@@ -1,0 +1,13 @@
+This is a preamble which should be ignored
+--separator
+Content-Disposition: form-data; name="upload"; filename="plain.txt"
+Content-Type: text/plain
+
+I am a plain text file
+
+--separator
+Content-Disposition: form-data; name="textView"
+
+Regular text
+--separator--
+This is a epilogue which should be ignored

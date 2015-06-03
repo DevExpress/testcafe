@@ -1,0 +1,160 @@
+(function () {
+    if (window.self !== window.top)
+        return;
+
+    //NOTE: sometime browser hang on page load. In this case we restart a job.
+    var __testCafeStartWatchdog = window.setTimeout(function () {
+        window.location.href = '"<@ restartTestRunUrl @>"';
+    }, 20 * 1000);
+
+    //API - should be defined here in local scope
+    var act = null,
+        ok = null,
+        notOk = null,
+        eq = null,
+        notEq = null,
+        handleAlert = null,
+        handleConfirm = null,
+        handlePrompt = null,
+        handleBeforeUnload = null,
+        inIFrame = null,
+        __set$ = null,
+        __get$ = null,
+        __get$Loc = null,
+        __set$Loc = null,
+        __call$ = null,
+        __proc$Script = null,
+
+        $ = null,
+        jQuery = null,
+
+    //NOTE: Global __waitFor is used to ensure page is ready before the next step executing.
+    //Usage: call the global __waitFor function everywhere you want (test file, wrappers, modules etc..)
+    //The arguments are identical with the act.waitFor function arguments.
+        __waitFor = null;
+
+    //Internals
+    (function () {
+        var Hammerhead = HammerheadClient.get('Hammerhead'),
+            TestCafeClient = window.TestCafeClient;
+
+        delete window.TestCafeClient;
+
+        TestCafeClient.get('Base.jQueryExtensions.Selectors').init();
+
+        TestCafeClient.define('Settings', function (require, exports) {
+            var nextStep = "<@ nextStep @>",
+                stepNames = "<@ stepNames @>";
+
+            exports.CURRENT_TEST_STEP_NAME = nextStep ? stepNames[nextStep - 1] : 'Test initialization';
+            exports.WORKER_IDLE_URL = '"<@ workerIdleUrl @>"';
+            exports.TAKE_SCREENSHOT_ON_FAILS = "<@ takeScreenshotOnFails @>";
+            exports.FAIL_ON_JS_ERRORS = "<@ failOnJsErrors @>";
+            exports.ENABLE_SOURCE_INDEX = true;
+            exports.NATIVE_DIALOGS_INFO = "<@ nativeDialogsInfo @>";
+        });
+
+        var IFRAME_TEST_RUNNNER_TASK_SCRIPT = "<@ iFrameTestRunScript @>";
+
+        Hammerhead.on(Hammerhead.IFRAME_READY_TO_INIT, function (e) {
+            var iframeWindow = e.iframe.contentWindow;
+
+            initTestCafeClientCore(iframeWindow);
+            initTestCafeUI(iframeWindow);
+
+            iframeWindow.eval.apply(iframeWindow, ['var isIFrameWithoutSrc = true;' + IFRAME_TEST_RUNNNER_TASK_SCRIPT]);
+        });
+
+        var Transport = TestCafeClient.get('Base.Transport'),
+            TestRunner = TestCafeClient.get('TestRunner.TestRunner'),
+            TestRunnerBase = TestCafeClient.get('TestRunner.TestRunnerBase'),
+            SandboxedJQuery = Hammerhead.SandboxedJQuery,
+            CustomSelectors = TestCafeClient.get('Base.jQueryExtensions.Selectors'),
+            jQueryDataMethodProxy = TestCafeClient.get('Base.jQueryExtensions.DataMethodProxy'),
+            UI = TestCafeClient.get('UI'),
+            ModalBackground = TestCafeClient.get('UI.ModalBackground'),
+            ShadowUI = Hammerhead.ShadowUI;
+
+        var testError = "<@ testError @>";
+
+        if (testError) {
+            Transport.fail(testError);
+            return;
+        }
+
+        $ = jQuery = CustomSelectors.create(SandboxedJQuery);
+
+        jQueryDataMethodProxy.setup($);
+
+        //NOTE: initialize API
+        var testRunner = new TestRunner();
+
+        testRunner.on(testRunner.TEST_STARTED_EVENT, function () {
+            window.clearTimeout(__testCafeStartWatchdog);
+        });
+
+        testRunner.on(TestRunnerBase.SCREENSHOT_CREATING_STARTED_EVENT, function () {
+            ShadowUI.setBlind(true);
+        });
+
+        testRunner.on(TestRunnerBase.SCREENSHOT_CREATING_FINISHED_EVENT, function () {
+            ShadowUI.setBlind(false);
+        });
+
+        testRunner.on(testRunner.ACTION_TARGET_WAITING_STARTED_EVENT, function (e) {
+            if (!e.isWaitAction)
+                UI.showProgressPanel(TestRunnerBase.WAITING_FOR_ACTION_TARGET_MESSAGE, e.maxTimeout);
+        });
+
+        testRunner.on(testRunner.ACTION_RUN_EVENT, function () {
+            UI.closeProgressPanel(null, true);
+        });
+
+        testRunner.on(testRunner.TEST_FAILED_EVENT, function () {
+            UI.closeProgressPanel(null, false);
+        });
+
+        act = testRunner.act;
+        ok = testRunner.ok;
+        notOk = testRunner.notOk;
+        eq = testRunner.eq;
+        notEq = testRunner.notEq;
+        handleAlert = testRunner.handleAlert;
+        handleConfirm = testRunner.handleConfirm;
+        handlePrompt = testRunner.handlePrompt;
+        handleBeforeUnload = testRunner.handleBeforeUnload;
+        inIFrame = testRunner.inIFrame;
+        __set$ = window.__set$;
+        __get$ = window.__get$;
+        __set$Loc = window.__set$Loc;
+        __get$Loc = window.__get$Loc;
+        __call$ = window.__call$;
+        __proc$Script = window.__proc$Script;
+        __waitFor = function () {
+            testRunner.setGlobalWaitFor.apply(testRunner, arguments);
+        };
+
+        ModalBackground.initAndShowLoadingText();
+    })();
+
+    try {
+        //!----------------------------------BEGIN HELPERS AND REQUIRES CODE----------------------------------
+        "<@ sharedJs @>";
+        //!------------------------------------END HELPERS AND REQUIRES CODE----------------------------------
+    } catch (err) {
+        act._onJSError(err);
+        return;
+    }
+
+    try {
+        act._start(
+            "<@ stepNames @>",
+            //!-----------------------------------------BEGIN TEST CODE-------------------------------------------
+            "<@ testSteps @>",
+            //!------------------------------------------END TEST CODE--------------------------------------------
+            "<@ nextStep @>"
+        );
+    } catch (err) {
+        act._onJSError(err);
+    }
+})();

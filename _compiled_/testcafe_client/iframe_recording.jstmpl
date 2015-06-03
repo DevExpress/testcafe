@@ -1,0 +1,85 @@
+(function () {
+    var TestCafeClient = window.TestCafeClient;
+    delete window.TestCafeClient;
+
+    //Playback
+    function initPlayback() {
+        function onTestRunnerInitialized(testRunner, callback) {
+            delete onTestRunnerInitialized;
+            delete IFrameDispatcher;
+
+            var act = testRunner.act,
+                ok = testRunner.ok,
+                notOk = testRunner.notOk,
+                eq = testRunner.eq,
+                notEq = testRunner.notEq,
+                handleAlert = testRunner.handleAlert,
+                handleConfirm = testRunner.handleConfirm,
+                handlePrompt = testRunner.handlePrompt,
+                handleBeforeUnload = testRunner.handleBeforeUnload,
+                __set$ = window.__set$,
+                __get$ = window.__get$,
+                __set$Loc = window.__set$Loc,
+                __get$Loc = window.__get$Loc,
+                __call$ = window.__call$,
+                __proc$Script = window.__proc$Script,
+                $ = null,
+                jQuery = null;
+
+            var Hammerhead = HammerheadClient.get('Hammerhead'),
+                SandboxedJQuery = Hammerhead.SandboxedJQuery,
+                jQuerySelectorExtensions = TestCafeClient.get('Base.jQueryExtensions.Selectors'),
+                jQueryDataMethodProxy = TestCafeClient.get('Base.jQueryExtensions.DataMethodProxy');
+
+            $ = jQuery = jQuerySelectorExtensions.create(SandboxedJQuery);
+            jQueryDataMethodProxy.setup($);
+
+            function runInContext(stepName, step, stepNum, runner) {
+                runner([stepName], [function () {
+                    eval('(' + step + ').call(this)');
+                }], stepNum, true);
+            }
+
+            callback(runInContext);
+        }
+
+        var IFrameDispatcher = TestCafeClient.get('Base.IFrameDispatcher');
+        IFrameDispatcher.init(onTestRunnerInitialized);
+    }
+
+    //Recording
+    (function () {
+        //TestCafe internal implementation object
+        var Hammerhead = HammerheadClient.get('Hammerhead');
+
+        TestCafeClient.define('Settings', function (require, exports) {
+            exports.FIXTURE_FILE_NAME_PARAM = '?expand=';
+
+            exports.RECORDING = true;
+            exports.PLAYBACK = "<@ playback @>";
+            exports.NATIVE_DIALOGS_INFO = "<@ nativeDialogsInfo @>";
+        });
+
+        var jQuerySelectorExtensions = TestCafeClient.get('Base.jQueryExtensions.Selectors');
+        jQuerySelectorExtensions.init();
+
+        var $ = Hammerhead.$,
+            Settings = TestCafeClient.get('Settings'),
+            IFrameRecorder = TestCafeClient.get('Recorder.IFrameRecorder'),
+            RecorderUtil = TestCafeClient.get('Recorder.Util');
+
+        var nativeDialogs = RecorderUtil.getNativeDialogs(); //NOTE: we should store it before recorder and playback initialization
+
+        if (Settings.PLAYBACK)
+            initPlayback();
+
+        if (window && window.top)
+            var iFrameRecorder = new IFrameRecorder(nativeDialogs);
+
+        $(document).ready(function () {
+            //NOTE: an iFrame may be removed in this moment
+            if (window && window.top)
+                iFrameRecorder.completeInitialization();
+       });
+    })();
+})();

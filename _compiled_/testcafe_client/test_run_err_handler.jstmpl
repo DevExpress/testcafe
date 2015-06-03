@@ -1,0 +1,17 @@
+(function () {
+    //NOTE: check that we are not in iframe
+    if (window.self !== window.top)
+        return;
+
+    var TestCafeClient = window.TestCafeClient,
+        Hammerhead = HammerheadClient.get('Hammerhead');
+
+    TestCafeClient.define('Settings', function (require, exports) {
+        exports.WORKER_IDLE_URL = '"<@ workerIdleUrl @>"';
+    });
+
+    var Transport = TestCafeClient.get('Base.Transport'),
+        JSON = Hammerhead.JSON;
+
+    Transport.fail(JSON.parse('"<@ error @>"'));
+})();

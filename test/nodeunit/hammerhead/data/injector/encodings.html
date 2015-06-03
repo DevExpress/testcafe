@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <title>Some title</title>
+
+</head>
+<body>
+<div id="testDiv">
+
+</div>
+<script type="text/javascript">
+    //<![CDATA[
+    Test for htmlparser bug with CDATA (see: https://github.com/fb55/node-htmlparser/issues/29)
+    //]]>
+</script>
+<div style="background-color: red; border: 1px solid black; width: 300px; height: 400px;">
+
+</div>
+<script type="text/javascript">
+    function someFunc() {
+        var testDiv = document.getElementById('testDiv');
+        testDiv.appendChild(document.createTextNode('Hi there!'));
+    }
+    someFunc();
+</script>
+
+</body>
+</html>
