@@ -1,8 +1,0 @@
-language: node_js
-node_js:
-  - "0.10"
-
-env:
-  global:
-    - secure: "dikareva_github"
-    - secure: "43b7cb4b-6208-4718-aaaf-81060cb3448e"
