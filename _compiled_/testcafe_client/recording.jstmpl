@@ -1,0 +1,385 @@
+(function () {
+    if (window.top !== window.self)
+        return;
+
+    //TestCafe internal implementation object
+    var TestCafeClient = window.TestCafeClient,
+        Hammerhead = HammerheadClient.get('Hammerhead');
+
+    delete window.TestCafeClient;
+
+    TestCafeClient.define('Settings', function (require, exports) {
+        exports.RETURN_URL = '"<@ returnUrl @>"';
+        exports.FIXTURE_FILE_NAME_PARAM = '?expand=';
+
+        exports.RECORDER_TOOLBAR_POS_LEFT = '"<@ toolbarPosLeft @>"';
+        exports.RECORDER_TOOLBAR_POS_TOP = '"<@ toolbarPosTop @>"';
+        exports.RECORDING = true;
+        exports.PLAYBACK = "<@ playback @>";
+        exports.SHOW_STEPS = "<@ showSteps @>";
+        exports.LINUX_PLATFORM = "<@ linuxPlatform @>";
+        exports.NATIVE_DIALOGS_INFO = "<@ nativeDialogsInfo @>";
+        exports.NATIVE_DIALOGS_QUEUE = "<@ nativeDialogsQueue @>";
+    });
+
+    var IFRAME_RECORDER_TASK_SCRIPT = "<@ iFrameRecordingScript @>";
+
+    Hammerhead.on(Hammerhead.IFRAME_READY_TO_INIT, function (e) {
+        var iframeWindow = e.iframe.contentWindow;
+
+        initTestCafeClientCore(iframeWindow);
+        initTestCafeUI(iframeWindow);
+        initTestCafeRecorder(iframeWindow);
+        initTestCafeRecorderUI(iframeWindow);
+
+        iframeWindow.eval.apply(iframeWindow, [ 'var isIFrameWithoutSrc = true;' + IFRAME_RECORDER_TASK_SCRIPT ]);
+    });
+
+    var jQuerySelectorExtensions = TestCafeClient.get('Base.jQueryExtensions.Selectors'),
+        TestRunnerBase = TestCafeClient.get('TestRunner.TestRunnerBase'),
+        PlaybackRunner = TestCafeClient.get('Recorder.PlaybackRunner');
+
+    var playbackNextStep = "<@ nextStep @>";
+
+    jQuerySelectorExtensions.init();
+
+    var $ = Hammerhead.$,
+        Settings = TestCafeClient.get('Settings'),
+        ServiceCommands = TestCafeClient.get('Shared.ServiceCommands'),
+        SharedErrors = TestCafeClient.get('Shared.Errors'),
+        Transport = TestCafeClient.get('Base.Transport'),
+        ModalBackground = TestCafeClient.get('UI.ModalBackground'),
+        CursorWidget = TestCafeClient.get('UI.Cursor'),
+        Recorder = TestCafeClient.get('Recorder.Recorder'),
+        UI = TestCafeClient.get('UI'),
+        RecorderUI = TestCafeClient.get('UI.Recorder'),
+        RecorderUtil = TestCafeClient.get('Recorder.Util'),
+        PlaybackResultWidget = TestCafeClient.get('UI.RecorderWidgets.PlaybackResult'),
+        PlaybackErrorMessagesWidget = TestCafeClient.get('UI.RecorderWidgets.PlaybackErrorMessages'),
+        DialogsAPI = TestCafeClient.get('TestRunner.API.Dialogs'),
+
+        UXLog = TestCafeClient.get('UI.UXLog');
+
+    var nativeDialogs = RecorderUtil.getNativeDialogs(),//NOTE: we should store it before recorder and playback initialization
+        recorder = new Recorder(nativeDialogs),
+        playbackRunner = Settings.PLAYBACK ? new PlaybackRunner(null) : null,
+        jsErrors = [];
+
+    function onJsError(err) {
+        jsErrors.push(err.msg);
+    }
+
+    Hammerhead.on(Hammerhead.UNCAUGHT_JS_ERROR, onJsError);
+
+    function runRecording(initNativeDialogs) {
+        recorder.start(initNativeDialogs);
+        ModalBackground.hide();
+
+        if (initNativeDialogs)
+            recorder.initNativeDialogsHandling();
+    }
+
+    ModalBackground.initAndShowLoadingText();
+
+    Transport.batchUpdate(function () {
+        //NOTE: load recorded steps info as soon as possible
+        recorder.loadStepsInfo(function (stepsInfo, hasUnsavedChanges) {
+            var adaptedStepsInfo = [];
+
+            for (var i = 0; i < stepsInfo.length; i++) {
+                var info = stepsInfo[i];
+
+                if (!info.isAssertion || info.blocks.length < 1)
+                    adaptedStepsInfo.push($.extend({ relatedStep: i }, info));
+                else {
+                    for (var j = 0; j < info.blocks.length; j++)
+                        adaptedStepsInfo.push($.extend({ relatedStep: i }, info.blocks[j]));
+                }
+            }
+
+            RecorderUI.init(function () {
+                    return recorder.stepsInfo;
+                },
+                function () {
+                    return recorder.hasUnsavedChanges;
+                },
+                function () {
+                    return recorder.testSaved;
+                }, Settings.SHOW_STEPS);
+
+            Hammerhead.off(Hammerhead.UNCAUGHT_JS_ERROR, onJsError);
+
+            if (Settings.PLAYBACK) {
+                var currentStep = playbackNextStep ? playbackNextStep - 1 : 0,
+                    wrapStepsInTestContext = null;
+
+                function addErrorsToStep(errors, stepNum) {
+                    stepsInfo[adaptedStepsInfo[stepNum].relatedStep].jsErrors = stepsInfo[adaptedStepsInfo[stepNum].relatedStep].jsErrors ?
+                        stepsInfo[adaptedStepsInfo[stepNum].relatedStep].jsErrors.concat(errors) :
+                        errors;
+                }
+
+                function getNextStepForSkipping() {
+                    var res = currentStep + 1;
+
+                    while (adaptedStepsInfo[res] && adaptedStepsInfo[res].relatedStep === adaptedStepsInfo[currentStep].relatedStep) {
+                        res++;
+                    }
+
+                    return res;
+                }
+
+                if (jsErrors.length)
+                    addErrorsToStep(jsErrors, adaptedStepsInfo[currentStep].relatedStep);
+
+                function onPlayBackStarted(e) {
+                    RecorderUI.activatePlaybackMode();
+                    RecorderUI.highlightStep(Math.max(0, e.nextStep - 1));
+                }
+
+                function stopPlayback(callback, err) {
+                    Settings.PLAYBACK = false;
+                    CursorWidget.hide(function () {
+                        var endPlaybackMsg = {
+                            cmd: ServiceCommands.END_PLAYBACK,
+                            error: err
+                        };
+
+                        Transport.asyncServiceMsg(endPlaybackMsg, function (res) {
+                            callback(res.errorMessage);
+                        });
+                    });
+                }
+
+                function onPlaybackFinished() {
+                    stopPlayback(function () {
+                        function callback() {
+                            RecorderUI.hideToolbar();
+                            ModalBackground.show();
+
+                            var failedStepsCount = 0;
+
+                            for (var i = 0; i < stepsInfo.length; i++) {
+                                if (stepsInfo[i].failed)
+                                    failedStepsCount++;
+                            }
+
+                            UXLog.write('Playback: playback finished with ' + failedStepsCount + ' failed steps');
+
+                            PlaybackResultWidget.show(PlaybackResultWidget.STATES.FINISHED, {
+                                total: stepsInfo.length,
+                                failed: failedStepsCount,
+                                onClosed: function () {
+                                    ModalBackground.hide();
+                                    RecorderUI.showToolbar();
+                                    runRecording(true);
+                                }
+                            });
+                        }
+
+                        checkStepJsErrors(null, callback, callback);
+                    });
+                }
+
+                function getSteps(stepsInfo, hasChanges, callback) {
+                    var stepNames = [];
+
+                    for (var i = 0; i < stepsInfo.length; i++)
+                        stepNames.push(stepsInfo[i].name);
+
+                    RecorderUtil.sendStepsInfo(stepsInfo, hasChanges || hasUnsavedChanges, function (res) {
+                        callback(stepNames, wrapStepsInTestContext(res));
+                    }, true);
+                }
+
+                function onTestFailed(e) {
+                    if (!Settings.PLAYBACK)
+                        return;
+
+                    UXLog.write('Playback: playback failed (' + (e.err.pageError ? 'js error on the page' : 'failed step') + ')');
+
+                    if (e.err && e.err.dialog && e.err.dialog === 'beforeUnload' && DialogsAPI.hasUnexpectedBeforeUnloadDialog() &&
+                        e.err.code === SharedErrors.API_UNEXPECTED_DIALOG && !e.afterUnload)
+                        return;
+
+                    if (e.err.pageError)
+                        addErrorsToStep([e.err.scriptErr], Math.max(e.stepNum, 0));
+                    else {
+                        if (e.err && stepsInfo[e.stepNum]) {
+                            stepsInfo[e.stepNum].failed = true;
+
+                            if (e.err && e.err.dialog)
+                                stepsInfo[e.stepNum].dialogError = e.err;
+                        }
+
+                        RecorderUtil.sendStepsInfo(stepsInfo, hasUnsavedChanges, function () {
+                            UI.closeProgressPanel(function () {
+                                RecorderUI.showToolbar();
+                            }, false);
+
+                            if (!adaptedStepsInfo[e.stepNum].isAssertion) {
+                                stopPlayback(function (err) {
+                                    RecorderUI.hideToolbar();
+                                    ModalBackground.show();
+
+                                    PlaybackResultWidget.show(PlaybackResultWidget.STATES.FAILED, {
+                                        total: stepsInfo.length,
+                                        failedStepNum: adaptedStepsInfo[e.stepNum].relatedStep + 1,
+                                        onClosed: function () {
+                                            ModalBackground.hide();
+                                            RecorderUI.showToolbar();
+                                            runRecording(true);
+
+                                            RecorderUI.openStepWithError(adaptedStepsInfo[e.stepNum].relatedStep, e.err, {}, true);
+                                        },
+                                        error: err
+                                    });
+                                }, e.err);
+                            }
+                            else {
+                                RecorderUI.openStepWithError(adaptedStepsInfo[e.stepNum].relatedStep, e.err, {
+                                    skipStep: function (hasChanges) {
+                                        UXLog.write('Playback: skip step button is pressed');
+                                        getSteps(stepsInfo, hasChanges, function (stepNames, steps) {
+                                            playbackRunner.skipStep(stepNames, steps, getNextStepForSkipping());
+                                        });
+                                    },
+                                    resumePlayback: function (hasChanges) {
+                                        UXLog.write('Playback: resume playback button is pressed');
+                                        getSteps(stepsInfo, hasChanges, function (stepNames, steps) {
+                                            playbackRunner.resumePlayback(stepNames, steps);
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+
+                playbackRunner.on(playbackRunner.TEST_STARTED_EVENT, onPlayBackStarted);
+                playbackRunner.on(playbackRunner.TEST_COMPLETED_EVENT, onPlaybackFinished);
+                playbackRunner.on(playbackRunner.TEST_FAILED_EVENT, onTestFailed);
+                playbackRunner.on(playbackRunner.ACTION_TARGET_WAITING_STARTED_EVENT, function (e) {
+                    if (!e.isWaitAction) {
+                        UI.showProgressPanel(TestRunnerBase.WAITING_FOR_ACTION_TARGET_MESSAGE, e.maxTimeout, function () {
+                            RecorderUI.hideToolbar();
+                        });
+                    }
+                });
+                playbackRunner.on(playbackRunner.ACTION_RUN_EVENT, function () {
+                    UI.closeProgressPanel(function () {
+                        RecorderUI.showToolbar();
+                    }, true);
+                });
+
+                function checkStepJsErrors(hasErrorsCallback, resumeCallback, hasNoErrorsCallback) {
+                    if (stepsInfo[adaptedStepsInfo[currentStep].relatedStep].jsErrors) {
+                        stepsInfo[adaptedStepsInfo[currentStep].relatedStep].failed = true;
+                        RecorderUI.updateSteps();
+
+                        var errors = stepsInfo[adaptedStepsInfo[currentStep].relatedStep].jsErrors;
+                        delete stepsInfo[adaptedStepsInfo[currentStep].relatedStep].jsErrors;
+
+                        RecorderUtil.sendStepsInfo(stepsInfo, hasUnsavedChanges);
+
+                        RecorderUI.hideToolbar();
+                        ModalBackground.show();
+
+                        PlaybackErrorMessagesWidget.show(errors, function () {
+                            ModalBackground.hide();
+                            RecorderUI.showToolbar();
+
+                            if (typeof resumeCallback === 'function')
+                                resumeCallback();
+                        });
+
+                        if (typeof hasErrorsCallback === 'function')
+                            hasErrorsCallback();
+                    }
+                    else {
+                        if (typeof hasNoErrorsCallback === 'function')
+                            hasNoErrorsCallback();
+                    }
+                }
+
+                playbackRunner.on(playbackRunner.NEXT_STEP_STARTED_EVENT, function (e) {
+                    function callback() {
+                        currentStep = e.nextStep - 1;
+
+                        if (e.nextStep !== 1)
+                            RecorderUI.highlightStep(adaptedStepsInfo[currentStep].relatedStep);
+                    }
+
+                    checkStepJsErrors(function () {
+                            e.stop = true;
+                        },
+                        function () {
+                            callback();
+                            e.callback();
+                        }, callback);
+                });
+
+                (function () {
+                    var CustomSelectors = TestCafeClient.get('Base.jQueryExtensions.Selectors'),
+                        jQueryDataMethodProxy = TestCafeClient.get('Base.jQueryExtensions.DataMethodProxy'),
+                        SandboxedJQuery = Hammerhead.SandboxedJQuery;
+
+                    //NOTE: initialize API for test steps
+                    var $ = CustomSelectors.create(SandboxedJQuery),
+                        jQuery = $;
+
+                    jQueryDataMethodProxy.setup($);
+
+                    var act = playbackRunner.act,
+                        ok = playbackRunner.ok,
+                        notOk = playbackRunner.notOk,
+                        eq = playbackRunner.eq,
+                        notEq = playbackRunner.notEq,
+                        handleAlert = playbackRunner.handleAlert,
+                        handleConfirm = playbackRunner.handleConfirm,
+                        handlePrompt = playbackRunner.handlePrompt,
+                        handleBeforeUnload = playbackRunner.handleBeforeUnload,
+                        inIFrame = playbackRunner.inIFrame;
+
+                    var testSteps = "<@ testSteps @>",
+                        stepNames = [];
+
+                    wrapStepsInTestContext = function (steps) {
+                        var res = window.eval('(function($, jQuery, act, ok, notOk, eq, notEq, handleAlert, handleConfirm, handlePrompt, handleBeforeUnload, inIFrame) { return ' + steps + ' })'),
+                            steps = res($, jQuery, act, ok, notOk, eq, notEq, handleAlert, handleConfirm, handlePrompt, handleBeforeUnload, inIFrame);
+
+                        return steps;
+                    };
+
+                    for (var i = 0; i < stepsInfo.length; i++)
+                        stepNames.push(stepsInfo[i].name);
+
+                    if (Settings.NATIVE_DIALOGS_INFO && Settings.NATIVE_DIALOGS_INFO.beforeUnloadDialogAppeared && !Settings.NATIVE_DIALOGS_INFO.expectBeforeUnload) {
+                        onPlayBackStarted({
+                            nextStep: currentStep
+                        });
+
+                        CursorWidget.init();
+
+                        onTestFailed({
+                            err: {
+                                code: SharedErrors.API_UNEXPECTED_DIALOG,
+                                dialog: 'beforeUnload',
+                                stepName: stepNames[currentStep]
+                            },
+                            stepNum: currentStep,
+                            afterUnload: true
+                        });
+                    }
+                    else
+                        playbackRunner.act._start(stepNames, testSteps, playbackNextStep);
+                })();
+            }
+            else {
+                $(document).ready(function () {
+                    runRecording();
+                });
+            }
+        });
+    });
+})();

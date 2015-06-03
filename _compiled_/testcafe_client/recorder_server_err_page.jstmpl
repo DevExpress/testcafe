@@ -1,0 +1,83 @@
+(function () {
+    //Const
+    var ERROR_INFO_CLASS = 'error-info',
+        HEADER_CLASS = 'header',
+        CONTENT_CLASS = 'content',
+        FOOTER_CLASS = 'footer',
+
+        TITLE_LOGO_CLASS = 'logo',
+        SUBTITLE_CLASS = 'subtitle',
+        ERROR_CODE_CLASS = 'error-code',
+        ERROR_CODE_TITLE_CLASS = 'error-code-title',
+        ERROR_MESSAGE_CLASS = 'error-message',
+        PAGE_URL_CLASS = 'page-url',
+        RETURN_URL_CLASS = 'return-url',
+        ERROR_CODE_SPACE_CLASS = 'space',
+
+        SUBTITLE = ' Recorder',
+        ERROR_CODE_TITLE = 'HTTP status code',
+        ERROR_MESSAGE = 'Recorder has stopped because the target webpage returned an error.',
+        RETURN_LINK_TEXT = 'Return to TestCafé Control Panel';
+
+    var TestCafeClient = window.TestCafeClient,
+        Hammerhead = HammerheadClient.get('Hammerhead');
+
+    TestCafeClient.define('Settings', {});
+
+    var $ = Hammerhead.$,
+        ShadowUI = Hammerhead.ShadowUI;
+
+    var returnUrl = '"<@ returnUrl @>"',
+        errorCode = '"<@ errorCode @>"',
+        originUrl = '"<@ originUrl @>"',
+        errorMessage = '"<@ errorMessage @>"' || '';
+
+    $(document).ready(function () {
+
+        var $errorInfo = $('<div></div>');
+        ShadowUI.addClass($errorInfo, ERROR_INFO_CLASS);
+
+        //header
+        var $header = $('<div></div>').appendTo($errorInfo);
+        ShadowUI.addClass($header, HEADER_CLASS);
+
+        var $logo = $('<div></div>').appendTo($header);
+        ShadowUI.addClass($logo, TITLE_LOGO_CLASS);
+
+        var $subtitle = $('<span></span>').text(SUBTITLE).appendTo($header);
+        ShadowUI.addClass($subtitle, SUBTITLE_CLASS);
+
+        //content
+        var $content = $('<div></div>').appendTo($errorInfo);
+        ShadowUI.addClass($content, CONTENT_CLASS);
+
+        if (errorCode) {
+            var $errorCode = $('<div></div>').text(errorCode).appendTo($content);
+            ShadowUI.addClass($errorCode, ERROR_CODE_CLASS);
+
+            var $errorCodeTitle = $('<div></div>').text(ERROR_CODE_TITLE).appendTo($content);
+            ShadowUI.addClass($errorCodeTitle, ERROR_CODE_TITLE_CLASS);
+        }
+        else {
+            var $errorCodeSpace = $('<div></div>').appendTo($content);
+            ShadowUI.addClass($errorCodeSpace, ERROR_CODE_SPACE_CLASS);
+        }
+
+        var $errorMessage = $('<div></div>').text(errorMessage || ERROR_MESSAGE).appendTo($content);
+        ShadowUI.addClass($errorMessage, ERROR_MESSAGE_CLASS);
+
+        var $pageUrl = $('<a></a>').text(originUrl).appendTo($content);
+        Hammerhead.NativeMethods.setAttribute.call($pageUrl[0], 'href', originUrl);
+        ShadowUI.addClass($pageUrl, PAGE_URL_CLASS);
+
+        //footer
+        var $footer = $('<div></div>').appendTo($errorInfo);
+        ShadowUI.addClass($footer, FOOTER_CLASS);
+
+        var $returnLink = $('<a />').text(RETURN_LINK_TEXT).appendTo($footer);
+        Hammerhead.NativeMethods.setAttribute.call($returnLink[0], 'href', returnUrl);
+        ShadowUI.addClass($returnLink, RETURN_URL_CLASS);
+
+        $errorInfo.appendTo(ShadowUI.getRoot());
+    });
+})();

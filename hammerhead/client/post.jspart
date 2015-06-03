@@ -1,0 +1,4 @@
+    }
+
+    initHammerheadClient(window);
+})();
