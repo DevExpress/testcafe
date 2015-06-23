@@ -16,13 +16,12 @@ export default class BrowserConnection extends EventEmitter {
         this.ready            = false;
         this.heartbeatTimeout = null;
 
-        this.url          = null;
-        this.heartbeatUrl = null;
-        this.idleUrl      = null;
-        this.statusUrl    = null;
+        this.url          = `${gateway.domain}/browser/connect/${this.id}`;
+        this.heartbeatUrl = `${gateway.domain}/browser/heartbeat/${this.id}`;
+        this.idleUrl      = `${gateway.domain}/browser/idle/${this.id}`;
+        this.statusUrl    = `${gateway.domain}/browser/status/${this.id}`;
 
         this.gateway = gateway;
-
         this.gateway.startServingConnection(this);
     }
 

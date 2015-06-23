@@ -3,6 +3,8 @@ import { respond404, redirect } from '../utils/http';
 export default class BrowserConnectionGateway {
     constructor (proxy) {
         this.connections = {};
+        this.domain      = proxy.server1Info.domain;
+
         this._registerRoutes(proxy);
     }
 
@@ -45,13 +47,7 @@ export default class BrowserConnectionGateway {
 
     // API
     startServingConnection (connection) {
-        var id     = connection.id;
-        var domain = this.proxy.server1Info.domain;
-        var url    = `http://${domain}/browser/connect/${id}`;
-
         this.connections[id] = connection;
-
-        return url;
     }
 
     stopServingConnection (connection) {
