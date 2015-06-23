@@ -1,3 +1,5 @@
+import { respond404, redirect } from '../utils/http';
+
 export default class BrowserConnectionGateway {
     constructor (proxy) {
         this.connections = {};
@@ -15,12 +17,12 @@ export default class BrowserConnectionGateway {
         var connection = this.connections[id];
         var userAgent  = req.headers['user-agent'];
 
-        if (connection)
+        if (connection) {
             connection.establish(userAgent);
+            redirect(res, connection.idleUrl);
+        }
         else
-            res.statusCode = 404;
-
-        res.end();
+            respond404(res);
     }
 
     _onHeartbeat (res, id) {
@@ -29,9 +31,7 @@ export default class BrowserConnectionGateway {
         if (connection)
             connection.heartbeat();
         else
-            res.statusCode = 404;
-
-        res.end();
+            respond404(res);
     }
 
     _onIdle (res, id) {
@@ -39,19 +39,19 @@ export default class BrowserConnectionGateway {
 
         if (connection)
             res.end(connection.renderIdlePage());
-        else {
-            res.statusCode = 404;
-            res.end();
-        }
+        else
+            respond404(res);
     }
 
     // API
     startServingConnection (connection) {
         var id     = connection.id;
         var domain = this.proxy.server1Info.domain;
+        var url    = `http://${domain}/browser/connect/${id}`;
 
-        connection.url       = `http://${domain}/browser/connect/${id}`;
         this.connections[id] = connection;
+
+        return url;
     }
 
     stopServingConnection (connection) {
