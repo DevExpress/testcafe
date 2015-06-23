@@ -5,7 +5,7 @@ import TestRun from './test-run';
 const QUARANTINE_THRESHOLD = 3;
 
 
-// Worker job
+// Browser job
 export default class BrowserJob extends EventEmitter {
     constructor (tests, worker, proxy, opts) {
         super();
