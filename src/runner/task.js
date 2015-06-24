@@ -8,11 +8,11 @@ export default class Task extends EventEmitter {
         this.startTime = null;
         this.endTime   = null;
 
-        this.browserJobs = browserConnections.map((bc) => this._createBrowserJob(tests, bc, proxy, opts));
+        this.browserJobs = browserConnections.map(bc => this._createBrowserJob(tests, bc, proxy, opts));
     }
 
     _assignBrowserJobEventListeners (job) {
-        job.on('test-run-done', (testRun) => this.emit('test-run-done', testRun));
+        job.on('test-run-done', testRun => this.emit('test-run-done', testRun));
 
         job.once('start', () => {
             if (!this.startTime) {

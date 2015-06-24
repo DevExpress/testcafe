@@ -14,7 +14,7 @@ export default class BrowserJob extends EventEmitter {
         this.quarantine = null;
         this.opts       = opts;
         this.proxy      = proxy;
-        this.testRuns   = tests.map((test) => this._createTestRun(test, worker));
+        this.testRuns   = tests.map(test => this._createTestRun(test, worker));
     }
 
     _shouldStartQuarantine (testRun) {
