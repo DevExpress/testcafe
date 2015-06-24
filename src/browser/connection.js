@@ -1,6 +1,18 @@
+import path from 'path';
+import fs from 'fs';
 import { EventEmitter } from 'events';
+import Mustache from 'mustache';
 import { parse as parseUserAgent } from 'useragent';
-import { create as createUniqueId } from '../utils/unique-id';
+import read from '../utils/read-file-relative';
+
+
+// Const
+const IDLE_PAGE_TEMPLATE = read('./idle-page/index.html.mustache');
+
+
+// Global instance counter used to generate ID's
+var instanceCount = 0;
+
 
 export default class BrowserConnection extends EventEmitter {
     const HEARTBEAT_TIMEOUT = 2 * 60 * 1000;
@@ -8,12 +20,12 @@ export default class BrowserConnection extends EventEmitter {
     constructor (gateway) {
         super();
 
-        this.id   = createUniqueId();
-        this.jobs = [];
+        this.id      = ++instanceCount;
+        this.jobs    = [];
+        this.gateway = gateway;
 
-        this.userAgent        = null;
-        this.browserInstance  = null;
         this.ready            = false;
+        this.userAgent        = null;
         this.heartbeatTimeout = null;
 
         this.url          = `${gateway.domain}/browser/connect/${this.id}`;
@@ -21,7 +33,6 @@ export default class BrowserConnection extends EventEmitter {
         this.idleUrl      = `${gateway.domain}/browser/idle/${this.id}`;
         this.statusUrl    = `${gateway.domain}/browser/status/${this.id}`;
 
-        this.gateway = gateway;
         this.gateway.startServingConnection(this);
     }
 
@@ -52,7 +63,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     renderIdlePage () {
-        //TODO
+        return Mustache.render(IDLE_PAGE_TEMPLATE, { id: this.id });
     }
 
 }
