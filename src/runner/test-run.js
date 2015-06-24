@@ -5,14 +5,12 @@ import Mustache from 'mustache';
 import { Session } from './../../../hammerhead/lib';
 import SERVICE_CMD from '../../shared/service_msg_cmd';
 import UploadsStorage from '../../upload';
+import read from '../utils/read-file-relative';
 
 
 // Const
-const TEST_RUN_TEMPLATE_PATH        = path.join(__dirname, '../../_compiled_/testcafe_client/test-run.mustache');
-const TEST_RUN_TEMPLATE             = fs.readFileSync(TEST_RUN_TEMPLATE_PATH).toString();
-
-const IFRAME_TEST_RUN_TEMPLATE_PATH = path.join(__dirname, '../../_compiled_/testcafe_client/iframe-test-run.mustache');
-const IFRAME_TEST_RUN_TEMPLATE      = fs.readFileSync(TEST_RUN_TEMPLATE_PATH).toString();
+const TEST_RUN_TEMPLATE        = read('../../_compiled_/testcafe_client/test-run.js.mustache');
+const IFRAME_TEST_RUN_TEMPLATE = read('../../_compiled_/testcafe_client/iframe-test-run.js.mustache');
 
 
 export default class TestRun extends Session {
