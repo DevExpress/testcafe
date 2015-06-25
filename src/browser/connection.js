@@ -5,6 +5,8 @@ import Mustache from 'mustache';
 import { parse as parseUserAgent } from 'useragent';
 import read from '../utils/read-file-relative';
 import COMMANDS from './commands';
+import { MESSAGES, getText } from '../messages';
+
 
 
 // Const
@@ -40,7 +42,7 @@ export default class BrowserConnection extends EventEmitter {
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
             this.close();
-            this.emit('interrupt');
+            this.emit('error', getText(MESSAGES.browserConnectionInterrupted, this.userAgent));
         }, BrowserConnection.HEARTBEAT_TIMEOUT);
     }
 
@@ -79,7 +81,11 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     renderIdlePage () {
-        return Mustache.render(IDLE_PAGE_TEMPLATE, { id: this.id });
+        return Mustache.render(IDLE_PAGE_TEMPLATE, {
+            id:        this.id,
+            userAgent: this.userAgent,
+            statusUrl: this.statusUrl
+        });
     }
 
     getStatus () {
