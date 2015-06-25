@@ -1,4 +1,4 @@
-import { respond404, redirect } from '../utils/http';
+import { respond404, respondWithJSON, redirect } from '../utils/http';
 import read from '../utils/read-file-relative';
 
 
@@ -37,6 +37,8 @@ export default class BrowserConnectionGateway {
         proxy.GET('./browser/assets/style.css', { content: IDLE_PAGE_STYLE, contentType: 'text/css' });
     }
 
+
+    // Route handlers
     static onConnection (req, res, connection) {
         var userAgent = req.headers['user-agent'];
 
@@ -54,7 +56,9 @@ export default class BrowserConnectionGateway {
     }
 
     static onStatusRequest (req, res, connection) {
-        res.end(connection.getStatus());
+        var status = connection.getStatus();
+
+        respondWithJSON(res, status);
     }
 
 
