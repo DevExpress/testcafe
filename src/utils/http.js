@@ -8,3 +8,8 @@ export function redirect (res, url) {
     res.setHeader('location', url);
     res.end();
 }
+
+export function respondWithJSON (res, data) {
+    res.setHeader('content-type', 'application/json');
+    res.end(data ? JSON.stringify(data) : '');
+}
