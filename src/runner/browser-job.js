@@ -10,11 +10,11 @@ export default class BrowserJob extends EventEmitter {
     constructor (tests, worker, proxy, opts) {
         super();
 
-        this.started    = false;
-        this.quarantine = null;
-        this.opts       = opts;
-        this.proxy      = proxy;
-        this.testRunQueue   = tests.map(test => this._createTestRun(test, worker));
+        this.started      = false;
+        this.quarantine   = null;
+        this.opts         = opts;
+        this.proxy        = proxy;
+        this.testRunQueue = tests.map(test => this._createTestRun(test, worker));
     }
 
     _shouldStartQuarantine (testRun) {
@@ -95,5 +95,9 @@ export default class BrowserJob extends EventEmitter {
         this.emit('done');
 
         return null;
+    }
+
+    terminate () {
+        this.testRunQueue = [];
     }
 }
