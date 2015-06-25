@@ -3,7 +3,7 @@ import path from 'path';
 import Promise from 'promise';
 import Mustache from 'mustache';
 import { Session } from './../../../hammerhead/lib';
-import SERVICE_CMD from '../../shared/service_msg_cmd';
+import COMMANDS from './commands';
 import UploadsStorage from '../../upload';
 import read from '../utils/read-file-relative';
 
@@ -131,50 +131,50 @@ export default class TestRun extends Session {
 // Service message handlers
 var ServiceMessages = TestRun.prototype;
 
-ServiceMessages[SERVICE_CMD.TEST_FAIL] = function (msg) {
+ServiceMessages[COMMANDS.fatalError] = function (msg) {
     this._fatalError(msg.err);
 };
 
-ServiceMessages[SERVICE_CMD.ASSERTION_FAILED] = function (msg) {
+ServiceMessages[COMMANDS.assertionFailed] = function (msg) {
     this._addError(msg.err);
 };
 
-ServiceMessages[SERVICE_CMD.TEST_COMPLETE] = function () {
+ServiceMessages[COMMANDS.done] = function () {
     this._done();
 };
 
-ServiceMessages[SERVICE_CMD.SET_STEPS_SHARED_DATA] = function (msg) {
+ServiceMessages[COMMANDS.setStepsSharedData] = function (msg) {
     this.stepsSharedData = msg.stepsSharedData;
 };
 
-ServiceMessages[SERVICE_CMD.GET_STEPS_SHARED_DATA] = function () {
+ServiceMessages[COMMANDS.getStepsSharedData] = function () {
     return this.stepsSharedData;
 };
 
-ServiceMessages[SERVICE_CMD.SET_NEXT_STEP] = function (msg) {
+ServiceMessages[COMMANDS.setNextStep] = function (msg) {
     this.nextStep = msg.nextStep;
 };
 
-ServiceMessages[SERVICE_CMD.SET_ACTION_TARGET_WAITING] = function (msg) {
+ServiceMessages[COMMANDS.setActionTargetWaiting] = function (msg) {
     this.actionTargetWaiting = msg.value;
 };
 
-ServiceMessages[SERVICE_CMD.SET_TEST_ERROR] = function (msg) {
+ServiceMessages[COMMANDS.setTestError] = function (msg) {
     this.testError = msg.err;
 };
 
-ServiceMessages[SERVICE_CMD.GET_AND_UNCHECK_FILE_DOWNLOADING_FLAG] = function () {
+ServiceMessages[COMMANDS.getAndUncheckFileDownloadingFlag] = function () {
     var isFileDownloading  = this.isFileDownloading;
     this.isFileDownloading = false;
 
     return isFileDownloading;
 };
 
-ServiceMessages[SERVICE_CMD.UNCHECK_FILE_DOWNLOADING_FLAG] = function () {
+ServiceMessages[COMMANDS.uncheckFileDownloadingFlag] = function () {
     this.isFileDownloading = false;
 };
 
-ServiceMessages[SERVICE_CMD.NATIVE_DIALOGS_INFO_SET] = function (msg) {
+ServiceMessages[COMMANDS.nativeDialogsInfoSet] = function (msg) {
     if (msg.timeStamp >= this.nativeDialogsInfoTimeStamp) {
         //NOTE: the server can get messages in the wrong sequence if they was sent with a little distance (several milliseconds),
         // we don't take to account old messages
