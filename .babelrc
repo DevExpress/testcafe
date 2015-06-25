@@ -1,0 +1,34 @@
+{
+  "whitelist": [
+    "es6.arrowFunctions",
+    "es6.classes",
+    "es6.properties.computed",
+    "es6.constants",
+    "es6.blockScoping",
+    "es6.destructuring",
+    "es6.modules",
+    "es6.parameters.default",
+    "es6.parameters.rest",
+    "es6.templateLiterals",
+    "es6.forOf",
+    "regenerator",
+    "runtime",
+    "strict",
+    "es7.asyncFunctions",
+    "es7.classProperties"
+  ],
+  "loose": [
+    "es6.arrowFunctions",
+    "es6.classes",
+    "es6.properties.computed",
+    "es6.constants",
+    "es6.blockScoping",
+    "es6.destructuring",
+    "es6.modules",
+    "es6.parameters.default",
+    "es6.parameters.rest",
+    "es6.templateLiterals",
+    "es7.asyncFunctions",
+    "es7.classProperties"
+  ]
+}
