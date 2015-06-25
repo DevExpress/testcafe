@@ -1,0 +1,9 @@
+{
+  "parser": "babel-eslint",
+  "rules": {
+    "brace-style": [2, "stroustrup", { "allowSingleLine": true }]
+  },
+  "env": {
+    "node": true
+  }
+}

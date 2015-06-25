@@ -1,5 +1,3 @@
-import fs from 'fs';
-import path from 'path';
 import { Proxy } from './../../hammerhead/lib';
 import BrowserConnectionGateway from './browser/gateway';
 import BrowserConnection from './browser/connection';

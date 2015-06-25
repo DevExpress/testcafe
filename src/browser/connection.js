@@ -18,7 +18,7 @@ var instanceCount = 0;
 
 
 export default class BrowserConnection extends EventEmitter {
-    const HEARTBEAT_TIMEOUT = 2 * 60 * 1000;
+    static HEARTBEAT_TIMEOUT = 2 * 60 * 1000;
 
     constructor (gateway) {
         super();
