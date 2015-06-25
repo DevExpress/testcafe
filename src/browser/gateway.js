@@ -16,44 +16,45 @@ export default class BrowserConnectionGateway {
         this._registerRoutes(proxy);
     }
 
+    _dispatch (url, proxy, handler) {
+        proxy.GET(url, (req, res, si, params) => {
+            var connection = this.connections[params.id];
+
+            if (connection)
+                handler(req, res, connection);
+            else
+                respond404(res);
+        });
+    }
 
     _registerRoutes (proxy) {
+        this._dispatch('/browser/connect/{id}', proxy, BrowserConnectionGateway.onConnection);
+        this._dispatch('/browser/heartbeat/{id}', proxy, BrowserConnectionGateway.onHeartbeat);
+        this._dispatch('/browser/idle/{id}', proxy, BrowserConnectionGateway.onIdle);
+        this._dispatch('/browser/status/{id}', proxy, BrowserConnectionGateway.onStatusRequest);
+
         proxy.GET('./browser/assets/index.js', { content: IDLE_PAGE_SCRIPT, contentType: 'application/x-javascript' });
         proxy.GET('./browser/assets/style.css', { content: IDLE_PAGE_STYLE, contentType: 'text/css' });
-
-        proxy.GET('/browser/connect/{id}', (req, res, si, params) => this._onConnection(req, res, params.id));
-        proxy.GET('/browser/heartbeat/{id}', (req, res, si, params) => this._onHeartbeat(res, params.id));
-        proxy.GET('/browser/idle/{id}', (req, res, si, params) => this._onIdle(res, params.id));
     }
 
-    _onConnection (req, res, id) {
-        var connection = this.connections[id];
-        var userAgent  = req.headers['user-agent'];
+    static onConnection (req, res, connection) {
+        var userAgent = req.headers['user-agent'];
 
-        if (connection) {
-            connection.establish(userAgent);
-            redirect(res, connection.idleUrl);
-        }
-        else
-            respond404(res);
+        connection.establish(userAgent);
+        redirect(res, connection.idleUrl);
     }
 
-    _onHeartbeat (res, id) {
-        var connection = this.connections[id];
-
-        if (connection)
-            connection.heartbeat();
-        else
-            respond404(res);
+    static onHeartbeat (req, res, connection) {
+        connection.heartbeat();
+        res.end();
     }
 
-    _onIdle (res, id) {
-        var connection = this.connections[id];
+    static onIdle (req, res, connection) {
+        res.end(connection.renderIdlePage());
+    }
 
-        if (connection)
-            res.end(connection.renderIdlePage());
-        else
-            respond404(res);
+    static onStatusRequest (req, res, connection) {
+        res.end(connection.getStatus());
     }
 
 
