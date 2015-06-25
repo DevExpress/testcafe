@@ -54,8 +54,10 @@ export default class BrowserConnection extends EventEmitter {
     addJob (job) {
         this.jobQueue.push(job);
 
-        // NOTE: finished job is always first in the queue
-        job.once('done', () => this.jobQueue.shift());
+        job.once('done', () => {
+            var idx = this.jobQueue.indexOf(job);
+            this.jobQueue.splice(idx, 1);
+        });
     }
 
     close () {
