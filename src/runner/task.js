@@ -5,8 +5,9 @@ export default class Task extends EventEmitter {
     constructor (tests, browserConnections, proxy, opts) {
         super();
 
-        this.startTime = null;
-        this.endTime   = null;
+        this.startTime    = null;
+        this.endTime      = null;
+        this.testRunCount = tests.length * browserConnections.length;
 
         this.browserJobs = browserConnections.map(bc => this._createBrowserJob(tests, bc, proxy, opts));
     }
@@ -25,7 +26,6 @@ export default class Task extends EventEmitter {
             var idx = this.browserJobs.indexOf(job);
 
             this.browserJobs.splice(idx, 1);
-            job.removeAllListeners();
 
             if (!this.browserJobs.length) {
                 this.endTime = new Date();
@@ -41,5 +41,10 @@ export default class Task extends EventEmitter {
         browserConnection.addJob(job);
 
         return job;
+    }
+
+    // API
+    terminate () {
+        this.browserJobs.forEach(job => job.terminate());
     }
 }
