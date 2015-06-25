@@ -4,6 +4,7 @@ import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { parse as parseUserAgent } from 'useragent';
 import read from '../utils/read-file-relative';
+import COMMANDS from './commands';
 
 
 // Const
@@ -20,12 +21,12 @@ export default class BrowserConnection extends EventEmitter {
     constructor (gateway) {
         super();
 
-        this.id      = ++instanceCount;
-        this.jobs    = [];
-        this.gateway = gateway;
+        this.id        = ++instanceCount;
+        this.jobQueue  = [];
+        this.gateway   = gateway;
+        this.userAgent = null;
 
         this.ready            = false;
-        this.userAgent        = null;
         this.heartbeatTimeout = null;
 
         this.url          = `${gateway.domain}/browser/connect/${this.id}`;
@@ -43,7 +44,22 @@ export default class BrowserConnection extends EventEmitter {
         }, BrowserConnection.HEARTBEAT_TIMEOUT);
     }
 
+    _getNextTestRunUrl () {
+        var job = this.jobQueue[0];
+
+        return job ? job.getNextTestRunUrl() : null;
+    }
+
     // API
+    addJob (job) {
+        this.jobQueue.push(job);
+
+        job.once('done', () => {
+            var idx = this.jobQueue.indexOf(job);
+            this.jobQueue.splice(idx, 1);
+        });
+    }
+
     close () {
         this.ready = false;
         this.gateway.stopServingConnection(this);
@@ -66,4 +82,12 @@ export default class BrowserConnection extends EventEmitter {
         return Mustache.render(IDLE_PAGE_TEMPLATE, { id: this.id });
     }
 
+    getStatus () {
+        var testRunUrl = this._getNextTestRunUrl();
+
+        if (testRunUrl)
+            return { cmd: COMMANDS.run, url: testRunUrl };
+
+        return { cmd: COMMANDS.idle };
+    }
 }
