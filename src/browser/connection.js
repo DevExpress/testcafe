@@ -23,9 +23,9 @@ export default class BrowserConnection extends EventEmitter {
         this.id      = ++instanceCount;
         this.jobs    = [];
         this.gateway = gateway;
+        this.userAgent        = null;
 
         this.ready            = false;
-        this.userAgent        = null;
         this.heartbeatTimeout = null;
 
         this.url          = `${gateway.domain}/browser/connect/${this.id}`;
@@ -65,5 +65,4 @@ export default class BrowserConnection extends EventEmitter {
     renderIdlePage () {
         return Mustache.render(IDLE_PAGE_TEMPLATE, { id: this.id });
     }
-
 }
