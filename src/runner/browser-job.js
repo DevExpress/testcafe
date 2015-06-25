@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import TestRun from '../test-run';
+import TestRun from './test-run';
 
 // Const
 const QUARANTINE_THRESHOLD = 3;
