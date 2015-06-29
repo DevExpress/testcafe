@@ -36,7 +36,8 @@
     "radix": 2,
     "comma-dangle": [2, "never"],
     "no-extra-parens": 2,
-    "new-cap": [2, { "capIsNew": false }]
+    "new-cap": [2, { "capIsNew": false }],
+    "space-before-function-paren": [2, "always"]
   },
   "env": {
     "node": true
