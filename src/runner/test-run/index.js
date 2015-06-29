@@ -1,5 +1,3 @@
-import fs from 'fs';
-import path from 'path';
 import Promise from 'promise';
 import Mustache from 'mustache';
 import { Session } from './../../../hammerhead/lib';
@@ -62,6 +60,7 @@ export default class TestRun extends Session {
 
         // TODO
         var nextStep             = this.actionTargetWaiting ? this.nextStep - 1 : this.nextStep;
+
         this.actionTargetWaiting = false;
 
         if (!this.startTime)
@@ -98,7 +97,7 @@ export default class TestRun extends Session {
     _addError (err) {
         if (err.__sourceIndex !== void 0 && err.__sourceIndex !== null) {
             err.relatedSourceCode = this.suite.sourceIndex[err.__sourceIndex];
-            delete  err.__sourceIndex;
+            delete err.__sourceIndex;
         }
 
         this.errs.push(err);
@@ -165,6 +164,7 @@ ServiceMessages[COMMANDS.setTestError] = function (msg) {
 
 ServiceMessages[COMMANDS.getAndUncheckFileDownloadingFlag] = function () {
     var isFileDownloading  = this.isFileDownloading;
+
     this.isFileDownloading = false;
 
     return isFileDownloading;

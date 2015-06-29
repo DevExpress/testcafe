@@ -1,7 +1,42 @@
 {
   "parser": "babel-eslint",
   "rules": {
-    "brace-style": [2, "stroustrup", { "allowSingleLine": true }]
+    "brace-style": [2, "stroustrup", { "allowSingleLine": true }],
+    "eol-last": 2,
+    "indent": 2,
+    "key-spacing": [2, { "align": "value" }],
+    "max-nested-callbacks": [2, 3],
+    "new-parens": 2,
+    "newline-after-var": [2, "always"],
+    "no-lonely-if": 2,
+    "no-mixed-spaces-and-tabs": 2,
+    "no-multiple-empty-lines":  [2, { "max": 2 }],
+    "no-nested-ternary": 2,
+    "no-underscore-dangle": 0,
+    "no-unneeded-ternary": 2,
+    "object-curly-spacing": [2, "always"],
+    "operator-assignment": [2, "always"],
+    "quotes": [2, "single", "avoid-escape"],
+    "space-after-keywords": [2, "always"],
+    "space-before-blocks": [2, "always"],
+    "prefer-const": 2,
+    "no-path-concat": 2,
+    "no-undefined": 2,
+    "strict": 0,
+    "curly": [2, "multi"],
+    "dot-notation": 0,
+    "no-else-return": 2,
+    "one-var": [2, "never"],
+    "no-multi-spaces": [2, {
+      "exceptions": {
+        "VariableDeclarator": true,
+        "AssignmentExpression": true
+      }
+    }],
+    "radix": 2,
+    "comma-dangle": [2, "never"],
+    "no-extra-parens": 2,
+    "new-cap": [2, { "capIsNew": false }]
   },
   "env": {
     "node": true
