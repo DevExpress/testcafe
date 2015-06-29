@@ -44,6 +44,7 @@ export default class BrowserJob extends EventEmitter {
 
     _keepInQuarantine (testRun) {
         var nextAttempt = this._createTestRun(testRun.test, testRun.browserConnection);
+
         this.testRunQueue.splice(0, 0, nextAttempt);
     }
 
@@ -53,19 +54,19 @@ export default class BrowserJob extends EventEmitter {
         if (this._shouldStartQuarantine(testRun))
             this._startQuarantine(testRun);
 
-        else if (this.quarantine) {
+        else if (this.quarantine)
             if (this._shouldKeepInQuarantine(testRun))
                 this._keepInQuarantine(testRun);
             else
                 this._endQuarantine(testRun);
-        }
+
         else
             this.emit('test-run-done', testRun);
     }
 
     _testRunDone (testRun) {
         this.proxy.closeSession(testRun);
-        this.emit('test-run-done', testRun)
+        this.emit('test-run-done', testRun);
     }
 
     _createTestRun (test, worker) {

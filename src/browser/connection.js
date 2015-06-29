@@ -1,12 +1,9 @@
-import path from 'path';
-import fs from 'fs';
 import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { parse as parseUserAgent } from 'useragent';
 import read from '../utils/read-file-relative';
 import COMMANDS from './commands';
 import { MESSAGES, getText } from '../messages';
-
 
 
 // Const
@@ -58,6 +55,7 @@ export default class BrowserConnection extends EventEmitter {
 
         job.once('done', () => {
             var idx = this.jobQueue.indexOf(job);
+
             this.jobQueue.splice(idx, 1);
         });
     }
