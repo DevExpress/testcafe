@@ -13,4 +13,4 @@ export default {
     getAndUncheckFileDownloadingFlag: 'get-and-uncheck-file-downloading-flag',
     uncheckFileDownloadingFlag:       'uncheck-file-downloading-flag',
     nativeDialogsInfoSet:             'native-dialogs-info-set'
-}
+};
