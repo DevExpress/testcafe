@@ -39,7 +39,7 @@ export default class BrowserConnection extends EventEmitter {
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
             this.close();
-            this.emit('error', getText(MESSAGES.browserConnectionInterrupted, this.userAgent));
+            this.emit('error', getText(MESSAGES.browserDisconnected, this.userAgent));
         }, BrowserConnection.HEARTBEAT_TIMEOUT);
     }
 
