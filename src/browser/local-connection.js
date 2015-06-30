@@ -8,7 +8,8 @@ export default class LocalBrowserConnection extends BrowserConnection {
     constructor (gateway, browserInfo) {
         super(gateway);
 
-        this._runBrowser(browserInfo);
+        // NOTE: Give caller a time to assign event listeners
+        process.nextTick(() => this._runBrowser(browserInfo));
     }
 
     async _runBrowser (browserInfo) {

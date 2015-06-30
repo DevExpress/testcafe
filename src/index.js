@@ -37,4 +37,8 @@ export default class TestCafe {
     createRunner () {
         return new Runner(this.proxy);
     }
+
+    close () {
+        this.proxy.close();
+    }
 }
