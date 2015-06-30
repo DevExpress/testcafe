@@ -1,4 +1,4 @@
-export default class RunnerBootstrapper {
+export default class Bootstrapper {
     constructor () {
         this.src             = [];
         this.browsers        = [];
