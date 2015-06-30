@@ -2,6 +2,7 @@ import Promise from 'promise';
 import browserInstallations from '../browser/installations';
 import BrowserConnection from '../browser/connection';
 import LocalBrowserConnection from '../browser/local-connection';
+import { MESSAGES, getText } from '../messages';
 
 
 export default class Bootstrapper {
@@ -23,7 +24,8 @@ export default class Bootstrapper {
             browser = browserInstallations.getInfo(browser);
 
             if (!browser) {
-                //TODO throw error here
+                //TODO appropriate message
+                throw getText(MESSAGES.browserDisconnected);
             }
         }
 
@@ -42,7 +44,16 @@ export default class Bootstrapper {
             .map(Bootstrapper._convertBrowserAliasToBrowserInfo)
             .map(browser => this._createConnectionFromBrowserInfo(browser));
 
-        var readyTimeout = setTimeout(()=> { /* TODO throw error here */ });
+        browserConnections.forEach(connection => {
+            connection.once('error', err => {
+                throw err;
+            });
+        });
+
+        var readyTimeout = setTimeout(() => {
+            //TODO appropriate message
+            throw getText(MESSAGES.browserDisconnected);
+        });
 
         await * browserConnections
             .filter(connection => !connection.ready)
