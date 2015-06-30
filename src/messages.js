@@ -1,6 +1,6 @@
 export const MESSAGES = {
-    browserConnectionInterrupted: 'The {userAgent} browser did not respond to the TestCafe and was deleted. ' +
-                                  'This problem may appear when a browser hangs or is closed, or due to network issues.'
+    browserDisconnected: 'The {userAgent} browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues.',
+    unableToRunBrowser:  'Unable to run the browser. The file at {path} does not exist or is not executable.'
 };
 
 export function getText (template, ...args) {
