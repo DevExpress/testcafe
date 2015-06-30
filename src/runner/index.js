@@ -32,8 +32,8 @@ export default class Runner {
     }
 
     screenshots (path, takeOnFails = false) {
-        this.opts.screenshotPath        = path;
-        this.opts.takeScreenshotOnFails = takeOnFails;
+        this.opts.takeScreenshotOnFails  = takeOnFails;
+        this.bootstrapper.screenshotPath = path;
     }
 
     async run ({ failOnJsErrors = true, quarantineMode = false }) {
