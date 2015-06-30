@@ -22,7 +22,7 @@ export default class BrowserConnection extends EventEmitter {
 
         this.id        = ++instanceCount;
         this.jobQueue  = [];
-        this.gateway   = gateway;
+        this.browserConnectionGateway   = gateway;
         this.userAgent = null;
 
         this.ready            = false;
@@ -33,7 +33,7 @@ export default class BrowserConnection extends EventEmitter {
         this.idleUrl      = `${gateway.domain}/browser/idle/${this.id}`;
         this.statusUrl    = `${gateway.domain}/browser/status/${this.id}`;
 
-        this.gateway.startServingConnection(this);
+        this.browserConnectionGateway.startServingConnection(this);
     }
 
     _waitForHeartbeat () {
@@ -62,7 +62,7 @@ export default class BrowserConnection extends EventEmitter {
 
     close () {
         this.ready = false;
-        this.gateway.stopServingConnection(this);
+        this.browserConnectionGateway.stopServingConnection(this);
     }
 
     establish (userAgent) {

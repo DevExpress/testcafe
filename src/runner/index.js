@@ -2,8 +2,9 @@ import Bootstrapper from './bootstrapper';
 import concatFlattened from '../utils/array-concat-flattened';
 
 export default class Runner {
-    constructor () {
-        this.bootstrapper = new Bootstrapper();
+    constructor (proxy, browserConnectionGateway) {
+        this.proxy        = proxy;
+        this.bootstrapper = new Bootstrapper(browserConnectionGateway);
 
         this.opts = {
             screenshotPath:        null,
