@@ -1,9 +1,9 @@
-import RunnerBootstrapper from './bootstrapper';
+import Bootstrapper from './bootstrapper';
 import concatFlattened from '../utils/array-concat-flattened';
 
 export default class Runner {
     constructor () {
-        this.bootstrapper = new RunnerBootstrapper();
+        this.bootstrapper = new Bootstrapper();
 
         this.opts = {
             screenshotPath:        null,
