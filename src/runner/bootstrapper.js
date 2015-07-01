@@ -16,27 +16,37 @@ export default class Bootstrapper {
         this.filter          = null;
         this.reporter        = null;
         this.reportOutStream = null;
-        this.screenshotPath  = null;
     }
 
     static _convertBrowserAliasToBrowserInfo (browser) {
-        if (typeof browser === 'string') {
-            browser = browserInstallations.getInfo(browser);
+        if (typeof browser === 'string')
+            return browser;
 
-            if (!browser) {
-                //TODO appropriate message
-                throw getText(MESSAGES.browserDisconnected);
-            }
-        }
+        var browserInfo = browserInstallations.getInfo(browser);
 
-        return browser;
+        if (!browserInfo)
+            throw new Error(getText(MESSAGES.cantFindBrowserForAlias, browser));
+
+        return browserInfo;
+    }
+
+    static async waitBrowserConnectionsReady (browserConnections) {
+        var readyTimeout = setTimeout(() => {
+            throw new Error(getText(MESSAGES.cantEstablishBrowserConnection));
+        }, Bootstrapper.BROWSER_CONNECTION_READY_TIMEOUT);
+
+        await * browserConnections
+            .filter(bc => !bc.ready)
+            .map(bc => new Promise(resolve => bc.once('ready', resolve)));
+
+        clearTimeout(readyTimeout);
     }
 
     _createConnectionFromBrowserInfo (browser) {
-        if (!(browser instanceof BrowserConnection))
-            browser = new LocalBrowserConnection(this.browserConnectionGateway, browser);
+        if (browser instanceof BrowserConnection)
+            return browser;
 
-        return browser;
+        return new LocalBrowserConnection(this.browserConnectionGateway, browser);
     }
 
     async _getBrowserConnections () {
@@ -44,22 +54,13 @@ export default class Bootstrapper {
             .map(Bootstrapper._convertBrowserAliasToBrowserInfo)
             .map(browser => this._createConnectionFromBrowserInfo(browser));
 
-        browserConnections.forEach(connection => {
-            connection.once('error', err => {
-                throw err;
+        browserConnections.forEach(bc => {
+            bc.once('error', msg => {
+                throw new Error(msg);
             });
         });
 
-        var readyTimeout = setTimeout(() => {
-            //TODO appropriate message
-            throw getText(MESSAGES.browserDisconnected);
-        });
-
-        await * browserConnections
-            .filter(connection => !connection.ready)
-            .map(connection => new Promise(resolve => connection.once('ready', resolve)));
-
-        clearTimeout(readyTimeout);
+        await Bootstrapper.waitBrowserConnectionsReady(browserConnections);
 
         return browserConnections;
     }
