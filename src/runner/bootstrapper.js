@@ -32,7 +32,7 @@ export default class Bootstrapper {
 
     static _waitBrowserConnectionsReady (browserConnections) {
         return new Promise((resolve, reject) => {
-            var readyTimeout = setTimeout(() => {
+            var timeout = setTimeout(() => {
                 reject(new Error(getText(MESSAGES.cantEstablishBrowserConnection)));
             }, Bootstrapper.BROWSER_CONNECTION_READY_TIMEOUT);
 
@@ -42,13 +42,13 @@ export default class Bootstrapper {
 
             browserConnections.forEach(bc => bc.once('error', onError));
 
-            var readyPromises = browserConnections
+            var ready = browserConnections
                 .filter(bc => !bc.ready)
                 .map(bc => new Promise(resolve => bc.once('ready', resolve)));
 
-            Promise.all(readyPromises).then(() => {
+            Promise.all(ready).then(() => {
                 browserConnections.forEach(bc => bc.removeListener('error', onError));
-                clearTimeout(readyTimeout);
+                clearTimeout(timeout);
                 resolve();
             });
         });
