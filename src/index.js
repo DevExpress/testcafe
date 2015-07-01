@@ -15,8 +15,8 @@ const UI_SPRITE      = read('../../_compiled_/testcafe_client/uisprite.png', tru
 // TestCafe
 export default class TestCafe {
     constructor (port1, port2, hostname = '127.0.0.1') {
-        this.proxy   = new Proxy(hostname, port1, port2);
-        this.gateway = new BrowserConnectionGateway(this);
+        this.proxy                    = new Proxy(hostname, port1, port2);
+        this.browserConnectionGateway = new BrowserConnectionGateway(this);
 
         this._registerAssets();
     }
@@ -31,11 +31,11 @@ export default class TestCafe {
 
     // API
     createBrowserConnection () {
-        return new BrowserConnection(this.gateway);
+        return new BrowserConnection(this.browserConnectionGateway);
     }
 
     createRunner () {
-        return new Runner(this.proxy);
+        return new Runner(this.proxy, this.browserConnectionGateway);
     }
 
     close () {

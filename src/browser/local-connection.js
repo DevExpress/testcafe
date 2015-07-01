@@ -16,7 +16,7 @@ export default class LocalBrowserConnection extends BrowserConnection {
         var { path, cmdList } = this._createBrowserExecParams(browserInfo);
 
         try {
-            execFile(path, cmdList);
+            await execFile(path, cmdList);
         }
         catch (err) {
             this.emit('error', getText(MESSAGES.unableToRunBrowser, browserInfo.path));
