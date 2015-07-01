@@ -30,15 +30,22 @@ export default class Bootstrapper {
         return browserInfo;
     }
 
-    static async waitBrowserConnectionsReady (browserConnections) {
+    static async _waitBrowserConnectionsReady (browserConnections) {
         var readyTimeout = setTimeout(() => {
             throw new Error(getText(MESSAGES.cantEstablishBrowserConnection));
         }, Bootstrapper.BROWSER_CONNECTION_READY_TIMEOUT);
+
+        var onError = msg => {
+            throw new Error(msg);
+        };
+
+        browserConnections.forEach(bc => bc.once('error', onError));
 
         await * browserConnections
             .filter(bc => !bc.ready)
             .map(bc => new Promise(resolve => bc.once('ready', resolve)));
 
+        browserConnections.forEach(bc => bc.removeListener('error', onError));
         clearTimeout(readyTimeout);
     }
 
@@ -54,13 +61,7 @@ export default class Bootstrapper {
             .map(Bootstrapper._convertBrowserAliasToBrowserInfo)
             .map(browser => this._createConnectionFromBrowserInfo(browser));
 
-        browserConnections.forEach(bc => {
-            bc.once('error', msg => {
-                throw new Error(msg);
-            });
-        });
-
-        await Bootstrapper.waitBrowserConnectionsReady(browserConnections);
+        await Bootstrapper._waitBrowserConnectionsReady(browserConnections);
 
         return browserConnections;
     }
@@ -71,6 +72,17 @@ export default class Bootstrapper {
 
     _createReporter () {
         //TODO
+    }
+
+
+    // API
+    static freeBrowserConnections (browserConnections, errorHandler) {
+        browserConnections.forEach(bc => {
+            bc.removeListener('error', errorHandler);
+
+            if (bc instanceof LocalBrowserConnection)
+                bc.close();
+        });
     }
 
     async createRunnableConfiguration () {

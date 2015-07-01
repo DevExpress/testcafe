@@ -1,4 +1,7 @@
+import Promise from 'promise';
 import Bootstrapper from './bootstrapper';
+import Task from './task';
+import LocalBrowserConnection from '../browser/local-connection';
 import concatFlattened from '../utils/array-concat-flattened';
 
 export default class Runner {
@@ -13,6 +16,41 @@ export default class Runner {
             quarantineMode:        false
         };
     }
+
+    static _watchBrowserConnectionError (browserConnections, task) {
+        var onError = msg => {
+            task.terminate();
+            task.removeAllListeners();
+            Bootstrapper.freeBrowserConnections(browserConnections, onError);
+            throw new Error(msg);
+        };
+
+        browserConnections.forEach(bc => bc.once('error', onError));
+
+        return onError;
+    }
+
+    _runTask (reporter, browserConnections, tests) {
+        var task           = new Task(tests, browserConnections, this.proxy, this.opts);
+        var passed         = true;
+        var bcErrorHandler = Runner._watchBrowserConnectionError(browserConnections, task);
+
+        task.once('start', () => reporter.onTaskStart(task));
+
+        task.on('test-run-done', testRun => {
+            passed &= !testRun.errs.length;
+            reporter.onTestRunDone(testRun);
+        });
+
+        return new Promise((resolve) => {
+            task.once('done', () => {
+                reporter.onTaskDone(task);
+                Bootstrapper.freeBrowserConnections(browserConnections, bcErrorHandler);
+                resolve(passed);
+            });
+        });
+    }
+
 
     // API
     src (...src) {
@@ -51,7 +89,8 @@ export default class Runner {
         this.opts.failOnJsErrors = failOnJsErrors;
         this.opts.quarantineMode = quarantineMode;
 
-        // TODO
-        // var config = await this.bootstrapper.createRunnableConfiguration();
+        var { reporter, browserConnections, tests } = await this.bootstrapper.createRunnableConfiguration();
+
+        return await this._runTask(reporter, browserConnections, tests);
     }
 }
