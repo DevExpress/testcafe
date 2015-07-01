@@ -19,7 +19,7 @@ export default class Bootstrapper {
     }
 
     static _convertBrowserAliasToBrowserInfo (browser) {
-        if (typeof browser === 'string')
+        if (typeof browser !== 'string')
             return browser;
 
         var browserInfo = browserInstallations.getInfo(browser);
@@ -74,11 +74,12 @@ export default class Bootstrapper {
     }
 
     async createRunnableConfiguration () {
-        var reporter           = this._createReporter();
-        var browserConnections = this._getBrowserConnections();
-        var tests              = this._getTests();
+        var reporter = this._createReporter();
 
-        await * [browserConnections, tests];
+        var [browserConnections, tests] = await * [
+            this._getBrowserConnections(),
+            this._getTests()
+        ];
 
         return { reporter, browserConnections, tests };
     }
