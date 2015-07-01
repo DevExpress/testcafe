@@ -17,19 +17,7 @@ export default class Bootstrapper {
         this.reporter        = null;
         this.reportOutStream = null;
     }
-
-    static _convertBrowserAliasToBrowserInfo (browser) {
-        if (typeof browser !== 'string')
-            return browser;
-
-        var browserInfo = browserInstallations.getInfo(browser);
-
-        if (!browserInfo)
-            throw new Error(getText(MESSAGES.cantFindBrowserForAlias, browser));
-
-        return browserInfo;
-    }
-
+    
     static _waitBrowserConnectionsReady (browserConnections) {
         return new Promise((resolve, reject) => {
             var timeout = setTimeout(() => {
@@ -54,7 +42,19 @@ export default class Bootstrapper {
         });
     }
 
-    _createConnectionFromBrowserInfo (browser) {
+    static _convertBrowserAliasToBrowserInfo (browser) {
+        if (typeof browser !== 'string')
+            return browser;
+
+        var browserInfo = browserInstallations.getInfo(browser);
+
+        if (!browserInfo)
+            throw new Error(getText(MESSAGES.cantFindBrowserForAlias, browser));
+
+        return browserInfo;
+    }
+    
+     _createConnectionFromBrowserInfo (browser) {
         if (browser instanceof BrowserConnection)
             return browser;
 
