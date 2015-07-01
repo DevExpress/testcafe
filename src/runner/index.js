@@ -16,31 +16,21 @@ export default class Runner {
         };
     }
 
-    static _freeBrowserConnections (browserConnections, errorHandler) {
-        browserConnections.forEach(bc => {
-            bc.removeListener('error', errorHandler);
-
-            // NOTE: we should close local connections and 
-            // related browsers once we've done
-            if (bc instanceof LocalBrowserConnection)
-                bc.close();
-        });
-    }
-
     _runTask (reporter, browserConnections, tests) {
         return new Promise((resolve, reject) => {
             var task           = new Task(tests, browserConnections, this.proxy, this.opts);
             var passed         = true;
+            
             var bcErrorHandler = msg => {
                 task.terminate();
                 task.removeAllListeners();
                 freeBrowserConnections();
                 reject(new Error(msg));
             };
+            
             var freeBrowserConnections = () => {
                 browserConnections.forEach(bc => {
                     bc.removeListener('error', bcErrorHandler);
-                    
                     // NOTE: we should close local connections and 
                     // related browsers once we've done
                     if (bc instanceof LocalBrowserConnection)
