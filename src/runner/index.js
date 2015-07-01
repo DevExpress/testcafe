@@ -16,35 +16,50 @@ export default class Runner {
         };
     }
 
-    static _watchBrowserConnectionError (browserConnections, task) {
-        var onError = msg => {
-            task.terminate();
-            task.removeAllListeners();
-            Bootstrapper.freeBrowserConnections(browserConnections, onError);
-            throw new Error(msg);
-        };
+    static _freeBrowserConnections (browserConnections, errorHandler) {
+        browserConnections.forEach(bc => {
+            bc.removeListener('error', errorHandler);
 
-        browserConnections.forEach(bc => bc.once('error', onError));
-
-        return onError;
+            // NOTE: we should close local connections and 
+            // related browsers once we've done
+            if (bc instanceof LocalBrowserConnection)
+                bc.close();
+        });
     }
 
     _runTask (reporter, browserConnections, tests) {
-        var task           = new Task(tests, browserConnections, this.proxy, this.opts);
-        var passed         = true;
-        var bcErrorHandler = Runner._watchBrowserConnectionError(browserConnections, task);
+        return new Promise((resolve, reject) => {
+            var task           = new Task(tests, browserConnections, this.proxy, this.opts);
+            var passed         = true;
+            var bcErrorHandler = msg => {
+                task.terminate();
+                task.removeAllListeners();
+                freeBrowserConnections();
+                reject(new Error(msg));
+            };
+            var freeBrowserConnections = () => {
+                browserConnections.forEach(bc => {
+                    bc.removeListener('error', bcErrorHandler);
+                    
+                    // NOTE: we should close local connections and 
+                    // related browsers once we've done
+                    if (bc instanceof LocalBrowserConnection)
+                        bc.close();
+                });
+            };
+            
+            browserConnections.forEach(bc => bc.once('error', onError));
+            
+            task.once('start', () => reporter.onTaskStart(task));
 
-        task.once('start', () => reporter.onTaskStart(task));
+            task.on('test-run-done', testRun => {
+                passed &= !testRun.errs.length;
+                reporter.onTestRunDone(testRun);
+            });
 
-        task.on('test-run-done', testRun => {
-            passed &= !testRun.errs.length;
-            reporter.onTestRunDone(testRun);
-        });
-
-        return new Promise((resolve) => {
             task.once('done', () => {
                 reporter.onTaskDone(task);
-                Bootstrapper.freeBrowserConnections(browserConnections, bcErrorHandler);
+                freeBrowserConnections();
                 resolve(passed);
             });
         });
