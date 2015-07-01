@@ -1,6 +1,7 @@
 import Promise from 'promise';
 import Bootstrapper from './bootstrapper';
 import Task from './task';
+import LocalBrowserConnection from '../browser/local-connection';
 import concatFlattened from '../utils/array-concat-flattened';
 
 export default class Runner {
