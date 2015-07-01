@@ -30,23 +30,28 @@ export default class Bootstrapper {
         return browserInfo;
     }
 
-    static async _waitBrowserConnectionsReady (browserConnections) {
-        var readyTimeout = setTimeout(() => {
-            throw new Error(getText(MESSAGES.cantEstablishBrowserConnection));
-        }, Bootstrapper.BROWSER_CONNECTION_READY_TIMEOUT);
+    static _waitBrowserConnectionsReady (browserConnections) {
+        return new Promise((resolve, reject) => {
+            var readyTimeout = setTimeout(() => {
+                reject(new Error(getText(MESSAGES.cantEstablishBrowserConnection)));
+            }, Bootstrapper.BROWSER_CONNECTION_READY_TIMEOUT);
 
-        var onError = msg => {
-            throw new Error(msg);
-        };
+            var onError = msg => {
+                reject(new Error(msg));
+            };
 
-        browserConnections.forEach(bc => bc.once('error', onError));
+            browserConnections.forEach(bc => bc.once('error', onError));
 
-        await * browserConnections
-            .filter(bc => !bc.ready)
-            .map(bc => new Promise(resolve => bc.once('ready', resolve)));
+            var readyPromises = browserConnections
+                .filter(bc => !bc.ready)
+                .map(bc => new Promise(resolve => bc.once('ready', resolve)));
 
-        browserConnections.forEach(bc => bc.removeListener('error', onError));
-        clearTimeout(readyTimeout);
+            Promise.all(readyPromises).then(() => {
+                browserConnections.forEach(bc => bc.removeListener('error', onError));
+                clearTimeout(readyTimeout);
+                resolve();
+            });
+        });
     }
 
     _createConnectionFromBrowserInfo (browser) {
@@ -76,15 +81,6 @@ export default class Bootstrapper {
 
 
     // API
-    static freeBrowserConnections (browserConnections, errorHandler) {
-        browserConnections.forEach(bc => {
-            bc.removeListener('error', errorHandler);
-
-            if (bc instanceof LocalBrowserConnection)
-                bc.close();
-        });
-    }
-
     async createRunnableConfiguration () {
         var reporter = this._createReporter();
 
