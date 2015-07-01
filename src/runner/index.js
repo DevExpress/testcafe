@@ -15,26 +15,36 @@ export default class Runner {
     }
 
     // API
-    src (...sources) {
-        this.bootstrapper.src = concatFlattened(this.bootstrapper.src, sources);
+    src (...src) {
+        this.bootstrapper.src = concatFlattened(this.bootstrapper.src, src);
+
+        return this;
     }
 
-    browsers (...browserList) {
-        this.bootstrapper.browsers = concatFlattened(this.bootstrapper.browsers, browserList);
+    browsers (...browsers) {
+        this.bootstrapper.browsers = concatFlattened(this.bootstrapper.browsers, browsers);
+
+        return this;
     }
 
     reporter (reporter, outStream = null) {
         this.bootstrapper.reporter        = reporter;
         this.bootstrapper.reportOutStream = outStream;
+
+        return this;
     }
 
-    filter (fn) {
-        this.bootstrapper.filter = fn;
+    filter (filter) {
+        this.bootstrapper.filter = filter;
+
+        return this;
     }
 
     screenshots (path, takeOnFails = false) {
         this.opts.takeScreenshotOnFails  = takeOnFails;
         this.bootstrapper.screenshotPath = path;
+
+        return this;
     }
 
     async run ({ failOnJsErrors = true, quarantineMode = false }) {
