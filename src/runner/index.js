@@ -71,7 +71,7 @@ export default class Runner {
     }
 
     reporter (reporter, outStream = null) {
-        this.bootstrapper.reporter        = reporter;
+        this.bootstrapper.reporter    = reporter;
         this.bootstrapper.reportOutStream = outStream;
 
         return this;

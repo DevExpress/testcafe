@@ -1,5 +1,6 @@
 import Promise from 'promise';
 import browserInstallations from '../browser/installations';
+import reporters from '../reporters';
 import BrowserConnection from '../browser/connection';
 import LocalBrowserConnection from '../browser/local-connection';
 import { MESSAGES, getText } from '../messages';
@@ -14,8 +15,8 @@ export default class Bootstrapper {
         this.src             = [];
         this.browsers        = [];
         this.filter          = null;
-        this.reporter        = null;
         this.reportOutStream = null;
+        this.reporter        = null;
     }
 
     static _createBrowserConnectionReadyPromises (browserConnections) {
@@ -66,6 +67,9 @@ export default class Bootstrapper {
     }
 
     async _getBrowserConnections () {
+        if (!this.browsers.length)
+            throw new Error(getText(MESSAGES.browserNotSet));
+
         var browserConnections = this.browsers
             .map(Bootstrapper._convertBrowserAliasToBrowserInfo)
             .map(browser => this._createConnectionFromBrowserInfo(browser));
@@ -80,7 +84,19 @@ export default class Bootstrapper {
     }
 
     _createReporter () {
-        //TODO
+        var Reporter = this.reporter;
+
+        if (!Reporter)
+            throw new Error(getText(MESSAGES.reporterNotSet));
+
+        if (typeof Reporter === 'string') {
+            Reporter = reporters[Reporter];
+
+            if (!Reporter)
+                throw new Error(getText(MESSAGES.unknownReporter, this.reporter));
+        }
+
+        return new Reporter(this.reportOutStream);
     }
 
 
