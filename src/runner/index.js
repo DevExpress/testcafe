@@ -19,28 +19,28 @@ export default class Runner {
 
     _runTask (reporter, browserConnections, tests) {
         return new Promise((resolve, reject) => {
-            var task           = new Task(tests, browserConnections, this.proxy, this.opts);
-            var passed         = true;
-            
-            var bcErrorHandler = msg => {
-                task.terminate();
-                task.removeAllListeners();
-                freeBrowserConnections();
-                reject(new Error(msg));
-            };
-            
-            var freeBrowserConnections = () => {
+            var task   = new Task(tests, browserConnections, this.proxy, this.opts);
+            var passed = true;
+
+            function freeBrowserConnections () {
                 browserConnections.forEach(bc => {
                     bc.removeListener('error', bcErrorHandler);
-                    // NOTE: we should close local connections and 
+                    // NOTE: we should close local connections and
                     // related browsers once we've done
                     if (bc instanceof LocalBrowserConnection)
                         bc.close();
                 });
-            };
-            
-            browserConnections.forEach(bc => bc.once('error', onError));
-            
+            }
+
+            function bcErrorHandler (msg) {
+                task.terminate();
+                task.removeAllListeners();
+                freeBrowserConnections();
+                reject(new Error(msg));
+            }
+
+            browserConnections.forEach(bc => bc.once('error', bcErrorHandler));
+
             task.once('start', () => reporter.onTaskStart(task));
 
             task.on('test-run-done', testRun => {

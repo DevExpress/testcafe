@@ -17,7 +17,13 @@ export default class Bootstrapper {
         this.reporter        = null;
         this.reportOutStream = null;
     }
-    
+
+    static _createBrowserConnectionReadyPromises (browserConnections) {
+        return browserConnections
+            .filter(bc => !bc.ready)
+            .map(bc => new Promise(resolve => bc.once('ready', resolve)));
+    }
+
     static _waitBrowserConnectionsReady (browserConnections) {
         return new Promise((resolve, reject) => {
             var timeout = setTimeout(() => {
@@ -30,9 +36,7 @@ export default class Bootstrapper {
 
             browserConnections.forEach(bc => bc.once('error', onError));
 
-            var ready = browserConnections
-                .filter(bc => !bc.ready)
-                .map(bc => new Promise(resolve => bc.once('ready', resolve)));
+            var ready = Bootstrapper._createBrowserConnectionReadyPromises(browserConnections);
 
             Promise.all(ready).then(() => {
                 browserConnections.forEach(bc => bc.removeListener('error', onError));
@@ -53,8 +57,8 @@ export default class Bootstrapper {
 
         return browserInfo;
     }
-    
-     _createConnectionFromBrowserInfo (browser) {
+
+    _createConnectionFromBrowserInfo (browser) {
         if (browser instanceof BrowserConnection)
             return browser;
 

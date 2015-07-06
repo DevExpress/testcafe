@@ -37,7 +37,8 @@
     "comma-dangle": [2, "never"],
     "no-extra-parens": 2,
     "new-cap": [2, { "capIsNew": false }],
-    "space-before-function-paren": [2, "always"]
+    "space-before-function-paren": [2, "always"],
+    "no-use-before-define" : [2, "nofunc"]
   },
   "env": {
     "node": true
