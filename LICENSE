@@ -1,0 +1,468 @@
+DEVELOPER EXPRESS INC 
+TestCafe 
+Copyright (C) 2012-2015 Developer Express Inc.
+
+IMPORTANT- READ CAREFULLY: This DEVELOPER EXPRESS INC ("DEVEXPRESS") End-User License Agreement ("EULA") is a legal agreement between you, a tester of software applications, ("TESTER") and DEVEXPRESS for all DEVEXPRESS products, source code, demos, intermediate files, media, printed materials, and "online" or electronic documentation ("TESTCAFE") contained in this distribution.
+
+By installing, copying, or otherwise using TESTCAFE, you agree to be bound by the terms of this EULA. If you do not agree to any part of the terms of this EULA, DO NOT INSTALL, COPY, USE, OR EVALUATE TESTCAFE.
+
+TESTCAFE is licensed, not sold.
+
+1. GRANT OF LICENSE.
+
+Subject to all the terms and conditions of this EULA, DEVEXPRESS grants TESTER a non-exclusive, non-transferable license to install and use TESTCAFE for COMMERCIAL USE or EVALUATION PURPOSES as authorized below:
+
+1.1 COMMERCIAL USE LICENSE FOR INDIVIDUALS.
+
+If you are an individual and are using TESTCAFE for commercial purposes or for testing software applications sold for financial or commercial gain, you may install and use TESTCAFE by purchasing a 12 month subscription from DEVEXPRESS or its authorized resellers.
+
+1.2 COMMERCIAL USE LICENSE FOR BUSINESS AND GOVERNMENT ENTITIES.
+
+DEVEXPRESS licenses TESTCAFE on a per user basis. If you are a business or government entity, your employees may install and use TESTCAFE by purchasing a 12 month subscription from DEVEXPRESS or its authorized resellers for each individual using TESTCAFE.
+
+1.3 EVALUATION USE LICENSE.
+
+If you are an individual, you may install and use TESTCAFE for evaluation purposes only. You may evaluate TESTCAFE for a period of 30 days from the date of installation.
+
+2. LIMITATIONS ON REVERSE ENGINEERING AND DISASSEMBLY.
+
+You may not reverse engineer, create derivative works or disassemble TESTCAFE. If TESTCAFE is purchased by you with the intent to reverse engineer, create derivative works, or the exploitation and unauthorized transfer of any DEVEXPRESS intellectual property and trade secrets, to include any exposed methods or source code where provided, no licensed right of use shall exist and any product(s) created as a result shall be judged illegal by definition. Any sale or resale of intellectual property or created derivatives so obtained will be prosecuted to the fullest extent of all local, federal and international law.
+
+3. SEPARATION OF COMPONENTS.
+
+TESTCAFE is licensed as a single product. TESTCAFE and its constituent parts may not be reverse engineered, disassembled or separated for use on more than one computer, nor placed for distribution, sale, or resale as individual creations by TESTER. The provision of source code, if included with TESTCAFE, does not constitute transfer of any legal rights to such code, and resale or distribution of all or any portion of all source code and intellectual property will be prosecuted to the fullest extent of all applicable local, federal and international laws. All DEVEXPRESS libraries, source code and other files remain DEVEXPRESS's exclusive property. You may not distribute any files contained in this distribution.
+
+4. RENTAL.
+
+You may not rent, lease, or lend TESTCAFE.
+
+5. TRANSFER.
+
+You may NOT permanently or temporarily transfer ANY of your rights under this EULA to any individual or business or government entity without prior written approval from DEVEXPRESS. Regardless of any modifications which you make and regardless of how you might use TESTCAFE, under no circumstances may the files included in the TESTCAFE distribution (including any portions thereof) be used for testing websites or applications by anyone other than you. Only you as the licensed TESTER have the right to use TESTCAFE (or any portions thereof) for testing websites or applications. You may not share copies of TESTCAFE with other individuals. You may not reproduce or distribute any DEVEXPRESS documentation without the permission of DEVEXPRESS.
+
+6. DISTRIBUTION AND COMPETITIVE PRODUCTS.
+
+NO RIGHTS TO DISTRIBUTION ARE GRANTED WITHIN THIS END-USER LICENSE AGREEMENT.
+
+AT NO TIME MAY TESTER CREATE ANY TOOL OR PRODUCT THAT DIRECTLY OR INDIRECTLY COMPETES WITH TESTCAFE BY UTILIZING ALL OR ANY PORTION OF THE TESTCAFE DISTRIBUTION.
+
+7. COPYRIGHT.
+
+TESTCAFE is protected by copyright laws and international treaty provisions and therefore, you must treat TESTCAFE like any other copyrighted material except that you may install and use TESTCAFE as described in this EULA.
+
+All title and copyrights in and to TESTCAFE (including but not limited to any DEVEXPRESS trademarks, copywritten images, demos, source code, intermediate files, packages, photographs, animations, video, audio, music, text and accompanying printed materials in this distribution) are owned by DEVEXPRESS, its licensors and its subsidiaries. All title and intellectual property rights in and to third-party content that may be accessed through use of TESTCAFE remains the property of its respective owner and may be protected by applicable copyright or other intellectual property laws and treaties. This Agreement grants TESTER no use rights to such content.
+
+8. OPEN SOURCE LIBRARIES.
+
+The open source libraries used in TESTCAFE are done so pursuant to each individual open source library license and subject to the disclaimers and limitations on liability set forth in each open source library license.
+
+8.1 INCLUDED LIBRARIES.
+
+The following open source libraries are used and included within TESTCAFE:
+~~
+ace
+Copyright (c) 2010, Ajax.org B.V.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of Ajax.org B.V. nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+~~
+acorn 
+Copyright (C) 2012-2014 by various contributors (see AUTHORS)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+~~
+async.js
+Copyright (c) 2010, Caolan McMahon
+https://github.com/caolan/async/blob/master/LICENSE
+
+~~
+buffer-crc32
+Copyright (c) 2013 Brian J. Brennan
+https://github.com/brianloveswords/buffer-crc32/blob/master/LICENSE
+
+~~
+ejs
+Copyright (c) 2009-2010, TJ Holowaychuk
+https://github.com/visionmedia/ejs#license
+
+~~
+esotope
+Copyright (C) 2014 Ivan Nikulin <ifaaan@gmail.com>
+Copyright (C) 2012-2014 Yusuke Suzuki <utatane.tea@gmail.com>
+Copyright (C) 2012-2013 Michael Ficarra <escodegen.copyright@michael.ficarra.me>
+Copyright (C) 2012-2013 Mathias Bynens <mathias@qiwi.be>
+Copyright (C) 2013 Irakli Gozalishvili <rfobic@gmail.com>
+Copyright (C) 2012 Robert Gust-Bardon <donate@robert.gust-bardon.org>
+Copyright (C) 2012 John Freeman <jfreeman08@gmail.com>
+Copyright (C) 2011-2012 Ariya Hidayat <ariya.hidayat@gmail.com>
+Copyright (C) 2012 Joost-Wim Boekesteijn <joost-wim@boekesteijn.nl>
+Copyright (C) 2012 Kris Kowal <kris.kowal@cixar.com>
+Copyright (C) 2012 Arpad Borsos <arpad.borsos@googlemail.com>
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+~~
+express
+Copyright (c) 2009-2012, TJ Holowaychuk
+https://github.com/visionmedia/express#license
+
+~~
+history.js
+Copyright © 2014+ Bevry Pty Ltd us@bevry.me (http://bevry.me)
+Copyright © 2011-2013 Benjamin Lupton b@lupton.cc (http://balupton.com)
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the <organization> nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+~~
+iconv-lite
+Copyright (c) 2011, Alexander Shtuchkin
+https://github.com/ashtuchkin/iconv-lite/blob/master/LICENSE
+
+~~
+Int64.js
+Copyright (c) 2012, Robert Kieffer
+http://opensource.org/licenses/mit-license.php
+
+~~
+jQuery
+Copyright jQuery Foundation and other contributors, https://jquery.org/
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+~~
+jQuery UI 
+Copyright (c) 2013, jQuery Foundation and other contributors 
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+~~
+jQuery.cookie 
+Copyright 2014 Klaus Hartl
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+~~
+json2 
+Public Domain.
+
+~~
+markdown
+Copyright (c) 2009-2010 Dominic Baggott
+Copyright (c) 2009-2010 Ash Berlin
+Copyright (c) 2011 Christoph Dorn <christoph@christophdorn.com> (http://www.christophdorn.com)
+http://www.opensource.org/licenses/mit-license.php
+
+~~
+mime
+Copyright (c) Robert Kieffer
+https://github.com/broofa/node-mime/blob/master/LICENSE
+
+~~
+mods
+Copyright (c) 2013-2015 Ivan Nikulin (ifaaan@gmail.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+~~
+moment
+Copyright (c) 2011-2012, Tim Wood
+https://github.com/timrwood/moment/blob/develop/LICENSE
+
+~~
+node-uuid
+Copyright (c) 2010-2012, Robert Kieffer
+https://github.com/broofa/node-uuid/blob/master/LICENSE.md
+
+~~
+node-zip
+Copyright (c) Diego Araos <d@wehack.it> (http://wehack.it/)
+http://opensource.org/licenses/mit-license.php
+
+~~
+revalidator
+Copyright (c) 2009-2010, Alexis Sellier, Charlie Robbins, Nodejitsu Inc. 
+https://github.com/flatiron/revalidator/blob/master/LICENSE
+
+~~
+socket.io
+Copyright (c) 2011, Guillermo Rauch
+https://github.com/LearnBoost/socket.io/blob/master/LICENSE
+
+~~
+tough-cookie
+Copyright (c) 2015, Salesforce.com, Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the <organization> nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+~~~
+uglify-js
+Copyright (c) 2010, Mihai Bazon
+https://github.com/mishoo/UglifyJS#license
+
+~~
+useragent
+Copyright (c) 2013 Arnout Kazemier
+https://github.com/3rd-Eden/useragent/blob/master/LICENSE
+
+~~
+qrcodejs
+Copyright (c) 2012 davidshimjs
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+~~
+webauth
+Copyright (c) 2013 Churkin Andrey (https://github.com/churkin)
+https://github.com/churkin/webauth/blob/master/LICENSE
+
+~~
+whacko
+Copyright (c) 2013-2015, Ivan Nikulin
+Copyright (c) 2012, Matt Mueller
+https://github.com/inikulin/whacko#license
+
+8.2 PREREQUISITE LIBRARIES.
+
+The following open source libraries are required by TESTCAFE and included in this distribution:
+
+Node.js 
+Copyright Joyent, Inc. and other Node contributors 
+https://github.com/joyent/node/blob/master/LICENSE
+
+Joyent, Inc, Node and its contributors are not affiliated with DEVEXPRESS.
+
+9. TWELVE (12) MONTH SUBSCRIPTION AND UPDATES
+
+DEVEXPRESS licenses TESTCAFE on a subscription basis. A subscription lasts for a 12 month period from the date of purchase and TESTER will be eligible to receive all major and minor updates for TESTCAFE during this 12 month period. Upon expiration of a subscription (12 months, plus 1 day after original purchase date), TESTER can optionally renew the TESTCAFE subscription for an additional 12 month period in order to receive major and minor updates of TESTCAFE from DEVEXPRESS.
+
+If TESTCAFE is labeled as an update, you must be properly licensed to obtain the updated version of TESTCAFE. A product labeled as an update replaces and/or supplements the product that formed the basis for your eligibility for the update, and together constitutes a single product. You may only use the updated product in accordance with all the terms of this EULA.
+
+Pricing for the 12 month TESTCAFE subscription and any subsequent renewal of the subscription are listed on DevExpress.com and subject to change with or without notice.
+
+DEVEXPRESS reserves the right to discontinue TESTCAFE or its constituent parts, at any time.
+
+10. DOWNLOAD of TESTCAFE.
+
+TESTCAFE shall be made available for download from DevExpress.com exclusively. All documentation shall be made available in electronic format only.
+
+11. EXPORT RESTRICTIONS.
+
+DEVEXPRESS expressly complies with all export restrictions imposed by the government of the United States of America. Restricted countries currently include, but are not necessarily limited to Cuba, Iran, North Korea, Sudan, and Syria. You warrant and represent that neither the U.S.A. Bureau of Export Administration nor any other federal agency has suspended, revoked or denied your export privileges.
+
+12. DISCLAIMER OF WARRANTY.
+
+DEVEXPRESS expressly disclaims any warranty for TESTCAFE. TESTCAFE AND ANY RELATED DOCUMENTATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NONINFRINGEMENT. DEVEXPRESS DOES NOT WARRANT, GUARANTEE, OR MAKE ANY REPRESENTATIONS REGARDING THE USE, OR THE RESULTS OF THE USE, OF TESTCAFE IN TERMS OF CORRECTNESS, ACCURACY, RELIABILITY, OR OTHERWISE. THE ENTIRE RISK ARISING OUT OF USE OR PERFORMANCE OF TESTCAFE REMAINS WITH YOU. No oral or written information or advice given by DEVEXPRESS or its employees shall create a warranty or in any way increase the scope of this warranty.
+
+13. LIMITATIONS ON LIABILITY.
+
+To the maximum extent permitted by applicable law, in no event shall DEVEXPRESS be liable for any special, incidental, indirect, or consequential damages whatsoever (including, without limitation, damages for loss of goodwill, loss of business profits, business interruption, loss of business information, or any other pecuniary loss) arising out of the use of or inability to use TESTCAFE or the provision of or failure to provide Support Services, even if DEVEXPRESS has been advised of the possibility of such damages.
+
+TESTER understands that TESTCAFE may produce inaccurate results because of a failure or fault within TESTCAFE or failure by TESTER to properly use TESTCAFE. TESTER assumes full and sole responsibility for any use of TESTCAFE, and bears the entire risk for failures or faults within TESTCAFE. You agree that regardless of the cause of failure or fault or the form of any claim, YOUR SOLE REMEDY AND DEVEXPRESS'S SOLE OBLIGATION SHALL BE GOVERNED BY THIS AGREEMENT AND IN NO EVENT SHALL DEVEXPRESS'S LIABILITY EXCEED THE PRICE PAID TO DEVEXPRESS FOR TESTCAFE. This Limited Warranty is void if failure of TESTCAFE has resulted from accident, abuse, alteration, unauthorized use or misapplication of TESTCAFE.
+
+Certain jurisdictions do not allow the exclusion or limitation of incidental or consequential damages, so this exclusion and limitation may not be applicable.
+
+14. INDEMNIFICATION.
+
+You hereby agree to indemnify, hold harmless, and defend DEVEXPRESS and its officers, directors, employees, agents, and representatives from each and every demand, claim, lawsuit, and proceedings of any kind, (“CLAIMS”) and all expenses, costs (including attorney's fees), judgments, damages and other liabilities resulting from such CLAIMS, that arise or result from your use of TESTCAFE.
+
+15. SUPPORT SERVICES.
+
+DEVEXPRESS may provide you with support services related to TESTCAFE ("Support Services"). Use of Support Services is governed by DEVEXPRESS policies and programs described in the user manual, in "on line" documentation and/or other DEVEXPRESS provided materials. Any supplemental information or code provided to you as part of Support Services shall be considered part of TESTCAFE and subject to the terms and conditions of this EULA. With respect to technical information you provide to DEVEXPRESS as part of Support Services, DEVEXPRESS may use such information for its business purposes, including for TESTCAFE support and development.
+
+16. TERMINATION.
+
+Without prejudice to any other rights or remedies, DEVEXPRESS will terminate this EULA upon failure to comply with all the terms and conditions of this EULA. In such events, TESTER must destroy all copies of TESTCAFE and all of its constituent parts including any related documentation.
+
+17. TAX.
+
+DEVEXPRESS delivers its software electronically and does not collect sales or use tax for residents of US states in which it operates. You should confirm that your local, state, or federal government does not impose any sales or use tax on electronically delivered software. You are entirely liable for any such sales or use tax.
+
+18. MISCELLANEOUS.
+
+This EULA shall be construed, interpreted and governed by the laws of the State of Nevada, U.S.A. This EULA gives you specific legal rights; you may have others that vary from state to state and from country to country.
+
+This EULA may only be modified in writing signed by you and an authorized officer of DEVEXPRESS. If any provision of this EULA is found void or unenforceable, the remainder will remain valid and enforceable according to its terms. If any remedy provided is determined to have failed for its essential purpose, all limitations of liability and exclusions of damages set forth in the Limited Warranty shall remain in effect.
+
+DEVEXPRESS reserves all rights not specifically granted in this EULA.
+
+YOU ACKNOWLEDGE THAT YOU HAVE READ AND UNDERSTAND THIS AGREEMENT AND YOU AGREE TO BE BOUND BY THE TERMS OF THIS AGREEMENT UPON INSTALLATION AND/OR USE of ALL PRODUCTS INCLUDED IN THIS DISTRIBUTION.
+
+Copyright (C) 2012-2015 Developer Express Inc.
+
+All trademarks and registered trademarks are property of their respective owners.
+
+Should you have any questions concerning this EULA, or if you desire to contact DEVEXPRESS for any reason, please contact us directly in the United States at +1 (818) 844 3383, or write: Developer Express Inc. Legal department / 505 N. Brand Blvd Suite 1600, Glendale CA 91203.
