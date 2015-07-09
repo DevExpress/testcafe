@@ -44,7 +44,7 @@ export default class Task extends EventEmitter {
     }
 
     // API
-    terminate () {
-        this.browserJobs.forEach(job => job.terminate());
+    abort () {
+        this.browserJobs.forEach(job => job.abort());
     }
 }

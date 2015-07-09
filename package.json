@@ -4,6 +4,11 @@
     "del": "^1.2.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
-    "gulp-eslint": "^0.15.0"
+    "gulp-eslint": "^0.15.0",
+    "gulp-mocha": "^2.1.2"
+  },
+  "dependencies": {
+    "babel-runtime": "^5.6.15",
+    "promise": "^7.0.3"
   }
 }
