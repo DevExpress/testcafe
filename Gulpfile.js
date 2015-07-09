@@ -2,6 +2,7 @@ var gulp   = require('gulp');
 var babel  = require('gulp-babel');
 var eslint = require('gulp-eslint');
 var del    = require('del');
+var mocha  = require('gulp-mocha');
 
 gulp.task('clean', function (cb) {
     del('lib', cb);
@@ -25,3 +26,15 @@ gulp.task('lint', function () {
         .pipe(eslint.format())
         .pipe(eslint.failAfterError());
 });
+
+gulp.task('test-server', ['build'], function () {
+    return gulp
+        .src('test/server/*-test.js')
+        .pipe(mocha({
+            ui:       'bdd',
+            reporter: 'spec',
+            timeout:  typeof v8debug === 'undefined' ? 2000 : Infinity // NOTE: disable timeouts in debug
+        }));
+});
+
+gulp.task('test', ['lint', 'test-server']);

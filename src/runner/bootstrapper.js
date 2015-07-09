@@ -47,32 +47,32 @@ export default class Bootstrapper {
         });
     }
 
-    static _convertBrowserAliasToBrowserInfo (browser) {
-        if (typeof browser !== 'string')
-            return browser;
+    static async _convertBrowserAliasToBrowserInfo (alias) {
+        if (typeof alias !== 'string')
+            return alias;
 
-        var browserInfo = browserInstallations.getInfo(browser);
+        var installations = await browserInstallations.get();
+        var browserInfo   = installations[alias.toLowerCase()];
 
         if (!browserInfo)
-            throw new Error(getText(MESSAGES.cantFindBrowserForAlias, browser));
+            throw new Error(getText(MESSAGES.cantFindBrowserForAlias, alias));
 
         return browserInfo;
     }
 
-    _createConnectionFromBrowserInfo (browser) {
-        if (browser instanceof BrowserConnection)
-            return browser;
+    _createConnectionFromBrowserInfo (browserInfo) {
+        if (browserInfo instanceof BrowserConnection)
+            return browserInfo;
 
-        return new LocalBrowserConnection(this.browserConnectionGateway, browser);
+        return new LocalBrowserConnection(this.browserConnectionGateway, browserInfo);
     }
 
     async _getBrowserConnections () {
         if (!this.browsers.length)
             throw new Error(getText(MESSAGES.browserNotSet));
 
-        var browserConnections = this.browsers
-            .map(Bootstrapper._convertBrowserAliasToBrowserInfo)
-            .map(browser => this._createConnectionFromBrowserInfo(browser));
+        var browsers           = await * this.browsers.map(Bootstrapper._convertBrowserAliasToBrowserInfo);
+        var browserConnections = browsers.map(browser => this._createConnectionFromBrowserInfo(browser));
 
         await Bootstrapper._waitBrowserConnectionsReady(browserConnections);
 
