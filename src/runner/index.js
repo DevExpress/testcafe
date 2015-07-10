@@ -33,7 +33,7 @@ export default class Runner {
             }
 
             function bcErrorHandler (msg) {
-                task.terminate();
+                task.abort();
                 task.removeAllListeners();
                 freeBrowserConnections();
                 reject(new Error(msg));

@@ -29,11 +29,12 @@ export default class LocalBrowserConnection extends BrowserConnection {
         // NOTE: due to the fact that MacOS .app files actually are bundles
         // they can not be executed by execFile directly.
         // We use 'open' shell command instead.
-        if (OS.mac)
+        if (OS.mac) {
             return {
                 path:    'open',
                 cmdList: ['-a', browserInfo.path, this.url, '--args'].concat(cmdList)
             };
+        }
 
         return {
             path:    browserInfo.path,
