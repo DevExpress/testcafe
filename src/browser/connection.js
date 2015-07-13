@@ -7,7 +7,7 @@ import { MESSAGES, getText } from '../messages';
 
 
 // Const
-const IDLE_PAGE_TEMPLATE = read('./idle-page/index.html.mustache');
+const IDLE_PAGE_TEMPLATE = read('../client/browser-idle-page/index.html.mustache');
 
 
 // Global instance counter used to generate ID's

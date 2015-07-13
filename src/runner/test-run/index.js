@@ -1,14 +1,12 @@
-import Promise from 'promise';
 import Mustache from 'mustache';
-import { Session } from './../../../hammerhead/lib';
+import { Session } from 'hammerhead';
 import COMMANDS from './commands';
-import UploadsStorage from '../../upload';
-import read from '../utils/read-file-relative';
+import read from '../../utils/read-file-relative';
 
 
 // Const
-const TEST_RUN_TEMPLATE        = read('../../_compiled_/testcafe_client/test-run.js.mustache');
-const IFRAME_TEST_RUN_TEMPLATE = read('../../_compiled_/testcafe_client/iframe-test-run.js.mustache');
+const TEST_RUN_TEMPLATE        = read('../../client/test-run/index.js.mustache');
+const IFRAME_TEST_RUN_TEMPLATE = read('../../client/test-run/iframe.js.mustache');
 
 
 export default class TestRun extends Session {
@@ -42,16 +40,8 @@ export default class TestRun extends Session {
         this.injectable.styles.push('/uistyle.css');
     }
 
-    async _loadUploads (paths) {
+    async _loadUploads () {
         //TODO fix it after UploadStorage rewrite
-        return new Promise((resolve, reject)=> {
-            UploadsStorage.getFiles(paths, this.fixture.workingDir, (data, err) => {
-                if (err)
-                    reject(err);
-                else
-                    resolve(data);
-            });
-        });
     }
 
     _getPayloadScript () {
@@ -59,7 +49,7 @@ export default class TestRun extends Session {
         var sharedJs  = requireJs + this.fixture.remainderJs;
 
         // TODO
-        var nextStep             = this.actionTargetWaiting ? this.nextStep - 1 : this.nextStep;
+        var nextStep = this.actionTargetWaiting ? this.nextStep - 1 : this.nextStep;
 
         this.actionTargetWaiting = false;
 
@@ -163,7 +153,7 @@ ServiceMessages[COMMANDS.setTestError] = function (msg) {
 };
 
 ServiceMessages[COMMANDS.getAndUncheckFileDownloadingFlag] = function () {
-    var isFileDownloading  = this.isFileDownloading;
+    var isFileDownloading = this.isFileDownloading;
 
     this.isFileDownloading = false;
 
