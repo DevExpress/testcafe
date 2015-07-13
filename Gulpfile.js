@@ -1,17 +1,31 @@
 var gulp   = require('gulp');
 var babel  = require('gulp-babel');
+var less   = require('gulp-less');
 var eslint = require('gulp-eslint');
-var del    = require('del');
 var mocha  = require('gulp-mocha');
+var del    = require('del');
+var merge  = require('merge-stream');
 
 gulp.task('clean', function (cb) {
     del('lib', cb);
 });
 
 gulp.task('build', ['clean'], function () {
-    return gulp
+    var js = gulp
         .src('src/**/*.js')
-        .pipe(babel())
+        .pipe(babel());
+
+    var styles = gulp
+        .src('src/**/*.less')
+        .pipe(less());
+
+    var templates = gulp
+        .src('src/**/*.mustache');
+
+    var images = gulp
+        .src('src/**/*.png');
+
+    return merge(js, styles, templates, images)
         .pipe(gulp.dest('lib'));
 });
 

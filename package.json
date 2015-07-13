@@ -1,14 +1,22 @@
 {
+  "dependencies": {
+    "babel-runtime": "^5.6.15",
+    "callsite": "^1.0.0",
+    "mustache": "^2.1.2",
+    "promise": "^7.0.3",
+    "useragent": "^2.1.7"
+  },
   "devDependencies": {
     "babel-eslint": "^3.1.18",
     "del": "^1.2.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
     "gulp-eslint": "^0.15.0",
-    "gulp-mocha": "^2.1.2"
+    "gulp-less": "^3.0.3",
+    "gulp-mocha": "^2.1.2",
+    "merge-stream": "^0.1.8"
   },
-  "dependencies": {
-    "babel-runtime": "^5.6.15",
-    "promise": "^7.0.3"
+  "scripts": {
+    "test": "gulp test"
   }
 }

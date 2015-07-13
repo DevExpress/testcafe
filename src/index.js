@@ -1,4 +1,4 @@
-import { Proxy } from './../../hammerhead/lib';
+import { Proxy } from 'hammerhead';
 import BrowserConnectionGateway from './browser/gateway';
 import BrowserConnection from './browser/connection';
 import Runner from './runner';
@@ -6,10 +6,10 @@ import read from './utils/read-file-relative';
 
 
 // Const
-const CORE_SCRIPT    = read('../../_compiled_/testcafe_client/testcafe_core.js');
-const UI_CORE_SCRIPT = read('../../_compiled_/testcafe_client/testcafe_ui_core.js');
-const UI_STYLE       = read('../../_compiled_/testcafe_client/styles.css');
-const UI_SPRITE      = read('../../_compiled_/testcafe_client/uisprite.png', true);
+const CORE_SCRIPT = read('./client/core/index.js');
+const UI_SCRIPT   = read('./client/ui/index.js');
+const UI_STYLE    = read('./client/ui/styles.css');
+const UI_SPRITE   = read('./client/ui/sprite.png', true);
 
 
 // TestCafe
@@ -23,9 +23,9 @@ export default class TestCafe {
 
     _registerAssets () {
         this.proxy.GET('/testcafe-core.js', { content: CORE_SCRIPT, contentType: 'application/x-javascript' });
-        this.proxy.GET('/testcafe-ui-core.js', { content: UI_CORE_SCRIPT, contentType: 'application/x-javascript' });
-        this.proxy.GET('/uistyle.css', { content: UI_STYLE, contentType: 'text/css' });
-        this.proxy.GET('/uisprite.png', { content: UI_SPRITE, contentType: 'image/png' });
+        this.proxy.GET('/testcafe-ui.js', { content: UI_SCRIPT, contentType: 'application/x-javascript' });
+        this.proxy.GET('/testcafe-ui-styles.css', { content: UI_STYLE, contentType: 'text/css' });
+        this.proxy.GET('/testcafe-ui-sprite.png', { content: UI_SPRITE, contentType: 'image/png' });
     }
 
 
