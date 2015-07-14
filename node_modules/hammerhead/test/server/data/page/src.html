@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html manifest="/some.url">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+    <link id="stylesheet" rel="stylesheet" type="text/css" href="http://stylesheet.url">
+    <script type="text/javascript" src="http://link.url"></script>
+    <meta http-equiv="Refresh" content="0;URL=http://link.url">
+    <base href="http://base.url">
+    <title></title>
+    <style type="text/css">
+        @import "http://some.url";
+        @import url("http://some.url");
+        @import 'http://some.url';
+        @import url('http://some.url');
+
+        .src:hover {
+            src : 'fakeUrl';
+        }
+
+        .src {
+            src : 'fakeUrl';
+        }
+
+        .someRule {
+            background-image: url('http://some.url');
+            background: repeat-y url('/some/other/url') #fc0;
+
+            background-image: url("http://some.url");
+            background: repeat-y url("/some/other/url") #fc0;
+
+            background-image: url(http://some.url);
+            background: repeat-y url(/some/other/url) #fc0;
+        }
+    </style>
+    <script type="text/javascript">
+        { a : window.location }
+    </script>
+    <script type="text/javascript">
+        //<![CDATA[
+            window.location='test';
+            location='test';
+            document.location='test';
+            document.domain='test';
+            document.cookie='test';
+        //]]>
+    </script>
+    <script type="text/javascript">
+        <!--//--><![CDATA[//><!--
+        var someScript;
+        //--><!]]>
+    </script>
+    <!-- T217636: Health monitor - script incorrectly process html-comments (flipkart.com) -->
+    <script type="text/javascript">
+        <!--<script type="text/javascript">-->
+        var someScript;
+    </script>
+</head>
+<body>
+<map>
+    <area href="http://link.url">
+</map>
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEcAAAARCAYAAAH4YIF">
+<a id="link" href="http://link.url"></a>
+<a id="httpsLink" href="https://link.url"></a>
+<a id="javascriptLink" href="javascript: void(0);"></a>
+<a id="mailtoLink" href="mailto: some@e.mail"></a>
+<a id="hashLink" href="#42"></a>
+
+<div id="href-test" class="HP-innerHTML" data-test="{location: 9034, filter: 'dlk4k', action: 349}"></div>
+
+<a href='javascript:onclick("1");'></a>
+<a href='javascript:a.src="test"'></a>
+<div onclick="window.location='test'; return false;"></div>
+<div onclick="javascript:window.location='test'; return false;"></div>
+
+<form id="form" method="post" action="http://post.something.here">
+</form>
+<embed id="swf" src="http://some.nice.kitty.image">
+
+<input>
+<input type="text" autocomplete="on">
+<input type="password" autocomplete="off">
+<input type="email" autocomplete>
+
+<iframe src="javascript:'<html><body><a id=&quot;link&quot; href=&quot;http://link.url&quot;></a></body></html>'"></iframe>
+<iframe src='javascript:"<html><body><a id=&#39;link&#39;   href=&#39;http://link.url&#39;>  </a></body></html>"'></iframe>
+<iframe src="javascript:'<div></div>'"></iframe>
+
+</body>
+</html>

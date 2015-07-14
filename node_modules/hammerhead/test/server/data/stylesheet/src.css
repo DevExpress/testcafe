@@ -1,0 +1,23 @@
+span {
+    background: url('http://some.url') no-repeat -6px -52px;
+    width: 18px;
+    height: 14px;
+    float: left;
+    margin-top: 8px;
+}
+
+.content {
+    margin: 0 auto;
+    color: #ffffff;
+    font-family: Helvetica, Tahoma, Geneva, sans-serif;
+}
+
+.copyright {
+    padding-top: 26px;
+    float: left;
+}
+
+.logo {
+    padding-top: 36px;
+    float: right;
+}
