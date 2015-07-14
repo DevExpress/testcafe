@@ -1,0 +1,11 @@
+--separator
+Content-Disposition: form-data; name="inputUpload"; filename="text.txt"
+Content-Type: text/plain
+
+text
+--separator
+Content-Disposition: form-data; name="inputUpload"; filename="1"
+Content-Type: text/plain
+
+123
+--separator--

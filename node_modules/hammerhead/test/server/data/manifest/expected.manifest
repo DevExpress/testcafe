@@ -1,0 +1,12 @@
+CACHE MANIFEST
+# 7/17/2013 12:00:00 AM
+
+CACHE:
+http://127.0.0.1:1836/!1337/http://127.0.0.1:1335/favicon.ico
+http://127.0.0.1:1836/!1337/http://127.0.0.1:1335/Images/Master/Logo.png
+
+NETWORK:
+*
+
+FALLBACK:
+http://127.0.0.1:1836/!1337/http://127.0.0.1:1335/html/ http://127.0.0.1:1836/!1337/http://127.0.0.1:1335/offline.html

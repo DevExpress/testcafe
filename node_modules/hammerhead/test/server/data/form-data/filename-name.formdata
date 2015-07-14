@@ -1,0 +1,7 @@
+--separator
+Content-Disposition: form-data; filename="plain.txt"; name="upload"
+Content-Type: text/plain
+
+I am a plain text file
+
+--separator--
