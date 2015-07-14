@@ -38,7 +38,8 @@
     "no-extra-parens": 2,
     "new-cap": [2, { "capIsNew": false }],
     "space-before-function-paren": [2, "always"],
-    "no-use-before-define" : [2, "nofunc"]
+    "no-use-before-define" : [2, "nofunc"],
+    "handle-callback-err": 0
   },
   "env": {
     "node": true

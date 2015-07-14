@@ -16,7 +16,7 @@ const UI_SPRITE   = read('./client/ui/sprite.png', true);
 export default class TestCafe {
     constructor (port1, port2, hostname = '127.0.0.1') {
         this.proxy                    = new Proxy(hostname, port1, port2);
-        this.browserConnectionGateway = new BrowserConnectionGateway(this);
+        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy);
 
         this._registerAssets();
     }
