@@ -20,10 +20,10 @@ export default class BrowserConnection extends EventEmitter {
     constructor (gateway) {
         super();
 
-        this.id        = ++instanceCount;
-        this.jobQueue  = [];
-        this.browserConnectionGateway   = gateway;
-        this.userAgent = null;
+        this.id                       = ++instanceCount;
+        this.jobQueue                 = [];
+        this.browserConnectionGateway = gateway;
+        this.userAgent                = null;
 
         this.ready            = false;
         this.heartbeatTimeout = null;
@@ -39,7 +39,7 @@ export default class BrowserConnection extends EventEmitter {
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
             this.close();
-            this.emit('error', getText(MESSAGES.browserDisconnected, this.userAgent));
+            this.emit('error', getText(MESSAGES.browserDisconnected, this.userAgent.toString()));
         }, BrowserConnection.HEARTBEAT_TIMEOUT);
     }
 
@@ -63,6 +63,7 @@ export default class BrowserConnection extends EventEmitter {
     close () {
         this.ready = false;
         this.browserConnectionGateway.stopServingConnection(this);
+        clearTimeout(this.heartbeatTimeout);
     }
 
     establish (userAgent) {
@@ -81,7 +82,7 @@ export default class BrowserConnection extends EventEmitter {
     renderIdlePage () {
         return Mustache.render(IDLE_PAGE_TEMPLATE, {
             id:        this.id,
-            userAgent: this.userAgent,
+            userAgent: this.userAgent.toString(),
             statusUrl: this.statusUrl
         });
     }
