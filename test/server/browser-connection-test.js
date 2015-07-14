@@ -32,7 +32,7 @@ describe('Browser connection', function () {
     });
 
     // Tests
-    it('Should fire "ready" event once established and redirect to idle page', function (done) {
+    it('Should fire "ready" event and redirect to idle page once established', function (done) {
         var eventFired = false;
 
         connection.on('ready', function () {
@@ -151,7 +151,7 @@ describe('Browser connection', function () {
             .catch(done);
     });
 
-    it('Should respond with error on queries if not ready', function (done) {
+    it('Should respond to the service queries with error if not ready', function (done) {
         var testCases = [
             connection.heartbeatUrl,
             connection.idleUrl,
