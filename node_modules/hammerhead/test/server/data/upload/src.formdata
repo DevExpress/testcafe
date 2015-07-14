@@ -1,0 +1,7 @@
+--separator
+Content-Disposition: form-data; name="upload-89fc3-info"
+
+[{"name":"inputUpload","files":[{"name":"text.txt","type":"text/plain","data":"dGV4dA=="},{"name":"1","type":"text/plain","data":"MTIz"}]}]
+--separator
+Content-Disposition: form-data; name="inputUpload"
+--separator--

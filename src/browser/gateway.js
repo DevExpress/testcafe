@@ -1,4 +1,4 @@
-import { respond404, respondWithJSON, redirect } from '../utils/http';
+import { respond404, respond500, respondWithJSON, redirect } from '../utils/http';
 import read from '../utils/read-file-relative';
 
 
@@ -37,28 +37,48 @@ export default class BrowserConnectionGateway {
         proxy.GET('./browser/assets/style.css', { content: IDLE_PAGE_STYLE, contentType: 'text/css' });
     }
 
+    // Helpers
+    static ensureConnectionReady (res, connection) {
+        if (!connection.ready) {
+            respond500(res, 'The connection is not ready yet.');
+            return false;
+        }
+
+        return true;
+    }
+
 
     // Route handlers
     static onConnection (req, res, connection) {
-        var userAgent = req.headers['user-agent'];
+        if (connection.ready)
+            respond500(res, 'The connection is already established.');
 
-        connection.establish(userAgent);
-        redirect(res, connection.idleUrl);
+        else {
+            var userAgent = req.headers['user-agent'];
+
+            connection.establish(userAgent);
+            redirect(res, connection.idleUrl);
+        }
     }
 
     static onHeartbeat (req, res, connection) {
-        connection.heartbeat();
-        res.end();
+        if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
+            connection.heartbeat();
+            res.end();
+        }
     }
 
     static onIdle (req, res, connection) {
-        res.end(connection.renderIdlePage());
+        if (BrowserConnectionGateway.ensureConnectionReady(res, connection))
+            res.end(connection.renderIdlePage());
     }
 
     static onStatusRequest (req, res, connection) {
-        var status = connection.getStatus();
+        if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
+            var status = connection.getStatus();
 
-        respondWithJSON(res, status);
+            respondWithJSON(res, status);
+        }
     }
 
 

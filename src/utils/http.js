@@ -3,6 +3,11 @@ export function respond404 (res) {
     res.end();
 }
 
+export function respond500 (res, err) {
+    res.statusCode = 500;
+    res.end(err || '');
+}
+
 export function redirect (res, url) {
     res.statusCode = 302;
     res.setHeader('location', url);
