@@ -3,9 +3,9 @@ export const MESSAGES = {
     unableToRunBrowser:             'Unable to run the browser. The file at {path} does not exist or is not executable.',
     cantEstablishBrowserConnection: 'Unable to establish one or more of the specified browser connections. This can be caused by network issues or remote device failure.',
     cantFindBrowserForAlias:        'Cannot find a corresponding browser for the following alias: {alias}.',
-    reporterNotSet:                 'No reporter has been set for the test runner. Use the runner.reporter() method to specify reporting parameters.',
-    browserNotSet:                  'No browser selected to test against. Use the runner.browsers() method to specify the target browser.',
-    unknownReporter:                'The provided "{name}" reporter does not exist. Check that you have specified the report format correctly.'
+    reporterNotSet:                 'No reporter has been set for the test runner. Use the Runner.reporter() method to specify reporting parameters.',
+    browserNotSet:                  'No browser selected to test against. Use the Runner.browsers() method to specify the target browser.',
+    cantFindReporterForAlias:       'The provided "{name}" reporter does not exist. Check that you have specified the report format correctly.'
 };
 
 export function getText (template, ...args) {
