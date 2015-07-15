@@ -3,6 +3,7 @@ import Bootstrapper from './bootstrapper';
 import Task from './task';
 import LocalBrowserConnection from '../browser/local-connection';
 import concatFlattened from '../utils/array-concat-flattened';
+import fallbackDefault from '../utils/fallback-default';
 
 export default class Runner {
     constructor (proxy, browserConnectionGateway) {
@@ -71,7 +72,7 @@ export default class Runner {
     }
 
     reporter (reporter, outStream = null) {
-        this.bootstrapper.reporter    = reporter;
+        this.bootstrapper.reporter        = reporter;
         this.bootstrapper.reportOutStream = outStream;
 
         return this;
@@ -90,9 +91,9 @@ export default class Runner {
         return this;
     }
 
-    async run ({ failOnJsErrors = true, quarantineMode = false }) {
-        this.opts.failOnJsErrors = failOnJsErrors;
-        this.opts.quarantineMode = quarantineMode;
+    async run ({ failOnJsErrors, quarantineMode } = {}) {
+        this.opts.failOnJsErrors = fallbackDefault(failOnJsErrors, true);
+        this.opts.quarantineMode = fallbackDefault(quarantineMode, false);
 
         var { reporter, browserConnections, tests } = await this.bootstrapper.createRunnableConfiguration();
 
