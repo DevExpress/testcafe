@@ -1,0 +1,32 @@
+Running tests in: Chrome, Firefox
+
+  fixture1 (./fixture1.js)
+    ✓ fixture1test1 (unstable)
+    ✖ fixture1test2
+
+        1) Chrome - Error1: Lorem ipsum dolor sit amet, consectetur
+        adipiscing elit
+
+        2) Chrome - Error2: Ut enim ad minim veniam, quis nostrud
+        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+        dolore eu fugiat nulla pariatur.
+
+        3) Firefox - Error3: Excepteur sint occaecat cupidatat non proident,
+        sunt in culpa qui officia deserunt mollit anim id est laborum &.
+
+    ✓ fixture1test3
+
+  fixture2 (./fixture2.js)
+    ✓ fixture2test1
+    ✓ fixture2test2
+
+  fixture3 (./fixture3.js)
+    ✖ fixture3test1 (unstable)
+
+        1) Firefox - Error1: Lorem ipsum dolor sit amet, consectetur
+        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua.
+
+
+  2/6 failed (15m 25s)

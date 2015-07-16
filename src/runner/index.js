@@ -2,7 +2,7 @@ import Promise from 'promise';
 import Bootstrapper from './bootstrapper';
 import Task from './task';
 import LocalBrowserConnection from '../browser/local-connection';
-import concatFlattened from '../utils/array-concat-flattened';
+import { concatFlattened } from '../utils/array';
 import fallbackDefault from '../utils/fallback-default';
 
 export default class Runner {
@@ -14,14 +14,16 @@ export default class Runner {
             screenshotPath:        null,
             takeScreenshotOnFails: false,
             failOnJsErrors:        true,
-            quarantineMode:        false
+            quarantineMode:        false,
+            reportOutStream:       null,
+            formatter:             null
         };
     }
 
-    _runTask (reporter, browserConnections, tests) {
+    _runTask (Reporter, browserConnections, tests) {
         return new Promise((resolve, reject) => {
-            var task   = new Task(tests, browserConnections, this.proxy, this.opts);
-            var passed = true;
+            var task     = new Task(tests, browserConnections, this.proxy, this.opts);
+            var reporter = new Reporter(task, this.opts.reportOutStream, this.opts.form);
 
             function freeBrowserConnections () {
                 browserConnections.forEach(bc => {
@@ -42,17 +44,9 @@ export default class Runner {
 
             browserConnections.forEach(bc => bc.once('error', bcErrorHandler));
 
-            task.once('start', () => reporter.onTaskStart(task));
-
-            task.on('test-run-done', testRun => {
-                passed &= !testRun.errs.length;
-                reporter.onTestRunDone(testRun);
-            });
-
             task.once('done', () => {
-                reporter.onTaskDone(task);
                 freeBrowserConnections();
-                resolve(passed);
+                resolve(reporter.passed === reporter.total);
             });
         });
     }
@@ -71,9 +65,10 @@ export default class Runner {
         return this;
     }
 
-    reporter (reporter, outStream = null) {
-        this.bootstrapper.reporter        = reporter;
-        this.bootstrapper.reportOutStream = outStream;
+    reporter (reporter, outStream = null, formatter = null) {
+        this.bootstrapper.reporter = reporter;
+        this.opts.reportOutStream  = outStream;
+        this.opts.formatter        = formatter;
 
         return this;
     }
@@ -95,8 +90,8 @@ export default class Runner {
         this.opts.failOnJsErrors = fallbackDefault(failOnJsErrors, true);
         this.opts.quarantineMode = fallbackDefault(quarantineMode, false);
 
-        var { reporter, browserConnections, tests } = await this.bootstrapper.createRunnableConfiguration();
+        var { Reporter, browserConnections, tests } = await this.bootstrapper.createRunnableConfiguration();
 
-        return await this._runTask(reporter, browserConnections, tests);
+        return await this._runTask(Reporter, browserConnections, tests);
     }
 }
