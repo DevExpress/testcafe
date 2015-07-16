@@ -38,7 +38,7 @@ const ALIASES = {
 
 
 // Installation info cache
-var installations = null;
+var installationsCache = null;
 
 
 // Promisified node API
@@ -50,7 +50,7 @@ function exists (path) {
 
 
 // Find installations for different platforms
-async function addInstallation (name, path) {
+async function addInstallation (installations, name, path) {
     var fileExists = await exists(path);
 
     if (fileExists) {
@@ -68,10 +68,11 @@ async function addInstallation (name, path) {
 }
 
 async function findWindowsBrowsers () {
-    var regKey    = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Clients\\StartMenuInternet\\';
-    var regKeyEsc = regKey.replace(/\\/g, '\\\\');
-    var browserRe = new RegExp(regKeyEsc + '([^\\\\]+)\\\\shell\\\\open\\\\command' +
-                               '\\s+\\([^)]+\\)\\s+reg_sz\\s+([^\n]+)\n', 'gi');
+    var installations = {};
+    var regKey        = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Clients\\StartMenuInternet\\';
+    var regKeyEsc     = regKey.replace(/\\/g, '\\\\');
+    var browserRe     = new RegExp(regKeyEsc + '([^\\\\]+)\\\\shell\\\\open\\\\command' +
+                                   '\\s+\\([^)]+\\)\\s+reg_sz\\s+([^\n]+)\n', 'gi');
 
     var stdout = await exec(`chcp 65001 | reg query ${regKey} /s`);
 
@@ -83,11 +84,15 @@ async function findWindowsBrowsers () {
             .replace(/\\$/, '')
             .replace(/\s*$/, '');
 
-        await addInstallation(name, path);
+        await addInstallation(installations, name, path);
     }
+
+    return installations;
 }
 
 async function findMacBrowsers () {
+    var installations = {};
+
     //NOTE: replace space symbol with the code, because grep splits strings by space.
     var stdout = await exec('ls "/Applications/" | grep -E "Chrome|Firefox|Opera|Safari|Chromium" | sed -E "s/ /032/"');
 
@@ -101,37 +106,43 @@ async function findMacBrowsers () {
             var name = fileName.replace(/.app$/, '');
             var path = `/Applications/${fileName}`;
 
-            return addInstallation(name, path);
+            return addInstallation(installations, name, path);
         });
+
+    return installations;
 }
 
 async function findLinuxBrowsers () {
-    var stdout = await exec('update-alternatives --list x-www-browser');
+    var installations = {};
+    var stdout        = await exec('update-alternatives --list x-www-browser');
 
     await * stdout
         .split('\n')
         .map(path => {
             var name = path.replace(/.*\/([^\/]+)$/g, '$1');
 
-            return addInstallation(name, path);
+            return addInstallation(installations, name, path);
         });
+
+    return installations;
+}
+
+async function findBrowsers () {
+    if (OS.win)
+        return await findWindowsBrowsers();
+
+    if (OS.mac)
+        return await findMacBrowsers();
+
+    if (OS.linux)
+        return await findLinuxBrowsers();
 }
 
 
 // API
 export async function get () {
-    if (!installations) {
-        installations = {};
+    if (!installationsCache)
+        installationsCache = await findBrowsers();
 
-        if (OS.win)
-            await findWindowsBrowsers();
-
-        else if (OS.mac)
-            await findMacBrowsers();
-
-        else if (OS.linux)
-            await findLinuxBrowsers();
-    }
-
-    return installations;
+    return installationsCache;
 }

@@ -13,6 +13,7 @@ describe('Browser connection', function () {
     var testCafe   = null;
     var connection = null;
 
+
     // Fixture setup/teardown
     before(function () {
         testCafe = new TestCafe(1335, 1336);
@@ -22,6 +23,7 @@ describe('Browser connection', function () {
         testCafe.close();
     });
 
+
     // Test setup/teardown
     beforeEach(function () {
         connection = testCafe.createBrowserConnection();
@@ -30,6 +32,7 @@ describe('Browser connection', function () {
     afterEach(function () {
         connection.close();
     });
+
 
     // Tests
     it('Should fire "ready" event and redirect to idle page once established', function (done) {

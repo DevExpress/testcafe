@@ -1,5 +1,5 @@
 import Promise from 'promise';
-import browserInstallations from '../browser/installations';
+import { get as getBrowserInstallations } from '../browser/installations';
 import reporters from '../reporters';
 import BrowserConnection from '../browser/connection';
 import LocalBrowserConnection from '../browser/local-connection';
@@ -31,9 +31,10 @@ export default class Bootstrapper {
                 reject(new Error(getText(MESSAGES.cantEstablishBrowserConnection)));
             }, Bootstrapper.BROWSER_CONNECTION_READY_TIMEOUT);
 
-            var onError = msg => {
+            function onError (msg) {
+                clearTimeout(timeout);
                 reject(new Error(msg));
-            };
+            }
 
             browserConnections.forEach(bc => bc.once('error', onError));
 
@@ -51,7 +52,7 @@ export default class Bootstrapper {
         if (typeof alias !== 'string')
             return alias;
 
-        var installations = await browserInstallations.get();
+        var installations = await getBrowserInstallations();
         var browserInfo   = installations[alias.toLowerCase()];
 
         if (!browserInfo)
@@ -74,7 +75,16 @@ export default class Bootstrapper {
         var browsers           = await * this.browsers.map(Bootstrapper._convertBrowserAliasToBrowserInfo);
         var browserConnections = browsers.map(browser => this._createConnectionFromBrowserInfo(browser));
 
-        await Bootstrapper._waitBrowserConnectionsReady(browserConnections);
+        try {
+            await Bootstrapper._waitBrowserConnectionsReady(browserConnections);
+        }
+        finally {
+            // NOTE: we should close local connections and related browsers once we've done
+            browserConnections.forEach(bc => {
+                if (bc instanceof LocalBrowserConnection)
+                    bc.close();
+            });
+        }
 
         return browserConnections;
     }
@@ -90,10 +100,10 @@ export default class Bootstrapper {
             throw new Error(getText(MESSAGES.reporterNotSet));
 
         if (typeof Reporter === 'string') {
-            Reporter = reporters[Reporter];
+            Reporter = reporters[Reporter.toLowerCase()];
 
             if (!Reporter)
-                throw new Error(getText(MESSAGES.unknownReporter, this.reporter));
+                throw new Error(getText(MESSAGES.cantFindReporterForAlias, this.reporter));
         }
 
         return new Reporter(this.reportOutStream);
