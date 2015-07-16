@@ -15,7 +15,6 @@ export default class Bootstrapper {
         this.src             = [];
         this.browsers        = [];
         this.filter          = null;
-        this.reportOutStream = null;
         this.reporter        = null;
     }
 
@@ -91,9 +90,10 @@ export default class Bootstrapper {
 
     async _getTests () {
         //TODO
+        // Sort tests by fixture!
     }
 
-    _createReporter () {
+    _getReporterCtor () {
         var Reporter = this.reporter;
 
         if (!Reporter)
@@ -106,19 +106,19 @@ export default class Bootstrapper {
                 throw new Error(getText(MESSAGES.cantFindReporterForAlias, this.reporter));
         }
 
-        return new Reporter(this.reportOutStream);
+        return Reporter;
     }
 
 
     // API
     async createRunnableConfiguration () {
-        var reporter = this._createReporter();
+        var Reporter = this._getReporterCtor();
 
         var [browserConnections, tests] = await * [
             this._getBrowserConnections(),
             this._getTests()
         ];
 
-        return { reporter, browserConnections, tests };
+        return { Reporter, browserConnections, tests };
     }
 }

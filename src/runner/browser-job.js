@@ -51,7 +51,7 @@ export default class BrowserJob extends EventEmitter {
     _testRunDoneInQuarantineMode (testRun) {
         this.proxy.closeSession(testRun);
 
-        /*eslint-disable indent*/
+        /* eslint-disable indent */
         //NOTE: eslint disabled because of the https://github.com/eslint/eslint/issues/2343 issue
         if (this._shouldStartQuarantine(testRun))
             this._startQuarantine(testRun);
@@ -65,7 +65,7 @@ export default class BrowserJob extends EventEmitter {
 
         else
             this.emit('test-run-done', testRun);
-        /*eslint-enable indent*/
+        /* eslint-enable indent */
     }
 
     _testRunDone (testRun) {
