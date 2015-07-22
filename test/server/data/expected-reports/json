@@ -1,0 +1,72 @@
+{
+  "startTime": "1970-01-01T00:00:00.000Z",
+  "endTime": "1970-01-01T00:15:25.000Z",
+  "userAgents": [
+    "Chrome",
+    "Firefox"
+  ],
+  "passed": 4,
+  "total": 6,
+  "fixtures": [
+    {
+      "name": "fixture1",
+      "path": "./fixture1.js",
+      "tests": [
+        {
+          "name": "fixture1test1",
+          "errMsgs": [],
+          "durationMs": 74000,
+          "unstable": true
+        },
+        {
+          "name": "fixture1test2",
+          "errMsgs": [
+            "Chrome - Error1: Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+            "Chrome - Error2: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            "Firefox - Error3: Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum &."
+          ],
+          "durationMs": 74000,
+          "unstable": false
+        },
+        {
+          "name": "fixture1test3",
+          "errMsgs": [],
+          "durationMs": 74000,
+          "unstable": false
+        }
+      ]
+    },
+    {
+      "name": "fixture2",
+      "path": "./fixture2.js",
+      "tests": [
+        {
+          "name": "fixture2test1",
+          "errMsgs": [],
+          "durationMs": 74000,
+          "unstable": false
+        },
+        {
+          "name": "fixture2test2",
+          "errMsgs": [],
+          "durationMs": 74000,
+          "unstable": false
+        }
+      ]
+    },
+    {
+      "name": "fixture3",
+      "path": "./fixture3.js",
+      "tests": [
+        {
+          "name": "fixture3test1",
+          "errMsgs": [
+            "Firefox - Error1: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          ],
+          "durationMs": 74000,
+          "unstable": true
+        }
+      ]
+    }
+  ]
+}

@@ -56,7 +56,7 @@ describe('Runner', function () {
         it('Should raise error if browser was not found for the alias', function (done) {
             var run = runner
                 .browsers('browser42')
-                .reporter('list')
+                .reporter('spec')
                 .src('./test.js')
                 .run()
                 .then(function () {
@@ -75,7 +75,7 @@ describe('Runner', function () {
 
         it('Should raise error if browser was not set', function (done) {
             var run = runner
-                .reporter('list')
+                .reporter('spec')
                 .src('./test.js')
                 .run()
                 .then(function () {
@@ -99,7 +99,7 @@ describe('Runner', function () {
 
             var run = runner
                 .browsers(connection1, connection2)
-                .reporter('list')
+                .reporter('spec')
                 .src('./test.js')
                 .run()
                 .then(function () {
@@ -143,7 +143,7 @@ describe('Runner', function () {
 
             var run = runner
                 .browsers(connection)
-                .reporter('list')
+                .reporter('spec')
                 .src('./test.js')
                 .run()
                 .then(function () {
@@ -165,9 +165,22 @@ describe('Runner', function () {
     });
 
     describe('.reporter()', function () {
+        var connection = null;
+
+        // Fixture setup/teardown
+        before(function () {
+            connection = testCafe.createBrowserConnection();
+            connection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                 '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+        });
+
+        after(function () {
+            connection.close();
+        });
+
         it('Should raise error if reporter was not found for the alias', function (done) {
             var run = runner
-                .browsers({ path: 'phantomjs' })
+                .browsers(connection)
                 .reporter('reporter42')
                 .src('./test.js')
                 .run()
@@ -188,7 +201,7 @@ describe('Runner', function () {
 
         it('Should raise error if reporter was not set', function (done) {
             var run = runner
-                .browsers({ path: 'phantomjs' })
+                .browsers(connection)
                 .src('./test.js')
                 .run()
                 .then(function () {

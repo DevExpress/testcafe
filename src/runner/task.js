@@ -5,19 +5,20 @@ export default class Task extends EventEmitter {
     constructor (tests, browserConnections, proxy, opts) {
         super();
 
-        this.startTime    = null;
-        this.endTime      = null;
-        this.testRunCount = tests.length * browserConnections.length;
+        this.running            = false;
+        this.browserConnections = browserConnections;
+        this.tests              = tests;
 
-        this.browserJobs = browserConnections.map(bc => this._createBrowserJob(tests, bc, proxy, opts));
+        this.browserJobs = this._createBrowserJobs(tests, proxy, opts);
     }
 
-    _assignBrowserJobEventListeners (job) {
+    _assignBrowserJobEventHandlers (job) {
+        job.on('test-run-start', testRun => this.emit('test-run-start', testRun));
         job.on('test-run-done', testRun => this.emit('test-run-done', testRun));
 
         job.once('start', () => {
-            if (!this.startTime) {
-                this.startTime = new Date();
+            if (!this.running) {
+                this.running = true;
                 this.emit('start');
             }
         });
@@ -27,20 +28,20 @@ export default class Task extends EventEmitter {
 
             this.browserJobs.splice(idx, 1);
 
-            if (!this.browserJobs.length) {
-                this.endTime = new Date();
+            if (!this.browserJobs.length)
                 this.emit('done');
-            }
         });
     }
 
-    _createBrowserJob (tests, browserConnection, proxy, opts) {
-        var job = new BrowserJob(tests, browserConnection, proxy, opts);
+    _createBrowserJobs (tests, proxy, opts) {
+        return this.browserConnections.map(bc => {
+            var job = new BrowserJob(tests, bc, proxy, opts);
 
-        this._assignBrowserJobEventListeners(job);
-        browserConnection.addJob(job);
+            this._assignBrowserJobEventHandlers(job);
+            bc.addJob(job);
 
-        return job;
+            return job;
+        });
     }
 
     // API

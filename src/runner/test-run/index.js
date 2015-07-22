@@ -13,9 +13,8 @@ export default class TestRun extends Session {
     constructor (test, browserConnection, opts) {
         super();
 
-        this.startTime = null;
-        this.endTime   = null;
-        this.unstable  = false;
+        this.running  = false;
+        this.unstable = false;
 
         this.opts              = opts;
         this.suite             = this.opts.suite;
@@ -53,8 +52,10 @@ export default class TestRun extends Session {
 
         this.actionTargetWaiting = false;
 
-        if (!this.startTime)
-            this.startTime = new Date();
+        if (!this.running) {
+            this.running = true;
+            this.emit('start');
+        }
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
             stepNames:             JSON.stringify(this.test.stepData.names),
@@ -95,11 +96,6 @@ export default class TestRun extends Session {
 
     _fatalError (err) {
         this._addError(err);
-        this._done();
-    }
-
-    _done () {
-        this.endTime = new Date();
         this.emit('done');
     }
 
@@ -129,7 +125,7 @@ ServiceMessages[COMMANDS.assertionFailed] = function (msg) {
 };
 
 ServiceMessages[COMMANDS.done] = function () {
-    this._done();
+    this.emit('done');
 };
 
 ServiceMessages[COMMANDS.setStepsSharedData] = function (msg) {
