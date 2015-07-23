@@ -23,7 +23,7 @@ export default class Runner {
     _runTask (Reporter, browserConnections, tests) {
         return new Promise((resolve, reject) => {
             var task     = new Task(tests, browserConnections, this.proxy, this.opts);
-            var reporter = new Reporter(task, this.opts.reportOutStream, this.opts.form);
+            var reporter = new Reporter(task, this.opts.reportOutStream, this.opts.formatter);
 
             function freeBrowserConnections () {
                 browserConnections.forEach(bc => {
