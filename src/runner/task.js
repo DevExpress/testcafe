@@ -28,6 +28,8 @@ export default class Task extends EventEmitter {
 
             this.browserJobs.splice(idx, 1);
 
+            this.emit('browser-job-done', job);
+
             if (!this.browserJobs.length)
                 this.emit('done');
         });
