@@ -1,6 +1,6 @@
 import { Proxy } from 'hammerhead';
-import BrowserConnectionGateway from './browser/gateway';
-import BrowserConnection from './browser/connection';
+import BrowserConnectionGateway from './browser-connection/gateway';
+import BrowserConnection from './browser-connection';
 import Runner from './runner';
 import read from './utils/read-file-relative';
 

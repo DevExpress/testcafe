@@ -1,8 +1,8 @@
 import Promise from 'promise';
-import { get as getBrowserInstallations } from '../browser/installations';
+import { getInstallations as getBrowserInstallations } from 'testcafe-browser-natives';
 import reporters from '../reporters';
-import BrowserConnection from '../browser/connection';
-import LocalBrowserConnection from '../browser/local-connection';
+import BrowserConnection from '../browser-connection';
+import LocalBrowserConnection from '../browser-connection/local';
 import { MESSAGES, getText } from '../messages';
 
 
@@ -12,10 +12,10 @@ export default class Bootstrapper {
     constructor (browserConnectionGateway) {
         this.browserConnectionGateway = browserConnectionGateway;
 
-        this.src             = [];
-        this.browsers        = [];
-        this.filter          = null;
-        this.reporter        = null;
+        this.src      = [];
+        this.browsers = [];
+        this.filter   = null;
+        this.reporter = null;
     }
 
     static _createBrowserConnectionReadyPromises (browserConnections) {
@@ -30,10 +30,10 @@ export default class Bootstrapper {
                 reject(new Error(getText(MESSAGES.cantEstablishBrowserConnection)));
             }, Bootstrapper.BROWSER_CONNECTION_READY_TIMEOUT);
 
-            function onError (msg) {
+            var onError = msg => {
                 clearTimeout(timeout);
                 reject(new Error(msg));
-            }
+            };
 
             browserConnections.forEach(bc => bc.once('error', onError));
 

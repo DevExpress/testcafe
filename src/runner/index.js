@@ -1,7 +1,7 @@
 import Promise from 'promise';
 import Bootstrapper from './bootstrapper';
 import Task from './task';
-import LocalBrowserConnection from '../browser/local-connection';
+import LocalBrowserConnection from '../browser-connection/local';
 import { concatFlattened } from '../utils/array';
 import fallbackDefault from '../utils/fallback-default';
 
@@ -20,34 +20,34 @@ export default class Runner {
         };
     }
 
+    // Static
+    static _freeBrowserConnection (bc, errorHandler) {
+        bc.removeListener('error', errorHandler);
+
+        // NOTE: we should close local connections and
+        // related browsers once we've done
+        if (bc instanceof LocalBrowserConnection)
+            bc.close();
+    }
+
+    // Run task
     _runTask (Reporter, browserConnections, tests) {
         return new Promise((resolve, reject) => {
             var task     = new Task(tests, browserConnections, this.proxy, this.opts);
             var reporter = new Reporter(task, this.opts.reportOutStream, this.opts.formatter);
 
-            function freeBrowserConnections () {
-                browserConnections.forEach(bc => {
-                    bc.removeListener('error', bcErrorHandler);
-                    // NOTE: we should close local connections and
-                    // related browsers once we've done
-                    if (bc instanceof LocalBrowserConnection)
-                        bc.close();
-                });
-            }
-
-            function bcErrorHandler (msg) {
+            var bcErrorHandler = msg => {
                 task.abort();
                 task.removeAllListeners();
-                freeBrowserConnections();
+                browserConnections.forEach(bc => Runner._freeBrowserConnection(bc, bcErrorHandler));
                 reject(new Error(msg));
-            }
+            };
 
             browserConnections.forEach(bc => bc.once('error', bcErrorHandler));
 
-            task.once('done', () => {
-                freeBrowserConnections();
-                resolve(reporter.passed === reporter.total);
-            });
+            task.on('browser-job-done', job => Runner._freeBrowserConnection(job.browserConnection, bcErrorHandler));
+
+            task.once('done', () => resolve(reporter.passed === reporter.total));
         });
     }
 

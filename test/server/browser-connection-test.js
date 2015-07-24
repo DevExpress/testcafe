@@ -2,8 +2,8 @@ var expect            = require('chai').expect;
 var Promise           = require('promise');
 var request           = require('request');
 var TestCafe          = require('../../lib/');
-var BrowserConnection = require('../../lib/browser/connection');
-var COMMANDS          = require('../../lib/browser/commands');
+var BrowserConnection = require('../../lib/browser-connection');
+var COMMANDS          = require('../../lib/browser-connection/commands');
 
 
 var promisedRequest = Promise.denodeify(request);
