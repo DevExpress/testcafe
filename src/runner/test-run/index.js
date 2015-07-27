@@ -17,8 +17,6 @@ export default class TestRun extends Session {
         this.unstable = false;
 
         this.opts              = opts;
-        this.suite             = this.opts.suite;
-        this.fixture           = this.suite.fixtures[test.fixtureUid];
         this.test              = test;
         this.browserConnection = browserConnection;
 
@@ -44,8 +42,7 @@ export default class TestRun extends Session {
     }
 
     _getPayloadScript () {
-        var requireJs = this.suite.requireJsMap[this.fixture.requireJsMapKey];
-        var sharedJs  = requireJs + this.fixture.remainderJs;
+        var sharedJs  = this.test.fixture.getSharedJs();
 
         // TODO
         var nextStep = this.actionTargetWaiting ? this.nextStep - 1 : this.nextStep;
@@ -73,8 +70,7 @@ export default class TestRun extends Session {
     }
 
     _getIFramePayloadScript () {
-        var requireJs = this.suite.requireJsMap[this.fixture.requireJsMapKey];
-        var sharedJs  = requireJs + this.fixture.remainderJs;
+        var sharedJs  = this.test.fixture.getSharedJs();
 
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             sharedJs:              sharedJs,
@@ -87,7 +83,7 @@ export default class TestRun extends Session {
 
     _addError (err) {
         if (err.__sourceIndex !== void 0 && err.__sourceIndex !== null) {
-            err.relatedSourceCode = this.suite.sourceIndex[err.__sourceIndex];
+            err.relatedSourceCode = this.test.sourceIndex[err.__sourceIndex];
             delete err.__sourceIndex;
         }
 
@@ -100,7 +96,7 @@ export default class TestRun extends Session {
     }
 
     getAuthCredentials () {
-        return this.fixture.authCredentials;
+        return this.test.fixture.authCredentials;
     }
 
     handleFileDownload () {

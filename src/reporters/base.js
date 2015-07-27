@@ -49,13 +49,13 @@ export default class BaseReporter {
 
     static _createReportItem (test, runsPerTest) {
         return {
-            currentFixtureName: test.fixture.name,
-            fixturePath:        test.fixture.path,
-            testName:           test.name,
-            pendingRuns:        runsPerTest,
-            errMsgs:            [],
-            unstable:           false,
-            startTime:          null
+            fixtureName: test.fixture.name,
+            fixturePath: test.fixture.path,
+            testName:    test.name,
+            pendingRuns: runsPerTest,
+            errMsgs:     [],
+            unstable:    false,
+            startTime:   null
         };
     }
 
@@ -87,7 +87,7 @@ export default class BaseReporter {
         var nextReportItem = this.reportQueue[0];
 
         if (nextReportItem && nextReportItem.fixturePath !== reportItem.fixturePath)
-            this._reportFixtureStart(nextReportItem.currentFixtureName, nextReportItem.fixturePath);
+            this._reportFixtureStart(nextReportItem.fixtureName, nextReportItem.fixturePath);
     }
 
     _assignTaskEventHandlers (task) {
@@ -97,7 +97,7 @@ export default class BaseReporter {
             var first      = this.reportQueue[0];
 
             this._reportTaskStart(startTime, userAgents);
-            this._reportFixtureStart(first.currentFixtureName, first.fixturePath);
+            this._reportFixtureStart(first.fixtureName, first.fixturePath);
         });
 
         task.on('test-run-start', (testRun) => {

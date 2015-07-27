@@ -2,7 +2,7 @@ var expect            = require('chai').expect;
 var request           = require('request');
 var TestCafe          = require('../../lib/');
 var Bootsrapper       = require('../../lib/runner/bootstrapper');
-var BrowserConnection = require('../../lib/browser/connection');
+var BrowserConnection = require('../../lib/browser-connection');
 
 
 describe('Runner', function () {
