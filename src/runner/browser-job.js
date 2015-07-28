@@ -88,7 +88,7 @@ export default class BrowserJob extends EventEmitter {
 
 
     // API
-    getNextTestRunUrl () {
+    get nextTestRunUrl () {
         var testRun = this.testRunQueue.shift();
 
         if (!this.started) {
