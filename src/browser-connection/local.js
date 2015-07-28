@@ -16,7 +16,7 @@ export default class LocalBrowserConnection extends BrowserConnection {
 
 
     _runBrowser (browserInfo) {
-        // NOTE: Give caller a time to assign event listeners
+        // NOTE: Give caller time to assign event listeners
         process.nextTick(async () => {
             try {
                 await openBrowser(browserInfo, this.url);
