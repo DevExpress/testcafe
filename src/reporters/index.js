@@ -11,3 +11,4 @@ export default {
     json:    JSONReporter,
     xunit:   XUnitReporter
 };
+

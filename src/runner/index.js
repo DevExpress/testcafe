@@ -1,4 +1,5 @@
 import Promise from 'promise';
+import { resolve as resolvePath } from 'path';
 import Bootstrapper from './bootstrapper';
 import Task from './task';
 import LocalBrowserConnection from '../browser-connection/local';
@@ -53,8 +54,10 @@ export default class Runner {
 
 
     // API
-    src (...src) {
-        this.bootstrapper.src = concatFlattened(this.bootstrapper.src, src);
+    src (...sources) {
+        sources = concatFlattened([], sources).map(path => resolvePath(path));
+
+        this.bootstrapper.sources = this.bootstrapper.sources.concat(sources);
 
         return this;
     }
