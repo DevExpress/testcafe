@@ -4,6 +4,7 @@ import { createHash } from 'crypto';
 import { resolve as resolveUrl } from 'url';
 import Promise from 'promise';
 import { Compiler as OldCompiler } from './old';
+import OS from '../utils/os';
 
 var readFile = Promise.denodeify(fs.readFile);
 
@@ -44,7 +45,14 @@ export default class Compiler {
         var dirHierarchy = dirName
             .split(path.sep)
             .reduce((dirs, chunk) => {
-                var dir = dirs.length ? path.join(dirs[dirs.length - 1], chunk) : chunk;
+                var dir = null;
+
+                if (dirs.length)
+                    dir = path.join(dirs[dirs.length - 1], chunk);
+                else if (OS.win)
+                    dir = chunk;
+                else
+                    dir = path.sep + chunk;
 
                 dirs.push(dir);
 
