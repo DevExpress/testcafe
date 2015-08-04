@@ -3,6 +3,7 @@ import { getInstallations as getBrowserInstallations } from 'testcafe-browser-na
 import reporters from '../reporters';
 import BrowserConnection from '../browser-connection';
 import LocalBrowserConnection from '../browser-connection/local';
+import Compiler from '../compiler';
 import { MESSAGES, getText } from '../messages';
 
 
@@ -12,7 +13,7 @@ export default class Bootstrapper {
     constructor (browserConnectionGateway) {
         this.browserConnectionGateway = browserConnectionGateway;
 
-        this.src      = [];
+        this.sources  = [];
         this.browsers = [];
         this.filter   = null;
         this.reporter = null;
@@ -89,8 +90,16 @@ export default class Bootstrapper {
     }
 
     async _getTests () {
-        //TODO
-        // Sort tests by fixture!
+        if (!this.sources.length)
+            throw new Error(getText(MESSAGES.testSourcesNotSet));
+
+        var compiler = new Compiler(this.sources);
+        var tests    = await compiler.getTests();
+
+        if (this.filter)
+            tests = tests.filter(test => this.filter(test.name, test.fixture.name, test.fixture.path));
+
+        return tests;
     }
 
     _getReporterCtor () {

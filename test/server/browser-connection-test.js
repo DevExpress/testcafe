@@ -105,7 +105,7 @@ describe('Browser connection', function () {
             var doneHandler = null;
 
             return {
-                getNextTestRunUrl: function () {
+                get nextTestRunUrl () {
                     var url = urls.shift();
 
                     if (!urls.length)

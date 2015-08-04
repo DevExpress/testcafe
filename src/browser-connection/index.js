@@ -43,10 +43,10 @@ export default class BrowserConnection extends EventEmitter {
         }, BrowserConnection.HEARTBEAT_TIMEOUT);
     }
 
-    _getNextTestRunUrl () {
+    get nextTestRunUrl () {
         var job = this.jobQueue[0];
 
-        return job ? job.getNextTestRunUrl() : null;
+        return job ? job.nextTestRunUrl : null;
     }
 
     // API
@@ -88,7 +88,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     getStatus () {
-        var testRunUrl = this._getNextTestRunUrl();
+        var testRunUrl = this.nextTestRunUrl;
 
         if (testRunUrl)
             return { cmd: COMMANDS.run, url: testRunUrl };
