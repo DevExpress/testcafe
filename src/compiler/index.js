@@ -76,7 +76,7 @@ export default class Compiler {
     }
 
     async getTests () {
-        var fixtures = await * this.sources.map(filePath => this._compileFile(filePath));
+        var fixtures = await Promise.all(this.sources.map(filePath => this._compileFile(filePath)));
 
         return fixtures.reduce((tests, fixture) => tests.concat(fixture.tests), []);
     }
