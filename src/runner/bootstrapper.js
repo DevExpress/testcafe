@@ -105,10 +105,7 @@ export default class Bootstrapper {
     }
 
     _getReporterCtor () {
-        var Reporter = this.reporter;
-
-        if (!Reporter)
-            throw new Error(getText(MESSAGES.reporterNotSet));
+        var Reporter = this.reporter || 'spec';
 
         if (typeof Reporter === 'string') {
             Reporter = reporters[Reporter.toLowerCase()];
