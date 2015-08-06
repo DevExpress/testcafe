@@ -19,10 +19,12 @@ export default class Bootstrapper {
         this.reporter = null;
     }
 
-    static _createBrowserConnectionReadyPromises (browserConnections) {
-        return browserConnections
+    static _createBrowserConnectionsReadyPromise (browserConnections) {
+        var ready = browserConnections
             .filter(bc => !bc.ready)
             .map(bc => new Promise(resolve => bc.once('ready', resolve)));
+
+        return Promise.all(ready);
     }
 
     static _waitBrowserConnectionsReady (browserConnections) {
@@ -38,13 +40,13 @@ export default class Bootstrapper {
 
             browserConnections.forEach(bc => bc.once('error', onError));
 
-            var ready = Bootstrapper._createBrowserConnectionReadyPromises(browserConnections);
-
-            Promise.all(ready).then(() => {
-                browserConnections.forEach(bc => bc.removeListener('error', onError));
-                clearTimeout(timeout);
-                resolve();
-            });
+            Bootstrapper
+                ._createBrowserConnectionsReadyPromise(browserConnections)
+                .then(()=> {
+                    browserConnections.forEach(bc => bc.removeListener('error', onError));
+                    clearTimeout(timeout);
+                    resolve();
+                });
         });
     }
 
@@ -72,7 +74,7 @@ export default class Bootstrapper {
         if (!this.browsers.length)
             throw new Error(getText(MESSAGES.browserNotSet));
 
-        var browsers           = await * this.browsers.map(Bootstrapper._convertBrowserAliasToBrowserInfo);
+        var browsers           = await Promise.all(this.browsers.map(Bootstrapper._convertBrowserAliasToBrowserInfo));
         var browserConnections = browsers.map(browser => this._createConnectionFromBrowserInfo(browser));
 
         try {
@@ -123,10 +125,10 @@ export default class Bootstrapper {
     async createRunnableConfiguration () {
         var Reporter = this._getReporterCtor();
 
-        var [browserConnections, tests] = await * [
+        var [browserConnections, tests] = await Promise.all([
             this._getBrowserConnections(),
             this._getTests()
-        ];
+        ]);
 
         return { Reporter, browserConnections, tests };
     }
