@@ -1,5 +1,7 @@
 import { EventEmitter } from 'events';
 import BrowserJob from './browser-job';
+import { remove } from '../utils/array';
+
 
 export default class Task extends EventEmitter {
     constructor (tests, browserConnections, proxy, opts) {
@@ -9,7 +11,7 @@ export default class Task extends EventEmitter {
         this.browserConnections = browserConnections;
         this.tests              = tests;
 
-        this.browserJobs = this._createBrowserJobs(tests, proxy, opts);
+        this.pendingBrowserJobs = this._createBrowserJobs(tests, proxy, opts);
     }
 
     _assignBrowserJobEventHandlers (job) {
@@ -24,13 +26,10 @@ export default class Task extends EventEmitter {
         });
 
         job.once('done', () => {
-            var idx = this.browserJobs.indexOf(job);
-
-            this.browserJobs.splice(idx, 1);
-
+            remove(this.pendingBrowserJobs, job);
             this.emit('browser-job-done', job);
 
-            if (!this.browserJobs.length)
+            if (!this.pendingBrowserJobs.length)
                 this.emit('done');
         });
     }
@@ -48,6 +47,9 @@ export default class Task extends EventEmitter {
 
     // API
     abort () {
-        this.browserJobs.forEach(job => job.abort());
+        this.pendingBrowserJobs.forEach(job => {
+            job.removeAllListeners();
+            job.browserConnection.removeJob(job);
+        });
     }
 }

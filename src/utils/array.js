@@ -12,3 +12,9 @@ export function find (arr, predicate) {
 
     return void 0;
 }
+
+export function remove (arr, item) {
+    var idx = arr.indexOf(item);
+
+    arr.splice(idx, 1);
+}
