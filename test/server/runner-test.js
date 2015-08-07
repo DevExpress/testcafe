@@ -4,6 +4,7 @@ var request           = require('request');
 var TestCafe          = require('../../lib/');
 var Bootsrapper       = require('../../lib/runner/bootstrapper');
 var BrowserConnection = require('../../lib/browser-connection');
+var SpecReporter      = require('../../lib/reporters/spec');
 
 
 describe('Runner', function () {
@@ -63,7 +64,7 @@ describe('Runner', function () {
         it('Should raise error if browser was not found for the alias', function (done) {
             var run = runner
                 .browsers('browser42')
-                .reporter('spec')
+                .reporter('list')
                 .src('test/server/data/test-suite/top.test.js')
                 .run()
                 .then(function () {
@@ -82,7 +83,7 @@ describe('Runner', function () {
 
         it('Should raise error if browser was not set', function (done) {
             var run = runner
-                .reporter('spec')
+                .reporter('list')
                 .src('test/server/data/test-suite/top.test.js')
                 .run()
                 .then(function () {
@@ -106,7 +107,7 @@ describe('Runner', function () {
 
             var run = runner
                 .browsers(connection1, connection2)
-                .reporter('spec')
+                .reporter('list')
                 .src('test/server/data/test-suite/top.test.js')
                 .run()
                 .then(function () {
@@ -150,7 +151,7 @@ describe('Runner', function () {
 
             var run = runner
                 .browsers(brokenConnection)
-                .reporter('spec')
+                .reporter('list')
                 .src('test/server/data/test-suite/top.test.js')
                 .run()
                 .then(function () {
@@ -193,18 +194,15 @@ describe('Runner', function () {
                 .catch(done);
         });
 
-        it('Should raise error if reporter was not set', function (done) {
+        it('Should fallback to the "spec" reporter if reporter was not set', function (done) {
+            runner._runTask = function (Reporter) {
+                expect(Reporter).eql(SpecReporter);
+            };
+
             var run = runner
                 .browsers(connection)
                 .src('test/server/data/test-suite/top.test.js')
-                .run()
-                .then(function () {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(function (err) {
-                    expect(err.message).eql('No reporter has been set for the test runner. Use the ' +
-                                            'Runner.reporter() method to specify reporting parameters.');
-                });
+                .run();
 
             run
                 .then(function () {
@@ -242,7 +240,7 @@ describe('Runner', function () {
         it('Should raise error if the source was not set', function (done) {
             var run = runner
                 .browsers(connection)
-                .reporter('spec')
+                .reporter('list')
                 .run()
                 .then(function () {
                     throw new Error('Promise rejection expected');
@@ -266,7 +264,7 @@ describe('Runner', function () {
         beforeEach(function () {
             runner
                 .browsers(connection)
-                .reporter('spec')
+                .reporter('list')
                 .src([
                     'test/server/data/test-suite/top.test.js',
                     'test/server/data/test-suite/child/test.test.js',
