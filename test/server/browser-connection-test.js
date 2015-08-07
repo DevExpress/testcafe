@@ -102,21 +102,19 @@ describe('Browser connection', function () {
 
     it('Should provide status', function (done) {
         function createBrowserJobMock (urls) {
-            var doneHandler = null;
-
             return {
-                get nextTestRunUrl () {
+                popNextTestRunUrl: function () {
                     var url = urls.shift();
-
-                    if (!urls.length)
-                        doneHandler();
 
                     return url;
                 },
 
-                once: function (event, handler) {
-                    if (event === 'done')
-                        doneHandler = handler;
+                get hasQueuedTestRuns () {
+                    return urls.length;
+                },
+
+                once: function () {
+                    // Do nothing =)
                 }
             };
         }
