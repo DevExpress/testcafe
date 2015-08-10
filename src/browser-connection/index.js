@@ -13,7 +13,7 @@ export default class BrowserConnection extends EventEmitter {
     static HEARTBEAT_TIMEOUT = 2 * 60 * 1000;
 
     // Global instance counter used to generate ID's
-    static var instanceCount = 0;
+    static instanceCount = 0;
 
     constructor (gateway) {
         super();
