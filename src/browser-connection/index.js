@@ -9,18 +9,16 @@ import { MESSAGES, getText } from '../messages';
 // Const
 const IDLE_PAGE_TEMPLATE = read('../client/browser-idle-page/index.html.mustache');
 
-
-// Global instance counter used to generate ID's
-var instanceCount = 0;
-
-
 export default class BrowserConnection extends EventEmitter {
     static HEARTBEAT_TIMEOUT = 2 * 60 * 1000;
+
+    // Global instance counter used to generate ID's
+    static var instanceCount = 0;
 
     constructor (gateway) {
         super();
 
-        this.id                       = ++instanceCount;
+        this.id                       = ++BrowserConnection.instanceCount;
         this.jobQueue                 = [];
         this.browserConnectionGateway = gateway;
         this.userAgent                = null;
