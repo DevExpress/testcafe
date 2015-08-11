@@ -4,6 +4,7 @@ import { parse as parseUserAgent } from 'useragent';
 import read from '../utils/read-file-relative';
 import COMMANDS from './commands';
 import { MESSAGES, getText } from '../messages';
+import { remove } from '../utils/array';
 
 
 // Const
@@ -43,21 +44,27 @@ export default class BrowserConnection extends EventEmitter {
         }, BrowserConnection.HEARTBEAT_TIMEOUT);
     }
 
-    get nextTestRunUrl () {
-        var job = this.jobQueue[0];
+    _popNextTestRunUrl () {
+        if (this.jobQueue.length) {
+            var job = this.jobQueue[0];
+            var url = job.popNextTestRunUrl();
 
-        return job ? job.nextTestRunUrl : null;
+            if (!job.hasQueuedTestRuns)
+                this.jobQueue.shift();
+
+            return url;
+        }
+
+        return null;
     }
 
     // API
     addJob (job) {
         this.jobQueue.push(job);
+    }
 
-        job.once('done', () => {
-            var idx = this.jobQueue.indexOf(job);
-
-            this.jobQueue.splice(idx, 1);
-        });
+    removeJob (job) {
+        remove(this.jobQueue, job);
     }
 
     close () {
@@ -88,7 +95,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     getStatus () {
-        var testRunUrl = this.nextTestRunUrl;
+        var testRunUrl = this._popNextTestRunUrl();
 
         if (testRunUrl)
             return { cmd: COMMANDS.run, url: testRunUrl };

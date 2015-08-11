@@ -10,8 +10,9 @@ export default class BrowserJob extends EventEmitter {
     constructor (tests, browserConnection, proxy, opts) {
         super();
 
-        this.started           = false;
-        this.quarantine        = null;
+        this.started    = false;
+        this.quarantine = null;
+
         this.opts              = opts;
         this.proxy             = proxy;
         this.browserConnection = browserConnection;
@@ -32,7 +33,7 @@ export default class BrowserJob extends EventEmitter {
         testRun.unstable = this.quarantine.passed > 0;
         this.quarantine  = null;
 
-        this.emit('test-run-done', testRun);
+        this._reportTestRunDone(testRun);
     }
 
     _shouldKeepInQuarantine (testRun) {
@@ -66,13 +67,20 @@ export default class BrowserJob extends EventEmitter {
         }
 
         else
-            this.emit('test-run-done', testRun);
+            this._reportTestRunDone(testRun);
         /* eslint-enable indent */
     }
 
     _testRunDone (testRun) {
         this.proxy.closeSession(testRun);
+        this._reportTestRunDone(testRun);
+    }
+
+    _reportTestRunDone (testRun) {
         this.emit('test-run-done', testRun);
+
+        if (!this.hasQueuedTestRuns)
+            this.emit('done');
     }
 
     _createTestRun (test) {
@@ -88,7 +96,11 @@ export default class BrowserJob extends EventEmitter {
 
 
     // API
-    get nextTestRunUrl () {
+    get hasQueuedTestRuns () {
+        return !!this.testRunQueue.length;
+    }
+
+    popNextTestRunUrl () {
         var testRun = this.testRunQueue.shift();
 
         if (!this.started) {
@@ -99,12 +111,6 @@ export default class BrowserJob extends EventEmitter {
         if (testRun)
             return this.proxy.openSession(testRun.fixture.page, testRun);
 
-        this.emit('done');
-
         return null;
-    }
-
-    abort () {
-        this.testRunQueue = [];
     }
 }
