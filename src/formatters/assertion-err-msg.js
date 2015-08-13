@@ -59,7 +59,7 @@ export class AssertionErrMsg {
 
         if (err.isDates || err.diffType && err.diffType.isDates)
             diffType = DIFF_TYPE.DATE;
-        else if ((err.isStrings || (err.diffType && err.diffType.isStrings))
+        else if ((err.isStrings || err.diffType && err.diffType.isStrings)
                  && err.expected.length > EMPTY_STRING_LENGTH && err.actual.length > EMPTY_STRING_LENGTH)
             diffType = DIFF_TYPE.STRING;
 
@@ -126,8 +126,10 @@ export class AssertionErrMsg {
             if (this.diffType && this.diffType === DIFF_TYPE.STRING)
                 diffIndex = this.diffIndex + 1;
         }
-        else //NOTE: string quote
+        else {
+            //NOTE: string quote
             diffIndex = this.diffKey + 1;
+        }
 
         this._formatOverflowDiffString(diffIndex, stringOutputOffset, stringOutputOffset);
     }
@@ -157,6 +159,7 @@ export class AssertionErrMsg {
     }
 
     _buildEqAssert () {
+        var builtErrMsg   = '';
         var arrayIndexStr = '';
         var messagePrefix = this._getMsgPrefix();
 
@@ -165,32 +168,37 @@ export class AssertionErrMsg {
         if (this.isArrays) {
             arrayIndexStr = this._getArrayIndexStr();
 
-            return `${messagePrefix} failed at step <step-name>${this.stepName}</step-name>: ` +
-                   `<related-code>${this.relatedSourceCode}</related-code>\n\n` +
-                   `Arrays differ at index <js>${this.diffKey}</js>:\n\n` +
-                   `<expected><diff-index>${arrayIndexStr}</diff-index><js>${this.expected}</js></expected>\n` +
-                   `<actual><diff-index>${arrayIndexStr}</diff-index><js>${this.actual}</js></actual>\n` +
-                   `${this.marker}`;
+            builtErrMsg = `${messagePrefix} failed at step <step-name>${this.stepName}</step-name>: ` +
+                          `<related-code>${this.relatedSourceCode}</related-code>\n\n` +
+                          `Arrays differ at index <js>${this.diffKey}</js>:\n\n` +
+                          `<expected><diff-index>${arrayIndexStr}</diff-index><js>${this.expected}</js></expected>\n` +
+                          `<actual><diff-index>${arrayIndexStr}</diff-index><js>${this.actual}</js></actual>\n` +
+                          `${this.marker}`;
         }
-        else if (this.isObjects)
-            return `${messagePrefix} failed at step <step-name>${this.stepName}</step-name>: ` +
-                   `<related-code>${this.relatedSourceCode}</related-code>\n\n` +
-                   `Objects differ at the <js>${this.diffKey}</js> field:\n\n` +
-                   `<expected><js>${this.expected}</js></expected>\n` +
-                   `<actual><js>${this.actual}</js></actual>\n` +
-                   `${this.marker}`;
-        else if (this.isStrings)
-            return `${messagePrefix} failed at step <step-name>${this.stepName}</step-name>: ` +
-                   `<related-code>${this.relatedSourceCode}</related-code>\n\n` +
-                   `Strings differ at index <js>${this.diffKey}</js>:\n\n` +
-                   `<expected><js>${this.expected}</js></expected>\n` +
-                   `<actual><js>${this.actual}</js></actual>\n` +
-                   `${this.marker}`;
-        else
-            return `${messagePrefix} failed at step <step-name>${this.stepName}</step-name>: ` +
-                   `<related-code>${this.relatedSourceCode}</related-code>\n` +
-                   `<expected><js>${this.expected}</js></expected>\n` +
-                   `<actual><js>${this.actual}</js></actual>\n`;
+        else if (this.isObjects) {
+            builtErrMsg = `${messagePrefix} failed at step <step-name>${this.stepName}</step-name>: ` +
+                          `<related-code>${this.relatedSourceCode}</related-code>\n\n` +
+                          `Objects differ at the <js>${this.diffKey}</js> field:\n\n` +
+                          `<expected><js>${this.expected}</js></expected>\n` +
+                          `<actual><js>${this.actual}</js></actual>\n` +
+                          `${this.marker}`;
+        }
+        else if (this.isStrings) {
+            builtErrMsg = `${messagePrefix} failed at step <step-name>${this.stepName}</step-name>: ` +
+                          `<related-code>${this.relatedSourceCode}</related-code>\n\n` +
+                          `Strings differ at index <js>${this.diffKey}</js>:\n\n` +
+                          `<expected><js>${this.expected}</js></expected>\n` +
+                          `<actual><js>${this.actual}</js></actual>\n` +
+                          `${this.marker}`;
+        }
+        else {
+            builtErrMsg = `${messagePrefix} failed at step <step-name>${this.stepName}</step-name>: ` +
+                          `<related-code>${this.relatedSourceCode}</related-code>\n` +
+                          `<expected><js>${this.expected}</js></expected>\n` +
+                          `<actual><js>${this.actual}</js></actual>\n`;
+        }
+
+        return builtErrMsg;
     }
 
     _formatOverflowDiffString (key, markerOffset, maxStringLengthOffset) {

@@ -1,4 +1,4 @@
-const ACTUAL_MSG_PREFIX = 'Actual:   ';
+const ACTUAL_MSG_PREFIX          = 'Actual:   ';
 const actualMsgLengthPlaceholder = ACTUAL_MSG_PREFIX.replace(/./g, ' ');
 
 var cutNewLines = function (code) {
@@ -7,50 +7,50 @@ var cutNewLines = function (code) {
 
 var transforms = [
     {
-        tag: 'step-name',
+        tag:      'step-name',
         replacer: '"$1"'
     },
     {
-        tag: 'link',
+        tag:      'link',
         replacer: '$1'
     },
     {
-        tag: 'diff-marker',
+        tag:      'diff-marker',
         replacer: actualMsgLengthPlaceholder + '$1'
     },
     {
-        tag: 'diff-index',
+        tag:      'diff-index',
         replacer: ''
     },
     {
-        tag: 'err-type',
+        tag:      'err-type',
         replacer: ''
     },
     {
-        tag: 'js',
+        tag:      'js',
         replacer: '$1'
     },
     {
-        tag: 'related-code',
+        tag:      'related-code',
         replacer: function (matchStr, submatch) {
             return cutNewLines(submatch);
         }
     },
     {
-        tag: 'expected',
+        tag:      'expected',
         replacer: function (matchStr, submatch) {
             return 'Expected: ' + cutNewLines(submatch);
         }
     },
     {
-        tag: 'actual',
+        tag:      'actual',
         replacer: function (matchStr, submatch) {
             return 'Actual:   ' + cutNewLines(submatch);
         }
     },
     {
         //NOTE: cut empty lines
-        pattern: /\n\n/g,
+        pattern:  /\n\n/g,
         replacer: '\n'
     }
 ];
