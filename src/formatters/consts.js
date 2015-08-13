@@ -1,0 +1,14 @@
+exports.ERR_TYPES = {
+    ASSERT_ERROR:        'ASSERT_ERROR',
+    JS_ERROR:            'JS_ERROR',
+    ACTION_ERROR:        'ACTION_ERROR',
+    NATIVE_DIALOG_ERROR: 'NATIVE_DIALOG_ERROR',
+    TIMEOUT_ERROR:       'TIMEOUT_ERROR'
+};
+
+exports.ASSERT_TYPES = {
+    OK:     'OK_ASSERT_TYPE',
+    NOT_OK: 'NOT_OK_ASSERT_TYPE',
+    EQ:     'EQ_ASSERT_TYPE',
+    NOT_EQ: 'NOT_EQ_ASSERT_TYPE'
+};

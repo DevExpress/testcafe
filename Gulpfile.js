@@ -43,7 +43,7 @@ gulp.task('lint', function () {
 
 gulp.task('test-server', ['build'], function () {
     return gulp
-        .src('test/server/*-test.js')
+        .src('test/server/**/*-test.js')
         .pipe(mocha({
             ui:       'bdd',
             reporter: 'spec',
