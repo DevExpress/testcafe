@@ -3,7 +3,7 @@ var Promise           = require('promise');
 var request           = require('request');
 var TestCafe          = require('../../lib/');
 var BrowserConnection = require('../../lib/browser-connection');
-var COMMANDS          = require('../../lib/browser-connection/commands');
+var COMMAND           = require('../../lib/browser-connection/command');
 
 
 var promisedRequest = Promise.denodeify(request);
@@ -130,22 +130,22 @@ describe('Browser connection', function () {
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res.body)).eql({ cmd: COMMANDS.run, url: '1' });
+                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '1' });
             })
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res.body)).eql({ cmd: COMMANDS.run, url: '2' });
+                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '2' });
             })
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res.body)).eql({ cmd: COMMANDS.run, url: '3' });
+                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '3' });
             })
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res.body)).eql({ cmd: COMMANDS.idle });
+                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.idle });
                 done();
             })
 

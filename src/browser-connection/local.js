@@ -1,6 +1,6 @@
 import { open as openBrowser, close as closeBrowser } from 'testcafe-browser-natives';
 import BrowserConnection from './index';
-import COMMANDS from './commands';
+import COMMAND from './command';
 
 
 export default class LocalBrowserConnection extends BrowserConnection {
@@ -38,7 +38,7 @@ export default class LocalBrowserConnection extends BrowserConnection {
         if (this.forceClose) {
             setTimeout(() => closeBrowser(this.idleUrl), LocalBrowserConnection.NATIVE_ACTION_DELAY);
 
-            return { cmd: COMMANDS.close };
+            return { cmd: COMMAND.close };
         }
 
         return super.getStatus();

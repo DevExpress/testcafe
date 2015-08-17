@@ -4,7 +4,7 @@ import reporters from '../reporters';
 import BrowserConnection from '../browser-connection';
 import LocalBrowserConnection from '../browser-connection/local';
 import Compiler from '../compiler';
-import { MESSAGES, getText } from '../messages';
+import { MESSAGE, getText } from '../messages';
 
 
 export default class Bootstrapper {
@@ -30,7 +30,7 @@ export default class Bootstrapper {
     static _waitBrowserConnectionsReady (browserConnections) {
         return new Promise((resolve, reject) => {
             var timeout = setTimeout(() => {
-                reject(new Error(getText(MESSAGES.cantEstablishBrowserConnection)));
+                reject(new Error(getText(MESSAGE.cantEstablishBrowserConnection)));
             }, Bootstrapper.BROWSER_CONNECTION_READY_TIMEOUT);
 
             var onError = msg => {
@@ -58,7 +58,7 @@ export default class Bootstrapper {
         var browserInfo   = installations[alias.toLowerCase()];
 
         if (!browserInfo)
-            throw new Error(getText(MESSAGES.cantFindBrowserForAlias, alias));
+            throw new Error(getText(MESSAGE.cantFindBrowserForAlias, alias));
 
         return browserInfo;
     }
@@ -72,7 +72,7 @@ export default class Bootstrapper {
 
     async _getBrowserConnections () {
         if (!this.browsers.length)
-            throw new Error(getText(MESSAGES.browserNotSet));
+            throw new Error(getText(MESSAGE.browserNotSet));
 
         var browsers           = await Promise.all(this.browsers.map(Bootstrapper._convertBrowserAliasToBrowserInfo));
         var browserConnections = browsers.map(browser => this._createConnectionFromBrowserInfo(browser));
@@ -93,7 +93,7 @@ export default class Bootstrapper {
 
     async _getTests () {
         if (!this.sources.length)
-            throw new Error(getText(MESSAGES.testSourcesNotSet));
+            throw new Error(getText(MESSAGE.testSourcesNotSet));
 
         var compiler = new Compiler(this.sources);
         var tests    = await compiler.getTests();
@@ -111,7 +111,7 @@ export default class Bootstrapper {
             Reporter = reporters[Reporter.toLowerCase()];
 
             if (!Reporter)
-                throw new Error(getText(MESSAGES.cantFindReporterForAlias, this.reporter));
+                throw new Error(getText(MESSAGE.cantFindReporterForAlias, this.reporter));
         }
 
         return Reporter;
