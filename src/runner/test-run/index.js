@@ -1,6 +1,6 @@
 import Mustache from 'mustache';
 import { Session } from 'hammerhead';
-import COMMANDS from './commands';
+import COMMAND from './command';
 import read from '../../utils/read-file-relative';
 
 
@@ -112,39 +112,39 @@ export default class TestRun extends Session {
 // Service message handlers
 var ServiceMessages = TestRun.prototype;
 
-ServiceMessages[COMMANDS.fatalError] = function (msg) {
+ServiceMessages[COMMAND.fatalError] = function (msg) {
     this._fatalError(msg.err);
 };
 
-ServiceMessages[COMMANDS.assertionFailed] = function (msg) {
+ServiceMessages[COMMAND.assertionFailed] = function (msg) {
     this._addError(msg.err);
 };
 
-ServiceMessages[COMMANDS.done] = function () {
+ServiceMessages[COMMAND.done] = function () {
     this.emit('done');
 };
 
-ServiceMessages[COMMANDS.setStepsSharedData] = function (msg) {
+ServiceMessages[COMMAND.setStepsSharedData] = function (msg) {
     this.stepsSharedData = msg.stepsSharedData;
 };
 
-ServiceMessages[COMMANDS.getStepsSharedData] = function () {
+ServiceMessages[COMMAND.getStepsSharedData] = function () {
     return this.stepsSharedData;
 };
 
-ServiceMessages[COMMANDS.setNextStep] = function (msg) {
+ServiceMessages[COMMAND.setNextStep] = function (msg) {
     this.nextStep = msg.nextStep;
 };
 
-ServiceMessages[COMMANDS.setActionTargetWaiting] = function (msg) {
+ServiceMessages[COMMAND.setActionTargetWaiting] = function (msg) {
     this.actionTargetWaiting = msg.value;
 };
 
-ServiceMessages[COMMANDS.setTestError] = function (msg) {
+ServiceMessages[COMMAND.setTestError] = function (msg) {
     this.testError = msg.err;
 };
 
-ServiceMessages[COMMANDS.getAndUncheckFileDownloadingFlag] = function () {
+ServiceMessages[COMMAND.getAndUncheckFileDownloadingFlag] = function () {
     var isFileDownloading = this.isFileDownloading;
 
     this.isFileDownloading = false;
@@ -152,11 +152,11 @@ ServiceMessages[COMMANDS.getAndUncheckFileDownloadingFlag] = function () {
     return isFileDownloading;
 };
 
-ServiceMessages[COMMANDS.uncheckFileDownloadingFlag] = function () {
+ServiceMessages[COMMAND.uncheckFileDownloadingFlag] = function () {
     this.isFileDownloading = false;
 };
 
-ServiceMessages[COMMANDS.nativeDialogsInfoSet] = function (msg) {
+ServiceMessages[COMMAND.nativeDialogsInfoSet] = function (msg) {
     if (msg.timeStamp >= this.nativeDialogsInfoTimeStamp) {
         //NOTE: the server can get messages in the wrong sequence if they was sent with a little distance (several milliseconds),
         // we don't take to account old messages

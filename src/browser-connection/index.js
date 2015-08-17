@@ -2,8 +2,8 @@ import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { parse as parseUserAgent } from 'useragent';
 import read from '../utils/read-file-relative';
-import COMMANDS from './commands';
-import { MESSAGES, getText } from '../messages';
+import COMMAND from './command';
+import { MESSAGE, getText } from '../messages';
 import { remove } from '../utils/array';
 
 
@@ -40,7 +40,7 @@ export default class BrowserConnection extends EventEmitter {
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
             this.close();
-            this.emit('error', getText(MESSAGES.browserDisconnected, this.userAgent.toString()));
+            this.emit('error', getText(MESSAGE.browserDisconnected, this.userAgent.toString()));
         }, BrowserConnection.HEARTBEAT_TIMEOUT);
     }
 
@@ -98,8 +98,8 @@ export default class BrowserConnection extends EventEmitter {
         var testRunUrl = this._popNextTestRunUrl();
 
         if (testRunUrl)
-            return { cmd: COMMANDS.run, url: testRunUrl };
+            return { cmd: COMMAND.run, url: testRunUrl };
 
-        return { cmd: COMMANDS.idle };
+        return { cmd: COMMAND.idle };
     }
 }
