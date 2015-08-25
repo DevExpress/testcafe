@@ -1,0 +1,2 @@
+Error on step "Step": code
+wait action's "milliseconds" parameter should be a positive number.
