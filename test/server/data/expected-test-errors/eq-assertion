@@ -1,0 +1,7 @@
+Assertion failed at step "Step": eq(["12345678901"], ["00000000000"])
+
+Arrays differ at index 0:
+
+Expected: [0]: "12..."
+Actual:   [0]: "00..."
+                ^

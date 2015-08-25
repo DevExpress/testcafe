@@ -1,0 +1,2 @@
+Error on step "Step": code
+waitFor action's "timeout" parameter should be a positive number.
