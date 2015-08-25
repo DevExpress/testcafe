@@ -23,7 +23,7 @@
     "del": "^1.2.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
-    "gulp-eslint": "^0.15.0",
+    "gulp-eslint": "^1.0.0",
     "gulp-less": "^3.0.3",
     "gulp-mocha": "^2.1.2",
     "merge-stream": "^0.1.8",
