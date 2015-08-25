@@ -23,7 +23,7 @@
     "no-path-concat": 2,
     "no-undefined": 2,
     "strict": 0,
-    "curly": [1, "multi"],
+    "curly": [2, "multi-or-nest"],
     "dot-notation": 0,
     "no-else-return": 2,
     "one-var": [2, "never"],
