@@ -23,15 +23,12 @@ export default class MinimalReporter extends BaseReporter {
         var hasErr = !!errMsgs.length;
         var dot    = hasErr ? this.style.red('.') : '.';
 
-        /* eslint-disable indent */
-        //NOTE: eslint disabled because of the https://github.com/eslint/eslint/issues/2343 issue
         if (this.spaceLeft - 1 < 0) {
             this.spaceLeft = this.viewportWidth - MinimalReporter.NEW_LINE.length - 1;
             this._write(MinimalReporter.NEW_LINE);
         }
         else
             this.spaceLeft--;
-        /* eslint-enable indent */
 
         this._write(dot);
 

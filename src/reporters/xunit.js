@@ -39,8 +39,6 @@ export default class XUnitReporter extends BaseReporter {
 
         this.report += indentString(openTag, ' ', 2);
 
-        /* eslint-disable indent */
-        //NOTE: eslint disabled because of the https://github.com/eslint/eslint/issues/2343 issue
         if (hasErr) {
             this.report += ' >\n';
             this.report += indentString('<failure>\n', ' ', 4);
@@ -60,7 +58,6 @@ export default class XUnitReporter extends BaseReporter {
         }
         else
             this.report += ' />\n';
-        /* eslint-enable indent */
     }
 
     _reportTaskDone (passed, total, endTime) {
