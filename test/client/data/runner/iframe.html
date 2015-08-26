@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <script src="/async.js" class="script-TC2b9a6d"></script>
+    <script src="/hammerhead.js" class="script-TC2b9a6d"></script>
+    <script src="/core.js" class="script-TC2b9a6d"></script>
+    <script src="/ui.js" class="script-TC2b9a6d"></script>
+    <script src="/runner.js" class="script-TC2b9a6d"></script>
+    <script src="/jquery.js" class="script-TC2b9a6d"></script>
+
+    <link type="text/css" rel=stylesheet href="/ui.css" class="ui-stylesheet-TC2b9a6d">
+</head>
+<body>
+<script type="text/javascript">
+    function getTestCafeModule (module) {
+        if (module === 'hammerhead')
+            return window.Hammerhead;
+
+        return window['%' + module + '%'];
+    }
+
+
+    //Hammerhead setup
+    var hammerhead = getTestCafeModule('hammerhead');
+    var hhSettings = hammerhead.get('./settings');
+    var hhUrlUtil = hammerhead.get('./utils/url');
+    var HH_CONST = hammerhead.get('../const');
+    var jsProcessor = hammerhead.get('../processing/js/index');
+
+    hhSettings.set({
+        JOB_OWNER_TOKEN: 'ownerToken',
+        JOB_UID:         'jobUid'
+    });
+
+    hhUrlUtil.OriginLocation.get = function () {
+        return 'https://example.com';
+    };
+
+    hammerhead.init();
+
+    var testCafeRunner = getTestCafeModule('testCafeRunner');
+    var iframeDispatcher = testCafeRunner.get('./iframe-dispatcher');
+
+    var testCafeUI = getTestCafeModule('testCafeUI');
+    var cursor = testCafeUI.get('./cursor');
+
+    cursor.init();
+
+    var act = null,
+        ok = null,
+        notOk = null,
+        eq = null,
+        notEq = null,
+        runInContext = null;
+
+    function onTestRunnerInitialized (testRunner, callback) {
+        act   = testRunner.act;
+        ok    = testRunner.ok;
+        notOk = testRunner.notOk;
+        eq    = testRunner.eq;
+        notEq = testRunner.notEq;
+
+        try {
+            //!----------------------------------BEGIN HELPERS AND REQUIRES CODE----------------------------------
+            "<@ sharedJs @>";
+            //!------------------------------------END HELPERS AND REQUIRES CODE----------------------------------
+        } catch (err) {
+            act._onJSError(err);
+            return;
+        }
+
+        runInContext = function (stepName, step, stepNum, runner) {
+            runner([stepName], [function () {
+                eval('(' + step + ').call(this)');
+            }], stepNum, true);
+        };
+
+        callback(runInContext);
+    }
+
+    iframeDispatcher.init(onTestRunnerInitialized);
+</script>
+
+<input id="button" type="button" value="simple button"/>
+<input id="errorButton" type="button" value="error button"/>
+<input id="xhrButton" type="button" value="xhr button"/>
+<a id="link">Link</a>
+
+<script>
+    $(document).ready(function () {
+        $('#link').click(function () {
+            document.location = document.location.toString();
+        });
+
+        window.loadedTime = Date.now();
+
+        $('#button').click(function () {
+            //eval(window[jsProcessor.PROCESS_SCRIPT_METH_NAME]('window.top.postMessage("clickRaised", "*");'));
+            window.top.postMessage({ type: "clickRaised" }, "*");
+        });
+
+        $('#errorButton').click(function () {
+            throw 'error';
+        });
+
+        $('#xhrButton').click(function () {
+            $.get('/xhr-test/1000', function () {
+                window.xhrCompleted = true;
+            });
+        });
+    });
+</script>
+</body>
+</html>
