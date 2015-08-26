@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel=stylesheet href="/ui.css" class="ui-stylesheet-TC2b9a6d">
+
+    <script src="/hammerhead.js" class="script-TC2b9a6d"></script>
+</head>
+<body>
+<!-- Resources loading -->
+<script>
+    var HH_SETTINGS = Hammerhead.get('./settings');
+    HH_SETTINGS.set({
+        CROSS_DOMAIN_PROXY_PORT: 2000
+    });
+
+    var urlUtil = Hammerhead.get('./utils/url');
+
+    urlUtil.OriginLocation.get = function () {
+        return 'http://target_url';
+    };
+
+    Hammerhead.init();
+
+    window.focusInput = function () {
+        document.getElementById('input').focus();
+    };
+</script>
+
+<input id="input"/>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+{
+  "env": {
+    "browser": true,
+    /* "qunit": true, Not implemented */
+    "jquery": true,
+    "node": false
+  },
+  "rules": {
+    "no-eval": 0,
+    "max-nested-callbacks": 0,
+    "no-script-url": 0
+  },
+  "globals": {
+    /* QUnit variables */
+    "QUnit": true,
+    "ok": true,
+    "notOk": true,
+    "strictEqual": true,
+    "notEqual": true,
+    "deepEqual": true,
+    "test": true,
+    "asyncTest": true,
+    "throws": true,
+    "eval": true,
+    "expect": true,
+    "start": true,
+    "module": true,
+
+    /* Utils */
+    "async": true,
+
+    /* For more details on global variables see custom-setup.js file */
+    "callMethod": true,
+    "getProperty": true,
+    "setProperty": true,
+    "processScript": true,
+    "getLocation": true,
+    "Hammerhead": true,
+    "overrideDomMeth": true,
+    "initIFrameTestHandler": true
+  }
+}
+
