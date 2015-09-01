@@ -1,0 +1,1 @@
+Error on step "Step": It is not allowed to share the DOM element, jQuery object or a function between test steps via "this" object.

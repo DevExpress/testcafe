@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var buildDiff  = require('../../lib/formatters/diffs');
+var buildDiff  = require('../../lib/test-error/diffs');
 
 var MAX_STRING_LENGTH = 10;
 
