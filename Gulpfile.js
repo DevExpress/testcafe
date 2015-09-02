@@ -1,23 +1,152 @@
-var gulp   = require('gulp');
-var babel  = require('gulp-babel');
-var less   = require('gulp-less');
-var eslint = require('gulp-eslint');
-var mocha  = require('gulp-mocha');
-var del    = require('del');
-var merge  = require('merge-stream');
+var babel        = require('babel');
+var gulp         = require('gulp');
+var gulpBabel    = require('gulp-babel');
+var gulpLess     = require('gulp-less');
+var eslint       = require('gulp-eslint');
+var qunitHarness = require('gulp-qunit-harness');
+var mocha        = require('gulp-mocha');
+var webmake      = require('gulp-webmake');
+var del          = require('del');
+var fs           = require('fs');
+var less         = require('less');
+var merge        = require('merge-stream');
+var path         = require('path');
+var Promise      = require('promise');
+
+
+var CLIENT_TESTS_SETTINGS = {
+    basePath:        './test/client/fixtures',
+    port:            2000,
+    crossDomainPort: 2001,
+
+    scripts: [
+        { src: '/async.js', path: './test/client/vendor/async.js' },
+        { src: '/hammerhead.js', path: './node_modules/hammerhead/client/hammerhead.js' },
+        { src: '/core.js', path: './lib/client/core/index.js' },
+        { src: '/ui.js', path: './lib/client/ui/index.js' },
+        { src: '/runner.js', path: './lib/client/runner/index.js' },
+        { src: '/before-test.js', path: './test/client/before-test.js' }
+    ],
+
+    css: [{ src: '/ui.css', path: './lib/client/ui/styles.css' }],
+
+    configApp: require('./test/client/config-qunit-server-app')
+};
+
+var UI_STYLES_FILE_PATH = '/client/ui';
+var UI_STYLES_TEMP_DIR  = path.join('lib', UI_STYLES_FILE_PATH);
+
 
 gulp.task('clean', function (cb) {
     del('lib', cb);
 });
 
-gulp.task('build', ['clean'], function () {
+
+//Scripts
+gulp.task('build-client-scripts', ['clean'], function () {
+    return gulp
+        .src('src/client/*/index.js')
+        .pipe(webmake({
+            sourceMap: false,
+            transform: function (filename, code) {
+                var transformed = babel.transform(code, { sourceMap: false });
+
+                return {
+                    code:      transformed.code,
+                    sourceMap: transformed.map
+                };
+            }
+        }))
+        .pipe(gulp.dest('lib/client'))
+});
+
+
+//Styles
+function makePromise (fn) {
+    return { then: fn };
+}
+
+gulp.task('styles-temp-copy', ['clean'], function () {
+    return gulp
+        .src(path.join('src', UI_STYLES_FILE_PATH, 'styles.less'))
+        .pipe(gulp.dest(UI_STYLES_TEMP_DIR));
+});
+
+gulp.task('build-styles', ['styles-temp-copy'], function () {
+    var SHADOW_UI_CLASSNAME_POSTFIX = require('./node_modules/hammerhead/lib/const').SHADOW_UI_CLASSNAME_POSTFIX;
+    var TEMP_SRC_FILE               = path.join(process.cwd(), UI_STYLES_TEMP_DIR, 'styles.less');
+
+    var readFile  = Promise.denodeify(fs.readFile);
+    var writeFile = Promise.denodeify(fs.writeFile);
+    var unlink    = Promise.denodeify(fs.unlink);
+
+    //NOTE: add unique UI postfix to each LESS class and id selector
+    function processSelector (selector) {
+        if (selector.elements) {
+            selector.elements.forEach(function (element) {
+                var isPureMixin      = typeof element.index === 'undefined';
+                var isTargetSelector = element.value && (element.value.indexOf('.') === 0 ||
+                                                         element.value.indexOf('#') === 0);
+
+                if (isTargetSelector && !isPureMixin)
+                    element.value += SHADOW_UI_CLASSNAME_POSTFIX;
+            });
+        }
+    }
+
+    function addUIClassPostfix (lessRules) {
+        lessRules.forEach(function (rule) {
+            if (rule.selectors)
+                rule.selectors.forEach(processSelector);
+
+            if (rule.rules)
+                addUIClassPostfix(rule.rules);
+        });
+    }
+
+    function parseLess (src) {
+        return new Promise(function (resolve, reject) {
+            var parser = new less.Parser();
+
+            src = src.toString();
+
+            parser.parse(src, function (parseErr, tree) {
+                if (parseErr)
+                    reject('Failed to parse client runtime LESS: ' + parseErr.message);
+                else
+                    resolve(tree);
+            });
+        });
+    }
+
+    return readFile(TEMP_SRC_FILE)
+        .then(parseLess)
+        .then(function (tree) {
+            addUIClassPostfix([tree]);
+
+            return writeFile(path.join('lib', UI_STYLES_FILE_PATH, 'styles.css'), tree.toCSS());
+        })
+        .then(function () {
+            return unlink(TEMP_SRC_FILE);
+        });
+});
+
+
+//Build
+gulp.task('build', ['build-client-scripts', 'build-styles'], function () {
     var js = gulp
-        .src('src/**/*.js')
-        .pipe(babel());
+        .src([
+            'src/**/*.js',
+            '!src/client/**/*.js'
+        ])
+        .pipe(gulpBabel());
 
     var styles = gulp
-        .src('src/**/*.less')
-        .pipe(less());
+        .src([
+            'src/**/*.less',
+            '!' + path.join('src', UI_STYLES_FILE_PATH, 'styles.less')
+        ])
+        .pipe(gulpLess());
 
     var templates = gulp
         .src('src/**/*.mustache');
@@ -33,7 +162,8 @@ gulp.task('lint', function () {
     return gulp
         .src([
             'src/**/*.js',
-            'test/**/*.js',
+            '!src/client/**/*.js',  //TODO: fix it
+            //'test/**/*.js',       //TODO: fix it
             'Gulpfile.js'
         ])
         .pipe(eslint())
@@ -41,6 +171,8 @@ gulp.task('lint', function () {
         .pipe(eslint.failAfterError());
 });
 
+
+//Test
 gulp.task('test-server', ['build'], function () {
     return gulp
         .src('test/server/*-test.js')
@@ -49,6 +181,12 @@ gulp.task('test-server', ['build'], function () {
             reporter: 'spec',
             timeout:  typeof v8debug === 'undefined' ? 2000 : Infinity // NOTE: disable timeouts in debug
         }));
+});
+
+gulp.task('test-client', ['build'], function () {
+    return gulp
+        .src('./test/client/fixtures/**/*-test.js')
+        .pipe(qunitHarness(CLIENT_TESTS_SETTINGS));
 });
 
 gulp.task('test', ['lint', 'test-server']);

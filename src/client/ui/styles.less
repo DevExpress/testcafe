@@ -1,0 +1,263 @@
+//NOTE: This file have some LESS limitations due to post processing (see: ../../assets.js):
+//-Use only pure mixins
+//-@import directive can't be used, because imported files are not affected by post processing
+//due to strange less parser design.
+
+.layout-default() {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+}
+
+#root.root > {
+    position: absolute;
+    display: block;
+    left: 0px;
+    top: 0px;
+    margin: 0 !important;
+
+    .layout-default();
+
+    /*Mixins*/
+    .sprite-icon() {
+        background-image: url("/testcafe-ui-sprite.png") !important;
+        background-repeat: no-repeat;
+        background-color: transparent;
+        display: block;
+    }
+
+    .rounded-corners(@radius) {
+        border-radius: @radius !important;
+        -webkit-border-radius: @radius !important;
+        -moz-border-radius: @radius !important;
+        -o-border-radius: @radius !important;
+    }
+
+    .unselectable() {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    //use this mixin for all the elements that we are going to set position:fixed (described in T171764)
+    .position-fixed() {
+        position: fixed;
+        -webkit-transform: translate3d(0px, 0px, 0px) !important;
+    }
+
+    /*Const*/
+    @rootZIndex: 2147483647;
+    @rootContentPadding: 5px 2px 5px 11px;
+
+    /*Make z-index context*/
+    z-index: @rootZIndex;
+
+    /*Reset*/
+    fieldset, img {
+        border: 0;
+    }
+
+    ol, ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-size: 100%;
+        font-weight: normal;
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        font-size: 100%;
+        font: inherit;
+    }
+
+    * {
+        width: auto;
+        height: auto;
+
+        .layout-default();
+
+        vertical-align: baseline;
+        background: transparent;
+        text-align: left !important;
+        line-height: normal;
+        border-radius: 0px;
+        font-variant: normal !important;
+        font-weight: normal;
+        font-size: inherit;
+        cursor: default;
+        font-family: Segoe UI, Helvetica, sans-serif !important;
+        letter-spacing: normal;
+        clear: none;
+        box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        transition: none !important;
+        -webkit-transition: none !important;
+        -moz-transition: none !important;
+        -o-transition: none !important;
+        zoom: 1 !important;
+        text-indent: 0 !important;
+        text-shadow: none;
+    }
+
+    textarea, input, select,
+    input:focus, input[type="text"], input[type="text"]:hover, input[type="text"]:focus, input[type="text"]:active,
+    input[type="button"], input[type="button"]:hover, input[type="button"]:focus, input[type="button"]:active {
+        .layout-default();
+
+        font-family: Segoe UI, Helvetica, sans-serif;
+        cursor: text;
+        font-weight: normal;
+        vertical-align: baseline;
+        background-color: white;
+        background-image: none;
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        text-align: left !important;
+        line-height: normal;
+        border-radius: 0px;
+        min-height: 0;
+        min-width: 0;
+
+        box-shadow: none;
+        box-sizing: content-box;
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        -moz-user-select: auto;
+        -webkit-user-select: auto;
+        transition: none !important;
+        -webkit-transition: none !important;
+        -moz-transition: none !important;
+        -o-transition: none !important;
+        letter-spacing: normal;
+        text-shadow: none;
+        text-transform: none;
+    }
+
+    ::-ms-clear {
+        display: none;
+    }
+
+    label {
+        display: inline;
+        color: #ffffff !important;
+    }
+
+    button::-moz-focus-inner {
+        margin-top: -1px;
+    }
+
+    /* Clear */
+    .clear {
+        display: block;
+        clear: both;
+        height: 0;
+        width: 0;
+        font-size: 0;
+        line-height: 0;
+        overflow: hidden;
+        visibility: hidden;
+    }
+
+    /* Cursor */
+    &.hidden .cursor {
+        display: none;
+    }
+
+    &.blind .cursor {
+        opacity: 0.4;
+    }
+
+    .cursor {
+        .sprite-icon;
+
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 35px;
+        height: 57px;
+        background-position: 0 0;
+        z-index: @rootZIndex - 3;
+
+        &.l-mouse-down {
+            background-position: -64px 0;
+        }
+
+        &.r-mouse-down {
+            background-position: -130px 0;
+        }
+
+        &.touch {
+            width: 50px;
+            height: 50px;
+            background-position: -190px 0;
+
+            &.l-mouse-down,
+            &.r-mouse-down {
+                background-position: -264px 0;
+            }
+        }
+
+    }
+
+    /* Modal background and loading text */
+    .modal-background {
+        display: none;
+        .position-fixed();
+        top: 0;
+        left: 0;
+        z-index: @rootZIndex - 2;
+        background-color: #000000;
+    }
+
+    .loading-text {
+        font-family: Segoe UI, Helvetica, sans-serif;
+        font-size: 40px;
+        color: #ffffff;
+        text-shadow: 0 0 10px #000000;
+
+        display: none;
+        .position-fixed();
+        top: 0;
+        left: 0;
+        z-index: @rootZIndex - 1;
+    }
+
+    .loading-icon {
+        .sprite-icon();
+        width: 218px;
+        height: 218px;
+        background-position: -465px 0;
+        .position-fixed();
+        z-index: @rootZIndex;
+    }
+
+    /* Actions Emulating */
+    .tcOptionList {
+        overflow-y: auto;
+        background-color: white;
+        border: 1px solid #7F9DB9;
+        z-index: @rootZIndex - 4;
+
+        .tcOptionGroup {
+            font-weight: bolder;
+
+            .tcOption {
+                margin: 1px 20px;
+            }
+        }
+
+        .tcOption {
+            margin: 1px 5px;
+        }
+    }
+
+}
