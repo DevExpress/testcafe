@@ -57,15 +57,11 @@ gulp.task('build-client-scripts', ['clean'], function () {
                 };
             }
         }))
-        .pipe(gulp.dest('lib/client'))
+        .pipe(gulp.dest('lib/client'));
 });
 
 
 //Styles
-function makePromise (fn) {
-    return { then: fn };
-}
-
 gulp.task('styles-temp-copy', ['clean'], function () {
     return gulp
         .src(path.join('src', UI_STYLES_FILE_PATH, 'styles.less'))
