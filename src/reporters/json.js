@@ -1,8 +1,8 @@
 import BaseReporter from './base';
 
 export default class JSONReporter extends BaseReporter {
-    constructor (task, outStream, formatter) {
-        super(task, outStream, formatter);
+    constructor (task, outStream, errorDecorator) {
+        super(task, outStream, errorDecorator);
 
         this.currentFixture = null;
 
@@ -26,8 +26,10 @@ export default class JSONReporter extends BaseReporter {
         this.report.fixtures.push(this.currentFixture);
     }
 
-    _reportTestDone (name, errMsgs, durationMs, unstable) {
-        this.currentFixture.tests.push({ name, errMsgs, durationMs, unstable });
+    _reportTestDone (name, errs, durationMs, unstable) {
+        errs = errs.map(err => this._formatError(err));
+
+        this.currentFixture.tests.push({ name, errs, durationMs, unstable });
     }
 
     _reportTaskDone (passed, total, endTime) {

@@ -1,3 +1,6 @@
-Assertion failed at step "Step": ok(false)
+Chrome - Assertion failed at step "Step":
+
+    ok(false)
+
 Expected: not null, not undefined, not false, not NaN and not ''
 Actual:   false

@@ -1,3 +1,6 @@
-Assertion failed at step "Step": notEq("test", "test")
+Chrome - Assertion failed at step "Step":
+
+    notEq("test", "test")
+
 Expected: not "test"
 Actual:   "test"

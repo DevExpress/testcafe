@@ -1,2 +1,3 @@
-Error on step "Step": code
-waitFor action's first parameter should be a function, a CSS selector or an array of CSS selectors.
+Chrome - Error on step "Step": code
+waitFor action's first parameter should be a function, a CSS selector or an
+array of CSS selectors.

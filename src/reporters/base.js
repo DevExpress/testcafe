@@ -1,18 +1,22 @@
 import tty from 'tty';
 import chalk from 'chalk';
-import wordwrap from 'wordwrap';
+import wordwrap from './word-wrap';
 import indentString from 'indent-string';
 import OS from '../utils/os';
 import { find } from '../utils/array';
+import format from './errors/format';
+import plainTextDecorator from './errors/decorators/plain-text';
+import ttyDecorator from './errors/decorators/tty';
 
 export default class BaseReporter {
     static DEFAULT_VIEWPORT_WIDTH = 78;
 
-    constructor (task, outStream = process.stdout, formatter = null) {
+    constructor (task, outStream = process.stdout, errorDecorator = null) {
         this.outStream = outStream;
-        this.formatter = formatter;
 
         var isTTY = !!this.outStream.isTTY;
+
+        this.errorDecorator = errorDecorator || (isTTY ? ttyDecorator : plainTextDecorator);
 
         this.style         = new chalk.constructor({ enabled: isTTY });
         this.viewportWidth = BaseReporter._getViewportWidth(isTTY);
@@ -53,7 +57,7 @@ export default class BaseReporter {
             fixturePath: test.fixture.path,
             testName:    test.name,
             pendingRuns: runsPerTest,
-            errMsgs:     [],
+            errs:        [],
             unstable:    false,
             startTime:   null
         };
@@ -63,6 +67,16 @@ export default class BaseReporter {
         return stream !== process.stdout && stream !== process.stderr;
     }
 
+    static _errorSorter (errs) {
+        errs.sort((err1, err2) => {
+            err1 = err1.userAgent + err1.code;
+            err2 = err2.userAgent + err2.code;
+
+            if (err1 > err2) return 1;
+            if (err1 < err2) return -1;
+            return 0;
+        });
+    }
 
     _getReportItemForTestRun (testRun) {
         var test = testRun.test;
@@ -78,12 +92,12 @@ export default class BaseReporter {
         var reportItem = this.reportQueue.shift();
         var durationMs = new Date() - reportItem.startTime;
 
-        if (!reportItem.errMsgs.length)
+        if (!reportItem.errs.length)
             this.passed++;
 
-        reportItem.errMsgs.sort();
+        BaseReporter._errorSorter(reportItem.errs);
 
-        this._reportTestDone(reportItem.testName, reportItem.errMsgs, durationMs, reportItem.unstable);
+        this._reportTestDone(reportItem.testName, reportItem.errs, durationMs, reportItem.unstable);
 
         // NOTE: here we assume that tests are sorted by fixture.
         // Therefore, if the next report item has a different
@@ -104,7 +118,7 @@ export default class BaseReporter {
             this._reportFixtureStart(first.fixtureName, first.fixturePath);
         });
 
-        task.on('test-run-start', (testRun) => {
+        task.on('test-run-start', testRun => {
             var reportItem = this._getReportItemForTestRun(testRun);
 
             if (!reportItem.startTime)
@@ -115,10 +129,10 @@ export default class BaseReporter {
             var reportItem = this._getReportItemForTestRun(testRun);
             var userAgent  = testRun.browserConnection.userAgent;
 
-            var testRunErrMsgs  = testRun.errs.map(err => this.formatter(err, userAgent));
+            testRun.errs.forEach(err => err.userAgent = userAgent);
 
             reportItem.pendingRuns--;
-            reportItem.errMsgs  = reportItem.errMsgs.concat(testRunErrMsgs);
+            reportItem.errs     = reportItem.errs.concat(testRun.errs);
             reportItem.unstable = reportItem.unstable || testRun.unstable;
 
             if (!reportItem.pendingRuns)
@@ -140,9 +154,15 @@ export default class BaseReporter {
         return this;
     }
 
+    _formatError (err, prefix = '') {
+        var msg = format(err, this.errorDecorator, this.viewportWidth - this.indent - prefix.length);
+
+        return prefix + msg;
+    }
+
     _write (text) {
         if (this.useWordWrap)
-            text = wordwrap(this.indent, this.viewportWidth)(text);
+            text = wordwrap(text, this.indent, this.viewportWidth);
         else
             text = indentString(text, ' ', this.indent);
 
@@ -171,7 +191,7 @@ export default class BaseReporter {
         throw new Error('Not implemented');
     }
 
-    _reportTestDone (name, errMsgs, durationMs, unstable) {
+    _reportTestDone (name, errs, durationMs, unstable) {
         throw new Error('Not implemented');
     }
 

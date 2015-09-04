@@ -17,7 +17,7 @@ export default class Runner {
             failOnJsErrors:        true,
             quarantineMode:        false,
             reportOutStream:       void 0,
-            formatter:             void 0
+            errorDecorator:        void 0
         };
     }
 
@@ -35,7 +35,7 @@ export default class Runner {
     _runTask (Reporter, browserConnections, tests) {
         return new Promise((resolve, reject) => {
             var task     = new Task(tests, browserConnections, this.proxy, this.opts);
-            var reporter = new Reporter(task, this.opts.reportOutStream, this.opts.formatter);
+            var reporter = new Reporter(task, this.opts.reportOutStream, this.opts.errorDecorator);
 
             var bcErrorHandler = msg => {
                 task.abort();
@@ -68,10 +68,11 @@ export default class Runner {
         return this;
     }
 
-    reporter (reporter, outStream = null, formatter = null) {
-        this.bootstrapper.reporter = reporter;
-        this.opts.reportOutStream  = outStream;
-        this.opts.formatter        = formatter;
+    reporter (reporter, outStream = null, errorDecorator = null) {
+        this.bootstrapper.reporter       = reporter;
+        this.bootstrapper.errorDecorator = errorDecorator;
+        this.opts.reportOutStream        = outStream;
+        this.opts.errorDecorator         = errorDecorator;
 
         return this;
     }
