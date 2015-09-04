@@ -1,13 +1,13 @@
 import indentString from 'indent-string';
 import escapeHtml from 'escape-html';
-import wordwrap from 'wordwrap';
+import wordwrap from './word-wrap';
 import BaseReporter from './base';
 
 export default class XUnitReporter extends BaseReporter {
     static LINE_WIDTH = 100;
 
-    constructor (task, outStream, formatter) {
-        super(task, outStream, formatter);
+    constructor (task, outStream, errorDecorator) {
+        super(task, outStream, errorDecorator);
 
         this.report             = '';
         this.startTime          = null;
@@ -27,8 +27,8 @@ export default class XUnitReporter extends BaseReporter {
         this.currentFixtureName = escapeHtml(name);
     }
 
-    _reportTestDone (name, errMsgs, durationMs, unstable) {
-        var hasErr = !!errMsgs.length;
+    _reportTestDone (name, errs, durationMs, unstable) {
+        var hasErr = !!errs.length;
 
         if (unstable)
             name += ' (unstable)';
@@ -44,11 +44,11 @@ export default class XUnitReporter extends BaseReporter {
             this.report += indentString('<failure>\n', ' ', 4);
             this.report += indentString('<![CDATA[', ' ', 4);
 
-            errMsgs.forEach((msg, idx) => {
-                msg = escapeHtml(`${idx + 1}) ${msg}`);
+            errs.forEach((err, idx) => {
+                err = escapeHtml(this._formatError(err, `${idx + 1}) `));
 
                 this.report += '\n';
-                this.report += wordwrap(6, XUnitReporter.LINE_WIDTH)(msg);
+                this.report += wordwrap(err, 6, XUnitReporter.LINE_WIDTH);
                 this.report += '\n';
             });
 

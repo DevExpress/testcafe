@@ -14,23 +14,23 @@
       "tests": [
         {
           "name": "fixture1test1",
-          "errMsgs": [],
+          "errs": [],
           "durationMs": 74000,
           "unstable": true
         },
         {
           "name": "fixture1test2",
-          "errMsgs": [
-            "Chrome - Error1: Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-            "Chrome - Error2: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-            "Firefox - Error3: Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum &."
+          "errs": [
+            "Chrome - Assertion failed at step \"Step\":\n\n    eq([\"12345678901\"], [\"00000000000\"])\n\nArrays differ at index 0:\n\nExpected: [0]: \"12345678901\"\nActual:   [0]: \"00000000000\"\n                ^",
+            "Chrome - Assertion failed at step \"Step\":\n\n    notEq(\"test\", \"test\")\n\nExpected: not \"test\"\nActual:   \"test\"",
+            "Firefox - Assertion failed at step \"Step\":\n\n    ok(false)\n\nExpected: not null, not undefined, not false, not NaN and not ''\nActual:   false"
           ],
           "durationMs": 74000,
           "unstable": false
         },
         {
           "name": "fixture1test3",
-          "errMsgs": [],
+          "errs": [],
           "durationMs": 74000,
           "unstable": false
         }
@@ -42,13 +42,13 @@
       "tests": [
         {
           "name": "fixture2test1",
-          "errMsgs": [],
+          "errs": [],
           "durationMs": 74000,
           "unstable": false
         },
         {
           "name": "fixture2test2",
-          "errMsgs": [],
+          "errs": [],
           "durationMs": 74000,
           "unstable": false
         }
@@ -60,8 +60,8 @@
       "tests": [
         {
           "name": "fixture3test1",
-          "errMsgs": [
-            "Firefox - Error1: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          "errs": [
+            "Firefox - Assertion failed at step \"Step\":\n\n    eq([\"12345678901\"], [\"00000000000\"])\n\nArrays differ at index 0:\n\nExpected: [0]: \"12345678901\"\nActual:   [0]: \"00000000000\"\n                ^"
           ],
           "durationMs": 74000,
           "unstable": true

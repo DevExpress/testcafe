@@ -4,8 +4,8 @@ import BaseReporter from './base';
 
 
 export default class SpecReporter extends BaseReporter {
-    constructor (task, outStream, formatter) {
-        super(task, outStream, formatter);
+    constructor (task, outStream, errorDecorator) {
+        super(task, outStream, errorDecorator);
 
         this.useWordWrap  = true;
         this.startTime    = null;
@@ -38,8 +38,8 @@ export default class SpecReporter extends BaseReporter {
             ._newline();
     }
 
-    _reportTestDone (name, errMsgs, durationMs, unstable) {
-        var hasErr    = !!errMsgs.length;
+    _reportTestDone (name, errs, durationMs, unstable) {
+        var hasErr    = !!errs.length;
         var nameStyle = hasErr ? this.style.red : this.style.gray;
         var symbol    = hasErr ? this.style.red(this.symbols.err) : this.style.green(this.symbols.ok);
         var title     = `${symbol} ${nameStyle(name)}`;
@@ -56,9 +56,9 @@ export default class SpecReporter extends BaseReporter {
 
             this._newline();
 
-            errMsgs.forEach((msg, idx) => {
+            errs.forEach((err, idx) => {
                 this._newline()
-                    ._write(this.style.red(`${idx + 1}) ${msg}`))
+                    ._write(this._formatError(err, `${idx + 1}) `))
                     ._newline();
             });
         }
