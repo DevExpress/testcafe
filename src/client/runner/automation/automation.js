@@ -16,7 +16,6 @@ var listeners      = hammerheadAPI.EventSandbox.Listeners;
 
 var $          = testCafeCore.$;
 var SETTINGS   = testCafeCore.SETTINGS;
-var jsExecutor = testCafeCore.jsExecutor;
 var eventUtils = testCafeCore.eventUtils;
 var domUtils   = testCafeCore.domUtils;
 
@@ -275,63 +274,4 @@ function runAutomation (descriptor, runner, callback) {
             callback();
             break;
     }
-}
-
-function ensureElements (descriptor) {
-    if (descriptor.selector) {
-        var $elements = jsExecutor.parseSelectorSync(descriptor.selector).$elements;
-
-        if ($elements && $elements.length) {
-            if ($elements.length === 1)
-                descriptor.element = $elements[0];
-            else
-                descriptor.elements = $elements.toArray();
-        }
-    }
-}
-
-export function playback (descriptor, callback) {
-    var curDescriptor = null,
-        curIndex      = 0;
-
-    if (!runners[descriptor.type]) {
-        callback();
-        return;
-    }
-
-    inSimulation = true;
-
-    ensureElements(descriptor);
-
-    //NOTE: Descriptor contains array of elements for action click on select+option
-    //we should call action playback for each array element
-    async.forEachSeries(
-        descriptor.elements || [],
-        function (el, seriesCallback) {
-            curDescriptor         = $.extend(curDescriptor, descriptor);
-            curDescriptor.element = el;
-            delete curDescriptor.elements;
-
-            if (curIndex === descriptor.elements.length - 1) {
-                seriesCallback();
-                return;
-            }
-
-            runAutomation(curDescriptor, runners[curDescriptor.type].playback, function () {
-                curDescriptor = {};
-                curIndex++;
-                seriesCallback();
-            });
-
-        },
-        function () {
-            curDescriptor = curDescriptor || descriptor;
-
-            runAutomation(curDescriptor, runners[curDescriptor.type].playback, function () {
-                inSimulation = false;
-
-                callback();
-            });
-        }
-    );
 }

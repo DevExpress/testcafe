@@ -7,7 +7,6 @@ import CONST from './const';
 import * as transport from './transport';
 import * as jQuerySelectorExtensions from './jquery-extensions/custom-selectors';
 import * as jQueryDataMethodProxy from './jquery-extensions/data-proxy';
-import * as jsExecutor from './javascript-executor';
 
 import * as serviceUtils from './util/service';
 import * as domUtils from './util/dom';
@@ -26,7 +25,6 @@ exports.ERRORS                   = ERRORS;
 exports.CONST                    = CONST;
 exports.jQuerySelectorExtensions = jQuerySelectorExtensions;
 exports.jQueryDataMethodProxy    = jQueryDataMethodProxy;
-exports.jsExecutor               = jsExecutor;
 exports.transport                = transport;
 
 exports.serviceUtils    = serviceUtils;
