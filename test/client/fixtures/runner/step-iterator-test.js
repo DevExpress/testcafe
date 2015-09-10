@@ -1,6 +1,6 @@
 var testCafeCore = window.getTestCafeModule('testCafeCore');
-var COMMANDS     = testCafeCore.get('./service-msg-cmd');
-var ERRORS       = testCafeCore.get('./errors');
+var COMMAND      = testCafeCore.COMMAND;
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var SETTINGS     = testCafeCore.get('./settings').get();
 var transport    = testCafeCore.get('./transport');
 var event        = testCafeCore.get('./util/event');
@@ -22,24 +22,24 @@ QUnit.testStart(function () {
     onError         = null;
 
     stepIterator.on(StepIterator.NEXT_STEP_STARTED_EVENT, function (e) {
-        states.push(COMMANDS.SET_NEXT_STEP);
+        states.push(COMMAND.setNextStep);
         nextStep = e.nextStep;
         e.callback();
     });
 
     stepIterator.on(StepIterator.SET_STEPS_SHARED_DATA_EVENT, function (e) {
-        states.push(COMMANDS.SET_STEPS_SHARED_DATA);
+        states.push(COMMAND.setStepsSharedData);
         stepsSharedData = e.stepsSharedData;
         e.callback();
     });
 
     stepIterator.on(StepIterator.GET_STEPS_SHARED_DATA_EVENT, function (e) {
-        states.push(COMMANDS.GET_STEPS_SHARED_DATA);
+        states.push(COMMAND.getStepsSharedData);
         e.callback(stepsSharedData);
     });
 
     stepIterator.on(StepIterator.TEST_COMPLETE_EVENT, function () {
-        states.push(COMMANDS.TEST_COMPLETE);
+        states.push(COMMAND.done);
         transport.switchToWorkerIdle();
     });
 
@@ -141,36 +141,36 @@ $(document).ready(function () {
         };
 
         var expectedStates = [
-            COMMANDS.GET_STEPS_SHARED_DATA,
-            COMMANDS.SET_NEXT_STEP,
+            COMMAND.getStepsSharedData,
+            COMMAND.setNextStep,
             'step0_setup',
             'step0',
             'step0_action',
             'step0_done',
-            COMMANDS.SET_NEXT_STEP,
+            COMMAND.setNextStep,
             'step1_setup',
             'step1',
-            COMMANDS.SET_STEPS_SHARED_DATA,
+            COMMAND.setStepsSharedData,
             'step1_action',
             'step1_done',
-            COMMANDS.SET_NEXT_STEP,
+            COMMAND.setNextStep,
             'step2_setup',
             'step2',
             'step2_action',
             'step2_done',
-            COMMANDS.SET_NEXT_STEP,
+            COMMAND.setNextStep,
             'step3_setup',
             'step3',
-            ERRORS.UNCAUGHT_JS_ERROR_IN_TEST_CODE_STEP,
-            COMMANDS.GET_STEPS_SHARED_DATA,
+            ERROR_TYPE.uncaughtJSErrorInTestCodeStep,
+            COMMAND.getStepsSharedData,
             'step3_done',
-            COMMANDS.SET_NEXT_STEP,
+            COMMAND.setNextStep,
             'step4_setup',
             'step4',
             'step4_0_action',
             'step4_1_action',
             'step4_done',
-            COMMANDS.TEST_COMPLETE,
+            COMMAND.done,
             'switchToWorkerIdle'
         ];
 
@@ -236,29 +236,29 @@ $(document).ready(function () {
         };
 
         var expectedStates = [
-            COMMANDS.GET_STEPS_SHARED_DATA,
-            COMMANDS.SET_NEXT_STEP,
-            COMMANDS.INACTIVITY_EXPECTED,
+            COMMAND.getStepsSharedData,
+            COMMAND.setNextStep,
+            'CMD_INACTIVITY_EXPECTED',  //TODO: remove it
             'step0_pre_setup',
             'step0_setup',
             'step0',
             'step0_action',
             'step0_done',
-            COMMANDS.SET_NEXT_STEP,
-            COMMANDS.INACTIVITY_EXPECTED,
+            COMMAND.setNextStep,
+            'CMD_INACTIVITY_EXPECTED',  //TODO: remove it
             'step1_pre_setup',
             'step1_setup',
             'step1',
             'step1_action',
             'step1_done',
-            COMMANDS.TEST_COMPLETE,
+            COMMAND.done,
             'switchToWorkerIdle'
         ];
 
         expect(1);
 
         stepIterator.expectInactivity = function (timeout, callback) {
-            states.push(COMMANDS.INACTIVITY_EXPECTED);
+            states.push('CMD_INACTIVITY_EXPECTED'); //TODO: remove it
             callback();
         };
         stepIterator.start(stepNames, steps, stepSetup, stepDone, 0);
@@ -302,12 +302,12 @@ $(document).ready(function () {
         };
 
         var expectedStates = [
-            COMMANDS.GET_STEPS_SHARED_DATA,
-            COMMANDS.SET_NEXT_STEP,
-            COMMANDS.INACTIVITY_EXPECTED,
+            COMMAND.getStepsSharedData,
+            COMMAND.setNextStep,
+            'CMD_INACTIVITY_EXPECTED',  //TODO: remove it
             'step0_pre_setup',
-            ERRORS.API_WAIT_FOR_ACTION_TIMEOUT_EXCEEDED,
-            COMMANDS.TEST_COMPLETE,
+            ERROR_TYPE.waitForActionTimeoutExceeded,
+            COMMAND.done,
             'switchToWorkerIdle'
         ];
 
@@ -315,12 +315,12 @@ $(document).ready(function () {
 
         onError = function (err) {
             states.push(err.code);
-            states.push(COMMANDS.TEST_COMPLETE);
+            states.push(COMMAND.done);
             transport.switchToWorkerIdle();
         };
 
         stepIterator.expectInactivity = function (timeout, callback) {
-            states.push(COMMANDS.INACTIVITY_EXPECTED);
+            states.push('CMD_INACTIVITY_EXPECTED'); //TODO: remove it
             callback();
         };
 
@@ -371,11 +371,11 @@ $(document).ready(function () {
         };
 
         var expectedStates = [
-            COMMANDS.GET_STEPS_SHARED_DATA,
-            COMMANDS.SET_NEXT_STEP,
+            COMMAND.getStepsSharedData,
+            COMMAND.setNextStep,
             'step0',
-            ERRORS.STORE_DOM_NODE_OR_JQUERY_OBJECT,
-            COMMANDS.TEST_COMPLETE,
+            ERROR_TYPE.storeDomNodeOrJqueryObject,
+            COMMAND.done,
             'switchToWorkerIdle'
         ];
 
@@ -383,7 +383,7 @@ $(document).ready(function () {
 
         onError = function (err) {
             states.push(err.code);
-            states.push(COMMANDS.TEST_COMPLETE);
+            states.push(COMMAND.done);
             transport.switchToWorkerIdle();
         };
 

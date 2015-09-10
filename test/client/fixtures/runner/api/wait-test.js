@@ -1,6 +1,6 @@
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
-var ERRORS       = testCafeCore.get('./errors');
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var actionsAPI     = testCafeRunner.get('./api/actions');
@@ -173,7 +173,7 @@ $(document).ready(function () {
             };
             actionsAPI.wait('abc', '#567');
             window.setTimeout(function () {
-                equal(currentErrorCode, ERRORS.API_INCORRECT_WAIT_ACTION_MILLISECONDS_ARGUMENT, 'correct error code sent');
+                equal(currentErrorCode, ERROR_TYPE.incorrectWaitActionMillisecondsArgument, 'correct error code sent');
                 equal(currentSourceIndex, 567);
                 start();
             }, 500);
@@ -206,7 +206,7 @@ $(document).ready(function () {
             };
             actionsAPI.wait(condition, SHORT_DELAY, '#90');
             window.setTimeout(function () {
-                equal(currentErrorCode, ERRORS.API_INCORRECT_WAIT_ACTION_MILLISECONDS_ARGUMENT, 'correct error code sent');
+                equal(currentErrorCode, ERROR_TYPE.incorrectWaitActionMillisecondsArgument, 'correct error code sent');
                 equal(currentSourceIndex, 90);
                 start();
             }, 500);

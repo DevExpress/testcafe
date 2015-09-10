@@ -3,7 +3,7 @@ var browser    = hammerhead.Util.Browser;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
-var ERRORS       = testCafeCore.get('./errors');
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var DOM          = testCafeCore.get('./util/dom');
 var style        = testCafeCore.get('./util/style');
 var position     = testCafeCore.get('./util/position');
@@ -309,7 +309,7 @@ $(document).ready(function () {
         SETTINGS.ENABLE_SOURCE_INDEX = true;
         actionsAPI.click($('#nonExistentElement'), '#24');
         setTimeout(function () {
-            equal(currentErrorCode, ERRORS.API_EMPTY_FIRST_ARGUMENT);
+            equal(currentErrorCode, ERROR_TYPE.emptyFirstArgument);
             equal(currentActionSourceIndex, 24);
             startNext();
         }, ERROR_WAITING_TIMEOUT);
@@ -321,7 +321,7 @@ $(document).ready(function () {
         actionsAPI.click($el, '#32');
         setTimeout(function () {
             $el.css('visibility', '');
-            equal(currentErrorCode, ERRORS.API_INVISIBLE_ACTION_ELEMENT);
+            equal(currentErrorCode, ERROR_TYPE.invisibleActionElement);
             equal(currentErrorElement, DOM.getElementDescription($el[0]));
             equal(currentActionSourceIndex, 32);
 
@@ -374,7 +374,7 @@ $(document).ready(function () {
         actionsAPI.click([$el, '#nonExistentElementId'], '#271');
 
         setTimeout(function () {
-            equal(currentErrorCode, ERRORS.API_EMPTY_FIRST_ARGUMENT);
+            equal(currentErrorCode, ERROR_TYPE.emptyFirstArgument);
             equal(currentActionSourceIndex, 271);
 
             startNext();

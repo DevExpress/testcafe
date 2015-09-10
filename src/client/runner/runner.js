@@ -4,11 +4,11 @@ import RunnerBase from './runner-base';
 
 var browserUtils = hammerheadAPI.Util.Browser;
 
-var SETTINGS         = testCafeCore.SETTINGS;
-var SERVICE_COMMANDS = testCafeCore.SERVICE_COMMANDS;
-var ERRORS           = testCafeCore.ERRORS;
-var transport        = testCafeCore.transport;
-var serviceUtils     = testCafeCore.serviceUtils;
+var SETTINGS     = testCafeCore.SETTINGS;
+var COMMAND      = testCafeCore.COMMAND;
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
+var transport    = testCafeCore.transport;
+var serviceUtils = testCafeCore.serviceUtils;
 
 
 const WAITING_FOR_SERVICE_MESSAGES_COMPLETED_DELAY = 1000;
@@ -21,7 +21,7 @@ var Runner = function (startedCallback) {
 
     transport.startInactivityMonitor(function () {
         runner._onError({
-            code: ERRORS.TEST_INACTIVITY
+            code: ERROR_TYPE.testInactivity
         });
     });
 };
@@ -31,7 +31,7 @@ serviceUtils.inherit(Runner, RunnerBase);
 Runner.prototype._onTestComplete = function (e) {
     transport.waitForServiceMessagesCompleted(function () {
         var testCompleteMsg = {
-            cmd: SERVICE_COMMANDS.TEST_COMPLETE
+            cmd: COMMAND.done
         };
 
         transport.asyncServiceMsg(testCompleteMsg, function () {
@@ -43,7 +43,7 @@ Runner.prototype._onTestComplete = function (e) {
 
 Runner.prototype._onNextStepStarted = function (e) {
     var nextStepMsg = {
-        cmd:      SERVICE_COMMANDS.SET_NEXT_STEP,
+        cmd:      COMMAND.setNextStep,
         nextStep: e.nextStep
     };
 
@@ -55,7 +55,7 @@ Runner.prototype._onActionTargetWaitingStarted = function (e) {
     RunnerBase.prototype._onActionTargetWaitingStarted.apply(this, [e]);
 
     var msg = {
-        cmd:   SERVICE_COMMANDS.SET_ACTION_TARGET_WAITING,
+        cmd:   COMMAND.setActionTargetWaiting,
         value: true
     };
 
@@ -66,7 +66,7 @@ Runner.prototype._onActionRun = function () {
     RunnerBase.prototype._onActionRun.apply(this, []);
 
     var msg = {
-        cmd:   SERVICE_COMMANDS.SET_ACTION_TARGET_WAITING,
+        cmd:   COMMAND.setActionTargetWaiting,
         value: false
     };
 
@@ -91,16 +91,17 @@ Runner.prototype._onError = function (err) {
     }
 
     var setErrorMsg = {
-        cmd: SERVICE_COMMANDS.SET_TEST_ERROR,
+        cmd: COMMAND.setTestError,
         err: err
     };
 
     transport.asyncServiceMsg(setErrorMsg);
 
     this._onTakeScreenshot({
-        isFailedStep:    true,
-        withoutStepName: !(ERRORS.hasErrorStepName(err) && ERRORS.hasErrorStepName(err)),
-        callback:        function () {
+        isFailedStep: true,
+        //TODO:
+        //withoutStepName: !(ERRORS.hasErrorStepName(err) && ERRORS.hasErrorStepName(err)),
+        callback:     function () {
             runner.stopped = true;
             transport.fail(err);
         }
@@ -114,7 +115,7 @@ Runner.prototype._onAssertionFailed = function (e, inIFrame) {
 
 Runner.prototype._onSetStepsSharedData = function (e) {
     var msg = {
-        cmd:             SERVICE_COMMANDS.SET_STEPS_SHARED_DATA,
+        cmd:             COMMAND.setStepsSharedData,
         stepsSharedData: e.stepsSharedData
     };
 
@@ -124,7 +125,7 @@ Runner.prototype._onSetStepsSharedData = function (e) {
 };
 
 Runner.prototype._onGetStepsSharedData = function (e) {
-    var msg = { cmd: SERVICE_COMMANDS.GET_STEPS_SHARED_DATA };
+    var msg = { cmd: COMMAND.getStepsSharedData };
 
     transport.asyncServiceMsg(msg, e.callback);
 };
@@ -158,7 +159,7 @@ Runner.prototype._onTakeScreenshot = function (e) {
         browserName = 'IE';
 
     var msg = {
-        cmd:             SERVICE_COMMANDS.TAKE_SCREENSHOT,
+        cmd:             'CMD_TAKE_SCREENSHOT', //TODO: fix
         windowMark:      windowMark,
         browserName:     browserName,
         isFailedStep:    e.isFailedStep,
@@ -194,7 +195,7 @@ Runner.prototype._onTakeScreenshot = function (e) {
 
 Runner.prototype._onDialogsInfoChanged = function (info) {
     transport.asyncServiceMsg({
-        cmd:       SERVICE_COMMANDS.NATIVE_DIALOGS_INFO_SET,
+        cmd:       COMMAND.nativeDialogsInfoSet,
         info:      info,
         timeStamp: Date.now()
     });

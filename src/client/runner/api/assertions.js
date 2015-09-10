@@ -7,7 +7,7 @@ var messageSandbox = hammerheadAPI.MessageSandbox;
 var $                     = testCafeCore.$;
 var SETTINGS              = testCafeCore.SETTINGS;
 var CONST                 = testCafeCore.CONST;
-var ERRORS                = testCafeCore.ERRORS;
+var ERROR_TYPE            = testCafeCore.ERROR_TYPE;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
 var serviceUtils          = testCafeCore.serviceUtils;
 var domUtils              = testCafeCore.domUtils;
@@ -326,7 +326,7 @@ AssertionsAPI.prototype._fail = function (err) {
 AssertionsAPI.prototype.ok = function (actual, message) {
     if (!actual) {
         this._fail({
-            code:    ERRORS.API_OK_ASSERTION_FAILED,
+            code:    ERROR_TYPE.okAssertion,
             message: message,
             actual:  getDescription(actual)
         });
@@ -336,7 +336,7 @@ AssertionsAPI.prototype.ok = function (actual, message) {
 AssertionsAPI.prototype.notOk = function (actual, message) {
     if (actual) {
         this._fail({
-            code:    ERRORS.API_NOT_OK_ASSERTION_FAILED,
+            code:    ERROR_TYPE.notOkAssertion,
             message: message,
             actual:  getDescription(actual)
         });
@@ -348,7 +348,7 @@ AssertionsAPI.prototype.eq = function (actual, expected, message) {
 
     if (diff) {
         this._fail({
-            code:      ERRORS.API_EQUAL_ASSERTION_FAILED,
+            code:      ERROR_TYPE.eqAssertion,
             message:   message,
             actual:    diff.actual,
             expected:  diff.expected,
@@ -367,7 +367,7 @@ AssertionsAPI.prototype.notEq = function (actual, unexpected, message, callback)
 
     if (!diff) {
         this._fail({
-            code:     ERRORS.API_NOT_EQUAL_ASSERTION_FAILED,
+            code:     ERROR_TYPE.notEqAssertion,
             message:  message,
             actual:   getDescription(actual),
             callback: callback

@@ -1,7 +1,6 @@
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var transport    = testCafeCore.get('./transport');
-var ERRORS       = testCafeCore.get('./errors');
-var COMMANDS     = testCafeCore.get('./service-msg-cmd');
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var SETTINGS     = testCafeCore.get('./settings').get();
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
@@ -31,7 +30,7 @@ transport.fail               = function (err) {
     start();
 };
 transport.asyncServiceMsg    = function (msg, callback) {
-    if (msg.cmd === COMMANDS.TAKE_SCREENSHOT) {
+    if (msg.cmd === 'CMD_TAKE_SCREENSHOT') {    //TODO: fix
         screenShotRequestCount++;
         ok(msg.isFailedStep);
     }
@@ -66,7 +65,7 @@ asyncTest('Uncaught error in test script', function () {
         }];
 
     SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
-    expectedError                     = ERRORS.UNCAUGHT_JS_ERROR_IN_TEST_CODE_STEP;
+    expectedError                     = ERROR_TYPE.uncaughtJSErrorInTestCodeStep;
     expectedScreenshotCount           = 1;
 
     runner.act._start(stepNames, testSteps, 0);
@@ -79,7 +78,7 @@ asyncTest('Invisible element', function () {
         }];
 
     SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
-    expectedError                     = ERRORS.API_EMPTY_FIRST_ARGUMENT;
+    expectedError                     = ERROR_TYPE.emptyFirstArgument;
     expectedScreenshotCount           = 1;
 
     runner.act._start(stepNames, testSteps, 0);
@@ -96,7 +95,7 @@ asyncTest('Failed assertion in step with action', function () {
         }];
 
     SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
-    expectedError                     = ERRORS.API_INCORRECT_WAIT_ACTION_MILLISECONDS_ARGUMENT;
+    expectedError                     = ERROR_TYPE.incorrectWaitActionMillisecondsArgument;
     expectedScreenshotCount           = 1;
 
     runner.act._start(stepNames, testSteps, 0);
@@ -117,7 +116,7 @@ asyncTest('Failed assertion in step without action', function () {
         ];
 
     SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
-    expectedError                     = ERRORS.API_INCORRECT_WAIT_ACTION_MILLISECONDS_ARGUMENT;
+    expectedError                     = ERROR_TYPE.incorrectWaitActionMillisecondsArgument;
     expectedScreenshotCount           = 2;
 
     runner.act._start(stepNames, testSteps, 0);
@@ -138,7 +137,7 @@ asyncTest('Failed assertion and error: without "Take scr" flag', function () {
         ];
 
     SETTINGS.TAKE_SCREENSHOT_ON_FAILS = false;
-    expectedError                     = ERRORS.API_INCORRECT_WAIT_ACTION_MILLISECONDS_ARGUMENT;
+    expectedError                     = ERROR_TYPE.incorrectWaitActionMillisecondsArgument;
     expectedScreenshotCount           = 0;
 
     runner.act._start(stepNames, testSteps, 0);
@@ -163,7 +162,7 @@ asyncTest('Uncaught error in test script', function () {
     ];
 
     SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
-    expectedError                     = ERRORS.UNCAUGHT_JS_ERROR_IN_TEST_CODE_STEP;
+    expectedError                     = ERROR_TYPE.uncaughtJSErrorInTestCodeStep;
     expectedScreenshotCount           = 1;
     runner._runInIFrame($iframe[0], steps[0].stepName, steps[0].step, steps[0].stepNum);
 });
@@ -185,7 +184,7 @@ asyncTest('Invisible element', function () {
     ];
 
     SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
-    expectedError                     = ERRORS.API_EMPTY_FIRST_ARGUMENT;
+    expectedError                     = ERROR_TYPE.emptyFirstArgument;
     expectedScreenshotCount           = 1;
 
     runner._runInIFrame($iframe[0], steps[0].stepName, steps[0].step, steps[0].stepNum);
@@ -208,7 +207,7 @@ asyncTest('Error in api iframe argument', function () {
         ];
 
     SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
-    expectedError                     = ERRORS.API_IFRAME_ARGUMENT_IS_NOT_IFRAME;
+    expectedError                     = ERROR_TYPE.iframeArgumentIsNotIFrame;
     expectedScreenshotCount           = 1;
 
     runner.act._start(stepNames, steps, 0);
@@ -233,7 +232,7 @@ asyncTest('Failed assertion in step with action', function () {
     ];
 
     SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
-    expectedError                     = ERRORS.API_INCORRECT_WAIT_ACTION_MILLISECONDS_ARGUMENT;
+    expectedError                     = ERROR_TYPE.incorrectWaitActionMillisecondsArgument;
     expectedScreenshotCount           = 1;
 
     runner._runInIFrame($iframe[0], steps[0].stepName, steps[0].step, steps[0].stepNum);

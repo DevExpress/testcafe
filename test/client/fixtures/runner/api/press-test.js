@@ -4,7 +4,7 @@ var iframeSandbox = hammerhead.get('./sandboxes/iframe');
 
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var SETTINGS      = testCafeCore.get('./settings').get();
-var ERRORS        = testCafeCore.get('./errors');
+var ERROR_TYPE    = testCafeCore.ERROR_TYPE;
 var DOM           = testCafeCore.get('./util/dom');
 var textSelection = testCafeCore.get('./util/text-selection');
 
@@ -510,7 +510,7 @@ $(document).ready(function () {
         SETTINGS.ENABLE_SOURCE_INDEX = true;
         actionsAPI.press('incorrect', '#11');
         setTimeout(function () {
-            equal(currentErrorCode, ERRORS.API_INCORRECT_PRESS_ACTION_ARGUMENT);
+            equal(currentErrorCode, ERROR_TYPE.incorrectPressActionArgument);
             equal(currentSourceIndex, 11);
 
             start();

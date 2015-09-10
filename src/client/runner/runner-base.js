@@ -16,8 +16,8 @@ var UNCAUGHT_JS_ERROR = hammerheadAPI.UNCAUGHT_JS_ERROR;
 
 var SETTINGS                 = testCafeCore.SETTINGS;
 var $                        = testCafeCore.$;
-var SERVICE_COMMANDS         = testCafeCore.SERVICE_COMMANDS;
-var ERRORS                   = testCafeCore.ERRORS;
+var COMMAND                  = testCafeCore.COMMAND;
+var ERROR_TYPE               = testCafeCore.ERROR_TYPE;
 var CROSS_DOMAIN_MESSAGES    = testCafeCore.CROSS_DOMAIN_MESSAGES;
 var jQuerySelectorExtensions = testCafeCore.jQuerySelectorExtensions;
 var transport                = testCafeCore.transport;
@@ -84,7 +84,7 @@ var RunnerBase = function () {
             runner.stepIterator.stop();
         else if (SETTINGS.get().FAIL_ON_JS_ERRORS || SETTINGS.get().RECORDING) {
             runner._onError({
-                code:      ERRORS.UNCAUGHT_JS_ERROR,
+                code:      ERROR_TYPE.uncaughtJSError,
                 scriptErr: err.msg,
                 pageError: true,
                 pageUrl:   err.pageUrl
@@ -98,7 +98,7 @@ var RunnerBase = function () {
 
     runner.act._onJSError = function (err) {
         runner._onError({
-            code:      ERRORS.UNCAUGHT_JS_ERROR,
+            code:      ERROR_TYPE.uncaughtJSError,
             scriptErr: (err && err.message) || err
         });
     };
@@ -390,7 +390,7 @@ RunnerBase.prototype._runInIFrame = function (iframe, stepName, step, stepNum) {
     pingIFrame(iframe, function (err) {
         if (err) {
             runner._onError({
-                code:     ERRORS.IN_IFRAME_TARGET_LOADING_TIMEOUT,
+                code:     ERROR_TYPE.inIFrameTargetLoadingTimeout,
                 stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
             });
         }
@@ -404,7 +404,7 @@ RunnerBase.prototype._runInIFrame = function (iframe, stepName, step, stepNum) {
 RunnerBase.prototype._ensureIFrame = function (arg) {
     if (!arg) {
         this._onError({
-            code:     ERRORS.API_EMPTY_IFRAME_ARGUMENT,
+            code:     ERROR_TYPE.emptyIFrameArgument,
             stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
         });
         return null;
@@ -415,7 +415,7 @@ RunnerBase.prototype._ensureIFrame = function (arg) {
             return arg;
         else {
             this._onError({
-                code:     ERRORS.API_IFRAME_ARGUMENT_IS_NOT_IFRAME,
+                code:     ERROR_TYPE.iframeArgumentIsNotIFrame,
                 stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
             });
             return null;
@@ -428,14 +428,14 @@ RunnerBase.prototype._ensureIFrame = function (arg) {
     if (serviceUtils.isJQueryObj(arg)) {
         if (arg.length === 0) {
             this._onError({
-                code:     ERRORS.API_EMPTY_IFRAME_ARGUMENT,
+                code:     ERROR_TYPE.emptyIFrameArgument,
                 stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
             });
             return null;
         }
         else if (arg.length > 1) {
             this._onError({
-                code:     ERRORS.API_MULTIPLE_IFRAME_ARGUMENT,
+                code:     ERROR_TYPE.multipleIFrameArgument,
                 stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
             });
             return null;
@@ -448,7 +448,7 @@ RunnerBase.prototype._ensureIFrame = function (arg) {
         return this._ensureIFrame(arg());
 
     this._onError({
-        code:     ERRORS.API_INCORRECT_IFRAME_ARGUMENT,
+        code:     ERROR_TYPE.incorrectIFrameArgument,
         stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
     });
     return null;
@@ -499,7 +499,7 @@ RunnerBase.prototype._initNativeDialogs = function () {
     dialogsAPI.on(dialogsAPI.UNEXPECTED_DIALOG_ERROR_EVENT, function (e) {
         if (runner.listenNativeDialogs) {
             runner.stepIterator.onError({
-                code:     ERRORS.API_UNEXPECTED_DIALOG,
+                code:     ERROR_TYPE.unexpectedDialog,
                 stepName: runner.stepIterator.getCurrentStep(),
                 dialog:   e.dialog,
                 message:  e.message
@@ -510,7 +510,7 @@ RunnerBase.prototype._initNativeDialogs = function () {
     dialogsAPI.on(dialogsAPI.WAS_NOT_EXPECTED_DIALOG_ERROR_EVENT, function (e) {
         if (runner.listenNativeDialogs) {
             runner.stepIterator.onError({
-                code:     ERRORS.API_EXPECTED_DIALOG_DOESNT_APPEAR,
+                code:     ERROR_TYPE.expectedDialogDoesntAppear,
                 stepName: runner.stepIterator.getCurrentStep(),
                 dialog:   e.dialog
             });
@@ -588,11 +588,11 @@ RunnerBase.prototype._onBeforeUnload = function (fromIFrame, callback) {
     var runner = this;
 
     //NOTE: we should expect file downloading request only after before unload event (T216625)
-    transport.asyncServiceMsg({ cmd: SERVICE_COMMANDS.UNCHECK_FILE_DOWNLOADING_FLAG }, function () {
+    transport.asyncServiceMsg({ cmd: COMMAND.uncheckFileDownloadingFlag }, function () {
 
         //NOTE: we need check it to determinate file downloading
         runner.isFileDownloadingIntervalID = window.setInterval(function () {
-            transport.asyncServiceMsg({ cmd: SERVICE_COMMANDS.GET_AND_UNCHECK_FILE_DOWNLOADING_FLAG }, function (res) {
+            transport.asyncServiceMsg({ cmd: COMMAND.getAndUncheckFileDownloadingFlag }, function (res) {
                 if (res) {
                     window.clearInterval(runner.isFileDownloadingIntervalID);
                     runner.isFileDownloadingIntervalID = null;

@@ -3,7 +3,7 @@ var browser    = hammerhead.Util.Browser;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
-var ERRORS       = testCafeCore.get('./errors');
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var position     = testCafeCore.get('./util/position');
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
@@ -370,7 +370,7 @@ $(document).ready(function () {
         };
         actionsAPI.drag($draggable, 'abc', '@#%^^', '#211');
         window.setTimeout(function () {
-            equal(currentErrorCode, ERRORS.API_INCORRECT_DRAGGING_SECOND_ARGUMENT, 'correct error code sended');
+            equal(currentErrorCode, ERROR_TYPE.incorrectDraggingSecondArgument, 'correct error code sended');
             equal(currentSourceIndex, 211);
             start();
         }, correctTestWaitingTime(500));
@@ -383,7 +383,7 @@ $(document).ready(function () {
         };
         actionsAPI.drag($draggable, null, '#803');
         window.setTimeout(function () {
-            equal(currentErrorCode, ERRORS.API_INCORRECT_DRAGGING_SECOND_ARGUMENT, 'correct error code sended');
+            equal(currentErrorCode, ERROR_TYPE.incorrectDraggingSecondArgument, 'correct error code sended');
             equal(currentSourceIndex, 803);
             start();
         }, correctTestWaitingTime(500));

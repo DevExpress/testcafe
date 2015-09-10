@@ -1,9 +1,9 @@
 var hammerhead    = window.getTestCafeModule('hammerhead');
-var HH_SETTINGS = hammerhead.get('./settings').get();
+var HH_SETTINGS   = hammerhead.get('./settings').get();
 var iframeSandbox = hammerhead.get('./sandboxes/iframe');
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
-var ERRORS       = testCafeCore.get('./errors');
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var transport    = testCafeCore.get('./transport');
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
@@ -95,7 +95,7 @@ asyncTest('Inactivity monitor', function () {
 
     window.setTimeout(function () {
         ok(lastError);
-        equal(lastError.code, ERRORS.TEST_INACTIVITY);
+        equal(lastError.code, ERROR_TYPE.testInactivity);
 
         transport.startInactivityMonitor = storedStartInactivityMonitor;
         start();
@@ -114,7 +114,7 @@ asyncTest('Uncaught error in test script', function () {
     testRunner.on(testRunner.TEST_STARTED_EVENT, function () {
         window.setTimeout(function () {
             ok(lastError);
-            ok(lastError.code === ERRORS.UNCAUGHT_JS_ERROR_IN_TEST_CODE_STEP);
+            ok(lastError.code === ERROR_TYPE.uncaughtJSErrorInTestCodeStep);
             equal(lastError.scriptErr, errorText);
 
             start();
@@ -200,11 +200,11 @@ test('empty argument error', function () {
     testRunner._initApi();
     testRunner.inIFrame(wrapIFrameArgument(null), 0)();
 
-    equal(lastError.code, ERRORS.API_EMPTY_IFRAME_ARGUMENT);
+    equal(lastError.code, ERROR_TYPE.emptyIFrameArgument);
     lastError      = null;
 
     testRunner.inIFrame(wrapIFrameArgument('#notExistingIFrame'), 0)();
-    equal(lastError.code, ERRORS.API_EMPTY_IFRAME_ARGUMENT);
+    equal(lastError.code, ERROR_TYPE.emptyIFrameArgument);
 });
 
 test('not iFrame error', function () {
@@ -214,7 +214,7 @@ test('not iFrame error', function () {
     testRunner._initApi();
     testRunner.inIFrame(wrapIFrameArgument($div), 0)();
 
-    equal(lastError.code, ERRORS.API_IFRAME_ARGUMENT_IS_NOT_IFRAME);
+    equal(lastError.code, ERROR_TYPE.iframeArgumentIsNotIFrame);
     $div.remove();
 });
 
@@ -225,7 +225,7 @@ test('multiple argument error', function () {
     testRunner._initApi();
     testRunner.inIFrame(wrapIFrameArgument('iframe'), 0)();
 
-    equal(lastError.code, ERRORS.API_MULTIPLE_IFRAME_ARGUMENT);
+    equal(lastError.code, ERROR_TYPE.multipleIFrameArgument);
     $iFrame.remove();
 });
 
@@ -235,10 +235,10 @@ test('incorrect argument error', function () {
     testRunner._initApi();
 
     testRunner.inIFrame(wrapIFrameArgument(['#iframe']), 0)();
-    equal(lastError.code, ERRORS.API_INCORRECT_IFRAME_ARGUMENT);
+    equal(lastError.code, ERROR_TYPE.incorrectIFrameArgument);
     lastError      = null;
 
     testRunner.inIFrame(wrapIFrameArgument({ iFrame: $('#iframe') }), 0)();
-    equal(lastError.code, ERRORS.API_INCORRECT_IFRAME_ARGUMENT);
+    equal(lastError.code, ERROR_TYPE.incorrectIFrameArgument);
     lastError      = null;
 });

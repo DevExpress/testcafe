@@ -13,7 +13,7 @@ var nativeMethods  = hammerheadAPI.NativeMethods;
 
 var $             = testCafeCore.$;
 var SETTINGS      = testCafeCore.SETTINGS;
-var ERRORS        = testCafeCore.ERRORS;
+var ERROR_TYPE    = testCafeCore.ERROR_TYPE;
 var domUtils      = testCafeCore.domUtils;
 var positionUtils = testCafeCore.positionUtils;
 var styleUtils    = testCafeCore.styleUtils;
@@ -50,7 +50,7 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
 
         if ((!SETTINGS.get().RECORDING || SETTINGS.get().PLAYBACK) && selectSizeValue <= 1) {
             errorCallback({
-                code:    ERRORS.API_INVISIBLE_ACTION_ELEMENT,
+                code:    ERROR_TYPE.invisibleActionElement,
                 element: domUtils.getElementDescription(childElement)
             });
             return;
