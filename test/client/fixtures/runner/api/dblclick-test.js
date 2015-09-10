@@ -3,7 +3,7 @@ var browser    = hammerhead.Util.Browser;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
-var ERRORS       = testCafeCore.get('./errors');
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var actionsAPI     = testCafeRunner.get('./api/actions');
@@ -166,7 +166,7 @@ $(document).ready(function () {
         SETTINGS.ENABLE_SOURCE_INDEX = true;
         actionsAPI.dblclick($('#nonExistentElement'), '#0');
         setTimeout(function () {
-            equal(currentErrorCode, ERRORS.API_EMPTY_FIRST_ARGUMENT);
+            equal(currentErrorCode, ERROR_TYPE.emptyFirstArgument);
             equal(currentSourceIndex, 0);
             start();
         }, correctTestWaitingTime(ELEMENT_WAITING_TIMEOUT + 100));

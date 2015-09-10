@@ -2,7 +2,7 @@ var hammerhead = window.getTestCafeModule('hammerhead');
 var browser    = hammerhead.Util.Browser;
 
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
-var errors        = testCafeCore.get('./errors');
+var ERROR_TYPE    = testCafeCore.ERROR_TYPE;
 var DOM           = testCafeCore.get('./util/dom');
 var textSelection = testCafeCore.get('./util/text-selection');
 var position      = testCafeCore.get('./util/position');
@@ -1165,7 +1165,7 @@ $(document).ready(function () {
 
         actionsAPI.select($el1[0], $el2[0]);
         window.setTimeout(function () {
-            equal(currentErrorCode, errors.API_INCORRECT_SELECT_ACTION_ARGUMENTS, 'correct error code sent');
+            equal(currentErrorCode, ERROR_TYPE.incorrectSelectActionArguments, 'correct error code sent');
             start();
         }, correctTestWaitingTime(ERROR_WAITING_TIMEOUT));
     });
@@ -1181,7 +1181,7 @@ $(document).ready(function () {
 
         actionsAPI.select($el1[0], $el2[0]);
         window.setTimeout(function () {
-            equal(currentErrorCode, errors.API_INCORRECT_SELECT_ACTION_ARGUMENTS, 'correct error code sent');
+            equal(currentErrorCode, ERROR_TYPE.incorrectSelectActionArguments, 'correct error code sent');
             start();
         }, correctTestWaitingTime(ERROR_WAITING_TIMEOUT));
     });
@@ -1194,7 +1194,7 @@ $(document).ready(function () {
 
         actionsAPI.select($el1[0], $el2[0]);
         window.setTimeout(function () {
-            equal(currentErrorCode, errors.API_INCORRECT_SELECT_ACTION_ARGUMENTS, 'correct error code sent');
+            equal(currentErrorCode, ERROR_TYPE.incorrectSelectActionArguments, 'correct error code sent');
             start();
         }, correctTestWaitingTime(ERROR_WAITING_TIMEOUT));
     });
@@ -1210,7 +1210,7 @@ $(document).ready(function () {
             caretPos: 1
         });
         window.setTimeout(function () {
-            equal(currentErrorCode, errors.API_EMPTY_FIRST_ARGUMENT, 'correct error code sent');
+            equal(currentErrorCode, ERROR_TYPE.emptyFirstArgument, 'correct error code sent');
             start();
         }, correctTestWaitingTime(ERROR_WAITING_TIMEOUT));
     });

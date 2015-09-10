@@ -1,6 +1,6 @@
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
-var ERRORS       = testCafeCore.get('./errors');
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var DOM          = testCafeCore.get('./util/dom');
 
 
@@ -31,7 +31,7 @@ test('failed ok assertion', function () {
 
     var message = 'ok assertion';
     assertionsAPI.ok(false, message, '#213');
-    equal(currentError.code, ERRORS.API_OK_ASSERTION_FAILED, 'correct error code sended');
+    equal(currentError.code, ERROR_TYPE.okAssertion, 'correct error code sended');
     equal(currentError.message, message, 'correct error message sended');
     equal(currentError.__sourceIndex, 213);
 });
@@ -46,7 +46,7 @@ test('failed not ok assertion', function () {
 
     var message = 'notOk assertion';
     assertionsAPI.notOk(true, message, '#805');
-    equal(currentError.code, ERRORS.API_NOT_OK_ASSERTION_FAILED, 'correct error code sended');
+    equal(currentError.code, ERROR_TYPE.notOkAssertion, 'correct error code sended');
     equal(currentError.message, message, 'correct error message sended');
     equal(currentError.__sourceIndex, 805);
 });
@@ -61,7 +61,7 @@ test('failed equal assertion', function () {
 
     var message = 'equal assertion';
     assertionsAPI.eq(1, 2, message, '#289');
-    equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED, 'correct error code sended');
+    equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sended');
     equal(currentError.message, message, 'correct error message sended');
     equal(currentError.__sourceIndex, 289);
 });
@@ -76,7 +76,7 @@ test('failed equal assertion', function () {
 
     var message = 'not equal assertion';
     assertionsAPI.notEq(1, 1, message, '#514');
-    equal(currentError.code, ERRORS.API_NOT_EQUAL_ASSERTION_FAILED, 'correct error code sended');
+    equal(currentError.code, ERROR_TYPE.notEqAssertion, 'correct error code sended');
     equal(currentError.message, message, 'correct error message sended');
     equal(currentError.__sourceIndex, 514);
 });
@@ -104,7 +104,7 @@ test('objects', function () {
     equal(currentError, null, 'error not sent');
 
     assertionsAPI.eq(obj1, obj3);
-    equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED, 'correct error code sent');
+    equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
     ok(currentError.isObjects);
     equal(currentError.key, 'f1');
     equal(currentError.actual, '1');
@@ -112,7 +112,7 @@ test('objects', function () {
     currentError      = null;
 
     assertionsAPI.eq(obj1, obj4);
-    equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED, 'correct error code sent');
+    equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
     ok(currentError.isObjects);
     equal(currentError.key, 'f1');
     equal(currentError.actual, 1);
@@ -120,7 +120,7 @@ test('objects', function () {
     currentError      = null;
 
     assertionsAPI.eq(obj5, obj6);
-    equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED, 'correct error code sent');
+    equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
     ok(currentError.isObjects);
     equal(currentError.key, 'f1.f2');
     equal(currentError.actual, 1);
@@ -128,7 +128,7 @@ test('objects', function () {
     currentError      = null;
 
     assertionsAPI.eq(obj6, obj7);
-    equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED, 'correct error code sent');
+    equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
     ok(currentError.isObjects);
     equal(currentError.key, 'f1.f2');
     equal(currentError.actual, 2);
@@ -136,7 +136,7 @@ test('objects', function () {
     currentError      = null;
 
     assertionsAPI.eq(obj5, obj3);
-    equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED, 'correct error code sent');
+    equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
     ok(currentError.isObjects);
     equal(currentError.key, 'f1');
     equal(currentError.actual, JSON.stringify({ f2: 1 }));
@@ -159,7 +159,7 @@ test('arrays', function () {
 
     var checkErrSent = function (testData) {
         assertionsAPI.eq(testData.actual, testData.expected);
-        equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED, 'correct error code sent');
+        equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
         ok(currentError.isArrays);
         equal(testData.key, currentError.key);
         equal(testData.actualVal, currentError.actual);
@@ -188,14 +188,14 @@ test('dates', function () {
     equal(currentError, null, 'error not sent');
 
     assertionsAPI.eq(d1, d3);
-    equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED, 'correct error code sent');
+    equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
     equal(currentError.actual, d1.getTime());
     equal(currentError.expected, d3.getTime());
 
     currentError = null;
 
     assertionsAPI.eq(d4, d5);
-    equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED, 'correct error code sent');
+    equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
     equal(currentError.actual, d4.getTime());
     equal(currentError.expected, d5.getTime());
 });
@@ -211,7 +211,7 @@ test('dom elements', function () {
     equal(currentError, null, 'error not sent');
 
     assertionsAPI.eq(div1, div2);
-    equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED, 'correct error code sent');
+    equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
     equal(currentError.actual, DOM.getElementDescription(div1));
     equal(currentError.expected, DOM.getElementDescription(div2));
 
@@ -249,7 +249,7 @@ test('jQuery objects', function () {
     equal(currentError, null, 'error not sent');
 
     assertionsAPI.eq($('.' + commonClass), $('.' + specificClass));
-    equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED, 'correct error code sent');
+    equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
     equal(currentError.actual, commonClassElementsDescription);
     equal(currentError.expected, specificClassElementsDescription);
 
@@ -283,7 +283,7 @@ test('NodeLists', function () {
         ].join('');
 
     assertionsAPI.eq(document.getElementsByClassName(commonClass), document.getElementsByClassName(specificClass));
-    equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED, 'correct error code sent');
+    equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
     equal(currentError.actual, commonClassElementsDescription);
     equal(currentError.expected, specificClassElementsDescription);
     ok(!currentError.isArray);
@@ -295,7 +295,7 @@ test('NodeLists', function () {
 
 test('null, undefined, false, true', function () {
     assertionsAPI.eq(true, false);
-    equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED);
+    equal(currentError.code, ERROR_TYPE.eqAssertion);
     equal(currentError.actual, 'true');
     equal(currentError.expected, 'false');
     currentError = null;
@@ -304,7 +304,7 @@ test('null, undefined, false, true', function () {
         obj = { f1: 1 };
 
     assertionsAPI.eq(arr, obj);
-    equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED);
+    equal(currentError.code, ERROR_TYPE.eqAssertion);
     equal(currentError.actual, '[1, 2]');
     equal(currentError.expected, JSON.stringify(obj));
 });
@@ -315,7 +315,7 @@ test('functions', function () {
     assertionsAPI.eq(obj.toString, obj.toString);
     equal(currentError, null, 'error not sent');
     assertionsAPI.eq(obj.toString, obj.hasOwnProperty);
-    equal(currentError.code, ERRORS.API_EQUAL_ASSERTION_FAILED);
+    equal(currentError.code, ERROR_TYPE.eqAssertion);
     equal(currentError.actual, obj.toString.toString());
     equal(currentError.expected, obj.hasOwnProperty.toString());
     ok(!currentError.isObject);
@@ -330,7 +330,7 @@ test('notDeepEq', function () {
     equal(currentError, null, 'error not sent');
 
     assertionsAPI.notEq(obj1, obj2);
-    equal(currentError.code, ERRORS.API_NOT_EQUAL_ASSERTION_FAILED, 'correct error code sent');
+    equal(currentError.code, ERROR_TYPE.notEqAssertion, 'correct error code sent');
     equal(currentError.actual, JSON.stringify(obj1));
 });
 

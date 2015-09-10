@@ -3,7 +3,7 @@ var browser    = hammerhead.Util.Browser;
 var shadowUI   = Hammerhead.ShadowUI;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
-var ERRORS       = testCafeCore.get('./errors');
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var SETTINGS     = testCafeCore.get('./settings').get();
 
 var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
@@ -403,7 +403,7 @@ $(document).ready(function () {
         actionsAPI.click($(select).children().eq(1), '#312');
 
         setTimeout(function () {
-            equal(currentErrorCode, ERRORS.API_INVISIBLE_ACTION_ELEMENT);
+            equal(currentErrorCode, ERROR_TYPE.invisibleActionElement);
             equal(currentActionSourceIndex, 312);
 
             startNext();

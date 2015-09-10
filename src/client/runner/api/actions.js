@@ -17,7 +17,7 @@ var hhUpload    = hammerheadAPI.upload;
 var $               = testCafeCore.$;
 var SETTINGS        = testCafeCore.SETTINGS;
 var CONST           = testCafeCore.CONST;
-var ERRORS          = testCafeCore.ERRORS;
+var ERROR_TYPE      = testCafeCore.ERROR_TYPE;
 var contentEditable = testCafeCore.contentEditable;
 var domUtils        = testCafeCore.domUtils;
 var positionUtils   = testCafeCore.positionUtils;
@@ -116,7 +116,7 @@ function ensureElementsExist (item, actionName, callback) {
     window.setTimeout(function () {
         if (!success) {
             window.clearInterval(interval);
-            failWithError(ERRORS.API_EMPTY_FIRST_ARGUMENT, { action: actionName });
+            failWithError(ERROR_TYPE.emptyFirstArgument, { action: actionName });
         }
     }, ELEMENT_AVAILABILITY_WAITING_TIMEOUT);
 }
@@ -142,7 +142,7 @@ function ensureElementVisibility (element, actionName, callback) {
         if (!success) {
             window.clearInterval(interval);
 
-            failWithError(ERRORS.API_INVISIBLE_ACTION_ELEMENT, {
+            failWithError(ERROR_TYPE.invisibleActionElement, {
                 element: domUtils.getElementDescription(element),
                 action:  actionName
             });
@@ -169,7 +169,7 @@ function actionArgumentsIterator (actionName) {
         else {
             var elementsArray = parseActionArgument(item, actionName);
             if (!elementsArray || elementsArray.length < 1)
-                failWithError(ERRORS.API_EMPTY_FIRST_ARGUMENT, { action: actionName });
+                failWithError(ERROR_TYPE.emptyFirstArgument, { action: actionName });
             else
                 runAction(elementsArray, iterationCallback);
         }
@@ -177,7 +177,7 @@ function actionArgumentsIterator (actionName) {
 
     var extractArgs = function (items, callback) {
         if (!items.length) {
-            failWithError(ERRORS.API_EMPTY_FIRST_ARGUMENT, { action: actionName });
+            failWithError(ERROR_TYPE.emptyFirstArgument, { action: actionName });
         }
         else {
             window.async.forEachSeries(
@@ -336,19 +336,19 @@ export function drag (what) {
     var to = args.length > 2 && secondArgIsCoord ? { dragOffsetX: args[1], dragOffsetY: args[2] } : args[1];
 
     if (!to) {
-        failWithError(ERRORS.API_INCORRECT_DRAGGING_SECOND_ARGUMENT);
+        failWithError(ERROR_TYPE.incorrectDraggingSecondArgument);
         return;
     }
     if (serviceUtils.isJQueryObj(to)) {
         if (to.length < 1) {
-            failWithError(ERRORS.API_INCORRECT_DRAGGING_SECOND_ARGUMENT);
+            failWithError(ERROR_TYPE.incorrectDraggingSecondArgument);
             return;
         }
         else
             to = to[0];
     }
     else if (!domUtils.isDomElement(to) && (isNaN(parseInt(to.dragOffsetX)) || isNaN(parseInt(to.dragOffsetY)))) {
-        failWithError(ERRORS.API_INCORRECT_DRAGGING_SECOND_ARGUMENT);
+        failWithError(ERROR_TYPE.incorrectDraggingSecondArgument);
         return;
     }
 
@@ -383,13 +383,13 @@ export function select () {
         commonParent  = null;
 
     if (!arguments[0])
-        failWithError(ERRORS.API_INCORRECT_SELECT_ACTION_ARGUMENTS);
+        failWithError(ERROR_TYPE.incorrectSelectActionArguments);
 
     if (args.length === 1) {
         //NOTE: second action argument is jquery object
         if (serviceUtils.isJQueryObj(args[0])) {
             if (args[0].length < 1) {
-                failWithError(ERRORS.API_INCORRECT_SELECT_ACTION_ARGUMENTS);
+                failWithError(ERROR_TYPE.incorrectSelectActionArguments);
                 return;
             }
             else
@@ -436,7 +436,7 @@ export function select () {
     }
 
     if (error) {
-        failWithError(ERRORS.API_INCORRECT_SELECT_ACTION_ARGUMENTS);
+        failWithError(ERROR_TYPE.incorrectSelectActionArguments);
         return;
     }
 
@@ -475,7 +475,7 @@ export function select () {
 
 export function type (what, text, options) {
     if (!text) {
-        failWithError(ERRORS.API_EMPTY_TYPE_ACTION_ARGUMENT);
+        failWithError(ERROR_TYPE.emptyTypeActionArgument);
         return;
     }
 
@@ -529,7 +529,7 @@ export function press () {
         pressActionArgumentsIterator().run,
         function (keys, callback) {
             if (keyCharUtils.parseKeysString(keys).error)
-                failWithError(ERRORS.API_INCORRECT_PRESS_ACTION_ARGUMENT);
+                failWithError(ERROR_TYPE.incorrectPressActionArgument);
 
             else
                 pressPlaybackAutomation(keys, callback);
@@ -557,7 +557,7 @@ export function wait (ms, condition) {
     condition = typeof(condition) === 'function' ? condition : null;
 
     if (typeof ms !== 'number' || ms < 0) {
-        failWithError(ERRORS.API_INCORRECT_WAIT_ACTION_MILLISECONDS_ARGUMENT);
+        failWithError(ERROR_TYPE.incorrectWaitActionMillisecondsArgument);
         return;
     }
 
@@ -582,7 +582,7 @@ export function waitFor (event, timeout) {
         timeoutExceeded = false;
 
     if (typeof event !== 'function' && !waitForElements) {
-        failWithError(ERRORS.API_INCORRECT_WAIT_FOR_ACTION_EVENT_ARGUMENT);
+        failWithError(ERROR_TYPE.incorrectWaitForActionEventArgument);
         return;
     }
 
@@ -590,7 +590,7 @@ export function waitFor (event, timeout) {
         timeout = WAIT_FOR_DEFAULT_TIMEOUT;
 
     if (typeof timeout !== 'number' || timeout < 0) {
-        failWithError(ERRORS.API_INCORRECT_WAIT_FOR_ACTION_TIMEOUT_ARGUMENT);
+        failWithError(ERROR_TYPE.incorrectWaitForActionTimeoutArgument);
         return;
     }
 
@@ -602,7 +602,7 @@ export function waitFor (event, timeout) {
                 stopConditionCheck();
 
             timeoutExceeded = true;
-            failWithError(ERRORS.API_WAIT_FOR_ACTION_TIMEOUT_EXCEEDED);
+            failWithError(ERROR_TYPE.waitForActionTimeoutExceeded);
         }, timeout);
 
         function onConditionReached () {
@@ -671,14 +671,14 @@ export function upload (what, path) {
         elements      = ensureArray(what);
 
     if (!isStringOrStringArray(path) && path)
-        failWithError(ERRORS.API_UPLOAD_INVALID_FILE_PATH_ARGUMENT);
+        failWithError(ERROR_TYPE.uploadInvalidFilePathArgument);
 
     stepIterator.asyncActionSeries(
         elements,
         actionArgumentsIterator('upload').run,
         function (element, callback) {
             if (!domUtils.isFileInput(element))
-                failWithError(ERRORS.API_UPLOAD_ELEMENT_IS_NOT_FILE_INPUT);
+                failWithError(ERROR_TYPE.uploadElementIsNotFileInput);
 
             else {
                 if (!actionStarted) {
@@ -692,7 +692,7 @@ export function upload (what, path) {
                             return err.filePath;
                         });
 
-                        failWithError(ERRORS.API_UPLOAD_CAN_NOT_FIND_FILE_TO_UPLOAD, { filePaths: errPaths });
+                        failWithError(ERROR_TYPE.uploadCanNotFindFileToUpload, { filePaths: errPaths });
                     }
 
                     else

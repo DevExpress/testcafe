@@ -1,6 +1,6 @@
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
-var ERRORS       = testCafeCore.get('./errors');
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var actionsAPI     = testCafeRunner.get('./api/actions');
@@ -25,8 +25,7 @@ StepIterator.prototype.onActionRun = function () {
     actionRunCounter++;
 };
 
-var stepIterator = new StepIterator();
-actionsAPI.init(stepIterator);
+var stepIterator = null;
 
 $(document).ready(function () {
         var currentErrorCode   = null,
@@ -58,6 +57,24 @@ $(document).ready(function () {
         QUnit.testStart(function () {
             actionTargetWaitingCounter = 0;
             actionRunCounter           = 0;
+
+            stepIterator = new StepIterator();
+
+            actionsAPI.init(stepIterator);
+
+            stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
+                stepIterator.state.stoppedOnFail = false;
+                currentErrorCode                 = err.code;
+                currentSourceIndex               = err.__sourceIndex;
+            });
+
+            stepIterator.asyncAction = function (action) {
+                action(asyncActionCallback);
+            };
+
+            stepIterator.expectInactivity = function (duration, callback) {
+                callback();
+            };
         });
 
         QUnit.testDone(function () {
@@ -65,20 +82,6 @@ $(document).ready(function () {
             currentSourceIndex = null;
 
             SETTINGS.ENABLE_SOURCE_INDEX = false;
-        });
-
-        StepIterator.prototype.asyncAction = function (action) {
-            action(asyncActionCallback);
-        };
-
-        StepIterator.prototype.expectInactivity = function (duration, callback) {
-            callback();
-        };
-
-        stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
-            stepIterator.state.stoppedOnFail = false;
-            currentErrorCode                 = err.code;
-            currentSourceIndex               = err.__sourceIndex;
         });
 
         asyncTest('wait event', function () {
@@ -109,10 +112,15 @@ $(document).ready(function () {
 
         asyncTest('event timeout', function () {
             SETTINGS.ENABLE_SOURCE_INDEX = true;
-            actionsAPI.waitFor($.get('/xhr-test/300').complete, 20, '#508');
+
+            function delay300s (callback) {
+                window.setTimeout(callback, 300);
+            }
+
+            actionsAPI.waitFor(delay300s, 20, '#508');
 
             window.setTimeout(function () {
-                strictEqual(currentErrorCode, ERRORS.API_WAIT_FOR_ACTION_TIMEOUT_EXCEEDED);
+                strictEqual(currentErrorCode, ERROR_TYPE.waitForActionTimeoutExceeded);
                 strictEqual(currentSourceIndex, 508);
                 equal(actionTargetWaitingCounter, 1);
                 equal(actionRunCounter, 0);
@@ -131,7 +139,7 @@ $(document).ready(function () {
             actionsAPI.waitFor(123, 20, '#808');
 
             window.setTimeout(function () {
-                strictEqual(currentErrorCode, ERRORS.API_INCORRECT_WAIT_FOR_ACTION_EVENT_ARGUMENT);
+                strictEqual(currentErrorCode, ERROR_TYPE.incorrectWaitForActionEventArgument);
                 strictEqual(currentSourceIndex, 808);
                 start();
             });
@@ -148,7 +156,7 @@ $(document).ready(function () {
             }, 'test', '#313');
 
             window.setTimeout(function () {
-                strictEqual(currentErrorCode, ERRORS.API_INCORRECT_WAIT_FOR_ACTION_TIMEOUT_ARGUMENT);
+                strictEqual(currentErrorCode, ERROR_TYPE.incorrectWaitForActionTimeoutArgument);
                 strictEqual(currentSourceIndex, 313);
                 start();
             });
@@ -188,7 +196,7 @@ $(document).ready(function () {
             actionsAPI.waitFor('#testDivElement', 250, '#102');
 
             window.setTimeout(function () {
-                strictEqual(currentErrorCode, ERRORS.API_WAIT_FOR_ACTION_TIMEOUT_EXCEEDED);
+                strictEqual(currentErrorCode, ERROR_TYPE.waitForActionTimeoutExceeded);
                 strictEqual(currentSourceIndex, 102);
                 equal(asyncActionCallbackRaised, false);
                 equal(actionTargetWaitingCounter, 1);
@@ -239,7 +247,7 @@ $(document).ready(function () {
             actionsAPI.waitFor(['#testDivElement1', '#testDivElement2'], 150, '#104');
 
             window.setTimeout(function () {
-                strictEqual(currentErrorCode, ERRORS.API_WAIT_FOR_ACTION_TIMEOUT_EXCEEDED);
+                strictEqual(currentErrorCode, ERROR_TYPE.waitForActionTimeoutExceeded);
                 strictEqual(currentSourceIndex, 104);
                 equal(asyncActionCallbackRaised, false);
                 equal(actionTargetWaitingCounter, 1);
@@ -260,7 +268,7 @@ $(document).ready(function () {
             actionsAPI.waitFor([], '#105');
 
             window.setTimeout(function () {
-                strictEqual(currentErrorCode, ERRORS.API_INCORRECT_WAIT_FOR_ACTION_EVENT_ARGUMENT);
+                strictEqual(currentErrorCode, ERROR_TYPE.incorrectWaitForActionEventArgument);
                 strictEqual(currentSourceIndex, 105);
                 start();
             });
