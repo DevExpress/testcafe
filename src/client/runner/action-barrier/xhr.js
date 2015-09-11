@@ -6,7 +6,7 @@ var XHR_SEND      = hammerheadAPI.XHR_SEND;
 var XHR_ERROR     = hammerheadAPI.XHR_ERROR;
 var XHR_COMPLETED = hammerheadAPI.XHR_COMPLETED;
 
-var ERRORS       = testCafeCore.ERRORS;
+var ERROR_TYPE       = testCafeCore.ERROR_TYPE;
 var serviceUtils = testCafeCore.serviceUtils;
 
 
@@ -55,7 +55,7 @@ function onRequestsCollected () {
 
     if (barrierCtx.reqCount) {
         barrierCtx.watchdog = window.setTimeout(function () {
-            eventEmitter.emit(XHR_BARRIER_ERROR, { code: ERRORS.XHR_REQUEST_TIMEOUT });
+            eventEmitter.emit(XHR_BARRIER_ERROR, { code: ERROR_TYPE.xhrRequestTimeout });
             barrierCtx.callback();
         }, BARRIER_TIMEOUT);
     }

@@ -4,7 +4,7 @@ var HH_CONST    = hammerhead.get('../const');
 var HH_SETTINGS = hammerhead.get('./settings').get();
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
-var ERRORS       = testCafeCore.get('./errors');
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var xhrBarrier     = testCafeRunner.get('./action-barrier/xhr');
@@ -96,7 +96,7 @@ $(document).ready(function () {
         xhrBarrier.init();
 
         var handler = function (err) {
-            strictEqual(err.code, ERRORS.XHR_REQUEST_TIMEOUT);
+            strictEqual(err.code, ERROR_TYPE.xhrRequestTimeout);
             xhrBarrier.events.off(xhrBarrier.XHR_BARRIER_ERROR, handler);
         };
 

@@ -1,5 +1,5 @@
 import * as hammerheadAPI from './deps/hammerhead';
-import SERVICE_COMMANDS from './service-msg-cmd';
+import COMMAND from '../../runner/test-run/command';
 import * as SETTINGS from './settings';
 
 var transport = hammerheadAPI.Transport;
@@ -58,7 +58,7 @@ export function expectInactivity (duration, callback) {
 
     //NOTE: order is important here. serviceMsg should go first because it also resets inactivity timeout
     var inactivityExpectedMsg = {
-        cmd:      SERVICE_COMMANDS.INACTIVITY_EXPECTED,
+        cmd:      'CMD_INACTIVITY_EXPECTED',  //TODO: remove it
         duration: maxDuration
     };
 
@@ -70,7 +70,7 @@ export function expectInactivity (duration, callback) {
 
 export function fail (err) {
     var testFailMsg = {
-        cmd: SERVICE_COMMANDS.TEST_FAIL,
+        cmd: COMMAND.fatalError,
         err: err
     };
 
@@ -86,7 +86,7 @@ export function fail (err) {
 
 export function assertionFailed (err) {
     var assertionFailedMsg = {
-        cmd: SERVICE_COMMANDS.ASSERTION_FAILED,
+        cmd: COMMAND.assertionFailed,
         err: err
     };
 

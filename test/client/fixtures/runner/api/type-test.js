@@ -3,7 +3,7 @@ var browser    = hammerhead.Util.Browser;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
-var ERRORS       = testCafeCore.get('./errors');
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var actionsAPI     = testCafeRunner.get('./api/actions');
@@ -241,7 +241,7 @@ $(document).ready(function () {
         };
         actionsAPI.type($('#nonExistentElement'), 'text', '#213');
         setTimeout(function () {
-            equal(currentErrorCode, ERRORS.API_EMPTY_FIRST_ARGUMENT, 'correct error code is sent');
+            equal(currentErrorCode, ERROR_TYPE.emptyFirstArgument, 'correct error code is sent');
             equal(currentSourceIndex, 213);
             start();
         }, ELEMENT_WAITING_TIMEOUT + 100);
@@ -255,7 +255,7 @@ $(document).ready(function () {
         actionsAPI.type($input, '', '#218');
 
         setTimeout(function () {
-            equal(currentErrorCode, ERRORS.API_EMPTY_TYPE_ACTION_ARGUMENT, 'correct error code is sent');
+            equal(currentErrorCode, ERROR_TYPE.emptyTypeActionArgument, 'correct error code is sent');
             equal(currentSourceIndex, 218);
             start();
         }, 500);

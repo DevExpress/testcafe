@@ -1,9 +1,6 @@
 var hammerhead     = window.getTestCafeModule('hammerhead');
 var jsProcessor    = hammerhead.JSProcessor;
 
-var testCafeCore = window.getTestCafeModule('testCafeCore');
-var ERRORS       = testCafeCore.get('./errors');
-
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var actionsAPI     = testCafeRunner.get('./api/actions');
 var StepIterator   = testCafeRunner.get('./step-iterator');

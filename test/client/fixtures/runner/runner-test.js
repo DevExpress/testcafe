@@ -2,12 +2,12 @@ var hammerhead  = window.getTestCafeModule('hammerhead');
 var HH_SETTINGS = hammerhead.get('./settings').get();
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
-var COMMANDS     = testCafeCore.get('./service-msg-cmd');
+var COMMAND      = testCafeCore.COMMAND;
 var transport    = testCafeCore.get('./transport');
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var actionBarrier  = testCafeRunner.get('./action-barrier/action-barrier');
-var Runner                     = testCafeRunner.get('./runner');
+var Runner         = testCafeRunner.get('./runner');
 
 
 transport.batchUpdate                = function (callback) {
@@ -32,10 +32,10 @@ asyncTest('T204773 - TestCafe - The assertion in last step with inIFrame wrapper
         assertionFailedMessageTime = null;
 
     transport.asyncServiceMsg = function (msg, callback) {
-        if (msg.cmd === COMMANDS.ASSERTION_FAILED)
+        if (msg.cmd === COMMAND.assertionFailed)
             assertionFailedMessageTime = Date.now();
 
-        if (msg.cmd === COMMANDS.TEST_COMPLETE)
+        if (msg.cmd === COMMAND.done)
             ok(Date.now() - assertionFailedMessageTime >= 500);
 
         savedAsyncServiceMsg.apply(transport, arguments);

@@ -3,7 +3,7 @@ var browser    = hammerhead.Util.Browser;
 
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var SETTINGS      = testCafeCore.get('./settings').get();
-var ERRORS        = testCafeCore.get('./errors');
+var ERROR_TYPE    = testCafeCore.ERROR_TYPE;
 var DOM           = testCafeCore.get('./util/dom');
 var style         = testCafeCore.get('./util/style');
 var textSelection = testCafeCore.get('./util/text-selection');
@@ -339,7 +339,7 @@ $(document).ready(function () {
         };
         actionsAPI.select($input, 'abc', '#34');
         window.setTimeout(function () {
-            equal(currentErrorCode, ERRORS.API_INCORRECT_SELECT_ACTION_ARGUMENTS, 'correct error code sent');
+            equal(currentErrorCode, ERROR_TYPE.incorrectSelectActionArguments, 'correct error code sent');
             equal(currentSourceIndex, 34);
             start();
         }, correctTestWaitingTime(500));
@@ -352,7 +352,7 @@ $(document).ready(function () {
         };
         actionsAPI.select($input, 2, -4, '#12');
         window.setTimeout(function () {
-            equal(currentErrorCode, ERRORS.API_INCORRECT_SELECT_ACTION_ARGUMENTS, 'correct error code sent');
+            equal(currentErrorCode, ERROR_TYPE.incorrectSelectActionArguments, 'correct error code sent');
             equal(currentSourceIndex, 12);
             start();
         }, correctTestWaitingTime(500));
@@ -588,7 +588,7 @@ $(document).ready(function () {
         };
         actionsAPI.select($textarea, 2, 4, -2, 5, '#56');
         window.setTimeout(function () {
-            equal(currentErrorCode, ERRORS.API_INCORRECT_SELECT_ACTION_ARGUMENTS, 'correct error code sent');
+            equal(currentErrorCode, ERROR_TYPE.incorrectSelectActionArguments, 'correct error code sent');
             equal(currentSourceIndex, 56);
             start();
         }, correctTestWaitingTime(500));
