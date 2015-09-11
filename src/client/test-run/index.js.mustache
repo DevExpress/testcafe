@@ -1,0 +1,148 @@
+(function () {
+    if (window.self !== window.top)
+        return;
+
+    //API - should be defined here in local scope
+    var act                = null;
+    var ok                 = null;
+    var notOk              = null;
+    var eq                 = null;
+    var notEq              = null;
+    var handleAlert        = null;
+    var handleConfirm      = null;
+    var handlePrompt       = null;
+    var handleBeforeUnload = null;
+    var inIFrame           = null;
+    var __set$             = null;
+    var __get$             = null;
+    var __get$Loc          = null;
+    var __set$Loc          = null;
+    var __call$            = null;
+    var __proc$Script      = null;
+
+    var $      = null;
+    var jQuery = null;
+
+    // NOTE: The global __waitFor is used to ensure that the page is ready for the next step to be executed.
+    // Usage: call the global __waitFor wherever required (test file, wrappers, modules, etc).
+    // The arguments are identical to the act.waitFor function arguments.
+    var __waitFor = null;
+
+    //Internals
+    (function () {
+        var hammerhead     = window.Hammerhead;
+        var testCafeCore   = window['%testCafeCore%'];
+        var testCafeRunner = window['%testCafeRunner%'];
+        var testCafeUI     = window['%testCafeUI%'];
+
+        var nextStep  = {{{nextStep}}};
+        var stepNames = {{{stepNames}}};
+
+        testCafeCore.SETTINGS.set({
+            CURRENT_TEST_STEP_NAME:   nextStep ? stepNames[nextStep - 1] : 'Test initialization',
+            WORKER_IDLE_URL:          '{{{browserIdleUrl}}}',   //TODO: rename to BROWSER_IDLE_URL
+            TAKE_SCREENSHOT_ON_FAILS: {{{takeScreenshotOnFails}}},
+            FAIL_ON_JS_ERRORS:        {{{failOnJsErrors}}},
+            ENABLE_SOURCE_INDEX:      true,
+            NATIVE_DIALOGS_INFO:      {{{nativeDialogsInfo}}}
+        });
+
+        hammerhead.on(hammerhead.IFRAME_READY_TO_INIT, function (e) {
+            var iframeWindow = e.iframe.contentWindow;
+
+            iframeWindow.eval.apply(iframeWindow, ['var isIFrameWithoutSrc = true;' + {{{iFrameTestRunScript}}}]);
+        });
+
+        var transport                = testCafeCore.transport;
+        var sandboxedJQuery          = testCafeCore.sandboxedJQuery;
+        var jQuerySelectorExtensions = testCafeCore.jQuerySelectorExtensions;
+        var jQueryDataMethodProxy    = testCafeCore.jQueryDataMethodProxy;
+
+        var Runner     = testCafeRunner.Runner;
+        var RunnerBase = testCafeRunner.RunnerBase;
+
+        var modalBackground = testCafeUI.modalBackground;
+        var shadowUI        = hammerhead.ShadowUI;
+
+        sandboxedJQuery.init(window, undefined);
+        jQuerySelectorExtensions.init();
+
+        var testError = {{{testError}}};
+
+        if (testError) {
+            transport.fail(testError);
+            return;
+        }
+
+        $ = jQuery = jQuerySelectorExtensions.create(sandboxedJQuery.jQuery);
+        jQueryDataMethodProxy.setup($);
+
+        //NOTE: initialize API
+        var runner = new Runner();
+
+        runner.on(RunnerBase.SCREENSHOT_CREATING_STARTED_EVENT, function () {
+            shadowUI.setBlind(true);
+        });
+
+        runner.on(RunnerBase.SCREENSHOT_CREATING_FINISHED_EVENT, function () {
+            shadowUI.setBlind(false);
+        });
+
+        //TODO:
+        /*testRunner.on(testRunner.ACTION_TARGET_WAITING_STARTED_EVENT, function (e) {
+            if (!e.isWaitAction)
+                UI.showProgressPanel(RunnerBase.WAITING_FOR_ACTION_TARGET_MESSAGE, e.maxTimeout);
+        });
+
+        testRunner.on(testRunner.ACTION_RUN_EVENT, function () {
+            UI.closeProgressPanel(null, true);
+        });
+
+        testRunner.on(testRunner.TEST_FAILED_EVENT, function () {
+            UI.closeProgressPanel(null, false);
+        });*/
+
+        act                = runner.act;
+        ok                 = runner.ok;
+        notOk              = runner.notOk;
+        eq                 = runner.eq;
+        notEq              = runner.notEq;
+        handleAlert        = runner.handleAlert;
+        handleConfirm      = runner.handleConfirm;
+        handlePrompt       = runner.handlePrompt;
+        handleBeforeUnload = runner.handleBeforeUnload;
+        inIFrame           = runner.inIFrame;
+        __set$             = window.__set$;
+        __get$             = window.__get$;
+        __set$Loc          = window.__set$Loc;
+        __get$Loc          = window.__get$Loc;
+        __call$            = window.__call$;
+        __proc$Script      = window.__proc$Script;
+        __waitFor          = function () {
+            runner.setGlobalWaitFor.apply(runner, arguments);
+        };
+
+        modalBackground.initAndShowLoadingText();
+    })();
+
+    try {
+        //!----------------------------------BEGIN HELPERS AND REQUIRES CODE----------------------------------
+        {{{sharedJs}}};
+        //!------------------------------------END HELPERS AND REQUIRES CODE----------------------------------
+    } catch (err) {
+        act._onJSError(err);
+        return;
+    }
+
+    try {
+        act._start(
+            {{{stepNames}}},
+            //!-----------------------------------------BEGIN TEST CODE-------------------------------------------
+            {{{testSteps}}},
+            //!------------------------------------------END TEST CODE--------------------------------------------
+            {{{nextStep}}}
+        );
+    } catch (err) {
+        act._onJSError(err);
+    }
+})();

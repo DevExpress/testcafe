@@ -1,3 +1,4 @@
+import COMPILER_CONST from '../../../compiler/old/const';
 import * as hammerheadAPI from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import * as automation from '../automation/automation';
@@ -10,13 +11,13 @@ import rClickPlaybackAutomation from '../automation/playback/rclick';
 import selectPlaybackAutomation from '../automation/playback/select';
 import typePlaybackAutomation from '../automation/playback/type';
 import * as sourceIndexTracker from '../source-index';
+import async from '../deps/async';
 
 var jsProcessor = hammerheadAPI.JSProcessor;
 var hhUpload    = hammerheadAPI.upload;
 
 var $               = testCafeCore.$;
 var SETTINGS        = testCafeCore.SETTINGS;
-var CONST           = testCafeCore.CONST;
 var ERROR_TYPE      = testCafeCore.ERROR_TYPE;
 var contentEditable = testCafeCore.contentEditable;
 var domUtils        = testCafeCore.domUtils;
@@ -180,7 +181,7 @@ function actionArgumentsIterator (actionName) {
             failWithError(ERROR_TYPE.emptyFirstArgument, { action: actionName });
         }
         else {
-            window.async.forEachSeries(
+            async.forEachSeries(
                 items,
                 function (item, seriaCallback) {
                     iterate(item, seriaCallback);
@@ -717,4 +718,4 @@ export function setElementAvailabilityWaitingTimeout (ms) {
 }
 
 //NOTE: add sourceIndex wrapper
-sourceIndexTracker.wrapTrackableMethods(exports, CONST.ACTION_FUNC_NAMES);
+sourceIndexTracker.wrapTrackableMethods(exports, COMPILER_CONST.ACTION_FUNC_NAMES);

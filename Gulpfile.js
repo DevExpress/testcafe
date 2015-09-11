@@ -5,6 +5,8 @@ var gulpLess     = require('gulp-less');
 var eslint       = require('gulp-eslint');
 var qunitHarness = require('gulp-qunit-harness');
 var mocha        = require('gulp-mocha');
+var mustache     = require('gulp-mustache');
+var rename       = require('gulp-rename');
 var webmake      = require('gulp-webmake');
 var del          = require('del');
 var fs           = require('fs');
@@ -43,6 +45,29 @@ gulp.task('clean', function (cb) {
 
 
 //Scripts
+function wrapScriptWithTemplate (templatePath, scriptPath) {
+    return gulp
+        .src(templatePath)
+        .pipe(mustache({
+            source:    fs.readFileSync(scriptPath).toString(),
+            sourceMap: ''
+        }))
+        .pipe(rename(path.basename(scriptPath)))
+        .pipe(gulp.dest(path.dirname(scriptPath)));
+}
+
+gulp.task('wrap-scripts-with-templates', ['build-client-scripts'], function () {
+    var scripts = [
+        { templatePath: './src/client/core/index.js.wrapper.mustache', scriptPath: './lib/client/core/index.js' },
+        { templatePath: './src/client/ui/index.js.wrapper.mustache', scriptPath: './lib/client/ui/index.js' },
+        { templatePath: './src/client/runner/index.js.wrapper.mustache', scriptPath: './lib/client/runner/index.js' }
+    ];
+
+    return Promise.all(scripts.map(function (item) {
+        return wrapScriptWithTemplate(item.templatePath, item.scriptPath);
+    }));
+});
+
 gulp.task('build-client-scripts', ['clean'], function () {
     return gulp
         .src('src/client/*/index.js')
@@ -129,7 +154,7 @@ gulp.task('build-styles', ['styles-temp-copy'], function () {
 
 
 //Build
-gulp.task('build', ['build-client-scripts', 'build-styles'], function () {
+gulp.task('build', ['wrap-scripts-with-templates', 'build-styles'], function () {
     var js = gulp
         .src([
             'src/**/*.js',
@@ -145,7 +170,7 @@ gulp.task('build', ['build-client-scripts', 'build-styles'], function () {
         .pipe(gulpLess());
 
     var templates = gulp
-        .src('src/**/*.mustache');
+        .src(['src/**/*.mustache', '!src/**/*.js.wrapper.mustache']);
 
     var images = gulp
         .src('src/**/*.png');

@@ -59,6 +59,10 @@ export default class BaseReporter {
         };
     }
 
+    static _streamCanBeClosed (stream) {
+        return stream !== process.stdout && stream !== process.stderr;
+    }
+
 
     _getReportItemForTestRun (testRun) {
         var test = testRun.test;
@@ -108,8 +112,9 @@ export default class BaseReporter {
         });
 
         task.on('test-run-done', (testRun) => {
-            var reportItem      = this._getReportItemForTestRun(testRun);
-            var userAgent       = testRun.browserConnection.userAgent;
+            var reportItem = this._getReportItemForTestRun(testRun);
+            var userAgent  = testRun.browserConnection.userAgent;
+
             var testRunErrMsgs  = testRun.errs.map(err => this.formatter(err, userAgent));
 
             reportItem.pendingRuns--;
@@ -150,7 +155,8 @@ export default class BaseReporter {
         if (text)
             this._write(text);
 
-        this.outStream.end('');
+        if (BaseReporter._streamCanBeClosed(this.outStream))
+            this.outStream.end('');
     }
 
 

@@ -1,20 +1,22 @@
 /*! async.js | https://github.com/caolan/async/blob/master/LICENSE */
 /*global setTimeout: false, console: false */
-(function () {
+var async = {};
 
-    var async = {};
+export default async;
+
+(function () {
 
     // global on the server, window in the browser
     /*var root = this,
         previous_async = root.async;
 */
     //if (typeof module !== 'undefined' && module.exports) {
-        module.exports = async;
+    module.exports = async;
     //}
-  /*  else {
-        console.log('222');
-        root.async = async;
-    }*/
+    /*  else {
+          console.log('222');
+          root.async = async;
+      }*/
 
     /*async.noConflict = function () {
         root.async = previous_async;
@@ -80,7 +82,7 @@
 
     async.forEach = function (arr, iterator, callback) {
         callback = callback || function () {
-        };
+            };
         if (!arr.length) {
             return callback();
         }
@@ -104,12 +106,12 @@
 
     async.forEachSeries = function (arr, iterator, callback) {
         callback = callback || function () {
-        };
+            };
         if (!arr.length) {
             return callback();
         }
         var completed = 0;
-        var iterate = function () {
+        var iterate   = function () {
             iterator(arr[completed], function (err) {
                 if (err) {
                     callback(err);
@@ -132,15 +134,15 @@
 
     async.forEachLimit = function (arr, limit, iterator, callback) {
         callback = callback || function () {
-        };
+            };
         if (!arr.length || limit <= 0) {
             return callback();
         }
         var completed = 0;
-        var started = 0;
-        var running = 0;
+        var started   = 0;
+        var running   = 0;
 
-        (function replenish() {
+        (function replenish () {
             if (completed === arr.length) {
                 return callback();
             }
@@ -176,7 +178,7 @@
             return fn.apply(null, [async.forEach].concat(args));
         };
     };
-    var doSeries = function (fn) {
+    var doSeries   = function (fn) {
         return function () {
             var args = Array.prototype.slice.call(arguments);
             return fn.apply(null, [async.forEachSeries].concat(args));
@@ -184,10 +186,10 @@
     };
 
 
-    var _asyncMap = function (eachfn, arr, iterator, callback) {
+    var _asyncMap   = function (eachfn, arr, iterator, callback) {
         var results = [];
-        arr = _map(arr, function (x, i) {
-            return {index: i, value: x};
+        arr         = _map(arr, function (x, i) {
+            return { index: i, value: x };
         });
         eachfn(arr, function (x, callback) {
             iterator(x.value, function (err, v) {
@@ -198,7 +200,7 @@
             callback(err, results);
         });
     };
-    async.map = doParallel(_asyncMap);
+    async.map       = doParallel(_asyncMap);
     async.mapSeries = doSeries(_asyncMap);
 
 
@@ -220,7 +222,7 @@
     async.foldl = async.reduce;
 
     async.reduceRight = function (arr, memo, iterator, callback) {
-        var reversed = _map(arr,function (x) {
+        var reversed = _map(arr, function (x) {
             return x;
         }).reverse();
         async.reduce(reversed, memo, iterator, callback);
@@ -228,10 +230,10 @@
     // foldr alias
     async.foldr = async.reduceRight;
 
-    var _filter = function (eachfn, arr, iterator, callback) {
+    var _filter        = function (eachfn, arr, iterator, callback) {
         var results = [];
-        arr = _map(arr, function (x, i) {
-            return {index: i, value: x};
+        arr         = _map(arr, function (x, i) {
+            return { index: i, value: x };
         });
         eachfn(arr, function (x, callback) {
             iterator(x.value, function (v) {
@@ -248,16 +250,16 @@
             }));
         });
     };
-    async.filter = doParallel(_filter);
+    async.filter       = doParallel(_filter);
     async.filterSeries = doSeries(_filter);
     // select alias
-    async.select = async.filter;
+    async.select       = async.filter;
     async.selectSeries = async.filterSeries;
 
-    var _reject = function (eachfn, arr, iterator, callback) {
+    var _reject        = function (eachfn, arr, iterator, callback) {
         var results = [];
-        arr = _map(arr, function (x, i) {
-            return {index: i, value: x};
+        arr         = _map(arr, function (x, i) {
+            return { index: i, value: x };
         });
         eachfn(arr, function (x, callback) {
             iterator(x.value, function (v) {
@@ -274,10 +276,10 @@
             }));
         });
     };
-    async.reject = doParallel(_reject);
+    async.reject       = doParallel(_reject);
     async.rejectSeries = doSeries(_reject);
 
-    var _detect = function (eachfn, arr, iterator, main_callback) {
+    var _detect        = function (eachfn, arr, iterator, main_callback) {
         eachfn(arr, function (x, callback) {
             iterator(x, function (result) {
                 if (result) {
@@ -293,7 +295,7 @@
             main_callback();
         });
     };
-    async.detect = doParallel(_detect);
+    async.detect       = doParallel(_detect);
     async.detectSeries = doSeries(_detect);
 
     async.some = function (arr, iterator, main_callback) {
@@ -337,7 +339,7 @@
                     callback(err);
                 }
                 else {
-                    callback(null, {value: x, criteria: criteria});
+                    callback(null, { value: x, criteria: criteria });
                 }
             });
         }, function (err, results) {
@@ -358,7 +360,7 @@
 
     async.auto = function (tasks, callback) {
         callback = callback || function () {
-        };
+            };
         var keys = _keys(tasks);
         if (!keys.length) {
             return callback(null);
@@ -366,8 +368,8 @@
 
         var results = {};
 
-        var listeners = [];
-        var addListener = function (fn) {
+        var listeners      = [];
+        var addListener    = function (fn) {
             listeners.unshift(fn);
         };
         var removeListener = function (fn) {
@@ -378,7 +380,7 @@
                 }
             }
         };
-        var taskComplete = function () {
+        var taskComplete   = function () {
             _forEach(listeners.slice(0), function (fn) {
                 fn();
             });
@@ -393,7 +395,7 @@
         });
 
         _forEach(keys, function (k) {
-            var task = (tasks[k] instanceof Function) ? [tasks[k]] : tasks[k];
+            var task         = (tasks[k] instanceof Function) ? [tasks[k]] : tasks[k];
             var taskCallback = function (err) {
                 if (err) {
                     callback(err);
@@ -410,8 +412,8 @@
                     taskComplete();
                 }
             };
-            var requires = task.slice(0, Math.abs(task.length - 1)) || [];
-            var ready = function () {
+            var requires     = task.slice(0, Math.abs(task.length - 1)) || [];
+            var ready        = function () {
                 return _reduce(requires, function (a, x) {
                     return (a && results.hasOwnProperty(x));
                 }, true);
@@ -433,7 +435,7 @@
 
     async.waterfall = function (tasks, callback) {
         callback = callback || function () {
-        };
+            };
         if (!tasks.length) {
             return callback();
         }
@@ -464,7 +466,7 @@
 
     async.parallel = function (tasks, callback) {
         callback = callback || function () {
-        };
+            };
         if (tasks.constructor === Array) {
             async.map(tasks, function (fn, callback) {
                 if (fn) {
@@ -497,7 +499,7 @@
 
     async.series = function (tasks, callback) {
         callback = callback || function () {
-        };
+            };
         if (tasks.constructor === Array) {
             async.mapSeries(tasks, function (fn, callback) {
                 if (fn) {
@@ -530,7 +532,7 @@
 
     async.iterator = function (tasks) {
         var makeCallback = function (index) {
-            var fn = function () {
+            var fn  = function () {
                 if (tasks.length) {
                     tasks[index].apply(null, arguments);
                 }
@@ -553,7 +555,7 @@
         };
     };
 
-    var _concat = function (eachfn, arr, fn, callback) {
+    var _concat        = function (eachfn, arr, fn, callback) {
         var r = [];
         eachfn(arr, function (x, cb) {
             fn(x, function (err, y) {
@@ -564,7 +566,7 @@
             callback(err, r);
         });
     };
-    async.concat = doParallel(_concat);
+    async.concat       = doParallel(_concat);
     async.concatSeries = doSeries(_concat);
 
     async.whilst = function (test, iterator, callback) {
@@ -597,19 +599,19 @@
 
     async.queue = function (worker, concurrency) {
         var workers = 0;
-        var q = {
-            tasks: [],
+        var q       = {
+            tasks:       [],
             concurrency: concurrency,
-            saturated: null,
-            empty: null,
-            drain: null,
-            push: function (data, callback) {
+            saturated:   null,
+            empty:       null,
+            drain:       null,
+            push:        function (data, callback) {
                 if (data.constructor !== Array) {
                     data = [data];
                 }
                 _forEach(data, function (task) {
                     q.tasks.push({
-                        data: task,
+                        data:     task,
                         callback: typeof callback === 'function' ? callback : null
                     });
                     if (q.saturated && q.tasks.length == concurrency) {
@@ -618,7 +620,7 @@
                     async.nextTick(q.process);
                 });
             },
-            process: function () {
+            process:     function () {
                 if (workers < q.concurrency && q.tasks.length) {
                     var task = q.tasks.shift();
                     if (q.empty && q.tasks.length == 0) q.empty();
@@ -633,10 +635,10 @@
                     });
                 }
             },
-            length: function () {
+            length:      function () {
                 return q.tasks.length;
             },
-            running: function () {
+            running:     function () {
                 return workers;
             }
         };
@@ -663,22 +665,22 @@
             }]));
         };
     };
-    async.log = _console_fn('log');
-    async.dir = _console_fn('dir');
+    async.log       = _console_fn('log');
+    async.dir       = _console_fn('dir');
     /*async.info = _console_fn('info');
      async.warn = _console_fn('warn');
      async.error = _console_fn('error');*/
 
     async.memoize = function (fn, hasher) {
-        var memo = {};
-        var queues = {};
-        hasher = hasher || function (x) {
-            return x;
-        };
-        var memoized = function () {
-            var args = Array.prototype.slice.call(arguments);
+        var memo            = {};
+        var queues          = {};
+        hasher              = hasher || function (x) {
+                return x;
+            };
+        var memoized        = function () {
+            var args     = Array.prototype.slice.call(arguments);
             var callback = args.pop();
-            var key = hasher.apply(null, args);
+            var key      = hasher.apply(null, args);
             if (key in memo) {
                 callback.apply(null, memo[key]);
             }
@@ -689,7 +691,7 @@
                 queues[key] = [callback];
                 fn.apply(null, args.concat([function () {
                     memo[key] = arguments;
-                    var q = queues[key];
+                    var q     = queues[key];
                     delete queues[key];
                     for (var i = 0, l = q.length; i < l; i++) {
                         q[i].apply(null, arguments);

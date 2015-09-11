@@ -1,3 +1,4 @@
+import COMPILER_CONST from '../../../compiler/old/const';
 import * as hammerheadAPI from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import * as sourceIndexTracker from '../source-index';
@@ -6,7 +7,6 @@ var messageSandbox = hammerheadAPI.MessageSandbox;
 
 var $                     = testCafeCore.$;
 var SETTINGS              = testCafeCore.SETTINGS;
-var CONST                 = testCafeCore.CONST;
 var ERROR_TYPE            = testCafeCore.ERROR_TYPE;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
 var serviceUtils          = testCafeCore.serviceUtils;
@@ -410,7 +410,7 @@ AssertionsAPI.assert = function (operator, args, callback, context) {
 };
 
 //NOTE: add sourceIndex wrapper
-sourceIndexTracker.wrapTrackableMethods(AssertionsAPI.prototype, CONST.ASSERTION_FUNC_NAMES);
+sourceIndexTracker.wrapTrackableMethods(AssertionsAPI.prototype, COMPILER_CONST.ASSERTION_FUNC_NAMES);
 
 
 export default AssertionsAPI;

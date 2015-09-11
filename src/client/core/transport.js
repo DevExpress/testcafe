@@ -1,6 +1,6 @@
 import * as hammerheadAPI from './deps/hammerhead';
 import COMMAND from '../../runner/test-run/command';
-import * as SETTINGS from './settings';
+import SETTINGS from './settings';
 
 var transport = hammerheadAPI.Transport;
 
