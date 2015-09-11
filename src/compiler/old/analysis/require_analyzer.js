@@ -1,23 +1,23 @@
-var astProcessor = require('uglify-js').uglify,
-    Common = require('./../common'),
-    Hammerhead = require('hammerhead'),
-    Ast = require('./../ast'),
-    CallAnalyzer = require('./call_analyzer'),
+var astProcessor  = require('uglify-js').uglify,
+    Common        = require('./../common'),
+    Hammerhead    = require('hammerhead'),
+    Ast           = require('./../ast'),
+    CallAnalyzer  = require('./call_analyzer'),
     StepsAnalyzer = require('./steps_analyzer');
 
-function extractMixins(ast, descriptor, errs, sourceIndex) {
-    var walker = astProcessor.ast_walker(),
-        mixinAnalyzer = new StepsAnalyzer(true, descriptor.rawMixinsStepData, errs, sourceIndex),
+function extractMixins (ast, descriptor, errs, sourceIndex) {
+    var walker             = astProcessor.ast_walker(),
+        mixinAnalyzer      = new StepsAnalyzer(true, descriptor.rawMixinsStepData, errs, sourceIndex),
         requireCodeRebuild = false;
 
     walker.with_walkers({
         'string': function () {
-            var astPath = walker.stack(),
+            var astPath      = walker.stack(),
                 topStatement = astPath[1][0];
 
             if (this[1] === Common.MIXIN_DECLARATION_MARKER) {
                 topStatement.remove = true;
-                requireCodeRebuild = true;
+                requireCodeRebuild  = true;
 
                 mixinAnalyzer.run(walker.stack(), descriptor.filename, descriptor.jsCode);
             }
@@ -29,7 +29,7 @@ function extractMixins(ast, descriptor, errs, sourceIndex) {
     return requireCodeRebuild;
 }
 
-function analyzeRequireCode(requireAst, descriptor, errs, sourceIndex) {
+function analyzeRequireCode (requireAst, descriptor, errs, sourceIndex) {
     //OPTIMIZATION: use footprints to determine if we need deeper analysis
     var originalSrc = descriptor.jsCode;
 
@@ -38,8 +38,8 @@ function analyzeRequireCode(requireAst, descriptor, errs, sourceIndex) {
 
         //NOTE: we need to rebuild js code if mixins were removed from AST
         if (rebuildCode) {
-            requireAst = Ast.getRemainderAst(requireAst);
-            descriptor.jsCode = requireAst ? astProcessor.gen_code(requireAst, {beautify: true}) : '';
+            requireAst        = Ast.getRemainderAst(requireAst);
+            descriptor.jsCode = requireAst ? astProcessor.gen_code(requireAst, { beautify: true }) : '';
         }
     }
 
@@ -47,18 +47,18 @@ function analyzeRequireCode(requireAst, descriptor, errs, sourceIndex) {
         //NOTE: validate what require file doesn't contain action functions calls and update source index
         if (CallAnalyzer.run(requireAst, descriptor.filename, errs, true, sourceIndex, originalSrc)) {
             //NOTE: if call analyzer found assertions and added them to index, we need to rebuild again
-            descriptor.jsCode = requireAst ? astProcessor.gen_code(requireAst, {beautify: true}) : '';
+            descriptor.jsCode = requireAst ? astProcessor.gen_code(requireAst, { beautify: true }) : '';
         }
     }
 }
 
 exports.run = function (requireFilename, ownerFilename, sourceIndex, callback) {
-    var errs = [],
+    var errs       = [],
         descriptor = {
-            hasErrs: false,
-            jsCode: null,
+            hasErrs:           false,
+            jsCode:            null,
             rawMixinsStepData: {},
-            filename: requireFilename
+            filename:          requireFilename
         };
 
     Ast.construct(requireFilename, ownerFilename, function (parsingErr, requireAst, srcCode) {

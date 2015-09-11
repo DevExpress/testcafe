@@ -15,6 +15,12 @@ export function redirect (res, url) {
 }
 
 export function respondWithJSON (res, data) {
+    preventCaching(res);
     res.setHeader('content-type', 'application/json');
     res.end(data ? JSON.stringify(data) : '');
+}
+
+export function preventCaching (res) {
+    res.setHeader('cache-control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('pragma', 'no-cache');
 }

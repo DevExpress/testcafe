@@ -16,8 +16,8 @@ export default class Runner {
             takeScreenshotOnFails: false,
             failOnJsErrors:        true,
             quarantineMode:        false,
-            reportOutStream:       null,
-            formatter:             null
+            reportOutStream:       void 0,
+            formatter:             void 0
         };
     }
 

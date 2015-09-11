@@ -1,3 +1,5 @@
+import * as hammerheadAPI from './deps/hammerhead';
+
 import * as cursor from './cursor';
 import * as selectElement from './select-element';
 import * as modalBackground from './modal-background';
@@ -16,3 +18,5 @@ Object.defineProperty(window, '%testCafeUI%', {
     writable:     false,
     value:        exports
 });
+
+hammerheadAPI.on(hammerheadAPI.IFRAME_READY_TO_INIT, e => initTestCafeUI(e.iframe.contentWindow, true));
