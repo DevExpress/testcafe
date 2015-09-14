@@ -4,7 +4,7 @@ var nativeMethods = hammerhead.nativeMethods;
 
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var domUtils      = testCafeCore.get('./utils/dom');
-var event         = testCafeCore.get('./utils/event');
+var eventUtils         = testCafeCore.get('./utils/event');
 var textSelection = testCafeCore.get('./utils/text-selection');
 
 var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
@@ -161,7 +161,7 @@ $(document).ready(function () {
 
             $form.submit(function (ev) {
                 formSubmitted = true;
-                event.preventDefault(ev);
+                eventUtils.preventDefault(ev);
                 return false;
             });
 

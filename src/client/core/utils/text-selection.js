@@ -1,13 +1,13 @@
 import hammerhead from '../deps/hammerhead';
-import $ from '../deps/jquery';
 import * as domUtils from './dom';
 import * as positionUtils from './position';
 import * as styleUtils from './style';
 import * as contentEditable from './content-editable';
+import * as eventUtils from './event';
+import { forEach } from './array';
 
 
 var browserUtils     = hammerhead.utils.browser;
-var nativeMethods    = hammerhead.nativeMethods;
 var selectionSandbox = hammerhead.eventSandbox.selection;
 
 
@@ -129,7 +129,7 @@ function onSelectionChange () {
 }
 
 if (browserUtils.isIE)
-    nativeMethods.addEventListener.call(document, 'selectionchange', onSelectionChange, true);
+    eventUtils.bind(document, 'selectionchange', onSelectionChange, true);
 
 //utils for contentEditable
 function selectContentEditable (el, from, to, needFocus, inverse) {
@@ -156,7 +156,7 @@ function selectContentEditable (el, from, to, needFocus, inverse) {
     }
 
     if (typeof to === 'undefined') {
-        latestTextNodeChild = contentEditable.getLastVisibleTextNode(el, true);
+        latestTextNodeChild = contentEditable.getLastTextNode(el, true);
         endPosition         = {
             node:   latestTextNodeChild || el,
             offset: latestTextNodeChild && latestTextNodeChild.nodeValue ?
@@ -431,54 +431,52 @@ export function getPositionCoordinates (el, position, correctOptions) {
         return rect ? correctRectangle(rect, correctOptions) : null;
     }
 
-    var $body            = $(document).find('body'),
-        bodyMargin       = styleUtils.getElementMargin($body[0]),
-        bodyLeft         = null,
-        bodyTop          = null,
-        elementMargin    = styleUtils.getElementMargin(el),
-        elementTop       = offset.top - elementMargin.top,
-        elementLeft      = offset.left - elementMargin.left,
-        width            = el.scrollWidth,
+    var body          = document.body;
+    var bodyMargin    = styleUtils.getElementMargin(body);
+    var bodyLeft      = null;
+    var bodyTop       = null;
+    var elementMargin = styleUtils.getElementMargin(el);
+    var elementTop    = offset.top - elementMargin.top;
+    var elementLeft   = offset.left - elementMargin.left;
+    var width         = el.scrollWidth;
 
-        $fakeDiv         = $('<div></div>'),
-        fakeDivCssStyles = 'white-space:pre-wrap;border-style:solid;',
-        listOfModifiers  = ['direction', 'font-family', 'font-size', 'font-size-adjust', 'font-variant', 'font-weight', 'font-style', 'letter-spacing', 'line-height', 'text-align', 'text-indent', 'text-transform', 'word-wrap', 'word-spacing', 'padding-top', 'padding-left', 'padding-right', 'padding-bottom', 'margin-top', 'margin-left', 'margin-right', 'margin-bottom', 'border-top-width', 'border-left-width', 'border-right-width', 'border-bottom-width'];
+    var fakeDiv          = document.createElement('div');
+    var fakeDivCssStyles = 'white-space:pre-wrap;border-style:solid;';
+    var listOfModifiers  = ['direction', 'font-family', 'font-size', 'font-size-adjust', 'font-variant', 'font-weight', 'font-style', 'letter-spacing', 'line-height', 'text-align', 'text-indent', 'text-transform', 'word-wrap', 'word-spacing', 'padding-top', 'padding-left', 'padding-right', 'padding-bottom', 'margin-top', 'margin-left', 'margin-right', 'margin-bottom', 'border-top-width', 'border-left-width', 'border-right-width', 'border-bottom-width'];
 
-    if (styleUtils.getCssStyleValue($body[0], 'position') === 'absolute') {
+    if (styleUtils.get(body, 'position') === 'absolute') {
         elementLeft -= bodyMargin.left;
         elementTop -= bodyMargin.top;
-        bodyLeft = styleUtils.getCssStyleValue($body[0], 'left');
+        bodyLeft = styleUtils.get(body, 'left');
 
         if (bodyLeft !== 'auto')
             elementLeft -= parseInt(bodyLeft.replace('px', ''));
 
-        bodyTop = styleUtils.getCssStyleValue($body[0], 'top');
+        bodyTop = styleUtils.get(body, 'top');
 
         if (bodyTop !== 'auto')
             elementTop -= parseInt(bodyTop.replace('px', ''));
     }
 
-    $.each(listOfModifiers, function (index, value) {
-        fakeDivCssStyles += value + ':' + styleUtils.getCssStyleValue(el, value) + ';';
-    });
+    forEach(listOfModifiers, modifier => fakeDivCssStyles += `${modifier}:${styleUtils.get(el, modifier)};`);
 
-    $fakeDiv.appendTo($body);
+    body.appendChild(fakeDiv);
 
     try {
-        $fakeDiv.css({
+        styleUtils.set(fakeDiv, {
             cssText:  fakeDivCssStyles,
             position: 'absolute',
-            top:      elementTop,
-            left:     elementLeft,
-            width:    width,
-            height:   el.scrollHeight
+            left:     elementLeft + 'px',
+            top:      elementTop + 'px',
+            width:    width + 'px',
+            height:   el.scrollHeight + 'px'
         });
 
-        $fakeDiv[0].textContent = !el.value.length ? ' ' : el.value;
+        fakeDiv.textContent = !el.value.length ? ' ' : el.value;
 
         range = document.createRange(); //B254723
-        range.setStart($fakeDiv[0].firstChild, Math.min(position, el.value.length));
-        range.setEnd($fakeDiv[0].firstChild, Math.min(position, el.value.length));
+        range.setStart(fakeDiv.firstChild, Math.min(position, el.value.length));
+        range.setEnd(fakeDiv.firstChild, Math.min(position, el.value.length));
 
         if (isTextarea) {
             rects = range.getClientRects();
@@ -490,9 +488,9 @@ export function getPositionCoordinates (el, position, correctOptions) {
         else
             rect = range.getClientRects()[0];
 
-        $fakeDiv.remove();
+        domUtils.remove(fakeDiv);
     } catch (err) {
-        $fakeDiv.remove();
+        domUtils.remove(fakeDiv);
 
         return {};
     }

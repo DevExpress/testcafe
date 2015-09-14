@@ -6,6 +6,7 @@ var filter       = require('gulp-filter');
 var eslint       = require('gulp-eslint');
 var ghPages      = require('gulp-gh-pages');
 var git          = require('gulp-git');
+var globby       = require('globby');
 var qunitHarness = require('gulp-qunit-harness');
 var mocha        = require('gulp-mocha');
 var mustache     = require('gulp-mustache');
@@ -25,6 +26,7 @@ var readline     = require('readline');
 var spawn        = require('child_process').spawn;
 var serveStatic  = require('serve-static');
 var Promise      = require('pinkie');
+var markdownlint = require('markdownlint');
 
 ll
     .tasks([
@@ -244,17 +246,40 @@ gulp.task('test-client-travis', ['build'], function () {
 gulp.task('travis', [process.env.GULP_TASK || '']);
 
 //Documentation
-gulp.task('clear-site', function() {
-	return del('./site');		
+gulp.task('lint-docs', function() {
+    function lintFiles(files) {
+        return new Promise(function(resolve, reject) {
+            var config = {
+                "files": files,
+                "config": require("./.markdownlint.json")
+            };
+            markdownlint(config, function(err, result) {
+                var lintErr = err || (result && result.toString());    
+                    
+                if(lintErr) 
+                    reject(lintErr);
+                else 
+                    resolve();
+            });
+        });
+    }
+    
+    return globby("./docs/articles/**/*.md").then(lintFiles);
+});
+
+gulp.task('clear-site', ['lint-docs'], function(cb) {
+	del('./site/**', function(e) {
+		cb(e);
+    });		
 });
 
 gulp.task('fetch-assets-repo', ['clear-site'], function(cb) {
-//	git.clone('https://github.com/VasilyStrelyaev/testcafe-gh-page-assets.git', {args: './site'}, function (e) {
-//		if (e) return cb(e);
-//		cb();
-//	});
-	return gulp.src('../testcafe-gh-page-assets/**/*')
-		.pipe(gulp.dest('./site'));	
+	git.clone('https://github.com/VasilyStrelyaev/testcafe-gh-page-assets.git', {args: './site'}, function (e) {
+		if (e) return cb(e);
+		cb();
+	});
+//	return gulp.src('../testcafe-gh-page-assets/**/*')
+//		.pipe(gulp.dest('./site'));	
 });
 
 gulp.task('put-in-articles', ['fetch-assets-repo'], function() {
@@ -267,7 +292,12 @@ gulp.task('put-in-navigation', ['put-in-articles'], function() {
 		.pipe(gulp.dest('./site/src/_data'));	
 });
 
-gulp.task('put-in-docs', ['put-in-articles', 'put-in-navigation']);
+gulp.task('put-in-templates', ['put-in-navigation'], function() {
+	return gulp.src('./docs/_includes/**/*')
+		.pipe(gulp.dest('./site/src/_includes'));	
+});
+
+gulp.task('put-in-docs', ['put-in-articles', 'put-in-navigation', 'put-in-templates']);
 
 gulp.task('prepare-website', ['fetch-assets-repo', 'put-in-docs']);
 

@@ -1,4 +1,5 @@
-import $ from '../deps/jquery';
+import hammerhead from '../deps/hammerhead';
+import { filter } from './array';
 
 
 export function inherit (Child, Parent) {
@@ -7,15 +8,9 @@ export function inherit (Child, Parent) {
 
     Func.prototype              = Parent.prototype;
 
-    $.extend(Child.prototype, new Func());
+    hammerhead.utils.extend(Child.prototype, new Func());
     Child.prototype.constructor = Child;
     Child.base                  = Parent.prototype;
-}
-
-// TODO: import the following functions in Hammerhead. (They are not published now)
-// We can't use 'obj instanceof $' check because it depends on instance of the jQuery.
-export function isJQueryObj (obj) {
-    return obj && !!obj.jquery;
 }
 
 export var EventEmitter = function () {
@@ -48,9 +43,7 @@ EventEmitter.prototype.off = function (evt, listener) {
     var listeners = this.eventsListeners[evt];
 
     if (listeners) {
-        this.eventsListeners[evt] = listeners.filter(function (item) {
-            return item !== listener;
-        });
+        this.eventsListeners[evt] = filter(listeners, item => item !== listener);
     }
 };
 

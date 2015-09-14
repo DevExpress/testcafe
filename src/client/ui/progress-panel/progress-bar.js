@@ -3,6 +3,8 @@ import testCafeCore from '../deps/testcafe-core';
 
 var shadowUI = hammerhead.shadowUI;
 
+var styleUtils = testCafeCore.styleUtils;
+
 
 const CONTAINER_CLASS = 'progress-bar';
 const VALUE_CLASS     = 'value';
@@ -24,7 +26,7 @@ export default class ProgressBar {
     setValue (value) {
         value = typeof value !== 'number' ? 0 : Math.min(Math.max(value, 0), 100);
 
-        this.valueElement.style.width = value + '%';
+        styleUtils.set(this.valueElement, 'width', value + '%');
     }
 
     setSuccess (value) {

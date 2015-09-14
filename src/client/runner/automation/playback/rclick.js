@@ -9,7 +9,6 @@ import async from '../../deps/async';
 var browserUtils   = hammerhead.utils.browser;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
-var $             = testCafeCore.$;
 var SETTINGS      = testCafeCore.SETTINGS;
 var domUtils      = testCafeCore.domUtils;
 var positionUtils = testCafeCore.positionUtils;
@@ -56,13 +55,13 @@ export default function (el, options, actionCallback) {
             }
 
             movePlaybackAutomation(target, false, options, function () {
-                if ((isSVGElement && browserUtils.isOpera) || ($(el).is('tref')))
+                if ((isSVGElement && browserUtils.isOpera) || el.tagName.toLowerCase() === 'tref')
                     topElement = el; //NOTE: document.elementFromPoint can't find this element
                 else {
                     screenPoint = automationUtil.getMouseActionPoint(el, options, true);
                     eventPoint  = automationUtil.getEventOptionCoordinates(el, screenPoint);
 
-                    eventOptions = $.extend({
+                    eventOptions = hammerhead.utils.extend({
                         clientX: eventPoint.x,
                         clientY: eventPoint.y,
                         button:  eventUtils.BUTTON.right,

@@ -1,24 +1,40 @@
 - item: Getting Started
   url: /testcafe/documentation/getting-started
-- item: Command-Line Interface 
-  url: /testcafe/documentation/command-line-interface
-- folder: Test Framework API
-  url: /testcafe/documentation/test-framework-api
+- folder: Test Framework
+  url: /testcafe/documentation/test-framework
   content:
   - item: Test Structure
-    url: /testcafe/documentation/test-framework-api/test-structure
+    url: .
   - item: Assertions
-    url: /testcafe/documentation/test-framework-api/assertions
-  - item: Test Structure
-    url: /testcafe/documentation/test-framework-api/test-structure
+    url: .
   - item: Roles
-    url: /testcafe/documentation/test-framework-api/roles
-- folder: Continuous Integration API
-  url: /testcafe/documentation/continuous-integration-api  
+    url: .
+- item: Command Line Interface
+  url: /testcafe/documentation/command-line-interface
+- folder: API Reference
+  url: /testcafe/documentation/api-reference  
   content:
   - item: TestCafe
-    url: /testcafe/documentation/test-framework-api/testCafe
+    url: /testcafe/documentation/api-reference/testCafe
   - item: BrowserConnection
-    url: /testcafe/documentation/test-framework-api/browserConnection
+    url: /testcafe/documentation/api-reference/browserConnection
   - item: Runner
-    url: /testcafe/documentation/test-framework-api/runner
+    url: /testcafe/documentation/api-reference/runner
+  - item: Global
+    url: /testcafe/documentation/api-reference/global
+- folder: Extending TestCafe
+  url: .  
+  content:
+  - item: Reporter Plugins
+    url: .
+  - item: Browser Provider Plugins
+    url: .
+  - item: Report Test Utils
+    url: .
+- folder: How-to
+  url: .
+  content:
+  - item: How to do this
+    url: .
+  - item: How to do that
+    url: .

@@ -416,7 +416,6 @@ $(document).ready(function () {
 
     // NOTE: Android and iOS ignore the size and multiple attributes, all select elements behave like select with size=1
     if (isMobileBrowser) {
-
         asyncTest('in select elements with "size" more than 1, click on an option raises an error when the option list is collapsed', function () {
             SETTINGS.ENABLE_SOURCE_INDEX = true;
             var select                   = createSelect(2);
@@ -468,7 +467,6 @@ $(document).ready(function () {
             });
         });
     });
-
 
     module('press actions with select element');
     asyncTest('press down/up/right/left when option list closed', function () {
@@ -632,26 +630,23 @@ $(document).ready(function () {
 
     // NOTE: Android and iOS ignore the size and multiple attributes, all select elements behave like select with size=1
     if (isMobileBrowser) {
-
         module('mouse actions with multiline select element');
         asyncTest('click on the "select" element with the "size" attribute greater than one, then click on an option', function () {
-            var select = createSelect(2),
-                option = $(select).children()[2];
+            var select = createSelect(2);
 
             clickPlaybackAutomation(select, {}, function () {
-                ok(selectElement.isOptionListExpanded($(select)));
+                ok(selectElement.isOptionListExpanded(select));
                 startNext();
             });
         });
 
         asyncTest('click on the "select" element with the "multiple" attribute, then click on an option', function () {
-            var select = createSelect(),
-                option = $(select).children()[2];
+            var select = createSelect();
 
             $(select).attr('multiple', 'multiple');
 
             clickPlaybackAutomation(select, {}, function () {
-                ok(selectElement.isOptionListExpanded($(select)));
+                ok(selectElement.isOptionListExpanded(select));
                 startNext();
             });
         });
@@ -1026,7 +1021,6 @@ $(document).ready(function () {
 
    // Android and iOS ignore the size and multiple attributes, all select elements behave like select with size=1
    if (!isMobileBrowser) {
-
        module('mouse actions with select with the "groups" option and size more than one');
        asyncTest('click optgroup', function () {
            var select  = createSelectWithGroups(),

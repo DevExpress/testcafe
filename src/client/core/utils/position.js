@@ -1,13 +1,11 @@
 /* global isIFrameWithoutSrc:true */
 import hammerhead from '../deps/hammerhead';
-import $ from '../deps/jquery';
 import * as styleUtils from './style';
 import * as domUtils from './dom';
 
 
 export function getIFrameCoordinates (iFrameWin) {
     var iFrame              = domUtils.getIframeByWindow(iFrameWin);
-    var $IFrame             = $(iFrame);
     var iFrameOffset        = getOffsetPosition(iFrame);
     var iFrameBorders       = styleUtils.getBordersWidth(iFrame);
     var iFramePadding       = styleUtils.getElementPadding(iFrame);
@@ -15,10 +13,10 @@ export function getIFrameCoordinates (iFrameWin) {
     var iFrameRectangleTop  = iFrameOffset.top + iFrameBorders.top + iFramePadding.top;
 
     return {
-        bottom: iFrameRectangleTop + $IFrame.height(),
         left:   iFrameRectangleLeft,
-        right:  iFrameRectangleLeft + $IFrame.width(),
-        top:    iFrameRectangleTop
+        top:    iFrameRectangleTop,
+        right:  iFrameRectangleLeft + styleUtils.getWidth(iFrame),
+        bottom: iFrameRectangleTop + styleUtils.getHeight(iFrame)
     };
 }
 
@@ -26,7 +24,6 @@ export function isElementVisible (el) {
     if (domUtils.isTextNode(el))
         return !styleUtils.isNotVisibleNode(el);
 
-    var $el              = $(el);
     var elementRectangle = getElementRectangle(el);
 
     if (!domUtils.isContentEditableElement(el)) {
@@ -35,24 +32,24 @@ export function isElementVisible (el) {
     }
 
     if (domUtils.isMapElement(el)) {
-        var mapContainer = domUtils.getMapContainer($el.closest('map')[0]);
+        var mapContainer = domUtils.getMapContainer(domUtils.closest(el, 'map'));
 
         return mapContainer ? isElementVisible(mapContainer) : false;
     }
     else if (styleUtils.isVisibleChild(el)) {
-        var $select             = $(domUtils.getSelectParent(el));
-        var childRealIndex      = domUtils.getChildVisibleIndex($select[0], el);
-        var realSelectSizeValue = styleUtils.getSelectElementSize($select[0]);
-        var topVisibleIndex     = Math.max($select.scrollTop() / styleUtils.getOptionHeight($select[0]), 0);
+        var select              = domUtils.getSelectParent(el);
+        var childRealIndex      = domUtils.getChildVisibleIndex(select, el);
+        var realSelectSizeValue = styleUtils.getSelectElementSize(select);
+        var topVisibleIndex     = Math.max(styleUtils.getScrollTop(select) / styleUtils.getOptionHeight(select), 0);
         var bottomVisibleIndex  = topVisibleIndex + realSelectSizeValue - 1;
         var optionVisibleIndex  = Math.max(childRealIndex - topVisibleIndex, 0);
 
         return optionVisibleIndex >= topVisibleIndex && optionVisibleIndex <= bottomVisibleIndex;
     }
     else if (domUtils.isSVGElement(el))
-        return $el.css('visibility') !== 'hidden' && $el.css('display') !== 'none';
+        return styleUtils.get(el, 'visibility') !== 'hidden' && styleUtils.get(el, 'display') !== 'none';
     else
-        return $el.is(':visible') && $el.css('visibility') !== 'hidden';
+        return styleUtils.hasDimensions(el) && styleUtils.get(el, 'visibility') !== 'hidden';
 }
 
 export function getClientDimensions (target) {
@@ -79,9 +76,8 @@ export function getClientDimensions (target) {
         };
     }
 
-    var $target             = $(target);
     var isHtmlElement       = /html/i.test(target.tagName);
-    var body                = isHtmlElement ? $target.find('body')[0] : null;
+    var body                = isHtmlElement ? target.getElementsByTagName('body')[0] : null;
     var elementBorders      = styleUtils.getBordersWidth(target);
     var elementRect         = target.getBoundingClientRect();
     var elementScroll       = styleUtils.getElementScroll(target);
@@ -130,8 +126,10 @@ export function getClientDimensions (target) {
             top:  elementScroll.top
         },
         scrollbar: {
-            right:  isHtmlElement || $target.innerWidth() === target.clientWidth ? 0 : domUtils.getScrollbarSize(),
-            bottom: isHtmlElement || $target.innerHeight() === target.clientHeight ? 0 : domUtils.getScrollbarSize()
+            right:  isHtmlElement ||
+                    styleUtils.getInnerWidth(target) === target.clientWidth ? 0 : domUtils.getScrollbarSize(),
+            bottom: isHtmlElement ||
+                    styleUtils.getInnerHeight(target) === target.clientHeight ? 0 : domUtils.getScrollbarSize()
         },
         top:       elementTopPosition,
         width:     elementWidth
@@ -219,7 +217,7 @@ export function getElementFromPoint (x, y, currentDocument, skipIFramesDeeping) 
         var iframeDocument = null;
 
         try {
-            iframeDocument = $(el).contents()[0];
+            iframeDocument = el.contentDocument;
         } catch (e) {
             //cross-domain iframe
         }
@@ -275,11 +273,11 @@ export function getFixedPosition (pos, iFrameWin, convertToClient) {
 }
 
 export function clientToOffsetCoord (coords, currentDocument) {
-    var $doc = $(currentDocument || document);
+    var doc = currentDocument || document;
 
     return {
-        x: coords.x + $doc.scrollLeft(),
-        y: coords.y + $doc.scrollTop()
+        x: coords.x + styleUtils.getScrollLeft(doc),
+        y: coords.y + styleUtils.getScrollTop(doc)
     };
 }
 
@@ -306,37 +304,6 @@ export function getElementClientRectangle (el) {
         width:  rect.width
     };
 }
-
-export function getElementRectangleForMarking (element, padding, borderWidth) {
-    var elementRectangle = getElementRectangle(element);
-    var rectPadding      = padding || 0;
-    var top              = elementRectangle.top - rectPadding < 0 ? borderWidth / 2 : elementRectangle.top -
-                                                                                      rectPadding;
-    var left             = elementRectangle.left - rectPadding < 0 ? borderWidth / 2 : elementRectangle.left -
-                                                                                       rectPadding;
-
-    var width = Math.min(
-        elementRectangle.left - rectPadding < 0 ?
-        Math.max(elementRectangle.width + elementRectangle.left + rectPadding - left, 0) :
-        elementRectangle.width + rectPadding * 2,
-        styleUtils.getDocumentElementWidth() - borderWidth <= 1 ? 1 : styleUtils.getDocumentElementWidth() -
-                                                                      borderWidth);
-
-    var height = Math.min(
-        elementRectangle.top - rectPadding < 0 ?
-        Math.max(elementRectangle.height + elementRectangle.top + rectPadding - top, 0) :
-        elementRectangle.height + rectPadding * 2,
-        styleUtils.getDocumentElementHeight() - borderWidth <= 1 ? 1 : styleUtils.getDocumentElementHeight() -
-                                                                       borderWidth);
-
-    return {
-        height: height,
-        left:   left,
-        top:    top,
-        width:  width
-    };
-}
-
 
 export var getElementRectangle  = hammerhead.utils.position.getElementRectangle;
 export var getOffsetPosition    = hammerhead.utils.position.getOffsetPosition;

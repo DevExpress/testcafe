@@ -1,41 +1,20 @@
-import $ from '../deps/jquery';
 import * as domUtils from './dom';
+import * as arrayUtils from './array';
 
 
 //nodes utils
 function getOwnFirstVisibleTextNode (el) {
-    var childrenArray = $.makeArray(el.childNodes),
-        child         = null;
+    var children = el.childNodes;
 
-    if (!childrenArray.length && el.nodeType === 3 && !isInvisibleTextNode(el))
+    if (!children.length && el.nodeType === 3 && !isInvisibleTextNode(el))
         return el;
 
-    $.each(childrenArray, function (index, value) {
-        if (value.nodeType === 3 && !isInvisibleTextNode(value)) {
-            child = value;
-            return false;
-        }
-    });
-    return child;
+    return arrayUtils.find(children, node => node.nodeType === 3 && !isInvisibleTextNode(node));
 }
 
 function getOwnFirstVisibleNode (el) {
-    var childrenArray = $.makeArray(el.childNodes),
-        child         = null;
-
-    $.each(childrenArray, function (index, value) {
-        if (value.nodeType === 3) {
-            if (!isInvisibleTextNode(value)) {
-                child = value;
-                return false;
-            }
-        }
-        else if (domUtils.isRenderedNode(value) && getOwnFirstVisibleNode(value)) {
-            child = value;
-            return false;
-        }
-    });
-    return child;
+    return arrayUtils.find(el.childNodes, node => node.nodeType === 3 && !isInvisibleTextNode(node) ||
+                                                  domUtils.isRenderedNode(node) && getOwnFirstVisibleNode(node));
 }
 
 function getOwnPreviousVisibleSibling (el) {
@@ -109,48 +88,55 @@ function isNodeAfterNodeBlockWithBreakLine (parent, node) {
 }
 
 export function getFirstVisibleTextNode (el) {
-    var childrenArray = $.makeArray(el.childNodes),
-        element       = null;
+    var children       = el.childNodes;
+    var childrenLength = children.length;
+    var curNode        = null;
+    var child          = null;
 
-    if (!childrenArray.length && el.nodeType === 3 && !isInvisibleTextNode(el))
+    if (!childrenLength && el.nodeType === 3 && !isInvisibleTextNode(el))
         return el;
 
-    $.each(childrenArray, function (index, value) {
-        if (value.nodeType === 3 && !isInvisibleTextNode(value)) {
-            element = value;
-            return false;
+    for (var i = 0; i < childrenLength; i++) {
+        curNode = children[i];
+
+        if (curNode.nodeType === 3 && !isInvisibleTextNode(curNode))
+            return curNode;
+        else if (domUtils.isRenderedNode(curNode) &&
+                 (curNode.nodeType === 1 || curNode.childNodes && curNode.childNodes.length)) {
+            child = getFirstVisibleTextNode(curNode);
+
+            if (child)
+                return child;
         }
-        else if (domUtils.isRenderedNode(value) && (value.nodeType === 1 || (value.childNodes && value.childNodes.length))) {
-            element = getFirstVisibleTextNode(value);
-            if (element)
-                return false;
-        }
-    });
-    return element;
+    }
+
+    return child;
 }
 
-export function getLastVisibleTextNode (el, onlyVisible) {
-    var childrenArray = $.makeArray(el.childNodes),
-        element       = null;
+export function getLastTextNode (el, onlyVisible) {
+    var children       = el.childNodes;
+    var childrenLength = children.length;
+    var curNode        = null;
+    var child          = null;
 
-    if (!childrenArray.length && el.nodeType === 3 && !isInvisibleTextNode(el))
+    if (!childrenLength && el.nodeType === 3 && !isInvisibleTextNode(el))
         return el;
 
-    if (childrenArray.length)
-        childrenArray = childrenArray.reverse();
+    for (var i = childrenLength - 1; i >= 0; i--) {
+        curNode = children[i];
 
-    $.each(childrenArray, function (index, value) {
-        if (value.nodeType === 3 && (onlyVisible ? !isInvisibleTextNode(value) : true)) {
-            element = value;
-            return false;
+        if (curNode.nodeType === 3 && (onlyVisible ? !isInvisibleTextNode(curNode) : true))
+            return curNode;
+        else if (domUtils.isRenderedNode(curNode) &&
+                 (curNode.nodeType === 1 || (curNode.childNodes && curNode.childNodes.length))) {
+            child = getLastTextNode(curNode, false);
+
+            if (child)
+                return child;
         }
-        else if (domUtils.isRenderedNode(value) && (value.nodeType === 1 || (value.childNodes && value.childNodes.length))) {
-            element = getLastVisibleTextNode(value, false);
-            if (element)
-                return false;
-        }
-    });
-    return element;
+    }
+
+    return child;
 }
 
 export function getFirstNonWhitespaceSymbolIndex (nodeValue, startFrom) {
@@ -198,29 +184,23 @@ export function isInvisibleTextNode (node) {
 
 //dom utils
 export function findContentEditableParent (el) {
-    var $elParents      = $(el).parents(),
-        currentDocument = null,
-        parent          = null;
+    var elParents = domUtils.getParents(el);
 
     function hasContentEditableAttr (el) {
-        return typeof $(el).attr('contenteditable') !== 'undefined' && $(el).attr('contenteditable') !== 'false' &&
-               $(el).attr('contenteditable') !== 'inherit';
+        var attrValue = el.getAttribute ? el.getAttribute('contenteditable') : null;
+
+        return attrValue === '' || attrValue === 'true';
     }
 
     if (hasContentEditableAttr(el) && domUtils.isContentEditableElement(el))
         return el;
 
-    currentDocument = domUtils.findDocument(el);
+    var currentDocument = domUtils.findDocument(el);
     if (currentDocument.designMode === 'on')
         return currentDocument.body;
 
-    $.each($elParents, function (index, item) {
-        if (hasContentEditableAttr(item) && domUtils.isContentEditableElement(item)) {
-            parent = item;
-            return false;
-        }
-    });
-    return parent;
+    return arrayUtils.find(elParents, parent => hasContentEditableAttr(parent) &&
+                                                domUtils.isContentEditableElement(parent));
 }
 
 export function getNearestCommonAncestor (node1, node2) {
@@ -241,7 +221,7 @@ export function getNearestCommonAncestor (node1, node2) {
         ancestors.push(curNode);
 
     for (curNode = node2; curNode !== contentEditableParent; curNode = curNode.parentNode) {
-        if ($.inArray(curNode, ancestors) !== -1)
+        if (arrayUtils.indexOf(ancestors, curNode) !== -1)
             return curNode;
     }
 
@@ -311,7 +291,8 @@ function getSelectionEnd (el, selection, inverseSelection) {
         };
 
     //NOTE: window.getSelection() can't returns not rendered node like selected node, so we shouldn't check it
-    if ((domUtils.isTheSameNode(el, endNode) || endNode.nodeType === 1) && endNode.childNodes && endNode.childNodes.length)
+    if ((domUtils.isTheSameNode(el, endNode) || endNode.nodeType === 1) && endNode.childNodes &&
+        endNode.childNodes.length)
         correctedEndPosition = getSelectedPositionInParentByOffset(endNode, endOffset);
 
     return {
@@ -382,9 +363,7 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
                 point.offset--;
         }
 
-        $.each(childNodes, function (index, value) {
-            point = checkChildNodes(value);
-        });
+        arrayUtils.forEach(childNodes, node => point = checkChildNodes(node));
 
         return point;
     }
@@ -426,9 +405,7 @@ export function calculatePositionByNodeAndOffset (el, node, offset) {
         else if (!find && (isNodeBlockWithBreakLine(el, target) || isNodeAfterNodeBlockWithBreakLine(el, target)))
             currentOffset++;
 
-        $.each(childNodes, function (index, value) {
-            currentOffset = checkChildNodes(value);
-        });
+        arrayUtils.forEach(childNodes, node => currentOffset = checkChildNodes(node));
 
         return currentOffset;
     }
@@ -457,7 +434,7 @@ export function getFirstVisiblePosition (el) {
 }
 
 export function getLastVisiblePosition (el) {
-    var lastVisibleTextChild = el.nodeType === 3 ? el : getLastVisibleTextNode(el, true),
+    var lastVisibleTextChild = el.nodeType === 3 ? el : getLastTextNode(el, true),
         curDocument          = domUtils.findDocument(el),
         range                = curDocument.createRange();
 
@@ -470,19 +447,18 @@ export function getLastVisiblePosition (el) {
 
 //contents util
 export function getContentEditableValue (target) {
-    var elementValue = '',
-        childNodes   = target.childNodes;
+    var elementValue = '';
+    var childNodes   = target.childNodes;
 
     if (!domUtils.isRenderedNode(target))
         return elementValue;
 
-    if (!target.childNodes.length && target.nodeType === 3)
+    if (!childNodes.length && target.nodeType === 3)
         return target.nodeValue;
-    else if (target.childNodes.length === 1 && target.childNodes[0].nodeType === 3)
-        return target.childNodes[0].nodeValue;
+    else if (childNodes.length === 1 && childNodes[0].nodeType === 3)
+        return childNodes[0].nodeValue;
 
-    $.each(childNodes, function (index, value) {
-        elementValue += getContentEditableValue(value);
-    });
+    arrayUtils.forEach(childNodes, node => elementValue += getContentEditableValue(node));
+
     return elementValue;
 }

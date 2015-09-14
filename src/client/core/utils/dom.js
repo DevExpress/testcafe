@@ -1,9 +1,192 @@
 import escapeHTML from 'escape-html';
 import hammerhead from '../deps/hammerhead';
-import $ from '../deps/jquery';
+import * as styleUtils from './style';
+import * as arrayUtils from './array';
 
 
 var browserUtils = hammerhead.utils.browser;
+
+function getElementsWithTabIndex (elements) {
+    return arrayUtils.filter(elements, el => el.tabIndex > 0);
+}
+
+function getElementsWithoutTabIndex (elements) {
+    return arrayUtils.filter(elements, el => el.tabIndex <= 0);
+}
+
+function sortElementsByFocusingIndex (elements) {
+    if (!elements || !elements.length)
+        return [];
+
+    var elementsWithTabIndex = getElementsWithTabIndex(elements);
+
+    //iFrames
+    var iFrames = arrayUtils.filter(elements, el => el.tagName.toLowerCase() === 'iframe');
+
+    if (!elementsWithTabIndex.length) {
+        if (iFrames.length)
+            elements = insertIFramesContentElements(elements, iFrames);
+
+        return elements;
+    }
+
+    elementsWithTabIndex        = elementsWithTabIndex.sort(sortBy('tabIndex'));
+    var elementsWithoutTabIndex = getElementsWithoutTabIndex(elements);
+
+    if (iFrames.length)
+        return insertIFramesContentElements(elementsWithTabIndex, iFrames).concat(insertIFramesContentElements(elementsWithoutTabIndex, iFrames));
+
+    return elementsWithTabIndex.concat(elementsWithoutTabIndex);
+}
+
+function insertIFramesContentElements (elements, iFrames) {
+    var sortedIFrames         = sortElementsByTabIndex(iFrames);
+    var results               = [];
+    var iFramesElements       = [];
+    var iframeFocusedElements = [];
+
+    for (var i = 0; i < sortedIFrames.length; i++) {
+        //NOTE: We can get elements of the same domain iframe only
+        try {
+            iframeFocusedElements = getFocusableElements(sortedIFrames[i].contentDocument);
+        }
+        catch (e) {
+            iframeFocusedElements = [];
+        }
+
+        iFramesElements.push(sortElementsByFocusingIndex(iframeFocusedElements));
+    }
+
+    for (var i = 0; i < elements.length; i++) {
+        results.push(elements[i]);
+
+        if (elements[i].tagName.toLowerCase() === 'iframe') {
+            if (browserUtils.isIE) {
+                results.pop();
+
+                var iFrameElements               = iFramesElements[arrayUtils.indexOf(iFrames, elements[i])];
+                var elementsWithTabIndex         = getElementsWithTabIndex(iFrameElements);
+                var elementsWithoutTabIndexArray = getElementsWithoutTabIndex(iFrameElements);
+
+                elementsWithTabIndex = elementsWithTabIndex.sort(sortBy('tabIndex'));
+                results              = results.concat(elementsWithTabIndex);
+                results.push(elements[i]);
+                results              = results.concat(elementsWithoutTabIndexArray);
+            }
+            else {
+                if (browserUtils.isWebKit && iFramesElements[arrayUtils.indexOf(iFrames, elements[i])].length)
+                    results.pop();
+
+                results = results.concat(iFramesElements[arrayUtils.indexOf(iFrames, elements[i])]);
+            }
+        }
+    }
+
+    return results;
+}
+
+function sortElementsByTabIndex (elements) {
+    var elementsWithTabIndex = getElementsWithTabIndex(elements);
+
+    if (!elementsWithTabIndex.length)
+        return elements;
+
+    return elementsWithTabIndex.sort(sortBy('tabIndex')).concat(getElementsWithoutTabIndex(elements));
+}
+
+function sortBy (property) {
+    return function (a, b) {
+        if (a[property] < b[property])
+            return -1;
+        if (a[property] > b[property])
+            return 1;
+
+        return 0;
+    };
+}
+
+function getFocusableElements (doc) {
+    // NOTE: We don't take into account the case of embedded contentEditable
+    // elements and specify the contentEditable attribute for focusable elements
+    var allElements         = doc.querySelectorAll('*');
+    var invisibleElements   = getInvisibleElements(allElements);
+    var inputElementsRegExp = /^(input|button|select|textarea)$/;
+    var focusableElements   = [];
+    var el                  = null;
+    var tagName             = null;
+    var tabIndex            = null;
+
+    var needPush = false;
+
+    for (var i = 0; i < allElements.length; i++) {
+        el       = allElements[i];
+        tagName  = el.tagName.toLowerCase();
+        tabIndex = getTabIndexAttributeIntValue(el);
+        needPush = false;
+
+        if (el.disabled)
+            continue;
+
+        if (styleUtils.get(el, 'display') === 'none' || styleUtils.get(el, 'visibility') === 'hidden')
+            continue;
+
+        if (browserUtils.isIE && tagName === 'option')
+            continue;
+
+        if (tabIndex !== null && tabIndex < 0)
+            continue;
+
+        if (inputElementsRegExp.test(tagName))
+            needPush = true;
+        else if (browserUtils.isIE && tagName === 'iframe')
+            focusableElements.push(el);
+        else if (!browserUtils.isOpera && tagName === 'a' && el.hasAttribute('href'))
+            needPush = el.getAttribute('href') !== '' || !browserUtils.isIE || tabIndex !== null;
+
+        var contentEditableAttr = el.getAttribute('contenteditable');
+
+        if (contentEditableAttr === '' || contentEditableAttr === "true")
+            needPush = true;
+
+        if (tabIndex !== null)
+            needPush = true;
+
+        if (needPush)
+            focusableElements.push(el);
+    }
+
+    //NOTE: remove children of invisible elements
+    return arrayUtils.filter(focusableElements, el => !containsElement(invisibleElements, el));
+}
+
+function getInvisibleElements (elements) {
+    var invisibleElements = [];
+
+    for (var i = 0; i < elements.length; i++) {
+        if (styleUtils.get(elements[i], 'display') === 'none')
+            invisibleElements.push(elements[i]);
+    }
+
+    return invisibleElements;
+}
+
+function getTabIndexAttributeIntValue (el) {
+    var tabIndex = el.getAttribute('tabIndex');
+
+    if (tabIndex !== null) {
+        tabIndex = parseInt(tabIndex);
+        tabIndex = isNaN(tabIndex) ? null : tabIndex;
+    }
+
+    return tabIndex;
+}
+
+export function containsElement (elements, element) {
+    if (elements.contains)
+        return elements.contains(element);
+
+    return arrayUtils.some(elements, parent => parent.contains(element));
+}
 
 export function getTextareaIndentInLine (textarea, position) {
     if (!textarea.value)
@@ -53,17 +236,15 @@ export function isElementContainsNode (el, node) {
     var contains = false;
 
     function checkChildNodes (el, node) {
-        var childNodes = el.childNodes;
-
         if (contains || isTheSameNode(node, el))
             contains = true;
 
-        $.each(childNodes, function (index, value) {
-            if (!contains)
-                contains = checkChildNodes(value, node);
-            else
-                return false;
-        });
+        for (var i = 0; i < el.childNodes.length; i++) {
+            contains = checkChildNodes(el.childNodes[i], node);
+
+            if (contains)
+                return contains;
+        }
 
         return contains;
     }
@@ -98,9 +279,9 @@ export function isTheSameNode (node1, node2) {
 
 export function getElementDescription (el) {
     var attributes = {
-            id:    'id',
-            name:  'name',
-            class: 'className'
+            id:      'id',
+            name:    'name',
+            'class': 'className'
         },
         res        = [];
 
@@ -121,174 +302,23 @@ export function getElementDescription (el) {
     return escapeHTML(res.join(''));
 }
 
-export function storeElementAttributes (propName, el) {
-    el[propName] = {};
-
-    $.each(el.attributes, function (index, attribute) {
-        el[propName][attribute.nodeName] = attribute.nodeValue;
-    });
-}
-
-function sortElementsByFocusingIndex ($elements) {
-    if (!$elements || !$elements.length)
-        return [];
-
-    var $withTabIndex = $elements.filter((index, el) => el.tabIndex > 0);
-
-    //iFrames
-    var $iFrames = $elements.filter('iframe');
-
-    if (!$withTabIndex.length) {
-        var elementsArray = $elements.toArray();
-
-        if ($iFrames.length)
-            elementsArray = insertIFramesContentElements(elementsArray, $iFrames);
-
-        return elementsArray;
-    }
-
-    var withTabIndexArray    = $withTabIndex.toArray().sort(sortBy('tabIndex')),
-        withoutTabIndexArray = $elements.not($withTabIndex).toArray();
-
-    if ($iFrames.length)
-        return insertIFramesContentElements(withTabIndexArray, $iFrames).concat(insertIFramesContentElements(withoutTabIndexArray, $iFrames));
-
-    return withTabIndexArray.concat(withoutTabIndexArray);
-}
-
-function insertIFramesContentElements (elementsArray, $iFrames) {
-    var results         = [],
-        sortedIFrames   = sortElementsByTabIndex($iFrames),
-        iFramesElements = [];
-
-    for (var i = 0; i < sortedIFrames.length; i++)
-        iFramesElements.push(sortElementsByFocusingIndex(getAllFocusableElements($(sortedIFrames[i]))));
-
-    var elementWithTabIndexFilter = (item, el) => el.tabIndex > 0;
-
-    for (var j = 0; j < elementsArray.length; j++) {
-        results.push(elementsArray[j]);
-
-        if (elementsArray[j].tagName.toLowerCase() === 'iframe') {
-            if (browserUtils.isIE) {
-                results.pop();
-
-                var $iFramesElements     = $(iFramesElements[$.inArray(elementsArray[j], $iFrames)]),
-                    $withTabIndex        = $iFramesElements.filter(elementWithTabIndexFilter),
-                    withTabIndexArray    = $withTabIndex.toArray().sort(sortBy('tabIndex')),
-                    withoutTabIndexArray = $iFramesElements.not($withTabIndex).toArray();
-
-                results = results.concat(withTabIndexArray);
-                results.push(elementsArray[j]);
-                results = results.concat(withoutTabIndexArray);
-            }
-            else {
-                if (browserUtils.isWebKit && iFramesElements[$.inArray(elementsArray[j], $iFrames)].length)
-                    results.pop();
-
-                results = results.concat(iFramesElements[$.inArray(elementsArray[j], $iFrames)]);
-            }
-        }
-    }
-
-    return results;
-}
-
-function sortElementsByTabIndex ($elements) {
-    var $withTabIndex = $elements.filter((index, el) => el.tabIndex > 0);
-
-    if (!$withTabIndex.length)
-        return $elements.toArray();
-
-    return $withTabIndex.toArray().sort(sortBy('tabIndex')).concat($elements.not($withTabIndex).toArray());
-}
-
-function sortBy (property) {
-    return function (a, b) {
-        if (a[property] < b[property])
-            return -1;
-        if (a[property] > b[property])
-            return 1;
-
-        return 0;
-    };
-}
-
-function getAllFocusableElements ($iframe) {
-    var $allFocusable      = $();
-    var $invisibleElements = $();
-
-    if ($iframe) {
-        //NOTE: We can get elements of the same domain iframe only
-        try {
-            $allFocusable      = $iframe.contents(0).find(getFocusableSelector());
-            $invisibleElements = $iframe.contents(0).find('*').filter((index, el)=> el.style.display === 'none');
-        } catch (e) {
-            return $allFocusable;
-        }
-    }
-    else {
-        $allFocusable      = $(getFocusableSelector());
-        $invisibleElements = $('*').filter((index, el) => el.style.display === 'none');
-    }
-
-    $allFocusable = $allFocusable
-        .not(":disabled")
-        .filter((index, el) => $(el).attr("tabIndex") !== -1);
-
-    $allFocusable = $allFocusable.filter((index, el) => el.style.display !== 'none' &&
-                                                        !$invisibleElements.has(el).length);
-
-    if (browserUtils.isIE)
-        $allFocusable = $allFocusable.not('option');
-
-    $allFocusable = $allFocusable.filter((index, el) => {
-        var $el = $(el);
-
-        return !($el.is("a") && $el.attr("href") === '' && !$el.attr("tabIndex")) &&
-               $el.css('visibility') !== 'hidden';
-    });
-
-    return $allFocusable;
-}
-
-function getFocusableSelector () {
-    //NOTE: We don't take into account the case of embedded contentEditable elements and specify the contentEditable attribute for focusable elements
-    var selectorPostfix = ', [contenteditable="true"], [contenteditable=""], [tabIndex]';
-
-    if (browserUtils.isIE)
-        return ':input, a[href][href != ""], iframe' + selectorPostfix;
-
-    if (browserUtils.isOpera)
-        return ':input' + selectorPostfix;
-
-    return ':input, a[href], iframe' + selectorPostfix;
-}
-
 export function getNextFocusableElement (element, reverse) {
     var offset       = reverse ? -1 : 1,
-        allFocusable = sortElementsByFocusingIndex(getAllFocusableElements());
+        allFocusable = sortElementsByFocusingIndex(getFocusableElements(findDocument(element)));
 
     //NOTE: in all browsers except Mozilla and Opera focus sets on one radio set from group only.
     // in Mozilla and Opera focus sets on any radio set.
     if (element.tagName === "INPUT" && element.type === "radio" && element.name !== "" &&
-        !(browserUtils.isFirefox || browserUtils.isOpera)) {
-        allFocusable = $.grep(allFocusable, function (item) {
+        !(browserUtils.isFirefox || browserUtils.isOpera))
+        allFocusable = arrayUtils.filter(allFocusable, item => {
             return !item.name || item === element || item.name !== element.name;
         });
-    }
 
-    var currentIndex = -1;
+    var currentIndex         = arrayUtils.indexOf(allFocusable, element);
+    var isLastElementFocused = reverse ? currentIndex === 0 : currentIndex === allFocusable.length - 1;
 
-    $.each(allFocusable, function (index, item) {
-        if (item === element) {
-            currentIndex = index;
-            return false;
-        }
-    });
-
-    if ((!reverse && currentIndex === allFocusable.length - 1) || (reverse && currentIndex === 0))
-        return $('body')[0];
+    if (isLastElementFocused)
+        return document.body;
 
     if (reverse && currentIndex === -1)
         return allFocusable[allFocusable.length - 1];
@@ -296,18 +326,38 @@ export function getNextFocusableElement (element, reverse) {
     return allFocusable[currentIndex + offset];
 }
 
-export function isElementFocusable ($element) {
-    var isFocusable = $element.is(getFocusableSelector() + ', body') && !$element.is(':disabled') &&
-                      $element.attr("tabIndex") !== -1;
+export function isElementFocusable (element) {
+    var tagName           = element.tagName.toLowerCase();
+    var focusableElements = getFocusableElements(findDocument(element));
+    var isFocusable       = (arrayUtils.indexOf(focusableElements, element) !== -1 || tagName === 'body')
+                            && !element.disabled && element.tabIndex >= 0;
 
-    if (browserUtils.isWebKit || browserUtils.isOpera)
-        isFocusable = isFocusable && (!$element.is(':hidden') || $element.is('option'));
-    else
-        isFocusable = isFocusable && !$element.is(':hidden');
+    if (!isFocusable)
+        return isFocusable;
 
+    if ((browserUtils.isWebKit || browserUtils.isOpera) && tagName === 'option')
+        return isFocusable;
 
-    return (isFocusable && !($element.is("a") && $element.attr("href") === '' && !$element.attr("tabIndex")) &&
-            $element.css('visibility') !== 'hidden');
+    return !styleUtils.isElementHidden(element) && styleUtils.get(element, 'visibility') !== 'hidden';
+}
+
+export function getParents (el, selector) {
+    var parent  = el.parentNode;
+    var parents = [];
+
+    while (parent) {
+        if (parent.nodeType === 1 && (!selector || (selector && hammerhead.utils.dom.matches(parent, selector))))
+            parents.push(parent);
+
+        parent = parent.parentNode;
+    }
+
+    return parents;
+}
+
+export function remove (el) {
+    if (el && el.parentElement)
+        el.parentElement.removeChild(el);
 }
 
 export function isIFrameWindowInDOM (win) {
@@ -367,3 +417,4 @@ export var isMapElement                               = hammerhead.utils.dom.isM
 export var getMapContainer                            = hammerhead.utils.dom.getMapContainer;
 export var isWindowInstance                           = hammerhead.utils.dom.isWindow;
 export var isDocumentInstance                         = hammerhead.utils.dom.isDocument;
+export var closest                                    = hammerhead.utils.dom.closest;

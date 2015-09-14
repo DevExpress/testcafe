@@ -2,7 +2,10 @@ import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 
 var shadowUI = hammerhead.shadowUI;
-var $        = testCafeCore.$;
+
+var $          = testCafeCore.$;
+var eventUtils = testCafeCore.eventUtils;
+var styleUtils = testCafeCore.styleUtils;
 
 
 //Const
@@ -15,70 +18,70 @@ const BACKGROUND_OPACITY_WITH_LOADING_TEXT = 0.8;
 const LOADING_ICON_CLASS = 'loading-icon';
 
 //Globals
-var $backgroundDiv = null,
-    $loadingText   = null,
-    $loadingIcon   = null,
-    initialized    = false;
+var backgroundDiv  = null;
+var loadingTextDiv = null;
+var loadingIconDiv = null;
+var initialized    = false;
 
 //Markup
 function createBackground () {
-    var $root = $(shadowUI.getRoot());
+    var root = shadowUI.getRoot();
 
-    $backgroundDiv = $('<div></div>').appendTo($root);
-    shadowUI.addClass($backgroundDiv[0], BACKGROUND_CLASS);
+    backgroundDiv = document.createElement('div');
+    root.appendChild(backgroundDiv);
+    shadowUI.addClass(backgroundDiv, BACKGROUND_CLASS);
 
-    $loadingText = $('<div></div>')
-        .appendTo($root)
-        .text(LOADING_TEXT);
+    loadingTextDiv             = document.createElement('div');
+    loadingTextDiv.textContent = LOADING_TEXT;
+    root.appendChild(loadingTextDiv);
+    shadowUI.addClass(loadingTextDiv, LOADING_TEXT_CLASS);
 
-    shadowUI.addClass($loadingText[0], LOADING_TEXT_CLASS);
-
-    $loadingIcon = $('<div></div>').css('visibility', 'hidden').appendTo($root);
-    shadowUI.addClass($loadingIcon[0], LOADING_ICON_CLASS);
+    loadingIconDiv = document.createElement('div');
+    styleUtils.set(loadingIconDiv, 'visibility', 'hidden');
+    root.appendChild(loadingIconDiv);
+    shadowUI.addClass(loadingIconDiv, LOADING_ICON_CLASS);
 }
 
 //Behavior
 function adjustLoadingTextPos () {
-    var $window = $(window);
+    var wHeight = styleUtils.getHeight(window),
+        wWidth  = styleUtils.getWidth(window);
 
-    var wHeight = $window.height(),
-        wWidth  = $window.width();
+    var loadingTextHidden = !styleUtils.hasDimensions(loadingTextDiv);
 
-    var loadingTextVisible = $loadingText.is(':visible');
-
-    if (!loadingTextVisible) {
-        $loadingText.attr('visibility', 'hidden');
-        $loadingText.show();
+    if (loadingTextHidden) {
+        styleUtils.set(loadingTextDiv, 'visibility', 'hidden');
+        styleUtils.set(loadingTextDiv, 'display', 'block');
     }
 
-    $loadingText.css({
-        left: Math.max((wWidth - $loadingText.width()) / 2, 0),
-        top:  Math.max((wHeight - $loadingText.height()) / 2, 0)
+    styleUtils.set(loadingTextDiv, {
+        left: Math.max((wWidth - styleUtils.getWidth(loadingTextDiv)) / 2, 0) + 'px',
+        top:  Math.max((wHeight - styleUtils.getHeight(loadingTextDiv)) / 2, 0) + 'px'
     });
 
-    if (!loadingTextVisible) {
-        $loadingText.hide();
-        $loadingText.attr('visibility', '');
+    if (loadingTextHidden) {
+        styleUtils.set(loadingTextDiv, 'display', 'none');
+        styleUtils.set(loadingTextDiv, 'visibility', '');
     }
 }
 
 function initSizeAdjustments () {
-    var $window = $(window);
-
     var adjust = function () {
-        var wHeight = $window.height(),
-            wWidth  = $window.width();
+        var wHeight = styleUtils.getHeight(window),
+            wWidth  = styleUtils.getWidth(window);
 
-        $backgroundDiv.width(wWidth);
-        $backgroundDiv.height(wHeight);
+        styleUtils.set(backgroundDiv, 'width', wWidth + 'px');
+        styleUtils.set(backgroundDiv, 'height', wHeight + 'px');
 
-        $loadingIcon.css('top', Math.round((wHeight - $loadingIcon.height()) / 2));
-        $loadingIcon.css('left', Math.round((wWidth - $loadingIcon.width()) / 2));
+        styleUtils.set(loadingIconDiv, {
+            left: Math.round((wWidth - styleUtils.getWidth(loadingIconDiv)) / 2) + 'px',
+            top:  Math.round((wHeight - styleUtils.getHeight(loadingIconDiv)) / 2) + 'px'
+        });
     };
 
     adjust();
 
-    $window.resize(adjust);
+    eventUtils.bind(window, 'resize', adjust);
 }
 
 function init () {
@@ -96,9 +99,9 @@ export function initAndShowLoadingText () {
     var initAndShow = function () {
         init();
 
-        $backgroundDiv.css({ opacity: BACKGROUND_OPACITY_WITH_LOADING_TEXT });
-        $backgroundDiv.show();
-        $loadingText.show();
+        styleUtils.set(backgroundDiv, 'opacity', BACKGROUND_OPACITY_WITH_LOADING_TEXT);
+        styleUtils.set(backgroundDiv, 'display', 'block');
+        styleUtils.set(loadingTextDiv, 'display', 'block');
 
         shown = true;
     };
@@ -125,22 +128,22 @@ export function show (transparent) {
     if (!initialized)
         init();
 
-    $backgroundDiv.css({ opacity: transparent ? 0 : BACKGROUND_OPACITY });
-    $backgroundDiv.show();
+    styleUtils.set(backgroundDiv, 'opacity', transparent ? 0 : BACKGROUND_OPACITY);
+    styleUtils.set(backgroundDiv, 'display', 'block');
 }
 
 export function hide () {
     if (!initialized)
         return;
 
-    $loadingText.hide();
-    $backgroundDiv.hide();
+    styleUtils.set(loadingTextDiv, 'display', 'none');
+    styleUtils.set(backgroundDiv, 'display', 'none');
 }
 
 export function showLoadingIcon () {
-    $loadingIcon.css('visibility', 'visible');
+    styleUtils.set(loadingIconDiv, 'visibility', 'visible');
 }
 
 export function hideLoadingIcon () {
-    $loadingIcon.css('visibility', 'hidden');
+    styleUtils.set(loadingIconDiv, 'visibility', 'hidden');
 }

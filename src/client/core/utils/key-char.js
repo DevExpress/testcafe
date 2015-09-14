@@ -1,9 +1,10 @@
 import hammerhead from '../deps/hammerhead';
-import $ from '../deps/jquery';
 import * as domUtils from './dom';
+import { map , some } from './array';
 
 
 var browserUtils = hammerhead.utils.browser;
+var trim         = hammerhead.utils.trim;
 
 
 export const KEYS_MAPS = {
@@ -131,11 +132,8 @@ export function getArrayByKeyCombination (keysCombination) {
     //NOTE: we should separate symbol '+' that concats other keys and key '+' to support commands like the 'ctrl++'
     var keys = keysCombination.replace(/^\+/g, 'plus').replace(/\+\+/g, '+plus').split('+');
 
-    $.map(keys, function (key, index) {
-        keys[index] = key.replace('plus', '+');
-    });
 
-    return keys;
+    return map(keys, key => key.replace('plus', '+'));
 }
 
 export function getKeyCodeByChar (keyChar) {
@@ -214,7 +212,7 @@ export function parseKeysString (keysString) {
     var error           = false,
         keyStringLength = keysString.length;
 
-    keysString = $.trim(keysString).replace(/\s+/g, ' ');
+    keysString = trim(keysString).replace(/\s+/g, ' ');
 
     //NOTE: trim last connecting '+'
     if (keyStringLength > 1 && keysString.charAt(keyStringLength - 1) === '+' &&
@@ -223,12 +221,12 @@ export function parseKeysString (keysString) {
 
     var commands = keysString.split(' ');
 
-    $.map(commands, function (command) {
+    error = some(commands, command => {
         var keys = getArrayByKeyCombination(command);
 
-        $.map(keys, function (key) {
-            var isChar       = key.length === 1 || key === 'space',
-                sanitizedKey = isChar ? key : key.toLowerCase();
+        return some(keys, key => {
+            var isChar       = key.length === 1 || key === 'space';
+            var sanitizedKey = isChar ? key : key.toLowerCase();
 
             if (KEYS_MAPS.MODIFIERS_MAP[sanitizedKey])
                 sanitizedKey = KEYS_MAPS.MODIFIERS_MAP[sanitizedKey];
@@ -236,15 +234,8 @@ export function parseKeysString (keysString) {
             var modifierKeyCode = KEYS_MAPS.MODIFIERS[sanitizedKey],
                 specialKeyCode  = KEYS_MAPS.SPECIAL_KEYS[sanitizedKey];
 
-            if (!(isChar || modifierKeyCode || specialKeyCode)) {
-                error = true;
-
-                return false;
-            }
+            return !(isChar || modifierKeyCode || specialKeyCode);
         });
-
-        if (error)
-            return false;
     });
 
     return {
