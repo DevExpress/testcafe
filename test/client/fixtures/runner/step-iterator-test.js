@@ -3,7 +3,7 @@ var COMMAND      = testCafeCore.COMMAND;
 var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var SETTINGS     = testCafeCore.get('./settings').get();
 var transport    = testCafeCore.get('./transport');
-var event        = testCafeCore.get('./utils/event');
+var eventUtils   = testCafeCore.get('./utils/event');
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var StepIterator   = testCafeRunner.get('./step-iterator');
@@ -318,7 +318,7 @@ $(document).ready(function () {
 
         $a.on('click', function (e) {
             clickRaised = true;
-            event.preventDefault(e, false);
+            eventUtils.preventDefault(e, false);
             return false;
         });
 

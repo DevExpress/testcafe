@@ -6,15 +6,17 @@ import * as automationSettings from '../settings';
 import movePlaybackAutomation from '../playback/move';
 import async from '../../deps/async';
 
+
 var browserUtils     = hammerhead.utils.browser;
+var extend           = hammerhead.utils.extend;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
-var $               = testCafeCore.$;
 var SETTINGS        = testCafeCore.SETTINGS;
 var contentEditable = testCafeCore.contentEditable;
 var positionUtils   = testCafeCore.positionUtils;
 var domUtils        = testCafeCore.domUtils;
+var styleUtils      = testCafeCore.styleUtils;
 
 var cursor = testCafeUI.cursor;
 
@@ -53,7 +55,7 @@ export default function (el, to, options, runCallback) {
                 screenPointFrom = positionUtils.offsetToClientCoords(startPosition);
                 eventPointFrom  = automationUtil.getEventOptionCoordinates(el, screenPointFrom);
 
-                eventOptionsStart = $.extend({
+                eventOptionsStart = extend({
                     clientX: eventPointFrom.x,
                     clientY: eventPointFrom.y
                 }, options);
@@ -126,8 +128,8 @@ export default function (el, to, options, runCallback) {
                 var currentIFrame = domUtils.getIframeByElement(el);
                 if (currentIFrame) {
                     var screenPointToInIFrame = {
-                        x: screenPointTo.x - $(currentIFrame.contentWindow).scrollLeft(),
-                        y: screenPointTo.y - $(currentIFrame.contentWindow).scrollTop()
+                        x: screenPointTo.x - styleUtils.getScrollLeft(currentIFrame.contentWindow),
+                        y: screenPointTo.y - styleUtils.getScrollTop(currentIFrame.contentWindow)
                     };
 
                     topElement = cursor.getElementUnderCursor(screenPointToInIFrame.x, screenPointToInIFrame.y);
@@ -141,7 +143,7 @@ export default function (el, to, options, runCallback) {
                 return;
             }
 
-            eventOptionsEnd = $.extend({
+            eventOptionsEnd = extend({
                 clientX: eventPointTo.x,
                 clientY: eventPointTo.y
             }, options);

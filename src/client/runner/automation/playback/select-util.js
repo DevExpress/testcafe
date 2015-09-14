@@ -4,7 +4,6 @@ import testCafeCore from '../../deps/testcafe-core';
 var browserUtils   = hammerhead.utils.browser;
 var messageSandbox = hammerhead.eventSandbox.message;
 
-var $                     = testCafeCore.$;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
 var domUtils              = testCafeCore.domUtils;
 var positionUtils         = testCafeCore.positionUtils;
@@ -12,6 +11,26 @@ var styleUtils            = testCafeCore.styleUtils;
 var contentEditable       = testCafeCore.contentEditable;
 var textSelection         = testCafeCore.textSelection;
 
+function getPointByPosition (el, pos, correctOptions) {
+    var selectionCoord = textSelection.getPositionCoordinates(el, pos, correctOptions);
+
+    //NOTE: For position corresponding to the invisible character in contentEditable element
+    // method 'getPositionCoordinates' can return empty point
+    if (!selectionCoord)
+        return;
+
+    var point         = {
+        x: selectionCoord.left,
+        y: selectionCoord.top + (selectionCoord.bottom - selectionCoord.top) / 2
+    };
+    var elementScroll = styleUtils.getElementScroll(el);
+
+    if (browserUtils.isIE) {
+        point.x += elementScroll.left;
+        point.y += elementScroll.top;
+    }
+    return point;
+}
 
 export function getSelectPositionCoordinates (el, start, end, isStartPos, correctOptions) {
     var backward       = start > end,
@@ -74,7 +93,7 @@ export function scrollElementByPoint (element, point) {
             scrollValue = ownOffsetY - element.clientHeight;
 
         if (scrollValue !== null)
-            $(element).scrollTop(Math.round(scrollValue));
+            styleUtils.setScrollTop(element, Math.round(scrollValue));
     }
     else {
         if (ownOffsetX < elementScroll.left)
@@ -83,7 +102,7 @@ export function scrollElementByPoint (element, point) {
             scrollValue = ownOffsetX - element.clientWidth;
 
         if (scrollValue !== null)
-            $(element).scrollLeft(Math.round(scrollValue));
+            styleUtils.setScrollLeft(element, Math.round(scrollValue));
     }
 }
 
@@ -120,22 +139,25 @@ export function updatePointByScrollElement (element, point) {
 }
 
 export function getProcessedOptions (element, options) {
-    var isTextarea        = element.tagName.toLowerCase() === 'textarea',
-        isTextEditable    = domUtils.isTextEditableElement(element),
-        isContentEditable = domUtils.isContentEditableElement(element),
+    var isTextarea            = element.tagName.toLowerCase() === 'textarea',
+        isTextEditable        = domUtils.isTextEditableElement(element),
+        isContentEditable     = domUtils.isContentEditableElement(element),
 
         //results for any elements
-        startPosition     = null,
-        endPosition       = null,
+        startPosition         = null,
+        endPosition           = null,
 
-        //results for textarea elements
-        linesArray        = [],
-        startPos          = null,
-        endPos            = null,
-        startLine         = null,
-        endLine           = null,
-        startLineIndex    = null,
-        endLineIndex      = null;
+        //for textarea elements
+        linesArray            = [],
+        startPos              = null,
+        endPos                = null,
+        startLine             = null,
+        endLine               = null,
+        startLineIndex        = null,
+        endLineIndex          = null,
+
+        isEmptyPropertyObject = typeof options.offset === 'undefined' && typeof options.startPos === 'undefined' &&
+                                typeof options.startNode === 'undefined';
 
     if (isTextarea)
         linesArray = element.value.length ? element.value.split('\n') : [];
@@ -143,7 +165,7 @@ export function getProcessedOptions (element, options) {
     if (isTextEditable) {
         if (!element.value.length)
             startPosition = endPosition = 0;
-        else if (typeof options.offset !== 'undefined' || $.isEmptyObject(options)) {
+        else if (typeof options.offset !== 'undefined' || isEmptyPropertyObject) {
             startPosition = 0;
 
             if (typeof options.offset === 'undefined')
@@ -207,7 +229,7 @@ export function getProcessedOptions (element, options) {
                 endPosition   = contentEditable.calculatePositionByNodeAndOffset(element, options.endNode, endPosition);
             }
         }
-        else if (typeof options.offset !== 'undefined' || $.isEmptyObject(options)) {
+        else if (typeof options.offset !== 'undefined' || isEmptyPropertyObject) {
             startPosition = contentEditable.getFirstVisiblePosition(element);
             if (typeof options.offset === 'undefined')
                 endPosition = contentEditable.getLastVisiblePosition(element);
@@ -224,241 +246,10 @@ export function getProcessedOptions (element, options) {
         }
     }
 
-    //NOTE: we need calculate startLine, endLine, endPos to optimize selection path
-    if (isTextarea && typeof options.endLine === 'undefined' && element.value.length) {
-        startLine = domUtils.getTextareaLineNumberByPosition(element, startPosition);
-        startPos  = domUtils.getTextareaIndentInLine(element, startPosition);
-        endLine   = domUtils.getTextareaLineNumberByPosition(element, endPosition);
-        endPos    = domUtils.getTextareaIndentInLine(element, endPosition);
-    }
-
     return {
         startPosition: startPosition,
-        endPosition:   endPosition,
-        startLine:     startLine,
-        endLine:       endLine,
-        startPos:      startPos,
-        endPos:        endPos
+        endPosition:   endPosition
     };
-}
-
-function getPointByPosition (el, pos, correctOptions) {
-    var selectionCoord = textSelection.getPositionCoordinates(el, pos, correctOptions);
-
-    //NOTE: For position corresponding to the invisible character in contentEditable element
-    // method 'getPositionCoordinates' can return empty point
-    if (!selectionCoord)
-        return;
-
-    var point         = {
-            x: selectionCoord.left,
-            y: selectionCoord.top + (selectionCoord.bottom - selectionCoord.top) / 2
-        },
-        elementScroll = styleUtils.getElementScroll(el);
-
-    if (browserUtils.isIE) {
-        point.x += elementScroll.left;
-        point.y += elementScroll.top;
-    }
-    return point;
-}
-
-function getMidpointXCoordinate (y, pointStart, pointEnd) {
-    return pointStart.x + ((y - pointStart.y) * (pointEnd.x - pointStart.x)) / (pointEnd.y - pointStart.y);
-}
-
-function getOptimizedSelectionPath (path, processedOptions, startPoint, positionCorrect, pointForCorrectionPath) {
-    var isRightDirection = processedOptions.endPos > processedOptions.startPos,
-        backward         = processedOptions.startPosition > processedOptions.endPosition,
-        currentStart     = processedOptions.startPos === 0 && backward ? 2 : 1,
-        optimizedPath    = [
-            { position: processedOptions.startPosition, point: startPoint }
-        ],
-        realIndex        = null,
-        realPositionX    = null;
-
-    optimizedPath = optimizedPath.concat($.extend(true, [], path));
-
-    function findNextIndexWithRealPoint (afterIndex, moreThen) {
-        var lastPart = optimizedPath.slice(afterIndex + 1),
-            index    = afterIndex + 1;
-
-        if (!lastPart.length)
-            return afterIndex;
-
-        $.each(lastPart, function (i, value) {
-                if (isRightDirection) {
-                    if (value.point.x > moreThen) {
-                        index += i;
-                        return false;
-                    }
-                }
-                else if (value.point.x >=
-                         getMidpointXCoordinate(lastPart[i].point.y, optimizedPath[0].point, pointForCorrectionPath ===
-                                                                                             null ?
-                                                                                             optimizedPath[optimizedPath.length -
-                                                                                                           1].point :
-                                                                                             pointForCorrectionPath)) {
-                    index += i;
-                    return false;
-                }
-            }
-        );
-        return index;
-    }
-
-    var i = 0,
-        j = 0;
-
-    if (isRightDirection) {
-        for (i = currentStart; i < optimizedPath.length; i++) {
-            if (optimizedPath[i].point.x < optimizedPath[i - 1].point.x) {
-                realIndex = findNextIndexWithRealPoint(i, optimizedPath[i - 1].point.x);
-
-                for (j = i; j < realIndex; j++)
-                    optimizedPath[j].point.x = getMidpointXCoordinate(optimizedPath[j].point.y, optimizedPath[i -
-                                                                                                              1].point, optimizedPath[realIndex].point);
-
-                i = realIndex;
-            }
-        }
-    }
-    else {
-        for (i = currentStart; i < optimizedPath.length; i++) {
-            //NOTE: if left of the line that connects pointFrom and pointTo
-            if (optimizedPath[i].position ===
-                (positionCorrect === null ? optimizedPath[optimizedPath.length - 1].position : positionCorrect))
-                break;
-            else {
-                realPositionX = getMidpointXCoordinate(optimizedPath[i].point.y, optimizedPath[0].point, pointForCorrectionPath ===
-                                                                                                         null ?
-                                                                                                         optimizedPath[optimizedPath.length -
-                                                                                                                       1].point :
-                                                                                                         pointForCorrectionPath);
-
-                if (optimizedPath[i].point.x < realPositionX) {
-                    realIndex = findNextIndexWithRealPoint(i);
-
-                    for (j = i; j < realIndex; j++)
-                        optimizedPath[j].point.x = getMidpointXCoordinate(optimizedPath[j].point.y, optimizedPath[i -
-                                                                                                                  1].point, optimizedPath[realIndex].point);
-
-                    i = realIndex;
-                }
-            }
-        }
-    }
-
-    return optimizedPath;
-}
-
-export function getSelectionPath (el, processedOptions, startPoint, endPoint, correctOptions) {
-    var isTextarea             = el.tagName.toLowerCase() === 'textarea',
-
-        startPosition          = processedOptions.startPosition,
-        endPosition            = processedOptions.endPosition,
-        backward               = startPosition > endPosition,
-        linesArray             = [],
-        startPos               = null,
-        endPos                 = null,
-        startLine              = null,
-        endLine                = null,
-
-        current                = startPosition,
-        currentLine            = null,
-        currentPos             = null,
-
-        isSelectionRegion      = false,
-        selectionPath          = [],
-
-        endPointCorrect        = null,
-        positionCorrect        = null,
-        pointForCorrectionPath = null;
-
-    function setCorrectPoint (pos) {
-        if (isSelectionRegion && pointForCorrectionPath === null) {
-            positionCorrect        = pos;
-            pointForCorrectionPath = getPointByPosition(el, pos, correctOptions);
-        }
-    }
-
-    function pushPosition (pos) {
-        if (pos === endPosition) {
-            selectionPath.push({
-                position: endPosition,
-                point:    endPoint
-            });
-        }
-        else
-            selectionPath.push({
-                position: pos,
-                point:    getPointByPosition(el, pos, correctOptions)
-            });
-    }
-
-    if (isTextarea) {
-        linesArray = el.value.length ? el.value.split('\n') : [];
-        startPos   = processedOptions.startPos;
-        endPos     = processedOptions.endPos;
-        startLine  = processedOptions.startLine;
-        endLine    = processedOptions.endLine;
-    }
-
-    if (!isTextarea || startLine === endLine) {
-        while (current !== endPosition) {
-            current = backward ? current - 1 : current + 1;
-            pushPosition(current);
-        }
-    }
-    else {
-        currentLine = domUtils.getTextareaLineNumberByPosition(el, current);
-        currentPos  = domUtils.getTextareaIndentInLine(el, current);
-
-        while (current !== endPosition) {
-            if (currentLine !== endLine) {
-                if (!isSelectionRegion)
-                    isSelectionRegion = Math.abs(startPosition - endPosition) !== 1;
-
-                currentLine = backward ? currentLine - 1 : currentLine + 1;
-
-                if (currentPos !== endPos) {
-                    //NOTE:logic to optimize the mouse movements (during transitions between lines)
-                    if (currentLine === endLine && (endPos === 0 || endPos === linesArray[currentLine].length)) {
-                        if (selectionPath[selectionPath.length - 1] &&
-                            (!(backward &&
-                            domUtils.getTextareaIndentInLine(el, selectionPath[selectionPath.length - 1].position) <
-                            endPos))) {
-                            setCorrectPoint(selectionPath[selectionPath.length -
-                                                          1] ? selectionPath[selectionPath.length - 1].position : null);
-                        }
-                        currentPos = endPos;
-                    }
-                    else if (!(currentLine !== endLine &&
-                               (endPos === 0 || (endPos === linesArray[endLine].length && startPos !== 0))))
-                        currentPos = currentPos > endPos ? currentPos - 1 : currentPos + 1;
-                }
-                //HACK: we can't optimize mouse movements between startPos = endPos = 0 if selection will go on
-                //first symbol in the string.
-                else if (!browserUtils.isIE && currentLine !== endLine && endPos === 0)
-                    currentPos = backward ? 1 : currentPos + 1;
-
-                current = domUtils.getTextareaPositionByLineAndOffset(el, currentLine, Math.min(currentPos, linesArray[currentLine].length));
-            }
-            else {
-                current = current > endPosition ? current - 1 : current + 1;
-                setCorrectPoint(current);
-            }
-            pushPosition(current);
-        }
-    }
-
-    selectionPath.push({
-        position: endPosition,
-        point:    endPoint || endPointCorrect
-    });
-
-    return !isSelectionRegion ? selectionPath :
-           getOptimizedSelectionPath(selectionPath, processedOptions, startPoint, positionCorrect, pointForCorrectionPath);
 }
 
 export function getSelectionLastVisiblePosition (el, startPos, endPos, correctOptions) {

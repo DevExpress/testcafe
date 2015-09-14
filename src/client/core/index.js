@@ -17,6 +17,7 @@ import * as positionUtils from './utils/position';
 import * as styleUtils from './utils/style';
 import * as keyCharUtils from './utils/key-char';
 import * as eventUtils from './utils/event';
+import * as arrayUtils from './utils/array';
 import * as textSelection from './utils/text-selection';
 
 exports.$                        = $;
@@ -36,6 +37,7 @@ exports.positionUtils   = positionUtils;
 exports.styleUtils      = styleUtils;
 exports.keyCharUtils    = keyCharUtils;
 exports.eventUtils      = eventUtils;
+exports.arrayUtils      = arrayUtils;
 exports.textSelection   = textSelection;
 
 exports.get = require;

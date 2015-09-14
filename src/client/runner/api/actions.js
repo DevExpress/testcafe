@@ -13,6 +13,9 @@ import typePlaybackAutomation from '../automation/playback/type';
 import * as sourceIndexTracker from '../source-index';
 import async from '../deps/async';
 
+
+var isJQueryObj = hammerhead.utils.isJQueryObj;
+
 var $               = testCafeCore.$;
 var SETTINGS        = testCafeCore.SETTINGS;
 var ERROR_TYPE      = testCafeCore.ERROR_TYPE;
@@ -20,7 +23,7 @@ var contentEditable = testCafeCore.contentEditable;
 var domUtils        = testCafeCore.domUtils;
 var positionUtils   = testCafeCore.positionUtils;
 var styleUtils      = testCafeCore.styleUtils;
-var serviceUtils    = testCafeCore.serviceUtils;
+var arrayUtils      = testCafeCore.arrayUtils;
 var keyCharUtils    = testCafeCore.keyCharUtils;
 
 
@@ -36,14 +39,14 @@ const CHECK_CONDITION_INTERVAL           = 50;
 var stepIterator = null;
 
 function ensureArray (target) {
-    return target instanceof Array ? target : [target];
+    return arrayUtils.isArray(target) ? target : [target];
 }
 
 function isStringOrStringArray (target, forbidEmptyArray) {
     if (typeof target === 'string')
         return true;
 
-    if (target instanceof Array && (!forbidEmptyArray || target.length)) {
+    if (arrayUtils.isArray(target) && (!forbidEmptyArray || target.length)) {
         for (var i = 0; i < target.length; i++) {
             if (typeof target[i] !== 'string')
                 return false;
@@ -84,7 +87,7 @@ function ensureElementsExist (item, actionName, callback) {
 
             array = ensureArray(res);
 
-            if (res && !(serviceUtils.isJQueryObj(res) && !res.length) && array.length) {
+            if (res && !(isJQueryObj(res) && !res.length) && array.length) {
                 callback(array);
                 return true;
             }
@@ -152,7 +155,7 @@ function actionArgumentsIterator (actionName) {
     var runAction = null;
 
     var iterate = function (item, iterationCallback) {
-        if ($.isArray(item))
+        if (arrayUtils.isArray(item))
             extractArgs(item, iterationCallback);
         else if (typeof item === 'function') {
             ensureElementsExist(item, actionName, function (elementsArray) {
@@ -226,14 +229,9 @@ export function parseActionArgument (item, actionName) {
         return [item];
     else if (actionName && actionName === 'select' && domUtils.isTextNode(item))
         return [item];
-    else if (typeof item === 'string') {
-        $(item).each(function () {
-            elements.push(this);
-        });
-
-        return elements;
-    }
-    else if (serviceUtils.isJQueryObj(item)) {
+    else if (typeof item === 'string')
+        return $(item).get();
+    else if (isJQueryObj(item)) {
         item.each(function () {
             elements.push(this);
         });
@@ -337,7 +335,7 @@ export function drag (what) {
         failWithError(ERROR_TYPE.incorrectDraggingSecondArgument);
         return;
     }
-    if (serviceUtils.isJQueryObj(to)) {
+    if (isJQueryObj(to)) {
         if (to.length < 1) {
             failWithError(ERROR_TYPE.incorrectDraggingSecondArgument);
             return;
@@ -374,7 +372,7 @@ export function drag (what) {
 export function select () {
     var actionStarted = false,
         elements      = ensureArray(arguments[0]),
-        args          = $.makeArray(arguments).slice(1),
+        args          = arrayUtils.toArray(arguments).slice(1),
         secondArg     = null,
         options       = {},
         error         = false,
@@ -385,7 +383,7 @@ export function select () {
 
     if (args.length === 1) {
         //NOTE: second action argument is jquery object
-        if (serviceUtils.isJQueryObj(args[0])) {
+        if (isJQueryObj(args[0])) {
             if (args[0].length < 1) {
                 failWithError(ERROR_TYPE.incorrectSelectActionArguments);
                 return;
@@ -402,7 +400,7 @@ export function select () {
         if (styleUtils.isNotVisibleNode(secondArg))
             error = true;
         else {
-            options.startNode = serviceUtils.isJQueryObj(elements[0]) ? elements[0][0] : elements[0];
+            options.startNode = isJQueryObj(elements[0]) ? elements[0][0] : elements[0];
             options.endNode   = secondArg;
 
             if (!domUtils.isContentEditableElement(options.startNode) ||
@@ -424,14 +422,8 @@ export function select () {
             }
         }
     }
-    else {
-        $.each(args, function (index, value) {
-            if (isNaN(parseInt(value)) || (args.length > 1 && value < 0)) {
-                error = true;
-                return false;
-            }
-        });
-    }
+    else
+        error = arrayUtils.some(args, value => isNaN(parseInt(value)) || args.length > 1 && value < 0);
 
     if (error) {
         failWithError(ERROR_TYPE.incorrectSelectActionArguments);
@@ -682,9 +674,7 @@ export function upload (what, path) {
                 hammerhead.doUpload(element, path)
                     .then((errs) => {
                         if (errs.length) {
-                            var errPaths = errs.map(function (err) {
-                                return err.filePath;
-                            });
+                            var errPaths = arrayUtils.map(errs, err => err.filePath);
 
                             failWithError(ERROR_TYPE.uploadCanNotFindFileToUpload, { filePaths: errPaths });
                         }

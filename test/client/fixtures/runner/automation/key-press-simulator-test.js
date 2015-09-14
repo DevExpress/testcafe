@@ -3,7 +3,7 @@ var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var keyChar      = testCafeCore.get('./utils/key-char');
-var event        = testCafeCore.get('./utils/event');
+var eventUtils        = testCafeCore.get('./utils/event');
 
 var testCafeRunner    = window.getTestCafeModule('testCafeRunner');
 var automation        = testCafeRunner.get('./automation/automation');
@@ -374,7 +374,7 @@ $(document).ready(function () {
             input = $('<input>').attr('value', value).addClass(TEST_ELEMENT_CLASS).appendTo('body')[0];
 
         input.addEventListener('keypress', function (ev) {
-            event.preventDefault(ev);
+            eventUtils.preventDefault(ev);
         });
 
         input.focus();

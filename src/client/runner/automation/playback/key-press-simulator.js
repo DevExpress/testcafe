@@ -3,16 +3,18 @@ import testCafeCore from '../../deps/testcafe-core';
 import typeCharPlaybackAutomation from '../playback/type-char';
 import async from '../../deps/async';
 
+
 var browserUtils          = hammerhead.utils.browser;
+var extend                = hammerhead.utils.extend;
 var eventSimulator        = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox      = hammerhead.eventSandbox.focusBlur;
-var nativeMethods         = hammerhead.nativeMethods;
 var elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
 
-var $             = testCafeCore.$;
 var domUtils      = testCafeCore.domUtils;
 var keyCharUtils  = testCafeCore.keyCharUtils;
 var textSelection = testCafeCore.textSelection;
+var eventUtils    = testCafeCore.eventUtils;
+var arrayUtils    = testCafeCore.arrayUtils;
 
 
 const KEY_PRESS_DELAY = 80;
@@ -46,7 +48,7 @@ var keyHelper = function (key) {
 
             if (modifierKeyCode)
                 modifiersState[sanitizedKey] = true;
-            return eventSimulator.keydown(activeElement, $.extend({ keyCode: keyCode }, modifiersState));
+            return eventSimulator.keydown(activeElement, extend({ keyCode: keyCode }, modifiersState));
         },
 
         press: function (modifiersState) {
@@ -79,7 +81,7 @@ var keyHelper = function (key) {
             beforeKeypressActiveElement = activeElement;
             var raiseDefault            = eventSimulator.keypress(
                 activeElement,
-                $.extend({ keyCode: charCode, charCode: charCode }, modifiersState)
+                extend({ keyCode: charCode, charCode: charCode }, modifiersState)
             );
 
             activeElement = domUtils.getActiveElement();
@@ -122,7 +124,7 @@ var keyHelper = function (key) {
             if (modifierKeyCode)
                 modifiersState[sanitizedKey] = false;
 
-            var raiseDefault  = eventSimulator.keyup(domUtils.getActiveElement(), $.extend({ keyCode: keyCode }, modifiersState)),
+            var raiseDefault  = eventSimulator.keyup(domUtils.getActiveElement(), extend({ keyCode: keyCode }, modifiersState)),
 
                 activeElement = domUtils.getActiveElement();
 
@@ -163,13 +165,13 @@ var supportedShortcutHandlers = (function () {
     function onTextAreaBlur () {
         curTextareaElement      = null;
         curTextareaCursorIndent = null;
-        nativeMethods.removeEventListener.call(this, 'blur', onTextAreaBlur, true);
+        eventUtils.unbind(this, 'blur', onTextAreaBlur, true);
     }
 
     function updateTextAreaIndent (element) {
         if (element.tagName.toLowerCase() === 'textarea') {
             if (curTextareaElement !== element) {
-                nativeMethods.addEventListener.call(element, 'blur', onTextAreaBlur, true);
+                eventUtils.bind(element, 'blur', onTextAreaBlur, true);
                 curTextareaElement = element;
             }
 
@@ -558,35 +560,42 @@ var supportedShortcutHandlers = (function () {
             if (!browserUtils.isIE)
                 elementEditingWatcher.processElementChanging(element);
 
-            var $form = $(element).parents('form:first');
-            if ($form.length) {
+            var form = domUtils.getParents(element, 'form')[0];
 
+            if (form) {
                 //if user presses enter when form input is focused, and the form has a submit button,
                 //  browser sends click event to the submit button
-                var $submitButton = $form.find('input[type=submit]:enabled,button[type=submit]:enabled');
-                if (!$submitButton.length)
-                //if button type is not declared, it becomes submit button by default
-                    $submitButton = $form.find('button:enabled').filter(function () {
-                        return this.type === 'submit';
-                    });
-                if ($submitButton.length)
-                    eventSimulator.click($submitButton[0]);
+                var buttons      = form.querySelectorAll('input, button');
+                var submitButton = null;
 
+                for (var i = 0; i < buttons.length; i++) {
+                    if (!submitButton && buttons[i].type === 'submit' && !buttons[i].disabled) {
+                        submitButton = buttons[i];
+                        break;
+                    }
+                }
+
+                if (submitButton)
+                    eventSimulator.click(submitButton);
                 else {
                     //the form is also submitted on enter press if there is only one input of the following types on it
                     //  and this input is focused (http://www.w3.org/TR/html5/forms.html#implicit-submission)
-                    var textInputTagNameRegExp = browserUtils.isWebKit ? /^(text|search|url|number|tel|password|number|email)$/i :
-                                                 /^(text|search|url|number|tel|password|number|email|date|time)$/i;
+                    var textInputTypeRegExp = browserUtils.isWebKit ? /^(text|search|url|number|tel|password|number|email)$/i :
+                                              /^(text|search|url|number|tel|password|number|email|date|time)$/i;
 
-                    if (textInputTagNameRegExp.test(element.type)) {
-                        var $textInputs = $form.find('input').filter(function () {
-                            return textInputTagNameRegExp.test(this.type);
-                        });
+                    if (textInputTypeRegExp.test(element.type)) {
+                        var formInputs = form.getElementsByTagName('input');
+                        var textInputs = [];
 
-                        if ($textInputs.length === 1 && $textInputs[0] === element &&
+                        for (var i = 0; i < formInputs.length; i++) {
+                            if (textInputTypeRegExp.test(formInputs[i].type))
+                                textInputs.push(formInputs[i]);
+                        }
+
+                        if (textInputs.length === 1 && textInputs[0] === element &&
                             (!element.validity || element.validity.valid)) {
-                            if (eventSimulator.submit($form[0]))
-                                $form[0].submit();
+                            if (eventSimulator.submit(form))
+                                form.submit();
                         }
                     }
                 }
@@ -702,9 +711,7 @@ export default function (keysString, actionCallback) {
         }
     }
 
-    var keysHelpers = $.map(keys, function (key) {
-        return keyHelper(key);
-    });
+    var keysHelpers = arrayUtils.map(keys, keyHelper);
 
     //press keys
     var pressedKeyHelpers  = [],

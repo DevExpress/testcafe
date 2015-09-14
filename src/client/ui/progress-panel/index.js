@@ -2,8 +2,10 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import ProgressBar from './progress-bar';
 
-var shadowUI   = hammerhead.shadowUI;
+var shadowUI = hammerhead.shadowUI;
+
 var eventUtils = testCafeCore.eventUtils;
+var styleUtils = testCafeCore.styleUtils;
 var $          = testCafeCore.$;
 
 
@@ -11,43 +13,64 @@ const PANEL_CLASS   = 'progress-panel';
 const TITLE_CLASS   = 'title';
 const CONTENT_CLASS = 'content';
 
-const UPDATE_INTERVAL  = 100;
-const OPENING_DELAY    = 300;
-const SHOWING_DELAY    = 200;
-const HIDING_DELAY     = 600;
-const MIN_SHOWING_TIME = 1000;
+const UPDATE_INTERVAL           = 100;
+const ANIMATION_UPDATE_INTERVAL = 10;
+const OPENING_DELAY             = 300;
+const SHOWING_DELAY             = 200;
+const HIDING_DELAY              = 600;
+const MIN_SHOWING_TIME          = 1000;
 
 
 export default class ProgressPanel {
     constructor () {
-        this.startTime      = null;
-        this.openingTimeout = null;
-        this.updateInterval = null;
+        this.startTime         = null;
+        this.openingTimeout    = null;
+        this.updateInterval    = null;
+        this.animationInterval = null;
 
-        this.$panel   = $('<div></div>').appendTo($(shadowUI.getRoot()));
-        this.$title   = $('<div></div>').appendTo(this.$panel);
-        this.$content = $('<div></div>').appendTo(this.$panel);
+        this.panelDiv = document.createElement('div');
+        shadowUI.getRoot().appendChild(this.panelDiv);
 
-        shadowUI.addClass(this.$panel[0], PANEL_CLASS);
-        shadowUI.addClass(this.$title[0], TITLE_CLASS);
-        shadowUI.addClass(this.$content[0], CONTENT_CLASS);
+        this.titleDiv = document.createElement('div');
+        this.panelDiv.appendChild(this.titleDiv);
 
-        ProgressPanel._showAtWindowCenter(this.$panel);
+        this.contentDiv = document.createElement('div');
+        this.panelDiv.appendChild(this.contentDiv);
 
-        this.progressBar = new ProgressBar(this.$content[0]);
+        shadowUI.addClass(this.panelDiv, PANEL_CLASS);
+        shadowUI.addClass(this.titleDiv, TITLE_CLASS);
+        shadowUI.addClass(this.contentDiv, CONTENT_CLASS);
 
-        this.disposePanel = () => ProgressPanel._showAtWindowCenter(this.$panel);
+        ProgressPanel._showAtWindowCenter(this.panelDiv);
+
+        this.progressBar = new ProgressBar(this.contentDiv);
+
+        this.disposePanel = () => ProgressPanel._showAtWindowCenter(this.panelDiv);
     }
 
-    static _showAtWindowCenter ($element) {
-        var $window = $(window);
+    static _getInvisibleElementProperty (element, property) {
+        var needShowElement = styleUtils.get(element, 'display') === 'none';
 
-        var top  = Math.round($window.height() / 2 - ($element.outerHeight() / 2)),
-            left = Math.round($window.width() / 2 - ($element.outerWidth() / 2));
+        if (needShowElement)
+            styleUtils.set(element, 'display', 'block');
 
-        $element.css({
-            top:  top,
-            left: left
+        var value = element[property];
+
+        if (needShowElement)
+            styleUtils.set(element, 'display', 'none');
+
+        return value;
+    }
+
+    static _showAtWindowCenter (element) {
+        var elementHeight = ProgressPanel._getInvisibleElementProperty(element, 'offsetHeight');
+        var elementWidth  = ProgressPanel._getInvisibleElementProperty(element, 'offsetWidth');
+        var top           = Math.round(styleUtils.getHeight(window) / 2 - elementHeight / 2);
+        var left          = Math.round(styleUtils.getWidth(window) / 2 - (elementWidth / 2));
+
+        styleUtils.set(element, {
+            left: left + 'px',
+            top:  top + 'px'
         });
     }
 
@@ -61,25 +84,56 @@ export default class ProgressPanel {
         this.progressBar.setSuccess(value);
     }
 
-    _showPanel () {
-        eventUtils.bind($(window), 'resize', this.disposePanel);
+    _stopAnimation () {
+        window.clearInterval(this.animationInterval);
+    }
 
-        this.$panel.fadeIn(SHOWING_DELAY);
+    _animate (el, duration, show, complete) {
+        var startTime         = Date.now();
+        var startOpacityValue = show ? 0 : 1;
+        var passedTime        = 0;
+        var progress          = 0;
+        var delta             = 0;
+
+        styleUtils.set(el, 'opacity', startOpacityValue);
+        styleUtils.set(el, 'display', 'block');
+
+        this._stopAnimation();
+
+        this.animationInterval = window.setInterval(() => {
+            passedTime = Date.now() - startTime;
+            progress   = Math.min(passedTime / duration, 1);
+            delta      = 0.5 - Math.cos(progress * Math.PI) / 2;
+
+            styleUtils.set(el, 'opacity', startOpacityValue + (show ? delta : -delta));
+
+            if (progress === 1) {
+                this._stopAnimation();
+
+                if (complete)
+                    complete();
+            }
+        }, ANIMATION_UPDATE_INTERVAL);
+    }
+
+    _showPanel () {
+        eventUtils.bind(window, 'resize', this.disposePanel);
+
+        this._animate(this.panelDiv, SHOWING_DELAY, true);
     }
 
     _hidePanel (force) {
         this.startTime = null;
 
-        eventUtils.unbind($(window), 'resize', this.disposePanel);
-
-        this.$panel.fadeOut(force ? 0 : HIDING_DELAY, () => this.$panel.css('display', 'none'));
+        eventUtils.unbind(window, 'resize', this.disposePanel);
+        this._animate(this.panelDiv, force ? 0 : HIDING_DELAY, false, () => styleUtils.set(this.panelDiv, 'display', 'none'));
     }
 
     show (text, timeout) {
         this.startTime  = Date.now();
         this.maxTimeout = timeout;
 
-        this.$title.text(text);
+        this.titleDiv.textContent = text;
         this._setSuccess(false);
 
         this.openingTimeout = window.setTimeout(() => {

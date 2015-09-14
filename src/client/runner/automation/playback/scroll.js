@@ -5,7 +5,6 @@ import async from '../../deps/async';
 var browserUtils   = hammerhead.utils.browser;
 var messageSandbox = hammerhead.eventSandbox.message;
 
-var $                     = testCafeCore.$;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
 var domUtils              = testCafeCore.domUtils;
 var positionUtils         = testCafeCore.positionUtils;
@@ -18,9 +17,9 @@ const SCROLL_SPEED      = 1;
 const SCROLL_DELAY      = 10;
 
 
-function getScrollOption ($currentScrollable, target, offsetX, offsetY) {
+function getScrollOption (currentScrollable, target, offsetX, offsetY) {
     var targetDimensions     = positionUtils.getClientDimensions(target),
-        scrollableDimensions = positionUtils.getClientDimensions($currentScrollable[0]),
+        scrollableDimensions = positionUtils.getClientDimensions(currentScrollable),
 
         scrollTop            = null,
         scrollLeft           = null,
@@ -81,11 +80,11 @@ function getScrollOption ($currentScrollable, target, offsetX, offsetY) {
     return null;
 }
 
-function scrollElement ($el, left, top, scrollCallback) {
+function scrollElement (el, left, top, scrollCallback) {
     var leftScrollStep        = null,
         topScrollStep         = null,
 
-        elementScroll         = styleUtils.getElementScroll($el[0]),
+        elementScroll         = styleUtils.getElementScroll(el),
         startLeftScroll       = elementScroll.left,
         startTopScroll        = elementScroll.top,
 
@@ -110,8 +109,8 @@ function scrollElement ($el, left, top, scrollCallback) {
     }
 
     function assignScrollValues () {
-        $el.scrollLeft(currentScrollLeft);
-        $el.scrollTop(currentScrollTop);
+        styleUtils.setScrollLeft(el, currentScrollLeft);
+        styleUtils.setScrollTop(el, currentScrollTop);
 
         lastScrollLeft = currentScrollLeft;
         lastScrollTop  = currentScrollTop;
@@ -129,7 +128,7 @@ function scrollElement ($el, left, top, scrollCallback) {
             if (!scrollLeftDirection && !scrollTopDirection)
                 return false;
 
-            var elementScroll = styleUtils.getElementScroll($el[0]);
+            var elementScroll = styleUtils.getElementScroll(el);
             currentScrollLeft = Math.round(elementScroll.left + scrollLeftDirection * leftScrollStep);
             currentScrollLeft = scrollLeftDirection ===
                                 1 ? Math.min(currentScrollLeft, left) : Math.max(currentScrollLeft, left);
@@ -179,7 +178,7 @@ export default function (to, actionOptions, currentDocument, actionCallback) {
         scrollableParents   = [],
         pointTo             = null,
 
-        $target             = null,
+        target              = null,
         targetRect          = null,
         targetWidth         = null,
         targetHeight        = null,
@@ -220,10 +219,10 @@ export default function (to, actionOptions, currentDocument, actionCallback) {
                 return;
             }
 
-            $target             = $(to);
-            targetRect          = $target[0].getBoundingClientRect();
-            targetWidth         = isHtmlElement ? $target[0].clientWidth : targetRect.width;
-            targetHeight        = isHtmlElement ? $target[0].clientHeight : targetRect.height;
+            target              = to;
+            targetRect          = target.getBoundingClientRect();
+            targetWidth         = isHtmlElement ? target.clientWidth : targetRect.width;
+            targetHeight        = isHtmlElement ? target.clientHeight : targetRect.height;
             offsetX             = actionOptions && typeof actionOptions.offsetX !==
                                                    'undefined' ? actionOptions.offsetX : Math.round(targetWidth / 2);
             offsetY             = actionOptions && typeof actionOptions.offsetY !==
@@ -232,7 +231,7 @@ export default function (to, actionOptions, currentDocument, actionCallback) {
             maxTopScrollMargin  = Math.min(MAX_SCROLL_MARGIN, Math.floor(targetHeight / 2));
             ownScroll           = styleUtils.getElementScroll(to);
 
-            if (!styleUtils.hasScroll(to, currentDocument)) {
+            if (!styleUtils.hasScroll(to)) {
                 scrollElementCallback();
                 return;
             }
@@ -250,12 +249,12 @@ export default function (to, actionOptions, currentDocument, actionCallback) {
             async.series({
                 scrollBody: function (callback) {
                     if (isHtmlElement)
-                        scrollElement($target.find('body'), newOwnScrollLeft, newOwnScrollTop, callback);
+                        scrollElement(target.getElementsByTagName('body')[0], newOwnScrollLeft, newOwnScrollTop, callback);
                     else
                         callback();
                 },
                 ownScroll:  function (callback) {
-                    scrollElement($target, newOwnScrollLeft, newOwnScrollTop, callback);
+                    scrollElement(target, newOwnScrollLeft, newOwnScrollTop, callback);
                 },
                 callback:   function () {
                     scrollElementCallback();
@@ -273,18 +272,17 @@ export default function (to, actionOptions, currentDocument, actionCallback) {
 
             var currentTarget = pointTo ? pointTo : to;
 
-            currentOffsetX = $target ? offsetX - $target.scrollLeft() : offsetX;
-            currentOffsetY = $target ? offsetY - $target.scrollTop() : offsetY;
+            currentOffsetX = target ? offsetX - styleUtils.getScrollLeft(target) : offsetX;
+            currentOffsetY = target ? offsetY - styleUtils.getScrollTop(target) : offsetY;
 
 
             async.forEachSeries(scrollableParents,
                 function (el, callback) {
-                    var $el          = $(el),
-                        scrollOption = getScrollOption($el, currentTarget, Math.max(0, currentOffsetX), Math.max(0, currentOffsetY));
+                    var scrollOption = getScrollOption(el, currentTarget, Math.max(0, currentOffsetX), Math.max(0, currentOffsetY));
 
                     function parentScrollCallback () {
                         var newTargetDimensions     = positionUtils.getClientDimensions(currentTarget),
-                            newScrollableDimensions = positionUtils.getClientDimensions($el[0]);
+                            newScrollableDimensions = positionUtils.getClientDimensions(el);
 
                         currentOffsetX = newTargetDimensions.left - newScrollableDimensions.left +
                                          newScrollableDimensions.border.left + offsetX;
@@ -303,12 +301,12 @@ export default function (to, actionOptions, currentDocument, actionCallback) {
                     async.series({
                         scrollBody: function (callback) {
                             if (/html/i.test(el.tagName))
-                                scrollElement($el.find('body'), scrollOption.left, scrollOption.top, callback);
+                                scrollElement(el.getElementsByTagName('body')[0], scrollOption.left, scrollOption.top, callback);
                             else
                                 callback();
                         },
                         ownScroll:  function () {
-                            scrollElement($el, scrollOption.left, scrollOption.top, parentScrollCallback);
+                            scrollElement(el, scrollOption.left, scrollOption.top, parentScrollCallback);
                         }
                     });
                 },

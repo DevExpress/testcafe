@@ -1,21 +1,16 @@
 import testCafeCore from './deps/testcafe-core';
 
-var SETTINGS = testCafeCore.SETTINGS;
+var SETTINGS   = testCafeCore.SETTINGS;
+var arrayUtils = testCafeCore.arrayUtils;
 
 
 const SOURCE_INDEX_ARG_REGEXP = /#(\d+)/;
 
 
-function arrForEach (arr, func) {
-    for (var i = 0; i < arr.length; i++)
-        func(arr[i], i);
-}
-
-
 export var currentIndex = null;
 
 export function wrapTrackableMethods (methodsHost, methodNames) {
-    arrForEach(methodNames, function (methName) {
+    arrayUtils.forEach(methodNames, methName => {
         var originalMeth = methodsHost[methName];
 
         methodsHost[methName] = function () {

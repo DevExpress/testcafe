@@ -9,29 +9,28 @@ import async from '../../deps/async';
 var browserUtils     = hammerhead.utils.browser;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
-var nativeMethods    = hammerhead.nativeMethods;
 
-var $             = testCafeCore.$;
 var SETTINGS      = testCafeCore.SETTINGS;
 var ERROR_TYPE    = testCafeCore.ERROR_TYPE;
 var domUtils      = testCafeCore.domUtils;
 var positionUtils = testCafeCore.positionUtils;
 var styleUtils    = testCafeCore.styleUtils;
 var eventUtils    = testCafeCore.eventUtils;
+var arrayUtils    = testCafeCore.arrayUtils;
 
 var cursor        = testCafeUI.cursor;
 var selectElement = testCafeUI.selectElement;
 
 
-function getSelectChildElementIndex ($select, child) {
-    var $allChildren = child.tagName.toLowerCase() === 'option' ? $select.find('option') : $select.find('optgroup');
+function getSelectChildElementIndex (select, child) {
+    var children = select.querySelectorAll(child.tagName);
 
-    return $.inArray(child, $allChildren);
+    return arrayUtils.indexOf(children, child);
 }
 
 function clickOnSelectChildElement (childElement, clickOptions, actionCallback, errorCallback) {
-    var isClickOnOption = childElement.tagName.toLowerCase() === 'option',
-        select          = domUtils.getSelectParent(childElement);
+    var isClickOnOption = childElement.tagName.toLowerCase() === 'option';
+    var select          = domUtils.getSelectParent(childElement);
 
     if (!select) {
         eventSimulator.click(childElement, clickOptions);
@@ -39,11 +38,10 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
         return;
     }
 
-    var $select              = $(select),
-        selectedIndex        = select.selectedIndex,
-        isOptionListExpanded = selectElement.isOptionListExpanded($select),
-        childIndex           = getSelectChildElementIndex($select, childElement),
-        targetElement        = null;
+    var selectedIndex        = select.selectedIndex;
+    var isOptionListExpanded = selectElement.isOptionListExpanded(select);
+    var childIndex           = getSelectChildElementIndex(select, childElement);
+    var targetElement        = null;
 
     if (!isOptionListExpanded) {
         var selectSizeValue = styleUtils.getSelectElementSize(select);
@@ -81,19 +79,19 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
             click: function () {
                 var clickLeadChanges = isClickOnOption && !targetElement.disabled;
 
-                if (styleUtils.getSelectElementSize($select[0]) > 1) {
+                if (styleUtils.getSelectElementSize(select) > 1) {
                     if (browserUtils.isFirefox) {
                         eventSimulator.mousedown(targetElement, clickOptions);
 
                         if (clickLeadChanges)
-                            $select[0].selectedIndex = childIndex;
+                            select.selectedIndex = childIndex;
 
-                        focusBlurSandbox.focus($select[0], function () {
+                        focusBlurSandbox.focus(select, function () {
                             window.setTimeout(function () {
                                 eventSimulator.mouseup(targetElement, clickOptions);
 
-                                if (isClickOnOption && $(childElement).index() !== selectedIndex)
-                                    eventSimulator.change($select[0]);
+                                if (isClickOnOption && childIndex !== selectedIndex)
+                                    eventSimulator.change(select);
 
                                 eventSimulator.click(targetElement, clickOptions);
                                 actionCallback();
@@ -101,19 +99,19 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
                         }, false, true);
                     }
                     else if (browserUtils.isIE) {
-                        eventSimulator.mousedown($select[0], clickOptions);
+                        eventSimulator.mousedown(select, clickOptions);
 
-                        focusBlurSandbox.focus($select[0], function () {
+                        focusBlurSandbox.focus(select, function () {
                             window.setTimeout(function () {
-                                eventSimulator.mouseup($select[0], clickOptions);
+                                eventSimulator.mouseup(select, clickOptions);
 
                                 if (clickLeadChanges)
-                                    $select[0].selectedIndex = childIndex;
+                                    select.selectedIndex = childIndex;
 
-                                if (isClickOnOption && $(childElement).index() !== selectedIndex)
-                                    eventSimulator.change($select[0]);
+                                if (isClickOnOption && childIndex !== selectedIndex)
+                                    eventSimulator.change(select);
 
-                                eventSimulator.click($select[0], clickOptions);
+                                eventSimulator.click(select, clickOptions);
                                 actionCallback();
                             }, browserUtils.hasTouchEvents ? 0 : automationSettings.CLICK_STEP_DELAY);
                         }, false, true);
@@ -122,12 +120,12 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
                         //NOTE: after mousedown in Chrome document.activeElement = select.
                         //But we need to raise blur and change event for previous active element during focus raising.
                         //That's why we should change event order and raise focus before mousedown.
-                        focusBlurSandbox.focus($select[0], function () {
+                        focusBlurSandbox.focus(select, function () {
                             window.setTimeout(function () {
                                 eventSimulator.mousedown(targetElement, clickOptions);
 
                                 if (clickLeadChanges)
-                                    $select[0].selectedIndex = childIndex;
+                                    select.selectedIndex = childIndex;
 
                                 eventSimulator.mouseup(targetElement, clickOptions);
 
@@ -191,13 +189,13 @@ export default function (el, options, runCallback, errorCallback) {
             }
 
             movePlaybackAutomation(target, false, options, function () {
-                if ((isSVGElement && browserUtils.isOpera) || ($(el).is('tref')))
+                if ((isSVGElement && browserUtils.isOpera) || el.tagName.toLowerCase() === 'tref')
                     topElement = el; //NOTE: document.elementFromPoint can't find this element
                 else {
                     screenPoint = automationUtil.getMouseActionPoint(el, options, true);
                     eventPoint  = automationUtil.getEventOptionCoordinates(el, screenPoint);
 
-                    eventOptions = $.extend({
+                    eventOptions = hammerhead.utils.extend({
                         clientX: eventPoint.x,
                         clientY: eventPoint.y
                     }, options);
@@ -265,17 +263,18 @@ export default function (el, options, runCallback, errorCallback) {
                 var onmousedown = function (e) {
                     wasPrevented = e.defaultPrevented;
                     eventUtils.preventDefault(e);
-                    nativeMethods.removeEventListener.call(el, 'mousedown', onmousedown, false);
+                    eventUtils.unbind(el, 'mousedown', onmousedown);
                 };
 
-                nativeMethods.addEventListener.call(el, 'mousedown', onmousedown, false);
+                eventUtils.bind(el, 'mousedown', onmousedown);
             }
 
             var onblur = function () {
                 blurRaised = true;
-                nativeMethods.removeEventListener.call(activeElement, 'blur', onblur, true);
+                eventUtils.unbind(activeElement, 'blur', onblur, true);
             };
-            nativeMethods.addEventListener.call(activeElement, 'blur', onblur, true);
+
+            eventUtils.bind(activeElement, 'blur', onblur, true);
 
             notPrevented = eventSimulator.mousedown(topElement, eventOptions);
 
@@ -328,8 +327,6 @@ export default function (el, options, runCallback, errorCallback) {
         },
 
         click: function () {
-            var $el = $(topElement);
-
             if ((!SETTINGS.get().RECORDING || SETTINGS.get().PLAYBACK) &&
                 topElement.tagName.toLowerCase() === 'option') {
                 runCallback();
@@ -337,17 +334,16 @@ export default function (el, options, runCallback, errorCallback) {
             }
 
             if (topElement.tagName.toLowerCase() === 'option') {
-                var select  = domUtils.getSelectParent(topElement),
-                    $select = $(select);
+                var select = domUtils.getSelectParent(topElement);
 
                 if (select && ((browserUtils.isWebKit && styleUtils.getSelectElementSize(select) <= 1) ||
                                (browserUtils.isIE && styleUtils.getSelectElementSize(select) > 1)))
-                    eventSimulator.click($select[0], eventOptions);
+                    eventSimulator.click(select, eventOptions);
                 else
-                    eventSimulator.click($el[0], eventOptions);
+                    eventSimulator.click(topElement, eventOptions);
 
                 if (select)
-                    eventSimulator.change($select[0]);
+                    eventSimulator.change(select);
 
                 runCallback();
                 return;
@@ -364,7 +360,7 @@ export default function (el, options, runCallback, errorCallback) {
             if ((!SETTINGS.get().RECORDING || SETTINGS.get().PLAYBACK) && domUtils.isSelectElement(topElement) &&
                 styleUtils.getSelectElementSize(topElement) === 1 && notPrevented !== false) {
                 //if this select already have options list
-                if (selectElement.isOptionListExpanded($el))
+                if (selectElement.isOptionListExpanded(topElement))
                     selectElement.collapseOptionList();
                 else
                     selectElement.expandOptionList(topElement);

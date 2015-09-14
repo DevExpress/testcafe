@@ -3,9 +3,9 @@ import testCafeCore from './../deps/testcafe-core';
 
 var shadowUI = hammerhead.shadowUI;
 
-var $             = testCafeCore.$;
 var serviceUtils  = testCafeCore.serviceUtils;
 var positionUtils = testCafeCore.positionUtils;
+var styleUtils    = testCafeCore.styleUtils;
 
 
 //Const
@@ -56,10 +56,10 @@ CursorBaseBehavior.CURSOR_SHOW_RESPONSE_CMD       = 'cursorShowResponse';
 CursorBaseBehavior.prototype.move = function (to, callback, iFrameInitiator) {
     this.cursorPosition = positionUtils.getFixedPosition(to, iFrameInitiator, true);
 
-    if (this.$cursor) {
-        this.$cursor.css({
-            left: this.cursorPosition.x + $(document).scrollLeft() - this.pointerOffsetX + 'px',
-            top:  this.cursorPosition.y + $(document).scrollTop() - this.pointerOffsetY + 'px'
+    if (this.cursorElement) {
+        styleUtils.set(this.cursorElement, {
+            left: this.cursorPosition.x + styleUtils.getScrollLeft(document) - this.pointerOffsetX + 'px',
+            top:  this.cursorPosition.y + styleUtils.getScrollTop(document) - this.pointerOffsetY + 'px'
         });
     }
 
@@ -68,9 +68,9 @@ CursorBaseBehavior.prototype.move = function (to, callback, iFrameInitiator) {
 };
 
 CursorBaseBehavior.prototype.lMouseDown = function (callback) {
-    if (this.$cursor) {
-        shadowUI.removeClass(this.$cursor[0], STATE_CLASSES);
-        shadowUI.addClass(this.$cursor[0], L_MOUSE_DOWN_CLASS);
+    if (this.cursorElement) {
+        shadowUI.removeClass(this.cursorElement, STATE_CLASSES);
+        shadowUI.addClass(this.cursorElement, L_MOUSE_DOWN_CLASS);
     }
 
     if (callback)
@@ -78,9 +78,9 @@ CursorBaseBehavior.prototype.lMouseDown = function (callback) {
 };
 
 CursorBaseBehavior.prototype.rMouseDown = function (callback) {
-    if (this.$cursor) {
-        shadowUI.removeClass(this.$cursor[0], STATE_CLASSES);
-        shadowUI.addClass(this.$cursor[0], R_MOUSE_DOWN_CLASS);
+    if (this.cursorElement) {
+        shadowUI.removeClass(this.cursorElement, STATE_CLASSES);
+        shadowUI.addClass(this.cursorElement, R_MOUSE_DOWN_CLASS);
     }
 
     if (callback)
@@ -88,24 +88,24 @@ CursorBaseBehavior.prototype.rMouseDown = function (callback) {
 };
 
 CursorBaseBehavior.prototype.mouseUp = function (callback) {
-    if (this.$cursor)
-        shadowUI.removeClass(this.$cursor[0], STATE_CLASSES);
+    if (this.cursorElement)
+        shadowUI.removeClass(this.cursorElement, STATE_CLASSES);
 
     if (callback)
         callback();
 };
 
 CursorBaseBehavior.prototype.hide = function (callback) {
-    if (this.$cursor)
-        this.$cursor.css({ visibility: 'hidden' });
+    if (this.cursorElement)
+        styleUtils.set(this.cursorElement, 'visibility', 'hidden');
 
     if (callback)
         callback();
 };
 
 CursorBaseBehavior.prototype.show = function (callback) {
-    if (this.$cursor)
-        this.$cursor.css({ visibility: '' });
+    if (this.cursorElement)
+        styleUtils.set(this.cursorElement, 'visibility', '');
 
     if (callback)
         callback();

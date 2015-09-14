@@ -4,15 +4,14 @@ import * as actionBarrier from './action-barrier/action-barrier';
 import * as xhrBarrier from './action-barrier/xhr';
 import async from './deps/async';
 
-var browserUtils  = hammerhead.utils.browser;
-var nativeMethods = hammerhead.nativeMethods;
-var JSON          = hammerhead.json;
+var browserUtils = hammerhead.utils.browser;
+var JSON         = hammerhead.json;
 
-var $            = testCafeCore.$;
 var SETTINGS     = testCafeCore.SETTINGS;
 var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var serviceUtils = testCafeCore.serviceUtils;
 var domUtils     = testCafeCore.domUtils;
+var eventUtils   = testCafeCore.eventUtils;
 
 
 const STEP_DELAY                 = 500;
@@ -181,43 +180,49 @@ StepIterator.prototype._runStep = function () {
 };
 
 StepIterator.prototype._setupUnloadPrediction = function () {
-    var iterator     = this,
-        $form        = $('form'),
-        prolong      = function () {
+    var iterator       = this,
+        forms          = document.getElementsByTagName('form'),
+        prolong        = function () {
             iterator.state.prolongStepDelay = true;
         },
-        shortProlong = function () {
+        shortProlong   = function () {
             iterator.state.shortProlongStepDelay = true;
         },
-        beforeUnload = function () {
+        beforeUnload   = function () {
             iterator.state.pageUnloading = true;
 
             iterator.eventEmitter.emit(StepIterator.BEFORE_UNLOAD_EVENT_RAISED);
         },
-        unload       = function () {
+        unload         = function () {
             iterator.state.pageUnloading = true;
 
             iterator.eventEmitter.emit(StepIterator.UNLOAD_EVENT_RAISED);
+        },
+
+        overrideSubmit = function (form) {
+            var submit = form.submit;
+
+            form.submit = function () {
+                prolong();
+                submit.apply(form, arguments);
+            };
         };
 
-    $(document).on('submit', 'form', prolong);
-
-    $form.each(function () {
-        var submit = this.submit;
-
-        this.submit = function () {
+    eventUtils.bind(document, 'submit', function (e) {
+        if (e.target.tagName.toLowerCase() === 'form')
             prolong();
-            submit.apply(this, arguments);
-        };
     });
+
+    for (var i = 0; i < forms.length; i++)
+        overrideSubmit(forms[i]);
 
     var skipBeforeUnloadEvent = false;
 
-    nativeMethods.addEventListener.call(document, 'click', function (e) {
+    eventUtils.bind(document, 'click', function (e) {
         var target = (e.srcElement || e.target);
 
         if (!e.defaultPrevented && target.tagName && target.tagName.toLowerCase() === 'a') {
-            var href = $(target).attr('href');
+            var href = target.href;
 
             if (target.hasAttribute('href') && !/(^javascript:)|(^mailto:)|(^tel:)|(^#)/.test(href))
                 prolong();
@@ -234,7 +239,7 @@ StepIterator.prototype._setupUnloadPrediction = function () {
             //NOTE: except file downloading
             if (document.readyState === 'loading' &&
                 !(document.activeElement && document.activeElement.tagName.toLowerCase() === 'a' &&
-                document.activeElement.getAttribute('download') !== null))
+                document.activeElement.hasAttribute('download')))
                 beforeUnload();
         }, 0);
     }
@@ -245,7 +250,7 @@ StepIterator.prototype._setupUnloadPrediction = function () {
         skipBeforeUnloadEvent = false;
     });
 
-    nativeMethods.windowAddEventListener.call(window, 'unload', unload);
+    eventUtils.bind(window, 'unload', unload);
 };
 
 StepIterator.prototype._syncSharedDataWithServer = function (callback) {
@@ -382,11 +387,11 @@ StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator
                             });
 
                             function onBeforeUnload () {
-                                nativeMethods.windowRemoveEventListener.call(iframe.contentWindow, 'beforeunload', onBeforeUnload);
+                                eventUtils.unbind(iframe.contentWindow, 'beforeunload', onBeforeUnload);
                                 iFrameBeforeUnloadRaised = true;
                             }
 
-                            nativeMethods.windowAddEventListener.call(iframe.contentWindow, 'beforeunload', onBeforeUnload, true);
+                            eventUtils.bind(iframe.contentWindow, 'beforeunload', onBeforeUnload);
 
                             action(element, function () {
                                 iFrameWaitXhrBarrier();
@@ -467,7 +472,8 @@ StepIterator.prototype.onError = function (err) {
 
     this.state.curStepErrors.push(err);
 
-    this.eventEmitter.emit(StepIterator.ERROR_EVENT, $.extend({
+
+    this.eventEmitter.emit(StepIterator.ERROR_EVENT, hammerhead.utils.extend({
         stepNum: this.state.step - 1
     }, err));
 };
