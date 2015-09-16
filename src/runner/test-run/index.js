@@ -33,8 +33,9 @@ export default class TestRun extends Session {
         this.stepsSharedData            = {};
 
         this.injectable.scripts.push('/testcafe-core.js');
-        this.injectable.scripts.push('/testcafe-ui-core.js');
-        this.injectable.styles.push('/uistyle.css');
+        this.injectable.scripts.push('/testcafe-ui.js');
+        this.injectable.scripts.push('/testcafe-runner.js');
+        this.injectable.styles.push('/testcafe-ui-styles.css');
     }
 
     async _loadUploads () {
@@ -42,7 +43,7 @@ export default class TestRun extends Session {
     }
 
     _getPayloadScript () {
-        var sharedJs  = this.test.fixture.getSharedJs();
+        var sharedJs = this.test.fixture.getSharedJs();
 
         // TODO
         var nextStep = this.actionTargetWaiting ? this.nextStep - 1 : this.nextStep;
@@ -70,7 +71,7 @@ export default class TestRun extends Session {
     }
 
     _getIFramePayloadScript () {
-        var sharedJs  = this.test.fixture.getSharedJs();
+        var sharedJs = this.test.fixture.getSharedJs();
 
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             sharedJs:              sharedJs,
@@ -163,4 +164,12 @@ ServiceMessages[COMMAND.nativeDialogsInfoSet] = function (msg) {
         this.nativeDialogsInfoTimeStamp = msg.timeStamp;
         this.nativeDialogsInfo          = msg.info;
     }
+};
+
+ServiceMessages[COMMAND.inactivityExpected] = function () {
+    //TODO:
+};
+
+ServiceMessages[COMMAND.takeScreenshot] = function () {
+    //TODO:
 };

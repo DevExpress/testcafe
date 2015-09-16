@@ -1,4 +1,4 @@
-import { respond404, respond500, respondWithJSON, redirect } from '../utils/http';
+import { respond404, respond500, respondWithJSON, redirect, preventCaching } from '../utils/http';
 import read from '../utils/read-file-relative';
 
 
@@ -33,8 +33,8 @@ export default class BrowserConnectionGateway {
         this._dispatch('/browser/idle/{id}', proxy, BrowserConnectionGateway.onIdle);
         this._dispatch('/browser/status/{id}', proxy, BrowserConnectionGateway.onStatusRequest);
 
-        proxy.GET('./browser/assets/index.js', { content: IDLE_PAGE_SCRIPT, contentType: 'application/x-javascript' });
-        proxy.GET('./browser/assets/style.css', { content: IDLE_PAGE_STYLE, contentType: 'text/css' });
+        proxy.GET('/browser/assets/index.js', { content: IDLE_PAGE_SCRIPT, contentType: 'application/x-javascript' });
+        proxy.GET('/browser/assets/style.css', { content: IDLE_PAGE_STYLE, contentType: 'text/css' });
     }
 
     // Helpers
@@ -69,8 +69,10 @@ export default class BrowserConnectionGateway {
     }
 
     static onIdle (req, res, connection) {
-        if (BrowserConnectionGateway.ensureConnectionReady(res, connection))
+        if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
+            preventCaching(res);
             res.end(connection.renderIdlePage());
+        }
     }
 
     static onStatusRequest (req, res, connection) {

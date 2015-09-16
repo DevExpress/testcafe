@@ -80,12 +80,13 @@ export default class Bootstrapper {
         try {
             await Bootstrapper._waitBrowserConnectionsReady(browserConnections);
         }
-        finally {
-            // NOTE: we should close local connections and related browsers once we've done
+        catch (err) {
             browserConnections.forEach(bc => {
                 if (bc instanceof LocalBrowserConnection)
                     bc.close();
             });
+
+            throw err;
         }
 
         return browserConnections;

@@ -523,6 +523,7 @@ RunnerBase.prototype._initNativeDialogs = function () {
 };
 //Handlers
 RunnerBase.prototype._onTestComplete = function (e) {
+    this.stopped = true;
     this.eventEmitter.emit(this.TEST_COMPLETED_EVENT, {});
     e.callback();
 };
@@ -586,6 +587,9 @@ RunnerBase.prototype.setGlobalWaitFor = function (event, timeout) {
 
 RunnerBase.prototype._onBeforeUnload = function (fromIFrame, callback) {
     var runner = this;
+
+    if (this.stopped)
+        return;
 
     //NOTE: we should expect file downloading request only after before unload event (T216625)
     transport.asyncServiceMsg({ cmd: COMMAND.uncheckFileDownloadingFlag }, function () {

@@ -29,6 +29,8 @@ var Runner = function (startedCallback) {
 serviceUtils.inherit(Runner, RunnerBase);
 
 Runner.prototype._onTestComplete = function (e) {
+    this.stopped = true;
+    
     transport.waitForServiceMessagesCompleted(function () {
         var testCompleteMsg = {
             cmd: COMMAND.done
