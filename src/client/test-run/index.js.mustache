@@ -40,7 +40,7 @@
 
         testCafeCore.SETTINGS.set({
             CURRENT_TEST_STEP_NAME:   nextStep ? stepNames[nextStep - 1] : 'Test initialization',
-            WORKER_IDLE_URL:          '{{{browserIdleUrl}}}',   //TODO: rename to BROWSER_IDLE_URL
+            BROWSER_STATUS_URL:       '{{{browserStatusUrl}}}',
             TAKE_SCREENSHOT_ON_FAILS: {{{takeScreenshotOnFails}}},
             FAIL_ON_JS_ERRORS:        {{{failOnJsErrors}}},
             ENABLE_SOURCE_INDEX:      true,
@@ -64,13 +64,15 @@
         var modalBackground = testCafeUI.modalBackground;
         var shadowUI        = hammerhead.ShadowUI;
 
+        Runner.startHeartbeat('{{{browserHeartbeatUrl}}}');
+
         sandboxedJQuery.init(window, undefined);
         jQuerySelectorExtensions.init();
 
         var testError = {{{testError}}};
 
         if (testError) {
-            transport.fail(testError);
+            transport.fail(testError, Runner.checkStatus);
             return;
         }
 

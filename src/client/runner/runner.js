@@ -1,6 +1,7 @@
 import * as hammerheadAPI from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 import RunnerBase from './runner-base';
+import * as browser from '../browser';
 
 var browserUtils = hammerheadAPI.Util.Browser;
 
@@ -18,19 +19,23 @@ var Runner = function (startedCallback) {
     var runner = this;
 
     RunnerBase.apply(this, [startedCallback]);
-
-    transport.startInactivityMonitor(function () {
-        runner._onError({
-            code: ERROR_TYPE.testInactivity
-        });
-    });
 };
 
 serviceUtils.inherit(Runner, RunnerBase);
 
+//Static
+Runner.startHeartbeat = function (heartbeatUrl) {
+    browser.startHeartbeat(heartbeatUrl, hammerheadAPI.NativeMethods.XMLHttpRequest);
+};
+
+Runner.checkStatus = function () {
+    browser.checkStatus(SETTINGS.get().BROWSER_STATUS_URL, hammerheadAPI.NativeMethods.XMLHttpRequest);
+};
+
+
 Runner.prototype._onTestComplete = function (e) {
     this.stopped = true;
-    
+
     transport.waitForServiceMessagesCompleted(function () {
         var testCompleteMsg = {
             cmd: COMMAND.done
@@ -38,7 +43,7 @@ Runner.prototype._onTestComplete = function (e) {
 
         transport.asyncServiceMsg(testCompleteMsg, function () {
             e.callback();
-            transport.switchToWorkerIdle();
+            Runner.checkStatus();
         });
     }, WAITING_FOR_SERVICE_MESSAGES_COMPLETED_DELAY);
 };
@@ -88,7 +93,7 @@ Runner.prototype._onError = function (err) {
 
     if (!SETTINGS.get().TAKE_SCREENSHOT_ON_FAILS) {
         this.stopped = true;
-        transport.fail(err);
+        transport.fail(err, Runner.checkStatus);
         return;
     }
 
@@ -105,7 +110,7 @@ Runner.prototype._onError = function (err) {
         //withoutStepName: !(ERRORS.hasErrorStepName(err) && ERRORS.hasErrorStepName(err)),
         callback:     function () {
             runner.stopped = true;
-            transport.fail(err);
+            transport.fail(err, Runner.checkStatus);
         }
     });
 };
@@ -130,10 +135,6 @@ Runner.prototype._onGetStepsSharedData = function (e) {
     var msg = { cmd: COMMAND.getStepsSharedData };
 
     transport.asyncServiceMsg(msg, e.callback);
-};
-
-Runner.prototype._onExpectInactivity = function (e) {
-    transport.expectInactivity(e.duration, e.callback);
 };
 
 Runner.prototype._onTakeScreenshot = function (e) {

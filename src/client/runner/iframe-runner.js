@@ -108,16 +108,6 @@ IFrameRunner.prototype._onGetStepsSharedData = function (e) {
     messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, onMessage);
 };
 
-IFrameRunner.prototype._onExpectInactivity = function (e) {
-    var msg = {
-        cmd:      RunnerBase.IFRAME_EXPECT_INACTIVITY_CMD,
-        duration: e.duration
-    };
-
-    messageSandbox.sendServiceMsg(msg, window.top);
-    e.callback();
-};
-
 IFrameRunner.prototype._onTakeScreenshot = function (e) {
     var msg = {
         cmd:          RunnerBase.IFRAME_TAKE_SCREENSHOT_REQUEST_CMD,

@@ -9,7 +9,8 @@ export default class LocalBrowserConnection extends BrowserConnection {
     constructor (gateway, browserInfo) {
         super(gateway);
 
-        this.forceClose = false;
+        this.forceClose            = false;
+        this.switchedToIdleOnClose = false;
 
         this._runBrowser(browserInfo);
     }
@@ -36,6 +37,14 @@ export default class LocalBrowserConnection extends BrowserConnection {
 
     getStatus () {
         if (this.forceClose) {
+            // NOTE: when the task is done we should redirect the browser
+            // to the idle page and close it by the page url.
+            if (!this.switchedToIdleOnClose) {
+                this.switchedToIdleOnClose = true;
+
+                return { cmd: COMMAND.idle, url: this.idleUrl };
+            }
+
             setTimeout(() => {
                 closeBrowser(this.idleUrl);
                 super.close();

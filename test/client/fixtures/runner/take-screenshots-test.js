@@ -16,12 +16,11 @@ var runner                  = null,
     expectedError           = null,
     expectedScreenshotCount = 0;
 
-transport.batchUpdate        = function (callback) {
+transport.batchUpdate = function (callback) {
     callback();
 };
-transport.switchToWorkerIdle = function () {
-};
-transport.fail               = function (err) {
+
+transport.fail            = function (err) {
     ok(err.code === expectedError);
     ok(screenShotRequestCount === expectedScreenshotCount);
 
@@ -29,7 +28,7 @@ transport.fail               = function (err) {
     $('iframe').remove();
     start();
 };
-transport.asyncServiceMsg    = function (msg, callback) {
+transport.asyncServiceMsg = function (msg, callback) {
     if (msg.cmd === 'CMD_TAKE_SCREENSHOT') {    //TODO: fix
         screenShotRequestCount++;
         ok(msg.isFailedStep);
@@ -38,7 +37,7 @@ transport.asyncServiceMsg    = function (msg, callback) {
     if (callback)
         callback();
 };
-transport.assertionFailed    = function () {
+transport.assertionFailed = function () {
 };
 
 actionBarrier.waitPageInitialization = function (callback) {

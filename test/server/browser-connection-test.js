@@ -145,7 +145,7 @@ describe('Browser connection', function () {
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.idle });
+                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.idle, url: connection.idleUrl });
                 done();
             })
 

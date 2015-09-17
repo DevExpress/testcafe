@@ -144,9 +144,6 @@ var RunnerBase = function () {
             runner.stepIterator.on(StepIterator.GET_STEPS_SHARED_DATA_EVENT, function (e) {
                 runner._onGetStepsSharedData(e);
             });
-            runner.stepIterator.on(StepIterator.EXPECT_INACTIVITY_EVENT, function (e) {
-                runner._onExpectInactivity(e);
-            });
 
             runner.stepIterator.on(StepIterator.TAKE_SCREENSHOT_EVENT, function (e) {
                 runner._onTakeScreenshot(e);
@@ -177,8 +174,6 @@ RunnerBase.prototype._destroy = function () {
     dialogsAPI.destroy();
 
     this._destroyIFrameBehavior();
-
-    transport.stopInactivityMonitor();
 };
 
 RunnerBase.prototype._initBarrier = function () {
@@ -232,14 +227,6 @@ RunnerBase.prototype._initIFrameBehavior = function () {
 
             case RunnerBase.IFRAME_SET_SHARED_DATA_CMD:
                 runner.stepIterator.setSharedData(message.sharedData);
-                break;
-
-            case RunnerBase.IFRAME_EXPECT_INACTIVITY_CMD:
-                runner._onExpectInactivity({
-                    duration: message.duration,
-                    callback: function () {
-                    }
-                });
                 break;
 
             case RunnerBase.IFRAME_NEXT_STEP_STARTED_CMD:
@@ -348,7 +335,6 @@ RunnerBase.IFRAME_FAILED_ASSERTION_CMD              = 'iframeFailedAssertion';
 RunnerBase.IFRAME_GET_SHARED_DATA_REQUEST_CMD       = 'getSharedDataRequest';
 RunnerBase.IFRAME_GET_SHARED_DATA_RESPONSE_CMD      = 'getSharedDataResponse';
 RunnerBase.IFRAME_SET_SHARED_DATA_CMD               = 'setSharedData';
-RunnerBase.IFRAME_EXPECT_INACTIVITY_CMD             = 'expectInactivity';
 RunnerBase.IFRAME_NEXT_STEP_STARTED_CMD             = 'nextStepStarted';
 RunnerBase.IFRAME_ACTION_TARGET_WAITING_STARTED_CMD = 'actionTargetWaitingStarted';
 RunnerBase.IFRAME_ACTION_RUN_CMD                    = 'actionRun';
@@ -555,10 +541,6 @@ RunnerBase.prototype._onSetStepsSharedData = function (e) {
 };
 
 RunnerBase.prototype._onGetStepsSharedData = function (e) {
-    e.callback();
-};
-
-RunnerBase.prototype._onExpectInactivity = function (e) {
     e.callback();
 };
 

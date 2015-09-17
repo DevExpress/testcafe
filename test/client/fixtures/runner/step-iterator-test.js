@@ -8,18 +8,20 @@ var event        = testCafeCore.get('./util/event');
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var StepIterator   = testCafeRunner.get('./step-iterator');
 
-var stepIterator    = null,
-    nextStep        = 0,
-    stepsSharedData = null,
-    states          = [],
-    onError         = null;
+var stepIterator            = null,
+    nextStep                = 0,
+    stepsSharedData         = null,
+    states                  = [],
+    onError                 = null,
+    onStepIteratorCompleted = null;
 
 QUnit.testStart(function () {
-    stepIterator    = new StepIterator();
-    nextStep        = 0;
-    stepsSharedData = null;
-    states          = [];
-    onError         = null;
+    stepIterator            = new StepIterator();
+    nextStep                = 0;
+    stepsSharedData         = null;
+    states                  = [];
+    onError                 = null;
+    onStepIteratorCompleted = null;
 
     stepIterator.on(StepIterator.NEXT_STEP_STARTED_EVENT, function (e) {
         states.push(COMMAND.setNextStep);
@@ -38,14 +40,14 @@ QUnit.testStart(function () {
         e.callback(stepsSharedData);
     });
 
-    stepIterator.on(StepIterator.TEST_COMPLETE_EVENT, function () {
-        states.push(COMMAND.done);
-        transport.switchToWorkerIdle();
-    });
-
     stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
         if (typeof onError === 'function')
             onError(err);
+    });
+
+    stepIterator.on(StepIterator.TEST_COMPLETE_EVENT, function () {
+        if (typeof onStepIteratorCompleted === 'function')
+            onStepIteratorCompleted();
     });
 });
 
@@ -134,12 +136,6 @@ $(document).ready(function () {
             states.push('step' + SETTINGS.CURRENT_TEST_STEP_NAME + '_done');
         };
 
-        transport.switchToWorkerIdle = function () {
-            states.push('switchToWorkerIdle');
-            deepEqual(states, expectedStates);
-            start();
-        };
-
         var expectedStates = [
             COMMAND.getStepsSharedData,
             COMMAND.setNextStep,
@@ -170,8 +166,7 @@ $(document).ready(function () {
             'step4_0_action',
             'step4_1_action',
             'step4_done',
-            COMMAND.done,
-            'switchToWorkerIdle'
+            COMMAND.done
         ];
 
         expect(8);
@@ -182,6 +177,12 @@ $(document).ready(function () {
             states.push(err.code);
             stepIterator.start(stepNames, steps, stepSetup, stepDone, nextStep);
             onError                          = null;
+        };
+
+        onStepIteratorCompleted = function () {
+            states.push(COMMAND.done);
+            deepEqual(states, expectedStates);
+            start();
         };
 
         stepIterator.start(stepNames, steps, stepSetup, stepDone, 0);
@@ -229,38 +230,31 @@ $(document).ready(function () {
             callback();
         }, 1000);
 
-        transport.switchToWorkerIdle = function () {
-            states.push('switchToWorkerIdle');
-            deepEqual(states, expectedStates);
-            start();
-        };
-
         var expectedStates = [
             COMMAND.getStepsSharedData,
             COMMAND.setNextStep,
-            'CMD_INACTIVITY_EXPECTED',  //TODO: remove it
             'step0_pre_setup',
             'step0_setup',
             'step0',
             'step0_action',
             'step0_done',
             COMMAND.setNextStep,
-            'CMD_INACTIVITY_EXPECTED',  //TODO: remove it
             'step1_pre_setup',
             'step1_setup',
             'step1',
             'step1_action',
             'step1_done',
-            COMMAND.done,
-            'switchToWorkerIdle'
+            COMMAND.done
         ];
 
         expect(1);
 
-        stepIterator.expectInactivity = function (timeout, callback) {
-            states.push('CMD_INACTIVITY_EXPECTED'); //TODO: remove it
-            callback();
+        onStepIteratorCompleted = function () {
+            states.push(COMMAND.done);
+            deepEqual(states, expectedStates);
+            start();
         };
+
         stepIterator.start(stepNames, steps, stepSetup, stepDone, 0);
     });
 
@@ -295,20 +289,12 @@ $(document).ready(function () {
             states.push('step' + SETTINGS.CURRENT_TEST_STEP_NAME + '_pre_setup');
         }, 1000);
 
-        transport.switchToWorkerIdle = function () {
-            states.push('switchToWorkerIdle');
-            deepEqual(states, expectedStates);
-            start();
-        };
-
         var expectedStates = [
             COMMAND.getStepsSharedData,
             COMMAND.setNextStep,
-            'CMD_INACTIVITY_EXPECTED',  //TODO: remove it
             'step0_pre_setup',
             ERROR_TYPE.waitForActionTimeoutExceeded,
-            COMMAND.done,
-            'switchToWorkerIdle'
+            COMMAND.done
         ];
 
         expect(1);
@@ -316,12 +302,8 @@ $(document).ready(function () {
         onError = function (err) {
             states.push(err.code);
             states.push(COMMAND.done);
-            transport.switchToWorkerIdle();
-        };
-
-        stepIterator.expectInactivity = function (timeout, callback) {
-            states.push('CMD_INACTIVITY_EXPECTED'); //TODO: remove it
-            callback();
+            deepEqual(states, expectedStates);
+            start();
         };
 
         stepIterator.start(stepNames, steps, stepSetup, stepDone, 0);
@@ -364,19 +346,12 @@ $(document).ready(function () {
             }
         ];
 
-        transport.switchToWorkerIdle = function () {
-            states.push('switchToWorkerIdle');
-            deepEqual(states, expectedStates);
-            start();
-        };
-
         var expectedStates = [
             COMMAND.getStepsSharedData,
             COMMAND.setNextStep,
             'step0',
             ERROR_TYPE.storeDomNodeOrJqueryObject,
-            COMMAND.done,
-            'switchToWorkerIdle'
+            COMMAND.done
         ];
 
         expect(1);
@@ -384,11 +359,8 @@ $(document).ready(function () {
         onError = function (err) {
             states.push(err.code);
             states.push(COMMAND.done);
-            transport.switchToWorkerIdle();
-        };
-
-        stepIterator.expectInactivity = function (timeout, callback) {
-            callback();
+            deepEqual(states, expectedStates);
+            start();
         };
 
         stepIterator.start(stepNames, steps, null, null, 0);

@@ -12,7 +12,7 @@ var hhBind              = hammerheadAPI.on;
 
 var $            = testCafeCore.$;
 var SETTINGS     = testCafeCore.SETTINGS;
-var ERROR_TYPE       = testCafeCore.ERROR_TYPE;
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var serviceUtils = testCafeCore.serviceUtils;
 var domUtils     = testCafeCore.domUtils;
 
@@ -56,7 +56,6 @@ StepIterator.ERROR_EVENT                         = 'error';
 StepIterator.ASSERTION_FAILED_EVENT              = 'assertionFailed';
 StepIterator.SET_STEPS_SHARED_DATA_EVENT         = 'setStepsSharedData';
 StepIterator.GET_STEPS_SHARED_DATA_EVENT         = 'getStepsSharedData';
-StepIterator.EXPECT_INACTIVITY_EVENT             = 'expectInactivity';
 StepIterator.TAKE_SCREENSHOT_EVENT               = 'takeScreenshot';
 StepIterator.BEFORE_UNLOAD_EVENT_RAISED          = 'beforeUnload';
 StepIterator.UNLOAD_EVENT_RAISED                 = 'unload';
@@ -491,13 +490,6 @@ StepIterator.prototype.onAssertionFailed = function (err) {
     });
 };
 
-StepIterator.prototype.expectInactivity = function (duration, callback) {
-    this.eventEmitter.emit(StepIterator.EXPECT_INACTIVITY_EVENT, {
-        duration: duration,
-        callback: callback
-    });
-};
-
 StepIterator.prototype.runNext = function () {
     this._runStep();
 };
@@ -547,13 +539,10 @@ StepIterator.prototype.__waitFor = function (callback) {
         });
     }, this.globalWaitForTimeout);
 
-
-    this.expectInactivity(this.globalWaitForTimeout, function () {
-        iterator.callWithSharedDataContext(function () {
-            iterator.globalWaitForEvent.call(this, function () {
-                window.clearTimeout(timeoutID);
-                callback();
-            });
+    iterator.callWithSharedDataContext(function () {
+        iterator.globalWaitForEvent.call(this, function () {
+            window.clearTimeout(timeoutID);
+            callback();
         });
     });
 };

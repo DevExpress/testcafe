@@ -563,18 +563,16 @@ export function wait (ms, condition) {
     }
 
     stepIterator.asyncAction(function (iteratorCallback) {
-        stepIterator.expectInactivity(ms, function () {
-            function onConditionReached () {
-                window.clearTimeout(timeout);
-                stopConditionCheck();
-                iteratorCallback();
-            }
+        function onConditionReached () {
+            window.clearTimeout(timeout);
+            stopConditionCheck();
+            iteratorCallback();
+        }
 
-            var timeout = window.setTimeout(onConditionReached, ms || 0);
+        var timeout = window.setTimeout(onConditionReached, ms || 0);
 
-            if (condition)
-                startConditionCheck(condition, onConditionReached);
-        });
+        if (condition)
+            startConditionCheck(condition, onConditionReached);
     });
 }
 
@@ -618,41 +616,38 @@ export function waitFor (event, timeout) {
             iteratorCallback();
         }
 
+        var condition = null;
 
-        stepIterator.expectInactivity(timeout, function () {
-            var condition = null;
-
-            if (waitForElements) {
-                if (typeof event === 'string') {
-                    condition = function () {
-                        return !!$(event).length;
-                    };
-                }
-                else {
-                    condition = function () {
-                        var elementsExist = true;
-
-                        for (var i = 0; i < event.length; i++) {
-                            if (!$(event[i]).length) {
-                                elementsExist = false;
-                                break;
-                            }
-                        }
-
-                        return elementsExist;
-                    };
-                }
-
-                startConditionCheck(condition, onConditionReached);
+        if (waitForElements) {
+            if (typeof event === 'string') {
+                condition = function () {
+                    return !!$(event).length;
+                };
             }
             else {
-                stepIterator.callWithSharedDataContext(function () {
-                    event.call(this, function () {
-                        onConditionReached();
-                    });
-                });
+                condition = function () {
+                    var elementsExist = true;
+
+                    for (var i = 0; i < event.length; i++) {
+                        if (!$(event[i]).length) {
+                            elementsExist = false;
+                            break;
+                        }
+                    }
+
+                    return elementsExist;
+                };
             }
-        });
+
+            startConditionCheck(condition, onConditionReached);
+        }
+        else {
+            stepIterator.callWithSharedDataContext(function () {
+                event.call(this, function () {
+                    onConditionReached();
+                });
+            });
+        }
     });
 }
 

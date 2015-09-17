@@ -28,10 +28,6 @@ QUnit.done(function () {
 transport.batchUpdate                = function (callback) {
     callback();
 };
-transport.startInactivityMonitor     = function () {
-};
-transport.stopInactivityMonitor      = function () {
-};
 actionBarrier.waitPageInitialization = function (callback) {
     callback();
 };
@@ -83,23 +79,6 @@ asyncTest('init API', function () {
         ok(testStarted);
         start();
     });
-});
-
-asyncTest('Inactivity monitor', function () {
-    var storedStartInactivityMonitor = transport.startInactivityMonitor;
-    transport.startInactivityMonitor = function (callback) {
-        window.setTimeout(callback, 0);
-    };
-
-    var testRunner = new Runner();
-
-    window.setTimeout(function () {
-        ok(lastError);
-        equal(lastError.code, ERROR_TYPE.testInactivity);
-
-        transport.startInactivityMonitor = storedStartInactivityMonitor;
-        start();
-    }, 100);
 });
 
 asyncTest('Uncaught error in test script', function () {
