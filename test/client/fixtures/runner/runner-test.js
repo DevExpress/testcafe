@@ -13,10 +13,6 @@ var Runner         = testCafeRunner.get('./runner');
 transport.batchUpdate                = function (callback) {
     callback();
 };
-transport.startInactivityMonitor     = function () {
-};
-transport.stopInactivityMonitor      = function () {
-};
 actionBarrier.waitPageInitialization = function (callback) {
     callback();
 };
@@ -39,9 +35,6 @@ asyncTest('T204773 - TestCafe - The assertion in last step with inIFrame wrapper
             ok(Date.now() - assertionFailedMessageTime >= 500);
 
         savedAsyncServiceMsg.apply(transport, arguments);
-    };
-
-    transport.switchToWorkerIdle = function () {
     };
 
     var testRunner = new Runner();

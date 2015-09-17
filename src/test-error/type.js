@@ -16,8 +16,6 @@ export default {
     uncaughtJSError:                         'uncaughtJSError',
     //CLIENT_ERR.UNCAUGHT_JS_ERROR_IN_TEST_CODE_STEP
     uncaughtJSErrorInTestCodeStep:           'uncaughtJSErrorInTestCodeStep',
-    //CLIENT_ERR.TEST_INACTIVITY
-    testInactivity:                          'testInactivity',
     //CLIENT_ERR.STORE_DOM_NODE_OR_JQUERY_OBJECT
     storeDomNodeOrJqueryObject:              'storeDomNodeOrJqueryObject',
     //CLIENT_ERR.API_EMPTY_FIRST_ARGUMENT

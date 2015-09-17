@@ -61,8 +61,8 @@ export default class TestRun extends Session {
             sharedJs:              sharedJs,
             nextStep:              nextStep,
             testError:             this.testError ? JSON.stringify(this.testError) : 'null',
-            browserIdleUrl:        this.browserConnection.idleUrl,
             browserHeartbeatUrl:   this.browserConnection.heartbeatUrl,
+            browserStatusUrl:      this.browserConnection.statusUrl,
             takeScreenshotOnFails: this.opts.takeScreenshotOnFails,
             failOnJsErrors:        this.opts.failOnJsErrors,
             nativeDialogsInfo:     JSON.stringify(this.nativeDialogsInfo),
@@ -75,7 +75,6 @@ export default class TestRun extends Session {
 
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             sharedJs:              sharedJs,
-            browserIdleUrl:        this.browserConnection.idleUrl,
             takeScreenshotOnFails: this.opts.takeScreenshotOnFails,
             failOnJsErrors:        this.opts.failOnJsErrors,
             nativeDialogsInfo:     JSON.stringify(this.nativeDialogsInfo)
@@ -164,10 +163,6 @@ ServiceMessages[COMMAND.nativeDialogsInfoSet] = function (msg) {
         this.nativeDialogsInfoTimeStamp = msg.timeStamp;
         this.nativeDialogsInfo          = msg.info;
     }
-};
-
-ServiceMessages[COMMAND.inactivityExpected] = function () {
-    //TODO:
 };
 
 ServiceMessages[COMMAND.takeScreenshot] = function () {

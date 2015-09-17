@@ -22,10 +22,6 @@ $(document).ready(function () {
             action(asyncActionCallback);
         };
 
-        StepIterator.prototype.expectInactivity = function (duration, callback) {
-            callback();
-        };
-
         stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
             stepIterator.state.stoppedOnFail = false;
             currentErrorCode                 = err.code;
