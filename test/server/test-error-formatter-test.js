@@ -132,14 +132,6 @@ describe('Should build test error messages', function () {
             assertErrorMessage('uncaught-js-error-in-test-code-step', err);
         });
 
-        it('testInactivity', function () {
-            var err = {
-                code: TYPE.testInactivity
-            };
-
-            assertErrorMessage('test-inactivity', err);
-        });
-
         it('storeDomNodeOrJqueryObject', function () {
             var err = {
                 code:     TYPE.storeDomNodeOrJqueryObject,

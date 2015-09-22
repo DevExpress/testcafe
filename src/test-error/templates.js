@@ -97,11 +97,6 @@ export default {
                `Uncaught JavaScript error in test code - <code>${err.scriptErr}</code>.`;
     },
 
-    [TYPE.testInactivity]: () => {
-        return `<span data-type="category">${CATEGORY.timeout}</span>Abnormal test inactivity encountered. ` +
-               'It may be caused by a critical error on a test page.';
-    },
-
     [TYPE.storeDomNodeOrJqueryObject]: (err) => {
         return `<span data-type="category">${CATEGORY.unhandledException}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +

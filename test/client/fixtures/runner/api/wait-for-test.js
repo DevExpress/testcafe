@@ -71,10 +71,6 @@ $(document).ready(function () {
             stepIterator.asyncAction = function (action) {
                 action(asyncActionCallback);
             };
-
-            stepIterator.expectInactivity = function (duration, callback) {
-                callback();
-            };
         });
 
         QUnit.testDone(function () {

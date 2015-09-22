@@ -8,7 +8,7 @@ import { remove } from '../utils/array';
 
 
 // Const
-const IDLE_PAGE_TEMPLATE = read('../client/browser-idle-page/index.html.mustache');
+const IDLE_PAGE_TEMPLATE = read('../client/browser/idle-page/index.html.mustache');
 
 
 // Global instance counter used to generate ID's
@@ -88,7 +88,6 @@ export default class BrowserConnection extends EventEmitter {
 
     renderIdlePage () {
         return Mustache.render(IDLE_PAGE_TEMPLATE, {
-            id:        this.id,
             userAgent: this.userAgent.toString(),
             statusUrl: this.statusUrl
         });
@@ -100,6 +99,6 @@ export default class BrowserConnection extends EventEmitter {
         if (testRunUrl)
             return { cmd: COMMAND.run, url: testRunUrl };
 
-        return { cmd: COMMAND.idle };
+        return { cmd: COMMAND.idle, url: this.idleUrl };
     }
 }

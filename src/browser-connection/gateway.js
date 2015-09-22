@@ -3,8 +3,8 @@ import read from '../utils/read-file-relative';
 
 
 // Const
-const IDLE_PAGE_SCRIPT = read('../client/browser-idle-page/index.js');
-const IDLE_PAGE_STYLE  = read('../client/browser-idle-page/styles.css');
+const IDLE_PAGE_SCRIPT = read('../client/browser/idle-page/index.js');
+const IDLE_PAGE_STYLE  = read('../client/browser/idle-page/styles.css');
 
 
 // Gateway

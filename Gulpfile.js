@@ -70,7 +70,12 @@ gulp.task('wrap-scripts-with-templates', ['build-client-scripts'], function () {
 
 gulp.task('build-client-scripts', ['clean'], function () {
     return gulp
-        .src('src/client/*/index.js')
+        .src([
+            'src/client/core/index.js',
+            'src/client/ui/index.js',
+            'src/client/runner/index.js',
+            'src/client/browser/idle-page/index.js'
+        ], { base: 'src/client' })
         .pipe(webmake({
             sourceMap: false,
             transform: function (filename, code) {
