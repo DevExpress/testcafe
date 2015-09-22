@@ -32,7 +32,7 @@ export function startHeartbeat (heartbeatUrl, XMLHttpRequest) {
 }
 
 export function checkStatus (statusUrl, XMLHttpRequest) {
-    sendXHR(statusUrl, XMLHttpRequest)
+    return sendXHR(statusUrl, XMLHttpRequest)
         .then((res) => {
             if (res.cmd === COMMAND.run ||
                 res.cmd === COMMAND.idle && document.location.toString() !== res.url)
@@ -41,5 +41,7 @@ export function checkStatus (statusUrl, XMLHttpRequest) {
             //NOTE: prepare to close the browser
             if (res.cmd === COMMAND.close)
                 document.title = '[' + document.location.toString() + ']';
+
+            return res.cmd;
         });
 }
