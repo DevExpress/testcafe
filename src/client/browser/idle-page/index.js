@@ -11,7 +11,7 @@ function checkStatus (statusUrl) {
     browser
         .checkStatus(statusUrl, window.XMLHttpRequest)
         .then((cmd) => {
-            if (cmd === COMMAND.run)
+            if (cmd !== COMMAND.idle)
                 window.clearInterval(interval);
         });
 }
