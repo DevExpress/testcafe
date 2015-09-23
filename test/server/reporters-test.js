@@ -4,6 +4,7 @@ var util         = require('util');
 var Promise      = require('promise');
 var reporters    = require('../../lib/reporters');
 var readFile     = require('../../lib/utils/read-file-relative');
+var TYPE         = require('../../lib/reporters/errors/type');
 
 describe('Reporters', function () {
     // Runnable configuration mocks
@@ -72,11 +73,27 @@ describe('Reporters', function () {
             browserConnection: browserConnectionMocks[0],
 
             errs: [
-                'Error1: Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+                {
+                    stepName:          'Step',
+                    expected:          '"12345678901"',
+                    actual:            '"00000000000"',
+                    relatedSourceCode: 'eq(["12345678901"], ["00000000000"])',
+                    key:               0,
+                    isArrays:          true,
+                    code:              TYPE.eqAssertion,
 
-                'Error2: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut ' +
-                'aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate ' +
-                'velit esse cillum dolore eu fugiat nulla pariatur.'
+                    diffType: {
+                        isStrings: true,
+                        diffIndex: 0
+                    }
+                },
+                {
+                    relatedSourceCode: 'notEq("test", "test")',
+                    actual:            '"test"',
+                    expected:          '"test"',
+                    stepName:          'Step',
+                    code:              TYPE.notEqAssertion
+                }
             ]
         },
 
@@ -129,11 +146,12 @@ describe('Reporters', function () {
             test:              testMocks[1],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-
-            errs: [
-                'Error3: Excepteur sint occaecat cupidatat non proident, ' +
-                'sunt in culpa qui officia deserunt mollit anim id est laborum &.'
-            ]
+            errs:              [{
+                stepName:          'Step',
+                relatedSourceCode: 'ok(false)',
+                actual:            'false',
+                code:              TYPE.okAssertion
+            }]
         },
 
         //fixture1test3
@@ -165,11 +183,20 @@ describe('Reporters', function () {
             test:              testMocks[5],
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
+            errs:              [{
+                stepName:          'Step',
+                expected:          '"12345678901"',
+                actual:            '"00000000000"',
+                relatedSourceCode: 'eq(["12345678901"], ["00000000000"])',
+                key:               0,
+                isArrays:          true,
+                code:              TYPE.eqAssertion,
 
-            errs: [
-                'Error1: Lorem ipsum dolor sit amet, consectetur adipiscing elit, ' +
-                'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            ]
+                diffType: {
+                    isStrings: true,
+                    diffIndex: 0
+                }
+            }]
         }
     ];
 
@@ -185,7 +212,7 @@ describe('Reporters', function () {
     util.inherits(TaskMock, EventEmitter);
 
 
-    // Output stream and formatter mocks
+    // Output stream and errorDecorator mocks
     function createOutStreamMock () {
         return {
             data:      '',
@@ -204,11 +231,6 @@ describe('Reporters', function () {
             }
         };
     }
-
-    function formatterMock (err, userAgent) {
-        return userAgent + ' - ' + err;
-    }
-
 
     // Browser job emulation
     function delay () {
@@ -249,7 +271,7 @@ describe('Reporters', function () {
         var taskMock       = new TaskMock();
         var outStreamMock  = createOutStreamMock();
         var Reporter       = reporters[reporterAlias];
-        var reporter       = new Reporter(taskMock, outStreamMock, formatterMock);
+        var reporter       = new Reporter(taskMock, outStreamMock);
         var expectedReport = readFile('./data/expected-reports/' + reporterAlias);
 
         // NOTE: replace dates in reporting routines with the fixed values for the testing purposes
@@ -262,9 +284,9 @@ describe('Reporters', function () {
             origReportTaskStart.call(this, new Date('Thu Jan 01 1970 00:00:00 UTC'), userAgents);
         };
 
-        reporter._reportTestDone = function (name, errMsgs, durationMs, unstable) {
+        reporter._reportTestDone = function (name, errs, durationMs, unstable) {
             expect(durationMs).to.be.a('number');
-            origReportTestDone.call(this, name, errMsgs, 74000, unstable);
+            origReportTestDone.call(this, name, errs, 74000, unstable);
         };
 
         reporter._reportTaskDone = function (passed, total, endTime) {

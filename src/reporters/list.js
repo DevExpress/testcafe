@@ -1,8 +1,8 @@
 import SpecReporter from './spec';
 
 export default class ListReporter extends SpecReporter {
-    constructor (task, outStream, formatter) {
-        super(task, outStream, formatter);
+    constructor (task, outStream, errorDecorator) {
+        super(task, outStream, errorDecorator);
 
         this.currentFixtureName = null;
     }
@@ -11,8 +11,8 @@ export default class ListReporter extends SpecReporter {
         this.currentFixtureName = name;
     }
 
-    _reportTestDone (name, errMsgs, durationMs, unstable) {
-        var hasErr    = !!errMsgs.length;
+    _reportTestDone (name, errs, durationMs, unstable) {
+        var hasErr    = !!errs.length;
         var nameStyle = hasErr ? this.style.red : this.style.gray;
         var symbol    = hasErr ? this.style.red(this.symbols.err) : this.style.green(this.symbols.ok);
 
@@ -32,9 +32,9 @@ export default class ListReporter extends SpecReporter {
 
             this._newline();
 
-            errMsgs.forEach((msg, idx) => {
+            errs.forEach((err, idx) => {
                 this._newline()
-                    ._write(this.style.red(`${idx + 1}) ${msg}`))
+                    ._write(this._formatError(err, `${idx + 1}) `))
                     ._newline();
             });
         }

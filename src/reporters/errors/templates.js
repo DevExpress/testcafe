@@ -6,10 +6,16 @@ function escapeNewLines (str) {
     return str.replace(/(\r\n|\n|\r)/gm, '\\n');
 }
 
+function getMsgPrefix (err) {
+    return `${err.userAgent} - `;
+}
+
 function getAssertionMsgPrefix (err) {
-    return err.message !== void 0 && err.message !== null ?
-           `<span data-type="category">${CATEGORY.failedAssertion}</span>"${err.message}" assertion` :
-           `<span data-type="category">${CATEGORY.failedAssertion}</span>Assertion`;
+    var assertionPrefix = err.message !== void 0 && err.message !== null ?
+                          `<span data-type="category">${CATEGORY.failedAssertion}</span>"${err.message}" assertion` :
+                          `<span data-type="category">${CATEGORY.failedAssertion}</span>Assertion`;
+
+    return getMsgPrefix(err) + assertionPrefix;
 }
 
 function getDiffHeader (err) {
@@ -27,18 +33,18 @@ function getDiffHeader (err) {
 
 export default {
     [TYPE.okAssertion]: (err) => {
-        return `${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>: ` +
-               `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
-               `Expected: not <code>null</code>, not <code>undefined</code>, ` +
+        return `${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>:\n\n` +
+               `    <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n\n` +
+               `<strong>Expected: </strong>not <code>null</code>, not <code>undefined</code>, ` +
                `not <code>false</code>, not <code>NaN</code> ` +
                `and not <code>''</code>\n` +
                `<strong>Actual:   </strong><code>${escapeNewLines(err.actual)}</code>`;
     },
 
     [TYPE.notOkAssertion]: (err) => {
-        return `${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>: ` +
-               `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
-               `Expected: <code>null</code>, <code>undefined</code>, <code>false</code>, ` +
+        return `${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>:\n\n` +
+               `    <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n\n` +
+               `<strong>Expected: </strong><code>null</code>, <code>undefined</code>, <code>false</code>, ` +
                `<code>NaN</code> or <code>''</code>\n` +
                `<strong>Actual:   </strong><code>${escapeNewLines(err.actual)}</code>`;
     },
@@ -47,65 +53,65 @@ export default {
         var diff          = buildDiff(err, maxStringLength);
         var diffMarkerStr = diff.marker ? `          ${diff.marker}` : '';
 
-        return `${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>: ` +
-               `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
+        return `${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>:\n\n` +
+               `    <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                getDiffHeader(err) +
                `<strong>Expected: </strong><code>${escapeNewLines(diff.expected)}</code>\n` +
                `<strong>Actual:   </strong><code>${escapeNewLines(diff.actual)}</code>\n` +
-               `${diffMarkerStr}`;
+               `<code>${diffMarkerStr}</code>`;
     },
 
     [TYPE.notEqAssertion]: (err) => {
-        return `${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>: ` +
-               `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
+        return `${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>:\n\n` +
+               `    <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n\n` +
                `<strong>Expected: </strong>not <code>${escapeNewLines(err.actual)}</code>\n` +
                `<strong>Actual:   </strong><code>${escapeNewLines(err.actual)}</code>`;
     },
 
-    [TYPE.xhrRequestTimeout]: () => {
-        return `<span data-type="category">${CATEGORY.timeout}</span>XMLHttpRequest timed out.`;
+    [TYPE.xhrRequestTimeout]: (err) => {
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.timeout}</span>XMLHttpRequest timed out.`;
     },
 
-    [TYPE.iframeLoadingTimeout]: () => {
-        return `<span data-type="category">${CATEGORY.timeout}</span>IFrame loading timed out.`;
+    [TYPE.iframeLoadingTimeout]: (err) => {
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.timeout}</span>IFrame loading timed out.`;
     },
 
     [TYPE.inIFrameTargetLoadingTimeout]: (err) => {
-        return `<span data-type="category">${CATEGORY.timeout}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.timeout}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                'IFrame target loading timed out.';
     },
 
     [TYPE.urlUtilProtocolIsNotSupported]: (err) => {
-        return `<span data-type="category">${CATEGORY.unhandledException}</span>Failed to process the ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.unhandledException}</span>Failed to process the ` +
                `<a href="${err.destUrl}">${err.destUrl}</a> resource. TestCafe supports only HTTP and HTTPS protocols.`;
     },
 
     [TYPE.uncaughtJSError]: (err) => {
         if (err.pageUrl) {
-            return `<span data-type="category">${CATEGORY.unhandledException}</span>Uncaught JavaScript error ` +
+            return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.unhandledException}</span>Uncaught JavaScript error ` +
                    `<code>${err.scriptErr}</code> on page <a href="${err.pageUrl}">${err.pageUrl}</a>`;
         }
 
-        return `<span data-type="category">${CATEGORY.unhandledException}</span>Uncaught JavaScript error ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.unhandledException}</span>Uncaught JavaScript error ` +
                `<code>${err.scriptErr}</code> on page.`;
     },
 
     [TYPE.uncaughtJSErrorInTestCodeStep]: (err) => {
-        return `<span data-type="category">${CATEGORY.unhandledException}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.unhandledException}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `Uncaught JavaScript error in test code - <code>${err.scriptErr}</code>.`;
     },
 
     [TYPE.storeDomNodeOrJqueryObject]: (err) => {
-        return `<span data-type="category">${CATEGORY.unhandledException}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.unhandledException}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                'It is not allowed to share the DOM element, jQuery object or a function between test steps ' +
                'via "this" object.';
     },
 
     [TYPE.emptyFirstArgument]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                `A target element of the <code>${err.action}</code> action has not been found in the DOM tree. ` +
@@ -114,7 +120,7 @@ export default {
     },
 
     [TYPE.invisibleActionElement]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                `A target element of the <code>${err.action}</code> action (<code>${err.element}</code>) ` +
@@ -124,103 +130,103 @@ export default {
     },
 
     [TYPE.incorrectDraggingSecondArgument]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                `"<code>${err.action || ''}</code>" action drop target is incorrect.`;
     },
 
     [TYPE.incorrectPressActionArgument]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                'press action parameter contains incorrect key code.';
     },
 
     [TYPE.emptyTypeActionArgument]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                'The type action\'s parameter text is empty.';
     },
 
     [TYPE.unexpectedDialog]: (err) => {
-        return `<span data-type="category">${CATEGORY.nativeDialogError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.nativeDialogError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `Unexpected system <code>${err.dialog}</code> dialog <code>${err.message}</code> appeared.`;
     },
 
     [TYPE.expectedDialogDoesntAppear]: (err) => {
-        return `<span data-type="category">${CATEGORY.nativeDialogError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.nativeDialogError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: The expected system ` +
                `<code>${err.dialog}</code> dialog did not appear.`;
     },
 
     [TYPE.incorrectSelectActionArguments]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                'select action\'s parameters contain an incorrect value.';
     },
 
     [TYPE.incorrectWaitActionMillisecondsArgument]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                'wait action\'s "milliseconds" parameter should be a positive number.';
     },
 
     [TYPE.incorrectWaitForActionEventArgument]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                'waitFor action\'s first parameter should be a function, a CSS selector or an array of CSS selectors.';
     },
 
     [TYPE.incorrectWaitForActionTimeoutArgument]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                'waitFor action\'s "timeout" parameter should be a positive number.';
     },
 
     [TYPE.waitForActionTimeoutExceeded]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                'waitFor action\'s timeout exceeded.';
     },
 
     [TYPE.emptyIFrameArgument]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                'The selector within the inIFrame function returns an empty value.';
     },
 
     [TYPE.iframeArgumentIsNotIFrame]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                'The selector within the inIFrame function doesn’t return an iframe element.';
     },
 
     [TYPE.multipleIFrameArgument]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                'The selector within the inIFrame function returns more than one iframe element.';
     },
 
     [TYPE.incorrectIFrameArgument]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                'The inIFrame function contains an invalid argument.';
     },
 
     [TYPE.uploadCanNotFindFileToUpload]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                'Cannot find the following file(s) to upload:\n\t' +
@@ -228,14 +234,14 @@ export default {
     },
 
     [TYPE.uploadElementIsNotFileInput]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                'upload action argument does not contain a file input element.';
     },
 
     [TYPE.uploadInvalidFilePathArgument]: (err) => {
-        return `<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
+        return `${getMsgPrefix(err)}<span data-type="category">${CATEGORY.actionError}</span>Error on step ` +
                `<span data-type="step-name">${err.stepName}</span>: ` +
                `<code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>\n` +
                'upload action\'s "path" parameter should be a string or an array of strings.';
