@@ -5,9 +5,11 @@ export default {
 
     'code': str => str,
 
-    'strong': str => str,
-
     'code step-source': str => str,
+
+    'code api': str => str,
+
+    'strong': str => str,
 
     'a': str => `"${str}"`
 };

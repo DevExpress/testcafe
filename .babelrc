@@ -1,4 +1,5 @@
 {
+  "compact" : false,
   "whitelist": [
     "es6.arrowFunctions",
     "es6.classes",

@@ -1,39 +1,36 @@
 var expect             = require('chai').expect;
+var util               = require('util');
 var EventEmitter       = require('events').EventEmitter;
-var format             = require('../../lib/reporters/errors/format');
 var plainTextDecorator = require('../../lib/reporters/errors/decorators/plain-text');
 var readFile           = require('../../lib/utils/read-file-relative');
 var reporters          = require('../../lib/reporters');
 var TYPE               = require('../../lib/reporters/errors/type');
-var util               = require('util');
+var remove             = require('../../lib/utils/array').remove;
 
-var MAX_STRING_LENGTH = 10;
 
-var messages = Object.keys(TYPE);
+var untestedErrorCodes = Object.keys(TYPE);
 
-var testMock = [{
+var testMock = {
     name:    'fixtureTest',
     fixture: {
         name: 'fixture',
         path: './fixture.js'
     }
-}];
+};
+
+var browserConnectionMock = { userAgent: 'Chrome 15.0.874 / Mac OS X 10.8.1' };
 
 // Task mock
 var TaskMock = function () {
     EventEmitter.call(this);
 
-    this.tests              = testMock;
-    this.browserConnections = browserConnectionMocks;
+    this.tests              = [testMock];
+    this.browserConnections = [browserConnectionMock];
 };
 
 util.inherits(TaskMock, EventEmitter);
 
-var browserConnectionMocks = [
-    { userAgent: 'Chrome' }
-];
-
-var userAgentMock = browserConnectionMocks[0].userAgent;
+var userAgentMock = browserConnectionMock.userAgent;
 
 // Output stream and errorDecorator mocks
 function createOutStreamMock () {
@@ -54,41 +51,39 @@ function assertErrorMessage (file, err) {
 
     reporter._write(reporter._formatError(err));
 
-    var expectedMsg = readFile('./data/expected-test-errors/' + file).replace(/(\r\n)/gm, '\n');
+    var expectedMsg = readFile('./data/expected-test-errors/' + file)
+        .replace(/(\r\n)/gm, '\n')
+        .trim();
 
-    expect(expectedMsg).eql(outStreamMock.data);
+    expect(outStreamMock.data).eql(expectedMsg);
 
     //NOTE: remove tested messages from list
-    var msgPos = messages.indexOf(err.code);
-
-    if (msgPos > -1)
-        messages.splice(msgPos, 1);
+    remove(untestedErrorCodes, err.code);
 }
 
-describe('Should build test error messages', function () {
-    describe('Assertion messages', function () {
-        it('eq', function () {
-                var err = {
-                    stepName:          'Step',
-                    expected:          '"12345678901"',
-                    actual:            '"00000000000"',
-                    relatedSourceCode: 'eq(["12345678901"], ["00000000000"])',
-                    key:               0,
-                    isArrays:          true,
-                    code:              TYPE.eqAssertion,
-                    userAgent:         userAgentMock,
+describe('Error formatter', function () {
+    describe('Assertions', function () {
+        it('Should format "eq" assertion message', function () {
+            var err = {
+                stepName:          'Step',
+                expected:          '"12345678901"',
+                actual:            '"00000000000"',
+                relatedSourceCode: 'eq(["12345678901"], ["00000000000"])',
+                key:               0,
+                isArrays:          true,
+                code:              TYPE.eqAssertion,
+                userAgent:         userAgentMock,
 
-                    diffType: {
-                        isStrings: true,
-                        diffIndex: 0
-                    }
-                };
+                diffType: {
+                    isStrings: true,
+                    diffIndex: 0
+                }
+            };
 
-                assertErrorMessage('eq-assertion', err);
-            }
-        );
+            assertErrorMessage('eq-assertion', err);
+        });
 
-        it('notEq', function () {
+        it('Should format "notEq" assertion message', function () {
             var err = {
                 stepName:          'Step',
                 relatedSourceCode: 'notEq("test", "test")',
@@ -101,7 +96,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('not-eq-assertion', err);
         });
 
-        it('ok', function () {
+        it('Should format "ok" assertion message', function () {
             var err = {
                 stepName:          'Step',
                 relatedSourceCode: 'ok(false)',
@@ -113,7 +108,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('ok-assertion', err);
         });
 
-        it('notOk', function () {
+        it('Should format "notOk" assertion message', function () {
             var err = {
                 stepName:          'Step',
                 relatedSourceCode: 'notOk("test")',
@@ -126,8 +121,8 @@ describe('Should build test error messages', function () {
         });
     });
 
-    describe('Error messages', function () {
-        it('xhrRequestTimeout', function () {
+    describe('Errors', function () {
+        it('Should format "xhrRequestTimeout" error message', function () {
             var err = {
                 code:      TYPE.xhrRequestTimeout,
                 userAgent: userAgentMock
@@ -136,7 +131,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('xhr-request-timeout', err);
         });
 
-        it('iframeLoadingTimeout', function () {
+        it('Should format "iframeLoadingTimeout" error message', function () {
             var err = {
                 code:      TYPE.iframeLoadingTimeout,
                 userAgent: userAgentMock
@@ -145,7 +140,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('iframe-loading-timeout', err);
         });
 
-        it('inIFrameTargetLoadingTimeout', function () {
+        it('Should format "inIFrameTargetLoadingTimeout" error message', function () {
             var err = {
                 code:      TYPE.inIFrameTargetLoadingTimeout,
                 stepName:  'Step',
@@ -155,7 +150,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('in-iframe-target-loading-timeout', err);
         });
 
-        it('urlUtilProtocolIsNotSupported', function () {
+        it('Should format "urlUtilProtocolIsNotSupported" error message', function () {
             var err = {
                 code:      TYPE.urlUtilProtocolIsNotSupported,
                 destUrl:   'http://url',
@@ -165,7 +160,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('url-util-protocol-is-not-supported', err);
         });
 
-        it('uncaughtJSError', function () {
+        it('Should format "uncaughtJSError" error message', function () {
             var err = {
                 code:      TYPE.uncaughtJSError,
                 scriptErr: 'test-error',
@@ -176,7 +171,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('uncaught-js-error', err);
         });
 
-        it('uncaughtJSErrorInTestCodeStep', function () {
+        it('Should format "uncaughtJSErrorInTestCodeStep" error message', function () {
             var err = {
                 code:      TYPE.uncaughtJSErrorInTestCodeStep,
                 stepName:  'Step',
@@ -187,7 +182,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('uncaught-js-error-in-test-code-step', err);
         });
 
-        it('storeDomNodeOrJqueryObject', function () {
+        it('Should format "storeDomNodeOrJqueryObject" error message', function () {
             var err = {
                 code:      TYPE.storeDomNodeOrJqueryObject,
                 stepName:  'Step',
@@ -197,7 +192,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('store-dom-node-or-jquery-object', err);
         });
 
-        it('emptyFirstArgument', function () {
+        it('Should format "emptyFirstArgument" error message', function () {
             var err = {
                 code:              TYPE.emptyFirstArgument,
                 stepName:          'Step',
@@ -209,7 +204,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('empty-first-argument', err);
         });
 
-        it('invisibleActionElement', function () {
+        it('Should format "invisibleActionElement" error message', function () {
             var err = {
                 code:              TYPE.invisibleActionElement,
                 stepName:          'Step',
@@ -222,19 +217,18 @@ describe('Should build test error messages', function () {
             assertErrorMessage('invisible-action-element', err);
         });
 
-        it('incorrectDraggingSecondArgument', function () {
+        it('Should format "incorrectDraggingSecondArgument" error message', function () {
             var err = {
                 code:              TYPE.incorrectDraggingSecondArgument,
                 stepName:          'Step',
                 relatedSourceCode: 'code',
-                action:            'action',
                 userAgent:         userAgentMock
             };
 
             assertErrorMessage('incorrect-dragging-second-argument', err);
         });
 
-        it('incorrectPressActionArgument', function () {
+        it('Should format "incorrectPressActionArgument" error message', function () {
             var err = {
                 code:              TYPE.incorrectPressActionArgument,
                 stepName:          'Step',
@@ -245,7 +239,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('incorrect-press-action-argument', err);
         });
 
-        it('emptyTypeActionArgument', function () {
+        it('Should format "emptyTypeActionArgument" error message', function () {
             var err = {
                 code:              TYPE.emptyTypeActionArgument,
                 stepName:          'Step',
@@ -256,7 +250,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('empty-type-action-argument', err);
         });
 
-        it('unexpectedDialog', function () {
+        it('Should format "unexpectedDialog" error message', function () {
             var err = {
                 code:      TYPE.unexpectedDialog,
                 stepName:  'Step',
@@ -268,7 +262,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('unexpected-dialog', err);
         });
 
-        it('expectedDialogDoesntAppear', function () {
+        it('Should format "expectedDialogDoesntAppear" error message', function () {
             var err = {
                 code:      TYPE.expectedDialogDoesntAppear,
                 stepName:  'Step',
@@ -279,7 +273,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('expected-dialog-doesnt-appear', err);
         });
 
-        it('incorrectSelectActionArguments', function () {
+        it('Should format "incorrectSelectActionArguments" error message', function () {
             var err = {
                 code:              TYPE.incorrectSelectActionArguments,
                 stepName:          'Step',
@@ -290,7 +284,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('incorrect-select-action-arguments', err);
         });
 
-        it('incorrectWaitActionMillisecondsArgument', function () {
+        it('Should format "incorrectWaitActionMillisecondsArgument" error message', function () {
             var err = {
                 code:              TYPE.incorrectWaitActionMillisecondsArgument,
                 stepName:          'Step',
@@ -301,7 +295,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('incorrect-wait-action-milliseconds-arguments', err);
         });
 
-        it('incorrectWaitForActionEventArgument', function () {
+        it('Should format "incorrectWaitForActionEventArgument" error message', function () {
             var err = {
                 code:              TYPE.incorrectWaitForActionEventArgument,
                 stepName:          'Step',
@@ -312,7 +306,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('incorrect-wait-for-action-event-argument', err);
         });
 
-        it('incorrectWaitForActionTimeoutArgument', function () {
+        it('Should format "incorrectWaitForActionTimeoutArgument" error message', function () {
             var err = {
                 code:              TYPE.incorrectWaitForActionTimeoutArgument,
                 stepName:          'Step',
@@ -323,7 +317,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('incorrect-wait-for-action-timeout-argument', err);
         });
 
-        it('waitForActionTimeoutExceeded', function () {
+        it('Should format "waitForActionTimeoutExceeded" error message', function () {
             var err = {
                 code:              TYPE.waitForActionTimeoutExceeded,
                 stepName:          'Step',
@@ -334,7 +328,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('wait-for-action-timeout-exceeded', err);
         });
 
-        it('emptyIFrameArgument', function () {
+        it('Should format "emptyIFrameArgument" error message', function () {
             var err = {
                 code:              TYPE.emptyIFrameArgument,
                 stepName:          'Step',
@@ -345,7 +339,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('empty-iframe-argument', err);
         });
 
-        it('iframeArgumentIsNotIFrame', function () {
+        it('Should format "iframeArgumentIsNotIFrame" error message', function () {
             var err = {
                 code:              TYPE.iframeArgumentIsNotIFrame,
                 stepName:          'Step',
@@ -356,7 +350,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('iframe-argument-is-not-iframe', err);
         });
 
-        it('multipleIFrameArgument', function () {
+        it('Should format "multipleIFrameArgument" error message', function () {
             var err = {
                 code:              TYPE.multipleIFrameArgument,
                 stepName:          'Step',
@@ -367,7 +361,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('multiple-iframe-argument', err);
         });
 
-        it('incorrectIFrameArgument', function () {
+        it('Should format "incorrectIFrameArgument" error message', function () {
             var err = {
                 code:              TYPE.incorrectIFrameArgument,
                 stepName:          'Step',
@@ -378,7 +372,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('incorrect-iframe-argument', err);
         });
 
-        it('uploadCanNotFindFileToUpload', function () {
+        it('Should format "uploadCanNotFindFileToUpload" error message', function () {
             var err = {
                 code:              TYPE.uploadCanNotFindFileToUpload,
                 stepName:          'Step',
@@ -390,7 +384,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('upload-can-not-find-file-to-upload', err);
         });
 
-        it('uploadElementIsNotFileInput', function () {
+        it('Should format "uploadElementIsNotFileInput" error message', function () {
             var err = {
                 code:              TYPE.uploadElementIsNotFileInput,
                 stepName:          'Step',
@@ -402,7 +396,7 @@ describe('Should build test error messages', function () {
             assertErrorMessage('upload-element-is-not-file-input', err);
         });
 
-        it('uploadInvalidFilePathArgument', function () {
+        it('Should format "uploadInvalidFilePathArgument" error message', function () {
             var err = {
                 code:              TYPE.uploadInvalidFilePathArgument,
                 stepName:          'Step',
@@ -414,9 +408,9 @@ describe('Should build test error messages', function () {
         });
     });
 
-    describe('Should test all messages', function () {
-        it('all messages were tested', function () {
-            expect(messages).eql([]);
+    describe('Test coverage', function () {
+        it('Should test messages for all error codes', function () {
+            expect(untestedErrorCodes).to.be.empty;
         });
     });
 });

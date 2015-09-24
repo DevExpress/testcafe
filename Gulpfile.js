@@ -79,7 +79,10 @@ gulp.task('build-client-scripts', ['clean'], function () {
         .pipe(webmake({
             sourceMap: false,
             transform: function (filename, code) {
-                var transformed = babel.transform(code, { sourceMap: false });
+                var transformed = babel.transform(code, {
+                    sourceMap: false,
+                    filename:  filename
+                });
 
                 return {
                     code:      transformed.code,
@@ -159,7 +162,7 @@ gulp.task('build-styles', ['styles-temp-copy'], function () {
 
 
 //Build
-gulp.task('build', ['wrap-scripts-with-templates', 'build-styles'], function () {
+gulp.task('build', ['lint', 'wrap-scripts-with-templates', 'build-styles'], function () {
     var js = gulp
         .src([
             'src/**/*.js',
@@ -190,6 +193,7 @@ gulp.task('lint', function () {
             'src/**/*.js',
             '!src/client/**/*.js',  //TODO: fix it
             //'test/**/*.js',       //TODO: fix it
+            'test/server/**.js',
             'Gulpfile.js'
         ])
         .pipe(eslint())
@@ -215,4 +219,4 @@ gulp.task('test-client', ['build'], function () {
         .pipe(qunitHarness(CLIENT_TESTS_SETTINGS));
 });
 
-gulp.task('test', ['lint', 'test-server']);
+gulp.task('test', ['test-server']);
