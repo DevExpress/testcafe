@@ -1,2 +1,5 @@
-Chrome - Error on step "Step": code
+Chrome 15.0.874 / Mac OS X 10.8.1 - Error at step "Step":
+
+    code
+
 select action's parameters contain an incorrect value.

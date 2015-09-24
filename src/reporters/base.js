@@ -1,6 +1,6 @@
 import tty from 'tty';
 import chalk from 'chalk';
-import wordwrap from './word-wrap';
+import wordwrap from '../utils/word-wrap';
 import indentString from 'indent-string';
 import OS from '../utils/os';
 import { find } from '../utils/array';

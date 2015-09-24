@@ -1,32 +1,32 @@
-var expect = require('chai').expect;
-var buildDiff  = require('../../lib/reporters/errors/diffs');
+var expect    = require('chai').expect;
+var buildDiff = require('../../lib/reporters/errors/assertion-diffs');
 
 var MAX_STRING_LENGTH = 10;
 
-describe('Diffs', function () {
-    describe('Should format the assertion difference', function () {
-        function compareDiff (err, expectedDiff) {
-            var actualDiffs = buildDiff(err, MAX_STRING_LENGTH);
+describe('Assertion diffs', function () {
+    function compareDiff (err, expectedDiff) {
+        var actualDiffs = buildDiff(err, MAX_STRING_LENGTH);
 
-            expect(JSON.stringify(expectedDiff)).to.be.equal(JSON.stringify(actualDiffs));
-        }
+        expect(JSON.stringify(expectedDiff)).eql(JSON.stringify(actualDiffs));
+    }
 
-        it('different types', function () {
-            var err = {
-                expected: '"test"',
-                actual:   123
-            };
+    it('Should produce diff for different types', function () {
+        var err = {
+            expected: '"test"',
+            actual:   123
+        };
 
-            var expectedDiff = {
-                expected: '"test"',
-                actual:   123,
-                marker:   ''
-            };
+        var expectedDiff = {
+            expected: '"test"',
+            actual:   123,
+            marker:   ''
+        };
 
-            compareDiff(err, expectedDiff);
-        });
+        compareDiff(err, expectedDiff);
+    });
 
-        it('numbers', function () {
+    describe('Numbers', function () {
+        it('Should produce diff for numbers', function () {
             var err = {
                 expected: '12345',
                 actual:   '54321'
@@ -41,7 +41,7 @@ describe('Diffs', function () {
             compareDiff(err, expectedDiff);
         });
 
-        it('truncate long values', function () {
+        it('Should truncate long values', function () {
             var err = {
                 expected: '12345678910',
                 actual:   '10987654321'
@@ -55,25 +55,10 @@ describe('Diffs', function () {
 
             compareDiff(err, expectedDiff);
         });
+    });
 
-        it('string - at least one of string is empty', function () {
-            var err = {
-                expected:  '"str"',
-                actual:    '""',
-                isStrings: true,
-                key:       0
-            };
-
-            var expectedDiff = {
-                expected: '"str"',
-                actual:   '""',
-                marker:   ''
-            };
-
-            compareDiff(err, expectedDiff);
-        });
-
-        it('string - string length less than max output length', function () {
+    describe('Strings', function () {
+        it('Should produce diff for strings', function () {
             var err = {
                 expected:  '"00001000"',
                 actual:    '"0000000"',
@@ -90,7 +75,24 @@ describe('Diffs', function () {
             compareDiff(err, expectedDiff);
         });
 
-        it('string - string more than max output length: diff in the begin', function () {
+        it('Should produce diff if one of the strings is empty', function () {
+            var err = {
+                expected:  '"str"',
+                actual:    '""',
+                isStrings: true,
+                key:       0
+            };
+
+            var expectedDiff = {
+                expected: '"str"',
+                actual:   '""',
+                marker:   ''
+            };
+
+            compareDiff(err, expectedDiff);
+        });
+
+        it('Should truncate long value if strings differ at the beginning', function () {
             var err = {
                 expected:  '"12345678901"',
                 actual:    '"00000000000"',
@@ -107,7 +109,7 @@ describe('Diffs', function () {
             compareDiff(err, expectedDiff);
         });
 
-        it('string - string more than max output length: diff in the end', function () {
+        it('Should truncate long value if strings differ at the end', function () {
             var err = {
                 expected:  '"00000000000"',
                 actual:    '"00000000001"',
@@ -124,7 +126,7 @@ describe('Diffs', function () {
             compareDiff(err, expectedDiff);
         });
 
-        it('string - string more than max output length: diff in middle', function () {
+        it('Should truncate long value if strings differ in the middle', function () {
             var err = {
                 actual:    '"0000001000000"',
                 expected:  '"0000000000000"',
@@ -141,7 +143,7 @@ describe('Diffs', function () {
             compareDiff(err, expectedDiff);
         });
 
-        it('string - string with new line', function () {
+        it('Should escape new lines', function () {
             var err = {
                 actual:    '"00\n000010\n0"',
                 expected:  '"00\n0000000"',
@@ -157,8 +159,10 @@ describe('Diffs', function () {
 
             compareDiff(err, expectedDiff);
         });
+    });
 
-        it('arrays - different types', function () {
+    describe('Arrays', function () {
+        it('Should produce diff for the array items of different types', function () {
             var err = {
                 isArrays: true,
                 key:      1,
@@ -175,7 +179,7 @@ describe('Diffs', function () {
             compareDiff(err, expectedDiff);
         });
 
-        it('arrays - numbers', function () {
+        it('Should produce diff if array items are numbers', function () {
             var err = {
                 isArrays: true,
                 key:      0,
@@ -192,7 +196,7 @@ describe('Diffs', function () {
             compareDiff(err, expectedDiff);
         });
 
-        it('arrays - two strings - string length less than max output length', function () {
+        it('Should produce diff if array items are strings', function () {
             var err = {
                 expected: '"01000"',
                 actual:   '"0000"',
@@ -213,7 +217,7 @@ describe('Diffs', function () {
             compareDiff(err, expectedDiff);
         });
 
-        it('arrays - two strings - string - string more than max output length: diff in the begin', function () {
+        it('Should produce diff if array items are long strings that differ at the beginning', function () {
             var err = {
                 expected: '"12345678901"',
                 actual:   '"00000000000"',
@@ -234,7 +238,7 @@ describe('Diffs', function () {
             compareDiff(err, expectedDiff);
         });
 
-        it('arrays - two strings - string - string more than max output length: diff in the end', function () {
+        it('Should produce diff if array items are long strings that differ at the end', function () {
             var err = {
                 expected: '"00000000000"',
                 actual:   '"00000000001"',
@@ -255,7 +259,7 @@ describe('Diffs', function () {
             compareDiff(err, expectedDiff);
         });
 
-        it('arrays - two objects', function () {
+        it('Should produce diff if array items are objects', function () {
             var err = {
                 expected: '{t:1}',
                 actual:   '{t:2}',
@@ -272,7 +276,7 @@ describe('Diffs', function () {
             compareDiff(err, expectedDiff);
         });
 
-        it('arrays - comparing values more than max string length', function () {
+        it('Should produce diff if array items are objects that are too long in the serialized form', function () {
             var err = {
                 expected: '{t:"1111111111"}',
                 actual:   '{t:"222222222222"}',
@@ -288,8 +292,10 @@ describe('Diffs', function () {
 
             compareDiff(err, expectedDiff);
         });
+    });
 
-        it('objects - nested objects - diff in elemental values', function () {
+    describe('Objects', function () {
+        it('Should produce diff if object properties are numbers', function () {
             var err = {
                 expected:  '1',
                 actual:    '2',
@@ -306,7 +312,7 @@ describe('Diffs', function () {
             compareDiff(err, expectedDiff);
         });
 
-        it('objects - nested object - diff in objects structure', function () {
+        it('Should produce diff if object properties are objects', function () {
             var err = {
                 expected:  '{b:1}',
                 actual:    '{c:2}',
@@ -323,7 +329,7 @@ describe('Diffs', function () {
             compareDiff(err, expectedDiff);
         });
 
-        it('objects - diff in arrays', function () {
+        it('Should produce diff if object properties are arrays', function () {
             var err = {
                 expected:  '[1, 2, 3]',
                 actual:    '[1, 2, 4]',
@@ -340,7 +346,7 @@ describe('Diffs', function () {
             compareDiff(err, expectedDiff);
         });
 
-        it('objects - comparing values more than max string length', function () {
+        it('Should produce diff if object properties are objects that are too long in the serialized form', function () {
             var err = {
                 expected:  '{b:"1111111111111111"}',
                 actual:    '{c:"222222222222"}',

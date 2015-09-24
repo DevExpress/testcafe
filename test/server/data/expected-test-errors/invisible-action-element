@@ -1,4 +1,7 @@
-Chrome - Error on step "Step": code
-A target element of the test-action action (element) is not visible. If this
-element should appear when you are hovering over another element, make sure
-that you properly recorded the Hover action.
+Chrome 15.0.874 / Mac OS X 10.8.1 - Error at step "Step":
+
+    code
+
+A target element element of the test-action action is not visible.
+If this element should appear when you are hovering over another element,
+make sure that you properly recorded the hover action.
