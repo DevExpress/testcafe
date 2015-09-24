@@ -1,5 +1,8 @@
-Chrome - Error on step "Step": code
+Chrome 15.0.874 / Mac OS X 10.8.1 - Error at step "Step":
+
+    code
+
 A target element of the testAction action has not been found in the DOM tree.
 If this element should be created after animation or a time-consuming
-operation is finished, use the act.waitFor action (available for use in code)
-to pause test execution until this element appears.
+operation is finished, use the waitFor action (available for use in code) to
+pause test execution until this element appears.

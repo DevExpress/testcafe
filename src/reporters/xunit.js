@@ -1,6 +1,6 @@
 import indentString from 'indent-string';
 import escapeHtml from 'escape-html';
-import wordwrap from './word-wrap';
+import wordwrap from '../utils/word-wrap';
 import BaseReporter from './base';
 
 export default class XUnitReporter extends BaseReporter {
