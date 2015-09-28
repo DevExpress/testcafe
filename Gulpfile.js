@@ -1,3 +1,4 @@
+var argv         = require('yargs').argv;
 var babel        = require('babel');
 var gulp         = require('gulp');
 var gulpBabel    = require('gulp-babel');
@@ -194,6 +195,7 @@ gulp.task('lint', function () {
             '!src/client/**/*.js',  //TODO: fix it
             //'test/**/*.js',       //TODO: fix it
             'test/server/**.js',
+            'test/report-design-viewer/*.js',
             'Gulpfile.js'
         ])
         .pipe(eslint())
@@ -220,3 +222,9 @@ gulp.task('test-client', ['build'], function () {
 });
 
 gulp.task('test', ['test-server']);
+
+gulp.task('report-design-viewer', function () {
+    return new Promise(function () {
+        require('./test/report-design-viewer')(argv.reporter, argv.decorator);
+    });
+});
