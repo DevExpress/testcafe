@@ -1,8 +1,9 @@
 import BaseReporter from './base';
+import plainTextDecorator from './errors/decorators/plain-text';
 
 export default class JSONReporter extends BaseReporter {
-    constructor (task, outStream, errorDecorator) {
-        super(task, outStream, errorDecorator);
+    constructor (task, outStream) {
+        super(task, outStream, plainTextDecorator);
 
         this.currentFixture = null;
 
