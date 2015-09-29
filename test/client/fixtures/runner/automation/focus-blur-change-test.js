@@ -454,31 +454,6 @@ if (browserUtils.isIE)
         );
     });
 
-asyncTest('B237723 - Error on http://phonejs.devexpress.com/Demos/?url=KitchenSink&sm=3 on recording', function () {
-    runAsyncTest(
-        function () {
-            var iframeSrc = window.QUnitGlobals.getResourceUrl('../../../data/focus-blur-change/iframe.html');
-            var $iframe   = $('<iframe></iframe>')
-                .addClass(TEST_ELEMENT_CLASS)
-                .attr('src', iframeSrc)
-                .appendTo('body');
-
-            var errorRaised = false;
-
-            $iframe.load(function () {
-                try {
-                    $iframe[0].contentWindow.focusInput();
-                }
-                catch (err) {
-                    errorRaised = true;
-                }
-
-                ok(!errorRaised, 'error is not raised');
-                startNext();
-            });
-        }, 2000);
-});
-
 asyncTest('B238617 - Label with "for" attribute focusing', function () {
     runAsyncTest(
         function () {

@@ -75,14 +75,14 @@ $(document).ready(function () {
             $iFrame.appendTo($('body'));
         },
 
-        runAsyncTest       = function (actions, assertions, timeout) {
+        runAsyncTest       = function (actions, assertions, timeout, delayBeforeAssertions) {
             var callbackFunction = function () {
                 clearTimeout(timeoutId);
                 assertions();
                 start();
             };
             asyncActionCallback  = function () {
-                callbackFunction();
+                window.setTimeout(callbackFunction, delayBeforeAssertions || 0);
             };
             actions();
             var timeoutId        = setTimeout(function () {
@@ -432,7 +432,8 @@ $(document).ready(function () {
                     equal($iFrame[0].contentWindow.location.pathname, '/sessionId/https://example.com/test-resource/focus-iframe.html');
                     ok(clicked);
                 },
-                2000
+                2000,
+                1000
             );
         };
 
@@ -465,7 +466,8 @@ $(document).ready(function () {
                     equal($iFrame[0].contentWindow.location.pathname, '/sessionId!iframe/https://example.com/test-resource/focus-iframe.html');
                     ok(clicked);
                 },
-                2000
+                2000,
+                1000
             );
         };
 
