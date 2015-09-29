@@ -223,7 +223,7 @@ gulp.task('test-client', ['build'], function () {
 
 gulp.task('test', ['test-server']);
 
-gulp.task('report-design-viewer', function () {
+gulp.task('report-design-viewer', ['build'], function () {
     return new Promise(function () {
         require('./test/report-design-viewer')(argv.reporter, argv.decorator);
     });
