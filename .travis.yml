@@ -1,8 +1,13 @@
 language: node_js
-node_js:
-  - iojs
-  - 0.10
-  - 0.12
+matrix:
+ include:
+  - node_js: "0.10"
+    env: GULP_TASK="test-server"
+  - node_js: "stable"
+    env: GULP_TASK="test-server"
+  - node_js: "0.10"
+    env: GULP_TASK="test-client-travis"
+ fast_finish: true
 
 notifications:
-  email: false
+ email: false

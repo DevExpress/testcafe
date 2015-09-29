@@ -38,6 +38,6 @@
     "yargs": "^3.26.0"
   },
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp travis"
   }
 }

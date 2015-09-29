@@ -152,20 +152,22 @@ asyncTest('Uncaught error in test script', function () {
     $iframe[0].src = window.getCrossDomainPageUrl('../../data/runner/iframe.html');
     $iframe.appendTo('body');
 
-    var steps = [
-        {
-            stepName: '1.',
-            step:     function () {
-                throw 'error';
-            },
-            stepNum:  0
-        }
-    ];
+    $iframe.load(function () {
+        var steps = [
+            {
+                stepName: '1.',
+                step:     function () {
+                    throw 'error';
+                },
+                stepNum:  0
+            }
+        ];
 
-    SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
-    expectedError                     = ERROR_TYPE.uncaughtJSErrorInTestCodeStep;
-    expectedScreenshotCount           = 1;
-    runner._runInIFrame($iframe[0], steps[0].stepName, steps[0].step, steps[0].stepNum);
+        SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
+        expectedError                     = ERROR_TYPE.uncaughtJSErrorInTestCodeStep;
+        expectedScreenshotCount           = 1;
+        runner._runInIFrame($iframe[0], steps[0].stepName, steps[0].step, steps[0].stepNum);
+    });
 });
 
 asyncTest('Invisible element', function () {
@@ -174,21 +176,23 @@ asyncTest('Invisible element', function () {
     $iframe[0].src = window.getCrossDomainPageUrl('../../data/runner/iframe.html');
     $iframe.appendTo('body');
 
-    var steps = [
-        {
-            stepName: '1.',
-            step:     function () {
-                act.click("body1");
-            },
-            stepNum:  0
-        }
-    ];
+    $iframe.load(function () {
+        var steps = [
+            {
+                stepName: '1.',
+                step:     function () {
+                    act.click("body1");
+                },
+                stepNum:  0
+            }
+        ];
 
-    SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
-    expectedError                     = ERROR_TYPE.emptyFirstArgument;
-    expectedScreenshotCount           = 1;
+        SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
+        expectedError                     = ERROR_TYPE.emptyFirstArgument;
+        expectedScreenshotCount           = 1;
 
-    runner._runInIFrame($iframe[0], steps[0].stepName, steps[0].step, steps[0].stepNum);
+        runner._runInIFrame($iframe[0], steps[0].stepName, steps[0].step, steps[0].stepNum);
+    });
 });
 
 asyncTest('Error in api iframe argument', function () {
@@ -197,21 +201,23 @@ asyncTest('Error in api iframe argument', function () {
     $iframe[0].src = window.getCrossDomainPageUrl('../../data/runner/iframe.html');
     $iframe.appendTo('body');
 
-    var inIFrame  = runner.inIFrame,
-        stepNames = ['1'],
-        steps     = [
-            inIFrame(function () {
-                return $('body');
-            }, function () {
-                wait(100);
-            })
-        ];
+    $iframe.load(function () {
+        var inIFrame  = runner.inIFrame,
+            stepNames = ['1'],
+            steps     = [
+                inIFrame(function () {
+                    return $('body');
+                }, function () {
+                    wait(100);
+                })
+            ];
 
-    SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
-    expectedError                     = ERROR_TYPE.iframeArgumentIsNotIFrame;
-    expectedScreenshotCount           = 1;
+        SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
+        expectedError                     = ERROR_TYPE.iframeArgumentIsNotIFrame;
+        expectedScreenshotCount           = 1;
 
-    runner.act._start(stepNames, steps, 0);
+        runner.act._start(stepNames, steps, 0);
+    });
 });
 
 asyncTest('Failed assertion in step with action', function () {
@@ -220,21 +226,23 @@ asyncTest('Failed assertion in step with action', function () {
     $iframe[0].src = window.getCrossDomainPageUrl('../../data/runner/iframe.html');
     $iframe.appendTo('body');
 
-    var steps = [
-        {
-            stepName: '1.',
-            step:     function () {
-                ok(0);
-                eq(0, 1);
-                act.wait('body1');
-            },
-            stepNum:  0
-        }
-    ];
+    $iframe.load(function () {
+        var steps = [
+            {
+                stepName: '1.',
+                step:     function () {
+                    ok(0);
+                    eq(0, 1);
+                    act.wait('body1');
+                },
+                stepNum:  0
+            }
+        ];
 
-    SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
-    expectedError                     = ERROR_TYPE.incorrectWaitActionMillisecondsArgument;
-    expectedScreenshotCount           = 1;
+        SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
+        expectedError                     = ERROR_TYPE.incorrectWaitActionMillisecondsArgument;
+        expectedScreenshotCount           = 1;
 
-    runner._runInIFrame($iframe[0], steps[0].stepName, steps[0].step, steps[0].stepNum);
+        runner._runInIFrame($iframe[0], steps[0].stepName, steps[0].step, steps[0].stepNum);
+    });
 });
