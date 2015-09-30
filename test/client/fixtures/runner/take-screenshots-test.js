@@ -47,6 +47,8 @@ $.fn.load                            = function (callback) {
     callback();
 };
 
+Runner.checkStatus = function () {
+};
 
 QUnit.testStart(function () {
     runner                  = new Runner();

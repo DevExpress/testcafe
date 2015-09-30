@@ -1,8 +1,8 @@
-import * as hammerheadAPI from './deps/hammerhead';
+import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 import ProgressBar from './progress-bar';
 
-var shadowUI   = hammerheadAPI.ShadowUI;
+var shadowUI   = hammerhead.shadowUI;
 var eventUtils = testCafeCore.eventUtils;
 var $          = testCafeCore.$;
 

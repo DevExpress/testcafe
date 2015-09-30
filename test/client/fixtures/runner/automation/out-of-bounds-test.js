@@ -1,9 +1,9 @@
-var hammerhead = window.getTestCafeModule('hammerhead');
-var browser    = hammerhead.Util.Browser;
+var hammerhead   = window.getTestCafeModule('hammerhead');
+var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
-var position      = testCafeCore.get('./util/position');
-var textSelection = testCafeCore.get('./util/text-selection');
+var position      = testCafeCore.get('./utils/position');
+var textSelection = testCafeCore.get('./utils/text-selection');
 
 var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
 var automation                 = testCafeRunner.get('./automation/automation');
@@ -57,8 +57,8 @@ $(document).ready(function () {
             $doc.data(DRAGGABLE_BIND_FLAG, true);
             $doc.data(CURSOR_POSITION_PROPERTY, null);
 
-            $doc.bind(browser.hasTouchEvents ? 'touchmove' : 'mousemove', function (e) {
-                var curMousePos = browser.hasTouchEvents ? {
+            $doc.bind(browserUtils.hasTouchEvents ? 'touchmove' : 'mousemove', function (e) {
+                var curMousePos = browserUtils.hasTouchEvents ? {
                     x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                     y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
                 } : {
@@ -115,8 +115,8 @@ $(document).ready(function () {
 
         $el.addClass(DRAGGABLE_CLASS);
 
-        $el.bind(browser.hasTouchEvents ? 'touchstart' : 'mousedown', function (e) {
-            doc[CURSOR_POSITION_PROPERTY] = browser.hasTouchEvents ? {
+        $el.bind(browserUtils.hasTouchEvents ? 'touchstart' : 'mousedown', function (e) {
+            doc[CURSOR_POSITION_PROPERTY] = browserUtils.hasTouchEvents ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                 y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
             } : {
@@ -129,7 +129,7 @@ $(document).ready(function () {
             $(this).data(DRAG_STARTED_PROPERTY, true);
         });
 
-        $el.bind(browser.hasTouchEvents ? 'touchend' : 'mouseup', function () {
+        $el.bind(browserUtils.hasTouchEvents ? 'touchend' : 'mouseup', function () {
             doc[CURSOR_POSITION_PROPERTY] = null;
             $(this).data(DRAG_STARTED_PROPERTY, false);
         });
@@ -159,7 +159,7 @@ $(document).ready(function () {
     };
 
     var startNext = function () {
-        if (browser.isIE) {
+        if (browserUtils.isIE) {
             removeTestElements();
             window.setTimeout(start, 30);
         }
@@ -172,7 +172,7 @@ $(document).ready(function () {
     };
 
     QUnit.testDone(function () {
-        if (!browser.isIE)
+        if (!browserUtils.isIE)
             removeTestElements();
     });
 
@@ -387,7 +387,7 @@ $(document).ready(function () {
             equal(e.clientY, smallDraggablePosClient.y + dragOffsetY, 'mousedown clientY correct');
         };
 
-        if (!browser.hasTouchEvents) {
+        if (!browserUtils.hasTouchEvents) {
             $bigDraggable.bind('mousedown', function (e) {
                 var smallDraggablePos       = position.getOffsetPosition($smallDraggable[0]),
                     smallDraggablePosClient = position.offsetToClientCoords({
@@ -418,7 +418,7 @@ $(document).ready(function () {
             equal(position.getOffsetPosition($bigDraggable[0]).left, bigDraggableOffset.left + dragOffsetX);
             equal(position.getOffsetPosition($bigDraggable[0]).top, bigDraggableOffset.top + dragOffsetY);
 
-            expect(browser.hasTouchEvents ? 3 : 9);
+            expect(browserUtils.hasTouchEvents ? 3 : 9);
 
             startNext();
 

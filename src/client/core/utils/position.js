@@ -1,11 +1,8 @@
 /* global isIFrameWithoutSrc:true */
-import * as hammerheadAPI from '../deps/hammerhead';
+import hammerhead from '../deps/hammerhead';
 import $ from '../deps/jquery';
 import * as styleUtils from './style';
 import * as domUtils from './dom';
-
-
-var hhPositionUtils = hammerheadAPI.Util.Position;
 
 
 function isMapElement (el) {
@@ -62,7 +59,7 @@ export function isElementVisible (el) {
 
         return optionVisibleIndex >= topVisibleIndex && optionVisibleIndex <= bottomVisibleIndex;
     }
-    else if (domUtils.isSvgElement(el))
+    else if (domUtils.isSVGElement(el))
         return $el.css('visibility') !== 'hidden' && $el.css('display') !== 'none';
     else
         return $el.is(':visible') && $el.css('visibility') !== 'hidden';
@@ -350,7 +347,7 @@ export function getElementRectangleForMarking (element, padding, borderWidth) {
     };
 }
 
-// Imported form the hammerhead
-export var getElementRectangle  = hhPositionUtils.getElementRectangle;
-export var getOffsetPosition    = hhPositionUtils.getOffsetPosition;
-export var offsetToClientCoords = hhPositionUtils.offsetToClientCoords;
+
+export var getElementRectangle  = hammerhead.utils.position.getElementRectangle;
+export var getOffsetPosition    = hammerhead.utils.position.getOffsetPosition;
+export var offsetToClientCoords = hammerhead.utils.position.offsetToClientCoords;

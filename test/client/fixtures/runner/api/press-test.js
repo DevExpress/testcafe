@@ -1,12 +1,12 @@
 var hammerhead    = window.getTestCafeModule('hammerhead');
-var browser       = hammerhead.Util.Browser;
-var iframeSandbox = hammerhead.get('./sandboxes/iframe');
+var browserUtils  = hammerhead.utils.browser;
+var iframeSandbox = hammerhead.sandbox.iframe;
 
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var SETTINGS      = testCafeCore.get('./settings').get();
 var ERROR_TYPE    = testCafeCore.ERROR_TYPE;
-var DOM           = testCafeCore.get('./util/dom');
-var textSelection = testCafeCore.get('./util/text-selection');
+var domUtils      = testCafeCore.get('./utils/dom');
+var textSelection = testCafeCore.get('./utils/text-selection');
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var actionsAPI     = testCafeRunner.get('./api/actions');
@@ -101,8 +101,8 @@ $(document).ready(function () {
         textSelection.select($input[0], 4, 4);
         asyncActionCallback = function () {
         };
-        iframeSandbox.on(iframeSandbox.IFRAME_READY_TO_INIT, window.initIFrameTestHandler);
-        iframeSandbox.off(iframeSandbox.IFRAME_READY_TO_INIT, iframeSandbox.iframeReadyToInitHandler);
+        hammerhead.on(hammerhead.EVENTS.iframeReadyToInit, window.initIFrameTestHandler);
+        hammerhead.off(hammerhead.EVENTS.iframeReadyToInit, iframeSandbox.iframeReadyToInitHandler);
     });
 
     QUnit.testDone(function () {
@@ -110,7 +110,7 @@ $(document).ready(function () {
         currentErrorCode             = null;
         currentSourceIndex           = null;
         SETTINGS.ENABLE_SOURCE_INDEX = false;
-        iframeSandbox.off(iframeSandbox.IFRAME_READY_TO_INIT, window.initIFrameTestHandler);
+        hammerhead.off(hammerhead.EVENTS.iframeReadyToInit, window.initIFrameTestHandler);
     });
 
     module('events raising');
@@ -138,7 +138,7 @@ $(document).ready(function () {
             function () {
                 equal(keydownCount, 3, 'keydown event raises twice');
                 equal(keyupCount, 3, 'keyup event raises twice');
-                equal(keypressCount, browser.isMozilla ? 2 : 0, 'keypress event raises twice');
+                equal(keypressCount, browserUtils.isMozilla ? 2 : 0, 'keypress event raises twice');
             },
             3000
         );
@@ -320,7 +320,7 @@ $(document).ready(function () {
     });
 
     asyncTest('press tab', function () {
-        DOM.getActiveElement().blur();
+        domUtils.getActiveElement().blur();
         $('body').focus();
         $input.attr('tabIndex', 1);
         runAsyncTest(
@@ -328,7 +328,7 @@ $(document).ready(function () {
                 actionsAPI.press('tab');
             },
             function () {
-                deepEqual(DOM.getActiveElement(), $input[0]);
+                deepEqual(domUtils.getActiveElement(), $input[0]);
             },
             1000
         );
@@ -340,14 +340,14 @@ $(document).ready(function () {
             .appendTo($('body'))
             .attr('tabIndex', 1);
         $input.attr('tabIndex', 2);
-        DOM.getActiveElement().blur();
+        domUtils.getActiveElement().blur();
         $('body').focus();
         runAsyncTest(
             function () {
                 actionsAPI.press('tab');
             },
             function () {
-                deepEqual(DOM.getActiveElement(), $input2[0]);
+                deepEqual(domUtils.getActiveElement(), $input2[0]);
             },
             1000
         );
@@ -361,7 +361,7 @@ $(document).ready(function () {
             .addClass(TEST_ELEMENT_CLASS);
         $($iframe.contents()[0]).find('body').append($iframeInput);
 
-        DOM.getActiveElement().blur();
+        domUtils.getActiveElement().blur();
         $input.focus();
 
         runAsyncTest(
@@ -369,7 +369,7 @@ $(document).ready(function () {
                 actionsAPI.press('tab');
             },
             function () {
-                ok(DOM.getActiveElement() !== $input[0]);
+                ok(domUtils.getActiveElement() !== $input[0]);
             },
             1000
         );
@@ -377,7 +377,7 @@ $(document).ready(function () {
 
     module('Regression tests');
     asyncTest('T178354', function () {
-        DOM.getActiveElement().blur();
+        domUtils.getActiveElement().blur();
         $('body').focus();
         $input.attr('tabIndex', 1);
         runAsyncTest(
@@ -385,7 +385,7 @@ $(document).ready(function () {
                 actionsAPI.press('tab');
             },
             function () {
-                deepEqual(DOM.getActiveElement(), $input[0]);
+                deepEqual(domUtils.getActiveElement(), $input[0]);
                 equal($input[0].selectionStart, 0);
                 equal($input[0].selectionEnd, $input[0].value.length);
             },
@@ -417,19 +417,19 @@ $(document).ready(function () {
                     $link.click(function () {
                         clicked = true;
                     });
-                    equal($iFrame[0].contentWindow.location.pathname, '/ownerToken!jobUid!iframe/https://example.com/test-resource/runner-iframe.html');
+                    equal($iFrame[0].contentWindow.location.pathname, '/sessionId!iframe/https://example.com/test-resource/runner-iframe.html');
                     $link.focus();
 
                     //NOTE: we need set timeout for waiting of focus in IE
 
                     window.setTimeout(function () {
-                        equal(DOM.getActiveElement(), $link[0]);
+                        equal(domUtils.getActiveElement(), $link[0]);
                         actionsAPI.press('enter');
                     }, 500);
 
                 },
                 function () {
-                    equal($iFrame[0].contentWindow.location.pathname, '/ownerToken!jobUid/https://example.com/test-resource/focus-iframe.html');
+                    equal($iFrame[0].contentWindow.location.pathname, '/sessionId/https://example.com/test-resource/focus-iframe.html');
                     ok(clicked);
                 },
                 2000
@@ -452,17 +452,17 @@ $(document).ready(function () {
                     $link.click(function () {
                         clicked = true;
                     });
-                    equal($iFrame[0].contentWindow.location.pathname, '/ownerToken!jobUid!iframe/https://example.com/test-resource/runner-iframe.html');
+                    equal($iFrame[0].contentWindow.location.pathname, '/sessionId!iframe/https://example.com/test-resource/runner-iframe.html');
                     $link.focus();
 
                     //NOTE: we need set timeout for waiting of focus in IE
                     window.setTimeout(function () {
-                        equal(DOM.getActiveElement(), $link[0]);
+                        equal(domUtils.getActiveElement(), $link[0]);
                         actionsAPI.press('enter');
                     }, 500);
                 },
                 function () {
-                    equal($iFrame[0].contentWindow.location.pathname, '/ownerToken!jobUid!iframe/https://example.com/test-resource/focus-iframe.html');
+                    equal($iFrame[0].contentWindow.location.pathname, '/sessionId!iframe/https://example.com/test-resource/focus-iframe.html');
                     ok(clicked);
                 },
                 2000

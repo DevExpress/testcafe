@@ -1,12 +1,7 @@
-import * as hammerheadAPI from '../deps/hammerhead';
+import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 
-var hhBind        = hammerheadAPI.on;
-var XHR_SEND      = hammerheadAPI.XHR_SEND;
-var XHR_ERROR     = hammerheadAPI.XHR_ERROR;
-var XHR_COMPLETED = hammerheadAPI.XHR_COMPLETED;
-
-var ERROR_TYPE       = testCafeCore.ERROR_TYPE;
+var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var serviceUtils = testCafeCore.serviceUtils;
 
 
@@ -83,14 +78,14 @@ export function init () {
         pageInitialReqsComplete = true;
     });
 
-    hhBind(XHR_SEND, function (e) {
+    hammerhead.on(hammerhead.EVENTS.xhrSend, function (e) {
         if (barrierCtx) {
             barrierCtx.reqCount++;
             barrierCtx.requests.push(e.xhr);
         }
     });
 
-    hhBind(XHR_ERROR, function (e) {
+    hammerhead.on(hammerhead.EVENTS.xhrError, function (e) {
         //NOTE: previously this error used in possible fail causes, which are R.I.P. now.
         //So we just through errot to the console for the debugging purposes. In IE9 console.log
         //is defined only if dev tools are open.
@@ -99,7 +94,7 @@ export function init () {
         events.emit(XHR_BARRIER_ERROR, e.err);
     });
 
-    hhBind(XHR_COMPLETED, function (e) {
+    hammerhead.on(hammerhead.EVENTS.xhrCompleted, function (e) {
         //NOTE: let last real xhr-handler finish it's job and try to obtain any additional requests
         //if they were initiated by this handler
         window.setTimeout(function () {

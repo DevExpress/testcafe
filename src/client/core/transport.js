@@ -1,7 +1,7 @@
-import * as hammerheadAPI from './deps/hammerhead';
+import hammerhead from './deps/hammerhead';
 import COMMAND from '../../runner/test-run/command';
 
-var transport = hammerheadAPI.Transport;
+var transport = hammerhead.transport;
 
 
 //Exports

@@ -1,11 +1,11 @@
 var hammerhead    = window.getTestCafeModule('hammerhead');
-var browser       = hammerhead.Util.Browser;
-var nativeMethods = Hammerhead.NativeMethods;
+var browserUtils  = hammerhead.utils.browser;
+var nativeMethods = hammerhead.nativeMethods;
 
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
-var DOM           = testCafeCore.get('./util/dom');
-var event         = testCafeCore.get('./util/event');
-var textSelection = testCafeCore.get('./util/text-selection');
+var domUtils      = testCafeCore.get('./utils/dom');
+var event         = testCafeCore.get('./utils/event');
+var textSelection = testCafeCore.get('./utils/text-selection');
 
 var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
 var automation                 = testCafeRunner.get('./automation/automation');
@@ -46,7 +46,7 @@ $(document).ready(function () {
     $(body).css('height', 1500);
     //NOTE: problem with window.top bodyMargin in IE9 if test 'runAll'
     //because we can't determine that element is in qunit test iframe
-    if (browser.isIE9)
+    if (browserUtils.isIE9)
         $(window.top.document).find('body').css('marginTop', '0px');
 
     var createDraggable = function (currentWindow, currentDocument, x, y) {
@@ -65,8 +65,8 @@ $(document).ready(function () {
                     left:            x ? x + 'px' : '100px',
                     top:             y ? y + 'px' : '850px',
                     zIndex:          5
-                }).bind(browser.hasTouchEvents ? 'touchstart' : 'mousedown', function (e) {
-                    lastCursorPosition = browser.hasTouchEvents ? {
+                }).bind(browserUtils.hasTouchEvents ? 'touchstart' : 'mousedown', function (e) {
+                    lastCursorPosition = browserUtils.hasTouchEvents ? {
                         x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                         y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
                     } : {
@@ -76,14 +76,14 @@ $(document).ready(function () {
                     $(this).data('dragStarted', true);
                 })
 
-                .bind(browser.hasTouchEvents ? 'touchend' : 'mouseup', function () {
+                .bind(browserUtils.hasTouchEvents ? 'touchend' : 'mouseup', function () {
                     lastCursorPosition = null;
                     $(this).data('dragStarted', false);
                 })
                 .appendTo($(curDocument).find('body'));
 
-        $(curDocument).bind(browser.hasTouchEvents ? 'touchmove' : 'mousemove', function (e) {
-            var curMousePos    = browser.hasTouchEvents ? {
+        $(curDocument).bind(browserUtils.hasTouchEvents ? 'touchmove' : 'mousemove', function (e) {
+            var curMousePos    = browserUtils.hasTouchEvents ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                 y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
             } : {
@@ -127,11 +127,11 @@ $(document).ready(function () {
     };
 
     var isInputWithoutSelectionProperties = function ($el) {
-        return DOM.isInputWithoutSelectionPropertiesInMozilla($el[0]);
+        return domUtils.isInputWithoutSelectionPropertiesInMozilla($el[0]);
     };
 
     var startNext = function () {
-        if (browser.isIE) {
+        if (browserUtils.isIE) {
             removeTestElements();
             window.setTimeout(start, 30);
         }
@@ -144,13 +144,13 @@ $(document).ready(function () {
     };
 
     QUnit.testDone(function () {
-        if (!browser.isIE)
+        if (!browserUtils.isIE)
             removeTestElements();
     });
 
     module('regression tests');
 
-    if (browser.isIE)
+    if (browserUtils.isIE)
         asyncTest('click on submit button child (B236676)', function () {
             var $form         = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
                 $button       = $('<button></button>').attr('type', 'submit').addClass(TEST_ELEMENT_CLASS).appendTo($form),
@@ -194,7 +194,7 @@ $(document).ready(function () {
             });
         });
 
-    if (!browser.hasTouchEvents) {
+    if (!browserUtils.hasTouchEvents) {
         asyncTest('B236966 - TESTCafe - onmouseout event is not called during the execution of the method hover.', function () {
             var $element   = createDraggable(window, document, 200, 200),
                 firstEvent = null;
@@ -210,7 +210,7 @@ $(document).ready(function () {
             });
 
             hoverPlaybackAutomation($element[0], {}, function () {
-                equal(firstEvent, browser.isIE ? 'mousemove' : 'mouseover');
+                equal(firstEvent, browserUtils.isIE ? 'mousemove' : 'mouseover');
                 startNext();
             });
         });
@@ -299,7 +299,7 @@ $(document).ready(function () {
         });
     });
 
-    if (!browser.isIE) {
+    if (!browserUtils.isIE) {
         //TODO: IE wrong detection dimension top for element if this element have height more than scrollable container
         //and element's top less than container top
         asyncTest('B237890 - Wrong scroll before second click on big element in scrollable container', function () {
@@ -547,7 +547,7 @@ $(document).ready(function () {
     });
 
     //T101195 - Recording crashed after action with input type = "number" recorded in FF 29
-    if (!browser.isMozilla) {
+    if (!browserUtils.isMozilla) {
         asyncTest('B254340 - type letters in input with type="number"', function () {
             var initText = '12345',
                 newText  = 'aaa',
@@ -558,7 +558,7 @@ $(document).ready(function () {
                 caretPos: caretPos
             }, function () {
                 //NOTE: when we try to set value with letters for 'input type = number' we get input.value = '' (may be we'll fix it in the future)
-                if (browser.isWebKit || (browser.isIE && browser.version > 11)) {
+                if (browserUtils.isWebKit || (browserUtils.isIE && browserUtils.version > 11)) {
                     equal($input[0].value, '');
                     equal(textSelection.getSelectionStart($input[0]), 0, 'start selection correct');
                     equal(textSelection.getSelectionEnd($input[0]), 0, 'end selection correct');
@@ -609,7 +609,7 @@ $(document).ready(function () {
         });
     });
 
-    if (browser.isIE) {
+    if (browserUtils.isIE) {
         //TODO: fix it for other browsers
         asyncTest('Unexpected focus events are raised during click', function () {
             var input1FocusCount = 0,
@@ -642,15 +642,15 @@ $(document).ready(function () {
                 });
 
             dblClickPlaybackAutomation($input2[0], {}, function () {
-                equal(input1FocusCount, browser.isIE ? 1 : 2);
-                equal(input2FocusCount, browser.isIE ? 1 : 2);
+                equal(input1FocusCount, browserUtils.isIE ? 1 : 2);
+                equal(input2FocusCount, browserUtils.isIE ? 1 : 2);
 
                 startNext();
             });
         });
     }
 
-    if (browser.isIE && browser.version > 9) {
+    if (browserUtils.isIE && browserUtils.version > 9) {
         asyncTest('T109295 - User action act.click isn\'t raised by click on map', function () {
             var initText = 'click',
                 $input   = createInput('button').attr('value', initText).css({
@@ -679,14 +679,14 @@ $(document).ready(function () {
 
             addListeners($input[0], events.mouse);
 
-            if (browser.version > 10)
+            if (browserUtils.version > 10)
                 addListeners($input[0], events.pointer);
             else
                 addListeners($input[0], events.MSevents);
 
 
             clickPlaybackAutomation($input[0], {}, function () {
-                if (browser.version > 10)
+                if (browserUtils.version > 10)
                     equal(log, 'pointerover, mouseover, pointerdown, mousedown, pointerup, mouseup, click');
                 else
                     equal(log, 'MSPointerOver, mouseover, MSPointerDown, mousedown, MSPointerUp, mouseup, click');
@@ -745,7 +745,7 @@ $(document).ready(function () {
         }, function () {
             equal($input[0].value, text);
 
-            if (!DOM.isInputWithoutSelectionPropertiesInMozilla($input[0])) {
+            if (!domUtils.isInputWithoutSelectionPropertiesInMozilla($input[0])) {
                 equal(textSelection.getSelectionStart($input[0]), text.length, 'start selection correct');
                 equal(textSelection.getSelectionEnd($input[0]), text.length, 'end selection correct');
             }
@@ -761,7 +761,7 @@ $(document).ready(function () {
             $input   = createInput('number').attr('value', initText);
 
         clickPlaybackAutomation($input[0], {}, function () {
-            equal(DOM.getActiveElement(), $input[0]);
+            equal(domUtils.getActiveElement(), $input[0]);
 
             pressPlaybackAutomation(text, function () {
                 equal($input[0].value, newText);

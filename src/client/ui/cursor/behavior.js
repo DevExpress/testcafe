@@ -1,10 +1,10 @@
-import * as hammerheadAPI from './../deps/hammerhead';
+import hammerhead from './../deps/hammerhead';
 import testCafeCore from './../deps/testcafe-core';
 import CursorBaseBehavior from './base-behavior';
 
-var shadowUI       = hammerheadAPI.ShadowUI;
-var browserUtils   = hammerheadAPI.Util.Browser;
-var messageSandbox = hammerheadAPI.MessageSandbox;
+var shadowUI       = hammerhead.shadowUI;
+var browserUtils   = hammerhead.utils.browser;
+var messageSandbox = hammerhead.messageSandbox;
 
 var $             = testCafeCore.$;
 var SETTINGS      = testCafeCore.SETTINGS;
@@ -116,7 +116,7 @@ CursorBehavior.prototype._initCursorIFrameBehavior = function () {
         }
     }
 
-    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, onMessage);
+    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
 };
 
 CursorBehavior.prototype.getElementUnderCursor = function (x, y, currentDocument) {

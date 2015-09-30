@@ -1,4 +1,4 @@
-import * as hammerheadAPI from '../../deps/hammerhead';
+import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
 import * as automationUtil from '../util';
@@ -6,9 +6,9 @@ import * as automationSettings from '../settings';
 import clickPlaybackAutomation from '../playback/click';
 import async from '../../deps/async';
 
-var browserUtils   = hammerheadAPI.Util.Browser;
-var eventSimulator = hammerheadAPI.EventSandbox.EventSimulator;
-var nativeMethods  = hammerheadAPI.NativeMethods;
+var browserUtils   = hammerhead.utils.browser;
+var eventSimulator = hammerhead.eventSandbox.eventSimulator;
+var nativeMethods  = hammerhead.nativeMethods;
 
 var $             = testCafeCore.$;
 var SETTINGS      = testCafeCore.SETTINGS;

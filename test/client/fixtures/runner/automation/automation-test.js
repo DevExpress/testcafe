@@ -1,19 +1,19 @@
-var hammerhead = window.getTestCafeModule('hammerhead');
-var browser    = hammerhead.Util.Browser;
+var hammerhead   = window.getTestCafeModule('hammerhead');
+var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
-var DOM           = testCafeCore.get('./util/dom');
-var textSelection = testCafeCore.get('./util/text-selection');
-var position      = testCafeCore.get('./util/position');
+var domUtils      = testCafeCore.get('./utils/dom');
+var textSelection = testCafeCore.get('./utils/text-selection');
+var position      = testCafeCore.get('./utils/position');
 
-var testCafeRunner                = window.getTestCafeModule('testCafeRunner');
-var automation                    = testCafeRunner.get('./automation/automation');
-var clickPlaybackAutomation       = testCafeRunner.get('./automation/playback/click');
-var dblClickPlaybackAutomation    = testCafeRunner.get('./automation/playback/dblclick');
-var dragPlaybackAutomation   = testCafeRunner.get('./automation/playback/drag');
-var selectPlaybackAutomation = testCafeRunner.get('./automation/playback/select');
-var pressPlaybackAutomation  = testCafeRunner.get('./automation/playback/press');
-var typePlaybackAutomation        = testCafeRunner.get('./automation/playback/type');
+var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
+var automation                 = testCafeRunner.get('./automation/automation');
+var clickPlaybackAutomation    = testCafeRunner.get('./automation/playback/click');
+var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
+var dragPlaybackAutomation     = testCafeRunner.get('./automation/playback/drag');
+var selectPlaybackAutomation   = testCafeRunner.get('./automation/playback/select');
+var pressPlaybackAutomation    = testCafeRunner.get('./automation/playback/press');
+var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
 
 var testCafeUI = window.getTestCafeModule('testCafeUI');
 var cursor     = testCafeUI.get('./cursor');
@@ -39,7 +39,7 @@ $(document).ready(function () {
     $('body').css('height', 1500);
     //NOTE: problem with window.top bodyMargin in IE9 if test 'runAll'
     //because we can't determine that element is in qunit test iframe
-    if (browser.isIE9)
+    if (browserUtils.isIE9)
         $(window.top.document).find('body').css('marginTop', '0px');
 
     var DRAGGABLE_BIND_FLAG      = 'tc-dbf-c56a4d91',
@@ -55,8 +55,8 @@ $(document).ready(function () {
             $doc.data(DRAGGABLE_BIND_FLAG, true);
             $doc.data(CURSOR_POSITION_PROPERTY, null);
 
-            $doc.bind(browser.hasTouchEvents ? 'touchmove' : 'mousemove', function (e) {
-                var curMousePos = browser.hasTouchEvents ? {
+            $doc.bind(browserUtils.hasTouchEvents ? 'touchmove' : 'mousemove', function (e) {
+                var curMousePos = browserUtils.hasTouchEvents ? {
                     x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                     y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
                 } : {
@@ -112,8 +112,8 @@ $(document).ready(function () {
 
         $el.addClass(DRAGGABLE_CLASS);
 
-        $el.bind(browser.hasTouchEvents ? 'touchstart' : 'mousedown', function (e) {
-            doc[CURSOR_POSITION_PROPERTY] = browser.hasTouchEvents ? {
+        $el.bind(browserUtils.hasTouchEvents ? 'touchstart' : 'mousedown', function (e) {
+            doc[CURSOR_POSITION_PROPERTY] = browserUtils.hasTouchEvents ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                 y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
             } : {
@@ -125,7 +125,7 @@ $(document).ready(function () {
             $(this).data(DRAG_STARTED_PROPERTY, true);
         });
 
-        $el.bind(browser.hasTouchEvents ? 'touchend' : 'mouseup', function () {
+        $el.bind(browserUtils.hasTouchEvents ? 'touchend' : 'mouseup', function () {
             doc[CURSOR_POSITION_PROPERTY] = null;
             $(this).data(DRAG_STARTED_PROPERTY, false);
         });
@@ -155,7 +155,7 @@ $(document).ready(function () {
     };
 
     var startNext = function (ms) {
-        if (browser.isIE) {
+        if (browserUtils.isIE) {
             removeTestElements();
             window.setTimeout(start, ms || 30);
         }
@@ -181,7 +181,7 @@ $(document).ready(function () {
     };
 
     var checkSelection = function (el, start, end, inverse) {
-        equal(DOM.getActiveElement(), el, 'selected element is active');
+        equal(domUtils.getActiveElement(), el, 'selected element is active');
         equal(textSelection.getSelectionStart(el), start, 'start selection correct');
         equal(textSelection.getSelectionEnd(el), end, 'end selection correct');
         equal(textSelection.hasInverseSelection(el), inverse, 'selection direction correct');
@@ -196,7 +196,7 @@ $(document).ready(function () {
     };
 
     QUnit.testDone(function () {
-        if (!browser.isIE)
+        if (!browserUtils.isIE)
             removeTestElements();
     });
 
@@ -516,11 +516,11 @@ $(document).ready(function () {
 
             pressPlaybackAutomation('enter', function () {
                 equal(document.activeElement, input);
-                equal(changeCount, browser.isIE ? 0 : 1);
+                equal(changeCount, browserUtils.isIE ? 0 : 1);
 
                 pressPlaybackAutomation('enter', function () {
                     equal(document.activeElement, input);
-                    equal(changeCount, browser.isIE ? 0 : 1);
+                    equal(changeCount, browserUtils.isIE ? 0 : 1);
 
                     start();
                 });

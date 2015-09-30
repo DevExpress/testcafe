@@ -1,10 +1,10 @@
-import * as hammerheadAPI from './deps/hammerhead';
+import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 import * as dialogsAPI from './api/native-dialogs';
 import RunnerBase from './runner-base.js';
 
 var SETTINGS                 = testCafeCore.SETTINGS;
-var messageSandbox           = hammerheadAPI.MessageSandbox;
+var messageSandbox           = hammerhead.messageSandbox;
 var jQuerySelectorExtensions = testCafeCore.jQuerySelectorExtensions;
 var serviceUtils             = testCafeCore.serviceUtils;
 
@@ -100,12 +100,12 @@ IFrameRunner.prototype._onGetStepsSharedData = function (e) {
 
     function onMessage (response) {
         if (response.message.cmd === RunnerBase.IFRAME_GET_SHARED_DATA_RESPONSE_CMD) {
-            messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED, onMessage);
+            messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
             e.callback(response.message.sharedData);
         }
     }
 
-    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, onMessage);
+    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
 };
 
 IFrameRunner.prototype._onTakeScreenshot = function (e) {
@@ -118,13 +118,13 @@ IFrameRunner.prototype._onTakeScreenshot = function (e) {
 
     function onMessage (response) {
         if (response.message.cmd === RunnerBase.IFRAME_TAKE_SCREENSHOT_RESPONSE_CMD) {
-            messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED, onMessage);
+            messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
             if (e && e.callback)
                 e.callback();
         }
     }
 
-    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, onMessage);
+    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
 };
 
 IFrameRunner.prototype.onStepCompleted = function () {
@@ -149,7 +149,7 @@ IFrameRunner.prototype._onBeforeUnload = function () {
     function onMessage (response) {
         if (response.message.cmd === RunnerBase.IFRAME_BEFORE_UNLOAD_RESPONSE_CMD) {
 
-            messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED, onMessage);
+            messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
 
             if (response.message.res) {
                 if (iFrameTestRunner.stepIterator.state.stepDelayTimeout) {
@@ -163,7 +163,7 @@ IFrameRunner.prototype._onBeforeUnload = function () {
         }
     }
 
-    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, onMessage);
+    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
 
     messageSandbox.sendServiceMsg(msg, window.top);
 };

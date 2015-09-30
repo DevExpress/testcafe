@@ -25,7 +25,7 @@ var CLIENT_TESTS_SETTINGS = {
 
     scripts: [
         { src: '/async.js', path: './test/client/vendor/async.js' },
-        { src: '/hammerhead.js', path: './node_modules/hammerhead/client/hammerhead.js' },
+        { src: '/hammerhead.js', path: './node_modules/testcafe-hammerhead/lib/client/hammerhead.js' },
         { src: '/core.js', path: './lib/client/core/index.js' },
         { src: '/ui.js', path: './lib/client/ui/index.js' },
         { src: '/runner.js', path: './lib/client/runner/index.js' },
@@ -112,7 +112,7 @@ gulp.task('styles-temp-copy', ['clean'], function () {
 });
 
 gulp.task('build-styles', ['styles-temp-copy'], function () {
-    var SHADOW_UI_CLASSNAME_POSTFIX = require('./node_modules/hammerhead/lib/const').SHADOW_UI_CLASSNAME_POSTFIX;
+    var SHADOW_UI_CLASSNAME_POSTFIX = require('./node_modules/testcafe-hammerhead/lib/const').SHADOW_UI_CLASSNAME_POSTFIX;
     var TEMP_SRC_FILE               = path.join(process.cwd(), UI_STYLES_TEMP_DIR, 'styles.less');
 
     var readFile  = promisify(fs.readFile);

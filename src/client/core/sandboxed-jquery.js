@@ -1,8 +1,8 @@
-import * as hammerheadAPI from './deps/hammerhead';
-import * as domUtils from './util/dom';
+import hammerhead from './deps/hammerhead';
+import * as domUtils from './utils/dom';
 
 
-var nativeMethods = hammerheadAPI.NativeMethods;
+var nativeMethods = hammerhead.nativeMethods;
 
 
 export var jQuery = null;

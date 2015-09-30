@@ -1,12 +1,12 @@
-var hammerhead = window.getTestCafeModule('hammerhead');
-var browser    = hammerhead.Util.Browser;
+var hammerhead   = window.getTestCafeModule('hammerhead');
+var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
 var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
-var DOM          = testCafeCore.get('./util/dom');
-var style        = testCafeCore.get('./util/style');
-var position     = testCafeCore.get('./util/position');
+var domUtils     = testCafeCore.get('./utils/dom');
+var style        = testCafeCore.get('./utils/style');
+var position     = testCafeCore.get('./utils/position');
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var actionsAPI     = testCafeRunner.get('./api/actions');
@@ -24,7 +24,7 @@ var stepIterator = new StepIterator();
 actionsAPI.init(stepIterator);
 
 var correctTestWaitingTime = function (time) {
-    if (browser.isTouchDevice && browser.isMozilla)
+    if (browserUtils.isTouchDevice && browserUtils.isMozilla)
         return time * 2;
 
     return time;
@@ -148,7 +148,7 @@ $(document).ready(function () {
         },
 
         startNext                = function () {
-            if (browser.isIE) {
+            if (browserUtils.isIE) {
                 removeTestElements();
                 window.setTimeout(start, 30);
             }
@@ -175,7 +175,7 @@ $(document).ready(function () {
     });
 
     QUnit.testDone(function () {
-        if (!browser.isIE)
+        if (!browserUtils.isIE)
             removeTestElements();
 
         SETTINGS.ENABLE_SOURCE_INDEX = false;
@@ -322,7 +322,7 @@ $(document).ready(function () {
         setTimeout(function () {
             $el.css('visibility', '');
             equal(currentErrorCode, ERROR_TYPE.invisibleActionElement);
-            equal(currentErrorElement, DOM.getElementDescription($el[0]));
+            equal(currentErrorElement, domUtils.getElementDescription($el[0]));
             equal(currentActionSourceIndex, 32);
 
             startNext();
@@ -440,7 +440,7 @@ $(document).ready(function () {
         );
     });
 
-    if (!browser.hasTouchEvents) {
+    if (!browserUtils.hasTouchEvents) {
         asyncTest('over and move events on elements during moving', function () {
             var overed  = false,
                 entered = false,
@@ -929,7 +929,7 @@ $(document).ready(function () {
                     mousedownRaised = true;
 
                     equal(e.button, 0);
-                    if (browser.isIE || browser.isMozilla)
+                    if (browserUtils.isIE || browserUtils.isMozilla)
                         equal(e.buttons, 1);
 
                     ok(!mouseupRaised && !clickRaised, 'mousedown event was raised first');
@@ -938,7 +938,7 @@ $(document).ready(function () {
                     mouseupRaised = true;
 
                     equal(e.button, 0);
-                    if (browser.isIE || browser.isMozilla)
+                    if (browserUtils.isIE || browserUtils.isMozilla)
                         equal(e.buttons, 1);
 
                     ok(mousedownRaised && !clickRaised, 'mouseup event was raised second');
@@ -947,7 +947,7 @@ $(document).ready(function () {
                     clickRaised = true;
 
                     equal(e.button, 0);
-                    if (browser.isIE || browser.isMozilla)
+                    if (browserUtils.isIE || browserUtils.isMozilla)
                         equal(e.buttons, 1);
 
                     deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
@@ -955,12 +955,12 @@ $(document).ready(function () {
                 });
 
                 var pointerHandler = function (e) {
-                    equal(e.pointerType, browser.version > 10 ? 'mouse' : 4);
+                    equal(e.pointerType, browserUtils.version > 10 ? 'mouse' : 4);
                     equal(e.button, 0);
                     equal(e.buttons, 1);
                 };
 
-                if (browser.isIE && browser.version > 11) {
+                if (browserUtils.isIE && browserUtils.version > 11) {
                     $el[0].onpointerdown = pointerHandler;
                     $el[0].onpointerup   = pointerHandler;
                 }
@@ -973,9 +973,9 @@ $(document).ready(function () {
             },
             function () {
                 ok(mousedownRaised && mousedownRaised && clickRaised, 'mouse events were raised');
-                if (browser.isMozilla || browser.isIE9)
+                if (browserUtils.isMozilla || browserUtils.isIE9)
                     expect(11);
-                else if (browser.isIE)
+                else if (browserUtils.isIE)
                     expect(17);
                 else
                     expect(8);
@@ -1013,7 +1013,7 @@ $(document).ready(function () {
 
     module('touch devices test');
     //for touch devices
-    if (browser.hasTouchEvents) {
+    if (browserUtils.hasTouchEvents) {
         asyncTest('touch event on click', function () {
             var events = {
                 ontouchstart: false,

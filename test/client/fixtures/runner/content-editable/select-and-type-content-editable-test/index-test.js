@@ -1,11 +1,11 @@
-var hammerhead  = window.getTestCafeModule('hammerhead');
-var browser     = hammerhead.Util.Browser;
-var jsProcessor = hammerhead.JSProcessor;
+var hammerhead   = window.getTestCafeModule('hammerhead');
+var browserUtils = hammerhead.utils.browser;
+var jsProcessor  = hammerhead.jsProcessor;
 
 var testCafeCore    = window.getTestCafeModule('testCafeCore');
-var textSelection   = testCafeCore.get('./util/text-selection');
-var contentEditable = testCafeCore.get('./util/content-editable');
-var DOM             = testCafeCore.get('./util/dom');
+var textSelection   = testCafeCore.get('./utils/text-selection');
+var contentEditable = testCafeCore.get('./utils/content-editable');
+var domUtils        = testCafeCore.get('./utils/dom');
 
 var testCafeRunner           = window.getTestCafeModule('testCafeRunner');
 var automation               = testCafeRunner.get('./automation/automation');
@@ -38,7 +38,7 @@ $(document).ready(function () {
     $('body').css('height', 1500);
 
     var startNext = function () {
-        if (browser.isIE) {
+        if (browserUtils.isIE) {
             removeTestElements();
             window.setTimeout(start, 30);
         }
@@ -51,12 +51,12 @@ $(document).ready(function () {
     };
 
     var checkSelection = function ($el, startNode, startOffset, endNode, endOffset) {
-        var curDocument = DOM.findDocument($el[0]),
+        var curDocument = domUtils.findDocument($el[0]),
             selection   = curDocument.getSelection();
-        equal(DOM.getActiveElement(), $el[0]);
-        ok(DOM.isTheSameNode(startNode, selection.anchorNode), 'startNode correct');
+        equal(domUtils.getActiveElement(), $el[0]);
+        ok(domUtils.isTheSameNode(startNode, selection.anchorNode), 'startNode correct');
         equal(selection.anchorOffset, startOffset, 'startOffset correct');
-        ok(DOM.isTheSameNode(endNode, selection.focusNode), 'endNode correct');
+        ok(domUtils.isTheSameNode(endNode, selection.focusNode), 'endNode correct');
         equal(selection.focusOffset, endOffset, 'endOffset correct');
     };
 
@@ -78,8 +78,8 @@ $(document).ready(function () {
             seventhElementInnerHTML = $('#7')[0].innerHTML;
         },
         restoreState: function () {
-            var curActiveElement = DOM.getActiveElement(),
-                curDocument      = DOM.findDocument(curActiveElement),
+            var curActiveElement = domUtils.getActiveElement(),
+                curDocument      = domUtils.findDocument(curActiveElement),
                 selection        = curDocument.getSelection();
             if (firstElementInnerHTML) {
                 setInnerHTML($('#1'), firstElementInnerHTML);
@@ -103,7 +103,7 @@ $(document).ready(function () {
             if (find)
                 return currentOffset;
 
-            if (DOM.isTheSameNode(node, target)) {
+            if (domUtils.isTheSameNode(node, target)) {
                 find = true;
                 return currentOffset + offset;
             }
@@ -123,7 +123,7 @@ $(document).ready(function () {
     };
 
     var getElementTextWithoutSelection = function ($el, text) {
-        var curDocument = DOM.findDocument($el[0]),
+        var curDocument = domUtils.findDocument($el[0]),
             sel         = curDocument.getSelection(),
             startNode   = sel.anchorNode,
             startOffset = sel.anchorOffset,
@@ -134,7 +134,7 @@ $(document).ready(function () {
 
         var start = getRealCaretPosition($el, startNode, startOffset),
             end   = getRealCaretPosition($el, endNode, endOffset);
-        if (!browser.isIE && textSelection.hasInverseSelection($el[0]))
+        if (!browserUtils.isIE && textSelection.hasInverseSelection($el[0]))
             return elementText.substring(0, end) + text + elementText.substring(start);
         return elementText.substring(0, start) + text + elementText.substring(end);
     };
@@ -149,7 +149,7 @@ $(document).ready(function () {
         $el     = null;
         $parent = null;
         stateHelper.restoreState();
-        if (!browser.isIE)
+        if (!browserUtils.isIE)
             removeTestElements();
     });
 
@@ -184,7 +184,7 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                if (!browser.isIE || browser.version > 11) {
+                if (!browserUtils.isIE || browserUtils.version > 11) {
                     checkSelection($el, $el[0].childNodes[1].childNodes[0], 13, $el[0].childNodes[1].childNodes[0], 13);
                     equal($el[0].childNodes[1].childNodes[0].nodeValue, nodeValue.substring(0, 10) + text);
                 }
@@ -224,7 +224,7 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                if (!browser.isIE || browser.version > 11) {
+                if (!browserUtils.isIE || browserUtils.version > 11) {
                     checkSelection($el, $el[0].childNodes[3].childNodes[0], text.length, $el[0].childNodes[3].childNodes[0], text.length);
                     equal($el[0].childNodes[3].childNodes[0].nodeValue, text);
                 }
@@ -252,7 +252,7 @@ $(document).ready(function () {
             },
 
             'Check selection': function (callback) {
-                if (!browser.isIE) {
+                if (!browserUtils.isIE) {
                     checkSelection($el, $el[0].childNodes[8].childNodes[0], 2, $el[0].childNodes[3].childNodes[0], 0);
                     equal(textSelection.hasInverseSelection($el[0]), true, 'selection direction correct');
                 }
@@ -269,7 +269,7 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                if (browser.isMozilla || (browser.isIE && browser.version > 11)) {
+                if (browserUtils.isMozilla || (browserUtils.isIE && browserUtils.version > 11)) {
                     checkSelection($el, $el[0].childNodes[3].childNodes[0], text.length, $el[0].childNodes[3].childNodes[0], text.length);
                     equal($el[0].childNodes[3].childNodes[0].nodeValue, text);
                 }
@@ -298,7 +298,8 @@ $(document).ready(function () {
             },
 
             'Check selection': function (callback) {
-                nodeValue = browser.isMozilla || browser.isWebKit || (browser.isIE && browser.version > 11) ?
+                nodeValue = browserUtils.isMozilla || browserUtils.isWebKit ||
+                            (browserUtils.isIE && browserUtils.version > 11) ?
                             $el[0].childNodes[4].nodeValue : $el[0].childNodes[3].childNodes[0].nodeValue;
                 checkSelection($el, $el[0].childNodes[4], 6, $el[0].childNodes[8].childNodes[0], 2);
                 callback();
@@ -312,7 +313,8 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                if (browser.isMozilla || browser.isWebKit || (browser.isIE && browser.version > 11)) {
+                if (browserUtils.isMozilla || browserUtils.isWebKit ||
+                    (browserUtils.isIE && browserUtils.version > 11)) {
                     checkSelection($el, $el[0].childNodes[4], 6 + text.length, $el[0].childNodes[4], 6 +
                                                                                                      text.length);
                     equal($el[0].childNodes[4].nodeValue, nodeValue + text);
@@ -343,9 +345,9 @@ $(document).ready(function () {
             },
 
             'Check selection': function (callback) {
-                nodeValue = browser.isMozilla || (browser.isIE && browser.version >
-                                                                  11) ? $el[0].childNodes[4].nodeValue : $el[0].childNodes[5].childNodes[0].nodeValue;
-                if (!browser.isIE) {
+                nodeValue = browserUtils.isMozilla || (browserUtils.isIE && browserUtils.version >
+                                                                            11) ? $el[0].childNodes[4].nodeValue : $el[0].childNodes[5].childNodes[0].nodeValue;
+                if (!browserUtils.isIE) {
                     checkSelection($el, $el[0].childNodes[8].childNodes[0], 2, $el[0].childNodes[4], 6);
                     equal(textSelection.hasInverseSelection($el[0]), true, 'selection direction correct');
                 }
@@ -362,7 +364,7 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                if (!browser.isMozilla && !(browser.isIE && browser.version > 11)) {
+                if (!browserUtils.isMozilla && !(browserUtils.isIE && browserUtils.version > 11)) {
                     checkSelection($el, $el[0].childNodes[5].childNodes[0], text.length, $el[0].childNodes[5].childNodes[0], text.length);
                     equal($el[0].childNodes[5].childNodes[0].nodeValue, text + 'P');
                 }
@@ -403,7 +405,7 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                if (browser.isIE && browser.version <= 11) {
+                if (browserUtils.isIE && browserUtils.version <= 11) {
                     checkSelection($el, $el[0].childNodes[4].childNodes[0], text.length, $el[0].childNodes[4].childNodes[0], text.length);
                     equal($el[0].childNodes[4].childNodes[0].nodeValue, text);
                 }
@@ -432,9 +434,9 @@ $(document).ready(function () {
             },
 
             'Check selection': function (callback) {
-                nodeValue = browser.isIE && browser.version <=
-                                            11 ? $el[0].childNodes[8].childNodes[0].nodeValue : $el[0].childNodes[4].nodeValue;
-                if (browser.isMozilla || browser.isIE)
+                nodeValue = browserUtils.isIE && browserUtils.version <=
+                                                 11 ? $el[0].childNodes[8].childNodes[0].nodeValue : $el[0].childNodes[4].nodeValue;
+                if (browserUtils.isMozilla || browserUtils.isIE)
                     checkSelection($el, $el[0].childNodes[4], 6, $el[0].childNodes[8].childNodes[0], 0);
                 else
                     checkSelection($el, $el[0].childNodes[4], 6, $el[0].childNodes[8], 0);
@@ -449,7 +451,7 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                if (browser.isIE && browser.version <= 11) {
+                if (browserUtils.isIE && browserUtils.version <= 11) {
                     checkSelection($el, $el[0].childNodes[5].childNodes[0], text.length, $el[0].childNodes[5].childNodes[0], text.length);
                     equal($el[0].childNodes[5].childNodes[0].nodeValue, text + nodeValue);
                 }
@@ -479,8 +481,8 @@ $(document).ready(function () {
             },
 
             'Check selection': function (callback) {
-                nodeValue = browser.isIE ? $el[0].childNodes[8].childNodes[0].nodeValue : $el[0].childNodes[4].nodeValue;
-                if (browser.isMozilla || browser.isIE)
+                nodeValue = browserUtils.isIE ? $el[0].childNodes[8].childNodes[0].nodeValue : $el[0].childNodes[4].nodeValue;
+                if (browserUtils.isMozilla || browserUtils.isIE)
                     checkSelection($el, $el[0].childNodes[3].childNodes[0], 0, $el[0].childNodes[8].childNodes[0], 0);
                 else
                     checkSelection($el, $el[0].childNodes[3].childNodes[0], 0, $el[0].childNodes[8], 0);
@@ -495,7 +497,7 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                if (browser.isIE && browser.version <= 11) {
+                if (browserUtils.isIE && browserUtils.version <= 11) {
                     checkSelection($el, $el[0].childNodes[4].childNodes[0], text.length, $el[0].childNodes[4].childNodes[0], text.length);
                     equal($el[0].childNodes[4].childNodes[0].nodeValue, text + nodeValue);
                 }
@@ -524,8 +526,9 @@ $(document).ready(function () {
             },
 
             'Check selection': function (callback) {
-                nodeValue = browser.isMozilla || browser.isWebKit || (browser.isIE && browser.version >
-                                                                                      11) ? $el[0].childNodes[4].nodeValue : $el[0].childNodes[3].childNodes[0].nodeValue;
+                nodeValue = browserUtils.isMozilla || browserUtils.isWebKit ||
+                            (browserUtils.isIE && browserUtils.version >
+                                                  11) ? $el[0].childNodes[4].nodeValue : $el[0].childNodes[3].childNodes[0].nodeValue;
                 checkSelection($el, $el[0].childNodes[4], 6, $el[0].childNodes[8].childNodes[0], 3);
                 callback();
             },
@@ -538,11 +541,12 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                if (browser.isIE && !(browser.isIE && browser.version > 11)) {
+                if (browserUtils.isIE && !(browserUtils.isIE && browserUtils.version > 11)) {
                     checkSelection($el, $el[0].childNodes[5].childNodes[0], text.length, $el[0].childNodes[5].childNodes[0], text.length);
                     equal($el[0].childNodes[5].childNodes[0].nodeValue, text);
                 }
-                else if (browser.isMozilla || browser.isWebKit || (browser.isIE && browser.version > 11)) {
+                else if (browserUtils.isMozilla || browserUtils.isWebKit ||
+                         (browserUtils.isIE && browserUtils.version > 11)) {
                     checkSelection($el, $el[0].childNodes[4], 6 + text.length, $el[0].childNodes[4], 6 +
                                                                                                      text.length);
                     equal($el[0].childNodes[4].nodeValue, nodeValue + text);
@@ -586,7 +590,7 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                if (browser.isIE && browser.version <= 11)
+                if (browserUtils.isIE && browserUtils.version <= 11)
                     checkSelection($parent, $parent[0].childNodes[5].childNodes[1], text.length, $parent[0].childNodes[5].childNodes[1], text.length);
                 else
                     checkSelection($parent, $parent[0].childNodes[5].childNodes[0], 1 +
@@ -614,7 +618,7 @@ $(document).ready(function () {
 
             'Check selection': function (callback) {
                 nodeValue = $el[0].childNodes[5].childNodes[4].childNodes[0].nodeValue;
-                if (browser.isMozilla || browser.isIE)
+                if (browserUtils.isMozilla || browserUtils.isIE)
                     checkSelection($el, $el[0].childNodes[5].childNodes[4].childNodes[0], 3, $el[0].childNodes[8].childNodes[0], 2);
                 else
                     checkSelection($el, $el[0].childNodes[5].childNodes[5], 0, $el[0].childNodes[8].childNodes[0], 2);
@@ -629,7 +633,7 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                if (browser.isIE && browser.version <= 11) {
+                if (browserUtils.isIE && browserUtils.version <= 11) {
                     checkSelection($el, $el[0].childNodes[6].childNodes[0], text.length, $el[0].childNodes[6].childNodes[0], text.length);
                     equal($el[0].childNodes[6].childNodes[0].nodeValue, text + 'P');
                 }
@@ -683,10 +687,10 @@ $(document).ready(function () {
 
             'Check typing': function () {
                 //NOTE: we can not guarantee the exact position of selection after removal of content (after press 'delete', 'backspace' or etc.)
-                var curDocument = DOM.findDocument($el[0]),
+                var curDocument = domUtils.findDocument($el[0]),
                     selection   = curDocument.getSelection();
 
-                if (!browser.isIE9 || selection.anchorNode === $el[0].childNodes[1].childNodes[2]) {
+                if (!browserUtils.isIE9 || selection.anchorNode === $el[0].childNodes[1].childNodes[2]) {
                     checkSelection($el, $el[0].childNodes[1].childNodes[2], 11 +
                                                                             text.length, $el[0].childNodes[1].childNodes[2], 11 +
                                                                                                                              text.length);
@@ -816,7 +820,7 @@ $(document).ready(function () {
             },
 
             'Check selection': function (callback) {
-                if (!browser.isIE) {
+                if (!browserUtils.isIE) {
                     checkSelection($el, endNode, endOffset, startNode, startOffset);
                     equal(textSelection.hasInverseSelection($el[0]), true, 'selection direction correct');
                 }
@@ -873,7 +877,7 @@ $(document).ready(function () {
             },
 
             'Check selection': function (callback) {
-                if (!browser.isIE) {
+                if (!browserUtils.isIE) {
                     checkSelection($el, endNode, endOffset, startNode, startOffset);
                     equal(textSelection.hasInverseSelection($el[0]), true, 'selection direction correct');
                 }

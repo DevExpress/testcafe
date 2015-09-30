@@ -1,4 +1,4 @@
-import * as hammerheadAPI from '../../deps/hammerhead';
+import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
 import * as automationUtil from '../util';
@@ -6,8 +6,8 @@ import * as automationSettings from '../settings';
 import movePlaybackAutomation from '../playback/move';
 import async from '../../deps/async';
 
-var browserUtils   = hammerheadAPI.Util.Browser;
-var eventSimulator = hammerheadAPI.EventSandbox.EventSimulator;
+var browserUtils   = hammerhead.utils.browser;
+var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
 var $             = testCafeCore.$;
 var SETTINGS      = testCafeCore.SETTINGS;
@@ -29,7 +29,7 @@ export default function (el, options, actionCallback) {
         caretPos: options.caretPos
     };
 
-    var isSvgElement       = domUtils.isSvgElement(el),
+    var isSVGElement       = domUtils.isSVGElement(el),
         target             = positionUtils.isContainOffset(el, options.offsetX, options.offsetY) ?
                              el : automationUtil.getMouseActionPoint(el, options, false),
 
@@ -56,7 +56,7 @@ export default function (el, options, actionCallback) {
             }
 
             movePlaybackAutomation(target, false, options, function () {
-                if ((isSvgElement && browserUtils.isOpera) || ($(el).is('tref')))
+                if ((isSVGElement && browserUtils.isOpera) || ($(el).is('tref')))
                     topElement = el; //NOTE: document.elementFromPoint can't find this element
                 else {
                     screenPoint = automationUtil.getMouseActionPoint(el, options, true);
@@ -65,9 +65,9 @@ export default function (el, options, actionCallback) {
                     eventOptions = $.extend({
                         clientX: eventPoint.x,
                         clientY: eventPoint.y,
-                        button:  eventUtils.BUTTON.RIGHT,
-                        which:   eventUtils.WHICH_PARAMETER.RIGHT_BUTTON,
-                        buttons: eventUtils.BUTTONS_PARAMETER.RIGHT_BUTTON
+                        button:  eventUtils.BUTTON.right,
+                        which:   eventUtils.WHICH_PARAMETER.rightButton,
+                        buttons: eventUtils.BUTTONS_PARAMETER.rightButton
                     }, options);
 
                     topElement = automationUtil.getElementUnderCursor(screenPoint.x, screenPoint.y, null, target);

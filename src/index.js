@@ -1,4 +1,4 @@
-import { Proxy } from 'hammerhead';
+import { Proxy } from 'testcafe-hammerhead';
 import BrowserConnectionGateway from './browser-connection/gateway';
 import BrowserConnection from './browser-connection';
 import Runner from './runner';

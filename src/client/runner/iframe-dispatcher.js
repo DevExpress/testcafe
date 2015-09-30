@@ -1,4 +1,4 @@
-import * as hammerheadAPI from './deps/hammerhead';
+import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 import testCafeUI from './deps/testcafe-ui';
 
@@ -8,7 +8,7 @@ import * as automationIFrameBehavior from './automation/iframe-behavior';
 import RunnerBase from './runner-base';
 import IFrameRunner from './iframe-runner';
 
-var messageSandbox        = hammerheadAPI.MessageSandbox;
+var messageSandbox        = hammerhead.messageSandbox;
 var $                     = testCafeCore.$;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
 var serviceUtils          = testCafeCore.serviceUtils;
@@ -58,7 +58,7 @@ export var on  = null;
 export var off = null;
 
 export function init (onTestRunInitialized) {
-    testRunner = new IFrameRunner()
+    testRunner = new IFrameRunner();
 
     automation.init();
 
@@ -74,7 +74,7 @@ export function init (onTestRunInitialized) {
         eventEmitter.off.apply(eventEmitter, arguments);
     };
 
-    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, function (e) {
+    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, function (e) {
         var msg = e.message;
         switch (msg.cmd) {
             case CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_RUN_CMD:
@@ -133,7 +133,7 @@ if (window.top !== window.self) {
 
             window.setTimeout(function () {
                 xhrBarrier.waitPageInitialRequests(function () {
-                    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, function (e) {
+                    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, function (e) {
                         var msg = e.message;
 
                         if (msg.cmd === CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_WAITING_STEP_COMPLETION_RESPONSE_CMD) {

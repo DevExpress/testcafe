@@ -1,10 +1,10 @@
-import * as hammerheadAPI from '../deps/hammerhead';
+import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import testCafeUI from '../deps/testcafe-ui';
 import movePlaybackAutomation from './playback/move';
 import * as scrollAutomation from './scroll-behavior';
 
-var messageSandbox = hammerheadAPI.MessageSandbox;
+var messageSandbox = hammerhead.messageSandbox;
 
 var SETTINGS              = testCafeCore.SETTINGS;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
@@ -184,9 +184,9 @@ function findLineAndRectangelIntersection (pointStart, pointEnd, rectangle) {
 }
 
 export function init () {
-    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, onMessage);
+    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
 }
 
 export function destroy () {
-    messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED, onMessage);
+    messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
 }

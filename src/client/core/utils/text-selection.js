@@ -1,4 +1,4 @@
-import * as hammerheadAPI from '../deps/hammerhead';
+import hammerhead from '../deps/hammerhead';
 import $ from '../deps/jquery';
 import * as domUtils from './dom';
 import * as positionUtils from './position';
@@ -6,9 +6,9 @@ import * as styleUtils from './style';
 import * as contentEditable from './content-editable';
 
 
-var browserUtils  = hammerheadAPI.Util.Browser;
-var nativeMethods = hammerheadAPI.NativeMethods;
-var hhSelection     = hammerheadAPI.EventSandbox.Selection;
+var browserUtils     = hammerhead.utils.browser;
+var nativeMethods    = hammerhead.nativeMethods;
+var selectionSandbox = hammerhead.eventSandbox.selection;
 
 
 //NOTE: we can't determine selection direction in ie from dom api. Therefore we should listen selection changes,
@@ -353,7 +353,7 @@ export function getSelectionStart (el) {
     var selection = null;
 
     if (!domUtils.isContentEditableElement(el))
-        return hhSelection.getSelection(el).start;
+        return selectionSandbox.getSelection(el).start;
 
     if (hasElementContainsSelection(el)) {
         selection = getSelectionByElement(el);
@@ -368,7 +368,7 @@ export function getSelectionEnd (el) {
     var selection = null;
 
     if (!domUtils.isContentEditableElement(el))
-        return hhSelection.getSelection(el).end;
+        return selectionSandbox.getSelection(el).end;
 
     if (hasElementContainsSelection(el)) {
         selection = getSelectionByElement(el);
@@ -387,7 +387,7 @@ export function hasInverseSelection (el) {
     if (domUtils.isContentEditableElement(el))
         return hasInverseSelectionContentEditable(el);
 
-    return (hhSelection.getSelection(el).direction || selectionDirection) === BACKWARD_SELECTION_DIRECTION;
+    return (selectionSandbox.getSelection(el).direction || selectionDirection) === BACKWARD_SELECTION_DIRECTION;
 }
 
 export function getSelectionByElement (el) {
@@ -518,7 +518,7 @@ export function select (el, from, to, inverse) {
         inverse = true;
     }
 
-    hhSelection.setSelection(el, start, end, inverse ? BACKWARD_SELECTION_DIRECTION : FORWARD_SELECTION_DIRECTION);
+    selectionSandbox.setSelection(el, start, end, inverse ? BACKWARD_SELECTION_DIRECTION : FORWARD_SELECTION_DIRECTION);
 
     selectionDirection = from === to ?
                          NONE_SELECTION_DIRECTION :
@@ -560,7 +560,7 @@ export function selectByNodesAndOffsets (startNode, startOffset, endNode, endOff
         }
     };
 
-    hhSelection.wrapSetterSelection(parentElement, selectionSetter, needFocus, true);
+    selectionSandbox.wrapSetterSelection(parentElement, selectionSetter, needFocus, true);
 }
 
 export function deleteSelectionContents (el, selectAll) {

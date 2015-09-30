@@ -1,12 +1,12 @@
-var hammerhead     = window.getTestCafeModule('hammerhead');
-var browser        = hammerhead.Util.Browser;
+var hammerhead   = window.getTestCafeModule('hammerhead');
+var browserUtils = hammerhead.utils.browser;
 
-var testCafeCore    = window.getTestCafeModule('testCafeCore');
-var DOM             = testCafeCore.get('./util/dom');
+var testCafeCore = window.getTestCafeModule('testCafeCore');
+var domUtils     = testCafeCore.get('./utils/dom');
 
-var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
-var automation                 = testCafeRunner.get('./automation/automation');
-var keyPressSimulator          = testCafeRunner.get('./automation/playback/key-press-simulator');
+var testCafeRunner    = window.getTestCafeModule('testCafeRunner');
+var automation        = testCafeRunner.get('./automation/automation');
+var keyPressSimulator = testCafeRunner.get('./automation/playback/key-press-simulator');
 
 
 automation.init();
@@ -88,13 +88,13 @@ $(document).ready(function () {
     var createExpectedLog = function () {
         $expectedFocusedElements.push($divWithTabIndex);
         $expectedFocusedElements.push($link);
-        if (!browser.isIE)
+        if (!browserUtils.isIE)
             $expectedFocusedElements.push($optionOneWithTabIdex);
 
         $expectedFocusedElements.push($divContentEditableWithTabIndex);
         $expectedFocusedElements.push($buttonInContentEditable);
 
-        if (!browser.isIE)
+        if (!browserUtils.isIE)
             $expectedFocusedElements.push($optionTwoWithTabIdex);
 
         $expectedFocusedElements.push($radioInput2);
@@ -109,7 +109,7 @@ $(document).ready(function () {
         $expectedFocusedElements.push($selectMultiple);
         $expectedFocusedElements.push($radioInput1);
 
-        if (browser.isOpera || browser.isMozilla) {
+        if (browserUtils.isOpera || browserUtils.isMozilla) {
             $expectedFocusedElements.push($radioInput3);
             $expectedFocusedElements.push($radioInput4);
         }
@@ -118,7 +118,7 @@ $(document).ready(function () {
     };
 
     var logElement = function () {
-        var element = DOM.getActiveElement();
+        var element = domUtils.getActiveElement();
         if ($(element).hasClass(TEST_ELEMENT_CLASS))
             focusedElements.push(element);
     };

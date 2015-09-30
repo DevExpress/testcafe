@@ -3,7 +3,7 @@ var COMMAND      = testCafeCore.COMMAND;
 var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var SETTINGS     = testCafeCore.get('./settings').get();
 var transport    = testCafeCore.get('./transport');
-var event        = testCafeCore.get('./util/event');
+var event        = testCafeCore.get('./utils/event');
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var StepIterator   = testCafeRunner.get('./step-iterator');

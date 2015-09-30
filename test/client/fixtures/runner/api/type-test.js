@@ -1,5 +1,5 @@
-var hammerhead = window.getTestCafeModule('hammerhead');
-var browser    = hammerhead.Util.Browser;
+var hammerhead   = window.getTestCafeModule('hammerhead');
+var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
@@ -368,7 +368,7 @@ $(document).ready(function () {
             },
             function () {
                 equal(inputEventCount, 3);
-                equal($input.val(), browser.isIE ? '12' : '123');
+                equal($input.val(), browserUtils.isIE ? '12' : '123');
             },
             5000
         );
@@ -389,7 +389,7 @@ $(document).ready(function () {
             },
             function () {
                 equal(inputEventCount, 3);
-                equal($input.val(), browser.isIE ? '12' : '123');
+                equal($input.val(), browserUtils.isIE ? '12' : '123');
             },
             5000
         );
@@ -439,7 +439,7 @@ $(document).ready(function () {
     asyncTest('T239547: TD15.1 - Playback problems on https://jsfiddle.net/', function () {
         var $input   = $('<input type="text" />').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             charCode = 45,
-            keyCode  = browser.isMozilla ? 173 : 189;
+            keyCode  = browserUtils.isMozilla ? 173 : 189;
 
         runAsyncTest(
             function () {

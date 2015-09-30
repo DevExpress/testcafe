@@ -1,9 +1,9 @@
-import * as hammerheadAPI from '../../deps/hammerhead';
+import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import async from '../../deps/async';
 
-var browserUtils   = hammerheadAPI.Util.Browser;
-var messageSandbox = hammerheadAPI.MessageSandbox;
+var browserUtils   = hammerhead.utils.browser;
+var messageSandbox = hammerhead.messageSandbox;
 
 var $                     = testCafeCore.$;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
@@ -201,14 +201,14 @@ export default function (to, actionOptions, currentDocument, actionCallback) {
     function considerWindowTopScroll (msg, callback) {
         windowTopResponse = function (e) {
             if (e.message.cmd === CROSS_DOMAIN_MESSAGES.SCROLL_TOP_WINDOW_RESPONSE_CMD) {
-                messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED, windowTopResponse);
+                messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
                 windowTopResponse = null;
 
                 callback();
             }
         };
 
-        messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, windowTopResponse);
+        messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
 
         messageSandbox.sendServiceMsg(msg, window.top);
     }
@@ -339,7 +339,7 @@ export default function (to, actionOptions, currentDocument, actionCallback) {
                 else {
                     windowTopResponse = function (e) {
                         if (e.message.cmd === CROSS_DOMAIN_MESSAGES.GET_IFRAME_POSITION_DATA_RESPONSE_CMD) {
-                            messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED, windowTopResponse);
+                            messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
                             windowTopResponse = null;
 
                             var documentScroll = styleUtils.getElementScroll(document),
@@ -356,7 +356,7 @@ export default function (to, actionOptions, currentDocument, actionCallback) {
                         }
                     };
 
-                    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, windowTopResponse);
+                    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
 
                     messageSandbox.sendServiceMsg({ cmd: CROSS_DOMAIN_MESSAGES.GET_IFRAME_POSITION_DATA_REQUEST_CMD }, window.top);
                 }

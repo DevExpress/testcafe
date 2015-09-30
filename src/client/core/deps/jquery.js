@@ -3321,7 +3321,7 @@ var exportedJQuery = null;
 
                         // Prevent re-triggering of the same event, since we already bubbled it above
                         jQuery.event.triggered = type;
-                        if (!(window.Hammerhead && window.Hammerhead.Util.DOM.isDocumentInstance(elem)) ||
+                        if (!(window.Hammerhead && window.Hammerhead.utils.dom.isDocument(elem)) ||
                             type !== 'ready')
                             elem[type]();
                         jQuery.event.triggered = undefined;
