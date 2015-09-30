@@ -1,9 +1,9 @@
-import * as hammerheadAPI from '../deps/hammerhead';
+import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import testCafeUI from '../deps/testcafe-ui';
 
-var browserUtils = hammerheadAPI.Util.Browser;
-var focusBlur    = hammerheadAPI.EventSandbox.FocusBlur;
+var browserUtils     = hammerhead.utils.browser;
+var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
 var $               = testCafeCore.$;
 var contentEditable = testCafeCore.contentEditable;
@@ -86,7 +86,7 @@ export function focusAndSetSelection (element, options, needFocus, callback) {
             callback();
     }
     else
-        focusBlur.focus(focusableElement, function () {
+        focusBlurSandbox.focus(focusableElement, function () {
             //NOTE: if some other element was focused in the focus event handler we should not set selection
             if (!isContentEditable && needFocus && element !== domUtils.getActiveElement()) {
                 callback();
@@ -112,7 +112,7 @@ export function focusAndSetSelection (element, options, needFocus, callback) {
             //we can't avoid element focusing because set selection methods lead to focusing.
             // So we just focus previous active element without handlers if we don't need focus here
             if (!needFocus && activeElement !== domUtils.getActiveElement()) {
-                focusBlur.focus(activeElement, callback, true, true);
+                focusBlurSandbox.focus(activeElement, callback, true, true);
             }
             else
                 callback();
@@ -131,7 +131,7 @@ export function focusLabelChildElement (element, callback) {
             var focusableElement = $focusableElements[0];
 
             if (domUtils.getActiveElement() !== focusableElement) {
-                focusBlur.focus(focusableElement, callback, false, true);
+                focusBlurSandbox.focus(focusableElement, callback, false, true);
 
                 return;
             }
@@ -148,7 +148,7 @@ export function focusElementByLabel ($label, callback) {
         var focusableElement = $focusableElements[0];
 
         if (domUtils.getActiveElement() !== focusableElement) {
-            focusBlur.focus(focusableElement, callback, false, true);
+            focusBlurSandbox.focus(focusableElement, callback, false, true);
             return;
         }
     }

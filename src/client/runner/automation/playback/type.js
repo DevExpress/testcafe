@@ -1,13 +1,13 @@
-import * as hammerheadAPI from '../../deps/hammerhead';
+import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import * as automationSettings from '../settings';
 import typeCharPlaybackAutomation from '../playback/type-char';
 import clickPlaybackAutomation from '../playback/click';
 import async from '../../deps/async';
 
-var browserUtils          = hammerheadAPI.Util.Browser;
-var eventSimulator        = hammerheadAPI.EventSandbox.EventSimulator;
-var elementEditingWatcher = hammerheadAPI.EventSandbox.ElementEditingWatcher;
+var browserUtils          = hammerhead.utils.browser;
+var eventSimulator        = hammerhead.eventSandbox.eventSimulator;
+var elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
 
 var $               = testCafeCore.$;
 var SETTINGS        = testCafeCore.SETTINGS;

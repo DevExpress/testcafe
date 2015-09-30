@@ -1,6 +1,6 @@
 var hammerhead    = window.getTestCafeModule('hammerhead');
 var HH_SETTINGS   = hammerhead.get('./settings').get();
-var iframeSandbox = hammerhead.get('./sandboxes/iframe');
+var iframeSandbox = hammerhead.sandbox.iframe;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
@@ -13,16 +13,16 @@ var actionBarrier  = testCafeRunner.get('./action-barrier/action-barrier');
 
 
 QUnit.begin(function () {
-    HH_SETTINGS.SERVICE_MSG_URL = '/ping/10';
+    HH_SETTINGS.serviceMsgUrl = '/ping/10';
 
-    hammerhead.on(hammerhead.IFRAME_READY_TO_INIT, window.initIFrameTestHandler);
-    hammerhead.off(hammerhead.IFRAME_READY_TO_INIT, iframeSandbox.iframeReadyToInitHandler);
+    hammerhead.on(hammerhead.EVENTS.iframeReadyToInit, window.initIFrameTestHandler);
+    hammerhead.off(hammerhead.EVENTS.iframeReadyToInit, iframeSandbox.iframeReadyToInitHandler);
 
     $('<iframe id="test-iframe"></iframe>').appendTo('body');
 });
 
 QUnit.done(function () {
-    hammerhead.off(hammerhead.IFRAME_READY_TO_INIT, window.initIFrameTestHandler);
+    hammerhead.off(hammerhead.EVENTS.iframeReadyToInit, window.initIFrameTestHandler);
 });
 
 transport.batchUpdate                = function (callback) {
@@ -43,6 +43,9 @@ RunnerBase.prototype._onError = function (err) {
 
 Runner.prototype._onError = function (err) {
     lastError = err;
+};
+
+Runner.checkStatus = function () {
 };
 
 

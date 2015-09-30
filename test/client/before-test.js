@@ -2,8 +2,8 @@
     //NOTE: Prohibit Hammerhead from processing testing environment resources.
     // There are only testing environment resources on the page when this script is being executed. So, we can add
     // the hammerhead class to all script and link elements on the page.
-    $('script').addClass('script-TC2b9a6d');
-    $('link').addClass('ui-stylesheet-TC2b9a6d');
+    $('script').addClass('script-hammerhead-shadow-ui');
+    $('link').addClass('ui-stylesheet-hammerhead-shadow-ui');
 
 
     function getTestCafeModule (module) {
@@ -15,37 +15,33 @@
 
 
     //Hammerhead setup
-    var hammerhead  = getTestCafeModule('hammerhead');
-    var hhSettings  = hammerhead.get('./settings');
-    var hhUrlUtil   = hammerhead.get('./utils/url');
-    var HH_CONST    = hammerhead.get('../const');
-    var jsProcessor = hammerhead.get('../processing/js/index');
+    var hammerhead         = getTestCafeModule('hammerhead');
+    var hammerheadSettings = hammerhead.get('./settings');
+    var urlUtils           = hammerhead.get('./utils/url');
+    var HH_CONST           = hammerhead.get('../const');
+    var jsProcessor        = hammerhead.get('../processing/js/index');
 
-    hhSettings.set({
-        JOB_OWNER_TOKEN: 'ownerToken',
-        JOB_UID:         'jobUid'
+    hammerheadSettings.set({
+        sessionId: 'sessionId'
     });
 
-    hhUrlUtil.OriginLocation.get = function () {
+    urlUtils.OriginLocation.get = function () {
         return 'https://example.com';
     };
 
     window.initIFrameTestHandler = function (e) {
         if (e.iframe.id.indexOf('test') !== -1) {
             e.iframe.contentWindow.eval.call(e.iframe.contentWindow, [
-                'var Settings = Hammerhead.get(\'./settings\');',
-                'Settings.set({',
-                '    REFERER : "http://localhost/ownerToken!jobUid/https://example.com",',
-                '    JOB_OWNER_TOKEN : "ownerToken",',
-                '    SERVICE_MSG_URL : "/service-msg/100",',
-                '    JOB_UID : "jobUid"',
-                '});',
-                'Hammerhead.init();'
+                'Hammerhead.start({',
+                '    referer : "http://localhost/sessionId/https://example.com",',
+                '    serviceMsgUrl : "/service-msg/100",',
+                '    sessionId : "sessionId"',
+                '});'
             ].join(''));
         }
     };
 
-    hammerhead.init();
+    hammerhead.start();
 
 
     //TestCafe setup

@@ -1,10 +1,8 @@
-import * as hammerheadAPI from '../deps/hammerhead';
+import hammerhead from '../deps/hammerhead';
 import $ from '../deps/jquery';
 
 
-var browserUtils = hammerheadAPI.Util.Browser;
-var hhDomUtils   = hammerheadAPI.Util.DOM;
-
+var browserUtils = hammerhead.utils.browser;
 
 export function getTextareaIndentInLine (textarea, position) {
     if (!textarea.value)
@@ -45,9 +43,9 @@ export function getTextareaPositionByLineAndOffset (textarea, line, offset) {
 }
 
 export function isEditableElement (el, checkEditingAllowed) {
-    return checkEditingAllowed ? hhDomUtils.isTextEditableElementAndEditingAllowed(el) ||
-                                 hhDomUtils.isContentEditableElement(el)
-        : hhDomUtils.isTextEditableElement(el) || hhDomUtils.isContentEditableElement(el);
+    return checkEditingAllowed ?
+           isTextEditableElementAndEditingAllowed(el) || isContentEditableElement(el) :
+           isTextEditableElement(el) || isContentEditableElement(el);
 }
 
 export function isElementContainsNode (el, node) {
@@ -325,28 +323,28 @@ export function isElementFocusable ($element) {
             $element.css('visibility') !== 'hidden');
 }
 
-// Imported form the hammerhead
-export var findDocument                               = hhDomUtils.findDocument;
-export var getActiveElement                           = hhDomUtils.getActiveElement;
-export var getChildVisibleIndex                       = hhDomUtils.getChildVisibleIndex;
-export var getIFrameByElement                         = hhDomUtils.getIFrameByElement;
-export var getIFrameByWindow                          = hhDomUtils.getIFrameByWindow;
-export var getScrollbarSize                           = hhDomUtils.getScrollbarSize;
-export var getSelectParent                            = hhDomUtils.getSelectParent;
-export var getSelectVisibleChildren                   = hhDomUtils.getSelectVisibleChildren;
-export var isContentEditableElement                   = hhDomUtils.isContentEditableElement;
-export var isCrossDomainWindows                       = hhDomUtils.isCrossDomainWindows;
-export var isDocumentInstance                         = hhDomUtils.isDocumentInstance;
-export var isDomElement                               = hhDomUtils.isDomElement;
-export var isElementInIframe                          = hhDomUtils.isElementInIframe;
-export var isFileInput                                = hhDomUtils.isFileInput;
-export var isHammerheadAttr                           = hhDomUtils.isHammerheadAttr;
-export var isInputWithoutSelectionPropertiesInMozilla = hhDomUtils.isInputWithoutSelectionPropertiesInMozilla;
-export var isRenderedNode                             = hhDomUtils.isRenderedNode;
-export var isShadowUIElement                          = hhDomUtils.isShadowUIElement;
-export var isSvgElement                               = hhDomUtils.isSvgElement;
-export var isTextEditableElement                      = hhDomUtils.isTextEditableElement;
-export var isTextEditableElementAndEditingAllowed     = hhDomUtils.isTextEditableElementAndEditingAllowed;
-export var isTextEditableInput                        = hhDomUtils.isTextEditableInput;
-export var isTextNode                                 = hhDomUtils.isTextNode;
-export var isWindowInstance                           = hhDomUtils.isWindowInstance;
+
+export var findDocument                               = hammerhead.utils.dom.findDocument;
+export var getActiveElement                           = hammerhead.utils.dom.getActiveElement;
+export var getChildVisibleIndex                       = hammerhead.utils.dom.getChildVisibleIndex;
+export var getIFrameByElement                         = hammerhead.utils.dom.getIFrameByElement;
+export var getIFrameByWindow                          = hammerhead.utils.dom.getIFrameByWindow;
+export var getScrollbarSize                           = hammerhead.utils.dom.getScrollbarSize;
+export var getSelectParent                            = hammerhead.utils.dom.getSelectParent;
+export var getSelectVisibleChildren                   = hammerhead.utils.dom.getSelectVisibleChildren;
+export var isContentEditableElement                   = hammerhead.utils.dom.isContentEditableElement;
+export var isCrossDomainWindows                       = hammerhead.utils.dom.isCrossDomainWindows;
+export var isDomElement                               = hammerhead.utils.dom.isDomElement;
+export var isElementInIframe                          = hammerhead.utils.dom.isElementInIframe;
+export var isFileInput                                = hammerhead.utils.dom.isFileInput;
+export var isHammerheadAttr                           = hammerhead.utils.dom.isHammerheadAttr;
+export var isInputWithoutSelectionPropertiesInMozilla = hammerhead.utils.dom.isInputWithoutSelectionPropertiesInMozilla;
+export var isRenderedNode                             = hammerhead.utils.dom.isRenderedNode;
+export var isShadowUIElement                          = hammerhead.utils.dom.isShadowUIElement;
+export var isSVGElement                               = hammerhead.utils.dom.isSVGElement;
+export var isTextEditableElement                      = hammerhead.utils.dom.isTextEditableElement;
+export var isTextEditableElementAndEditingAllowed     = hammerhead.utils.dom.isTextEditableElementAndEditingAllowed;
+export var isTextEditableInput                        = hammerhead.utils.dom.isTextEditableInput;
+export var isTextNode                                 = hammerhead.utils.dom.isTextNode;
+export var isWindowInstance                           = hammerhead.utils.dom.isWindow;
+export var isDocumentInstance                         = hammerhead.utils.dom.isDocument;

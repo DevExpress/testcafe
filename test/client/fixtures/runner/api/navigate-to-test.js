@@ -1,5 +1,5 @@
 var hammerhead     = window.getTestCafeModule('hammerhead');
-var jsProcessor    = hammerhead.JSProcessor;
+var jsProcessor    = hammerhead.jsProcessor;
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var actionsAPI     = testCafeRunner.get('./api/actions');

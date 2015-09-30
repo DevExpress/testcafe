@@ -1,4 +1,4 @@
-import * as hammerheadAPI from '../../deps/hammerhead';
+import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
 
@@ -7,10 +7,10 @@ import * as automationSettings from '../settings';
 import scrollPlaybackAutomation from '../playback/scroll';
 import async from '../../deps/async';
 
-var browserUtils   = hammerheadAPI.Util.Browser;
-var eventSimulator = hammerheadAPI.EventSandbox.EventSimulator;
-var messageSandbox = hammerheadAPI.MessageSandbox;
-var nativeMethods  = hammerheadAPI.NativeMethods;
+var browserUtils   = hammerhead.utils.browser;
+var eventSimulator = hammerhead.eventSandbox.eventSimulator;
+var messageSandbox = hammerhead.messageSandbox;
+var nativeMethods  = hammerhead.nativeMethods;
 
 var $                     = testCafeCore.$;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
@@ -108,8 +108,8 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
                         clientX: eventPoint.x,
                         clientY: eventPoint.y,
                         button:  0,
-                        which:   browserUtils.isWebKit ? (inDragging ? eventUtils.WHICH_PARAMETER.LEFT_BUTTON : eventUtils.WHICH_PARAMETER.NO_BUTTON) : 1,
-                        buttons: inDragging ? eventUtils.BUTTONS_PARAMETER.LEFT : eventUtils.BUTTONS_PARAMETER.NO_BUTTON
+                        which:   browserUtils.isWebKit ? (inDragging ? eventUtils.WHICH_PARAMETER.leftButton : eventUtils.WHICH_PARAMETER.noButton) : 1,
+                        buttons: inDragging ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton
                     }, options);
 
                     var currentElementChanged = true;
@@ -208,7 +208,7 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
                         //NOTE: move over iframe then move above top document
                         windowTopResponse = function (e) {
                             if (e.message.cmd === CROSS_DOMAIN_MESSAGES.MOVE_FROM_IFRAME_RESPONSE_CMD) {
-                                messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED, windowTopResponse);
+                                messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
 
                                 if (!e.message.point)
                                     cursor.ensureCursorPosition(targetScreenPoint, false, callback);
@@ -221,7 +221,7 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
                             }
                         };
 
-                        messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, windowTopResponse);
+                        messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
 
 
                         messageSandbox.sendServiceMsg({
@@ -243,7 +243,7 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
                 //NOTE: move over top document than move above iframe
                 windowTopResponse = function (e) {
                     if (e.message.cmd === CROSS_DOMAIN_MESSAGES.MOVE_TO_IFRAME_RESPONSE_CMD) {
-                        messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED, windowTopResponse);
+                        messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
 
                         if (!e.message.point ||
                             (e.message.point.x === targetScreenPoint.x && e.message.point.y === targetScreenPoint.y))
@@ -257,7 +257,7 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
                     }
                 };
 
-                messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, windowTopResponse);
+                messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
 
                 messageSandbox.sendServiceMsg({
                     cmd:   CROSS_DOMAIN_MESSAGES.MOVE_TO_IFRAME_REQUEST_CMD,

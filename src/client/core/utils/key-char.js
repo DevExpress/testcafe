@@ -1,9 +1,9 @@
-import * as hammerheadAPI from '../deps/hammerhead';
+import hammerhead from '../deps/hammerhead';
 import $ from '../deps/jquery';
 import * as domUtils from './dom';
 
 
-var browserUtils = hammerheadAPI.Util.Browser;
+var browserUtils = hammerhead.utils.browser;
 
 
 export const KEYS_MAPS = {

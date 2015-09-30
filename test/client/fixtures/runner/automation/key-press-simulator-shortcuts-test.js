@@ -1,10 +1,10 @@
-var hammerhead = window.getTestCafeModule('hammerhead');
-var browser    = hammerhead.Util.Browser;
+var hammerhead   = window.getTestCafeModule('hammerhead');
+var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
-var textSelection = testCafeCore.get('./util/text-selection');
-var DOM           = testCafeCore.get('./util/dom');
-var keyChar       = testCafeCore.get('./util/key-char');
+var textSelection = testCafeCore.get('./utils/text-selection');
+var domUtils      = testCafeCore.get('./utils/dom');
+var keyChar       = testCafeCore.get('./utils/key-char');
 
 var testCafeRunner    = window.getTestCafeModule('testCafeRunner');
 var automation        = testCafeRunner.get('./automation/automation');
@@ -66,7 +66,7 @@ $(document).ready(function () {
 
     var checkShortcut = function (element, value, selectionStart, selectionEnd, inverse) {
         var selectionEnd     = selectionEnd || selectionStart,
-            activeElement    = DOM.findDocument(element).activeElement,
+            activeElement    = domUtils.findDocument(element).activeElement,
             inverseSelection = textSelection.hasInverseSelection(activeElement);
 
         equal(activeElement, element, 'active element are correct');
@@ -213,7 +213,7 @@ $(document).ready(function () {
             input          = createTextInput(text, cursorPosition);
 
         var callback = function () {
-            if (!browser.isWebKit)
+            if (!browserUtils.isWebKit)
                 checkShortcut(input, text, cursorPosition);
             else
                 checkShortcut(input, text, 0);
@@ -242,7 +242,7 @@ $(document).ready(function () {
             input          = createTextInput(text, cursorPosition);
 
         var callback = function () {
-            if (!browser.isWebKit)
+            if (!browserUtils.isWebKit)
                 checkShortcut(input, text, cursorPosition);
             else
                 checkShortcut(input, text, text.length);
@@ -614,7 +614,7 @@ $(document).ready(function () {
             input          = createTextInput(text, cursorPosition);
 
         var callback = function () {
-            if (!browser.isWebKit)
+            if (!browserUtils.isWebKit)
                 checkShortcut(input, text, cursorPosition);
             else
                 checkShortcut(input, text, 0, cursorPosition, true);
@@ -676,7 +676,7 @@ $(document).ready(function () {
             input          = createTextInput(text, cursorPosition);
 
         var callback = function () {
-            if (!browser.isWebKit)
+            if (!browserUtils.isWebKit)
                 checkShortcut(input, text, cursorPosition);
             else
                 checkShortcut(input, text, cursorPosition, text.length);

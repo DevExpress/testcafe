@@ -1,4 +1,4 @@
-import * as hammerheadAPI from './deps/hammerhead';
+import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 import testCafeUI from './deps/testcafe-ui';
 import StepIterator from './step-iterator.js';
@@ -10,9 +10,7 @@ import * as automationIFrameBehavior from './automation/iframe-behavior';
 import * as actionBarrier from './action-barrier/action-barrier';
 
 
-var messageSandbox    = hammerheadAPI.MessageSandbox;
-var hhBind            = hammerheadAPI.on;
-var UNCAUGHT_JS_ERROR = hammerheadAPI.UNCAUGHT_JS_ERROR;
+var messageSandbox = hammerhead.messageSandbox;
 
 var SETTINGS                 = testCafeCore.SETTINGS;
 var $                        = testCafeCore.$;
@@ -78,7 +76,7 @@ var RunnerBase = function () {
     this._initApi();
     this._initIFrameBehavior();
 
-    hhBind(UNCAUGHT_JS_ERROR, function (err) {
+    hammerhead.on(hammerhead.EVENTS.uncaughtJsError, function (err) {
         //NOTE: in this case we should to stop test iterator in iFrame
         if (err.inIFrame && !SETTINGS.get().PLAYBACK)
             runner.stepIterator.stop();
@@ -283,12 +281,12 @@ RunnerBase.prototype._initIFrameBehavior = function () {
         }
     }
 
-    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, onMessage);
+    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
 
     //NOTE: for test purposes
     runner._destroyIFrameBehavior = function () {
         automationIFrameBehavior.destroy();
-        messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED, onMessage);
+        messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
     };
 };
 

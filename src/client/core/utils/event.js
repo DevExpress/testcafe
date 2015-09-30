@@ -1,10 +1,8 @@
-import * as hammerheadAPI from '../deps/hammerhead';
+import hammerhead from '../deps/hammerhead';
 import * as domUtils from './dom';
 
 
-var hhEventUtils  = hammerheadAPI.Util.Event;
-var nativeMethods = hammerheadAPI.NativeMethods;
-
+var nativeMethods = hammerhead.nativeMethods;
 
 export const RECORDING_LISTENED_EVENTS = [
     'click', 'mousedown', 'mouseup', 'dblclick', 'contextmenu', 'mousemove', 'mouseover', 'mouseout',
@@ -13,13 +11,13 @@ export const RECORDING_LISTENED_EVENTS = [
     'pointermove', 'pointerover', 'pointerout', 'pointerup'];
 
 // Imported form the hammerhead
-export const BUTTON            = hhEventUtils.BUTTON;
-export const BUTTONS_PARAMETER = hhEventUtils.BUTTONS_PARAMETER;
-export const DOM_EVENTS        = hhEventUtils.DOM_EVENTS;
-export const WHICH_PARAMETER   = hhEventUtils.WHICH_PARAMETER;
+export const BUTTON            = hammerhead.utils.event.BUTTON;
+export const BUTTONS_PARAMETER = hammerhead.utils.event.BUTTONS_PARAMETER;
+export const DOM_EVENTS        = hammerhead.utils.event.DOM_EVENTS;
+export const WHICH_PARAMETER   = hammerhead.utils.event.WHICH_PARAMETER;
 
-export var preventDefault  = hhEventUtils.preventDefault;
-export var stopPropagation = hhEventUtils.stopPropagation;
+export var preventDefault  = hammerhead.utils.event.preventDefault;
+export var stopPropagation = hammerhead.utils.event.stopPropagation;
 
 export function bind ($elem, event, handler) {
     $elem.each(function () {

@@ -1,7 +1,7 @@
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
 var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
-var DOM          = testCafeCore.get('./util/dom');
+var domUtils     = testCafeCore.get('./utils/dom');
 
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
@@ -212,8 +212,8 @@ test('dom elements', function () {
 
     assertionsAPI.eq(div1, div2);
     equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
-    equal(currentError.actual, DOM.getElementDescription(div1));
-    equal(currentError.expected, DOM.getElementDescription(div2));
+    equal(currentError.actual, domUtils.getElementDescription(div1));
+    equal(currentError.expected, domUtils.getElementDescription(div2));
 
     $(div1).remove();
     $(div2).remove();
@@ -230,18 +230,18 @@ test('jQuery objects', function () {
         $div3                            = $(divString).addClass(commonClass).appendTo($body),
 
         commonClassElementsDescription   = ['[',
-            DOM.getElementDescription($div1[0]),
+            domUtils.getElementDescription($div1[0]),
             ', ',
-            DOM.getElementDescription($div2[0]),
+            domUtils.getElementDescription($div2[0]),
             ', ',
-            DOM.getElementDescription($div3[0]),
+            domUtils.getElementDescription($div3[0]),
             ']'
         ].join(''),
 
         specificClassElementsDescription = ['[',
-            DOM.getElementDescription($div1[0]),
+            domUtils.getElementDescription($div1[0]),
             ', ',
-            DOM.getElementDescription($div2[0]),
+            domUtils.getElementDescription($div2[0]),
             ']'
         ].join('');
 
@@ -267,18 +267,18 @@ test('NodeLists', function () {
         $div3                            = $(divString).addClass(commonClass).appendTo($body),
 
         commonClassElementsDescription   = ['[',
-            DOM.getElementDescription($div1[0]),
+            domUtils.getElementDescription($div1[0]),
             ', ',
-            DOM.getElementDescription($div2[0]),
+            domUtils.getElementDescription($div2[0]),
             ', ',
-            DOM.getElementDescription($div3[0]),
+            domUtils.getElementDescription($div3[0]),
             ']'
         ].join(''),
 
         specificClassElementsDescription = ['[',
-            DOM.getElementDescription($div1[0]),
+            domUtils.getElementDescription($div1[0]),
             ', ',
-            DOM.getElementDescription($div2[0]),
+            domUtils.getElementDescription($div2[0]),
             ']'
         ].join('');
 

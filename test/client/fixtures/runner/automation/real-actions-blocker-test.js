@@ -1,5 +1,5 @@
 var hammerhead    = window.getTestCafeModule('hammerhead');
-var nativeMethods = Hammerhead.NativeMethods;
+var nativeMethods = hammerhead.nativeMethods;
 
 var testCafeRunner          = window.getTestCafeModule('testCafeRunner');
 var automation              = testCafeRunner.get('./automation/automation');

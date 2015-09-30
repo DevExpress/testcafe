@@ -1,9 +1,5 @@
-import * as hammerheadAPI from '../deps/hammerhead';
+import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
-
-var hhBind              = hammerheadAPI.on;
-var hhUnbind            = hammerheadAPI.off;
-var BEFORE_UNLOAD_EVENT = hammerheadAPI.BEFORE_UNLOAD_EVENT;
 
 var EventEmitter = testCafeCore.serviceUtils.EventEmitter;
 
@@ -114,14 +110,14 @@ function sendWasNotExpectedDialog (dialog) {
 }
 
 export function init (info) {
-    hhBind(BEFORE_UNLOAD_EVENT, beforeUnloadHandler);
+    hammerhead.on(hammerhead.EVENTS.beforeUnload, beforeUnloadHandler);
 
     beforeUnloadEventWasRaised = false;
     initDialogs(info);
 }
 
 export function destroy () {
-    hhUnbind(BEFORE_UNLOAD_EVENT, beforeUnloadHandler);
+    hammerhead.off(hammerhead.EVENTS.beforeUnload, beforeUnloadHandler);
 }
 
 export function handleAlert () {

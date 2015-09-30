@@ -14,6 +14,7 @@
     "mustache": "^2.1.2",
     "parse5": "^1.5.0",
     "testcafe-browser-natives": "^0.9.1",
+    "testcafe-hammerhead": "^0.2.1",
     "uglify-js": "1.2.6",
     "useragent": "^2.1.7"
   },

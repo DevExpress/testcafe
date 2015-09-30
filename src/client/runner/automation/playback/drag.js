@@ -1,4 +1,4 @@
-import * as hammerheadAPI from '../../deps/hammerhead';
+import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
 import * as automationUtil from '../util';
@@ -6,9 +6,9 @@ import * as automationSettings from '../settings';
 import movePlaybackAutomation from '../playback/move';
 import async from '../../deps/async';
 
-var browserUtils   = hammerheadAPI.Util.Browser;
-var eventSimulator = hammerheadAPI.EventSandbox.EventSimulator;
-var focusBlur      = hammerheadAPI.EventSandbox.FocusBlur;
+var browserUtils     = hammerhead.utils.browser;
+var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
+var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
 var $               = testCafeCore.$;
 var SETTINGS        = testCafeCore.SETTINGS;
@@ -85,7 +85,7 @@ export default function (el, to, options, runCallback) {
                 eventSimulator.mousedown(topElement, eventOptionsStart);
 
             //NOTE: For contentEditable elements we should call focus directly for action's element
-            focusBlur.focus(domUtils.isContentEditableElement(el) ? contentEditable.findContentEditableParent(el) : topElement, function () {
+            focusBlurSandbox.focus(domUtils.isContentEditableElement(el) ? contentEditable.findContentEditableParent(el) : topElement, function () {
                 window.setTimeout(callback, automationSettings.DRAG_ACTION_STEP_DELAY);
             }, false, true);
         },

@@ -47,7 +47,7 @@
             NATIVE_DIALOGS_INFO:      {{{nativeDialogsInfo}}}
         });
 
-        hammerhead.on(hammerhead.IFRAME_READY_TO_INIT, function (e) {
+        hammerhead.on(hammerhead.EVENTS.iframeReadyToInit, function (e) {
             var iframeWindow = e.iframe.contentWindow;
 
             iframeWindow.eval.apply(iframeWindow, ['var isIFrameWithoutSrc = true;' + {{{iFrameTestRunScript}}}]);
@@ -62,7 +62,7 @@
         var RunnerBase = testCafeRunner.RunnerBase;
 
         var modalBackground = testCafeUI.modalBackground;
-        var shadowUI        = hammerhead.ShadowUI;
+        var shadowUI        = hammerhead.shadowUI;
 
         Runner.startHeartbeat('{{{browserHeartbeatUrl}}}');
 

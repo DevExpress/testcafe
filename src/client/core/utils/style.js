@@ -1,9 +1,7 @@
-import * as hammerheadAPI from '../deps/hammerhead';
+import hammerhead from '../deps/hammerhead';
 import $ from '../deps/jquery';
 import * as domUtils from './dom';
 
-
-var hhStyleUtils = hammerheadAPI.Util.Style;
 
 export function getCssStyleValue (el, property, doc) {
     doc = doc || domUtils.findDocument(el);
@@ -75,7 +73,7 @@ export function getScrollableParents (el, doc) {
 
 export function hasScroll (el, doc) {
     var currentDocument = doc || document;
-    var styles          = hhStyleUtils.getComputedStyle(el, currentDocument);
+    var styles          = getComputedStyle(el, currentDocument);
     var scrollRegEx     = /auto|scroll/i;
     var overflowX       = scrollRegEx.test(styles.overflowX);
     var overflowY       = scrollRegEx.test(styles.overflowY);
@@ -108,12 +106,12 @@ export function getDocumentElementWidth () {
     return Math.round(Math.max($(document).width(), $window.width() + $window.scrollLeft()));
 }
 
-// Imported form the hammerhead
-export var getBordersWidth      = hhStyleUtils.getBordersWidth;
-export var getComputedStyle     = hhStyleUtils.getComputedStyle;
-export var getElementMargin     = hhStyleUtils.getElementMargin;
-export var getElementPadding    = hhStyleUtils.getElementPadding;
-export var getElementScroll     = hhStyleUtils.getElementScroll;
-export var getOptionHeight      = hhStyleUtils.getOptionHeight;
-export var getSelectElementSize = hhStyleUtils.getSelectElementSize;
-export var isVisibleChild       = hhStyleUtils.isVisibleChild;
+
+export var getBordersWidth      = hammerhead.utils.style.getBordersWidth;
+export var getComputedStyle     = hammerhead.utils.style.getComputedStyle;
+export var getElementMargin     = hammerhead.utils.style.getElementMargin;
+export var getElementPadding    = hammerhead.utils.style.getElementPadding;
+export var getElementScroll     = hammerhead.utils.style.getElementScroll;
+export var getOptionHeight      = hammerhead.utils.style.getOptionHeight;
+export var getSelectElementSize = hammerhead.utils.style.getSelectElementSize;
+export var isVisibleChild       = hammerhead.utils.style.isVisibleChild;

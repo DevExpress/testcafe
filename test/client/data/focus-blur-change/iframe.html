@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link type="text/css" rel=stylesheet href="/ui.css" class="ui-stylesheet-TC2b9a6d">
+    <link type="text/css" rel=stylesheet href="/ui.css" class="ui-stylesheet-hammerhead-shadow-ui">
 
-    <script src="/hammerhead.js" class="script-TC2b9a6d"></script>
+    <script src="/hammerhead.js" class="script-hammerhead-shadow-ui"></script>
 </head>
 <body>
 <!-- Resources loading -->
@@ -13,13 +13,13 @@
         CROSS_DOMAIN_PROXY_PORT: 2000
     });
 
-    var urlUtil = Hammerhead.get('./utils/url');
+    var urlUtils = Hammerhead.get('./utils/url');
 
-    urlUtil.OriginLocation.get = function () {
+    urlUtils.OriginLocation.get = function () {
         return 'http://target_url';
     };
 
-    Hammerhead.init();
+    Hammerhead.start();
 
     window.focusInput = function () {
         document.getElementById('input').focus();

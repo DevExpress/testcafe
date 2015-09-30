@@ -1,4 +1,4 @@
-import * as hammerheadAPI from '../../deps/hammerhead';
+import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
 import * as automationUtil from '../util';
@@ -6,10 +6,10 @@ import * as automationSettings from '../settings';
 import movePlaybackAutomation from '../playback/move';
 import async from '../../deps/async';
 
-var browserUtils   = hammerheadAPI.Util.Browser;
-var eventSimulator = hammerheadAPI.EventSandbox.EventSimulator;
-var focusBlur      = hammerheadAPI.EventSandbox.FocusBlur;
-var nativeMethods  = hammerheadAPI.NativeMethods;
+var browserUtils     = hammerhead.utils.browser;
+var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
+var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
+var nativeMethods    = hammerhead.nativeMethods;
 
 var $             = testCafeCore.$;
 var SETTINGS      = testCafeCore.SETTINGS;
@@ -88,7 +88,7 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
                         if (clickLeadChanges)
                             $select[0].selectedIndex = childIndex;
 
-                        focusBlur.focus($select[0], function () {
+                        focusBlurSandbox.focus($select[0], function () {
                             window.setTimeout(function () {
                                 eventSimulator.mouseup(targetElement, clickOptions);
 
@@ -103,7 +103,7 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
                     else if (browserUtils.isIE) {
                         eventSimulator.mousedown($select[0], clickOptions);
 
-                        focusBlur.focus($select[0], function () {
+                        focusBlurSandbox.focus($select[0], function () {
                             window.setTimeout(function () {
                                 eventSimulator.mouseup($select[0], clickOptions);
 
@@ -122,7 +122,7 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
                         //NOTE: after mousedown in Chrome document.activeElement = select.
                         //But we need to raise blur and change event for previous active element during focus raising.
                         //That's why we should change event order and raise focus before mousedown.
-                        focusBlur.focus($select[0], function () {
+                        focusBlurSandbox.focus($select[0], function () {
                             window.setTimeout(function () {
                                 eventSimulator.mousedown(targetElement, clickOptions);
 
@@ -164,7 +164,7 @@ export default function (el, options, runCallback, errorCallback) {
         return;
     }
 
-    var isSvgElement        = domUtils.isSvgElement(el),
+    var isSVGElement        = domUtils.isSVGElement(el),
         screenPoint         = null,
         eventPoint          = null,
         eventOptions        = null,
@@ -191,7 +191,7 @@ export default function (el, options, runCallback, errorCallback) {
             }
 
             movePlaybackAutomation(target, false, options, function () {
-                if ((isSvgElement && browserUtils.isOpera) || ($(el).is('tref')))
+                if ((isSVGElement && browserUtils.isOpera) || ($(el).is('tref')))
                     topElement = el; //NOTE: document.elementFromPoint can't find this element
                 else {
                     screenPoint = automationUtil.getMouseActionPoint(el, options, true);

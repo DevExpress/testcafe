@@ -20,9 +20,12 @@ $.fn.load                            = function (callback) {
     callback();
 };
 
+Runner.checkStatus = function () {
+};
+
 module('Regression');
 asyncTest('T204773 - TestCafe - The assertion in last step with inIFrame wrapper works incorrect in IE browser', function () {
-    HH_SETTINGS.SERVICE_MSG_URL = '/ping/500';
+    HH_SETTINGS.serviceMsgUrl = '/ping/500';
 
     var savedAsyncServiceMsg       = transport.asyncServiceMsg,
         assertionFailedMessageTime = null;
