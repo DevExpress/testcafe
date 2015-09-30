@@ -2,12 +2,13 @@ import indentString from 'indent-string';
 import escapeHtml from 'escape-html';
 import wordwrap from '../utils/word-wrap';
 import BaseReporter from './base';
+import plainTextDecorator from './errors/decorators/plain-text';
 
 export default class XUnitReporter extends BaseReporter {
     static LINE_WIDTH = 100;
 
-    constructor (task, outStream, errorDecorator) {
-        super(task, outStream, errorDecorator);
+    constructor (task, outStream) {
+        super(task, outStream, plainTextDecorator);
 
         this.report             = '';
         this.startTime          = null;

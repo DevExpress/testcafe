@@ -1,10 +1,12 @@
-var expect       = require('chai').expect;
-var EventEmitter = require('events').EventEmitter;
-var util         = require('util');
-var Promise      = require('promise');
-var reporters    = require('../../lib/reporters');
-var readFile     = require('../../lib/utils/read-file-relative');
-var TYPE         = require('../../lib/reporters/errors/type');
+var expect             = require('chai').expect;
+var EventEmitter       = require('events').EventEmitter;
+var util               = require('util');
+var Promise            = require('promise');
+var reporters          = require('../../lib/reporters');
+var readFile           = require('../../lib/utils/read-file-relative');
+var TYPE               = require('../../lib/reporters/errors/type');
+var ttyDecorator       = require('../../lib/reporters/errors/decorators/tty');
+var plainTextDecorator = require('../../lib/reporters/errors/decorators/plain-text');
 
 describe('Reporters', function () {
     // Runnable configuration mocks
@@ -315,7 +317,6 @@ describe('Reporters', function () {
             .catch(done);
     }
 
-
     // Tests
     it('spec', function (done) {
         testReporter('spec', done);
@@ -335,5 +336,18 @@ describe('Reporters', function () {
 
     it('xunit', function (done) {
         testReporter('xunit', done);
+    });
+
+    describe('Regression', function () {
+        it('Should force plain text decorator for reporters that target machine-readable formats(GH-86)', function () {
+            ['xunit', 'json'].forEach(function (type) {
+                var taskMock      = new TaskMock();
+                var outStreamMock = createOutStreamMock();
+                var Reporter      = reporters[type];
+                var reporter      = new Reporter(taskMock, outStreamMock, ttyDecorator);
+
+                expect(reporter.errorDecorator).eql(plainTextDecorator);
+            });
+        });
     });
 });
