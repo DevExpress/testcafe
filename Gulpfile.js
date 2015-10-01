@@ -80,6 +80,14 @@ gulp.task('build-client-scripts', ['clean'], function () {
         .pipe(webmake({
             sourceMap: false,
             transform: function (filename, code) {
+                //https://github.com/jakearchibald/es6-promise/issues/108
+                if (filename.indexOf('es6-promise.js') !== -1) {
+                    var polyfillCallString = 'lib$es6$promise$polyfill$$default();';
+
+                    code = code.replace(polyfillCallString, '');
+                }
+                ///////////////////////////////////////////////////////////////
+
                 var transformed = babel.transform(code, {
                     sourceMap: false,
                     filename:  filename
