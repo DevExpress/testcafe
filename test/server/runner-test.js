@@ -2,8 +2,6 @@ var path              = require('path');
 var expect            = require('chai').expect;
 var request           = require('request');
 var TestCafe          = require('../../lib/');
-var Bootsrapper       = require('../../lib/runner/bootstrapper');
-var BrowserConnection = require('../../lib/browser-connection');
 var SpecReporter      = require('../../lib/reporters/spec');
 
 
@@ -119,9 +117,8 @@ describe('Runner', function () {
                                             'or due to network issues.');
                 });
 
-            var savedHeartbeatTimeout = BrowserConnection.HEARTBEAT_TIMEOUT;
-
-            BrowserConnection.HEARTBEAT_TIMEOUT = 0;
+            connection1.HEARTBEAT_TIMEOUT = 0;
+            connection2.HEARTBEAT_TIMEOUT = 0;
 
             var options = {
                 url:            connection1.url,
@@ -132,9 +129,7 @@ describe('Runner', function () {
                 }
             };
 
-            request(options, function () {
-                BrowserConnection.HEARTBEAT_TIMEOUT = savedHeartbeatTimeout;
-            });
+            request(options);
 
             run
                 .then(function () {
@@ -145,9 +140,8 @@ describe('Runner', function () {
 
         it('Should raise error if the browser connections are not ready', function (done) {
             var brokenConnection  = testCafe.createBrowserConnection();
-            var savedReadyTimeout = Bootsrapper.BROWSER_CONNECTION_READY_TIMEOUT;
 
-            Bootsrapper.BROWSER_CONNECTION_READY_TIMEOUT = 0;
+            runner.bootstrapper.BROWSER_CONNECTION_READY_TIMEOUT = 0;
 
             var run = runner
                 .browsers(brokenConnection)
@@ -158,8 +152,6 @@ describe('Runner', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    Bootsrapper.BROWSER_CONNECTION_READY_TIMEOUT = savedReadyTimeout;
-
                     expect(err.message).eql('Unable to establish one or more of the specified browser connections. ' +
                                             'This can be caused by network issues or remote device failure.');
                 });
