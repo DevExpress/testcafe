@@ -4,10 +4,10 @@ import COMMAND from './command';
 
 
 export default class LocalBrowserConnection extends BrowserConnection {
-    static NATIVE_ACTION_DELAY = 500;
-
     constructor (gateway, browserInfo) {
         super(gateway);
+
+        this.NATIVE_ACTION_DELAY = 500;
 
         this.forceClose            = false;
         this.switchedToIdleOnClose = false;
@@ -48,7 +48,7 @@ export default class LocalBrowserConnection extends BrowserConnection {
             setTimeout(() => {
                 closeBrowser(this.idleUrl);
                 super.close();
-            }, LocalBrowserConnection.NATIVE_ACTION_DELAY);
+            }, this.NATIVE_ACTION_DELAY);
 
             return { cmd: COMMAND.close };
         }

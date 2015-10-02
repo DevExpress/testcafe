@@ -1,10 +1,10 @@
 import BaseReporter from './base';
 
 export default class MinimalReporter extends BaseReporter {
-    static NEW_LINE = '\n  ';
-
     constructor (task, outStream, errorDecorator) {
         super(task, outStream, errorDecorator);
+
+        this.NEW_LINE = '\n  ';
 
         this.spaceLeft          = 0;
         this.errDescriptors     = [];
@@ -24,8 +24,8 @@ export default class MinimalReporter extends BaseReporter {
         var dot    = hasErr ? this.style.red('.') : '.';
 
         if (this.spaceLeft - 1 < 0) {
-            this.spaceLeft = this.viewportWidth - MinimalReporter.NEW_LINE.length - 1;
-            this._write(MinimalReporter.NEW_LINE);
+            this.spaceLeft = this.viewportWidth - this.NEW_LINE.length - 1;
+            this._write(this.NEW_LINE);
         }
         else
             this.spaceLeft--;

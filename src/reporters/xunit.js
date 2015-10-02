@@ -5,10 +5,10 @@ import BaseReporter from './base';
 import plainTextDecorator from './errors/decorators/plain-text';
 
 export default class XUnitReporter extends BaseReporter {
-    static LINE_WIDTH = 100;
-
     constructor (task, outStream) {
         super(task, outStream, plainTextDecorator);
+
+        this.LINE_WIDTH = 100;
 
         this.report             = '';
         this.startTime          = null;
@@ -49,7 +49,7 @@ export default class XUnitReporter extends BaseReporter {
                 err = escapeHtml(this._formatError(err, `${idx + 1}) `));
 
                 this.report += '\n';
-                this.report += wordwrap(err, 6, XUnitReporter.LINE_WIDTH);
+                this.report += wordwrap(err, 6, this.LINE_WIDTH);
                 this.report += '\n';
             });
 
