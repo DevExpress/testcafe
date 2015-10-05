@@ -1,4 +1,4 @@
-import Promise from 'promise';
+import { Promise } from 'es6-promise';
 import { resolve as resolvePath } from 'path';
 import Bootstrapper from './bootstrapper';
 import Task from './task';

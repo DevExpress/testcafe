@@ -2,11 +2,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { createHash } from 'crypto';
 import { resolve as resolveUrl } from 'url';
-import Promise from 'promise';
+import { Promise } from 'es6-promise';
 import { Compiler as OldCompiler } from './old';
 import OS from '../utils/os';
+import promisify from 'es6-promisify';
 
-var readFile = Promise.denodeify(fs.readFile);
+
+var readFile = promisify(fs.readFile);
 
 function exists (filePath) {
     return new Promise(resolve => fs.exists(filePath, resolve));
