@@ -14,7 +14,8 @@ var fs           = require('fs');
 var less         = require('less');
 var merge        = require('merge-stream');
 var path         = require('path');
-var Promise      = require('promise');
+var Promise      = require('es6-promise').Promise;
+var promisify    = require('es6-promisify');
 
 
 var CLIENT_TESTS_SETTINGS = {
@@ -114,9 +115,9 @@ gulp.task('build-styles', ['styles-temp-copy'], function () {
     var SHADOW_UI_CLASSNAME_POSTFIX = require('./node_modules/hammerhead/lib/const').SHADOW_UI_CLASSNAME_POSTFIX;
     var TEMP_SRC_FILE               = path.join(process.cwd(), UI_STYLES_TEMP_DIR, 'styles.less');
 
-    var readFile  = Promise.denodeify(fs.readFile);
-    var writeFile = Promise.denodeify(fs.writeFile);
-    var unlink    = Promise.denodeify(fs.unlink);
+    var readFile  = promisify(fs.readFile);
+    var writeFile = promisify(fs.writeFile);
+    var unlink    = promisify(fs.unlink);
 
     //NOTE: add unique UI postfix to each LESS class and id selector
     function processSelector (selector) {

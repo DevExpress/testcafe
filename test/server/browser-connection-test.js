@@ -1,12 +1,13 @@
 var expect            = require('chai').expect;
-var Promise           = require('promise');
+var Promise           = require('es6-promise').Promise;
+var promisify         = require('es6-promisify');
 var request           = require('request');
 var TestCafe          = require('../../lib/');
 var BrowserConnection = require('../../lib/browser-connection');
 var COMMAND           = require('../../lib/browser-connection/command');
 
 
-var promisedRequest = Promise.denodeify(request);
+var promisedRequest = promisify(request);
 
 
 describe('Browser connection', function () {
@@ -68,8 +69,8 @@ describe('Browser connection', function () {
                 return promisedRequest(connection.url);
             })
             .then(function (res) {
-                expect(res.statusCode).eql(500);
-                expect(res.body).eql('The connection is already established.');
+                expect(res[0].statusCode).eql(500);
+                expect(res[1]).eql('The connection is already established.');
                 done();
             })
             .catch(done);
@@ -130,22 +131,22 @@ describe('Browser connection', function () {
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '1' });
+                expect(JSON.parse(res[1])).eql({ cmd: COMMAND.run, url: '1' });
             })
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '2' });
+                expect(JSON.parse(res[1])).eql({ cmd: COMMAND.run, url: '2' });
             })
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '3' });
+                expect(JSON.parse(res[1])).eql({ cmd: COMMAND.run, url: '3' });
             })
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.idle, url: connection.idleUrl });
+                expect(JSON.parse(res[1])).eql({ cmd: COMMAND.idle, url: connection.idleUrl });
                 done();
             })
 
@@ -161,8 +162,8 @@ describe('Browser connection', function () {
 
         testCases = testCases.map(function (url) {
             return promisedRequest(url).then(function (res) {
-                expect(res.statusCode).eql(500);
-                expect(res.body).eql('The connection is not ready yet.');
+                expect(res[0].statusCode).eql(500);
+                expect(res[1]).eql('The connection is not ready yet.');
             });
         });
 

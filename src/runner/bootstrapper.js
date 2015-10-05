@@ -1,4 +1,4 @@
-import Promise from 'promise';
+import { Promise } from 'es6-promise';
 import { getInstallations as getBrowserInstallations } from 'testcafe-browser-natives';
 import reporters from '../reporters';
 import BrowserConnection from '../browser-connection';
