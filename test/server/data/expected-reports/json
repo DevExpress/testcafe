@@ -21,9 +21,9 @@
         {
           "name": "fixture1test2",
           "errs": [
-            "Chrome - Assertion failed at step \"Step\":\n\n    eq([\"12345678901\"], [\"00000000000\"])\n\nArrays differ at index 0:\n\nExpected: [0]: \"12345678901\"\nActual:   [0]: \"00000000000\"\n                ^",
-            "Chrome - Assertion failed at step \"Step\":\n\n    notEq(\"test\", \"test\")\n\nExpected: not \"test\"\nActual:   \"test\"",
-            "Firefox - Assertion failed at step \"Step\":\n\n    ok(false)\n\nExpected: not null, not undefined, not false, not NaN and not ''\nActual:   false"
+            "Chrome\nAssertion failed at step \"Step\":\n\n    eq([\"12345678901\"], [\"00000000000\"])\n\nArrays differ at index 0:\n\nExpected: [0]: \"12345678901\"\nActual:   [0]: \"00000000000\"\n                ^",
+            "Chrome\nAssertion failed at step \"Step\":\n\n    notEq(\"test\", \"test\")\n\nExpected: not \"test\"\nActual:   \"test\"",
+            "Firefox\nAssertion failed at step \"Step\":\n\n    ok(false)\n\nExpected: not null, not undefined, not false, not NaN and not ''\nActual:   false"
           ],
           "durationMs": 74000,
           "unstable": false
@@ -61,7 +61,7 @@
         {
           "name": "fixture3test1",
           "errs": [
-            "Firefox - Assertion failed at step \"Step\":\n\n    eq([\"12345678901\"], [\"00000000000\"])\n\nArrays differ at index 0:\n\nExpected: [0]: \"12345678901\"\nActual:   [0]: \"00000000000\"\n                ^"
+            "Firefox\nAssertion failed at step \"Step\":\n\n    eq([\"12345678901\"], [\"00000000000\"])\n\nArrays differ at index 0:\n\nExpected: [0]: \"12345678901\"\nActual:   [0]: \"00000000000\"\n                ^"
           ],
           "durationMs": 74000,
           "unstable": true
