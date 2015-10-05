@@ -21,7 +21,7 @@ function multySplice(arr, index, deleteCount, itemsToInsert) {
 }
 
 //Compiler
-var Compiler = module.exports = function (filename, modules, requiresDescriptorCache, sourceIndex) {
+var Compiler = module.exports = function (filename, modules, requireReader, sourceIndex) {
     this.walker = astProcessor.ast_walker();
 
     this.filename = filename;
@@ -29,7 +29,7 @@ var Compiler = module.exports = function (filename, modules, requiresDescriptorC
     this.workingDir = path.dirname(this.filename);
 
     this.modules = modules;
-    this.requiresDescriptorCache = requiresDescriptorCache || {};
+    this.requireReader = requireReader;
 
     this.sourceIndex = sourceIndex || [];
 
@@ -243,39 +243,32 @@ Compiler.prototype._mergeRequireMixins = function (requireDescriptor) {
 };
 
 Compiler.prototype._analyzeRequires = function (callback) {
-    var compiler = this,
-        descriptorReaders = [];
+    var requireReaderPromises = this.requires.map(require => {
+        return this.requireReader
+            .read(require, this.filename, this.sourceIndex)
+            .then(res => {
+                var descriptor = res.descriptor;
 
-    this.requires.forEach(function (require) {
-        descriptorReaders.push(function (readerCallback) {
-            //NOTE: use requires cache to avoid race condition on async requires read
-            if (compiler.requiresDescriptorCache[require]) {
-                var descriptor = compiler.requiresDescriptorCache[require];
+                if (res.fromCache)
+                    this.ok = this.ok && !descriptor.hasErrs;
+                else
+                    this.errs = this.errs.concat(res.errs);
 
-                compiler.ok = compiler.ok && !descriptor.hasErrs;
-
-                readerCallback(null, descriptor);
-            } else {
-                RequireAnalyzer.run(require, compiler.filename, compiler.sourceIndex, function (errs, descriptor) {
-                    compiler.errs = compiler.errs.concat(errs);
-                    compiler.requiresDescriptorCache[require] = descriptor;
-                    readerCallback(null, descriptor);
-                });
-            }
-        });
+                return descriptor;
+            });
     });
 
-    //NOTE: we need to process requires in async callback to keep their correct order
-    async.parallel(descriptorReaders, function (asyncErr, requireDescriptors) {
-        requireDescriptors.forEach(function (descriptor) {
-            compiler._mergeRequireMixins(descriptor);
+    Promise.all(requireReaderPromises)
+        .then(descriptors => {
+            descriptors.forEach(descriptor => {
+                this._mergeRequireMixins(descriptor);
 
-            if (compiler.ok)
-                compiler.out.requireJs += descriptor.jsCode;
+                if (this.ok)
+                    this.out.requireJs += descriptor.jsCode;
+            });
+
+            callback();
         });
-
-        callback();
-    });
 };
 
 
