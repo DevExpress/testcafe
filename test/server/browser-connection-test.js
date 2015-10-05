@@ -2,7 +2,6 @@ var expect            = require('chai').expect;
 var Promise           = require('promise');
 var request           = require('request');
 var TestCafe          = require('../../lib/');
-var BrowserConnection = require('../../lib/browser-connection');
 var COMMAND           = require('../../lib/browser-connection/command');
 
 
@@ -76,9 +75,7 @@ describe('Browser connection', function () {
     });
 
     it('Should fire "error" event on browser disconnection', function (done) {
-        var savedHeartbeatTimeout = BrowserConnection.HEARTBEAT_TIMEOUT;
-
-        BrowserConnection.HEARTBEAT_TIMEOUT = 0;
+        connection.HEARTBEAT_TIMEOUT = 0;
 
         connection.on('error', function (msg) {
             expect(msg).eql('The Chrome 41.0.2227 / Mac OS X 10.10.1 browser disconnected. This problem may ' +
@@ -95,9 +92,7 @@ describe('Browser connection', function () {
             }
         };
 
-        request(options, function () {
-            BrowserConnection.HEARTBEAT_TIMEOUT = savedHeartbeatTimeout;
-        });
+        request(options);
     });
 
     it('Should provide status', function (done) {

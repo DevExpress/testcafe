@@ -9,9 +9,9 @@ import plainTextDecorator from './errors/decorators/plain-text';
 import ttyDecorator from './errors/decorators/tty';
 
 export default class BaseReporter {
-    static DEFAULT_VIEWPORT_WIDTH = 78;
-
     constructor (task, outStream = process.stdout, errorDecorator = null) {
+        this.DEFAULT_VIEWPORT_WIDTH = 78;
+
         this.outStream = outStream;
 
         var isTTY = !!this.outStream.isTTY;
@@ -19,7 +19,7 @@ export default class BaseReporter {
         this.errorDecorator = errorDecorator || (isTTY ? ttyDecorator : plainTextDecorator);
 
         this.style         = new chalk.constructor({ enabled: isTTY });
-        this.viewportWidth = BaseReporter._getViewportWidth(isTTY);
+        this.viewportWidth = this._getViewportWidth(isTTY);
         this.useWordWrap   = false;
         this.indent        = 0;
 
@@ -35,16 +35,6 @@ export default class BaseReporter {
     }
 
     // Static
-    static _getViewportWidth (isTTY) {
-        if (isTTY && tty.isatty(1) && tty.isatty(2)) {
-            return process.stdout.getWindowSize ?
-                   process.stdout.getWindowSize(1)[0] :
-                   tty.getWindowSize()[1];
-        }
-
-        return BaseReporter.DEFAULT_VIEWPORT_WIDTH;
-    }
-
     static _createReportQueue (task) {
         var runsPerTest = task.browserConnections.length;
 
@@ -76,6 +66,16 @@ export default class BaseReporter {
             if (err1 < err2) return -1;
             return 0;
         });
+    }
+
+    _getViewportWidth (isTTY) {
+        if (isTTY && tty.isatty(1) && tty.isatty(2)) {
+            return process.stdout.getWindowSize ?
+                   process.stdout.getWindowSize(1)[0] :
+                   tty.getWindowSize()[1];
+        }
+
+        return this.DEFAULT_VIEWPORT_WIDTH;
     }
 
     _getReportItemForTestRun (testRun) {

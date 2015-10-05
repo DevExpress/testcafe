@@ -16,10 +16,10 @@ var instanceCount = 0;
 
 
 export default class BrowserConnection extends EventEmitter {
-    static HEARTBEAT_TIMEOUT = 2 * 60 * 1000;
-
     constructor (gateway) {
         super();
+
+        this.HEARTBEAT_TIMEOUT = 2 * 60 * 1000;
 
         this.id                       = ++instanceCount;
         this.jobQueue                 = [];
@@ -41,7 +41,7 @@ export default class BrowserConnection extends EventEmitter {
         this.heartbeatTimeout = setTimeout(() => {
             this.close();
             this.emit('error', getText(MESSAGE.browserDisconnected, this.userAgent.toString()));
-        }, BrowserConnection.HEARTBEAT_TIMEOUT);
+        }, this.HEARTBEAT_TIMEOUT);
     }
 
     _popNextTestRunUrl () {

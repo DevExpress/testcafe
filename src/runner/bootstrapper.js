@@ -8,9 +8,9 @@ import { MESSAGE, getText } from '../messages';
 
 
 export default class Bootstrapper {
-    static BROWSER_CONNECTION_READY_TIMEOUT = 30 * 1000;
-
     constructor (browserConnectionGateway) {
+        this.BROWSER_CONNECTION_READY_TIMEOUT = 30 * 1000;
+
         this.browserConnectionGateway = browserConnectionGateway;
 
         this.sources  = [];
@@ -25,29 +25,6 @@ export default class Bootstrapper {
             .map(bc => new Promise(resolve => bc.once('ready', resolve)));
 
         return Promise.all(ready);
-    }
-
-    static _waitBrowserConnectionsReady (browserConnections) {
-        return new Promise((resolve, reject) => {
-            var timeout = setTimeout(() => {
-                reject(new Error(getText(MESSAGE.cantEstablishBrowserConnection)));
-            }, Bootstrapper.BROWSER_CONNECTION_READY_TIMEOUT);
-
-            var onError = msg => {
-                clearTimeout(timeout);
-                reject(new Error(msg));
-            };
-
-            browserConnections.forEach(bc => bc.once('error', onError));
-
-            Bootstrapper
-                ._createBrowserConnectionsReadyPromise(browserConnections)
-                .then(()=> {
-                    browserConnections.forEach(bc => bc.removeListener('error', onError));
-                    clearTimeout(timeout);
-                    resolve();
-                });
-        });
     }
 
     static async _convertBrowserAliasToBrowserInfo (alias) {
@@ -70,6 +47,29 @@ export default class Bootstrapper {
         return new LocalBrowserConnection(this.browserConnectionGateway, browserInfo);
     }
 
+    _waitBrowserConnectionsReady (browserConnections) {
+        return new Promise((resolve, reject) => {
+            var timeout = setTimeout(() => {
+                reject(new Error(getText(MESSAGE.cantEstablishBrowserConnection)));
+            }, this.BROWSER_CONNECTION_READY_TIMEOUT);
+
+            var onError = msg => {
+                clearTimeout(timeout);
+                reject(new Error(msg));
+            };
+
+            browserConnections.forEach(bc => bc.once('error', onError));
+
+            Bootstrapper
+                ._createBrowserConnectionsReadyPromise(browserConnections)
+                .then(()=> {
+                    browserConnections.forEach(bc => bc.removeListener('error', onError));
+                    clearTimeout(timeout);
+                    resolve();
+                });
+        });
+    }
+
     async _getBrowserConnections () {
         if (!this.browsers.length)
             throw new Error(getText(MESSAGE.browserNotSet));
@@ -78,7 +78,7 @@ export default class Bootstrapper {
         var browserConnections = browsers.map(browser => this._createConnectionFromBrowserInfo(browser));
 
         try {
-            await Bootstrapper._waitBrowserConnectionsReady(browserConnections);
+            await this._waitBrowserConnectionsReady(browserConnections);
         }
         catch (err) {
             browserConnections.forEach(bc => {
