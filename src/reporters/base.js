@@ -155,9 +155,12 @@ export default class BaseReporter {
     }
 
     _formatError (err, prefix = '') {
-        var msg = format(err, this.errorDecorator, this.viewportWidth - this.indent - prefix.length);
+        var maxMsgLength = this.viewportWidth - this.indent - prefix.length;
+        var msg          = format(err, this.errorDecorator, maxMsgLength);
 
-        return prefix + msg;
+        msg = wordwrap(msg, prefix.length, maxMsgLength);
+
+        return prefix + msg.substr(prefix.length);
     }
 
     _write (text) {

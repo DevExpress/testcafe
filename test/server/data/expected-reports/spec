@@ -4,29 +4,33 @@ Running tests in: Chrome, Firefox
     ✓ fixture1test1 (unstable)
     ✖ fixture1test2
 
-        1) Chrome - Assertion failed at step "Step":
+        1) Chrome
+           Assertion failed at step "Step":
 
-            eq(["12345678901"], ["00000000000"])
+               eq(["12345678901"], ["00000000000"])
 
-        Arrays differ at index 0:
+           Arrays differ at index 0:
 
-        Expected: [0]: "12345678901"
-        Actual:   [0]: "00000000000"
-                        ^
+           Expected: [0]: "12345678901"
+           Actual:   [0]: "00000000000"
+                           ^
 
-        2) Chrome - Assertion failed at step "Step":
+        2) Chrome
+           Assertion failed at step "Step":
 
-            notEq("test", "test")
+               notEq("test", "test")
 
-        Expected: not "test"
-        Actual:   "test"
+           Expected: not "test"
+           Actual:   "test"
 
-        3) Firefox - Assertion failed at step "Step":
+        3) Firefox
+           Assertion failed at step "Step":
 
-            ok(false)
+               ok(false)
 
-        Expected: not null, not undefined, not false, not NaN and not ''
-        Actual:   false
+           Expected: not null, not undefined, not false, not NaN and not
+           ''
+           Actual:   false
 
     ✓ fixture1test3
 
@@ -37,15 +41,16 @@ Running tests in: Chrome, Firefox
   fixture3 (./fixture3.js)
     ✖ fixture3test1 (unstable)
 
-        1) Firefox - Assertion failed at step "Step":
+        1) Firefox
+           Assertion failed at step "Step":
 
-            eq(["12345678901"], ["00000000000"])
+               eq(["12345678901"], ["00000000000"])
 
-        Arrays differ at index 0:
+           Arrays differ at index 0:
 
-        Expected: [0]: "12345678901"
-        Actual:   [0]: "00000000000"
-                        ^
+           Expected: [0]: "12345678901"
+           Actual:   [0]: "00000000000"
+                           ^
 
 
   2/6 failed (15m 25s)

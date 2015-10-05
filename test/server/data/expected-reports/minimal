@@ -4,7 +4,8 @@
   2/6 failed
 
   1) fixture1 - fixture1test2
-     Chrome - Assertion failed at step "Step":
+     Chrome
+     Assertion failed at step "Step":
 
          eq(["12345678901"], ["00000000000"])
 
@@ -15,7 +16,8 @@
                      ^
 
   2) fixture1 - fixture1test2
-     Chrome - Assertion failed at step "Step":
+     Chrome
+     Assertion failed at step "Step":
 
          notEq("test", "test")
 
@@ -23,7 +25,8 @@
      Actual:   "test"
 
   3) fixture1 - fixture1test2
-     Firefox - Assertion failed at step "Step":
+     Firefox
+     Assertion failed at step "Step":
 
          ok(false)
 
@@ -31,7 +34,8 @@
      Actual:   false
 
   4) fixture3 - fixture3test1
-     Firefox - Assertion failed at step "Step":
+     Firefox
+     Assertion failed at step "Step":
 
          eq(["12345678901"], ["00000000000"])
 
