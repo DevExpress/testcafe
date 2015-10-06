@@ -15,6 +15,7 @@
      Actual:   [0]: "00000000000"
                      ^
 
+
   2) fixture1 - fixture1test2
      Chrome
      Assertion failed at step "Step":
@@ -24,6 +25,7 @@
      Expected: not "test"
      Actual:   "test"
 
+
   3) fixture1 - fixture1test2
      Firefox
      Assertion failed at step "Step":
@@ -32,6 +34,7 @@
 
      Expected: not null, not undefined, not false, not NaN and not ''
      Actual:   false
+
 
   4) fixture3 - fixture3test1
      Firefox
@@ -44,3 +47,4 @@
      Expected: [0]: "12345678901"
      Actual:   [0]: "00000000000"
                      ^
+

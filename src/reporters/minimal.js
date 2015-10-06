@@ -72,6 +72,7 @@ export default class MinimalReporter extends BaseReporter {
                 this.indent = 2 + prefix.length;
 
                 this._write(this._formatError(errDescriptor.err))
+                    ._newline()
                     ._newline();
             });
         }
