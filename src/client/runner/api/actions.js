@@ -1,5 +1,5 @@
 import COMPILER_CONST from '../../../compiler/old/const';
-import * as hammerheadAPI from '../deps/hammerhead';
+import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import * as automation from '../automation/automation';
 import clickPlaybackAutomation from '../automation/playback/click';
@@ -13,8 +13,7 @@ import typePlaybackAutomation from '../automation/playback/type';
 import * as sourceIndexTracker from '../source-index';
 import async from '../deps/async';
 
-var jsProcessor = hammerheadAPI.JSProcessor;
-var hhUpload    = hammerheadAPI.upload;
+var jsProcessor = hammerhead.jsProcessor;
 
 var $               = testCafeCore.$;
 var SETTINGS        = testCafeCore.SETTINGS;
@@ -682,7 +681,7 @@ export function upload (what, path) {
                     onTargetWaitingFinished();
                 }
 
-                hhUpload(element, path, function (errs) {
+                hammerhead.upload(element, path, function (errs) {
                     if (errs.length) {
                         var errPaths = errs.map(function (err) {
                             return err.filePath;

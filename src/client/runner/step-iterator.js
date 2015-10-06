@@ -1,14 +1,12 @@
-import * as hammerheadAPI from './deps/hammerhead';
+import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 import * as actionBarrier from './action-barrier/action-barrier';
 import * as xhrBarrier from './action-barrier/xhr';
 import async from './deps/async';
 
-var browserUtils        = hammerheadAPI.Util.Browser;
-var nativeMethods       = hammerheadAPI.NativeMethods;
-var JSON                = hammerheadAPI.JSON;
-var BEFORE_UNLOAD_EVENT = hammerheadAPI.BEFORE_UNLOAD_EVENT;
-var hhBind              = hammerheadAPI.on;
+var browserUtils  = hammerhead.utils.browser;
+var nativeMethods = hammerhead.nativeMethods;
+var JSON          = hammerhead.json;
 
 var $            = testCafeCore.$;
 var SETTINGS     = testCafeCore.SETTINGS;
@@ -233,9 +231,9 @@ StepIterator.prototype._setupUnloadPrediction = function () {
         }, 0);
     }
 
-    hhBind(BEFORE_UNLOAD_EVENT, browserUtils.isIE ? onBeforeUnloadIE : beforeUnload);
+    hammerhead.on(hammerhead.EVENTS.beforeUnload, browserUtils.isIE ? onBeforeUnloadIE : beforeUnload);
 
-    hhBind(BEFORE_UNLOAD_EVENT, function () {
+    hammerhead.on(hammerhead.EVENTS.beforeUnload, function () {
         skipBeforeUnloadEvent = false;
     });
 

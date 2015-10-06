@@ -1,5 +1,0 @@
-@IF EXIST "%~dp0\node.exe" (
-  "%~dp0\node.exe"  "%~dp0\..\nodeunit\bin\nodeunit" %*
-) ELSE (
-  node  "%~dp0\..\nodeunit\bin\nodeunit" %*
-)

@@ -1,4 +1,4 @@
-import * as hammerheadAPI from './deps/hammerhead';
+import hammerhead from './deps/hammerhead';
 
 import $ from './deps/jquery';
 import SETTINGS from './settings';
@@ -10,14 +10,14 @@ import * as sandboxedJQuery from './sandboxed-jquery';
 import * as jQuerySelectorExtensions from './jquery-extensions/custom-selectors';
 import * as jQueryDataMethodProxy from './jquery-extensions/data-proxy';
 
-import * as serviceUtils from './util/service';
-import * as domUtils from './util/dom';
-import * as contentEditable from './util/content-editable';
-import * as positionUtils from './util/position';
-import * as styleUtils from './util/style';
-import * as keyCharUtils from './util/key-char';
-import * as eventUtils from './util/event';
-import * as textSelection from './util/text-selection';
+import * as serviceUtils from './utils/service';
+import * as domUtils from './utils/dom';
+import * as contentEditable from './utils/content-editable';
+import * as positionUtils from './utils/position';
+import * as styleUtils from './utils/style';
+import * as keyCharUtils from './utils/key-char';
+import * as eventUtils from './utils/event';
+import * as textSelection from './utils/text-selection';
 
 exports.$                        = $;
 exports.SETTINGS                 = SETTINGS;
@@ -47,4 +47,4 @@ Object.defineProperty(window, '%testCafeCore%', {
     value:        exports
 });
 
-hammerheadAPI.on(hammerheadAPI.IFRAME_READY_TO_INIT, e => initTestCafeCore(e.iframe.contentWindow, true));
+hammerhead.on(hammerhead.EVENTS.iframeReadyToInit, e => initTestCafeCore(e.iframe.contentWindow, true));

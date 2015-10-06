@@ -9,7 +9,7 @@ var cursor     = testCafeUI.get('./cursor');
 
 cursor.init();
 
-HH_SETTINGS.SERVICE_MSG_URL         = '/ping/10';
+HH_SETTINGS.serviceMsgUrl = '/ping/10';
 
 asyncTest('run steps in iframe', function () {
     var $iframe = $('<iframe>');

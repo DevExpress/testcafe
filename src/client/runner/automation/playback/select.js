@@ -1,4 +1,4 @@
-import * as hammerheadAPI from '../../deps/hammerhead';
+import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
 import * as automationUtil from '../util';
@@ -8,10 +8,10 @@ import movePlaybackAutomation from '../playback/move';
 import scrollPlaybackAutomation from '../playback/scroll';
 import async from '../../deps/async';
 
-var browserUtils   = hammerheadAPI.Util.Browser;
-var eventSimulator = hammerheadAPI.EventSandbox.EventSimulator;
-var focusBlur      = hammerheadAPI.EventSandbox.FocusBlur;
-var nativeMethods  = hammerheadAPI.NativeMethods;
+var browserUtils     = hammerhead.utils.browser;
+var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
+var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
+var nativeMethods    = hammerhead.nativeMethods;
 
 var $               = testCafeCore.$;
 var SETTINGS        = testCafeCore.SETTINGS;
@@ -155,7 +155,7 @@ export default function (el, options, runCallback) {
             if (isContentEditable)
                 topElement = el;
 
-            focusBlur.focus(isContentEditable ? contentEditable.findContentEditableParent(topElement) : topElement, function () {
+            focusBlurSandbox.focus(isContentEditable ? contentEditable.findContentEditableParent(topElement) : topElement, function () {
                 pointTo = automationSelectUtil.getSelectPositionCoordinates(topElement, startPosition, endPosition, false, correctOptions);
 
                 if (isContentEditable && !pointTo) {

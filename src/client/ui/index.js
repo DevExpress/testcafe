@@ -1,4 +1,4 @@
-import * as hammerheadAPI from './deps/hammerhead';
+import hammerhead from './deps/hammerhead';
 
 import * as cursor from './cursor';
 import * as selectElement from './select-element';
@@ -19,4 +19,4 @@ Object.defineProperty(window, '%testCafeUI%', {
     value:        exports
 });
 
-hammerheadAPI.on(hammerheadAPI.IFRAME_READY_TO_INIT, e => initTestCafeUI(e.iframe.contentWindow, true));
+hammerhead.on(hammerhead.EVENTS.iframeReadyToInit, e => initTestCafeUI(e.iframe.contentWindow, true));

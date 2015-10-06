@@ -1,5 +1,5 @@
 var hammerhead    = window.getTestCafeModule('hammerhead');
-var iframeSandbox = hammerhead.get('./sandboxes/iframe');
+var iframeSandbox = hammerhead.sandbox.iframe;
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var actionBarrier  = testCafeRunner.get('./action-barrier/action-barrier');
@@ -9,12 +9,12 @@ QUnit.begin(function () {
 });
 
 QUnit.testStart(function () {
-    hammerhead.on(hammerhead.IFRAME_READY_TO_INIT, window.initIFrameTestHandler);
-    hammerhead.off(hammerhead.IFRAME_READY_TO_INIT, iframeSandbox.iframeReadyToInitHandler);
+    hammerhead.on(hammerhead.EVENTS.iframeReadyToInit, window.initIFrameTestHandler);
+    hammerhead.off(hammerhead.EVENTS.iframeReadyToInit, iframeSandbox.iframeReadyToInitHandler);
 });
 
 QUnit.testDone(function () {
-    hammerhead.off(hammerhead.IFRAME_READY_TO_INIT, window.initIFrameTestHandler);
+    hammerhead.off(hammerhead.EVENTS.iframeReadyToInit, window.initIFrameTestHandler);
 });
 
 $(document).ready(function () {

@@ -1,6 +1,6 @@
 var astProcessor  = require('uglify-js').uglify,
     Common        = require('./../common'),
-    Hammerhead    = require('hammerhead'),
+    Hammerhead    = require('testcafe-hammerhead'),
     Ast           = require('./../ast'),
     CallAnalyzer  = require('./call_analyzer'),
     StepsAnalyzer = require('./steps_analyzer');

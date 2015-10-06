@@ -4,7 +4,7 @@ var HH_SETTINGS = hammerhead.get('./settings').get();
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var RunnerBase     = testCafeRunner.get('./runner-base');
 
-HH_SETTINGS.SERVICE_MSG_URL = '/ping/10';
+HH_SETTINGS.serviceMsgUrl = '/ping/10';
 
 asyncTest('run test', function () {
     var $iframe    = $('<iframe>');

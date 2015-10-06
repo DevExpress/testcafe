@@ -3,14 +3,14 @@
 <head>
     <title></title>
     <meta charset="utf-8">
-    <script src="/async.js" class="script-TC2b9a6d"></script>
-    <script src="/hammerhead.js" class="script-TC2b9a6d"></script>
-    <script src="/core.js" class="script-TC2b9a6d"></script>
-    <script src="/ui.js" class="script-TC2b9a6d"></script>
-    <script src="/runner.js" class="script-TC2b9a6d"></script>
-    <script src="/jquery.js" class="script-TC2b9a6d"></script>
+    <script src="/async.js" class="script-hammerhead-shadow-ui"></script>
+    <script src="/hammerhead.js" class="script-hammerhead-shadow-ui"></script>
+    <script src="/core.js" class="script-hammerhead-shadow-ui"></script>
+    <script src="/ui.js" class="script-hammerhead-shadow-ui"></script>
+    <script src="/runner.js" class="script-hammerhead-shadow-ui"></script>
+    <script src="/jquery.js" class="script-hammerhead-shadow-ui"></script>
 
-    <link type="text/css" rel=stylesheet href="/ui.css" class="ui-stylesheet-TC2b9a6d">
+    <link type="text/css" rel=stylesheet href="/ui.css" class="ui-stylesheet-hammerhead-shadow-ui">
 </head>
 <body>
 <script type="text/javascript">
@@ -24,21 +24,20 @@
 
     //Hammerhead setup
     var hammerhead = getTestCafeModule('hammerhead');
-    var hhSettings = hammerhead.get('./settings');
-    var hhUrlUtil = hammerhead.get('./utils/url');
+    var hammerheadSettings = hammerhead.get('./settings');
+    var urlUtils = hammerhead.get('./utils/url');
     var HH_CONST = hammerhead.get('../const');
     var jsProcessor = hammerhead.get('../processing/js/index');
 
-    hhSettings.set({
-        JOB_OWNER_TOKEN: 'ownerToken',
-        JOB_UID:         'jobUid'
+    hammerheadSettings.set({
+        sessionId: 'sessionId'
     });
 
-    hhUrlUtil.OriginLocation.get = function () {
+    urlUtils.OriginLocation.get = function () {
         return 'https://example.com';
     };
 
-    hammerhead.init();
+    hammerhead.start();
 
     var testCafeRunner = getTestCafeModule('testCafeRunner');
     var iframeDispatcher = testCafeRunner.get('./iframe-dispatcher');

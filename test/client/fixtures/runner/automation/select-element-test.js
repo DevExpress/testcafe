@@ -1,6 +1,6 @@
-var hammerhead = window.getTestCafeModule('hammerhead');
-var browser    = hammerhead.Util.Browser;
-var shadowUI   = Hammerhead.ShadowUI;
+var hammerhead   = window.getTestCafeModule('hammerhead');
+var browserUtils = hammerhead.utils.browser;
+var shadowUI     = hammerhead.shadowUI;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
@@ -162,7 +162,7 @@ $(document).ready(function () {
     $('body').css('height', 1500);
 
     var startNext = function () {
-        if (browser.isIE) {
+        if (browserUtils.isIE) {
             removeTestElements();
             window.setTimeout(start, 30);
         }
@@ -249,60 +249,60 @@ $(document).ready(function () {
                 equal(select.selectedIndex, 0);
 
                 pressPlaybackAutomation('right', function () {
-                    equal(select.selectedIndex, browser.isMozilla ? 1 : 0);
+                    equal(select.selectedIndex, browserUtils.isMozilla ? 1 : 0);
                     callback();
                 });
             },
             secondPressRightAction: function (callback) {
-                equal(select.selectedIndex, browser.isMozilla ? 1 : 0);
+                equal(select.selectedIndex, browserUtils.isMozilla ? 1 : 0);
 
                 pressPlaybackAutomation('right', function () {
-                    equal(select.selectedIndex, browser.isMozilla ? 2 : 0);
+                    equal(select.selectedIndex, browserUtils.isMozilla ? 2 : 0);
                     callback();
                 });
             },
             thirdPressRightAction:  function (callback) {
-                equal(select.selectedIndex, browser.isMozilla ? 2 : 0);
+                equal(select.selectedIndex, browserUtils.isMozilla ? 2 : 0);
 
                 pressPlaybackAutomation('right', function () {
-                    equal(select.selectedIndex, browser.isMozilla ? 3 : 0);
+                    equal(select.selectedIndex, browserUtils.isMozilla ? 3 : 0);
                     callback();
                 });
             },
             fourthPressRightAction: function (callback) {
-                equal(select.selectedIndex, browser.isMozilla ? 3 : 0);
+                equal(select.selectedIndex, browserUtils.isMozilla ? 3 : 0);
 
                 pressPlaybackAutomation('right', function () {
-                    equal(select.selectedIndex, browser.isMozilla ? 4 : 0);
+                    equal(select.selectedIndex, browserUtils.isMozilla ? 4 : 0);
                     callback();
                 });
             },
             firstPressLeftAction:   function (callback) {
-                equal(select.selectedIndex, browser.isMozilla ? 4 : 0);
+                equal(select.selectedIndex, browserUtils.isMozilla ? 4 : 0);
 
                 pressPlaybackAutomation('left', function () {
-                    equal(select.selectedIndex, browser.isMozilla ? 3 : 0);
+                    equal(select.selectedIndex, browserUtils.isMozilla ? 3 : 0);
                     callback();
                 });
             },
             secondPressLeftAction:  function (callback) {
-                equal(select.selectedIndex, browser.isMozilla ? 3 : 0);
+                equal(select.selectedIndex, browserUtils.isMozilla ? 3 : 0);
 
                 pressPlaybackAutomation('left', function () {
-                    equal(select.selectedIndex, browser.isMozilla ? 2 : 0);
+                    equal(select.selectedIndex, browserUtils.isMozilla ? 2 : 0);
                     callback();
                 });
             },
             thirdPressLeftAction:   function (callback) {
-                equal(select.selectedIndex, browser.isMozilla ? 2 : 0);
+                equal(select.selectedIndex, browserUtils.isMozilla ? 2 : 0);
 
                 pressPlaybackAutomation('left', function () {
-                    equal(select.selectedIndex, browser.isMozilla ? 1 : 0);
+                    equal(select.selectedIndex, browserUtils.isMozilla ? 1 : 0);
                     callback();
                 });
             },
             fourthPressLeftAction:  function () {
-                equal(select.selectedIndex, browser.isMozilla ? 1 : 0);
+                equal(select.selectedIndex, browserUtils.isMozilla ? 1 : 0);
 
                 pressPlaybackAutomation('left', function () {
                     equal(select.selectedIndex, 0);
@@ -349,25 +349,25 @@ $(document).ready(function () {
                 equal($select.selectedIndex, 0);
 
                 pressPlaybackAutomation('right', function () {
-                    equal($select.selectedIndex, browser.isIE || notChangeInChrome ? 0 : 1);
+                    equal($select.selectedIndex, browserUtils.isIE || notChangeInChrome ? 0 : 1);
                     callback();
                 });
             },
             pressDownSecondTime: function (callback) {
                 pressPlaybackAutomation('right', function () {
-                    equal($select.selectedIndex, browser.isIE || notChangeInChrome ? 0 : 3);
+                    equal($select.selectedIndex, browserUtils.isIE || notChangeInChrome ? 0 : 3);
                     callback();
                 });
             },
             pressUpFirstTime:    function (callback) {
                 pressPlaybackAutomation('left', function () {
-                    equal($select.selectedIndex, browser.isIE || notChangeInChrome ? 0 : 1);
+                    equal($select.selectedIndex, browserUtils.isIE || notChangeInChrome ? 0 : 1);
                     callback();
                 });
             },
             pressUpSecondTime:   function () {
                 pressPlaybackAutomation('up', function () {
-                    equal($select.selectedIndex, browser.isIE || notChangeInChrome ? 0 : 0);
+                    equal($select.selectedIndex, browserUtils.isIE || notChangeInChrome ? 0 : 0);
                     testCallback();
                 });
             }
@@ -375,7 +375,7 @@ $(document).ready(function () {
     };
 
     QUnit.testDone(function () {
-        if (!browser.isIE)
+        if (!browserUtils.isIE)
             removeTestElements();
         handlersLog                  = [];
         SETTINGS.ENABLE_SOURCE_INDEX = false;
@@ -452,7 +452,7 @@ $(document).ready(function () {
             },
             pressRightAction: function (callback) {
                 pressPlaybackAutomation('right', function () {
-                    equal(select.selectedIndex, browser.isIE ? 0 : 1);
+                    equal(select.selectedIndex, browserUtils.isIE ? 0 : 1);
                     callback();
                 });
             },
@@ -492,7 +492,7 @@ $(document).ready(function () {
             },
             pressRightAction: function (callback) {
                 pressPlaybackAutomation('right', function () {
-                    equal(select.selectedIndex, browser.isMozilla ? 1 : 0);
+                    equal(select.selectedIndex, browserUtils.isMozilla ? 1 : 0);
                     callback();
                 });
             },
@@ -941,7 +941,7 @@ $(document).ready(function () {
                 });
             },
             pressRightLeftKeysActionsForSelectWithOptgroups: function (callback) {
-                pressRightLeftKeysActionsForSelectWithOptgroups(select, callback, browser.isWebKit);
+                pressRightLeftKeysActionsForSelectWithOptgroups(select, callback, browserUtils.isWebKit);
             },
             closeSelectList:                                 function () {
                 clickPlaybackAutomation(select, {}, function () {
@@ -1157,7 +1157,7 @@ $(document).ready(function () {
         select.selectedIndex = 0;
         $(select).focus();
 
-        pressRightLeftKeysActionsForSelectWithOptgroups(select, startNext, browser.isWebKit);
+        pressRightLeftKeysActionsForSelectWithOptgroups(select, startNext, browserUtils.isWebKit);
     });
 
 
@@ -1282,9 +1282,9 @@ $(document).ready(function () {
 
             clickPlaybackAutomation($option[0], {}, function () {
                 equal(select.selectedIndex, 2);
-                if (browser.isMozilla)
+                if (browserUtils.isMozilla)
                     equal(handlersLog.join(), 'select mousedown,select mouseup,select click,option mousedown,option mouseup,select change,option click');
-                else if (browser.isIE)
+                else if (browserUtils.isIE)
                     equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select mousedown,select mouseup,select change,option click');
                 else
                     equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select change,select mouseup,select click');
@@ -1310,9 +1310,9 @@ $(document).ready(function () {
                     clickPlaybackAutomation($option[0], {}, function () {
                         equal(select.selectedIndex, 2);
 
-                        if (browser.isMozilla)
+                        if (browserUtils.isMozilla)
                             equal(handlersLog.join(), 'select mousedown,select mouseup,select click,option mousedown,option mouseup,select change,option click,select mousedown,select mouseup,select click,option mousedown,option mouseup,option click');
-                        else if (browser.isIE)
+                        else if (browserUtils.isIE)
                             equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select mousedown,select mouseup,select change,option click,select mousedown,select mouseup,select click,select mousedown,select mouseup,option click');
                         else
                             equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select change,select mouseup,select click,select mousedown,select mouseup,select click,select mouseup,select click');
@@ -1354,7 +1354,7 @@ $(document).ready(function () {
 
         clickPlaybackAutomation($option[0], {}, function () {
             equal(select.selectedIndex, 2);
-            equal(handlersLog.join(), browser.isIE ? 'select mousedown,select mouseup,select change,select click' : 'option mousedown,option mouseup,select change,option click');
+            equal(handlersLog.join(), browserUtils.isIE ? 'select mousedown,select mouseup,select change,select click' : 'option mousedown,option mouseup,select change,option click');
             startNext();
         });
     });
@@ -1371,7 +1371,7 @@ $(document).ready(function () {
 
             clickPlaybackAutomation($option[0], {}, function () {
                 equal(select.selectedIndex, 2);
-                equal(handlersLog.join(), browser.isIE ? 'select mousedown,select mouseup,select change,select click,select mousedown,select mouseup,select click' : 'option mousedown,option mouseup,select change,option click,option mousedown,option mouseup,option click');
+                equal(handlersLog.join(), browserUtils.isIE ? 'select mousedown,select mouseup,select change,select click,select mousedown,select mouseup,select click' : 'option mousedown,option mouseup,select change,option click,option mousedown,option mouseup,option click');
                 startNext();
             });
         });
@@ -1386,7 +1386,7 @@ $(document).ready(function () {
         select.selectedIndex = 0;
 
         clickPlaybackAutomation(select, {}, function () {
-            equal(handlersLog.join(), browser.isIE ? 'select mousedown,select mouseup,select click' : 'select mousedown,select mouseup,select click');
+            equal(handlersLog.join(), browserUtils.isIE ? 'select mousedown,select mouseup,select click' : 'select mousedown,select mouseup,select click');
             startNext();
         });
     });

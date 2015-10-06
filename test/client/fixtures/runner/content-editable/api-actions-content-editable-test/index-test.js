@@ -1,11 +1,11 @@
-var hammerhead = window.getTestCafeModule('hammerhead');
-var browser    = hammerhead.Util.Browser;
+var hammerhead   = window.getTestCafeModule('hammerhead');
+var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var ERROR_TYPE    = testCafeCore.ERROR_TYPE;
-var DOM           = testCafeCore.get('./util/dom');
-var textSelection = testCafeCore.get('./util/text-selection');
-var position      = testCafeCore.get('./util/position');
+var domUtils      = testCafeCore.get('./utils/dom');
+var textSelection = testCafeCore.get('./utils/text-selection');
+var position      = testCafeCore.get('./utils/position');
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var automation     = testCafeRunner.get('./automation/automation');
@@ -27,7 +27,7 @@ actionsAPI.init(stepIterator);
 cursor.init();
 
 var correctTestWaitingTime = function (time) {
-    if (browser.isTouchDevice && browser.isMozilla)
+    if (browserUtils.isTouchDevice && browserUtils.isMozilla)
         return time * 2;
 
     return time;
@@ -96,7 +96,7 @@ $(document).ready(function () {
         },
 
         startNext                     = function () {
-            if (browser.isIE) {
+            if (browserUtils.isIE) {
                 removeTestElements();
                 window.setTimeout(start, 30);
             }
@@ -118,12 +118,12 @@ $(document).ready(function () {
         },
 
         checkSelection                = function ($el, startNode, startOffset, endNode, endOffset) {
-            var curDocument = DOM.findDocument($el[0]),
+            var curDocument = domUtils.findDocument($el[0]),
                 selection   = curDocument.getSelection();
-            equal(DOM.getActiveElement(), $el[0]);
-            ok(DOM.isTheSameNode(startNode, selection.anchorNode), 'startNode correct');
+            equal(domUtils.getActiveElement(), $el[0]);
+            ok(domUtils.isTheSameNode(startNode, selection.anchorNode), 'startNode correct');
             equal(selection.anchorOffset, startOffset, 'startOffset correct');
-            ok(DOM.isTheSameNode(endNode, selection.focusNode), 'endNode correct');
+            ok(domUtils.isTheSameNode(endNode, selection.focusNode), 'endNode correct');
             equal(selection.focusOffset, endOffset, 'endOffset correct');
         },
 
@@ -145,8 +145,8 @@ $(document).ready(function () {
                 seventhElementInnerHTML = $('#7')[0].innerHTML;
             },
             restoreState: function () {
-                var curActiveElement = DOM.getActiveElement(),
-                    curDocument      = DOM.findDocument(curActiveElement),
+                var curActiveElement = domUtils.getActiveElement(),
+                    curDocument      = domUtils.findDocument(curActiveElement),
                     selection        = curDocument.getSelection();
                 if (firstElementInnerHTML) {
                     setInnerHTML($('#1'), firstElementInnerHTML);
@@ -187,7 +187,7 @@ $(document).ready(function () {
         $el     = null;
         $parent = null;
         stateHelper.restoreState();
-        if (!browser.isIE)
+        if (!browserUtils.isIE)
             removeTestElements();
         currentErrorCode    = null;
         currentErrorElement = null;
@@ -374,7 +374,7 @@ $(document).ready(function () {
                 actionsAPI.select($el[0], 21, 4);
             },
             function () {
-                if (browser.isIE)
+                if (browserUtils.isIE)
                     checkSelection($el, $el[0].childNodes[0], 4, $el[0].childNodes[2], 6);
                 else {
                     checkSelection($el, $el[0].childNodes[2], 6, $el[0].childNodes[0], 4);
@@ -393,7 +393,7 @@ $(document).ready(function () {
                 actionsAPI.select($el[0], 141, 4);
             },
             function () {
-                if (browser.isIE)
+                if (browserUtils.isIE)
                     checkSelection($el, $el[0].childNodes[0], 4, $el[0].childNodes[10], 1);
                 else {
                     checkSelection($el, $el[0].childNodes[10], 1, $el[0].childNodes[0], 4);
@@ -429,8 +429,8 @@ $(document).ready(function () {
                 actionsAPI.select($el[0]);
             },
             function () {
-                checkSelection($el, $el[0].childNodes[0], 0, $el[0].childNodes[2], browser.isMozilla ||
-                                                                                   browser.isIE ? 8 : 7);
+                checkSelection($el, $el[0].childNodes[0], 0, $el[0].childNodes[2], browserUtils.isMozilla ||
+                                                                                   browserUtils.isIE ? 8 : 7);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
@@ -458,10 +458,10 @@ $(document).ready(function () {
                 actionsAPI.select($el[0], -11);
             },
             function () {
-                if (browser.isIE)
+                if (browserUtils.isIE)
                     checkSelection($el, $el[0].childNodes[0], 12, $el[0].childNodes[2], 8);
                 else {
-                    checkSelection($el, $el[0].childNodes[2], browser.isMozilla ? 8 : 7, $el[0].childNodes[0], 12);
+                    checkSelection($el, $el[0].childNodes[2], browserUtils.isMozilla ? 8 : 7, $el[0].childNodes[0], 12);
                     equal(textSelection.hasInverseSelection($el[0]), true, 'selection direction correct');
                 }
             },
@@ -525,7 +525,7 @@ $(document).ready(function () {
                 actionsAPI.select(node1, node2);
             },
             function () {
-                checkSelection($parent, node1, 0, node2, browser.isIE || browser.isMozilla ? 8 : 7);
+                checkSelection($parent, node1, 0, node2, browserUtils.isIE || browserUtils.isMozilla ? 8 : 7);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
@@ -588,8 +588,8 @@ $(document).ready(function () {
                 actionsAPI.select(el, node);
             },
             function () {
-                checkSelection($parent, $parent[0].childNodes[1].childNodes[0], 0, $parent[0].childNodes[8], browser.isIE ||
-                                                                                                             browser.isMozilla ? 13 : 9);
+                checkSelection($parent, $parent[0].childNodes[1].childNodes[0], 0, $parent[0].childNodes[8], browserUtils.isIE ||
+                                                                                                             browserUtils.isMozilla ? 13 : 9);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
@@ -605,12 +605,12 @@ $(document).ready(function () {
                 actionsAPI.select(node, el);
             },
             function () {
-                if (browser.isIE)
-                    checkSelection($parent, $parent[0].childNodes[1].childNodes[0], 0, $parent[0].childNodes[8], browser.isIE ||
-                                                                                                                 browser.isMozilla ? 13 : 9);
+                if (browserUtils.isIE)
+                    checkSelection($parent, $parent[0].childNodes[1].childNodes[0], 0, $parent[0].childNodes[8], browserUtils.isIE ||
+                                                                                                                 browserUtils.isMozilla ? 13 : 9);
                 else {
-                    checkSelection($parent, $parent[0].childNodes[8], browser.isIE ||
-                                                                      browser.isMozilla ? 13 : 9, $parent[0].childNodes[1].childNodes[0], 0);
+                    checkSelection($parent, $parent[0].childNodes[8], browserUtils.isIE ||
+                                                                      browserUtils.isMozilla ? 13 : 9, $parent[0].childNodes[1].childNodes[0], 0);
                     equal(textSelection.hasInverseSelection($parent[0]), true, 'selection direction correct');
                 }
             },
@@ -660,8 +660,8 @@ $(document).ready(function () {
                 actionsAPI.select($el1, $el2);
             },
             function () {
-                checkSelection($parent, $parent.find('del')[0].childNodes[0], browser.isIE ||
-                                                                              browser.isMozilla ? 0 : 9, $parent.find('a')[1].childNodes[0], 4);
+                checkSelection($parent, $parent.find('del')[0].childNodes[0], browserUtils.isIE ||
+                                                                              browserUtils.isMozilla ? 0 : 9, $parent.find('a')[1].childNodes[0], 4);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
@@ -677,12 +677,12 @@ $(document).ready(function () {
                 actionsAPI.select($el1, $el2);
             },
             function () {
-                if (browser.isIE)
-                    checkSelection($parent, $parent.find('del')[0].childNodes[0], browser.isIE ||
-                                                                                  browser.isMozilla ? 0 : 9, $parent.find('a')[1].childNodes[0], 4);
+                if (browserUtils.isIE)
+                    checkSelection($parent, $parent.find('del')[0].childNodes[0], browserUtils.isIE ||
+                                                                                  browserUtils.isMozilla ? 0 : 9, $parent.find('a')[1].childNodes[0], 4);
                 else {
-                    checkSelection($parent, $parent.find('a')[1].childNodes[0], 4, $parent.find('del')[0].childNodes[0], browser.isIE ||
-                                                                                                                         browser.isMozilla ? 0 : 9);
+                    checkSelection($parent, $parent.find('a')[1].childNodes[0], 4, $parent.find('del')[0].childNodes[0], browserUtils.isIE ||
+                                                                                                                         browserUtils.isMozilla ? 0 : 9);
                     equal(textSelection.hasInverseSelection($parent[0]), true, 'selection direction correct');
                 }
             },
@@ -917,8 +917,8 @@ $(document).ready(function () {
                 });
             },
             function () {
-                expectedNode = browser.isIE && browser.version <
-                                               12 ? $el[0].childNodes[2].childNodes[0] : $el[0].childNodes[1].childNodes[0];
+                expectedNode = browserUtils.isIE && browserUtils.version <
+                                                    12 ? $el[0].childNodes[2].childNodes[0] : $el[0].childNodes[1].childNodes[0];
                 checkSelection($el, expectedNode, expectedNode.length, expectedNode, expectedNode.length);
                 equal($.trim($el.text()), fixedText);
             },

@@ -1,8 +1,8 @@
-var testCafeCore    = window.getTestCafeModule('testCafeCore');
-var DOM             = testCafeCore.get('./util/dom');
+var testCafeCore = window.getTestCafeModule('testCafeCore');
+var domUtils     = testCafeCore.get('./utils/dom');
 
-var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
-var actionsAPI                 = testCafeRunner.get('./api/actions');
+var testCafeRunner = window.getTestCafeModule('testCafeRunner');
+var actionsAPI     = testCafeRunner.get('./api/actions');
 
 
 $(document).ready(function () {
@@ -12,7 +12,7 @@ $(document).ready(function () {
         if (!$.isArray(target))
             return false;
         for (var i = 0; i < target.length; i++) {
-            if (!DOM.isDomElement(target[i]))
+            if (!domUtils.isDomElement(target[i]))
                 return false;
         }
         return true;

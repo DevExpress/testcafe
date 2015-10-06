@@ -1,9 +1,9 @@
 import COMPILER_CONST from '../../../compiler/old/const';
-import * as hammerheadAPI from '../deps/hammerhead';
+import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import * as sourceIndexTracker from '../source-index';
 
-var messageSandbox = hammerheadAPI.MessageSandbox;
+var messageSandbox = hammerhead.messageSandbox;
 
 var $                     = testCafeCore.$;
 var SETTINGS              = testCafeCore.SETTINGS;
@@ -380,13 +380,13 @@ AssertionsAPI.prototype.notEq = function (actual, unexpected, message, callback)
 AssertionsAPI.assert = function (operator, args, callback, context) {
     function onMessage (e) {
         if (e.message.cmd === CROSS_DOMAIN_MESSAGES.ASSERT_RESPONSE_CMD) {
-            messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED, onMessage);
+            messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
             callback(e.message.err);
         }
     }
 
     if (context) {
-        messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, onMessage);
+        messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
 
         var msg = {
             cmd:      CROSS_DOMAIN_MESSAGES.ASSERT_REQUEST_CMD,

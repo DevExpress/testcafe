@@ -1,10 +1,10 @@
-var hammerhead = window.getTestCafeModule('hammerhead');
-var browser    = hammerhead.Util.Browser;
+var hammerhead   = window.getTestCafeModule('hammerhead');
+var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
 var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
-var position     = testCafeCore.get('./util/position');
+var position     = testCafeCore.get('./utils/position');
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var actionsAPI     = testCafeRunner.get('./api/actions');
@@ -22,7 +22,7 @@ var stepIterator = new StepIterator();
 actionsAPI.init(stepIterator);
 
 var correctTestWaitingTime = function (time) {
-    if (browser.isTouchDevice && browser.isMozilla)
+    if (browserUtils.isTouchDevice && browserUtils.isMozilla)
         return time * 2;
 
     return time;
@@ -71,7 +71,7 @@ $(document).ready(function () {
 
         //utils
         asyncActionCallback,
-        hasTouchEvents     = browser.hasTouchEvents,
+        hasTouchEvents     = browserUtils.hasTouchEvents,
         getValueFromPx     = function (px) {
             return parseInt(px.replace('px', ''));
         },

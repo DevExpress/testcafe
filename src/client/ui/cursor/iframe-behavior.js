@@ -1,9 +1,9 @@
-import * as hammerheadAPI from './../deps/hammerhead';
+import hammerhead from './../deps/hammerhead';
 import testCafeCore from './../deps/testcafe-core';
 import CursorBaseBehavior from './base-behavior';
 
-var messageSandbox = hammerheadAPI.MessageSandbox;
-var browserUtils   = hammerheadAPI.Util.Browser;
+var messageSandbox = hammerhead.messageSandbox;
+var browserUtils   = hammerhead.utils.browser;
 
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
 var serviceUtils          = testCafeCore.serviceUtils;
@@ -20,14 +20,14 @@ serviceUtils.inherit(CursorIFrameBehavior, CursorBaseBehavior);
 CursorIFrameBehavior.prototype._bindMessageHandler = function (msg, callback) {
     function _onMessageHandler (e) {
         if (e.message && e.message.cmd === msg) {
-            messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED, _onMessageHandler);
+            messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, _onMessageHandler);
 
             if (callback)
                 callback();
         }
     }
 
-    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED, _onMessageHandler);
+    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, _onMessageHandler);
 };
 
 CursorIFrameBehavior.prototype.start = function (position) {

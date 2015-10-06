@@ -1,13 +1,13 @@
-import * as hammerheadAPI from '../../deps/hammerhead';
+import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import typeCharPlaybackAutomation from '../playback/type-char';
 import async from '../../deps/async';
 
-var browserUtils          = hammerheadAPI.Util.Browser;
-var eventSimulator        = hammerheadAPI.EventSandbox.EventSimulator;
-var focusBlur             = hammerheadAPI.EventSandbox.FocusBlur;
-var nativeMethods         = hammerheadAPI.NativeMethods;
-var elementEditingWatcher = hammerheadAPI.EventSandbox.ElementEditingWatcher;
+var browserUtils          = hammerhead.utils.browser;
+var eventSimulator        = hammerhead.eventSandbox.eventSimulator;
+var focusBlurSandbox      = hammerhead.eventSandbox.focusBlur;
+var nativeMethods         = hammerhead.nativeMethods;
+var elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
 
 var $             = testCafeCore.$;
 var domUtils      = testCafeCore.domUtils;
@@ -611,7 +611,7 @@ var supportedShortcutHandlers = (function () {
     function focusNextElement (element, callback) {
         var nextElement = domUtils.getNextFocusableElement(element);
 
-        focusBlur.focus(nextElement, function () {
+        focusBlurSandbox.focus(nextElement, function () {
             if (domUtils.isTextEditableInput(nextElement))
                 textSelection.select(nextElement);
 
@@ -622,7 +622,7 @@ var supportedShortcutHandlers = (function () {
     function focusPrevElement (element, callback) {
         var prevElement = domUtils.getNextFocusableElement(element, true);
 
-        focusBlur.focus(prevElement, function () {
+        focusBlurSandbox.focus(prevElement, function () {
             if (domUtils.isTextEditableInput(prevElement))
                 textSelection.select(prevElement);
 

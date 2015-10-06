@@ -1,4 +1,4 @@
-import * as hammerheadAPI from '../deps/hammerhead';
+import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import clickPlayback from './playback/click';
 import dblClickPlayback from './playback/dblclick';
@@ -10,9 +10,9 @@ import selectPlayback from './playback/select';
 import typePlayback from './playback/type';
 import async from '../deps/async';
 
-var browserUtils   = hammerheadAPI.Util.Browser;
-var eventSimulator = hammerheadAPI.EventSandbox.EventSimulator;
-var listeners      = hammerheadAPI.EventSandbox.Listeners;
+var browserUtils   = hammerhead.utils.browser;
+var eventSimulator = hammerhead.eventSandbox.eventSimulator;
+var listeners      = hammerhead.eventSandbox.listeners;
 
 var $          = testCafeCore.$;
 var SETTINGS   = testCafeCore.SETTINGS;

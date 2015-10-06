@@ -1,4 +1,4 @@
-import * as hammerheadAPI from './deps/hammerhead';
+import hammerhead from './deps/hammerhead';
 
 import RunnerBase from './runner-base';
 import Runner from './runner';
@@ -17,4 +17,4 @@ Object.defineProperty(window, '%testCafeRunner%', {
     value:        exports
 });
 
-hammerheadAPI.on(hammerheadAPI.IFRAME_READY_TO_INIT, e => initTestCafeRunner(e.iframe.contentWindow, true));
+hammerhead.on(hammerhead.EVENTS.iframeReadyToInit, e => initTestCafeRunner(e.iframe.contentWindow, true));

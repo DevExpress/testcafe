@@ -1,9 +1,9 @@
-var hammerhead = window.getTestCafeModule('hammerhead');
-var browser    = hammerhead.Util.Browser;
+var hammerhead   = window.getTestCafeModule('hammerhead');
+var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
-var keyChar      = testCafeCore.get('./util/key-char');
-var event        = testCafeCore.get('./util/event');
+var keyChar      = testCafeCore.get('./utils/key-char');
+var event        = testCafeCore.get('./utils/event');
 
 var testCafeRunner    = window.getTestCafeModule('testCafeRunner');
 var automation        = testCafeRunner.get('./automation/automation');
@@ -317,7 +317,7 @@ $(document).ready(function () {
             { type: 'keydown', keyCode: KEYCODES.end, ctrlKey: true }
         ];
 
-        if (browser.isMozilla)
+        if (browserUtils.isMozilla)
             expectedEvents.push({ type: 'keypress', keyCode: KEYCODES.end, charCode: KEYCODES.end, ctrlKey: true });
 
         expectedEvents.push({ type: 'keyup', keyCode: KEYCODES.end, ctrlKey: true });
@@ -382,7 +382,7 @@ $(document).ready(function () {
         keyPressSimulator('ctrl+a', function () {
             keyPressSimulator('delete', function () {
 
-                equal(input.value, browser.isMozilla ? value : '');
+                equal(input.value, browserUtils.isMozilla ? value : '');
 
                 start();
             });

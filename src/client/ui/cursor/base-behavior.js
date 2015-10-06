@@ -1,7 +1,7 @@
-import * as hammerheadAPI from './../deps/hammerhead';
+import hammerhead from './../deps/hammerhead';
 import testCafeCore from './../deps/testcafe-core';
 
-var shadowUI = hammerheadAPI.ShadowUI;
+var shadowUI = hammerhead.shadowUI;
 
 var $             = testCafeCore.$;
 var serviceUtils  = testCafeCore.serviceUtils;

@@ -1,5 +1,5 @@
 var hammerhead  = window.getTestCafeModule('hammerhead');
-var urlUtil     = hammerhead.get('../utils/url');
+var urlUtils    = hammerhead.get('../utils/url');
 var HH_CONST    = hammerhead.get('../const');
 var HH_SETTINGS = hammerhead.get('./settings').get();
 
@@ -65,14 +65,14 @@ $(document).ready(function () {
         xhrBarrier.startBarrier(function () {
             ok(!TestCafeClientReqComplete);
             jqxhr.abort();
-            HH_SETTINGS.SERVICE_MSG_URL = null;
+            HH_SETTINGS.serviceMsgUrl = null;
             start();
         });
 
-        HH_SETTINGS.SERVICE_MSG_URL = '/xhr-test/8000';
+        HH_SETTINGS.serviceMsgUrl = '/xhr-test/8000';
 
         var action = function (callback) {
-            jqxhr = $.ajax(HH_SETTINGS.SERVICE_MSG_URL);
+            jqxhr = $.ajax(HH_SETTINGS.serviceMsgUrl);
 
             jqxhr.always(function () {
                 TestCafeClientReqComplete = true;
@@ -112,101 +112,6 @@ $(document).ready(function () {
             jqxhr.abort();
         }, 500);
         xhrBarrier.waitBarrier();
-    });
-
-    asyncTest('Redirect requests to proxy', function () {
-        expect(3);
-
-        xhrBarrier.init();
-
-        xhrBarrier.startBarrier(function () {
-            start();
-        });
-
-        var action = function (callback) {
-            $.get('/xhr-test/100', function (url) {
-                strictEqual(url, '/ownerToken!jobUid/https://example.com/xhr-test/100');
-            });
-
-            $.get('http://' + window.location.host + '/xhr-test/200', function (url) {
-                strictEqual(url, '/ownerToken!jobUid/https://example.com/xhr-test/200');
-            });
-
-            $.get('https://example.com/xhr-test/300', function (url) {
-                strictEqual(url, '/ownerToken!jobUid/https://example.com/xhr-test/300');
-            });
-            callback();
-        };
-
-        action(function () {
-            xhrBarrier.waitBarrier();
-        });
-    });
-
-    asyncTest('Unsupported protocol', function () {
-        var jqxhr = null;
-
-        expect(1);
-
-        xhrBarrier.init();
-
-        var handler = function (err) {
-            strictEqual(err.code, urlUtil.URL_UTIL_PROTOCOL_IS_NOT_SUPPORTED);
-            xhrBarrier.events.off(xhrBarrier.XHR_BARRIER_ERROR, handler);
-            start();
-        };
-
-        xhrBarrier.events.on(xhrBarrier.XHR_BARRIER_ERROR, handler);
-
-        $.get('gopher:test.domain');
-    });
-
-    asyncTest('TC request in not processed by page processor', function () {
-        var ready = function () {
-            if (this.readyState === this.DONE)
-                ok(this.responseText.indexOf(HH_CONST.DOM_SANDBOX_STORED_ATTR_POSTFIX) === -1);
-        };
-
-        expect(1);
-
-        xhrBarrier.init();
-
-        xhrBarrier.startBarrier(function () {
-            HH_SETTINGS.SERVICE_MSG_URL = null;
-            start();
-        });
-
-        HH_SETTINGS.SERVICE_MSG_URL = '/wrap-responseText-test/json';
-
-        var xhr = new XMLHttpRequest();
-
-        xhr.onreadystatechange = ready;
-        xhr.open('GET', HH_SETTINGS.SERVICE_MSG_URL, false);
-        xhr.send(null);
-
-        xhrBarrier.waitBarrier();
-    });
-
-    asyncTest('B238528 - Unexpected text modifying during typing text in the search input on the http://www.google.co.uk', function () {
-        var timeout = 100;
-
-        xhrBarrier.init();
-
-        var ready = function () {
-            if (this.readyState === this.DONE) {
-                ok(syncActionExecuted);
-                start();
-            }
-        };
-
-        var syncActionExecuted = false,
-            xhr                = new XMLHttpRequest();
-
-        xhr.onreadystatechange = ready;
-        xhr.open('GET', '/xhr-test/' + timeout);
-        xhr.send(null);
-
-        syncActionExecuted = true;
     });
 
     asyncTest('T135542 - act.wait method works too-o-o-o long', function () {

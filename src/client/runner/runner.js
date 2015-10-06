@@ -1,9 +1,9 @@
-import * as hammerheadAPI from './deps/hammerhead';
+import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 import RunnerBase from './runner-base';
 import * as browser from '../browser';
 
-var browserUtils = hammerheadAPI.Util.Browser;
+var browserUtils = hammerhead.utils.browser;
 
 var SETTINGS     = testCafeCore.SETTINGS;
 var COMMAND      = testCafeCore.COMMAND;
@@ -25,11 +25,11 @@ serviceUtils.inherit(Runner, RunnerBase);
 
 //Static
 Runner.startHeartbeat = function (heartbeatUrl) {
-    browser.startHeartbeat(heartbeatUrl, hammerheadAPI.NativeMethods.XMLHttpRequest);
+    browser.startHeartbeat(heartbeatUrl, hammerhead.nativeMethods.XMLHttpRequest);
 };
 
 Runner.checkStatus = function () {
-    browser.checkStatus(SETTINGS.get().BROWSER_STATUS_URL, hammerheadAPI.NativeMethods.XMLHttpRequest);
+    browser.checkStatus(SETTINGS.get().BROWSER_STATUS_URL, hammerhead.nativeMethods.XMLHttpRequest);
 };
 
 

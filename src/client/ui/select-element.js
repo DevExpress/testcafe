@@ -1,11 +1,11 @@
 //NOTE: we can't manipulate (open/close option list) with a native select element during test running, so we
 // draw our custom option list to emulate this.
-import * as hammerheadAPI from './deps/hammerhead';
+import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 
-var shadowUI       = hammerheadAPI.ShadowUI;
-var browserUtils   = hammerheadAPI.Util.Browser;
-var eventSimulator = hammerheadAPI.EventSandbox.EventSimulator;
+var shadowUI       = hammerhead.shadowUI;
+var browserUtils   = hammerhead.utils.browser;
+var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
 var $             = testCafeCore.$;
 var positionUtils = testCafeCore.positionUtils;
