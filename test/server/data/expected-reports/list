@@ -13,6 +13,7 @@ Running tests in: Chrome, Firefox
          Actual:   [0]: "00000000000"
                          ^
 
+
       2) Chrome
          Assertion failed at step "Step":
 
@@ -21,6 +22,7 @@ Running tests in: Chrome, Firefox
          Expected: not "test"
          Actual:   "test"
 
+
       3) Firefox
          Assertion failed at step "Step":
 
@@ -28,6 +30,7 @@ Running tests in: Chrome, Firefox
 
          Expected: not null, not undefined, not false, not NaN and not ''
          Actual:   false
+
 
   ✓ fixture1 - fixture1test3
   ✓ fixture2 - fixture2test1
@@ -44,6 +47,7 @@ Running tests in: Chrome, Firefox
          Expected: [0]: "12345678901"
          Actual:   [0]: "00000000000"
                          ^
+
 
 
   2/6 failed (15m 25s)

@@ -35,6 +35,7 @@ export default class ListReporter extends SpecReporter {
             errs.forEach((err, idx) => {
                 this._newline()
                     ._write(this._formatError(err, `${idx + 1}) `))
+                    ._newline()
                     ._newline();
             });
         }

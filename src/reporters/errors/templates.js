@@ -8,7 +8,7 @@ function escapeNewLines (str) {
 }
 
 function getMsgPrefix (err) {
-    return `${err.userAgent}\n`;
+    return `<span data-type="user-agent">${err.userAgent}</span>\n`;
 }
 
 function getAssertionMsgPrefix (err) {
