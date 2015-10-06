@@ -20,6 +20,8 @@ export default class BrowserConnectionGateway {
         proxy.GET(url, (req, res, si, params) => {
             var connection = this.connections[params.id];
 
+            preventCaching(res);
+
             if (connection)
                 handler(req, res, connection);
             else
@@ -69,10 +71,8 @@ export default class BrowserConnectionGateway {
     }
 
     static onIdle (req, res, connection) {
-        if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
-            preventCaching(res);
+        if (BrowserConnectionGateway.ensureConnectionReady(res, connection))
             res.end(connection.renderIdlePage());
-        }
     }
 
     static onStatusRequest (req, res, connection) {
