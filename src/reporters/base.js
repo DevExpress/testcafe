@@ -1,9 +1,9 @@
 import tty from 'tty';
 import chalk from 'chalk';
-import wordwrap from '../utils/word-wrap';
+import find from 'array-find';
 import indentString from 'indent-string';
-import OS from '../utils/os';
-import { find } from '../utils/array';
+import OS from 'os-family';
+import wordwrap from '../utils/word-wrap';
 import format from './errors/format';
 import plainTextDecorator from './errors/decorators/plain-text';
 import ttyDecorator from './errors/decorators/tty';

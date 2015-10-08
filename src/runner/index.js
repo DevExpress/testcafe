@@ -1,10 +1,9 @@
 import { Promise } from 'es6-promise';
 import { resolve as resolvePath } from 'path';
+import flatten from 'flatten';
 import Bootstrapper from './bootstrapper';
 import Task from './task';
 import LocalBrowserConnection from '../browser-connection/local';
-import { concatFlattened } from '../utils/array';
-import fallbackDefault from '../utils/fallback-default';
 
 export default class Runner {
     constructor (proxy, browserConnectionGateway) {
@@ -55,7 +54,7 @@ export default class Runner {
 
     // API
     src (...sources) {
-        sources = concatFlattened([], sources).map(path => resolvePath(path));
+        sources = flatten(sources).map(path => resolvePath(path));
 
         this.bootstrapper.sources = this.bootstrapper.sources.concat(sources);
 
@@ -63,7 +62,7 @@ export default class Runner {
     }
 
     browsers (...browsers) {
-        this.bootstrapper.browsers = concatFlattened(this.bootstrapper.browsers, browsers);
+        this.bootstrapper.browsers = this.bootstrapper.browsers.concat(flatten(browsers));
 
         return this;
     }
@@ -91,8 +90,8 @@ export default class Runner {
     }
 
     async run ({ failOnJsErrors, quarantineMode } = {}) {
-        this.opts.failOnJsErrors = fallbackDefault(failOnJsErrors, true);
-        this.opts.quarantineMode = fallbackDefault(quarantineMode, false);
+        this.opts.failOnJsErrors = failOnJsErrors === void 0 ? true : failOnJsErrors;
+        this.opts.quarantineMode = quarantineMode === void 0 ? false : quarantineMode;
 
         var { Reporter, browserConnections, tests } = await this.bootstrapper.createRunnableConfiguration();
 
