@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import BrowserJob from './browser-job';
-import { remove } from '../utils/array';
+import remove from '../utils/array-remove';
 
 
 export default class Task extends EventEmitter {

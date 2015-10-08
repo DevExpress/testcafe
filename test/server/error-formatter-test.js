@@ -1,11 +1,11 @@
 var expect             = require('chai').expect;
+var read               = require('read-file-relative').readSync;
 var util               = require('util');
 var EventEmitter       = require('events').EventEmitter;
 var plainTextDecorator = require('../../lib/reporters/errors/decorators/plain-text');
-var readFile           = require('../../lib/utils/read-file-relative');
 var reporters          = require('../../lib/reporters');
 var TYPE               = require('../../lib/reporters/errors/type');
-var remove             = require('../../lib/utils/array').remove;
+var remove             = require('../../lib/utils/array-remove');
 
 
 var untestedErrorCodes = Object.keys(TYPE);
@@ -51,7 +51,7 @@ function assertErrorMessage (file, err) {
 
     reporter._write(reporter._formatError(err));
 
-    var expectedMsg = readFile('./data/expected-test-errors/' + file)
+    var expectedMsg = read('./data/expected-test-errors/' + file)
         .replace(/(\r\n)/gm, '\n')
         .trim();
 

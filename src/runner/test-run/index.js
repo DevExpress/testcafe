@@ -1,7 +1,7 @@
+import { readSync as read } from 'read-file-relative';
 import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
 import COMMAND from './command';
-import read from '../../utils/read-file-relative';
 
 
 // Const

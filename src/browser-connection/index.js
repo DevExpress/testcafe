@@ -1,10 +1,10 @@
 import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { parse as parseUserAgent } from 'useragent';
-import read from '../utils/read-file-relative';
+import { readSync as read } from 'read-file-relative';
 import COMMAND from './command';
 import { MESSAGE, getText } from '../messages';
-import { remove } from '../utils/array';
+import remove from '../utils/array-remove';
 
 
 // Const
