@@ -1,8 +1,10 @@
 import { readSync as read } from 'read-file-relative';
 import { Proxy } from 'testcafe-hammerhead';
+import * as endpointUtils from 'endpoint-utils';
 import BrowserConnectionGateway from './browser-connection/gateway';
 import BrowserConnection from './browser-connection';
 import Runner from './runner';
+import { MESSAGE, getText } from './messages';
 
 
 // Const
@@ -14,8 +16,8 @@ const UI_SPRITE     = read('./client/ui/sprite.png', true);
 
 
 // TestCafe
-export default class TestCafe {
-    constructor (port1, port2, hostname = '127.0.0.1') {
+class TestCafe {
+    constructor (hostname, port1, port2) {
         this.proxy                    = new Proxy(hostname, port1, port2);
         this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy);
 
@@ -44,3 +46,40 @@ export default class TestCafe {
         this.proxy.close();
     }
 }
+
+// Factory function and validations
+async function getValidHostname (hostname) {
+    if (hostname) {
+        var valid = await endpointUtils.isMyHostname(hostname);
+
+        if (!valid)
+            throw new Error(getText(MESSAGE.invalidHostname, hostname));
+    }
+    else
+        hostname = await endpointUtils.getMyHostname();
+
+    return hostname;
+}
+
+async function getValidPort (port) {
+    if (port) {
+        var isFree = await endpointUtils.isFreePort(port);
+
+        if (!isFree)
+            throw new Error(getText(MESSAGE.portIsNotFree, port));
+    }
+    else
+        port = await endpointUtils.getFreePort();
+
+    return port;
+}
+
+export default async function (hostname, port1, port2) {
+    [hostname, port1, port2] = await Promise.all([
+        getValidHostname(hostname),
+        getValidPort(port1),
+        getValidPort(port2)
+    ]);
+
+    return new TestCafe(hostname, port1, port2);
+};

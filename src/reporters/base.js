@@ -1,25 +1,23 @@
-import tty from 'tty';
 import chalk from 'chalk';
 import find from 'array-find';
 import indentString from 'indent-string';
 import OS from 'os-family';
 import wordwrap from '../utils/word-wrap';
+import getViewportWidth from '../utils/get-viewport-width';
 import format from './errors/format';
 import plainTextDecorator from './errors/decorators/plain-text';
 import ttyDecorator from './errors/decorators/tty';
 
 export default class BaseReporter {
-    constructor (task, outStream = process.stdout, errorDecorator = null) {
-        this.DEFAULT_VIEWPORT_WIDTH = 78;
-
-        this.outStream = outStream;
+    constructor (task, outStream, errorDecorator) {
+        this.outStream = outStream || process.stdout;
 
         var isTTY = !!this.outStream.isTTY;
 
         this.errorDecorator = errorDecorator || (isTTY ? ttyDecorator : plainTextDecorator);
 
         this.style         = new chalk.constructor({ enabled: isTTY });
-        this.viewportWidth = this._getViewportWidth(isTTY);
+        this.viewportWidth = getViewportWidth(isTTY);
         this.useWordWrap   = false;
         this.indent        = 0;
 
@@ -66,16 +64,6 @@ export default class BaseReporter {
             if (err1 < err2) return -1;
             return 0;
         });
-    }
-
-    _getViewportWidth (isTTY) {
-        if (isTTY && tty.isatty(1) && tty.isatty(2)) {
-            return process.stdout.getWindowSize ?
-                   process.stdout.getWindowSize(1)[0] :
-                   tty.getWindowSize()[1];
-        }
-
-        return this.DEFAULT_VIEWPORT_WIDTH;
     }
 
     _getReportItemForTestRun (testRun) {

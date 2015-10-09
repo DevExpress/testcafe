@@ -66,7 +66,7 @@ export default class TestRun extends Session {
             browserHeartbeatUrl:   this.browserConnection.heartbeatUrl,
             browserStatusUrl:      this.browserConnection.statusUrl,
             takeScreenshotOnFails: this.opts.takeScreenshotOnFails,
-            failOnJsErrors:        this.opts.failOnJsErrors,
+            skipJsErrors:          this.opts.skipJsErrors,
             nativeDialogsInfo:     JSON.stringify(this.nativeDialogsInfo),
             iFrameTestRunScript:   JSON.stringify(this._getIFramePayloadScript())
         });
@@ -78,7 +78,7 @@ export default class TestRun extends Session {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             sharedJs:              sharedJs,
             takeScreenshotOnFails: this.opts.takeScreenshotOnFails,
-            failOnJsErrors:        this.opts.failOnJsErrors,
+            skipJsErrors:          this.opts.skipJsErrors,
             nativeDialogsInfo:     JSON.stringify(this.nativeDialogsInfo)
         });
     }
