@@ -1,9 +1,9 @@
-var path         = require('path');
-var expect       = require('chai').expect;
-var request      = require('request');
-var TestCafe     = require('../../lib/');
-var SpecReporter = require('../../lib/reporters/spec');
-var COMMAND      = require('../../lib/browser-connection/command');
+var path           = require('path');
+var expect         = require('chai').expect;
+var request        = require('request');
+var createTestCafe = require('../../lib/');
+var SpecReporter   = require('../../lib/reporters/spec');
+var COMMAND        = require('../../lib/browser-connection/command');
 
 describe('Runner', function () {
     var testCafe   = null;
@@ -12,12 +12,17 @@ describe('Runner', function () {
 
 
     // Fixture setup/teardown
-    before(function () {
-        testCafe   = new TestCafe(1335, 1336);
-        connection = testCafe.createBrowserConnection();
+    before(function (done) {
+        createTestCafe('127.0.0.1', 1335, 1336)
+            .then(function (tc) {
+                testCafe   = tc;
+                connection = testCafe.createBrowserConnection();
 
-        connection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                             '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+                connection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                     '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+
+                done();
+            });
     });
 
     after(function () {
@@ -88,8 +93,7 @@ describe('Runner', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    expect(err.message).eql('No browser selected to test against. Use the ' +
-                                            'Runner.browsers() method to specify the target browser.');
+                    expect(err.message).eql('No browser selected to test against.');
                 });
 
             run
@@ -174,8 +178,7 @@ describe('Runner', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    expect(err.message).eql('No test file specified. Use the Runner.src() ' +
-                                            'function to specify one or several test files to run.');
+                    expect(err.message).eql('No test file specified.');
                 });
 
             run
@@ -412,7 +415,7 @@ describe('Runner', function () {
 
             var run = runner
                 .browsers(brokenConnection)
-                .reporter('list')
+                .reporter('json')
                 .src('test/server/data/test-suite/top.test.js')
                 .run()
                 .then(function () {

@@ -19,7 +19,7 @@ export default class JSONReporter extends BaseReporter {
 
     _reportTaskStart (startTime, userAgents) {
         this.report.startTime  = startTime;
-        this.report.userAgents = userAgents.map(ua => ua.toString());
+        this.report.userAgents = userAgents;
     }
 
     _reportFixtureStart (name, path) {

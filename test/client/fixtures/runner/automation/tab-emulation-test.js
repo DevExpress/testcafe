@@ -54,7 +54,7 @@ $(document).ready(function () {
         var $body        = $('body');
         $inputText       = $('<input type="text">').attr('value', 'text input').addClass(TEST_ELEMENT_CLASS).appendTo($body);
         $textarea        = $('<textarea>').css('height', 100).attr('value', 'textarea').addClass(TEST_ELEMENT_CLASS).appendTo($body);
-        $link            = $('<a>').attr('href', 'http://www.google.ru/').attr('tabIndex', 2).text('Link with href').addClass(TEST_ELEMENT_CLASS).appendTo($body);
+        $link            = $('<a>').attr('href', 'http://www.example.org/').attr('tabIndex', 2).text('Link with href').addClass(TEST_ELEMENT_CLASS).appendTo($body);
         $linkWithoutHref = $('<a>').text('Link without href').addClass(TEST_ELEMENT_CLASS).appendTo($body);
         $div             = $('<div></div>').text('div tag').addClass(TEST_ELEMENT_CLASS).appendTo($body);
         $divWithTabIndex = $('<div></div>').text('div tag with tabIndex').attr('tabIndex', 1).addClass(TEST_ELEMENT_CLASS).appendTo($body);

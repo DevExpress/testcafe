@@ -1,9 +1,9 @@
-var expect            = require('chai').expect;
-var Promise           = require('es6-promise').Promise;
-var promisify         = require('es6-promisify');
-var request           = require('request');
-var TestCafe          = require('../../lib/');
-var COMMAND           = require('../../lib/browser-connection/command');
+var expect         = require('chai').expect;
+var Promise        = require('es6-promise').Promise;
+var promisify      = require('es6-promisify');
+var request        = require('request');
+var createTestCafe = require('../../lib/');
+var COMMAND        = require('../../lib/browser-connection/command');
 
 
 var promisedRequest = promisify(request);
@@ -15,8 +15,12 @@ describe('Browser connection', function () {
 
 
     // Fixture setup/teardown
-    before(function () {
-        testCafe = new TestCafe(1335, 1336);
+    before(function (done) {
+        createTestCafe('127.0.0.1', 1335, 1336)
+            .then(function (tc) {
+                testCafe = tc;
+                done();
+            });
     });
 
     after(function () {
@@ -54,7 +58,7 @@ describe('Browser connection', function () {
         request(options, function (err, res) {
             expect(eventFired).to.be.true;
             expect(connection.ready).to.be.true;
-            expect(connection.userAgent.toAgent()).eql('Chrome 41.0.2227');
+            expect(connection.userAgent).eql('Chrome 41.0.2227 / Mac OS X 10.10.1');
             expect(res.statusCode).eql(302);
             expect(res.headers['location']).eql(connection.idleUrl);
 

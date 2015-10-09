@@ -14,7 +14,7 @@ export default class Runner {
         this.opts = {
             screenshotPath:        null,
             takeScreenshotOnFails: false,
-            failOnJsErrors:        true,
+            skipJsErrors:          false,
             quarantineMode:        false,
             reportOutStream:       void 0,
             errorDecorator:        void 0
@@ -48,7 +48,7 @@ export default class Runner {
 
             task.on('browser-job-done', job => Runner._freeBrowserConnection(job.browserConnection, bcErrorHandler));
 
-            task.once('done', () => resolve(reporter.passed === reporter.total));
+            task.once('done', () => resolve(reporter.total - reporter.passed));
         });
     }
 
@@ -69,10 +69,9 @@ export default class Runner {
     }
 
     reporter (reporter, outStream, errorDecorator) {
-        this.bootstrapper.reporter       = reporter;
-        this.bootstrapper.errorDecorator = errorDecorator;
-        this.opts.reportOutStream        = outStream;
-        this.opts.errorDecorator         = errorDecorator;
+        this.bootstrapper.reporter = reporter;
+        this.opts.reportOutStream  = outStream;
+        this.opts.errorDecorator   = errorDecorator;
 
         return this;
     }
@@ -90,9 +89,9 @@ export default class Runner {
         return this;
     }
 
-    async run ({ failOnJsErrors, quarantineMode } = {}) {
-        this.opts.failOnJsErrors = failOnJsErrors === void 0 ? true : failOnJsErrors;
-        this.opts.quarantineMode = quarantineMode === void 0 ? false : quarantineMode;
+    async run ({ skipJsErrors, quarantineMode } = {}) {
+        this.opts.skipJsErrors   = !!skipJsErrors;
+        this.opts.quarantineMode = !!quarantineMode;
 
         var { Reporter, browserConnections, tests } = await this.bootstrapper.createRunnableConfiguration();
 

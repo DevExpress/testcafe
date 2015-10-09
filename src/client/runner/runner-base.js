@@ -80,7 +80,7 @@ var RunnerBase = function () {
         //NOTE: in this case we should to stop test iterator in iFrame
         if (err.inIFrame && !SETTINGS.get().PLAYBACK)
             runner.stepIterator.stop();
-        else if (SETTINGS.get().FAIL_ON_JS_ERRORS || SETTINGS.get().RECORDING) {
+        else if (!SETTINGS.get().SKIP_JS_ERRORS || SETTINGS.get().RECORDING) {
             runner._onError({
                 code:      ERROR_TYPE.uncaughtJSError,
                 scriptErr: err.msg,
