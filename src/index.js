@@ -1,8 +1,8 @@
+import { readSync as read } from 'read-file-relative';
 import { Proxy } from 'testcafe-hammerhead';
 import BrowserConnectionGateway from './browser-connection/gateway';
 import BrowserConnection from './browser-connection';
 import Runner from './runner';
-import read from './utils/read-file-relative';
 
 
 // Const

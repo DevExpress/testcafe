@@ -3,7 +3,7 @@ var EventEmitter       = require('events').EventEmitter;
 var util               = require('util');
 var Promise            = require('es6-promise').Promise;
 var reporters          = require('../../lib/reporters');
-var readFile           = require('../../lib/utils/read-file-relative');
+var read               = require('read-file-relative').readSync;
 var TYPE               = require('../../lib/reporters/errors/type');
 var ttyDecorator       = require('../../lib/reporters/errors/decorators/tty');
 var plainTextDecorator = require('../../lib/reporters/errors/decorators/plain-text');
@@ -274,7 +274,7 @@ describe('Reporters', function () {
         var outStreamMock  = createOutStreamMock();
         var Reporter       = reporters[reporterAlias];
         var reporter       = new Reporter(taskMock, outStreamMock);
-        var expectedReport = readFile('./data/expected-reports/' + reporterAlias);
+        var expectedReport = read('./data/expected-reports/' + reporterAlias);
 
         // NOTE: replace dates in reporting routines with the fixed values for the testing purposes
         var origReportTaskStart = reporter._reportTaskStart;

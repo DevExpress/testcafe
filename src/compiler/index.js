@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import OS from 'os-family';
 import { createHash } from 'crypto';
 import { resolve as resolveUrl } from 'url';
 import { Promise } from 'es6-promise';
 import { Compiler as OldCompiler } from './old';
-import OS from '../utils/os';
 import promisify from 'es6-promisify';
 
 

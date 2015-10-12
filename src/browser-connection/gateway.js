@@ -1,5 +1,5 @@
+import { readSync as read } from 'read-file-relative';
 import { respond404, respond500, respondWithJSON, redirect, preventCaching } from '../utils/http';
-import read from '../utils/read-file-relative';
 
 
 // Const
