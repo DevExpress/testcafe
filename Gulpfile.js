@@ -37,6 +37,37 @@ var CLIENT_TESTS_SETTINGS = {
     configApp: require('./test/client/config-qunit-server-app')
 };
 
+var CLIENT_TESTS_BROWSERS = [
+    {
+        platform:    'Windows 10',
+        browserName: 'chrome'
+    },
+    {
+        platform:    'Windows 10',
+        browserName: 'firefox'
+    },
+    {
+        platform:    'Windows 10',
+        browserName: 'internet explorer',
+        version:     '11.0'
+    },
+    {
+        platform:    'Windows 8',
+        browserName: 'internet explorer',
+        version:     '10.0'
+    }
+];
+
+var SAUCELABS_SETTINGS = {
+    username:  process.env.SAUCE_USERNAME,
+    accessKey: process.env.SAUCE_ACCESS_KEY,
+    build:     process.env.TRAVIS_JOB_ID || '',
+    tags:      [process.env.TRAVIS_BRANCH || 'master'],
+    browsers:  CLIENT_TESTS_BROWSERS,
+    name:      'testcafe client tests',
+    timeout:   720
+};
+
 var UI_STYLES_FILE_PATH = '/client/ui';
 var UI_STYLES_TEMP_DIR  = path.join('lib', UI_STYLES_FILE_PATH);
 
@@ -230,10 +261,16 @@ gulp.task('test-client', ['build'], function () {
         .pipe(qunitHarness(CLIENT_TESTS_SETTINGS));
 });
 
-gulp.task('test', ['test-server']);
+gulp.task('test-client-travis', ['build'], function () {
+    return gulp
+        .src('./test/client/fixtures/**/*-test.js')
+        .pipe(qunitHarness(CLIENT_TESTS_SETTINGS, SAUCELABS_SETTINGS));
+});
 
 gulp.task('report-design-viewer', ['build'], function () {
     return new Promise(function () {
         require('./test/report-design-viewer')(argv.reporter, argv.decorator);
     });
 });
+
+gulp.task('travis', [process.env.GULP_TASK || '']);
