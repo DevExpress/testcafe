@@ -6,6 +6,7 @@ import { resolve as resolveUrl } from 'url';
 import { Promise } from 'es6-promise';
 import { Compiler as OldCompiler } from './old';
 import promisify from 'es6-promisify';
+import RequireReader from './require-reader';
 
 
 var readFile = promisify(fs.readFile);
@@ -24,6 +25,8 @@ export default class Compiler {
             sourceIndex:  [],
             configs:      {}
         };
+
+        this.requireReader = new RequireReader(this.cache.requires);
     }
 
     static _resolveConfigModules (cfg, dirName) {
@@ -118,7 +121,7 @@ export default class Compiler {
 
     _createOldCompilerPromise (filePath, modules) {
         return new Promise((resolve, reject)=> {
-            var oldCompiler = new OldCompiler(filePath, modules, this.cache.requires, this.cache.sourceIndex);
+            var oldCompiler = new OldCompiler(filePath, modules, this.requireReader, this.cache.sourceIndex);
 
             oldCompiler.compile((errs, out)=> {
                 if (errs)
