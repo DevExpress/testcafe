@@ -67,7 +67,7 @@ export default class Runner {
         return this;
     }
 
-    reporter (reporter, outStream = null, errorDecorator = null) {
+    reporter (reporter, outStream, errorDecorator) {
         this.bootstrapper.reporter       = reporter;
         this.bootstrapper.errorDecorator = errorDecorator;
         this.opts.reportOutStream        = outStream;
