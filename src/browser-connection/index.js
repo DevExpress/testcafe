@@ -26,6 +26,7 @@ export default class BrowserConnection extends EventEmitter {
         this.browserConnectionGateway = gateway;
         this.userAgent                = null;
 
+        this.disconnected     = false;
         this.ready            = false;
         this.heartbeatTimeout = null;
 
@@ -34,12 +35,13 @@ export default class BrowserConnection extends EventEmitter {
         this.idleUrl      = `${gateway.domain}/browser/idle/${this.id}`;
         this.statusUrl    = `${gateway.domain}/browser/status/${this.id}`;
 
+        this.on('error', () => this.close());
+
         this.browserConnectionGateway.startServingConnection(this);
     }
 
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
-            this.close();
             this.emit('error', getText(MESSAGE.browserDisconnected, this.userAgent.toString()));
         }, this.HEARTBEAT_TIMEOUT);
     }
@@ -68,7 +70,9 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     close () {
-        this.ready = false;
+        this.disconnected = true;
+        this.ready        = false;
+
         this.browserConnectionGateway.stopServingConnection(this);
         clearTimeout(this.heartbeatTimeout);
     }
