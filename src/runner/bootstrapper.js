@@ -70,9 +70,21 @@ export default class Bootstrapper {
         });
     }
 
+    _checkForDisconnectedBrowsers () {
+        var disconnectedUserAgents = this.browsers
+            .filter(browser => browser instanceof BrowserConnection &&
+                               browser.disconnected)
+            .map(bc => bc.userAgent);
+
+        if (disconnectedUserAgents.length)
+            throw new Error(getText(MESSAGE.cantRunAgainstDisconnectedBrowsers, disconnectedUserAgents.join(', ')));
+    }
+
     async _getBrowserConnections () {
         if (!this.browsers.length)
             throw new Error(getText(MESSAGE.browserNotSet));
+
+        this._checkForDisconnectedBrowsers();
 
         var browsers           = await Promise.all(this.browsers.map(Bootstrapper._convertBrowserAliasToBrowserInfo));
         var browserConnections = browsers.map(browser => this._createConnectionFromBrowserInfo(browser));
@@ -102,6 +114,9 @@ export default class Bootstrapper {
         if (this.filter)
             tests = tests.filter(test => this.filter(test.name, test.fixture.name, test.fixture.path));
 
+        if (!tests.length)
+            throw new Error(getText(MESSAGE.noTestsToRun));
+
         return tests;
     }
 
@@ -123,10 +138,8 @@ export default class Bootstrapper {
     async createRunnableConfiguration () {
         var Reporter = this._getReporterCtor();
 
-        var [browserConnections, tests] = await Promise.all([
-            this._getBrowserConnections(),
-            this._getTests()
-        ]);
+        var tests              = await this._getTests();
+        var browserConnections = await this._getBrowserConnections();
 
         return { Reporter, browserConnections, tests };
     }
