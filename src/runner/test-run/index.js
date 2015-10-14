@@ -1,3 +1,4 @@
+import path from 'path';
 import { readSync as read } from 'read-file-relative';
 import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
@@ -11,7 +12,7 @@ const IFRAME_TEST_RUN_TEMPLATE = read('../../client/test-run/iframe.js.mustache'
 
 export default class TestRun extends Session {
     constructor (test, browserConnection, opts) {
-        super();
+        super(path.dirname(test.fixture.path));
 
         this.running  = false;
         this.unstable = false;

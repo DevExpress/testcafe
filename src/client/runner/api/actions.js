@@ -272,7 +272,7 @@ export function click (what, options) {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].click.playback.run(element, options ||
+                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].click.playback(element, options ||
                                                                                                     {}, callback, onerror);
                 else
                     clickPlaybackAutomation(element, options || {}, callback, onerror);
@@ -295,7 +295,7 @@ export function rclick (what, options) {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].rclick.playback.run(element, options ||
+                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].rclick.playback(element, options ||
                                                                                                      {}, callback);
                 else
                     rClickPlaybackAutomation(element, options || {}, callback);
@@ -318,7 +318,7 @@ export function dblclick (what, options) {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].dblclick.playback.run(element, options ||
+                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].dblclick.playback(element, options ||
                                                                                                        {}, callback);
                 else
                     dblClickPlaybackAutomation(element, options || {}, callback);
@@ -365,7 +365,7 @@ export function drag (what) {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].drag.playback.run(element, to, options ||
+                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].drag.playback(element, to, options ||
                                                                                                        {}, callback);
                 else
                     dragPlaybackAutomation(element, to, options || {}, callback);
@@ -466,7 +466,7 @@ export function select () {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].select.playback.run(element, options, callback);
+                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].select.playback(element, options, callback);
                 else
                     selectPlaybackAutomation(element, options, callback);
             });
@@ -493,7 +493,7 @@ export function type (what, text, options) {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].type.playback.run(element, text, options ||
+                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].type.playback(element, text, options ||
                                                                                                          {}, callback);
                 else
                     typePlaybackAutomation(element, text, options || {}, callback);
@@ -516,7 +516,7 @@ export function hover (what, options) {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].hover.playback.run(element, callback);
+                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].hover.playback(element, callback);
                 else
                     hoverPlaybackAutomation(element, options || {}, callback);
             });

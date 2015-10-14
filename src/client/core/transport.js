@@ -6,11 +6,11 @@ var transport = hammerhead.transport;
 
 //Exports
 //-------------------------------------------------------------------------------------
-export var syncServiceMsg                  = transport.syncServiceMsg;
-export var asyncServiceMsg                 = transport.asyncServiceMsg;
-export var waitForServiceMessagesCompleted = transport.waitForServiceMessagesCompleted;
-export var batchUpdate                     = transport.batchUpdate;
-export var queuedAsyncServiceMsg           = transport.queuedAsyncServiceMsg;
+export var syncServiceMsg                  = transport.syncServiceMsg.bind(transport);
+export var asyncServiceMsg                 = transport.asyncServiceMsg.bind(transport);
+export var waitForServiceMessagesCompleted = transport.waitForServiceMessagesCompleted.bind(transport);
+export var batchUpdate                     = transport.batchUpdate.bind(transport);
+export var queuedAsyncServiceMsg           = transport.queuedAsyncServiceMsg.bind(transport);
 
 export function fail (err, callback) {
     var testFailMsg = {
@@ -18,7 +18,7 @@ export function fail (err, callback) {
         err: err
     };
 
-    asyncServiceMsg(testFailMsg, function () {
+    transport.asyncServiceMsg(testFailMsg, function () {
         callback();
     });
 
@@ -34,5 +34,5 @@ export function assertionFailed (err) {
         err: err
     };
 
-    asyncServiceMsg(assertionFailedMsg);
+    transport.asyncServiceMsg(assertionFailedMsg);
 }
