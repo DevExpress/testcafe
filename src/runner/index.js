@@ -5,6 +5,7 @@ import Bootstrapper from './bootstrapper';
 import Task from './task';
 import LocalBrowserConnection from '../browser-connection/local';
 
+
 export default class Runner {
     constructor (proxy, browserConnectionGateway) {
         this.proxy        = proxy;
