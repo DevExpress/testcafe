@@ -1,7 +1,6 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 
-var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var serviceUtils = testCafeCore.serviceUtils;
 
 
@@ -50,7 +49,13 @@ function onRequestsCollected () {
 
     if (barrierCtx.reqCount) {
         barrierCtx.watchdog = window.setTimeout(function () {
-            eventEmitter.emit(XHR_BARRIER_ERROR, { code: ERROR_TYPE.xhrRequestTimeout });
+            //NOTE: previously this error used in possible fail causes, which are R.I.P. now.
+            //So we just through error to the console for the debugging purposes. In IE9 console.log
+            //is defined only if dev tools are open.
+            if (window.console && window.console.log)
+                window.console.log('TestCafe encountered hanged XHR on page.');
+
+            eventEmitter.emit(XHR_BARRIER_ERROR);
             barrierCtx.callback();
         }, BARRIER_TIMEOUT);
     }
@@ -87,7 +92,7 @@ export function init () {
 
     hammerhead.on(hammerhead.EVENTS.xhrError, function (e) {
         //NOTE: previously this error used in possible fail causes, which are R.I.P. now.
-        //So we just through errot to the console for the debugging purposes. In IE9 console.log
+        //So we just through error to the console for the debugging purposes. In IE9 console.log
         //is defined only if dev tools are open.
         if (window.console && window.console.log)
             window.console.log('TestCafe encountered XHR error on page: ' + e.err);

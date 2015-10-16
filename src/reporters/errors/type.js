@@ -9,14 +9,10 @@ export default {
     eqAssertion:    'eqAssertion',
     notEqAssertion: 'notEqAssertion',
 
-    //CLIENT_ERR.XHR_REQUEST_TIMEOUT
-    xhrRequestTimeout:                       'xhrRequestTimeout',
     //CLIENT_ERR.IFRAME_LOADING_TIMEOUT
     iframeLoadingTimeout:                    'iframeLoadingTimeout',
     //CLIENT_ERR.IN_IFRAME_TARGET_LOADING_TIMEOUT
     inIFrameTargetLoadingTimeout:            'inIFrameTargetLoadingTimeout',
-    //Hammerhead.CLIENT_ERRS.URL_UTIL_PROTOCOL_IS_NOT_SUPPORTED
-    urlUtilProtocolIsNotSupported:           'urlUtilProtocolIsNotSupported',
     //CLIENT_ERR.UNCAUGHT_JS_ERROR
     uncaughtJSError:                         'uncaughtJSError',
     //CLIENT_ERR.UNCAUGHT_JS_ERROR_IN_TEST_CODE_STEP
@@ -60,5 +56,6 @@ export default {
     //CLIENT_ERR.API_UPLOAD_ELEMENT_IS_NOT_FILE_INPUT
     uploadElementIsNotFileInput:             'uploadElementIsNotFileInput',
     //CLIENT_ERR.API_UPLOAD_INVALID_FILE_PATH_ARGUMENT
-    uploadInvalidFilePathArgument:           'uploadInvalidFilePathArgument'
+    uploadInvalidFilePathArgument:           'uploadInvalidFilePathArgument',
+    pageNotLoaded:                           'pageNotLoaded'
 };

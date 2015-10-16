@@ -120,10 +120,10 @@ export default class Compiler {
     }
 
     _createOldCompilerPromise (filePath, modules) {
-        return new Promise((resolve, reject)=> {
+        return new Promise((resolve, reject) => {
             var oldCompiler = new OldCompiler(filePath, modules, this.requireReader, this.cache.sourceIndex);
 
-            oldCompiler.compile((errs, out)=> {
+            oldCompiler.compile((errs, out) => {
                 if (errs)
                     reject(errs);
                 else

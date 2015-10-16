@@ -31,6 +31,11 @@ var TaskMock = function () {
 util.inherits(TaskMock, EventEmitter);
 
 var userAgentMock = browserConnectionMock.userAgent;
+var testDecorator = Object.create(plainTextDecorator);
+
+testDecorator['span category'] = function (catgory) {
+    return 'CATEGORY=' + catgory + '\n';
+};
 
 // Output stream and errorDecorator mocks
 function createOutStreamMock () {
@@ -47,7 +52,7 @@ function assertErrorMessage (file, err) {
     var taskMock      = new TaskMock();
     var outStreamMock = createOutStreamMock();
     var Reporter      = reporters['list'];
-    var reporter      = new Reporter(taskMock, outStreamMock, plainTextDecorator);
+    var reporter      = new Reporter(taskMock, outStreamMock, testDecorator);
 
     reporter._write(reporter._formatError(err));
 
@@ -122,15 +127,6 @@ describe('Error formatter', function () {
     });
 
     describe('Errors', function () {
-        it('Should format "xhrRequestTimeout" error message', function () {
-            var err = {
-                code:      TYPE.xhrRequestTimeout,
-                userAgent: userAgentMock
-            };
-
-            assertErrorMessage('xhr-request-timeout', err);
-        });
-
         it('Should format "iframeLoadingTimeout" error message', function () {
             var err = {
                 code:      TYPE.iframeLoadingTimeout,
@@ -148,16 +144,6 @@ describe('Error formatter', function () {
             };
 
             assertErrorMessage('in-iframe-target-loading-timeout', err);
-        });
-
-        it('Should format "urlUtilProtocolIsNotSupported" error message', function () {
-            var err = {
-                code:      TYPE.urlUtilProtocolIsNotSupported,
-                destUrl:   'http://url',
-                userAgent: userAgentMock
-            };
-
-            assertErrorMessage('url-util-protocol-is-not-supported', err);
         });
 
         it('Should format "uncaughtJSError" error message', function () {
@@ -405,6 +391,16 @@ describe('Error formatter', function () {
             };
 
             assertErrorMessage('upload-invalid-file-path-argument', err);
+        });
+
+        it('Should format "pageNotLoaded" error message', function () {
+            var err = {
+                code:      TYPE.pageNotLoaded,
+                message:   'Failed to find a DNS-record for the resource at <a href="example.org">example.org</a>.',
+                userAgent: userAgentMock
+            };
+
+            assertErrorMessage('page-not-loaded', err);
         });
     });
 

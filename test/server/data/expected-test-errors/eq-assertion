@@ -1,4 +1,5 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
+CATEGORY=failedAssertion
 Assertion failed at step "Step":
 
     eq(["12345678901"], ["00000000000"])
