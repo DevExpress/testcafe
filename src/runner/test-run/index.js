@@ -3,6 +3,7 @@ import { readSync as read } from 'read-file-relative';
 import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
 import COMMAND from './command';
+import ERROR_TYPE from '../../reporters/errors/type';
 
 
 // Const
@@ -104,8 +105,12 @@ export default class TestRun extends Session {
         this.isFileDownloading = true;
     }
 
-    handlePageError (ctx, err) {
-        this._fatalError(err);
+    handlePageError (ctx, errMsg) {
+        this._fatalError({
+            code:    ERROR_TYPE.pageNotLoaded,
+            message: errMsg
+        });
+
         ctx.redirect(this.browserConnection.idleUrl);
     }
 }

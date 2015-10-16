@@ -28,7 +28,7 @@ var markerPositionCalculators = {
 };
 
 var cutStringCalculators = {
-    [OVERFLOW_TYPES.noOverflow]: (str) => str,
+    [OVERFLOW_TYPES.noOverflow]: str => str,
 
     [OVERFLOW_TYPES.rightOverflow]: (str, diffIndex, maxStringLength, quote) => {
         var maxLength = maxStringLength - STRING_OVERFLOW_MARKER.length;

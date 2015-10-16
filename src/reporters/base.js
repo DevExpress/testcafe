@@ -125,7 +125,7 @@ export default class BaseReporter {
                 reportItem.startTime = new Date();
         });
 
-        task.on('test-run-done', (testRun) => {
+        task.on('test-run-done', testRun => {
             var reportItem = this._getReportItemForTestRun(testRun);
             var userAgent  = testRun.browserConnection.userAgent;
 
