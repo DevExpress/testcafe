@@ -13,6 +13,7 @@ const RUNNER_SCRIPT = read('./client/runner/index.js');
 const UI_SCRIPT     = read('./client/ui/index.js');
 const UI_STYLE      = read('./client/ui/styles.css');
 const UI_SPRITE     = read('./client/ui/sprite.png', true);
+const FAVICON       = read('./client/ui/favicon.ico', true);
 
 
 // TestCafe
@@ -30,6 +31,7 @@ class TestCafe {
         this.proxy.GET('/testcafe-ui.js', { content: UI_SCRIPT, contentType: 'application/x-javascript' });
         this.proxy.GET('/testcafe-ui-styles.css', { content: UI_STYLE, contentType: 'text/css' });
         this.proxy.GET('/testcafe-ui-sprite.png', { content: UI_SPRITE, contentType: 'image/png' });
+        this.proxy.GET('/favicon.ico', { content: FAVICON, contentType: 'image/x-icon' });
     }
 
 

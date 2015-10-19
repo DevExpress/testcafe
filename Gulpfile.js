@@ -222,7 +222,7 @@ gulp.task('build', ['lint', 'wrap-scripts-with-templates', 'build-styles'], func
         .src(['src/**/*.mustache', '!src/**/*.js.wrapper.mustache']);
 
     var images = gulp
-        .src('src/**/*.png');
+        .src(['src/**/*.png', 'src/**/*.ico', 'src/**/*.svg']);
 
     return merge(js, styles, templates, images)
         .pipe(gulp.dest('lib'));
