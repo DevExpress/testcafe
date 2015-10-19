@@ -62,7 +62,7 @@ export default class Bootstrapper {
 
             Bootstrapper
                 ._createBrowserConnectionsReadyPromise(browserConnections)
-                .then(()=> {
+                .then(() => {
                     browserConnections.forEach(bc => bc.removeListener('error', onError));
                     clearTimeout(timeout);
                     resolve();

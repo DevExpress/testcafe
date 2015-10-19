@@ -3,5 +3,6 @@ export default {
     failedAssertion:    'failedAssertion',
     unhandledException: 'unhandledException',
     nativeDialogError:  'nativeDialogError',
-    timeout:            'timeout'
+    timeout:            'timeout',
+    pageLoadError:      'pageLoadError'
 };

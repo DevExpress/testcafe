@@ -90,19 +90,21 @@ $(document).ready(function () {
 
         expect(1);
 
-        var savedTimeout = xhrBarrier.BARRIER_TIMEOUT;
+        var savedTimeout     = xhrBarrier.BARRIER_TIMEOUT;
+        var errorEventRaised = false;
 
         xhrBarrier.setBarrierTimeout(0);
         xhrBarrier.init();
 
         var handler = function (err) {
-            strictEqual(err.code, ERROR_TYPE.xhrRequestTimeout);
+            errorEventRaised = true;
             xhrBarrier.events.off(xhrBarrier.XHR_BARRIER_ERROR, handler);
         };
 
         xhrBarrier.events.on(xhrBarrier.XHR_BARRIER_ERROR, handler);
         xhrBarrier.startBarrier(function () {
             xhrBarrier.setBarrierTimeout(savedTimeout);
+            ok(errorEventRaised);
             start();
         });
 

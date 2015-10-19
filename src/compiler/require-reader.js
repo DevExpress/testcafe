@@ -13,7 +13,7 @@ export default class RequireReader {
     async _analyzeRequire (require, filename, sourceIndex) {
         this.readings.push(require);
 
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             RequireAnalyzer.run(require, filename, sourceIndex, (errs, descriptor) => {
                 this.descriptorsCache[require] = descriptor;
 
@@ -29,7 +29,7 @@ export default class RequireReader {
     }
 
     async _waitForReading (require) {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             if (!this.waiters[require])
                 this.waiters[require] = [];
 
