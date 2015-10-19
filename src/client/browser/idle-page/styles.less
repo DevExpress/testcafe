@@ -1,0 +1,85 @@
+/*Mixins*/
+.no-indents() {
+    margin: 0;
+    padding: 0;
+}
+
+.message-text {
+    text-align: center;
+
+    span {
+        font-family: Segoe UI, Helvetica, sans-serif;
+    }
+}
+
+html, body {
+    .no-indents;
+
+    height: 100%;
+    background-color: #181818;
+}
+
+.page-background {
+    .no-indents;
+
+    height: 100%;
+    background-color: #181818;
+    overflow: hidden;
+}
+
+.container {
+    margin: 0 auto;
+
+    .spinner {
+        position: absolute;
+    }
+
+    .status-text-area {
+        position: relative;
+        width: 91.5%;
+        height: 39.5%;
+        left: 4%;
+        top: 37%;
+    }
+
+    .logo {
+        display: block;
+        margin: 0 auto;
+        width: 53.5%;
+        height: 30%;
+    }
+
+    .user-agent {
+        .message-text;
+
+        position: relative;
+        width: 97.8%;
+        margin: 22px 0px -4px 4px;
+
+        span {
+            color: #8f8f8f;
+            overflow: hidden;
+            position: relative;
+            display: inline-block;
+            top: -0.5px;
+        }
+    }
+
+    .status {
+        .message-text;
+
+        span {
+            position: relative;
+            display: inline-block;
+            top: -0.5px;
+
+            &.connected {
+                color: #36B6E5;
+            }
+
+            &.disconnected {
+                color: #F6422F
+            }
+        }
+    }
+}

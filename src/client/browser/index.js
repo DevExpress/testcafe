@@ -9,14 +9,18 @@ const HEARTBEAT_INTERVAL = 30 * 1000;
 // NOTE: the window.XMLHttpRequest may have been wrapped by Hammerhead, while we should send a request to
 // the original URL. That's why we need the XMLHttpRequest argument to send the request via native methods.
 function sendXHR (url, XMLHttpRequest) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         var xhr = new XMLHttpRequest();
 
         xhr.open('GET', url, true);
 
         xhr.onreadystatechange = () => {
-            if (xhr.readyState === 4 && xhr.status === 200)
-                resolve(xhr.responseText ? JSON.parse(xhr.responseText) : '');
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200)
+                    resolve(xhr.responseText ? JSON.parse(xhr.responseText) : '');
+                else
+                    reject('disconnected');
+            }
         };
 
         xhr.send(null);
@@ -45,3 +49,4 @@ export function checkStatus (statusUrl, XMLHttpRequest) {
             return res.cmd;
         });
 }
+
