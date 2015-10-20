@@ -48,7 +48,7 @@ asyncTest('run test', function () {
         storedIFrameStepExecuted.call(runner);
     };
 
-    runner._onError = function () {
+    runner._onFatalError = function () {
         errorRaised = true;
     };
 

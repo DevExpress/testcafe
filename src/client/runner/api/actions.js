@@ -698,11 +698,11 @@ export function upload (what, path) {
     );
 }
 
-export function screenshot () {
+export function screenshot (filePath) {
     stepIterator.asyncAction(function (iteratorCallback) {
         stepIterator.takeScreenshot(function () {
             iteratorCallback();
-        }, false);
+        }, filePath);
     });
 }
 

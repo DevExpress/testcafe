@@ -1,8 +1,8 @@
 Running tests in: Chrome, Firefox
 
   fixture1 (./fixture1.js)
-    ✓ fixture1test1 (unstable)
-    ✖ fixture1test2
+    ✓ fixture1test1 (unstable) (screenshots: /screenshots/1445437598847)
+    ✖ fixture1test2 (screenshots: /screenshots/1445437598847)
 
         1) Chrome
            Assertion failed at step "Step":
@@ -14,6 +14,8 @@ Running tests in: Chrome, Firefox
            Expected: [0]: "12345678901"
            Actual:   [0]: "00000000000"
                            ^
+
+           Screenshot: /screenshots/1445437598847/userAgent/1.Fail.png
 
 
         2) Chrome

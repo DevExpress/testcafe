@@ -18,7 +18,7 @@ actionsAPI.init(stepIterator);
 
 var errorRaised = false;
 
-transport.fail = function (err) {
+transport.fatalError = function (err) {
     if (err) {
         errorRaised = true;
         ok(!errorRaised, 'error raised');

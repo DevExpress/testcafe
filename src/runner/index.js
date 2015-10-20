@@ -15,12 +15,12 @@ export default class Runner extends EventEmitter {
         this.bootstrapper = new Bootstrapper(browserConnectionGateway);
 
         this.opts = {
-            screenshotPath:        null,
-            takeScreenshotOnFails: false,
-            skipJsErrors:          false,
-            quarantineMode:        false,
-            reportOutStream:       void 0,
-            errorDecorator:        void 0
+            screenshotPath:         null,
+            takeScreenshotsOnFails: false,
+            skipJsErrors:           false,
+            quarantineMode:         false,
+            reportOutStream:        void 0,
+            errorDecorator:         void 0
         };
     }
 
@@ -108,8 +108,8 @@ export default class Runner extends EventEmitter {
     }
 
     screenshots (path, takeOnFails = false) {
-        this.opts.takeScreenshotOnFails  = takeOnFails;
-        this.bootstrapper.screenshotPath = path;
+        this.opts.takeScreenshotsOnFails = takeOnFails;
+        this.opts.screenshotPath         = path;
 
         return this;
     }

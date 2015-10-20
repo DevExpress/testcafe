@@ -59,8 +59,7 @@ IFrameRunner.prototype._onActionRun = function () {
     messageSandbox.sendServiceMsg({ cmd: RunnerBase.IFRAME_ACTION_RUN_CMD }, window.top);
 };
 
-IFrameRunner.prototype._onError = function (err) {
-
+IFrameRunner.prototype._onFatalError = function (err) {
     if (!SETTINGS.get().PLAYBACK || err.dialog)
         this.stepIterator.stop();
 
@@ -77,8 +76,6 @@ IFrameRunner.prototype._onAssertionFailed = function (e) {
         cmd: RunnerBase.IFRAME_FAILED_ASSERTION_CMD,
         err: e
     };
-
-    this.stepIterator.state.needScreeshot = true;
 
     messageSandbox.sendServiceMsg(msg, window.top);
 
@@ -115,8 +112,9 @@ IFrameRunner.prototype._onGetStepsSharedData = function (e) {
 
 IFrameRunner.prototype._onTakeScreenshot = function (e) {
     var msg = {
-        cmd:          RunnerBase.IFRAME_TAKE_SCREENSHOT_REQUEST_CMD,
-        isFailedStep: e.isFailedStep
+        cmd:      RunnerBase.IFRAME_TAKE_SCREENSHOT_REQUEST_CMD,
+        stepName: e.stepName,
+        filePath: e.filePath
     };
 
     messageSandbox.sendServiceMsg(msg, window.top);

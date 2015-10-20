@@ -44,13 +44,14 @@ export default class BaseReporter {
 
     static _createReportItem (test, runsPerTest) {
         return {
-            fixtureName: test.fixture.name,
-            fixturePath: test.fixture.path,
-            testName:    test.name,
-            pendingRuns: runsPerTest,
-            errs:        [],
-            unstable:    false,
-            startTime:   null
+            fixtureName:    test.fixture.name,
+            fixturePath:    test.fixture.path,
+            testName:       test.name,
+            screenshotPath: null,
+            pendingRuns:    runsPerTest,
+            errs:           [],
+            unstable:       false,
+            startTime:      null
         };
     }
 
@@ -88,7 +89,7 @@ export default class BaseReporter {
 
         BaseReporter._errorSorter(reportItem.errs);
 
-        this._reportTestDone(reportItem.testName, reportItem.errs, durationMs, reportItem.unstable);
+        this._reportTestDone(reportItem.testName, reportItem.errs, durationMs, reportItem.unstable, reportItem.screenshotPath);
 
         // NOTE: here we assume that tests are sorted by fixture.
         // Therefore, if the next report item has a different
@@ -126,8 +127,12 @@ export default class BaseReporter {
             reportItem.errs     = reportItem.errs.concat(testRun.errs);
             reportItem.unstable = reportItem.unstable || testRun.unstable;
 
-            if (!reportItem.pendingRuns)
+            if (!reportItem.pendingRuns) {
+                if (task.screenshots.hasCapturedFor(testRun.test))
+                    reportItem.screenshotPath = task.screenshots.getPathFor(testRun.test);
+
                 this._shiftReportQueue();
+            }
         });
 
         task.once('done', () => {
@@ -185,7 +190,7 @@ export default class BaseReporter {
         throw new Error('Not implemented');
     }
 
-    _reportTestDone (name, errs, durationMs, unstable) {
+    _reportTestDone (name, errs, durationMs, unstable, screenshotPath) {
         throw new Error('Not implemented');
     }
 

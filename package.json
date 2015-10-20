@@ -30,7 +30,8 @@
     "testcafe-browser-natives": "^0.10.0",
     "testcafe-hammerhead": "^0.2.1",
     "uglify-js": "1.2.6",
-    "useragent": "^2.1.7"
+    "useragent": "^2.1.7",
+    "uuid": "^2.0.1"
   },
   "devDependencies": {
     "babel": "^5.8.23",

@@ -64,7 +64,7 @@ asyncTest('run steps in iframe', function () {
         }
     };
 
-    testRunner._onError = function () {
+    testRunner._onFatalError = function () {
         errorRaised = true;
     };
 
@@ -104,7 +104,7 @@ asyncTest('element error', function () {
             }
         ];
 
-    testRunner._onError = function () {
+    testRunner._onFatalError = function () {
         errorRaised = true;
     };
 
@@ -206,7 +206,7 @@ asyncTest('shared data', function () {
         assertionFailed = true;
     };
 
-    testRunner._onErrorRaised = function () {
+    testRunner._onFatalError = function () {
         errorRaised = true;
     };
 
@@ -353,7 +353,7 @@ asyncTest('waiting for postback', function () {
         assertionFailed = true;
     };
 
-    testRunner._onError = function () {
+    testRunner._onFatalError = function () {
         errorRaised = true;
     };
 

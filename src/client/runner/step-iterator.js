@@ -19,6 +19,12 @@ const STEP_DELAY                 = 500;
 const PROLONGED_STEP_DELAY       = 3000;
 const SHORT_PROLONGED_STEP_DELAY = 30;
 
+const SUSPEND_ACTIONS = {
+    runStep:           'runStep',
+    asyncAction:       'asyncAction',
+    asyncActionSeries: 'asyncActionSeries'
+};
+
 
 //Iterator
 var StepIterator = function (pingIFrame) {
@@ -34,8 +40,11 @@ var StepIterator = function (pingIFrame) {
         stepsSharedData:          {},
         lastSyncedSharedDataJSON: null,
         stopped:                  false,
+        suspended:                false,
+        suspendedAction:          null,
+        suspendedArgs:            [],
         waitedIFrame:             null,
-        needScreeshot:            false
+        curStepErrors:            []
     };
 
     this.pingIFrame           = pingIFrame;
@@ -81,7 +90,13 @@ StepIterator.prototype._checkSharedDataSerializable = function () {
 };
 
 StepIterator.prototype._runStep = function () {
-    this.state.stopped = false;
+    if (this.state.suspended) {
+        this.state.suspendedAction = SUSPEND_ACTIONS.runStep;
+        return;
+    }
+
+    this.state.stopped       = false;
+    this.state.curStepErrors = [];
 
     var iterator = this;
 
@@ -158,14 +173,7 @@ StepIterator.prototype._runStep = function () {
                     if (!iterator._checkSharedDataSerializable())
                         return;
 
-                    if (SETTINGS.get().TAKE_SCREENSHOT_ON_FAILS && iterator.state.needScreeshot) {
-                        iterator.takeScreenshot(function () {
-                            iterator.state.needScreeshot = false;
-                            runCallback();
-                        }, true);
-                    }
-                    else
-                        runCallback();
+                    runCallback();
                 }
             });
         }
@@ -313,103 +321,93 @@ StepIterator.prototype._checkIFrame = function (element, callback) {
 };
 
 StepIterator.prototype.asyncAction = function (action) {
+    if (this.state.suspended) {
+        this.state.suspendedAction = SUSPEND_ACTIONS.asyncAction;
+        this.state.suspendedArgs   = arguments;
+        return;
+    }
+
     var iterator = this;
 
     this.state.inAsyncAction = true;
 
-    var actionRun = function () {
-        iterator._syncSharedDataWithServer(function () {
-            actionBarrier.waitActionSideEffectsCompletion(action, function () {
-                iterator._completeAsyncAction.apply(iterator, arguments);
-            });
+    iterator._syncSharedDataWithServer(function () {
+        actionBarrier.waitActionSideEffectsCompletion(action, function () {
+            iterator._completeAsyncAction.apply(iterator, arguments);
         });
-    };
-
-    if (SETTINGS.get().TAKE_SCREENSHOT_ON_FAILS && this.state.needScreeshot) {
-        this.takeScreenshot(function () {
-            iterator.state.needScreeshot = false;
-            actionRun();
-        }, true);
-    }
-    else
-        actionRun();
+    });
 };
 
 StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
+    if (this.state.suspended) {
+        this.state.suspendedAction = SUSPEND_ACTIONS.asyncActionSeries;
+        this.state.suspendedArgs   = arguments;
+        return;
+    }
+
     var iterator = this;
-
-    var actionsRun = function () {
-        var seriesActionsRun = function (elements, callback) {
-            async.forEachSeries(
-                elements,
-                function (element, asyncCallback) {
-                    //NOTE: since v.14.1.5 it's recommended to run actions with the inIFrame function. But we should support old-style iframes
-                    //using, so, it'll be resolved here.
-                    iterator._checkIFrame(element, function (iframe) {
-                        if (!iframe) {
-                            actionBarrier.waitActionSideEffectsCompletion(function (barrierCallback) {
-                                action(element, barrierCallback);
-                            }, asyncCallback);
-                        }
-                        else {
-                            var iFrameStartXhrBarrier = iframe.contentWindow[xhrBarrier.GLOBAL_START_XHR_BARRIER],
-                                iFrameWaitXhrBarrier  = iframe.contentWindow[xhrBarrier.GLOBAL_WAIT_XHR_BARRIER];
-
-                            actionBarrier.waitActionSideEffectsCompletion(function (barrierCallback) {
-                                var iFrameBeforeUnloadRaised = false;
-
-                                iterator.iFrameActionCallback = function () {
-                                    iterator.iFrameActionCallback = null;
-                                    iterator.waitedIFrame         = null;
-                                    barrierCallback();
-                                };
-
-                                iterator.waitedIFrame = iframe;
-
-                                iFrameStartXhrBarrier(function () {
-                                    if (!iFrameBeforeUnloadRaised)
-                                        iterator.iFrameActionCallback();
-                                });
-
-                                function onBeforeUnload () {
-                                    nativeMethods.windowRemoveEventListener.call(iframe.contentWindow, 'beforeunload', onBeforeUnload);
-                                    iFrameBeforeUnloadRaised = true;
-                                }
-
-                                nativeMethods.windowAddEventListener.call(iframe.contentWindow, 'beforeunload', onBeforeUnload, true);
-
-                                action(element, function () {
-                                    iFrameWaitXhrBarrier();
-                                }, iframe);
-                            }, asyncCallback);
-                        }
-                    });
-                },
-                function () {
-                    if (iterator.state.stopped)
-                        return;
-
-                    callback();
-                });
-        };
-
-        iterator._syncSharedDataWithServer(function () {
-            runArgumentsIterator(items, seriesActionsRun, function () {
-                iterator._completeAsyncAction.apply(iterator, arguments);
-            });
-        });
-    };
 
     iterator.state.inAsyncAction = true;
 
-    if (SETTINGS.get().TAKE_SCREENSHOT_ON_FAILS && this.state.needScreeshot) {
-        this.takeScreenshot(function () {
-            iterator.state.needScreeshot = false;
-            actionsRun();
-        }, true);
-    }
-    else
-        actionsRun();
+    var seriesActionsRun = function (elements, callback) {
+        async.forEachSeries(
+            elements,
+            function (element, asyncCallback) {
+                // NOTE: since v.14.1.5 it's recommended to run actions using the inIFrame function.
+                // But we should support old-style iframes, so it'll be resolved here.
+                iterator._checkIFrame(element, function (iframe) {
+                    if (!iframe) {
+                        actionBarrier.waitActionSideEffectsCompletion(function (barrierCallback) {
+                            action(element, barrierCallback);
+                        }, asyncCallback);
+                    }
+                    else {
+                        var iFrameStartXhrBarrier = iframe.contentWindow[xhrBarrier.GLOBAL_START_XHR_BARRIER],
+                            iFrameWaitXhrBarrier  = iframe.contentWindow[xhrBarrier.GLOBAL_WAIT_XHR_BARRIER];
+
+                        actionBarrier.waitActionSideEffectsCompletion(function (barrierCallback) {
+                            var iFrameBeforeUnloadRaised = false;
+
+                            iterator.iFrameActionCallback = function () {
+                                iterator.iFrameActionCallback = null;
+                                iterator.waitedIFrame         = null;
+                                barrierCallback();
+                            };
+
+                            iterator.waitedIFrame = iframe;
+
+                            iFrameStartXhrBarrier(function () {
+                                if (!iFrameBeforeUnloadRaised)
+                                    iterator.iFrameActionCallback();
+                            });
+
+                            function onBeforeUnload () {
+                                nativeMethods.windowRemoveEventListener.call(iframe.contentWindow, 'beforeunload', onBeforeUnload);
+                                iFrameBeforeUnloadRaised = true;
+                            }
+
+                            nativeMethods.windowAddEventListener.call(iframe.contentWindow, 'beforeunload', onBeforeUnload, true);
+
+                            action(element, function () {
+                                iFrameWaitXhrBarrier();
+                            }, iframe);
+                        }, asyncCallback);
+                    }
+                });
+            },
+            function () {
+                if (iterator.state.stopped)
+                    return;
+
+                callback();
+            });
+    };
+
+    iterator._syncSharedDataWithServer(function () {
+        runArgumentsIterator(items, seriesActionsRun, function () {
+            iterator._completeAsyncAction.apply(iterator, arguments);
+        });
+    });
 };
 
 StepIterator.prototype._init = function () {
@@ -467,6 +465,8 @@ StepIterator.prototype.onError = function (err) {
     if (this.state.stopped)
         return;
 
+    this.state.curStepErrors.push(err);
+
     this.eventEmitter.emit(StepIterator.ERROR_EVENT, $.extend({
         stepNum: this.state.step - 1
     }, err));
@@ -475,6 +475,8 @@ StepIterator.prototype.onError = function (err) {
 StepIterator.prototype.onAssertionFailed = function (err) {
     if (this.state.stopped)
         return;
+
+    this.state.curStepErrors.push(err);
 
     this.eventEmitter.emit(StepIterator.ASSERTION_FAILED_EVENT, {
         err:         err,
@@ -508,6 +510,32 @@ StepIterator.prototype.onActionRun = function () {
     this.eventEmitter.emit(StepIterator.ACTION_RUN_EVENT, {});
 };
 
+StepIterator.prototype.suspend = function () {
+    // NOTE: in fact we can suspend the iterator before
+    // the next step or an async action run
+    this.state.suspended = true;
+};
+
+StepIterator.prototype.resume = function () {
+    if (!this.state.suspended || this.state.stopped)
+        return;
+
+    this.state.suspended = false;
+
+    if (this.state.suspendedAction === SUSPEND_ACTIONS.runStep)
+        this._runStep();
+
+    if (this.state.suspendedAction === SUSPEND_ACTIONS.asyncAction)
+        this.asyncAction.apply(this, this.state.suspendedArgs);
+
+    if (this.state.suspendedAction === SUSPEND_ACTIONS.asyncActionSeries)
+        this.asyncActionSeries.apply(this, this.state.suspendedArgs);
+
+    this.state.suspendedAction = null;
+    this.state.suspendedArgs   = [];
+};
+
+
 //Global __waitFor()
 StepIterator.prototype.setGlobalWaitFor = function (event, timeout) {
     this.globalWaitForEvent   = event;
@@ -540,10 +568,11 @@ StepIterator.prototype.__waitFor = function (callback) {
     });
 };
 
-StepIterator.prototype.takeScreenshot = function (callback, isFailedStep) {
+StepIterator.prototype.takeScreenshot = function (callback, filePath) {
     this.eventEmitter.emit(StepIterator.TAKE_SCREENSHOT_EVENT, {
-        isFailedStep: isFailedStep,
-        callback:     callback
+        stepName: this.getCurrentStep(),
+        filePath: filePath || '',
+        callback: callback
     });
 };
 
