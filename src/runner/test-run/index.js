@@ -12,8 +12,10 @@ const IFRAME_TEST_RUN_TEMPLATE = read('../../client/test-run/iframe.js.mustache'
 
 
 export default class TestRun extends Session {
-    constructor (test, browserConnection, opts) {
-        super(path.dirname(test.fixture.path));
+    constructor (test, browserConnection, screenshotCapturer, opts) {
+        var uploadsRoot = path.dirname(test.fixture.path);
+
+        super(uploadsRoot);
 
         this.running  = false;
         this.unstable = false;
@@ -26,22 +28,19 @@ export default class TestRun extends Session {
 
         // TODO remove it then we move shared data to session storage
         this.errs                       = [];
-        this.testError                  = null;
+        this.deferredError              = null;
         this.restartCount               = 0;
         this.nextStep                   = 0;
         this.actionTargetWaiting        = 0;
         this.nativeDialogsInfo          = null;
         this.nativeDialogsInfoTimeStamp = 0;
         this.stepsSharedData            = {};
+        this.screenshotCapturer         = screenshotCapturer;
 
         this.injectable.scripts.push('/testcafe-core.js');
         this.injectable.scripts.push('/testcafe-ui.js');
         this.injectable.scripts.push('/testcafe-runner.js');
         this.injectable.styles.push('/testcafe-ui-styles.css');
-    }
-
-    async _loadUploads () {
-        //TODO fix it after UploadStorage rewrite
     }
 
     _getPayloadScript () {
@@ -58,17 +57,18 @@ export default class TestRun extends Session {
         }
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
-            stepNames:             JSON.stringify(this.test.stepData.names),
-            testSteps:             this.test.stepData.js,
-            sharedJs:              sharedJs,
-            nextStep:              nextStep,
-            testError:             this.testError ? JSON.stringify(this.testError) : 'null',
-            browserHeartbeatUrl:   this.browserConnection.heartbeatUrl,
-            browserStatusUrl:      this.browserConnection.statusUrl,
-            takeScreenshotOnFails: this.opts.takeScreenshotOnFails,
-            skipJsErrors:          this.opts.skipJsErrors,
-            nativeDialogsInfo:     JSON.stringify(this.nativeDialogsInfo),
-            iFrameTestRunScript:   JSON.stringify(this._getIFramePayloadScript())
+            stepNames:              JSON.stringify(this.test.stepData.names),
+            testSteps:              this.test.stepData.js,
+            sharedJs:               sharedJs,
+            nextStep:               nextStep,
+            deferredError:          this.deferredError ? JSON.stringify(this.deferredError) : 'null',
+            browserHeartbeatUrl:    this.browserConnection.heartbeatUrl,
+            browserStatusUrl:       this.browserConnection.statusUrl,
+            takeScreenshots:        this.screenshotCapturer.enabled,
+            takeScreenshotsOnFails: this.opts.takeScreenshotsOnFails,
+            skipJsErrors:           this.opts.skipJsErrors,
+            nativeDialogsInfo:      JSON.stringify(this.nativeDialogsInfo),
+            iFrameTestRunScript:    JSON.stringify(this._getIFramePayloadScript())
         });
     }
 
@@ -76,24 +76,39 @@ export default class TestRun extends Session {
         var sharedJs = this.test.fixture.getSharedJs();
 
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
-            sharedJs:              sharedJs,
-            takeScreenshotOnFails: this.opts.takeScreenshotOnFails,
-            skipJsErrors:          this.opts.skipJsErrors,
-            nativeDialogsInfo:     JSON.stringify(this.nativeDialogsInfo)
+            sharedJs:               sharedJs,
+            takeScreenshotsOnFails: this.opts.takeScreenshotsOnFails,
+            skipJsErrors:           this.opts.skipJsErrors,
+            nativeDialogsInfo:      JSON.stringify(this.nativeDialogsInfo)
         });
     }
 
-    _addError (err) {
+    async _addError (err) {
         if (err.__sourceIndex !== void 0 && err.__sourceIndex !== null) {
             err.relatedSourceCode = this.test.sourceIndex[err.__sourceIndex];
             delete err.__sourceIndex;
         }
 
+        try {
+            err.screenshotPath = await this.screenshotCapturer.captureError(err);
+        }
+        catch (e) {
+            // NOTE: swallow the error silently if we can't take screenshots for some
+            // reason (e.g. we don't have permissions to write a screenshot file).
+        }
+
         this.errs.push(err);
     }
 
-    _fatalError (err) {
-        this._addError(err);
+    async _fatalError (err, deferred) {
+        // TODO: move this logic to the client when localStorageSandbox will be implemented in the
+        // testcafe-hammerhead repo https://github.com/DevExpress/testcafe-hammerhead/issues/252 !!!
+        if (deferred) {
+            this.deferredError = err;
+            return;
+        }
+
+        await this._addError(err);
         this.emit('done');
     }
 
@@ -119,11 +134,11 @@ export default class TestRun extends Session {
 var ServiceMessages = TestRun.prototype;
 
 ServiceMessages[COMMAND.fatalError] = function (msg) {
-    this._fatalError(msg.err);
+    return this._fatalError(msg.err, msg.deferred);
 };
 
 ServiceMessages[COMMAND.assertionFailed] = function (msg) {
-    this._addError(msg.err);
+    return this._addError(msg.err);
 };
 
 ServiceMessages[COMMAND.done] = function () {
@@ -144,10 +159,6 @@ ServiceMessages[COMMAND.setNextStep] = function (msg) {
 
 ServiceMessages[COMMAND.setActionTargetWaiting] = function (msg) {
     this.actionTargetWaiting = msg.value;
-};
-
-ServiceMessages[COMMAND.setTestError] = function (msg) {
-    this.testError = msg.err;
 };
 
 ServiceMessages[COMMAND.getAndUncheckFileDownloadingFlag] = function () {
@@ -171,6 +182,14 @@ ServiceMessages[COMMAND.nativeDialogsInfoSet] = function (msg) {
     }
 };
 
-ServiceMessages[COMMAND.takeScreenshot] = function () {
-    //TODO:
+ServiceMessages[COMMAND.takeScreenshot] = async function (msg) {
+    try {
+        return await this.screenshotCapturer.captureAction(msg);
+    }
+    catch (e) {
+        // NOTE: swallow the error silently if we can't take screenshots for some
+        // reason (e.g. we don't have permissions to write a screenshot file).
+        return null;
+    }
+
 };

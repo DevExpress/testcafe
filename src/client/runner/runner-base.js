@@ -81,21 +81,22 @@ var RunnerBase = function () {
         if (err.inIFrame && !SETTINGS.get().PLAYBACK)
             runner.stepIterator.stop();
         else if (!SETTINGS.get().SKIP_JS_ERRORS || SETTINGS.get().RECORDING) {
-            runner._onError({
+            runner._onFatalError({
                 type:      ERROR_TYPE.uncaughtJSError,
                 scriptErr: err.msg,
                 pageError: true,
-                pageUrl:   err.pageUrl
+                pageUrl:   err.pageUrl,
+                stepName:  runner.stepIterator.getCurrentStep()
             });
         }
     });
 
     runner.stepIterator.on(StepIterator.ERROR_EVENT, function (e) {
-        runner._onError(e);
+        runner._onFatalError(e);
     });
 
     runner.act._onJSError = function (err) {
-        runner._onError({
+        runner._onFatalError({
             type:      ERROR_TYPE.uncaughtJSError,
             scriptErr: (err && err.message) || err
         });
@@ -105,6 +106,9 @@ var RunnerBase = function () {
         //NOTE: start test execution only when all content is loaded or if loading
         //timeout is reached (whichever comes first).
         runner._prepareStepsExecuting(function () {
+            if (runner.stopped)
+                return;
+
             delete runner.act._onJSError;
             delete runner.act._start;
 
@@ -203,7 +207,7 @@ RunnerBase.prototype._initIFrameBehavior = function () {
                     message.err.stepName = runner.stepIterator.getCurrentStep();
                 }
                 runner._clearIFrameExistenceWatcherInterval();
-                runner._onError(message.err);
+                runner._onFatalError(message.err);
                 break;
 
             case RunnerBase.IFRAME_FAILED_ASSERTION_CMD:
@@ -211,7 +215,7 @@ RunnerBase.prototype._initIFrameBehavior = function () {
                     runner.executingStepInIFrameWindow = null;
 
                 message.err.stepNum = runner.stepIterator.state.step - 1;
-                runner._onAssertionFailed(message.err, true);
+                runner._onAssertionFailed(message.err);
                 break;
 
             case RunnerBase.IFRAME_GET_SHARED_DATA_REQUEST_CMD:
@@ -256,8 +260,9 @@ RunnerBase.prototype._initIFrameBehavior = function () {
 
             case RunnerBase.IFRAME_TAKE_SCREENSHOT_REQUEST_CMD:
                 runner._onTakeScreenshot({
-                    isFailedStep: message.isFailedStep,
-                    callback:     function () {
+                    stepName: message.stepName,
+                    filePath: message.filePath,
+                    callback: function () {
                         msg = {
                             cmd: RunnerBase.IFRAME_TAKE_SCREENSHOT_RESPONSE_CMD
                         };
@@ -375,9 +380,9 @@ RunnerBase.prototype._runInIFrame = function (iframe, stepName, step, stepNum) {
 
     pingIFrame(iframe, function (err) {
         if (err) {
-            runner._onError({
+            runner._onFatalError({
                 type:     ERROR_TYPE.inIFrameTargetLoadingTimeout,
-                stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
+                stepName: runner.stepIterator.getCurrentStep()
             });
         }
         else {
@@ -389,9 +394,9 @@ RunnerBase.prototype._runInIFrame = function (iframe, stepName, step, stepNum) {
 
 RunnerBase.prototype._ensureIFrame = function (arg) {
     if (!arg) {
-        this._onError({
+        this._onFatalError({
             type:     ERROR_TYPE.emptyIFrameArgument,
-            stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
+            stepName: this.stepIterator.getCurrentStep()
         });
         return null;
     }
@@ -400,9 +405,9 @@ RunnerBase.prototype._ensureIFrame = function (arg) {
         if (arg.tagName && arg.tagName.toLowerCase() === 'iframe')
             return arg;
         else {
-            this._onError({
+            this._onFatalError({
                 type:     ERROR_TYPE.iframeArgumentIsNotIFrame,
-                stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
+                stepName: this.stepIterator.getCurrentStep()
             });
             return null;
         }
@@ -413,16 +418,16 @@ RunnerBase.prototype._ensureIFrame = function (arg) {
 
     if (serviceUtils.isJQueryObj(arg)) {
         if (arg.length === 0) {
-            this._onError({
+            this._onFatalError({
                 type:     ERROR_TYPE.emptyIFrameArgument,
-                stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
+                stepName: this.stepIterator.getCurrentStep()
             });
             return null;
         }
         else if (arg.length > 1) {
-            this._onError({
+            this._onFatalError({
                 type:     ERROR_TYPE.multipleIFrameArgument,
-                stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
+                stepName: this.stepIterator.getCurrentStep()
             });
             return null;
         }
@@ -433,10 +438,11 @@ RunnerBase.prototype._ensureIFrame = function (arg) {
     if (typeof arg === 'function')
         return this._ensureIFrame(arg());
 
-    this._onError({
+    this._onFatalError({
         type:     ERROR_TYPE.incorrectIFrameArgument,
-        stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
+        stepName: this.stepIterator.getCurrentStep()
     });
+
     return null;
 };
 
@@ -468,7 +474,7 @@ RunnerBase.prototype._initApi = function () {
                 iFrame  = runner._ensureIFrame(iFrameGetter());
 
             if (iFrame)
-                runner._runInIFrame(iFrame, SETTINGS.get().CURRENT_TEST_STEP_NAME, step, stepNum);
+                runner._runInIFrame(iFrame, runner.stepIterator.getCurrentStep(), step, stepNum);
         };
     };
 };
@@ -526,7 +532,7 @@ RunnerBase.prototype._onActionRun = function () {
     this.eventEmitter.emit(this.ACTION_RUN_EVENT, {});
 };
 
-RunnerBase.prototype._onError = function (err) {
+RunnerBase.prototype._onFatalError = function (err) {
     this.eventEmitter.emit(this.TEST_FAILED_EVENT, {
         stepNum: this.stepIterator.state.step - 1,
         err:     err

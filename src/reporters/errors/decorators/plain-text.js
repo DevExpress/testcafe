@@ -9,6 +9,10 @@ export default {
 
     'span user-agent': str => str,
 
+    'div screenshot-info': str => str,
+
+    'a screenshot-path': str => str,
+
     'code': str => str,
 
     'code step-source': str => indentString(str, ' ', CODE_ALIGN_SPACES),

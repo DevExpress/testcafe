@@ -39,9 +39,10 @@
         var stepNames = {{{stepNames}}};
 
         testCafeCore.SETTINGS.set({
-            CURRENT_TEST_STEP_NAME:   nextStep ? stepNames[nextStep - 1] : 'Test initialization',
+            CURRENT_TEST_STEP_NAME:   nextStep ? stepNames[nextStep - 1] : 'Page Load',
             BROWSER_STATUS_URL:       '{{{browserStatusUrl}}}',
-            TAKE_SCREENSHOT_ON_FAILS: {{{takeScreenshotOnFails}}},
+            TAKE_SCREENSHOTS:         {{{takeScreenshots}}},
+            TAKE_SCREENSHOTS_ON_FAILS: {{{takeScreenshotsOnFails}}},
             SKIP_JS_ERRORS:           {{{skipJsErrors}}},
             ENABLE_SOURCE_INDEX:      true,
             NATIVE_DIALOGS_INFO:      {{{nativeDialogsInfo}}}
@@ -70,19 +71,16 @@
         sandboxedJQuery.init(window, undefined);
         jQuerySelectorExtensions.init();
 
-        var testError = {{{testError}}};
-
-        if (testError) {
-            transport.fail(testError, Runner.checkStatus);
-            return;
-        }
-
         $ = jQuery = jQuerySelectorExtensions.create(sandboxedJQuery.jQuery);
         jQueryDataMethodProxy.setup($);
 
         //NOTE: initialize API
-        var runner        = new Runner();
+        var deferredError = {{{deferredError}}};
+        var runner        = new Runner(null, deferredError);
         var progressPanel = null;
+
+        if (deferredError)
+            return;
 
         runner.on(RunnerBase.SCREENSHOT_CREATING_STARTED_EVENT, function () {
             shadowUI.setBlind(true);

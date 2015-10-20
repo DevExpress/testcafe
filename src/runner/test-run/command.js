@@ -11,7 +11,6 @@ export default {
     getStepsSharedData:               'get-steps-shared-data',
     setNextStep:                      'set-next-step',
     setActionTargetWaiting:           'set-action-target-waiting',
-    setTestError:                     'set-test-error',
     getAndUncheckFileDownloadingFlag: 'get-and-uncheck-file-downloading-flag',
     uncheckFileDownloadingFlag:       'uncheck-file-downloading-flag',
     nativeDialogsInfoSet:             'native-dialogs-info-set',

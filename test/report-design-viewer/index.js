@@ -6,13 +6,17 @@ var errs         = require('./errors');
 
 var decoratorsPath = '../../lib/reporters/errors/decorators';
 
+var screenshotDir = '/screenshots/1445437598847';
+
 var testMocks = [
     {
         name:    'fixture1Test1',
         fixture: {
             name: 'fixture1',
             path: './fixture1.js'
-        }
+        },
+
+        screenshotExpected: true
     },
     {
         name:    'fixture1Test2',
@@ -40,11 +44,23 @@ var testMocks = [
         fixture: {
             name: 'fixture3',
             path: './fixture3.js'
-        }
+        },
+
+        screenshotExpected: true
     }
 ];
 
 var browserConnectionMock = { userAgent: 'Chrome 15.0.874 / Mac OS X 10.8.1' };
+
+var ScreenshotsMock = function () {
+    this.hasCapturedFor = function (testMock) {
+        return testMock.screenshotExpected;
+    };
+
+    this.getPathFor = function () {
+        return screenshotDir;
+    };
+};
 
 // Task mock
 var TaskMock = function () {
@@ -52,6 +68,7 @@ var TaskMock = function () {
 
     this.tests              = testMocks;
     this.browserConnections = [browserConnectionMock];
+    this.screenshots        = new ScreenshotsMock();
 };
 
 util.inherits(TaskMock, EventEmitter);
@@ -76,10 +93,11 @@ var testRunMocks = [
         errs:              errs[2]
     },
     {
-        test:              testMocks[3],
-        unstable:          false,
-        browserConnection: browserConnectionMock,
-        errs:              []
+        test:                 testMocks[3],
+        unstable:             false,
+        browserConnection:    browserConnectionMock,
+        errs:                 [],
+        hasActionScreenshots: true
     },
     {
         test:              testMocks[4],
