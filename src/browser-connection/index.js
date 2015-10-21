@@ -42,7 +42,7 @@ export default class BrowserConnection extends EventEmitter {
 
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
-            this.emit('error', getText(MESSAGE.browserDisconnected, this.userAgent.toString()));
+            this.emit('error', getText(MESSAGE.browserDisconnected, this.userAgent));
         }, this.HEARTBEAT_TIMEOUT);
     }
 
@@ -79,7 +79,7 @@ export default class BrowserConnection extends EventEmitter {
 
     establish (userAgent) {
         this.ready     = true;
-        this.userAgent = parseUserAgent(userAgent);
+        this.userAgent = parseUserAgent(userAgent).toString();
 
         this._waitForHeartbeat();
         this.emit('ready');
@@ -92,7 +92,7 @@ export default class BrowserConnection extends EventEmitter {
 
     renderIdlePage () {
         return Mustache.render(IDLE_PAGE_TEMPLATE, {
-            userAgent: this.userAgent.toString(),
+            userAgent: this.userAgent,
             statusUrl: this.statusUrl
         });
     }

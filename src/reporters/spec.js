@@ -13,9 +13,7 @@ export default class SpecReporter extends BaseReporter {
     }
 
     _reportTaskStart (startTime, userAgents) {
-        var uaList = userAgents
-            .map(ua => ua.toString())
-            .join(', ');
+        var uaList = userAgents.join(', ');
 
         this.startTime = startTime;
         this.indent    = 0;

@@ -18,10 +18,7 @@ export default class XUnitReporter extends BaseReporter {
 
     _reportTaskStart (startTime, userAgents) {
         this.startTime = startTime;
-
-        this.uaList = userAgents
-            .map(ua => ua.toString())
-            .join(', ');
+        this.uaList = userAgents.join(', ');
     }
 
     _reportFixtureStart (name) {
