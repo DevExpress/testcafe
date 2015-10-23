@@ -1,9 +1,14 @@
-var path           = require('path');
-var expect         = require('chai').expect;
-var request        = require('request');
-var createTestCafe = require('../../lib/');
-var SpecReporter   = require('../../lib/reporters/spec');
-var COMMAND        = require('../../lib/browser-connection/command');
+var path                   = require('path');
+var expect                 = require('chai').expect;
+var request                = require('request');
+var createTestCafe         = require('../../lib/');
+var SpecReporter           = require('../../lib/reporters/spec');
+var COMMAND                = require('../../lib/browser-connection/command');
+var Task                   = require('../../lib/runner/task');
+var LocalBrowserConnection = require('../../lib/browser-connection/local');
+var BrowserConnection      = require('../../lib/browser-connection');
+var Bootstrapper           = require('../../lib/runner/bootstrapper');
+
 
 describe('Runner', function () {
     var testCafe   = null;
@@ -440,6 +445,113 @@ describe('Runner', function () {
                     done();
                 })
                 .catch(done);
+        });
+
+        describe('Should not stop the task until local connection browsers are not closed', function () {
+            const BROWSER_CLOSING_DELAY = 50;
+            const TASK_DONE_DELAY       = 50;
+
+            var origCreateBrowserJobs   = Task.prototype._createBrowserJobs;
+            var origClose               = LocalBrowserConnection.prototype.close;
+            var origRunBrowser          = LocalBrowserConnection.prototype._runBrowser;
+            var origAbort               = Task.prototype.abort;
+            var origConvertBrowserAlias = Bootstrapper._convertBrowserAliasToBrowserInfo;
+
+            var closeCalled      = 0;
+            var taskShouldBeDone = true;
+
+            beforeEach(function () {
+                closeCalled      = 0;
+                taskShouldBeDone = true;
+            });
+
+            before(function () {
+                Bootstrapper._convertBrowserAliasToBrowserInfo = function (alias) {
+                    return typeof alias === 'string' ? {} : alias;
+                };
+
+                LocalBrowserConnection.prototype.close = function () {
+                    var bc = this;
+
+                    setTimeout(function () {
+                        BrowserConnection.prototype.close.call(bc);
+                        closeCalled++;
+                        bc.emit('closed');
+                    }, BROWSER_CLOSING_DELAY);
+                };
+
+                LocalBrowserConnection.prototype._runBrowser = function () {
+                    this.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                   '(KHTML, like Gecko) Chrome/42.0.2227.1 Safari/537.36');
+                };
+
+                Task.prototype._createBrowserJobs = function () {
+                    if (taskShouldBeDone) {
+                        var task = this;
+
+                        setTimeout(function () {
+                            task.pendingBrowserJobs.forEach(function (job) {
+                                task.emit('browser-job-done', job);
+                            });
+
+                            task.emit('done');
+                        }, TASK_DONE_DELAY);
+                    }
+
+                    return this.browserConnections.map(function (bc) {
+                        return { browserConnection: bc };
+                    });
+                };
+
+                Task.prototype.abort = function () {
+                };
+            });
+
+            after(function () {
+                LocalBrowserConnection.prototype.close         = origClose;
+                LocalBrowserConnection.prototype._runBrowser   = origRunBrowser;
+                Task.prototype._createBrowserJobs              = origCreateBrowserJobs;
+                Task.prototype.abort                           = origAbort;
+                Bootstrapper._convertBrowserAliasToBrowserInfo = origConvertBrowserAlias;
+            });
+
+            it('when task done', function () {
+                return runner
+                    .browsers('chrome', 'ff')
+                    .reporter(function () {
+                    })
+                    .src('test/server/data/test-suite/top.test.js')
+                    .run()
+                    .then(function () {
+                        expect(closeCalled).eql(2);
+                    });
+            });
+
+            it('when connection failed', function () {
+                var brokenConnection = testCafe.createBrowserConnection();
+
+                taskShouldBeDone = false;
+                brokenConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                           '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+
+                setTimeout(function () {
+                    brokenConnection.emit('error', 'I have failed :(');
+                }, 25);
+
+                return runner
+                    .browsers(brokenConnection, 'chrome')
+                    .reporter(function () {
+                    })
+                    .src('test/server/data/test-suite/top.test.js')
+                    .run()
+                    .then(function () {
+                        throw new Error('Promise rejection expected');
+                    })
+                    .catch(function (err) {
+                        expect(err.message).eql('I have failed :(');
+                        expect(closeCalled).eql(1);
+                    });
+            });
         });
     });
 });

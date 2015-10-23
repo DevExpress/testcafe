@@ -22,13 +22,25 @@ export default class Runner {
     }
 
     // Static
-    static _freeBrowserConnection (bc, errorHandler) {
+    static _waitForLocalBrowserClose (bc) {
+        return new Promise(resolve => {
+            if (bc.disconnected) {
+                resolve();
+                return;
+            }
+
+            bc.close();
+            bc.once('closed', resolve);
+        });
+    }
+
+    static async _freeBrowserConnection (bc, errorHandler) {
         bc.removeListener('error', errorHandler);
 
         // NOTE: we should close local connections and
         // related browsers once we've done
         if (bc instanceof LocalBrowserConnection)
-            bc.close();
+            await Runner._waitForLocalBrowserClose(bc);
     }
 
     // Run task
@@ -37,18 +49,28 @@ export default class Runner {
             var task     = new Task(tests, browserConnections, this.proxy, this.opts);
             var reporter = new Reporter(task, this.opts.reportOutStream, this.opts.errorDecorator);
 
-            var bcErrorHandler = msg => {
+            var bcErrorHandler = async msg => {
+                await Promise.all(browserConnections.map(bc => Runner._freeBrowserConnection(bc, bcErrorHandler)));
+
                 task.abort();
                 task.removeAllListeners();
-                browserConnections.forEach(bc => Runner._freeBrowserConnection(bc, bcErrorHandler));
+
                 reject(new Error(msg));
             };
 
             browserConnections.forEach(bc => bc.once('error', bcErrorHandler));
 
-            task.on('browser-job-done', job => Runner._freeBrowserConnection(job.browserConnection, bcErrorHandler));
+            var promisedCloses = [];
 
-            task.once('done', () => resolve(reporter.total - reporter.passed));
+            task.on('browser-job-done', job => {
+                promisedCloses.push(Runner._freeBrowserConnection(job.browserConnection, bcErrorHandler));
+            });
+
+            task.once('done', async () => {
+                await Promise.all(promisedCloses);
+
+                resolve(reporter.total - reporter.passed);
+            });
         });
     }
 
