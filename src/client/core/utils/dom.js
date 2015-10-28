@@ -323,6 +323,35 @@ export function isElementFocusable ($element) {
             $element.css('visibility') !== 'hidden');
 }
 
+export function isIFrameWindowInDOM (win) {
+    //NOTE: In MS Edge, if an iframe is removed from DOM, the browser throws an exception when accessing window.top
+    //and window.frameElement. Fortunately, setTimeout is set to undefined in this case.
+    if (!win.setTimeout)
+        return false;
+
+    //NOTE: Cross-domain iframes in Firefox have null in frameElement even if they are in DOM
+    //But Firefox doesn't execute scripts in removed iframes, so we suppose that the iframe is in DOM
+    if (browserUtils.isMozilla && win.top !== win.self && !win.frameElement)
+        return true;
+
+    try {
+        //NOTE: This raises a cross-domain policy error in WebKit-based browsers.
+        return !!(win.frameElement && win.frameElement.contentDocument);
+    }
+    catch (e) {
+        return !!win.top;
+    }
+}
+
+export function isTopWindow (win) {
+    try {
+        //NOTE: MS Edge throws an exception when trying to access window.top from an iframe removed from DOM
+        return win.top === win.self;
+    }
+    catch (e) {
+        return false;
+    }
+}
 
 export var findDocument                               = hammerhead.utils.dom.findDocument;
 export var getActiveElement                           = hammerhead.utils.dom.getActiveElement;
