@@ -142,4 +142,32 @@ $(document).ready(function () {
             });
         }, 100);
     });
+
+    asyncTest('T233907 - TestRunning waits cancelled xhrs', function () {
+        var timeout = 300;  //NOTE: equals to INITIAL_REQUESTS_COLLECTION_DELAY
+        var barrierCompleted = false;
+
+        expect(1);
+
+        xhrBarrier.init();
+
+        xhrBarrier.startBarrier(function () {
+            barrierCompleted = true;
+        });
+
+        xhrBarrier.waitBarrier();
+
+        var syncActionExecuted = false,
+            xhr = new XMLHttpRequest();
+
+        xhr.open('GET', '/xhr-test/' + 2*timeout);
+        xhr.send(null);
+        xhr.abort();
+
+        setTimeout(function (){
+            ok(barrierCompleted);
+            start();
+        }, timeout);
+    });
+
 });
