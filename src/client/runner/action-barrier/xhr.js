@@ -83,6 +83,14 @@ export function init () {
         pageInitialReqsComplete = true;
     });
 
+    function onXhrFinish (xhr) {
+        if (removeXhrFromQueue(xhr))
+            barrierCtx.reqCount--;
+
+        if (!barrierCtx.collectingReqs && !barrierCtx.reqCount)
+            barrierCtx.callback();
+    }
+
     hammerhead.on(hammerhead.EVENTS.xhrSend, function (e) {
         if (barrierCtx) {
             barrierCtx.reqCount++;
@@ -97,17 +105,15 @@ export function init () {
         if (window.console && window.console.log)
             window.console.log('TestCafe encountered XHR error on page: ' + e.err);
         events.emit(XHR_BARRIER_ERROR, e.err);
+
+        onXhrFinish(e.xhr);
     });
 
     hammerhead.on(hammerhead.EVENTS.xhrCompleted, function (e) {
         //NOTE: let last real xhr-handler finish it's job and try to obtain any additional requests
         //if they were initiated by this handler
         window.setTimeout(function () {
-            if (removeXhrFromQueue(e.xhr))
-                barrierCtx.reqCount--;
-
-            if (!barrierCtx.collectingReqs && !barrierCtx.reqCount)
-                barrierCtx.callback();
+            onXhrFinish(e.xhr);
 
         }, ADDITIONAL_REQUESTS_COLLECTION_DELAY);
     });
