@@ -21,6 +21,8 @@ var eventUtils            = testCafeCore.eventUtils;
 
 var cursor = testCafeUI.cursor;
 
+//NOTE: We should save the last hovered element between runs because of T286582
+var lastHoveredElement = null;
 
 export default function (to, inDragging, options, actionCallback, currentDocument, skipEvents, inSelect) {
     currentDocument = currentDocument || document;
@@ -45,8 +47,6 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
         startTime             = null,
         endTime               = null,
         movingTime            = null,
-
-        lastOverElement       = null,//B235842
 
         currentCursorPosition = cursor.getPosition(),
 
@@ -114,18 +114,23 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
 
                     var currentElementChanged = true;
 
-                    try {
-                        //NOTE: when lastOverElement was in an iframe that removed, ie raises exception when we try to
-                        // compare it with current element
-                        currentElementChanged = currentElement !== lastOverElement;
-                    }
-                    catch (e) {
-                        lastOverElement       = null;
+                    //NOTE: if lastHoveredElement was in an iframe that has been removed,
+                    //IE raises an exception when we try to compare it with the current element
+                    var isLastOverElementInRemovedIframe = lastHoveredElement &&
+                                                           domUtils.isElementInIframe(lastHoveredElement) &&
+                                                           !domUtils.getIFrameByElement(lastHoveredElement);
+
+                    var elementInDocument = lastHoveredElement && domUtils.isElementInDocument(lastHoveredElement);
+
+                    if (browserUtils.isIE && isLastOverElementInRemovedIframe || !elementInDocument) {
+                        lastHoveredElement    = null;
                         currentElementChanged = true;
                     }
+                    else
+                        currentElementChanged = currentElement !== lastHoveredElement;
 
-                    if (currentElementChanged && lastOverElement)
-                        eventSimulator.mouseout(lastOverElement, $.extend({ relatedTarget: currentElement }, eventOptions));
+                    if (currentElementChanged && lastHoveredElement)
+                        eventSimulator.mouseout(lastHoveredElement, $.extend({ relatedTarget: currentElement }, eventOptions));
 
                     var eventName = browserUtils.hasTouchEvents ? 'touchmove' : 'mousemove',
                         el        = browserUtils.hasTouchEvents ? dragElement : currentElement;
@@ -136,8 +141,8 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
 
                     if (currentElementChanged) {
                         if (currentElement)
-                            eventSimulator.mouseover(currentElement, $.extend({ relatedTarget: lastOverElement }, eventOptions));
-                        lastOverElement = currentElement;
+                            eventSimulator.mouseover(currentElement, $.extend({ relatedTarget: lastHoveredElement }, eventOptions));
+                        lastHoveredElement = currentElement;
                     }
 
                     if (!browserUtils.isIE && currentElement)

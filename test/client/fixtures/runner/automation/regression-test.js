@@ -787,7 +787,7 @@ $(document).ready(function () {
 
         $iFrame.load(function () {
             var $iFrameBody = $($iFrame[0].contentWindow.document.body);
-            
+
             $iFrameBody.attr('contenteditable', true);
 
             $iFrameBody.bind('focus', function () {
@@ -803,5 +803,37 @@ $(document).ready(function () {
                 });
             });
         });
+    });
+
+    asyncTest('T286582 - A menu item has a hover state in jssite tests, but it is not hovered', function () {
+        var style = [
+            '<style>',
+            'input {border-bottom-width: 0;}',
+            'input:hover {border-bottom-width: 10px;}',
+            '</style>'
+        ].join('\n');
+
+        $(style)
+            .addClass(TEST_ELEMENT_CLASS)
+            .appendTo(body);
+
+        var $input1 = createInput()
+            .css('position', 'fixed')
+            .css('margin-top', '50px')
+            .appendTo(body);
+
+        var $input2 = $input1
+            .clone()
+            .css('margin-left', '200px')
+            .appendTo(body);
+
+        clickPlaybackAutomation($input1[0], {}, function () {
+            strictEqual($input1.css('border-bottom-width'), '10px');
+            $input1.css('margin-top', '0px');
+            clickPlaybackAutomation($input2[0], {}, function () {
+                strictEqual($input1.css('border-bottom-width'), '0px');
+                startNext();
+            })
+        })
     });
 });

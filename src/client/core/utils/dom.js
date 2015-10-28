@@ -365,6 +365,7 @@ export var getSelectVisibleChildren                   = hammerhead.utils.dom.get
 export var isContentEditableElement                   = hammerhead.utils.dom.isContentEditableElement;
 export var isCrossDomainWindows                       = hammerhead.utils.dom.isCrossDomainWindows;
 export var isDomElement                               = hammerhead.utils.dom.isDomElement;
+export var isElementInDocument                        = hammerhead.utils.dom.isElementInDocument;
 export var isElementInIframe                          = hammerhead.utils.dom.isElementInIframe;
 export var isFileInput                                = hammerhead.utils.dom.isFileInput;
 export var isHammerheadAttr                           = hammerhead.utils.dom.isHammerheadAttr;
