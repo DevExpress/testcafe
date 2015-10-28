@@ -12,6 +12,7 @@ var messageSandbox        = hammerhead.messageSandbox;
 var $                     = testCafeCore.$;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
 var serviceUtils          = testCafeCore.serviceUtils;
+var domUtils              = testCafeCore.domUtils;
 var cursor                = testCafeUI.cursor;
 
 
@@ -113,7 +114,7 @@ function waitPageLoad (callback) {
     $(window).load(callbackWrapper);
     $(document).ready(function () {
         //NOTE: an iFrame may be removed in this moment
-        if (window && window.top)
+        if (domUtils.isIFrameWindowInDOM(window))
             window.setTimeout(callbackWrapper, PAGE_LOAD_TIMEOUT);
     });
 }

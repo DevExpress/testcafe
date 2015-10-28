@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <script src="/async.js" class="script-hammerhead-shadow-ui"></script>
+    <script src="/hammerhead.js" class="script-hammerhead-shadow-ui"></script>
+    <script src="/core.js" class="script-hammerhead-shadow-ui"></script>
+    <script src="/ui.js" class="script-hammerhead-shadow-ui"></script>
+    <script src="/runner.js" class="script-hammerhead-shadow-ui"></script>
+    <script src="/jquery.js" class="script-hammerhead-shadow-ui"></script>
+
+    <link type="text/css" rel=stylesheet href="/ui.css" class="ui-stylesheet-hammerhead-shadow-ui">
+</head>
+<body>
+<script type="text/javascript">
+    var HH_SETTINGS = Hammerhead.get('./settings');
+    HH_SETTINGS.set({
+        CROSS_DOMAIN_PROXY_PORT: 2000
+    });
+
+    var testCafeCore = window['%testCafeCore%'];
+
+    (function (isIFrameWindowInDOM, window) {
+        window.addEventListener('message', function (event) {
+            if (event.data === 'isIFrameWindowInDOM')
+                event.source.postMessage({ message: isIFrameWindowInDOM(window) }, '*');
+
+        }, false);
+    })(testCafeCore.domUtils.isIFrameWindowInDOM, window);
+</script>
+</body>
+</html>
