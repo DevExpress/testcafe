@@ -775,4 +775,33 @@ $(document).ready(function () {
             });
         });
     });
+
+    asyncTest('T235186 - Focus event handlers don\'t call for iframe\'s contenteditable body', function () {
+        var focusEventCount = 0;
+        var $iFrame         = $('<iframe></iframe>')
+            .width(500)
+            .height(500)
+            .attr('src', window.QUnitGlobals.getResourceUrl('../../../data/focus-blur-change/iframe.html'))
+            .addClass(TEST_ELEMENT_CLASS)
+            .appendTo('body');
+
+        $iFrame.load(function () {
+            var $iFrameBody = $($iFrame[0].contentWindow.document.body);
+            
+            $iFrameBody.attr('contenteditable', true);
+
+            $iFrameBody.bind('focus', function () {
+                focusEventCount++;
+            });
+
+            clickPlaybackAutomation($iFrameBody[0], {}, function () {
+                equal(focusEventCount, 1);
+
+                clickPlaybackAutomation($iFrameBody[0], {}, function () {
+                    equal(focusEventCount, 1);
+                    startNext();
+                });
+            });
+        });
+    });
 });
