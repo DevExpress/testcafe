@@ -7,10 +7,12 @@ export default class LocalBrowserConnection extends BrowserConnection {
     constructor (gateway, browserInfo) {
         super(gateway);
 
-        this.NATIVE_ACTION_DELAY = 500;
+        this.NATIVE_ACTION_DELAY       = 500;
+        this.WAITING_FOR_CLOSE_TIMEOUT = 10000;
 
-        this.forceClose            = false;
-        this.switchedToIdleOnClose = false;
+        this.forceClose             = false;
+        this.switchedToIdleOnClose  = false;
+        this.waitingForCloseTimeout = 0;
 
         this._runBrowser(browserInfo);
     }
@@ -28,11 +30,12 @@ export default class LocalBrowserConnection extends BrowserConnection {
         });
     }
 
-
     close () {
         // NOTE: When using local connections, we should close the browser before closing
         // the connection. For this, we close connections in the getStatus function.
         this.forceClose = true;
+
+        this.waitingForCloseTimeout = setTimeout(() => this.emit('closed'), this.WAITING_FOR_CLOSE_TIMEOUT);
     }
 
     getStatus () {
@@ -45,9 +48,11 @@ export default class LocalBrowserConnection extends BrowserConnection {
                 return { cmd: COMMAND.idle, url: this.idleUrl };
             }
 
-            setTimeout(() => {
-                closeBrowser(this.idleUrl);
+            setTimeout(async () => {
+                await closeBrowser(this.idleUrl);
                 super.close();
+                clearTimeout(this.waitingForCloseTimeout);
+                this.emit('closed');
             }, this.NATIVE_ACTION_DELAY);
 
             return { cmd: COMMAND.close };

@@ -93,10 +93,15 @@ export default class Bootstrapper {
             await this._waitBrowserConnectionsReady(browserConnections);
         }
         catch (err) {
-            browserConnections.forEach(bc => {
-                if (bc instanceof LocalBrowserConnection)
+            await Promise.all(browserConnections.map(bc => new Promise(resolve => {
+                if (bc instanceof LocalBrowserConnection && !bc.disconnected) {
                     bc.close();
-            });
+                    bc.once('closed', resolve);
+                }
+                else
+                    resolve();
+
+            })));
 
             throw err;
         }
