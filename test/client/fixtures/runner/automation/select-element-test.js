@@ -725,8 +725,14 @@ $(document).ready(function () {
 
     module('mouse actions with select with option groups');
     asyncTest('click select and option', function () {
-        var select = createSelectWithGroups(),
-            option = $(select).find('option')[8];
+        var select        = createSelectWithGroups(),
+            option        = $(select).find('option')[3],
+            changeHandled = false;
+
+        //T280587 - Selecting an option does not trigger the on('change', ...) event
+        select.onchange = function () {
+            changeHandled = true;
+        };
 
         clickPlaybackAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
@@ -734,8 +740,9 @@ $(document).ready(function () {
             equal(shadowUI.select('.' + OPTION_GROUP_CLASS).length, 3);
 
             clickPlaybackAutomation(option, {}, function () {
-                equal(select.selectedIndex, 8);
                 window.setTimeout(function () {
+                    equal(select.selectedIndex, 3);
+                    ok(changeHandled, 'change event raised');
                     startNext();
                 }, 0);
             });
