@@ -112,8 +112,9 @@ function waitPageLoad (callback) {
 
     $(window).load(callbackWrapper);
     $(document).ready(function () {
-        //NOTE: an iFrame may be removed in this moment
-        if (window && window.top)
+        // NOTE: In IE, a removed iframe may contain window.top while the setTimeout method is missed.
+        // This happens because all overridden methods are set to 'undefined' after the iFrame is removed.
+        if (window && window.top && window.setTimeout)
             window.setTimeout(callbackWrapper, PAGE_LOAD_TIMEOUT);
     });
 }
