@@ -611,6 +611,9 @@ var supportedShortcutHandlers = (function () {
     function focusNextElement (element, callback) {
         var nextElement = domUtils.getNextFocusableElement(element);
 
+        if (!nextElement)
+            return;
+
         focusBlurSandbox.focus(nextElement, function () {
             if (domUtils.isTextEditableInput(nextElement))
                 textSelection.select(nextElement);
@@ -621,6 +624,9 @@ var supportedShortcutHandlers = (function () {
 
     function focusPrevElement (element, callback) {
         var prevElement = domUtils.getNextFocusableElement(element, true);
+
+        if (!prevElement)
+            return;
 
         focusBlurSandbox.focus(prevElement, function () {
             if (domUtils.isTextEditableInput(prevElement))

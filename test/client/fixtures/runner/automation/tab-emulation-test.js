@@ -47,7 +47,10 @@ $(document).ready(function () {
         $radioInput4                    = null,
         $radioGroupSecond               = null,
         $radioInput5                    = null,
-        $radioInput6                    = null;
+        $radioInput6                    = null,
+        $invisibleParentWithInput = null,
+        $invisibleInput = null;
+
 
     //utils
     var createElements = function () {
@@ -83,6 +86,11 @@ $(document).ready(function () {
         $radioGroupSecond     = $('<fieldset></fieldset>').addClass(TEST_ELEMENT_CLASS).appendTo($body);
         $radioInput5          = $('<input type="radio">').attr('name', 'radioGroup2').attr('tabIndex', 0).addClass(TEST_ELEMENT_CLASS).appendTo($radioGroupSecond);
         $radioInput6          = $('<input type="radio">').attr('name', 'radioGroup1').attr('tabIndex', 0).addClass(TEST_ELEMENT_CLASS).appendTo($radioGroupSecond);
+
+        //T297258
+        $invisibleParentWithInput = $('<div style="display: none;"><input/></div>').addClass(TEST_ELEMENT_CLASS).appendTo($body);
+        var $hiddenParent = $('<div style="width: 0px; height: 0px;"></div>').addClass(TEST_ELEMENT_CLASS).appendTo($body);
+        $invisibleInput = $('<input style="width: 0px; height: 0px;"/>').addClass(TEST_ELEMENT_CLASS).appendTo($hiddenParent);
     };
 
     var createExpectedLog = function () {
@@ -115,6 +123,9 @@ $(document).ready(function () {
         }
         $expectedFocusedElements.push($radioInput5);
         $expectedFocusedElements.push($radioInput6);
+
+        //T297258
+        $expectedFocusedElements.push($invisibleInput);
     };
 
     var logElement = function () {
@@ -126,7 +137,7 @@ $(document).ready(function () {
     var finishActions = function (actionsType) {
         if (actionsType === 'shift+tab') {
             $expectedFocusedElements    = $expectedFocusedElements.reverse();
-            $expectedFocusedElements[2] = $radioInput4;
+            $expectedFocusedElements[3] = $radioInput4;
         }
 
         equal($expectedFocusedElements.length, focusedElements.length);
@@ -136,7 +147,12 @@ $(document).ready(function () {
         start();
     };
 
+    QUnit.testStart = function(){
+        $('#qunit-tests').css('display', 'none');
+    };
+
     QUnit.testDone(function () {
+        $('#qunit-tests').css('display', '');
         $('.' + TEST_ELEMENT_CLASS).remove();
         focusedElements          = [];
         $expectedFocusedElements = [];
@@ -148,7 +164,7 @@ $(document).ready(function () {
         createElements();
         createExpectedLog();
 
-        var pressTabRecursive = function (callback) {
+        var pressTabRecursive = function () {
             keyPressSimulator('tab', function (callback) {
                 if (focusedElements.length === $expectedFocusedElements.length - 1) {
                     logElement();
@@ -170,7 +186,7 @@ $(document).ready(function () {
         createElements();
         createExpectedLog();
 
-        var pressTabRecursive = function (callback) {
+        var pressShiftTabRecursive = function (callback) {
             keyPressSimulator('shift+tab', function (callback) {
                 if (focusedElements.length === $expectedFocusedElements.length - 1) {
                     logElement();
@@ -178,11 +194,11 @@ $(document).ready(function () {
                 }
                 else {
                     logElement();
-                    pressTabRecursive(callback);
+                    pressShiftTabRecursive(callback);
                 }
             });
         };
 
-        pressTabRecursive(logElement);
+        pressShiftTabRecursive(logElement);
     });
 });
