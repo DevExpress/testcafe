@@ -7,6 +7,15 @@ function escapeNewLines (str) {
     return str.replace(/(\r\n|\n|\r)/gm, '\\n');
 }
 
+function getStepCode (str) {
+    var lines = str.split(/\r?\n/g);
+    var last  = lines.pop();
+
+    return lines
+        .reduceRight((prev, line) => `<span data-type="code-line">${line}</span>${prev}`,
+        `<span data-type="last-code-line">${last}</span>`);
+}
+
 function getMsgPrefix (err, category) {
     return dedent`
         <span data-type="user-agent">${err.userAgent}</span>
@@ -37,7 +46,7 @@ export default {
     [TYPE.okAssertion]: err => dedent`
         ${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         <strong>Expected: </strong>not <code>null</code>, not <code>undefined</code>, not <code>false</code>, not <code>NaN</code> and not <code>''</code>
         <strong>Actual:   </strong><code>${escapeNewLines(err.actual)}</code>
@@ -46,7 +55,7 @@ export default {
     [TYPE.notOkAssertion]: err => dedent`
         ${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         <strong>Expected: </strong><code>null</code>, <code>undefined</code>, <code>false</code>, <code>NaN</code> or <code>''</code>
         <strong>Actual:   </strong><code>${escapeNewLines(err.actual)}</code>
@@ -59,7 +68,7 @@ export default {
         return dedent`
             ${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>:
 
-                <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+            <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
             ${getDiffHeader(err)}
 
@@ -72,7 +81,7 @@ export default {
     [TYPE.notEqAssertion]: err => dedent`
         ${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         <strong>Expected: </strong>not <code>${escapeNewLines(err.actual)}</code>
         <strong>Actual:   </strong><code>${escapeNewLines(err.actual)}</code>
@@ -112,7 +121,7 @@ export default {
     [TYPE.emptyFirstArgument]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         A target element of the <code data-type="api">${err.action}</code> action has not been found in the DOM tree.
         If this element should be created after animation or a time-consuming operation is finished, use the <code data-type="api">waitFor</code> action (available for use in code) to pause test execution until this element appears.
@@ -121,7 +130,7 @@ export default {
     [TYPE.invisibleActionElement]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         A target element <code>${err.element}</code> of the <code data-type="api">${err.action}</code> action is not visible.
         If this element should appear when you are hovering over another element, make sure that you properly recorded the <code data-type="api">hover</code> action.
@@ -130,7 +139,7 @@ export default {
     [TYPE.incorrectDraggingSecondArgument]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         <code data-type="api">drag</code> action drop target is incorrect.
     `,
@@ -138,7 +147,7 @@ export default {
     [TYPE.incorrectPressActionArgument]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         <code data-type="api">press</code> action parameter contains incorrect key code.
     `,
@@ -146,7 +155,7 @@ export default {
     [TYPE.emptyTypeActionArgument]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         The <code data-type="api">type<code> action's parameter text is empty.
     `,
@@ -164,7 +173,7 @@ export default {
     [TYPE.incorrectSelectActionArguments]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         <code data-type="api">select</code> action's parameters contain an incorrect value.
     `,
@@ -172,7 +181,7 @@ export default {
     [TYPE.incorrectWaitActionMillisecondsArgument]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         <code data-type="api">wait</code> action's "milliseconds" parameter should be a positive number.
     `,
@@ -180,7 +189,7 @@ export default {
     [TYPE.incorrectWaitForActionEventArgument]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         <code data-type="api">waitFor</code> action's first parameter should be a function, a CSS selector or an array of CSS selectors.
     `,
@@ -188,7 +197,7 @@ export default {
     [TYPE.incorrectWaitForActionTimeoutArgument]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         <code data-type="api">waitFor</code> action's "timeout" parameter should be a positive number.
     `,
@@ -196,7 +205,7 @@ export default {
     [TYPE.waitForActionTimeoutExceeded]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.timeout)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         <code data-type="api">waitFor</code> action's timeout exceeded.
     `,
@@ -204,7 +213,7 @@ export default {
     [TYPE.emptyIFrameArgument]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         The selector within the <code data-type="api">inIFrame</code> function returns an empty value.
     `,
@@ -212,7 +221,7 @@ export default {
     [TYPE.iframeArgumentIsNotIFrame]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         The selector within the <code data-type="api">inIFrame</code> function doesn’t return an iframe element.
     `,
@@ -220,7 +229,7 @@ export default {
     [TYPE.multipleIFrameArgument]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         The selector within the <code data-type="api">inIFrame</code> function returns more than one iframe element.
     `,
@@ -228,7 +237,7 @@ export default {
     [TYPE.incorrectIFrameArgument]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         The <code data-type="api">inIFrame</code> function contains an invalid argument.
     `,
@@ -237,7 +246,7 @@ export default {
         var msg = dedent`
             ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-                <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+            <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
             Cannot find the following file(s) to upload:
         `;
@@ -248,7 +257,7 @@ export default {
     [TYPE.uploadElementIsNotFileInput]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         <code data-type="api">upload</code> action argument does not contain a file input element.
     `,
@@ -256,7 +265,7 @@ export default {
     [TYPE.uploadInvalidFilePathArgument]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
 
-            <code data-type="step-source">${escapeNewLines(err.relatedSourceCode)}</code>
+        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
         <code data-type="api">upload</code> action's "path" parameter should be a string or an array of strings.
     `,

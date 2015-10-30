@@ -307,7 +307,7 @@ describe('Error formatter', function () {
             var err = {
                 code:              TYPE.waitForActionTimeoutExceeded,
                 stepName:          'Step',
-                relatedSourceCode: 'code',
+                relatedSourceCode: 'act.waitFor(function(cb) {\n    cb();\n}, 1000);',
                 userAgent:         userAgentMock
             };
 
@@ -318,7 +318,7 @@ describe('Error formatter', function () {
             var err = {
                 code:              TYPE.emptyIFrameArgument,
                 stepName:          'Step',
-                relatedSourceCode: 'code',
+                relatedSourceCode: 'inIFrame("#iFrame", function () {\n    act.click($("button"))\n})',
                 userAgent:         userAgentMock
             };
 
@@ -329,7 +329,7 @@ describe('Error formatter', function () {
             var err = {
                 code:              TYPE.iframeArgumentIsNotIFrame,
                 stepName:          'Step',
-                relatedSourceCode: 'code',
+                relatedSourceCode: 'inIFrame("#content", function () {\n    act.click($("button"))\n})',
                 userAgent:         userAgentMock
             };
 
@@ -340,7 +340,7 @@ describe('Error formatter', function () {
             var err = {
                 code:              TYPE.multipleIFrameArgument,
                 stepName:          'Step',
-                relatedSourceCode: 'code',
+                relatedSourceCode: 'inIFrame(".IFrame", function () {\n    act.press("123")\n})',
                 userAgent:         userAgentMock
             };
 
@@ -351,7 +351,7 @@ describe('Error formatter', function () {
             var err = {
                 code:              TYPE.incorrectIFrameArgument,
                 stepName:          'Step',
-                relatedSourceCode: 'code',
+                relatedSourceCode: 'inIFrame(IFrame, function () {\n    act.press("123")\n})',
                 userAgent:         userAgentMock
             };
 

@@ -2,7 +2,9 @@ Chrome 15.0.874 / Mac OS X 10.8.1
 CATEGORY=actionError
 Error at step "Step":
 
-    code
+    inIFrame(".IFrame", function () {
+        act.press("123")
+    })
 
 The selector within the inIFrame function returns more than one iframe
 element.

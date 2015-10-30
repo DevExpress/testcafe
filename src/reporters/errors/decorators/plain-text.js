@@ -1,3 +1,7 @@
+import indentString from 'indent-string';
+
+const CODE_ALIGN_SPACES = 4;
+
 export default {
     'span category': () => '',
 
@@ -7,7 +11,11 @@ export default {
 
     'code': str => str,
 
-    'code step-source': str => str,
+    'code step-source': str => indentString(str, ' ', CODE_ALIGN_SPACES),
+
+    'span code-line': str => `${str}\n`,
+
+    'span last-code-line': str => str,
 
     'code api': str => str,
 
