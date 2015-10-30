@@ -270,11 +270,6 @@ StepIterator.prototype._syncSharedDataWithServer = function (callback) {
 StepIterator.prototype._completeAsyncAction = function () {
     var iterator = this;
 
-    if (typeof iterator.state.stepDone === 'function' && !iterator.state.stepDoneCalled) {
-        iterator.state.stepDone();
-        iterator.state.stepDoneCalled = true;
-    }
-
     if (iterator.state.stopped)
         return;
 
