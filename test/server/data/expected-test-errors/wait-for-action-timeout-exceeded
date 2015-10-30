@@ -2,6 +2,8 @@ Chrome 15.0.874 / Mac OS X 10.8.1
 CATEGORY=timeout
 Error at step "Step":
 
-    code
+    act.waitFor(function(cb) {
+        cb();
+    }, 1000);
 
 waitFor action's timeout exceeded.
