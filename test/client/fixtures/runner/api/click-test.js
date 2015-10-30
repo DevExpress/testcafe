@@ -1003,6 +1003,39 @@ $(document).ready(function () {
         );
     });
 
+    asyncTest('T299665 - Incorrect click on image with associated map element in Mozilla', function () {
+        var $map  = $('<map name="map"></map>')
+            .appendTo('body')
+            .addClass(TEST_ELEMENT_CLASS);
+        var $area = $('<area shape="rect" coords="0,0,200,200" title="Area"/>').appendTo($map);
+
+        $('<img usemap="#map"/>')
+            .attr('src', window.QUnitGlobals.getResourceUrl("../../../data/runner/img.png"))
+            .css({
+                width:  '200px',
+                height: '200px'
+            })
+            .appendTo('body')
+            .addClass(TEST_ELEMENT_CLASS);
+
+        runAsyncTest(
+            function () {
+                $('#button1').remove();
+
+                $area.click(function (e) {
+                    if (this === e.target)
+                        $area.data('clicked', true);
+                });
+
+                actionsAPI.click($area);
+            },
+            function () {
+                ok($("area").data('clicked'));
+            },
+            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
+        );
+    });
+
     module('touch devices test');
     //for touch devices
     if (browserUtils.hasTouchEvents) {

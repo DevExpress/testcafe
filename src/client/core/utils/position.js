@@ -5,16 +5,6 @@ import * as styleUtils from './style';
 import * as domUtils from './dom';
 
 
-function isMapElement (el) {
-    return /^map$|^area$/i.test(el.tagName);
-}
-
-function getMapContainer (el) {
-    var $container = $('[usemap=#' + $(el).closest('map').attr('name') + ']', domUtils.findDocument(el));
-
-    return $container.length ? $container[0] : null;
-}
-
 export function getIFrameCoordinates (iFrameWin) {
     var iFrame              = domUtils.getIframeByWindow(iFrameWin);
     var $IFrame             = $(iFrame);
@@ -44,8 +34,8 @@ export function isElementVisible (el) {
             return false;
     }
 
-    if (isMapElement(el)) {
-        var mapContainer = getMapContainer($el.closest('map')[0]);
+    if (domUtils.isMapElement(el)) {
+        var mapContainer = domUtils.getMapContainer($el.closest('map')[0]);
 
         return mapContainer ? isElementVisible(mapContainer) : false;
     }

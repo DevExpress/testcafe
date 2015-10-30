@@ -188,28 +188,39 @@ export function getDragEndPoint (startPosition, to, currentDocument) {
 }
 
 export function getElementUnderCursor (x, y, currentDocument, target) {
+    var $target    = $(target);
     var topElement = cursor.getElementUnderCursor(x, y, currentDocument);
 
-    if (!target || !domUtils.isDomElement(target) || topElement === target ||
-        (target.tagName.toLowerCase() !== 'a' && !$(target).parents('a').length) || !$(target).text().length)
+    if (!target || !domUtils.isDomElement(target) || topElement === target || !topElement)
         return topElement;
+
+    //NOTE: T299665 - Incorrect click on image with associated map element in Mozilla
+    if (browserUtils.isFirefox && target.tagName.toLowerCase() === 'area' &&
+        topElement.tagName.toLowerCase() === 'img') {
+        var mapElement = $target.closest('map')[0];
+
+        return mapElement && mapElement.name === topElement.useMap.substring(1) ? target : topElement;
+    }
+
+    if ((target.tagName.toLowerCase() !== 'a' && !$target.parents('a').length) || !$target.text().length)
+        return topElement;
+
     //NOTE: we caught link's child with text so it fit for redirect
-    else if (target && domUtils.isDomElement(target) && target.tagName.toLowerCase() === 'a' && topElement !== target &&
-             $(target).has(topElement).length && $(topElement).text().length)
+    if (target.tagName.toLowerCase() === 'a' && $target.has(topElement).length && $(topElement).text().length)
         return topElement;
 
     //NOTE: try to find myltiline link by her rectangle (T163678)
-    var linkRect      = target.getBoundingClientRect(),
-        curTopElement = cursor.getElementUnderCursor(linkRect.right - 1, linkRect.top + 1, currentDocument);
+    var linkRect      = target.getBoundingClientRect();
+    var curTopElement = cursor.getElementUnderCursor(linkRect.right - 1, linkRect.top + 1, currentDocument);
 
     if ((curTopElement && curTopElement === target) ||
-        ($(target).has(curTopElement).length && $(curTopElement).text().length))
+        ($target.has(curTopElement).length && $(curTopElement).text().length))
         return curTopElement;
     else {
         curTopElement = cursor.getElementUnderCursor(linkRect.left + 1, linkRect.bottom - 1);
 
         if ((curTopElement && curTopElement === target) ||
-            ($(target).has(curTopElement).length && $(curTopElement).text().length))
+            ($target.has(curTopElement).length && $(curTopElement).text().length))
             return curTopElement;
     }
 

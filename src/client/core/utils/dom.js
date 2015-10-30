@@ -363,5 +363,7 @@ export var isTextEditableElement                      = hammerhead.utils.dom.isT
 export var isTextEditableElementAndEditingAllowed     = hammerhead.utils.dom.isTextEditableElementAndEditingAllowed;
 export var isTextEditableInput                        = hammerhead.utils.dom.isTextEditableInput;
 export var isTextNode                                 = hammerhead.utils.dom.isTextNode;
+export var isMapElement                               = hammerhead.utils.dom.isMapElement;
+export var getMapContainer                            = hammerhead.utils.dom.getMapContainer;
 export var isWindowInstance                           = hammerhead.utils.dom.isWindow;
 export var isDocumentInstance                         = hammerhead.utils.dom.isDocument;
