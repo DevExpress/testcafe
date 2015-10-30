@@ -1,12 +1,12 @@
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
 
-var testCafeCore = window.getTestCafeModule('testCafeCore');
-var SETTINGS     = testCafeCore.get('./settings').get();
-var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
-var domUtils     = testCafeCore.get('./utils/dom');
-var style        = testCafeCore.get('./utils/style');
-var position     = testCafeCore.get('./utils/position');
+var testCafeCore  = window.getTestCafeModule('testCafeCore');
+var SETTINGS      = testCafeCore.get('./settings').get();
+var ERROR_TYPE    = testCafeCore.ERROR_TYPE;
+var domUtils      = testCafeCore.get('./utils/dom');
+var styleUtils    = testCafeCore.get('./utils/style');
+var positionUtils = testCafeCore.get('./utils/position');
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var actionsAPI     = testCafeRunner.get('./api/actions');
@@ -193,7 +193,7 @@ $(document).ready(function () {
                     clicked = true;
                 });
                 $el.bind('mousedown', function () {
-                    deepEqual(cursor.getAbsolutePosition(), position.findCenter($el[0]), 'check cursor position');
+                    deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter($el[0]), 'check cursor position');
                 });
                 actionsAPI.click($el[0]);
             },
@@ -215,7 +215,7 @@ $(document).ready(function () {
                     clicked = true;
                 });
                 $el.bind('mousedown', function () {
-                    deepEqual(cursor.getAbsolutePosition(), position.findCenter($el[0]), 'check cursor position');
+                    deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter($el[0]), 'check cursor position');
                 });
                 actionsAPI.click($el);
             },
@@ -237,7 +237,7 @@ $(document).ready(function () {
                         clicksCount++;
                     })
                     .bind('mousedown', function () {
-                        deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+                        deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
                     });
                 actionsAPI.click($elements);
             },
@@ -262,11 +262,11 @@ $(document).ready(function () {
                 var $el2 = addInputElement('button', 'button2', 150, 150);
                 $el.click(function (e) {
                     firstElementClickRaised = true
-                    deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+                    deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
                 });
                 $el2.click(function (e) {
                     secondElementClickRaised = true
-                    deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+                    deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
                 });
                 actionsAPI.click([$el[0], $el2[0]]);
             },
@@ -294,7 +294,7 @@ $(document).ready(function () {
                         clicksCount++;
                     })
                     .bind('mousedown', function () {
-                        deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+                        deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
                     });
                 actionsAPI.click([$('.button'), $el3]);
             },
@@ -335,19 +335,19 @@ $(document).ready(function () {
             newTestClass         = 'newTestClass';
 
         $('#button1').click(function () {
-            deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+            deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
         });
 
         $el.click(function () {
             addInputElement('button', 'button2', 150, 150).addClass(newTestClass).click(function () {
                 secondElementClicked = true;
-                deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+                deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
             });
 
             addInputElement('button', 'button3', 200, 200)
                 .addClass(newTestClass)
                 .bind('mousedown', function () {
-                    deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+                    deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
                 })
                 .bind('click', function () {
                     thirdElementClicked = true;
@@ -389,11 +389,11 @@ $(document).ready(function () {
         $el.click(function () {
             addInputElement('button', 'button2', 150, 150).addClass(newTestClass).click(function () {
                 secondElementClicked = true;
-                deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+                deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
             });
             addInputElement('button', 'button3', 200, 200).addClass(newTestClass).click(function () {
                 thirdElementClicked = true;
-                deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+                deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
             });
         });
         runAsyncTest(function () {
@@ -427,7 +427,7 @@ $(document).ready(function () {
                 });
                 $el.click(function () {
                     clickRaised = true;
-                    deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+                    deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
                     ok(mousedownRaised && mouseupRaised, 'click event was raised third ');
                 });
                 actionsAPI.click($el[0]);
@@ -485,8 +485,8 @@ $(document).ready(function () {
                     $div3            = addContainer(400, 620, $div2),
                     $div4            = addContainer(350, 1230, $div3),
                     offsetY          = 2350,
-                    containerBorders = style.getBordersWidth($div4[0]),
-                    containerPadding = style.getElementPadding($div4[0]);
+                    containerBorders = styleUtils.getBordersWidth($div4[0]),
+                    containerPadding = styleUtils.getElementPadding($div4[0]);
 
                 createDiv().addClass(TEST_ELEMENT_CLASS)
                     .css({
@@ -528,8 +528,8 @@ $(document).ready(function () {
                     $div3            = addContainer(400, 620, $div2),
                     $div4            = addContainer(350, 1230, $div3),
                     offsetY          = 50,
-                    containerBorders = style.getBordersWidth($div4[0]),
-                    containerPadding = style.getElementPadding($div4[0]);
+                    containerBorders = styleUtils.getBordersWidth($div4[0]),
+                    containerPadding = styleUtils.getElementPadding($div4[0]);
 
                 createDiv().addClass(TEST_ELEMENT_CLASS)
                     .css({
@@ -583,7 +583,7 @@ $(document).ready(function () {
                     .css({ marginTop: '400px', marginLeft: '80px' })
                     .bind('mousedown', function () {
                         clicked = true;
-                        deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+                        deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
                     })
                     .appendTo($div);
                 actionsAPI.click($button[0]);
@@ -605,7 +605,7 @@ $(document).ready(function () {
                         clicked = true;
                     })
                     .bind('mousedown', function () {
-                        deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+                        deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
                     });
                 //moving scroll to start position for a next test
                 actionsAPI.click([$el[0], addDiv(200, 500)]);
@@ -641,7 +641,7 @@ $(document).ready(function () {
             el              = $el[0];
         $el.click(function () {
             clicksCount++;
-            deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+            deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
         });
         asyncActionCallback = function () {
             asyncActionCallback = function () {
@@ -676,7 +676,7 @@ $(document).ready(function () {
                     ctrl  = e.ctrlKey;
                     shift = e.shiftKey;
                     meta  = e.metaKey;
-                    deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+                    deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
                 });
                 actionsAPI.click($input[0], {
                     alt:   true,
@@ -707,7 +707,7 @@ $(document).ready(function () {
                     e              = e || window.event;
                     e.cancelBubble = true;
                     btnClicked     = true;
-                    deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+                    deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
                 };
                 var $div       = addDiv(100, 100)
                     .width(150)
@@ -950,7 +950,7 @@ $(document).ready(function () {
                     if (browserUtils.isIE || browserUtils.isMozilla)
                         equal(e.buttons, 1);
 
-                    deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
+                    deepEqual(cursor.getAbsolutePosition(), positionUtils.findCenter(this), 'check cursor position');
                     ok(mousedownRaised && mouseupRaised, 'click event was raised third ');
                 });
 
@@ -1000,12 +1000,40 @@ $(document).ready(function () {
 
         runAsyncTest(
             function () {
-
-
                 actionsAPI.click($input[0]);
             },
             function () {
                 equal(document.activeElement, $input[0]);
+            },
+            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
+        );
+    });
+
+    asyncTest('T303226 - Fixed content scrolls in IE11 while clicking on the invisible element', function () {
+        var htmlEl    = document.documentElement;
+        var oldScroll = styleUtils.getElementScroll($(htmlEl));
+        var clicked   = false;
+
+        htmlEl.style.overflow = 'hidden';
+        $el.css('marginTop', htmlEl.clientHeight + 50);
+
+        $el.click(function () {
+            clicked = true;
+        });
+
+        $el.mousedown(function (e) {
+            //NOTE: to prevent scrolling on focus event
+            e.preventDefault();
+        });
+
+        runAsyncTest(
+            function () {
+                actionsAPI.click($el);
+            },
+            function () {
+                ok(clicked);
+                deepEqual(styleUtils.getElementScroll($(htmlEl)), oldScroll);
+                htmlEl.style.overflow = '';
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
