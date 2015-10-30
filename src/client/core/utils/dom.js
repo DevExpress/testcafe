@@ -133,9 +133,7 @@ function sortElementsByFocusingIndex ($elements) {
     if (!$elements || !$elements.length)
         return [];
 
-    var $withTabIndex = $elements.filter(function (item, el) {
-        return el.tabIndex > 0;
-    });
+    var $withTabIndex = $elements.filter((index, el) => el.tabIndex > 0);
 
     //iFrames
     var $iFrames = $elements.filter('iframe');
@@ -166,9 +164,7 @@ function insertIFramesContentElements (elementsArray, $iFrames) {
     for (var i = 0; i < sortedIFrames.length; i++)
         iFramesElements.push(sortElementsByFocusingIndex(getAllFocusableElements($(sortedIFrames[i]))));
 
-    var elementWithTabIndexFilter = function (item, el) {
-        return el.tabIndex > 0;
-    };
+    var elementWithTabIndexFilter = (item, el) => el.tabIndex > 0;
 
     for (var j = 0; j < elementsArray.length; j++) {
         results.push(elementsArray[j]);
@@ -199,9 +195,7 @@ function insertIFramesContentElements (elementsArray, $iFrames) {
 }
 
 function sortElementsByTabIndex ($elements) {
-    var $withTabIndex = $elements.filter(function (item, el) {
-        return el.tabIndex > 0;
-    });
+    var $withTabIndex = $elements.filter((index, el) => el.tabIndex > 0);
 
     if (!$withTabIndex.length)
         return $elements.toArray();
@@ -222,45 +216,36 @@ function sortBy (property) {
 
 function getAllFocusableElements ($iframe) {
     var $allFocusable = $();
+    var $invisibleElements = $();
 
     if ($iframe) {
         //NOTE: We can get elements of the same domain iframe only
         try {
             $allFocusable = $iframe.contents(0).find(getFocusableSelector());
+            $invisibleElements = $iframe.contents(0).find('*').filter((index, el)=> el.style.display === 'none');
         } catch (e) {
             return $allFocusable;
         }
     }
-    else
-        $allFocusable = $(getFocusableSelector());
+    else {
+        $allFocusable      = $(getFocusableSelector());
+        $invisibleElements = $('*').filter((index, el) => el.style.display === 'none');
+    }
 
     $allFocusable = $allFocusable
         .not(":disabled")
-        .filter(function () {
-            return $(this).attr("tabIndex") !== -1;
-        });
+        .filter((index, el) => $(el).attr("tabIndex") !== -1);
 
-    //NOTE: <option> element visible/ hidden in all browser differently
-    // http://api.jquery.com/hidden-selector/
-    if (browserUtils.isWebKit || browserUtils.isOpera) {
-        var $hidden = $allFocusable.filter(function () {
-            return ($(this).is(":hidden") && !($(this).is("option")));
-        });
+    $allFocusable = $allFocusable.filter((index, el) => el.style.display !== 'none' && !$invisibleElements.has(el).length);
 
-        $allFocusable = $allFocusable.not($hidden);
-    }
-    else
-        $allFocusable = $allFocusable.not(':hidden');
-
-    //NOTE: in MSEdge not(':hidden') method doesn't exclude 'options'
-    if (browserUtils.isIE && browserUtils.version > 11)
+    if (browserUtils.isIE)
         $allFocusable = $allFocusable.not('option');
 
-    $allFocusable = $allFocusable.filter(function () {
-        var $this = $(this);
+    $allFocusable = $allFocusable.filter((index, el) => {
+        var $el = $(el);
 
-        return !($this.is("a") && $this.attr("href") === '' && !$this.attr("tabIndex")) &&
-               $this.css('visibility') !== 'hidden';
+        return !($el.is("a") && $el.attr("href") === '' && !$el.attr("tabIndex")) &&
+               $el.css('visibility') !== 'hidden';
     });
 
     return $allFocusable;
