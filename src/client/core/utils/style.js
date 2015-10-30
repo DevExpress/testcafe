@@ -80,7 +80,11 @@ export function hasScroll (el, doc) {
     var isHtmlElement   = /html/i.test(el.tagName);
     var body            = isHtmlElement ? $(el).find('body')[0] : null;
 
-    if (!overflowX && !overflowY && !isHtmlElement)
+    //T303226
+    if (isHtmlElement && styles.overflowX === 'hidden' && styles.overflowY === 'hidden')
+        return false;
+    
+    if (!isHtmlElement && !overflowX && !overflowY)
         return false;
 
     var hasScroll = ((overflowY || isHtmlElement) && el.scrollHeight > el.clientHeight) ||
