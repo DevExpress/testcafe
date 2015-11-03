@@ -37,18 +37,11 @@ module.exports = [
             code:              TYPE.notOkAssertion
         },
         {
-            code: TYPE.xhrRequestTimeout
-        },
-        {
             code: TYPE.iframeLoadingTimeout
         },
         {
             code:     TYPE.inIFrameTargetLoadingTimeout,
             stepName: 'Do action in iframe'
-        },
-        {
-            code:    TYPE.urlUtilProtocolIsNotSupported,
-            destUrl: 'ftp://host:8080/'
         },
         {
             code:      TYPE.uncaughtJSError,
@@ -118,39 +111,39 @@ module.exports = [
         {
             code:              TYPE.incorrectWaitForActionEventArgument,
             stepName:          'Wait for request handling',
-            relatedSourceCode: 'act.waitFor(function(callback) {\n callback(); \n})'
+            relatedSourceCode: 'act.waitFor(function(callback) {\n    callback();\n})'
         },
         {
             code:              TYPE.incorrectWaitForActionTimeoutArgument,
             stepName:          'Wait for request handling',
-            relatedSourceCode: 'act.waitFor(function(cb) {\ncb();\n}, "1000")'
+            relatedSourceCode: 'act.waitFor(function(cb) {\n    cb();\n}, "1000")'
         },
         {
             code:              TYPE.waitForActionTimeoutExceeded,
             stepName:          'Wait for request handling',
-            relatedSourceCode: 'act.waitFor(function(cb) {\ncb();\n}, 1000);'
+            relatedSourceCode: 'act.waitFor(function(cb) {\n    cb();\n}, 1000);'
         }
     ],
     [
         {
             code:              TYPE.emptyIFrameArgument,
             stepName:          'Click button in IFrame',
-            relatedSourceCode: 'inIFrame("#iFrame", function () {\nact.click($("button"))\n})'
+            relatedSourceCode: 'inIFrame("#iFrame", function () {\n    act.click($("button"))\n})'
         },
         {
             code:              TYPE.iframeArgumentIsNotIFrame,
             stepName:          'Click button in IFrame',
-            relatedSourceCode: 'inIFrame("#content", function () {\nact.click($("button"))\n})'
+            relatedSourceCode: 'inIFrame("#content", function () {\n    act.click($("button"))\n})'
         },
         {
             code:              TYPE.multipleIFrameArgument,
             stepName:          'Type text in IFrame',
-            relatedSourceCode: 'inIFrame(".IFrame", function () {\nact.press("123")\n})'
+            relatedSourceCode: 'inIFrame(".IFrame", function () {\n    act.press("123")\n})'
         },
         {
             code:              TYPE.incorrectIFrameArgument,
             stepName:          'Type text in IFrame',
-            relatedSourceCode: 'inIFrame(IFrame, function () {\nact.press("123")\n})'
+            relatedSourceCode: 'inIFrame(IFrame, function () {\n    act.press("123")\n})'
         },
         {
             code:              TYPE.uploadCanNotFindFileToUpload,
