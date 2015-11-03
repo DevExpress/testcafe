@@ -15,6 +15,7 @@
         <canvas class="spinner"></canvas>
         <div class="status-text-area">
             <img class="logo" src="/browser/assets/logo.svg"/>
+
             <div class="user-agent">
                 <span>{{{userAgent}}}</span>
             </div>
@@ -26,7 +27,7 @@
 </div>
 
 <script type="text/javascript">
-    window.init('{{{statusUrl}}}');
+    new IdlePage('{{{statusUrl}}}', '{{{heartbeatUrl}}}');
 </script>
 </body>
 </html>
