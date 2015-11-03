@@ -249,15 +249,17 @@ export default function (el, options, runCallback, errorCallback) {
         mousedown: function (callback) {
             //NOTE: in webkit and ie raising mousedown event opens select element's dropdown,
             // therefore we should handle it and hide the dropdown (B236416)
-            var needHandleMousedown = (browserUtils.isWebKit || browserUtils.isIE) && domUtils.isSelectElement(el),
-                wasPrevented        = null,
-                blurRaised          = false,
-                activeElement       = domUtils.getActiveElement(),
-                //in IE focus is not raised if element was focused before click, even if focus is lost during mousedown
-                needFocus           = !(browserUtils.isIE && activeElement === topElement),
-                mouseDownCallback   = function () {
-                    window.setTimeout(callback, automationSettings.ACTION_STEP_DELAY);
-                };
+            var needHandleMousedown = (browserUtils.isWebKit || browserUtils.isIE) && domUtils.isSelectElement(el);
+            var wasPrevented        = null;
+            var blurRaised          = false;
+            var activeElement       = domUtils.getActiveElement();
+
+            //in IE focus is not raised if element was focused before click, even if focus is lost during mousedown
+            var isContentEditableBody = topElement.tagName.toLowerCase() === 'body' &&
+                                        domUtils.isContentEditableElement(topElement);
+            var needFocus             = !browserUtils.isIE || activeElement !== topElement || isContentEditableBody;
+
+            var mouseDownCallback = () => window.setTimeout(callback, automationSettings.ACTION_STEP_DELAY);
 
             if (needHandleMousedown) {
                 var onmousedown = function (e) {
