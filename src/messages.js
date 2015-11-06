@@ -2,7 +2,7 @@ export const MESSAGE = {
     browserDisconnected:                'The {userAgent} browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues.',
     cantRunAgainstDisconnectedBrowsers: 'The following browsers disconnected: {userAgents}. Tests will not be run.',
     cantEstablishBrowserConnection:     'Unable to establish one or more of the specified browser connections. This can be caused by network issues or remote device failure.',
-    cantFindBrowserForAlias:            'Cannot find a corresponding browser for the following alias: {alias}.',
+    cantFindBrowser:                    'Unable to find the browser. "{browser}" is not a browser alias or path to an executable file.',
     browserNotSet:                      'No browser selected to test against.',
     testSourcesNotSet:                  'No test file specified.',
     noTestsToRun:                       'No tests to run. Either the test files contain no tests or the filter function is too restrictive.',
