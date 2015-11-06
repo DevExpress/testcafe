@@ -1,3 +1,4 @@
+import escapeHTML from 'escape-html';
 import hammerhead from '../deps/hammerhead';
 import $ from '../deps/jquery';
 
@@ -117,7 +118,7 @@ export function getElementDescription (el) {
 
     res.push('>');
 
-    return res.join('');
+    return escapeHTML(res.join(''));
 }
 
 export function storeElementAttributes (propName, el) {

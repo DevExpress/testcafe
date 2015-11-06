@@ -4,7 +4,6 @@ var browserUtils = hammerhead.utils.browser;
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var SETTINGS      = testCafeCore.get('./settings').get();
 var ERROR_TYPE    = testCafeCore.ERROR_TYPE;
-var domUtils      = testCafeCore.get('./utils/dom');
 var styleUtils    = testCafeCore.get('./utils/style');
 var positionUtils = testCafeCore.get('./utils/position');
 
@@ -322,7 +321,7 @@ $(document).ready(function () {
         setTimeout(function () {
             $el.css('visibility', '');
             equal(currentErrorCode, ERROR_TYPE.invisibleActionElement);
-            equal(currentErrorElement, domUtils.getElementDescription($el[0]));
+            equal(currentErrorElement, '&lt;input id=&quot;button1&quot; class=&quot;button testElement&quot;&gt;');
             equal(currentActionSourceIndex, 32);
 
             startNext();

@@ -1,7 +1,6 @@
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
 var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
-var domUtils     = testCafeCore.get('./utils/dom');
 
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
@@ -31,8 +30,8 @@ test('failed ok assertion', function () {
 
     var message = 'ok assertion';
     assertionsAPI.ok(false, message, '#213');
-    equal(currentError.code, ERROR_TYPE.okAssertion, 'correct error code sended');
-    equal(currentError.message, message, 'correct error message sended');
+    equal(currentError.code, ERROR_TYPE.okAssertion, 'correct error code sent');
+    equal(currentError.message, message, 'correct error message sent');
     equal(currentError.__sourceIndex, 213);
 });
 
@@ -46,8 +45,8 @@ test('failed not ok assertion', function () {
 
     var message = 'notOk assertion';
     assertionsAPI.notOk(true, message, '#805');
-    equal(currentError.code, ERROR_TYPE.notOkAssertion, 'correct error code sended');
-    equal(currentError.message, message, 'correct error message sended');
+    equal(currentError.code, ERROR_TYPE.notOkAssertion, 'correct error code sent');
+    equal(currentError.message, message, 'correct error message sent');
     equal(currentError.__sourceIndex, 805);
 });
 
@@ -61,8 +60,8 @@ test('failed equal assertion', function () {
 
     var message = 'equal assertion';
     assertionsAPI.eq(1, 2, message, '#289');
-    equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sended');
-    equal(currentError.message, message, 'correct error message sended');
+    equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
+    equal(currentError.message, message, 'correct error message sent');
     equal(currentError.__sourceIndex, 289);
 });
 
@@ -76,8 +75,8 @@ test('failed equal assertion', function () {
 
     var message = 'not equal assertion';
     assertionsAPI.notEq(1, 1, message, '#514');
-    equal(currentError.code, ERROR_TYPE.notEqAssertion, 'correct error code sended');
-    equal(currentError.message, message, 'correct error message sended');
+    equal(currentError.code, ERROR_TYPE.notEqAssertion, 'correct error code sent');
+    equal(currentError.message, message, 'correct error message sent');
     equal(currentError.__sourceIndex, 514);
 });
 
@@ -212,8 +211,8 @@ test('dom elements', function () {
 
     assertionsAPI.eq(div1, div2);
     equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
-    equal(currentError.actual, domUtils.getElementDescription(div1));
-    equal(currentError.expected, domUtils.getElementDescription(div2));
+    equal(currentError.actual, '&lt;div&gt;');
+    equal(currentError.expected, '&lt;div class=&quot;testClass&quot;&gt;');
 
     $(div1).remove();
     $(div2).remove();
@@ -225,25 +224,28 @@ test('jQuery objects', function () {
         divString     = '<div></div>',
         $body         = $('body');
 
-    var $div1                            = $(divString).addClass(commonClass).addClass(specificClass).appendTo($body),
-        $div2                            = $(divString).addClass(commonClass).addClass(specificClass).appendTo($body),
-        $div3                            = $(divString).addClass(commonClass).appendTo($body),
+    $(divString).addClass(commonClass).addClass(specificClass).appendTo($body);
+    $(divString).addClass(commonClass).addClass(specificClass).appendTo($body);
+    $(divString).addClass(commonClass).appendTo($body);
 
-        commonClassElementsDescription   = ['[',
-            domUtils.getElementDescription($div1[0]),
-            ', ',
-            domUtils.getElementDescription($div2[0]),
-            ', ',
-            domUtils.getElementDescription($div3[0]),
-            ']'
-        ].join(''),
+    var commonClassElementDescription   = '&lt;div class=&quot;common&quot;&gt;';
+    var specificClassElementDescription = '&lt;div class=&quot;common specific&quot;&gt;';
 
-        specificClassElementsDescription = ['[',
-            domUtils.getElementDescription($div1[0]),
-            ', ',
-            domUtils.getElementDescription($div2[0]),
-            ']'
-        ].join('');
+    var commonClassElementsDescription = ['[',
+        specificClassElementDescription,
+        ', ',
+        specificClassElementDescription,
+        ', ',
+        commonClassElementDescription,
+        ']'
+    ].join('');
+
+    var specificClassElementsDescription = ['[',
+        specificClassElementDescription,
+        ', ',
+        specificClassElementDescription,
+        ']'
+    ].join('');
 
     assertionsAPI.eq($('div.' + commonClass), $('.' + commonClass));
     equal(currentError, null, 'error not sent');
@@ -262,25 +264,28 @@ test('NodeLists', function () {
         divString     = '<div></div>',
         $body         = $('body');
 
-    var $div1                            = $(divString).addClass(commonClass).addClass(specificClass).appendTo($body),
-        $div2                            = $(divString).addClass(commonClass).addClass(specificClass).appendTo($body),
-        $div3                            = $(divString).addClass(commonClass).appendTo($body),
+    $(divString).addClass(commonClass).addClass(specificClass).appendTo($body);
+    $(divString).addClass(commonClass).addClass(specificClass).appendTo($body);
+    $(divString).addClass(commonClass).appendTo($body);
 
-        commonClassElementsDescription   = ['[',
-            domUtils.getElementDescription($div1[0]),
-            ', ',
-            domUtils.getElementDescription($div2[0]),
-            ', ',
-            domUtils.getElementDescription($div3[0]),
-            ']'
-        ].join(''),
+    var commonClassElementDescription   = '&lt;div class=&quot;common&quot;&gt;';
+    var specificClassElementDescription = '&lt;div class=&quot;common specific&quot;&gt;';
 
-        specificClassElementsDescription = ['[',
-            domUtils.getElementDescription($div1[0]),
-            ', ',
-            domUtils.getElementDescription($div2[0]),
-            ']'
-        ].join('');
+    var commonClassElementsDescription = ['[',
+        specificClassElementDescription,
+        ', ',
+        specificClassElementDescription,
+        ', ',
+        commonClassElementDescription,
+        ']'
+    ].join('');
+
+    var specificClassElementsDescription = ['[',
+        specificClassElementDescription,
+        ', ',
+        specificClassElementDescription,
+        ']'
+    ].join('');
 
     assertionsAPI.eq(document.getElementsByClassName(commonClass), document.getElementsByClassName(specificClass));
     equal(currentError.code, ERROR_TYPE.eqAssertion, 'correct error code sent');
