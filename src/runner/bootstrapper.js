@@ -1,5 +1,5 @@
 import { Promise } from 'es6-promise';
-import { getInstallations as getBrowserInstallations } from 'testcafe-browser-natives';
+import { getBrowserInfo } from 'testcafe-browser-natives';
 import reporters from '../reporters';
 import BrowserConnection from '../browser-connection';
 import LocalBrowserConnection from '../browser-connection/local';
@@ -27,17 +27,17 @@ export default class Bootstrapper {
         return Promise.all(ready);
     }
 
-    static async _convertBrowserAliasToBrowserInfo (alias) {
-        if (typeof alias !== 'string')
-            return alias;
+    static async _convertAliasOrPathToBrowserInfo (browser) {
+        if (typeof browser === 'string') {
+            var browserInfo = await getBrowserInfo(browser);
 
-        var installations = await getBrowserInstallations();
-        var browserInfo   = installations[alias.toLowerCase()];
+            if (!browserInfo)
+                throw new Error(getText(MESSAGE.cantFindBrowser, browser));
 
-        if (!browserInfo)
-            throw new Error(getText(MESSAGE.cantFindBrowserForAlias, alias));
+            return browserInfo;
+        }
 
-        return browserInfo;
+        return browser;
     }
 
     _createConnectionFromBrowserInfo (browserInfo) {
@@ -86,7 +86,7 @@ export default class Bootstrapper {
 
         this._checkForDisconnectedBrowsers();
 
-        var browsers           = await Promise.all(this.browsers.map(Bootstrapper._convertBrowserAliasToBrowserInfo));
+        var browsers           = await Promise.all(this.browsers.map(Bootstrapper._convertAliasOrPathToBrowserInfo));
         var browserConnections = browsers.map(browser => this._createConnectionFromBrowserInfo(browser));
 
         try {

@@ -79,7 +79,8 @@ describe('Runner', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    expect(err.message).eql('Cannot find a corresponding browser for the following alias: browser42.');
+                    expect(err.message).eql('Unable to find the browser. "browser42" is not a ' +
+                                            'browser alias or path to an executable file.');
                 });
 
             run
@@ -446,112 +447,112 @@ describe('Runner', function () {
                 })
                 .catch(done);
         });
+    });
 
-        describe('Should not stop the task until local connection browsers are not closed', function () {
-            const BROWSER_CLOSING_DELAY = 50;
-            const TASK_DONE_DELAY       = 50;
+    describe('Task termination', function () {
+        const BROWSER_CLOSING_DELAY = 50;
+        const TASK_DONE_DELAY       = 50;
 
-            var origCreateBrowserJobs   = Task.prototype._createBrowserJobs;
-            var origClose               = LocalBrowserConnection.prototype.close;
-            var origRunBrowser          = LocalBrowserConnection.prototype._runBrowser;
-            var origAbort               = Task.prototype.abort;
-            var origConvertBrowserAlias = Bootstrapper._convertBrowserAliasToBrowserInfo;
+        var origCreateBrowserJobs   = Task.prototype._createBrowserJobs;
+        var origClose               = LocalBrowserConnection.prototype.close;
+        var origRunBrowser          = LocalBrowserConnection.prototype._runBrowser;
+        var origAbort               = Task.prototype.abort;
+        var origConvertAliasOrPathToBrowserInfo = Bootstrapper._convertBrowserAliasToBrowserInfo;
 
-            var closeCalled      = 0;
-            var taskShouldBeDone = true;
+        var closeCalled      = 0;
+        var taskShouldBeDone = true;
 
-            beforeEach(function () {
-                closeCalled      = 0;
-                taskShouldBeDone = true;
-            });
+        beforeEach(function () {
+            closeCalled      = 0;
+            taskShouldBeDone = true;
+        });
 
-            before(function () {
-                Bootstrapper._convertBrowserAliasToBrowserInfo = function (alias) {
-                    return typeof alias === 'string' ? {} : alias;
-                };
+        before(function () {
+            Bootstrapper._convertAliasOrPathToBrowserInfo = function (alias) {
+                return typeof alias === 'string' ? {} : alias;
+            };
 
-                LocalBrowserConnection.prototype.close = function () {
-                    var bc = this;
-
-                    setTimeout(function () {
-                        BrowserConnection.prototype.close.call(bc);
-                        closeCalled++;
-                        bc.emit('closed');
-                    }, BROWSER_CLOSING_DELAY);
-                };
-
-                LocalBrowserConnection.prototype._runBrowser = function () {
-                    this.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                                   '(KHTML, like Gecko) Chrome/42.0.2227.1 Safari/537.36');
-                };
-
-                Task.prototype._createBrowserJobs = function () {
-                    if (taskShouldBeDone) {
-                        var task = this;
-
-                        setTimeout(function () {
-                            task.pendingBrowserJobs.forEach(function (job) {
-                                task.emit('browser-job-done', job);
-                            });
-
-                            task.emit('done');
-                        }, TASK_DONE_DELAY);
-                    }
-
-                    return this.browserConnections.map(function (bc) {
-                        return { browserConnection: bc };
-                    });
-                };
-
-                Task.prototype.abort = function () {
-                };
-            });
-
-            after(function () {
-                LocalBrowserConnection.prototype.close         = origClose;
-                LocalBrowserConnection.prototype._runBrowser   = origRunBrowser;
-                Task.prototype._createBrowserJobs              = origCreateBrowserJobs;
-                Task.prototype.abort                           = origAbort;
-                Bootstrapper._convertBrowserAliasToBrowserInfo = origConvertBrowserAlias;
-            });
-
-            it('when task done', function () {
-                return runner
-                    .browsers('chrome', 'ff')
-                    .reporter(function () {
-                    })
-                    .src('test/server/data/test-suite/top.test.js')
-                    .run()
-                    .then(function () {
-                        expect(closeCalled).eql(2);
-                    });
-            });
-
-            it('when connection failed', function () {
-                var brokenConnection = testCafe.createBrowserConnection();
-
-                taskShouldBeDone = false;
-                brokenConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                                           '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+            LocalBrowserConnection.prototype.close = function () {
+                var bc = this;
 
                 setTimeout(function () {
-                    brokenConnection.emit('error', 'I have failed :(');
-                }, 25);
+                    BrowserConnection.prototype.close.call(bc);
+                    closeCalled++;
+                    bc.emit('closed');
+                }, BROWSER_CLOSING_DELAY);
+            };
 
-                return runner
-                    .browsers(brokenConnection, 'chrome')
-                    .reporter(function () {
-                    })
-                    .src('test/server/data/test-suite/top.test.js')
-                    .run()
-                    .then(function () {
-                        throw new Error('Promise rejection expected');
-                    })
-                    .catch(function (err) {
-                        expect(err.message).eql('I have failed :(');
-                        expect(closeCalled).eql(1);
-                    });
-            });
+            LocalBrowserConnection.prototype._runBrowser = function () {
+                this.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                               '(KHTML, like Gecko) Chrome/42.0.2227.1 Safari/537.36');
+            };
+
+            Task.prototype._createBrowserJobs = function () {
+                if (taskShouldBeDone) {
+                    var task = this;
+
+                    setTimeout(function () {
+                        task.pendingBrowserJobs.forEach(function (job) {
+                            task.emit('browser-job-done', job);
+                        });
+
+                        task.emit('done');
+                    }, TASK_DONE_DELAY);
+                }
+
+                return this.browserConnections.map(function (bc) {
+                    return { browserConnection: bc };
+                });
+            };
+
+            Task.prototype.abort = function () {
+            };
+        });
+
+        after(function () {
+            LocalBrowserConnection.prototype.close        = origClose;
+            LocalBrowserConnection.prototype._runBrowser  = origRunBrowser;
+            Task.prototype._createBrowserJobs             = origCreateBrowserJobs;
+            Task.prototype.abort                          = origAbort;
+            Bootstrapper._convertAliasOrPathToBrowserInfo = origConvertAliasOrPathToBrowserInfo;
+        });
+
+        it('Should not stop the task until local connection browsers are not closed when task done', function () {
+            return runner
+                .browsers('browser-alias1', 'browser-alias2')
+                .reporter(function () {
+                })
+                .src('test/server/data/test-suite/top.test.js')
+                .run()
+                .then(function () {
+                    expect(closeCalled).eql(2);
+                });
+        });
+
+        it('Should not stop the task until local connection browsers are not closed when connection failed', function () {
+            var brokenConnection = testCafe.createBrowserConnection();
+
+            taskShouldBeDone = false;
+            brokenConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                       '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+
+            setTimeout(function () {
+                brokenConnection.emit('error', 'I have failed :(');
+            }, 25);
+
+            return runner
+                .browsers(brokenConnection, 'browser-alias')
+                .reporter(function () {
+                })
+                .src('test/server/data/test-suite/top.test.js')
+                .run()
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    expect(err.message).eql('I have failed :(');
+                    expect(closeCalled).eql(1);
+                });
         });
     });
 });

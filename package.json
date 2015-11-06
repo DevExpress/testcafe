@@ -25,7 +25,7 @@
     "parse5": "^1.5.0",
     "qrcode-terminal": "^0.10.0",
     "read-file-relative": "^1.2.0",
-    "testcafe-browser-natives": "^0.9.1",
+    "testcafe-browser-natives": "^0.10.0",
     "testcafe-hammerhead": "^0.2.1",
     "uglify-js": "1.2.6",
     "useragent": "^2.1.7"
