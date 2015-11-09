@@ -399,11 +399,13 @@ $(document).ready(function () {
     asyncTest('click on option in a collapsed option list raises error', function () {
         SETTINGS.ENABLE_SOURCE_INDEX = true;
         var select                   = createSelect();
+        var option                   = $(select).children()[1];
 
-        actionsAPI.click($(select).children().eq(1), '#312');
+        actionsAPI.click(option, '#312');
 
         setTimeout(function () {
             equal(currentErrorCode, ERROR_TYPE.invisibleActionElement);
+            equal(currentErrorElement, '&lt;option class=&quot;testElement&quot;&gt;');
             equal(currentActionSourceIndex, 312);
 
             startNext();
