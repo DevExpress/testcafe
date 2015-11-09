@@ -1,4 +1,4 @@
-# testcafe-phoenix
+# testcafe
 
 [![Build Status](https://travis-ci.org/DevExpress/testcafe.svg)](https://travis-ci.org/DevExpress/testcafe)
 
