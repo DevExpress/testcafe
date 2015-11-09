@@ -27,6 +27,10 @@ function sendXHR (url, XMLHttpRequest) {
     });
 }
 
+function isCurrentLocation (url) {
+    return document.location.href.toLowerCase() === url.toLowerCase();
+}
+
 
 //API
 export function startHeartbeat (heartbeatUrl, XMLHttpRequest) {
@@ -38,8 +42,7 @@ export function startHeartbeat (heartbeatUrl, XMLHttpRequest) {
 export function checkStatus (statusUrl, XMLHttpRequest) {
     return sendXHR(statusUrl, XMLHttpRequest)
         .then((res) => {
-            if (res.cmd === COMMAND.run ||
-                res.cmd === COMMAND.idle && document.location.toString() !== res.url)
+            if (res.cmd === COMMAND.run || res.cmd === COMMAND.idle && !isCurrentLocation(res.url))
                 document.location = res.url;
 
             //NOTE: prepare to close the browser

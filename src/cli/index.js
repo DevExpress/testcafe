@@ -61,7 +61,7 @@ async function runTests (argParser) {
     var port1          = opts.ports && opts.ports[0];
     var port2          = opts.ports && opts.ports[1];
     var testCafe       = await createTestCafe(opts.hostname, port1, port2);
-    var remoteBrowsers = await createRemoteBrowserConnections(testCafe, argParser.remoteCount, opts.qrcode);
+    var remoteBrowsers = await createRemoteBrowserConnections(testCafe, argParser.remoteCount, opts.qrCode);
     var browsers       = argParser.browsers.concat(remoteBrowsers);
     var runner         = testCafe.createRunner();
 
