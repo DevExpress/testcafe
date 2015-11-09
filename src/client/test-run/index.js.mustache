@@ -61,6 +61,7 @@
         var Runner     = testCafeRunner.Runner;
         var RunnerBase = testCafeRunner.RunnerBase;
 
+        var ProgressPanel   = testCafeUI.ProgressPanel;
         var modalBackground = testCafeUI.modalBackground;
         var shadowUI        = hammerhead.shadowUI;
 
@@ -80,7 +81,8 @@
         jQueryDataMethodProxy.setup($);
 
         //NOTE: initialize API
-        var runner = new Runner();
+        var runner        = new Runner();
+        var progressPanel = null;
 
         runner.on(RunnerBase.SCREENSHOT_CREATING_STARTED_EVENT, function () {
             shadowUI.setBlind(true);
@@ -90,19 +92,21 @@
             shadowUI.setBlind(false);
         });
 
-        //TODO:
-        /*testRunner.on(testRunner.ACTION_TARGET_WAITING_STARTED_EVENT, function (e) {
+        runner.on(runner.ACTION_TARGET_WAITING_STARTED_EVENT, function (e) {
+            if(!progressPanel)
+                progressPanel = new ProgressPanel();
+
             if (!e.isWaitAction)
-                UI.showProgressPanel(RunnerBase.WAITING_FOR_ACTION_TARGET_MESSAGE, e.maxTimeout);
+                progressPanel.show(RunnerBase.WAITING_FOR_ACTION_TARGET_MESSAGE, e.maxTimeout);
         });
 
-        testRunner.on(testRunner.ACTION_RUN_EVENT, function () {
-            UI.closeProgressPanel(null, true);
+        runner.on(runner.ACTION_RUN_EVENT, function () {
+            progressPanel.close(true);
         });
 
-        testRunner.on(testRunner.TEST_FAILED_EVENT, function () {
-            UI.closeProgressPanel(null, false);
-        });*/
+        runner.on(runner.TEST_FAILED_EVENT, function () {
+            progressPanel.close(false);
+        });
 
         act                = runner.act;
         ok                 = runner.ok;

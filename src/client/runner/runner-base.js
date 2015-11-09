@@ -127,8 +127,8 @@ var RunnerBase = function () {
                 runner._onActionTargetWaitingStarted(e);
             });
 
-            runner.stepIterator.on(StepIterator.ACTION_RUN_EVENT, function (e) {
-                runner._onActionRun(e);
+            runner.stepIterator.on(StepIterator.ACTION_RUN_EVENT, function () {
+                runner._onActionRun();
             });
 
             runner.stepIterator.on(StepIterator.ASSERTION_FAILED_EVENT, function (e) {
@@ -235,10 +235,12 @@ RunnerBase.prototype._initIFrameBehavior = function () {
 
             case RunnerBase.IFRAME_ACTION_TARGET_WAITING_STARTED_CMD:
                 runner.actionTargetWaitingStarted = true;
+                runner._onActionTargetWaitingStarted(e.message.params);
                 break;
 
             case RunnerBase.IFRAME_ACTION_RUN_CMD:
                 runner.actionTargetWaitingStarted = false;
+                runner._onActionRun();
                 break;
 
             case CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_WAITING_STEP_COMPLETION_REQUEST_CMD:
