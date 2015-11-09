@@ -49,6 +49,12 @@
         -webkit-transform: translate3d(0px, 0px, 0px) !important;
     }
 
+    .box-shadow(@shadow) {
+        -webkit-box-shadow: @shadow !important;
+        -moz-box-shadow: @shadow !important;
+        box-shadow: @shadow !important;
+    }
+
     /*Const*/
     @rootZIndex: 2147483647;
     @rootContentPadding: 5px 2px 5px 11px;
@@ -238,6 +244,54 @@
         background-position: -465px 0;
         .position-fixed();
         z-index: @rootZIndex;
+    }
+
+    /*Progress panel*/
+    .progress-panel {
+        .box-shadow(0px 4px 20px rgba(0, 0, 0, 0.5));
+        .rounded-corners(7px);
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 92px 120px 110px;
+        width: 500px;
+        position: fixed;
+        display: none;
+
+        .title {
+            font-weight: lighter;
+            font-family: 'Segoe UI Light', 'Segoe UI', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Verdana, sans-serif;
+            font-size: 33px;
+            text-align: center !important;
+            margin: 0 25px 31px;
+            color: white;
+        }
+
+        .content {
+            max-width: 498px;
+            height: 17px;
+        }
+    }
+
+    .progress-bar {
+        .rounded-corners(2px);
+        width: 100%;
+        height: 15px;
+        background-color: transparent;
+        border: 1px solid #df5679;
+        padding: 0;
+        overflow: hidden;
+
+        .value {
+            background-color: #df5679;
+            height: 15px;
+        }
+
+        &.success {
+            border-color: #6ab779;
+
+            .value {
+                background-color: #6ab779;
+            }
+        }
     }
 
     /* Actions Emulating */

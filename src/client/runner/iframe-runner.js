@@ -46,8 +46,13 @@ IFrameRunner.prototype._onNextStepStarted = function (e) {
     e.callback();
 };
 
-IFrameRunner.prototype._onActionTargetWaitingStarted = function () {
-    messageSandbox.sendServiceMsg({ cmd: RunnerBase.IFRAME_ACTION_TARGET_WAITING_STARTED_CMD }, window.top);
+IFrameRunner.prototype._onActionTargetWaitingStarted = function (e) {
+    var msg = {
+        cmd:    RunnerBase.IFRAME_ACTION_TARGET_WAITING_STARTED_CMD,
+        params: e
+    };
+
+    messageSandbox.sendServiceMsg(msg, window.top);
 };
 
 IFrameRunner.prototype._onActionRun = function () {
