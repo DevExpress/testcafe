@@ -90,7 +90,7 @@ export default class CliArgumentParser {
 
             .option('-b, --list-browsers', 'output the available browser aliases')
             .option('-r, --reporter <name>', 'specify the reporter type to use')
-            .option('-p, --report-path <path>', 'specify the path to which the report file should be saved')
+            .option('-p, --report-path <path>', 'send the report to a file at <path>')
             .option('-s, --screenshots <path>', 'enable screenshot capturing and specify the path to save the screenshots to')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-q, --quarantine-mode', 'enable the quarantine mode')
@@ -101,7 +101,7 @@ export default class CliArgumentParser {
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
-            .option('--qrcode', 'outputs QR-code that repeats URLs used to connect the remote browsers');
+            .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers');
     }
 
     _filterAndCountRemotes (browser) {
