@@ -45,10 +45,6 @@ export function checkStatus (statusUrl, XMLHttpRequest) {
             if (res.cmd === COMMAND.run || res.cmd === COMMAND.idle && !isCurrentLocation(res.url))
                 document.location = res.url;
 
-            //NOTE: prepare to close the browser
-            if (res.cmd === COMMAND.close)
-                document.title = '[' + document.location.toString() + ']';
-
             return res.cmd;
         });
 }

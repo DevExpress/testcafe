@@ -5,26 +5,17 @@ import BrowserConnection from '../browser-connection';
 import LocalBrowserConnection from '../browser-connection/local';
 import LegacyCompilerAdapter from '../compiler';
 import { MESSAGE, getText } from '../messages';
+import BrowserSet from './browser-set';
 
 
 export default class Bootstrapper {
     constructor (browserConnectionGateway) {
-        this.BROWSER_CONNECTION_READY_TIMEOUT = 30 * 1000;
-
         this.browserConnectionGateway = browserConnectionGateway;
 
         this.sources  = [];
         this.browsers = [];
         this.filter   = null;
         this.reporter = null;
-    }
-
-    static _createBrowserConnectionsReadyPromise (browserConnections) {
-        var ready = browserConnections
-            .filter(bc => !bc.ready)
-            .map(bc => new Promise(resolve => bc.once('ready', resolve)));
-
-        return Promise.all(ready);
     }
 
     static async _convertAliasOrPathToBrowserInfo (browser) {
@@ -47,66 +38,15 @@ export default class Bootstrapper {
         return new LocalBrowserConnection(this.browserConnectionGateway, browserInfo);
     }
 
-    _waitBrowserConnectionsReady (browserConnections) {
-        return new Promise((resolve, reject) => {
-            var timeout = setTimeout(() => {
-                reject(new Error(getText(MESSAGE.cantEstablishBrowserConnection)));
-            }, this.BROWSER_CONNECTION_READY_TIMEOUT);
-
-            var onError = msg => {
-                clearTimeout(timeout);
-                reject(new Error(msg));
-            };
-
-            browserConnections.forEach(bc => bc.once('error', onError));
-
-            Bootstrapper
-                ._createBrowserConnectionsReadyPromise(browserConnections)
-                .then(() => {
-                    browserConnections.forEach(bc => bc.removeListener('error', onError));
-                    clearTimeout(timeout);
-                    resolve();
-                });
-        });
-    }
-
-    _checkForDisconnectedBrowsers () {
-        var disconnectedUserAgents = this.browsers
-            .filter(browser => browser instanceof BrowserConnection &&
-                               browser.disconnected)
-            .map(bc => bc.userAgent);
-
-        if (disconnectedUserAgents.length)
-            throw new Error(getText(MESSAGE.cantRunAgainstDisconnectedBrowsers, disconnectedUserAgents.join(', ')));
-    }
-
     async _getBrowserConnections () {
         if (!this.browsers.length)
             throw new Error(getText(MESSAGE.browserNotSet));
 
-        this._checkForDisconnectedBrowsers();
-
         var browsers           = await Promise.all(this.browsers.map(Bootstrapper._convertAliasOrPathToBrowserInfo));
         var browserConnections = browsers.map(browser => this._createConnectionFromBrowserInfo(browser));
+        var browserSet         = await BrowserSet.from(browserConnections);
 
-        try {
-            await this._waitBrowserConnectionsReady(browserConnections);
-        }
-        catch (err) {
-            await Promise.all(browserConnections.map(bc => new Promise(resolve => {
-                if (bc instanceof LocalBrowserConnection && !bc.disconnected) {
-                    bc.close();
-                    bc.once('closed', resolve);
-                }
-                else
-                    resolve();
-
-            })));
-
-            throw err;
-        }
-
-        return browserConnections;
+        return browserSet;
     }
 
     async _getTests () {
@@ -143,9 +83,9 @@ export default class Bootstrapper {
     async createRunnableConfiguration () {
         var Reporter = this._getReporterCtor();
 
-        var tests              = await this._getTests();
-        var browserConnections = await this._getBrowserConnections();
+        var tests      = await this._getTests();
+        var browserSet = await this._getBrowserConnections();
 
-        return { Reporter, browserConnections, tests };
+        return { Reporter, browserSet, tests };
     }
 }
