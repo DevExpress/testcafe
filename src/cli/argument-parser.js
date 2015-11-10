@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { resolve, dirname } from 'path';
 import { createWriteStream } from 'fs';
 import { Command } from 'commander';
@@ -78,7 +79,7 @@ export default class CliArgumentParser {
 
     static _getDescription () {
         // NOTE: add empty line to workaround commander-forced indentation on the first line.
-        return '\n' + wordwrap(DESCRIPTION, 2, getViewPortWidth(true));
+        return '\n' + wordwrap(DESCRIPTION, 2, getViewPortWidth(process.stdout));
     }
 
     _describeProgram () {
@@ -101,7 +102,8 @@ export default class CliArgumentParser {
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
-            .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers');
+            .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
+            .option('--no-color', 'disable colors in command line');
     }
 
     _filterAndCountRemotes (browser) {
@@ -195,6 +197,8 @@ export default class CliArgumentParser {
         this.program.parse(argv);
 
         this.opts = this.program.opts();
+
+        chalk.enabled = this.opts.color;
 
         // NOTE: the '-list-browsers' option only lists browsers and immediately exits the app.
         // Therefore, we don't need to process other arguments.

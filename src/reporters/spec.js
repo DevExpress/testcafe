@@ -13,17 +13,19 @@ export default class SpecReporter extends BaseReporter {
     }
 
     _reportTaskStart (startTime, userAgents) {
-        var uaList = userAgents.join(', ');
+        var uaList = userAgents
+            .map(ua => this.chalk.blue(ua))
+            .join(', ');
 
         this.startTime = startTime;
         this.indent    = 0;
 
-        this._write(this.style.bold(`Running tests in: ${uaList}`))
+        this._write(this.chalk.bold(`Running tests in: ${uaList}`))
             ._newline();
     }
 
     _reportFixtureStart (name, path) {
-        var title = `${name} (${this.style.underline(path)})`;
+        var title = `${name} (${this.chalk.underline(path)})`;
 
         this.indent = 2;
 
@@ -38,14 +40,14 @@ export default class SpecReporter extends BaseReporter {
 
     _reportTestDone (name, errs, durationMs, unstable) {
         var hasErr    = !!errs.length;
-        var nameStyle = hasErr ? this.style.red : this.style.gray;
-        var symbol    = hasErr ? this.style.red(this.symbols.err) : this.style.green(this.symbols.ok);
+        var nameStyle = hasErr ? this.chalk.red : this.chalk.gray;
+        var symbol    = hasErr ? this.chalk.red(this.symbols.err) : this.chalk.green(this.symbols.ok);
         var title     = `${symbol} ${nameStyle(name)}`;
 
         this.indent = 4;
 
         if (unstable)
-            title += this.style.yellow(' (unstable)');
+            title += this.chalk.yellow(' (unstable)');
 
         this._write(title);
 
@@ -71,10 +73,10 @@ export default class SpecReporter extends BaseReporter {
         var durationMs  = endTime - this.startTime;
         var durationStr = moment.duration(durationMs).format('h[h] mm[m] ss[s]');
         var footer      = passed === total ?
-                          this.style.bold.green(`${total} passed`) :
-                          this.style.bold.red(`${total - passed}/${total} failed`);
+                          this.chalk.bold.green(`${total} passed`) :
+                          this.chalk.bold.red(`${total - passed}/${total} failed`);
 
-        footer += this.style.gray(` (${durationStr})`);
+        footer += this.chalk.gray(` (${durationStr})`);
 
         this.indent = 2;
 

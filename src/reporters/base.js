@@ -6,18 +6,21 @@ import wordwrap from '../utils/word-wrap';
 import getViewportWidth from '../utils/get-viewport-width';
 import format from './errors/format';
 import plainTextDecorator from './errors/decorators/plain-text';
-import ttyDecorator from './errors/decorators/tty';
+import coloredTextDecorator from './errors/decorators/colored-text';
 
 export default class BaseReporter {
     constructor (task, outStream, errorDecorator) {
         this.outStream = outStream || process.stdout;
 
-        var isTTY = !!this.outStream.isTTY;
+        var disableColors = this.outStream !== process.stdout;
 
-        this.errorDecorator = errorDecorator || (isTTY ? ttyDecorator : plainTextDecorator);
+        this.errorDecorator = errorDecorator || (disableColors ? plainTextDecorator : coloredTextDecorator);
 
-        this.style         = new chalk.constructor({ enabled: isTTY });
-        this.viewportWidth = getViewportWidth(isTTY);
+        // NOTE: force colors disabling only if we don't write to the
+        // stdout. Otherwise use global instance of `chalk`, so it will
+        // work with respect to the `--no-color` flag.
+        this.chalk         = disableColors ? new chalk.constructor({ enabled: false }) : chalk;
+        this.viewportWidth = getViewportWidth(this.outStream);
         this.useWordWrap   = false;
         this.indent        = 0;
 

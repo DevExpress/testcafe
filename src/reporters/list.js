@@ -7,14 +7,20 @@ export default class ListReporter extends SpecReporter {
         this.currentFixtureName = null;
     }
 
+    _reportTaskStart (startTime, userAgents) {
+        super._reportTaskStart(startTime, userAgents);
+
+        this._newline();
+    }
+
     _reportFixtureStart (name) {
         this.currentFixtureName = name;
     }
 
     _reportTestDone (name, errs, durationMs, unstable) {
         var hasErr    = !!errs.length;
-        var nameStyle = hasErr ? this.style.red : this.style.gray;
-        var symbol    = hasErr ? this.style.red(this.symbols.err) : this.style.green(this.symbols.ok);
+        var nameStyle = hasErr ? this.chalk.red : this.chalk.gray;
+        var symbol    = hasErr ? this.chalk.red(this.symbols.err) : this.chalk.green(this.symbols.ok);
 
         name = `${this.currentFixtureName} - ${name}`;
 
@@ -23,7 +29,7 @@ export default class ListReporter extends SpecReporter {
         this.indent = 2;
 
         if (unstable)
-            title += this.style.yellow(' (unstable)');
+            title += this.chalk.yellow(' (unstable)');
 
         this._write(title);
 

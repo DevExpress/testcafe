@@ -1,12 +1,12 @@
-var expect             = require('chai').expect;
-var EventEmitter       = require('events').EventEmitter;
-var util               = require('util');
-var Promise            = require('es6-promise').Promise;
-var reporters          = require('../../lib/reporters');
-var read               = require('read-file-relative').readSync;
-var TYPE               = require('../../lib/reporters/errors/type');
-var ttyDecorator       = require('../../lib/reporters/errors/decorators/tty');
-var plainTextDecorator = require('../../lib/reporters/errors/decorators/plain-text');
+var expect               = require('chai').expect;
+var EventEmitter         = require('events').EventEmitter;
+var util                 = require('util');
+var Promise              = require('es6-promise').Promise;
+var reporters            = require('../../lib/reporters');
+var read                 = require('read-file-relative').readSync;
+var TYPE                 = require('../../lib/reporters/errors/type');
+var coloredTextDecorator = require('../../lib/reporters/errors/decorators/colored-text');
+var plainTextDecorator   = require('../../lib/reporters/errors/decorators/plain-text');
 
 describe('Reporters', function () {
     // Runnable configuration mocks
@@ -344,7 +344,7 @@ describe('Reporters', function () {
                 var taskMock      = new TaskMock();
                 var outStreamMock = createOutStreamMock();
                 var Reporter      = reporters[type];
-                var reporter      = new Reporter(taskMock, outStreamMock, ttyDecorator);
+                var reporter      = new Reporter(taskMock, outStreamMock, coloredTextDecorator);
 
                 expect(reporter.errorDecorator).eql(plainTextDecorator);
             });
