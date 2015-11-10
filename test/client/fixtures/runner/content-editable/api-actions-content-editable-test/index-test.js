@@ -52,7 +52,7 @@ $(document).ready(function () {
 
     stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
         stepIterator.state.stoppedOnFail = false;
-        currentErrorCode                 = err.code;
+        currentErrorType                 = err.type;
 
         if (err.element)
             currentErrorElement = err.element;
@@ -69,7 +69,7 @@ $(document).ready(function () {
         sixthElementInnerHTML         = null,
         seventhElementInnerHTML       = null,
 
-        currentErrorCode              = null,
+        currentErrorType              = null,
         currentErrorElement           = null,
         //constants
         TEST_ELEMENT_CLASS            = 'testElement',
@@ -189,7 +189,7 @@ $(document).ready(function () {
         stateHelper.restoreState();
         if (!browserUtils.isIE)
             removeTestElements();
-        currentErrorCode    = null;
+        currentErrorType    = null;
         currentErrorElement = null;
     });
 
@@ -1165,7 +1165,7 @@ $(document).ready(function () {
 
         actionsAPI.select($el1[0], $el2[0]);
         window.setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.incorrectSelectActionArguments, 'correct error code sent');
+            equal(currentErrorType, ERROR_TYPE.incorrectSelectActionArguments, 'correct error type sent');
             start();
         }, correctTestWaitingTime(ERROR_WAITING_TIMEOUT));
     });
@@ -1181,7 +1181,7 @@ $(document).ready(function () {
 
         actionsAPI.select($el1[0], $el2[0]);
         window.setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.incorrectSelectActionArguments, 'correct error code sent');
+            equal(currentErrorType, ERROR_TYPE.incorrectSelectActionArguments, 'correct error type sent');
             start();
         }, correctTestWaitingTime(ERROR_WAITING_TIMEOUT));
     });
@@ -1194,7 +1194,7 @@ $(document).ready(function () {
 
         actionsAPI.select($el1[0], $el2[0]);
         window.setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.incorrectSelectActionArguments, 'correct error code sent');
+            equal(currentErrorType, ERROR_TYPE.incorrectSelectActionArguments, 'correct error type sent');
             start();
         }, correctTestWaitingTime(ERROR_WAITING_TIMEOUT));
     });
@@ -1210,7 +1210,7 @@ $(document).ready(function () {
             caretPos: 1
         });
         window.setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.emptyFirstArgument, 'correct error code sent');
+            equal(currentErrorType, ERROR_TYPE.emptyFirstArgument, 'correct error type sent');
             start();
         }, correctTestWaitingTime(ERROR_WAITING_TIMEOUT));
     });

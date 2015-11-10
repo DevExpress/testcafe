@@ -21,7 +21,7 @@ transport.batchUpdate = function (callback) {
 };
 
 transport.fail            = function (err) {
-    ok(err.code === expectedError);
+    ok(err.type === expectedError);
     ok(screenShotRequestCount === expectedScreenshotCount);
 
     runner._destroyIFrameBehavior();

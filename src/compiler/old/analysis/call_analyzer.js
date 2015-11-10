@@ -60,9 +60,9 @@ CallAnalyzer.prototype._walkCalls = function (onCall) {
     });
 };
 
-CallAnalyzer.prototype._err = function (code) {
+CallAnalyzer.prototype._err = function (type) {
     this.errs.push({
-        code: code,
+        type: type,
         filename: this.filename,
         line: this.callInfo.line
     });

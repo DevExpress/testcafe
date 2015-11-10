@@ -7,7 +7,7 @@ exports.construct = function (fileName, ownerFilename, callback) {
     fs.readFile(fileName, function (readErr, data) {
         if (readErr) {
             callback({
-                code: ownerFilename ? ErrCodes.FAILED_LOAD_REQUIRE : ErrCodes.READ_FILE_FAILED,
+                type: ownerFilename ? ErrCodes.FAILED_LOAD_REQUIRE : ErrCodes.READ_FILE_FAILED,
                 filename: fileName,
                 ownerFilename: ownerFilename
             });
@@ -26,7 +26,7 @@ exports.construct = function (fileName, ownerFilename, callback) {
             ast = javascriptParser.parse(srcCode, false, true);
         } catch (parseErr) {
             callback({
-                code: ErrCodes.JAVASCRIPT_PARSING_FAILED,
+                type: ErrCodes.JAVASCRIPT_PARSING_FAILED,
                 filename: fileName,
                 parserErr: parseErr
             });

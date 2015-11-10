@@ -32,7 +32,7 @@ $(document).ready(function () {
         OPTION_LIST_CLASS  = 'tcOptionList';
 
     //utils
-    var currentErrorCode         = null,
+    var currentErrorType         = null,
         currentErrorElement      = null,
         currentActionSourceIndex = null,
         handlersLog              = [];
@@ -55,7 +55,7 @@ $(document).ready(function () {
 
     stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
         stepIterator.state.stoppedOnFail = false;
-        currentErrorCode                 = err.code;
+        currentErrorType                 = err.type;
         currentActionSourceIndex         = err.__sourceIndex;
 
         if (err.element)
@@ -404,7 +404,7 @@ $(document).ready(function () {
         actionsAPI.click(option, '#312');
 
         setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.invisibleActionElement);
+            equal(currentErrorType, ERROR_TYPE.invisibleActionElement);
             equal(currentErrorElement, '&lt;option class=&quot;testElement&quot;&gt;');
             equal(currentActionSourceIndex, 312);
 

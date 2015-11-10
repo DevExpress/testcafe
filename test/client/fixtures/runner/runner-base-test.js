@@ -96,7 +96,7 @@ asyncTest('Uncaught error in test script', function () {
     testRunner.on(testRunner.TEST_STARTED_EVENT, function () {
         window.setTimeout(function () {
             ok(lastError);
-            ok(lastError.code === ERROR_TYPE.uncaughtJSErrorInTestCodeStep);
+            ok(lastError.type === ERROR_TYPE.uncaughtJSErrorInTestCodeStep);
             equal(lastError.scriptErr, errorText);
 
             start();
@@ -182,11 +182,11 @@ test('empty argument error', function () {
     testRunner._initApi();
     testRunner.inIFrame(wrapIFrameArgument(null), 0)();
 
-    equal(lastError.code, ERROR_TYPE.emptyIFrameArgument);
+    equal(lastError.type, ERROR_TYPE.emptyIFrameArgument);
     lastError      = null;
 
     testRunner.inIFrame(wrapIFrameArgument('#notExistingIFrame'), 0)();
-    equal(lastError.code, ERROR_TYPE.emptyIFrameArgument);
+    equal(lastError.type, ERROR_TYPE.emptyIFrameArgument);
 });
 
 test('not iFrame error', function () {
@@ -196,7 +196,7 @@ test('not iFrame error', function () {
     testRunner._initApi();
     testRunner.inIFrame(wrapIFrameArgument($div), 0)();
 
-    equal(lastError.code, ERROR_TYPE.iframeArgumentIsNotIFrame);
+    equal(lastError.type, ERROR_TYPE.iframeArgumentIsNotIFrame);
     $div.remove();
 });
 
@@ -207,7 +207,7 @@ test('multiple argument error', function () {
     testRunner._initApi();
     testRunner.inIFrame(wrapIFrameArgument('iframe'), 0)();
 
-    equal(lastError.code, ERROR_TYPE.multipleIFrameArgument);
+    equal(lastError.type, ERROR_TYPE.multipleIFrameArgument);
     $iFrame.remove();
 });
 
@@ -217,10 +217,10 @@ test('incorrect argument error', function () {
     testRunner._initApi();
 
     testRunner.inIFrame(wrapIFrameArgument(['#iframe']), 0)();
-    equal(lastError.code, ERROR_TYPE.incorrectIFrameArgument);
+    equal(lastError.type, ERROR_TYPE.incorrectIFrameArgument);
     lastError      = null;
 
     testRunner.inIFrame(wrapIFrameArgument({ iFrame: $('#iframe') }), 0)();
-    equal(lastError.code, ERROR_TYPE.incorrectIFrameArgument);
+    equal(lastError.type, ERROR_TYPE.incorrectIFrameArgument);
     lastError      = null;
 });
