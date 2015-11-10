@@ -53,12 +53,12 @@ $(document).ready(function () {
 
     stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
         stepIterator.state.stoppedOnFail = false;
-        currentErrorCode                 = err.code;
+        currentErrorType                 = err.type;
         currentSourceIndex               = err.__sourceIndex;
     });
 
     var asyncActionCallback,
-        currentErrorCode   = null,
+        currentErrorType   = null,
         currentSourceIndex = null,
         $input,
 
@@ -96,7 +96,7 @@ $(document).ready(function () {
         $('body').focus();
 
         $('.' + TEST_ELEMENT_CLASS).remove();
-        currentErrorCode             = null;
+        currentErrorType             = null;
         currentSourceIndex           = null;
         SETTINGS.ENABLE_SOURCE_INDEX = false;
     });
@@ -241,7 +241,7 @@ $(document).ready(function () {
         };
         actionsAPI.type($('#nonExistentElement'), 'text', '#213');
         setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.emptyFirstArgument, 'correct error code is sent');
+            equal(currentErrorType, ERROR_TYPE.emptyFirstArgument, 'correct error type is sent');
             equal(currentSourceIndex, 213);
             start();
         }, ELEMENT_WAITING_TIMEOUT + 100);
@@ -255,7 +255,7 @@ $(document).ready(function () {
         actionsAPI.type($input, '', '#218');
 
         setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.emptyTypeActionArgument, 'correct error code is sent');
+            equal(currentErrorType, ERROR_TYPE.emptyTypeActionArgument, 'correct error type is sent');
             equal(currentSourceIndex, 218);
             start();
         }, 500);

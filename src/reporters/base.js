@@ -57,8 +57,8 @@ export default class BaseReporter {
 
     static _errorSorter (errs) {
         errs.sort((err1, err2) => {
-            err1 = err1.userAgent + err1.code;
-            err2 = err2.userAgent + err2.code;
+            err1 = err1.userAgent + err1.type;
+            err2 = err2.userAgent + err2.type;
 
             if (err1 > err2) return 1;
             if (err1 < err2) return -1;

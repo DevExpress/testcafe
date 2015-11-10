@@ -9,7 +9,7 @@ module.exports = [
             relatedSourceCode: 'eq(["12345678901"], ["00000000000"])',
             key:               0,
             isArrays:          true,
-            code:              TYPE.eqAssertion,
+            type:              TYPE.eqAssertion,
 
             diffType: {
                 isStrings: true,
@@ -21,144 +21,144 @@ module.exports = [
             relatedSourceCode: 'notEq("test", "test")',
             actual:            '"test"',
             expected:          '"test"',
-            code:              TYPE.notEqAssertion
+            type:              TYPE.notEqAssertion
         },
         {
             stepName:          'Check value',
             relatedSourceCode: 'ok(false)',
             actual:            'false',
-            code:              TYPE.okAssertion
+            type:              TYPE.okAssertion
         },
 
         {
             stepName:          'Check value',
             relatedSourceCode: 'notOk("test")',
             actual:            '"test"',
-            code:              TYPE.notOkAssertion
+            type:              TYPE.notOkAssertion
         },
         {
-            code: TYPE.iframeLoadingTimeout
+            type: TYPE.iframeLoadingTimeout
         },
         {
-            code:     TYPE.inIFrameTargetLoadingTimeout,
+            type:     TYPE.inIFrameTargetLoadingTimeout,
             stepName: 'Do action in iframe'
         },
         {
-            code:      TYPE.uncaughtJSError,
+            type:      TYPE.uncaughtJSError,
             scriptErr: 'Cannot read property \'name\' of null',
             pageUrl:   'http://host:8080/index.aspx'
         }
     ],
     [
         {
-            code:      TYPE.uncaughtJSErrorInTestCodeStep,
+            type:      TYPE.uncaughtJSErrorInTestCodeStep,
             stepName:  'Step',
             scriptErr: 'error'
         },
         {
-            code:     TYPE.storeDomNodeOrJqueryObject,
+            type:     TYPE.storeDomNodeOrJqueryObject,
             stepName: 'Share Jquery object between steps'
         },
         {
-            code:              TYPE.emptyFirstArgument,
+            type:              TYPE.emptyFirstArgument,
             stepName:          'Click Login button',
             relatedSourceCode: 'act.click(null, {offsetX: 0, offsetY: 1000})',
             action:            'act.click'
         },
         {
-            code:              TYPE.invisibleActionElement,
+            type:              TYPE.invisibleActionElement,
             stepName:          'Drag options panel',
             relatedSourceCode: 'act.drag($("button.login"), $("div.dock"), {dragOffsetX: 1, dragOffsetY: 2})',
             action:            'act.drag',
             element:           '&lt;button class=&quot;login&quot;&gt;&lt;/button&gt;'
         },
         {
-            code:              TYPE.incorrectDraggingSecondArgument,
+            type:              TYPE.incorrectDraggingSecondArgument,
             stepName:          'Drag options panel',
             relatedSourceCode: 'act.drag($("button.login"), 1)'
         },
         {
-            code:              TYPE.incorrectPressActionArgument,
+            type:              TYPE.incorrectPressActionArgument,
             stepName:          'Enter the authentication data',
             relatedSourceCode: 'act.press("some text some text some text")'
         },
         {
-            code:              TYPE.emptyTypeActionArgument,
+            type:              TYPE.emptyTypeActionArgument,
             stepName:          'Type username',
             relatedSourceCode: 'act.type($("input"), "username")'
         },
         {
-            code:     TYPE.unexpectedDialog,
+            type:     TYPE.unexpectedDialog,
             stepName: 'Handle alert message',
             dialog:   'unexpectedDialog',
             message:  'message'
         },
         {
-            code:     TYPE.expectedDialogDoesntAppear,
+            type:     TYPE.expectedDialogDoesntAppear,
             stepName: 'Handle prompt message',
             dialog:   'prompt'
         },
         {
-            code:              TYPE.incorrectSelectActionArguments,
+            type:              TYPE.incorrectSelectActionArguments,
             stepName:          'Select the input text',
             relatedSourceCode: 'act.select($("input.username"));'
         },
         {
-            code:              TYPE.incorrectWaitActionMillisecondsArgument,
+            type:              TYPE.incorrectWaitActionMillisecondsArgument,
             stepName:          'Wait 1000 milliseconds',
             relatedSourceCode: 'act.wait("1000")'
         },
         {
-            code:              TYPE.incorrectWaitForActionEventArgument,
+            type:              TYPE.incorrectWaitForActionEventArgument,
             stepName:          'Wait for request handling',
             relatedSourceCode: 'act.waitFor(function(callback) {\n    callback();\n})'
         },
         {
-            code:              TYPE.incorrectWaitForActionTimeoutArgument,
+            type:              TYPE.incorrectWaitForActionTimeoutArgument,
             stepName:          'Wait for request handling',
             relatedSourceCode: 'act.waitFor(function(cb) {\n    cb();\n}, "1000")'
         },
         {
-            code:              TYPE.waitForActionTimeoutExceeded,
+            type:              TYPE.waitForActionTimeoutExceeded,
             stepName:          'Wait for request handling',
             relatedSourceCode: 'act.waitFor(function(cb) {\n    cb();\n}, 1000);'
         }
     ],
     [
         {
-            code:              TYPE.emptyIFrameArgument,
+            type:              TYPE.emptyIFrameArgument,
             stepName:          'Click button in IFrame',
             relatedSourceCode: 'inIFrame("#iFrame", function () {\n    act.click($("button"))\n})'
         },
         {
-            code:              TYPE.iframeArgumentIsNotIFrame,
+            type:              TYPE.iframeArgumentIsNotIFrame,
             stepName:          'Click button in IFrame',
             relatedSourceCode: 'inIFrame("#content", function () {\n    act.click($("button"))\n})'
         },
         {
-            code:              TYPE.multipleIFrameArgument,
+            type:              TYPE.multipleIFrameArgument,
             stepName:          'Type text in IFrame',
             relatedSourceCode: 'inIFrame(".IFrame", function () {\n    act.press("123")\n})'
         },
         {
-            code:              TYPE.incorrectIFrameArgument,
+            type:              TYPE.incorrectIFrameArgument,
             stepName:          'Type text in IFrame',
             relatedSourceCode: 'inIFrame(IFrame, function () {\n    act.press("123")\n})'
         },
         {
-            code:              TYPE.uploadCanNotFindFileToUpload,
+            type:              TYPE.uploadCanNotFindFileToUpload,
             stepName:          'Upload the user images',
             relatedSourceCode: 'act.upload(".upload", ["./test-images/picture1", "./test-images/picture2"]);',
             filePaths:         ['./test-images/picture1', './test-images/picture2']
         },
         {
-            code:              TYPE.uploadElementIsNotFileInput,
+            type:              TYPE.uploadElementIsNotFileInput,
             stepName:          'Upload the user images',
             relatedSourceCode: 'act.upload(".upload-btn", ["./test-images/picture1", "./test-images/picture2"]);',
             filePath:          ['./test-images/picture1', './test-images/picture2']
         },
         {
-            code:              TYPE.uploadInvalidFilePathArgument,
+            type:              TYPE.uploadInvalidFilePathArgument,
             stepName:          'Upload the user images',
             relatedSourceCode: 'act.upload(".upload", uploadFiles);'
         }

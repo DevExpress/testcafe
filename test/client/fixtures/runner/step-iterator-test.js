@@ -174,7 +174,7 @@ $(document).ready(function () {
         //NOTE: simulate execution interruption (see 2nd step)
         onError = function (err) {
             stepIterator.state.stoppedOnFail = false;
-            states.push(err.code);
+            states.push(err.type);
             stepIterator.start(stepNames, steps, stepSetup, stepDone, nextStep);
             onError                          = null;
         };
@@ -300,7 +300,7 @@ $(document).ready(function () {
         expect(1);
 
         onError = function (err) {
-            states.push(err.code);
+            states.push(err.type);
             states.push(COMMAND.done);
             deepEqual(states, expectedStates);
             start();
@@ -357,7 +357,7 @@ $(document).ready(function () {
         expect(1);
 
         onError = function (err) {
-            states.push(err.code);
+            states.push(err.type);
             states.push(COMMAND.done);
             deepEqual(states, expectedStates);
             start();

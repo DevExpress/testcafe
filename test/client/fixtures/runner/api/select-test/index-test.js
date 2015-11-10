@@ -59,7 +59,7 @@ $(document).ready(function () {
 
     stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
         stepIterator.state.stoppedOnFail = false;
-        currentErrorCode                 = err.code;
+        currentErrorType                 = err.type;
         currentSourceIndex               = err.__sourceIndex;
 
         if (err.element)
@@ -68,7 +68,7 @@ $(document).ready(function () {
 
     var checkScrollAfterSelect = !(browserUtils.isMozilla || browserUtils.isIE),
 
-        currentErrorCode       = null,
+        currentErrorType       = null,
         currentSourceIndex     = null,
         currentErrorElement    = null,
         //constants
@@ -160,7 +160,7 @@ $(document).ready(function () {
         $(INPUT_SELECTOR)[0].selectionStart        = 0;
         $(INPUT_SELECTOR)[0].selectionEnd          = 0;
         $(INPUT_SELECTOR)[0].scrollLeft            = 0;
-        currentErrorCode                           = null;
+        currentErrorType                           = null;
         currentErrorElement                        = null;
         currentSourceIndex                         = null;
         SETTINGS.ENABLE_SOURCE_INDEX               = false;
@@ -339,7 +339,7 @@ $(document).ready(function () {
         };
         actionsAPI.select($input, 'abc', '#34');
         window.setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.incorrectSelectActionArguments, 'correct error code sent');
+            equal(currentErrorType, ERROR_TYPE.incorrectSelectActionArguments, 'correct error type sent');
             equal(currentSourceIndex, 34);
             start();
         }, correctTestWaitingTime(500));
@@ -352,7 +352,7 @@ $(document).ready(function () {
         };
         actionsAPI.select($input, 2, -4, '#12');
         window.setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.incorrectSelectActionArguments, 'correct error code sent');
+            equal(currentErrorType, ERROR_TYPE.incorrectSelectActionArguments, 'correct error type sent');
             equal(currentSourceIndex, 12);
             start();
         }, correctTestWaitingTime(500));
@@ -588,7 +588,7 @@ $(document).ready(function () {
         };
         actionsAPI.select($textarea, 2, 4, -2, 5, '#56');
         window.setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.incorrectSelectActionArguments, 'correct error code sent');
+            equal(currentErrorType, ERROR_TYPE.incorrectSelectActionArguments, 'correct error type sent');
             equal(currentSourceIndex, 56);
             start();
         }, correctTestWaitingTime(500));
