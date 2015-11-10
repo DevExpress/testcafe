@@ -26,8 +26,9 @@ export default class BrowserConnection extends EventEmitter {
         this.browserConnectionGateway = gateway;
         this.userAgent                = null;
 
-        this.disconnected     = false;
+        this.closed           = false;
         this.ready            = false;
+        this.idle             = true;
         this.heartbeatTimeout = null;
 
         this.url          = `${gateway.domain}/browser/connect/${this.id}`;
@@ -70,11 +71,13 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     close () {
-        this.disconnected = true;
-        this.ready        = false;
-
         this.browserConnectionGateway.stopServingConnection(this);
         clearTimeout(this.heartbeatTimeout);
+
+        this.ready  = false;
+        this.closed = true;
+
+        this.emit('closed');
     }
 
     establish (userAgent) {
@@ -91,6 +94,10 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     renderIdlePage () {
+        this.idle = true;
+
+        this.emit('idle');
+
         return Mustache.render(IDLE_PAGE_TEMPLATE, {
             userAgent:    this.userAgent,
             statusUrl:    this.statusUrl,
@@ -101,8 +108,10 @@ export default class BrowserConnection extends EventEmitter {
     getStatus () {
         var testRunUrl = this._popNextTestRunUrl();
 
-        if (testRunUrl)
+        if (testRunUrl) {
+            this.idle = false;
             return { cmd: COMMAND.run, url: testRunUrl };
+        }
 
         return { cmd: COMMAND.idle, url: this.idleUrl };
     }
