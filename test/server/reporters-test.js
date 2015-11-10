@@ -82,7 +82,7 @@ describe('Reporters', function () {
                     relatedSourceCode: 'eq(["12345678901"], ["00000000000"])',
                     key:               0,
                     isArrays:          true,
-                    code:              TYPE.eqAssertion,
+                    type:              TYPE.eqAssertion,
 
                     diffType: {
                         isStrings: true,
@@ -94,7 +94,7 @@ describe('Reporters', function () {
                     actual:            '"test"',
                     expected:          '"test"',
                     stepName:          'Step',
-                    code:              TYPE.notEqAssertion
+                    type:              TYPE.notEqAssertion
                 }
             ]
         },
@@ -152,7 +152,7 @@ describe('Reporters', function () {
                 stepName:          'Step',
                 relatedSourceCode: 'ok(false)',
                 actual:            'false',
-                code:              TYPE.okAssertion
+                type:              TYPE.okAssertion
             }]
         },
 
@@ -192,7 +192,7 @@ describe('Reporters', function () {
                 relatedSourceCode: 'eq(["12345678901"], ["00000000000"])',
                 key:               0,
                 isArrays:          true,
-                code:              TYPE.eqAssertion,
+                type:              TYPE.eqAssertion,
 
                 diffType: {
                     isStrings: true,

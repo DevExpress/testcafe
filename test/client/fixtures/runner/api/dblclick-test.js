@@ -60,12 +60,12 @@ $(document).ready(function () {
 
     stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
         stepIterator.state.stoppedOnFail = false;
-        currentErrorCode                 = err.code;
+        currentErrorType                 = err.type;
         currentSourceIndex               = err.__sourceIndex;
     });
 
     var $el,
-        currentErrorCode   = null,
+        currentErrorType   = null,
         currentSourceIndex = null,
 
         //constants
@@ -118,7 +118,7 @@ $(document).ready(function () {
 
     QUnit.testDone(function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
-        currentErrorCode             = null;
+        currentErrorType             = null;
         currentSourceIndex           = null;
         SETTINGS.ENABLE_SOURCE_INDEX = false;
     });
@@ -166,7 +166,7 @@ $(document).ready(function () {
         SETTINGS.ENABLE_SOURCE_INDEX = true;
         actionsAPI.dblclick($('#nonExistentElement'), '#0');
         setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.emptyFirstArgument);
+            equal(currentErrorType, ERROR_TYPE.emptyFirstArgument);
             equal(currentSourceIndex, 0);
             start();
         }, correctTestWaitingTime(ELEMENT_WAITING_TIMEOUT + 100));

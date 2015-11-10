@@ -183,8 +183,8 @@ StepsAnalyzer.prototype._insertStep = function (facilityName, name, ast) {
     this.rawStepData[facilityName].asts.push(ast);
 };
 
-StepsAnalyzer.prototype._err = function (code, currentAst, additionalFields) {
+StepsAnalyzer.prototype._err = function (type, currentAst, additionalFields) {
     var line = Ast.getCurrentSrcLineNum(currentAst);
-    this.errs.push(Common.createErrorObj(code, this.filename, line, additionalFields));
+    this.errs.push(Common.createErrorObj(type, this.filename, line, additionalFields));
 };
 

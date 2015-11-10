@@ -50,7 +50,7 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
 
         if ((!SETTINGS.get().RECORDING || SETTINGS.get().PLAYBACK) && selectSizeValue <= 1) {
             errorCallback({
-                code:    ERROR_TYPE.invisibleActionElement,
+                type:    ERROR_TYPE.invisibleActionElement,
                 element: domUtils.getElementDescription(childElement)
             });
             return;

@@ -57,9 +57,9 @@ function isStringOrStringArray (target, forbidEmptyArray) {
     return false;
 }
 
-function failWithError (code, additionalParams) {
+function failWithError (type, additionalParams) {
     var err = {
-        code:          code,
+        type:          type,
         stepName:      SETTINGS.get().CURRENT_TEST_STEP_NAME,
         __sourceIndex: sourceIndexTracker.currentIndex
     };
@@ -260,7 +260,7 @@ export function click (what, options) {
         function (element, callback, iframe) {
             ensureElementVisibility(element, 'click', function () {
                 function onerror (err) {
-                    failWithError(err.code, {
+                    failWithError(err.type, {
                         element: err.element,
                         action:  'click'
                     });

@@ -58,10 +58,10 @@ exports.ACTIONS_OWNER_OBJECT_IDENTIFIER = 'act';
 exports.NATIVE_DIALOG_HANDLE_IDENTIFIER_PREFIX = 'handle';
 exports.SOURCE_INDEX_ARG_PREFIX = '#';
 
-exports.createErrorObj = function (code, filename, line, additionalFields) {
+exports.createErrorObj = function (type, filename, line, additionalFields) {
     var err = additionalFields || {};
 
-    err.code = code;
+    err.type = type;
     err.filename = filename;
 
     if (line)

@@ -67,7 +67,7 @@ StepIterator.prototype._checkSharedDataSerializable = function () {
 
     if (!JSON.isSerializable(this.state.stepsSharedData)) {
         error = {
-            code:     ERROR_TYPE.storeDomNodeOrJqueryObject,
+            type:     ERROR_TYPE.storeDomNodeOrJqueryObject,
             stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME,
             stepNum:  this.state.step - 1
         };
@@ -129,7 +129,7 @@ StepIterator.prototype._runStep = function () {
                     iterator.callWithSharedDataContext(stepToRun);
                 } catch (err) {
                     error = {
-                        code:      ERROR_TYPE.uncaughtJSErrorInTestCodeStep,
+                        type:      ERROR_TYPE.uncaughtJSErrorInTestCodeStep,
                         scriptErr: (err && err.message) || err,
                         stepName:  SETTINGS.get().CURRENT_TEST_STEP_NAME,
                         stepNum:   iterator.state.step - 1
@@ -527,7 +527,7 @@ StepIterator.prototype.__waitFor = function (callback) {
 
     var timeoutID = window.setTimeout(function () {
         iterator.onError({
-            code:     ERROR_TYPE.waitForActionTimeoutExceeded,
+            type:     ERROR_TYPE.waitForActionTimeoutExceeded,
             stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
         });
     }, this.globalWaitForTimeout);

@@ -8,7 +8,7 @@ var TYPE               = require('../../lib/reporters/errors/type');
 var remove             = require('../../lib/utils/array-remove');
 
 
-var untestedErrorCodes = Object.keys(TYPE);
+var untestedErrorTypes = Object.keys(TYPE);
 
 var testMock = {
     name:    'fixtureTest',
@@ -63,7 +63,7 @@ function assertErrorMessage (file, err) {
     expect(outStreamMock.data).eql(expectedMsg);
 
     //NOTE: remove tested messages from list
-    remove(untestedErrorCodes, err.code);
+    remove(untestedErrorTypes, err.type);
 }
 
 describe('Error formatter', function () {
@@ -76,7 +76,7 @@ describe('Error formatter', function () {
                 relatedSourceCode: 'eq(["12345678901"], ["00000000000"])',
                 key:               0,
                 isArrays:          true,
-                code:              TYPE.eqAssertion,
+                type:              TYPE.eqAssertion,
                 userAgent:         userAgentMock,
 
                 diffType: {
@@ -94,7 +94,7 @@ describe('Error formatter', function () {
                 relatedSourceCode: 'notEq("test", "test")',
                 actual:            '"test"',
                 expected:          '"test"',
-                code:              TYPE.notEqAssertion,
+                type:              TYPE.notEqAssertion,
                 userAgent:         userAgentMock
             };
 
@@ -106,7 +106,7 @@ describe('Error formatter', function () {
                 stepName:          'Step',
                 relatedSourceCode: 'ok(false)',
                 actual:            'false',
-                code:              TYPE.okAssertion,
+                type:              TYPE.okAssertion,
                 userAgent:         userAgentMock
             };
 
@@ -118,7 +118,7 @@ describe('Error formatter', function () {
                 stepName:          'Step',
                 relatedSourceCode: 'notOk("test")',
                 actual:            '"test"',
-                code:              TYPE.notOkAssertion,
+                type:              TYPE.notOkAssertion,
                 userAgent:         userAgentMock
             };
 
@@ -129,7 +129,7 @@ describe('Error formatter', function () {
     describe('Errors', function () {
         it('Should format "iframeLoadingTimeout" error message', function () {
             var err = {
-                code:      TYPE.iframeLoadingTimeout,
+                type:      TYPE.iframeLoadingTimeout,
                 userAgent: userAgentMock
             };
 
@@ -138,7 +138,7 @@ describe('Error formatter', function () {
 
         it('Should format "inIFrameTargetLoadingTimeout" error message', function () {
             var err = {
-                code:      TYPE.inIFrameTargetLoadingTimeout,
+                type:      TYPE.inIFrameTargetLoadingTimeout,
                 stepName:  'Step',
                 userAgent: userAgentMock
             };
@@ -148,7 +148,7 @@ describe('Error formatter', function () {
 
         it('Should format "uncaughtJSError" error message', function () {
             var err = {
-                code:      TYPE.uncaughtJSError,
+                type:      TYPE.uncaughtJSError,
                 scriptErr: 'test-error',
                 pageUrl:   'http://page',
                 userAgent: userAgentMock
@@ -159,7 +159,7 @@ describe('Error formatter', function () {
 
         it('Should format "uncaughtJSErrorInTestCodeStep" error message', function () {
             var err = {
-                code:      TYPE.uncaughtJSErrorInTestCodeStep,
+                type:      TYPE.uncaughtJSErrorInTestCodeStep,
                 stepName:  'Step',
                 scriptErr: 'error',
                 userAgent: userAgentMock
@@ -170,7 +170,7 @@ describe('Error formatter', function () {
 
         it('Should format "storeDomNodeOrJqueryObject" error message', function () {
             var err = {
-                code:      TYPE.storeDomNodeOrJqueryObject,
+                type:      TYPE.storeDomNodeOrJqueryObject,
                 stepName:  'Step',
                 userAgent: userAgentMock
             };
@@ -180,7 +180,7 @@ describe('Error formatter', function () {
 
         it('Should format "emptyFirstArgument" error message', function () {
             var err = {
-                code:              TYPE.emptyFirstArgument,
+                type:              TYPE.emptyFirstArgument,
                 stepName:          'Step',
                 relatedSourceCode: 'code',
                 action:            'testAction',
@@ -192,7 +192,7 @@ describe('Error formatter', function () {
 
         it('Should format "invisibleActionElement" error message', function () {
             var err = {
-                code:              TYPE.invisibleActionElement,
+                type:              TYPE.invisibleActionElement,
                 stepName:          'Step',
                 relatedSourceCode: 'code',
                 action:            'test-action',
@@ -205,7 +205,7 @@ describe('Error formatter', function () {
 
         it('Should format "incorrectDraggingSecondArgument" error message', function () {
             var err = {
-                code:              TYPE.incorrectDraggingSecondArgument,
+                type:              TYPE.incorrectDraggingSecondArgument,
                 stepName:          'Step',
                 relatedSourceCode: 'code',
                 userAgent:         userAgentMock
@@ -216,7 +216,7 @@ describe('Error formatter', function () {
 
         it('Should format "incorrectPressActionArgument" error message', function () {
             var err = {
-                code:              TYPE.incorrectPressActionArgument,
+                type:              TYPE.incorrectPressActionArgument,
                 stepName:          'Step',
                 relatedSourceCode: 'code',
                 userAgent:         userAgentMock
@@ -227,7 +227,7 @@ describe('Error formatter', function () {
 
         it('Should format "emptyTypeActionArgument" error message', function () {
             var err = {
-                code:              TYPE.emptyTypeActionArgument,
+                type:              TYPE.emptyTypeActionArgument,
                 stepName:          'Step',
                 relatedSourceCode: 'code',
                 userAgent:         userAgentMock
@@ -238,7 +238,7 @@ describe('Error formatter', function () {
 
         it('Should format "unexpectedDialog" error message', function () {
             var err = {
-                code:      TYPE.unexpectedDialog,
+                type:      TYPE.unexpectedDialog,
                 stepName:  'Step',
                 dialog:    'test-dialog',
                 message:   'message',
@@ -250,7 +250,7 @@ describe('Error formatter', function () {
 
         it('Should format "expectedDialogDoesntAppear" error message', function () {
             var err = {
-                code:      TYPE.expectedDialogDoesntAppear,
+                type:      TYPE.expectedDialogDoesntAppear,
                 stepName:  'Step',
                 dialog:    'test-dialog',
                 userAgent: userAgentMock
@@ -261,7 +261,7 @@ describe('Error formatter', function () {
 
         it('Should format "incorrectSelectActionArguments" error message', function () {
             var err = {
-                code:              TYPE.incorrectSelectActionArguments,
+                type:              TYPE.incorrectSelectActionArguments,
                 stepName:          'Step',
                 relatedSourceCode: 'code',
                 userAgent:         userAgentMock
@@ -272,7 +272,7 @@ describe('Error formatter', function () {
 
         it('Should format "incorrectWaitActionMillisecondsArgument" error message', function () {
             var err = {
-                code:              TYPE.incorrectWaitActionMillisecondsArgument,
+                type:              TYPE.incorrectWaitActionMillisecondsArgument,
                 stepName:          'Step',
                 relatedSourceCode: 'code',
                 userAgent:         userAgentMock
@@ -283,7 +283,7 @@ describe('Error formatter', function () {
 
         it('Should format "incorrectWaitForActionEventArgument" error message', function () {
             var err = {
-                code:              TYPE.incorrectWaitForActionEventArgument,
+                type:              TYPE.incorrectWaitForActionEventArgument,
                 stepName:          'Step',
                 relatedSourceCode: 'code',
                 userAgent:         userAgentMock
@@ -294,7 +294,7 @@ describe('Error formatter', function () {
 
         it('Should format "incorrectWaitForActionTimeoutArgument" error message', function () {
             var err = {
-                code:              TYPE.incorrectWaitForActionTimeoutArgument,
+                type:              TYPE.incorrectWaitForActionTimeoutArgument,
                 stepName:          'Step',
                 relatedSourceCode: 'code',
                 userAgent:         userAgentMock
@@ -305,7 +305,7 @@ describe('Error formatter', function () {
 
         it('Should format "waitForActionTimeoutExceeded" error message', function () {
             var err = {
-                code:              TYPE.waitForActionTimeoutExceeded,
+                type:              TYPE.waitForActionTimeoutExceeded,
                 stepName:          'Step',
                 relatedSourceCode: 'act.waitFor(function(cb) {\n    cb();\n}, 1000);',
                 userAgent:         userAgentMock
@@ -316,7 +316,7 @@ describe('Error formatter', function () {
 
         it('Should format "emptyIFrameArgument" error message', function () {
             var err = {
-                code:              TYPE.emptyIFrameArgument,
+                type:              TYPE.emptyIFrameArgument,
                 stepName:          'Step',
                 relatedSourceCode: 'inIFrame("#iFrame", function () {\n    act.click($("button"))\n})',
                 userAgent:         userAgentMock
@@ -327,7 +327,7 @@ describe('Error formatter', function () {
 
         it('Should format "iframeArgumentIsNotIFrame" error message', function () {
             var err = {
-                code:              TYPE.iframeArgumentIsNotIFrame,
+                type:              TYPE.iframeArgumentIsNotIFrame,
                 stepName:          'Step',
                 relatedSourceCode: 'inIFrame("#content", function () {\n    act.click($("button"))\n})',
                 userAgent:         userAgentMock
@@ -338,7 +338,7 @@ describe('Error formatter', function () {
 
         it('Should format "multipleIFrameArgument" error message', function () {
             var err = {
-                code:              TYPE.multipleIFrameArgument,
+                type:              TYPE.multipleIFrameArgument,
                 stepName:          'Step',
                 relatedSourceCode: 'inIFrame(".IFrame", function () {\n    act.press("123")\n})',
                 userAgent:         userAgentMock
@@ -349,7 +349,7 @@ describe('Error formatter', function () {
 
         it('Should format "incorrectIFrameArgument" error message', function () {
             var err = {
-                code:              TYPE.incorrectIFrameArgument,
+                type:              TYPE.incorrectIFrameArgument,
                 stepName:          'Step',
                 relatedSourceCode: 'inIFrame(IFrame, function () {\n    act.press("123")\n})',
                 userAgent:         userAgentMock
@@ -360,7 +360,7 @@ describe('Error formatter', function () {
 
         it('Should format "uploadCanNotFindFileToUpload" error message', function () {
             var err = {
-                code:              TYPE.uploadCanNotFindFileToUpload,
+                type:              TYPE.uploadCanNotFindFileToUpload,
                 stepName:          'Step',
                 relatedSourceCode: 'code',
                 filePaths:         ['path1', 'path2'],
@@ -372,7 +372,7 @@ describe('Error formatter', function () {
 
         it('Should format "uploadElementIsNotFileInput" error message', function () {
             var err = {
-                code:              TYPE.uploadElementIsNotFileInput,
+                type:              TYPE.uploadElementIsNotFileInput,
                 stepName:          'Step',
                 relatedSourceCode: 'code',
                 filePath:          'path',
@@ -384,7 +384,7 @@ describe('Error formatter', function () {
 
         it('Should format "uploadInvalidFilePathArgument" error message', function () {
             var err = {
-                code:              TYPE.uploadInvalidFilePathArgument,
+                type:              TYPE.uploadInvalidFilePathArgument,
                 stepName:          'Step',
                 relatedSourceCode: 'code',
                 userAgent:         userAgentMock
@@ -395,7 +395,7 @@ describe('Error formatter', function () {
 
         it('Should format "pageNotLoaded" error message', function () {
             var err = {
-                code:      TYPE.pageNotLoaded,
+                type:      TYPE.pageNotLoaded,
                 message:   'Failed to find a DNS-record for the resource at <a href="example.org">example.org</a>.',
                 userAgent: userAgentMock
             };
@@ -406,7 +406,7 @@ describe('Error formatter', function () {
 
     describe('Test coverage', function () {
         it('Should test messages for all error codes', function () {
-            expect(untestedErrorCodes).to.be.empty;
+            expect(untestedErrorTypes).to.be.empty;
         });
     });
 });

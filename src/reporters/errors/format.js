@@ -26,7 +26,7 @@ function decorateHTML (node, decorator) {
 
 export default function format (err, decorator, viewportWidth) {
     var parser   = new Parser();
-    var fragment = parser.parseFragment(TEMPLATES[err.code](err, viewportWidth));
+    var fragment = parser.parseFragment(TEMPLATES[err.type](err, viewportWidth));
 
     return decorateHTML(fragment, decorator);
 }

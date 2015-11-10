@@ -48,12 +48,12 @@ $(document).ready(function () {
     };
 
     transport.fail = function (err) {
-        currentErrorCode = err.code;
+        currentErrorType = err.type;
         if (err.element)
             currentErrorElement = err.element;
     };
 
-    var currentErrorCode                    = null,
+    var currentErrorType                    = null,
         currentErrorElement                 = null,
         //constants
         TEST_ELEMENT_CLASS                  = 'testElement',
@@ -394,7 +394,7 @@ $(document).ready(function () {
     QUnit.testDone(function () {
         if (!browserUtils.isIE)
             removeTestElements();
-        currentErrorCode    = null;
+        currentErrorType    = null;
         currentErrorElement = null;
     });
 

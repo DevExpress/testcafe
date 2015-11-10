@@ -71,12 +71,12 @@ Object.defineProperties(Compiler.prototype, {
 });
 
 
-Compiler.prototype._err = function (code, filename, line, additionalFields) {
-    this.errs.push(Common.createErrorObj(code, filename, line, additionalFields));
+Compiler.prototype._err = function (type, filename, line, additionalFields) {
+    this.errs.push(Common.createErrorObj(type, filename, line, additionalFields));
 };
 
-Compiler.prototype._fixtureErr = function (code, line, additionalFields) {
-    this._err(code, this.filename, line, additionalFields);
+Compiler.prototype._fixtureErr = function (type, line, additionalFields) {
+    this._err(type, this.filename, line, additionalFields);
 };
 
 Compiler.prototype._addRequire = function (require) {

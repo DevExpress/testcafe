@@ -41,12 +41,12 @@ $(document).ready(function () {
 
     stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
         stepIterator.state.stoppedOnFail = false;
-        currentErrorCode                 = err.code;
+        currentErrorType                 = err.type;
         currentSourceIndex               = err.__sourceIndex;
     });
 
     var asyncActionCallback,
-        currentErrorCode   = null,
+        currentErrorType   = null,
         currentSourceIndex = null,
         $input,
         $iFrame,
@@ -107,7 +107,7 @@ $(document).ready(function () {
 
     QUnit.testDone(function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
-        currentErrorCode             = null;
+        currentErrorType             = null;
         currentSourceIndex           = null;
         SETTINGS.ENABLE_SOURCE_INDEX = false;
         hammerhead.off(hammerhead.EVENTS.iframeReadyToInit, window.initIFrameTestHandler);
@@ -479,7 +479,7 @@ $(document).ready(function () {
     asyncTest('press correct symbol', function () {
         actionsAPI.press('a');
         setTimeout(function () {
-            equal(currentErrorCode, null);
+            equal(currentErrorType, null);
             start();
         }, 300);
     });
@@ -487,7 +487,7 @@ $(document).ready(function () {
     asyncTest('press correct symbol with spaces', function () {
         actionsAPI.press(' a  ');
         setTimeout(function () {
-            equal(currentErrorCode, null);
+            equal(currentErrorType, null);
             start();
         }, 300);
     });
@@ -495,7 +495,7 @@ $(document).ready(function () {
     asyncTest('press correct keys combination', function () {
         actionsAPI.press('g h g+h  f t');
         setTimeout(function () {
-            equal(currentErrorCode, null);
+            equal(currentErrorType, null);
             start();
         }, 300);
     });
@@ -503,7 +503,7 @@ $(document).ready(function () {
     asyncTest('press correct keys combination with shortcuts', function () {
         actionsAPI.press('g home g+h  f t left+right');
         setTimeout(function () {
-            equal(currentErrorCode, null);
+            equal(currentErrorType, null);
             start();
         }, 300);
     });
@@ -512,7 +512,7 @@ $(document).ready(function () {
         SETTINGS.ENABLE_SOURCE_INDEX = true;
         actionsAPI.press('incorrect', '#11');
         setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.incorrectPressActionArgument);
+            equal(currentErrorType, ERROR_TYPE.incorrectPressActionArgument);
             equal(currentSourceIndex, 11);
 
             start();

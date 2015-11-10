@@ -82,7 +82,7 @@ var RunnerBase = function () {
             runner.stepIterator.stop();
         else if (!SETTINGS.get().SKIP_JS_ERRORS || SETTINGS.get().RECORDING) {
             runner._onError({
-                code:      ERROR_TYPE.uncaughtJSError,
+                type:      ERROR_TYPE.uncaughtJSError,
                 scriptErr: err.msg,
                 pageError: true,
                 pageUrl:   err.pageUrl
@@ -96,7 +96,7 @@ var RunnerBase = function () {
 
     runner.act._onJSError = function (err) {
         runner._onError({
-            code:      ERROR_TYPE.uncaughtJSError,
+            type:      ERROR_TYPE.uncaughtJSError,
             scriptErr: (err && err.message) || err
         });
     };
@@ -376,7 +376,7 @@ RunnerBase.prototype._runInIFrame = function (iframe, stepName, step, stepNum) {
     pingIFrame(iframe, function (err) {
         if (err) {
             runner._onError({
-                code:     ERROR_TYPE.inIFrameTargetLoadingTimeout,
+                type:     ERROR_TYPE.inIFrameTargetLoadingTimeout,
                 stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
             });
         }
@@ -390,7 +390,7 @@ RunnerBase.prototype._runInIFrame = function (iframe, stepName, step, stepNum) {
 RunnerBase.prototype._ensureIFrame = function (arg) {
     if (!arg) {
         this._onError({
-            code:     ERROR_TYPE.emptyIFrameArgument,
+            type:     ERROR_TYPE.emptyIFrameArgument,
             stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
         });
         return null;
@@ -401,7 +401,7 @@ RunnerBase.prototype._ensureIFrame = function (arg) {
             return arg;
         else {
             this._onError({
-                code:     ERROR_TYPE.iframeArgumentIsNotIFrame,
+                type:     ERROR_TYPE.iframeArgumentIsNotIFrame,
                 stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
             });
             return null;
@@ -414,14 +414,14 @@ RunnerBase.prototype._ensureIFrame = function (arg) {
     if (serviceUtils.isJQueryObj(arg)) {
         if (arg.length === 0) {
             this._onError({
-                code:     ERROR_TYPE.emptyIFrameArgument,
+                type:     ERROR_TYPE.emptyIFrameArgument,
                 stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
             });
             return null;
         }
         else if (arg.length > 1) {
             this._onError({
-                code:     ERROR_TYPE.multipleIFrameArgument,
+                type:     ERROR_TYPE.multipleIFrameArgument,
                 stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
             });
             return null;
@@ -434,7 +434,7 @@ RunnerBase.prototype._ensureIFrame = function (arg) {
         return this._ensureIFrame(arg());
 
     this._onError({
-        code:     ERROR_TYPE.incorrectIFrameArgument,
+        type:     ERROR_TYPE.incorrectIFrameArgument,
         stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
     });
     return null;
@@ -485,7 +485,7 @@ RunnerBase.prototype._initNativeDialogs = function () {
     dialogsAPI.on(dialogsAPI.UNEXPECTED_DIALOG_ERROR_EVENT, function (e) {
         if (runner.listenNativeDialogs) {
             runner.stepIterator.onError({
-                code:     ERROR_TYPE.unexpectedDialog,
+                type:     ERROR_TYPE.unexpectedDialog,
                 stepName: runner.stepIterator.getCurrentStep(),
                 dialog:   e.dialog,
                 message:  e.message
@@ -496,7 +496,7 @@ RunnerBase.prototype._initNativeDialogs = function () {
     dialogsAPI.on(dialogsAPI.WAS_NOT_EXPECTED_DIALOG_ERROR_EVENT, function (e) {
         if (runner.listenNativeDialogs) {
             runner.stepIterator.onError({
-                code:     ERROR_TYPE.expectedDialogDoesntAppear,
+                type:     ERROR_TYPE.expectedDialogDoesntAppear,
                 stepName: runner.stepIterator.getCurrentStep(),
                 dialog:   e.dialog
             });

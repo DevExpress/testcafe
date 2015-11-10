@@ -107,7 +107,7 @@ export default class TestRun extends Session {
 
     handlePageError (ctx, errMsg) {
         this._fatalError({
-            code:    ERROR_TYPE.pageNotLoaded,
+            type:    ERROR_TYPE.pageNotLoaded,
             message: errMsg
         });
 

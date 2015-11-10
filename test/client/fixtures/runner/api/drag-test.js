@@ -60,11 +60,11 @@ $(document).ready(function () {
 
     stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
         stepIterator.state.stoppedOnFail = false;
-        currentErrorCode                 = err.code;
+        currentErrorType                 = err.type;
         currentSourceIndex               = err.__sourceIndex;
     });
 
-    var currentErrorCode   = null,
+    var currentErrorType   = null,
         currentSourceIndex = null,
         //constants
         TEST_ELEMENT_CLASS = 'testElement',
@@ -192,7 +192,7 @@ $(document).ready(function () {
     QUnit.testDone(function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
         $('body').height('').width('');
-        currentErrorCode             = null;
+        currentErrorType             = null;
         asyncActionCallback          = null;
         currentSourceIndex           = null;
         SETTINGS.ENABLE_SOURCE_INDEX = false;
@@ -370,7 +370,7 @@ $(document).ready(function () {
         };
         actionsAPI.drag($draggable, 'abc', '@#%^^', '#211');
         window.setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.incorrectDraggingSecondArgument, 'correct error code sended');
+            equal(currentErrorType, ERROR_TYPE.incorrectDraggingSecondArgument, 'correct error type sended');
             equal(currentSourceIndex, 211);
             start();
         }, correctTestWaitingTime(500));
@@ -383,7 +383,7 @@ $(document).ready(function () {
         };
         actionsAPI.drag($draggable, null, '#803');
         window.setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.incorrectDraggingSecondArgument, 'correct error code sended');
+            equal(currentErrorType, ERROR_TYPE.incorrectDraggingSecondArgument, 'correct error type sended');
             equal(currentSourceIndex, 803);
             start();
         }, correctTestWaitingTime(500));

@@ -65,7 +65,7 @@ $(document).ready(function () {
 
     stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
         stepIterator.state.stoppedOnFail = false;
-        currentErrorCode                 = err.code;
+        currentErrorType                 = err.type;
         currentActionSourceIndex         = err.__sourceIndex;
 
         if (err.element)
@@ -73,7 +73,7 @@ $(document).ready(function () {
     });
 
     var $el                      = null,
-        currentErrorCode         = null,
+        currentErrorType         = null,
         currentErrorElement      = null,
         currentActionSourceIndex = null,
         //constants
@@ -178,7 +178,7 @@ $(document).ready(function () {
             removeTestElements();
 
         SETTINGS.ENABLE_SOURCE_INDEX = false;
-        currentErrorCode             = null;
+        currentErrorType             = null;
         currentErrorElement          = null;
         currentActionSourceIndex     = null;
     });
@@ -308,7 +308,7 @@ $(document).ready(function () {
         SETTINGS.ENABLE_SOURCE_INDEX = true;
         actionsAPI.click($('#nonExistentElement'), '#24');
         setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.emptyFirstArgument);
+            equal(currentErrorType, ERROR_TYPE.emptyFirstArgument);
             equal(currentActionSourceIndex, 24);
             startNext();
         }, ERROR_WAITING_TIMEOUT);
@@ -320,7 +320,7 @@ $(document).ready(function () {
         actionsAPI.click($el, '#32');
         setTimeout(function () {
             $el.css('visibility', '');
-            equal(currentErrorCode, ERROR_TYPE.invisibleActionElement);
+            equal(currentErrorType, ERROR_TYPE.invisibleActionElement);
             equal(currentErrorElement, '&lt;input id=&quot;button1&quot; class=&quot;button testElement&quot;&gt;');
             equal(currentActionSourceIndex, 32);
 
@@ -373,7 +373,7 @@ $(document).ready(function () {
         actionsAPI.click([$el, '#nonExistentElementId'], '#271');
 
         setTimeout(function () {
-            equal(currentErrorCode, ERROR_TYPE.emptyFirstArgument);
+            equal(currentErrorType, ERROR_TYPE.emptyFirstArgument);
             equal(currentActionSourceIndex, 271);
 
             startNext();
