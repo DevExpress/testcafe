@@ -19,15 +19,18 @@ export default class BrowserConnection extends EventEmitter {
     constructor (gateway) {
         super();
 
-        this.HEARTBEAT_TIMEOUT = 2 * 60 * 1000;
+        this.HEARTBEAT_TIMEOUT        = 2 * 60 * 1000;
+        this.WAITING_FOR_IDLE_TIMEOUT = 10000;
 
         this.id                       = ++instanceCount;
         this.jobQueue                 = [];
         this.browserConnectionGateway = gateway;
         this.userAgent                = null;
+        this.waitingForIdleTimeout    = null;
 
-        this.disconnected     = false;
+        this.closed           = false;
         this.ready            = false;
+        this.idle             = true;
         this.heartbeatTimeout = null;
 
         this.url          = `${gateway.domain}/browser/connect/${this.id}`;
@@ -70,11 +73,24 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     close () {
-        this.disconnected = true;
-        this.ready        = false;
+        this.ready = false;
 
         this.browserConnectionGateway.stopServingConnection(this);
         clearTimeout(this.heartbeatTimeout);
+
+        this.closed = true;
+        this.emit('closed');
+    }
+
+    switchToIdle () {
+        this.jobQueue = [];
+
+        this.waitingForIdleTimeout = setTimeout(() => {
+            this.waitingForIdleTimeout = null;
+            this.idle                  = true;
+
+            this.emit('idle');
+        }, this.WAITING_FOR_IDLE_TIMEOUT);
     }
 
     establish (userAgent) {
@@ -91,6 +107,15 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     renderIdlePage () {
+        if (this.waitingForIdleTimeout) {
+            clearTimeout(this.waitingForIdleTimeout);
+            this.waitingForIdleTimeout = null;
+        }
+
+        this.idle = true;
+
+        this.emit('idle');
+
         return Mustache.render(IDLE_PAGE_TEMPLATE, {
             userAgent:    this.userAgent,
             statusUrl:    this.statusUrl,
@@ -101,8 +126,10 @@ export default class BrowserConnection extends EventEmitter {
     getStatus () {
         var testRunUrl = this._popNextTestRunUrl();
 
-        if (testRunUrl)
+        if (testRunUrl) {
+            this.idle = false;
             return { cmd: COMMAND.run, url: testRunUrl };
+        }
 
         return { cmd: COMMAND.idle, url: this.idleUrl };
     }

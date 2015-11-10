@@ -25,25 +25,31 @@ export default class Runner extends EventEmitter {
     }
 
     // Static
-    static _waitForLocalBrowserClose (bc) {
+    static _waitForBrowserState (bc, state) {
         return new Promise(resolve => {
-            if (bc.disconnected) {
+            if (bc[state]) {
                 resolve();
                 return;
             }
 
-            bc.close();
-            bc.once('closed', resolve);
+            bc.once(state, resolve);
         });
     }
 
     static async _freeBrowserConnection (bc, errorHandler) {
         bc.removeListener('error', errorHandler);
 
+        if (bc.closed)
+            return;
+
         // NOTE: we should close local connections and
         // related browsers once we've done
         if (bc instanceof LocalBrowserConnection)
-            await Runner._waitForLocalBrowserClose(bc);
+            bc.close();
+        else
+            bc.switchToIdle();
+
+        await Runner._waitForBrowserState(bc, bc instanceof LocalBrowserConnection ? 'closed' : 'idle');
     }
 
     // Run task
