@@ -93,7 +93,7 @@
         });
 
         runner.on(runner.ACTION_TARGET_WAITING_STARTED_EVENT, function (e) {
-            if(!progressPanel)
+            if (!progressPanel)
                 progressPanel = new ProgressPanel();
 
             if (!e.isWaitAction)
@@ -101,11 +101,13 @@
         });
 
         runner.on(runner.ACTION_RUN_EVENT, function () {
-            progressPanel.close(true);
+            if (progressPanel)
+                progressPanel.close(true);
         });
 
         runner.on(runner.TEST_FAILED_EVENT, function () {
-            progressPanel.close(false);
+            if (progressPanel)
+                progressPanel.close(false);
         });
 
         act                = runner.act;
