@@ -449,22 +449,39 @@ describe('Runner', function () {
         });
     });
 
+    //TODO: Convert Task termination tests to functional tests
     describe('Task termination', function () {
         const BROWSER_CLOSING_DELAY = 50;
-        const TASK_DONE_DELAY       = 50;
+        const TASK_ACTION_DELAY     = 50;
 
-        var origCreateBrowserJobs   = Task.prototype._createBrowserJobs;
-        var origClose               = LocalBrowserConnection.prototype.close;
-        var origRunBrowser          = LocalBrowserConnection.prototype._runBrowser;
-        var origAbort               = Task.prototype.abort;
+        var origCreateBrowserJobs               = Task.prototype._createBrowserJobs;
+        var origClose                           = LocalBrowserConnection.prototype.close;
+        var origRunBrowser                      = LocalBrowserConnection.prototype._runBrowser;
+        var origAbort                           = Task.prototype.abort;
         var origConvertAliasOrPathToBrowserInfo = Bootstrapper._convertBrowserAliasToBrowserInfo;
 
-        var closeCalled      = 0;
-        var taskShouldBeDone = true;
+        var closeCalled        = 0;
+        var taskActionCallback = null;
+
+        function taskDone () {
+            var task = this;
+
+            task.pendingBrowserJobs.forEach(function (job) {
+                task.emit('browser-job-done', job);
+            });
+
+            task.emit('done');
+        }
 
         beforeEach(function () {
-            closeCalled      = 0;
-            taskShouldBeDone = true;
+            closeCalled        = 0;
+            taskActionCallback = taskDone;
+
+            runner
+                .src('test/server/data/test-suite/top.test.js')
+                .reporter(function () {
+
+                });
         });
 
         before(function () {
@@ -488,17 +505,7 @@ describe('Runner', function () {
             };
 
             Task.prototype._createBrowserJobs = function () {
-                if (taskShouldBeDone) {
-                    var task = this;
-
-                    setTimeout(function () {
-                        task.pendingBrowserJobs.forEach(function (job) {
-                            task.emit('browser-job-done', job);
-                        });
-
-                        task.emit('done');
-                    }, TASK_DONE_DELAY);
-                }
+                setTimeout(taskActionCallback.bind(this), TASK_ACTION_DELAY);
 
                 return this.browserConnections.map(function (bc) {
                     return { browserConnection: bc };
@@ -520,9 +527,6 @@ describe('Runner', function () {
         it('Should not stop the task until local connection browsers are not closed when task done', function () {
             return runner
                 .browsers('browser-alias1', 'browser-alias2')
-                .reporter(function () {
-                })
-                .src('test/server/data/test-suite/top.test.js')
                 .run()
                 .then(function () {
                     expect(closeCalled).eql(2);
@@ -532,19 +536,15 @@ describe('Runner', function () {
         it('Should not stop the task until local connection browsers are not closed when connection failed', function () {
             var brokenConnection = testCafe.createBrowserConnection();
 
-            taskShouldBeDone = false;
             brokenConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
                                        '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
 
-            setTimeout(function () {
+            taskActionCallback = function () {
                 brokenConnection.emit('error', 'I have failed :(');
-            }, 25);
+            };
 
             return runner
                 .browsers(brokenConnection, 'browser-alias')
-                .reporter(function () {
-                })
-                .src('test/server/data/test-suite/top.test.js')
                 .run()
                 .then(function () {
                     throw new Error('Promise rejection expected');
