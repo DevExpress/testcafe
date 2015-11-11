@@ -1,4 +1,5 @@
 import { Promise } from 'es6-promise';
+import escapeHtml from 'escape-html';
 import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 import RunnerBase from './runner-base';
@@ -131,6 +132,10 @@ Runner.prototype._onTestError = function (err, isAssertion) {
     err.pageUrl            = document.location.toString();
     err.screenshotRequired = SETTINGS.get().TAKE_SCREENSHOTS && SETTINGS.get().TAKE_SCREENSHOTS_ON_FAILS &&
                              this.stepIterator.state.curStepErrors.length < 2;
+    
+    // NOTE: we should escape the test name because it may contain markup (GH-160)
+    if (err.stepName)
+        err.stepName = escapeHtml(err.stepName);
 
     var errorProcessingChain = Promise.resolve();
 
