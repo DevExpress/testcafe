@@ -1,4 +1,4 @@
-import COMPILER_CONST from '../../../compiler/old/const';
+import COMPILER_CONST from '../../../compiler/legacy/const';
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import * as automation from '../automation/automation';

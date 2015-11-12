@@ -4,7 +4,7 @@ import OS from 'os-family';
 import { createHash } from 'crypto';
 import { resolve as resolveUrl } from 'url';
 import { Promise } from 'es6-promise';
-import { Compiler as OldCompiler } from './old';
+import { Compiler as LegacyCompiler, getErrMsg } from './legacy';
 import promisify from 'es6-promisify';
 import RequireReader from './require-reader';
 
@@ -15,7 +15,7 @@ function exists (filePath) {
     return new Promise(resolve => fs.exists(filePath, resolve));
 }
 
-export default class Compiler {
+export default class LegacyCompilerAdapter {
     constructor (sources) {
         this.sources = sources;
 
@@ -72,7 +72,7 @@ export default class Compiler {
                 var data = await readFile(cfgPath);
                 var cfg  = JSON.parse(data);
 
-                Compiler._resolveConfigModules(cfg, dir);
+                LegacyCompilerAdapter._resolveConfigModules(cfg, dir);
                 cfgs.push(cfg);
             }
         }
@@ -95,7 +95,7 @@ export default class Compiler {
             cfg = cachedCfg;
         else {
             // NOTE: walk up in the directories hierarchy and collect test_config.json files
-            var dirConfigs = await Compiler._collectDirConfigs(dirName);
+            var dirConfigs = await LegacyCompilerAdapter._collectDirConfigs(dirName);
 
             cfg = {
                 modules: {},
@@ -119,13 +119,18 @@ export default class Compiler {
         return cfg;
     }
 
-    _createOldCompilerPromise (filePath, modules) {
+    _createLegacyCompilerPromise (filePath, modules) {
         return new Promise((resolve, reject) => {
-            var oldCompiler = new OldCompiler(filePath, modules, this.requireReader, this.cache.sourceIndex);
+            var legacyCompiler = new LegacyCompiler(filePath, modules, this.requireReader, this.cache.sourceIndex);
 
-            oldCompiler.compile((errs, out) => {
-                if (errs)
-                    reject(errs);
+            legacyCompiler.compile((errs, out) => {
+                if (errs) {
+                    var msg = 'There are test compilation errors:\n';
+
+                    msg += errs.map(err => ` * ${getErrMsg(err)}`).join('\n');
+
+                    reject(new Error(msg));
+                }
                 else
                     resolve(out);
             });
@@ -156,7 +161,7 @@ export default class Compiler {
     async _compileFile (filePath) {
         var { modules, baseUrl } = await this._getConfig(filePath);
 
-        var compiled = await this._createOldCompilerPromise(filePath, modules);
+        var compiled = await this._createLegacyCompilerPromise(filePath, modules);
 
         //NOTE: solve memory overuse issue by storing requireJs in the suite-level hash-based map
         //(see: B237609 - Fixture file compiler memory overuse)
