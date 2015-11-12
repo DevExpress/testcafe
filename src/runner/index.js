@@ -1,13 +1,16 @@
 import { Promise } from 'es6-promise';
 import { resolve as resolvePath } from 'path';
+import { EventEmitter } from 'events';
 import flatten from 'flatten';
 import Bootstrapper from './bootstrapper';
 import Task from './task';
 import LocalBrowserConnection from '../browser-connection/local';
 
 
-export default class Runner {
+export default class Runner extends EventEmitter {
     constructor (proxy, browserConnectionGateway) {
+        super();
+
         this.proxy        = proxy;
         this.bootstrapper = new Bootstrapper(browserConnectionGateway);
 
@@ -116,6 +119,8 @@ export default class Runner {
         this.opts.quarantineMode = !!quarantineMode;
 
         var { Reporter, browserConnections, tests } = await this.bootstrapper.createRunnableConfiguration();
+
+        this.emit('done-bootstrapping');
 
         return await this._runTask(Reporter, browserConnections, tests);
     }

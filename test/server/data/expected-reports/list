@@ -1,4 +1,5 @@
 Running tests in: Chrome, Firefox
+
   ✓ fixture1 - fixture1test1 (unstable)
   ✖ fixture1 - fixture1test2
 

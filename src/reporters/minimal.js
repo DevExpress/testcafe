@@ -21,7 +21,7 @@ export default class MinimalReporter extends BaseReporter {
 
     _reportTestDone (name, errs) {
         var hasErr = !!errs.length;
-        var dot    = hasErr ? this.style.red('.') : '.';
+        var dot    = hasErr ? this.chalk.red('.') : '.';
 
         if (this.spaceLeft - 1 < 0) {
             this.spaceLeft = this.viewportWidth - this.NEW_LINE.length - 1;
@@ -46,8 +46,8 @@ export default class MinimalReporter extends BaseReporter {
     _reportTaskDone (passed, total) {
         var allPassed = !this.errDescriptors.length;
         var footer    = allPassed ?
-                        this.style.bold.green(`${total} passed`) :
-                        this.style.bold.red(`${total - passed}/${total} failed`);
+                        this.chalk.bold.green(`${total} passed`) :
+                        this.chalk.bold.red(`${total - passed}/${total} failed`);
 
         this.indent = 2;
 
@@ -61,7 +61,7 @@ export default class MinimalReporter extends BaseReporter {
 
             this.errDescriptors.forEach((errDescriptor, idx) => {
                 var prefix = `${idx + 1}) `;
-                var title  = this.style.bold.red(`${prefix}${errDescriptor.fixtureName} - ${errDescriptor.testName}`);
+                var title  = this.chalk.bold.red(`${prefix}${errDescriptor.fixtureName} - ${errDescriptor.testName}`);
 
                 this.indent = 2;
 
