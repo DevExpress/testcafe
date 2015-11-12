@@ -14,14 +14,9 @@ function exit (code) {
 }
 
 function error (err) {
-    var msg = err.message
-        .split(/\n/g)
-        .map(line => chalk.red('ERROR ') + line)
-        .join('\n');
-
     spinner.hide();
 
-    console.error(msg);
+    console.error(chalk.red('ERROR ') + err.message);
     console.error(chalk.gray('Type "tescafe -h" for help.'));
 
     exit(1);
