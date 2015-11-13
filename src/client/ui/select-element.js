@@ -62,21 +62,21 @@ function createOption (option, $parent) {
             if (clickLeadChanges && !browserUtils.isIE)
                 curSelectEl.selectedIndex = optionIndex;
 
-            if (!browserUtils.isMozilla && !browserUtils.isIE && clickLeadChanges)
+            if (!browserUtils.isFirefox && !browserUtils.isIE && clickLeadChanges)
                 eventSimulator.change(curSelectEl);
 
-            if (browserUtils.isMozilla || browserUtils.isIE)
-                eventSimulator.mousedown(browserUtils.isMozilla ? option : curSelectEl);
-            eventSimulator.mouseup(browserUtils.isMozilla ? option : curSelectEl);
+            if (browserUtils.isFirefox || browserUtils.isIE)
+                eventSimulator.mousedown(browserUtils.isFirefox ? option : curSelectEl);
+            eventSimulator.mouseup(browserUtils.isFirefox ? option : curSelectEl);
 
-            if ((browserUtils.isMozilla || browserUtils.isIE) && clickLeadChanges) {
+            if ((browserUtils.isFirefox || browserUtils.isIE) && clickLeadChanges) {
                 eventSimulator.change(curSelectEl);
 
                 if (browserUtils.isIE)
                     curSelectEl.selectedIndex = optionIndex;
             }
 
-            eventSimulator.click(browserUtils.isMozilla || browserUtils.isIE ? option : curSelectEl);
+            eventSimulator.click(browserUtils.isFirefox || browserUtils.isIE ? option : curSelectEl);
 
             if (!isOptionDisabled)
                 collapseOptionList();
@@ -243,9 +243,9 @@ export function switchOptionsByKeys (command) {
 
     if (/down|up/.test(command) ||
         (!browserUtils.isIE &&
-         (styleUtils.getSelectElementSize($select[0]) <= 1 || browserUtils.isMozilla) &&
+         (styleUtils.getSelectElementSize($select[0]) <= 1 || browserUtils.isFirefox) &&
          (!$(shadowUI.select('.' + OPTION_LIST_CLASS)).is(':visible') ||
-          browserUtils.isMozilla) &&
+          browserUtils.isFirefox) &&
          /left|right/.test(command))) {
 
         var $options        = $select.find('option'),

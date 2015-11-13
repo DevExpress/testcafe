@@ -69,7 +69,7 @@ export const KEYS_MAPS = {
         59: 186,    // ;
         39: 222,    // '
         44: 188,    // ,
-        45: browserUtils.isMozilla ? 173 : 189,    // -
+        45: browserUtils.isFirefox ? 173 : 189,    // -
         46: 190,    // .
         47: 191     // /
     },

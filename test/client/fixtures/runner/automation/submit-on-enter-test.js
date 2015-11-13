@@ -328,13 +328,13 @@ $(document).ready(function () {
 
         $form[0].addEventListener('submit', function (e) {
             submitHandlerExecuted = true;
-            if (browserUtils.isMozilla)
+            if (browserUtils.isFirefox)
                 e.preventDefault();
         });
 
         //submit event dispatching leads to form submit in FireFox
         //in other browsers we call submit function after submit event dispatched (if there are no submit buttons on form)
-        if (!browserUtils.isMozilla)
+        if (!browserUtils.isFirefox)
             $form[0].submit = function () {
                 submitFunctionCalled = true;
             };
@@ -346,7 +346,7 @@ $(document).ready(function () {
             ok(inputKeydownHandlerExecuted, 'input keydown handler executed');
             ok(inputKeypressHandlerExecuted, 'input keydown handler executed');
             ok(inputKeyupHandlerExecuted, 'input keydown handler executed');
-            if (!browserUtils.isMozilla)
+            if (!browserUtils.isFirefox)
                 ok(submitFunctionCalled, 'submit function called');
 
             start();

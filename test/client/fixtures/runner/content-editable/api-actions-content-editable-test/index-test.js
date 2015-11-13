@@ -27,7 +27,7 @@ actionsAPI.init(stepIterator);
 cursor.init();
 
 var correctTestWaitingTime = function (time) {
-    if (browserUtils.isTouchDevice && browserUtils.isMozilla)
+    if (browserUtils.isTouchDevice && browserUtils.isFirefox)
         return time * 2;
 
     return time;
@@ -203,11 +203,8 @@ $(document).ready(function () {
 
         runAsyncTest(
             function () {
-                $el[0].onclick     = function () {
+                $el[0].onclick = function () {
                     clicked = true;
-                };
-                $el[0].onmousedown = function () {
-                    deepEqual(cursor.getAbsolutePosition(), position.findCenter($el[0]), 'check cursor position');
                 };
                 ok(!clicked);
                 actionsAPI.click($el[0], {
@@ -217,7 +214,6 @@ $(document).ready(function () {
             function () {
                 ok(clicked, 'click raised');
                 checkSelection($parent, $el[0].childNodes[0], 10, $el[0].childNodes[0], 10);
-                expect(8);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
@@ -231,11 +227,8 @@ $(document).ready(function () {
 
         runAsyncTest(
             function () {
-                $el[0].onclick     = function () {
+                $el[0].onclick = function () {
                     clicked = true;
-                };
-                $el[0].onmousedown = function () {
-                    deepEqual(cursor.getAbsolutePosition(), position.findCenter($el[0]), 'check cursor position');
                 };
                 ok(!clicked);
                 actionsAPI.click($el[0], {
@@ -245,7 +238,6 @@ $(document).ready(function () {
             function () {
                 ok(clicked, 'click raised');
                 checkSelection($parent, $parent[0].childNodes[5].childNodes[3].childNodes[0], 1, $parent[0].childNodes[5].childNodes[3].childNodes[0], 1);
-                expect(8);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
@@ -259,11 +251,8 @@ $(document).ready(function () {
 
         runAsyncTest(
             function () {
-                $el[0].onclick     = function () {
+                $el[0].onclick = function () {
                     clicked = true;
-                };
-                $el[0].onmousedown = function () {
-                    deepEqual(cursor.getAbsolutePosition(), position.findCenter($el[0]), 'check cursor position');
                 };
                 ok(!clicked);
                 textSelection.selectByNodesAndOffsets($parent[0].childNodes[0], 3, $parent[0].childNodes[4], 7, true);
@@ -274,7 +263,6 @@ $(document).ready(function () {
             function () {
                 ok(clicked, 'click raised');
                 checkSelection($parent, $el[0].childNodes[0], 6, $el[0].childNodes[0], 6);
-                expect(8);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
@@ -429,7 +417,7 @@ $(document).ready(function () {
                 actionsAPI.select($el[0]);
             },
             function () {
-                checkSelection($el, $el[0].childNodes[0], 0, $el[0].childNodes[2], browserUtils.isMozilla ||
+                checkSelection($el, $el[0].childNodes[0], 0, $el[0].childNodes[2], browserUtils.isFirefox ||
                                                                                    browserUtils.isIE ? 8 : 7);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
@@ -461,7 +449,7 @@ $(document).ready(function () {
                 if (browserUtils.isIE)
                     checkSelection($el, $el[0].childNodes[0], 12, $el[0].childNodes[2], 8);
                 else {
-                    checkSelection($el, $el[0].childNodes[2], browserUtils.isMozilla ? 8 : 7, $el[0].childNodes[0], 12);
+                    checkSelection($el, $el[0].childNodes[2], browserUtils.isFirefox ? 8 : 7, $el[0].childNodes[0], 12);
                     equal(textSelection.hasInverseSelection($el[0]), true, 'selection direction correct');
                 }
             },
@@ -470,7 +458,7 @@ $(document).ready(function () {
     });
 
     asyncTest('zero offset', function () {
-        $el = $("#2");
+        $el = $("#3");
 
         runAsyncTest(
             function () {
@@ -525,7 +513,7 @@ $(document).ready(function () {
                 actionsAPI.select(node1, node2);
             },
             function () {
-                checkSelection($parent, node1, 0, node2, browserUtils.isIE || browserUtils.isMozilla ? 8 : 7);
+                checkSelection($parent, node1, 0, node2, browserUtils.isIE || browserUtils.isFirefox ? 8 : 7);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
@@ -589,7 +577,7 @@ $(document).ready(function () {
             },
             function () {
                 checkSelection($parent, $parent[0].childNodes[1].childNodes[0], 0, $parent[0].childNodes[8], browserUtils.isIE ||
-                                                                                                             browserUtils.isMozilla ? 13 : 9);
+                                                                                                             browserUtils.isFirefox ? 13 : 9);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
@@ -607,10 +595,10 @@ $(document).ready(function () {
             function () {
                 if (browserUtils.isIE)
                     checkSelection($parent, $parent[0].childNodes[1].childNodes[0], 0, $parent[0].childNodes[8], browserUtils.isIE ||
-                                                                                                                 browserUtils.isMozilla ? 13 : 9);
+                                                                                                                 browserUtils.isFirefox ? 13 : 9);
                 else {
                     checkSelection($parent, $parent[0].childNodes[8], browserUtils.isIE ||
-                                                                      browserUtils.isMozilla ? 13 : 9, $parent[0].childNodes[1].childNodes[0], 0);
+                                                                      browserUtils.isFirefox ? 13 : 9, $parent[0].childNodes[1].childNodes[0], 0);
                     equal(textSelection.hasInverseSelection($parent[0]), true, 'selection direction correct');
                 }
             },
@@ -661,7 +649,7 @@ $(document).ready(function () {
             },
             function () {
                 checkSelection($parent, $parent.find('del')[0].childNodes[0], browserUtils.isIE ||
-                                                                              browserUtils.isMozilla ? 0 : 9, $parent.find('a')[1].childNodes[0], 4);
+                                                                              browserUtils.isFirefox ? 0 : 9, $parent.find('a')[1].childNodes[0], 4);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
@@ -679,10 +667,10 @@ $(document).ready(function () {
             function () {
                 if (browserUtils.isIE)
                     checkSelection($parent, $parent.find('del')[0].childNodes[0], browserUtils.isIE ||
-                                                                                  browserUtils.isMozilla ? 0 : 9, $parent.find('a')[1].childNodes[0], 4);
+                                                                                  browserUtils.isFirefox ? 0 : 9, $parent.find('a')[1].childNodes[0], 4);
                 else {
                     checkSelection($parent, $parent.find('a')[1].childNodes[0], 4, $parent.find('del')[0].childNodes[0], browserUtils.isIE ||
-                                                                                                                         browserUtils.isMozilla ? 0 : 9);
+                                                                                                                         browserUtils.isFirefox ? 0 : 9);
                     equal(textSelection.hasInverseSelection($parent[0]), true, 'selection direction correct');
                 }
             },

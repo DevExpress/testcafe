@@ -8,7 +8,7 @@ import * as automationIFrameBehavior from './automation/iframe-behavior';
 import RunnerBase from './runner-base';
 import IFrameRunner from './iframe-runner';
 
-var messageSandbox        = hammerhead.messageSandbox;
+var messageSandbox        = hammerhead.eventSandbox.message;
 var $                     = testCafeCore.$;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
 var serviceUtils          = testCafeCore.serviceUtils;

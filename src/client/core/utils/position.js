@@ -16,7 +16,7 @@ function getMapContainer (el) {
 }
 
 export function getIFrameCoordinates (iFrameWin) {
-    var iFrame              = domUtils.getIFrameByWindow(iFrameWin);
+    var iFrame              = domUtils.getIframeByWindow(iFrameWin);
     var $IFrame             = $(iFrame);
     var iFrameOffset        = getOffsetPosition(iFrame);
     var iFrameBorders       = styleUtils.getBordersWidth(iFrame);
@@ -107,7 +107,7 @@ export function getClientDimensions (target) {
     }
 
     if (isElementInIFrame) {
-        var iFrameElement = domUtils.getIFrameByElement(target);
+        var iFrameElement = domUtils.getIframeByElement(target);
 
         if (iFrameElement) {
             var iFrameOffset  = getOffsetPosition(iFrameElement);
@@ -166,7 +166,7 @@ export function getEventAbsoluteCoordinates (ev) {
     var yOffset         = 0;
 
     if (domUtils.isElementInIframe(curDocument.documentElement)) {
-        var currentIFrame = domUtils.getIFrameByElement(curDocument);
+        var currentIFrame = domUtils.getIframeByElement(curDocument);
 
         if (currentIFrame) {
             var iFrameOffset  = getOffsetPosition(currentIFrame);
@@ -255,7 +255,7 @@ export function getElementFromPoint (x, y, currentDocument, skipIFramesDeeping) 
 }
 
 export function getFixedPositionForIFrame (pos, iFrameWin) {
-    var iFrame        = domUtils.getIFrameByWindow(iFrameWin);
+    var iFrame        = domUtils.getIframeByWindow(iFrameWin);
     var iFrameOffset  = getOffsetPosition(iFrame);
     var iFrameBorders = styleUtils.getBordersWidth(iFrame);
     var iFramePadding = styleUtils.getElementPadding(iFrame);
@@ -270,7 +270,7 @@ export function getFixedPosition (pos, iFrameWin, convertToClient) {
     if (!iFrameWin)
         return pos;
 
-    var iFrame         = domUtils.getIFrameByWindow(iFrameWin);
+    var iFrame         = domUtils.getIframeByWindow(iFrameWin);
     var iFrameOffset   = getOffsetPosition(iFrame);
     var iFrameBorders  = styleUtils.getBordersWidth(iFrame);
     var iFramePadding  = styleUtils.getElementPadding(iFrame);

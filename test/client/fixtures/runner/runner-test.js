@@ -1,8 +1,9 @@
 var hammerhead  = window.getTestCafeModule('hammerhead');
-var HH_SETTINGS = hammerhead.get('./settings').get();
+var hhsettings = hammerhead.get('./settings').get();
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var COMMAND      = testCafeCore.COMMAND;
+var SETTINGS     = testCafeCore.get('./settings').get();
 var transport    = testCafeCore.get('./transport');
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
@@ -24,11 +25,12 @@ Runner.checkStatus = function () {
 };
 
 module('Regression');
-asyncTest('T204773 - TestCafe - The assertion in last step with inIFrame wrapper works incorrect in IE browser', function () {
-    HH_SETTINGS.serviceMsgUrl = '/ping/500';
 
-    var savedAsyncServiceMsg       = transport.asyncServiceMsg,
-        assertionFailedMessageTime = null;
+asyncTest('T204773 - TestCafe - The assertion in last step with inIFrame wrapper works incorrect in IE browser', function () {
+    hhsettings.serviceMsgUrl = '/ping/500';
+
+    var savedAsyncServiceMsg       = transport.asyncServiceMsg;
+    var assertionFailedMessageTime = null;
 
     transport.asyncServiceMsg = function (msg, callback) {
         if (msg.cmd === COMMAND.assertionFailed)
@@ -49,56 +51,54 @@ asyncTest('T204773 - TestCafe - The assertion in last step with inIFrame wrapper
             start();
         }
     });
-
-
 });
 
 asyncTest('Test iterator should not call Transport.fail twice (without screenshots)', function () {
-    var savedTakeScreenshotOnFails = HH_SETTINGS.TAKE_SCREENSHOTS_ON_FAILS,
-        savedTransportFatalError   = transport.fatalError;
-
-    var transportFailCount = 0;
+    var savedTakeScreenshotOnFails = SETTINGS.TAKE_SCREENSHOTS_ON_FAILS;
+    var savedTransportFatalError   = transport.fatalError;
+    var transportFailCount         = 0;
 
     transport.fatalError = function () {
         transportFailCount++;
     };
 
-    HH_SETTINGS.TAKE_SCREENSHOTS_ON_FAILS = false;
+    SETTINGS.TAKE_SCREENSHOTS_ON_FAILS = false;
 
     var testRunner = new Runner();
+
     testRunner._onFatalError({ message: 'err1' });
     testRunner._onFatalError({ message: 'err2' });
 
     window.setTimeout(function () {
         equal(transportFailCount, 1);
 
-        HH_SETTINGS.TAKE_SCREENSHOTS_ON_FAILS = savedTakeScreenshotOnFails;
-        transport.fatalError                  = savedTransportFatalError;
+        SETTINGS.TAKE_SCREENSHOTS_ON_FAILS = savedTakeScreenshotOnFails;
+        transport.fatalError               = savedTransportFatalError;
 
         start();
     }, 100);
 });
 
 asyncTest('Test iterator should not call Transport.fail twice (with screenshots)', function () {
-    var savedTakeScreenshotOnFails = HH_SETTINGS.TAKE_SCREENSHOTS_ON_FAILS,
-        savedTransportFatalError   = transport.fatalError;
+    var savedTakeScreenshotOnFails = SETTINGS.TAKE_SCREENSHOTS_ON_FAILS;
+    var savedTransportFatalError   = transport.fatalError;
+    var transportFailCount         = 0;
 
-    var transportFailCount = 0;
-
-    transport.fatalError                  = function () {
+    transport.fatalError               = function () {
         transportFailCount++;
     };
-    HH_SETTINGS.TAKE_SCREENSHOTS_ON_FAILS = true;
+    SETTINGS.TAKE_SCREENSHOTS_ON_FAILS = true;
 
     var testRunner = new Runner();
+
     testRunner._onFatalError({ message: 'err1' });
     testRunner._onFatalError({ message: 'err2' });
 
     window.setTimeout(function () {
         equal(transportFailCount, 1);
 
-        HH_SETTINGS.TAKE_SCREENSHOTS_ON_FAILS = savedTakeScreenshotOnFails;
-        transport.fatalError                  = savedTransportFatalError;
+        SETTINGS.TAKE_SCREENSHOTS_ON_FAILS = savedTakeScreenshotOnFails;
+        transport.fatalError               = savedTransportFatalError;
 
         start();
     }, 100);

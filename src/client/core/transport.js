@@ -9,12 +9,6 @@ hammerhead.on(hammerhead.EVENTS.beforeUnload, () => beforeUnloadRaised = true);
 
 //Exports
 //-------------------------------------------------------------------------------------
-export var syncServiceMsg                  = transport.syncServiceMsg.bind(transport);
-export var asyncServiceMsg                 = transport.asyncServiceMsg.bind(transport);
-export var waitForServiceMessagesCompleted = transport.waitForServiceMessagesCompleted.bind(transport);
-export var batchUpdate                     = transport.batchUpdate.bind(transport);
-export var queuedAsyncServiceMsg           = transport.queuedAsyncServiceMsg.bind(transport);
-
 export function fatalError (err, callback) {
     // NOTE: we should not stop the test run if an error occured during page unloading because we
     // would destroy the session in this case and wouldn't be able to get the next page in the browser.
@@ -25,7 +19,7 @@ export function fatalError (err, callback) {
         deferred: beforeUnloadRaised
     };
 
-    transport.asyncServiceMsg(testFailMsg, callback);
+    asyncServiceMsg(testFailMsg, callback);
 }
 
 export function assertionFailed (err, callback) {
@@ -34,5 +28,24 @@ export function assertionFailed (err, callback) {
         err: err
     };
 
-    transport.asyncServiceMsg(assertionFailedMsg, callback);
+    asyncServiceMsg(assertionFailedMsg, callback);
+}
+
+// TODO: temporary solution before GH-50
+export function asyncServiceMsg (msg, callback) {
+    return transport.asyncServiceMsg(msg)
+        .then(args => {
+            if (callback)
+                callback(args)
+        });
+}
+
+export function waitForServiceMessagesCompleted (timeout, callback) {
+    return transport.waitForServiceMessagesCompleted(timeout)
+        .then(callback);
+}
+
+export function batchUpdate (callback) {
+    return transport.batchUpdate()
+        .then(callback);
 }

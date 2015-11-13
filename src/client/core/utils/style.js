@@ -59,7 +59,7 @@ export function getScrollableParents (el, doc) {
     var $parentsArray   = $.makeArray($(el).parents());
 
     if (domUtils.isElementInIframe(el)) {
-        var $iFrameParents = $(domUtils.getIFrameByElement(el)).parents();
+        var $iFrameParents = $(domUtils.getIframeByElement(el)).parents();
 
         $.each($iFrameParents, function (index, el) {
             $parentsArray.push(el);
@@ -83,7 +83,7 @@ export function hasScroll (el, doc) {
     //T303226
     if (isHtmlElement && styles.overflowX === 'hidden' && styles.overflowY === 'hidden')
         return false;
-    
+
     if (!isHtmlElement && !overflowX && !overflowY)
         return false;
 

@@ -14,10 +14,10 @@
 </head>
 <body>
 <script type="text/javascript">
-    var HH_SETTINGS = Hammerhead.get('./settings');
-    HH_SETTINGS.set({
-        CROSS_DOMAIN_PROXY_PORT: 2000
-    });
+    var hammerhead = window['%hammerhead%'];
+    var settings = hammerhead.get('./settings');
+
+    settings.get().crossDomainProxyPort = 2000;
 
     var testCafeCore = window['%testCafeCore%'];
 

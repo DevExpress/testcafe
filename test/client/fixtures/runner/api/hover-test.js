@@ -1,6 +1,5 @@
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
-var jsProcessor  = hammerhead.jsProcessor;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
@@ -145,17 +144,17 @@ $(document).ready(function () {
         var $el = addInputElement('button', 'button1', 200, 200);
 
         $el.mouseover(function (e) {
-            equal(eval(window[jsProcessor.PROCESS_SCRIPT_METH_NAME]('e.which')), browserUtils.isWebKit ? 0 : 1);
-            equal(eval(window[jsProcessor.PROCESS_SCRIPT_METH_NAME]('e.originalEvent.which')), browserUtils.isWebKit ? 0 : 1);
+            equal(window.getProperty(e, 'which'), browserUtils.isWebKit ? 0 : 1);
+            equal(window.getProperty(e.originalEvent, 'which'), browserUtils.isWebKit ? 0 : 1);
         });
 
         $el.mouseenter(function (e) {
-            equal(eval(window[jsProcessor.PROCESS_SCRIPT_METH_NAME]('e.which')), browserUtils.isWebKit ? 0 : 1);
-            equal(eval(window[jsProcessor.PROCESS_SCRIPT_METH_NAME]('e.originalEvent.which')), browserUtils.isWebKit ? 0 : 1);
+            equal(window.getProperty(e, 'which'), browserUtils.isWebKit ? 0 : 1);
+            equal(window.getProperty(e.originalEvent, 'which'), browserUtils.isWebKit ? 0 : 1);
         });
 
         $el[0].addEventListener('mouseover', function (e) {
-            equal(eval(window[jsProcessor.PROCESS_SCRIPT_METH_NAME]('e.which')), browserUtils.isWebKit ? 0 : 1);
+            equal(window.getProperty(e, 'which'), browserUtils.isWebKit ? 0 : 1);
         });
 
         asyncActionCallback = function () {
@@ -180,19 +179,21 @@ $(document).ready(function () {
             mouseenterWhichParam = null;
 
         $el.mouseover(function (e) {
-            mouseoverRaised = true;
+            mouseoverRaised     = true;
+            mouseoverWhichParam = window.getProperty(e, 'which');
+
             equal(e.button, 0);
-            if (browserUtils.isIE || browserUtils.isMozilla)
+            if (browserUtils.isIE || browserUtils.isFirefox)
                 equal(e.buttons, 0);
-            mouseoverWhichParam = eval(window[jsProcessor.PROCESS_SCRIPT_METH_NAME]('e.which'));
         });
 
         $el.mouseenter(function (e) {
-            mouseenterRaised = true;
+            mouseenterRaised     = true;
+            mouseenterWhichParam = window.getProperty(e, 'which');
+
             equal(e.button, 0);
-            if (browserUtils.isIE || browserUtils.isMozilla)
+            if (browserUtils.isIE || browserUtils.isFirefox)
                 equal(e.buttons, 0);
-            mouseenterWhichParam = eval(window[jsProcessor.PROCESS_SCRIPT_METH_NAME]('e.which'));
         });
 
         var pointerHandler = function (e) {
@@ -216,7 +217,7 @@ $(document).ready(function () {
             equal(mouseoverWhichParam, browserUtils.isWebKit ? 0 : 1);
             equal(mouseenterWhichParam, browserUtils.isWebKit ? 0 : 1);
 
-            if (browserUtils.isMozilla || browserUtils.isIE9)
+            if (browserUtils.isFirefox || browserUtils.isIE9)
                 expect(8);
             else if (browserUtils.isIE)
                 expect(17);

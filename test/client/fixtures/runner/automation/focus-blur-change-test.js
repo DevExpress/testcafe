@@ -134,7 +134,7 @@ var input1,
                 input1BlurredCount += numberOfHandlers;
                 input2FocusedCount += numberOfHandlers;
             }
-            logMessage(' before focusing ' + element.id)
+            logMessage(' before focusing ' + element.id);
             focusBlurSandbox.focus(element, function () {
                 logMessage(' focus function callback called for ' + element.id);
                 callback();

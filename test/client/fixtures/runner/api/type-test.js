@@ -439,7 +439,7 @@ $(document).ready(function () {
     asyncTest('T239547: TD15.1 - Playback problems on https://jsfiddle.net/', function () {
         var $input   = $('<input type="text" />').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             charCode = 45,
-            keyCode  = browserUtils.isMozilla ? 173 : 189;
+            keyCode  = browserUtils.isFirefox ? 173 : 189;
 
         runAsyncTest(
             function () {

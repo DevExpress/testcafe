@@ -82,7 +82,7 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
                 var clickLeadChanges = isClickOnOption && !targetElement.disabled;
 
                 if (styleUtils.getSelectElementSize($select[0]) > 1) {
-                    if (browserUtils.isMozilla) {
+                    if (browserUtils.isFirefox) {
                         eventSimulator.mousedown(targetElement, clickOptions);
 
                         if (clickLeadChanges)

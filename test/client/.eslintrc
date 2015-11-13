@@ -30,13 +30,8 @@
     "async": true,
 
     /* For more details on global variables see custom-setup.js file */
-    "callMethod": true,
     "getProperty": true,
     "setProperty": true,
-    "processScript": true,
-    "getLocation": true,
-    "Hammerhead": true,
-    "overrideDomMeth": true,
     "initIFrameTestHandler": true
   }
 }

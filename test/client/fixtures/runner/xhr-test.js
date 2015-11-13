@@ -1,7 +1,5 @@
 var hammerhead  = window.getTestCafeModule('hammerhead');
-var urlUtils    = hammerhead.get('../utils/url');
-var HH_CONST    = hammerhead.get('../const');
-var HH_SETTINGS = hammerhead.get('./settings').get();
+var hhsettings = hammerhead.get('./settings').get();
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
@@ -65,14 +63,14 @@ $(document).ready(function () {
         xhrBarrier.startBarrier(function () {
             ok(!TestCafeClientReqComplete);
             jqxhr.abort();
-            HH_SETTINGS.serviceMsgUrl = null;
+            hhsettings.serviceMsgUrl = null;
             start();
         });
 
-        HH_SETTINGS.serviceMsgUrl = '/xhr-test/8000';
+        hhsettings.serviceMsgUrl = '/xhr-test/8000';
 
         var action = function (callback) {
-            jqxhr = $.ajax(HH_SETTINGS.serviceMsgUrl);
+            jqxhr = $.ajax(hhsettings.serviceMsgUrl);
 
             jqxhr.always(function () {
                 TestCafeClientReqComplete = true;

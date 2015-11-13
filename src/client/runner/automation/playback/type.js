@@ -52,7 +52,7 @@ export default function (el, text, options, actionCallback) {
 
     curElement                        = findTextEditableChild(el);
     isTextEditable                    = domUtils.isTextEditableElementAndEditingAllowed(curElement);
-    isInputWithoutSelectionProperties = domUtils.isInputWithoutSelectionPropertiesInMozilla(curElement); //T133144
+    isInputWithoutSelectionProperties = domUtils.isInputWithoutSelectionPropertiesInFirefox(curElement); //T133144
 
     if (SETTINGS.get().RECORDING && !SETTINGS.get().PLAYBACK && !positionUtils.isElementVisible(curElement)) {
         actionCallback();
@@ -130,7 +130,7 @@ export default function (el, text, options, actionCallback) {
                                     curElement                        = domUtils.getActiveElement();
                                     curElement                        = findTextEditableChild(curElement);
                                     isTextEditable                    = domUtils.isTextEditableElementAndEditingAllowed(curElement);
-                                    isInputWithoutSelectionProperties = domUtils.isInputWithoutSelectionPropertiesInMozilla(curElement);
+                                    isInputWithoutSelectionProperties = domUtils.isInputWithoutSelectionPropertiesInFirefox(curElement);
                                 }
 
                                 //Element for typing can change last time only after keydown event

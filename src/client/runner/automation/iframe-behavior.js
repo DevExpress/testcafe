@@ -4,7 +4,7 @@ import testCafeUI from '../deps/testcafe-ui';
 import movePlaybackAutomation from './playback/move';
 import * as scrollAutomation from './scroll-behavior';
 
-var messageSandbox = hammerhead.messageSandbox;
+var messageSandbox = hammerhead.eventSandbox.message;
 
 var SETTINGS              = testCafeCore.SETTINGS;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
