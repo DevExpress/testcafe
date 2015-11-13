@@ -138,7 +138,7 @@ $(document).ready(function () {
             function () {
                 equal(keydownCount, 3, 'keydown event raises twice');
                 equal(keyupCount, 3, 'keyup event raises twice');
-                equal(keypressCount, browserUtils.isMozilla ? 2 : 0, 'keypress event raises twice');
+                equal(keypressCount, browserUtils.isFirefox ? 2 : 0, 'keypress event raises twice');
             },
             3000
         );

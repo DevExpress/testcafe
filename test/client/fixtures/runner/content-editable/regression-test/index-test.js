@@ -1,6 +1,5 @@
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
-var jsProcessor  = hammerhead.jsProcessor;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var domUtils     = testCafeCore.get('./utils/dom');
@@ -49,7 +48,7 @@ $(document).ready(function () {
     };
 
     var setInnerHTML = function ($el, innerHTML) {
-        window[jsProcessor.SET_PROPERTY_METH_NAME]($el[0], 'innerHTML', innerHTML);
+        window.setProperty($el[0], 'innerHTML', innerHTML);
     };
 
     var stateHelper = {

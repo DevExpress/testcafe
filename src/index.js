@@ -29,7 +29,7 @@ class TestCafe {
         this.proxy.GET('/testcafe-core.js', { content: CORE_SCRIPT, contentType: 'application/x-javascript' });
         this.proxy.GET('/testcafe-runner.js', { content: RUNNER_SCRIPT, contentType: 'application/x-javascript' });
         this.proxy.GET('/testcafe-ui.js', { content: UI_SCRIPT, contentType: 'application/x-javascript' });
-        this.proxy.GET('/testcafe-ui-styles.css', { content: UI_STYLE, contentType: 'text/css' });
+        this.proxy.GET('/testcafe-ui-styles.css', { content: UI_STYLE, contentType: 'text/css', isShadowUIStylesheet: true });
         this.proxy.GET('/testcafe-ui-sprite.png', { content: UI_SPRITE, contentType: 'image/png' });
         this.proxy.GET('/favicon.ico', { content: FAVICON, contentType: 'image/x-icon' });
     }

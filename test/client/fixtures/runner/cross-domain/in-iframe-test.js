@@ -1,5 +1,5 @@
 var hammerhead  = window.getTestCafeModule('hammerhead');
-var HH_SETTINGS = hammerhead.get('./settings').get();
+var hhsettings = hammerhead.get('./settings').get();
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var RunnerBase     = testCafeRunner.get('./runner-base');
@@ -9,7 +9,7 @@ var cursor     = testCafeUI.get('./cursor');
 
 cursor.init();
 
-HH_SETTINGS.serviceMsgUrl = '/ping/10';
+hhsettings.serviceMsgUrl = '/ping/10';
 
 asyncTest('run steps in iframe', function () {
     var $iframe = $('<iframe>');

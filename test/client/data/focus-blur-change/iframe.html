@@ -8,18 +8,11 @@
 <body>
 <!-- Resources loading -->
 <script>
-    var HH_SETTINGS = Hammerhead.get('./settings');
-    HH_SETTINGS.set({
-        CROSS_DOMAIN_PROXY_PORT: 2000
-    });
+    var hammerhead = window['%hammerhead%'];
 
-    var urlUtils = Hammerhead.get('./utils/url');
+    hammerhead.get('./utils/destination-location').forceLocation('http://localhost/sessionId/http://target_url');
 
-    urlUtils.OriginLocation.get = function () {
-        return 'http://target_url';
-    };
-
-    Hammerhead.start();
+    hammerhead.start({ crossDomainProxyPort: 2000 });
 
     window.focusInput = function () {
         document.getElementById('input').focus();

@@ -48,7 +48,7 @@ export function getEventOptionCoordinates (element, screenPoint) {
     };
 
     if (domUtils.isElementInIframe(element)) {
-        var currentIFrame = domUtils.getIFrameByElement(element);
+        var currentIFrame = domUtils.getIframeByElement(element);
         if (currentIFrame) {
             var iFramePosition       = positionUtils.getOffsetPosition(currentIFrame),
                 iFrameBorders        = styleUtils.getBordersWidth(currentIFrame),
@@ -167,7 +167,7 @@ export function getDragEndPoint (startPosition, to, currentDocument) {
         maxY         = 0;
 
     if (dragInIFrame) {
-        var currentIFrame = domUtils.getIFrameByElement(currentDocument);
+        var currentIFrame = domUtils.getIframeByElement(currentDocument);
         if (currentIFrame) {
             var iFrameOffset  = positionUtils.getOffsetPosition(currentIFrame),
                 iFrameBorders = styleUtils.getBordersWidth(currentIFrame);

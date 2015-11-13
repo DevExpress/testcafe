@@ -11,11 +11,9 @@ var rename       = require('gulp-rename');
 var webmake      = require('gulp-webmake');
 var del          = require('del');
 var fs           = require('fs');
-var less         = require('less');
 var merge        = require('merge-stream');
 var path         = require('path');
 var Promise      = require('es6-promise').Promise;
-var promisify    = require('es6-promisify');
 
 
 var CLIENT_TESTS_SETTINGS = {
@@ -32,12 +30,14 @@ var CLIENT_TESTS_SETTINGS = {
         { src: '/before-test.js', path: './test/client/before-test.js' }
     ],
 
-    css: [{ src: '/ui.css', path: './lib/client/ui/styles.css' }],
-
     configApp: require('./test/client/config-qunit-server-app')
 };
 
 var CLIENT_TESTS_BROWSERS = [
+    {
+        platform:    'Windows 10',
+        browserName: 'microsoftedge'
+    },
     {
         platform:    'Windows 10',
         browserName: 'chrome'
@@ -72,9 +72,6 @@ var SAUCELABS_SETTINGS = {
     name:      'testcafe client tests',
     timeout:   720
 };
-
-var UI_STYLES_FILE_PATH = '/client/ui';
-var UI_STYLES_TEMP_DIR  = path.join('lib', UI_STYLES_FILE_PATH);
 
 
 gulp.task('clean', function (cb) {
@@ -140,75 +137,8 @@ gulp.task('build-client-scripts', ['clean'], function () {
 });
 
 
-//Styles
-gulp.task('styles-temp-copy', ['clean'], function () {
-    return gulp
-        .src(path.join('src', UI_STYLES_FILE_PATH, 'styles.less'))
-        .pipe(gulp.dest(UI_STYLES_TEMP_DIR));
-});
-
-gulp.task('build-styles', ['styles-temp-copy'], function () {
-    var SHADOW_UI_CLASSNAME_POSTFIX = require('./node_modules/testcafe-hammerhead/lib/const').SHADOW_UI_CLASSNAME_POSTFIX;
-    var TEMP_SRC_FILE               = path.join(process.cwd(), UI_STYLES_TEMP_DIR, 'styles.less');
-
-    var readFile  = promisify(fs.readFile);
-    var writeFile = promisify(fs.writeFile);
-    var unlink    = promisify(fs.unlink);
-
-    //NOTE: add unique UI postfix to each LESS class and id selector
-    function processSelector (selector) {
-        if (selector.elements) {
-            selector.elements.forEach(function (element) {
-                var isPureMixin      = typeof element.index === 'undefined';
-                var isTargetSelector = element.value && (element.value.indexOf('.') === 0 ||
-                                                         element.value.indexOf('#') === 0);
-
-                if (isTargetSelector && !isPureMixin)
-                    element.value += SHADOW_UI_CLASSNAME_POSTFIX;
-            });
-        }
-    }
-
-    function addUIClassPostfix (lessRules) {
-        lessRules.forEach(function (rule) {
-            if (rule.selectors)
-                rule.selectors.forEach(processSelector);
-
-            if (rule.rules)
-                addUIClassPostfix(rule.rules);
-        });
-    }
-
-    function parseLess (src) {
-        return new Promise(function (resolve, reject) {
-            var parser = new less.Parser();
-
-            src = src.toString();
-
-            parser.parse(src, function (parseErr, tree) {
-                if (parseErr)
-                    reject('Failed to parse client runtime LESS: ' + parseErr.message);
-                else
-                    resolve(tree);
-            });
-        });
-    }
-
-    return readFile(TEMP_SRC_FILE)
-        .then(parseLess)
-        .then(function (tree) {
-            addUIClassPostfix([tree]);
-
-            return writeFile(path.join('lib', UI_STYLES_FILE_PATH, 'styles.css'), tree.toCSS());
-        })
-        .then(function () {
-            return unlink(TEMP_SRC_FILE);
-        });
-});
-
-
 //Build
-gulp.task('build', ['lint', 'wrap-scripts-with-templates', 'build-styles'], function () {
+gulp.task('build', ['lint', 'wrap-scripts-with-templates'], function () {
     var js = gulp
         .src([
             'src/**/*.js',
@@ -217,10 +147,7 @@ gulp.task('build', ['lint', 'wrap-scripts-with-templates', 'build-styles'], func
         .pipe(gulpBabel());
 
     var styles = gulp
-        .src([
-            'src/**/*.less',
-            '!' + path.join('src', UI_STYLES_FILE_PATH, 'styles.less')
-        ])
+        .src('src/**/*.less')
         .pipe(gulpLess());
 
     var templates = gulp

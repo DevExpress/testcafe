@@ -127,7 +127,7 @@ $(document).ready(function () {
     };
 
     var isInputWithoutSelectionProperties = function ($el) {
-        return domUtils.isInputWithoutSelectionPropertiesInMozilla($el[0]);
+        return domUtils.isInputWithoutSelectionPropertiesInFirefox($el[0]);
     };
 
     var startNext = function () {
@@ -547,7 +547,7 @@ $(document).ready(function () {
     });
 
     //T101195 - Recording crashed after action with input type = "number" recorded in FF 29
-    if (!browserUtils.isMozilla) {
+    if (!browserUtils.isFirefox) {
         asyncTest('B254340 - type letters in input with type="number"', function () {
             var initText = '12345',
                 newText  = 'aaa',
@@ -745,7 +745,7 @@ $(document).ready(function () {
         }, function () {
             equal($input[0].value, text);
 
-            if (!domUtils.isInputWithoutSelectionPropertiesInMozilla($input[0])) {
+            if (!domUtils.isInputWithoutSelectionPropertiesInFirefox($input[0])) {
                 equal(textSelection.getSelectionStart($input[0]), text.length, 'start selection correct');
                 equal(textSelection.getSelectionEnd($input[0]), text.length, 'end selection correct');
             }

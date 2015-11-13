@@ -13,8 +13,6 @@ import typePlaybackAutomation from '../automation/playback/type';
 import * as sourceIndexTracker from '../source-index';
 import async from '../deps/async';
 
-var jsProcessor = hammerhead.jsProcessor;
-
 var $               = testCafeCore.$;
 var SETTINGS        = testCafeCore.SETTINGS;
 var ERROR_TYPE      = testCafeCore.ERROR_TYPE;
@@ -273,7 +271,7 @@ export function click (what, options) {
 
                 if (iframe)
                     iframe.contentWindow[automation.AUTOMATION_RUNNERS].click.playback(element, options ||
-                                                                                                    {}, callback, onerror);
+                                                                                                {}, callback, onerror);
                 else
                     clickPlaybackAutomation(element, options || {}, callback, onerror);
             });
@@ -296,7 +294,7 @@ export function rclick (what, options) {
 
                 if (iframe)
                     iframe.contentWindow[automation.AUTOMATION_RUNNERS].rclick.playback(element, options ||
-                                                                                                     {}, callback);
+                                                                                                 {}, callback);
                 else
                     rClickPlaybackAutomation(element, options || {}, callback);
             });
@@ -319,7 +317,7 @@ export function dblclick (what, options) {
 
                 if (iframe)
                     iframe.contentWindow[automation.AUTOMATION_RUNNERS].dblclick.playback(element, options ||
-                                                                                                       {}, callback);
+                                                                                                   {}, callback);
                 else
                     dblClickPlaybackAutomation(element, options || {}, callback);
             });
@@ -366,7 +364,7 @@ export function drag (what) {
 
                 if (iframe)
                     iframe.contentWindow[automation.AUTOMATION_RUNNERS].drag.playback(element, to, options ||
-                                                                                                       {}, callback);
+                                                                                                   {}, callback);
                 else
                     dragPlaybackAutomation(element, to, options || {}, callback);
             });
@@ -494,7 +492,7 @@ export function type (what, text, options) {
 
                 if (iframe)
                     iframe.contentWindow[automation.AUTOMATION_RUNNERS].type.playback(element, text, options ||
-                                                                                                         {}, callback);
+                                                                                                     {}, callback);
                 else
                     typePlaybackAutomation(element, text, options || {}, callback);
             });
@@ -654,7 +652,7 @@ export function navigateTo (url) {
     var NAVIGATION_DELAY = 1000;
 
     stepIterator.asyncAction(function (iteratorCallback) {
-        window[jsProcessor.SET_PROPERTY_METH_NAME](window, 'location', url);
+        hammerhead.navigateTo(url);
 
         //NOTE: give browser some time to navigate
         window.setTimeout(iteratorCallback, NAVIGATION_DELAY);
@@ -681,18 +679,19 @@ export function upload (what, path) {
                     onTargetWaitingFinished();
                 }
 
-                hammerhead.upload(element, path, function (errs) {
-                    if (errs.length) {
-                        var errPaths = errs.map(function (err) {
-                            return err.filePath;
-                        });
+                hammerhead.doUpload(element, path)
+                    .then((errs) => {
+                        if (errs.length) {
+                            var errPaths = errs.map(function (err) {
+                                return err.filePath;
+                            });
 
-                        failWithError(ERROR_TYPE.uploadCanNotFindFileToUpload, { filePaths: errPaths });
-                    }
+                            failWithError(ERROR_TYPE.uploadCanNotFindFileToUpload, { filePaths: errPaths });
+                        }
 
-                    else
-                        callback();
-                });
+                        else
+                            callback();
+                    });
             }
         }
     );

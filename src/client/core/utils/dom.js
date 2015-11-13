@@ -215,13 +215,13 @@ function sortBy (property) {
 }
 
 function getAllFocusableElements ($iframe) {
-    var $allFocusable = $();
+    var $allFocusable      = $();
     var $invisibleElements = $();
 
     if ($iframe) {
         //NOTE: We can get elements of the same domain iframe only
         try {
-            $allFocusable = $iframe.contents(0).find(getFocusableSelector());
+            $allFocusable      = $iframe.contents(0).find(getFocusableSelector());
             $invisibleElements = $iframe.contents(0).find('*').filter((index, el)=> el.style.display === 'none');
         } catch (e) {
             return $allFocusable;
@@ -236,7 +236,8 @@ function getAllFocusableElements ($iframe) {
         .not(":disabled")
         .filter((index, el) => $(el).attr("tabIndex") !== -1);
 
-    $allFocusable = $allFocusable.filter((index, el) => el.style.display !== 'none' && !$invisibleElements.has(el).length);
+    $allFocusable = $allFocusable.filter((index, el) => el.style.display !== 'none' &&
+                                                        !$invisibleElements.has(el).length);
 
     if (browserUtils.isIE)
         $allFocusable = $allFocusable.not('option');
@@ -271,7 +272,7 @@ export function getNextFocusableElement (element, reverse) {
     //NOTE: in all browsers except Mozilla and Opera focus sets on one radio set from group only.
     // in Mozilla and Opera focus sets on any radio set.
     if (element.tagName === "INPUT" && element.type === "radio" && element.name !== "" &&
-        !(browserUtils.isMozilla || browserUtils.isOpera)) {
+        !(browserUtils.isFirefox || browserUtils.isOpera)) {
         allFocusable = $.grep(allFocusable, function (item) {
             return !item.name || item === element || item.name !== element.name;
         });
@@ -317,7 +318,7 @@ export function isIFrameWindowInDOM (win) {
 
     //NOTE: Cross-domain iframes in Firefox have null in frameElement even if they are in DOM
     //But Firefox doesn't execute scripts in removed iframes, so we suppose that the iframe is in DOM
-    if (browserUtils.isMozilla && win.top !== win.self && !win.frameElement)
+    if (browserUtils.isFirefox && win.top !== win.self && !win.frameElement)
         return true;
 
     try {
@@ -342,8 +343,8 @@ export function isTopWindow (win) {
 export var findDocument                               = hammerhead.utils.dom.findDocument;
 export var getActiveElement                           = hammerhead.utils.dom.getActiveElement;
 export var getChildVisibleIndex                       = hammerhead.utils.dom.getChildVisibleIndex;
-export var getIFrameByElement                         = hammerhead.utils.dom.getIFrameByElement;
-export var getIFrameByWindow                          = hammerhead.utils.dom.getIFrameByWindow;
+export var getIframeByElement                         = hammerhead.utils.dom.getIframeByElement;
+export var getIframeByWindow                          = hammerhead.utils.dom.getIframeByWindow;
 export var getScrollbarSize                           = hammerhead.utils.dom.getScrollbarSize;
 export var getSelectParent                            = hammerhead.utils.dom.getSelectParent;
 export var getSelectVisibleChildren                   = hammerhead.utils.dom.getSelectVisibleChildren;
@@ -354,7 +355,7 @@ export var isElementInDocument                        = hammerhead.utils.dom.isE
 export var isElementInIframe                          = hammerhead.utils.dom.isElementInIframe;
 export var isFileInput                                = hammerhead.utils.dom.isFileInput;
 export var isHammerheadAttr                           = hammerhead.utils.dom.isHammerheadAttr;
-export var isInputWithoutSelectionPropertiesInMozilla = hammerhead.utils.dom.isInputWithoutSelectionPropertiesInMozilla;
+export var isInputWithoutSelectionPropertiesInFirefox = hammerhead.utils.dom.isInputWithoutSelectionPropertiesInFirefox;
 export var isRenderedNode                             = hammerhead.utils.dom.isRenderedNode;
 export var isShadowUIElement                          = hammerhead.utils.dom.isShadowUIElement;
 export var isSVGElement                               = hammerhead.utils.dom.isSVGElement;

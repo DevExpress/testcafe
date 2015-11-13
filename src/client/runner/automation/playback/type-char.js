@@ -137,7 +137,7 @@ export default function (element, characters, caretPos) {
                 startSelection += 1;
                 endSelection += 1;
             }
-            else if (domUtils.isInputWithoutSelectionPropertiesInMozilla(element)) //T133144
+            else if (domUtils.isInputWithoutSelectionPropertiesInFirefox(element)) //T133144
                 startSelection = endSelection = caretPos;
         }
 

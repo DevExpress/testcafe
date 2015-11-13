@@ -1,1 +1,1 @@
-export default window.Hammerhead;
+export default window['%hammerhead%'];

@@ -2,7 +2,7 @@ import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 
 var browserUtils   = hammerhead.utils.browser;
-var messageSandbox = hammerhead.messageSandbox;
+var messageSandbox = hammerhead.eventSandbox.message;
 
 var $                     = testCafeCore.$;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
@@ -50,14 +50,14 @@ export function scrollElementByPoint (element, point) {
         elementBorders = styleUtils.getBordersWidth(element),
         elementScroll  = styleUtils.getElementScroll(element),
 
-        iFrame         = domUtils.getIFrameByElement(element),
+        iFrame         = domUtils.getIframeByElement(element),
         iFrameScroll   = iFrame ? styleUtils.getElementScroll(iFrame.contentWindow.document) : null;
 
     //NOTE: we don't need to scroll input elements in Mozilla,
     // because it happens automatically on selection setting
     // but we can't know input elements' scroll value in Mozilla
     // Bug https://bugzilla.mozilla.org/show_bug.cgi?id=293186
-    if ((browserUtils.isMozilla || (browserUtils.isIE && browserUtils.version > 10)) && !isTextarea)
+    if ((browserUtils.isFirefox || (browserUtils.isIE && browserUtils.version > 10)) && !isTextarea)
         return;
 
     var ownOffsetX  = point.x -
@@ -105,7 +105,7 @@ export function updatePointByScrollElement (element, point) {
     // because it happens automatically on selection setting
     //but we can't know input elements' scroll value in Mozilla
     // Bug https://bugzilla.mozilla.org/show_bug.cgi?id=293186
-    if (isTextEditable && (browserUtils.isMozilla || (browserUtils.isIE && browserUtils.version > 10)) && !isTextarea) {
+    if (isTextEditable && (browserUtils.isFirefox || (browserUtils.isIE && browserUtils.version > 10)) && !isTextarea) {
         return {
             x: Math.min(left, elementOffset.left + elementBorders.left + element.clientWidth) -
                (iFrameScroll ? iFrameScroll.left : 0),
@@ -511,7 +511,7 @@ export function getCorrectOptions (el, callback) {
     var elementRect       = el.getBoundingClientRect(),
         elementHeight     = el.scrollHeight || elementRect.height,
         isInIFrame        = domUtils.isElementInIframe(el),
-        iFrame            = domUtils.getIFrameByElement(el),
+        iFrame            = domUtils.getIframeByElement(el),
         windowTopResponse = null,
 
         options           = {
@@ -534,7 +534,7 @@ export function getCorrectOptions (el, callback) {
         };
 
     if (isInIFrame) {
-        options.iFrame        = domUtils.getIFrameByElement(el);
+        options.iFrame        = domUtils.getIframeByElement(el);
         options.iFrameOffset  = positionUtils.getOffsetPosition(iFrame);
         options.iFrameBorders = styleUtils.getBordersWidth(iFrame);
         options.iFrameMargin  = styleUtils.getElementMargin(iFrame);
