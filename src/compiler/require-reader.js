@@ -1,5 +1,5 @@
 import { Promise } from 'es6-promise';
-import RequireAnalyzer from './old/analysis/require_analyzer';
+import RequireAnalyzer from './legacy/analysis/require_analyzer';
 import remove from '../utils/array-remove';
 
 

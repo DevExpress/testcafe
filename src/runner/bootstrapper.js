@@ -3,7 +3,7 @@ import { getBrowserInfo } from 'testcafe-browser-natives';
 import reporters from '../reporters';
 import BrowserConnection from '../browser-connection';
 import LocalBrowserConnection from '../browser-connection/local';
-import Compiler from '../compiler';
+import LegacyCompilerAdapter from '../compiler';
 import { MESSAGE, getText } from '../messages';
 
 
@@ -113,7 +113,7 @@ export default class Bootstrapper {
         if (!this.sources.length)
             throw new Error(getText(MESSAGE.testSourcesNotSet));
 
-        var compiler = new Compiler(this.sources);
+        var compiler = new LegacyCompilerAdapter(this.sources);
         var tests    = await compiler.getTests();
 
         if (this.filter)
