@@ -47,7 +47,7 @@ $(document).ready(function () {
         runArgumentsIterator(items, seriesActionsRun, asyncActionCallback);
     };
 
-    transport.fail = function (err) {
+    transport.fatalError = function (err) {
         currentErrorType = err.type;
         if (err.element)
             currentErrorElement = err.element;
@@ -97,7 +97,7 @@ $(document).ready(function () {
                 callbackFunction();
             };
             actions();
-            var timeoutId        = setTimeout(function () {
+            var timeoutId = setTimeout(function () {
                 callbackFunction = function () {
                 };
                 ok(false, 'Timeout is exceeded');

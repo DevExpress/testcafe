@@ -14,7 +14,9 @@ module.exports = [
             diffType: {
                 isStrings: true,
                 diffIndex: 0
-            }
+            },
+
+            screenshotPath: '/screenshots/1445437598847/Chrome_46.0.2490_Windows_7_0.0.0/1.Failed_step_-_Fail.png'
         },
         {
             stepName:          'Compare two strings',

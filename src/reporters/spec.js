@@ -38,7 +38,7 @@ export default class SpecReporter extends BaseReporter {
             ._newline();
     }
 
-    _reportTestDone (name, errs, durationMs, unstable) {
+    _reportTestDone (name, errs, durationMs, unstable, screenshotPath) {
         var hasErr    = !!errs.length;
         var nameStyle = hasErr ? this.chalk.red : this.chalk.gray;
         var symbol    = hasErr ? this.chalk.red(this.symbols.err) : this.chalk.green(this.symbols.ok);
@@ -48,6 +48,9 @@ export default class SpecReporter extends BaseReporter {
 
         if (unstable)
             title += this.chalk.yellow(' (unstable)');
+
+        if (screenshotPath)
+            title += ` (screenshots: ${this.chalk.underline(screenshotPath)})`;
 
         this._write(title);
 

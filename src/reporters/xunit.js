@@ -25,11 +25,14 @@ export default class XUnitReporter extends BaseReporter {
         this.currentFixtureName = escapeHtml(name);
     }
 
-    _reportTestDone (name, errs, durationMs, unstable) {
+    _reportTestDone (name, errs, durationMs, unstable, screenshotPath) {
         var hasErr = !!errs.length;
 
         if (unstable)
             name += ' (unstable)';
+
+        if (screenshotPath)
+            name += ` (screenshots: ${screenshotPath})`;
 
         name = escapeHtml(name);
 

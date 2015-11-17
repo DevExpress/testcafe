@@ -37,11 +37,11 @@ $.fn.load                            = function (callback) {
 
 var lastError = null;
 
-RunnerBase.prototype._onError = function (err) {
+RunnerBase.prototype._onFatalError = function (err) {
     lastError = err;
 };
 
-Runner.prototype._onError = function (err) {
+Runner.prototype._onFatalError = function (err) {
     lastError = err;
 };
 
@@ -114,8 +114,8 @@ function wrapIFrameArgument (arg) {
 }
 
 test('DOM element', function () {
-    var arg                 = null,
-        testRunner          = new RunnerBase();
+    var arg        = null,
+        testRunner = new RunnerBase();
 
     testRunner._initApi();
     testRunner._runInIFrame = function (iFrame) {
@@ -129,8 +129,8 @@ test('DOM element', function () {
 });
 
 test('jQuery object', function () {
-    var arg                 = null,
-        testRunner          = new RunnerBase();
+    var arg        = null,
+        testRunner = new RunnerBase();
 
     testRunner._initApi();
     testRunner._runInIFrame = function (iFrame) {
@@ -144,8 +144,8 @@ test('jQuery object', function () {
 });
 
 test('string selector', function () {
-    var arg                 = null,
-        testRunner          = new RunnerBase();
+    var arg        = null,
+        testRunner = new RunnerBase();
 
     testRunner._initApi();
     testRunner._runInIFrame = function (iFrame) {
@@ -159,8 +159,8 @@ test('string selector', function () {
 });
 
 test('function', function () {
-    var arg                 = null,
-        testRunner          = new RunnerBase();
+    var arg        = null,
+        testRunner = new RunnerBase();
 
     testRunner._initApi();
     testRunner._runInIFrame = function (iFrame) {
@@ -183,7 +183,7 @@ test('empty argument error', function () {
     testRunner.inIFrame(wrapIFrameArgument(null), 0)();
 
     equal(lastError.type, ERROR_TYPE.emptyIFrameArgument);
-    lastError      = null;
+    lastError = null;
 
     testRunner.inIFrame(wrapIFrameArgument('#notExistingIFrame'), 0)();
     equal(lastError.type, ERROR_TYPE.emptyIFrameArgument);
@@ -218,9 +218,9 @@ test('incorrect argument error', function () {
 
     testRunner.inIFrame(wrapIFrameArgument(['#iframe']), 0)();
     equal(lastError.type, ERROR_TYPE.incorrectIFrameArgument);
-    lastError      = null;
+    lastError = null;
 
     testRunner.inIFrame(wrapIFrameArgument({ iFrame: $('#iframe') }), 0)();
     equal(lastError.type, ERROR_TYPE.incorrectIFrameArgument);
-    lastError      = null;
+    lastError = null;
 });

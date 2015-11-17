@@ -10,6 +10,10 @@ export default {
 
     'span user-agent': str => chalk.gray(str),
 
+    'div screenshot-info': str => str,
+
+    'a screenshot-path': str => chalk.underline(str),
+
     'code': str => chalk.yellow(str),
 
     'code step-source': str => chalk.magenta(indentString(str, ' ', CODE_ALIGN_SPACES)),

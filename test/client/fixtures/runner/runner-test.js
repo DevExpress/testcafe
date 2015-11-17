@@ -42,7 +42,7 @@ asyncTest('T204773 - TestCafe - The assertion in last step with inIFrame wrapper
 
     var testRunner = new Runner();
 
-    testRunner._onAssertionFailed({ err: 'err' });
+    testRunner._onAssertionFailed({ err: { message: 'err' } });
 
     testRunner._onTestComplete({
         callback: function () {
@@ -53,44 +53,53 @@ asyncTest('T204773 - TestCafe - The assertion in last step with inIFrame wrapper
 
 });
 
-test('Test iterator should not call Transport.fail twice (without screenshots)', function () {
-    var savedTakeScreenshotOnFails = HH_SETTINGS.TAKE_SCREENSHOT_ON_FAILS,
-        savedTransportFail         = transport.fail;
+asyncTest('Test iterator should not call Transport.fail twice (without screenshots)', function () {
+    var savedTakeScreenshotOnFails = HH_SETTINGS.TAKE_SCREENSHOTS_ON_FAILS,
+        savedTransportFatalError   = transport.fatalError;
 
     var transportFailCount = 0;
 
-    transport.fail                       = function () {
+    transport.fatalError = function () {
         transportFailCount++;
     };
-    HH_SETTINGS.TAKE_SCREENSHOT_ON_FAILS = false;
+
+    HH_SETTINGS.TAKE_SCREENSHOTS_ON_FAILS = false;
 
     var testRunner = new Runner();
-    testRunner._onError();
-    testRunner._onError();
+    testRunner._onFatalError({ message: 'err1' });
+    testRunner._onFatalError({ message: 'err2' });
 
-    equal(transportFailCount, 1);
+    window.setTimeout(function () {
+        equal(transportFailCount, 1);
 
-    HH_SETTINGS.TAKE_SCREENSHOT_ON_FAILS = savedTakeScreenshotOnFails;
-    transport.fail                       = savedTransportFail;
+        HH_SETTINGS.TAKE_SCREENSHOTS_ON_FAILS = savedTakeScreenshotOnFails;
+        transport.fatalError                  = savedTransportFatalError;
+
+        start();
+    }, 100);
 });
 
-test('Test iterator should not call Transport.fail twice (with screenshots)', function () {
-    var savedTakeScreenshotOnFails = HH_SETTINGS.TAKE_SCREENSHOT_ON_FAILS,
-        savedTransportFail         = transport.fail;
+asyncTest('Test iterator should not call Transport.fail twice (with screenshots)', function () {
+    var savedTakeScreenshotOnFails = HH_SETTINGS.TAKE_SCREENSHOTS_ON_FAILS,
+        savedTransportFatalError   = transport.fatalError;
 
     var transportFailCount = 0;
 
-    transport.fail                       = function () {
+    transport.fatalError                  = function () {
         transportFailCount++;
     };
-    HH_SETTINGS.TAKE_SCREENSHOT_ON_FAILS = true;
+    HH_SETTINGS.TAKE_SCREENSHOTS_ON_FAILS = true;
 
     var testRunner = new Runner();
-    testRunner._onError();
-    testRunner._onError();
+    testRunner._onFatalError({ message: 'err1' });
+    testRunner._onFatalError({ message: 'err2' });
 
-    equal(transportFailCount, 1);
+    window.setTimeout(function () {
+        equal(transportFailCount, 1);
 
-    HH_SETTINGS.TAKE_SCREENSHOT_ON_FAILS = savedTakeScreenshotOnFails;
-    transport.fail                       = savedTransportFail;
+        HH_SETTINGS.TAKE_SCREENSHOTS_ON_FAILS = savedTakeScreenshotOnFails;
+        transport.fatalError                  = savedTransportFatalError;
+
+        start();
+    }, 100);
 });

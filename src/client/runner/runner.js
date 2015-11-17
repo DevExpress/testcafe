@@ -1,24 +1,26 @@
+import { Promise } from 'es6-promise';
 import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 import RunnerBase from './runner-base';
 import * as browser from '../browser';
 
-var browserUtils = hammerhead.utils.browser;
 
 var SETTINGS     = testCafeCore.SETTINGS;
 var COMMAND      = testCafeCore.COMMAND;
-var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var transport    = testCafeCore.transport;
 var serviceUtils = testCafeCore.serviceUtils;
 
 
 const WAITING_FOR_SERVICE_MESSAGES_COMPLETED_DELAY = 1000;
+const APPLY_DOCUMENT_TITLE_TIMEOUT                 = 500;
+const RESTORE_DOCUMENT_TITLE_TIMEOUT               = 100;
+const CHECK_TITLE_INTERVAL                         = 50;
 
-
-var Runner = function (startedCallback) {
-    var runner = this;
-
+var Runner = function (startedCallback, err) {
     RunnerBase.apply(this, [startedCallback]);
+
+    if (err)
+        this._onFatalError(err);
 };
 
 serviceUtils.inherit(Runner, RunnerBase);
@@ -80,44 +82,84 @@ Runner.prototype._onActionRun = function () {
     transport.asyncServiceMsg(msg);
 };
 
-Runner.prototype._onError = function (err) {
-    var runner = this;
+Runner.prototype._beforeScreenshot = function () {
+    this.stepIterator.suspend();
+    this.eventEmitter.emit(RunnerBase.SCREENSHOT_CREATING_STARTED_EVENT, {});
+    this.savedDocumentTitle = document.title;
 
-    if (this.stopped)
-        return;
+    var assignedTitle = `[ ${window.location.toString()} ]`;
 
-    //NOTE: we should stop stepIterator to prevent playback after an error is occurred
-    this.stepIterator.stop();
-
-    RunnerBase.prototype._onError.call(this, err);
-
-    if (!SETTINGS.get().TAKE_SCREENSHOT_ON_FAILS) {
-        this.stopped = true;
-        transport.fail(err, Runner.checkStatus);
-        return;
-    }
-
-    var setErrorMsg = {
-        cmd: COMMAND.setTestError,
-        err: err
-    };
-
-    transport.asyncServiceMsg(setErrorMsg);
-
-    this._onTakeScreenshot({
-        isFailedStep: true,
-        //TODO:
-        //withoutStepName: !(ERRORS.hasErrorStepName(err) && ERRORS.hasErrorStepName(err)),
-        callback:     function () {
-            runner.stopped = true;
-            transport.fail(err, Runner.checkStatus);
+    // NOTE: we should keep the page url in document.title
+    // while the screenshot is being created
+    this.checkTitleIntervalId = window.setInterval(() => {
+        if (document.title !== assignedTitle) {
+            this.savedDocumentTitle = document.title;
+            document.title          = assignedTitle;
         }
+    }, CHECK_TITLE_INTERVAL);
+
+    document.title = assignedTitle;
+
+    return new Promise(resolve => window.setTimeout(resolve), APPLY_DOCUMENT_TITLE_TIMEOUT);
+};
+
+Runner.prototype._afterScreenshot = function () {
+    window.clearInterval(this.checkTitleIntervalId);
+
+    document.title            = this.savedDocumentTitle;
+    this.checkTitleIntervalId = null;
+    this.savedDocumentTitle   = null;
+
+    this.eventEmitter.emit(RunnerBase.SCREENSHOT_CREATING_FINISHED_EVENT, {});
+    this.stepIterator.resume();
+
+    return new Promise(resolve => window.setTimeout(resolve), RESTORE_DOCUMENT_TITLE_TIMEOUT);
+};
+
+Runner.prototype._reportErrorToServer = function (err, isAssertion) {
+    return new Promise(resolve => {
+        if (isAssertion)
+            transport.assertionFailed(err, resolve);
+        else
+            transport.fatalError(err, resolve);
     });
 };
 
-Runner.prototype._onAssertionFailed = function (e, inIFrame) {
-    this.stepIterator.state.needScreeshot = !inIFrame;
-    transport.assertionFailed(e.err);
+Runner.prototype._onTestError = function (err, isAssertion) {
+    // NOTE: we should not create multiple screenshots for a step. Create a screenshot if
+    // it's the first error at this step or it's an error that occurs on page initialization.
+    err.pageUrl            = document.location.toString();
+    err.screenshotRequired = SETTINGS.get().TAKE_SCREENSHOTS && SETTINGS.get().TAKE_SCREENSHOTS_ON_FAILS &&
+                             this.stepIterator.state.curStepErrors.length < 2;
+
+    var errorProcessingChain = Promise.resolve();
+
+    if (err.screenshotRequired)
+        errorProcessingChain = errorProcessingChain.then(() => this._beforeScreenshot());
+
+    errorProcessingChain = errorProcessingChain.then(() => this._reportErrorToServer(err, isAssertion));
+
+    if (err.screenshotRequired)
+        errorProcessingChain = errorProcessingChain.then(() => this._afterScreenshot());
+
+    return errorProcessingChain;
+};
+
+Runner.prototype._onFatalError = function (err) {
+    if (this.stopped)
+        return;
+
+    this.stopped = true;
+    this.stepIterator.stop();
+
+    RunnerBase.prototype._onFatalError.call(this, err);
+
+    this._onTestError(err)
+        .then(Runner.checkStatus);
+};
+
+Runner.prototype._onAssertionFailed = function (e) {
+    this._onTestError(e.err, true);
 };
 
 Runner.prototype._onSetStepsSharedData = function (e) {
@@ -138,62 +180,28 @@ Runner.prototype._onGetStepsSharedData = function (e) {
 };
 
 Runner.prototype._onTakeScreenshot = function (e) {
-    var savedTitle  = document.title,
-        windowMark  = '[tc-' + Date.now() + ']',
-        browserName = null,
-        callback    = e && e.callback ? e.callback : function () {
-        },
-        runner      = this;
+    if (!SETTINGS.get().TAKE_SCREENSHOTS)
+        return typeof e.callback === 'function' ? e.callback() : null;
 
-    runner.eventEmitter.emit(RunnerBase.SCREENSHOT_CREATING_STARTED_EVENT, {});
+    this
+        ._beforeScreenshot()
+        .then(() => {
+            return new Promise(resolve => {
+                var msg = {
+                    cmd:        COMMAND.takeScreenshot,
+                    pageUrl:    document.location.toString(),
+                    stepName:   e.stepName,
+                    customPath: e.filePath
+                };
 
-
-    if (browserUtils.isMSEdge)
-        browserName = 'MSEDGE';
-    else if (browserUtils.isSafari)
-        browserName = 'SAFARI';
-    else if (browserUtils.isOpera || browserUtils.isOperaWithWebKit)
-        browserName = 'OPERA';
-    else if (browserUtils.isWebKit)
-        browserName = 'CHROME';
-    else if (browserUtils.isMozilla)
-        browserName = 'FIREFOX';
-    else if (browserUtils.isIE)
-        browserName = 'IE';
-
-    var msg = {
-        cmd:             'CMD_TAKE_SCREENSHOT', //TODO: fix
-        windowMark:      windowMark,
-        browserName:     browserName,
-        isFailedStep:    e.isFailedStep,
-        withoutStepName: e.withoutStepName,
-        url:             window.location.toString()
-    };
-
-    var assignedTitle        = savedTitle + windowMark,
-        checkTitleIntervalId = window.setInterval(function () {
-            if (document.title !== assignedTitle) {
-                savedTitle     = document.title;
-                document.title = assignedTitle;
-            }
-        }, 50);
-
-    document.title = assignedTitle;
-
-    //NOTE: we should set timeouts to changing of document title
-    //in any case we are waiting response from server
-    window.setTimeout(function () {
-        transport.asyncServiceMsg(msg, function () {
-            window.clearInterval(checkTitleIntervalId);
-            checkTitleIntervalId = null;
-            document.title       = savedTitle;
-            runner.eventEmitter.emit(RunnerBase.SCREENSHOT_CREATING_FINISHED_EVENT, {});
-
-            window.setTimeout(function () {
-                callback();
-            }, 100);
+                transport.asyncServiceMsg(msg, resolve);
+            });
+        })
+        .then(() => this._afterScreenshot())
+        .then(() => {
+            if (typeof e.callback === 'function')
+                e.callback();
         });
-    }, 500);
 };
 
 Runner.prototype._onDialogsInfoChanged = function (info) {

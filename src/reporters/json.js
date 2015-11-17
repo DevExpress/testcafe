@@ -27,10 +27,10 @@ export default class JSONReporter extends BaseReporter {
         this.report.fixtures.push(this.currentFixture);
     }
 
-    _reportTestDone (name, errs, durationMs, unstable) {
+    _reportTestDone (name, errs, durationMs, unstable, screenshotPath) {
         errs = errs.map(err => this._formatError(err));
 
-        this.currentFixture.tests.push({ name, errs, durationMs, unstable });
+        this.currentFixture.tests.push({ name, errs, durationMs, unstable, screenshotPath });
     }
 
     _reportTaskDone (passed, total, endTime) {

@@ -10,6 +10,8 @@ var plainTextDecorator   = require('../../lib/reporters/errors/decorators/plain-
 
 describe('Reporters', function () {
     // Runnable configuration mocks
+    var screenshotDir = '/screenshots/1445437598847';
+
     var browserConnectionMocks = [
         { userAgent: 'Chrome' },
         { userAgent: 'Firefox' }
@@ -32,12 +34,14 @@ describe('Reporters', function () {
 
     var testMocks = [
         {
-            name:    'fixture1test1',
-            fixture: fixtureMocks[0]
+            name:               'fixture1test1',
+            fixture:            fixtureMocks[0],
+            screenshotExpected: true
         },
         {
-            name:    'fixture1test2',
-            fixture: fixtureMocks[0]
+            name:               'fixture1test2',
+            fixture:            fixtureMocks[0],
+            screenshotExpected: true
         },
         {
             name:    'fixture1test3',
@@ -87,7 +91,9 @@ describe('Reporters', function () {
                     diffType: {
                         isStrings: true,
                         diffIndex: 0
-                    }
+                    },
+
+                    screenshotPath: '/screenshots/1445437598847/userAgent/1.Fail.png'
                 },
                 {
                     relatedSourceCode: 'notEq("test", "test")',
@@ -202,6 +208,16 @@ describe('Reporters', function () {
         }
     ];
 
+    var ScreenshotsMock = function () {
+        this.hasCapturedFor = function (testMock) {
+            return testMock.screenshotExpected;
+        };
+
+        this.getPathFor = function () {
+            return screenshotDir;
+        };
+    };
+
 
     // Task mock
     var TaskMock = function () {
@@ -209,6 +225,7 @@ describe('Reporters', function () {
 
         this.tests              = testMocks;
         this.browserConnections = browserConnectionMocks;
+        this.screenshots        = new ScreenshotsMock();
     };
 
     util.inherits(TaskMock, EventEmitter);
@@ -286,9 +303,9 @@ describe('Reporters', function () {
             origReportTaskStart.call(this, new Date('Thu Jan 01 1970 00:00:00 UTC'), userAgents);
         };
 
-        reporter._reportTestDone = function (name, errs, durationMs, unstable) {
+        reporter._reportTestDone = function (name, errs, durationMs, unstable, screenshotPath) {
             expect(durationMs).to.be.a('number');
-            origReportTestDone.call(this, name, errs, 74000, unstable);
+            origReportTestDone.call(this, name, errs, 74000, unstable, screenshotPath);
         };
 
         reporter._reportTaskDone = function (passed, total, endTime) {
