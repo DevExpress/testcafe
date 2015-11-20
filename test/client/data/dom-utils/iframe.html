@@ -21,13 +21,13 @@
 
     var testCafeCore = window['%testCafeCore%'];
 
-    (function (isIFrameWindowInDOM, window) {
+    (function (isIFrameWindowInDOM, window, JSON) {
         window.addEventListener('message', function (event) {
             if (event.data === 'isIFrameWindowInDOM')
-                event.source.postMessage({ message: isIFrameWindowInDOM(window) }, '*');
+                event.source.postMessage(JSON.stringify({ message: isIFrameWindowInDOM(window).toString() }), '*');
 
         }, false);
-    })(testCafeCore.domUtils.isIFrameWindowInDOM, window);
+    })(testCafeCore.domUtils.isIFrameWindowInDOM, window, JSON);
 </script>
 </body>
 </html>
