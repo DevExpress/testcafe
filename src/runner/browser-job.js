@@ -87,6 +87,7 @@ export default class BrowserJob extends EventEmitter {
                                  () => this._testRunDoneInQuarantineMode(testRun) :
                                  () => this._testRunDone(testRun);
 
+        testRun.once('start', () => this.emit('test-run-start', testRun));
         testRun.once('done', done);
 
         return testRun;
