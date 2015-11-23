@@ -97,7 +97,7 @@
 
         $('#button').click(function () {
             //eval(window[jsProcessor.PROCESS_SCRIPT_METH_NAME]('window.top.postMessage("clickRaised", "*");'));
-            window.top.postMessage({ type: "clickRaised" }, "*");
+            window.top.postMessage(JSON.stringify({ type: "clickRaised" }), "*");
         });
 
         $('#errorButton').click(function () {
