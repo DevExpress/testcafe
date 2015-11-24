@@ -1,6 +1,4 @@
-import chalk from 'chalk';
-import { resolve, dirname } from 'path';
-import { createWriteStream } from 'fs';
+import { resolve } from 'path';
 import { Command } from 'commander';
 import { Promise } from 'es6-promise';
 import promisify from 'es6-promisify';
@@ -40,7 +38,6 @@ export default class CliArgumentParser {
         this.browsers        = null;
         this.filter          = null;
         this.remoteCount     = 0;
-        this.reportOutStream = null;
         this.opts            = null;
 
         this._describeProgram();
@@ -91,7 +88,6 @@ export default class CliArgumentParser {
 
             .option('-b, --list-browsers', 'output the available browser aliases')
             .option('-r, --reporter <name>', 'specify the reporter type to use')
-            .option('-p, --report-path <path>', 'send the report to a file at <path>')
             .option('-s, --screenshots <path>', 'enable screenshot capturing and specify the path to save the screenshots to')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-q, --quarantine-mode', 'enable the quarantine mode')
@@ -103,6 +99,9 @@ export default class CliArgumentParser {
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
+
+            // NOTE: these options will be handled by chalk internally
+            .option('--color', 'force colors in command line')
             .option('--no-color', 'disable colors in command line');
     }
 
@@ -181,24 +180,10 @@ export default class CliArgumentParser {
         }
     }
 
-    async _parseReportPath () {
-        if (this.opts.reportPath) {
-            this.opts.reportPath = resolve(this.cwd, this.opts.reportPath);
-
-            var dir = dirname(this.opts.reportPath);
-
-            await ensureDir(dir);
-
-            this.reportOutStream = createWriteStream(this.opts.reportPath);
-        }
-    }
-
     async parse (argv) {
         this.program.parse(argv);
 
         this.opts = this.program.opts();
-
-        chalk.enabled = this.opts.color;
 
         // NOTE: the '-list-browsers' option only lists browsers and immediately exits the app.
         // Therefore, we don't need to process other arguments.
@@ -208,7 +193,6 @@ export default class CliArgumentParser {
             await Promise.all([
                 this._parsePorts(),
                 this._parseScreenshotsPath(),
-                this._parseReportPath(),
                 this._parseBrowserList(),
                 this._parseFileList()
             ]);
