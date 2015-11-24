@@ -1,13 +1,10 @@
 var expect                  = require('chai').expect;
 var path                    = require('path');
 var fs                      = require('fs');
-var promisify               = require('es6-promisify');
 var tmp                     = require('tmp');
 var Promise                 = require('es6-promise').Promise;
 var getBrowserInstallations = require('testcafe-browser-natives').getInstallations;
 var CliArgumentParser       = require('../../lib/cli/argument-parser');
-
-var readFile = promisify(fs.readFile);
 
 describe('CLI argument parser', function () {
     tmp.setGracefulCleanup();
@@ -252,22 +249,6 @@ describe('CLI argument parser', function () {
             .catch(done);
     });
 
-    it('Should parse report path and provide file stream', function (done) {
-        var file = path.join(tmp.dirSync().name, 'my/reports/report1');
-
-        parse('-p ' + file)
-            .then(function (parser) {
-                parser.reportOutStream.end('42');
-
-                return readFile(file, 'utf8');
-            })
-            .then(function (content) {
-                expect(content).eql('42');
-                done();
-            })
-            .catch(done);
-    });
-
     it('Should parse command line arguments', function (done) {
         parse('-r list -S -q -e --hostname myhost --qr-code ie test/server/data/file-list/file-1.js')
             .then(function (parser) {
@@ -276,7 +257,6 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.reporter).eql('list');
                 expect(parser.opts.hostname).eql('myhost');
                 expect(parser.opts.screenshots).to.be.undefined;
-                expect(parser.reportOutStream).to.be.null;
                 expect(parser.opts.screenshotsOnFails).to.be.ok;
                 expect(parser.opts.quarantineMode).to.be.ok;
                 expect(parser.opts.skipJsErrors).to.be.ok;
