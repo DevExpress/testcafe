@@ -1,12 +1,12 @@
 import chalk from 'chalk';
 import { getInstallations as getBrowserInstallations } from 'testcafe-browser-natives';
 import CliArgumentParser from './argument-parser';
-import spinner from './spinner';
+import log from './log';
 import remotesWizard from './remotes-wizard';
 import createTestCafe from '../';
 
 function exit (code) {
-    spinner.hide();
+    log.hideSpinner();
 
     // NOTE: give a process time to flush the output.
     // It's necessary in some environments.
@@ -14,10 +14,10 @@ function exit (code) {
 }
 
 function error (err) {
-    spinner.hide();
+    log.hideSpinner();
 
-    console.error(chalk.red('ERROR ') + err.message);
-    console.error(chalk.gray('Type "tescafe -h" for help.'));
+    log.write(chalk.red('ERROR ') + err.message);
+    log.write(chalk.gray('Type "tescafe -h" for help.'));
 
     exit(1);
 }
@@ -27,7 +27,7 @@ async function runTests (argParser) {
     var port1 = opts.ports && opts.ports[0];
     var port2 = opts.ports && opts.ports[1];
 
-    spinner.showBootstrapIndicator();
+    log.showSpinner();
 
     var testCafe       = await createTestCafe(opts.hostname, port1, port2);
     var remoteBrowsers = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
@@ -37,19 +37,11 @@ async function runTests (argParser) {
     runner
         .src(argParser.src)
         .browsers(browsers)
-        .reporter(opts.reporter, argParser.reportOutStream)
+        .reporter(opts.reporter)
         .filter(argParser.filter)
         .screenshots(opts.screenshots, opts.screenshotsOnFails);
 
-    runner.once('done-bootstrapping', () => {
-        spinner.hide();
-
-        if (opts.reportPath) {
-            console.log(`Report will be written to: ${chalk.underline.blue(opts.reportPath)}`);
-            console.log();
-            spinner.showRunIndicator();
-        }
-    });
+    runner.once('done-bootstrapping', () => log.hideSpinner());
 
     var failed = await runner.run({
         skipJsErrors:   opts.skipJsErrors,

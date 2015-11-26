@@ -12,14 +12,11 @@ export default class BaseReporter {
     constructor (task, outStream, errorDecorator) {
         this.outStream = outStream || process.stdout;
 
-        var disableColors = this.outStream !== process.stdout;
+        var useColors = this.outStream === process.stdout && chalk.enabled;
 
-        this.errorDecorator = errorDecorator || (disableColors ? plainTextDecorator : coloredTextDecorator);
+        this.errorDecorator = errorDecorator || (useColors ? coloredTextDecorator : plainTextDecorator);
 
-        // NOTE: force colors disabling only if we don't write to the
-        // stdout. Otherwise use global instance of `chalk`, so it will
-        // work with respect to the `--no-color` flag.
-        this.chalk         = disableColors ? new chalk.constructor({ enabled: false }) : chalk;
+        this.chalk         = new chalk.constructor({ enabled: useColors });
         this.viewportWidth = getViewportWidth(this.outStream);
         this.useWordWrap   = false;
         this.indent        = 0;

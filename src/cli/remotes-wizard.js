@@ -1,6 +1,6 @@
 import qrcode from 'qrcode-terminal';
 import chalk from 'chalk';
-import spinner from './spinner';
+import log from './log';
 import { Promise } from 'es6-promise';
 
 function waitBrowserConnectionReady (browserConnection) {
@@ -11,25 +11,25 @@ export default async function (testCafe, remoteCount, showQRCode) {
     var connections = [];
 
     if (remoteCount) {
-        spinner.hide();
+        log.hideSpinner();
 
         for (var i = 0; i < remoteCount; i++) {
             var browserConnection = testCafe.createBrowserConnection();
 
-            console.log(`To connect a remote browser #${i + 1}, use it to open ${chalk.underline.blue(browserConnection.url)}`);
+            log.write(`To connect a remote browser #${i + 1}, use it to open ${chalk.underline.blue(browserConnection.url)}`);
 
             if (showQRCode) {
-                console.log('or scan this QR-code:\n');
+                log.write('or scan this QR-code:\n');
                 qrcode.generate(browserConnection.url);
             }
 
             await waitBrowserConnectionReady(browserConnection);
 
             connections.push(browserConnection);
-            console.log(`${chalk.green('CONNECTED')} ${browserConnection.userAgent}\n`);
+            log.write(`${chalk.green('CONNECTED')} ${browserConnection.userAgent}\n`);
         }
 
-        spinner.showBootstrapIndicator();
+        log.showSpinner();
     }
 
     return connections;
