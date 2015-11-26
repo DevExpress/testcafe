@@ -3,7 +3,7 @@ import testCafeCore from '../../deps/testcafe-core';
 import async from '../../deps/async';
 
 var browserUtils   = hammerhead.utils.browser;
-var messageSandbox = hammerhead.messageSandbox;
+var messageSandbox = hammerhead.eventSandbox.message;
 
 var $                     = testCafeCore.$;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
@@ -173,7 +173,7 @@ function scrollElement ($el, left, top, scrollCallback) {
 }
 
 export default function (to, actionOptions, currentDocument, actionCallback) {
-    var afterScrollDelay    = browserUtils.isTouchDevice && browserUtils.isMozilla ? 200 : 0,
+    var afterScrollDelay    = browserUtils.isTouchDevice && browserUtils.isFirefox ? 200 : 0,
         isDomElement        = domUtils.isDomElement(to),
         isHtmlElement       = isDomElement && /html/i.test(to.tagName),
         scrollableParents   = [],

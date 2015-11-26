@@ -68,11 +68,11 @@ export default class TestRun extends Session {
             takeScreenshotsOnFails: this.opts.takeScreenshotsOnFails,
             skipJsErrors:           this.opts.skipJsErrors,
             nativeDialogsInfo:      JSON.stringify(this.nativeDialogsInfo),
-            iFrameTestRunScript:    JSON.stringify(this._getIFramePayloadScript())
+            iFrameTestRunScript:    JSON.stringify(this._getIframePayloadScript())
         });
     }
 
-    _getIFramePayloadScript () {
+    _getIframePayloadScript () {
         var sharedJs = this.test.fixture.getSharedJs();
 
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {

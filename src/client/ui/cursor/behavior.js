@@ -4,7 +4,7 @@ import CursorBaseBehavior from './base-behavior';
 
 var shadowUI       = hammerhead.shadowUI;
 var browserUtils   = hammerhead.utils.browser;
-var messageSandbox = hammerhead.messageSandbox;
+var messageSandbox = hammerhead.eventSandbox.message;
 
 var $             = testCafeCore.$;
 var SETTINGS      = testCafeCore.SETTINGS;

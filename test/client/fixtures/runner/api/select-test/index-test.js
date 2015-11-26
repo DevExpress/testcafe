@@ -24,7 +24,7 @@ var stepIterator = new StepIterator();
 actionsAPI.init(stepIterator);
 
 var correctTestWaitingTime = function (time) {
-    if (browserUtils.isTouchDevice && browserUtils.isMozilla)
+    if (browserUtils.isTouchDevice && browserUtils.isFirefox)
         return time * 2;
 
     return time;
@@ -66,7 +66,7 @@ $(document).ready(function () {
             currentErrorElement = err.element;
     });
 
-    var checkScrollAfterSelect = !(browserUtils.isMozilla || browserUtils.isIE),
+    var checkScrollAfterSelect = !(browserUtils.isFirefox || browserUtils.isIE),
 
         currentErrorType       = null,
         currentSourceIndex     = null,

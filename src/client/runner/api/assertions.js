@@ -3,7 +3,7 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import * as sourceIndexTracker from '../source-index';
 
-var messageSandbox = hammerhead.messageSandbox;
+var messageSandbox = hammerhead.eventSandbox.message;
 
 var $                     = testCafeCore.$;
 var SETTINGS              = testCafeCore.SETTINGS;

@@ -1,5 +1,5 @@
 var hammerhead    = window.getTestCafeModule('hammerhead');
-var HH_SETTINGS   = hammerhead.get('./settings').get();
+var hhsettings   = hammerhead.get('./settings').get();
 var iframeSandbox = hammerhead.sandbox.iframe;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
@@ -13,7 +13,7 @@ var actionBarrier  = testCafeRunner.get('./action-barrier/action-barrier');
 
 
 QUnit.begin(function () {
-    HH_SETTINGS.serviceMsgUrl = '/ping/10';
+    hhsettings.serviceMsgUrl = '/ping/10';
 
     hammerhead.on(hammerhead.EVENTS.iframeReadyToInit, window.initIFrameTestHandler);
     hammerhead.off(hammerhead.EVENTS.iframeReadyToInit, iframeSandbox.iframeReadyToInitHandler);

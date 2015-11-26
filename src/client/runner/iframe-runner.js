@@ -4,7 +4,7 @@ import * as dialogsAPI from './api/native-dialogs';
 import RunnerBase from './runner-base.js';
 
 var SETTINGS                 = testCafeCore.SETTINGS;
-var messageSandbox           = hammerhead.messageSandbox;
+var messageSandbox           = hammerhead.eventSandbox.message;
 var jQuerySelectorExtensions = testCafeCore.jQuerySelectorExtensions;
 var serviceUtils             = testCafeCore.serviceUtils;
 

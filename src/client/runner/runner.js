@@ -38,7 +38,7 @@ Runner.checkStatus = function () {
 Runner.prototype._onTestComplete = function (e) {
     this.stopped = true;
 
-    transport.waitForServiceMessagesCompleted(function () {
+    transport.waitForServiceMessagesCompleted(WAITING_FOR_SERVICE_MESSAGES_COMPLETED_DELAY, function () {
         var testCompleteMsg = {
             cmd: COMMAND.done
         };
@@ -47,7 +47,7 @@ Runner.prototype._onTestComplete = function (e) {
             e.callback();
             Runner.checkStatus();
         });
-    }, WAITING_FOR_SERVICE_MESSAGES_COMPLETED_DELAY);
+    });
 };
 
 Runner.prototype._onNextStepStarted = function (e) {

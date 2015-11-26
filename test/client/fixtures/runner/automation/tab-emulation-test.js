@@ -117,7 +117,7 @@ $(document).ready(function () {
         $expectedFocusedElements.push($selectMultiple);
         $expectedFocusedElements.push($radioInput1);
 
-        if (browserUtils.isOpera || browserUtils.isMozilla) {
+        if (browserUtils.isOpera || browserUtils.isFirefox) {
             $expectedFocusedElements.push($radioInput3);
             $expectedFocusedElements.push($radioInput4);
         }

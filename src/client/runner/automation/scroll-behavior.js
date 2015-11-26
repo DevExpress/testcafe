@@ -7,7 +7,7 @@ var styleUtils    = testCafeCore.styleUtils;
 
 
 export function setScroll (iFrameWin, point, actionOptions, callback) {
-    var iFrame  = domUtils.getIFrameByWindow(iFrameWin),
+    var iFrame  = domUtils.getIframeByWindow(iFrameWin),
         target  = point ? positionUtils.getFixedPosition(point, iFrameWin, true) : iFrame,
         options = point ? null : actionOptions;
 
@@ -15,7 +15,7 @@ export function setScroll (iFrameWin, point, actionOptions, callback) {
 }
 
 export function getScrollData (iFrameWin) {
-    var iFrame = domUtils.getIFrameByWindow(iFrameWin);
+    var iFrame = domUtils.getIframeByWindow(iFrameWin);
 
     return {
         scroll:        styleUtils.getElementScroll(domUtils.findDocument(document)),

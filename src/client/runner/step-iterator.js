@@ -27,7 +27,7 @@ const SUSPEND_ACTIONS = {
 
 
 //Iterator
-var StepIterator = function (pingIFrame) {
+var StepIterator = function (pingIframe) {
     this.state = {
         step:                     0,
         stepNames:                null,
@@ -47,7 +47,7 @@ var StepIterator = function (pingIFrame) {
         curStepErrors:            []
     };
 
-    this.pingIFrame           = pingIFrame;
+    this.pingIframe           = pingIframe;
     this.globalWaitForEvent   = null;
     this.globalWaitForTimeout = null;
 
@@ -312,9 +312,9 @@ StepIterator.prototype._checkIFrame = function (element, callback) {
         return;
     }
 
-    var iFrame = domUtils.getIFrameByElement(element);
+    var iFrame = domUtils.getIframeByElement(element);
 
-    this.pingIFrame(iFrame, function () {
+    this.pingIframe(iFrame, function () {
         callback(iFrame);
     });
 

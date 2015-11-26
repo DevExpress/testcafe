@@ -9,7 +9,7 @@ import async from '../../deps/async';
 
 var browserUtils   = hammerhead.utils.browser;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
-var messageSandbox = hammerhead.messageSandbox;
+var messageSandbox = hammerhead.eventSandbox.message;
 var nativeMethods  = hammerhead.nativeMethods;
 
 var $                     = testCafeCore.$;
@@ -118,7 +118,7 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
                     //IE raises an exception when we try to compare it with the current element
                     var isLastOverElementInRemovedIframe = lastHoveredElement &&
                                                            domUtils.isElementInIframe(lastHoveredElement) &&
-                                                           !domUtils.getIFrameByElement(lastHoveredElement);
+                                                           !domUtils.getIframeByElement(lastHoveredElement);
 
                     var elementInDocument = lastHoveredElement && domUtils.isElementInDocument(lastHoveredElement);
 
@@ -208,41 +208,40 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
                 if (fixedPositionForIFrame.x <= 0 || fixedPositionForIFrame.y <= 0)
                     cursor.ensureCursorPosition(targetScreenPoint, false, callback);
 
-                messageSandbox.pingIFrame(currentElement, CROSS_DOMAIN_MESSAGES.MOVE_CURSOR_IN_IFRAME_PING, function (err) {
-                    if (!err) {
-                        //NOTE: move over iframe then move above top document
-                        windowTopResponse = function (e) {
-                            if (e.message.cmd === CROSS_DOMAIN_MESSAGES.MOVE_FROM_IFRAME_RESPONSE_CMD) {
-                                messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
+                messageSandbox.pingIframe(currentElement, CROSS_DOMAIN_MESSAGES.MOVE_CURSOR_IN_IFRAME_PING, true)
+                    .then(function (err) {
+                        if (!err) {
+                            //NOTE: move over iframe then move above top document
+                            windowTopResponse = function (e) {
+                                if (e.message.cmd === CROSS_DOMAIN_MESSAGES.MOVE_FROM_IFRAME_RESPONSE_CMD) {
+                                    messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
 
-                                if (!e.message.point)
-                                    cursor.ensureCursorPosition(targetScreenPoint, false, callback);
-                                else if (cursor.getPosition()) {
-                                    cursor.setPosition(positionUtils.getFixedPosition(e.message.point, currentElement.contentWindow, true));
-                                    window.setTimeout(callback, 0);
+                                    if (!e.message.point)
+                                        cursor.ensureCursorPosition(targetScreenPoint, false, callback);
+                                    else if (cursor.getPosition()) {
+                                        cursor.setPosition(positionUtils.getFixedPosition(e.message.point, currentElement.contentWindow, true));
+                                        window.setTimeout(callback, 0);
+                                    }
+                                    else
+                                        cursor.ensureCursorPosition(positionUtils.getFixedPosition(e.message.point, currentElement.contentWindow, true), true, callback);
                                 }
-                                else
-                                    cursor.ensureCursorPosition(positionUtils.getFixedPosition(e.message.point, currentElement.contentWindow, true), true, callback);
-                            }
-                        };
+                            };
 
-                        messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
+                            messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
 
 
-                        messageSandbox.sendServiceMsg({
-                            cmd:            CROSS_DOMAIN_MESSAGES.MOVE_FROM_IFRAME_REQUEST_CMD,
-                            rectangle:      positionUtils.getIFrameCoordinates(currentElement.contentWindow),
-                            startPoint:     positionUtils.clientToOffsetCoord(targetScreenPoint),
-                            endPoint:       pageCursorPosition,
-                            //NOTE: after scroll in top window cursor position in iframe could be changed (if cursor was above iframe)
-                            cursorPosition: positionUtils.getFixedPositionForIFrame(pageCursorPosition, currentElement.contentWindow)
-                        }, currentElement.contentWindow);
-                    }
-                    else {
-                        cursor.ensureCursorPosition(targetScreenPoint, false, callback);
-                        return;
-                    }
-                }, true);
+                            messageSandbox.sendServiceMsg({
+                                cmd:            CROSS_DOMAIN_MESSAGES.MOVE_FROM_IFRAME_REQUEST_CMD,
+                                rectangle:      positionUtils.getIFrameCoordinates(currentElement.contentWindow),
+                                startPoint:     positionUtils.clientToOffsetCoord(targetScreenPoint),
+                                endPoint:       pageCursorPosition,
+                                //NOTE: after scroll in top window cursor position in iframe could be changed (if cursor was above iframe)
+                                cursorPosition: positionUtils.getFixedPositionForIFrame(pageCursorPosition, currentElement.contentWindow)
+                            }, currentElement.contentWindow);
+                        }
+                        else
+                            cursor.ensureCursorPosition(targetScreenPoint, false, callback);
+                    });
             }
             else {
                 //NOTE: move over top document than move above iframe

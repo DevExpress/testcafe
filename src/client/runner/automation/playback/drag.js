@@ -123,7 +123,7 @@ export default function (el, to, options, runCallback) {
             eventPointTo = automationUtil.getEventOptionCoordinates(el, screenPointTo);
 
             if (domUtils.isElementInIframe(el)) {
-                var currentIFrame = domUtils.getIFrameByElement(el);
+                var currentIFrame = domUtils.getIframeByElement(el);
                 if (currentIFrame) {
                     var screenPointToInIFrame = {
                         x: screenPointTo.x - $(currentIFrame.contentWindow).scrollLeft(),

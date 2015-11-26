@@ -84,14 +84,14 @@ var keyHelper = function (key) {
 
             activeElement = domUtils.getActiveElement();
 
-            var caretPos = domUtils.isInputWithoutSelectionPropertiesInMozilla(activeElement) ? activeElement.value.length : null;
+            var caretPos = domUtils.isInputWithoutSelectionPropertiesInFirefox(activeElement) ? activeElement.value.length : null;
 
             if (raiseDefault) {
                 if (character && !(modifiersState.ctrl || modifiersState.alt)) {
                     //T210448 - Unnecessary typing occurs if element was changed after keydown/keypress event
                     try {
                         if (beforeKeypressActiveElement === activeElement ||
-                            (!(browserUtils.isMozilla && !domUtils.isEditableElement(beforeKeypressActiveElement)) &&
+                            (!(browserUtils.isFirefox && !domUtils.isEditableElement(beforeKeypressActiveElement)) &&
                              !(browserUtils.isWebKit && domUtils.isElementInIframe(activeElement) !==
                                                         domUtils.isElementInIframe(beforeKeypressActiveElement) &&
                              !domUtils.isEditableElement(beforeKeypressActiveElement)))) {
@@ -730,7 +730,7 @@ export default function (keysString, actionCallback) {
                     else {
                         var currentShortcutHandler = keysCombinationHandlers[currentCombination];
 
-                        if (!currentShortcutHandler || browserUtils.isMozilla || key === 'enter')  //B254435
+                        if (!currentShortcutHandler || browserUtils.isFirefox || key === 'enter')  //B254435
                             preventDefault = !helper.press(modifiersState);
 
                         if (!preventDefault && currentShortcutHandler)

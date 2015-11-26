@@ -21,7 +21,7 @@ var stepIterator = new StepIterator();
 actionsAPI.init(stepIterator);
 
 var correctTestWaitingTime = function (time) {
-    if (browserUtils.isTouchDevice && browserUtils.isMozilla)
+    if (browserUtils.isTouchDevice && browserUtils.isFirefox)
         return time * 2;
 
     return time;
@@ -129,6 +129,7 @@ $(document).ready(function () {
             mouseupRaised     = false,
             clickRaised       = false,
             contextmenuRaised = false;
+
         runAsyncTest(
             function () {
                 $input = addInputElement('button', 'button1', Math.floor(Math.random() * 100),
@@ -151,7 +152,6 @@ $(document).ready(function () {
                     $input.contextmenu(function (e) {
                         contextmenuRaised = true;
                         ok(e.which, RIGHT_BUTTON_WHICH_PARAMETER);
-                        deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
                         ok(mousedownRaised && mouseupRaised && !clickRaised, 'contextmenu event was raised third ');
                     });
                     actionsAPI.rclick($input[0]);
@@ -161,7 +161,6 @@ $(document).ready(function () {
                 ok(mousedownRaised && mousedownRaised && !clickRaised && contextmenuRaised, 'mouse events were raised');
                 equal(actionTargetWaitingCounter, 1);
                 equal(actionRunCounter, 1);
-                expect(10);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
@@ -182,7 +181,7 @@ $(document).ready(function () {
                     mousedownRaised = true;
 
                     equal(e.button, 2);
-                    if (browserUtils.isIE || browserUtils.isMozilla)
+                    if (browserUtils.isIE || browserUtils.isFirefox)
                         equal(e.buttons, 2);
 
                     ok(!mouseupRaised && !contextmenu, 'mousedown event was raised first');
@@ -191,7 +190,7 @@ $(document).ready(function () {
                     mouseupRaised = true;
 
                     equal(e.button, 2);
-                    if (browserUtils.isIE || browserUtils.isMozilla)
+                    if (browserUtils.isIE || browserUtils.isFirefox)
                         equal(e.buttons, 2);
 
                     ok(mousedownRaised && !contextmenu, 'mouseup event was raised second');
@@ -200,10 +199,9 @@ $(document).ready(function () {
                     contextmenu = true;
 
                     equal(e.button, 2);
-                    if (browserUtils.isIE || browserUtils.isMozilla)
+                    if (browserUtils.isIE || browserUtils.isFirefox)
                         equal(e.buttons, 2);
 
-                    deepEqual(cursor.getAbsolutePosition(), position.findCenter(this), 'check cursor position');
                     ok(mousedownRaised && mouseupRaised, 'click event was raised third ');
                 });
 
@@ -226,12 +224,12 @@ $(document).ready(function () {
             },
             function () {
                 ok(mousedownRaised && mousedownRaised && contextmenu, 'mouse events were raised');
-                if (browserUtils.isMozilla || browserUtils.isIE9)
-                    expect(11);
+                if (browserUtils.isFirefox || browserUtils.isIE9)
+                    expect(10);
                 else if (browserUtils.isIE)
-                    expect(17);
+                    expect(16);
                 else
-                    expect(8);
+                    expect(7);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );

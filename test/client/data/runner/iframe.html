@@ -15,29 +15,16 @@
 <body>
 <script type="text/javascript">
     function getTestCafeModule (module) {
-        if (module === 'hammerhead')
-            return window.Hammerhead;
-
         return window['%' + module + '%'];
     }
 
 
     //Hammerhead setup
     var hammerhead = getTestCafeModule('hammerhead');
-    var hammerheadSettings = hammerhead.get('./settings');
-    var urlUtils = hammerhead.get('./utils/url');
-    var HH_CONST = hammerhead.get('../const');
-    var jsProcessor = hammerhead.get('../processing/js/index');
 
-    hammerheadSettings.set({
-        sessionId: 'sessionId'
-    });
+    hammerhead.get('./utils/destination-location').forceLocation('http://localhost/sessionId/https://example.com');
 
-    urlUtils.OriginLocation.get = function () {
-        return 'https://example.com';
-    };
-
-    hammerhead.start();
+    hammerhead.start({ sessionId: 'sessionId' });
 
     var testCafeRunner = getTestCafeModule('testCafeRunner');
     var iframeDispatcher = testCafeRunner.get('./iframe-dispatcher');
@@ -96,7 +83,6 @@
         window.loadedTime = Date.now();
 
         $('#button').click(function () {
-            //eval(window[jsProcessor.PROCESS_SCRIPT_METH_NAME]('window.top.postMessage("clickRaised", "*");'));
             window.top.postMessage(JSON.stringify({ type: "clickRaised" }), "*");
         });
 

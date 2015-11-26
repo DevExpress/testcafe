@@ -7,32 +7,20 @@
 
 
     function getTestCafeModule (module) {
-        if (module === 'hammerhead')
-            return window.Hammerhead;
-
         return window['%' + module + '%'];
     }
 
 
     //Hammerhead setup
-    var hammerhead         = getTestCafeModule('hammerhead');
-    var hammerheadSettings = hammerhead.get('./settings');
-    var urlUtils           = hammerhead.get('./utils/url');
-    var HH_CONST           = hammerhead.get('../const');
-    var jsProcessor        = hammerhead.get('../processing/js/index');
+    var hammerhead  = getTestCafeModule('hammerhead');
+    var INSTRUCTION = hammerhead.get('../processing/script/instruction');
 
-    hammerheadSettings.set({
-        sessionId: 'sessionId'
-    });
-
-    urlUtils.OriginLocation.get = function () {
-        return 'https://example.com';
-    };
+    hammerhead.get('./utils/destination-location').forceLocation('http://localhost/sessionId/https://example.com');
 
     window.initIFrameTestHandler = function (e) {
         if (e.iframe.id.indexOf('test') !== -1) {
             e.iframe.contentWindow.eval.call(e.iframe.contentWindow, [
-                'Hammerhead.start({',
+                'window["%hammerhead%"].start({',
                 '    referer : "http://localhost/sessionId/https://example.com",',
                 '    serviceMsgUrl : "/service-msg/100",',
                 '    sessionId : "sessionId"',
@@ -41,7 +29,7 @@
         }
     };
 
-    hammerhead.start();
+    hammerhead.start({ sessionId: 'sessionId' });
 
 
     //TestCafe setup
@@ -53,20 +41,8 @@
 
     //Tests API
     window.getTestCafeModule = getTestCafeModule;
-
-    window.overrideDomMeth = window[HH_CONST.DOM_SANDBOX_OVERRIDE_DOM_METHOD_NAME];
-
-    window[HH_CONST.DOM_SANDBOX_OVERRIDE_DOM_METHOD_NAME] = function (el) {
-        if (el)
-            window.overrideDomMeth(el);
-    };
-
-    window.processScript = window[jsProcessor.PROCESS_SCRIPT_METH_NAME];
-    window.getProperty   = window[jsProcessor.GET_PROPERTY_METH_NAME];
-    window.setProperty   = window[jsProcessor.SET_PROPERTY_METH_NAME];
-    window.callMethod    = window[jsProcessor.CALL_METHOD_METH_NAME];
-    window.getLocation   = window[jsProcessor.GET_LOCATION_METH_NAME];
-
+    window.getProperty       = window[INSTRUCTION.getProperty];
+    window.setProperty       = window[INSTRUCTION.setProperty];
 
     window.getCrossDomainPageUrl = function (filePath) {
         return window.QUnitGlobals.crossDomainHostname + window.QUnitGlobals.getResourceUrl(filePath);

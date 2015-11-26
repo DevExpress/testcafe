@@ -10,7 +10,7 @@ import * as automationIFrameBehavior from './automation/iframe-behavior';
 import * as actionBarrier from './action-barrier/action-barrier';
 
 
-var messageSandbox = hammerhead.messageSandbox;
+var messageSandbox = hammerhead.eventSandbox.message;
 
 var SETTINGS                 = testCafeCore.SETTINGS;
 var $                        = testCafeCore.$;
@@ -55,7 +55,7 @@ var RunnerBase = function () {
     var runner = this;
 
     this.eventEmitter = new serviceUtils.EventEmitter();
-    this.stepIterator = new StepIterator(pingIFrame);
+    this.stepIterator = new StepIterator(pingIframe);
 
     this.executingStepInIFrameWindow = null;
     this.stopped                     = false;
@@ -193,7 +193,7 @@ RunnerBase.prototype._initIFrameBehavior = function () {
 
         switch (message.cmd) {
             case RunnerBase.IFRAME_STEP_COMPLETED_CMD:
-                if (runner.stepIterator.waitedIFrame === domUtils.getIFrameByWindow(e.source))
+                if (runner.stepIterator.waitedIFrame === domUtils.getIframeByWindow(e.source))
                     runner.stepIterator.iFrameActionCallback();
                 else if (runner.executingStepInIFrameWindow === e.source)
                     runner._onIFrameStepExecuted();
@@ -248,7 +248,7 @@ RunnerBase.prototype._initIFrameBehavior = function () {
                 break;
 
             case CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_WAITING_STEP_COMPLETION_REQUEST_CMD:
-                if (runner.stepIterator.waitedIFrame === domUtils.getIFrameByWindow(e.source) ||
+                if (runner.stepIterator.waitedIFrame === domUtils.getIframeByWindow(e.source) ||
                     runner.executingStepInIFrameWindow === e.source) {
                     msg = {
                         cmd: CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_WAITING_STEP_COMPLETION_RESPONSE_CMD
@@ -353,8 +353,9 @@ RunnerBase.prototype.on = function (event, handler) {
     this.eventEmitter.on(event, handler);
 };
 
-function pingIFrame (iframe, callback) {
-    messageSandbox.pingIFrame(iframe, CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_PING_DISPATCHER_CMD, callback);
+function pingIframe (iframe, callback) {
+    messageSandbox.pingIframe(iframe, CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_PING_DISPATCHER_CMD).
+        then(callback);
 }
 
 RunnerBase.prototype._runInIFrame = function (iframe, stepName, step, stepNum) {
@@ -378,7 +379,7 @@ RunnerBase.prototype._runInIFrame = function (iframe, stepName, step, stepNum) {
         }
     }
 
-    pingIFrame(iframe, function (err) {
+    pingIframe(iframe, function (err) {
         if (err) {
             runner._onFatalError({
                 type:     ERROR_TYPE.inIFrameTargetLoadingTimeout,

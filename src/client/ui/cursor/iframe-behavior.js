@@ -2,7 +2,7 @@ import hammerhead from './../deps/hammerhead';
 import testCafeCore from './../deps/testcafe-core';
 import CursorBaseBehavior from './base-behavior';
 
-var messageSandbox = hammerhead.messageSandbox;
+var messageSandbox = hammerhead.eventSandbox.message;
 var browserUtils   = hammerhead.utils.browser;
 
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;

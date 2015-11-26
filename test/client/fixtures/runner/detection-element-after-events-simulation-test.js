@@ -21,7 +21,7 @@ actionsAPI.init(stepIterator);
 
 
 var correctTestWaitingTime = function (time) {
-    if (browserUtils.isTouchDevice && browserUtils.isMozilla)
+    if (browserUtils.isTouchDevice && browserUtils.isFirefox)
         return time * 2;
 
     return time;
@@ -985,7 +985,7 @@ $(document).ready(function () {
                 },
                 function () {
                     equal($inputIFrame[0].value, browserUtils.isWebKit ||
-                                                 browserUtils.isMozilla ? '' : 'f', 'iframe\'s input value is correct');
+                                                 browserUtils.isFirefox ? '' : 'f', 'iframe\'s input value is correct');
                 },
                 2000
             );
