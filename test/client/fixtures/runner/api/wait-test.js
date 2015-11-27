@@ -40,7 +40,7 @@ $(document).ready(function () {
             currentSourceIndex      = null,
             //constants
             SHORT_DELAY             = 10,
-            LONG_DELAY              = 1000,
+            LONG_DELAY              = 1050,
 
             //utils
             asyncActionCallback,

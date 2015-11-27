@@ -57,7 +57,8 @@ function createOption (option, $parent) {
                 curSelectIndex   = curSelectEl.selectedIndex,
                 optionIndex      = $.inArray(this, $options),
                 option           = $(curSelectEl).find('option')[optionIndex],
-                clickLeadChanges = !isOptionDisabled && optionIndex !== curSelectIndex;
+                clickLeadChanges = !isOptionDisabled && optionIndex !== curSelectIndex,
+                isMobileBrowser  = browserUtils.isSafari && browserUtils.hasTouchEvents || browserUtils.isAndroid;
 
             if (clickLeadChanges && !browserUtils.isIE)
                 curSelectEl.selectedIndex = optionIndex;
@@ -67,7 +68,9 @@ function createOption (option, $parent) {
 
             if (browserUtils.isFirefox || browserUtils.isIE)
                 eventSimulator.mousedown(browserUtils.isFirefox ? option : curSelectEl);
-            eventSimulator.mouseup(browserUtils.isFirefox ? option : curSelectEl);
+
+            if(!isMobileBrowser)
+                eventSimulator.mouseup(browserUtils.isFirefox ? option : curSelectEl);
 
             if ((browserUtils.isFirefox || browserUtils.isIE) && clickLeadChanges) {
                 eventSimulator.change(curSelectEl);
@@ -76,7 +79,8 @@ function createOption (option, $parent) {
                     curSelectEl.selectedIndex = optionIndex;
             }
 
-            eventSimulator.click(browserUtils.isFirefox || browserUtils.isIE ? option : curSelectEl);
+            if(!isMobileBrowser)
+                eventSimulator.click(browserUtils.isFirefox || browserUtils.isIE ? option : curSelectEl);
 
             if (!isOptionDisabled)
                 collapseOptionList();
