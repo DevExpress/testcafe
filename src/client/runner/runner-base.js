@@ -277,6 +277,9 @@ RunnerBase.prototype._initIFrameBehavior = function () {
                 break;
 
             case RunnerBase.IFRAME_BEFORE_UNLOAD_REQUEST_CMD:
+                runner.actionTargetWaitingStarted = false;
+                runner._onActionRun();
+
                 runner._onBeforeUnload(true, function (res) {
                     msg = {
                         cmd: RunnerBase.IFRAME_BEFORE_UNLOAD_RESPONSE_CMD,
@@ -354,8 +357,9 @@ RunnerBase.prototype.on = function (event, handler) {
 };
 
 function pingIframe (iframe, callback) {
-    messageSandbox.pingIframe(iframe, CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_PING_DISPATCHER_CMD).
-        then(callback);
+    messageSandbox
+        .pingIframe(iframe, CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_PING_DISPATCHER_CMD)
+        .then(callback);
 }
 
 RunnerBase.prototype._runInIFrame = function (iframe, stepName, step, stepNum) {
