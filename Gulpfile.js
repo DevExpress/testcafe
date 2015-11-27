@@ -43,8 +43,16 @@ var CLIENT_TESTS_BROWSERS = [
         browserName: 'chrome'
     },
     {
+        browserName: 'chrome',
+        platform:    'OS X 10.11'
+    },
+    {
         platform:    'Windows 10',
         browserName: 'firefox'
+    },
+    {
+        browserName: 'firefox',
+        platform:    'OS X 10.11'
     },
     {
         platform:    'Windows 10',
