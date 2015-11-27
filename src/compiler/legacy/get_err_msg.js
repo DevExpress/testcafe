@@ -8,7 +8,28 @@ module.exports = function (err) {
         };
 
     switch (err.type) {
-        //Fixture file
+        case ErrCodes.READ_FILE_FAILED:
+            m(
+                'Failed to read test file "%s."',
+                err.filename
+            );
+            break;
+
+        case ErrCodes.JAVASCRIPT_PARSING_FAILED:
+            m(
+                '(line %s): %s',
+                err.parserErr && err.parserErr.line,
+                err.parserErr && err.parserErr.message
+            );
+            break;
+
+        case ErrCodes.AUTH_DIRECTIVE_REDEFINITION:
+            m(
+                '(line %s): @auth directive redefinition. @auth directive should be used once per test fixture file.',
+                err.line
+            );
+            break;
+
         case ErrCodes.FIXTURE_DIRECTIVE_REDEFINITION:
             m(
                 '(line %s): @fixture duplicated. The @fixture directive can only be used once per test fixture file.',
