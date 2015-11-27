@@ -82,6 +82,12 @@ var CLIENT_TESTS_BROWSERS = [
         platform:    'Windows 7',
         browserName: 'internet explorer',
         version:     '9.0'
+    },
+    {
+        platform:    'Linux',
+        browserName: 'android',
+        version:     '5.1',
+        deviceName:  'Android Emulator'
     }
 ];
 
