@@ -554,5 +554,25 @@ describe('Runner', function () {
                     expect(closeCalled).eql(1);
                 });
         });
+
+        it('Should not stop the task while connected browser is not in idle state', function () {
+            var remoteConnection = testCafe.createBrowserConnection();
+
+            remoteConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                       '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+
+            remoteConnection.idle                     = false;
+            remoteConnection.WAITING_FOR_IDLE_TIMEOUT = 0;
+
+            taskActionCallback = taskDone;
+
+            return runner
+                .browsers(remoteConnection)
+                .run()
+                .then(function () {
+                    expect(remoteConnection.idle).to.be.true;
+                    remoteConnection.close();
+                });
+        });
     });
 });

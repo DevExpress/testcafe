@@ -13,6 +13,8 @@ class IdlePage {
 
         browser.startHeartbeat(heartbeatUrl, window.XMLHttpRequest);
         this._checkStatus();
+
+        document.title = '[' + document.location.toString() + ']';
     }
 
     _checkStatus () {

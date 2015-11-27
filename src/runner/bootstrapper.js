@@ -73,7 +73,7 @@ export default class Bootstrapper {
     _checkForDisconnectedBrowsers () {
         var disconnectedUserAgents = this.browsers
             .filter(browser => browser instanceof BrowserConnection &&
-                               browser.disconnected)
+                               browser.closed)
             .map(bc => bc.userAgent);
 
         if (disconnectedUserAgents.length)
@@ -94,7 +94,7 @@ export default class Bootstrapper {
         }
         catch (err) {
             await Promise.all(browserConnections.map(bc => new Promise(resolve => {
-                if (bc instanceof LocalBrowserConnection && !bc.disconnected) {
+                if (bc instanceof LocalBrowserConnection && !bc.closed) {
                     bc.close();
                     bc.once('closed', resolve);
                 }
