@@ -161,6 +161,7 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
     async.series({
         scrollToTarget: function (callback) {
             var elementOffset = domUtils.isDomElement(to) ? positionUtils.getOffsetPosition(to) : null;
+
             scrollPlaybackAutomation(domUtils.isDomElement(to) ? to : targetPoint, options, currentDocument, function () {
                 if (domUtils.isDomElement(to)) {
                     var newElementOffset = positionUtils.getOffsetPosition(to),
@@ -177,12 +178,13 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
                     }
                 }
                 targetScreenPoint = positionUtils.offsetToClientCoords(targetPoint);
+
                 callback();
             });
         },
 
         setCursor: function (callback) {
-            if (targetPoint.x < 0 || targetScreenPoint.x > styleUtils.getWidth(window) ||
+            if (targetScreenPoint.x < 0 || targetScreenPoint.x > styleUtils.getWidth(window) ||
                 targetScreenPoint.y < 0 || targetScreenPoint.y > styleUtils.getHeight(window)) {
                 actionCallback();
                 return;

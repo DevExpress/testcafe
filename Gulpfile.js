@@ -89,6 +89,23 @@ var CLIENT_TESTS_BROWSERS = [
         browserName: 'android',
         version:     '5.1',
         deviceName:  'Android Emulator'
+    },
+    {
+        browserName: 'safari',
+        platform:    'OS X 10.10',
+        version:     '8.0'
+    },
+    {
+        browserName: 'iphone',
+        platform:    'OS X 10.10',
+        version:     '8.1',
+        deviceName:  'iPad Simulator'
+    },
+    {
+        browserName: 'iphone',
+        platform:    'OS X 10.10',
+        version:     '9.1',
+        deviceName:  'iPhone 6 Plus'
     }
 ];
 

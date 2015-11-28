@@ -578,22 +578,17 @@ var supportedShortcutHandlers = (function () {
                 if (submitButton)
                     eventSimulator.click(submitButton);
                 else {
-                    //the form is also submitted on enter press if there is only one input of the following types on it
-                    //  and this input is focused (http://www.w3.org/TR/html5/forms.html#implicit-submission)
-                    var textInputTypeRegExp = browserUtils.isWebKit ? /^(text|search|url|number|tel|password|number|email)$/i :
-                                              /^(text|search|url|number|tel|password|number|email|date|time)$/i;
-
-                    if (textInputTypeRegExp.test(element.type)) {
+                    if (domUtils.blocksImplicitSubmission(element)) {
                         var formInputs = form.getElementsByTagName('input');
                         var textInputs = [];
 
                         for (var i = 0; i < formInputs.length; i++) {
-                            if (textInputTypeRegExp.test(formInputs[i].type))
+                            if (domUtils.blocksImplicitSubmission(formInputs[i]))
                                 textInputs.push(formInputs[i]);
                         }
 
                         if (textInputs.length === 1 && textInputs[0] === element &&
-                            (!element.validity || element.validity.valid)) {
+                            (browserUtils.isSafari || !element.validity || element.validity.valid)) {
                             if (eventSimulator.submit(form))
                                 form.submit();
                         }
