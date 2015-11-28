@@ -29,13 +29,18 @@ $(document).ready(function () {
         keyPressSimulator('enter', callback);
     }
 
+    function isInputValueValid ($el) {
+        var el = $el[0];
+
+        return browserUtils.isSafari || !el.validity || el.validity.valid;
+    }
+
     QUnit.testDone(function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     });
 
-    module('form markup');
-
-    asyncTest('form with two text inputs and submit button (input type="submit")', function () {
+    module('form with two text inputs');
+    asyncTest('submit button (input type="submit")', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
@@ -45,7 +50,7 @@ $(document).ready(function () {
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
-    asyncTest('form with two text inputs and submit button (button type="submit")', function () {
+    asyncTest('submit button (button type="submit")', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
@@ -55,7 +60,7 @@ $(document).ready(function () {
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
-    asyncTest('form with two text inputs and submit button (button without declared type)', function () {
+    asyncTest('submit button (button without declared type)', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
@@ -65,7 +70,7 @@ $(document).ready(function () {
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
-    asyncTest('form with two text inputs without submit button', function () {
+    asyncTest('without submit button', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
@@ -74,7 +79,7 @@ $(document).ready(function () {
         checkSubmitRaisedOnEnterPress($form, $input, false);
     });
 
-    asyncTest('form with two text inputs and not-submit button (button type="button")', function () {
+    asyncTest('not-submit button (button type="button")', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
@@ -84,7 +89,7 @@ $(document).ready(function () {
         checkSubmitRaisedOnEnterPress($form, $input, false);
     });
 
-    asyncTest('form with two text inputs and disabled submit button', function () {
+    asyncTest('disabled submit button', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
@@ -94,63 +99,76 @@ $(document).ready(function () {
         checkSubmitRaisedOnEnterPress($form, $input, false);
     });
 
-    asyncTest('form with one text input (type=text)', function () {
+    asyncTest('inputs types "text" and "search" and without submit button', function () {
+        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
+            $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+
+        $('<input type="search">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+
+        checkSubmitRaisedOnEnterPress($form, $input, false);
+    });
+
+    asyncTest('valid and invalid text input ("text" and "url") and submit button', function () {
+        var $form     = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
+            $input    = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form),
+            $urlInput = $('<input type="url">').addClass(TEST_ELEMENT_CLASS).val('test').appendTo($form);
+
+        $('<button type="submit">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
+
+        checkSubmitRaisedOnEnterPress($form, $input, isInputValueValid($urlInput));
+    });
+
+    module('form with one text input');
+    asyncTest('input type = "text"', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
-    asyncTest('form with one text input (type=search)', function () {
+    asyncTest('input type = "search"', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="search">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
-    asyncTest('form with one text (type=url)', function () {
+    asyncTest('input type = "url"', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="url">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
-    asyncTest('form with one text input (type=number)', function () {
+    asyncTest('input type = "number"', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="number">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
-    asyncTest('form with one text input (type=tel)', function () {
+    asyncTest('input type = "tel"', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="tel">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
-    asyncTest('form with one text input (type=password)', function () {
+    asyncTest('input type = "password"', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="password">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
-    asyncTest('form with one text input (type=number)', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
-            $input = $('<input type="number">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-
-        checkSubmitRaisedOnEnterPress($form, $input, true);
-    });
-
-    asyncTest('form with one text input (type=email)', function () {
+    asyncTest('input type = "email"', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="email">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
-    asyncTest('form with one text input (type=date)', function () {
+    asyncTest('input type = "date"', function () {
         var needChangeType = browserUtils.isIE && browserUtils.version > 11,
             $form          = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input         = $('<input type="' + (needChangeType ? 'email' : 'date') +
@@ -161,25 +179,33 @@ $(document).ready(function () {
             $input[0].type = 'date';
 
         //webkit does not submit date input on enter
-        checkSubmitRaisedOnEnterPress($form, $input, browserUtils.isWebKit ? false : true);
+        checkSubmitRaisedOnEnterPress($form, $input, !browserUtils.isWebKit || browserUtils.isSafari);
     });
 
-    asyncTest('form with one text input (type=time)', function () {
+    asyncTest('input type = "time"', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="time">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         //webkit does not submit time input on enter
-        checkSubmitRaisedOnEnterPress($form, $input, browserUtils.isWebKit ? false : true);
+        checkSubmitRaisedOnEnterPress($form, $input, !browserUtils.isWebKit || browserUtils.isSafari);
     });
 
-    asyncTest('form with one not-text input (radio)', function () {
+    asyncTest('input type = "radio"', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="radio">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, false);
     });
 
-    asyncTest('form with one text input and one not-text input (checkbox), text input is focused', function () {
+    asyncTest('input type = "url" with invalid value', function () {
+        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
+            $input = $('<input type="url">').addClass(TEST_ELEMENT_CLASS).val('test').appendTo($form);
+
+        checkSubmitRaisedOnEnterPress($form, $input, isInputValueValid($input));
+    });
+
+    module('form with two different type inputs');
+    asyncTest('one text input and one not-text input (type = "checkbox"), text input is focused', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
@@ -188,52 +214,13 @@ $(document).ready(function () {
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
-    asyncTest('form with one text input and one not-text input (checkbox), checkbox is focused', function () {
+    asyncTest('one text input and one not-text input (type = "checkbox"), checkbox is focused', function () {
         var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input = $('<input type="checkbox">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
         checkSubmitRaisedOnEnterPress($form, $input, false);
-    });
-
-    asyncTest('form with one text input and one not-text input (checkbox), checkbox is focused', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
-            $input = $('<input type="checkbox">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-
-        $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-
-        checkSubmitRaisedOnEnterPress($form, $input, false);
-    });
-
-    asyncTest('form with two text inputs (text and search)', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
-            $input = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-
-        $('<input type="search">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-
-        checkSubmitRaisedOnEnterPress($form, $input, false);
-    });
-
-    asyncTest('form with invalid text input (url)', function () {
-        var $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
-            $input = $('<input type="url">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-
-        $input.val('test');
-
-        checkSubmitRaisedOnEnterPress($form, $input, !$input[0].validity);
-    });
-
-    asyncTest('form with valid and invalid text input (text and url) and submit button', function () {
-        var $form     = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
-            $input    = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form),
-            $urlInput = $('<input type="url">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-
-        $('<button type="submit">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
-
-        $urlInput.val('test');
-
-        checkSubmitRaisedOnEnterPress($form, $input, !$input[0].validity);
     });
 
     module('event handlers');
@@ -415,12 +402,10 @@ $(document).ready(function () {
     asyncTest('form must not be submitted if it has inputs with failed validation', function () {
         var $form                 = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             $input                = $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form),
-            $emailInput           = $('<input type="email">').addClass(TEST_ELEMENT_CLASS).appendTo($form),
+            $emailInput           = $('<input type="email">').addClass(TEST_ELEMENT_CLASS).val('test').appendTo($form),
             $button               = $('<input type="submit">').addClass(TEST_ELEMENT_CLASS).appendTo($form),
             submitHandlerExecuted = false,
             clickHandlerExecuted  = false;
-
-        $emailInput.val('test');
 
         $button[0].addEventListener('click', function () {
             clickHandlerExecuted = true;
@@ -433,7 +418,7 @@ $(document).ready(function () {
 
         var callback = function () {
             ok(clickHandlerExecuted, 'click executed');
-            ok(!$input[0].validity === submitHandlerExecuted, 'submit not executed');
+            equal(submitHandlerExecuted, isInputValueValid($emailInput));
 
             start();
         };

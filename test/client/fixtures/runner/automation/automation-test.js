@@ -413,8 +413,8 @@ $(document).ready(function () {
             $scrollableContainer = $('<div />')
                 .css({
                     position: 'absolute',
-                    left:     '200px',
-                    top:      '250px',
+                    left:     '50px',
+                    top:      '1200px',
                     border:   '1px solid black',
                     overflow: 'scroll'
                 })

@@ -4,7 +4,7 @@ var nativeMethods = hammerhead.nativeMethods;
 
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var domUtils      = testCafeCore.get('./utils/dom');
-var eventUtils         = testCafeCore.get('./utils/event');
+var eventUtils    = testCafeCore.get('./utils/event');
 var textSelection = testCafeCore.get('./utils/text-selection');
 
 var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
@@ -288,14 +288,18 @@ $(document).ready(function () {
         var initText     = 'init',
             newText      = 'newnewnew',
             $input       = createInput().attr('value', initText),
+            input        = $input[0],
             resultString = initText + newText,
             maxLength    = 7;
 
         $input.attr('maxLength', maxLength);
         equal(parseInt($input.attr('maxLength')), 7);
+        input.focus();
 
-        typePlaybackAutomation($input[0], newText, {}, function () {
-            equal($input[0].value, resultString.substring(0, maxLength));
+        typePlaybackAutomation(input, newText, {
+            caretPos: input.value.length
+        }, function () {
+            equal(input.value, resultString.substring(0, maxLength));
             startNext();
         });
     });

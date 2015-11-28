@@ -297,9 +297,17 @@ $(document).ready(function () {
             },
 
             'Check selection': function (callback) {
-                nodeValue = browserUtils.isFirefox || browserUtils.isWebKit ||
-                            (browserUtils.isIE && browserUtils.version > 11) ?
-                            $el[0].childNodes[4].nodeValue : $el[0].childNodes[3].childNodes[0].nodeValue;
+                if (browserUtils.isSafari)
+                    nodeValue = $el[0].childNodes[3].childNodes[0].nodeValue;
+                else if (browserUtils.isFirefox || browserUtils.isWebKit ||
+                         (browserUtils.isIE && browserUtils.version > 11))
+                    nodeValue = $el[0].childNodes[4].nodeValue;
+                else
+                    nodeValue = $el[0].childNodes[3].childNodes[0].nodeValue;
+
+                if (browserUtils.isSafari)
+                    nodeValue = $el[0].childNodes[3].childNodes[0].nodeValue;
+
                 checkSelection($el, $el[0].childNodes[4], 6, $el[0].childNodes[8].childNodes[0], 2);
                 callback();
             },
@@ -312,18 +320,25 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                if (browserUtils.isFirefox || browserUtils.isWebKit ||
-                    (browserUtils.isIE && browserUtils.version > 11)) {
+                if (browserUtils.isSafari) {
+                    checkSelection($el, $el[0].childNodes[3].childNodes[0],
+                        6 + text.length, $el[0].childNodes[3].childNodes[0], 6 + text.length);
+
+                    equal($el[0].childNodes[3].childNodes[0].nodeValue, nodeValue + text);
+                }
+                else if (browserUtils.isFirefox || browserUtils.isWebKit ||
+                         (browserUtils.isIE && browserUtils.version > 11)) {
                     checkSelection($el, $el[0].childNodes[4], 6 + text.length, $el[0].childNodes[4], 6 +
                                                                                                      text.length);
                     equal($el[0].childNodes[4].nodeValue, nodeValue + text);
-                    equal($el.text().replace(/\s/g, ''), $.trim(newElementText).replace(/\s/g, ''));
                 }
                 else {
-                    checkSelection($el, $el[0].childNodes[5].childNodes[0], text.length, $el[0].childNodes[5].childNodes[0], text.length);
+                    checkSelection($el, $el[0].childNodes[5].childNodes[0], text.length,
+                        $el[0].childNodes[5].childNodes[0], text.length);
                     equal($el[0].childNodes[5].childNodes[0].nodeValue, text + 'P');
-                    equal($el.text().replace(/\s/g, ''), $.trim(newElementText).replace(/\s/g, ''));
                 }
+                equal($el.text().replace(/\s/g, ''), $.trim(newElementText).replace(/\s/g, ''));
+
                 startNext();
             }
         });
@@ -525,9 +540,10 @@ $(document).ready(function () {
             },
 
             'Check selection': function (callback) {
-                nodeValue = browserUtils.isFirefox || browserUtils.isWebKit ||
+                nodeValue = browserUtils.isFirefox || (browserUtils.isWebKit && !browserUtils.isSafari) ||
                             (browserUtils.isIE && browserUtils.version >
                                                   11) ? $el[0].childNodes[4].nodeValue : $el[0].childNodes[3].childNodes[0].nodeValue;
+
                 checkSelection($el, $el[0].childNodes[4], 6, $el[0].childNodes[8].childNodes[0], 3);
                 callback();
             },
@@ -544,7 +560,7 @@ $(document).ready(function () {
                     checkSelection($el, $el[0].childNodes[5].childNodes[0], text.length, $el[0].childNodes[5].childNodes[0], text.length);
                     equal($el[0].childNodes[5].childNodes[0].nodeValue, text);
                 }
-                else if (browserUtils.isFirefox || browserUtils.isWebKit ||
+                else if (browserUtils.isFirefox || (browserUtils.isWebKit && !browserUtils.isSafari) ||
                          (browserUtils.isIE && browserUtils.version > 11)) {
                     checkSelection($el, $el[0].childNodes[4], 6 + text.length, $el[0].childNodes[4], 6 +
                                                                                                      text.length);
