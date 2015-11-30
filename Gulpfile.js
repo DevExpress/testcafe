@@ -9,25 +9,39 @@ var mocha        = require('gulp-mocha');
 var mustache     = require('gulp-mustache');
 var rename       = require('gulp-rename');
 var webmake      = require('gulp-webmake');
+var util         = require('gulp-util');
+var gulpif       = require('gulp-if');
+var uglify       = require('gulp-uglify');
+var ll           = require('gulp-ll');
 var del          = require('del');
 var fs           = require('fs');
-var merge        = require('merge-stream');
 var path         = require('path');
 var Promise      = require('es6-promise').Promise;
 
+ll
+    .tasks([
+        'lint',
+        'server-scripts'
+    ])
+    .onlyInDebug([
+        'styles',
+        'client-scripts',
+        'client-scripts-bundle'
+    ]);
+
 
 var CLIENT_TESTS_SETTINGS = {
-    basePath:        './test/client/fixtures',
+    basePath:        'test/client/fixtures',
     port:            2000,
     crossDomainPort: 2001,
 
     scripts: [
-        { src: '/async.js', path: './test/client/vendor/async.js' },
-        { src: '/hammerhead.js', path: './node_modules/testcafe-hammerhead/lib/client/hammerhead.js' },
-        { src: '/core.js', path: './lib/client/core/index.js' },
-        { src: '/ui.js', path: './lib/client/ui/index.js' },
-        { src: '/runner.js', path: './lib/client/runner/index.js' },
-        { src: '/before-test.js', path: './test/client/before-test.js' }
+        { src: '/async.js', path: 'test/client/vendor/async.js' },
+        { src: '/hammerhead.js', path: 'node_modules/testcafe-hammerhead/lib/client/hammerhead.js' },
+        { src: '/core.js', path: 'lib/client/core/index.js' },
+        { src: '/ui.js', path: 'lib/client/ui/index.js' },
+        { src: '/runner.js', path: 'lib/client/runner/index.js' },
+        { src: '/before-test.js', path: 'test/client/before-test.js' }
     ],
 
     configApp: require('./test/client/config-qunit-server-app')
@@ -87,31 +101,42 @@ gulp.task('clean', function (cb) {
 });
 
 
-//Scripts
-function wrapScriptWithTemplate (templatePath, scriptPath) {
+// Lint
+gulp.task('lint', function () {
     return gulp
-        .src(templatePath)
-        .pipe(mustache({
-            source:    fs.readFileSync(scriptPath).toString(),
-            sourceMap: ''
-        }))
-        .pipe(rename(path.basename(scriptPath)))
-        .pipe(gulp.dest(path.dirname(scriptPath)));
-}
+        .src([
+            'src/**/*.js',
+            '!src/client/**/*.js',  //TODO: fix it
+            //'test/**/*.js',       //TODO: fix it
+            'test/server/**.js',
+            'test/report-design-viewer/*.js',
+            'Gulpfile.js'
+        ])
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
+});
 
-gulp.task('wrap-scripts-with-templates', ['build-client-scripts'], function () {
+
+// Build
+gulp.task('client-scripts', ['client-scripts-bundle'], function () {
     var scripts = [
-        { templatePath: './src/client/core/index.js.wrapper.mustache', scriptPath: './lib/client/core/index.js' },
-        { templatePath: './src/client/ui/index.js.wrapper.mustache', scriptPath: './lib/client/ui/index.js' },
-        { templatePath: './src/client/runner/index.js.wrapper.mustache', scriptPath: './lib/client/runner/index.js' }
+        { wrapper: 'src/client/core/index.js.wrapper.mustache', src: 'lib/client/core/index.js' },
+        { wrapper: 'src/client/ui/index.js.wrapper.mustache', src: 'lib/client/ui/index.js' },
+        { wrapper: 'src/client/runner/index.js.wrapper.mustache', src: 'lib/client/runner/index.js' }
     ];
 
-    return Promise.all(scripts.map(function (item) {
-        return wrapScriptWithTemplate(item.templatePath, item.scriptPath);
+    return Promise.all(scripts.map(function (script) {
+        return gulp
+            .src(script.wrapper)
+            .pipe(mustache({ source: fs.readFileSync(script.src).toString() }))
+            .pipe(rename(path.basename(script.src)))
+            .pipe(gulpif(!util.env.dev, uglify()))
+            .pipe(gulp.dest(path.dirname(script.src)));
     }));
 });
 
-gulp.task('build-client-scripts', ['clean'], function () {
+gulp.task('client-scripts-bundle', ['clean'], function () {
     return gulp
         .src([
             'src/client/core/index.js',
@@ -135,56 +160,52 @@ gulp.task('build-client-scripts', ['clean'], function () {
                     filename:  filename
                 });
 
-                return {
-                    code:      transformed.code,
-                    sourceMap: transformed.map
-                };
+                return { code: transformed.code };
             }
         }))
         .pipe(gulp.dest('lib/client'));
 });
 
-
-//Build
-gulp.task('build', ['lint', 'wrap-scripts-with-templates'], function () {
-    var js = gulp
+gulp.task('server-scripts', ['clean'], function () {
+    return gulp
         .src([
             'src/**/*.js',
             '!src/client/**/*.js'
         ])
-        .pipe(gulpBabel());
-
-    var styles = gulp
-        .src('src/**/*.less')
-        .pipe(gulpLess());
-
-    var templates = gulp
-        .src(['src/**/*.mustache', '!src/**/*.js.wrapper.mustache']);
-
-    var images = gulp
-        .src(['src/**/*.png', 'src/**/*.ico', 'src/**/*.svg']);
-
-    return merge(js, styles, templates, images)
+        .pipe(gulpBabel())
         .pipe(gulp.dest('lib'));
 });
 
-gulp.task('lint', function () {
+gulp.task('styles', ['clean'], function () {
+    return gulp
+        .src('src/**/*.less')
+        .pipe(gulpLess())
+        .pipe(gulp.dest('lib'));
+});
+
+gulp.task('templates', ['clean'], function () {
     return gulp
         .src([
-            'src/**/*.js',
-            '!src/client/**/*.js',  //TODO: fix it
-            //'test/**/*.js',       //TODO: fix it
-            'test/server/**.js',
-            'test/report-design-viewer/*.js',
-            'Gulpfile.js'
+            'src/**/*.mustache',
+            '!src/**/*.js.wrapper.mustache'
         ])
-        .pipe(eslint())
-        .pipe(eslint.format())
-        .pipe(eslint.failAfterError());
+        .pipe(gulp.dest('lib'));
+});
+
+gulp.task('images', ['clean'], function () {
+    return gulp
+        .src([
+            'src/**/*.png',
+            'src/**/*.ico',
+            'src/**/*.svg'
+        ])
+        .pipe(gulp.dest('lib'));
 });
 
 
-//Test
+gulp.task('build', ['lint', 'server-scripts', 'client-scripts', 'styles', 'images', 'templates']);
+
+// Test
 gulp.task('test-server', ['build'], function () {
     return gulp
         .src('test/server/*-test.js')
@@ -197,19 +218,19 @@ gulp.task('test-server', ['build'], function () {
 
 gulp.task('test-client', ['build'], function () {
     return gulp
-        .src('./test/client/fixtures/**/*-test.js')
+        .src('test/client/fixtures/**/*-test.js')
         .pipe(qunitHarness(CLIENT_TESTS_SETTINGS));
 });
 
 gulp.task('test-client-travis', ['build'], function () {
     return gulp
-        .src('./test/client/fixtures/**/*-test.js')
+        .src('test/client/fixtures/**/*-test.js')
         .pipe(qunitHarness(CLIENT_TESTS_SETTINGS, SAUCELABS_SETTINGS));
 });
 
 gulp.task('report-design-viewer', ['build'], function () {
     return new Promise(function () {
-        require('./test/report-design-viewer')(argv.reporter, argv.decorator);
+        require('test/report-design-viewer')(argv.reporter, argv.decorator);
     });
 });
 
