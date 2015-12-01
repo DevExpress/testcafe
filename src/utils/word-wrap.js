@@ -8,19 +8,19 @@ function rtrim (str) {
     return str.replace(/\s+$/, '');
 }
 
-export default function (msg, indent, width) {
+export default function (str, indent, width) {
     var curStr     = '';
     var wrappedMsg = '';
 
-    if (cutTtyColors(msg).length <= width - indent)
-        return indentString(msg, ' ', indent);
+    if (cutTtyColors(str).length <= width - indent)
+        return indentString(str, ' ', indent);
 
-    msg = msg.replace(/(\r\n)/gm, '\n')
+    str = str.replace(/(\r\n)/gm, '\n')
         .split(/(\S+[ \t]+)|(\S+(?:\n))|(\n)/m)
         //NOTE: cut empty elements
         .filter(elm => !!elm);
 
-    msg.forEach(word => {
+    str.forEach(word => {
         var newStr = curStr + word;
 
         if (cutTtyColors(newStr).length > width - indent) {

@@ -1,40 +1,69 @@
 var expect             = require('chai').expect;
 var read               = require('read-file-relative').readSync;
-var util               = require('util');
-var EventEmitter       = require('events').EventEmitter;
-var plainTextDecorator = require('../../lib/reporters/errors/decorators/plain-text');
-var reporters          = require('../../lib/reporters');
-var TYPE               = require('../../lib/reporters/errors/type');
+var ReporterPluginHost = require('../../lib/reporter/plugin-host');
+var TYPE               = require('../../lib/reporter/errors/type');
 var remove             = require('../../lib/utils/array-remove');
 
 
 var untestedErrorTypes = Object.keys(TYPE);
+var userAgentMock      = 'Chrome 15.0.874 / Mac OS X 10.8.1';
 
-var testMock = {
-    name:    'fixtureTest',
-    fixture: {
-        name: 'fixture',
-        path: './fixture.js'
+var reporterPluginMock = {
+    noColors: true,
+
+    createErrorDecorator: function () {
+        var plugin = this;
+
+        return {
+            'span category': function (str) {
+                return 'CATEGORY=' + str + '\n';
+            },
+
+            'span step-name': function (str) {
+                return '"' + str + '"';
+            },
+
+            'span user-agent': function (str) {
+                return str;
+            },
+
+            'div screenshot-info': function (str) {
+                return str;
+            },
+
+            'a screenshot-path': function (str) {
+                return str;
+            },
+
+            'code': function (str) {
+                return str;
+            },
+
+            'code step-source': function (str) {
+                return plugin.indentString(str, 4);
+            },
+
+            'span code-line': function (str) {
+                return str + '\n';
+            },
+
+            'span last-code-line': function (str) {
+                return str;
+            },
+
+            'code api': function (str) {
+                return str;
+            },
+
+            'strong': function (str) {
+                return str;
+            },
+
+            'a': function (str) {
+                return '"' + str + '"';
+            }
+        };
     }
-};
-
-var browserConnectionMock = { userAgent: 'Chrome 15.0.874 / Mac OS X 10.8.1' };
-
-// Task mock
-var TaskMock = function () {
-    EventEmitter.call(this);
-
-    this.tests              = [testMock];
-    this.browserConnections = [browserConnectionMock];
-};
-
-util.inherits(TaskMock, EventEmitter);
-
-var userAgentMock = browserConnectionMock.userAgent;
-var testDecorator = Object.create(plainTextDecorator);
-
-testDecorator['span category'] = function (catgory) {
-    return 'CATEGORY=' + catgory + '\n';
 };
 
 // Output stream and errorDecorator mocks
@@ -49,12 +78,10 @@ function createOutStreamMock () {
 }
 
 function assertErrorMessage (file, err) {
-    var taskMock      = new TaskMock();
     var outStreamMock = createOutStreamMock();
-    var Reporter      = reporters['list'];
-    var reporter      = new Reporter(taskMock, outStreamMock, testDecorator);
+    var plugin        = new ReporterPluginHost(reporterPluginMock, outStreamMock);
 
-    reporter._write(reporter._formatError(err));
+    plugin.write(plugin.formatError(err));
 
     var expectedMsg = read('./data/expected-test-errors/' + file)
         .replace(/(\r\n)/gm, '\n')

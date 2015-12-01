@@ -67,7 +67,7 @@ describe('Browser connection', function () {
     });
 
     it('Should respond with error if connection was established twice', function (done) {
-        promisedRequest(connection.url)
+        return promisedRequest(connection.url)
             .then(function () {
                 return promisedRequest(connection.url);
             })
@@ -75,8 +75,7 @@ describe('Browser connection', function () {
                 expect(res[0].statusCode).eql(500);
                 expect(res[1]).eql('The connection is already established.');
                 done();
-            })
-            .catch(done);
+            });
     });
 
     it('Should fire "error" event on browser disconnection', function (done) {

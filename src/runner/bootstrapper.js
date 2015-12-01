@@ -1,6 +1,5 @@
 import { Promise } from 'es6-promise';
 import { getBrowserInfo } from 'testcafe-browser-natives';
-import reporters from '../reporters';
 import BrowserConnection from '../browser-connection';
 import LocalBrowserConnection from '../browser-connection/local';
 import LegacyCompilerAdapter from '../compiler';
@@ -65,27 +64,31 @@ export default class Bootstrapper {
         return tests;
     }
 
-    _getReporterCtor () {
-        var Reporter = this.reporter || 'spec';
+    _getReporterPlugin () {
+        var pluginFactory = this.reporter;
 
-        if (typeof Reporter === 'string') {
-            Reporter = reporters[Reporter.toLowerCase()];
+        if (typeof pluginFactory !== 'function') {
+            try {
+                var alias = this.reporter || 'spec';
 
-            if (!Reporter)
+                pluginFactory = require('testcafe-reporter-' + alias);
+            }
+            catch (err) {
                 throw new Error(getText(MESSAGE.cantFindReporterForAlias, this.reporter));
+            }
         }
 
-        return Reporter;
+        return pluginFactory();
     }
 
 
     // API
     async createRunnableConfiguration () {
-        var Reporter = this._getReporterCtor();
+        var reporterPlugin = this._getReporterPlugin();
 
         var tests      = await this._getTests();
         var browserSet = await this._getBrowserConnections();
 
-        return { Reporter, browserSet, tests };
+        return { reporterPlugin, browserSet, tests };
     }
 }
