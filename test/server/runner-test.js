@@ -1,8 +1,8 @@
 var path                   = require('path');
 var expect                 = require('chai').expect;
 var request                = require('request');
+var noop                   = require('noop-fn');
 var createTestCafe         = require('../../lib/');
-var SpecReporter           = require('../../lib/reporters/spec');
 var COMMAND                = require('../../lib/browser-connection/command');
 var Task                   = require('../../lib/runner/task');
 var LocalBrowserConnection = require('../../lib/browser-connection/local');
@@ -133,9 +133,12 @@ describe('Runner', function () {
                 .catch(done);
         });
 
-        it('Should fallback to the "spec" reporter if reporter was not set', function (done) {
-            runner._runTask = function (Reporter) {
-                expect(Reporter).eql(SpecReporter);
+        it('Should fallback to the default reporter if reporter was not set', function (done) {
+            runner._runTask = function (reporterPlugin) {
+                expect(reporterPlugin.reportFixtureStart).to.be.a('function');
+                expect(reporterPlugin.reportTestDone).to.be.a('function');
+                expect(reporterPlugin.reportTaskStart).to.be.a('function');
+                expect(reporterPlugin.reportTaskDone).to.be.a('function');
             };
 
             var run = runner
@@ -216,7 +219,7 @@ describe('Runner', function () {
         function testFilter (filterFn, expectedTestNames, done) {
             runner.filter(filterFn);
 
-            runner._runTask = function (Reporter, browserSet, tests) {
+            runner._runTask = function (reporterPlugin, browserSet, tests) {
                 var actualTestNames = tests
                     .map(function (test) {
                         return test.name;
@@ -486,7 +489,12 @@ describe('Runner', function () {
             runner
                 .src('test/server/data/test-suite/top.test.js')
                 .reporter(function () {
-
+                    return {
+                        reportTaskStart:    noop,
+                        reportTaskDone:     noop,
+                        reportTestDone:     noop,
+                        reportFixtureStart: noop
+                    };
                 });
         });
 

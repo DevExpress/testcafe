@@ -2,7 +2,7 @@ import hammerhead from './deps/hammerhead';
 
 import $ from './deps/jquery';
 import SETTINGS from './settings';
-import ERROR_TYPE from '../../reporters/errors/type';
+import ERROR_TYPE from '../../reporter/errors/type';
 import COMMAND from '../../runner/test-run/command';
 import CROSS_DOMAIN_MESSAGES from './cross-domain-messages';
 import * as transport from './transport';

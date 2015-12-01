@@ -1,4 +1,3 @@
-var argv         = require('yargs').argv;
 var babel        = require('babel');
 var gulp         = require('gulp');
 var gulpBabel    = require('gulp-babel');
@@ -13,6 +12,7 @@ var util         = require('gulp-util');
 var gulpif       = require('gulp-if');
 var uglify       = require('gulp-uglify');
 var ll           = require('gulp-ll');
+var publish      = require('publish-please');
 var del          = require('del');
 var fs           = require('fs');
 var path         = require('path');
@@ -234,10 +234,10 @@ gulp.task('test-client-travis', ['build'], function () {
         .pipe(qunitHarness(CLIENT_TESTS_SETTINGS, SAUCELABS_SETTINGS));
 });
 
-gulp.task('report-design-viewer', ['build'], function () {
-    return new Promise(function () {
-        require('test/report-design-viewer')(argv.reporter, argv.decorator);
-    });
-});
-
 gulp.task('travis', [process.env.GULP_TASK || '']);
+
+// Publish
+gulp.task('publish', ['test-server'], function () {
+    // TODO switch publish tag once we'll be ready to release
+    return publish({ tag: 'alpha' });
+});

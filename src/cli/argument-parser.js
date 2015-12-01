@@ -9,7 +9,7 @@ import { getInstallations as getBrowserInstallations } from 'testcafe-browser-na
 import { readSync as read } from 'read-file-relative';
 import { MESSAGE, getText } from '../messages';
 import getViewPortWidth from '../utils/get-viewport-width';
-import wordwrap from '../utils/word-wrap';
+import wordWrap from '../utils/word-wrap';
 
 var ensureDir = promisify(mkdirp);
 
@@ -76,7 +76,7 @@ export default class CliArgumentParser {
 
     static _getDescription () {
         // NOTE: add empty line to workaround commander-forced indentation on the first line.
-        return '\n' + wordwrap(DESCRIPTION, 2, getViewPortWidth(process.stdout));
+        return '\n' + wordWrap(DESCRIPTION, 2, getViewPortWidth(process.stdout));
     }
 
     _describeProgram () {

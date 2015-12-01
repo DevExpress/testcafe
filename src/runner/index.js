@@ -3,6 +3,7 @@ import { resolve as resolvePath } from 'path';
 import { EventEmitter } from 'events';
 import flatten from 'flatten';
 import Bootstrapper from './bootstrapper';
+import Reporter from '../reporter';
 import Task from './task';
 
 
@@ -18,16 +19,15 @@ export default class Runner extends EventEmitter {
             takeScreenshotsOnFails: false,
             skipJsErrors:           false,
             quarantineMode:         false,
-            reportOutStream:        void 0,
-            errorDecorator:         void 0
+            reportOutStream:        void 0
         };
     }
 
     // Run task
-    _runTask (Reporter, browserSet, tests) {
+    _runTask (reporterPlugin, browserSet, tests) {
         return new Promise((resolve, reject) => {
             var task     = new Task(tests, browserSet.connections, this.proxy, this.opts);
-            var reporter = new Reporter(task, this.opts.reportOutStream, this.opts.errorDecorator);
+            var reporter = new Reporter(reporterPlugin, task, this.opts.reportOutStream);
 
             browserSet.once('error', async msg => {
                 task.abort();
@@ -43,7 +43,7 @@ export default class Runner extends EventEmitter {
             task.once('done', async () => {
                 await browserSet.dispose();
 
-                resolve(reporter.total - reporter.passed);
+                resolve(reporter.testCount - reporter.passed);
             });
         });
     }
@@ -64,10 +64,9 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    reporter (reporter, outStream, errorDecorator) {
+    reporter (reporter, outStream) {
         this.bootstrapper.reporter = reporter;
         this.opts.reportOutStream  = outStream;
-        this.opts.errorDecorator   = errorDecorator;
 
         return this;
     }
@@ -89,10 +88,10 @@ export default class Runner extends EventEmitter {
         this.opts.skipJsErrors   = !!skipJsErrors;
         this.opts.quarantineMode = !!quarantineMode;
 
-        var { Reporter, browserSet, tests } = await this.bootstrapper.createRunnableConfiguration();
+        var { reporterPlugin, browserSet, tests } = await this.bootstrapper.createRunnableConfiguration();
 
         this.emit('done-bootstrapping');
 
-        return await this._runTask(Reporter, browserSet, tests);
+        return await this._runTask(reporterPlugin, browserSet, tests);
     }
 }
