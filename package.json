@@ -28,7 +28,7 @@
     "qrcode-terminal": "^0.10.0",
     "read-file-relative": "^1.2.0",
     "testcafe-browser-natives": "^0.10.0",
-    "testcafe-hammerhead": "^2.0.1",
+    "testcafe-hammerhead": "^3.0.0",
     "uglify-js": "1.2.6",
     "useragent": "^2.1.7",
     "uuid": "^2.0.1"
