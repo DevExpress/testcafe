@@ -1,41 +1,39 @@
-var fs = require('fs'),
-    util = require('util'),
+var util = require('util'),
     javascriptParser = require('uglify-js').parser,
-    ErrCodes = require('./err_codes');
+    ErrCodes = require('./err_codes'),
+    readSourceFile = require('../utils/read-source-file');
 
 exports.construct = function (fileName, ownerFilename, callback) {
-    fs.readFile(fileName, function (readErr, data) {
-        if (readErr) {
+    readSourceFile(fileName)
+        .then(data => {
+            var ast     = null,
+                srcCode = data.toString().trim();
+
+            //NOTE: perform srcCode preprocessing the same way it's done in the uglify tokenizer, so
+            //we'll get correct entities positions for code generator
+            srcCode = srcCode.replace(/\r\n?|[\n\u2028\u2029]/g, "\n");
+
+            try {
+                ast = javascriptParser.parse(srcCode, false, true);
+            } catch (parseErr) {
+                callback({
+                    type:      ErrCodes.JAVASCRIPT_PARSING_FAILED,
+                    filename:  fileName,
+                    parserErr: parseErr
+                });
+
+                return;
+            }
+
+            callback(null, ast, srcCode);
+        })
+        .catch(() => {
             callback({
-                type: ownerFilename ? ErrCodes.FAILED_LOAD_REQUIRE : ErrCodes.READ_FILE_FAILED,
-                filename: fileName,
+                type:          ownerFilename ? ErrCodes.FAILED_LOAD_REQUIRE : ErrCodes.READ_FILE_FAILED,
+                filename:      fileName,
                 ownerFilename: ownerFilename
             });
-
-            return;
-        }
-
-        var ast = null,
-            srcCode = data.toString().trim();
-
-        //NOTE: perform srcCode preprocessing the same way it's done in the uglify tokenizer, so
-        //we'll get correct entities positions for code generator
-        srcCode = srcCode.replace(/\r\n?|[\n\u2028\u2029]/g, "\n").replace(/^\uFEFF/, '');
-
-        try {
-            ast = javascriptParser.parse(srcCode, false, true);
-        } catch (parseErr) {
-            callback({
-                type: ErrCodes.JAVASCRIPT_PARSING_FAILED,
-                filename: fileName,
-                parserErr: parseErr
-            });
-
-            return;
-        }
-
-        callback(null, ast, srcCode);
-    });
+        });
 };
 
 var getEntryName = exports.getEntryName = function (entry) {
