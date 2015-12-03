@@ -8,6 +8,7 @@ var Task                   = require('../../lib/runner/task');
 var LocalBrowserConnection = require('../../lib/browser-connection/local');
 var BrowserConnection      = require('../../lib/browser-connection');
 var Bootstrapper           = require('../../lib/runner/bootstrapper');
+var BrowserSet             = require('../../lib/runner/browser-set');
 
 
 describe('Runner', function () {
@@ -215,7 +216,7 @@ describe('Runner', function () {
         function testFilter (filterFn, expectedTestNames, done) {
             runner.filter(filterFn);
 
-            runner._runTask = function (Reporter, browserConnections, tests) {
+            runner._runTask = function (Reporter, browserSet, tests) {
                 var actualTestNames = tests
                     .map(function (test) {
                         return test.name;
@@ -296,10 +297,10 @@ describe('Runner', function () {
     });
 
     describe('.run()', function () {
-        it('Should not create a new local browser connection if sources are empty', function (done) {
+        it('Should not create a new local browser connection if sources are empty', function () {
             var firstConnectionId = testCafe.createBrowserConnection().id;
 
-            var run = runner
+            return runner
                 .browsers({ path: '/non/exist' })
                 .reporter('list')
                 .src([])
@@ -307,42 +308,47 @@ describe('Runner', function () {
                 .then(function () {
                     throw new Error('Promise rejection expected');
                 })
-                .catch(function () {
+                .catch(function (err) {
                     var secondConnectionId = testCafe.createBrowserConnection().id;
+
+                    expect(err.message).eql('No test file specified.');
 
                     expect(secondConnectionId).eql(firstConnectionId + 1);
                 });
-
-            run
-                .then(function () {
-                    done();
-                })
-                .catch(done);
         });
 
-        it('Should raise an error if the browser connections are not ready', function (done) {
+        it('Should raise an error if the browser connections are not ready', function () {
+            var origWaitConnReady = BrowserSet.prototype._waitConnectionsReady;
+
+            BrowserSet.prototype._waitConnectionsReady = function () {
+                this.BROWSER_CONNECTION_READY_TIMEOUT = 0;
+                return origWaitConnReady.call(this);
+            };
+
+            //NOTE: Restore original in prototype in test timeout callback
+            var testCallback   = this.test.callback;
+
+            this.test.callback = function (err) {
+                BrowserSet.prototype._waitConnectionsReady = origWaitConnReady;
+                testCallback(err);
+            };
+
             var brokenConnection = testCafe.createBrowserConnection();
 
-            runner.bootstrapper.BROWSER_CONNECTION_READY_TIMEOUT = 0;
-
-            var run = runner
+            return runner
                 .browsers(brokenConnection)
                 .reporter('list')
                 .src('test/server/data/test-suite/top.test.js')
                 .run()
                 .then(function () {
+                    BrowserSet.prototype._waitConnectionsReady = origWaitConnReady;
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
+                    BrowserSet.prototype._waitConnectionsReady = origWaitConnReady;
                     expect(err.message).eql('Unable to establish one or more of the specified browser connections. ' +
                                             'This can be caused by network issues or remote device failure.');
                 });
-
-            run
-                .then(function () {
-                    done();
-                })
-                .catch(done);
         });
 
         it('Should raise an error if browser gets disconnected before bootstrapping', function (done) {
@@ -552,6 +558,34 @@ describe('Runner', function () {
                 .catch(function (err) {
                     expect(err.message).eql('I have failed :(');
                     expect(closeCalled).eql(1);
+                });
+        });
+
+        it('Should not stop the task while connected browser is not in idle state', function () {
+            var IDLE_DELAY = 50;
+
+            var remoteConnection = testCafe.createBrowserConnection();
+
+            remoteConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                       '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+
+            remoteConnection.idle = false;
+
+            taskActionCallback = function () {
+                taskDone.call(this);
+
+                setTimeout(function () {
+                    remoteConnection.idle = true;
+                    remoteConnection.emit('idle');
+                }, IDLE_DELAY);
+            };
+
+            return runner
+                .browsers(remoteConnection)
+                .run()
+                .then(function () {
+                    expect(remoteConnection.idle).to.be.true;
+                    remoteConnection.close();
                 });
         });
     });

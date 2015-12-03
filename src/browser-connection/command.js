@@ -4,7 +4,6 @@
 // --------------------------------------------------------
 
 export default {
-    run:   'run',
-    idle:  'idle',
-    close: 'close'
+    run:  'run',
+    idle: 'idle'
 };
