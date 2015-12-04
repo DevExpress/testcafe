@@ -1,5 +1,4 @@
 var path = require('path'),
-    fs = require('fs'),
     util = require('util'),
     astProcessor = require('uglify-js').uglify,
     javascriptParser = require('uglify-js').parser,
@@ -10,7 +9,8 @@ var path = require('path'),
     CallAnalyzer = require('./analysis/call_analyzer'),
     StepsAnalyzer = require('./analysis/steps_analyzer'),
     RequireAnalyzer = require('./analysis/require_analyzer'),
-    ErrCodes = require('./err_codes');
+    ErrCodes = require('./err_codes'),
+    readSourceFile = require('../utils/read-source-file');
 
 //Util
 //NOTE: this is a version of splice which can operate with array of the injectable items
@@ -436,21 +436,22 @@ Compiler.prototype._createExternalTestCasesAnalyzer = function (testCasesPath, r
     var compiler = this;
 
     return function (readerCallback) {
-        fs.readFile(testCasesPath, function (readErr, data) {
-            if (readErr)
-                compiler._fixtureErr(ErrCodes.FAILED_TO_READ_EXTERNAL_TEST_CASES, 0, {testCasesPath: testCasesPath});
-
-            else {
+        readSourceFile(testCasesPath)
+            .then(data => {
                 var ast = compiler._parseExternalTestCases(data);
                 compiler._validateTestCaseListAst(ast, testCasesPath);
 
                 refTestsStepData.forEach(function (testStepData) {
                     testStepData.testCasesDirectiveAst = ast;
                 });
-            }
 
-            readerCallback();
-        });
+                readerCallback();
+
+            })
+            .catch(() => {
+                compiler._fixtureErr(ErrCodes.FAILED_TO_READ_EXTERNAL_TEST_CASES, 0, { testCasesPath: testCasesPath });
+                readerCallback();
+            });
     };
 };
 

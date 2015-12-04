@@ -5,11 +5,9 @@ import { createHash } from 'crypto';
 import { resolve as resolveUrl } from 'url';
 import { Promise } from 'es6-promise';
 import { Compiler as LegacyCompiler, getErrMsg } from './legacy';
-import promisify from 'es6-promisify';
 import RequireReader from './require-reader';
+import readSourceFile from './utils/read-source-file';
 
-
-var readFile = promisify(fs.readFile);
 
 function exists (filePath) {
     return new Promise(resolve => fs.exists(filePath, resolve));
@@ -69,7 +67,7 @@ export default class LegacyCompilerAdapter {
             var isExists = await exists(cfgPath);
 
             if (isExists) {
-                var data = await readFile(cfgPath);
+                var data = await readSourceFile(cfgPath);
                 var cfg  = JSON.parse(data);
 
                 LegacyCompilerAdapter._resolveConfigModules(cfg, dir);
