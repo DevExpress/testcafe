@@ -14,9 +14,9 @@ var clickPlaybackAutomation    = testCafeRunner.get('./automation/playback/click
 var pressPlaybackAutomation    = testCafeRunner.get('./automation/playback/press');
 var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
 
-var testCafeUI = window.getTestCafeModule('testCafeUI');
-var cursor     = testCafeUI.get('./cursor');
-
+var testCafeUI    = window.getTestCafeModule('testCafeUI');
+var cursor        = testCafeUI.get('./cursor');
+var selectElement = testCafeUI.get('./select-element');
 
 automation.init();
 cursor.init();
@@ -36,6 +36,8 @@ $(document).ready(function () {
         currentErrorElement      = null,
         currentActionSourceIndex = null,
         handlersLog              = [];
+
+    var isMobileBrowser = browserUtils.isSafari && browserUtils.hasTouchEvents || browserUtils.isAndroid;
 
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
         var seriesActionsRun = function (elements, callback) {
@@ -412,6 +414,43 @@ $(document).ready(function () {
         }, 1500);
     });
 
+    // NOTE: Android and iOS ignore the size and multiple attributes, all select elements behave like select with size=1
+    if (isMobileBrowser) {
+
+        asyncTest('in select elements with "size" more than 1, click on an option raises an error when the option list is collapsed', function () {
+            SETTINGS.ENABLE_SOURCE_INDEX = true;
+            var select                   = createSelect(2);
+            var option                   = $(select).children()[1];
+
+            actionsAPI.click(option, '#312');
+
+            setTimeout(function () {
+                equal(currentErrorType, ERROR_TYPE.invisibleActionElement);
+                equal(currentErrorElement, '&lt;option class=&quot;testElement&quot;&gt;');
+                equal(currentActionSourceIndex, 312);
+
+                startNext();
+            }, 1500);
+        });
+
+        asyncTest('in select elements with the "multiple" attribute, click on an option raises an error when option list is collapsed', function () {
+            SETTINGS.ENABLE_SOURCE_INDEX = true;
+            var select                   = createSelect();
+            var option                   = $(select).children()[1];
+
+            $(select).attr('multiple', 'multiple');
+
+            actionsAPI.click(option, '#312');
+
+            setTimeout(function () {
+                equal(currentErrorType, ERROR_TYPE.invisibleActionElement);
+                equal(currentErrorElement, '&lt;option class=&quot;testElement&quot;&gt;');
+                equal(currentActionSourceIndex, 312);
+
+                startNext();
+            }, 1500);
+        });
+    }
 
     module('mouse actions with select element');
     asyncTest('click on select and on option', function () {
@@ -591,139 +630,164 @@ $(document).ready(function () {
         });
     });
 
+    // NOTE: Android and iOS ignore the size and multiple attributes, all select elements behave like select with size=1
+    if (isMobileBrowser) {
 
-    module('mouse actions with select element with attribute size more than one');
-    asyncTest('click on option', function () {
-        var select = createSelect(2);
+        module('mouse actions with multiline select element');
+        asyncTest('click on the "select" element with the "size" attribute greater than one, then click on an option', function () {
+            var select = createSelect(2),
+                option = $(select).children()[2];
 
-        select.selectedIndex = 0;
-        equal(select.selectedIndex, 0);
-        clickPlaybackAutomation($(select).children()[1], {}, function () {
-            equal(select.selectedIndex, 1);
-            startNext();
+            clickPlaybackAutomation(select, {}, function () {
+                ok(selectElement.isOptionListExpanded($(select)));
+                startNext();
+            });
         });
-    });
 
-    asyncTest('click on option with scroll', function () {
-        var select = createSelect(2);
+        asyncTest('click on the "select" element with the "multiple" attribute, then click on an option', function () {
+            var select = createSelect(),
+                option = $(select).children()[2];
 
-        select.selectedIndex = 0;
-        equal(select.selectedIndex, 0);
-        clickPlaybackAutomation($(select).children(':last')[0], {}, function () {
-            equal(select.selectedIndex, 4);
-            startNext();
+            $(select).attr('multiple', 'multiple');
+
+            clickPlaybackAutomation(select, {}, function () {
+                ok(selectElement.isOptionListExpanded($(select)));
+                startNext();
+            });
         });
-    });
+    }
+    else {
+        module('mouse actions with select element with attribute size more than one');
+        asyncTest('click on option', function () {
+            var select = createSelect(2);
 
-    asyncTest('click on disabled option', function () {
-        var select  = createSelect(2),
-            $option = $(select).children(':first');
-
-        $option.attr('disabled', 'disabled');
-
-        select.selectedIndex = 0;
-        equal(select.selectedIndex, 0);
-        clickPlaybackAutomation($option[0], {}, function () {
+            select.selectedIndex = 0;
             equal(select.selectedIndex, 0);
-            startNext();
+            clickPlaybackAutomation($(select).children()[1], {}, function () {
+                equal(select.selectedIndex, 1);
+                startNext();
+            });
         });
-    });
 
-    asyncTest('click on option (select size more than options count)', function () {
-        var select = createSelect(10);
+        asyncTest('click on option with scroll', function () {
+            var select = createSelect(2);
 
-        select.selectedIndex = 0;
-        equal(select.selectedIndex, 0);
-        clickPlaybackAutomation($(select).children()[3], {}, function () {
-            equal(select.selectedIndex, 3);
-            startNext();
+            select.selectedIndex = 0;
+            equal(select.selectedIndex, 0);
+            clickPlaybackAutomation($(select).children(':last')[0], {}, function () {
+                equal(select.selectedIndex, 4);
+                startNext();
+            });
         });
-    });
 
+        asyncTest('click on disabled option', function () {
+            var select  = createSelect(2),
+                $option = $(select).children(':first');
 
-    module('press actions with select element with attribute size more than one');
-    asyncTest('press down/up in select', function () {
-        var select = createSelect();
+            $option.attr('disabled', 'disabled');
 
-        $(select).attr('size', '2');
-        //NOTE: IE11 set selectedIndex = -1 after setting attribute size != 1
-        select.selectedIndex = 0;
-        $(select).focus();
-
-        pressDownUpKeysActions(select);
-    });
-
-    asyncTest('press right/left in select', function () {
-        var select = createSelect();
-
-        $(select).attr('size', '2');
-        //NOTE: IE11 set selectedIndex = -1 after setting attribute size != 1
-        select.selectedIndex = 0;
-        $(select).focus();
-
-        pressRightLeftKeysActions(select);
-    });
-
-    asyncTest('press down/up in select with "size" more than options count', function () {
-        var select = createSelect();
-
-        $(select).attr('size', '10');
-        //NOTE: IE11 set selectedIndex = -1 after setting attribute size != 1
-        select.selectedIndex = 0;
-        $(select).focus();
-
-        pressDownUpKeysActions(select);
-    });
-
-    asyncTest('press right/left in select with "size" more than options count', function () {
-        var select = createSelect();
-
-        $(select).attr('size', '10');
-        //NOTE: IE11 set selectedIndex = -1 after setting attribute size != 1
-        select.selectedIndex = 0;
-        $(select).focus();
-
-        pressRightLeftKeysActions(select);
-    });
-
-
-    module('mouse actions with select element with attribute multiple');
-    asyncTest('click on option with scroll', function () {
-        var select = createSelect();
-
-        select.selectedIndex = 0;
-        equal(select.selectedIndex, 0);
-        $(select).attr('multiple', 'multiple');
-        clickPlaybackAutomation($(select).children(':last')[0], {}, function () {
-            equal(select.selectedIndex, 4);
-            startNext();
+            select.selectedIndex = 0;
+            equal(select.selectedIndex, 0);
+            clickPlaybackAutomation($option[0], {}, function () {
+                equal(select.selectedIndex, 0);
+                startNext();
+            });
         });
-    });
 
-    asyncTest('click on option with scroll (attribute size more than one)', function () {
-        var select = createSelect(2);
+        asyncTest('click on an option (the select size is more than the option count)', function () {
+            var select = createSelect(10);
 
-        select.selectedIndex = 0;
-        equal(select.selectedIndex, 0);
-        $(select).attr('multiple', 'multiple');
-        clickPlaybackAutomation($(select).children(':last')[0], {}, function () {
-            equal(select.selectedIndex, 4);
-            startNext();
+            select.selectedIndex = 0;
+            equal(select.selectedIndex, 0);
+            clickPlaybackAutomation($(select).children()[3], {}, function () {
+                equal(select.selectedIndex, 3);
+                startNext();
+            });
         });
-    });
 
-    asyncTest('click on option with scroll (attribute size less than one)', function () {
-        var select = createSelect(-1);
+        module('press actions with select element with attribute size more than one');
+        asyncTest('press down/up in select', function () {
+            var select = createSelect();
 
-        select.selectedIndex = 0;
-        equal(select.selectedIndex, 0);
-        $(select).attr('multiple', 'multiple');
-        clickPlaybackAutomation($(select).children(':last')[0], {}, function () {
-            equal(select.selectedIndex, 4);
-            startNext();
+            $(select).attr('size', '2');
+            //NOTE: IE11 sets selectedIndex = -1 after setting attribute size != 1
+            select.selectedIndex = 0;
+            $(select).focus();
+
+            pressDownUpKeysActions(select);
         });
-    });
 
+        asyncTest('press right/left in select', function () {
+            var select = createSelect();
+
+            $(select).attr('size', '2');
+            //NOTE: IE11 sets selectedIndex = -1 after setting attribute size != 1
+            select.selectedIndex = 0;
+            $(select).focus();
+
+            pressRightLeftKeysActions(select);
+        });
+
+        asyncTest('press down/up in select with "size" more than the option count', function () {
+            var select = createSelect();
+
+            $(select).attr('size', '10');
+            //NOTE: IE11 sets selectedIndex = -1 after setting attribute size != 1
+            select.selectedIndex = 0;
+            $(select).focus();
+
+            pressDownUpKeysActions(select);
+        });
+
+        asyncTest('press right/left in select with "size" more than the option count', function () {
+            var select = createSelect();
+
+            $(select).attr('size', '10');
+            //NOTE: IE11 sets selectedIndex = -1 after setting attribute size != 1
+            select.selectedIndex = 0;
+            $(select).focus();
+
+            pressRightLeftKeysActions(select);
+        });
+
+
+        module('mouse actions with the "select" element with the "multiple" attribute');
+        asyncTest('click on option with scroll', function () {
+            var select = createSelect();
+
+            select.selectedIndex = 0;
+            equal(select.selectedIndex, 0);
+            $(select).attr('multiple', 'multiple');
+            clickPlaybackAutomation($(select).children(':last')[0], {}, function () {
+                equal(select.selectedIndex, 4);
+                startNext();
+            });
+        });
+
+        asyncTest('click on option with scroll (attribute size more than one)', function () {
+            var select = createSelect(2);
+
+            select.selectedIndex = 0;
+            equal(select.selectedIndex, 0);
+            $(select).attr('multiple', 'multiple');
+            clickPlaybackAutomation($(select).children(':last')[0], {}, function () {
+                equal(select.selectedIndex, 4);
+                startNext();
+            });
+        });
+
+        asyncTest('click on option with scroll (attribute size less than one)', function () {
+            var select = createSelect(-1);
+
+            select.selectedIndex = 0;
+            equal(select.selectedIndex, 0);
+            $(select).attr('multiple', 'multiple');
+            clickPlaybackAutomation($(select).children(':last')[0], {}, function () {
+                equal(select.selectedIndex, 4);
+                startNext();
+            });
+        });
+    }
 
     module('mouse actions with select with option groups');
     asyncTest('click select and option', function () {
@@ -960,215 +1024,217 @@ $(document).ready(function () {
         });
     });
 
+   // Android and iOS ignore the size and multiple attributes, all select elements behave like select with size=1
+   if (!isMobileBrowser) {
 
-    module('mouse actions with select with option groups and size more than one');
-    asyncTest('click optgroup', function () {
-        var select           = createSelectWithGroups(),
-            $select          = $(select),
-            group            = $select.find('optgroup')[0];
+       module('mouse actions with select with the "groups" option and size more than one');
+       asyncTest('click optgroup', function () {
+           var select  = createSelectWithGroups(),
+               $select = $(select),
+               group   = $select.find('optgroup')[0];
 
-        $select.attr('size', '4');
-        select.selectedIndex = 0;
+           $select.attr('size', '4');
+           select.selectedIndex = 0;
 
-        window.setTimeout(function () {
-            //NOTE: during set selected option IE and Mozilla scroll select
-            $select.scrollTop(0);
-            clickPlaybackAutomation(group, {}, function () {
-                equal(select.selectedIndex, 0);
-                window.setTimeout(function () {
-                    startNext();
-                }, 0);
-            });
-        }, 100);
-    });
+           window.setTimeout(function () {
+               //NOTE: when setting the selected option, IE and Mozilla scroll the select
+               $select.scrollTop(0);
+               clickPlaybackAutomation(group, {}, function () {
+                   equal(select.selectedIndex, 0);
+                   window.setTimeout(function () {
+                       startNext();
+                   }, 0);
+               });
+           }, 100);
+       });
 
-    asyncTest('click option', function () {
-        var select           = createSelectWithGroups(),
-            $select          = $(select),
-            option           = $select.find('option')[1];
+       asyncTest('click option', function () {
+           var select  = createSelectWithGroups(),
+               $select = $(select),
+               option  = $select.find('option')[1];
 
-        $select.css({
-            position: 'absolute',
-            top:      '200px',
-            left:     '300px'
-        });
-        $select.attr('size', '5');
-        select.selectedIndex = 0;
+           $select.css({
+               position: 'absolute',
+               top:      '200px',
+               left:     '300px'
+           });
+           $select.attr('size', '5');
+           select.selectedIndex = 0;
 
-        window.setTimeout(function () {
-            //NOTE: during set selected option IE and Mozilla scroll select
-            $select.scrollTop(0);
-            clickPlaybackAutomation(option, {}, function () {
-                equal($select.scrollTop(), 0);
-                equal(select.selectedIndex, 1);
-                window.setTimeout(function () {
-                    startNext();
-                }, 0);
-            });
-        }, 100);
-    });
+           window.setTimeout(function () {
+               //NOTE: when setting the selected option, IE and Mozilla scroll the select
+               $select.scrollTop(0);
+               clickPlaybackAutomation(option, {}, function () {
+                   equal($select.scrollTop(), 0);
+                   equal(select.selectedIndex, 1);
+                   window.setTimeout(function () {
+                       startNext();
+                   }, 0);
+               });
+           }, 100);
+       });
 
-    asyncTest('click option with scroll down', function () {
-        var select           = createSelectWithGroups(),
-            $select          = $(select),
-            option           = $select.find('option')[8];
+       asyncTest('click option with scroll down', function () {
+           var select  = createSelectWithGroups(),
+               $select = $(select),
+               option  = $select.find('option')[8];
 
-        $select.css({
-            position: 'absolute',
-            top:      '200px',
-            left:     '300px'
-        });
-        $select.attr('size', '5');
-        select.selectedIndex = 0;
+           $select.css({
+               position: 'absolute',
+               top:      '200px',
+               left:     '300px'
+           });
+           $select.attr('size', '5');
+           select.selectedIndex = 0;
 
-        window.setTimeout(function () {
-            //NOTE: during set selected option IE and Mozilla scroll select
-            $select.scrollTop(0);
-            clickPlaybackAutomation(option, {}, function () {
-                ok($select.scrollTop() > 0);
-                equal(select.selectedIndex, 8);
-                window.setTimeout(function () {
-                    startNext();
-                }, 0);
-            });
-        }, 100);
-    });
+           window.setTimeout(function () {
+               //NOTE: when setting the selected option, IE and Mozilla scroll the select
+               $select.scrollTop(0);
+               clickPlaybackAutomation(option, {}, function () {
+                   ok($select.scrollTop() > 0);
+                   equal(select.selectedIndex, 8);
+                   window.setTimeout(function () {
+                       startNext();
+                   }, 0);
+               });
+           }, 100);
+       });
 
-    asyncTest('click option with scroll up', function () {
-        var select           = createSelectWithGroups(),
-            $select          = $(select),
-            option           = $select.find('option')[4];
+       asyncTest('click option with scroll up', function () {
+           var select  = createSelectWithGroups(),
+               $select = $(select),
+               option  = $select.find('option')[4];
 
-        $select.css({
-            position: 'absolute',
-            top:      '200px',
-            left:     '300px'
-        });
-        $select.attr('size', '5');
-        select.selectedIndex = 8;
+           $select.css({
+               position: 'absolute',
+               top:      '200px',
+               left:     '300px'
+           });
+           $select.attr('size', '5');
+           select.selectedIndex = 8;
 
-        window.setTimeout(function () {
-            ok($select.scrollTop() > 0);
-            clickPlaybackAutomation(option, {}, function () {
-                ok($select.scrollTop() > 0);
-                equal(select.selectedIndex, 4);
-                window.setTimeout(function () {
-                    startNext();
-                }, 0);
-            });
-        }, 100);
-    });
+           window.setTimeout(function () {
+               ok($select.scrollTop() > 0);
+               clickPlaybackAutomation(option, {}, function () {
+                   ok($select.scrollTop() > 0);
+                   equal(select.selectedIndex, 4);
+                   window.setTimeout(function () {
+                       startNext();
+                   }, 0);
+               });
+           }, 100);
+       });
 
-    asyncTest('click option in subgroup', function () {
-        var select           = createSelectWithGroups(),
-            $select          = $(select),
-            $optgroup        = $select.find('optgroup').eq(1),
-            $newOptgroup     = $('<optgroup label="subgroup"></optgroup>')
-                .addClass(TEST_ELEMENT_CLASS)
-                .appendTo($optgroup[0]),
-            $newOption       = $('<option></option>').text('sub option')
-                .addClass(TEST_ELEMENT_CLASS)
-                .appendTo($newOptgroup[0]);
+       asyncTest('click option in subgroup', function () {
+           var select       = createSelectWithGroups(),
+               $select      = $(select),
+               $optgroup    = $select.find('optgroup').eq(1),
+               $newOptgroup = $('<optgroup label="subgroup"></optgroup>')
+                   .addClass(TEST_ELEMENT_CLASS)
+                   .appendTo($optgroup[0]),
+               $newOption   = $('<option></option>').text('sub option')
+                   .addClass(TEST_ELEMENT_CLASS)
+                   .appendTo($newOptgroup[0]);
 
-        $select.css({
-            position: 'absolute',
-            top:      '200px',
-            left:     '300px'
-        });
-        $select.attr('size', '5');
-        select.selectedIndex = 0;
+           $select.css({
+               position: 'absolute',
+               top:      '200px',
+               left:     '300px'
+           });
+           $select.attr('size', '5');
+           select.selectedIndex = 0;
 
-        window.setTimeout(function () {
-            //NOTE: during set selected option IE and Mozilla scroll select
-            $select.scrollTop(0);
-            clickPlaybackAutomation($newOption[0], {}, function () {
-                ok($select.scrollTop() > 0);
-                equal(select.selectedIndex, 6);
-                window.setTimeout(function () {
-                    startNext();
-                }, 0);
-            });
-        }, 100);
-    });
+           window.setTimeout(function () {
+               //NOTE: when setting the selected option, IE and Mozilla scroll the select
+               $select.scrollTop(0);
+               clickPlaybackAutomation($newOption[0], {}, function () {
+                   ok($select.scrollTop() > 0);
+                   equal(select.selectedIndex, 6);
+                   window.setTimeout(function () {
+                       startNext();
+                   }, 0);
+               });
+           }, 100);
+       });
 
-    asyncTest('click subgroup', function () {
-        var select           = createSelectWithGroups(),
-            $select          = $(select),
-            $optgroup        = $select.find('optgroup').eq(1),
-            $newOptgroup     = $('<optgroup label="subgroup"></optgroup>')
-                .addClass(TEST_ELEMENT_CLASS)
-                .appendTo($optgroup[0]),
-            $newOption       = $('<option></option>').text('sub option')
-                .addClass(TEST_ELEMENT_CLASS)
-                .appendTo($newOptgroup[0]);
+       asyncTest('click subgroup', function () {
+           var select       = createSelectWithGroups(),
+               $select      = $(select),
+               $optgroup    = $select.find('optgroup').eq(1),
+               $newOptgroup = $('<optgroup label="subgroup"></optgroup>')
+                   .addClass(TEST_ELEMENT_CLASS)
+                   .appendTo($optgroup[0]),
+               $newOption   = $('<option></option>').text('sub option')
+                   .addClass(TEST_ELEMENT_CLASS)
+                   .appendTo($newOptgroup[0]);
 
-        $select.css({
-            position: 'absolute',
-            top:      '200px',
-            left:     '300px'
-        });
-        $select.attr('size', '5');
-        select.selectedIndex = 0;
+           $select.css({
+               position: 'absolute',
+               top:      '200px',
+               left:     '300px'
+           });
+           $select.attr('size', '5');
+           select.selectedIndex = 0;
 
-        window.setTimeout(function () {
-            //NOTE: during set selected option IE and Mozilla scroll select
-            $select.scrollTop(0);
-            clickPlaybackAutomation($newOptgroup[0], {}, function () {
-                ok($select.scrollTop() > 0);
-                equal(select.selectedIndex, 0);
-                window.setTimeout(function () {
-                    startNext();
-                }, 0);
-            });
-        }, 100);
-    });
+           window.setTimeout(function () {
+               //NOTE: when setting the selected option, IE and Mozilla scroll the select
+               $select.scrollTop(0);
+               clickPlaybackAutomation($newOptgroup[0], {}, function () {
+                   ok($select.scrollTop() > 0);
+                   equal(select.selectedIndex, 0);
+                   window.setTimeout(function () {
+                       startNext();
+                   }, 0);
+               });
+           }, 100);
+       });
 
-    asyncTest('click option out of group', function () {
-        var select           = createSelectWithGroups(),
-            $select          = $(select),
-            $optgroup        = $select.find('optgroup').eq(2),
-            $newOption       = $('<option></option>').text('outer option')
-                .addClass(TEST_ELEMENT_CLASS)
-                .insertAfter($optgroup);
+       asyncTest('click option out of group', function () {
+           var select     = createSelectWithGroups(),
+               $select    = $(select),
+               $optgroup  = $select.find('optgroup').eq(2),
+               $newOption = $('<option></option>').text('outer option')
+                   .addClass(TEST_ELEMENT_CLASS)
+                   .insertAfter($optgroup);
 
-        $select.attr('size', '5');
-        select.selectedIndex = 0;
+           $select.attr('size', '5');
+           select.selectedIndex = 0;
 
-        window.setTimeout(function () {
-            //NOTE: during set selected option IE and Mozilla scroll select
-            $select.scrollTop(0);
-            clickPlaybackAutomation($newOption[0], {}, function () {
-                ok($select.scrollTop() > 0);
-                equal(select.selectedIndex, 9);
-                window.setTimeout(function () {
-                    startNext();
-                }, 0);
-            });
-        }, 100);
-    });
+           window.setTimeout(function () {
+               //NOTE: when setting the selected option, IE and Mozilla scroll the select
+               $select.scrollTop(0);
+               clickPlaybackAutomation($newOption[0], {}, function () {
+                   ok($select.scrollTop() > 0);
+                   equal(select.selectedIndex, 9);
+                   window.setTimeout(function () {
+                       startNext();
+                   }, 0);
+               });
+           }, 100);
+       });
 
 
-    module('press actions with select with option groups and size more than one');
-    asyncTest('press down/up', function () {
-        var select           = createSelectWithGroupsForCheckPress();
+       module('press actions with select with the "groups" option and size more than one');
+       asyncTest('press down/up', function () {
+           var select = createSelectWithGroupsForCheckPress();
 
-        $(select).attr('size', '5');
-        select.selectedIndex = 0;
-        $(select).focus();
+           $(select).attr('size', '5');
+           select.selectedIndex = 0;
+           $(select).focus();
 
-        pressDownUpKeysActionsForSelectWithOptgroups(select, startNext);
-    });
+           pressDownUpKeysActionsForSelectWithOptgroups(select, startNext);
+       });
 
-    asyncTest('press right/left', function () {
-        var select           = createSelectWithGroupsForCheckPress();
+       asyncTest('press right/left', function () {
+           var select = createSelectWithGroupsForCheckPress();
 
-        $(select).attr('size', '5');
-        select.selectedIndex = 0;
-        $(select).focus();
+           $(select).attr('size', '5');
+           select.selectedIndex = 0;
+           $(select).focus();
 
-        pressRightLeftKeysActionsForSelectWithOptgroups(select, startNext, browserUtils.isWebKit);
-    });
-
+           pressRightLeftKeysActionsForSelectWithOptgroups(select, startNext, browserUtils.isWebKit);
+       });
+   }
 
     module('regression');
     asyncTest('B237794 - Select options list doesn\'t close after dblclick in Chrome and Opera (dblclick)', function () {
@@ -1295,6 +1361,8 @@ $(document).ready(function () {
                     equal(handlersLog.join(), 'select mousedown,select mouseup,select click,option mousedown,option mouseup,select change,option click');
                 else if (browserUtils.isIE)
                     equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select mousedown,select mouseup,select change,option click');
+                else if (isMobileBrowser)
+                    equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select change');
                 else
                     equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select change,select mouseup,select click');
                 startNext();
@@ -1323,6 +1391,8 @@ $(document).ready(function () {
                             equal(handlersLog.join(), 'select mousedown,select mouseup,select click,option mousedown,option mouseup,select change,option click,select mousedown,select mouseup,select click,option mousedown,option mouseup,option click');
                         else if (browserUtils.isIE)
                             equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select mousedown,select mouseup,select change,option click,select mousedown,select mouseup,select click,select mousedown,select mouseup,option click');
+                        else if (isMobileBrowser)
+                            equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select change,select mousedown,select mouseup,select click');
                         else
                             equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select change,select mouseup,select click,select mousedown,select mouseup,select click,select mouseup,select click');
                         startNext();
@@ -1361,10 +1431,26 @@ $(document).ready(function () {
         select.selectedIndex = 0;
         equal(select.selectedIndex, 0);
 
-        clickPlaybackAutomation($option[0], {}, function () {
-            equal(select.selectedIndex, 2);
-            equal(handlersLog.join(), browserUtils.isIE ? 'select mousedown,select mouseup,select change,select click' : 'option mousedown,option mouseup,select change,option click');
-            startNext();
+        window.async.series({
+            'Click on select in Android and iOS': function (callback) {
+                if (isMobileBrowser)
+                    clickPlaybackAutomation(select, {}, callback);
+                else
+                    callback();
+
+            },
+            'Click on option': function () {
+                clickPlaybackAutomation($option[0], {}, function () {
+                    equal(select.selectedIndex, 2);
+                    if (browserUtils.isIE)
+                        equal(handlersLog.join(), 'select mousedown,select mouseup,select change,select click');
+                    else if (isMobileBrowser)
+                        equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select change');
+                    else
+                        equal(handlersLog.join(), 'option mousedown,option mouseup,select change,option click');
+                    startNext();
+                });
+            }
         });
     });
 
@@ -1375,14 +1461,38 @@ $(document).ready(function () {
         //bind handlers
         bindSelectAndOptionHandlers($(select), $option);
 
-        clickPlaybackAutomation($option[0], {}, function () {
-            equal(select.selectedIndex, 2);
+        window.async.series({
+            'Click on select in Android/iOS first time': function (callback) {
+                if (isMobileBrowser)
+                    clickPlaybackAutomation(select, {}, callback);
+                else
+                    callback();
 
-            clickPlaybackAutomation($option[0], {}, function () {
-                equal(select.selectedIndex, 2);
-                equal(handlersLog.join(), browserUtils.isIE ? 'select mousedown,select mouseup,select change,select click,select mousedown,select mouseup,select click' : 'option mousedown,option mouseup,select change,option click,option mousedown,option mouseup,option click');
-                startNext();
-            });
+            },
+            'Click on option first time': function (callback) {
+                clickPlaybackAutomation($option[0], {}, function () {
+                    equal(select.selectedIndex, 2);
+                    callback();
+                });
+            },
+            'Click on select in Android/iOS second time': function (callback) {
+                if (isMobileBrowser)
+                    clickPlaybackAutomation(select, {}, callback);
+                else
+                    callback();
+            },
+            'Click on option second time': function () {
+                clickPlaybackAutomation($option[0], {}, function () {
+                    equal(select.selectedIndex, 2);
+                    if (browserUtils.isIE)
+                        equal(handlersLog.join(), 'select mousedown,select mouseup,select change,select click,select mousedown,select mouseup,select click');
+                    else if (isMobileBrowser)
+                        equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select change,select mousedown,select mouseup,select click');
+                    else
+                        equal(handlersLog.join(), 'option mousedown,option mouseup,select change,option click,option mousedown,option mouseup,option click');
+                    startNext();
+                });
+            }
         });
     });
 
@@ -1395,7 +1505,7 @@ $(document).ready(function () {
         select.selectedIndex = 0;
 
         clickPlaybackAutomation(select, {}, function () {
-            equal(handlersLog.join(), browserUtils.isIE ? 'select mousedown,select mouseup,select click' : 'select mousedown,select mouseup,select click');
+            equal(handlersLog.join(), 'select mousedown,select mouseup,select click');
             startNext();
         });
     });

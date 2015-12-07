@@ -262,10 +262,9 @@ $(document).ready(function () {
                 .addClass(TEST_ELEMENT_CLASS)
                 .click(function () {
                     clicked = true;
-                })
-                .appendTo('body');
+                });
 
-        window.setTimeout(function () {
+        window.QUnitGlobals.waitForIframe($iframe[0]).then(function () {
             try {
                 //NOTE: for not ie
                 var iframeBody = $iframe[0].contentWindow.document;
@@ -280,7 +279,9 @@ $(document).ready(function () {
                 ok(clicked, 'click was raised');
                 startNext();
             });
-        }, 500);
+        });
+
+        $iframe.appendTo('body');
     });
 
     asyncTest('B237862 - Test runner - the type action does not consider maxLength of the input element.', function () {

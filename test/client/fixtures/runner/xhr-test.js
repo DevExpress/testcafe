@@ -19,7 +19,7 @@ $(document).ready(function () {
         xhrBarrier.init();
 
         for (var i = 0; i < reqCount; i++) {
-            $.get('/xhr-test/500', function () {
+            $.get('/xhr-test/200', function () {
                 completeReqCount++;
             });
         }
