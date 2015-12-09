@@ -5,7 +5,7 @@ var RequireAnalyzer       = require('../../lib/compiler/legacy/analysis/require_
 
 
 describe('Legacy compiler adapter', function () {
-    it('Should read each require once and save it to the cache', function (done) {
+    it('Should read each require once and save it to the cache', function () {
         var requireAnalyzingCount    = 0;
         var nativeRequireAnalyzerRun = RequireAnalyzer.run;
 
@@ -21,19 +21,17 @@ describe('Legacy compiler adapter', function () {
 
         var compiler = new LegacyCompilerAdapter(sources);
 
-        compiler
+        return compiler
             .getTests()
             .then(function () {
                 expect(requireAnalyzingCount).eql(1);
-                done();
-            })
-            .catch(done);
+            });
     });
 
-    it('Should provide errors for the legacy compiler', function (done) {
+    it('Should provide errors for the legacy compiler', function () {
         var compiler = new LegacyCompilerAdapter(['test/server/data/test-suite/broken.test.js']);
 
-        compiler
+        return compiler
             .getTests()
             .then(function () {
                 throw new Error('Promise rejection expected');
@@ -41,11 +39,6 @@ describe('Legacy compiler adapter', function () {
             .catch(function (err) {
                 expect(err).to.be.an.instanceof(Error);
                 expect(err.message).not.to.be.empty;
-            })
-
-            .then(function () {
-                done();
-            })
-            .catch(done);
+            });
     });
 });

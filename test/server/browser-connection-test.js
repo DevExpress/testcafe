@@ -5,9 +5,12 @@ var request        = require('request');
 var createTestCafe = require('../../lib/');
 var COMMAND        = require('../../lib/browser-connection/command');
 
-
-var promisedRequest = promisify(request);
-
+function promisedRequest (opts) {
+    return promisify(request)(opts)
+        .then(function (result) {
+            return result[0];
+        });
+}
 
 describe('Browser connection', function () {
     var testCafe   = null;
@@ -15,11 +18,10 @@ describe('Browser connection', function () {
 
 
     // Fixture setup/teardown
-    before(function (done) {
-        createTestCafe('127.0.0.1', 1335, 1336)
+    before(function () {
+        return createTestCafe('127.0.0.1', 1335, 1336)
             .then(function (tc) {
                 testCafe = tc;
-                done();
             });
     });
 
@@ -39,7 +41,7 @@ describe('Browser connection', function () {
 
 
     // Tests
-    it('Should fire "ready" event and redirect to idle page once established', function (done) {
+    it('Should fire "ready" event and redirect to idle page once established', function () {
         var eventFired = false;
 
         connection.on('ready', function () {
@@ -55,26 +57,24 @@ describe('Browser connection', function () {
             }
         };
 
-        request(options, function (err, res) {
-            expect(eventFired).to.be.true;
-            expect(connection.ready).to.be.true;
-            expect(connection.userAgent).eql('Chrome 41.0.2227 / Mac OS X 10.10.1');
-            expect(res.statusCode).eql(302);
-            expect(res.headers['location']).eql(connection.idleUrl);
-
-            done();
-        });
+        return promisedRequest(options)
+            .then(function (res) {
+                expect(eventFired).to.be.true;
+                expect(connection.ready).to.be.true;
+                expect(connection.userAgent).eql('Chrome 41.0.2227 / Mac OS X 10.10.1');
+                expect(res.statusCode).eql(302);
+                expect(res.headers['location']).eql(connection.idleUrl);
+            });
     });
 
-    it('Should respond with error if connection was established twice', function (done) {
+    it('Should respond with error if connection was established twice', function () {
         return promisedRequest(connection.url)
             .then(function () {
                 return promisedRequest(connection.url);
             })
             .then(function (res) {
-                expect(res[0].statusCode).eql(500);
-                expect(res[1]).eql('The connection is already established.');
-                done();
+                expect(res.statusCode).eql(500);
+                expect(res.body).eql('The connection is already established.');
             });
     });
 
@@ -99,7 +99,7 @@ describe('Browser connection', function () {
         request(options);
     });
 
-    it('Should provide status', function (done) {
+    it('Should provide status', function () {
         function createBrowserJobMock (urls) {
             return {
                 popNextTestRunUrl: function () {
@@ -125,33 +125,30 @@ describe('Browser connection', function () {
             return promisedRequest(connection.statusUrl);
         }
 
-        promisedRequest(connection.url)
+        return promisedRequest(connection.url)
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res[1])).eql({ cmd: COMMAND.run, url: '1' });
+                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '1' });
             })
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res[1])).eql({ cmd: COMMAND.run, url: '2' });
+                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '2' });
             })
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res[1])).eql({ cmd: COMMAND.run, url: '3' });
+                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '3' });
             })
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res[1])).eql({ cmd: COMMAND.idle, url: connection.idleUrl });
-                done();
-            })
-
-            .catch(done);
+                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.idle, url: connection.idleUrl });
+            });
     });
 
-    it('Should respond to the service queries with error if not ready', function (done) {
+    it('Should respond to the service queries with error if not ready', function () {
         var testCases = [
             connection.heartbeatUrl,
             connection.idleUrl,
@@ -160,16 +157,12 @@ describe('Browser connection', function () {
 
         testCases = testCases.map(function (url) {
             return promisedRequest(url).then(function (res) {
-                expect(res[0].statusCode).eql(500);
-                expect(res[1]).eql('The connection is not ready yet.');
+                expect(res.statusCode).eql(500);
+                expect(res.body).eql('The connection is not ready yet.');
             });
         });
 
-        Promise.all(testCases)
-            .then(function () {
-                done();
-            })
-            .catch(done);
+        return Promise.all(testCases);
     });
 });
 
