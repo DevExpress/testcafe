@@ -3,7 +3,6 @@ var url            = require('url');
 var net            = require('net');
 var createTestCafe = require('../../lib/');
 
-
 describe('TestCafe factory function', function () {
     var testCafe = null;
     var server   = null;
