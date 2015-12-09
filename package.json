@@ -50,7 +50,10 @@
     "eslint-plugin-babel": "^2.1.1",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.2.1",
+    "gulp-connect": "^2.2.0",
     "gulp-eslint": "^1.0.0",
+    "gulp-gh-pages": "^0.5.4",
+    "gulp-git": "^1.6.0",
     "gulp-if": "^2.0.0",
     "gulp-less": "^3.0.3",
     "gulp-ll": "^1.0.1",
@@ -64,6 +67,9 @@
     "noop-fn": "^1.0.0",
     "publish-please": "^1.0.1",
     "request": "^2.58.0",
+    "opn": "^3.0.3",
+    "connect": "^3.4.0",
+    "serve-static": "^1.10.0",
     "tmp": "0.0.28"
   },
   "files": [

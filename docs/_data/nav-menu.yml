@@ -1,0 +1,24 @@
+- item: Getting Started
+  url: /testcafe/documentation/getting-started
+- item: Command-Line Interface 
+  url: /testcafe/documentation/command-line-interface
+- folder: Test Framework API
+  url: /testcafe/documentation/test-framework-api
+  content:
+  - item: Test Structure
+    url: /testcafe/documentation/test-framework-api/test-structure
+  - item: Assertions
+    url: /testcafe/documentation/test-framework-api/assertions
+  - item: Test Structure
+    url: /testcafe/documentation/test-framework-api/test-structure
+  - item: Roles
+    url: /testcafe/documentation/test-framework-api/roles
+- folder: Continuous Integration API
+  url: /testcafe/documentation/continuous-integration-api  
+  content:
+  - item: TestCafe
+    url: /testcafe/documentation/test-framework-api/testCafe
+  - item: BrowserConnection
+    url: /testcafe/documentation/test-framework-api/browserConnection
+  - item: Runner
+    url: /testcafe/documentation/test-framework-api/runner
