@@ -18,16 +18,14 @@ describe('Runner', function () {
 
 
     // Fixture setup/teardown
-    before(function (done) {
-        createTestCafe('127.0.0.1', 1335, 1336)
+    before(function () {
+        return createTestCafe('127.0.0.1', 1335, 1336)
             .then(function (tc) {
                 testCafe   = tc;
                 connection = testCafe.createBrowserConnection();
 
                 connection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
                                      '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
-
-                done();
             });
     });
 
@@ -70,8 +68,8 @@ describe('Runner', function () {
             ]);
         });
 
-        it('Should raise an error if browser was not found for the alias', function (done) {
-            var run = runner
+        it('Should raise an error if browser was not found for the alias', function () {
+            return runner
                 .browsers('browser42')
                 .reporter('list')
                 .src('test/server/data/test-suite/top.test.js')
@@ -83,16 +81,10 @@ describe('Runner', function () {
                     expect(err.message).eql('Unable to find the browser. "browser42" is not a ' +
                                             'browser alias or path to an executable file.');
                 });
-
-            run
-                .then(function () {
-                    done();
-                })
-                .catch(done);
         });
 
-        it('Should raise an error if browser was not set', function (done) {
-            var run = runner
+        it('Should raise an error if browser was not set', function () {
+            return runner
                 .reporter('list')
                 .src('test/server/data/test-suite/top.test.js')
                 .run()
@@ -102,18 +94,12 @@ describe('Runner', function () {
                 .catch(function (err) {
                     expect(err.message).eql('No browser selected to test against.');
                 });
-
-            run
-                .then(function () {
-                    done();
-                })
-                .catch(done);
         });
     });
 
     describe('.reporter()', function () {
-        it('Should raise an error if reporter was not found for the alias', function (done) {
-            var run = runner
+        it('Should raise an error if reporter was not found for the alias', function () {
+            return runner
                 .browsers(connection)
                 .reporter('reporter42')
                 .src('test/server/data/test-suite/top.test.js')
@@ -125,15 +111,9 @@ describe('Runner', function () {
                     expect(err.message).eql('The provided "reporter42" reporter does not exist. ' +
                                             'Check that you have specified the report format correctly.');
                 });
-
-            run
-                .then(function () {
-                    done();
-                })
-                .catch(done);
         });
 
-        it('Should fallback to the default reporter if reporter was not set', function (done) {
+        it('Should fallback to the default reporter if reporter was not set', function () {
             runner._runTask = function (reporterPlugin) {
                 expect(reporterPlugin.reportFixtureStart).to.be.a('function');
                 expect(reporterPlugin.reportTestDone).to.be.a('function');
@@ -141,16 +121,10 @@ describe('Runner', function () {
                 expect(reporterPlugin.reportTaskDone).to.be.a('function');
             };
 
-            var run = runner
+            return runner
                 .browsers(connection)
                 .src('test/server/data/test-suite/top.test.js')
                 .run();
-
-            run
-                .then(function () {
-                    done();
-                })
-                .catch(done);
         });
     });
 
@@ -179,8 +153,8 @@ describe('Runner', function () {
             expect(runner.bootstrapper.sources).eql(expected);
         });
 
-        it('Should raise an error if the source was not set', function (done) {
-            var run = runner
+        it('Should raise an error if the source was not set', function () {
+            return runner
                 .browsers(connection)
                 .reporter('list')
                 .run()
@@ -190,12 +164,6 @@ describe('Runner', function () {
                 .catch(function (err) {
                     expect(err.message).eql('No test file specified.');
                 });
-
-            run
-                .then(function () {
-                    done();
-                })
-                .catch(done);
         });
     });
 
@@ -216,7 +184,7 @@ describe('Runner', function () {
                 ]);
         });
 
-        function testFilter (filterFn, expectedTestNames, done) {
+        function testFilter (filterFn, expectedTestNames) {
             runner.filter(filterFn);
 
             runner._runTask = function (reporterPlugin, browserSet, tests) {
@@ -231,16 +199,11 @@ describe('Runner', function () {
                 expect(actualTestNames).eql(expectedTestNames);
             };
 
-            runner
-                .run()
-                .then(function () {
-                    done();
-                })
-                .catch(done);
+            return runner.run();
         }
 
 
-        it('Should filter by test name', function (done) {
+        it('Should filter by test name', function () {
             var filter = function (testName) {
                 return testName.toLowerCase().indexOf('level1') > -1;
             };
@@ -251,31 +214,31 @@ describe('Runner', function () {
                 'Level1 no cfg fixture test'
             ];
 
-            testFilter(filter, expectedTestNames, done);
+            return testFilter(filter, expectedTestNames);
         });
 
-        it('Should filter by fixture name', function (done) {
+        it('Should filter by fixture name', function () {
             var filter = function (testName, fixtureName) {
                 return fixtureName.toLowerCase().indexOf('top') > -1;
             };
 
             var expectedTestNames = ['Top level test'];
 
-            testFilter(filter, expectedTestNames, done);
+            return testFilter(filter, expectedTestNames);
         });
 
-        it('Should filter by fixture path', function (done) {
+        it('Should filter by fixture path', function () {
             var filter = function (testName, fixtureName, fixturePath) {
                 return fixturePath.toLowerCase().indexOf('level2.test.js') > -1;
             };
 
             var expectedTestNames = ['Level2 fixture test'];
 
-            testFilter(filter, expectedTestNames, done);
+            return testFilter(filter, expectedTestNames);
         });
 
-        it('Should raise an error if all tests are rejected by the filter', function (done) {
-            var run = runner
+        it('Should raise an error if all tests are rejected by the filter', function () {
+            return runner
                 .browsers(connection)
                 .reporter('list')
                 .src('test/server/data/test-suite/top.test.js')
@@ -290,12 +253,6 @@ describe('Runner', function () {
                     expect(err.message).eql('No tests to run. Either the test files contain no tests ' +
                                             'or the filter function is too restrictive.');
                 });
-
-            run
-                .then(function () {
-                    done();
-                })
-                .catch(done);
         });
     });
 
@@ -329,7 +286,7 @@ describe('Runner', function () {
             };
 
             //NOTE: Restore original in prototype in test timeout callback
-            var testCallback   = this.test.callback;
+            var testCallback = this.test.callback;
 
             this.test.callback = function (err) {
                 BrowserSet.prototype._waitConnectionsReady = origWaitConnReady;
@@ -382,7 +339,7 @@ describe('Runner', function () {
             brokenConnection.emit('error', 'It happened');
         });
 
-        it('Should raise an error if browser disconnected during bootstrapping', function (done) {
+        it('Should raise an error if browser disconnected during bootstrapping', function () {
             var connection1 = testCafe.createBrowserConnection();
             var connection2 = testCafe.createBrowserConnection();
 
@@ -414,14 +371,10 @@ describe('Runner', function () {
 
             request(options);
 
-            run
-                .then(function () {
-                    done();
-                })
-                .catch(done);
+            return run;
         });
 
-        it('Should raise an error if connection breaks while tests are running', function (done) {
+        it('Should raise an error if connection breaks while tests are running', function () {
             var test             = this.test;
             var brokenConnection = testCafe.createBrowserConnection();
 
@@ -450,11 +403,7 @@ describe('Runner', function () {
                 }
             }, 200);
 
-            run
-                .then(function () {
-                    done();
-                })
-                .catch(done);
+            return run;
         });
     });
 

@@ -2,6 +2,8 @@ var expect         = require('chai').expect;
 var url            = require('url');
 var net            = require('net');
 var createTestCafe = require('../../lib/');
+var Promise        = require('es6-promise').Promise;
+
 
 describe('TestCafe factory function', function () {
     var testCafe = null;
@@ -26,8 +28,8 @@ describe('TestCafe factory function', function () {
         }
     });
 
-    it('Should automatically assign host and ports if they are not specified', function (done) {
-        getTestCafe()
+    it('Should automatically assign host and ports if they are not specified', function () {
+        return getTestCafe()
             .then(function () {
                 var bc    = testCafe.createBrowserConnection();
                 var bcUrl = url.parse(bc.url);
@@ -36,14 +38,11 @@ describe('TestCafe factory function', function () {
                 expect(bcUrl.hostname).not.eql('undefined');
                 expect(bcUrl.hostname).not.eql('null');
                 expect(isNaN(port)).to.be.false;
-
-                done();
-            })
-            .catch(done);
+            });
     });
 
-    it('Should accept custom port and hostname', function (done) {
-        getTestCafe('localhost', 1338)
+    it('Should accept custom port and hostname', function () {
+        return getTestCafe('localhost', 1338)
             .then(function () {
                 var bc    = testCafe.createBrowserConnection();
                 var bcUrl = url.parse(bc.url);
@@ -51,43 +50,35 @@ describe('TestCafe factory function', function () {
 
                 expect(bcUrl.hostname).eql('localhost');
                 expect(port).eql(1338);
-
-                done();
-            })
-            .catch(done);
+            });
     });
 
-    it('Should raise error if specified port is not free', function (done) {
-        server = net.createServer();
+    it('Should raise error if specified port is not free', function () {
+        var serverListen = new Promise(function (resolve) {
+            server = net.createServer();
 
-        server.listen(1337, function () {
-            getTestCafe(null, 1337, 1338)
-                .then(function () {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(function (err) {
-                    expect(err.message).eql('The specified 1337 port is already in use by another program.');
-                })
-
-                .then(function () {
-                    done();
-                })
-                .catch(done);
+            server.listen(1337, resolve);
         });
+
+        return serverListen
+            .then(function () {
+                return getTestCafe(null, 1337, 1338);
+            })
+            .then(function () {
+                throw new Error('Promise rejection expected');
+            })
+            .catch(function (err) {
+                expect(err.message).eql('The specified 1337 port is already in use by another program.');
+            });
     });
 
-    it("Should raise error if specified hostname doesn't resolve to the current machine", function (done) {
-        getTestCafe('example.org')
+    it("Should raise error if specified hostname doesn't resolve to the current machine", function () {
+        return getTestCafe('example.org')
             .then(function () {
                 throw new Error('Promise rejection expected');
             })
             .catch(function (err) {
                 expect(err.message).eql('The specified "example.org" hostname cannot be resolved to the current machine.');
-            })
-
-            .then(function () {
-                done();
-            })
-            .catch(done);
+            });
     });
 });
