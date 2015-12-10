@@ -281,7 +281,7 @@ describe('Runner', function () {
             var origWaitConnReady = BrowserSet.prototype._waitConnectionsReady;
 
             BrowserSet.prototype._waitConnectionsReady = function () {
-                this.BROWSER_CONNECTION_READY_TIMEOUT = 0;
+                this.READY_TIMEOUT = 0;
                 return origWaitConnReady.call(this);
             };
 
