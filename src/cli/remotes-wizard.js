@@ -1,11 +1,7 @@
 import qrcode from 'qrcode-terminal';
 import chalk from 'chalk';
 import log from './log';
-import Promise from 'pinkie';
-
-function waitBrowserConnectionReady (browserConnection) {
-    return new Promise(resolve => browserConnection.once('ready', resolve));
-}
+import promisifyEvent from 'promisify-event';
 
 export default async function (testCafe, remoteCount, showQRCode) {
     var connections = [];
@@ -23,7 +19,7 @@ export default async function (testCafe, remoteCount, showQRCode) {
                 qrcode.generate(browserConnection.url);
             }
 
-            await waitBrowserConnectionReady(browserConnection);
+            await promisifyEvent(browserConnection, 'ready');
 
             connections.push(browserConnection);
             log.write(`${chalk.green('CONNECTED')} ${browserConnection.userAgent}\n`);
