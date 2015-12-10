@@ -336,7 +336,7 @@ describe('Runner', function () {
                 .reporter('list')
                 .src('test/server/data/test-suite/top.test.js');
 
-            brokenConnection.emit('error', 'It happened');
+            brokenConnection.emit('error', new Error('It happened'));
         });
 
         it('Should raise an error if browser disconnected during bootstrapping', function () {
@@ -399,7 +399,7 @@ describe('Runner', function () {
                 if (test.timedOut || status.cmd === COMMAND.run) {
                     clearInterval(interval);
 
-                    brokenConnection.emit('error', 'I have failed :(');
+                    brokenConnection.emit('error', new Error('I have failed :('));
                 }
             }, 200);
 
@@ -503,7 +503,7 @@ describe('Runner', function () {
                                        '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
 
             taskActionCallback = function () {
-                brokenConnection.emit('error', 'I have failed :(');
+                brokenConnection.emit('error', new Error('I have failed :('));
             };
 
             return runner

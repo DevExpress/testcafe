@@ -17,7 +17,7 @@ export default class BrowserSet extends EventEmitter {
 
         this.connections = connections;
 
-        this.browserErrorHandler = msg => this.emit('error', msg);
+        this.browserErrorHandler = error => this.emit('error', error);
 
         connections.forEach(bc => bc.on('error', this.browserErrorHandler));
 
@@ -95,7 +95,7 @@ export default class BrowserSet extends EventEmitter {
             .then(() => browserSet);
 
         var connectionsErrorPromise = new Promise(
-            (resolve, reject) => browserSet.once('error', msg => reject(new Error(msg)))
+            (resolve, reject) => browserSet.once('error', reject)
         );
 
         return Promise
