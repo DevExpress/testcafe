@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { Promise } from 'es6-promise';
+import Promise from 'pinkie';
 import once from 'once';
 import LocalBrowserConnection from '../browser-connection/local';
 import { MESSAGE, getText } from '../messages';

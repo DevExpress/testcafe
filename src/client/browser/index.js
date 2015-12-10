@@ -1,4 +1,5 @@
-import { Promise } from 'es6-promise';
+// TODO: once we'll have client commons load it from there instead of node modules (currently it's leads to two copies of this packages on client)
+import Promise from 'pinkie';
 import COMMAND from '../../browser-connection/command';
 
 

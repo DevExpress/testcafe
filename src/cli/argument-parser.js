@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { Command } from 'commander';
-import { Promise } from 'es6-promise';
-import promisify from 'es6-promisify';
+import Promise from 'pinkie';
+import promisify from '../utils/promisify';
 import dedent from 'dedent';
 import globby from 'globby';
 import mkdirp from 'mkdirp';

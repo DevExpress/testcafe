@@ -2,7 +2,7 @@ var expect         = require('chai').expect;
 var url            = require('url');
 var net            = require('net');
 var createTestCafe = require('../../lib/');
-var Promise        = require('es6-promise').Promise;
+var Promise        = require('pinkie');
 
 
 describe('TestCafe factory function', function () {

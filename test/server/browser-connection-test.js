@@ -1,16 +1,11 @@
 var expect         = require('chai').expect;
-var Promise        = require('es6-promise').Promise;
-var promisify      = require('es6-promisify');
+var Promise        = require('pinkie');
+var promisify      = require('../../lib/utils/promisify');
 var request        = require('request');
 var createTestCafe = require('../../lib/');
 var COMMAND        = require('../../lib/browser-connection/command');
 
-function promisedRequest (opts) {
-    return promisify(request)(opts)
-        .then(function (result) {
-            return result[0];
-        });
-}
+var promisedRequest = promisify(request);
 
 describe('Browser connection', function () {
     var testCafe   = null;

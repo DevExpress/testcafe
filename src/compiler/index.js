@@ -3,7 +3,7 @@ import * as path from 'path';
 import OS from 'os-family';
 import { createHash } from 'crypto';
 import { resolve as resolveUrl } from 'url';
-import { Promise } from 'es6-promise';
+import Promise from 'pinkie';
 import { Compiler as LegacyCompiler, getErrMsg } from './legacy';
 import RequireReader from './require-reader';
 import readSourceFile from './utils/read-source-file';

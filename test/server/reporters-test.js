@@ -1,7 +1,7 @@
 var expect       = require('chai').expect;
 var EventEmitter = require('events').EventEmitter;
 var util         = require('util');
-var Promise      = require('es6-promise').Promise;
+var Promise      = require('pinkie');
 var Reporter     = require('../../lib/reporter');
 
 describe('Reporters', function () {

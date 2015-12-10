@@ -1,4 +1,4 @@
-import { Promise } from 'es6-promise';
+import Promise from 'pinkie';
 import { resolve as resolvePath } from 'path';
 import { EventEmitter } from 'events';
 import flatten from 'flatten';
