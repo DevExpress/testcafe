@@ -29,13 +29,13 @@ export default class Runner extends EventEmitter {
             var task     = new Task(tests, browserSet.connections, this.proxy, this.opts);
             var reporter = new Reporter(reporterPlugin, task, this.opts.reportOutStream);
 
-            browserSet.once('error', async msg => {
+            browserSet.once('error', async error => {
                 task.abort();
                 task.removeAllListeners();
 
                 await browserSet.dispose();
 
-                reject(new Error(msg));
+                reject(error);
             });
 
             task.on('browser-job-done', job => browserSet.freeConnection(job.browserConnection));

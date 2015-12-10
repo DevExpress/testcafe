@@ -17,7 +17,7 @@ export default class LocalBrowserConnection extends BrowserConnection {
                 await openBrowser(browserInfo, this.url);
             }
             catch (err) {
-                this.emit('error', err.message);
+                this.emit('error', err);
             }
         });
     }
