@@ -1,7 +1,7 @@
 import qrcode from 'qrcode-terminal';
 import chalk from 'chalk';
 import log from './log';
-import { Promise } from 'es6-promise';
+import Promise from 'pinkie';
 
 function waitBrowserConnectionReady (browserConnection) {
     return new Promise(resolve => browserConnection.once('ready', resolve));

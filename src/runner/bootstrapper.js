@@ -1,4 +1,4 @@
-import { Promise } from 'es6-promise';
+import Promise from 'pinkie';
 import { getBrowserInfo } from 'testcafe-browser-natives';
 import BrowserConnection from '../browser-connection';
 import LocalBrowserConnection from '../browser-connection/local';

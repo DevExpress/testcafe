@@ -1,4 +1,3 @@
-import { Promise } from 'es6-promise';
 import escapeHtml from 'escape-html';
 import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
@@ -10,6 +9,7 @@ var SETTINGS     = testCafeCore.SETTINGS;
 var COMMAND      = testCafeCore.COMMAND;
 var transport    = testCafeCore.transport;
 var serviceUtils = testCafeCore.serviceUtils;
+var Promise      = hammerhead.Promise;
 
 
 const WAITING_FOR_SERVICE_MESSAGES_COMPLETED_DELAY = 1000;
@@ -132,7 +132,7 @@ Runner.prototype._onTestError = function (err, isAssertion) {
     err.pageUrl            = document.location.toString();
     err.screenshotRequired = SETTINGS.get().TAKE_SCREENSHOTS && SETTINGS.get().TAKE_SCREENSHOTS_ON_FAILS &&
                              this.stepIterator.state.curStepErrors.length < 2;
-    
+
     // NOTE: we should escape the test name because it may contain markup (GH-160)
     if (err.stepName)
         err.stepName = escapeHtml(err.stepName);

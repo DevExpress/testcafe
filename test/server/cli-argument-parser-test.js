@@ -2,7 +2,7 @@ var expect                  = require('chai').expect;
 var path                    = require('path');
 var fs                      = require('fs');
 var tmp                     = require('tmp');
-var Promise                 = require('es6-promise').Promise;
+var Promise                 = require('pinkie');
 var getBrowserInstallations = require('testcafe-browser-natives').getInstallations;
 var CliArgumentParser       = require('../../lib/cli/argument-parser');
 
