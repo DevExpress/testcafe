@@ -1,7 +1,8 @@
 var babel        = require('babel');
 var gulp         = require('gulp');
 var gulpBabel    = require('gulp-babel');
-var gulpLess     = require('gulp-less');
+var less         = require('gulp-less');
+var filter       = require('gulp-filter');
 var eslint       = require('gulp-eslint');
 var ghPages      = require('gulp-gh-pages');
 var git          = require('gulp-git');
@@ -18,12 +19,12 @@ var publish      = require('publish-please');
 var del          = require('del');
 var fs           = require('fs');
 var path         = require('path');
-var Promise      = require('es6-promise').Promise;
 var opn          = require('opn');
 var connect      = require('connect');
 var readline     = require('readline');
 var spawn        = require('child_process').spawn;
 var serveStatic  = require('serve-static');
+var Promise      = require('pinkie');
 
 ll
     .tasks([
@@ -140,17 +141,20 @@ gulp.task('client-scripts', ['client-scripts-bundle'], function () {
         { wrapper: 'src/client/runner/index.js.wrapper.mustache', src: 'lib/client/runner/index.js' }
     ];
 
-    return Promise.all(scripts.map(function (script) {
-        return gulp
-            .src(script.wrapper)
-            .pipe(mustache({ source: fs.readFileSync(script.src).toString() }))
-            .pipe(rename(path.basename(script.src)))
-            .pipe(gulpif(!util.env.dev, uglify()))
-            .pipe(gulp.dest(path.dirname(script.src)));
-    }));
+    return Promise
+        .all(scripts.map(function (script) {
+            return gulp
+                .src(script.wrapper)
+                .pipe(mustache({ source: fs.readFileSync(script.src).toString() }))
+                .pipe(rename(path.basename(script.src)))
+                .pipe(gulpif(!util.env.dev, uglify()))
+                .pipe(gulp.dest(path.dirname(script.src)));
+        }));
 });
 
 gulp.task('client-scripts-bundle', ['clean'], function () {
+    var filterBrowserIdlePage = filter('browser/idle-page/index.js', { restore: true });
+
     return gulp
         .src([
             'src/client/core/index.js',
@@ -161,14 +165,6 @@ gulp.task('client-scripts-bundle', ['clean'], function () {
         .pipe(webmake({
             sourceMap: false,
             transform: function (filename, code) {
-                //https://github.com/jakearchibald/es6-promise/issues/108
-                if (filename.indexOf('es6-promise.js') !== -1) {
-                    var polyfillCallString = 'lib$es6$promise$polyfill$$default();';
-
-                    code = code.replace(polyfillCallString, '');
-                }
-                ///////////////////////////////////////////////////////////////
-
                 var transformed = babel.transform(code, {
                     sourceMap: false,
                     filename:  filename
@@ -177,6 +173,9 @@ gulp.task('client-scripts-bundle', ['clean'], function () {
                 return { code: transformed.code };
             }
         }))
+        .pipe(filterBrowserIdlePage)
+        .pipe(gulpif(!util.env.dev, uglify()))
+        .pipe(filterBrowserIdlePage.restore)
         .pipe(gulp.dest('lib/client'));
 });
 
@@ -193,7 +192,7 @@ gulp.task('server-scripts', ['clean'], function () {
 gulp.task('styles', ['clean'], function () {
     return gulp
         .src('src/**/*.less')
-        .pipe(gulpLess())
+        .pipe(less())
         .pipe(gulp.dest('lib'));
 });
 

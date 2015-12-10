@@ -1,5 +1,5 @@
 import fs from 'fs';
-import promisify from 'es6-promisify';
+import promisify from '../../utils/promisify';
 
 var readFile = promisify(fs.readFile);
 
