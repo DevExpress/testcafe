@@ -1,4 +1,5 @@
 import Promise from 'pinkie';
+import promisifyEvent from 'promisify-event';
 import { resolve as resolvePath } from 'path';
 import { EventEmitter } from 'events';
 import flatten from 'flatten';
@@ -24,28 +25,30 @@ export default class Runner extends EventEmitter {
     }
 
     // Run task
-    _runTask (reporterPlugin, browserSet, tests) {
-        return new Promise((resolve, reject) => {
-            var task     = new Task(tests, browserSet.connections, this.proxy, this.opts);
-            var reporter = new Reporter(reporterPlugin, task, this.opts.reportOutStream);
+    async _runTask (reporterPlugin, browserSet, tests) {
+        var task     = new Task(tests, browserSet.connections, this.proxy, this.opts);
+        var reporter = new Reporter(reporterPlugin, task, this.opts.reportOutStream);
 
-            browserSet.once('error', async error => {
-                task.abort();
-                task.removeAllListeners();
+        task.on('browser-job-done', job => browserSet.releaseConnection(job.browserConnection));
 
-                await browserSet.dispose();
+        try {
+            await Promise.race([
+                promisifyEvent(task, 'done'),
+                promisifyEvent(browserSet, 'error')
+            ]);
+        }
+        catch (err) {
+            task.abort();
+            task.removeAllListeners();
 
-                reject(error);
-            });
+            await browserSet.dispose();
 
-            task.on('browser-job-done', job => browserSet.freeConnection(job.browserConnection));
+            throw err;
+        }
 
-            task.once('done', async () => {
-                await browserSet.dispose();
+        await browserSet.dispose();
 
-                resolve(reporter.testCount - reporter.passed);
-            });
-        });
+        return reporter.testCount - reporter.passed;
     }
 
 
