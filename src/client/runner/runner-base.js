@@ -421,7 +421,7 @@ RunnerBase.prototype._ensureIFrame = function (arg) {
     if (typeof arg === 'string')
         arg = $(arg);
 
-    if (serviceUtils.isJQueryObj(arg)) {
+    if (hammerhead.utils.isJQueryObj(arg)) {
         if (arg.length === 0) {
             this._onFatalError({
                 type:     ERROR_TYPE.emptyIFrameArgument,

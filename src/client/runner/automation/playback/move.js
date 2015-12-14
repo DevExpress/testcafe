@@ -7,12 +7,13 @@ import * as automationSettings from '../settings';
 import scrollPlaybackAutomation from '../playback/scroll';
 import async from '../../deps/async';
 
+
 var browserUtils   = hammerhead.utils.browser;
+var extend         = hammerhead.utils.extend;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 var messageSandbox = hammerhead.eventSandbox.message;
 var nativeMethods  = hammerhead.nativeMethods;
 
-var $                     = testCafeCore.$;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
 var domUtils              = testCafeCore.domUtils;
 var positionUtils         = testCafeCore.positionUtils;
@@ -48,9 +49,7 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
         endTime               = null,
         movingTime            = null,
 
-        currentCursorPosition = cursor.getPosition(),
-
-        $window               = $(window);
+        currentCursorPosition = cursor.getPosition();
 
     // moving step
     function nextStep (movingStepCallback) {
@@ -104,7 +103,7 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
                     if (currentElement)
                         eventPoint = automationUtil.getEventOptionCoordinates(currentElement, currentCursorPosition);
 
-                    var eventOptions = $.extend({
+                    var eventOptions = extend({
                         clientX: eventPoint.x,
                         clientY: eventPoint.y,
                         button:  0,
@@ -130,7 +129,7 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
                         currentElementChanged = currentElement !== lastHoveredElement;
 
                     if (currentElementChanged && lastHoveredElement)
-                        eventSimulator.mouseout(lastHoveredElement, $.extend({ relatedTarget: currentElement }, eventOptions));
+                        eventSimulator.mouseout(lastHoveredElement, extend({ relatedTarget: currentElement }, eventOptions));
 
                     var eventName = browserUtils.hasTouchEvents ? 'touchmove' : 'mousemove',
                         el        = browserUtils.hasTouchEvents ? dragElement : currentElement;
@@ -141,7 +140,7 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
 
                     if (currentElementChanged) {
                         if (currentElement)
-                            eventSimulator.mouseover(currentElement, $.extend({ relatedTarget: lastHoveredElement }, eventOptions));
+                            eventSimulator.mouseover(currentElement, extend({ relatedTarget: lastHoveredElement }, eventOptions));
                         lastHoveredElement = currentElement;
                     }
 
@@ -172,7 +171,7 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
                         targetPoint.y += newElementOffset.top - elementOffset.top;
                     }
 
-                    if (!/html/i.test(to.tagName) && styleUtils.hasScroll(to, currentDocument)) {
+                    if (!/html/i.test(to.tagName) && styleUtils.hasScroll(to)) {
                         targetPoint.x -= elementScroll.left;
                         targetPoint.y -= elementScroll.top;
                     }
@@ -183,8 +182,8 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
         },
 
         setCursor: function (callback) {
-            if (targetPoint.x < 0 || targetScreenPoint.x > $window.width() ||
-                targetScreenPoint.y < 0 || targetScreenPoint.y > $window.height) {
+            if (targetPoint.x < 0 || targetScreenPoint.x > styleUtils.getWidth(window) ||
+                targetScreenPoint.y < 0 || targetScreenPoint.y > styleUtils.getHeight(window)) {
                 actionCallback();
                 return;
             }
@@ -284,8 +283,8 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
             distanceY = targetScreenPoint.y - startY;
 
             if (isMovingInIFrame) {
-                startX -= $(currentDocument).scrollLeft();
-                startY -= $(currentDocument).scrollTop();
+                startX -= styleUtils.getScrollLeft(currentDocument);
+                startY -= styleUtils.getScrollTop(currentDocument);
             }
 
             movingTime = Math.max(Math.abs(distanceX), Math.abs(distanceY)) /
@@ -298,8 +297,10 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
                 //is cursor in the target
                 function () {
                     if (isMovingInIFrame)
-                        return (currentCursorPosition.x + $(currentDocument).scrollLeft()) !== targetScreenPoint.x ||
-                               (currentCursorPosition.y + $(currentDocument).scrollTop()) !== targetScreenPoint.y;
+                        return (currentCursorPosition.x + styleUtils.getScrollLeft(currentDocument)) !==
+                               targetScreenPoint.x ||
+                               (currentCursorPosition.y + styleUtils.getScrollTop(currentDocument)) !==
+                               targetScreenPoint.y;
 
                     return currentCursorPosition.x !== targetScreenPoint.x ||
                            currentCursorPosition.y !== targetScreenPoint.y;

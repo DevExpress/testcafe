@@ -7,10 +7,11 @@ var shadowUI       = hammerhead.shadowUI;
 var browserUtils   = hammerhead.utils.browser;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
-var $             = testCafeCore.$;
 var positionUtils = testCafeCore.positionUtils;
 var domUtils      = testCafeCore.domUtils;
 var styleUtils    = testCafeCore.styleUtils;
+var eventUtils    = testCafeCore.eventUtils;
+var arrayUtils    = testCafeCore.arrayUtils;
 
 
 const OPTION_LIST_CLASS      = 'tcOptionList';
@@ -20,45 +21,45 @@ const DISABLED_CLASS         = 'disabled';
 const MAX_OPTION_LIST_LENGTH = browserUtils.isIE ? 30 : 20;
 
 
-var $curSelectEl = null,
-    $optionList  = null,
-    $groups      = null,
-    $options     = null;
+var curSelectEl = null;
+var optionList  = null;
+var groups      = [];
+var options     = [];
 
 function onDocumentMouseDown (e) {
     //NOTE: only in Mozilla 'mousedown' raises for option
-    if ((e.target || e.srcElement) !== $curSelectEl[0] && !$curSelectEl.has(e.target).length &&
-        !$optionList.has(e.target).length)
+    if ((e.target || e.srcElement) !== curSelectEl && !domUtils.containsElement(curSelectEl, e.target) &&
+        !domUtils.containsElement(optionList, e.target))
         collapseOptionList();
 }
 
-function createOption (option, $parent) {
-    var $option          = $('<div></div>')
-            .text(option.text)
-            .appendTo($parent),
-        isOptionDisabled = option.disabled ||
-                           (option.parentElement.tagName.toLowerCase() === 'optgroup' && option.parentElement.disabled);
+function createOption (realOption, parent) {
+    var option           = document.createElement('div');
+    var isOptionDisabled = realOption.disabled ||
+                           (realOption.parentElement.tagName.toLowerCase() === 'optgroup' &&
+                            realOption.parentElement.disabled);
 
-    shadowUI.addClass($option[0], OPTION_CLASS);
+    option.textContent = realOption.text;
+    parent.appendChild(option);
+    shadowUI.addClass(option, OPTION_CLASS);
 
     if (isOptionDisabled) {
-        shadowUI.addClass($option[0], DISABLED_CLASS);
-        $option.css('color', $(option).css('color'));
+        shadowUI.addClass(option, DISABLED_CLASS);
+        styleUtils.set(option, 'color', styleUtils.get(realOption, 'color'));
     }
 
     if (isOptionDisabled && browserUtils.isWebKit) {
-        $option.click(function () {
+        eventUtils.bind(option, 'click', function () {
             return false;
         });
     }
     else {
-        $option.click(function () {
-            var curSelectEl      = $curSelectEl[0],
-                curSelectIndex   = curSelectEl.selectedIndex,
-                optionIndex      = $.inArray(this, $options),
-                option           = $(curSelectEl).find('option')[optionIndex],
-                clickLeadChanges = !isOptionDisabled && optionIndex !== curSelectIndex,
-                isMobileBrowser  = browserUtils.isSafari && browserUtils.hasTouchEvents || browserUtils.isAndroid;
+        eventUtils.bind(option, 'click', function () {
+            var curSelectIndex   = curSelectEl.selectedIndex;
+            var optionIndex      = arrayUtils.indexOf(options, this);
+            var option           = curSelectEl.getElementsByTagName('option')[optionIndex];
+            var clickLeadChanges = !isOptionDisabled && optionIndex !== curSelectIndex;
+            var isMobileBrowser  = browserUtils.isSafari && browserUtils.hasTouchEvents || browserUtils.isAndroid;
 
             if (clickLeadChanges && !browserUtils.isIE)
                 curSelectEl.selectedIndex = optionIndex;
@@ -69,7 +70,7 @@ function createOption (option, $parent) {
             if (browserUtils.isFirefox || browserUtils.isIE)
                 eventSimulator.mousedown(browserUtils.isFirefox ? option : curSelectEl);
 
-            if(!isMobileBrowser)
+            if (!isMobileBrowser)
                 eventSimulator.mouseup(browserUtils.isFirefox ? option : curSelectEl);
 
             if ((browserUtils.isFirefox || browserUtils.isIE) && clickLeadChanges) {
@@ -79,7 +80,7 @@ function createOption (option, $parent) {
                     curSelectEl.selectedIndex = optionIndex;
             }
 
-            if(!isMobileBrowser)
+            if (!isMobileBrowser)
                 eventSimulator.click(browserUtils.isFirefox || browserUtils.isIE ? option : curSelectEl);
 
             if (!isOptionDisabled)
@@ -87,46 +88,46 @@ function createOption (option, $parent) {
         });
     }
 
-    $options = !$options || !$options.length ? $option : $options.add($option);
+    options.push(option);
 }
 
-function createGroup (group, $parent) {
-    var $group = $('<div></div>')
-        .text(group.label || ' ')
-        .appendTo($parent);
+function createGroup (realGroup, parent) {
+    var group = document.createElement('div');
 
-    shadowUI.addClass($group[0], OPTION_GROUP_CLASS);
+    group.textContent = realGroup.label || ' ';
+    parent.appendChild(group);
+
+    shadowUI.addClass(group, OPTION_GROUP_CLASS);
 
     if (group.disabled) {
-        shadowUI.addClass($group[0], DISABLED_CLASS);
+        shadowUI.addClass(group, DISABLED_CLASS);
 
-        $group.css('color', $(group).css('color'));
+        styleUtils.set(group, 'color', styleUtils.get(realGroup, 'color'));
     }
 
-    createChildren($(group).children(), $group);
+    createChildren(realGroup.children, group);
 
-    $groups = !$groups || !$groups.length ? $group : $groups.add($group);
+    groups.push(group);
 }
 
-function createChildren ($children, $parent) {
-    $.each($children, function (index, item) {
-        if (item.tagName.toLowerCase() === 'option')
-            createOption(item, $parent);
-        else if (item.tagName.toLowerCase() === 'optgroup')
-            createGroup(item, $parent);
-    });
+function createChildren (children, parent) {
+    for (var i = 0; i < children.length; i++) {
+        if (children[i].tagName.toLowerCase() === 'option')
+            createOption(children[i], parent);
+        else if (children[i].tagName.toLowerCase() === 'optgroup')
+            createGroup(children[i], parent);
+    }
 }
 
 export function expandOptionList (select) {
-    var $select         = $(select),
-        $selectChildren = $(select).children();
+    var selectChildren = select.children;
 
-    if (!$selectChildren.length)
+    if (!selectChildren.length)
         return;
 
     //NOTE: check is option list expanded
-    if ($curSelectEl) {
-        var isSelectExpanded = $select[0] === $curSelectEl[0];
+    if (curSelectEl) {
+        var isSelectExpanded = select === curSelectEl;
 
         collapseOptionList();
 
@@ -134,61 +135,61 @@ export function expandOptionList (select) {
             return;
     }
 
-    $curSelectEl = $select;
+    curSelectEl = select;
 
-    $optionList = $('<div></div>').appendTo($(shadowUI.getRoot()));
-    shadowUI.addClass($optionList[0], OPTION_LIST_CLASS);
+    optionList = document.createElement('div');
+    shadowUI.getRoot().appendChild(optionList);
+    shadowUI.addClass(optionList, OPTION_LIST_CLASS);
 
-    createChildren($selectChildren, $optionList);
+    createChildren(selectChildren, optionList);
 
     window.setTimeout(function () {
-        $(document).bind('mousedown', onDocumentMouseDown);
+        eventUtils.bind(document, 'mousedown', onDocumentMouseDown);
     }, 0);
 
-    $optionList.css({
+    styleUtils.set(optionList, {
         position:   'absolute',
-        fontSize:   $curSelectEl.css('fontSize'),
-        fontFamily: $curSelectEl.css('fontFamily'),
-        minWidth:   $curSelectEl.width(),
-        left:       positionUtils.getOffsetPosition($curSelectEl[0]).left,
-        height:     domUtils.getSelectVisibleChildren($select[0]).length > MAX_OPTION_LIST_LENGTH ?
+        fontSize:   styleUtils.get(curSelectEl, 'fontSize'),
+        fontFamily: styleUtils.get(curSelectEl, 'fontFamily'),
+        minWidth:   styleUtils.getWidth(curSelectEl) + 'px',
+        left:       positionUtils.getOffsetPosition(curSelectEl).left + 'px',
+        height:     domUtils.getSelectVisibleChildren(select).length > MAX_OPTION_LIST_LENGTH ?
                     styleUtils.getOptionHeight(select) * MAX_OPTION_LIST_LENGTH : ''
     });
 
-    var $window               = $(window),
-        selectTopPosition     = positionUtils.getOffsetPosition($curSelectEl[0]).top,
-        optionListHeight      = $optionList.height(),
-        optionListTopPosition = selectTopPosition + $curSelectEl.height() + 2;
+    var selectTopPosition     = positionUtils.getOffsetPosition(curSelectEl).top;
+    var optionListHeight      = styleUtils.getHeight(optionList);
+    var optionListTopPosition = selectTopPosition + styleUtils.getHeight(curSelectEl) + 2;
 
-    if (optionListTopPosition + optionListHeight > $window.scrollTop() + $window.height()) {
+    if (optionListTopPosition + optionListHeight > styleUtils.getScrollTop(window) + styleUtils.getHeight(window)) {
         var topPositionAboveSelect = selectTopPosition - 3 - optionListHeight;
 
-        if (topPositionAboveSelect >= $window.scrollTop())
+        if (topPositionAboveSelect >= styleUtils.getScrollTop(window))
             optionListTopPosition = topPositionAboveSelect;
     }
 
-    $optionList.css('top', optionListTopPosition);
+    styleUtils.set(optionList, 'top', optionListTopPosition + 'px');
 }
 
 export function collapseOptionList () {
-    $optionList.remove();
-    $(document).unbind('mousedown', onDocumentMouseDown);
+    domUtils.remove(optionList);
+    eventUtils.unbind(document, 'mousedown', onDocumentMouseDown);
 
-    $optionList  = null;
-    $curSelectEl = null;
-    $options     = null;
-    $groups      = null;
+    optionList  = null;
+    curSelectEl = null;
+    options     = [];
+    groups      = [];
 }
 
-export function isOptionListExpanded ($select) {
-    return $select ? $select.is($curSelectEl) : !!$curSelectEl;
+export function isOptionListExpanded (select) {
+    return select ? select === curSelectEl : !!curSelectEl;
 }
 
 export function getEmulatedChildElement (elementIndex, isGroup) {
     if (!isGroup)
-        return $options[elementIndex];
+        return options[elementIndex];
 
-    return $groups[elementIndex];
+    return groups[elementIndex];
 }
 
 export function scrollOptionListByChild (child) {
@@ -197,23 +198,22 @@ export function scrollOptionListByChild (child) {
     if (!select)
         return;
 
-    var $select            = $(select),
-        realSizeValue      = styleUtils.getSelectElementSize(select),
-        optionHeight       = styleUtils.getOptionHeight(select),
-        scrollIndent       = 0,
+    var realSizeValue = styleUtils.getSelectElementSize(select);
+    var optionHeight  = styleUtils.getOptionHeight(select);
+    var scrollIndent  = 0;
 
-        topVisibleIndex    = Math.max($select.scrollTop() / optionHeight, 0),
-        bottomVisibleIndex = topVisibleIndex + realSizeValue - 1,
+    var topVisibleIndex    = Math.max(styleUtils.getScrollTop(select) / optionHeight, 0);
+    var bottomVisibleIndex = topVisibleIndex + realSizeValue - 1;
 
-        childIndex         = domUtils.getChildVisibleIndex($select[0], child);
+    var childIndex = domUtils.getChildVisibleIndex(select, child);
 
     if (childIndex < topVisibleIndex) {
         scrollIndent = optionHeight * (topVisibleIndex - childIndex);
-        $select.scrollTop(Math.max($select.scrollTop() - scrollIndent, 0));
+        styleUtils.setScrollTop(select, Math.max(styleUtils.getScrollTop(select) - scrollIndent, 0));
     }
     else if (childIndex > bottomVisibleIndex) {
         scrollIndent = optionHeight * (childIndex - bottomVisibleIndex);
-        $select.scrollTop($select.scrollTop() + scrollIndent);
+        styleUtils.setScrollTop(select, styleUtils.getScrollTop(select) + scrollIndent);
     }
 }
 
@@ -237,33 +237,36 @@ export function getSelectChildCenter (child) {
 }
 
 export function switchOptionsByKeys (command) {
-    var $select = $(domUtils.getActiveElement());
+    var select = domUtils.getActiveElement();
 
-    if ($select[0].tagName.toLowerCase() !== 'select')
+    if (select.tagName.toLowerCase() !== 'select')
         return;
 
     if (/enter|tab|esc/.test(command))
         collapseOptionList();
 
+    var selectSize       = styleUtils.getSelectElementSize(select);
+    var optionListHidden = !styleUtils.hasDimensions(shadowUI.select('.' + OPTION_LIST_CLASS)[0]);
+
     if (/down|up/.test(command) ||
-        (!browserUtils.isIE &&
-         (styleUtils.getSelectElementSize($select[0]) <= 1 || browserUtils.isFirefox) &&
-         (!$(shadowUI.select('.' + OPTION_LIST_CLASS)).is(':visible') ||
-          browserUtils.isFirefox) &&
-         /left|right/.test(command))) {
+        (!browserUtils.isIE && (selectSize <= 1 || browserUtils.isFirefox) &&
+         (optionListHidden || browserUtils.isFirefox) && /left|right/.test(command))) {
+        var options        = select.querySelectorAll('option');
+        var enabledOptions = [];
 
-        var $options        = $select.find('option'),
-            $enabledOptions = $options.filter(function () {
-                var parent = $(this).parent()[0];
-                return !this.disabled && !(parent.tagName.toLowerCase() === 'optgroup' && parent.disabled);
-            }),
-            nextIndex       = $.inArray($select.find('option:selected')[0], $enabledOptions);
+        for (var i = 0; i < options.length; i++) {
+            var parent = options[i].parentElement;
 
-        nextIndex += /down|right/.test(command) ? 1 : -1;
+            if (!options[i].disabled && !(parent.tagName.toLowerCase() === 'optgroup' && parent.disabled))
+                enabledOptions.push(options[i]);
+        }
 
-        if (nextIndex >= 0 && nextIndex < $enabledOptions.length) {
-            $select[0].selectedIndex = $.inArray($enabledOptions[nextIndex], $options);
-            eventSimulator.change($select[0]);
+        var curSelectedOptionIndex = arrayUtils.indexOf(enabledOptions, options[select.selectedIndex]);
+        var nextIndex              = curSelectedOptionIndex + (/down|right/.test(command) ? 1 : -1);
+
+        if (nextIndex >= 0 && nextIndex < enabledOptions.length) {
+            select.selectedIndex = arrayUtils.indexOf(options, enabledOptions[nextIndex]);
+            eventSimulator.change(select);
         }
     }
 }

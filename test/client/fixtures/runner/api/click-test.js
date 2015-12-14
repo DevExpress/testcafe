@@ -958,8 +958,9 @@ $(document).ready(function () {
             $spanInLabel = $('<span>label for input</span>').
                 addClass(TEST_ELEMENT_CLASS)
                 .appendTo($label),
-            $input       = $('<input />').
-                addClass(TEST_ELEMENT_CLASS)
+            $input       = $('<input />')
+                .attr('id', 'input')
+                .addClass(TEST_ELEMENT_CLASS)
                 .appendTo($label);
 
         runAsyncTest(

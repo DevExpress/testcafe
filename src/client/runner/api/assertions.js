@@ -3,13 +3,14 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import * as sourceIndexTracker from '../source-index';
 
-var messageSandbox = hammerhead.eventSandbox.message;
 
-var $                     = testCafeCore.$;
+var messageSandbox = hammerhead.eventSandbox.message;
+var isJQueryObj    = hammerhead.utils.isJQueryObj;
+
 var SETTINGS              = testCafeCore.SETTINGS;
 var ERROR_TYPE            = testCafeCore.ERROR_TYPE;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
-var serviceUtils          = testCafeCore.serviceUtils;
+var arrayUtils            = testCafeCore.arrayUtils;
 var domUtils              = testCafeCore.domUtils;
 
 
@@ -55,8 +56,8 @@ function getObjectsDiff (actual, expected, comparablePath, checkedElements) {
         return getStringDiff(actual, expected);
 
     //arrays
-    if ($.isArray(actual) || $.isArray(expected)) {
-        return (!($.isArray(actual)) || !($.isArray(expected))) ?
+    if (arrayUtils.isArray(actual) || arrayUtils.isArray(expected)) {
+        return (!(arrayUtils.isArray(actual)) || !(arrayUtils.isArray(expected))) ?
                createDiffObject(actual, expected) :
                getArraysDiff(actual, expected);
     }
@@ -66,10 +67,10 @@ function getObjectsDiff (actual, expected, comparablePath, checkedElements) {
         if (!(isElementsCollection(actual)) || !(isElementsCollection(expected)))
             return createDiffObject(actual, expected);
 
-        var $actual   = $(actual),
-            $expected = $(expected);
+        var actualAsArray   = arrayUtils.toArray(actual),
+            expectedAsArray = arrayUtils.toArray(expected);
 
-        return getArraysDiff($actual.get(), $expected.get()) ? createDiffObject($actual, $expected) : null;
+        return getArraysDiff(actualAsArray, expectedAsArray) ? createDiffObject(actualAsArray, expectedAsArray) : null;
     }
 
     //dom elements
@@ -80,9 +81,9 @@ function getObjectsDiff (actual, expected, comparablePath, checkedElements) {
     }
 
     //jQuery objects
-    if (serviceUtils.isJQueryObj(actual) || serviceUtils.isJQueryObj(expected)) {
-        if (!serviceUtils.isJQueryObj(actual) || !serviceUtils.isJQueryObj(expected) ||
-            getArraysDiff(actual.get(), expected.get()))
+    if (isJQueryObj(actual) || isJQueryObj(expected)) {
+        if (!isJQueryObj(actual) || !isJQueryObj(expected) ||
+            getArraysDiff(arrayUtils.toArray(actual), arrayUtils.toArray(expected)))
             return createDiffObject(actual, expected);
         return null;
     }
@@ -279,13 +280,13 @@ function getDescription (obj, doNotWrapStr) {
         return obj.toString();
 
     //arrays
-    if ($.isArray(obj)) {
+    if (arrayUtils.isArray(obj)) {
         return getArrayDescription(obj);
     }
 
     //jQuery objects
-    if (serviceUtils.isJQueryObj(obj))
-        return getArrayDescription($.makeArray(obj));
+    if (isJQueryObj(obj))
+        return getArrayDescription(arrayUtils.toArray(obj));
 
     if (obj === null)
         return 'null';

@@ -6,10 +6,11 @@ var shadowUI       = hammerhead.shadowUI;
 var browserUtils   = hammerhead.utils.browser;
 var messageSandbox = hammerhead.eventSandbox.message;
 
-var $             = testCafeCore.$;
 var SETTINGS      = testCafeCore.SETTINGS;
 var serviceUtils  = testCafeCore.serviceUtils;
 var positionUtils = testCafeCore.positionUtils;
+var styleUtils    = testCafeCore.styleUtils;
+var eventUtils    = testCafeCore.eventUtils;
 
 
 //Const
@@ -19,7 +20,7 @@ const TOUCH_CLASS  = 'touch';
 var CursorBehavior = function () {
     var cursorBehavior = this;
 
-    $(window).scroll(function () {
+    eventUtils.bind(window, 'scroll', function () {
         var cursorPosition = cursorBehavior ? cursorBehavior.cursorPosition : null;
 
         if (cursorPosition)
@@ -31,10 +32,10 @@ var CursorBehavior = function () {
 
     this._initCursorIFrameBehavior();
 
-    this.$cursor = $('<div></div>');
-    shadowUI.addClass(this.$cursor[0], CURSOR_CLASS);
+    this.cursorElement = document.createElement('div');
+    shadowUI.addClass(this.cursorElement, CURSOR_CLASS);
 
-    this.$cursor.appendTo($(shadowUI.getRoot()));
+    shadowUI.getRoot().appendChild(this.cursorElement);
     this.hide();
 
     CursorBaseBehavior.call(this);
@@ -52,11 +53,11 @@ CursorBehavior.prototype.start = function (position, iFrameInitiator) {
     //NOTE: For IE in Cross domain iframe we can't use touch cursor because we won't be able to get element under cursor
     //for more information look at HACK in cursor_iframe_behavior
     if (browserUtils.isTouchDevice && !(browserUtils.isIE && iFrameInitiator)) {
-        shadowUI.addClass(this.$cursor[0], TOUCH_CLASS);
+        shadowUI.addClass(this.cursorElement, TOUCH_CLASS);
 
         //NOTE: in touch mode pointer should be in the center of the cursor
-        this.pointerOffsetX = Math.ceil(this.$cursor.width() / 2);
-        this.pointerOffsetY = Math.ceil(this.$cursor.height() / 2);
+        this.pointerOffsetX = Math.ceil(styleUtils.getWidth(this.cursorElement) / 2);
+        this.pointerOffsetY = Math.ceil(styleUtils.getHeight(this.cursorElement) / 2);
     }
 
     this.move(positionUtils.getFixedPosition(position, iFrameInitiator, true));
@@ -120,7 +121,7 @@ CursorBehavior.prototype._initCursorIFrameBehavior = function () {
 };
 
 CursorBehavior.prototype.getElementUnderCursor = function (x, y, currentDocument) {
-    var isCursorVisible = this.$cursor.css('visibility') !== 'hidden';
+    var isCursorVisible = styleUtils.get(this.cursorElement, 'visibility') !== 'hidden';
 
     if (isCursorVisible)
         this.hide();
@@ -135,10 +136,10 @@ CursorBehavior.prototype.getElementUnderCursor = function (x, y, currentDocument
 
 //NOTE: for testing purposes
 CursorBehavior.prototype.getAbsolutePosition = function () {
-    if (this.$cursor) {
-        var offset = positionUtils.getOffsetPosition(this.$cursor[0]),
-            x      = Math.round(offset.left) + this.pointerOffsetX,
-            y      = Math.round(offset.top) + this.pointerOffsetY;
+    if (this.cursorElement) {
+        var offset = positionUtils.getOffsetPosition(this.cursorElement);
+        var x      = Math.round(offset.left) + this.pointerOffsetX;
+        var y      = Math.round(offset.top) + this.pointerOffsetY;
 
         return { x: x, y: y };
     }

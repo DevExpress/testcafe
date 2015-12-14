@@ -6,10 +6,10 @@ import clickPlaybackAutomation from '../playback/click';
 import async from '../../deps/async';
 
 var browserUtils          = hammerhead.utils.browser;
+var extend                = hammerhead.utils.extend;
 var eventSimulator        = hammerhead.eventSandbox.eventSimulator;
 var elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
 
-var $               = testCafeCore.$;
 var SETTINGS        = testCafeCore.SETTINGS;
 var positionUtils   = testCafeCore.positionUtils;
 var keyCharUtils    = testCafeCore.keyCharUtils;
@@ -20,17 +20,20 @@ var textSelection   = testCafeCore.textSelection;
 
 function findTextEditableChild (el) {
     var isContentEditable = domUtils.isContentEditableElement(el);
+    var innerInputElement = null;
 
     if (!domUtils.isTextEditableElement(el) && !isContentEditable) {
-        var $innerInputElement = $(el).find('*').filter(function () {
-            return domUtils.isTextEditableElementAndEditingAllowed(this);
-        });
+        var children = el.querySelectorAll('*');
 
-        if ($innerInputElement.length)
-            return $innerInputElement[0];
+        for (var i = 0; i < children.length; i++) {
+            if (domUtils.isTextEditableElementAndEditingAllowed(children[i])) {
+                innerInputElement = children[i];
+                break;
+            }
+        }
     }
 
-    return el;
+    return innerInputElement;
 }
 
 export default function (el, text, options, actionCallback) {
@@ -50,7 +53,7 @@ export default function (el, text, options, actionCallback) {
     if (options.offsetY)
         options.offsetY = Math.round(options.offsetY);
 
-    curElement                        = findTextEditableChild(el);
+    curElement                        = findTextEditableChild(el) || el;
     isTextEditable                    = domUtils.isTextEditableElementAndEditingAllowed(curElement);
     isInputWithoutSelectionProperties = domUtils.isInputWithoutSelectionPropertiesInFirefox(curElement); //T133144
 
@@ -121,14 +124,14 @@ export default function (el, text, options, actionCallback) {
 
                     async.series({
                         startTypeSymbol: function (seriaCallback) {
-                            notPrevented = eventSimulator.keydown(curElement, $.extend(options, { keyCode: keyCode }));
+                            notPrevented = eventSimulator.keydown(curElement, extend(options, { keyCode: keyCode }));
                             delete options['keyCode'];
 
                             if (notPrevented !== false) {
                                 //T162478: Wrong typing and keys pressing in editor
                                 if (!isContentEditable && curElement !== domUtils.getActiveElement()) {
                                     curElement                        = domUtils.getActiveElement();
-                                    curElement                        = findTextEditableChild(curElement);
+                                    curElement                        = findTextEditableChild(curElement) || curElement;
                                     isTextEditable                    = domUtils.isTextEditableElementAndEditingAllowed(curElement);
                                     isInputWithoutSelectionProperties = domUtils.isInputWithoutSelectionPropertiesInFirefox(curElement);
                                 }
@@ -136,7 +139,7 @@ export default function (el, text, options, actionCallback) {
                                 //Element for typing can change last time only after keydown event
                                 elementForTyping = curElement;
 
-                                notPrevented = eventSimulator.keypress(curElement, $.extend(options, {
+                                notPrevented = eventSimulator.keypress(curElement, extend(options, {
                                     keyCode:  charCode,
                                     charCode: charCode
                                 }));
@@ -145,7 +148,7 @@ export default function (el, text, options, actionCallback) {
                                 //T162478: Wrong typing and keys pressing in editor
                                 if (!isContentEditable && curElement !== domUtils.getActiveElement()) {
                                     curElement = domUtils.getActiveElement();
-                                    curElement = findTextEditableChild(curElement);
+                                    curElement = findTextEditableChild(curElement) || curElement;
                                 }
 
                                 if (notPrevented === false)
@@ -179,7 +182,7 @@ export default function (el, text, options, actionCallback) {
                         },
 
                         endTypeSymbol: function () {
-                            eventSimulator.keyup(curElement, $.extend(options, { keyCode: keyCode }));
+                            eventSimulator.keyup(curElement, extend(options, { keyCode: keyCode }));
                             delete options['keyCode'];
                             currPos++;
 

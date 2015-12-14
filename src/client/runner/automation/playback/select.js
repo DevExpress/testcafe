@@ -9,11 +9,10 @@ import scrollPlaybackAutomation from '../playback/scroll';
 import async from '../../deps/async';
 
 var browserUtils     = hammerhead.utils.browser;
+var extend           = hammerhead.utils.extend;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
-var nativeMethods    = hammerhead.nativeMethods;
 
-var $               = testCafeCore.$;
 var SETTINGS        = testCafeCore.SETTINGS;
 var contentEditable = testCafeCore.contentEditable;
 var textSelection   = testCafeCore.textSelection;
@@ -92,7 +91,7 @@ export default function (el, options, runCallback) {
                 screenPointFrom = positionUtils.offsetToClientCoords(point);
                 eventPointFrom  = automationUtil.getEventOptionCoordinates(el, screenPointFrom);
 
-                eventOptionsStart = $.extend({
+                eventOptionsStart = extend({
                     clientX: eventPointFrom.x,
                     clientY: eventPointFrom.y
                 }, options);
@@ -125,10 +124,10 @@ export default function (el, options, runCallback) {
                 var onmousedown = function (e) {
                     wasPrevented = e.defaultPrevented;
                     eventUtils.preventDefault(e);
-                    nativeMethods.removeEventListener.call(el, 'mousedown', onmousedown, false);
+                    eventUtils.unbind(el, 'mousedown', onmousedown);
                 };
 
-                nativeMethods.addEventListener.call(el, 'mousedown', onmousedown, false);
+                eventUtils.bind(el, 'mousedown', onmousedown);
             }
 
             if (browserUtils.hasTouchEvents)
@@ -200,7 +199,7 @@ export default function (el, options, runCallback) {
             screenPointTo = positionUtils.offsetToClientCoords(point);
             eventPointTo  = automationUtil.getEventOptionCoordinates(topElement, screenPointTo);
 
-            eventOptionsEnd = $.extend({
+            eventOptionsEnd = extend({
                 clientX: eventPointTo.x,
                 clientY: eventPointTo.y
             }, options);

@@ -17,26 +17,17 @@ export const DOM_EVENTS        = hammerhead.utils.event.DOM_EVENTS;
 export const WHICH_PARAMETER   = hammerhead.utils.event.WHICH_PARAMETER;
 
 export var preventDefault  = hammerhead.utils.event.preventDefault;
-export var stopPropagation = hammerhead.utils.event.stopPropagation;
 
-export function bind ($elem, event, handler) {
-    $elem.each(function () {
-        if (domUtils.isWindowInstance(this))
-            nativeMethods.windowAddEventListener.call(this, event, handler, true);
-        else
-            nativeMethods.addEventListener.call(this, event, handler, true);
-    });
-
-    return $elem;
+export function bind (el, event, handler, useCapture) {
+    if (domUtils.isWindowInstance(el))
+        nativeMethods.windowAddEventListener.call(el, event, handler, useCapture);
+    else
+        nativeMethods.addEventListener.call(el, event, handler, useCapture);
 }
 
-export function unbind ($elem, event, handler) {
-    $elem.each(function () {
-        if (domUtils.isWindowInstance(this))
-            nativeMethods.windowRemoveEventListener.call(this, event, handler, true);
-        else
-            nativeMethods.removeEventListener.call(this, event, handler, true);
-    });
-
-    return $elem;
+export function unbind (el, event, handler, useCapture) {
+    if (domUtils.isWindowInstance(el))
+        nativeMethods.windowRemoveEventListener.call(el, event, handler, useCapture);
+    else
+        nativeMethods.removeEventListener.call(el, event, handler, useCapture);
 }

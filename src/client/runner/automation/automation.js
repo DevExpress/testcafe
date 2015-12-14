@@ -10,14 +10,17 @@ import selectPlayback from './playback/select';
 import typePlayback from './playback/type';
 import async from '../deps/async';
 
+
 var browserUtils   = hammerhead.utils.browser;
+var extend         = hammerhead.utils.extend;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 var listeners      = hammerhead.eventSandbox.listeners;
 
-var $          = testCafeCore.$;
 var SETTINGS   = testCafeCore.SETTINGS;
 var eventUtils = testCafeCore.eventUtils;
 var domUtils   = testCafeCore.domUtils;
+var styleUtils = testCafeCore.styleUtils;
+var arrayUtils = testCafeCore.arrayUtils;
 
 
 const REAL_ACTION_EVENTS_REGEXP = /blur|focus|(dbl)?click|contextmenu|key|mouse|pointer/i;
@@ -32,7 +35,7 @@ var defaultActionDescriptor        = {
         }
     },
 
-    defaultElementActionDescriptor = $.extend(true, {}, defaultActionDescriptor, {
+    defaultElementActionDescriptor = extend(true, {}, defaultActionDescriptor, {
         element:     null,
         selector:    null,
         serviceInfo: {
@@ -69,7 +72,7 @@ export var ADD_ACTION_SHORTCUTS = {
     screenshot: 'Ctrl+M'
 };
 
-export var defaultMouseActionDescriptor = $.extend(true, {}, defaultElementActionDescriptor, {
+export var defaultMouseActionDescriptor = extend(true, {}, defaultElementActionDescriptor, {
     apiArguments: {
         options: {
             ctrl:    false,
@@ -85,7 +88,7 @@ export var defaultMouseActionDescriptor = $.extend(true, {}, defaultElementActio
     }
 });
 
-export var defaultDragActionDescriptor = $.extend(true, {}, defaultMouseActionDescriptor, {
+export var defaultDragActionDescriptor = extend(true, {}, defaultMouseActionDescriptor, {
     type:          'drag',
     apiArguments:  {
         dragOffsetX: 0,
@@ -95,11 +98,11 @@ export var defaultDragActionDescriptor = $.extend(true, {}, defaultMouseActionDe
     endPosition:   null
 });
 
-export var defaultHoverActionDescriptor = $.extend(true, {}, defaultElementActionDescriptor, {
+export var defaultHoverActionDescriptor = extend(true, {}, defaultElementActionDescriptor, {
     type: 'hover'
 });
 
-export var defaultTypeActionDescriptor = $.extend(true, {}, defaultMouseActionDescriptor, {
+export var defaultTypeActionDescriptor = extend(true, {}, defaultMouseActionDescriptor, {
     type:         'type',
     apiArguments: {
         text:    '',
@@ -110,7 +113,7 @@ export var defaultTypeActionDescriptor = $.extend(true, {}, defaultMouseActionDe
     }
 });
 
-export var defaultPressActionDescriptor = $.extend(true, {}, defaultActionDescriptor, {
+export var defaultPressActionDescriptor = extend(true, {}, defaultActionDescriptor, {
     type:         'press',
     apiArguments: {
         keysCommand: ''
@@ -128,7 +131,7 @@ export var defaultScreenshotActionDescriptor = {
     type: 'screenshot'
 };
 
-export var defaultSelectActionDescriptor = $.extend(true, {}, defaultElementActionDescriptor, {
+export var defaultSelectActionDescriptor = extend(true, {}, defaultElementActionDescriptor, {
     type:         'select',
     apiArguments: {
         startPos: null,
@@ -151,19 +154,26 @@ var preventRealEvtHandler = function (e, dispatched, preventDefault) {
         //In the IE an element loses focus only if css display property is set to 'none', other ways of making
         // element invisible don't lead to blurring (in MSEdge focus/blur is sync)
         if (e.type === 'blur') {
-            var $target = $(target);
             if (browserUtils.isIE && browserUtils.version < 12) {
-                if ((!domUtils.isWindowInstance(target) && $target.css('display') === 'none') ||
-                    $target.parents().filter(function () {
-                        return this.style.display === 'none';
-                    }).length)
-                //B254768 - reason of setTimeout method using
+                var isElementInvisible = !domUtils.isWindowInstance(target) &&
+                                         styleUtils.get(target, 'display') === 'none';
+                var elementParents     = null;
+                var invisibleParents   = false;
+
+                if (!isElementInvisible) {
+                    elementParents   = domUtils.getParents(target);
+                    invisibleParents = arrayUtils.filter(elementParents, parent => styleUtils.get(parent, 'display') === 'none');
+                }
+
+                if (isElementInvisible || invisibleParents.length) {
+                    //B254768 - reason of setTimeout method using
                     window.setTimeout(function () {
-                        eventSimulator.blur($target[0]);
+                        eventSimulator.blur(target);
                     }, 0);
+                }
             }
             //NOTE: fix for jQuery bug. An exception raises when call .is(':visible') for window or document on page loading (e.ownerDocument is null)
-            else if (target !== window && target !== window.document && !$target.is(':visible'))
+            else if (target !== window && target !== window.document && !styleUtils.hasDimensions(target))
                 return;
         }
 
