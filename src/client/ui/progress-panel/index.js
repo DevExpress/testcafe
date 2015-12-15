@@ -95,8 +95,10 @@ export default class ProgressPanel {
         var progress          = 0;
         var delta             = 0;
 
-        styleUtils.set(el, 'opacity', startOpacityValue);
-        styleUtils.set(el, 'display', 'block');
+        if (show) {
+            styleUtils.set(el, 'opacity', startOpacityValue);
+            styleUtils.set(el, 'display', 'block');
+        }
 
         this._stopAnimation();
 
