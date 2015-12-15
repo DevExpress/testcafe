@@ -1,4 +1,3 @@
-import COMPILER_CONST from '../../../compiler/legacy/const';
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import * as automation from '../automation/automation';
@@ -701,4 +700,18 @@ export function setElementAvailabilityWaitingTimeout (ms) {
 }
 
 //NOTE: add sourceIndex wrapper
-sourceIndexTracker.wrapTrackableMethods(exports, COMPILER_CONST.ACTION_FUNC_NAMES);
+sourceIndexTracker.wrapTrackableMethods(exports, [
+    'click',
+    'rclick',
+    'dblclick',
+    'drag',
+    'type',
+    'wait',
+    'waitFor',
+    'hover',
+    'press',
+    'select',
+    'navigateTo',
+    'upload',
+    'screenshot'
+]);
