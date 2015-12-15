@@ -1,8 +1,9 @@
 import Promise from 'pinkie';
 import { getBrowserInfo } from 'testcafe-browser-natives';
+import { Compiler } from 'testcafe-legacy-api';
+import { wrapDomAccessors } from 'testcafe-hammerhead';
 import BrowserConnection from '../browser-connection';
 import LocalBrowserConnection from '../browser-connection/local';
-import LegacyCompilerAdapter from '../compiler';
 import { MESSAGE, getText } from '../messages';
 import BrowserSet from './browser-set';
 
@@ -43,16 +44,15 @@ export default class Bootstrapper {
 
         var browsers           = await Promise.all(this.browsers.map(Bootstrapper._convertAliasOrPathToBrowserInfo));
         var browserConnections = browsers.map(browser => this._createConnectionFromBrowserInfo(browser));
-        var browserSet         = await BrowserSet.from(browserConnections);
 
-        return browserSet;
+        return await BrowserSet.from(browserConnections);
     }
 
     async _getTests () {
         if (!this.sources.length)
             throw new Error(getText(MESSAGE.testSourcesNotSet));
 
-        var compiler = new LegacyCompilerAdapter(this.sources);
+        var compiler = new Compiler(this.sources, wrapDomAccessors);
         var tests    = await compiler.getTests();
 
         if (this.filter)

@@ -1,4 +1,3 @@
-import COMPILER_CONST from '../../../compiler/legacy/const';
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import * as sourceIndexTracker from '../source-index';
@@ -411,7 +410,9 @@ AssertionsAPI.assert = function (operator, args, callback, context) {
 };
 
 //NOTE: add sourceIndex wrapper
-sourceIndexTracker.wrapTrackableMethods(AssertionsAPI.prototype, COMPILER_CONST.ASSERTION_FUNC_NAMES);
+sourceIndexTracker.wrapTrackableMethods(AssertionsAPI.prototype, [
+    'ok', 'notOk', 'eq', 'notEq'
+]);
 
 
 export default AssertionsAPI;
