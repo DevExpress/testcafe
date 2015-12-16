@@ -1,6 +1,6 @@
 {
   "name": "testcafe",
-  "version": "0.0.7-alpha",
+  "version": "0.0.9-alpha",
   "main": "lib/index",
   "bin": {
     "testcafe": "./bin/testcafe"
@@ -26,6 +26,7 @@
     "noop-fn": "^1.0.0",
     "os-family": "^1.0.0",
     "parse5": "^1.5.0",
+    "pify": "^2.3.0",
     "pinkie": "^2.0.1",
     "promisify-event": "^1.0.0",
     "qrcode-terminal": "^0.10.0",
@@ -67,7 +68,6 @@
     "gulp-util": "^3.0.7",
     "gulp-webmake": "0.0.4",
     "markdownlint": ">=0.0.8",
-    "pify": "^2.3.0",
     "publish-please": "^1.0.1",
     "request": "^2.58.0",
     "opn": "^3.0.3",

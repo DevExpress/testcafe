@@ -81,7 +81,9 @@ function assertErrorMessage (file, err) {
     var outStreamMock = createOutStreamMock();
     var plugin        = new ReporterPluginHost(reporterPluginMock, outStreamMock);
 
-    plugin.write(plugin.formatError(err));
+    plugin
+        .useWordWrap(true)
+        .write(plugin.formatError(err));
 
     var expectedMsg = read('./data/expected-test-errors/' + file)
         .replace(/(\r\n)/gm, '\n')
