@@ -74,7 +74,8 @@ export default class ReporterPluginHost {
         var maxMsgLength = this[viewportWidth] - this[indent] - prefix.length;
         var msg          = format(err, this[errorDecorator], maxMsgLength);
 
-        msg = wordWrap(msg, prefix.length, maxMsgLength);
+        if (this[wordWrapEnabled])
+            msg = wordWrap(msg, prefix.length, maxMsgLength);
 
         return prefix + msg.substr(prefix.length);
     }
