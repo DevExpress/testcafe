@@ -75,7 +75,9 @@ export default class ReporterPluginHost {
         var msg          = format(err, this[errorDecorator], maxMsgLength);
 
         if (this[wordWrapEnabled])
-            msg = wordWrap(msg, prefix.length, maxMsgLength);
+            msg = this.wordWrap(msg, prefix.length, maxMsgLength);
+        else
+            msg = this.indentString(msg, prefix.length);
 
         return prefix + msg.substr(prefix.length);
     }
