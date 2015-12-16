@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "array-find": "^1.0.0",
-    "async": "0.2.6",
     "babel-runtime": "^5.6.15",
     "chalk": "^1.1.0",
     "commander": "^2.8.1",
@@ -33,13 +32,13 @@
     "read-file-relative": "^1.2.0",
     "testcafe-browser-natives": "^0.10.0",
     "testcafe-hammerhead": "^3.1.1",
+    "testcafe-legacy-api": "^0.1.0",
     "testcafe-reporter-json": "^1.0.0",
     "testcafe-reporter-list": "^1.0.0",
     "testcafe-reporter-minimal": "^1.0.0",
     "testcafe-reporter-spec": "^1.0.0",
     "testcafe-reporter-xunit": "^1.0.0",
     "time-limit-promise": "^1.0.2",
-    "uglify-js": "1.2.6",
     "useragent": "^2.1.7",
     "uuid": "^2.0.1"
   },
