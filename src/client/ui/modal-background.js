@@ -3,7 +3,6 @@ import testCafeCore from './deps/testcafe-core';
 
 var shadowUI = hammerhead.shadowUI;
 
-var $          = testCafeCore.$;
 var eventUtils = testCafeCore.eventUtils;
 var styleUtils = testCafeCore.styleUtils;
 
@@ -118,10 +117,12 @@ export function initAndShowLoadingText () {
     tryShowBeforeReady();
 
     //NOTE: ensure that background was shown on ready
-    $(document).ready(function () {
-        if (!shown)
-            initAndShow();
-    });
+    eventUtils
+        .documentReady()
+        .then(() => {
+            if (!shown)
+                initAndShow();
+        });
 }
 
 export function show (transparent) {

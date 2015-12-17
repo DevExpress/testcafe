@@ -2,6 +2,7 @@ import hammerhead from '../deps/hammerhead';
 import * as domUtils from './dom';
 
 
+var Promise       = hammerhead.Promise;
 var nativeMethods = hammerhead.nativeMethods;
 
 export const RECORDING_LISTENED_EVENTS = [
@@ -16,7 +17,7 @@ export const BUTTONS_PARAMETER = hammerhead.utils.event.BUTTONS_PARAMETER;
 export const DOM_EVENTS        = hammerhead.utils.event.DOM_EVENTS;
 export const WHICH_PARAMETER   = hammerhead.utils.event.WHICH_PARAMETER;
 
-export var preventDefault  = hammerhead.utils.event.preventDefault;
+export var preventDefault = hammerhead.utils.event.preventDefault;
 
 export function bind (el, event, handler, useCapture) {
     if (domUtils.isWindowInstance(el))
@@ -30,4 +31,39 @@ export function unbind (el, event, handler, useCapture) {
         nativeMethods.windowRemoveEventListener.call(el, event, handler, useCapture);
     else
         nativeMethods.removeEventListener.call(el, event, handler, useCapture);
+}
+
+
+export function documentReady () {
+    return new Promise(resolve => {
+        var isReady = false;
+
+        function ready () {
+            if (isReady)
+                return;
+
+            if (!document.body) {
+                window.setTimeout(ready, 1);
+                return;
+            }
+
+            isReady = true;
+
+            window.removeEventListener('load', ready);
+
+            resolve();
+        }
+
+        function onContentLoaded () {
+            document.removeEventListener('DOMContentLoaded', onContentLoaded);
+            ready();
+        }
+
+
+        if (document.readyState === 'complete')
+            return window.setTimeout(ready, 1);
+
+        document.addEventListener('DOMContentLoaded', onContentLoaded);
+        window.addEventListener('load', ready);
+    });
 }

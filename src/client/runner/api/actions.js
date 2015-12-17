@@ -229,7 +229,7 @@ export function parseActionArgument (item, actionName) {
     else if (actionName && actionName === 'select' && domUtils.isTextNode(item))
         return [item];
     else if (typeof item === 'string')
-        return $(item).get();
+        return arrayUtils.toArray($(item));
     else if (isJQueryObj(item)) {
         item.each(function () {
             elements.push(this);
