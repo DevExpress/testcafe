@@ -6,7 +6,6 @@ var shadowUI = hammerhead.shadowUI;
 
 var eventUtils = testCafeCore.eventUtils;
 var styleUtils = testCafeCore.styleUtils;
-var $          = testCafeCore.$;
 
 
 const PANEL_CLASS   = 'progress-panel';

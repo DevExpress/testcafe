@@ -13,7 +13,6 @@ import * as actionBarrier from './action-barrier/action-barrier';
 var messageSandbox = hammerhead.eventSandbox.message;
 
 var SETTINGS                 = testCafeCore.SETTINGS;
-var $                        = testCafeCore.$;
 var COMMAND                  = testCafeCore.COMMAND;
 var ERROR_TYPE               = testCafeCore.ERROR_TYPE;
 var CROSS_DOMAIN_MESSAGES    = testCafeCore.CROSS_DOMAIN_MESSAGES;
@@ -21,6 +20,7 @@ var jQuerySelectorExtensions = testCafeCore.jQuerySelectorExtensions;
 var transport                = testCafeCore.transport;
 var serviceUtils             = testCafeCore.serviceUtils;
 var domUtils                 = testCafeCore.domUtils;
+var eventUtils               = testCafeCore.eventUtils;
 
 var cursor          = testCafeUI.cursor;
 var modalBackground = testCafeUI.modalBackground;
@@ -42,12 +42,14 @@ function waitPageLoad (callback) {
             }
         };
 
-    $(window).load(callbackWrapper);
-    $(document).ready(function () {
-        //NOTE: an iFrame may be removed in this moment
-        if (domUtils.isIFrameWindowInDOM(window) || domUtils.isTopWindow(window))
-            window.setTimeout(callbackWrapper, PAGE_LOAD_TIMEOUT);
-    });
+    eventUtils.bind(window, 'load', callbackWrapper);
+    eventUtils
+        .documentReady()
+        .then(() => {
+            //NOTE: an iFrame may be removed in this moment
+            if (domUtils.isIFrameWindowInDOM(window) || domUtils.isTopWindow(window))
+                window.setTimeout(callbackWrapper, PAGE_LOAD_TIMEOUT);
+        });
 }
 
 //Init
