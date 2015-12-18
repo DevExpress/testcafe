@@ -1503,4 +1503,17 @@ $(document).ready(function () {
             startNext();
         });
     });
+
+    asyncTest('GH234 - Value of a <select> element must be updated before emitting "change" event in IE and Edge', function () {
+        var select = createSelect();
+
+        select.addEventListener('change', function () {
+            equal(select.value, 'three');
+            startNext();
+        });
+
+        clickPlaybackAutomation(select, {}, function (){
+            clickPlaybackAutomation(select.options[2], {}, function () {});
+        });
+    });
 });
