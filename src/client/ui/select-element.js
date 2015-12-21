@@ -74,10 +74,10 @@ function createOption (realOption, parent) {
                 eventSimulator.mouseup(browserUtils.isFirefox ? option : curSelectEl);
 
             if ((browserUtils.isFirefox || browserUtils.isIE) && clickLeadChanges) {
-                eventSimulator.change(curSelectEl);
-
                 if (browserUtils.isIE)
                     curSelectEl.selectedIndex = optionIndex;
+
+                eventSimulator.change(curSelectEl);
             }
 
             if (!isMobileBrowser)
