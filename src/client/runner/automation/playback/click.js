@@ -77,23 +77,24 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
             },
 
             click: function () {
-                var clickLeadChanges = isClickOnOption && !targetElement.disabled;
+                var clickCausesChange = isClickOnOption && !targetElement.disabled && childIndex !== selectedIndex;
 
                 if (styleUtils.getSelectElementSize(select) > 1) {
                     if (browserUtils.isFirefox) {
                         eventSimulator.mousedown(targetElement, clickOptions);
 
-                        if (clickLeadChanges)
+                        if (clickCausesChange)
                             select.selectedIndex = childIndex;
 
                         focusBlurSandbox.focus(select, function () {
                             window.setTimeout(function () {
                                 eventSimulator.mouseup(targetElement, clickOptions);
 
-                                if (isClickOnOption && childIndex !== selectedIndex)
+                                if (clickCausesChange)
                                     eventSimulator.change(select);
 
                                 eventSimulator.click(targetElement, clickOptions);
+
                                 actionCallback();
                             }, browserUtils.hasTouchEvents ? 0 : automationSettings.CLICK_STEP_DELAY);
                         }, false, true);
@@ -105,13 +106,14 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
                             window.setTimeout(function () {
                                 eventSimulator.mouseup(select, clickOptions);
 
-                                if (clickLeadChanges)
+                                if (clickCausesChange)
                                     select.selectedIndex = childIndex;
 
-                                if (isClickOnOption && childIndex !== selectedIndex)
+                                if (clickCausesChange)
                                     eventSimulator.change(select);
 
                                 eventSimulator.click(select, clickOptions);
+
                                 actionCallback();
                             }, browserUtils.hasTouchEvents ? 0 : automationSettings.CLICK_STEP_DELAY);
                         }, false, true);
@@ -124,12 +126,16 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
                             window.setTimeout(function () {
                                 eventSimulator.mousedown(targetElement, clickOptions);
 
-                                if (clickLeadChanges)
+                                if (clickCausesChange)
                                     select.selectedIndex = childIndex;
 
                                 eventSimulator.mouseup(targetElement, clickOptions);
 
+                                if (browserUtils.isSafari && clickCausesChange)
+                                    eventSimulator.change(select);
+
                                 eventSimulator.click(targetElement, clickOptions);
+
                                 actionCallback();
                             }, browserUtils.hasTouchEvents ? 0 : automationSettings.CLICK_STEP_DELAY);
                         }, false, true);

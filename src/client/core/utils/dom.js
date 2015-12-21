@@ -226,6 +226,24 @@ export function getTextareaPositionByLineAndOffset (textarea, line, offset) {
     return lineIndex + offset;
 }
 
+// NOTE: the form is also submitted on enter key press if there is only one input of certain
+// types (referred to as types that block implicit submission in the HTML5 standard) on the
+// form and this input is focused (http://www.w3.org/TR/html5/forms.html#implicit-submission)
+export function blocksImplicitSubmission (el) {
+    var inputTypeRegExp = null;
+
+    if (browserUtils.isSafari)
+        inputTypeRegExp = /^(text|password|color|date|time|datetime|datetime-local|email|month|number|search|tel|url|week|image)$/i;
+    else if (browserUtils.isFirefox)
+        inputTypeRegExp = /^(text|password|date|time|datetime|datetime-local|email|month|number|search|tel|url|week|image)$/i;
+    else if (browserUtils.isIE)
+        inputTypeRegExp = /^(text|password|color|date|time|datetime|datetime-local|email|file|month|number|search|tel|url|week|image)$/i;
+    else
+        inputTypeRegExp = /^(text|password|datetime|email|number|search|tel|url|image)$/i;
+
+    return inputTypeRegExp.test(el.type);
+}
+
 export function isEditableElement (el, checkEditingAllowed) {
     return checkEditingAllowed ?
            isTextEditableElementAndEditingAllowed(el) || isContentEditableElement(el) :

@@ -97,7 +97,7 @@ $(document).ready(function () {
                 callbackFunction();
             };
             actions();
-            var timeoutId = setTimeout(function () {
+            var timeoutId        = setTimeout(function () {
                 callbackFunction = function () {
                 };
                 ok(false, 'Timeout is exceeded');
@@ -381,9 +381,6 @@ $(document).ready(function () {
             $iFrame.bind('load', onLoadHandler);
             $iFrame.appendTo($('body'));
         };
-
-    $('<div></div>').css({ width: 1, height: 1500, position: 'absolute' }).appendTo('body');
-    $('body').css('height', '1500px');
 
     //tests
     QUnit.testStart(function () {

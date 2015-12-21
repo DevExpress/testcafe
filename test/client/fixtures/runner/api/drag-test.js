@@ -29,8 +29,14 @@ var correctTestWaitingTime = function (time) {
 };
 
 $(document).ready(function () {
-    //NOTE: remove this after fix IE tests in iFrame
+    // NOTE: remove this after fix IE tests in iFrame
     $('body').css('border', '0px');
+
+    // NOTE: prevent auto scrolling
+    if (browserUtils.isSafari && browserUtils.hasTouchEvents) {
+        var $meta = $('<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">');
+        $('head').append($meta);
+    }
 
     var actionTargetWaitingCounter = 0,
         actionRunCounter           = 0;
@@ -390,52 +396,62 @@ $(document).ready(function () {
     });
 
     module('scrolling functional test');
-    asyncTest('scroll down-right', function () {
-        var $draggable = createDraggable(500, 500),
-            $target    = createTarget(600, 1200);
-        $('body').height(1300).width(700);
-        runAsyncTest(
-            function () {
-                window.setTimeout(function () {
-                    actionsAPI.drag($draggable[0], $target[0]);
-                }, 500)
-                //api.drag($draggable[0], $target[0]);
-            },
-            function () {
-                ok(isInTarget($draggable[0], $target[0]), 'element is in the target');
-            },
-            correctTestWaitingTime(4000)
-        );
+    asyncTest('scroll down right', function () {
+        $('body').height(1500).width(1500);
+
+        window.setTimeout(function () {
+            var draggable = createDraggable(100, 100)[0];
+            var target    = createTarget(1200, 1200)[0];
+
+            runAsyncTest(
+                function () {
+                    window.setTimeout(function () {
+                        actionsAPI.drag(draggable, target);
+                    }, 500);
+                },
+                function () {
+                    ok(isInTarget(draggable, target), 'element is in the target');
+                },
+                correctTestWaitingTime(8000)
+            );
+        }, 500);
     });
 
     asyncTest('scroll up', function () {
-        var $draggable = createDraggable(100, 1300),
-            $target    = createTarget(100, 200);
         $('body').height(1400);
-        runAsyncTest(
-            function () {
-                actionsAPI.drag($draggable[0], $target[0]);
-            },
-            function () {
-                ok(isInTarget($draggable[0], $target[0]), 'element is in the target');
-            },
-            correctTestWaitingTime(8000)
-        );
+
+        window.setTimeout(function () {
+            var draggable = createDraggable(100, 1300)[0];
+            var target    = createTarget(100, 200)[0];
+
+            runAsyncTest(
+                function () {
+                    window.setTimeout(function () {
+                        actionsAPI.drag(draggable, target);
+                    }, 500);
+                },
+                function () {
+                    ok(isInTarget(draggable, target), 'element is in the target');
+                },
+                correctTestWaitingTime(8000)
+            );
+        }, 500);
     });
 
     module('other functional tests');
 
     asyncTest('overlapped during dragging', function () {
-        var $draggable = createDraggable(100, 100),
-            $target    = createTarget(500, 500);
-        createTarget(300, 300).css('zIndex', '100');
-        $('body').height(700).width(1300);
+        var draggable = createDraggable(100, 100)[0],
+            target    = createTarget(100, 500)[0];
+
+        createTarget(100, 300).css('zIndex', '100');
+
         runAsyncTest(
             function () {
-                actionsAPI.drag($draggable, $target);
+                actionsAPI.drag(draggable, target);
             },
             function () {
-                ok(isInTarget($draggable[0], $target[0]), 'element is in the target');
+                ok(isInTarget(draggable, target), 'element is in the target');
             },
             correctTestWaitingTime(3000)
         );

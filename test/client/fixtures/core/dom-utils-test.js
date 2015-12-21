@@ -15,9 +15,9 @@ asyncTest('isIFrameWindowInDOM', function () {
         if (messageCounter === 0) {
             equal(event.data, "true");
 
-            var iFramePostMessage = $iFrame[0].contentWindow.postMessage.bind($iFrame[0].contentWindow);
+            var iFramePostMessage = iframe.contentWindow.postMessage.bind(iframe.contentWindow);
 
-            $iFrame.remove();
+            document.body.removeChild(iframe);
 
             //NOTE: In WebKit, scripts cannot be executed in a removed iframe. Therefore, the test is finished here.
             if (browserUtils.isIE)
@@ -35,10 +35,11 @@ asyncTest('isIFrameWindowInDOM', function () {
 
     window.addEventListener('message', onMessage, false);
 
-    var $iFrame = $('<iframe>')
-        .prop('src', window.getCrossDomainPageUrl('../../data/dom-utils/iframe.html'))
-        .bind('load', function () {
-            $iFrame[0].contentWindow.postMessage('isIFrameWindowInDOM', '*');
-        }).appendTo('body');
+    var iframe = $('<iframe>').attr('src', window.getCrossDomainPageUrl('../../data/dom-utils/iframe.html'))[0];
 
+    window.QUnitGlobals.waitForIframe(iframe).then(function () {
+        iframe.contentWindow.postMessage('isIFrameWindowInDOM', '*');
+    });
+
+    document.body.appendChild(iframe);
 });
