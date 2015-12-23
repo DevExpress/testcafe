@@ -1,0 +1,21 @@
+{
+  "rules": {
+    "max-nested-callbacks": [2, 5]
+  },
+  "env": {
+    "browser": true,
+    "jquery": true,
+    "mocha": true
+  },
+  "globals": {
+    /* testcafe api */
+    "act": true,
+    "inIFrame": true,
+    "ok": true,
+    "notOk": true,
+    "eq": true,
+    "notEq": true,
+    /* functional harness */
+    "runTests": true
+  }
+}
