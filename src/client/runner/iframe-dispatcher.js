@@ -9,10 +9,10 @@ import RunnerBase from './runner-base';
 import IFrameRunner from './iframe-runner';
 
 var messageSandbox        = hammerhead.eventSandbox.message;
-var $                     = testCafeCore.$;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
 var serviceUtils          = testCafeCore.serviceUtils;
 var domUtils              = testCafeCore.domUtils;
+var eventUtils            = testCafeCore.eventUtils;
 var cursor                = testCafeUI.cursor;
 
 
@@ -111,12 +111,14 @@ function waitPageLoad (callback) {
             }
         };
 
-    $(window).load(callbackWrapper);
-    $(document).ready(function () {
-        //NOTE: an iFrame may be removed in this moment
-        if (domUtils.isIFrameWindowInDOM(window))
-            window.setTimeout(callbackWrapper, PAGE_LOAD_TIMEOUT);
-    });
+    eventUtils.bind(window, 'load', callbackWrapper);
+    eventUtils
+        .documentReady()
+        .then(() => {
+            //NOTE: an iFrame may be removed in this moment
+            if (domUtils.isIFrameWindowInDOM(window))
+                window.setTimeout(callbackWrapper, PAGE_LOAD_TIMEOUT);
+        });
 }
 
 
