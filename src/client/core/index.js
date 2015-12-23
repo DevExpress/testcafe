@@ -1,14 +1,15 @@
 import hammerhead from './deps/hammerhead';
 
-import $ from './deps/jquery';
 import SETTINGS from './settings';
 import ERROR_TYPE from '../../reporter/errors/type';
 import COMMAND from '../../runner/test-run/command';
 import CROSS_DOMAIN_MESSAGES from './cross-domain-messages';
 import * as transport from './transport';
+import Sizzle  from './sandboxed-sizzle';
+import extendSizzleSelectors from './extensions/sizzle-custom-selectors';
 import * as sandboxedJQuery from './sandboxed-jquery';
-import * as jQuerySelectorExtensions from './jquery-extensions/custom-selectors';
-import * as jQueryDataMethodProxy from './jquery-extensions/data-proxy';
+import extendJQuerySelectors from './extensions/jquery-custom-selectors';
+import * as jQueryDataMethodProxy from './extensions/jquery-data-proxy';
 
 import * as serviceUtils from './utils/service';
 import * as domUtils from './utils/dom';
@@ -20,15 +21,16 @@ import * as eventUtils from './utils/event';
 import * as arrayUtils from './utils/array';
 import * as textSelection from './utils/text-selection';
 
-exports.$                        = $;
-exports.SETTINGS                 = SETTINGS;
-exports.CROSS_DOMAIN_MESSAGES    = CROSS_DOMAIN_MESSAGES;
-exports.COMMAND                  = COMMAND;
-exports.ERROR_TYPE               = ERROR_TYPE;
-exports.jQuerySelectorExtensions = jQuerySelectorExtensions;
-exports.jQueryDataMethodProxy    = jQueryDataMethodProxy;
-exports.transport                = transport;
-exports.sandboxedJQuery          = sandboxedJQuery;
+exports.Sizzle                = Sizzle;
+exports.extendSizzleSelectors = extendSizzleSelectors;
+exports.SETTINGS              = SETTINGS;
+exports.CROSS_DOMAIN_MESSAGES = CROSS_DOMAIN_MESSAGES;
+exports.COMMAND               = COMMAND;
+exports.ERROR_TYPE            = ERROR_TYPE;
+exports.extendJQuerySelectors = extendJQuerySelectors;
+exports.jQueryDataMethodProxy = jQueryDataMethodProxy;
+exports.transport             = transport;
+exports.sandboxedJQuery       = sandboxedJQuery;
 
 exports.serviceUtils    = serviceUtils;
 exports.domUtils        = domUtils;
