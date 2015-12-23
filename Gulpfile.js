@@ -154,6 +154,7 @@ gulp.task('lint', ['lint-client'], function () {
             '!src/client/**/*.js',  //TODO: fix it
             //'test/**/*.js',       //TODO: fix it
             'test/server/**.js',
+            'test/functional/**/*.js',
             'test/report-design-viewer/*.js',
             'Gulpfile.js'
         ])
@@ -381,4 +382,14 @@ gulp.task('preview-website', ['prompt-web-server-close']);
 gulp.task('publish', ['test-server'], function () {
     // TODO switch publish tag once we'll be ready to release
     return publish({ tag: 'alpha' });
+});
+
+gulp.task('test-functional', ['build'], function () {
+    return gulp
+        .src(['test/functional/setup.js', 'test/functional/**/*-test.js'])
+        .pipe(mocha({
+            ui:       'bdd',
+            reporter: 'spec',
+            timeout:  typeof v8debug === 'undefined' ? 600000 : Infinity // NOTE: disable timeouts in debug
+        }));
 });
