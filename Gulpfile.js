@@ -126,7 +126,18 @@ gulp.task('clean', function (cb) {
 
 
 // Lint
-gulp.task('lint', function () {
+gulp.task('lint-client', function () {
+    return gulp
+        .src([
+            'src/client/runner/automation/playback/scroll.js',
+            'src/client/runner/utils/**/*.js'
+        ])
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
+});
+
+gulp.task('lint', ['lint-client'], function () {
     return gulp
         .src([
             'src/**/*.js',

@@ -305,6 +305,15 @@ export function getElementClientRectangle (el) {
     };
 }
 
+export function calcRelativePosition (dimensions, toDimensions) {
+    return {
+        left:   dimensions.left - (toDimensions.left + toDimensions.border.left),
+        right:  toDimensions.right - toDimensions.border.right - toDimensions.scrollbar.right - dimensions.right,
+        top:    dimensions.top - (toDimensions.top + toDimensions.border.top),
+        bottom: toDimensions.bottom - toDimensions.border.bottom - toDimensions.scrollbar.bottom - dimensions.bottom
+    };
+}
+
 export var getElementRectangle  = hammerhead.utils.position.getElementRectangle;
 export var getOffsetPosition    = hammerhead.utils.position.getOffsetPosition;
 export var offsetToClientCoords = hammerhead.utils.position.offsetToClientCoords;

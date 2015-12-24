@@ -37,7 +37,7 @@ export function isNotVisibleNode (node) {
     return !domUtils.isRenderedNode(node) || isHiddenNode(node) || isVisibilityHiddenTextNode(node);
 }
 
-export function getScrollableParents (el, doc) {
+export function getScrollableParents (el) {
     var parentsArray = domUtils.getParents(el);
 
     if (domUtils.isElementInIframe(el)) {

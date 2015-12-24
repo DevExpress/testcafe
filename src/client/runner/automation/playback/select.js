@@ -5,7 +5,7 @@ import * as automationUtil from '../util';
 import * as automationSettings from '../settings';
 import * as automationSelectUtil from './select-util';
 import movePlaybackAutomation from '../playback/move';
-import scrollPlaybackAutomation from '../playback/scroll';
+import ScrollAutomation from '../playback/scroll';
 import async from '../../deps/async';
 
 var browserUtils     = hammerhead.utils.browser;
@@ -63,13 +63,20 @@ export default function (el, options, runCallback) {
 
     async.series({
         scrollToElement: function (callback) {
-            scrollPlaybackAutomation(el, {}, null, function () {
+            var elementRectangle = positionUtils.getElementRectangle(el);
+            var scrollAutomation = new ScrollAutomation(el, {
+                offsetX: Math.round(elementRectangle.width / 2),
+                offsetY: Math.round(elementRectangle.height / 2)
+            });
+
+            scrollAutomation
+                .run()
+                .then(() => {
                     automationSelectUtil.getCorrectOptions(el, function (opt) {
                         correctOptions = opt;
                         callback();
                     });
-                }
-            );
+                });
         },
 
         moveToStart: function (callback) {
@@ -194,7 +201,7 @@ export default function (el, options, runCallback) {
                 point = positionUtils.findCenter(topElement);
 
             automationSelectUtil.scrollElementByPoint(topElement, point);
-            point     = automationSelectUtil.updatePointByScrollElement(topElement, point);
+            point = automationSelectUtil.updatePointByScrollElement(topElement, point);
 
             screenPointTo = positionUtils.offsetToClientCoords(point);
             eventPointTo  = automationUtil.getEventOptionCoordinates(topElement, screenPointTo);
