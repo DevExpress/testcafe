@@ -2,7 +2,6 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import testCafeUI from '../deps/testcafe-ui';
 import movePlaybackAutomation from './playback/move';
-import * as scrollAutomation from './scroll-behavior';
 
 var messageSandbox = hammerhead.eventSandbox.message;
 
@@ -115,18 +114,18 @@ function onMessage (e) {
 
             break;
 
-        case CROSS_DOMAIN_MESSAGES.SCROLL_TOP_WINDOW_REQUEST_CMD:
-            scrollAutomation.setScroll(e.source, message.point, message.options, function () {
-                messageSandbox.sendServiceMsg({ cmd: CROSS_DOMAIN_MESSAGES.SCROLL_TOP_WINDOW_RESPONSE_CMD }, e.source);
-            });
-            break;
-
         case CROSS_DOMAIN_MESSAGES.GET_IFRAME_POSITION_DATA_REQUEST_CMD:
-            var data = scrollAutomation.getScrollData(e.source);
+            var iFrame = domUtils.getIframeByWindow(e.source);
 
-            data.cmd = CROSS_DOMAIN_MESSAGES.GET_IFRAME_POSITION_DATA_RESPONSE_CMD;
+            var msg = {
+                scroll:        styleUtils.getElementScroll(domUtils.findDocument(document)),
+                iFrameOffset:  positionUtils.getOffsetPosition(iFrame),
+                iFrameBorders: styleUtils.getBordersWidth(iFrame),
+                iFramePadding: styleUtils.getElementPadding(iFrame),
+                cmd:           CROSS_DOMAIN_MESSAGES.GET_IFRAME_POSITION_DATA_RESPONSE_CMD
+            };
 
-            messageSandbox.sendServiceMsg(data, e.source);
+            messageSandbox.sendServiceMsg(msg, e.source);
             break;
     }
 }

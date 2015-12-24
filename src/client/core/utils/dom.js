@@ -408,6 +408,10 @@ export function isTopWindow (win) {
     }
 }
 
+export function isDocumentRootElement (element) {
+    return element.tagName && element.tagName.toLowerCase() === 'html';
+}
+
 export var findDocument                               = hammerhead.utils.dom.findDocument;
 export var getActiveElement                           = hammerhead.utils.dom.getActiveElement;
 export var getChildVisibleIndex                       = hammerhead.utils.dom.getChildVisibleIndex;
