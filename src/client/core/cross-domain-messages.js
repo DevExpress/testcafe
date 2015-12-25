@@ -15,9 +15,6 @@ export default {
     MOVE_FROM_IFRAME_REQUEST_CMD:  'moveFromIFrameRequest',
     MOVE_FROM_IFRAME_RESPONSE_CMD: 'moveFromIFrameResponse',
 
-    SCROLL_TOP_WINDOW_REQUEST_CMD:  'scrollTopWindowRequest',
-    SCROLL_TOP_WINDOW_RESPONSE_CMD: 'scrollTopWindowResponse',
-
     GET_IFRAME_POSITION_DATA_REQUEST_CMD:  'getIFramePositionDataRequest',
     GET_IFRAME_POSITION_DATA_RESPONSE_CMD: 'getIFramePositionDataResponse',
 

@@ -4,7 +4,7 @@ import testCafeUI from '../../deps/testcafe-ui';
 
 import * as automationUtil from '../util';
 import * as automationSettings from '../settings';
-import scrollPlaybackAutomation from '../playback/scroll';
+import ScrollAutomation from '../playback/scroll';
 import async from '../../deps/async';
 
 
@@ -160,27 +160,50 @@ export default function (to, inDragging, options, actionCallback, currentDocumen
 
     async.series({
         scrollToTarget: function (callback) {
-            var elementOffset = domUtils.isDomElement(to) ? positionUtils.getOffsetPosition(to) : null;
+            var isDomElement     = domUtils.isDomElement(to);
+            var scrollElement    = isDomElement ? to : document.documentElement;
+            var offsets          = null;
+            var elementRectangle = positionUtils.getElementRectangle(scrollElement);
 
-            scrollPlaybackAutomation(domUtils.isDomElement(to) ? to : targetPoint, options, currentDocument, function () {
-                if (domUtils.isDomElement(to)) {
-                    var newElementOffset = positionUtils.getOffsetPosition(to),
-                        elementScroll    = styleUtils.getElementScroll(to);
+            if (isDomElement) {
+                offsets = {
+                    offsetX: typeof options.offsetX === 'number' ?
+                             options.offsetX : Math.round(elementRectangle.width / 2),
+                    offsetY: typeof options.offsetY === 'number' ?
+                             options.offsetY : Math.round(elementRectangle.height / 2)
+                };
+            }
+            else {
+                offsets = {
+                    offsetX: to.x,
+                    offsetY: to.y
+                };
+            }
 
-                    if (to !== document.documentElement) {
-                        targetPoint.x += newElementOffset.left - elementOffset.left;
-                        targetPoint.y += newElementOffset.top - elementOffset.top;
+            var elementOffset    = isDomElement ? positionUtils.getOffsetPosition(to) : null;
+            var scrollAutomation = new ScrollAutomation(scrollElement, offsets);
+
+            scrollAutomation
+                .run()
+                .then(() => {
+                    if (isDomElement) {
+                        var newElementOffset = positionUtils.getOffsetPosition(to),
+                            elementScroll    = styleUtils.getElementScroll(to);
+
+                        if (to !== document.documentElement) {
+                            targetPoint.x += newElementOffset.left - elementOffset.left;
+                            targetPoint.y += newElementOffset.top - elementOffset.top;
+                        }
+
+                        if (!domUtils.isDocumentRootElement(to) && styleUtils.hasScroll(to)) {
+                            targetPoint.x -= elementScroll.left;
+                            targetPoint.y -= elementScroll.top;
+                        }
                     }
 
-                    if (!/html/i.test(to.tagName) && styleUtils.hasScroll(to)) {
-                        targetPoint.x -= elementScroll.left;
-                        targetPoint.y -= elementScroll.top;
-                    }
-                }
-                targetScreenPoint = positionUtils.offsetToClientCoords(targetPoint);
-
-                callback();
-            });
+                    targetScreenPoint = positionUtils.offsetToClientCoords(targetPoint);
+                    callback();
+                });
         },
 
         setCursor: function (callback) {
