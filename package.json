@@ -46,9 +46,11 @@
   "devDependencies": {
     "babel": "^5.8.23",
     "babel-eslint": "^4.0.10",
+    "caller": "^1.0.1",
     "chai": "^3.0.0",
     "del": "^1.2.0",
     "eslint-plugin-babel": "^2.1.1",
+    "express": "^4.13.3",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.2.1",
     "gulp-eslint": "^1.0.0",
@@ -65,6 +67,7 @@
     "gulp-webmake": "0.0.4",
     "publish-please": "^1.0.1",
     "request": "^2.58.0",
+    "saucelabs-connector": "^0.0.2",
     "tmp": "0.0.28"
   },
   "files": [
