@@ -21,7 +21,7 @@ describe('Browser connection', function () {
     });
 
     after(function () {
-        testCafe.close();
+        return testCafe.close();
     });
 
 

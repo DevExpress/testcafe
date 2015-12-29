@@ -17,6 +17,7 @@ export default class TestCafe {
     constructor (hostname, port1, port2) {
         this.proxy                    = new Proxy(hostname, port1, port2);
         this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy);
+        this.runners                  = [];
 
         this._registerAssets();
     }
@@ -42,10 +43,17 @@ export default class TestCafe {
     }
 
     createRunner () {
-        return new Runner(this.proxy, this.browserConnectionGateway);
+        var newRunner = new Runner(this.proxy, this.browserConnectionGateway);
+
+        this.runners.push(newRunner);
+
+        return newRunner;
     }
 
-    close () {
+    async close () {
+        await Promise.all(this.runners.map(runner => runner.stop()));
+
+        this.browserConnectionGateway.close();
         this.proxy.close();
     }
 }
