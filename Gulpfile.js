@@ -198,7 +198,8 @@ gulp.task('client-scripts-bundle', ['clean'], function () {
             transform: function (filename, code) {
                 var transformed = babel.transform(code, {
                     sourceMap: false,
-                    filename:  filename
+                    filename:  filename,
+                    blacklist: ['useStrict']
                 });
 
                 return { code: transformed.code };
