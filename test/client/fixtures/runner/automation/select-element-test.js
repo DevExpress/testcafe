@@ -15,11 +15,9 @@ var pressPlaybackAutomation    = testCafeRunner.get('./automation/playback/press
 var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
 
 var testCafeUI    = window.getTestCafeModule('testCafeUI');
-var cursor        = testCafeUI.get('./cursor');
 var selectElement = testCafeUI.get('./select-element');
 
 automation.init();
-cursor.init();
 
 var stepIterator = new StepIterator();
 actionsAPI.init(stepIterator);

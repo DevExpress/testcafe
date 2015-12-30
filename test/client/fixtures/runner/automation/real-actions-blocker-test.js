@@ -6,12 +6,7 @@ var automation              = testCafeRunner.get('./automation/automation');
 var clickPlaybackAutomation = testCafeRunner.get('./automation/playback/click');
 var hoverPlaybackAutomation = testCafeRunner.get('./automation/playback/hover');
 
-var testCafeUI = window.getTestCafeModule('testCafeUI');
-var cursor     = testCafeUI.get('./cursor');
-
-
 automation.init();
-cursor.init();
 
 $(document).ready(function () {
     var TEST_ELEMENT_CLASS = 'TestCafe-testElement';

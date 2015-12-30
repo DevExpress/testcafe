@@ -12,9 +12,6 @@ var automation     = testCafeRunner.get('./automation/automation');
 var actionsAPI     = testCafeRunner.get('./api/actions');
 var StepIterator   = testCafeRunner.get('./step-iterator');
 
-var testCafeUI = window.getTestCafeModule('testCafeUI');
-var cursor     = testCafeUI.get('./cursor');
-
 actionsAPI.ELEMENT_AVAILABILITY_WAITING_TIMEOUT = 400;
 
 var TEST_COMPLETE_WAITING_TIMEOUT = 3500;
@@ -24,7 +21,6 @@ var ERROR_WAITING_TIMEOUT         = actionsAPI.ELEMENT_AVAILABILITY_WAITING_TIME
 var stepIterator = new StepIterator();
 automation.init();
 actionsAPI.init(stepIterator);
-cursor.init();
 
 var correctTestWaitingTime = function (time) {
     if (browserUtils.isTouchDevice && browserUtils.isFirefox)

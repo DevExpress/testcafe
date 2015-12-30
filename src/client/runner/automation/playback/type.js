@@ -48,9 +48,9 @@ export default function (el, text, options, actionCallback) {
         isContentEditable                 = domUtils.isContentEditableElement(el),
         notPrevented                      = true;
 
-    if (options.offsetX)
+    if (typeof options.offsetX === 'number')
         options.offsetX = Math.round(options.offsetX);
-    if (options.offsetY)
+    if (typeof options.offsetY === 'number')
         options.offsetY = Math.round(options.offsetY);
 
     curElement                        = findTextEditableChild(el) || el;
@@ -155,13 +155,15 @@ export default function (el, text, options, actionCallback) {
                                 //change event must not be raised after prevented keypress even if element value was changed (B253816)
                                     elementEditingWatcher.restartWatchingElementEditing(elementForTyping);
                                 else {
-                                    var currentChar       = text.charAt(currPos);
-                                    var prevChar          = currPos === 0 ? null : text.charAt(currPos - 1);
+                                    var currentChar = text.charAt(currPos);
+                                    var prevChar    = currPos === 0 ? null : text.charAt(currPos - 1);
+
                                     var isInputTypeNumber = elementForTyping.tagName.toLowerCase() === 'input' &&
                                                             elementForTyping.type === 'number';
-                                    var problematicBrowsers   = (browserUtils.isFirefox ||
-                                                             (browserUtils.isWebKit && !browserUtils.isSafari));
-                                    var hasProblemWithDot = problematicBrowsers && isInputTypeNumber;
+
+                                    var problematicBrowsers = (browserUtils.isFirefox ||
+                                                               (browserUtils.isWebKit && !browserUtils.isSafari));
+                                    var hasProblemWithDot   = problematicBrowsers && isInputTypeNumber;
 
                                     if (hasProblemWithDot && currentChar === '.') {
                                         window.setTimeout(seriaCallback, automationSettings.ACTION_STEP_DELAY);

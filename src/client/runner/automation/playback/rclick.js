@@ -1,10 +1,13 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
+import { fromPoint as getElementFromPoint } from '../get-element';
 import * as automationUtil from '../util';
 import * as automationSettings from '../settings';
-import movePlaybackAutomation from '../playback/move';
+import MoveAutomation from '../playback/move';
+import MoveOptions from '../options/move';
 import async from '../../deps/async';
+import cursor from '../cursor';
 
 var browserUtils   = hammerhead.utils.browser;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
@@ -13,8 +16,6 @@ var SETTINGS      = testCafeCore.SETTINGS;
 var domUtils      = testCafeCore.domUtils;
 var positionUtils = testCafeCore.positionUtils;
 var eventUtils    = testCafeCore.eventUtils;
-
-var cursor = testCafeUI.cursor;
 
 
 export default function (el, options, actionCallback) {
@@ -29,21 +30,35 @@ export default function (el, options, actionCallback) {
     };
 
     var isSVGElement       = domUtils.isSVGElement(el),
-        target             = positionUtils.isContainOffset(el, options.offsetX, options.offsetY) ?
-                             el : automationUtil.getMouseActionPoint(el, options, false),
-
+        clickOnElement     = positionUtils.isContainOffset(el, options.offsetX, options.offsetY),
+        target             = clickOnElement ? el : automationUtil.getMouseActionPoint(el, options, false),
+        targetElement      = clickOnElement ? el : document.documentElement,
         notPrevented       = true,
         screenPoint        = null,
         eventPoint         = null,
         eventOptions       = null,
         topElement         = null,
         isInvisibleElement = false,
-        currentTopElement  = null;
+        currentTopElement  = null,
 
-    if (options.offsetX)
-        options.offsetX = Math.round(options.offsetX);
-    if (options.offsetY)
-        options.offsetY = Math.round(options.offsetY);
+        offsets            = clickOnElement ? automationUtil.getDefaultAutomationOffsets(el) : {
+            offsetX: target.x,
+            offsetY: target.y
+        },
+
+        modifiers          = {
+            ctrl:  options.ctrl,
+            shift: options.shift,
+            alt:   options.alt,
+            meta:  options.meta
+        };
+
+    if (clickOnElement) {
+        if (typeof options.offsetX === 'number')
+            offsets.offsetX = Math.round(options.offsetX);
+        if (typeof options.offsetY === 'number')
+            offsets.offsetY = Math.round(options.offsetY);
+    }
 
     async.series({
         moveCursorToElement: function (callback) {
@@ -54,34 +69,46 @@ export default function (el, options, actionCallback) {
                 return;
             }
 
-            movePlaybackAutomation(target, false, options, function () {
-                if ((isSVGElement && browserUtils.isOpera) || el.tagName.toLowerCase() === 'tref')
-                    topElement = el; //NOTE: document.elementFromPoint can't find this element
-                else {
-                    screenPoint = automationUtil.getMouseActionPoint(el, options, true);
-                    eventPoint  = automationUtil.getEventOptionCoordinates(el, screenPoint);
+            var moveOptions = new MoveOptions();
 
-                    eventOptions = hammerhead.utils.extend({
-                        clientX: eventPoint.x,
-                        clientY: eventPoint.y,
-                        button:  eventUtils.BUTTON.right,
-                        which:   eventUtils.WHICH_PARAMETER.rightButton,
-                        buttons: eventUtils.BUTTONS_PARAMETER.rightButton
-                    }, options);
+            moveOptions.offsetX   = offsets.offsetX;
+            moveOptions.offsetY   = offsets.offsetY;
+            moveOptions.modifiers = modifiers;
 
-                    topElement = automationUtil.getElementUnderCursor(screenPoint.x, screenPoint.y, null, target);
+            var moveAutomation = new MoveAutomation(targetElement, moveOptions);
 
-                    if (!topElement) {
-                        isInvisibleElement = true;
-                        topElement         = el;
+            moveAutomation
+                .run()
+                .then(() => {
+                    if ((isSVGElement && browserUtils.isOpera) || el.tagName.toLowerCase() === 'tref')
+                        topElement = el; //NOTE: document.elementFromPoint can't find this element
+                    else {
+                        screenPoint = automationUtil.getMouseActionPoint(el, options, true);
+                        eventPoint  = automationUtil.getEventOptionCoordinates(el, screenPoint);
+
+                        eventOptions = hammerhead.utils.extend({
+                            clientX: eventPoint.x,
+                            clientY: eventPoint.y,
+                            button:  eventUtils.BUTTON.right,
+                            which:   eventUtils.WHICH_PARAMETER.rightButton,
+                            buttons: eventUtils.BUTTONS_PARAMETER.rightButton
+                        }, options);
+
+                        topElement = getElementFromPoint(screenPoint.x, screenPoint.y, target);
+
+                        if (!topElement) {
+                            isInvisibleElement = true;
+                            topElement         = el;
+                        }
                     }
-                }
-                window.setTimeout(callback, automationSettings.ACTION_STEP_DELAY);
-            });
+                    window.setTimeout(callback, automationSettings.ACTION_STEP_DELAY);
+                });
         },
 
         cursorMouseDown: function (callback) {
-            cursor.rMouseDown(callback);
+            cursor
+                .rightButtonDown()
+                .then(() => callback());
         },
 
         mousedown: function (callback) {
@@ -92,7 +119,7 @@ export default function (el, options, actionCallback) {
             notPrevented = eventSimulator.mousedown(topElement, eventOptions);
 
             if (!isInvisibleElement && screenPoint) {
-                currentTopElement = automationUtil.getElementUnderCursor(screenPoint.x, screenPoint.y, null, target);
+                currentTopElement = getElementFromPoint(screenPoint.x, screenPoint.y, target);
 
                 if (currentTopElement)
                     topElement = currentTopElement;
@@ -109,14 +136,16 @@ export default function (el, options, actionCallback) {
         },
 
         cursorMouseUp: function (callback) {
-            cursor.mouseUp(callback);
+            cursor
+                .buttonUp()
+                .then(() => callback());
         },
 
         mouseup: function (callback) {
             eventSimulator.mouseup(topElement, eventOptions);
 
             if (!isInvisibleElement && screenPoint) {
-                currentTopElement = cursor.getElementUnderCursor(screenPoint.x, screenPoint.y, null, target);
+                currentTopElement = getElementFromPoint(screenPoint.x, screenPoint.y, target);
 
                 if (currentTopElement)
                     topElement = currentTopElement;

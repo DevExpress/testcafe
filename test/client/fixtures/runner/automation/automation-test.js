@@ -15,12 +15,8 @@ var selectPlaybackAutomation   = testCafeRunner.get('./automation/playback/selec
 var pressPlaybackAutomation    = testCafeRunner.get('./automation/playback/press');
 var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
 
-var testCafeUI = window.getTestCafeModule('testCafeUI');
-var cursor     = testCafeUI.get('./cursor');
-
 QUnit.begin(function () {
     automation.init();
-    cursor.init();
 });
 
 $(document).ready(function () {

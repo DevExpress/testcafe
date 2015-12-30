@@ -1,13 +1,8 @@
-var hammerhead  = window.getTestCafeModule('hammerhead');
+var hammerhead = window.getTestCafeModule('hammerhead');
 var hhsettings = hammerhead.get('./settings').get();
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var RunnerBase     = testCafeRunner.get('./runner-base');
-
-var testCafeUI = window.getTestCafeModule('testCafeUI');
-var cursor     = testCafeUI.get('./cursor');
-
-cursor.init();
 
 hhsettings.serviceMsgUrl = '/ping/10';
 

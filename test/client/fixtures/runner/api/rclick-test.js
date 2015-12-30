@@ -9,13 +9,9 @@ var actionsAPI     = testCafeRunner.get('./api/actions');
 var automation     = testCafeRunner.get('./automation/automation');
 var StepIterator   = testCafeRunner.get('./step-iterator');
 
-var testCafeUI = window.getTestCafeModule('testCafeUI');
-var cursor     = testCafeUI.get('./cursor');
-
 var RIGHT_BUTTON_WHICH_PARAMETER = hammerhead.utils.event.WHICH_PARAMETER.rightButton;
 
 automation.init();
-cursor.init();
 
 var stepIterator = new StepIterator();
 actionsAPI.init(stepIterator);

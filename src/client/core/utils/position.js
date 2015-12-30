@@ -4,19 +4,20 @@ import * as styleUtils from './style';
 import * as domUtils from './dom';
 
 
-export function getIFrameCoordinates (iFrameWin) {
-    var iFrame              = domUtils.getIframeByWindow(iFrameWin);
-    var iFrameOffset        = getOffsetPosition(iFrame);
-    var iFrameBorders       = styleUtils.getBordersWidth(iFrame);
-    var iFramePadding       = styleUtils.getElementPadding(iFrame);
-    var iFrameRectangleLeft = iFrameOffset.left + iFrameBorders.left + iFramePadding.left;
-    var iFrameRectangleTop  = iFrameOffset.top + iFrameBorders.top + iFramePadding.top;
+export function getIframeClientCoordinates (iframe) {
+    var { left, top }       = getOffsetPosition(iframe);
+    var clientPosition      = offsetToClientCoords({ x: left, y: top });
+    var iframeBorders       = styleUtils.getBordersWidth(iframe);
+    var iframePadding       = styleUtils.getElementPadding(iframe);
+    var iframeRectangleLeft = clientPosition.x + iframeBorders.left + iframePadding.left;
+    var iframeRectangleTop  = clientPosition.y + iframeBorders.top + iframePadding.top;
+
 
     return {
-        left:   iFrameRectangleLeft,
-        top:    iFrameRectangleTop,
-        right:  iFrameRectangleLeft + styleUtils.getWidth(iFrame),
-        bottom: iFrameRectangleTop + styleUtils.getHeight(iFrame)
+        left:   iframeRectangleLeft,
+        top:    iframeRectangleTop,
+        right:  iframeRectangleLeft + styleUtils.getWidth(iframe),
+        bottom: iframeRectangleTop + styleUtils.getHeight(iframe)
     };
 }
 
@@ -81,7 +82,7 @@ export function getClientDimensions (target) {
     var elementBorders      = styleUtils.getBordersWidth(target);
     var elementRect         = target.getBoundingClientRect();
     var elementScroll       = styleUtils.getElementScroll(target);
-    var isElementInIFrame   = domUtils.isElementInIframe(target);
+    var isElementInIframe   = domUtils.isElementInIframe(target);
     var elementLeftPosition = isHtmlElement ? 0 : elementRect.left;
     var elementTopPosition  = isHtmlElement ? 0 : elementRect.top;
     var elementHeight       = isHtmlElement ? target.clientHeight : elementRect.height;
@@ -92,25 +93,25 @@ export function getClientDimensions (target) {
         elementWidth  = body.clientWidth;
     }
 
-    if (isElementInIFrame) {
-        var iFrameElement = domUtils.getIframeByElement(target);
+    if (isElementInIframe) {
+        var iframeElement = domUtils.getIframeByElement(target);
 
-        if (iFrameElement) {
-            var iFrameOffset  = getOffsetPosition(iFrameElement);
+        if (iframeElement) {
+            var iframeOffset  = getOffsetPosition(iframeElement);
             var clientOffset  = offsetToClientCoords({
-                x: iFrameOffset.left,
-                y: iFrameOffset.top
+                x: iframeOffset.left,
+                y: iframeOffset.top
             });
-            var iFrameBorders = styleUtils.getBordersWidth(iFrameElement);
+            var iframeBorders = styleUtils.getBordersWidth(iframeElement);
 
-            elementLeftPosition += clientOffset.x + iFrameBorders.left;
-            elementTopPosition += clientOffset.y + iFrameBorders.top;
+            elementLeftPosition += clientOffset.x + iframeBorders.left;
+            elementTopPosition += clientOffset.y + iframeBorders.top;
 
             if (isHtmlElement) {
-                elementBorders.bottom = elementBorders.bottom + iFrameBorders.bottom;
-                elementBorders.left   = elementBorders.left + iFrameBorders.left;
-                elementBorders.right  = elementBorders.right + iFrameBorders.right;
-                elementBorders.top    = elementBorders.top + iFrameBorders.top;
+                elementBorders.bottom = elementBorders.bottom + iframeBorders.bottom;
+                elementBorders.left   = elementBorders.left + iframeBorders.left;
+                elementBorders.right  = elementBorders.right + iframeBorders.right;
+                elementBorders.top    = elementBorders.top + iframeBorders.top;
             }
         }
     }
@@ -154,14 +155,14 @@ export function getEventAbsoluteCoordinates (ev) {
     var yOffset         = 0;
 
     if (domUtils.isElementInIframe(curDocument.documentElement)) {
-        var currentIFrame = domUtils.getIframeByElement(curDocument);
+        var currentIframe = domUtils.getIframeByElement(curDocument);
 
-        if (currentIFrame) {
-            var iFrameOffset  = getOffsetPosition(currentIFrame);
-            var iFrameBorders = styleUtils.getBordersWidth(currentIFrame);
+        if (currentIframe) {
+            var iframeOffset  = getOffsetPosition(currentIframe);
+            var iframeBorders = styleUtils.getBordersWidth(currentIframe);
 
-            xOffset = iFrameOffset.left + iFrameBorders.left;
-            yOffset = iFrameOffset.top + iFrameBorders.top;
+            xOffset = iframeOffset.left + iframeBorders.left;
+            yOffset = iframeOffset.top + iframeBorders.top;
         }
     }
 
@@ -196,80 +197,34 @@ export function getEventPageCoordinates (ev) {
     };
 }
 
-export function getElementFromPoint (x, y, currentDocument, skipIFramesDeeping) {
-    var el = null;
-
-    currentDocument = currentDocument || document;
-    var func        = currentDocument.getElementFromPoint || currentDocument.elementFromPoint;
+export function getElementFromPoint (x, y) {
+    var el   = null;
+    var func = document.getElementFromPoint || document.elementFromPoint;
 
     try {
-        // Permission denied to access property 'getElementFromPoint' error in iFrame
-        el = func.call(currentDocument, x, y);
+        // Permission denied to access property 'getElementFromPoint' error in iframe
+        el = func.call(document, x, y);
     } catch (ex) {
         return null;
     }
 
     //NOTE: elementFromPoint returns null when is's a border of an iframe
     if (el === null)
-        el = func.call(currentDocument, x - 1, y - 1);
-
-    if (el && el.tagName.toLowerCase() === 'iframe' && !skipIFramesDeeping) {
-        var iframeDocument = null;
-
-        try {
-            iframeDocument = el.contentDocument;
-        } catch (e) {
-            //cross-domain iframe
-        }
-
-        if (iframeDocument) {
-            var iframePosition       = getOffsetPosition(el);
-            var iframeClientPosition = offsetToClientCoords({
-                x: iframePosition.left,
-                y: iframePosition.top
-            }, currentDocument);
-            var iframeBorders        = styleUtils.getBordersWidth(el);
-            var iframePadding        = styleUtils.getElementPadding(el);
-
-            el = getElementFromPoint(
-                    x - iframeClientPosition.x - iframeBorders.left - iframePadding.left,
-                    y - iframeClientPosition.y - iframeBorders.top - iframePadding.top,
-                    iframeDocument
-                ) || el;
-        }
-    }
+        el = func.call(document, x - 1, y - 1);
 
     return el;
 }
 
-export function getFixedPositionForIFrame (pos, iFrameWin) {
-    var iFrame        = domUtils.getIframeByWindow(iFrameWin);
-    var iFrameOffset  = getOffsetPosition(iFrame);
-    var iFrameBorders = styleUtils.getBordersWidth(iFrame);
-    var iFramePadding = styleUtils.getElementPadding(iFrame);
+export function getIframePointRelativeToParentFrame (pos, iframeWin) {
+    var iframe        = domUtils.getIframeByWindow(iframeWin);
+    var iframeOffset  = getOffsetPosition(iframe);
+    var iframeBorders = styleUtils.getBordersWidth(iframe);
+    var iframePadding = styleUtils.getElementPadding(iframe);
 
-    return {
-        x: pos.x - iFrameOffset.left - iFrameBorders.left - iFramePadding.left,
-        y: pos.y - iFrameOffset.top - iFrameBorders.top - iFramePadding.top
-    };
-}
-
-export function getFixedPosition (pos, iFrameWin, convertToClient) {
-    if (!iFrameWin)
-        return pos;
-
-    var iFrame         = domUtils.getIframeByWindow(iFrameWin);
-    var iFrameOffset   = getOffsetPosition(iFrame);
-    var iFrameBorders  = styleUtils.getBordersWidth(iFrame);
-    var iFramePadding  = styleUtils.getElementPadding(iFrame);
-    var documentScroll = styleUtils.getElementScroll(document);
-
-    return {
-        x: pos.x + iFrameOffset.left + iFrameBorders.left + iFramePadding.left -
-           (convertToClient ? documentScroll.left : 0),
-        y: pos.y + iFrameOffset.top + iFrameBorders.top + iFramePadding.top -
-           (convertToClient ? documentScroll.top : 0)
-    };
+    return offsetToClientCoords({
+        x: pos.x + iframeOffset.left + iframeBorders.left + iframePadding.left,
+        y: pos.y + iframeOffset.top + iframeBorders.top + iframePadding.top
+    });
 }
 
 export function clientToOffsetCoord (coords, currentDocument) {
@@ -288,6 +243,12 @@ export function findCenter (el) {
         x: Math.round(rectangle.left + rectangle.width / 2),
         y: Math.round(rectangle.top + rectangle.height / 2)
     };
+}
+
+export function getClientPosition (el) {
+    var { left, top } = getOffsetPosition(el);
+
+    return offsetToClientCoords({ x: left, y: top });
 }
 
 export function getElementClientRectangle (el) {
@@ -312,6 +273,19 @@ export function calcRelativePosition (dimensions, toDimensions) {
         top:    dimensions.top - (toDimensions.top + toDimensions.border.top),
         bottom: toDimensions.bottom - toDimensions.border.bottom - toDimensions.scrollbar.bottom - dimensions.bottom
     };
+}
+
+export function getElementCenter (el) {
+    var rect = getElementRectangle(el);
+
+    return {
+        x: Math.floor(rect.width / 2),
+        y: Math.floor(rect.height / 2)
+    };
+}
+
+export function isInRectangle ({ x, y }, rectangle) {
+    return x >= rectangle.left && x <= rectangle.right && y >= rectangle.top && y <= rectangle.bottom;
 }
 
 export var getElementRectangle  = hammerhead.utils.position.getElementRectangle;

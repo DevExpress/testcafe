@@ -6,12 +6,7 @@ var StepIterator   = testCafeRunner.get('./step-iterator');
 var automation     = testCafeRunner.get('./automation/automation');
 var actionsAPI     = testCafeRunner.get('./api/actions');
 
-var testCafeUI = window.getTestCafeModule('testCafeUI');
-var cursor     = testCafeUI.get('./cursor');
-
-
 automation.init();
-cursor.init();
 
 var stepIterator = new StepIterator();
 actionsAPI.init(stepIterator);

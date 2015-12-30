@@ -3,7 +3,7 @@ import hammerhead from '../deps/hammerhead';
 var Promise        = hammerhead.Promise;
 var messageSandbox = hammerhead.eventSandbox.message;
 
-export var sendRequestToParentFrame = function (msg, responseCmd) {
+export var sendRequestToFrame = function (msg, responseCmd, receiverWindow) {
     return new Promise(resolve => {
         function onMessage (e) {
             if (e.message.cmd === responseCmd) {
@@ -13,6 +13,6 @@ export var sendRequestToParentFrame = function (msg, responseCmd) {
         }
 
         messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
-        messageSandbox.sendServiceMsg(msg, window.parent);
+        messageSandbox.sendServiceMsg(msg, receiverWindow);
     });
 };

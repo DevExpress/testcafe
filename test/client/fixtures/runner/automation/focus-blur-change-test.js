@@ -12,15 +12,8 @@ var clickPlaybackAutomation = testCafeRunner.get('./automation/playback/click');
 var typePlaybackAutomation  = testCafeRunner.get('./automation/playback/type');
 var pressPlaybackAutomation = testCafeRunner.get('./automation/playback/press');
 
-var testCafeUI = window.getTestCafeModule('testCafeUI');
-var cursor     = testCafeUI.get('./cursor');
-
-//ActionBarrier           = TestCafeClient.get('ActionBarrier'),
-
-//ActionBarrier.init();
 QUnit.begin(function () {
     automation.init();
-    cursor.init();
 });
 
 var input1,
