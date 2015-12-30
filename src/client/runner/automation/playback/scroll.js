@@ -35,6 +35,9 @@ export default class ScrollAutomation {
     }
 
     static _setScroll (element, { left, top }) {
+        left = Math.max(left, 0);
+        top  = Math.max(top, 0);
+
         if (domUtils.isDocumentRootElement(element)) {
             styleUtils.setScrollLeft(document.body, left);
             styleUtils.setScrollTop(document.body, top);
@@ -82,15 +85,19 @@ export default class ScrollAutomation {
         if (canShowFullElementWidth) {
             if (relativePosition.left < 0)
                 fullViewScrollLeft = Math.round(parentDimensions.scroll.left + relativePosition.left);
-            else if (relativePosition.left > 0 && relativePosition.right < 0)
-                fullViewScrollLeft = Math.round(parentDimensions.scroll.left + Math.min(relativePosition.left, -relativePosition.right));
+            else if (relativePosition.left > 0 && relativePosition.right < 0) {
+                fullViewScrollLeft = Math.round(parentDimensions.scroll.left +
+                                                Math.min(relativePosition.left, -relativePosition.right));
+            }
         }
 
         if (canShowFullElementHeight) {
             if (relativePosition.top < 0)
                 fullViewScrollTop = Math.round(parentDimensions.scroll.top + relativePosition.top);
-            else if (relativePosition.top > 0 && relativePosition.bottom < 0)
-                fullViewScrollTop = Math.round(parentDimensions.scroll.top + Math.min(relativePosition.top, -relativePosition.bottom));
+            else if (relativePosition.top > 0 && relativePosition.bottom < 0) {
+                fullViewScrollTop = Math.round(parentDimensions.scroll.top +
+                                               Math.min(relativePosition.top, -relativePosition.bottom));
+            }
         }
 
         return {
