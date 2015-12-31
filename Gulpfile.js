@@ -308,8 +308,6 @@ gulp.task('fetch-assets-repo', ['clear-site'], function(cb) {
 		if (e) return cb(e);
 		cb();
 	});
-//	return gulp.src('../testcafe-gh-page-assets/**/*')
-//		.pipe(gulp.dest('./site'));	
 });
 
 gulp.task('put-in-articles', ['fetch-assets-repo'], function() {
@@ -331,9 +329,24 @@ gulp.task('put-in-docs', ['put-in-articles', 'put-in-navigation', 'put-in-templa
 
 gulp.task('prepare-website', ['fetch-assets-repo', 'put-in-docs']);
 
-gulp.task('deploy-to-gh-pages', ['prepare-website'], function() {
-	return gulp.src('./site/src/**/*')
-		.pipe(ghPages());
+gulp.task('deploy-to-gh-pages', ['prepare-website'], function(/*cb*/) {
+//  Uncomment when safe to debug
+
+//	var rl = readline.createInterface({
+//		input: process.stdin,
+//		output: process.stdout
+//	});
+//  
+//	rl.question("Are you sure you want to deploy the website to GitHub Pages? y/n", function(answer) {
+//		rl.close();
+//        
+//      if(answer ==='y') {
+//          gulp.src('./site/src/**/*')
+//              .pipe(ghPages());
+//      }
+//        
+//      cb();
+//  });
 });
 
 gulp.task('build-website', ['prepare-website'], function(cb){

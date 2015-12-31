@@ -544,6 +544,20 @@ StepIterator.prototype.resume = function () {
 
 //Global __waitFor()
 StepIterator.prototype.setGlobalWaitFor = function (event, timeout) {
+    if (typeof event !== 'function') {
+        this.onError({
+            type:     ERROR_TYPE.incorrectGlobalWaitForActionEventArgument,
+            stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
+        });
+    }
+
+    if (typeof timeout !== 'number') {
+        this.onError({
+            type:     ERROR_TYPE.incorrectGlobalWaitForActionTimeoutArgument,
+            stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
+        });
+    }
+
     this.globalWaitForEvent   = event;
     this.globalWaitForTimeout = timeout;
 };
@@ -561,7 +575,7 @@ StepIterator.prototype.__waitFor = function (callback) {
 
     var timeoutID = window.setTimeout(function () {
         iterator.onError({
-            type:     ERROR_TYPE.waitForActionTimeoutExceeded,
+            type:     ERROR_TYPE.globalWaitForActionTimeoutExceeded,
             stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME
         });
     }, this.globalWaitForTimeout);

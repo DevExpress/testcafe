@@ -261,6 +261,30 @@ export default {
         ${getScreenshotInfoStr(err)}
     `,
 
+    [TYPE.incorrectGlobalWaitForActionEventArgument]: err => dedent`
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+
+        <code data-type="api">__waitFor</code> action's first parameter should be a function.
+
+        ${getScreenshotInfoStr(err)}
+    `,
+
+    [TYPE.incorrectGlobalWaitForActionTimeoutArgument]: err => dedent`
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+
+        <code data-type="api">__waitFor</code> action's "timeout" parameter should be a positive number.
+
+        ${getScreenshotInfoStr(err)}
+    `,
+
+    [TYPE.globalWaitForActionTimeoutExceeded]: err => dedent`
+        ${getMsgPrefix(err, CATEGORY.timeout)}Error at step <span data-type="step-name">${err.stepName}</span>:
+
+        <code data-type="api">__waitFor</code> action's timeout exceeded.
+
+        ${getScreenshotInfoStr(err)}
+    `,
+
     [TYPE.emptyIFrameArgument]: err => dedent`
         ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span data-type="step-name">${err.stepName}</span>:
         The selector within the <code data-type="api">inIFrame</code> function returns an empty value.

@@ -1,40 +1,11 @@
-- item: Getting Started
-  url: /testcafe/documentation/getting-started
-- folder: Test Framework
-  url: /testcafe/documentation/test-framework
-  content:
-  - item: Test Structure
-    url: .
-  - item: Assertions
-    url: .
-  - item: Roles
-    url: .
-- item: Command Line Interface
-  url: /testcafe/documentation/command-line-interface
-- folder: API Reference
-  url: /testcafe/documentation/api-reference  
-  content:
-  - item: TestCafe
-    url: /testcafe/documentation/api-reference/testCafe
-  - item: BrowserConnection
-    url: /testcafe/documentation/api-reference/browserConnection
-  - item: Runner
-    url: /testcafe/documentation/api-reference/runner
-  - item: Global
-    url: /testcafe/documentation/api-reference/global
-- folder: Extending TestCafe
-  url: .  
-  content:
-  - item: Reporter Plugins
-    url: .
-  - item: Browser Provider Plugins
-    url: .
-  - item: Report Test Utils
-    url: .
-- folder: How-to
+- item: Article1
+  url: .
+- folder: Folder1
   url: .
   content:
-  - item: How to do this
+  - item: Article2
     url: .
-  - item: How to do that
+  - item: Article3
+    url: .
+  - item: Article4
     url: .

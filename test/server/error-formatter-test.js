@@ -427,6 +427,39 @@ describe('Error formatter', function () {
 
             assertErrorMessage('page-not-loaded', err);
         });
+
+        it('Should format "incorrectGlobalWaitForActionEventArgument" error message', function () {
+            var err = {
+                type:      TYPE.incorrectGlobalWaitForActionEventArgument,
+                stepName:  'Step',
+                message:   '__waitFor action\'s "timeout" parameter should be a function.',
+                userAgent: userAgentMock
+            };
+
+            assertErrorMessage('incorrect-global-wait-for-action-event-argument', err);
+        });
+
+        it('Should format "incorrectGlobalWaitForActionTimeoutArgument" error message', function () {
+            var err = {
+                type:      TYPE.incorrectGlobalWaitForActionTimeoutArgument,
+                stepName:  'Step',
+                message:   '__waitFor action\'s "timeout" parameter should be a positive number.',
+                userAgent: userAgentMock
+            };
+
+            assertErrorMessage('incorrect-global-wait-for-action-timeout-argument', err);
+        });
+
+        it('Should format "globalWaitForActionTimeoutExceeded" error message', function () {
+            var err = {
+                type:      TYPE.globalWaitForActionTimeoutExceeded,
+                stepName:  'Step',
+                message:   '__waitFor action\'s timeout exceeded.',
+                userAgent: userAgentMock
+            };
+
+            assertErrorMessage('global-wait-for-action-timeout-exceed', err);
+        });
     });
 
     describe('Test coverage', function () {
