@@ -1,0 +1,5 @@
+Chrome 15.0.874 / Mac OS X 10.8.1
+CATEGORY=actionError
+Error at step "Step":
+
+__waitFor action's "timeout" parameter should be a positive number.
