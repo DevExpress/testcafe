@@ -16,7 +16,7 @@ import async from '../deps/async';
 
 var isJQueryObj = hammerhead.utils.isJQueryObj;
 
-var $               = testCafeCore.$;
+var sandboxedJQuery = testCafeCore.sandboxedJQuery;
 var SETTINGS        = testCafeCore.SETTINGS;
 var ERROR_TYPE      = testCafeCore.ERROR_TYPE;
 var contentEditable = testCafeCore.contentEditable;
@@ -254,7 +254,7 @@ export function parseActionArgument (item, actionName) {
     else if (actionName && actionName === 'select' && domUtils.isTextNode(item))
         return [item];
     else if (typeof item === 'string')
-        return arrayUtils.toArray($(item));
+        return arrayUtils.toArray(sandboxedJQuery.jQuery(item));
     else if (isJQueryObj(item)) {
         item.each(function () {
             elements.push(this);
@@ -633,7 +633,7 @@ export function waitFor (event, timeout) {
         if (waitForElements) {
             if (typeof event === 'string') {
                 condition = function () {
-                    return !!$(event).length;
+                    return !!sandboxedJQuery.jQuery(event).length;
                 };
             }
             else {
@@ -641,7 +641,7 @@ export function waitFor (event, timeout) {
                     var elementsExist = true;
 
                     for (var i = 0; i < event.length; i++) {
-                        if (!$(event[i]).length) {
+                        if (!sandboxedJQuery.jQuery(event[i]).length) {
                             elementsExist = false;
                             break;
                         }

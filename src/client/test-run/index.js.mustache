@@ -56,7 +56,7 @@
 
         var transport                = testCafeCore.transport;
         var sandboxedJQuery          = testCafeCore.sandboxedJQuery;
-        var jQuerySelectorExtensions = testCafeCore.jQuerySelectorExtensions;
+        var extendJQuerySelectors    = testCafeCore.extendJQuerySelectors;
         var jQueryDataMethodProxy    = testCafeCore.jQueryDataMethodProxy;
 
         var Runner     = testCafeRunner.Runner;
@@ -69,9 +69,9 @@
         Runner.startHeartbeat('{{{browserHeartbeatUrl}}}');
 
         sandboxedJQuery.init(window, undefined);
-        jQuerySelectorExtensions.init();
+        extendJQuerySelectors(sandboxedJQuery.jQuery);
 
-        $ = jQuery = jQuerySelectorExtensions.create(sandboxedJQuery.jQuery);
+        $ = jQuery = sandboxedJQuery.jQuery;
         jQueryDataMethodProxy.setup($);
 
         //NOTE: initialize API
