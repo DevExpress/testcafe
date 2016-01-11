@@ -11,7 +11,6 @@ var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
 var SETTINGS      = testCafeCore.SETTINGS;
-var ERROR_TYPE    = testCafeCore.ERROR_TYPE;
 var domUtils      = testCafeCore.domUtils;
 var positionUtils = testCafeCore.positionUtils;
 var styleUtils    = testCafeCore.styleUtils;
@@ -41,23 +40,7 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
     var selectedIndex        = select.selectedIndex;
     var isOptionListExpanded = selectElement.isOptionListExpanded(select);
     var childIndex           = getSelectChildElementIndex(select, childElement);
-    var targetElement        = null;
-
-    if (!isOptionListExpanded) {
-        var selectSizeValue = styleUtils.getSelectElementSize(select);
-
-        if ((!SETTINGS.get().RECORDING || SETTINGS.get().PLAYBACK) && selectSizeValue <= 1) {
-            errorCallback({
-                type:    ERROR_TYPE.invisibleActionElement,
-                element: domUtils.getElementDescription(childElement)
-            });
-            return;
-        }
-
-        targetElement = childElement;
-    }
-    else
-        targetElement = selectElement.getEmulatedChildElement(childIndex, !isClickOnOption);
+    var targetElement        = isOptionListExpanded ? selectElement.getEmulatedChildElement(childIndex, !isClickOnOption) : childElement;
 
     async.series({
             moveCursorToElement: function (callback) {
