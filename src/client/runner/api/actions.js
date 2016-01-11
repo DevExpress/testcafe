@@ -1,5 +1,6 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
+import testCafeUI from '../deps/testcafe-ui';
 import * as automation from '../automation/automation';
 import clickPlaybackAutomation from '../automation/playback/click';
 import dblClickPlaybackAutomation from '../automation/playback/dblclick';
@@ -24,6 +25,7 @@ var positionUtils   = testCafeCore.positionUtils;
 var styleUtils      = testCafeCore.styleUtils;
 var arrayUtils      = testCafeCore.arrayUtils;
 var keyCharUtils    = testCafeCore.keyCharUtils;
+var selectElement   = testCafeUI.selectElement;
 
 
 var ELEMENT_AVAILABILITY_WAITING_TIMEOUT = 10000;
@@ -123,9 +125,32 @@ function ensureElementsExist (item, actionName, callback) {
 
 function ensureElementVisibility (element, actionName, callback) {
     var success = false;
+    var tagName = element.tagName.toLowerCase();
 
-    if (positionUtils.isElementVisible(element) || element.tagName.toLowerCase() === 'option' ||
-        element.tagName.toLowerCase() === 'optgroup') {
+    if (tagName === 'option' || tagName === 'optgroup') {
+        var parentSelect = domUtils.getSelectParent(element);
+
+        if (!parentSelect) {
+            callback();
+            return;
+        }
+
+        var isOptionListExpanded = selectElement.isOptionListExpanded(parentSelect);
+        var selectSizeValue      = styleUtils.getSelectElementSize(parentSelect);
+
+        if (!isOptionListExpanded && selectSizeValue <= 1) {
+            failWithError(ERROR_TYPE.invisibleActionElement, {
+                element: domUtils.getElementDescription(element),
+                action:  actionName
+            });
+        }
+        else
+            callback();
+
+        return;
+    }
+
+    if (positionUtils.isElementVisible(element)) {
         callback();
         return;
     }
@@ -402,8 +427,7 @@ export function select () {
             options.startNode = isJQueryObj(elements[0]) ? elements[0][0] : elements[0];
             options.endNode   = secondArg;
 
-            if (!domUtils.isContentEditableElement(options.startNode) ||
-                !domUtils.isContentEditableElement(options.endNode))
+            if (!domUtils.isContentEditableElement(options.startNode) || !domUtils.isContentEditableElement(options.endNode))
                 error = true;
             else {
                 //NOTE: We should find element for perform select action
