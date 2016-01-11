@@ -64,7 +64,7 @@
         var testCafeRunner = window['%testCafeRunner%'];
 
         var sandboxedJQuery          = testCafeCore.sandboxedJQuery;
-        var jQuerySelectorExtensions = testCafeCore.jQuerySelectorExtensions;
+        var extendJQuerySelectors    = testCafeCore.extendJQuerySelectors;
         var jQueryDataMethodProxy    = testCafeCore.jQueryDataMethodProxy;
         var iframeDispatcher         = testCafeRunner.iframeDispatcher;
 
@@ -77,9 +77,9 @@
         });
 
         sandboxedJQuery.init(window, undefined);
-        jQuerySelectorExtensions.init();
+        extendJQuerySelectors(sandboxedJQuery.jQuery);
 
-        $ = jQuery = jQuerySelectorExtensions.create(sandboxedJQuery.jQuery);
+        $ = jQuery = sandboxedJQuery.jQuery;
         jQueryDataMethodProxy.setup($);
 
         //NOTE: Override these methods to suppress native dialogs until the test runner in the iFrame gets initialized. (T188994)

@@ -43,16 +43,7 @@ module('jQuery data proxy');
         ok(!$testElement.data(field2));
     });
 
-})(_jQuery, _jQuery);
-
-module('Regression tests');
-
-(function (jQuery, $) {
-    dataMethodProxy.setup(jQuery);
-
-    var getTestElement = function () {
-        return $('#' + elementId);
-    };
+    module('Regression tests');
 
     test('B234339 - Incorrect substitution of local page\'s jQuery.data if it\'s null or isn\'t a function', function () {
         var $el  = getTestElement(),
@@ -75,4 +66,5 @@ module('Regression tests');
 
         window.jQuery = rootJQuery;
     });
-})(_jQuery1, _jQuery1);
+
+})(_jQuery, _jQuery);

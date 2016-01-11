@@ -26,6 +26,10 @@
 
     hammerhead.start({ sessionId: 'sessionId' });
 
+    var sandboxedJQuery = getTestCafeModule('testCafeCore').get('./sandboxed-jquery');
+
+    sandboxedJQuery.init(window);
+
     var testCafeRunner = getTestCafeModule('testCafeRunner');
     var iframeDispatcher = testCafeRunner.get('./iframe-dispatcher');
 

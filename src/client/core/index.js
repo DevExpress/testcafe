@@ -1,13 +1,12 @@
 import hammerhead from './deps/hammerhead';
 
-import $ from './deps/jquery';
 import SETTINGS from './settings';
 import ERROR_TYPE from '../../reporter/errors/type';
 import COMMAND from '../../runner/test-run/command';
 import CROSS_DOMAIN_MESSAGES from './cross-domain-messages';
 import * as transport from './transport';
 import * as sandboxedJQuery from './sandboxed-jquery';
-import * as jQuerySelectorExtensions from './jquery-extensions/custom-selectors';
+import extendJQuerySelectors from './jquery-extensions/custom-selectors';
 import * as jQueryDataMethodProxy from './jquery-extensions/data-proxy';
 
 import * as serviceUtils from './utils/service';
@@ -20,15 +19,14 @@ import * as eventUtils from './utils/event';
 import * as arrayUtils from './utils/array';
 import * as textSelection from './utils/text-selection';
 
-exports.$                        = $;
-exports.SETTINGS                 = SETTINGS;
-exports.CROSS_DOMAIN_MESSAGES    = CROSS_DOMAIN_MESSAGES;
-exports.COMMAND                  = COMMAND;
-exports.ERROR_TYPE               = ERROR_TYPE;
-exports.jQuerySelectorExtensions = jQuerySelectorExtensions;
-exports.jQueryDataMethodProxy    = jQueryDataMethodProxy;
-exports.transport                = transport;
-exports.sandboxedJQuery          = sandboxedJQuery;
+exports.SETTINGS              = SETTINGS;
+exports.CROSS_DOMAIN_MESSAGES = CROSS_DOMAIN_MESSAGES;
+exports.COMMAND               = COMMAND;
+exports.ERROR_TYPE            = ERROR_TYPE;
+exports.extendJQuerySelectors = extendJQuerySelectors;
+exports.jQueryDataMethodProxy = jQueryDataMethodProxy;
+exports.transport             = transport;
+exports.sandboxedJQuery       = sandboxedJQuery;
 
 exports.serviceUtils    = serviceUtils;
 exports.domUtils        = domUtils;
