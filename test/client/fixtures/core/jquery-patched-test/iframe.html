@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <script src="/hammerhead.js" class="script-hammerhead-shadow-ui"></script>
+    <script src="/core.js" class="script-hammerhead-shadow-ui"></script>
+</head>
+<body>
+<script type="text/javascript">
+    var hammerhead = window['%hammerhead%'];
+
+    hammerhead.start({ sessionId: 'sessionId' });
+
+    var sandboxedJQuery = window['%testCafeCore%'].get('./sandboxed-jquery');
+
+    sandboxedJQuery.init(window);
+</script>
+</body>
+</html>

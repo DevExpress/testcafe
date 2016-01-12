@@ -12,11 +12,11 @@ import * as actionBarrier from './action-barrier/action-barrier';
 
 var messageSandbox = hammerhead.eventSandbox.message;
 
+var Sizzle                   = testCafeCore.Sizzle;
 var SETTINGS                 = testCafeCore.SETTINGS;
 var COMMAND                  = testCafeCore.COMMAND;
 var ERROR_TYPE               = testCafeCore.ERROR_TYPE;
 var CROSS_DOMAIN_MESSAGES    = testCafeCore.CROSS_DOMAIN_MESSAGES;
-var jQuerySelectorExtensions = testCafeCore.jQuerySelectorExtensions;
 var transport                = testCafeCore.transport;
 var serviceUtils             = testCafeCore.serviceUtils;
 var domUtils                 = testCafeCore.domUtils;
@@ -314,8 +314,6 @@ RunnerBase.prototype._prepareStepsExecuting = function (callback, skipPageWaitin
         waitPageLoad(function () {
             window.setTimeout(function () {
                 transport.batchUpdate(function () {
-                    jQuerySelectorExtensions.init();
-
                     actionBarrier.waitPageInitialization(function () {
                         cursor.init();
 
@@ -420,10 +418,10 @@ RunnerBase.prototype._ensureIFrame = function (arg) {
         }
     }
 
-    if (typeof arg === 'string')
-        arg = $(arg);
+    if (typeof arg === 'string' || hammerhead.utils.isJQueryObj(arg)) {
+        if(typeof arg === 'string')
+            arg = Sizzle(arg);
 
-    if (hammerhead.utils.isJQueryObj(arg)) {
         if (arg.length === 0) {
             this._onFatalError({
                 type:     ERROR_TYPE.emptyIFrameArgument,

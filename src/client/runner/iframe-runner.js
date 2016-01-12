@@ -5,7 +5,6 @@ import RunnerBase from './runner-base.js';
 
 var SETTINGS                 = testCafeCore.SETTINGS;
 var messageSandbox           = hammerhead.eventSandbox.message;
-var jQuerySelectorExtensions = testCafeCore.jQuerySelectorExtensions;
 var serviceUtils             = testCafeCore.serviceUtils;
 
 
@@ -19,7 +18,6 @@ IFrameRunner.prototype._initPageLoadBarrier = function () {
 };
 
 IFrameRunner.prototype._prepareStepsExecuting = function (callback) {
-    jQuerySelectorExtensions.init();
     callback();
 };
 
