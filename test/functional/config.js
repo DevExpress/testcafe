@@ -6,8 +6,8 @@ var hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
 module.exports = {
     isTravisTask: isTravisEnvironment,
     sauceLabs:    {
-        username:  process.env.SAUCE_USERNAME,
-        accessKey: process.env.SAUCE_ACCESS_KEY,
+        username:  process.env.SAUCE_USERNAME_FUNCTIONAL,
+        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL,
         build:     process.env.TRAVIS_JOB_ID || '',
         tags:      [process.env.TRAVIS_BRANCH || 'master'],
         name:      'testcafe functional tests'

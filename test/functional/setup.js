@@ -1,4 +1,4 @@
-var browserNatives     = require('testCafe-browser-natives');
+var browserNatives     = require('testcafe-browser-natives');
 var SauceLabsConnector = require('saucelabs-connector');
 var Promise            = require('pinkie');
 var caller             = require('caller');
@@ -91,9 +91,10 @@ before(function () {
         })
         .then(function () {
             global.runTests = function (fixture, testName, opts) {
-                var report = '';
-                var runner = testCafe.createRunner();
-                var fixturePath = path.join(path.dirname(caller()), fixture);
+                var report       = '';
+                var runner       = testCafe.createRunner();
+                var fixturePath  = path.join(path.dirname(caller()), fixture);
+                var skipJsErrors = opts && opts.skipJsErrors;
 
                 var connections = browsersInfo.map(function (browserInfo) {
                     return browserInfo.connection;
@@ -114,7 +115,7 @@ before(function () {
                         }
                     })
                     .src(fixturePath)
-                    .run()
+                    .run({ skipJsErrors: skipJsErrors })
                     .then(function () {
                         var testReport = JSON.parse(report).fixtures[0].tests[0];
                         var testError  = getTestError(testReport, browsersInfo);
