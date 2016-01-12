@@ -1,9 +1,4 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
-CATEGORY=actionError
+CATEGORY=inIFrameSelectorError
 Error at step "Step":
-
-    inIFrame("#content", function () {
-        act.click($("button"))
-    })
-
 The selector within the inIFrame function doesn’t return an iframe element.

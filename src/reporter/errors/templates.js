@@ -262,40 +262,28 @@ export default {
     `,
 
     [TYPE.emptyIFrameArgument]: err => dedent`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
-
-        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
-
+        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span data-type="step-name">${err.stepName}</span>:
         The selector within the <code data-type="api">inIFrame</code> function returns an empty value.
 
         ${getScreenshotInfoStr(err)}
     `,
 
     [TYPE.iframeArgumentIsNotIFrame]: err => dedent`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
-
-        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
-
+        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span data-type="step-name">${err.stepName}</span>:
         The selector within the <code data-type="api">inIFrame</code> function doesn’t return an iframe element.
 
         ${getScreenshotInfoStr(err)}
     `,
 
     [TYPE.multipleIFrameArgument]: err => dedent`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
-
-        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
-
+        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span data-type="step-name">${err.stepName}</span>:
         The selector within the <code data-type="api">inIFrame</code> function returns more than one iframe element.
 
         ${getScreenshotInfoStr(err)}
     `,
 
     [TYPE.incorrectIFrameArgument]: err => dedent`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
-
-        <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
-
+        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span data-type="step-name">${err.stepName}</span>:
         The <code data-type="api">inIFrame</code> function contains an invalid argument.
 
         ${getScreenshotInfoStr(err)}

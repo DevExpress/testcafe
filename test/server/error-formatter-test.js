@@ -345,10 +345,9 @@ describe('Error formatter', function () {
 
         it('Should format "emptyIFrameArgument" error message', function () {
             var err = {
-                type:              TYPE.emptyIFrameArgument,
-                stepName:          'Step',
-                relatedSourceCode: 'inIFrame("#iFrame", function () {\n    act.click($("button"))\n})',
-                userAgent:         userAgentMock
+                type:      TYPE.emptyIFrameArgument,
+                stepName:  'Step',
+                userAgent: userAgentMock
             };
 
             assertErrorMessage('empty-iframe-argument', err);
@@ -356,10 +355,9 @@ describe('Error formatter', function () {
 
         it('Should format "iframeArgumentIsNotIFrame" error message', function () {
             var err = {
-                type:              TYPE.iframeArgumentIsNotIFrame,
-                stepName:          'Step',
-                relatedSourceCode: 'inIFrame("#content", function () {\n    act.click($("button"))\n})',
-                userAgent:         userAgentMock
+                type:      TYPE.iframeArgumentIsNotIFrame,
+                stepName:  'Step',
+                userAgent: userAgentMock
             };
 
             assertErrorMessage('iframe-argument-is-not-iframe', err);
@@ -367,10 +365,9 @@ describe('Error formatter', function () {
 
         it('Should format "multipleIFrameArgument" error message', function () {
             var err = {
-                type:              TYPE.multipleIFrameArgument,
-                stepName:          'Step',
-                relatedSourceCode: 'inIFrame(".IFrame", function () {\n    act.press("123")\n})',
-                userAgent:         userAgentMock
+                type:      TYPE.multipleIFrameArgument,
+                stepName:  'Step',
+                userAgent: userAgentMock
             };
 
             assertErrorMessage('multiple-iframe-argument', err);
@@ -378,10 +375,9 @@ describe('Error formatter', function () {
 
         it('Should format "incorrectIFrameArgument" error message', function () {
             var err = {
-                type:              TYPE.incorrectIFrameArgument,
-                stepName:          'Step',
-                relatedSourceCode: 'inIFrame(IFrame, function () {\n    act.press("123")\n})',
-                userAgent:         userAgentMock
+                type:      TYPE.incorrectIFrameArgument,
+                stepName:  'Step',
+                userAgent: userAgentMock
             };
 
             assertErrorMessage('incorrect-iframe-argument', err);
