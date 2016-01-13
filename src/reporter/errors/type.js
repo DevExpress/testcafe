@@ -10,52 +10,58 @@ export default {
     notEqAssertion: 'notEqAssertion',
 
     //CLIENT_ERR.IFRAME_LOADING_TIMEOUT
-    iframeLoadingTimeout:                    'iframeLoadingTimeout',
+    iframeLoadingTimeout:                        'iframeLoadingTimeout',
     //CLIENT_ERR.IN_IFRAME_TARGET_LOADING_TIMEOUT
-    inIFrameTargetLoadingTimeout:            'inIFrameTargetLoadingTimeout',
+    inIFrameTargetLoadingTimeout:                'inIFrameTargetLoadingTimeout',
     //CLIENT_ERR.UNCAUGHT_JS_ERROR
-    uncaughtJSError:                         'uncaughtJSError',
+    uncaughtJSError:                             'uncaughtJSError',
     //CLIENT_ERR.UNCAUGHT_JS_ERROR_IN_TEST_CODE_STEP
-    uncaughtJSErrorInTestCodeStep:           'uncaughtJSErrorInTestCodeStep',
+    uncaughtJSErrorInTestCodeStep:               'uncaughtJSErrorInTestCodeStep',
     //CLIENT_ERR.STORE_DOM_NODE_OR_JQUERY_OBJECT
-    storeDomNodeOrJqueryObject:              'storeDomNodeOrJqueryObject',
+    storeDomNodeOrJqueryObject:                  'storeDomNodeOrJqueryObject',
     //CLIENT_ERR.API_EMPTY_FIRST_ARGUMENT
-    emptyFirstArgument:                      'emptyFirstArgument',
+    emptyFirstArgument:                          'emptyFirstArgument',
     //CLIENT_ERR.API_INVISIBLE_ACTION_ELEMENT
-    invisibleActionElement:                  'invisibleActionElement',
+    invisibleActionElement:                      'invisibleActionElement',
     //CLIENT_ERR.API_INCORRECT_DRAGGING_SECOND_ARGUMENT
-    incorrectDraggingSecondArgument:         'incorrectDraggingSecondArgument',
+    incorrectDraggingSecondArgument:             'incorrectDraggingSecondArgument',
     //CLIENT_ERR.API_INCORRECT_PRESS_ACTION_ARGUMENT
-    incorrectPressActionArgument:            'incorrectPressActionArgument',
+    incorrectPressActionArgument:                'incorrectPressActionArgument',
     //CLIENT_ERR.API_EMPTY_TYPE_ACTION_ARGUMENT
-    emptyTypeActionArgument:                 'emptyTypeActionArgument',
+    emptyTypeActionArgument:                     'emptyTypeActionArgument',
     //CLIENT_ERR.API_UNEXPECTED_DIALOG
-    unexpectedDialog:                        'unexpectedDialog',
+    unexpectedDialog:                            'unexpectedDialog',
     //CLIENT_ERR.API_EXPECTED_DIALOG_DOESNT_APPEAR
-    expectedDialogDoesntAppear:              'expectedDialogDoesntAppear',
+    expectedDialogDoesntAppear:                  'expectedDialogDoesntAppear',
     //CLIENT_ERR.API_INCORRECT_SELECT_ACTION_ARGUMENTS
-    incorrectSelectActionArguments:          'incorrectSelectActionArguments',
+    incorrectSelectActionArguments:              'incorrectSelectActionArguments',
     //CLIENT_ERR.API_INCORRECT_WAIT_ACTION_MILLISECONDS_ARGUMENT
-    incorrectWaitActionMillisecondsArgument: 'incorrectWaitActionMillisecondsArgument',
+    incorrectWaitActionMillisecondsArgument:     'incorrectWaitActionMillisecondsArgument',
     //CLIENT_ERR.API_INCORRECT_WAIT_FOR_ACTION_EVENT_ARGUMENT
-    incorrectWaitForActionEventArgument:     'incorrectWaitForActionEventArgument',
+    incorrectWaitForActionEventArgument:         'incorrectWaitForActionEventArgument',
     //CLIENT_ERR.API_INCORRECT_WAIT_FOR_ACTION_TIMEOUT_ARGUMENT
-    incorrectWaitForActionTimeoutArgument:   'incorrectWaitForActionTimeoutArgument',
+    incorrectWaitForActionTimeoutArgument:       'incorrectWaitForActionTimeoutArgument',
     //CLIENT_ERR.API_WAIT_FOR_ACTION_TIMEOUT_EXCEEDED
-    waitForActionTimeoutExceeded:            'waitForActionTimeoutExceeded',
+    waitForActionTimeoutExceeded:                'waitForActionTimeoutExceeded',
+    //CLIENT_ERR.INCORRECT_GLOBAL_WAIT_FOR_ACTION_EVENT_ARGUMENT
+    incorrectGlobalWaitForActionEventArgument:   'incorrectGlobalWaitForActionEventArgument',
+    //CLIENT_ERR.INCORRECT_GLOBAL_WAIT_FOR_ACTION_TIMEOUT_ARGUMENT
+    incorrectGlobalWaitForActionTimeoutArgument: 'incorrectGlobalWaitForActionTimeoutArgument',
+    //CLIENT_ERR.GLOBAL_WAIT_FOR_ACTION_TIMEOUT_EXCEEDED
+    globalWaitForActionTimeoutExceeded:          'globalWaitForActionTimeoutExceeded',
     //CLIENT_ERR.API_EMPTY_IFRAME_ARGUMENT
-    emptyIFrameArgument:                     'emptyIFrameArgument',
+    emptyIFrameArgument:                         'emptyIFrameArgument',
     //CLIENT_ERR.API_IFRAME_ARGUMENT_IS_NOT_IFRAME
-    iframeArgumentIsNotIFrame:               'iframeArgumentIsNotIFrame',
+    iframeArgumentIsNotIFrame:                   'iframeArgumentIsNotIFrame',
     //CLIENT_ERR.API_MULTIPLE_IFRAME_ARGUMENT
-    multipleIFrameArgument:                  'multipleIFrameArgument',
+    multipleIFrameArgument:                      'multipleIFrameArgument',
     //CLIENT_ERR.API_INCORRECT_IFRAME_ARGUMENT
-    incorrectIFrameArgument:                 'incorrectIFrameArgument',
+    incorrectIFrameArgument:                     'incorrectIFrameArgument',
     //CLIENT_ERR.API_UPLOAD_CAN_NOT_FIND_FILE_TO_UPLOAD
-    uploadCanNotFindFileToUpload:            'uploadCanNotFindFileToUpload',
+    uploadCanNotFindFileToUpload:                'uploadCanNotFindFileToUpload',
     //CLIENT_ERR.API_UPLOAD_ELEMENT_IS_NOT_FILE_INPUT
-    uploadElementIsNotFileInput:             'uploadElementIsNotFileInput',
+    uploadElementIsNotFileInput:                 'uploadElementIsNotFileInput',
     //CLIENT_ERR.API_UPLOAD_INVALID_FILE_PATH_ARGUMENT
-    uploadInvalidFilePathArgument:           'uploadInvalidFilePathArgument',
-    pageNotLoaded:                           'pageNotLoaded'
+    uploadInvalidFilePathArgument:               'uploadInvalidFilePathArgument',
+    pageNotLoaded:                               'pageNotLoaded'
 };

@@ -293,7 +293,7 @@ $(document).ready(function () {
             COMMAND.getStepsSharedData,
             COMMAND.setNextStep,
             'step0_pre_setup',
-            ERROR_TYPE.waitForActionTimeoutExceeded,
+            ERROR_TYPE.globalWaitForActionTimeoutExceeded,
             COMMAND.done
         ];
 
