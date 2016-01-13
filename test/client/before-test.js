@@ -33,16 +33,20 @@
 
 
     //TestCafe setup
-    var testCafeCore = getTestCafeModule('testCafeCore');
-    var tcSettings   = testCafeCore.get('./settings');
+    var testCafeCore    = getTestCafeModule('testCafeCore');
+    var tcSettings      = testCafeCore.get('./settings');
+    var sandboxedJQuery = testCafeCore.get('./sandboxed-jquery');
 
     tcSettings.get().REFERER = 'https://example.com';
+
+    sandboxedJQuery.init(window);
 
 
     //Tests API
     window.getTestCafeModule = getTestCafeModule;
     window.getProperty       = window[INSTRUCTION.getProperty];
     window.setProperty       = window[INSTRUCTION.setProperty];
+    window.sandboxedJQuery   = sandboxedJQuery;
 
     window.getCrossDomainPageUrl = function (filePath) {
         return window.QUnitGlobals.crossDomainHostname + window.QUnitGlobals.getResourceUrl(filePath);
