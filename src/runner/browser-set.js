@@ -23,8 +23,8 @@ export default class BrowserSet extends EventEmitter {
 
         connections.forEach(bc => bc.on('error', this.browserErrorHandler));
 
-        //NOTE: We're setting an empty error handler, because Node kills the process on an 'error' event
-        //if there is no handler. See: https://nodejs.org/api/events.html#events_class_events_eventemitter
+        // NOTE: We're setting an empty error handler, because Node kills the process on an 'error' event
+        // if there is no handler. See: https://nodejs.org/api/events.html#events_class_events_eventemitter
         this.on('error', noop);
     }
 
@@ -32,10 +32,18 @@ export default class BrowserSet extends EventEmitter {
         if (bc.idle || bc.closed || !bc.ready)
             return;
 
+        var idlePromise  = promisifyEvent(bc, 'idle');
+        var closePromise = promisifyEvent(bc, 'closed');
+
         await Promise.race([
-            promisifyEvent(bc, 'idle'),
-            promisifyEvent(bc, 'closed')
+            idlePromise,
+            closePromise
         ]);
+
+        // NOTE: We must delete both listeners from the browser connection after
+        // one of them is executed to avoid exceeding the subscribers limit.
+        idlePromise.cancel();
+        closePromise.cancel();
     }
 
     static async _closeConnection (bc) {
