@@ -1,6 +1,7 @@
 var path                   = require('path');
 var expect                 = require('chai').expect;
 var request                = require('request');
+var Promise                = require('pinkie');
 var noop                   = require('noop-fn');
 var createTestCafe         = require('../../lib/');
 var COMMAND                = require('../../lib/browser-connection/command');
@@ -119,6 +120,8 @@ describe('Runner', function () {
                 expect(reporterPlugin.reportTestDone).to.be.a('function');
                 expect(reporterPlugin.reportTaskStart).to.be.a('function');
                 expect(reporterPlugin.reportTaskDone).to.be.a('function');
+
+                return Promise.resolve({});
             };
 
             return runner
@@ -197,6 +200,8 @@ describe('Runner', function () {
                 expectedTestNames = expectedTestNames.sort();
 
                 expect(actualTestNames).eql(expectedTestNames);
+
+                return Promise.resolve({});
             };
 
             return runner.run();
@@ -419,6 +424,7 @@ describe('Runner', function () {
         var origConvertAliasOrPathToBrowserInfo = Bootstrapper._convertBrowserAliasToBrowserInfo;
 
         var closeCalled        = 0;
+        var abortCalled        = false;
         var taskActionCallback = null;
 
         function taskDone () {
@@ -433,6 +439,7 @@ describe('Runner', function () {
 
         beforeEach(function () {
             closeCalled        = 0;
+            abortCalled        = false;
             taskActionCallback = taskDone;
 
             runner
@@ -476,6 +483,7 @@ describe('Runner', function () {
             };
 
             Task.prototype.abort = function () {
+                abortCalled = true;
             };
         });
 
@@ -544,6 +552,37 @@ describe('Runner', function () {
                     expect(remoteConnection.idle).to.be.true;
                     remoteConnection.close();
                 });
+        });
+
+        it('Should be able to cancel test', function () {
+            var IDLE_DELAY = 100;
+
+            var remoteConnection = testCafe.createBrowserConnection();
+
+            remoteConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                                   '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+
+            remoteConnection.idle = false;
+
+            // Don't let the test finish by emitting the task's 'done' event
+            taskActionCallback = function () {
+            };
+
+            setTimeout(function () {
+                remoteConnection.idle = true;
+                remoteConnection.emit('idle');
+            }, IDLE_DELAY);
+
+            return runner
+                    .browsers('browser-alias1', remoteConnection)
+                    .run()
+                    .cancel()
+                    .then(function () {
+                        expect(closeCalled).eql(1);
+                        expect(abortCalled).to.be.true;
+                        expect(remoteConnection.idle).to.be.true;
+                        remoteConnection.close();
+                    });
         });
     });
 });
