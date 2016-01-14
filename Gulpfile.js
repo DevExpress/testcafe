@@ -4,6 +4,8 @@ var gulpBabel    = require('gulp-babel');
 var less         = require('gulp-less');
 var filter       = require('gulp-filter');
 var eslint       = require('gulp-eslint');
+var git          = require('gulp-git');
+var globby       = require('globby');
 var qunitHarness = require('gulp-qunit-harness');
 var mocha        = require('gulp-mocha');
 var mustache     = require('gulp-mustache');
@@ -17,7 +19,13 @@ var publish      = require('publish-please');
 var del          = require('del');
 var fs           = require('fs');
 var path         = require('path');
+var opn          = require('opn');
+var connect      = require('connect');
+var spawn        = require('cross-spawn-async');
+var serveStatic  = require('serve-static');
 var Promise      = require('pinkie');
+var markdownlint = require('markdownlint');
+
 
 ll
     .tasks([
@@ -272,6 +280,65 @@ gulp.task('test-client-travis', ['build'], function () {
 });
 
 gulp.task('travis', [process.env.GULP_TASK || '']);
+
+//Documentation
+gulp.task('lint-docs', function () {
+    function lintFiles (files) {
+        return new Promise(function (resolve, reject) {
+            var config = {
+                'files':  files,
+                'config': require('./.markdownlint.json')
+            };
+
+            markdownlint(config, function (err, result) {
+                var lintErr = err || result && result.toString();
+
+                if (lintErr)
+                    reject(lintErr);
+                else
+                    resolve();
+            });
+        });
+    }
+
+    return globby('docs/articles/**/*.md').then(lintFiles);
+});
+
+gulp.task('clean-website', function (cb) {
+    del('website', cb);
+});
+
+gulp.task('fetch-assets-repo', ['clean-website'], function (cb) {
+    git.clone('https://github.com/DevExpress/testcafe-gh-page-assets.git', { args: 'website' }, cb);
+});
+
+gulp.task('put-in-articles', ['fetch-assets-repo'], function () {
+    return gulp
+        .src('docs/articles/**/*')
+        .pipe(gulp.dest('website/src'));
+});
+
+gulp.task('put-in-navigation', ['fetch-assets-repo'], function () {
+    return gulp
+        .src('docs/nav/**/*')
+        .pipe(gulp.dest('website/src/_data'));
+});
+
+gulp.task('prepare-website', ['put-in-articles', 'put-in-navigation', 'lint-docs']);
+
+gulp.task('build-website', ['prepare-website'], function (cb) {
+    spawn('jekyll', ['build', '--source', 'website/src/', '--destination', 'website/deploy'], { stdio: 'inherit' })
+        .on('exit', cb);
+});
+
+gulp.task('preview-website', ['build-website'], function (cb) {
+    connect()
+        .use('/testcafe', serveStatic('website/deploy'))
+        .listen(8080, function () {
+            opn('http://localhost:8080/testcafe');
+            cb();
+        });
+});
 
 // Publish
 gulp.task('publish', ['test-server'], function () {
