@@ -1,9 +1,11 @@
 {
   "compact": false,
   "presets": [
-    "es2015-loose"
+    "es2015-loose",
+    "babel-preset-stage-2"
   ],
   "plugins": [
+    "transform-runtime",
     "add-module-exports"
   ]
 }

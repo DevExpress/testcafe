@@ -15,7 +15,7 @@ var ensureDir = promisify(mkdirp);
 
 const REMOTE_ALIAS_RE = /^(\d*)remote$/;
 
-const DESCRIPTION = dedent`
+const DESCRIPTION = dedent(`
     In the browser list, you can use aliases (e.g. "ie9", "chrome", etc.) as well as paths to executables.
 
     To run tests against all installed browsers, use the "all" alias.
@@ -26,7 +26,7 @@ const DESCRIPTION = dedent`
     You can use one or more file paths or glob patterns to specify which tests to run.
 
     More info: http://testcafe.devexpress.com/Documentation/CLI
-`;
+`);
 
 export default class CliArgumentParser {
     constructor () {
@@ -34,11 +34,11 @@ export default class CliArgumentParser {
 
         this.cwd = process.cwd();
 
-        this.src             = null;
-        this.browsers        = null;
-        this.filter          = null;
-        this.remoteCount     = 0;
-        this.opts            = null;
+        this.src         = null;
+        this.browsers    = null;
+        this.filter      = null;
+        this.remoteCount = 0;
+        this.opts        = null;
 
         this._describeProgram();
     }

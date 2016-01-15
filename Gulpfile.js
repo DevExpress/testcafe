@@ -1,4 +1,4 @@
-var babel        = require('babel');
+var babel        = require('babel-core');
 var gulp         = require('gulp');
 var gulpBabel    = require('gulp-babel');
 var less         = require('gulp-less');
@@ -188,11 +188,19 @@ gulp.task('client-scripts-bundle', ['clean'], function () {
             transform: function (filename, code) {
                 var transformed = babel.transform(code, {
                     sourceMap: false,
+                    ast:       false,
                     filename:  filename,
-                    blacklist: ['useStrict']
+
+                    // NOTE: force usage of client .babelrc for all
+                    // files, regardless of their location
+                    babelrc: false,
+                    extends: path.join(__dirname, './src/client/.babelrc')
                 });
 
-                return { code: transformed.code };
+                // HACK: babel-plugin-transform-es2015-modules-commonjs forces
+                // 'use strict' insertion. We need to remove it manually because
+                // of https://github.com/DevExpress/testcafe/issues/258
+                return { code: transformed.code.replace(/^('|")use strict('|");?/, '') };
             }
         }))
         .pipe(filterBrowserIdlePage)
