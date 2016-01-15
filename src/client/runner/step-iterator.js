@@ -567,7 +567,7 @@ StepIterator.prototype.__waitFor = function (callback) {
     }, this.globalWaitForTimeout);
 
     iterator.callWithSharedDataContext(function () {
-        iterator.globalWaitForEvent.call(this, function () {
+        iterator.globalWaitForEvent.call(iterator, function () {
             window.clearTimeout(timeoutID);
             callback();
         });
