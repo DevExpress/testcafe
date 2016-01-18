@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import LegacyTestRun from '../legacy/test-run';
 import TestRun from './test-run';
 
 // Const
@@ -82,8 +83,9 @@ export default class BrowserJob extends EventEmitter {
     }
 
     _createTestRun (test) {
+        var TestRunCtor        = test.isLegacy ? LegacyTestRun : TestRun;
         var screenshotCapturer = this.screenshots.createCapturerFor(test, this.browserConnection.userAgent);
-        var testRun            = new TestRun(test, this.browserConnection, screenshotCapturer, this.opts);
+        var testRun            = new TestRunCtor(test, this.browserConnection, screenshotCapturer, this.opts);
         var done               = this.opts.quarantineMode ?
                                  () => this._testRunDoneInQuarantineMode(testRun) :
                                  () => this._testRunDone(testRun);

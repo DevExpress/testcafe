@@ -15,7 +15,7 @@ export default class Capturer {
     }
 
     static _getFileName (stepName) {
-        return `${stepName && stepName.replace(/\s|\\|\/|"|\*|\?|<|>|\|/g, '_') || 'Page_Load'}.png`;
+        return `${stepName && stepName.replace(/\s|\\|\/|"|\*|\?|<|>|\|/g, '_') || 'page-load'}.png`;
     }
 
     async _takeScreenshot (url, filePath) {
