@@ -1,0 +1,11 @@
+- item: Article1
+  url: .
+- folder: Folder1
+  url: .
+  content:
+  - item: Article2
+    url: .
+  - item: Article3
+    url: .
+  - item: Article4
+    url: .
