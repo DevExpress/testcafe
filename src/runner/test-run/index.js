@@ -67,20 +67,20 @@ export default class TestRun extends Session {
             takeScreenshots:        this.screenshotCapturer.enabled,
             takeScreenshotsOnFails: this.opts.takeScreenshotsOnFails,
             skipJsErrors:           this.opts.skipJsErrors,
-            nativeDialogsInfo:      JSON.stringify(this.nativeDialogsInfo),
-            iFrameTestRunScript:    JSON.stringify(this._getIframePayloadScript())
+            nativeDialogsInfo:      JSON.stringify(this.nativeDialogsInfo)
         });
     }
 
-    _getIframePayloadScript () {
-        var sharedJs = this.test.fixture.getSharedJs();
-
-        return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
+    _getIframePayloadScript (iframeWithoutSrc) {
+        var sharedJs      = this.test.fixture.getSharedJs();
+        var payloadScript = Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             sharedJs:               sharedJs,
             takeScreenshotsOnFails: this.opts.takeScreenshotsOnFails,
             skipJsErrors:           this.opts.skipJsErrors,
             nativeDialogsInfo:      JSON.stringify(this.nativeDialogsInfo)
         });
+
+        return iframeWithoutSrc ? 'var isIFrameWithoutSrc = true;' + payloadScript : payloadScript;
     }
 
     async _addError (err) {

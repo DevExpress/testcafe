@@ -78,7 +78,7 @@ export default class MoveAutomation {
         };
 
         var iframeWin                   = e.source;
-        var iframe                      = domUtils.getIframeByWindow(iframeWin);
+        var iframe                      = domUtils.findIframeInTopWindow(iframeWin);
         var iframeBorders               = styleUtils.getBordersWidth(iframe);
         var iframePadding               = styleUtils.getElementPadding(iframe);
         var iframeRectangle             = positionUtils.getIframeClientCoordinates(iframe);
@@ -322,7 +322,7 @@ export default class MoveAutomation {
         };
 
         if (activeWindow.parent === window.self) {
-            iframe            = domUtils.getIframeByWindow(activeWindow);
+            iframe            = domUtils.findIframeInTopWindow(activeWindow);
             iframeRectangle   = positionUtils.getIframeClientCoordinates(iframe);
             iframeUnderCursor = getElementUnderCursor() === iframe;
 

@@ -21,4 +21,4 @@ Object.defineProperty(window, '%testCafeUI%', {
     value:        exports
 });
 
-hammerhead.on(hammerhead.EVENTS.iframeReadyToInit, e => initTestCafeUI(e.iframe.contentWindow, true));
+hammerhead.on(hammerhead.EVENTS.evalIframeScript, e => initTestCafeUI(e.iframe.contentWindow, true));

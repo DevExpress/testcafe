@@ -10,19 +10,44 @@
         return window['%' + module + '%'];
     }
 
-
     //Hammerhead setup
     var hammerhead  = getTestCafeModule('hammerhead');
     var INSTRUCTION = hammerhead.get('../processing/script/instruction');
+    var location    = 'http://localhost/sessionId/https://example.com';
 
-    hammerhead.get('./utils/destination-location').forceLocation('http://localhost/sessionId/https://example.com');
+    hammerhead.get('./utils/destination-location').forceLocation(location);
+
+    var iframeTaskScriptTempate = [
+        'window["%hammerhead%"].get("./utils/destination-location").forceLocation("{{{location}}}");',
+        'window["%hammerhead%"].start({',
+        '    referer : "{{{referer}}}",',
+        '    cookie: "{{{cookie}}}",',
+        '    serviceMsgUrl : "{{{serviceMsgUrl}}}",',
+        '    sessionId : "sessionId",',
+        '    iframeTaskScriptTemplate: {{{iframeTaskScriptTemplate}}}',
+        '});'
+    ].join('');
+
+    window.getIframeTaskScript = function (referer, serviceMsgUrl, location, cookie) {
+        return iframeTaskScriptTempate
+            .replace('{{{referer}}}', referer || '')
+            .replace('{{{serviceMsgUrl}}}', serviceMsgUrl || '')
+            .replace('{{{location}}}', location || '')
+            .replace('{{{cookie}}}', cookie || '');
+    };
 
     window.initIFrameTestHandler = function (e) {
+        var referer          = location;
+        var serviceMsg       = '/service-msg/100';
+        var iframeTaskScript = window.getIframeTaskScript(referer, serviceMsg, location).replace(/"/g, '\\"');
+
         if (e.iframe.id.indexOf('test') !== -1) {
             e.iframe.contentWindow.eval.call(e.iframe.contentWindow, [
+                'window["%hammerhead%"].get("./utils/destination-location").forceLocation("' + location + '");',
                 'window["%hammerhead%"].start({',
-                '    referer : "http://localhost/sessionId/https://example.com",',
-                '    serviceMsgUrl : "/service-msg/100",',
+                '    referer : "' + referer + '",',
+                '    serviceMsgUrl : "' + serviceMsg + '",',
+                '    iframeTaskScriptTemplate: "' + iframeTaskScript + '",',
                 '    sessionId : "sessionId"',
                 '});'
             ].join(''));

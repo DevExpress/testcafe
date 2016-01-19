@@ -412,11 +412,21 @@ export function isDocumentRootElement (element) {
     return element.tagName && element.tagName.toLowerCase() === 'html';
 }
 
+export function findIframeInTopWindow (iframeWindow) {
+    var iframes = window.top.document.getElementsByTagName('iframe');
+
+    for (var i = 0; i < iframes.length; i++) {
+        if (iframes[i].contentWindow === iframeWindow)
+            return iframes[i];
+    }
+
+    return null;
+}
+
 export var findDocument                               = hammerhead.utils.dom.findDocument;
 export var getActiveElement                           = hammerhead.utils.dom.getActiveElement;
 export var getChildVisibleIndex                       = hammerhead.utils.dom.getChildVisibleIndex;
 export var getIframeByElement                         = hammerhead.utils.dom.getIframeByElement;
-export var getIframeByWindow                          = hammerhead.utils.dom.getIframeByWindow;
 export var getScrollbarSize                           = hammerhead.utils.dom.getScrollbarSize;
 export var getSelectParent                            = hammerhead.utils.dom.getSelectParent;
 export var getSelectVisibleChildren                   = hammerhead.utils.dom.getSelectVisibleChildren;

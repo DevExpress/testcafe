@@ -12,7 +12,7 @@ var positionUtils         = testCafeCore.positionUtils;
 
 function onMessage (e) {
     if (e.message.cmd === CROSS_DOMAIN_MESSAGES.GET_IFRAME_POSITION_DATA_REQUEST_CMD) {
-        var iFrame = domUtils.getIframeByWindow(e.source);
+        var iFrame = domUtils.findIframeInTopWindow(e.source);
 
         var msg = {
             scroll:        styleUtils.getElementScroll(domUtils.findDocument(document)),

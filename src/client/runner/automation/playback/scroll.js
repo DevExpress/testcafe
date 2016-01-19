@@ -16,7 +16,7 @@ const SCROLL_RESPONSE_CMD = 'automation|scroll|response';
 // Setup cross-iframe interaction
 messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     if (e.message.cmd === SCROLL_REQUEST_CMD) {
-        var element = domUtils.getIframeByWindow(e.source);
+        var element = domUtils.findIframeInTopWindow(e.source);
         var offsetX = e.message.offsetX;
         var offsetY = e.message.offsetY;
         var scroll  = new ScrollAutomation(element, { offsetX, offsetY });

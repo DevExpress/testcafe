@@ -12,7 +12,6 @@ export function getIframeClientCoordinates (iframe) {
     var iframeRectangleLeft = clientPosition.x + iframeBorders.left + iframePadding.left;
     var iframeRectangleTop  = clientPosition.y + iframeBorders.top + iframePadding.top;
 
-
     return {
         left:   iframeRectangleLeft,
         top:    iframeRectangleTop,
@@ -216,7 +215,7 @@ export function getElementFromPoint (x, y) {
 }
 
 export function getIframePointRelativeToParentFrame (pos, iframeWin) {
-    var iframe        = domUtils.getIframeByWindow(iframeWin);
+    var iframe        = domUtils.findIframeInTopWindow(iframeWin);
     var iframeOffset  = getOffsetPosition(iframe);
     var iframeBorders = styleUtils.getBordersWidth(iframe);
     var iframePadding = styleUtils.getElementPadding(iframe);

@@ -194,7 +194,7 @@ RunnerBase.prototype._initIFrameBehavior = function () {
 
         switch (message.cmd) {
             case RunnerBase.IFRAME_STEP_COMPLETED_CMD:
-                if (runner.stepIterator.waitedIFrame === domUtils.getIframeByWindow(e.source))
+                if (runner.stepIterator.waitedIFrame === domUtils.findIframeInTopWindow(e.source))
                     runner.stepIterator.iFrameActionCallback();
                 else if (runner.executingStepInIFrameWindow === e.source)
                     runner._onIFrameStepExecuted();
@@ -249,7 +249,7 @@ RunnerBase.prototype._initIFrameBehavior = function () {
                 break;
 
             case CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_WAITING_STEP_COMPLETION_REQUEST_CMD:
-                if (runner.stepIterator.waitedIFrame === domUtils.getIframeByWindow(e.source) ||
+                if (runner.stepIterator.waitedIFrame === domUtils.findIframeInTopWindow(e.source) ||
                     runner.executingStepInIFrameWindow === e.source) {
                     msg = {
                         cmd: CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_WAITING_STEP_COMPLETION_RESPONSE_CMD
