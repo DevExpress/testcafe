@@ -143,6 +143,7 @@ gulp.task('lint-client', function () {
         .src([
             'src/client/runner/automation/playback/scroll.js',
             'src/client/runner/automation/playback/move.js',
+            'src/client/runner/automation/playback/press/**/*.js',
             'src/client/runner/automation/cursor.js',
             'src/client/runner/automation/utils/**/*.js',
             'src/client/runner/utils/**/*.js',

@@ -67,8 +67,6 @@ $(document).ready(function () {
 
         currentErrorType              = null,
         currentErrorElement           = null,
-        //constants
-        TEST_ELEMENT_CLASS            = 'testElement',
 
         //utils
         asyncActionCallback,
@@ -92,16 +90,7 @@ $(document).ready(function () {
         },
 
         startNext                     = function () {
-            if (browserUtils.isIE) {
-                removeTestElements();
-                window.setTimeout(start, 30);
-            }
-            else
-                start();
-        },
-
-        removeTestElements            = function () {
-            $('.' + TEST_ELEMENT_CLASS).remove();
+            window.setTimeout(start, 30);
         },
 
         firstNotWhiteSpaceSymbolIndex = function (value) {
@@ -141,9 +130,9 @@ $(document).ready(function () {
                 seventhElementInnerHTML = $('#7')[0].innerHTML;
             },
             restoreState: function () {
-                var curActiveElement = domUtils.getActiveElement(),
-                    curDocument      = domUtils.findDocument(curActiveElement),
-                    selection        = curDocument.getSelection();
+                var curActiveElement = domUtils.getActiveElement();
+                var selection        = document.getSelection();
+
                 if (firstElementInnerHTML) {
                     setInnerHTML($('#1'), firstElementInnerHTML);
                     setInnerHTML($('#2'), secondElementInnerHTML);
@@ -153,10 +142,10 @@ $(document).ready(function () {
                     setInnerHTML($('#6'), sixthElementInnerHTML);
                     setInnerHTML($('#7'), seventhElementInnerHTML);
                 }
-                if (curActiveElement !== $(curDocument).find('body')) {
-                    $(curDocument).find('body').focus();
+                if (curActiveElement !== document.body) {
                     $(curActiveElement).blur();
                     selection.removeAllRanges();
+                    document.body.focus();
                 }
             }
         };
@@ -180,11 +169,9 @@ $(document).ready(function () {
             $el[0].onclick     = function () {
             };
         }
-        $el     = null;
-        $parent = null;
+        $el                 = null;
+        $parent             = null;
         stateHelper.restoreState();
-        if (!browserUtils.isIE)
-            removeTestElements();
         currentErrorType    = null;
         currentErrorElement = null;
     });
@@ -321,7 +308,6 @@ $(document).ready(function () {
     asyncTest('simple select', function () {
         $parent = $('#1');
         $el     = $parent.find("p");
-
 
         runAsyncTest(
             function () {

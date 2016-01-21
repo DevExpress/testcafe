@@ -10,7 +10,8 @@ var testCafeRunner          = window.getTestCafeModule('testCafeRunner');
 var automation              = testCafeRunner.get('./automation/automation');
 var clickPlaybackAutomation = testCafeRunner.get('./automation/playback/click');
 var typePlaybackAutomation  = testCafeRunner.get('./automation/playback/type');
-var pressPlaybackAutomation = testCafeRunner.get('./automation/playback/press');
+var PressAutomation         = testCafeRunner.get('./automation/playback/press');
+var parseKeyString          = testCafeRunner.get('./automation/playback/press/parse-key-string');
 
 QUnit.begin(function () {
     automation.init();
@@ -815,19 +816,23 @@ if (browserUtils.isIE)
 
 asyncTest('Change event not raised after press action if element was focused by client script', function () {
     runAsyncTest(function () {
-        var changed  = false;
+        var changed         = false;
+        var pressAutomation = new PressAutomation(parseKeyString('ctrl+a delete').combinations);
+
         input2.value = 'test';
         $(input2).change(function () {
             changed = true;
         });
         input2.focus();
         window.setTimeout(function () {
-            pressPlaybackAutomation('ctrl+a delete', function () {
-                clickPlaybackAutomation(input1, {}, function () {
-                    ok(changed, 'change event was raised');
-                    startNext();
+            pressAutomation
+                .run()
+                .then(function () {
+                    clickPlaybackAutomation(input1, {}, function () {
+                        ok(changed, 'change event was raised');
+                        startNext();
+                    });
                 });
-            });
         }, 200);
     }, 3000);
 });

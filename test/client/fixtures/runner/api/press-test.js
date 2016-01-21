@@ -108,152 +108,6 @@ $(document).ready(function () {
         iframeSandbox.off(iframeSandbox.RUN_TASK_SCRIPT, window.initIFrameTestHandler);
     });
 
-    module('events raising');
-
-    asyncTest('events raising with shortcut', function () {
-        var keydownCount    = 0,
-            keyupCount      = 0,
-            keypressCount   = 0,
-            mouseclickCount = 0;
-
-        $input.keydown(
-            function () {
-                keydownCount++;
-            }).keyup(
-            function () {
-                keyupCount++;
-            }).keypress(
-            function () {
-                keypressCount++;
-            });
-        runAsyncTest(
-            function () {
-                actionsAPI.press('ctrl+a backspace');
-            },
-            function () {
-                equal(keydownCount, 3, 'keydown event raises twice');
-                equal(keyupCount, 3, 'keyup event raises twice');
-                equal(keypressCount, browserUtils.isFirefox ? 2 : 0, 'keypress event raises twice');
-            },
-            3000
-        );
-    });
-
-    module('shortcuts');
-
-    asyncTest('select all', function () {
-        runAsyncTest(
-            function () {
-                actionsAPI.press('ctrl+a');
-            },
-            function () {
-                equal($input[0].value, textSelection.getSelectedText($input[0]), 'all text selected');
-                equal($input[0].value, 'test', 'text is not changed');
-            },
-            1000
-        );
-    });
-
-    asyncTest('shortcut must not be raised when preventDefault called', function () {
-        $input.keydown(function (e) {
-            e.preventDefault();
-        });
-        runAsyncTest(
-            function () {
-                actionsAPI.press('ctrl+a');
-            },
-            function () {
-                notEqual($input[0].value, textSelection.getSelectedText($input[0]), 'text not selected');
-                equal($input[0].value, 'test', 'text is not changed');
-            },
-            1000
-        );
-    });
-
-    asyncTest('"backspace" command removes last symbol', function () {
-        runAsyncTest(
-            function () {
-                actionsAPI.press('backspace');
-            },
-            function () {
-                equal($input[0].value, 'tes', 'symbol removed');
-            },
-            1000
-        );
-    });
-
-    asyncTest('"ctrl+a backspace" removes all text', function () {
-        runAsyncTest(
-            function () {
-                actionsAPI.press('ctrl+a backspace');
-            },
-            function () {
-                equal($input[0].value, '', 'text removed');
-            },
-            1000
-        );
-    });
-
-    asyncTest('"ctrl+a delete" removes all text', function () {
-        runAsyncTest(
-            function () {
-                actionsAPI.press('ctrl+a delete');
-            },
-            function () {
-                equal($input[0].value, '', 'text removed');
-            },
-            1000
-        );
-    });
-
-    asyncTest('left', function () {
-        runAsyncTest(
-            function () {
-                actionsAPI.press('left backspace');
-            },
-            function () {
-                equal($input[0].value, 'tet', 'press left done');
-            },
-            1000
-        );
-    });
-
-    asyncTest('right', function () {
-        runAsyncTest(
-            function () {
-                actionsAPI.press('left left right backspace');
-            },
-            function () {
-                equal($input[0].value, 'tet', 'press left done');
-            },
-            1500
-        );
-    });
-
-    asyncTest('home', function () {
-        runAsyncTest(
-            function () {
-                actionsAPI.press('home delete');
-            },
-            function () {
-                equal($input[0].value, 'est', 'press home done');
-            },
-            1000
-        );
-    });
-
-    asyncTest('end', function () {
-        runAsyncTest(
-            function () {
-                actionsAPI.press('home end backspace');
-            },
-            function () {
-                equal($input[0].value, 'tes', 'press end done');
-            },
-            1000
-        );
-    });
-
     asyncTest('press a', function () {
         runAsyncTest(
             function () {
@@ -324,6 +178,8 @@ $(document).ready(function () {
             },
             function () {
                 deepEqual(domUtils.getActiveElement(), $input[0]);
+                equal($input[0].selectionStart, 0);
+                equal($input[0].selectionEnd, $input[0].value.length);
             },
             1000
         );
@@ -371,22 +227,6 @@ $(document).ready(function () {
     });
 
     module('Regression tests');
-    asyncTest('T178354', function () {
-        domUtils.getActiveElement().blur();
-        $('body').focus();
-        $input.attr('tabIndex', 1);
-        runAsyncTest(
-            function () {
-                actionsAPI.press('tab');
-            },
-            function () {
-                deepEqual(domUtils.getActiveElement(), $input[0]);
-                equal($input[0].selectionStart, 0);
-                equal($input[0].selectionEnd, $input[0].value.length);
-            },
-            1000
-        );
-    });
 
     asyncTest('B238757 - It is impossible to record and run \'press\' action with \'+\' key', function () {
         runAsyncTest(

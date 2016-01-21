@@ -124,7 +124,7 @@ export default function (element, characters, caretPos) {
         endSelection     = textSelection.getSelectionEnd(element),
 
         //NOTE: attribute 'maxlength' doesn't work in all browsers. In IE still don't support input with type 'number'
-        isNumberInput    = element.tagName.toLowerCase() === 'input' && element.type === 'number',
+        isNumberInput    = domUtils.isInputElement(element) && element.type === 'number',
         elementMaxLength = !browserUtils.isIE && isNumberInput ?
                            null : parseInt(element.maxLength),
         value            = element.value;

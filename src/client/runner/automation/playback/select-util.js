@@ -54,13 +54,16 @@ export function getSelectPositionCoordinates (el, start, end, isStartPos, correc
     if (start !== end)
         point = { x: selectionStart.left, y: !backward ? selectionStart.top : selectionStart.bottom };
     else
-        point = { x: selectionStart.left, y: Math.floor(selectionStart.top + (selectionStart.bottom - selectionStart.top) / 2) };
+        point = {
+            x: selectionStart.left,
+            y: Math.floor(selectionStart.top + (selectionStart.bottom - selectionStart.top) / 2)
+        };
 
     return point;
 }
 
 export function scrollElementByPoint (element, point) {
-    var isTextarea = element.tagName.toLowerCase() === 'textarea';
+    var isTextarea = domUtils.isTextarea(element);
 
     if (!domUtils.isEditableElement(element))
         return;
@@ -108,7 +111,7 @@ export function scrollElementByPoint (element, point) {
 
 export function updatePointByScrollElement (element, point) {
     var isTextEditable = domUtils.isTextEditableElement(element),
-        isTextarea     = element.tagName.toLowerCase() === 'textarea';
+        isTextarea     = domUtils.isTextarea(element);
 
     if (!(isTextEditable || domUtils.isContentEditableElement(element)))
         return;
@@ -139,7 +142,7 @@ export function updatePointByScrollElement (element, point) {
 }
 
 export function getProcessedOptions (element, options) {
-    var isTextarea            = element.tagName.toLowerCase() === 'textarea',
+    var isTextarea            = domUtils.isTextarea(element),
         isTextEditable        = domUtils.isTextEditableElement(element),
         isContentEditable     = domUtils.isContentEditableElement(element),
 
@@ -274,8 +277,10 @@ export function selectContentEditableByOptions (el, startPosition, endPosition, 
         endOffset            = null;
 
     //NOTE: If the calculated position does not match options we should recalculate it
-    if ((options.startNode !== startSelectionObject.node && !domUtils.isElementContainsNode(options.startNode, startSelectionObject.node)) ||
-        (options.endNode !== endSelectionObject.node && !domUtils.isElementContainsNode(options.endNode, endSelectionObject.node))) {
+    if ((options.startNode !== startSelectionObject.node &&
+         !domUtils.isElementContainsNode(options.startNode, startSelectionObject.node)) ||
+        (options.endNode !== endSelectionObject.node &&
+         !domUtils.isElementContainsNode(options.endNode, endSelectionObject.node))) {
 
         if (backward) {
             startOffset = contentEditable.getLastVisiblePosition(options.startNode);
@@ -304,7 +309,7 @@ export function getCorrectOptions (el, callback) {
         windowTopResponse = null,
 
         options           = {
-            isTextarea:           el.tagName.toLowerCase() === 'textarea',
+            isTextarea:           domUtils.isTextarea(el),
             isContentEditable:    domUtils.isContentEditableElement(el),
             elementBorders:       styleUtils.getBordersWidth(el),
             elementRect:          elementRect,

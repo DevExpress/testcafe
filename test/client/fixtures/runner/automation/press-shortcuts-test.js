@@ -4,11 +4,11 @@ var browserUtils = hammerhead.utils.browser;
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var textSelection = testCafeCore.get('./utils/text-selection');
 var domUtils      = testCafeCore.get('./utils/dom');
-var keyChar       = testCafeCore.get('./utils/key-char');
 
-var testCafeRunner    = window.getTestCafeModule('testCafeRunner');
-var automation        = testCafeRunner.get('./automation/automation');
-var keyPressSimulator = testCafeRunner.get('./automation/playback/key-press-simulator');
+var testCafeRunner  = window.getTestCafeModule('testCafeRunner');
+var automation      = testCafeRunner.get('./automation/automation');
+var PressAutomation = testCafeRunner.get('./automation/playback/press');
+var parseKeyString  = testCafeRunner.get('./automation/playback/press/parse-key-string');
 
 automation.init();
 
@@ -77,6 +77,15 @@ $(document).ready(function () {
         ok(inverseSelection === (typeof inverse === 'undefined' ? false : inverse));
     };
 
+    var runPressAutomation = function (keyString, callback) {
+        var keyCombinations = parseKeyString(keyString).combinations;
+        var pressAutomation = new PressAutomation(keyCombinations);
+
+        pressAutomation
+            .run()
+            .then(callback);
+    };
+
     QUnit.testDone(function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
         $el = null;
@@ -85,25 +94,61 @@ $(document).ready(function () {
     //tests
 
     module('utils testing');
+
     test('getShortcutsByKeyCombination', function () {
-        deepEqual(keyChar.getShortcutsByKeyCombination({ a: {} }, 'a'), ['a'], 'simple shortcut');
-        deepEqual(keyChar.getShortcutsByKeyCombination({ 'ctrl+a': {} }, 'ctrl+a'), ['ctrl+a'], 'combined shortcut');
-        deepEqual(keyChar.getShortcutsByKeyCombination({ 'a': {} }, 'b+a'), ['a'], 'symbol and simple shortcut');
-        deepEqual(keyChar.getShortcutsByKeyCombination({ 'a': {} }, 'a+b'), ['a'], 'simple shortcut and symbol');
-        deepEqual(keyChar.getShortcutsByKeyCombination({ 'ctrl+a': {} }, 'b+ctrl+a'), ['ctrl+a'], 'symbol and combined shortcut');
-        deepEqual(keyChar.getShortcutsByKeyCombination({ 'ctrl+a': {} }, 'ctrl+a+b'), ['ctrl+a'], 'combined shortcut and symbol');
-        deepEqual(keyChar.getShortcutsByKeyCombination({
-            'ctrl+a': {},
-            a:        {}
-        }, 'a+ctrl+a'), ['a', 'ctrl+a'], 'simple shortcut and combined shortcut');
-        deepEqual(keyChar.getShortcutsByKeyCombination({
-            'ctrl+a': {},
-            a:        {}
-        }, 'ctrl+a+a'), ['ctrl+a', 'a'], 'combined shortcut and simple shortcut');
-        deepEqual(keyChar.getShortcutsByKeyCombination({
-            'ctrl+a': {},
-            a:        {}
-        }, 'ctrl+a+b+a'), ['ctrl+a', 'a'], 'combined shortcut, symbol and simple shortcut');
+        deepEqual(PressAutomation._getShortcuts('enter'), ['enter'], 'simple shortcut');
+        deepEqual(PressAutomation._getShortcuts('ctrl+a'), ['ctrl+a'], 'combined shortcut');
+        deepEqual(PressAutomation._getShortcuts('a+enter'), ['enter'], 'symbol and simple shortcut');
+        deepEqual(PressAutomation._getShortcuts('enter+a'), ['enter'], 'simple shortcut and symbol');
+        deepEqual(PressAutomation._getShortcuts('a+ctrl+a'), ['ctrl+a'], 'symbol and combined shortcut');
+        deepEqual(PressAutomation._getShortcuts('ctrl+a+a'), ['ctrl+a'], 'combined shortcut and symbol');
+        deepEqual(PressAutomation._getShortcuts('enter+ctrl+a'), ['enter', 'ctrl+a'], 'simple shortcut and combined shortcut');
+        deepEqual(PressAutomation._getShortcuts('ctrl+a+enter'), ['ctrl+a', 'enter'], 'combined shortcut and simple shortcut');
+        deepEqual(PressAutomation._getShortcuts('ctrl+a+a+enter'), ['ctrl+a', 'enter'], 'combined shortcut, symbol and simple shortcut');
+    });
+
+    module('events raising');
+
+    asyncTest('events raising with shortcut', function () {
+        var $input        = $(createTextInput('text')),
+            keydownCount  = 0,
+            keyupCount    = 0,
+            keypressCount = 0;
+
+        $input.keydown(
+            function () {
+                keydownCount++;
+            }).keyup(
+            function () {
+                keyupCount++;
+            }).keypress(
+            function () {
+                keypressCount++;
+            });
+
+        runPressAutomation('ctrl+a backspace', function () {
+            equal(keydownCount, 3, 'keydown event raises twice');
+            equal(keyupCount, 3, 'keyup event raises twice');
+            equal(keypressCount, browserUtils.isFirefox ? 2 : 0, 'keypress event raises twice');
+            start();
+        });
+    });
+
+    module('preventDefault');
+
+    asyncTest('shortcut must not be raised when preventDefault called', function () {
+        var text  = 'test';
+        var input = createTextInput(text);
+
+        $(input).keydown(function (e) {
+            e.preventDefault();
+        });
+
+        runPressAutomation('ctrl+a', function () {
+            notEqual(input.value, textSelection.getSelectedText(input), 'text not selected');
+            equal(input.value, text, 'text is not changed');
+            start();
+        });
     });
 
     module('enter');
@@ -113,11 +158,10 @@ $(document).ready(function () {
             cursorPosition = 2,
             input          = createTextInput(text, cursorPosition);
 
-        var callback = function () {
+        runPressAutomation('enter', function () {
             checkShortcut(input, text, cursorPosition);
             start();
-        };
-        keyPressSimulator('enter', callback);
+        });
     });
 
     asyncTest('press enter in textarea', function () {
@@ -125,12 +169,11 @@ $(document).ready(function () {
             cursorPosition = 2,
             textarea       = createTextarea(text, cursorPosition);
 
-        var callback = function () {
+        runPressAutomation('enter', function () {
             var newText = 'te\nxt';
             checkShortcut(textarea, newText, newText.indexOf('\n') + 1);
             start();
-        };
-        keyPressSimulator('enter', callback);
+        });
     });
 
     module('home');
@@ -139,34 +182,32 @@ $(document).ready(function () {
         var text  = 'text',
             input = createTextInput(text, 2);
 
-        var callback = function () {
+        runPressAutomation('home', function () {
             checkShortcut(input, text, 0);
             start();
-        };
-        keyPressSimulator('home', callback);
+        });
     });
 
     asyncTest('press home in textarea', function () {
         var text     = 'text\rarea',
             textarea = createTextarea(text, 7);
 
-        var callback = function () {
+        runPressAutomation('home', function () {
             var newText = text.replace('\r', '\n');
             checkShortcut(textarea, newText, newText.indexOf('\n') + 1);
             start();
-        };
-        keyPressSimulator('home', callback);
+        });
     });
 
     asyncTest('press home with selection', function () {
         var text  = 'text',
             input = createTextInput(text, 2, text.length);
 
-        var callback = function () {
+
+        runPressAutomation('home', function () {
             checkShortcut(input, text, 0);
             start();
-        };
-        keyPressSimulator('home', callback);
+        });
     });
 
     module('end');
@@ -175,34 +216,31 @@ $(document).ready(function () {
         var text  = 'text',
             input = createTextInput(text, 2);
 
-        var callback = function () {
+        runPressAutomation('end', function () {
             checkShortcut(input, text, text.length);
             start();
-        };
-        keyPressSimulator('end', callback);
+        });
     });
 
     asyncTest('press end in textarea', function () {
         var text     = 'text\rarea',
             textarea = createTextarea(text, 7);
 
-        var callback = function () {
+        runPressAutomation('end', function () {
             var newText = text.replace('\r', '\n');
             checkShortcut(textarea, newText, newText.length);
             start();
-        };
-        keyPressSimulator('end', callback);
+        });
     });
 
     asyncTest('press end with selection', function () {
         var text  = 'text',
             input = createTextInput(text, 2, text.length);
 
-        var callback = function () {
+        runPressAutomation('end', function () {
             checkShortcut(input, text, text.length);
             start();
-        };
-        keyPressSimulator('end', callback);
+        });
     });
 
     module('up');
@@ -212,26 +250,24 @@ $(document).ready(function () {
             cursorPosition = 2,
             input          = createTextInput(text, cursorPosition);
 
-        var callback = function () {
+        runPressAutomation('up', function () {
             if (!browserUtils.isWebKit)
                 checkShortcut(input, text, cursorPosition);
             else
                 checkShortcut(input, text, 0);
             start();
-        };
-        keyPressSimulator('up', callback);
+        });
     });
 
     asyncTest('press up in textarea', function () {
         var text     = 'text\rarea',
             textarea = createTextarea(text, 7);
 
-        var callback = function () {
+        runPressAutomation('up', function () {
             var newText = text.replace('\r', '\n');
             checkShortcut(textarea, newText, 2);
             start();
-        };
-        keyPressSimulator('up', callback);
+        });
     });
 
     module('down');
@@ -241,14 +277,13 @@ $(document).ready(function () {
             cursorPosition = 2,
             input          = createTextInput(text, cursorPosition);
 
-        var callback = function () {
+        runPressAutomation('down', function () {
             if (!browserUtils.isWebKit)
                 checkShortcut(input, text, cursorPosition);
             else
                 checkShortcut(input, text, text.length);
             start();
-        };
-        keyPressSimulator('down', callback);
+        });
     });
 
     asyncTest('press down in textarea', function () {
@@ -256,12 +291,11 @@ $(document).ready(function () {
             cursorPosition = 2,
             textarea       = createTextarea(text, cursorPosition);
 
-        var callback = function () {
+        runPressAutomation('down', function () {
             var newText = text.replace('\r', '\n');
             checkShortcut(textarea, newText, newText.indexOf('\n') + cursorPosition + 1);
             start();
-        };
-        keyPressSimulator('down', callback);
+        });
     });
 
     module('left');
@@ -271,11 +305,10 @@ $(document).ready(function () {
             cursorPosition = 2,
             input          = createTextInput(text, cursorPosition);
 
-        var callback = function () {
+        runPressAutomation('left', function () {
             checkShortcut(input, text, cursorPosition - 1);
             start();
-        };
-        keyPressSimulator('left', callback);
+        });
     });
 
     asyncTest('press left in textarea', function () {
@@ -283,12 +316,11 @@ $(document).ready(function () {
             textarea          = createTextarea(text, 7),
             oldSelectionStart = textSelection.getSelectionStart(textarea);
 
-        var callback = function () {
+        runPressAutomation('left', function () {
             var newText = text.replace('\r', '\n');
             checkShortcut(textarea, newText, oldSelectionStart - 1);
             start();
-        };
-        keyPressSimulator('left', callback);
+        });
     });
 
     module('right');
@@ -298,11 +330,10 @@ $(document).ready(function () {
             cursorPosition = 2,
             input          = createTextInput(text, cursorPosition);
 
-        var callback = function () {
+        runPressAutomation('right', function () {
             checkShortcut(input, text, cursorPosition + 1);
             start();
-        };
-        keyPressSimulator('right', callback);
+        });
     });
 
     asyncTest('press right in textarea', function () {
@@ -310,12 +341,11 @@ $(document).ready(function () {
             textarea          = createTextarea(text, 7),
             oldSelectionStart = textSelection.getSelectionStart(textarea);
 
-        var callback = function () {
+        runPressAutomation('right', function () {
             var newText = text.replace('\r', '\n');
             checkShortcut(textarea, newText, oldSelectionStart + 1);
             start();
-        };
-        keyPressSimulator('right', callback);
+        });
     });
 
     module('backspace');
@@ -325,12 +355,11 @@ $(document).ready(function () {
             cursorPosition = 2,
             input          = createTextInput(text, cursorPosition);
 
-        var callback = function () {
+        runPressAutomation('backspace', function () {
             var newText = text.substring(0, cursorPosition - 1) + text.substring(cursorPosition);
             checkShortcut(input, newText, cursorPosition - 1);
             start();
-        };
-        keyPressSimulator('backspace', callback);
+        });
     });
 
     asyncTest('press backspace in textarea', function () {
@@ -338,12 +367,11 @@ $(document).ready(function () {
             cursorPosition = 5,
             textarea       = createTextarea(text, cursorPosition);
 
-        var callback = function () {
+        runPressAutomation('backspace', function () {
             var newText = text.replace('\r', '');
             checkShortcut(textarea, newText, cursorPosition - 1);
             start();
-        };
-        keyPressSimulator('backspace', callback);
+        });
     });
 
     module('delete');
@@ -353,12 +381,11 @@ $(document).ready(function () {
             cursorPosition = 2,
             input          = createTextInput(text, cursorPosition);
 
-        var callback = function () {
+        runPressAutomation('delete', function () {
             var newText = text.substring(0, cursorPosition) + text.substring(cursorPosition + 1);
             checkShortcut(input, newText, cursorPosition);
             start();
-        };
-        keyPressSimulator('delete', callback);
+        });
     });
 
     asyncTest('press delete in textarea', function () {
@@ -366,12 +393,11 @@ $(document).ready(function () {
             cursorPosition = 4,
             textarea       = createTextarea(text, cursorPosition);
 
-        var callback = function () {
+        runPressAutomation('delete', function () {
             var newText = text.replace('\r', '');
             checkShortcut(textarea, newText, cursorPosition);
             start();
-        };
-        keyPressSimulator('delete', callback);
+        });
     });
 
     module('ctrl+a');
@@ -380,57 +406,51 @@ $(document).ready(function () {
         var text  = 'test',
             input = createTextInput(text, 2);
 
-        var callback = function () {
+        runPressAutomation('ctrl+a', function () {
             checkShortcut(input, text, 0, text.length);
             start();
-        };
-        keyPressSimulator('ctrl+a', callback);
+        });
     });
 
     asyncTest('press ctrl+a in textarea', function () {
         var text     = 'test\rarea',
             textarea = createTextarea(text, 2);
 
-        var callback = function () {
+        runPressAutomation('ctrl+a', function () {
             var newText = text.replace('\r', '\n');
             checkShortcut(textarea, newText, 0, newText.length);
             start();
-        };
-        keyPressSimulator('ctrl+a', callback);
+        });
     });
 
     asyncTest('B233976: Wrong recording key combination Ctrl+A and DELETE', function () {
         var text     = 'test\rarea',
             textarea = createTextarea(text, 2);
 
-        var callback = function () {
+        runPressAutomation('ctrl+a', function () {
             var newText = text.replace('\r', '\n');
             checkShortcut(textarea, newText, 0, newText.length);
 
-            var deleteCallback = function () {
+            runPressAutomation('delete', function () {
                 checkShortcut(textarea, '', 0, 0);
                 start();
-            };
-            keyPressSimulator('delete', deleteCallback);
-        };
-        keyPressSimulator('ctrl+a', callback);
+            });
+        });
     });
 
     asyncTest('press ctrl+a and backspace press in textarea', function () {
         var text     = 'test\rarea',
             textarea = createTextarea(text, 2);
 
-        var callback = function () {
+        runPressAutomation('ctrl+a', function () {
             var newText = text.replace('\r', '\n');
             checkShortcut(textarea, newText, 0, newText.length);
 
-            var deleteCallback = function () {
+            runPressAutomation('backspace', function () {
                 checkShortcut(textarea, '', 0, 0);
                 start();
-            };
-            keyPressSimulator('backspace', deleteCallback);
-        };
-        keyPressSimulator('ctrl+a', callback);
+            });
+        });
     });
 
     module('test shortcut inside keys combination');
@@ -439,22 +459,20 @@ $(document).ready(function () {
         var text  = '1',
             input = createTextInput(text, text.length);
 
-        var callback = function () {
+        runPressAutomation('left+a', function () {
             checkShortcut(input, 'a1', 1);
             start();
-        };
-        keyPressSimulator('left+a', callback);
+        });
     });
 
     asyncTest('press a+left in input', function () {
         var text  = '1',
             input = createTextInput(text, text.length);
 
-        var callback = function () {
+        runPressAutomation('a+left', function () {
             checkShortcut(input, '1a', 1);
             start();
-        };
-        keyPressSimulator('a+left', callback);
+        });
     });
 
     module('test keys combination of two shortcuts');
@@ -463,147 +481,180 @@ $(document).ready(function () {
         var text     = 'test\rarea',
             textarea = createTextarea(text, 7);
 
-        var callback = function () {
+        runPressAutomation('left+home', function () {
             var newText = text.replace('\r', '\n');
             checkShortcut(textarea, newText, newText.indexOf('\n') + 1);
             start();
-        };
-        keyPressSimulator('left+home', callback);
+        });
     });
 
     asyncTest('press home+left in textarea', function () {
         var text     = 'test\rarea',
             textarea = createTextarea(text, 7);
 
-        var callback = function () {
+        runPressAutomation('home+left', function () {
             var newText = text.replace('\r', '\n');
             checkShortcut(textarea, newText, 4);
             start();
-        };
-        keyPressSimulator('home+left', callback);
+        });
     });
 
     module('shift+left');
 
     asyncTest('press shift+left in textarea without selection', function () {
-        var text           = 'text\rarea',
-            cursorPosition = 6,
-            textarea       = createTextarea(text, cursorPosition);
+        var text            = 'text\rarea',
+            newText         = text.replace('\r', '\n'),
+            cursorPosition  = 6,
+            textarea        = createTextarea(text, cursorPosition),
+            keys            = 'shift+left',
+            pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
 
-        var callback = function () {
-            var newText = text.replace('\r', '\n');
-            checkShortcut(textarea, newText, cursorPosition - 4, cursorPosition, true);
-            start();
-        };
-        keyPressSimulator('shift+left', function () {
-            keyPressSimulator('shift+left', function () {
-                keyPressSimulator('shift+left', function () {
-                    keyPressSimulator('shift+left', callback);
-                });
+        pressAutomation
+            .run()
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                checkShortcut(textarea, newText, cursorPosition - 4, cursorPosition, true);
+                start();
             });
-        });
     });
 
     asyncTest('press shift+left in textarea with forward selection', function () {
-        var text           = 'text\rare\rtest',
-            startSelection = 7,
-            endSelection   = 10,
-            textarea       = createTextarea(text, startSelection, endSelection);
+        var text            = 'text\rare\rtest',
+            newText         = text.replace(/\r/g, '\n'),
+            startSelection  = 7,
+            endSelection    = 10,
+            textarea        = createTextarea(text, startSelection, endSelection),
+            keys            = 'shift+left',
+            pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
 
-        var callback = function () {
-            var newText = text.replace(/\r/g, '\n');
-            checkShortcut(textarea, newText, 6, 7, true);
-            start();
-        };
-        keyPressSimulator('shift+left', function () {
-            keyPressSimulator('shift+left', function () {
-                keyPressSimulator('shift+left', function () {
-                    keyPressSimulator('shift+left', callback);
-                });
+        pressAutomation
+            .run()
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                checkShortcut(textarea, newText, 6, 7, true);
+                start();
             });
-        });
     });
 
     asyncTest('press shift+left in textarea with backward selection', function () {
-        var text           = 'text\rare\rtest',
-            startSelection = 7,
-            endSelection   = 10,
-            textarea       = createTextarea(text, startSelection, endSelection, true);
+        var text            = 'text\rare\rtest',
+            newText         = text.replace(/\r/g, '\n'),
+            startSelection  = 7,
+            endSelection    = 10,
+            textarea        = createTextarea(text, startSelection, endSelection, true),
+            keys            = 'shift+left',
+            pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
 
-        var callback = function () {
-            var newText = text.replace(/\r/g, '\n');
-            checkShortcut(textarea, newText, startSelection - 4, endSelection, true);
-            start();
-        };
-
-        keyPressSimulator('shift+left', function () {
-            keyPressSimulator('shift+left', function () {
-                keyPressSimulator('shift+left', function () {
-                    keyPressSimulator('shift+left', callback);
-                });
+        pressAutomation
+            .run()
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                checkShortcut(textarea, newText, startSelection - 4, endSelection, true);
+                start();
             });
-        });
     });
 
     module('shift+right');
 
     asyncTest('press shift+right in textarea without selection', function () {
-        var text           = 'text\rarea',
-            cursorPosition = 3,
-            textarea       = createTextarea(text, cursorPosition);
+        var text            = 'text\rarea',
+            newText         = text.replace('\r', '\n'),
+            cursorPosition  = 3,
+            textarea        = createTextarea(text, cursorPosition),
+            keys            = 'shift+right',
+            pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
 
-        var callback = function () {
-            var newText = text.replace('\r', '\n');
-            checkShortcut(textarea, newText, cursorPosition, cursorPosition + 4);
-            start();
-        };
-        keyPressSimulator('shift+right', function () {
-            keyPressSimulator('shift+right', function () {
-                keyPressSimulator('shift+right', function () {
-                    keyPressSimulator('shift+right', callback);
-                });
+        pressAutomation
+            .run()
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                checkShortcut(textarea, newText, cursorPosition, cursorPosition + 4);
+                start();
             });
-        });
     });
 
     asyncTest('press shift+right in textarea with forward selection', function () {
-        var text           = 'text\rarea\rtest',
-            startSelection = 3,
-            endSelection   = 7,
-            textarea       = createTextarea(text, startSelection, endSelection);
+        var text            = 'text\rarea\rtest',
+            newText         = text.replace(/\r/g, '\n'),
+            startSelection  = 3,
+            endSelection    = 7,
+            textarea        = createTextarea(text, startSelection, endSelection),
+            keys            = 'shift+right',
+            pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
 
-        var callback = function () {
-            var newText = text.replace(/\r/g, '\n');
-            checkShortcut(textarea, newText, startSelection, 11);
-            start();
-        };
-        keyPressSimulator('shift+right', function () {
-            keyPressSimulator('shift+right', function () {
-                keyPressSimulator('shift+right', function () {
-                    keyPressSimulator('shift+right', callback);
-                });
+        pressAutomation
+            .run()
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                checkShortcut(textarea, newText, startSelection, 11);
+                start();
             });
-        });
     });
 
     asyncTest('press shift+right in textarea with backward selection', function () {
-        var text           = 'text\rare\rtest',
-            startSelection = 2,
-            endSelection   = 12,
-            textarea       = createTextarea(text, startSelection, endSelection, true);
+        var text            = 'text\rare\rtest',
+            newText         = text.replace(/\r/g, '\n'),
+            startSelection  = 2,
+            endSelection    = 12,
+            textarea        = createTextarea(text, startSelection, endSelection, true),
+            keys            = 'shift+right',
+            pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
 
-        var callback = function () {
-            var newText = text.replace(/\r/g, '\n');
-            checkShortcut(textarea, newText, startSelection + 4, endSelection, true);
-            start();
-        };
-        keyPressSimulator('shift+right', function () {
-            keyPressSimulator('shift+right', function () {
-                keyPressSimulator('shift+right', function () {
-                    keyPressSimulator('shift+right', callback);
-                });
+        pressAutomation
+            .run()
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                return pressAutomation.run();
+            })
+            .then(function () {
+                checkShortcut(textarea, newText, startSelection + 4, endSelection, true);
+                start();
             });
-        });
     });
 
     module('shift+up');
@@ -613,59 +664,51 @@ $(document).ready(function () {
             cursorPosition = 2,
             input          = createTextInput(text, cursorPosition);
 
-        var callback = function () {
+        runPressAutomation('shift+up', function () {
             if (!browserUtils.isWebKit)
                 checkShortcut(input, text, cursorPosition);
             else
                 checkShortcut(input, text, 0, cursorPosition, true);
             start();
-        };
-        keyPressSimulator('shift+up', callback);
+        });
     });
 
     asyncTest('press shift+up in textarea without selection', function () {
         var text           = 'text\rarea',
+            newText        = text.replace('\r', '\n'),
             cursorPosition = 7,
             textarea       = createTextarea(text, cursorPosition);
 
-        var callback = function () {
-            var newText = text.replace('\r', '\n');
-
+        runPressAutomation('shift+up', function () {
             checkShortcut(textarea, newText, cursorPosition - 5, cursorPosition, true);
             start();
-        };
-
-        keyPressSimulator('shift+up', callback);
+        });
     });
 
     asyncTest('press shift+up in textarea with forward selection', function () {
         var text           = 'aaaa\rbbbb\rcccc',
+            newText        = text.replace(/\r/g, '\n'),
             startSelection = 8,
             endSelection   = 12,
             textarea       = createTextarea(text, startSelection, endSelection);
 
-        var callback = function () {
-            var newText = text.replace(/\r/g, '\n');
+        runPressAutomation('shift+up', function () {
             checkShortcut(textarea, newText, startSelection - 1, startSelection, true);
             start();
-        };
-
-        keyPressSimulator('shift+up', callback);
+        });
     });
 
     asyncTest('press shift+right in textarea with backward selection', function () {
         var text           = 'aaaa\rbbbb\rcccc',
+            newText        = text.replace(/\r/g, '\n'),
             startSelection = 8,
             endSelection   = 12,
             textarea       = createTextarea(text, startSelection, endSelection, true);
 
-        var callback = function () {
-            var newText = text.replace(/\r/g, '\n');
-
+        runPressAutomation('shift+up', function () {
             checkShortcut(textarea, newText, startSelection - 5, endSelection, true);
             start();
-        };
-        keyPressSimulator('shift+up', callback);
+        });
     });
 
     module('shift+down');
@@ -675,59 +718,51 @@ $(document).ready(function () {
             cursorPosition = 2,
             input          = createTextInput(text, cursorPosition);
 
-        var callback = function () {
+        runPressAutomation('shift+down', function () {
             if (!browserUtils.isWebKit)
                 checkShortcut(input, text, cursorPosition);
             else
                 checkShortcut(input, text, cursorPosition, text.length);
             start();
-        };
-        keyPressSimulator('shift+down', callback);
+        });
     });
 
     asyncTest('press shift+down in textarea without selection', function () {
         var text           = 'text\rarea',
+            newText        = text.replace('\r', '\n'),
             cursorPosition = 2,
             textarea       = createTextarea(text, cursorPosition);
 
-        var callback = function () {
-            var newText = text.replace('\r', '\n');
-
+        runPressAutomation('shift+down', function () {
             checkShortcut(textarea, newText, cursorPosition, cursorPosition + 5);
             start();
-        };
-
-        keyPressSimulator('shift+down', callback);
+        });
     });
 
     asyncTest('press shift+down in textarea with forward selection', function () {
         var text           = 'aaaa\rbbbb\rcccc',
+            newText        = text.replace(/\r/g, '\n'),
             startSelection = 3,
             endSelection   = 8,
             textarea       = createTextarea(text, startSelection, endSelection);
 
-        var callback = function () {
-            var newText = text.replace(/\r/g, '\n');
+        runPressAutomation('shift+down', function () {
             checkShortcut(textarea, newText, startSelection, endSelection + 5);
             start();
-        };
-
-        keyPressSimulator('shift+down', callback);
+        });
     });
 
     asyncTest('press shift+down in textarea with backward selection', function () {
         var text           = 'aaaa\rbbbb\rcccc',
+            newText        = text.replace(/\r/g, '\n'),
             startSelection = 8,
             endSelection   = 12,
             textarea       = createTextarea(text, startSelection, endSelection, true);
 
-        var callback = function () {
-            var newText = text.replace(/\r/g, '\n');
-
+        runPressAutomation('shift+down', function () {
             checkShortcut(textarea, newText, endSelection, startSelection + 5);
             start();
-        };
-        keyPressSimulator('shift+down', callback);
+        });
     });
 
     module('shift+home');
@@ -736,56 +771,51 @@ $(document).ready(function () {
         var text  = 'text',
             input = createTextInput(text, 2);
 
-        var callback = function () {
-            // TODO: remove this check after update of MSEdge version on sauce labs (GH-188)
-            if(!browserUtils.isMSEdge)
+        runPressAutomation('shift+home', function () {
+            if (!browserUtils.isMSEdge)
                 checkShortcut(input, text, 0, 2, true);
             else
                 expect(0);
             start();
-        };
-        keyPressSimulator('shift+home', callback);
+        });
     });
 
     asyncTest('press shift+home in textarea without selection', function () {
         var text           = 'text\rarea',
+            newText        = text.replace('\r', '\n'),
             cursorPosition = 7,
             textarea       = createTextarea(text, cursorPosition);
 
-        var callback = function () {
-            var newText = text.replace('\r', '\n');
+        runPressAutomation('shift+home', function () {
             checkShortcut(textarea, newText, newText.indexOf('\n') + 1, cursorPosition, true);
             start();
-        };
-        keyPressSimulator('shift+home', callback);
+        });
     });
 
     asyncTest('press shift+home in textarea with forward selection', function () {
         var text          = 'text\rarea',
+            newText       = text.replace('\r', '\n'),
             startPosition = 7,
             endPosition   = 8,
             textarea      = createTextarea(text, startPosition, endPosition);
 
-        var callback = function () {
-            var newText = text.replace('\r', '\n');
+        runPressAutomation('shift+home', function () {
             checkShortcut(textarea, newText, newText.indexOf('\n') + 1, startPosition, true);
             start();
-        };
-        keyPressSimulator('shift+home', callback);
+        });
     });
 
     asyncTest('press shift+home in textarea with backward selection', function () {
         var text          = 'text\rarea',
+            newText       = text.replace('\r', '\n'),
             startPosition = 7,
             endPosition   = 8,
             textarea      = createTextarea(text, startPosition, endPosition, true);
 
-        var callback = function () {
-            var newText = text.replace('\r', '\n');
+        runPressAutomation('shift+home', function () {
             checkShortcut(textarea, newText, newText.indexOf('\n') + 1, endPosition, true);
             start();
-        };
-        keyPressSimulator('shift+home', callback);
+        });
     });
 
     module('shift+end');
@@ -794,52 +824,48 @@ $(document).ready(function () {
         var text  = 'text',
             input = createTextInput(text, 2);
 
-        var callback = function () {
+        runPressAutomation('shift+end', function () {
             checkShortcut(input, text, 2, 4);
             start();
-        };
-        keyPressSimulator('shift+end', callback);
+        });
     });
 
     asyncTest('press shift+end in textarea without selection', function () {
         var text           = 'text\rarea',
+            newText        = text.replace('\r', '\n'),
             cursorPosition = 7,
             textarea       = createTextarea(text, cursorPosition);
 
-        var callback = function () {
-            var newText = text.replace('\r', '\n');
+        runPressAutomation('shift+end', function () {
             checkShortcut(textarea, newText, cursorPosition, text.length);
             start();
-        };
-        keyPressSimulator('shift+end', callback);
+        });
     });
 
     asyncTest('press shift+end in textarea with forward selection', function () {
         var text          = 'text\rarea',
+            newText       = text.replace('\r', '\n'),
             startPosition = 7,
             endPosition   = 8,
             textarea      = createTextarea(text, startPosition, endPosition);
 
-        var callback = function () {
-            var newText = text.replace('\r', '\n');
+        runPressAutomation('shift+end', function () {
             checkShortcut(textarea, newText, startPosition, text.length);
             start();
-        };
-        keyPressSimulator('shift+end', callback);
+        });
     });
 
     asyncTest('press shift+end in textarea with backward selection', function () {
         var text          = 'text\rarea',
+            newText       = text.replace('\r', '\n'),
             startPosition = 7,
             endPosition   = 8,
             textarea      = createTextarea(text, startPosition, endPosition, true);
 
-        var callback = function () {
-            var newText = text.replace('\r', '\n');
+        runPressAutomation('shift+end', function () {
             checkShortcut(textarea, newText, endPosition, text.length);
             start();
-        };
-        keyPressSimulator('shift+end', callback);
+        });
     });
 
     module('Resression tests. B238614 ');
@@ -850,12 +876,10 @@ $(document).ready(function () {
             endPosition   = 4,
             input         = createTextInput(text, startPosition, endPosition);
 
-        var callback = function () {
+        runPressAutomation('left', function () {
             checkShortcut(input, text, startPosition, startPosition);
             start();
-        };
-
-        keyPressSimulator('left', callback);
+        });
     });
 
     asyncTest('Incorrectly selection reproduce (right)', function () {
@@ -864,12 +888,10 @@ $(document).ready(function () {
             endPosition   = 4,
             input         = createTextInput(text, startPosition, endPosition);
 
-        var callback = function () {
+        runPressAutomation('right', function () {
             checkShortcut(input, text, endPosition, endPosition);
             start();
-        };
-
-        keyPressSimulator('right', callback);
+        });
     });
 
     module('Resression tests.');
@@ -877,57 +899,53 @@ $(document).ready(function () {
     //B238809 - Wrong playback test with shift+home/shift+end shortcuts in multiline textarea.
     asyncTest('B238809. Press shift+home in textarea with forward multiline selection', function () {
         var text          = 'text\rarea',
+            newText       = text.replace('\r', '\n'),
             startPosition = 2,
             endPosition   = 7,
             textarea      = createTextarea(text, startPosition, endPosition);
 
-        var callback = function () {
-            var newText = text.replace('\r', '\n');
+        runPressAutomation('shirt+home', function () {
             checkShortcut(textarea, newText, startPosition, newText.indexOf('\n') + 1, false);
             start();
-        };
-        keyPressSimulator('shift+home', callback);
+        });
     });
 
     asyncTest('B238809. Press shift+home in textarea with backward multiline selection', function () {
         var text          = 'text\rarea',
+            newText       = text.replace('\r', '\n'),
             startPosition = 2,
             endPosition   = 7,
             textarea      = createTextarea(text, startPosition, endPosition, true);
 
-        var callback = function () {
-            var newText = text.replace('\r', '\n');
+        runPressAutomation('shift+home', function () {
             checkShortcut(textarea, newText, 0, endPosition, true);
             start();
-        };
-        keyPressSimulator('shift+home', callback);
+        });
     });
 
     asyncTest('B238809. Press shift+end in textarea with forward multiline selection', function () {
         var text          = 'text\rarea',
+            newText       = text.replace('\r', '\n'),
             startPosition = 2,
             endPosition   = 8,
             textarea      = createTextarea(text, startPosition, endPosition);
 
-        var callback = function () {
-            var newText = text.replace('\r', '\n');
+        runPressAutomation('shift+end', function () {
             checkShortcut(textarea, newText, startPosition, newText.length, false);
             start();
-        };
-        keyPressSimulator('shift+end', callback);
+        });
     });
 
     asyncTest('B238809. Press shift+end in textarea with backward multiline selection', function () {
         var text          = 'text\rarea',
+            newText       = text.replace('\r', '\n'),
             startPosition = 2,
             endPosition   = 8,
             textarea      = createTextarea(text, startPosition, endPosition, true);
 
-        var callback = function () {
-            var newText = text.replace('\r', '\n');
+        runPressAutomation('shift+end', function () {
             checkShortcut(textarea, newText, newText.indexOf('\n'), endPosition, true);
             start();
-        };
-        keyPressSimulator('shift+end', callback);
+        });
     });
 });

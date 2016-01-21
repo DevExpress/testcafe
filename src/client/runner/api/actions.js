@@ -6,10 +6,11 @@ import clickPlaybackAutomation from '../automation/playback/click';
 import dblClickPlaybackAutomation from '../automation/playback/dblclick';
 import dragPlaybackAutomation from '../automation/playback/drag';
 import hoverPlaybackAutomation from '../automation/playback/hover';
-import pressPlaybackAutomation from '../automation/playback/press';
+import PressAutomation from '../automation/playback/press';
 import rClickPlaybackAutomation from '../automation/playback/rclick';
 import selectPlaybackAutomation from '../automation/playback/select';
 import typePlaybackAutomation from '../automation/playback/type';
+import parseKeyString from '../automation/playback/press/parse-key-string';
 import * as sourceIndexTracker from '../source-index';
 import async from '../deps/async';
 
@@ -24,7 +25,6 @@ var domUtils        = testCafeCore.domUtils;
 var positionUtils   = testCafeCore.positionUtils;
 var styleUtils      = testCafeCore.styleUtils;
 var arrayUtils      = testCafeCore.arrayUtils;
-var keyCharUtils    = testCafeCore.keyCharUtils;
 var selectElement   = testCafeUI.selectElement;
 
 
@@ -427,7 +427,8 @@ export function select () {
             options.startNode = isJQueryObj(elements[0]) ? elements[0][0] : elements[0];
             options.endNode   = secondArg;
 
-            if (!domUtils.isContentEditableElement(options.startNode) || !domUtils.isContentEditableElement(options.endNode))
+            if (!domUtils.isContentEditableElement(options.startNode) ||
+                !domUtils.isContentEditableElement(options.endNode))
                 error = true;
             else {
                 //NOTE: We should find element for perform select action
@@ -459,7 +460,7 @@ export function select () {
         function (element, callback, iframe) {
             if (args.length === 1 && !options.startNode)
                 options = { offset: args[0] };
-            else if (args.length === 2 || (args.length > 2 && element.tagName.toLowerCase() !== 'textarea'))
+            else if (args.length === 2 || (args.length > 2 && !domUtils.isTextarea(element)))
                 options = {
                     startPos: args[0],
                     endPos:   args[1]
@@ -540,12 +541,18 @@ export function press () {
     stepIterator.asyncActionSeries(
         arguments,
         pressActionArgumentsIterator().run,
-        function (keys, callback) {
-            if (keyCharUtils.parseKeysString(keys).error)
-                failWithError(ERROR_TYPE.incorrectPressActionArgument);
+        function (keyString, callback) {
+            var parsedKeyString = parseKeyString(keyString);
 
-            else
-                pressPlaybackAutomation(keys, callback);
+            if (parsedKeyString.error)
+                failWithError(ERROR_TYPE.incorrectPressActionArgument);
+            else {
+                var pressAutomation = new PressAutomation(parsedKeyString.combinations);
+
+                pressAutomation
+                    .run()
+                    .then(callback);
+            }
         });
 }
 

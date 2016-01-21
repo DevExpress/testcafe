@@ -12,8 +12,9 @@ var clickPlaybackAutomation    = testCafeRunner.get('./automation/playback/click
 var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
 var dragPlaybackAutomation     = testCafeRunner.get('./automation/playback/drag');
 var selectPlaybackAutomation   = testCafeRunner.get('./automation/playback/select');
-var pressPlaybackAutomation    = testCafeRunner.get('./automation/playback/press');
 var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
+var PressAutomation            = testCafeRunner.get('./automation/playback/press');
+var parseKeyString             = testCafeRunner.get('./automation/playback/press/parse-key-string');
 
 QUnit.begin(function () {
     automation.init();
@@ -191,6 +192,14 @@ $(document).ready(function () {
             ev.returnValue = false;
     };
 
+    var runPressAutomation = function (keys, callback) {
+        var pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+
+        pressAutomation
+            .run()
+            .then(callback);
+    };
+
     QUnit.testDone(function () {
         if (!browserUtils.isIE)
             removeTestElements();
@@ -275,7 +284,7 @@ $(document).ready(function () {
             keys     = 'backspace';
 
         typePlaybackAutomation(input, initText, {}, function () {
-            pressPlaybackAutomation(keys, function () {
+            runPressAutomation(keys, function () {
                 equal(input.value, newText);
                 startNext();
             });
@@ -305,17 +314,17 @@ $(document).ready(function () {
             'First press down':  function (callback) {
                 ok(checkEditorSelection($textarea[0], 5));
 
-                pressPlaybackAutomation(keys, callback);
+                runPressAutomation(keys, callback);
             },
             'Second press down': function (callback) {
                 ok(checkEditorSelection($textarea[0], 14));
 
-                pressPlaybackAutomation(keys, callback);
+                runPressAutomation(keys, callback);
             },
             'Third press down':  function (callback) {
                 ok(checkEditorSelection($textarea[0], 23));
 
-                pressPlaybackAutomation(keys, callback);
+                runPressAutomation(keys, callback);
             },
             'Check selection':   function () {
                 ok(checkEditorSelection($textarea[0], $textarea[0].value.length));
@@ -337,17 +346,17 @@ $(document).ready(function () {
             'First press up':    function (callback) {
                 ok(checkEditorSelection($textarea[0], 23));
 
-                pressPlaybackAutomation(keys, callback);
+                runPressAutomation(keys, callback);
             },
             'Second press up':   function (callback) {
                 ok(checkEditorSelection($textarea[0], 14));
 
-                pressPlaybackAutomation(keys, callback);
+                runPressAutomation(keys, callback);
             },
             'Third press up':    function (callback) {
                 ok(checkEditorSelection($textarea[0], 5));
 
-                pressPlaybackAutomation(keys, callback);
+                runPressAutomation(keys, callback);
             },
             'Check selection':   function () {
                 ok(checkEditorSelection($textarea[0], 0));
@@ -368,7 +377,7 @@ $(document).ready(function () {
             'Press home': function (callback) {
                 ok(checkEditorSelection($textarea[0], 5));
 
-                pressPlaybackAutomation('home', callback);
+                runPressAutomation('home', callback);
             },
 
             'Check selection': function () {
@@ -390,7 +399,7 @@ $(document).ready(function () {
             'Press end': function (callback) {
                 ok(checkEditorSelection($textarea[0], 15));
 
-                pressPlaybackAutomation('end', callback);
+                runPressAutomation('end', callback);
             },
 
             'Check selection': function () {
@@ -500,7 +509,8 @@ $(document).ready(function () {
     module('Regression');
     asyncTest('T191234 - Press Enter key on a textbox element doesn\'t raise report\'s element updating during test running', function () {
         var input       = createTextInput()[0],
-            changeCount = 0;
+            changeCount = 0,
+            keys        = 'enter';
 
         input.addEventListener('change', function () {
             changeCount++;
@@ -510,16 +520,15 @@ $(document).ready(function () {
             equal(document.activeElement, input);
             equal(changeCount, 0);
 
-            pressPlaybackAutomation('enter', function () {
+            runPressAutomation(keys, function () {
                 equal(document.activeElement, input);
                 equal(changeCount, browserUtils.isIE ? 0 : 1);
 
-                pressPlaybackAutomation('enter', function () {
+                runPressAutomation(keys, function () {
                     equal(document.activeElement, input);
                     equal(changeCount, browserUtils.isIE ? 0 : 1);
-
                     start();
-                });
+                })
             });
         });
     });

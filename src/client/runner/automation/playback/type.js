@@ -1,8 +1,9 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import * as automationSettings from '../settings';
-import typeCharPlaybackAutomation from '../playback/type-char';
-import clickPlaybackAutomation from '../playback/click';
+import typeCharPlaybackAutomation from './type-char';
+import clickPlaybackAutomation from './click';
+import getKeyCode from '../../utils/get-key-code';
 import async from '../../deps/async';
 
 var browserUtils          = hammerhead.utils.browser;
@@ -12,7 +13,6 @@ var elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
 
 var SETTINGS        = testCafeCore.SETTINGS;
 var positionUtils   = testCafeCore.positionUtils;
-var keyCharUtils    = testCafeCore.keyCharUtils;
 var domUtils        = testCafeCore.domUtils;
 var contentEditable = testCafeCore.contentEditable;
 var textSelection   = testCafeCore.textSelection;
@@ -119,7 +119,7 @@ export default function (el, text, options, actionCallback) {
 
                 //typing symbol
                 function (typingCallback) {
-                    var keyCode  = keyCharUtils.getKeyCodeByChar(text.charAt(currPos)),
+                    var keyCode  = getKeyCode(text.charAt(currPos)),
                         charCode = text.charCodeAt(currPos);
 
                     async.series({
@@ -158,7 +158,7 @@ export default function (el, text, options, actionCallback) {
                                     var currentChar = text.charAt(currPos);
                                     var prevChar    = currPos === 0 ? null : text.charAt(currPos - 1);
 
-                                    var isInputTypeNumber = elementForTyping.tagName.toLowerCase() === 'input' &&
+                                    var isInputTypeNumber = domUtils.isInputElement(elementForTyping) &&
                                                             elementForTyping.type === 'number';
 
                                     var problematicBrowsers = (browserUtils.isFirefox ||

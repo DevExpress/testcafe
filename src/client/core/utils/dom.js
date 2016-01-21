@@ -274,6 +274,10 @@ export function isSelectElement (el) {
     return el.tagName && el.tagName.toLowerCase() === 'select';
 }
 
+export function isTextarea (el) {
+    return el.tagName && el.tagName.toLowerCase() === 'textarea';
+}
+
 export function setUnselectableAttributeRecursive (el) {
     if (el.nodeType === 1)
         el.setAttribute("unselectable", "on");
@@ -326,7 +330,7 @@ export function getNextFocusableElement (element, reverse) {
 
     //NOTE: in all browsers except Mozilla and Opera focus sets on one radio set from group only.
     // in Mozilla and Opera focus sets on any radio set.
-    if (element.tagName === "INPUT" && element.type === "radio" && element.name !== "" &&
+    if (isInputElement(element) && element.type === "radio" && element.name !== "" &&
         !(browserUtils.isFirefox || browserUtils.isOpera))
         allFocusable = arrayUtils.filter(allFocusable, item => {
             return !item.name || item === element || item.name !== element.name;
@@ -436,6 +440,7 @@ export var isDomElement                               = hammerhead.utils.dom.isD
 export var isElementInDocument                        = hammerhead.utils.dom.isElementInDocument;
 export var isElementInIframe                          = hammerhead.utils.dom.isElementInIframe;
 export var isFileInput                                = hammerhead.utils.dom.isFileInput;
+export var isInputElement                             = hammerhead.utils.dom.isInputElement;
 export var isHammerheadAttr                           = hammerhead.utils.dom.isHammerheadAttr;
 export var isInputWithoutSelectionPropertiesInFirefox = hammerhead.utils.dom.isInputWithoutSelectionPropertiesInFirefox;
 export var isRenderedNode                             = hammerhead.utils.dom.isRenderedNode;

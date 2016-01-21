@@ -236,22 +236,14 @@ export function getSelectChildCenter (child) {
     };
 }
 
-export function switchOptionsByKeys (command) {
-    var select = domUtils.getActiveElement();
-
-    if (select.tagName.toLowerCase() !== 'select')
-        return;
-
-    if (/enter|tab|esc/.test(command))
-        collapseOptionList();
-
-    var selectSize       = styleUtils.getSelectElementSize(select);
+export function switchOptionsByKeys (element, command) {
+    var selectSize       = styleUtils.getSelectElementSize(element);
     var optionListHidden = !styleUtils.hasDimensions(shadowUI.select('.' + OPTION_LIST_CLASS)[0]);
 
     if (/down|up/.test(command) ||
         (!browserUtils.isIE && (selectSize <= 1 || browserUtils.isFirefox) &&
          (optionListHidden || browserUtils.isFirefox) && /left|right/.test(command))) {
-        var options        = select.querySelectorAll('option');
+        var options        = element.querySelectorAll('option');
         var enabledOptions = [];
 
         for (var i = 0; i < options.length; i++) {
@@ -261,12 +253,12 @@ export function switchOptionsByKeys (command) {
                 enabledOptions.push(options[i]);
         }
 
-        var curSelectedOptionIndex = arrayUtils.indexOf(enabledOptions, options[select.selectedIndex]);
+        var curSelectedOptionIndex = arrayUtils.indexOf(enabledOptions, options[element.selectedIndex]);
         var nextIndex              = curSelectedOptionIndex + (/down|right/.test(command) ? 1 : -1);
 
         if (nextIndex >= 0 && nextIndex < enabledOptions.length) {
-            select.selectedIndex = arrayUtils.indexOf(options, enabledOptions[nextIndex]);
-            eventSimulator.change(select);
+            element.selectedIndex = arrayUtils.indexOf(options, enabledOptions[nextIndex]);
+            eventSimulator.change(element);
         }
     }
 }

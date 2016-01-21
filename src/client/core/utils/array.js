@@ -3,6 +3,8 @@ var nativeForEach = Array.prototype.forEach;
 var nativeSome    = Array.prototype.some;
 var nativeMap     = Array.prototype.map;
 var nativeFilter  = Array.prototype.filter;
+var nativeReverse = Array.prototype.reverse;
+var nativeReduce  = Array.prototype.reduce;
 
 export function toArray (arg) {
     var arr    = [];
@@ -12,6 +14,10 @@ export function toArray (arg) {
         arr.push(arg[i]);
 
     return arr;
+}
+
+export function reverse (arr) {
+    return nativeReverse.call(arr);
 }
 
 export function isArray (arg) {
@@ -47,4 +53,8 @@ export function map (arr, callback) {
 
 export function filter (arr, callback) {
     return nativeFilter.call(arr, callback);
+}
+
+export function reduce (arr, callback, initialValue) {
+    return nativeReduce.call(arr, callback, initialValue);
 }

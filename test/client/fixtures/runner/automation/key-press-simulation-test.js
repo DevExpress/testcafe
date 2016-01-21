@@ -2,12 +2,13 @@ var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
-var keyChar      = testCafeCore.get('./utils/key-char');
-var eventUtils        = testCafeCore.get('./utils/event');
+var eventUtils   = testCafeCore.get('./utils/event');
 
-var testCafeRunner    = window.getTestCafeModule('testCafeRunner');
-var automation        = testCafeRunner.get('./automation/automation');
-var keyPressSimulator = testCafeRunner.get('./automation/playback/key-press-simulator');
+var testCafeRunner  = window.getTestCafeModule('testCafeRunner');
+var automation      = testCafeRunner.get('./automation/automation');
+var PressAutomation = testCafeRunner.get('./automation/playback/press');
+var parseKeyString  = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var KEY_MAPS        = testCafeRunner.get('./utils/key-maps');
 
 automation.init();
 
@@ -111,6 +112,27 @@ $(document).ready(function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     });
 
+    function testKeysPress (keyString, expectedEvents) {
+        var keyCombinations = parseKeyString(keyString).combinations;
+        var pressAutomation = new PressAutomation(keyCombinations);
+
+        pressAutomation
+            .run()
+            .then(function () {
+                equal(eventsLog, createCheckingLog(expectedEvents), 'events are correct');
+                start();
+            });
+    }
+
+    function runPressAutomation (keyString, callback) {
+        var keyCombinations = parseKeyString(keyString).combinations;
+        var pressAutomation = new PressAutomation(keyCombinations);
+
+        pressAutomation
+            .run()
+            .then(callback);
+    }
+
     module('events raising');
     asyncTest('press literal symbol', function () {
         var literal        = 'a';
@@ -120,11 +142,7 @@ $(document).ready(function () {
             { type: 'keyup', keyCode: KEYCODES[literal] }
         ];
 
-        var callback = function () {
-            equal(eventsLog, createCheckingLog(expectedEvents), 'events are correct');
-            start();
-        };
-        keyPressSimulator(literal, callback);
+        testKeysPress(literal, expectedEvents);
     });
 
     asyncTest('press literal symbol uppercase', function () {
@@ -135,11 +153,7 @@ $(document).ready(function () {
             { type: 'keyup', keyCode: KEYCODES[literal] }
         ];
 
-        var callback = function () {
-            equal(eventsLog, createCheckingLog(expectedEvents), 'events are correct');
-            start();
-        };
-        keyPressSimulator(literal, callback);
+        testKeysPress(literal, expectedEvents);
     });
 
     asyncTest('press two literal symbols', function () {
@@ -155,16 +169,11 @@ $(document).ready(function () {
             { type: 'keyup', keyCode: KEYCODES[aLiteral] }
         ];
 
-        var callback = function () {
-            equal(eventsLog, createCheckingLog(expectedEvents), 'events are correct');
-            start();
-        };
-        keyPressSimulator(aLiteral + '+' + bLiteral, callback);
+        testKeysPress(aLiteral + '+' + bLiteral, expectedEvents);
     });
 
     asyncTest('press literal with ctrl', function () {
-        var literal = 'b';
-
+        var literal        = 'b';
         var expectedEvents = [
             { type: 'keydown', keyCode: KEYCODES.ctrl, ctrlKey: true },
             { type: 'keydown', keyCode: KEYCODES[literal], ctrlKey: true },
@@ -173,27 +182,18 @@ $(document).ready(function () {
             { type: 'keyup', keyCode: KEYCODES.ctrl }
         ];
 
-        var callback = function () {
-            equal(eventsLog, createCheckingLog(expectedEvents), 'events are correct');
-            start();
-        };
-        keyPressSimulator('ctrl+b', callback);
+        testKeysPress('ctrl+b', expectedEvents);
     });
 
     asyncTest('press number key', function () {
-        var literal = '1';
-
+        var literal        = '1';
         var expectedEvents = [
             { type: 'keydown', keyCode: KEYCODES[literal] },
             { type: 'keypress', keyCode: CHARCODES[literal], charCode: CHARCODES[literal] },
             { type: 'keyup', keyCode: KEYCODES[literal] }
         ];
 
-        var callback = function () {
-            equal(eventsLog, createCheckingLog(expectedEvents), 'events are correct');
-            start();
-        };
-        keyPressSimulator(literal, callback);
+        testKeysPress(literal, expectedEvents);
     });
 
     asyncTest('press special key', function () {
@@ -206,11 +206,7 @@ $(document).ready(function () {
             { type: 'keyup', keyCode: specialKeyCode }
         ];
 
-        var callback = function () {
-            equal(eventsLog, createCheckingLog(expectedEvents), 'events are correct');
-            start();
-        };
-        keyPressSimulator(specialKey, callback);
+        testKeysPress(specialKey, expectedEvents);
     });
 
     asyncTest('press mapped modifier', function () {
@@ -219,11 +215,7 @@ $(document).ready(function () {
             { type: 'keyup', keyCode: KEYCODES.alt }
         ];
 
-        var callback = function () {
-            equal(eventsLog, createCheckingLog(expectedEvents), 'events are correct');
-            start();
-        };
-        keyPressSimulator('option', callback);
+        testKeysPress('option', expectedEvents);
     });
 
     asyncTest('symbols with icorrect keycode', function () {
@@ -235,12 +227,7 @@ $(document).ready(function () {
             { type: 'keyup', keyCode: KEYCODES['shift'] }
         ];
 
-        function callback () {
-            equal(eventsLog, createCheckingLog(expectedEvents), 'events are correct');
-            start();
-        }
-
-        keyPressSimulator('"', callback);
+        testKeysPress('"', expectedEvents);
     });
 
     module('shift key');
@@ -257,11 +244,7 @@ $(document).ready(function () {
             { type: 'keyup', keyCode: KEYCODES.shift }
         ];
 
-        var callback = function () {
-            equal(eventsLog, createCheckingLog(expectedEvents), 'events are correct');
-            start();
-        };
-        keyPressSimulator('shift+a', callback);
+        testKeysPress('shift+a', expectedEvents);
     });
     //press(shift+A)
     asyncTest('shift+A', function () {
@@ -276,14 +259,9 @@ $(document).ready(function () {
             { type: 'keyup', keyCode: KEYCODES.shift }
         ];
 
-        var callback = function () {
-            equal(eventsLog, createCheckingLog(expectedEvents), 'events are correct');
-            start();
-        };
-        keyPressSimulator('shift+A', callback);
+        testKeysPress('shift+A', expectedEvents);
     });
 
-    //'shift+1' press helpers
     var literal                        = '1',
         modifiedLiteral                = '!';
     var expectedEventsShift_1_Pressing = [
@@ -293,21 +271,17 @@ $(document).ready(function () {
         { type: 'keyup', keyCode: KEYCODES[literal], shiftKey: true },
         { type: 'keyup', keyCode: KEYCODES.shift }
     ];
-    var shift_1_pressCallback          = function () {
-        equal(eventsLog, createCheckingLog(expectedEventsShift_1_Pressing), 'events are correct');
-        start();
-    };
-    //press(shift+1)
+
     asyncTest('shift+1', function () {
-        keyPressSimulator('shift+1', shift_1_pressCallback);
+        testKeysPress('shift+1', expectedEventsShift_1_Pressing);
     });
-    //press(shift+!)
+
     asyncTest('shift+!', function () {
-        keyPressSimulator('shift+!', shift_1_pressCallback);
+        testKeysPress('shift+!', expectedEventsShift_1_Pressing);
     });
-    //press(!)
+
     asyncTest('!', function () {
-        keyPressSimulator('!', shift_1_pressCallback);
+        testKeysPress('!', expectedEventsShift_1_Pressing);
     });
 
     module('Regression tests');
@@ -323,12 +297,7 @@ $(document).ready(function () {
         expectedEvents.push({ type: 'keyup', keyCode: KEYCODES.end, ctrlKey: true });
         expectedEvents.push({ type: 'keyup', keyCode: KEYCODES.ctrl });
 
-        var callback = function () {
-            equal(eventsLog, createCheckingLog(expectedEvents), 'events are correct');
-            start();
-        };
-
-        keyPressSimulator('ctrl+end', callback);
+        testKeysPress('ctrl+end', expectedEvents);
     });
 
     asyncTest('B237084 - Client instance works incorrect after "enter" key has been pressed on the focused control', function () {
@@ -340,29 +309,30 @@ $(document).ready(function () {
                 .appendTo('body');
 
         $input[0].focus();
+
         window.setTimeout(function () {
-            keyPressSimulator('enter', function () {
+            runPressAutomation('enter', function () {
                 equal(clickRaisedCount, 1);
 
-                keyPressSimulator('space', function () {
+                runPressAutomation('space', function () {
                     equal(clickRaisedCount, 2);
 
                     start();
                 });
             });
-        }, 100);
+        });
     });
 
     asyncTest('B237122 - Client instance works incorrect after "space" key has been pressed on the focused control', function () {
         var input = $('<input>').addClass(TEST_ELEMENT_CLASS).appendTo('body')[0];
 
         input.addEventListener('keyup', function (ev) {
-            equal(ev.keyCode, keyChar.KEYS_MAPS.SPECIAL_KEYS.space);
+            equal(ev.keyCode, KEY_MAPS.specialKeys.space);
         });
 
         input.focus();
         window.setTimeout(function () {
-            keyPressSimulator('space', function () {
+            runPressAutomation('space', function () {
                 expect(1);
                 start();
             });
@@ -379,9 +349,8 @@ $(document).ready(function () {
 
         input.focus();
 
-        keyPressSimulator('ctrl+a', function () {
-            keyPressSimulator('delete', function () {
-
+        runPressAutomation('ctrl+a', function () {
+            runPressAutomation('delete', function () {
                 equal(input.value, browserUtils.isFirefox ? value : '');
 
                 start();

@@ -11,8 +11,9 @@ var StepIterator               = testCafeRunner.get('./step-iterator');
 var actionsAPI                 = testCafeRunner.get('./api/actions');
 var automation                 = testCafeRunner.get('./automation/automation');
 var clickPlaybackAutomation    = testCafeRunner.get('./automation/playback/click');
-var pressPlaybackAutomation    = testCafeRunner.get('./automation/playback/press');
+var PressAutomation            = testCafeRunner.get('./automation/playback/press');
 var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
+var parseKeyString             = testCafeRunner.get('./automation/playback/press/parse-key-string');
 
 var testCafeUI    = window.getTestCafeModule('testCafeUI');
 var selectElement = testCafeUI.get('./select-element');
@@ -133,6 +134,14 @@ $(document).ready(function () {
         return select;
     };
 
+    var runPressAutomation = function (keys, callback) {
+        var pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+
+        pressAutomation
+            .run()
+            .then(callback);
+    };
+
     var preventDefault = function (e) {
         var ev = e || window.event;
         if (ev.preventDefault)
@@ -179,7 +188,7 @@ $(document).ready(function () {
             firstPressDownAction:  function (callback) {
                 equal(select.selectedIndex, 0);
 
-                pressPlaybackAutomation('down', function () {
+                runPressAutomation('down', function () {
                     equal(select.selectedIndex, 1);
                     callback();
                 });
@@ -187,7 +196,7 @@ $(document).ready(function () {
             secondPressDownAction: function (callback) {
                 equal(select.selectedIndex, 1);
 
-                pressPlaybackAutomation('down', function () {
+                runPressAutomation('down', function () {
                     equal(select.selectedIndex, 2);
                     callback();
                 });
@@ -195,7 +204,7 @@ $(document).ready(function () {
             thirdPressDownAction:  function (callback) {
                 equal(select.selectedIndex, 2);
 
-                pressPlaybackAutomation('down', function () {
+                runPressAutomation('down', function () {
                     equal(select.selectedIndex, 3);
                     callback();
                 });
@@ -203,7 +212,7 @@ $(document).ready(function () {
             fourthPressDownAction: function (callback) {
                 equal(select.selectedIndex, 3);
 
-                pressPlaybackAutomation('down', function () {
+                runPressAutomation('down', function () {
                     equal(select.selectedIndex, 4);
                     callback();
                 });
@@ -211,7 +220,7 @@ $(document).ready(function () {
             firstPressUpAction:    function (callback) {
                 equal(select.selectedIndex, 4);
 
-                pressPlaybackAutomation('up', function () {
+                runPressAutomation('up', function () {
                     equal(select.selectedIndex, 3);
                     callback();
                 });
@@ -219,7 +228,7 @@ $(document).ready(function () {
             secondPressUpAction:   function (callback) {
                 equal(select.selectedIndex, 3);
 
-                pressPlaybackAutomation('up', function () {
+                runPressAutomation('up', function () {
                     equal(select.selectedIndex, 2);
                     callback();
                 });
@@ -227,7 +236,7 @@ $(document).ready(function () {
             thirdPressUpAction:    function (callback) {
                 equal(select.selectedIndex, 2);
 
-                pressPlaybackAutomation('up', function () {
+                runPressAutomation('up', function () {
                     equal(select.selectedIndex, 1);
                     callback();
                 });
@@ -235,7 +244,7 @@ $(document).ready(function () {
             fourthPressUpAction:   function () {
                 equal(select.selectedIndex, 1);
 
-                pressPlaybackAutomation('up', function () {
+                runPressAutomation('up', function () {
                     equal(select.selectedIndex, 0);
                     startNext();
                 });
@@ -248,7 +257,7 @@ $(document).ready(function () {
             firstPressRightAction:  function (callback) {
                 equal(select.selectedIndex, 0);
 
-                pressPlaybackAutomation('right', function () {
+                runPressAutomation('right', function () {
                     equal(select.selectedIndex, browserUtils.isFirefox ? 1 : 0);
                     callback();
                 });
@@ -256,7 +265,7 @@ $(document).ready(function () {
             secondPressRightAction: function (callback) {
                 equal(select.selectedIndex, browserUtils.isFirefox ? 1 : 0);
 
-                pressPlaybackAutomation('right', function () {
+                runPressAutomation('right', function () {
                     equal(select.selectedIndex, browserUtils.isFirefox ? 2 : 0);
                     callback();
                 });
@@ -264,7 +273,7 @@ $(document).ready(function () {
             thirdPressRightAction:  function (callback) {
                 equal(select.selectedIndex, browserUtils.isFirefox ? 2 : 0);
 
-                pressPlaybackAutomation('right', function () {
+                runPressAutomation('right', function () {
                     equal(select.selectedIndex, browserUtils.isFirefox ? 3 : 0);
                     callback();
                 });
@@ -272,7 +281,7 @@ $(document).ready(function () {
             fourthPressRightAction: function (callback) {
                 equal(select.selectedIndex, browserUtils.isFirefox ? 3 : 0);
 
-                pressPlaybackAutomation('right', function () {
+                runPressAutomation('right', function () {
                     equal(select.selectedIndex, browserUtils.isFirefox ? 4 : 0);
                     callback();
                 });
@@ -280,7 +289,7 @@ $(document).ready(function () {
             firstPressLeftAction:   function (callback) {
                 equal(select.selectedIndex, browserUtils.isFirefox ? 4 : 0);
 
-                pressPlaybackAutomation('left', function () {
+                runPressAutomation('left', function () {
                     equal(select.selectedIndex, browserUtils.isFirefox ? 3 : 0);
                     callback();
                 });
@@ -288,7 +297,7 @@ $(document).ready(function () {
             secondPressLeftAction:  function (callback) {
                 equal(select.selectedIndex, browserUtils.isFirefox ? 3 : 0);
 
-                pressPlaybackAutomation('left', function () {
+                runPressAutomation('left', function () {
                     equal(select.selectedIndex, browserUtils.isFirefox ? 2 : 0);
                     callback();
                 });
@@ -296,7 +305,7 @@ $(document).ready(function () {
             thirdPressLeftAction:   function (callback) {
                 equal(select.selectedIndex, browserUtils.isFirefox ? 2 : 0);
 
-                pressPlaybackAutomation('left', function () {
+                runPressAutomation('left', function () {
                     equal(select.selectedIndex, browserUtils.isFirefox ? 1 : 0);
                     callback();
                 });
@@ -304,7 +313,7 @@ $(document).ready(function () {
             fourthPressLeftAction:  function () {
                 equal(select.selectedIndex, browserUtils.isFirefox ? 1 : 0);
 
-                pressPlaybackAutomation('left', function () {
+                runPressAutomation('left', function () {
                     equal(select.selectedIndex, 0);
                     startNext();
                 });
@@ -317,25 +326,25 @@ $(document).ready(function () {
             pressDownFirstTime:  function (callback) {
                 equal(select.selectedIndex, 0);
 
-                pressPlaybackAutomation('down', function () {
+                runPressAutomation('down', function () {
                     equal(select.selectedIndex, 1);
                     callback();
                 });
             },
             pressDownSecondTime: function (callback) {
-                pressPlaybackAutomation('down', function () {
+                runPressAutomation('down', function () {
                     equal(select.selectedIndex, 3);
                     callback();
                 });
             },
             pressUpFirstTime:    function (callback) {
-                pressPlaybackAutomation('up', function () {
+                runPressAutomation('up', function () {
                     equal(select.selectedIndex, 1);
                     callback();
                 });
             },
             pressUpSecondTime:   function () {
-                pressPlaybackAutomation('up', function () {
+                runPressAutomation('up', function () {
                     equal(select.selectedIndex, 0);
                     testCallback();
                 });
@@ -348,25 +357,25 @@ $(document).ready(function () {
             pressDownFirstTime:  function (callback) {
                 equal($select.selectedIndex, 0);
 
-                pressPlaybackAutomation('right', function () {
+                runPressAutomation('right', function () {
                     equal($select.selectedIndex, browserUtils.isIE || notChangeInChrome ? 0 : 1);
                     callback();
                 });
             },
             pressDownSecondTime: function (callback) {
-                pressPlaybackAutomation('right', function () {
+                runPressAutomation('right', function () {
                     equal($select.selectedIndex, browserUtils.isIE || notChangeInChrome ? 0 : 3);
                     callback();
                 });
             },
             pressUpFirstTime:    function (callback) {
-                pressPlaybackAutomation('left', function () {
+                runPressAutomation('left', function () {
                     equal($select.selectedIndex, browserUtils.isIE || notChangeInChrome ? 0 : 1);
                     callback();
                 });
             },
             pressUpSecondTime:   function () {
-                pressPlaybackAutomation('up', function () {
+                runPressAutomation('up', function () {
                     equal($select.selectedIndex, browserUtils.isIE || notChangeInChrome ? 0 : 0);
                     testCallback();
                 });
@@ -476,25 +485,25 @@ $(document).ready(function () {
             pressDownAction:  function (callback) {
                 equal(select.selectedIndex, 0);
 
-                pressPlaybackAutomation('down', function () {
+                runPressAutomation('down', function () {
                     equal(select.selectedIndex, 1);
                     callback();
                 });
             },
             pressUpAction:    function (callback) {
-                pressPlaybackAutomation('up', function () {
+                runPressAutomation('up', function () {
                     equal(select.selectedIndex, 0);
                     callback();
                 });
             },
             pressRightAction: function (callback) {
-                pressPlaybackAutomation('right', function () {
+                runPressAutomation('right', function () {
                     equal(select.selectedIndex, browserUtils.isIE ? 0 : 1);
                     callback();
                 });
             },
             pressLeftAction:  function () {
-                pressPlaybackAutomation('left', function () {
+                runPressAutomation('left', function () {
                     equal(select.selectedIndex, 0);
                     startNext();
                 });
@@ -516,25 +525,25 @@ $(document).ready(function () {
                 });
             },
             pressDownAction:  function (callback) {
-                pressPlaybackAutomation('down', function () {
+                runPressAutomation('down', function () {
                     equal(select.selectedIndex, 1);
                     callback();
                 });
             },
             pressUpAction:    function (callback) {
-                pressPlaybackAutomation('up', function () {
+                runPressAutomation('up', function () {
                     equal(select.selectedIndex, 0);
                     callback();
                 });
             },
             pressRightAction: function (callback) {
-                pressPlaybackAutomation('right', function () {
+                runPressAutomation('right', function () {
                     equal(select.selectedIndex, browserUtils.isFirefox ? 1 : 0);
                     callback();
                 });
             },
             pressLeftAction:  function (callback) {
-                pressPlaybackAutomation('left', function () {
+                runPressAutomation('left', function () {
                     equal(select.selectedIndex, 0);
                     callback();
                 });
@@ -564,7 +573,7 @@ $(document).ready(function () {
                 equal($(shadowUI.select('.' + OPTION_LIST_CLASS)).is(':visible'), true);
                 equal(select.selectedIndex, 0);
 
-                pressPlaybackAutomation('enter', callback);
+                runPressAutomation('enter', callback);
             },
 
             'Check assertions': function () {
@@ -589,7 +598,7 @@ $(document).ready(function () {
             },
 
             'Press tab': function (callback) {
-                pressPlaybackAutomation('tab', callback);
+                runPressAutomation('tab', callback);
             },
 
             'Check assertions': function () {
@@ -614,7 +623,7 @@ $(document).ready(function () {
             },
 
             'Press esc': function (callback) {
-                pressPlaybackAutomation('esc', callback);
+                runPressAutomation('esc', callback);
             },
 
             'Check assertions': function () {
@@ -1514,8 +1523,9 @@ $(document).ready(function () {
             startNext();
         });
 
-        clickPlaybackAutomation(select, {}, function (){
-            clickPlaybackAutomation(select.options[2], {}, function () {});
+        clickPlaybackAutomation(select, {}, function () {
+            clickPlaybackAutomation(select.options[2], {}, function () {
+            });
         });
     });
 });
