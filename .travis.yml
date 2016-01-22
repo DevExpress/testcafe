@@ -1,10 +1,10 @@
 language: node_js
 matrix:
  include:
-  - node_js: "0.10"
-    env: GULP_TASK="test-server"
   - node_js: "stable"
-    env: GULP_TASK="test-server"
+    env: GULP_TASK="test-client-travis"
+  - node_js: "stable"
+    env: GULP_TASK="test-client-travis"
   - node_js: "stable"
     env: GULP_TASK="test-client-travis"
  fast_finish: true
