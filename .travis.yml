@@ -5,7 +5,7 @@ matrix:
     env: GULP_TASK="test-server"
   - node_js: "stable"
     env: GULP_TASK="test-server"
-  - node_js: "0.10"
+  - node_js: "stable"
     env: GULP_TASK="test-client-travis"
  fast_finish: true
 
