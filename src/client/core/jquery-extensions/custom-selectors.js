@@ -21,7 +21,7 @@ function getOwnTextForSelector (element) {
 
     if (text) {
         //\xC0-\xFF - latin letters
-        text = hammerhead.utils.trim(text.replace(/[^a-z0-9а-я \xC0-\xFF]+/gi, ''));
+        text = hammerhead.utils.string.trim(text.replace(/[^a-z0-9а-я \xC0-\xFF]+/gi, ''));
         text = text.replace(/\s+/g, ' ');
         if (/\S/.test(text))
             return text;
