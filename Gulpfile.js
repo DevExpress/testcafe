@@ -24,7 +24,12 @@ var connect      = require('connect');
 var spawn        = require('cross-spawn-async');
 var serveStatic  = require('serve-static');
 var Promise      = require('pinkie');
+var promisify    = require('pify');
 var markdownlint = require('markdownlint');
+
+
+var readFile  = promisify(fs.readFile, Promise);
+var writeFile = promisify(fs.writeFile, Promise);
 
 
 ll
@@ -253,8 +258,31 @@ gulp.task('images', ['clean'], function () {
         .pipe(gulp.dest('lib'));
 });
 
+gulp.task('update-greenkeeper', function () {
+    var watchDepsRe = /testcafe|babel/;
 
-gulp.task('build', ['lint', 'server-scripts', 'client-scripts', 'styles', 'images', 'templates']);
+    return readFile('package.json')
+        .then(function (data) {
+            var config  = JSON.parse(data);
+            var deps    = Object.keys(config.dependencies);
+            var devDeps = Object.keys(config.devDependencies);
+
+            var ignoredDeps = deps
+                .concat(devDeps)
+                .filter(function (dep) {
+                    return !watchDepsRe.test(dep);
+                });
+
+            config.greenkeeper = {
+                ignore: ignoredDeps
+            };
+
+            return writeFile('package.json', JSON.stringify(config, null, 2) + '\n');
+        });
+});
+
+
+gulp.task('build', ['lint', 'update-greenkeeper', 'server-scripts', 'client-scripts', 'styles', 'images', 'templates']);
 
 // Test
 gulp.task('test-server', ['build'], function () {
