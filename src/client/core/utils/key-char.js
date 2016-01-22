@@ -4,7 +4,7 @@ import { map , some } from './array';
 
 
 var browserUtils = hammerhead.utils.browser;
-var trim         = hammerhead.utils.trim;
+var trim         = hammerhead.utils.string.trim;
 
 
 export const KEYS_MAPS = {
