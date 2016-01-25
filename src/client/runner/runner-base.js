@@ -103,7 +103,7 @@ var RunnerBase = function () {
         });
     };
 
-    runner.act._start = function (stepNames, testSteps, nextStep, skipPageWaiting) {
+    runner.act._start = function (stepNames, testSteps, skipPageWaiting) {
         //NOTE: start test execution only when all content is loaded or if loading
         //timeout is reached (whichever comes first).
         runner._prepareStepsExecuting(function () {
@@ -114,7 +114,7 @@ var RunnerBase = function () {
             delete runner.act._start;
 
             runner.eventEmitter.emit(runner.TEST_STARTED_EVENT, {
-                nextStep: nextStep
+                nextStep: runner.nextStep
             });
 
             modalBackground.hide();
@@ -163,7 +163,7 @@ var RunnerBase = function () {
             runner.listenNativeDialogs = true;
 
             runner.stepIterator.start(stepNames, testSteps, dialogsAPI.resetHandlers,
-                dialogsAPI.checkExpectedDialogs, nextStep);
+                dialogsAPI.checkExpectedDialogs, runner.nextStep);
         }, skipPageWaiting);
     };
 };

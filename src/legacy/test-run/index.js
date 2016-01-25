@@ -28,10 +28,6 @@ export default class TestRun extends Session {
 
         // TODO remove it then we move shared data to session storage
         this.errs                       = [];
-        this.deferredError              = null;
-        this.restartCount               = 0;
-        this.nextStep                   = 0;
-        this.actionTargetWaiting        = 0;
         this.nativeDialogsInfo          = null;
         this.nativeDialogsInfoTimeStamp = 0;
         this.stepsSharedData            = {};
@@ -46,11 +42,6 @@ export default class TestRun extends Session {
     _getPayloadScript () {
         var sharedJs = this.test.fixture.getSharedJs();
 
-        // TODO
-        var nextStep = this.actionTargetWaiting ? this.nextStep - 1 : this.nextStep;
-
-        this.actionTargetWaiting = false;
-
         if (!this.running) {
             this.running = true;
             this.emit('start');
@@ -60,8 +51,7 @@ export default class TestRun extends Session {
             stepNames:              JSON.stringify(this.test.stepData.names),
             testSteps:              this.test.stepData.js,
             sharedJs:               sharedJs,
-            nextStep:               nextStep,
-            deferredError:          this.deferredError ? JSON.stringify(this.deferredError) : 'null',
+            testRunId:              this.id,
             browserHeartbeatUrl:    this.browserConnection.heartbeatUrl,
             browserStatusUrl:       this.browserConnection.statusUrl,
             takeScreenshots:        this.screenshotCapturer.enabled,
@@ -100,14 +90,7 @@ export default class TestRun extends Session {
         this.errs.push(err);
     }
 
-    async _fatalError (err, deferred) {
-        // TODO: move this logic to the client when localStorageSandbox will be implemented in the
-        // testcafe-hammerhead repo https://github.com/DevExpress/testcafe-hammerhead/issues/252 !!!
-        if (deferred) {
-            this.deferredError = err;
-            return;
-        }
-
+    async _fatalError (err) {
         await this._addError(err);
         this.emit('done');
     }
@@ -134,7 +117,7 @@ export default class TestRun extends Session {
 var ServiceMessages = TestRun.prototype;
 
 ServiceMessages[COMMAND.fatalError] = function (msg) {
-    return this._fatalError(msg.err, msg.deferred);
+    return this._fatalError(msg.err);
 };
 
 ServiceMessages[COMMAND.assertionFailed] = function (msg) {
@@ -151,14 +134,6 @@ ServiceMessages[COMMAND.setStepsSharedData] = function (msg) {
 
 ServiceMessages[COMMAND.getStepsSharedData] = function () {
     return this.stepsSharedData;
-};
-
-ServiceMessages[COMMAND.setNextStep] = function (msg) {
-    this.nextStep = msg.nextStep;
-};
-
-ServiceMessages[COMMAND.setActionTargetWaiting] = function (msg) {
-    this.actionTargetWaiting = msg.value;
 };
 
 ServiceMessages[COMMAND.getAndUncheckFileDownloadingFlag] = function () {

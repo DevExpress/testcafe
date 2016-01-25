@@ -70,7 +70,8 @@ asyncTest('init API', function () {
     ok(testRunner.handlePrompt);
     ok(testRunner.handleBeforeUnload);
 
-    testRunner.act._start([], [], 0);
+    testRunner.nextStep = 0;
+    testRunner.act._start([], []);
 
     testRunner.on(testRunner.TEST_STARTED_EVENT, function () {
         testStarted = true;
@@ -103,7 +104,8 @@ asyncTest('Uncaught error in test script', function () {
         }, 0);
     });
 
-    testRunner.act._start(stepNames, testSteps, 0);
+    testRunner.nextStep = 0;
+    testRunner.act._start(stepNames, testSteps);
 });
 
 module('inIFrame arguments');
