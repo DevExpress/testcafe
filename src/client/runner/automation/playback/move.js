@@ -1,355 +1,362 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import testCafeUI from '../../deps/testcafe-ui';
 
-import * as automationUtil from '../util';
-import * as automationSettings from '../settings';
-import ScrollAutomation from '../playback/scroll';
-import async from '../../deps/async';
+import OffsetOptions from '../options/offset';
+import MoveOptions from '../options/move';
+import ScrollAutomation from './scroll';
+import cursor from '../cursor';
 
+import { underCursor as getElementUnderCursor } from '../get-element';
+import getLineRectIntersection from '../../utils/get-line-rect-intersection';
+import { sendRequestToFrame } from '../../utils/iframe';
+import whilst from '../../utils/promise-whilst';
+import nextTick from '../../utils/next-tick';
 
+var Promise = hammerhead.Promise;
+
+var nativeMethods  = hammerhead.nativeMethods;
 var browserUtils   = hammerhead.utils.browser;
 var extend         = hammerhead.utils.extend;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 var messageSandbox = hammerhead.eventSandbox.message;
-var nativeMethods  = hammerhead.nativeMethods;
+var positionUtils  = testCafeCore.positionUtils;
+var domUtils       = testCafeCore.domUtils;
+var styleUtils     = testCafeCore.styleUtils;
+var eventUtils     = testCafeCore.eventUtils;
 
-var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
-var domUtils              = testCafeCore.domUtils;
-var positionUtils         = testCafeCore.positionUtils;
-var styleUtils            = testCafeCore.styleUtils;
-var eventUtils            = testCafeCore.eventUtils;
 
-var cursor = testCafeUI.cursor;
+const MOVE_REQUEST_CMD  = 'automation|move|request';
+const MOVE_RESPONSE_CMD = 'automation|move|response';
 
-//NOTE: We should save the last hovered element between runs because of T286582
+// Setup cross-iframe interaction
+messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
+    if (e.message.cmd === MOVE_REQUEST_CMD) {
+        if (e.source.parent === window.self)
+            MoveAutomation.onMoveToIframeRequest(e);
+        else
+            MoveAutomation.onMoveOutRequest(e);
+    }
+});
+
+// Static
 var lastHoveredElement = null;
 
-export default function (to, inDragging, options, actionCallback, currentDocument, skipEvents, inSelect) {
-    currentDocument = currentDocument || document;
 
-    var targetPoint           = domUtils.isDomElement(to) ?
-                                automationUtil.getMouseActionPoint(to, options, false) :
-                                {
-                                    x: Math.floor(to.x),
-                                    y: Math.floor(to.y)
-                                },
+export default class MoveAutomation {
+    constructor (element, moveOptions) {
+        this.DEFAULT_SPEED = 1000; // pixes/ms
 
-        isMovingInIFrame      = currentDocument !== document,
-        targetScreenPoint     = null,
-        startX                = null,
-        startY                = null,
-        dragElement           = null,
+        this.touchMode = browserUtils.hasTouchEvents;
+        this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
 
-        // moving settings
-        distanceX             = null,
-        distanceY             = null,
+        this.dragMode    = moveOptions.dragMode;
+        this.dragElement = this.dragMode ? getElementUnderCursor() : null;
 
-        startTime             = null,
-        endTime               = null,
-        movingTime            = null,
+        this.element       = element;
+        this.offsetX       = moveOptions.offsetX;
+        this.offsetY       = moveOptions.offsetY;
+        this.speed         = moveOptions.speed || this.DEFAULT_SPEED;
+        this.minMovingTime = moveOptions.minMovingTime || null;
+        this.modifiers     = moveOptions.modifiers || {};
 
-        currentCursorPosition = cursor.getPosition();
+        this.endPoint = null;
 
-    // moving step
-    function nextStep (movingStepCallback) {
-        async.series({
-            setPosition:   function (callback) {
-                if (browserUtils.hasTouchEvents && !inDragging) {
-                    currentCursorPosition = targetScreenPoint;
-                    cursor.move(currentCursorPosition, movingStepCallback);
-                    return;
-                }
-
-                if (!startTime) {
-                    startTime = nativeMethods.dateNow();
-                    endTime   = startTime + movingTime;
-                }
-
-                var currentTime = Math.min(nativeMethods.dateNow(), endTime),
-                    progress    = (currentTime - startTime) / (endTime - startTime);
-
-                currentCursorPosition = {
-                    x: Math.round(startX + (distanceX * progress)),
-                    y: Math.round(startY + (distanceY * progress))
-                };
-
-                //NOTE: mousemove event can't be simulated on the point when cursor was at the start. Therefore we increases
-                // a minimal distance 1 px.
-                if (currentCursorPosition.x === startX && currentCursorPosition.y === startY) {
-                    if (inSelect) {
-                        movingStepCallback();
-                        return;
-                    }
-
-                    if (distanceX !== 0)
-                        currentCursorPosition.x = currentCursorPosition.x + (distanceX > 0 ? 1 : -1);
-                    else if (distanceY !== 0)
-                        currentCursorPosition.y = currentCursorPosition.y + (distanceY > 0 ? 1 : -1);
-
-                }
-
-                cursor.move(currentCursorPosition, callback);
-            },
-            emulateEvents: function () {
-                if (!skipEvents) {
-                    // moving events
-                    var currentElement = cursor.getElementUnderCursor(currentCursorPosition.x, currentCursorPosition.y),
-                        eventPoint     = currentCursorPosition;
-
-                    if (inDragging && !dragElement)
-                        dragElement = currentElement;
-
-                    if (currentElement)
-                        eventPoint = automationUtil.getEventOptionCoordinates(currentElement, currentCursorPosition);
-
-                    var eventOptions = extend({
-                        clientX: eventPoint.x,
-                        clientY: eventPoint.y,
-                        button:  0,
-                        which:   browserUtils.isWebKit ? (inDragging ? eventUtils.WHICH_PARAMETER.leftButton : eventUtils.WHICH_PARAMETER.noButton) : 1,
-                        buttons: inDragging ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton
-                    }, options);
-
-                    var currentElementChanged = true;
-
-                    //NOTE: if lastHoveredElement was in an iframe that has been removed,
-                    //IE raises an exception when we try to compare it with the current element
-                    var isLastOverElementInRemovedIframe = lastHoveredElement &&
-                                                           domUtils.isElementInIframe(lastHoveredElement) &&
-                                                           !domUtils.getIframeByElement(lastHoveredElement);
-
-                    var elementInDocument = lastHoveredElement && domUtils.isElementInDocument(lastHoveredElement);
-
-                    if (browserUtils.isIE && isLastOverElementInRemovedIframe || !elementInDocument) {
-                        lastHoveredElement    = null;
-                        currentElementChanged = true;
-                    }
-                    else
-                        currentElementChanged = currentElement !== lastHoveredElement;
-
-                    if (currentElementChanged && lastHoveredElement)
-                        eventSimulator.mouseout(lastHoveredElement, extend({ relatedTarget: currentElement }, eventOptions));
-
-                    var eventName = browserUtils.hasTouchEvents ? 'touchmove' : 'mousemove',
-                        el        = browserUtils.hasTouchEvents ? dragElement : currentElement;
-
-                    //NOTE: only in IE a 'mousemove' event is raised before a 'mouseover' one (B236966)
-                    if (browserUtils.isIE && currentElement)
-                        eventSimulator[eventName](el, eventOptions);
-
-                    if (currentElementChanged) {
-                        if (currentElement)
-                            eventSimulator.mouseover(currentElement, extend({ relatedTarget: lastHoveredElement }, eventOptions));
-                        lastHoveredElement = currentElement;
-                    }
-
-                    if (!browserUtils.isIE && currentElement)
-                        eventSimulator[eventName](el, eventOptions);
-
-                    //NOTE: we need add extra 'mousemove' if element was changed
-                    // because sometimes client script require several 'mousemove' events for element (T246904)
-                    if (currentElementChanged && currentElement)
-                        eventSimulator[eventName](el, eventOptions);
-
-                }
-                movingStepCallback();
-            }
-        });
+        // moving state
+        this.movingTime = null;
+        this.x          = null;
+        this.y          = null;
+        this.startTime  = null;
+        this.endTime    = null;
+        this.distanceX  = null;
+        this.distanceY  = null;
     }
 
-    async.series({
-        scrollToTarget: function (callback) {
-            var isDomElement     = domUtils.isDomElement(to);
-            var scrollElement    = isDomElement ? to : document.documentElement;
-            var offsets          = null;
-            var elementRectangle = positionUtils.getElementRectangle(scrollElement);
+    static onMoveToIframeRequest (e) {
+        var iframePoint = {
+            x: e.message.endX,
+            y: e.message.endY
+        };
 
-            if (isDomElement) {
-                offsets = {
-                    offsetX: typeof options.offsetX === 'number' ?
-                             options.offsetX : Math.round(elementRectangle.width / 2),
-                    offsetY: typeof options.offsetY === 'number' ?
-                             options.offsetY : Math.round(elementRectangle.height / 2)
-                };
-            }
-            else {
-                offsets = {
-                    offsetX: to.x,
-                    offsetY: to.y
-                };
-            }
+        var iframeWin                   = e.source;
+        var iframe                      = domUtils.getIframeByWindow(iframeWin);
+        var iframeBorders               = styleUtils.getBordersWidth(iframe);
+        var iframePadding               = styleUtils.getElementPadding(iframe);
+        var iframeRectangle             = positionUtils.getIframeClientCoordinates(iframe);
+        var iframePointRelativeToParent = positionUtils.getIframePointRelativeToParentFrame(iframePoint, iframeWin);
+        var cursorPosition              = cursor.position;
 
-            var elementOffset    = isDomElement ? positionUtils.getOffsetPosition(to) : null;
-            var scrollAutomation = new ScrollAutomation(scrollElement, offsets);
+        var intersectionPoint = positionUtils.isInRectangle(cursorPosition, iframeRectangle) ? cursorPosition :
+                                getLineRectIntersection(cursorPosition, iframePointRelativeToParent, iframeRectangle);
 
-            scrollAutomation
-                .run()
-                .then(() => {
-                    if (isDomElement) {
-                        var newElementOffset = positionUtils.getOffsetPosition(to),
-                            elementScroll    = styleUtils.getElementScroll(to);
+        var intersectionRelatedToIframe = {
+            x: intersectionPoint.x - iframeRectangle.left,
+            y: intersectionPoint.y - iframeRectangle.top
+        };
 
-                        if (to !== document.documentElement) {
-                            targetPoint.x += newElementOffset.left - elementOffset.left;
-                            targetPoint.y += newElementOffset.top - elementOffset.top;
-                        }
+        var moveOptions = new MoveOptions();
 
-                        if (!domUtils.isDocumentRootElement(to) && styleUtils.hasScroll(to)) {
-                            targetPoint.x -= elementScroll.left;
-                            targetPoint.y -= elementScroll.top;
-                        }
-                    }
+        moveOptions.modifiers = e.message.modifiers;
+        moveOptions.offsetX   = intersectionRelatedToIframe.x + iframeBorders.left + iframePadding.left;
+        moveOptions.offsetY   = intersectionRelatedToIframe.y + iframeBorders.top + iframePadding.top;
 
-                    targetScreenPoint = positionUtils.offsetToClientCoords(targetPoint);
-                    callback();
-                });
-        },
+        var moveAutomation = new MoveAutomation(iframe, moveOptions);
 
-        setCursor: function (callback) {
-            if (targetScreenPoint.x < 0 || targetScreenPoint.x > styleUtils.getWidth(window) ||
-                targetScreenPoint.y < 0 || targetScreenPoint.y > styleUtils.getHeight(window)) {
-                actionCallback();
-                return;
-            }
+        moveAutomation
+            .run()
+            .then(() => {
+                cursor.activeWindow = iframeWin;
 
-            var windowTopResponse = null;
-
-            if (window.top === window.self) {
-                var curCursorPosition = cursor.getPosition(),
-                    currentElement    = curCursorPosition ?
-                                        cursor.getElementUnderCursor(curCursorPosition.x, curCursorPosition.y) : null;
-
-                if (!currentElement || !(currentElement.tagName && currentElement.tagName.toLowerCase() === 'iframe')) {
-                    cursor.ensureCursorPosition(targetScreenPoint, false, callback);
-                    return;
-                }
-
-                var pageCursorPosition     = positionUtils.clientToOffsetCoord(curCursorPosition),
-                    //NOTE: after scroll in top window cursor position in iframe could be changed (if cursor was above iframe)
-                    fixedPositionForIFrame = positionUtils.getFixedPositionForIFrame(pageCursorPosition, currentElement.contentWindow);
-
-                if (fixedPositionForIFrame.x <= 0 || fixedPositionForIFrame.y <= 0)
-                    cursor.ensureCursorPosition(targetScreenPoint, false, callback);
-
-                messageSandbox.pingIframe(currentElement, CROSS_DOMAIN_MESSAGES.MOVE_CURSOR_IN_IFRAME_PING, true)
-                    .then(function (err) {
-                        if (!err) {
-                            //NOTE: move over iframe then move above top document
-                            windowTopResponse = function (e) {
-                                if (e.message.cmd === CROSS_DOMAIN_MESSAGES.MOVE_FROM_IFRAME_RESPONSE_CMD) {
-                                    messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
-
-                                    if (!e.message.point)
-                                        cursor.ensureCursorPosition(targetScreenPoint, false, callback);
-                                    else if (cursor.getPosition()) {
-                                        cursor.setPosition(positionUtils.getFixedPosition(e.message.point, currentElement.contentWindow, true));
-                                        window.setTimeout(callback, 0);
-                                    }
-                                    else
-                                        cursor.ensureCursorPosition(positionUtils.getFixedPosition(e.message.point, currentElement.contentWindow, true), true, callback);
-                                }
-                            };
-
-                            messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
-
-
-                            messageSandbox.sendServiceMsg({
-                                cmd:            CROSS_DOMAIN_MESSAGES.MOVE_FROM_IFRAME_REQUEST_CMD,
-                                rectangle:      positionUtils.getIFrameCoordinates(currentElement.contentWindow),
-                                startPoint:     positionUtils.clientToOffsetCoord(targetScreenPoint),
-                                endPoint:       pageCursorPosition,
-                                //NOTE: after scroll in top window cursor position in iframe could be changed (if cursor was above iframe)
-                                cursorPosition: positionUtils.getFixedPositionForIFrame(pageCursorPosition, currentElement.contentWindow)
-                            }, currentElement.contentWindow);
-                        }
-                        else
-                            cursor.ensureCursorPosition(targetScreenPoint, false, callback);
-                    });
-            }
-            else {
-                //NOTE: move over top document than move above iframe
-                windowTopResponse = function (e) {
-                    if (e.message.cmd === CROSS_DOMAIN_MESSAGES.MOVE_TO_IFRAME_RESPONSE_CMD) {
-                        messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
-
-                        if (!e.message.point ||
-                            (e.message.point.x === targetScreenPoint.x && e.message.point.y === targetScreenPoint.y))
-                            cursor.ensureCursorPosition(targetScreenPoint, false, callback);
-                        else if (cursor.getPosition()) {
-                            cursor.setPosition(e.message.point);
-                            window.setTimeout(callback, 0);
-                        }
-                        else
-                            cursor.ensureCursorPosition(e.message.point, true, callback);
-                    }
+                var responseMsg = {
+                    cmd: MOVE_RESPONSE_CMD,
+                    x:   intersectionRelatedToIframe.x,
+                    y:   intersectionRelatedToIframe.y
                 };
 
-                messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, windowTopResponse);
+                messageSandbox.sendServiceMsg(responseMsg, iframeWin);
+            });
+    }
 
-                messageSandbox.sendServiceMsg({
-                    cmd:   CROSS_DOMAIN_MESSAGES.MOVE_TO_IFRAME_REQUEST_CMD,
-                    point: targetScreenPoint
-                }, window.top);
-            }
-        },
+    static onMoveOutRequest (e) {
+        var parentWin = e.source;
 
-        moveToTarget: function (callback) {
-            currentCursorPosition = cursor.getPosition();
+        var iframeRectangle = {
+            left:   e.message.left,
+            right:  e.message.right,
+            top:    e.message.top,
+            bottom: e.message.bottom
+        };
 
-            if (!currentCursorPosition) {
-                actionCallback();
-                return;
-            }
+        if (!e.message.iframeUnderCursor) {
+            var { startX, startY } = e.message;
 
-            startX    = currentCursorPosition.x;
-            startY    = currentCursorPosition.y;
-            distanceX = targetScreenPoint.x - startX;
-            distanceY = targetScreenPoint.y - startY;
+            var clientX = startX - iframeRectangle.left;
+            var clientY = startY - iframeRectangle.top;
 
-            if (isMovingInIFrame) {
-                startX -= styleUtils.getScrollLeft(currentDocument);
-                startY -= styleUtils.getScrollTop(currentDocument);
-            }
+            eventSimulator.mouseout(lastHoveredElement, { clientX, clientY, relatedTarget: null });
+            messageSandbox.sendServiceMsg({ cmd: MOVE_RESPONSE_CMD }, parentWin);
 
-            movingTime = Math.max(Math.abs(distanceX), Math.abs(distanceY)) /
-                         (inDragging ? automationSettings.MOVING_SPEED_IN_DRAGGING : automationSettings.MOVING_SPEED);
-
-            if (inDragging)
-                movingTime = Math.max(movingTime, automationSettings.MINIMUM_MOVING_TIME);
-
-            async.whilst(
-                //is cursor in the target
-                function () {
-                    if (isMovingInIFrame)
-                        return (currentCursorPosition.x + styleUtils.getScrollLeft(currentDocument)) !==
-                               targetScreenPoint.x ||
-                               (currentCursorPosition.y + styleUtils.getScrollTop(currentDocument)) !==
-                               targetScreenPoint.y;
-
-                    return currentCursorPosition.x !== targetScreenPoint.x ||
-                           currentCursorPosition.y !== targetScreenPoint.y;
-                },
-
-                //moving step
-                function (movingCallback) {
-                    window.setTimeout(function () {
-                        nextStep(movingCallback);
-                    }, 0);
-                },
-
-                //save cursor position
-                function (err) {
-                    if (err)
-                        return;
-                    callback();
-                }
-            );
-        },
-
-
-        callback: function () {
-            actionCallback();
+            return;
         }
-    });
-};
+
+        var cursorPosition = cursor.position;
+
+        var startPoint = {
+            x: iframeRectangle.left + cursorPosition.x,
+            y: iframeRectangle.top + cursorPosition.y
+        };
+
+        var endPoint          = { x: e.message.endX, y: e.message.endY };
+        var intersectionPoint = getLineRectIntersection(startPoint, endPoint, iframeRectangle);
+
+        var moveOptions = new MoveOptions();
+
+        moveOptions.modifiers = e.message.modifiers;
+        moveOptions.offsetX   = intersectionPoint.x - iframeRectangle.left;
+        moveOptions.offsetY   = intersectionPoint.y - iframeRectangle.top;
+
+        var moveAutomation = new MoveAutomation(document.documentElement, moveOptions);
+
+        moveAutomation
+            .run()
+            .then(() => {
+                var responseMsg = {
+                    cmd: MOVE_RESPONSE_CMD,
+                    x:   intersectionPoint.x,
+                    y:   intersectionPoint.y
+                };
+
+                cursor.activeWindow = parentWin;
+                messageSandbox.sendServiceMsg(responseMsg, parentWin);
+            });
+    }
+
+    _getTargetClientPoint () {
+        var scroll = styleUtils.getElementScroll(this.element);
+
+        if (domUtils.isDocumentRootElement(this.element)) {
+            return {
+                x: this.offsetX - scroll.left,
+                y: this.offsetY - scroll.top
+            };
+        }
+
+        var clientPosition = positionUtils.getClientPosition(this.element);
+        var isDocumentBody = this.element.tagName && this.element.tagName.toLowerCase() === 'body';
+
+        return {
+            x: isDocumentBody ? clientPosition.x + this.offsetX : clientPosition.x + this.offsetX - scroll.left,
+            y: isDocumentBody ? clientPosition.y + this.offsetY : clientPosition.y + this.offsetY - scroll.top
+        };
+    }
+
+    _emulateEvents () {
+        var currentElement = this.dragMode ? this.dragElement : getElementUnderCursor();
+        var whichButton    = this.dragMode ? eventUtils.WHICH_PARAMETER.leftButton : eventUtils.WHICH_PARAMETER.noButton;
+        var button         = this.dragMode ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
+
+        var eventOptions = {
+            clientX: this.x,
+            clientY: this.y,
+            button:  0,
+            which:   browserUtils.isWebKit ? whichButton : 1,
+            buttons: button,
+            ctrl:    this.modifiers.ctrl,
+            alt:     this.modifiers.alt,
+            shift:   this.modifiers.shift,
+            meta:    this.modifiers.meta
+        };
+
+        // NOTE: if lastHoveredElement was in an iframe that has been removed, IE
+        // raises an exception when we try to compare it with the current element
+        var lastHoveredElementInDocument = lastHoveredElement &&
+                                           domUtils.isElementInDocument(lastHoveredElement);
+
+        var lastHoveredElementInRemovedIframe = lastHoveredElement &&
+                                                domUtils.isElementInIframe(lastHoveredElement) &&
+                                                !domUtils.getIframeByElement(lastHoveredElement);
+
+        if (lastHoveredElementInRemovedIframe || !lastHoveredElementInDocument)
+            lastHoveredElement = null;
+
+        var currentElementChanged = currentElement !== lastHoveredElement;
+
+        if (currentElementChanged && lastHoveredElement)
+            eventSimulator.mouseout(lastHoveredElement, extend({ relatedTarget: currentElement }, eventOptions));
+
+        // NOTE: the 'mousemove' event is raised before 'mouseover' in IE only (B236966)
+        if (browserUtils.isIE && currentElement)
+            eventSimulator[this.moveEvent](currentElement, eventOptions);
+
+        if (currentElementChanged) {
+            if (currentElement)
+                eventSimulator.mouseover(currentElement, extend({ relatedTarget: lastHoveredElement }, eventOptions));
+
+            lastHoveredElement = currentElement;
+        }
+
+        if (!browserUtils.isIE && currentElement)
+            eventSimulator[this.moveEvent](currentElement, eventOptions);
+
+        // NOTE: we need to add an extra 'mousemove' if the element was changed because sometimes
+        // the client script requires several 'mousemove' events for an element (T246904)
+        if (currentElementChanged && currentElement)
+            eventSimulator[this.moveEvent](currentElement, eventOptions);
+    }
+
+    _movingStep () {
+        if (this.touchMode && !this.dragMode) {
+            this.x = this.endPoint.x;
+            this.y = this.endPoint.y;
+        }
+        else if (!this.startTime) {
+            this.startTime = nativeMethods.dateNow();
+            this.endTime   = this.startTime + this.movingTime;
+
+            // NOTE: the mousemove event can't be simulated at the point where the cursor
+            // was located at the start. Therefore, we add a minimal distance 1 px.
+            this.x += this.distanceX > 0 ? 1 : -1;
+            this.y += this.distanceY > 0 ? 1 : -1;
+        }
+        else {
+            var currentTime = Math.min(nativeMethods.dateNow(), this.endTime);
+            var progress    = (currentTime - this.startTime) / (this.endTime - this.startTime);
+
+            this.x = Math.floor(this.startPoint.x + this.distanceX * progress);
+            this.y = Math.floor(this.startPoint.y + this.distanceY * progress);
+        }
+
+        return cursor
+            .move(this.x, this.y)
+            .then(() => this._emulateEvents())
+            .then(nextTick);
+    }
+
+    _isMovingFinished () {
+        return this.x === this.endPoint.x && this.y === this.endPoint.y;
+    }
+
+    _move () {
+        this.startPoint = cursor.position;
+        this.x          = this.startPoint.x;
+        this.y          = this.startPoint.y;
+
+        this.distanceX = this.endPoint.x - this.startPoint.x;
+        this.distanceY = this.endPoint.y - this.startPoint.y;
+
+        this.movingTime = Math.max(Math.abs(this.distanceX), Math.abs(this.distanceY)) / this.speed;
+
+        if (this.minMovingTime)
+            this.movingTime = Math.max(this.movingTime, this.minMovingTime);
+
+        return whilst(() => !this._isMovingFinished(), () => this._movingStep());
+    }
+
+    _scroll () {
+        var scrollOptions = new OffsetOptions();
+
+        scrollOptions.offsetX = this.offsetX;
+        scrollOptions.offsetY = this.offsetY;
+
+        var scrollAutomation = new ScrollAutomation(this.element, scrollOptions);
+
+        return scrollAutomation.run();
+    }
+
+    _moveToCurrentFrame () {
+        if (cursor.active)
+            return Promise.resolve();
+
+        var { x, y }          = cursor.position;
+        var activeWindow      = cursor.activeWindow;
+        var iframe            = null;
+        var iframeUnderCursor = null;
+        var iframeRectangle   = null;
+
+        var msg = {
+            cmd:       MOVE_REQUEST_CMD,
+            startX:    x,
+            startY:    y,
+            endX:      this.endPoint.x,
+            endY:      this.endPoint.y,
+            modifiers: this.modifiers
+        };
+
+        if (activeWindow.parent === window.self) {
+            iframe            = domUtils.getIframeByWindow(activeWindow);
+            iframeRectangle   = positionUtils.getIframeClientCoordinates(iframe);
+            iframeUnderCursor = getElementUnderCursor() === iframe;
+
+            msg.left              = iframeRectangle.left;
+            msg.top               = iframeRectangle.top;
+            msg.right             = iframeRectangle.right;
+            msg.bottom            = iframeRectangle.bottom;
+            msg.iframeUnderCursor = iframeUnderCursor;
+        }
+
+        return sendRequestToFrame(msg, MOVE_RESPONSE_CMD, activeWindow)
+            .then(message => {
+                cursor.activeWindow = window;
+
+                if (iframeUnderCursor || window.top !== window.self)
+                    return cursor.move(message.x, message.y);
+            });
+    }
+
+    run () {
+        return this
+            ._scroll()
+            .then(() => {
+                var { x, y } = this._getTargetClientPoint();
+                var windowWidth  = styleUtils.getWidth(window);
+                var windowHeight = styleUtils.getHeight(window);
+
+                if (x >= 0 && x <= windowWidth && y >= 0 && y <= windowHeight) {
+                    this.endPoint = { x, y };
+
+                    return this
+                        ._moveToCurrentFrame()
+                        .then(() => this._move());
+                }
+            });
+    }
+}

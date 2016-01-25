@@ -1,10 +1,12 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
+import { fromPoint as getElementFromPoint } from '../get-element';
 import * as automationUtil from '../util';
 import * as automationSettings from '../settings';
 import clickPlaybackAutomation from '../playback/click';
 import async from '../../deps/async';
+import cursor from '../cursor';
 
 var browserUtils   = hammerhead.utils.browser;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
@@ -15,7 +17,6 @@ var positionUtils = testCafeCore.positionUtils;
 var styleUtils    = testCafeCore.styleUtils;
 var eventUtils    = testCafeCore.eventUtils;
 
-var cursor        = testCafeUI.cursor;
 var selectElement = testCafeUI.selectElement;
 
 
@@ -37,14 +38,13 @@ export default function (el, options, actionCallback) {
 
     if (!positionUtils.isContainOffset(el, options.offsetX, options.offsetY)) {
         point      = automationUtil.getMouseActionPoint(el, options, true);
-        curElement = cursor.getElementUnderCursor(point.x, point.y);
+        curElement = getElementFromPoint(point.x, point.y);
     }
 
     if (!curElement)
         curElement = el;
 
-    var isInvisibleElement = (SETTINGS.get().RECORDING && !SETTINGS.get().PLAYBACK) &&
-                             !positionUtils.isElementVisible(el),
+    var isInvisibleElement = (SETTINGS.get().RECORDING && !SETTINGS.get().PLAYBACK) && !positionUtils.isElementVisible(el),
         screenPoint        = automationUtil.getMouseActionPoint(el, options, true),
         eventPoint         = automationUtil.getEventOptionCoordinates(el, screenPoint),
         eventOptions       = hammerhead.utils.extend({
@@ -56,7 +56,7 @@ export default function (el, options, actionCallback) {
         firstClick: function (callback) {
             clickPlaybackAutomation(el, options, function () {
                 if (!isInvisibleElement) {
-                    currentTopElement = automationUtil.getElementUnderCursor(screenPoint.x, screenPoint.y, null, el);
+                    currentTopElement = getElementFromPoint(screenPoint.x, screenPoint.y, el);
                     if (currentTopElement && currentTopElement !== curElement)
                         curElement = currentTopElement;
                 }
@@ -76,8 +76,11 @@ export default function (el, options, actionCallback) {
 
                 //NOTE: touch devices only
                 cursorTouchMouseDown: function (callback) {
-                    if (browserUtils.hasTouchEvents)
-                        cursor.lMouseDown(callback);
+                    if (browserUtils.hasTouchEvents) {
+                        cursor
+                            .leftButtonDown()
+                            .then(() => callback());
+                    }
                     else
                         callback();
                 },
@@ -94,8 +97,10 @@ export default function (el, options, actionCallback) {
                 },
 
                 cursorMouseDown: function (callback) {
-                    if (!browserUtils.hasTouchEvents)
-                        cursor.lMouseDown(callback);
+                    if (!browserUtils.hasTouchEvents) {
+                        cursor.leftButtonDown()
+                            .then(() => callback());
+                    }
                     else
                         callback();
                 },
@@ -123,7 +128,7 @@ export default function (el, options, actionCallback) {
                     notPrevented = eventSimulator.mousedown(curElement, eventOptions);
 
                     if (!isInvisibleElement) {
-                        currentTopElement = automationUtil.getElementUnderCursor(screenPoint.x, screenPoint.y, null, el);
+                        currentTopElement = getElementFromPoint(screenPoint.x, screenPoint.y, el);
 
                         if (currentTopElement && currentTopElement !== curElement) {
                             skipClickSimulation = true;
@@ -151,7 +156,9 @@ export default function (el, options, actionCallback) {
                 },
 
                 cursorMouseUp: function (callback) {
-                    cursor.mouseUp(callback);
+                    cursor
+                        .buttonUp()
+                        .then(() => callback());
                 },
 
                 mouseup: function (callback) {

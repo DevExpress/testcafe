@@ -14,12 +14,7 @@ var dragPlaybackAutomation     = testCafeRunner.get('./automation/playback/drag'
 var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
 var hoverPlaybackAutomation    = testCafeRunner.get('./automation/playback/hover');
 
-var testCafeUI = window.getTestCafeModule('testCafeUI');
-var cursor     = testCafeUI.get('./cursor');
-
-
 automation.init();
-cursor.init();
 
 SETTINGS.RECORDING = true;
 

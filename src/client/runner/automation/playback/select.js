@@ -1,12 +1,16 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
+import { fromPoint as getElementFromPoint } from '../get-element';
 import * as automationUtil from '../util';
 import * as automationSettings from '../settings';
 import * as automationSelectUtil from './select-util';
-import movePlaybackAutomation from '../playback/move';
+import MoveAutomation from '../playback/move';
 import ScrollAutomation from '../playback/scroll';
+import OffsetOptions from '../options/offset';
+import MoveOptions from '../options/move';
 import async from '../../deps/async';
+import cursor from '../cursor';
 
 var browserUtils     = hammerhead.utils.browser;
 var extend           = hammerhead.utils.extend;
@@ -19,8 +23,6 @@ var textSelection   = testCafeCore.textSelection;
 var domUtils        = testCafeCore.domUtils;
 var positionUtils   = testCafeCore.positionUtils;
 var eventUtils      = testCafeCore.eventUtils;
-
-var cursor = testCafeUI.cursor;
 
 
 export default function (el, options, runCallback) {
@@ -46,7 +48,14 @@ export default function (el, options, runCallback) {
         point             = null,
 
         //NOTE: options to get right selection position to mouse movement
-        correctOptions    = null;
+        correctOptions    = null,
+
+        modifiers         = {
+            ctrl:  options.ctrl,
+            shift: options.shift,
+            alt:   options.alt,
+            meta:  options.meta
+        };
 
     //determination of selection positions by arguments
     var processedOptions = automationSelectUtil.getProcessedOptions(el, options);
@@ -64,10 +73,12 @@ export default function (el, options, runCallback) {
     async.series({
         scrollToElement: function (callback) {
             var elementRectangle = positionUtils.getElementRectangle(el);
-            var scrollAutomation = new ScrollAutomation(el, {
-                offsetX: Math.round(elementRectangle.width / 2),
-                offsetY: Math.round(elementRectangle.height / 2)
-            });
+            var scrollOptions    = new OffsetOptions();
+
+            scrollOptions.offsetX = Math.round(elementRectangle.width / 2);
+            scrollOptions.offsetY = Math.round(elementRectangle.height / 2);
+
+            var scrollAutomation = new ScrollAutomation(el, scrollOptions);
 
             scrollAutomation
                 .run()
@@ -94,31 +105,43 @@ export default function (el, options, runCallback) {
 
             point = automationSelectUtil.updatePointByScrollElement(el, pointFrom);
 
-            movePlaybackAutomation(point, false, options, function () {
-                screenPointFrom = positionUtils.offsetToClientCoords(point);
-                eventPointFrom  = automationUtil.getEventOptionCoordinates(el, screenPointFrom);
+            var moveOptions = new MoveOptions();
 
-                eventOptionsStart = extend({
-                    clientX: eventPointFrom.x,
-                    clientY: eventPointFrom.y
-                }, options);
+            moveOptions.offsetX   = point.x;
+            moveOptions.offsetY   = point.y;
+            moveOptions.modifiers = modifiers;
 
-                topElement = cursor.getElementUnderCursor(screenPointFrom.x, screenPointFrom.y);
+            var moveAutomation = new MoveAutomation(document.documentElement, moveOptions);
 
-                if (!topElement) {
-                    runCallback();
-                    return;
-                }
+            moveAutomation
+                .run()
+                .then(() => {
+                    screenPointFrom = positionUtils.offsetToClientCoords(point);
+                    eventPointFrom  = automationUtil.getEventOptionCoordinates(el, screenPointFrom);
 
-                isTextEditable = domUtils.isTextEditableElement(topElement);
-                isTextarea     = topElement.tagName.toLowerCase() === 'textarea';
+                    eventOptionsStart = extend({
+                        clientX: eventPointFrom.x,
+                        clientY: eventPointFrom.y
+                    }, options);
 
-                window.setTimeout(callback, automationSettings.DRAG_ACTION_STEP_DELAY);
-            });
+                    topElement = getElementFromPoint(screenPointFrom.x, screenPointFrom.y);
+
+                    if (!topElement) {
+                        runCallback();
+                        return;
+                    }
+
+                    isTextEditable = domUtils.isTextEditableElement(topElement);
+                    isTextarea     = topElement.tagName.toLowerCase() === 'textarea';
+
+                    window.setTimeout(callback, automationSettings.DRAG_ACTION_STEP_DELAY);
+                });
         },
 
         cursorMousseDown: function (callback) {
-            cursor.lMouseDown(callback);
+            cursor
+                .leftButtonDown()
+                .then(() => callback());
         },
 
         mousedown: function (callback) {
@@ -142,7 +165,7 @@ export default function (el, options, runCallback) {
             else
                 notPrevented = eventSimulator.mousedown(topElement, eventOptionsStart);
 
-            currentTopElement = cursor.getElementUnderCursor(screenPointFrom.x, screenPointFrom.y);
+            currentTopElement = getElementFromPoint(screenPointFrom.x, screenPointFrom.y);
 
             if (currentTopElement)
                 topElement = currentTopElement;
@@ -172,9 +195,18 @@ export default function (el, options, runCallback) {
                 automationSelectUtil.scrollElementByPoint(topElement, pointTo);
                 pointTo = automationSelectUtil.updatePointByScrollElement(topElement, pointTo);
 
-                movePlaybackAutomation(pointTo, false, options, function () {
-                    callback();
-                });
+                var moveOptions = new MoveOptions();
+
+                moveOptions.offsetX   = pointTo.x;
+                moveOptions.offsetY   = pointTo.y;
+                moveOptions.modifiers = modifiers;
+
+
+                var moveAutomation = new MoveAutomation(document.documentElement, moveOptions);
+
+                moveAutomation
+                    .run()
+                    .then(callback);
             }, false, true);
         },
 
@@ -223,7 +255,9 @@ export default function (el, options, runCallback) {
         },
 
         cursorMouseUp: function (callback) {
-            cursor.mouseUp(callback);
+            cursor
+                .buttonUp()
+                .then(() => callback());
         },
 
         mouseup: function () {

@@ -1,10 +1,13 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
+import { fromPoint as getElementFromPoint } from '../get-element';
 import * as automationUtil from '../util';
 import * as automationSettings from '../settings';
-import movePlaybackAutomation from '../playback/move';
+import MoveAutomation from '../playback/move';
+import MoveOptions from '../options/move';
 import async from '../../deps/async';
+import cursor from '../cursor';
 
 var browserUtils     = hammerhead.utils.browser;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
@@ -17,7 +20,6 @@ var styleUtils    = testCafeCore.styleUtils;
 var eventUtils    = testCafeCore.eventUtils;
 var arrayUtils    = testCafeCore.arrayUtils;
 
-var cursor        = testCafeUI.cursor;
 var selectElement = testCafeUI.selectElement;
 
 
@@ -45,18 +47,34 @@ function clickOnSelectChildElement (childElement, clickOptions, actionCallback, 
     async.series({
             moveCursorToElement: function (callback) {
                 //NOTE: 'target' is option from emulated optionList or the point (x,y-coordinates) of real option element
-                var target = null;
+                var target            = null;
+                var offsets           = null;
+                var selectChildCenter = null;
 
-                if (isOptionListExpanded)
-                    target = targetElement;
+                if (isOptionListExpanded) {
+                    target  = targetElement;
+                    offsets = automationUtil.getDefaultAutomationOffsets(target);
+                }
                 else {
                     selectElement.scrollOptionListByChild(childElement);
-                    target = selectElement.getSelectChildCenter(childElement);
+                    target            = document.documentElement;
+                    selectChildCenter = selectElement.getSelectChildCenter(childElement);
+                    offsets           = {
+                        offsetX: selectChildCenter.x,
+                        offsetY: selectChildCenter.y
+                    };
                 }
 
-                movePlaybackAutomation(target, false, {}, function () {
-                    window.setTimeout(callback, automationSettings.ACTION_STEP_DELAY);
-                });
+                var moveOptions = new MoveOptions();
+
+                moveOptions.offsetX = offsets.offsetX;
+                moveOptions.offsetY = offsets.offsetY;
+
+                var moveAutomation = new MoveAutomation(target, moveOptions);
+
+                moveAutomation
+                    .run()
+                    .then(() => window.setTimeout(callback, automationSettings.ACTION_STEP_DELAY));
             },
 
             click: function () {
@@ -155,18 +173,33 @@ export default function (el, options, runCallback, errorCallback) {
         screenPoint         = null,
         eventPoint          = null,
         eventOptions        = null,
-        target              = positionUtils.isContainOffset(el, options.offsetX, options.offsetY) ?
-                              el : automationUtil.getMouseActionPoint(el, options, false),
+        clickOnElement      = positionUtils.isContainOffset(el, options.offsetX, options.offsetY),
+        target              = clickOnElement ? el : automationUtil.getMouseActionPoint(el, options, false),
+        targetElement       = clickOnElement ? el : document.documentElement,
         notPrevented        = true,
         topElement          = null,
         isInvisibleElement  = false,
         currentTopElement   = null,
-        skipClickSimulation = false;
+        skipClickSimulation = false,
 
-    if (options.offsetX)
-        options.offsetX = Math.round(options.offsetX);
-    if (options.offsetY)
-        options.offsetY = Math.round(options.offsetY);
+        offsets             = clickOnElement ? automationUtil.getDefaultAutomationOffsets(el) : {
+            offsetX: target.x,
+            offsetY: target.y
+        },
+
+        modifiers           = {
+            ctrl:  options.ctrl,
+            shift: options.shift,
+            alt:   options.alt,
+            meta:  options.meta
+        };
+
+    if (clickOnElement) {
+        if (typeof options.offsetX === 'number')
+            offsets.offsetX = Math.round(options.offsetX);
+        if (typeof options.offsetY === 'number')
+            offsets.offsetY = Math.round(options.offsetY);
+    }
 
     async.series({
         moveCursorToElement: function (callback) {
@@ -177,27 +210,37 @@ export default function (el, options, runCallback, errorCallback) {
                 return;
             }
 
-            movePlaybackAutomation(target, false, options, function () {
-                if ((isSVGElement && browserUtils.isOpera) || el.tagName.toLowerCase() === 'tref')
-                    topElement = el; //NOTE: document.elementFromPoint can't find this element
-                else {
-                    screenPoint = automationUtil.getMouseActionPoint(el, options, true);
-                    eventPoint  = automationUtil.getEventOptionCoordinates(el, screenPoint);
+            var moveOptions = new MoveOptions();
 
-                    eventOptions = hammerhead.utils.extend({
-                        clientX: eventPoint.x,
-                        clientY: eventPoint.y
-                    }, options);
+            moveOptions.offsetX   = offsets.offsetX;
+            moveOptions.offsetY   = offsets.offsetY;
+            moveOptions.modifiers = modifiers;
 
-                    topElement = automationUtil.getElementUnderCursor(screenPoint.x, screenPoint.y, null, target);
+            var moveAutomation = new MoveAutomation(targetElement, moveOptions);
 
-                    if (!topElement) {
-                        isInvisibleElement = true;
-                        topElement         = el;
+            moveAutomation
+                .run()
+                .then(() => {
+                    if ((isSVGElement && browserUtils.isOpera) || el.tagName.toLowerCase() === 'tref')
+                        topElement = el; //NOTE: document.elementFromPoint can't find this element
+                    else {
+                        screenPoint = automationUtil.getMouseActionPoint(el, options, true);
+                        eventPoint  = automationUtil.getEventOptionCoordinates(el, screenPoint);
+
+                        eventOptions = hammerhead.utils.extend({
+                            clientX: eventPoint.x,
+                            clientY: eventPoint.y
+                        }, options);
+
+                        topElement = getElementFromPoint(screenPoint.x, screenPoint.y, target);
+
+                        if (!topElement) {
+                            isInvisibleElement = true;
+                            topElement         = el;
+                        }
                     }
-                }
-                window.setTimeout(callback, automationSettings.ACTION_STEP_DELAY);
-            });
+                    window.setTimeout(callback, automationSettings.ACTION_STEP_DELAY);
+                });
         },
 
         //NOTE: touch devices only
@@ -209,8 +252,11 @@ export default function (el, options, runCallback, errorCallback) {
 
         //NOTE: touch devices only
         cursorTouchMouseDown: function (callback) {
-            if (browserUtils.hasTouchEvents)
-                cursor.lMouseDown(callback);
+            if (browserUtils.hasTouchEvents) {
+                cursor
+                    .leftButtonDown()
+                    .then(() => callback());
+            }
             else
                 callback();
         },
@@ -227,8 +273,11 @@ export default function (el, options, runCallback, errorCallback) {
         },
 
         cursorMouseDown: function (callback) {
-            if (!browserUtils.hasTouchEvents)
-                cursor.lMouseDown(callback);
+            if (!browserUtils.hasTouchEvents) {
+                cursor
+                    .leftButtonDown()
+                    .then(() => callback());
+            }
             else
                 callback();
         },
@@ -268,7 +317,7 @@ export default function (el, options, runCallback, errorCallback) {
             notPrevented = eventSimulator.mousedown(topElement, eventOptions);
 
             if (!isInvisibleElement && screenPoint) {
-                currentTopElement = automationUtil.getElementUnderCursor(screenPoint.x, screenPoint.y, null, target);
+                currentTopElement = getElementFromPoint(screenPoint.x, screenPoint.y, target);
 
                 if (currentTopElement && currentTopElement !== topElement) {
                     skipClickSimulation = true;
@@ -303,14 +352,16 @@ export default function (el, options, runCallback, errorCallback) {
         },
 
         cursorMouseUp: function (callback) {
-            cursor.mouseUp(callback);
+            cursor
+                .buttonUp()
+                .then(() => callback());
         },
 
         mouseup: function (callback) {
             eventSimulator.mouseup(topElement, eventOptions);
 
             if (!isInvisibleElement && screenPoint)
-                currentTopElement = automationUtil.getElementUnderCursor(screenPoint.x, screenPoint.y, null, target);
+                currentTopElement = getElementFromPoint(screenPoint.x, screenPoint.y, target);
 
             window.setTimeout(callback, automationSettings.ACTION_STEP_DELAY);
         },

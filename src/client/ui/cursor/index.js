@@ -1,97 +1,141 @@
+import hammerhead from './../deps/hammerhead';
 import testCafeCore from './../deps/testcafe-core';
-import CursorBehavior from './behavior';
-import CursorIFrameBehavior from './iframe-behavior';
+import CURSOR_UI_MESSAGES from './messages';
 
-var SETTINGS = testCafeCore.SETTINGS;
 
-//Global
-var cursorBehavior = null;
+var Promise        = hammerhead.Promise;
+var shadowUI       = hammerhead.shadowUI;
+var browserUtils   = hammerhead.utils.browser;
+var messageSandbox = hammerhead.eventSandbox.message;
 
-export function init () {
-    if (!cursorBehavior)
-        cursorBehavior = window.top !== window.self ? new CursorIFrameBehavior() : new CursorBehavior();
-}
+var styleUtils    = testCafeCore.styleUtils;
+var positionUtils = testCafeCore.positionUtils;
+var eventUtils    = testCafeCore.eventUtils;
 
-export function ensureCursorPosition (position, withoutOffset, callback) {
-    if (cursorBehavior.isStarted() && cursorBehavior.getPosition()) {
-        callback();
-        return;
+const CURSOR_CLASS       = 'cursor';
+const TOUCH_CLASS        = 'touch';
+const L_MOUSE_DOWN_CLASS = 'l-mouse-down';
+const R_MOUSE_DOWN_CLASS = 'r-mouse-down';
+const STATE_CLASSES      = [L_MOUSE_DOWN_CLASS, R_MOUSE_DOWN_CLASS].join(' ');
+
+// Setup cross-iframe interaction
+messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
+    var msg = e.message;
+
+    switch (msg.cmd) {
+        case CURSOR_UI_MESSAGES.moveRequest:
+            var position = positionUtils.getIframePointRelativeToParentFrame({ x: msg.x, y: msg.y }, e.source);
+
+            CursorUI
+                .move(position.x, position.y)
+                .then(() => messageSandbox.sendServiceMsg({ cmd: CURSOR_UI_MESSAGES.moveResponse }, e.source));
+            break;
+
+        case CURSOR_UI_MESSAGES.leftButtonDownRequest:
+            CursorUI
+                .leftButtonDown()
+                .then(() => messageSandbox.sendServiceMsg({ cmd: CURSOR_UI_MESSAGES.leftButtonDownResponse }, e.source));
+            break;
+        case CURSOR_UI_MESSAGES.rightButtonDownRequest:
+            CursorUI
+                .rightButtonDown()
+                .then(() => messageSandbox.sendServiceMsg({ cmd: CURSOR_UI_MESSAGES.rightButtonDownResponse }, e.source));
+            break;
+        case CURSOR_UI_MESSAGES.buttonUpRequest:
+            CursorUI
+                .buttonUp()
+                .then(() => messageSandbox.sendServiceMsg({ cmd: CURSOR_UI_MESSAGES.buttonUpResponse }, e.source));
+            break;
     }
+});
 
-    var cursorPosition = {
-        x: Math.max(0, position.x - (withoutOffset ? 0 : 50)),
-        y: Math.max(0, position.y - (withoutOffset ? 0 : 50))
-    };
+var CursorUI = {
+    cursorElement:  null,
+    x:              50,
+    y:              50,
+    pointerOffsetX: 0,
+    pointerOffsetY: 0,
 
-    start(cursorPosition, callback);
-}
+    _createElement () {
+        this.cursorElement = document.createElement('div');
+        shadowUI.addClass(this.cursorElement, CURSOR_CLASS);
 
-export function setPosition (position) {
-    if (!cursorBehavior.isStarted()) {
-        start(position, function () {
-        });
-    }
-    else
-        cursorBehavior.cursorPosition = position;
-}
+        // NOTE: For IE, we can't use the touch cursor in a cross-domain iframe
+        // because we won't be able to get an element under the cursor
+        if (browserUtils.isTouchDevice && !browserUtils.isIE) {
+            shadowUI.addClass(this.cursorElement, TOUCH_CLASS);
 
-export function start (position, callback, iFrameInitiator) {
-    if (!cursorBehavior.isStarted()) {
-        if (!SETTINGS.get().RECORDING || SETTINGS.get().PLAYBACK) {
-            cursorBehavior.start(position, iFrameInitiator);
-
-            cursorBehavior.on(cursorBehavior.STARTED_EVENT, callback);
+            // NOTE: in touch mode, the pointer should be in the center of the cursor
+            this.pointerOffsetX = Math.ceil(styleUtils.getWidth(this.cursorElement) / 2);
+            this.pointerOffsetY = Math.ceil(styleUtils.getHeight(this.cursorElement) / 2);
         }
-        else
-            callback();
+
+        shadowUI.getRoot().appendChild(this.cursorElement);
+
+        eventUtils.bind(window, 'scroll', () => this.move(this.x, this.y));
+    },
+
+    isVisible () {
+        return this.cursorElement && styleUtils.get(this.cursorElement, 'visibility') !== 'hidden';
+    },
+
+    hide () {
+        if (!this.cursorElement)
+            this._createElement();
+
+        styleUtils.set(this.cursorElement, 'visibility', 'hidden');
+    },
+
+    show () {
+        if (!this.cursorElement)
+            this._createElement();
+
+        styleUtils.set(this.cursorElement, 'visibility', '');
+    },
+
+    move (x, y) {
+        this.x = x;
+        this.y = y;
+
+        if (!this.cursorElement)
+            this._createElement();
+
+        styleUtils.set(this.cursorElement, {
+            left: this.x + styleUtils.getScrollLeft(document) - this.pointerOffsetX + 'px',
+            top:  this.y + styleUtils.getScrollTop(document) - this.pointerOffsetY + 'px'
+        });
+
+        return Promise.resolve();
+    },
+
+    leftButtonDown () {
+        if (!this.cursorElement)
+            this._createElement();
+
+        shadowUI.removeClass(this.cursorElement, STATE_CLASSES);
+        shadowUI.addClass(this.cursorElement, L_MOUSE_DOWN_CLASS);
+
+        return Promise.resolve();
+    },
+
+    rightButtonDown () {
+        if (!this.cursorElement)
+            this._createElement();
+
+        shadowUI.removeClass(this.cursorElement, STATE_CLASSES);
+        shadowUI.addClass(this.cursorElement, R_MOUSE_DOWN_CLASS);
+
+        return Promise.resolve();
+    },
+
+    buttonUp () {
+        if (!this.cursorElement)
+            this._createElement();
+
+        shadowUI.removeClass(this.cursorElement, STATE_CLASSES);
+
+        return Promise.resolve();
     }
-    else {
-        cursorBehavior.move(position, function () {
-            window.setTimeout(callback, 0);
-        }, iFrameInitiator);
-    }
-}
+};
 
-export function move (to, callback) {
-    cursorBehavior.move(to, callback);
-}
-
-export function lMouseDown (callback) {
-    cursorBehavior.lMouseDown(callback);
-}
-
-export function rMouseDown (callback) {
-    cursorBehavior.rMouseDown(callback);
-}
-
-export function mouseUp (callback) {
-    cursorBehavior.mouseUp(callback);
-}
-
-export function hide (callback) {
-    cursorBehavior.hide(callback);
-}
-
-export function show (callback) {
-    cursorBehavior.show(callback);
-}
-
-export function getElementUnderCursor (x, y, currentDocument) {
-    if (cursorBehavior)
-        return cursorBehavior.getElementUnderCursor(x, y, currentDocument);
-}
-
-export function getPosition () {
-    if (cursorBehavior.getPosition)
-        return cursorBehavior.getPosition();
-
-    return null;
-}
-
-//NOTE: for testing purposes
-export function getAbsolutePosition () {
-    if (cursorBehavior.getAbsolutePosition)
-        return cursorBehavior.getAbsolutePosition();
-
-    return null;
-}
+export default CursorUI;

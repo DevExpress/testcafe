@@ -21,7 +21,7 @@ function getPointByPosition (el, pos, correctOptions) {
 
     var point         = {
         x: selectionCoord.left,
-        y: selectionCoord.top + (selectionCoord.bottom - selectionCoord.top) / 2
+        y: Math.floor(selectionCoord.top + (selectionCoord.bottom - selectionCoord.top) / 2)
     };
     var elementScroll = styleUtils.getElementScroll(el);
 
@@ -54,7 +54,7 @@ export function getSelectPositionCoordinates (el, start, end, isStartPos, correc
     if (start !== end)
         point = { x: selectionStart.left, y: !backward ? selectionStart.top : selectionStart.bottom };
     else
-        point = { x: selectionStart.left, y: selectionStart.top + (selectionStart.bottom - selectionStart.top) / 2 };
+        point = { x: selectionStart.left, y: Math.floor(selectionStart.top + (selectionStart.bottom - selectionStart.top) / 2) };
 
     return point;
 }
@@ -274,10 +274,8 @@ export function selectContentEditableByOptions (el, startPosition, endPosition, 
         endOffset            = null;
 
     //NOTE: If the calculated position does not match options we should recalculate it
-    if ((options.startNode !== startSelectionObject.node &&
-         !domUtils.isElementContainsNode(options.startNode, startSelectionObject.node)) ||
-        (options.endNode !== endSelectionObject.node &&
-         !domUtils.isElementContainsNode(options.endNode, endSelectionObject.node))) {
+    if ((options.startNode !== startSelectionObject.node && !domUtils.isElementContainsNode(options.startNode, startSelectionObject.node)) ||
+        (options.endNode !== endSelectionObject.node && !domUtils.isElementContainsNode(options.endNode, endSelectionObject.node))) {
 
         if (backward) {
             startOffset = contentEditable.getLastVisiblePosition(options.startNode);

@@ -22,7 +22,6 @@ var serviceUtils          = testCafeCore.serviceUtils;
 var domUtils              = testCafeCore.domUtils;
 var eventUtils            = testCafeCore.eventUtils;
 
-var cursor          = testCafeUI.cursor;
 var modalBackground = testCafeUI.modalBackground;
 
 
@@ -303,22 +302,13 @@ RunnerBase.prototype._initIFrameBehavior = function () {
 };
 
 RunnerBase.prototype._prepareStepsExecuting = function (callback, skipPageWaiting) {
-    function runCallback () {
-        cursor.init();
-        callback();
-    }
-
     if (skipPageWaiting)
-        runCallback();
+        callback();
     else {
-        waitPageLoad(function () {
-            window.setTimeout(function () {
-                transport.batchUpdate(function () {
-                    actionBarrier.waitPageInitialization(function () {
-                        cursor.init();
-
-                        callback();
-                    });
+        waitPageLoad(() => {
+            window.setTimeout(() => {
+                transport.batchUpdate(() => {
+                    actionBarrier.waitPageInitialization(callback);
                 });
             }, ANIMATIONS_WAIT_DELAY);
         });

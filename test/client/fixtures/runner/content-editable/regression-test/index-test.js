@@ -8,11 +8,7 @@ var testCafeRunner         = window.getTestCafeModule('testCafeRunner');
 var automation             = testCafeRunner.get('./automation/automation');
 var typePlaybackAutomation = testCafeRunner.get('./automation/playback/type');
 
-var testCafeUI = window.getTestCafeModule('testCafeUI');
-var cursor     = testCafeUI.get('./cursor');
-
 automation.init();
-cursor.init();
 
 $(document).ready(function () {
     //consts

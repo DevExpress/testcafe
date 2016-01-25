@@ -1,6 +1,5 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
-import testCafeUI from '../deps/testcafe-ui';
 
 var browserUtils     = hammerhead.utils.browser;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
@@ -10,8 +9,6 @@ var textSelection   = testCafeCore.textSelection;
 var domUtils        = testCafeCore.domUtils;
 var positionUtils   = testCafeCore.positionUtils;
 var styleUtils      = testCafeCore.styleUtils;
-
-var cursor = testCafeUI.cursor;
 
 
 function focusElementByLabel (label, callback) {
@@ -126,8 +123,8 @@ export function focusAndSetSelection (element, options, needFocus, callback) {
         }, !needFocus, true);
 }
 
-//NOTE: in all browsers after simulation of  click on label with attribute 'for' occurs focus event
-// for related element, except Mozilla (so we should call focus)
+// NOTE: in all browsers except Firefox, the 'focus' event fires as we simulate a click on a
+// label with the 'for' attribute. So, we should call 'focus' in Firefox manually in this case.
 export function focusLabelChildElement (element, callback) {
     var labelWithForAttr = domUtils.closest(element, 'label[for]');
 
@@ -167,43 +164,11 @@ export function getDragEndPoint (startPosition, to, currentDocument) {
     return pointTo;
 }
 
-export function getElementUnderCursor (x, y, currentDocument, target) {
-    var topElement = cursor.getElementUnderCursor(x, y, currentDocument);
+export function getDefaultAutomationOffsets (element) {
+    var elementCenter = positionUtils.getElementCenter(element);
 
-    if (!target || !domUtils.isDomElement(target) || topElement === target || !topElement)
-        return topElement;
-
-    //NOTE: T299665 - Incorrect click on image with associated map element in Mozilla
-    if (browserUtils.isFirefox && target.tagName.toLowerCase() === 'area' &&
-        topElement.tagName.toLowerCase() === 'img') {
-        var mapElement = domUtils.closest(target, 'map');
-
-        return mapElement && mapElement.name === topElement.useMap.substring(1) ? target : topElement;
-    }
-
-    if ((target.tagName.toLowerCase() !== 'a' && !domUtils.getParents(target, 'a').length) ||
-        !target.textContent.length)
-        return topElement;
-
-    //NOTE: we caught link's child with text so it fit for redirect
-    if (target.tagName.toLowerCase() === 'a' && domUtils.containsElement(target, topElement) &&
-        topElement.textContent.length)
-        return topElement;
-
-    //NOTE: try to find myltiline link by her rectangle (T163678)
-    var linkRect      = target.getBoundingClientRect();
-    var curTopElement = cursor.getElementUnderCursor(linkRect.right - 1, linkRect.top + 1, currentDocument);
-
-    if ((curTopElement && curTopElement === target) ||
-        (domUtils.containsElement(target, curTopElement) && curTopElement.textContent.length))
-        return curTopElement;
-    else {
-        curTopElement = cursor.getElementUnderCursor(linkRect.left + 1, linkRect.bottom - 1);
-
-        if ((curTopElement && curTopElement === target) ||
-            (domUtils.containsElement(target, curTopElement) && curTopElement.textContent.length))
-            return curTopElement;
-    }
-
-    return topElement;
+    return {
+        offsetX: elementCenter.x,
+        offsetY: elementCenter.y
+    };
 }

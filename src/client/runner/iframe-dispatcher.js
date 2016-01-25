@@ -13,7 +13,6 @@ var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
 var serviceUtils          = testCafeCore.serviceUtils;
 var domUtils              = testCafeCore.domUtils;
 var eventUtils            = testCafeCore.eventUtils;
-var cursor                = testCafeUI.cursor;
 
 
 var testRunInitializedCallback = null,
@@ -130,7 +129,6 @@ if (window.top !== window.self) {
 
             xhrBarrier.init();
             automationIFrameBehavior.init();
-            cursor.init();
 
             initialized = true;
 
