@@ -11,7 +11,8 @@ var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
 var automation                 = testCafeRunner.get('./automation/automation');
 var mouseUtils                 = testCafeRunner.get('./utils/mouse');
 var MouseOptions               = testCafeRunner.get('./automation/options/mouse');
-var clickPlaybackAutomation    = testCafeRunner.get('./automation/playback/click');
+var ClickOptions               = testCafeRunner.get('./automation/options/click');
+var ClickAutomation            = testCafeRunner.get('./automation/playback/click');
 var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
 var HoverAutomation            = testCafeRunner.get('./automation/playback/hover');
 var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
@@ -156,6 +157,28 @@ $(document).ready(function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     };
 
+    var runClickAutomation = function (el, options, callback) {
+        var clickOptions = new ClickOptions();
+        var offsets      = mouseUtils.getOffsetOptions(el, options.offsetX, options.offsetY);
+
+        clickOptions.offsetX  = offsets.offsetX;
+        clickOptions.offsetY  = offsets.offsetY;
+        clickOptions.caretPos = options.caretPos;
+
+        clickOptions.mofifiers = {
+            ctrl:  options.ctrl,
+            alt:   options.ctrl,
+            shift: options.shift,
+            meta:  options.meta
+        };
+
+        var clickAutomation = new ClickAutomation(el, clickOptions);
+
+        clickAutomation
+            .run()
+            .then(callback);
+    };
+
     QUnit.testDone(function () {
         if (!browserUtils.isIE)
             removeTestElements();
@@ -186,7 +209,7 @@ $(document).ready(function () {
                 imgClicked = true;
             });
 
-            clickPlaybackAutomation($img[0], {}, function () {
+            runClickAutomation($img[0], {}, function () {
 
                 //in IE submit button's children do not receive click event if user clicks on it
                 ok(formSubmitted, 'form submit received');
@@ -195,7 +218,7 @@ $(document).ready(function () {
 
                 formSubmitted = buttonClicked = imgClicked = false;
 
-                clickPlaybackAutomation($button[0], {
+                runClickAutomation($button[0], {
                     offsetX: Math.round($button[0].offsetWidth / 2),
                     offsetY: Math.round($button[0].offsetHeight / 2)
                 }, function () {
@@ -257,7 +280,7 @@ $(document).ready(function () {
             button2ClickHandlerRaised = true;
         });
 
-        clickPlaybackAutomation(button1, {}, function () {
+        runClickAutomation(button1, {}, function () {
             ok(documentClickFirstHandlerRaised);
             ok(documentClickSecondHandlerRaised);
             ok(button2ClickHandlerRaised);
@@ -288,7 +311,7 @@ $(document).ready(function () {
             catch (e) {
             }
 
-            clickPlaybackAutomation($iframe[0], {}, function () {
+            runClickAutomation($iframe[0], {}, function () {
                 ok(clicked, 'click was raised');
                 startNext();
             });
@@ -381,11 +404,11 @@ $(document).ready(function () {
 
             bindScrollHandlers();
 
-            clickPlaybackAutomation($element[0], {}, function () {
+            runClickAutomation($element[0], {}, function () {
                 equal(clickCount, 1);
                 bindScrollHandlers();
 
-                clickPlaybackAutomation($element[0], {}, function () {
+                runClickAutomation($element[0], {}, function () {
                     equal(clickCount, 2);
                     ok(!errorScroll);
                     startNext();
@@ -403,7 +426,7 @@ $(document).ready(function () {
             clickRaised = true;
         };
 
-        clickPlaybackAutomation($b[0], {}, function () {
+        runClickAutomation($b[0], {}, function () {
             ok(clickRaised);
             startNext();
         });
@@ -415,7 +438,7 @@ $(document).ready(function () {
 
         $input[0].checked = false;
 
-        clickPlaybackAutomation($label[0], {}, function () {
+        runClickAutomation($label[0], {}, function () {
             ok($input[0].checked);
             startNext();
         });
@@ -458,7 +481,7 @@ $(document).ready(function () {
             changeRaised = true;
         });
 
-        clickPlaybackAutomation($input[0], {}, function () {
+        runClickAutomation($input[0], {}, function () {
             ok(changeRaised);
             startNext();
         });
@@ -533,7 +556,7 @@ $(document).ready(function () {
             clickCount++;
         });
 
-        clickPlaybackAutomation($input[0], {
+        runClickAutomation($input[0], {
             caretPos: caretPos
         }, function () {
             equal(textSelection.getSelectionStart($input[0]), caretPos, 'start selection correct');
@@ -646,7 +669,7 @@ $(document).ready(function () {
                     $input1[0].focus();
                 });
 
-            clickPlaybackAutomation($input2[0], {}, function () {
+            runClickAutomation($input2[0], {}, function () {
                 equal(input1FocusCount, 1);
                 equal(input2FocusCount, 1);
 
@@ -708,8 +731,7 @@ $(document).ready(function () {
             else
                 addListeners($input[0], events.MSevents);
 
-
-            clickPlaybackAutomation($input[0], {}, function () {
+            runClickAutomation($input[0], {}, function () {
                 if (browserUtils.version > 10)
                     equal(log, 'pointerover, mouseover, pointerdown, mousedown, pointerup, mouseup, click');
                 else
@@ -785,7 +807,7 @@ $(document).ready(function () {
             $input          = createInput('number').attr('value', initText),
             pressAutomation = new PressAutomation(parseKeyString(text).combinations);
 
-        clickPlaybackAutomation($input[0], {}, function () {
+        runClickAutomation($input[0], {}, function () {
             equal(domUtils.getActiveElement(), $input[0]);
 
             pressAutomation
@@ -821,10 +843,10 @@ $(document).ready(function () {
                 focusEventCount++;
             });
 
-            clickPlaybackAutomation($iFrameBody[0], {}, function () {
+            runClickAutomation($iFrameBody[0], {}, function () {
                 equal(focusEventCount, 1);
 
-                clickPlaybackAutomation($iFrameBody[0], {}, function () {
+                runClickAutomation($iFrameBody[0], {}, function () {
                     equal(focusEventCount, 1);
                     startNext();
                 });
@@ -854,13 +876,14 @@ $(document).ready(function () {
             .css('margin-left', '200px')
             .appendTo(body);
 
-        clickPlaybackAutomation($input1[0], {}, function () {
+        runClickAutomation($input1[0], {}, function () {
             strictEqual($input1.css('border-bottom-width'), '10px');
             $input1.css('margin-top', '0px');
-            clickPlaybackAutomation($input2[0], {}, function () {
+
+            runClickAutomation($input2[0], {}, function () {
                 strictEqual($input1.css('border-bottom-width'), '0px');
                 startNext();
-            })
-        })
+            });
+        });
     });
 });

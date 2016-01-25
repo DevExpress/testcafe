@@ -129,8 +129,8 @@ export default class SelectAutomation {
             .then(() => {
                 this.eventArgs = SelectAutomation._calculateEventArguments(this.clientPoint);
 
-                // NOTE: in WebKit and IE, the mousedown event opens the select element's dropdown.
-                // Therefore, we should prevent mousedown and hide the dropdown (B236416)
+                // NOTE: In WebKit and IE, the mousedown event opens the select element's dropdown;
+                // therefore, we should prevent mousedown and hide the dropdown (B236416).
                 var needCloseSelectDropDown = (browserUtils.isWebKit || browserUtils.isIE) &&
                                               domUtils.isSelectElement(this.element);
 

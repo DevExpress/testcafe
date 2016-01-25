@@ -16,7 +16,7 @@ export default class HoverAutomation {
     }
 
     _getMoveArguments () {
-        var clickOnElement    = positionUtils.isContainOffset(this.element, this.offsetX, this.offsetY);
+        var clickOnElement    = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY);
         var moveActionOffsets = getMoveAutomationOffsets(this.element, this.offsetX, this.offsetY);
 
         return {

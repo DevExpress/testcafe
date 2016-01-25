@@ -14,7 +14,7 @@ export function getDefaultAutomationOffsets (element) {
 }
 
 export function getMoveAutomationOffsets (element, offsetX, offsetY) {
-    var clickOnElement = positionUtils.isContainOffset(element, offsetX, offsetY);
+    var clickOnElement = positionUtils.containsOffset(element, offsetX, offsetY);
 
     if (clickOnElement)
         return { offsetX, offsetY };

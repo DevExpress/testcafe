@@ -1,7 +1,7 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../get-element';
-import * as automationUtil from '../util';
+import { focusAndSetSelection, focusByRelatedElement } from '../utils';
 import * as automationSettings from '../settings';
 import MoveAutomation from '../playback/move';
 import MoveOptions from '../options/move';
@@ -41,7 +41,7 @@ export default class RClickAutomation {
     }
 
     _getMoveArguments () {
-        var clickOnElement    = positionUtils.isContainOffset(this.element, this.offsetX, this.offsetY);
+        var clickOnElement    = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY);
         var moveActionOffsets = mouseUtils.getMoveAutomationOffsets(this.element, this.offsetX, this.offsetY);
 
         return {
@@ -69,7 +69,7 @@ export default class RClickAutomation {
             }, this.modifiers);
         }
 
-        var expectedElement = positionUtils.isContainOffset(this.element, this.offsetX, this.offsetY) ?
+        var expectedElement = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY) ?
                               this.element : null;
 
         var x          = point ? point.x : this.eventArgs.point.x;
@@ -128,8 +128,7 @@ export default class RClickAutomation {
         // element, a selection position may be calculated incorrectly (by using the caretPos option).
         var elementForFocus = domUtils.isContentEditableElement(this.element) ? this.element : this.eventArgs.element;
 
-        return automationUtil
-            .focusAndSetSelection(elementForFocus, this.eventState.simulateFocus, this.caretPos)
+        return focusAndSetSelection(elementForFocus, this.eventState.simulateFocus, this.caretPos)
             .then(() => nextTick());
     }
 
@@ -151,7 +150,7 @@ export default class RClickAutomation {
         eventSimulator.contextmenu(this.eventArgs.element, this.eventArgs.options);
 
         if (!domUtils.isElementFocusable(this.eventArgs.element))
-            automationUtil.focusByRelatedElement(this.eventArgs.element);
+            focusByRelatedElement(this.eventArgs.element);
     }
 
     run () {

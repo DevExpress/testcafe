@@ -58,8 +58,7 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
             if (simulateFocus)
                 focusByRelatedElement(labelWithForAttr);
 
-            resolve();
-            return;
+            return resolve();
         }
 
         var focusWithSilentMode = !simulateFocus;
@@ -67,19 +66,17 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
 
         focusBlurSandbox.focus(elementForFocus, () => {
             // NOTE: if a different element was focused in the focus event handler, we should not set selection
-            if (simulateFocus && !isContentEditable && element !== domUtils.getActiveElement()) {
-                resolve();
-                return;
-            }
+            if (simulateFocus && !isContentEditable && element !== domUtils.getActiveElement())
+                return resolve();
 
             setCaretPosition(element, caretPos);
 
             // NOTE: we can't avoid the element being focused because the setSelection method leads to focusing.
             // So, we just focus the previous active element without handlers if we don't need focus here
             if (!simulateFocus && domUtils.getActiveElement() !== activeElement)
-                focusBlurSandbox.focus(activeElement, resolve, true, true);
-            else
-                resolve();
+                return focusBlurSandbox.focus(activeElement, resolve, true, true);
+
+            resolve();
         }, focusWithSilentMode, focusForMouseEvent);
     });
 }
@@ -98,7 +95,7 @@ export function focusByRelatedElement (element) {
     focusBlurSandbox.focus(elementForFocus, noop, false, true);
 }
 
-// TODO: all methods below will be moved from this file
+//TODO: all methods below will be moved from this file
 export function getMouseActionPoint (el, actionOptions, convertToScreen) {
     var elementOffset = positionUtils.getOffsetPosition(el);
     var left          = el === document.documentElement ? 0 : elementOffset.left;

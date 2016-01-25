@@ -185,7 +185,11 @@ export function isOptionListExpanded (select) {
     return select ? select === curSelectEl : !!curSelectEl;
 }
 
-export function getEmulatedChildElement (elementIndex, isGroup) {
+export function getEmulatedChildElement (element) {
+    var isGroup      = element.tagName.toLowerCase() === 'optgroup';
+    var elementIndex = isGroup ? domUtils.getOptionGroupIndex(curSelectEl, element) :
+                       domUtils.getOptionIndex(curSelectEl, element);
+
     if (!isGroup)
         return options[elementIndex];
 

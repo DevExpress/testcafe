@@ -10,10 +10,12 @@ var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
 var StepIterator               = testCafeRunner.get('./step-iterator');
 var actionsAPI                 = testCafeRunner.get('./api/actions');
 var automation                 = testCafeRunner.get('./automation/automation');
-var clickPlaybackAutomation    = testCafeRunner.get('./automation/playback/click');
+var ClickOptions               = testCafeRunner.get('./automation/options/click');
 var PressAutomation            = testCafeRunner.get('./automation/playback/press');
 var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
 var parseKeyString             = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var ClickAutomation            = testCafeRunner.get('./automation/playback/click');
+var mouseUtils                 = testCafeRunner.get('./utils/mouse');
 
 var testCafeUI    = window.getTestCafeModule('testCafeUI');
 var selectElement = testCafeUI.get('./select-element');
@@ -383,6 +385,28 @@ $(document).ready(function () {
         });
     };
 
+    var runClickAutomation = function (el, options, callback) {
+        var clickOptions = new ClickOptions();
+        var offsets      = mouseUtils.getOffsetOptions(el, options.offsetX, options.offsetY);
+
+        clickOptions.offsetX  = offsets.offsetX;
+        clickOptions.offsetY  = offsets.offsetY;
+        clickOptions.caretPos = options.caretPos;
+
+        clickOptions.mofifiers = {
+            ctrl:  options.ctrl,
+            alt:   options.ctrl,
+            shift: options.shift,
+            meta:  options.meta
+        };
+
+        var clickAutomation = new ClickAutomation(el, clickOptions);
+
+        clickAutomation
+            .run()
+            .then(callback);
+    };
+
     QUnit.testDone(function () {
         if (!browserUtils.isIE)
             removeTestElements();
@@ -399,7 +423,7 @@ $(document).ready(function () {
 
         equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
 
-        clickPlaybackAutomation(select, {}, function () {
+        runClickAutomation(select, {}, function () {
             equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
             startNext();
         });
@@ -463,10 +487,10 @@ $(document).ready(function () {
         var select = createSelect(),
             option = $(select).children()[2];
 
-        clickPlaybackAutomation(select, {}, function () {
+        runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
 
-            clickPlaybackAutomation(option, {}, function () {
+            runClickAutomation(option, {}, function () {
                 equal(select.selectedIndex, 2);
                 window.setTimeout(function () {
                     startNext();
@@ -518,7 +542,7 @@ $(document).ready(function () {
             openSelectList:   function (callback) {
                 equal(select.selectedIndex, 0);
 
-                clickPlaybackAutomation(select, {}, function () {
+                runClickAutomation(select, {}, function () {
                     //NOTE: we should wait for binding handlers to the document
                     equal(select.selectedIndex, 0);
                     window.setTimeout(callback, 0);
@@ -549,7 +573,7 @@ $(document).ready(function () {
                 });
             },
             closeSelectList:  function () {
-                clickPlaybackAutomation(select, {}, function () {
+                runClickAutomation(select, {}, function () {
                     window.setTimeout(startNext, 0);
                 });
             }
@@ -563,7 +587,7 @@ $(document).ready(function () {
             'Click on select': function (callback) {
                 equal(select.selectedIndex, 0);
 
-                clickPlaybackAutomation(select, {}, function () {
+                runClickAutomation(select, {}, function () {
                     window.setTimeout(callback, 0);
                 });
             },
@@ -592,7 +616,7 @@ $(document).ready(function () {
             'Click on select': function (callback) {
                 equal(select.selectedIndex, 0);
 
-                clickPlaybackAutomation(select, {}, function () {
+                runClickAutomation(select, {}, function () {
                     window.setTimeout(callback, 0);
                 });
             },
@@ -617,7 +641,7 @@ $(document).ready(function () {
             'Click on select': function (callback) {
                 equal(select.selectedIndex, 0);
 
-                clickPlaybackAutomation(select, {}, function () {
+                runClickAutomation(select, {}, function () {
                     window.setTimeout(callback, 0);
                 });
             },
@@ -641,7 +665,7 @@ $(document).ready(function () {
         asyncTest('click on the "select" element with the "size" attribute greater than one, then click on an option', function () {
             var select = createSelect(2);
 
-            clickPlaybackAutomation(select, {}, function () {
+            runClickAutomation(select, {}, function () {
                 ok(selectElement.isOptionListExpanded(select));
                 startNext();
             });
@@ -652,7 +676,7 @@ $(document).ready(function () {
 
             $(select).attr('multiple', 'multiple');
 
-            clickPlaybackAutomation(select, {}, function () {
+            runClickAutomation(select, {}, function () {
                 ok(selectElement.isOptionListExpanded(select));
                 startNext();
             });
@@ -665,7 +689,8 @@ $(document).ready(function () {
 
             select.selectedIndex = 0;
             equal(select.selectedIndex, 0);
-            clickPlaybackAutomation($(select).children()[1], {}, function () {
+
+            runClickAutomation($(select).children()[1], {}, function () {
                 equal(select.selectedIndex, 1);
                 startNext();
             });
@@ -676,7 +701,8 @@ $(document).ready(function () {
 
             select.selectedIndex = 0;
             equal(select.selectedIndex, 0);
-            clickPlaybackAutomation($(select).children(':last')[0], {}, function () {
+
+            runClickAutomation($(select).children(':last')[0], {}, function () {
                 equal(select.selectedIndex, 4);
                 startNext();
             });
@@ -690,7 +716,8 @@ $(document).ready(function () {
 
             select.selectedIndex = 0;
             equal(select.selectedIndex, 0);
-            clickPlaybackAutomation($option[0], {}, function () {
+
+            runClickAutomation($option[0], {}, function () {
                 equal(select.selectedIndex, 0);
                 startNext();
             });
@@ -701,7 +728,8 @@ $(document).ready(function () {
 
             select.selectedIndex = 0;
             equal(select.selectedIndex, 0);
-            clickPlaybackAutomation($(select).children()[3], {}, function () {
+
+            runClickAutomation($(select).children()[3], {}, function () {
                 equal(select.selectedIndex, 3);
                 startNext();
             });
@@ -760,7 +788,8 @@ $(document).ready(function () {
             select.selectedIndex = 0;
             equal(select.selectedIndex, 0);
             $(select).attr('multiple', 'multiple');
-            clickPlaybackAutomation($(select).children(':last')[0], {}, function () {
+
+            runClickAutomation($(select).children(':last')[0], {}, function () {
                 equal(select.selectedIndex, 4);
                 startNext();
             });
@@ -772,7 +801,8 @@ $(document).ready(function () {
             select.selectedIndex = 0;
             equal(select.selectedIndex, 0);
             $(select).attr('multiple', 'multiple');
-            clickPlaybackAutomation($(select).children(':last')[0], {}, function () {
+
+            runClickAutomation($(select).children(':last')[0], {}, function () {
                 equal(select.selectedIndex, 4);
                 startNext();
             });
@@ -784,7 +814,8 @@ $(document).ready(function () {
             select.selectedIndex = 0;
             equal(select.selectedIndex, 0);
             $(select).attr('multiple', 'multiple');
-            clickPlaybackAutomation($(select).children(':last')[0], {}, function () {
+
+            runClickAutomation($(select).children(':last')[0], {}, function () {
                 equal(select.selectedIndex, 4);
                 startNext();
             });
@@ -802,12 +833,12 @@ $(document).ready(function () {
             changeHandled = true;
         };
 
-        clickPlaybackAutomation(select, {}, function () {
+        runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
             equal(shadowUI.select('.' + OPTION_CLASS).length, 9);
             equal(shadowUI.select('.' + OPTION_GROUP_CLASS).length, 3);
 
-            clickPlaybackAutomation(option, {}, function () {
+            runClickAutomation(option, {}, function () {
                 window.setTimeout(function () {
                     equal(select.selectedIndex, 3);
                     ok(changeHandled, 'change event raised');
@@ -822,12 +853,12 @@ $(document).ready(function () {
             $optgroup = $(select).find('optgroup').eq(0).attr('label', ''),
             option    = $optgroup.find('option')[1];
 
-        clickPlaybackAutomation(select, {}, function () {
+        runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
             equal(shadowUI.select('.' + OPTION_CLASS).length, 9);
             equal(shadowUI.select('.' + OPTION_GROUP_CLASS).length, 3);
 
-            clickPlaybackAutomation(option, {}, function () {
+            runClickAutomation(option, {}, function () {
                 equal(select.selectedIndex, 1);
                 window.setTimeout(function () {
                     startNext();
@@ -841,14 +872,15 @@ $(document).ready(function () {
             $optgroup = $(select).find('optgroup').eq(1).attr('disabled', ''),
             option    = $optgroup.find('option')[0];
 
-        clickPlaybackAutomation(select, {}, function () {
+        runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
             equal(shadowUI.select('.' + OPTION_CLASS).length, 9);
             equal(shadowUI.select('.' + OPTION_GROUP_CLASS).length, 3);
 
-            clickPlaybackAutomation(option, {}, function () {
+            runClickAutomation(option, {}, function () {
                 equal(select.selectedIndex, 0);
-                clickPlaybackAutomation($(select).find('option')[1], {}, function () {
+
+                runClickAutomation($(select).find('option')[1], {}, function () {
                     equal(select.selectedIndex, 1);
                     window.setTimeout(function () {
                         startNext();
@@ -862,16 +894,16 @@ $(document).ready(function () {
         var select = createSelectWithGroups(),
             group  = $(select).find('optgroup')[2];
 
-        clickPlaybackAutomation(select, {}, function () {
+        runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
             equal(shadowUI.select('.' + OPTION_CLASS).length, 9);
             equal(shadowUI.select('.' + OPTION_GROUP_CLASS).length, 3);
 
-            clickPlaybackAutomation(group, {}, function () {
+            runClickAutomation(group, {}, function () {
                 equal(select.selectedIndex, 0);
 
                 //NOTE: to close options list
-                clickPlaybackAutomation($(select).find('option')[1], {}, function () {
+                runClickAutomation($(select).find('option')[1], {}, function () {
                     equal(select.selectedIndex, 1);
                     window.setTimeout(function () {
                         startNext();
@@ -891,12 +923,12 @@ $(document).ready(function () {
                 .addClass(TEST_ELEMENT_CLASS)
                 .appendTo($newOptgroup[0]);
 
-        clickPlaybackAutomation(select, {}, function () {
+        runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
             equal(shadowUI.select('.' + OPTION_CLASS).length, 10);
             equal(shadowUI.select('.' + OPTION_GROUP_CLASS).length, 4);
 
-            clickPlaybackAutomation($newOption[0], {}, function () {
+            runClickAutomation($newOption[0], {}, function () {
                 equal(select.selectedIndex, 6);
                 window.setTimeout(function () {
                     startNext();
@@ -915,16 +947,16 @@ $(document).ready(function () {
                 .addClass(TEST_ELEMENT_CLASS)
                 .appendTo($newOptgroup[0]);
 
-        clickPlaybackAutomation(select, {}, function () {
+        runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
             equal(shadowUI.select('.' + OPTION_CLASS).length, 10);
             equal(shadowUI.select('.' + OPTION_GROUP_CLASS).length, 4);
 
-            clickPlaybackAutomation($newOptgroup[0], {}, function () {
+            runClickAutomation($newOptgroup[0], {}, function () {
                 equal(select.selectedIndex, 0);
 
                 //NOTE: to close options list
-                clickPlaybackAutomation($(select).find('option')[1], {}, function () {
+                runClickAutomation($(select).find('option')[1], {}, function () {
                     equal(select.selectedIndex, 1);
                     window.setTimeout(function () {
                         startNext();
@@ -941,12 +973,12 @@ $(document).ready(function () {
                 .addClass(TEST_ELEMENT_CLASS)
                 .insertAfter($optgroup);
 
-        clickPlaybackAutomation(select, {}, function () {
+        runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
             equal(shadowUI.select('.' + OPTION_CLASS).length, 10);
             equal(shadowUI.select('.' + OPTION_GROUP_CLASS).length, 3);
 
-            clickPlaybackAutomation($newOption[0], {}, function () {
+            runClickAutomation($newOption[0], {}, function () {
                 equal(select.selectedIndex, 6);
                 window.setTimeout(function () {
                     startNext();
@@ -985,7 +1017,7 @@ $(document).ready(function () {
             openSelectList:                               function (callback) {
                 equal(select.selectedIndex, 0);
 
-                clickPlaybackAutomation(select, {}, function () {
+                runClickAutomation(select, {}, function () {
                     //NOTE: we should wait for binding handlers to the document
                     equal(select.selectedIndex, 0);
                     window.setTimeout(callback, 0);
@@ -995,7 +1027,7 @@ $(document).ready(function () {
                 pressDownUpKeysActionsForSelectWithOptgroups(select, callback);
             },
             closeSelectList:                              function () {
-                clickPlaybackAutomation(select, {}, function () {
+                runClickAutomation(select, {}, function () {
                     window.setTimeout(startNext, 0);
                 });
             }
@@ -1009,7 +1041,7 @@ $(document).ready(function () {
             openSelectList:                                  function (callback) {
                 equal(select.selectedIndex, 0);
 
-                clickPlaybackAutomation(select, {}, function () {
+                runClickAutomation(select, {}, function () {
                     //NOTE: we should wait for binding handlers to the document
                     equal(select.selectedIndex, 0);
                     window.setTimeout(callback, 0);
@@ -1019,7 +1051,7 @@ $(document).ready(function () {
                 pressRightLeftKeysActionsForSelectWithOptgroups(select, callback, browserUtils.isWebKit);
             },
             closeSelectList:                                 function () {
-                clickPlaybackAutomation(select, {}, function () {
+                runClickAutomation(select, {}, function () {
                     window.setTimeout(startNext, 0);
                 });
             }
@@ -1040,7 +1072,8 @@ $(document).ready(function () {
             window.setTimeout(function () {
                 //NOTE: when setting the selected option, IE and Mozilla scroll the select
                 $select.scrollTop(0);
-                clickPlaybackAutomation(group, {}, function () {
+
+                runClickAutomation(group, {}, function () {
                     equal(select.selectedIndex, 0);
                     window.setTimeout(function () {
                         startNext();
@@ -1065,7 +1098,8 @@ $(document).ready(function () {
             window.setTimeout(function () {
                 //NOTE: when setting the selected option, IE and Mozilla scroll the select
                 $select.scrollTop(0);
-                clickPlaybackAutomation(option, {}, function () {
+
+                runClickAutomation(option, {}, function () {
                     equal($select.scrollTop(), 0);
                     equal(select.selectedIndex, 1);
                     window.setTimeout(function () {
@@ -1093,7 +1127,8 @@ $(document).ready(function () {
 
             window.setTimeout(function () {
                 equal($select.scrollTop(), selectElementScroll);
-                clickPlaybackAutomation(option, {}, function () {
+
+                runClickAutomation(option, {}, function () {
                     ok($select.scrollTop() > selectElementScroll);
                     equal(select.selectedIndex, 8);
                     window.setTimeout(function () {
@@ -1120,7 +1155,8 @@ $(document).ready(function () {
 
             window.setTimeout(function () {
                 ok($select.scrollTop() > 0);
-                clickPlaybackAutomation(option, {}, function () {
+
+                runClickAutomation(option, {}, function () {
                     ok(selectElementScroll > $select.scrollTop());
                     equal(select.selectedIndex, 4);
                     window.setTimeout(function () {
@@ -1152,7 +1188,8 @@ $(document).ready(function () {
             window.setTimeout(function () {
                 //NOTE: when setting the selected option, IE and Mozilla scroll the select
                 $select.scrollTop(0);
-                clickPlaybackAutomation($newOption[0], {}, function () {
+
+                runClickAutomation($newOption[0], {}, function () {
                     ok($select.scrollTop() > 0);
                     equal(select.selectedIndex, 6);
                     window.setTimeout(function () {
@@ -1184,7 +1221,8 @@ $(document).ready(function () {
             window.setTimeout(function () {
                 //NOTE: when setting the selected option, IE and Mozilla scroll the select
                 $select.scrollTop(0);
-                clickPlaybackAutomation($newOptgroup[0], {}, function () {
+
+                runClickAutomation($newOptgroup[0], {}, function () {
                     ok($select.scrollTop() > 0);
                     equal(select.selectedIndex, 0);
                     window.setTimeout(function () {
@@ -1208,7 +1246,8 @@ $(document).ready(function () {
             window.setTimeout(function () {
                 //NOTE: when setting the selected option, IE and Mozilla scroll the select
                 $select.scrollTop(0);
-                clickPlaybackAutomation($newOption[0], {}, function () {
+
+                runClickAutomation($newOption[0], {}, function () {
                     ok($select.scrollTop() > 0);
                     equal(select.selectedIndex, 9);
                     window.setTimeout(function () {
@@ -1277,7 +1316,7 @@ $(document).ready(function () {
 
         window.async.series({
             'First click':                      function (callback) {
-                clickPlaybackAutomation(select, {}, callback);
+                runClickAutomation(select, {}, callback);
             },
             'Check assertions and set timeout': function (callback) {
                 equal(select, document.activeElement);
@@ -1288,7 +1327,7 @@ $(document).ready(function () {
                 window.setTimeout(callback, 500);
             },
             'Second click':                     function (callback) {
-                clickPlaybackAutomation(select, {}, callback);
+                runClickAutomation(select, {}, callback);
             },
             'Check assertions':                 function () {
                 equal(select, document.activeElement);
@@ -1309,7 +1348,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Click on the first select': function (callback) {
-                clickPlaybackAutomation(firstSelect, {}, callback);
+                runClickAutomation(firstSelect, {}, callback);
             },
 
             'Check assertions after the first click': function (callback) {
@@ -1321,7 +1360,7 @@ $(document).ready(function () {
             },
 
             'Click on the second select': function (callback) {
-                clickPlaybackAutomation(secondSelect, {}, callback);
+                runClickAutomation(secondSelect, {}, callback);
             },
 
             'Check assertions after the second click': function (callback) {
@@ -1333,7 +1372,7 @@ $(document).ready(function () {
             },
 
             'Click on the second select option': function (callback) {
-                clickPlaybackAutomation($secondSelectOption[0], {}, callback);
+                runClickAutomation($secondSelectOption[0], {}, callback);
             },
 
             'Check assertions': function () {
@@ -1357,10 +1396,10 @@ $(document).ready(function () {
         bindSelectAndOptionHandlers($(select), $option);
         equal(select.selectedIndex, 0);
 
-        clickPlaybackAutomation(select, {}, function () {
+        runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
 
-            clickPlaybackAutomation($option[0], {}, function () {
+            runClickAutomation($option[0], {}, function () {
                 equal(select.selectedIndex, 2);
                 if (browserUtils.isFirefox)
                     equal(handlersLog.join(), 'select mousedown,select mouseup,select click,option mousedown,option mouseup,select change,option click');
@@ -1382,14 +1421,14 @@ $(document).ready(function () {
         //bind handlers
         bindSelectAndOptionHandlers($(select), $option);
 
-        clickPlaybackAutomation(select, {}, function () {
+        runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
 
-            clickPlaybackAutomation($option[0], {}, function () {
+            runClickAutomation($option[0], {}, function () {
                 equal(select.selectedIndex, 2);
-                clickPlaybackAutomation(select, {}, function () {
+                runClickAutomation(select, {}, function () {
                     equal(select.selectedIndex, 2);
-                    clickPlaybackAutomation($option[0], {}, function () {
+                    runClickAutomation($option[0], {}, function () {
                         equal(select.selectedIndex, 2);
 
                         if (browserUtils.isFirefox)
@@ -1415,10 +1454,10 @@ $(document).ready(function () {
         bindSelectAndOptionHandlers($(select), $option);
         equal(select.selectedIndex, 0);
 
-        clickPlaybackAutomation(select, {}, function () {
+        runClickAutomation(select, {}, function () {
             equal(select.selectedIndex, 0);
 
-            clickPlaybackAutomation(select, {}, function () {
+            runClickAutomation(select, {}, function () {
                 equal(select.selectedIndex, 0);
                 equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select mousedown,select mouseup,select click');
                 startNext();
@@ -1439,13 +1478,13 @@ $(document).ready(function () {
         window.async.series({
             'Click on select in Android and iOS': function (callback) {
                 if (isMobileBrowser)
-                    clickPlaybackAutomation(select, {}, callback);
+                    runClickAutomation(select, {}, callback);
                 else
                     callback();
 
             },
             'Click on option':                    function () {
-                clickPlaybackAutomation($option[0], {}, function () {
+                runClickAutomation($option[0], {}, function () {
                     equal(select.selectedIndex, 2);
                     if (browserUtils.isIE)
                         equal(handlersLog.join(), 'select mousedown,select mouseup,select change,select click');
@@ -1469,25 +1508,25 @@ $(document).ready(function () {
         window.async.series({
             'Click on select in Android/iOS first time':  function (callback) {
                 if (isMobileBrowser)
-                    clickPlaybackAutomation(select, {}, callback);
+                    runClickAutomation(select, {}, callback);
                 else
                     callback();
 
             },
             'Click on option first time':                 function (callback) {
-                clickPlaybackAutomation($option[0], {}, function () {
+                runClickAutomation($option[0], {}, function () {
                     equal(select.selectedIndex, 2);
                     callback();
                 });
             },
             'Click on select in Android/iOS second time': function (callback) {
                 if (isMobileBrowser)
-                    clickPlaybackAutomation(select, {}, callback);
+                    runClickAutomation(select, {}, callback);
                 else
                     callback();
             },
             'Click on option second time':                function () {
-                clickPlaybackAutomation($option[0], {}, function () {
+                runClickAutomation($option[0], {}, function () {
                     equal(select.selectedIndex, 2);
                     if (browserUtils.isIE)
                         equal(handlersLog.join(), 'select mousedown,select mouseup,select change,select click,select mousedown,select mouseup,select click');
@@ -1509,7 +1548,7 @@ $(document).ready(function () {
 
         select.selectedIndex = 0;
 
-        clickPlaybackAutomation(select, {}, function () {
+        runClickAutomation(select, {}, function () {
             equal(handlersLog.join(), 'select mousedown,select mouseup,select click');
             startNext();
         });
@@ -1523,8 +1562,8 @@ $(document).ready(function () {
             startNext();
         });
 
-        clickPlaybackAutomation(select, {}, function () {
-            clickPlaybackAutomation(select.options[2], {}, function () {
+        runClickAutomation(select, {}, function () {
+            runClickAutomation(select.options[2], {}, function () {
             });
         });
     });

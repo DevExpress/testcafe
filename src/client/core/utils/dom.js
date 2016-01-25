@@ -269,6 +269,18 @@ export function isElementContainsNode (el, node) {
     return checkChildNodes(el, node);
 }
 
+export function getOptionIndex (select, option) {
+    var children = select.querySelectorAll('option');
+
+    return arrayUtils.indexOf(children, option);
+}
+
+export function getOptionGroupIndex (select, optgroutp) {
+    var children = select.querySelectorAll('optgroup');
+
+    return arrayUtils.indexOf(children, optgroutp);
+}
+
 export function isSelectElement (el) {
     return el.tagName && el.tagName.toLowerCase() === 'select';
 }

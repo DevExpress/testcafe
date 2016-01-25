@@ -1,12 +1,13 @@
 var hammerhead    = window.getTestCafeModule('hammerhead');
 var nativeMethods = hammerhead.nativeMethods;
 
-var testCafeRunner          = window.getTestCafeModule('testCafeRunner');
-var automation              = testCafeRunner.get('./automation/automation');
-var mouseUtils              = testCafeRunner.get('./utils/mouse');
-var MouseOptions            = testCafeRunner.get('./automation/options/mouse');
-var clickPlaybackAutomation = testCafeRunner.get('./automation/playback/click');
-var HoverAutomation         = testCafeRunner.get('./automation/playback/hover');
+var testCafeRunner  = window.getTestCafeModule('testCafeRunner');
+var automation      = testCafeRunner.get('./automation/automation');
+var MouseOptions    = testCafeRunner.get('./automation/options/mouse');
+var ClickOptions    = testCafeRunner.get('./automation/options/click');
+var HoverAutomation = testCafeRunner.get('./automation/playback/hover');
+var ClickAutomation = testCafeRunner.get('./automation/playback/click');
+var mouseUtils      = testCafeRunner.get('./utils/mouse');
 
 automation.init();
 
@@ -60,7 +61,12 @@ $(document).ready(function () {
             },
 
             clickSecondElementAndSimulateRealEvent: function (callback) {
-                clickPlaybackAutomation(div2, {}, callback);
+                var clickOptions    = new ClickOptions();
+                var clickAutomation = new ClickAutomation(div2, clickOptions);
+
+                clickAutomation
+                    .run()
+                    .then(callback);
 
                 window.setTimeout(function () {
                     var click = nativeMethods.click.call(div1);
