@@ -17,7 +17,7 @@
   url: /testcafe/documentation/using-testcafe
   content:
   - item: Command Line Interface
-    url: .
+    url: /testcafe/documentation/using-testcafe/command-line-interface
   - folder: Programming Interface
     url: /testcafe/documentation/using-testcafe/programming-interface
     content:
