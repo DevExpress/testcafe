@@ -14,7 +14,7 @@ export default {
         if (this.currentActiveWindow === window || this.currentActiveWindow === window.parent)
             return;
 
-        var activeFrame = domUtils.getIframeByWindow(this.currentActiveWindow);
+        var activeFrame = domUtils.findIframeInTopWindow(this.currentActiveWindow);
 
         if (!activeFrame || !domUtils.isElementInDocument(activeFrame))
             this.currentActiveWindow = window;

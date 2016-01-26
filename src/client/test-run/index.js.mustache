@@ -48,12 +48,6 @@
             NATIVE_DIALOGS_INFO:      {{{nativeDialogsInfo}}}
         });
 
-        hammerhead.on(hammerhead.EVENTS.iframeReadyToInit, function (e) {
-            var iframeWindow = e.iframe.contentWindow;
-
-            iframeWindow.eval.apply(iframeWindow, ['var isIFrameWithoutSrc = true;' + {{{iFrameTestRunScript}}}]);
-        });
-
         var transport                = testCafeCore.transport;
         var sandboxedJQuery          = testCafeCore.sandboxedJQuery;
         var extendJQuerySelectors    = testCafeCore.extendJQuerySelectors;

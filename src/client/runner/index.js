@@ -17,4 +17,4 @@ Object.defineProperty(window, '%testCafeRunner%', {
     value:        exports
 });
 
-hammerhead.on(hammerhead.EVENTS.iframeReadyToInit, e => initTestCafeRunner(e.iframe.contentWindow, true));
+hammerhead.on(hammerhead.EVENTS.evalIframeScript, e => initTestCafeRunner(e.iframe.contentWindow, true));

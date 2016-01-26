@@ -32,7 +32,7 @@
     "qrcode-terminal": "^0.10.0",
     "read-file-relative": "^1.2.0",
     "testcafe-browser-natives": "^0.10.0",
-    "testcafe-hammerhead": "^3.1.1",
+    "testcafe-hammerhead": "^5.0.0",
     "testcafe-legacy-api": "^0.1.0",
     "testcafe-reporter-json": "^1.0.0",
     "testcafe-reporter-list": "^1.0.0",

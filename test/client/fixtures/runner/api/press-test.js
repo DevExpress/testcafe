@@ -96,8 +96,8 @@ $(document).ready(function () {
         textSelection.select($input[0], 4, 4);
         asyncActionCallback = function () {
         };
-        hammerhead.on(hammerhead.EVENTS.iframeReadyToInit, window.initIFrameTestHandler);
-        hammerhead.off(hammerhead.EVENTS.iframeReadyToInit, iframeSandbox.iframeReadyToInitHandler);
+        iframeSandbox.on(iframeSandbox.RUN_TASK_SCRIPT, window.initIFrameTestHandler);
+        iframeSandbox.off(iframeSandbox.RUN_TASK_SCRIPT, iframeSandbox.iframeReadyToInitHandler);
     });
 
     QUnit.testDone(function () {
@@ -105,7 +105,7 @@ $(document).ready(function () {
         currentErrorType             = null;
         currentSourceIndex           = null;
         SETTINGS.ENABLE_SOURCE_INDEX = false;
-        hammerhead.off(hammerhead.EVENTS.iframeReadyToInit, window.initIFrameTestHandler);
+        iframeSandbox.off(iframeSandbox.RUN_TASK_SCRIPT, window.initIFrameTestHandler);
     });
 
     module('events raising');
