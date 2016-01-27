@@ -2,6 +2,7 @@ import TestCafe from './testcafe';
 import ReporterPluginHost from './reporter/plugin-host';
 import * as endpointUtils from 'endpoint-utils';
 import { MESSAGE, getText } from './messages';
+import { Role, Hybrid } from './api/common';
 
 // Validations
 async function getValidHostname (hostname) {
@@ -49,5 +50,9 @@ createTestCafe.pluginTestingUtils = {
         return new ReporterPluginHost(plugin, outStream);
     }
 };
+
+// Common runtime
+createTestCafe.Role   = Role;
+createTestCafe.Hybrid = Hybrid;
 
 export default createTestCafe;

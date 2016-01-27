@@ -73,7 +73,7 @@ describe('Runner', function () {
             return runner
                 .browsers('browser42')
                 .reporter('list')
-                .src('test/server/data/test-suite/top.test.js')
+                .src('test/server/data/test-suites/basic/testfile2.js')
                 .run()
                 .then(function () {
                     throw new Error('Promise rejection expected');
@@ -87,7 +87,7 @@ describe('Runner', function () {
         it('Should raise an error if browser was not set', function () {
             return runner
                 .reporter('list')
-                .src('test/server/data/test-suite/top.test.js')
+                .src('test/server/data/test-suites/basic/testfile2.js')
                 .run()
                 .then(function () {
                     throw new Error('Promise rejection expected');
@@ -103,7 +103,7 @@ describe('Runner', function () {
             return runner
                 .browsers(connection)
                 .reporter('reporter42')
-                .src('test/server/data/test-suite/top.test.js')
+                .src('test/server/data/test-suites/basic/testfile2.js')
                 .run()
                 .then(function () {
                     throw new Error('Promise rejection expected');
@@ -126,7 +126,7 @@ describe('Runner', function () {
 
             return runner
                 .browsers(connection)
-                .src('test/server/data/test-suite/top.test.js')
+                .src('test/server/data/test-suites/basic/testfile2.js')
                 .run();
         });
     });
@@ -178,12 +178,8 @@ describe('Runner', function () {
                 .browsers(connection)
                 .reporter('list')
                 .src([
-                    'test/server/data/test-suite/top.test.js',
-                    'test/server/data/test-suite/child/test.test.js',
-                    'test/server/data/test-suite/level1/level1_1.test.js',
-                    'test/server/data/test-suite/level1/level1_2.test.js',
-                    'test/server/data/test-suite/level1/level2/level2.test.js',
-                    'test/server/data/test-suite/level1_no_cfg/level1_no_cfg.test.js'
+                    'test/server/data/test-suites/basic/testfile1.js',
+                    'test/server/data/test-suites/basic/testfile2.js'
                 ]);
         });
 
@@ -210,13 +206,13 @@ describe('Runner', function () {
 
         it('Should filter by test name', function () {
             var filter = function (testName) {
-                return testName.toLowerCase().indexOf('level1') > -1;
+                return testName.indexOf('Fixture2') < 0;
             };
 
             var expectedTestNames = [
-                'Level1 fixture1 test',
-                'Level1 fixture2 test',
-                'Level1 no cfg fixture test'
+                'Fixture1Test1',
+                'Fixture1Test2',
+                'Fixture3Test1'
             ];
 
             return testFilter(filter, expectedTestNames);
@@ -224,29 +220,29 @@ describe('Runner', function () {
 
         it('Should filter by fixture name', function () {
             var filter = function (testName, fixtureName) {
-                return fixtureName.toLowerCase().indexOf('top') > -1;
+                return fixtureName === 'Fixture1';
             };
 
-            var expectedTestNames = ['Top level test'];
+            var expectedTestNames = [
+                'Fixture1Test1',
+                'Fixture1Test2'
+            ];
 
             return testFilter(filter, expectedTestNames);
         });
 
         it('Should filter by fixture path', function () {
             var filter = function (testName, fixtureName, fixturePath) {
-                return fixturePath.toLowerCase().indexOf('level2.test.js') > -1;
+                return fixturePath.indexOf('testfile2.js') > -1;
             };
 
-            var expectedTestNames = ['Level2 fixture test'];
+            var expectedTestNames = ['Fixture3Test1'];
 
             return testFilter(filter, expectedTestNames);
         });
 
         it('Should raise an error if all tests are rejected by the filter', function () {
             return runner
-                .browsers(connection)
-                .reporter('list')
-                .src('test/server/data/test-suite/top.test.js')
                 .filter(function () {
                     return false;
                 })
@@ -303,7 +299,7 @@ describe('Runner', function () {
             return runner
                 .browsers(brokenConnection)
                 .reporter('list')
-                .src('test/server/data/test-suite/top.test.js')
+                .src('test/server/data/test-suites/basic/testfile2.js')
                 .run()
                 .then(function () {
                     BrowserSet.prototype._waitConnectionsReady = origWaitConnReady;
@@ -336,10 +332,9 @@ describe('Runner', function () {
                     .catch(done);
             });
 
-            runner.
-                browsers(brokenConnection)
+            runner.browsers(brokenConnection)
                 .reporter('list')
-                .src('test/server/data/test-suite/top.test.js');
+                .src('test/server/data/test-suites/basic/testfile2.js');
 
             brokenConnection.emit('error', new Error('It happened'));
         });
@@ -351,7 +346,7 @@ describe('Runner', function () {
             var run = runner
                 .browsers(connection1, connection2)
                 .reporter('list')
-                .src('test/server/data/test-suite/top.test.js')
+                .src('test/server/data/test-suites/basic/testfile2.js')
                 .run()
                 .then(function () {
                     throw new Error('Promise rejection expected');
@@ -389,7 +384,7 @@ describe('Runner', function () {
             var run = runner
                 .browsers(brokenConnection)
                 .reporter('json')
-                .src('test/server/data/test-suite/top.test.js')
+                .src('test/server/data/test-suites/basic/testfile2.js')
                 .run()
                 .then(function () {
                     throw new Error('Promise rejection expected');
@@ -443,7 +438,7 @@ describe('Runner', function () {
             taskActionCallback = taskDone;
 
             runner
-                .src('test/server/data/test-suite/top.test.js')
+                .src('test/server/data/test-suites/basic/testfile2.js')
                 .reporter(function () {
                     return {
                         reportTaskStart:    noop,

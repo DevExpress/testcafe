@@ -2,6 +2,8 @@ var expect         = require('chai').expect;
 var url            = require('url');
 var net            = require('net');
 var createTestCafe = require('../../lib/');
+var Role           = require('../../lib/api/common/role');
+var Hybrid         = require('../../lib/api/common/hybrid');
 var Promise        = require('pinkie');
 
 
@@ -80,5 +82,11 @@ describe('TestCafe factory function', function () {
             .catch(function (err) {
                 expect(err.message).eql('The specified "example.org" hostname cannot be resolved to the current machine.');
             });
+    });
+
+    it('Should contain plugin testing utils and common runtime functions', function () {
+        expect(createTestCafe.pluginTestingUtils).to.be.an.object;
+        expect(createTestCafe.Role).eql(Role);
+        expect(createTestCafe.Hybrid).eql(Hybrid);
     });
 });

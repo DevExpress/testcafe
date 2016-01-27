@@ -1,7 +1,6 @@
 import Promise from 'pinkie';
 import { getBrowserInfo } from 'testcafe-browser-natives';
-import { Compiler } from 'testcafe-legacy-api';
-import { wrapDomAccessors } from 'testcafe-hammerhead';
+import Compiler from '../compiler';
 import BrowserConnection from '../browser-connection';
 import LocalBrowserConnection from '../browser-connection/local';
 import { MESSAGE, getText } from '../messages';
@@ -52,7 +51,7 @@ export default class Bootstrapper {
         if (!this.sources.length)
             throw new Error(getText(MESSAGE.testSourcesNotSet));
 
-        var compiler = new Compiler(this.sources, wrapDomAccessors);
+        var compiler = new Compiler(this.sources);
         var tests    = await compiler.getTests();
 
         if (this.filter)

@@ -1,5 +1,5 @@
 import hammerhead from './deps/hammerhead';
-import COMMAND from '../../runner/test-run/command';
+import COMMAND from '../../legacy/test-run/command';
 
 var transport          = hammerhead.transport;
 var beforeUnloadRaised = false;
