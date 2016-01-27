@@ -32,7 +32,7 @@ describe('Runner', function () {
 
     after(function () {
         connection.close();
-        testCafe.close();
+        return testCafe.close();
     });
 
 

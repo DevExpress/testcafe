@@ -19,15 +19,15 @@ describe('TestCafe factory function', function () {
     }
 
     afterEach(function () {
-        if (testCafe) {
-            testCafe.close();
-            testCafe = null;
-        }
-
         if (server) {
             server.close();
             server = null;
         }
+
+        var promisedClose = testCafe ? testCafe.close() : Promise.resolve();
+
+        testCafe = null;
+        return promisedClose;
     });
 
     it('Should automatically assign host and ports if they are not specified', function () {

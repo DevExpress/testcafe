@@ -94,4 +94,9 @@ export default class BrowserConnectionGateway {
     stopServingConnection (connection) {
         delete this.connections[connection.id];
     }
+
+    close () {
+        Object.keys(this.connections).forEach(id => this.connections[id].close());
+    }
 }
+

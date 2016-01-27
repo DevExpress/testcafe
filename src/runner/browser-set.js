@@ -3,6 +3,7 @@ import Promise from 'pinkie';
 import timeLimit from 'time-limit-promise';
 import promisifyEvent from 'promisify-event';
 import noop from 'noop-fn';
+import mapReverse from 'map-reverse';
 import LocalBrowserConnection from '../browser-connection/local';
 import { MESSAGE, getText } from '../messages';
 import remove from '../utils/array-remove';
@@ -120,11 +121,11 @@ export default class BrowserSet extends EventEmitter {
     }
 
     async dispose () {
-        // FIXME: make a shallow copy of `this.connections`, because it
-        // will be modified inside `releaseConnection`.
-        // Not the most clear piece of code here. I hope we can do
-        // better. But I'm out of ideas for now.
-        this.connections.slice().forEach(bc => this.releaseConnection(bc));
+        // NOTE: When browserConnection is cancelled, it is removed from
+        // the this.connections array, which leads to shifting indexes
+        // towards the beginning. So, we must copy the array in order to iterate it,
+        // or we can perform iteration from the end to the beginning.
+        mapReverse(this.connections, bc => this.releaseConnection(bc));
 
         await Promise.all(this.pendingReleases);
     }

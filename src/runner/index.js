@@ -1,8 +1,11 @@
 import Promise from 'pinkie';
 import promisifyEvent from 'promisify-event';
+import onceDone from 'once-done';
+import mapReverse from 'map-reverse';
 import { resolve as resolvePath } from 'path';
 import { EventEmitter } from 'events';
 import flatten from 'flatten';
+import remove from '../utils/array-remove';
 import Bootstrapper from './bootstrapper';
 import Reporter from '../reporter';
 import Task from './task';
@@ -12,8 +15,9 @@ export default class Runner extends EventEmitter {
     constructor (proxy, browserConnectionGateway) {
         super();
 
-        this.proxy        = proxy;
-        this.bootstrapper = new Bootstrapper(browserConnectionGateway);
+        this.proxy               = proxy;
+        this.bootstrapper        = new Bootstrapper(browserConnectionGateway);
+        this.pendingTaskPromises = [];
 
         this.opts = {
             screenshotPath:         null,
@@ -31,11 +35,17 @@ export default class Runner extends EventEmitter {
         await browserSet.dispose();
     }
 
-    static _createCancelablePromise (taskPromise) {
-        var promise = taskPromise.then(({ completionPromise }) => completionPromise);
+    _createCancelablePromise (taskPromise) {
+        var promise           = taskPromise.then(({ completionPromise }) => completionPromise);
+        var removeFromPending = () => remove(this.pendingTaskPromises, promise);
 
-        promise.cancel = () => taskPromise.then(({ cancelTask }) => cancelTask());
+        onceDone(promise, removeFromPending);
 
+        promise.cancel = () => taskPromise
+            .then(({ cancelTask }) => cancelTask())
+            .then(removeFromPending);
+
+        this.pendingTaskPromises.push(promise);
         return promise;
     }
 
@@ -64,17 +74,14 @@ export default class Runner extends EventEmitter {
         var completed         = false;
         var task              = new Task(tests, browserSet.connections, this.proxy, this.opts);
         var reporter          = new Reporter(reporterPlugin, task, this.opts.reportOutStream);
-        var completeTask      = () => completed = true;
         var completionPromise = this._getTaskResult(task, browserSet, reporter);
+
+        onceDone(completionPromise, () => completed = true);
 
         var cancelTask = async () => {
             if (!completed)
                 await Runner._disposeTaskAndBrowsers(task, browserSet);
         };
-
-        completionPromise
-            .then(completeTask)
-            .catch(completeTask);
 
         return { completionPromise, cancelTask };
     }
@@ -126,6 +133,16 @@ export default class Runner extends EventEmitter {
                 return this._runTask(reporterPlugin, browserSet, tests);
             });
 
-        return Runner._createCancelablePromise(runTaskPromise);
+        return this._createCancelablePromise(runTaskPromise);
+    }
+
+    async stop () {
+        // NOTE: When taskPromise is cancelled, it is removed from
+        // the pendingTaskPromises array, which leads to shifting indexes
+        // towards the beginning. So, we must copy the array in order to iterate it,
+        // or we can perform iteration from the end to the beginning.
+        var cancellationPromises = mapReverse(this.pendingTaskPromises, taskPromise => taskPromise.cancel());
+
+        await Promise.all(cancellationPromises);
     }
 }
