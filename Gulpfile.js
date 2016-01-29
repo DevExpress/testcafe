@@ -29,7 +29,6 @@ var markdownlint = require('markdownlint');
 
 
 var readFile  = promisify(fs.readFile, Promise);
-var writeFile = promisify(fs.writeFile, Promise);
 
 
 ll
@@ -281,7 +280,9 @@ gulp.task('update-greenkeeper', function () {
                 ignore: ignoredDeps
             };
 
-            return writeFile('package.json', JSON.stringify(config, null, 2) + '\n');
+            // NOTE: We should write to the file synchronously to avoid collision
+            // with other tasks that may be reading from it asynchronously (GH-315)
+            fs.writeFileSync('package.json', JSON.stringify(config, null, 2) + '\n');
         });
 });
 
