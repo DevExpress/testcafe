@@ -4,6 +4,7 @@ import stripBom from 'strip-bom';
 import { Compiler as LegacyCompiler } from 'testcafe-legacy-api';
 import { wrapDomAccessors } from 'testcafe-hammerhead';
 import EsNextCompiler from './es-next';
+import RawFileCompiler from './raw-file';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import promisify from '../utils/promisify';
@@ -12,12 +13,14 @@ var readFile = promisify(fs.readFile);
 
 export default class Compiler {
     constructor (sources) {
-        this.sources        = sources;
-        this.esNextCompiler = new EsNextCompiler();
+        this.sources         = sources;
+        this.esNextCompiler  = new EsNextCompiler();
+        this.rawDataCompiler = new RawFileCompiler();
 
         this.compilers = [
             new LegacyCompiler(wrapDomAccessors),
-            this.esNextCompiler
+            this.esNextCompiler,
+            this.rawDataCompiler
         ];
     }
 
