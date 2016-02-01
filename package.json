@@ -1,6 +1,6 @@
 {
   "name": "testcafe",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "main": "lib/index",
   "bin": {
     "testcafe": "./bin/testcafe"
@@ -109,6 +109,7 @@
       "globby",
       "indent-string",
       "log-update",
+      "map-reverse",
       "mixin-object",
       "mkdirp",
       "moment",
@@ -116,6 +117,7 @@
       "mustache",
       "node-version",
       "noop-fn",
+      "once-done",
       "os-family",
       "parse5",
       "pify",
