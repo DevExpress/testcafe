@@ -1,11 +1,52 @@
-- item: Article1
+- item: GETTING STARTED
   url: .
-- folder: Folder1
+- folder: TEST API
   url: .
   content:
-  - item: Article2
+  - item: Test Structure
     url: .
-  - item: Article3
+  - item: Actions
     url: .
-  - item: Article4
+  - item: Assertions
+    url: .
+  - item: Hybrid Functions
+    url: .  
+  - item: Roles
+    url: .
+- folder: USING TESTCAFE
+  url: .
+  content:
+  - item: Command Line Interface
+    url: .
+  - folder: Programming Interface
+    url: .
+    content:
+    - item: TestCafe Class
+      url: .
+    - item: BrowserConnection Class
+      url: .
+    - item: Runner Class
+      url: .
+    - item: createTestCafe Factory
+      url: .
+  - folder: Common Concepts
+    url: /testcafe/documentation/using-testcafe/common-concepts
+    content: 
+    - item: Browser Aliases
+      url: /testcafe/documentation/using-testcafe/common-concepts/browser-aliases
+- folder: EXTENDING TESTCAFE
+  url: .  
+  content:
+  - item: Reporter Plugins
+    url: .
+  - item: Browser Provider Plugins
+    url: .
+  - item: Selector Extensions
+    url: .
+- folder: RECIPES
+  url: .
+  content:
+  - item: Recipe No. 1
+    url: .
+  - item: Recipe No. 2
     url: .
