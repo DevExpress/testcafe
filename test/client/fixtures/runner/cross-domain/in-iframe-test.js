@@ -231,7 +231,8 @@ asyncTest('shared data', function () {
         stepDone();
     };
 
-    testRunner.act._start([steps[0].stepName], [steps[0].step], steps[0].stepNum);
+    testRunner.nextStep = steps[0].stepNum;
+    testRunner.act._start([steps[0].stepName], [steps[0].step]);
 
     function stepDone () {
         count++;

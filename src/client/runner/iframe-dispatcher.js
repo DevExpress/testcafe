@@ -25,7 +25,7 @@ var testRunInitializedCallback = null,
 
 export const MESSAGE_RECEIVED = 'messageReceived';
 
-function runOrPushInQueue (fn) {
+function runOrEnqueue (fn) {
     if (!pageInitialzied)
         actionsQueue.push(fn);
     else
@@ -35,21 +35,15 @@ function runOrPushInQueue (fn) {
 function onRunStepsMsg (msg) {
     if (!testRunnerInitialized) {
         testRunnerInitialized = true;
-        testRunInitializedCallback(testRunner, function (runStepInContext) {
-            runStep = runStepInContext;
-        });
+        testRunInitializedCallback(testRunner, runStepInContext => runStep = runStepInContext);
 
-        runOrPushInQueue(function () {
-            runStep(msg.stepName, msg.step, 0, function () {
-                testRunner.act._start.apply(testRunner, arguments);
-            });
+        runOrEnqueue(() => {
+            runStep(msg.stepName, msg.step, (stepNames, steps) => testRunner.act._start(stepNames, steps, true));
         });
     }
     else {
-        runOrPushInQueue(function () {
-            runStep(msg.stepName, msg.step, 0, function () {
-                testRunner.run.apply(testRunner, arguments);
-            });
+        runOrEnqueue(() => {
+            runStep(msg.stepName, msg.step, (stepNames, steps) => testRunner.run(stepNames, steps, 0));
         });
     }
 }

@@ -83,5 +83,6 @@ asyncTest('run test', function () {
         start();
     });
 
-    runner.act._start(stepNames, steps, 0);
+    runner.nextStep = 0;
+    runner.act._start(stepNames, steps);
 });

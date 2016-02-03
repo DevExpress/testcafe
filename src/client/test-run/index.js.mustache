@@ -35,11 +35,10 @@
         var testCafeRunner = window['%testCafeRunner%'];
         var testCafeUI     = window['%testCafeUI%'];
 
-        var nextStep  = {{{nextStep}}};
         var stepNames = {{{stepNames}}};
 
         testCafeCore.SETTINGS.set({
-            CURRENT_TEST_STEP_NAME:   nextStep ? stepNames[nextStep - 1] : 'Page Load',
+            CURRENT_TEST_STEP_NAME:   'Page Load',
             BROWSER_STATUS_URL:       '{{{browserStatusUrl}}}',
             TAKE_SCREENSHOTS:         {{{takeScreenshots}}},
             TAKE_SCREENSHOTS_ON_FAILS: {{{takeScreenshotsOnFails}}},
@@ -69,12 +68,15 @@
         jQueryDataMethodProxy.setup($);
 
         //NOTE: initialize API
-        var deferredError = {{{deferredError}}};
-        var runner        = new Runner(null, deferredError);
-        var progressPanel = null;
+        var runner = new Runner(null, '{{{testRunId}}}');
 
-        if (deferredError)
+        if (runner.stopped)
             return;
+
+        if (runner.nextStep)
+            testCafeCore.SETTINGS.get().CURRENT_TEST_STEP_NAME = stepNames[runner.nextStep - 1];
+
+        var progressPanel = null;
 
         runner.on(RunnerBase.SCREENSHOT_CREATING_STARTED_EVENT, function () {
             shadowUI.setBlind(true);
@@ -138,9 +140,8 @@
         act._start(
             {{{stepNames}}},
             //!-----------------------------------------BEGIN TEST CODE-------------------------------------------
-            {{{testSteps}}},
+            {{{testSteps}}}
             //!------------------------------------------END TEST CODE--------------------------------------------
-            {{{nextStep}}}
         );
     } catch (err) {
         act._onJSError(err);

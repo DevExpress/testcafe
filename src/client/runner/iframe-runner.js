@@ -10,6 +10,8 @@ var serviceUtils             = testCafeCore.serviceUtils;
 
 var IFrameRunner = function (startedCallback) {
     RunnerBase.apply(this, [startedCallback]);
+
+    this.nextStep = 0;
 };
 
 serviceUtils.inherit(IFrameRunner, RunnerBase);

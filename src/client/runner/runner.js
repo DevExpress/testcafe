@@ -2,6 +2,7 @@ import escapeHtml from 'escape-html';
 import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 import RunnerBase from './runner-base';
+import TestContextStorage from './test-context-storage';
 import * as browser from '../browser';
 
 
@@ -17,11 +18,30 @@ const APPLY_DOCUMENT_TITLE_TIMEOUT                 = 500;
 const RESTORE_DOCUMENT_TITLE_TIMEOUT               = 100;
 const CHECK_TITLE_INTERVAL                         = 50;
 
-var Runner = function (startedCallback, err) {
+
+var beforeUnloadRaised = false;
+
+hammerhead.on(hammerhead.EVENTS.beforeUnload, () => beforeUnloadRaised = true);
+
+var Runner = function (startedCallback, testRunId) {
     RunnerBase.apply(this, [startedCallback]);
 
-    if (err)
-        this._onFatalError(err);
+    this.testContextStorage = new TestContextStorage(window, testRunId);
+
+    if (!this.testContextStorage.get()) {
+        this.testContextStorage.set({
+            nextStep:            0,
+            actionTargetWaiting: false,
+            testError:           null
+        });
+    }
+
+    var { nextStep, actionTargetWaiting, testError } = this.testContextStorage.get();
+
+    this.nextStep = actionTargetWaiting ? nextStep - 1 : nextStep;
+
+    if (testError)
+        this._onFatalError(testError);
 };
 
 serviceUtils.inherit(Runner, RunnerBase);
@@ -39,48 +59,37 @@ Runner.checkStatus = function () {
 Runner.prototype._onTestComplete = function (e) {
     this.stopped = true;
 
-    transport.waitForServiceMessagesCompleted(WAITING_FOR_SERVICE_MESSAGES_COMPLETED_DELAY, function () {
+    transport.waitForServiceMessagesCompleted(WAITING_FOR_SERVICE_MESSAGES_COMPLETED_DELAY, () => {
         var testCompleteMsg = {
             cmd: COMMAND.done
         };
 
-        transport.asyncServiceMsg(testCompleteMsg, function () {
+        transport.asyncServiceMsg(testCompleteMsg, () => {
             e.callback();
+
+            this.testContextStorage.dispose();
             Runner.checkStatus();
         });
     });
 };
 
 Runner.prototype._onNextStepStarted = function (e) {
-    var nextStepMsg = {
-        cmd:      COMMAND.setNextStep,
-        nextStep: e.nextStep
-    };
+    this.testContextStorage.get().nextStep = e.nextStep;
 
-    transport.asyncServiceMsg(nextStepMsg, e.callback);
+    e.callback();
 };
 
 //NOTE: decrease step counter while an action is waiting for element available and decrease it when action running started (T230851)
 Runner.prototype._onActionTargetWaitingStarted = function (e) {
     RunnerBase.prototype._onActionTargetWaitingStarted.apply(this, [e]);
 
-    var msg = {
-        cmd:   COMMAND.setActionTargetWaiting,
-        value: true
-    };
-
-    transport.asyncServiceMsg(msg);
+    this.testContextStorage.get().actionTargetWaiting = true;
 };
 
 Runner.prototype._onActionRun = function () {
     RunnerBase.prototype._onActionRun.apply(this, []);
 
-    var msg = {
-        cmd:   COMMAND.setActionTargetWaiting,
-        value: false
-    };
-
-    transport.asyncServiceMsg(msg);
+    this.testContextStorage.get().actionTargetWaiting = false;
 };
 
 Runner.prototype._beforeScreenshot = function () {
@@ -121,8 +130,16 @@ Runner.prototype._reportErrorToServer = function (err, isAssertion) {
     return new Promise(resolve => {
         if (isAssertion)
             transport.assertionFailed(err, resolve);
-        else
+        else if (beforeUnloadRaised) {
+            // NOTE: we should not stop the test run if an error occured during page unloading because we
+            // would destroy the session in this case and wouldn't be able to get the next page in the browser.
+            // We should set the deferred error to the task to have the test fail after the page reloading.
+            this.testContextStorage.get().testError = err;
+        }
+        else {
+            this.testContextStorage.dispose();
             transport.fatalError(err, resolve);
+        }
     });
 };
 

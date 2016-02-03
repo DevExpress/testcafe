@@ -56,10 +56,10 @@
             return;
         }
 
-        runInContext = function (stepName, step, stepNum, runner) {
+        runInContext = function (stepName, step, runner) {
             runner([stepName], [function () {
                 eval('(' + step + ').call(this)');
-            }], stepNum, true);
+            }]);
         };
 
         callback(runInContext);
