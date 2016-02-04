@@ -14,21 +14,21 @@
   - item: Roles
     url: .
 - folder: USING TESTCAFE
-  url: .
+  url: /testcafe/documentation/using-testcafe
   content:
   - item: Command Line Interface
     url: .
   - folder: Programming Interface
-    url: .
+    url: /testcafe/documentation/using-testcafe/programming-interface
     content:
     - item: TestCafe Class
-      url: .
+      url: /testcafe/documentation/using-testcafe/programming-interface/testCafe
     - item: BrowserConnection Class
-      url: .
+      url: /testcafe/documentation/using-testcafe/programming-interface/browserConnection
     - item: Runner Class
-      url: .
+      url: /testcafe/documentation/using-testcafe/programming-interface/runner
     - item: createTestCafe Factory
-      url: .
+      url: /testcafe/documentation/using-testcafe/programming-interface/createTestCafe
   - folder: Common Concepts
     url: /testcafe/documentation/using-testcafe/common-concepts
     content: 
