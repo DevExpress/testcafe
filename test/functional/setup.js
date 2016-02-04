@@ -90,11 +90,14 @@ before(function () {
             return openLocalBrowsers();
         })
         .then(function () {
+            global.testReport = null;
+
             global.runTests = function (fixture, testName, opts) {
-                var report       = '';
-                var runner       = testCafe.createRunner();
-                var fixturePath  = path.join(path.dirname(caller()), fixture);
-                var skipJsErrors = opts && opts.skipJsErrors;
+                var report          = '';
+                var runner          = testCafe.createRunner();
+                var fixturePath     = path.join(path.dirname(caller()), fixture);
+                var skipJsErrors    = opts && opts.skipJsErrors;
+                var quarantineMode = opts && opts.quarantineMode;
 
                 var connections = browsersInfo.map(function (browserInfo) {
                     return browserInfo.connection;
@@ -115,11 +118,13 @@ before(function () {
                         }
                     })
                     .src(fixturePath)
-                    .run({ skipJsErrors: skipJsErrors })
+                    .run({ skipJsErrors: skipJsErrors, quarantineMode: quarantineMode })
                     .then(function () {
                         var testReport = JSON.parse(report).fixtures[0].tests[0];
                         var testError  = getTestError(testReport, browsersInfo);
                         var shouldFail = opts && opts.shouldFail;
+
+                        global.testReport = testReport;
 
                         if (shouldFail)
                             throw testError;
@@ -135,6 +140,7 @@ after(function () {
     site.destroy();
 
     delete global.runTests;
+    delete global.testReport;
 
     if (config.isTravisTask)
         return closeRemoteBrowsers();

@@ -49,17 +49,18 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     _popNextTestRunUrl () {
-        if (this.jobQueue.length) {
-            var job = this.jobQueue[0];
-            var url = job.popNextTestRunUrl();
+        while (this.hasQueuedJobs && !this.currentJob.hasQueuedTestRuns)
+            this.jobQueue.shift();
 
-            if (!job.hasQueuedTestRuns)
-                this.jobQueue.shift();
+        return this.hasQueuedJobs ? this.currentJob.popNextTestRunUrl() : null;
+    }
 
-            return url;
-        }
+    get hasQueuedJobs () {
+        return !!this.jobQueue.length;
+    }
 
-        return null;
+    get currentJob () {
+        return this.jobQueue[0];
     }
 
     // API
@@ -116,7 +117,9 @@ export default class BrowserConnection extends EventEmitter {
             return { cmd: COMMAND.run, url: testRunUrl };
         }
 
-        this.switchingToIdle = true;
+        if (!this.idle)
+            this.switchingToIdle = true;
+
         return { cmd: COMMAND.idle, url: this.idleUrl };
     }
 }
