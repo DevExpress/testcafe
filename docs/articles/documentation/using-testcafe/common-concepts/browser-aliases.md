@@ -24,4 +24,4 @@ You can use these aliases when working both through the [command line](/testcafe
 and [programmatically](/testcafe/documentation/using-testcafe/programming-interface/Runner/#browsers).
 
 To obtain the list of browsers installed on the current machine, run TestCafe
-from the command line with the [-b option](/testcafe/documentation/using-testcafe/command-line-interface/#b).
+from the command line with the [-b option](/testcafe/documentation/using-testcafe/command-line-interface/#b-list-browsers).

@@ -26,7 +26,7 @@ console.log('Tests failed: ' + failed);
 
 ## Methods
 
-### <a class="anchor" name="src"></a>src
+### src
 
 Configures the test runner to run tests from the specified files.
 
@@ -47,7 +47,7 @@ Concatenates the settings when called several times.
 runner.src(['/home/user/tests/fixture1.js', 'fixture5.js']);
 ```
 
-### <a class="anchor" name="filter"></a>filter
+### filter
 
 Allows you to manualy select which tests should be run.
 
@@ -79,7 +79,7 @@ runner.filter((testName, fixtureName, fixturePath) => {
 });
 ```
 
-### <a class="anchor" name="browsers"></a>browsers
+### browsers
 
 Configures the test runner to run tests in the specified browsers.
 
@@ -139,7 +139,7 @@ remoteConnection.once('ready', async () => {
 });
 ```
 
-### <a class="anchor" name="screenshots"></a>screenshots
+### screenshots
 
 Enables the test runner to take screenshots of the tested webpages.
 
@@ -163,7 +163,7 @@ The `takeOnFails` parameter handles a separate scenario of capturing the webpage
 runner.screenshots('reports/screenshots/', true);
 ```
 
-### <a class="anchor" name="reporter"></a>reporter
+### reporter
 
 Configures the test runner's reporting feature.
 
@@ -220,7 +220,7 @@ runner.reporter('json', stream);
 
 You can also build your own reporter. Use a [dedicated Yeoman generator](https://github.com/DevExpress/generator-testcafe-reporter) to scaffold out a custom reporter plugin.
 
-### <a class="anchor" name="run"></a>run
+### run
 
 Runs tests according to the current configuration. Returns the number of failed tests.
 
