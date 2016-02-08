@@ -1,163 +1,165 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import testCafeUI from '../../deps/testcafe-ui';
 import { fromPoint as getElementFromPoint } from '../get-element';
 import * as automationUtil from '../util';
 import * as automationSettings from '../settings';
 import MoveAutomation from '../playback/move';
 import MoveOptions from '../options/move';
-import async from '../../deps/async';
 import cursor from '../cursor';
+import delay from '../../utils/delay';
+import nextTick from '../../utils/next-tick';
+import * as mouseUtils from '../../utils/mouse';
 
+var extend         = hammerhead.utils.extend;
 var browserUtils   = hammerhead.utils.browser;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
-var SETTINGS      = testCafeCore.SETTINGS;
 var domUtils      = testCafeCore.domUtils;
 var positionUtils = testCafeCore.positionUtils;
 var eventUtils    = testCafeCore.eventUtils;
 
 
-export default function (el, options, actionCallback) {
-    options = {
-        ctrl:     options.ctrl,
-        alt:      options.alt,
-        shift:    options.shift,
-        meta:     options.meta,
-        offsetX:  options.offsetX,
-        offsetY:  options.offsetY,
-        caretPos: options.caretPos
-    };
+export default class RClickAutomation {
+    constructor (element, clickOptions) {
+        this.element   = element;
+        this.modifiers = clickOptions.modifiers;
+        this.caretPos  = clickOptions.caretPos;
 
-    var isSVGElement       = domUtils.isSVGElement(el),
-        clickOnElement     = positionUtils.isContainOffset(el, options.offsetX, options.offsetY),
-        target             = clickOnElement ? el : automationUtil.getMouseActionPoint(el, options, false),
-        targetElement      = clickOnElement ? el : document.documentElement,
-        notPrevented       = true,
-        screenPoint        = null,
-        eventPoint         = null,
-        eventOptions       = null,
-        topElement         = null,
-        isInvisibleElement = false,
-        currentTopElement  = null,
+        this.offsetX = clickOptions.offsetX;
+        this.offsetY = clickOptions.offsetY;
 
-        offsets            = clickOnElement ? automationUtil.getDefaultAutomationOffsets(el) : {
-            offsetX: target.x,
-            offsetY: target.y
-        },
-
-        modifiers          = {
-            ctrl:  options.ctrl,
-            shift: options.shift,
-            alt:   options.alt,
-            meta:  options.meta
+        this.eventArgs = {
+            point:   null,
+            options: null,
+            element: null
         };
 
-    if (clickOnElement) {
-        if (typeof options.offsetX === 'number')
-            offsets.offsetX = Math.round(options.offsetX);
-        if (typeof options.offsetY === 'number')
-            offsets.offsetY = Math.round(options.offsetY);
+        this.eventState = {
+            simulateFocus:           true,
+            simulateDefaultBehavior: true
+        };
     }
 
-    async.series({
-        moveCursorToElement: function (callback) {
-            if (SETTINGS.get().RECORDING && !SETTINGS.get().PLAYBACK && !positionUtils.isElementVisible(el)) {
-                topElement = el;
+    _getMoveArguments () {
+        var clickOnElement    = positionUtils.isContainOffset(this.element, this.offsetX, this.offsetY);
+        var moveActionOffsets = mouseUtils.getMoveAutomationOffsets(this.element, this.offsetX, this.offsetY);
 
-                window.setTimeout(callback, automationSettings.ACTION_STEP_DELAY);
-                return;
-            }
+        return {
+            element: clickOnElement ? this.element : document.documentElement,
+            offsetX: moveActionOffsets.offsetX,
+            offsetY: moveActionOffsets.offsetY
+        };
+    }
 
-            var moveOptions = new MoveOptions();
+    _calculateEventArguments () {
+        var point   = null;
+        var options = null;
 
-            moveOptions.offsetX   = offsets.offsetX;
-            moveOptions.offsetY   = offsets.offsetY;
-            moveOptions.modifiers = modifiers;
+        if (!this.eventArgs.point) {
+            var screenPoint = mouseUtils.getAutomationPoint(this.element, this.offsetX, this.offsetY);
 
-            var moveAutomation = new MoveAutomation(targetElement, moveOptions);
+            point = mouseUtils.convertToClient(this.element, screenPoint);
 
-            moveAutomation
-                .run()
-                .then(() => {
-                    if ((isSVGElement && browserUtils.isOpera) || el.tagName.toLowerCase() === 'tref')
-                        topElement = el; //NOTE: document.elementFromPoint can't find this element
-                    else {
-                        screenPoint = automationUtil.getMouseActionPoint(el, options, true);
-                        eventPoint  = automationUtil.getEventOptionCoordinates(el, screenPoint);
-
-                        eventOptions = hammerhead.utils.extend({
-                            clientX: eventPoint.x,
-                            clientY: eventPoint.y,
-                            button:  eventUtils.BUTTON.right,
-                            which:   eventUtils.WHICH_PARAMETER.rightButton,
-                            buttons: eventUtils.BUTTONS_PARAMETER.rightButton
-                        }, options);
-
-                        topElement = getElementFromPoint(screenPoint.x, screenPoint.y, target);
-
-                        if (!topElement) {
-                            isInvisibleElement = true;
-                            topElement         = el;
-                        }
-                    }
-                    window.setTimeout(callback, automationSettings.ACTION_STEP_DELAY);
-                });
-        },
-
-        cursorMouseDown: function (callback) {
-            cursor
-                .rightButtonDown()
-                .then(() => callback());
-        },
-
-        mousedown: function (callback) {
-            var activeElement = domUtils.getActiveElement(),
-                //in IE focus is not raised if element was focused before click, even if focus is lost during mousedown
-                needFocus     = !(browserUtils.isIE && activeElement === topElement);
-
-            notPrevented = eventSimulator.mousedown(topElement, eventOptions);
-
-            if (!isInvisibleElement && screenPoint) {
-                currentTopElement = getElementFromPoint(screenPoint.x, screenPoint.y, target);
-
-                if (currentTopElement)
-                    topElement = currentTopElement;
-            }
-
-            if (notPrevented === false) {
-                callback();
-                return;
-            }
-
-            //NOTE: For contentEditable elements we should call focus directly for action's element because
-            //option 'caretPos' is indicated this element and topElement may be a child of this element
-            automationUtil.focusAndSetSelection(domUtils.isContentEditableElement(el) ? el : topElement, options, needFocus, callback);
-        },
-
-        cursorMouseUp: function (callback) {
-            cursor
-                .buttonUp()
-                .then(() => callback());
-        },
-
-        mouseup: function (callback) {
-            eventSimulator.mouseup(topElement, eventOptions);
-
-            if (!isInvisibleElement && screenPoint) {
-                currentTopElement = getElementFromPoint(screenPoint.x, screenPoint.y, target);
-
-                if (currentTopElement)
-                    topElement = currentTopElement;
-            }
-            window.setTimeout(callback, automationSettings.ACTION_STEP_DELAY);
-        },
-
-        contextmenu: function () {
-            eventSimulator.contextmenu(topElement, eventOptions);
-            automationUtil.focusLabelChildElement(topElement);
-
-            actionCallback();
+            options = extend({
+                clientX: point.x,
+                clientY: point.y,
+                button:  eventUtils.BUTTON.right,
+                which:   eventUtils.WHICH_PARAMETER.rightButton,
+                buttons: eventUtils.BUTTONS_PARAMETER.rightButton
+            }, this.modifiers);
         }
-    });
-};
+
+        var expectedElement = positionUtils.isContainOffset(this.element, this.offsetX, this.offsetY) ?
+                              this.element : null;
+
+        var x          = point ? point.x : this.eventArgs.point.x;
+        var y          = point ? point.y : this.eventArgs.point.y;
+        var topElement = getElementFromPoint(x, y, expectedElement);
+
+        return {
+            point:   point || this.eventArgs.point,
+            options: options || this.eventArgs.options,
+            element: topElement || this.element
+        };
+    }
+
+    _move ({ element, offsetX, offsetY }) {
+        var moveOptions = new MoveOptions();
+
+        moveOptions.offsetX   = offsetX;
+        moveOptions.offsetY   = offsetY;
+        moveOptions.modifiers = this.modifiers;
+
+        var moveAutomation = new MoveAutomation(element, moveOptions);
+
+        return moveAutomation
+            .run()
+            .then(() => delay(automationSettings.ACTION_STEP_DELAY));
+    }
+
+    _mousedown () {
+        return cursor
+            .rightButtonDown()
+            .then(() => {
+                this.eventArgs = this._calculateEventArguments();
+
+                var isBodyElement         = this.eventArgs.element.tagName.toLowerCase() === 'body';
+                var isContentEditable     = domUtils.isContentEditableElement(this.eventArgs.element);
+                var isContentEditableBody = isBodyElement && isContentEditable;
+                var activeElement         = domUtils.getActiveElement();
+
+                // NOTE: in IE, focus is not raised if the element was focused
+                // before the click, even if focus is lost during the mousedown
+                this.eventState.simulateFocus = !browserUtils.isIE || activeElement !== this.eventArgs.element ||
+                                                isContentEditableBody;
+
+                this.eventState.simulateDefaultBehavior = eventSimulator.mousedown(this.eventArgs.element,
+                    this.eventArgs.options);
+            })
+            .then(() => this._focus());
+    }
+
+    _focus () {
+        if (this.simulateDefaultBehavior === false)
+            return nextTick();
+
+        // NOTE: If a target element is a contentEditable element, we need to call focusAndSetSelection directly for
+        // this element. Otherwise, if the element obtained by elementFromPoint is a child of the contentEditable
+        // element, a selection position may be calculated incorrectly (by using the caretPos option).
+        var elementForFocus = domUtils.isContentEditableElement(this.element) ? this.element : this.eventArgs.element;
+
+        return automationUtil
+            .focusAndSetSelection(elementForFocus, this.eventState.simulateFocus, this.caretPos)
+            .then(() => nextTick());
+    }
+
+    _mouseup () {
+        return cursor
+            .buttonUp()
+            .then(() => {
+                this.eventArgs = this._calculateEventArguments();
+
+                eventSimulator.mouseup(this.eventArgs.element, this.eventArgs.options);
+
+                return delay(automationSettings.ACTION_STEP_DELAY);
+            });
+    }
+
+    _contextmenu () {
+        this.eventArgs = this._calculateEventArguments();
+
+        eventSimulator.contextmenu(this.eventArgs.element, this.eventArgs.options);
+
+        if (!domUtils.isElementFocusable(this.eventArgs.element))
+            automationUtil.focusByRelatedElement(this.eventArgs.element);
+    }
+
+    run () {
+        var moveArguments = this._getMoveArguments();
+
+        return this._move(moveArguments)
+            .then(() => this._mousedown())
+            .then(() => this._mouseup())
+            .then(() => this._contextmenu());
+    }
+}

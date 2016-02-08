@@ -44,30 +44,23 @@ $(document).ready(function () {
         currentErrorType   = null,
         currentSourceIndex = null,
         $input,
-        $iFrame,
 
         //constants
         TEST_ELEMENT_CLASS = 'testElement',
+        TEST_TIMEOUT       = 2000,
 
         //utils
-        createIFrame       = function ($element, src, callback) {
-            $iFrame = $('<iframe/>')
-                .attr('src', src)
+        createIFrame       = function (src) {
+            var $iframe = $('<iframe/>')
                 .css({
                     width:  '600px',
                     height: '600px'
                 })
                 .addClass(TEST_ELEMENT_CLASS);
-            $element.addClass(TEST_ELEMENT_CLASS);
 
-            var onLoadHandler = function () {
-                $($iFrame[0].contentWindow.document.body).append($element);
-                $iFrame.unbind('load', onLoadHandler);
-                callback();
-            };
+            $iframe[0].setAttribute('src', src);
 
-            $iFrame.bind('load', onLoadHandler);
-            $iFrame.appendTo($('body'));
+            return $iframe[0];
         },
 
         runAsyncTest       = function (actions, assertions, timeout, delayBeforeAssertions) {
@@ -108,6 +101,69 @@ $(document).ready(function () {
         iframeSandbox.off(iframeSandbox.RUN_TASK_SCRIPT, window.initIFrameTestHandler);
     });
 
+    module('parse keys string');
+
+    asyncTest('press correct symbol', function () {
+        runAsyncTest(
+            function () {
+                actionsAPI.press('a');
+            },
+            function () {
+                equal(currentErrorType, null);
+            },
+            TEST_TIMEOUT
+        );
+    });
+
+    asyncTest('press correct symbol with spaces', function () {
+        runAsyncTest(
+            function () {
+                actionsAPI.press('a ');
+            },
+            function () {
+                equal(currentErrorType, null);
+            },
+            TEST_TIMEOUT
+        );
+    });
+
+    asyncTest('press correct keys combination', function () {
+        runAsyncTest(
+            function () {
+                actionsAPI.press('g h g+h  f t');
+            },
+            function () {
+                equal(currentErrorType, null);
+            },
+            3000
+        );
+    });
+
+    asyncTest('press correct keys combination with shortcuts', function () {
+        runAsyncTest(
+            function () {
+                actionsAPI.press('g home g+h  f t left+right');
+            },
+            function () {
+                equal(currentErrorType, null);
+            },
+            3000
+        );
+    });
+
+    asyncTest('press incorrect keys combination', function () {
+        SETTINGS.ENABLE_SOURCE_INDEX = true;
+        actionsAPI.press('incorrect', '#11');
+        setTimeout(function () {
+            equal(currentErrorType, ERROR_TYPE.incorrectPressActionArgument);
+            equal(currentSourceIndex, 11);
+
+            start();
+        }, 300);
+    });
+
+    module('different scenarios');
+
     asyncTest('press a', function () {
         runAsyncTest(
             function () {
@@ -116,7 +172,7 @@ $(document).ready(function () {
             function () {
                 equal($input[0].value, 'tesat');
             },
-            1000
+            TEST_TIMEOUT
         );
     });
 
@@ -128,7 +184,7 @@ $(document).ready(function () {
             function () {
                 equal($input[0].value, 'test++');
             },
-            2000
+            TEST_TIMEOUT
         );
     });
 
@@ -140,7 +196,7 @@ $(document).ready(function () {
             function () {
                 equal($input[0].value, 'tes t');
             },
-            1000
+            TEST_TIMEOUT
         );
     });
 
@@ -152,7 +208,7 @@ $(document).ready(function () {
             function () {
                 equal($input[0].value, 'testA');
             },
-            1000
+            TEST_TIMEOUT
         );
     });
 
@@ -164,7 +220,7 @@ $(document).ready(function () {
             function () {
                 equal($input[0].value, 'test!');
             },
-            1000
+            TEST_TIMEOUT
         );
     });
 
@@ -181,7 +237,7 @@ $(document).ready(function () {
                 equal($input[0].selectionStart, 0);
                 equal($input[0].selectionEnd, $input[0].value.length);
             },
-            1000
+            3000
         );
     });
 
@@ -200,30 +256,37 @@ $(document).ready(function () {
             function () {
                 deepEqual(domUtils.getActiveElement(), $input2[0]);
             },
-            1000
+            3000
         );
     });
 
     asyncTest('press tab with iframe', function () {
-        var $iframe      = $('<iframe id="test1" src="about:blank"/>')
+        var $iframe = $('<iframe id="test1" src="about:blank"/>')
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo($('body'));
+
         var $iframeInput = $('<input type="text" id="iframeInput"/>')
             .addClass(TEST_ELEMENT_CLASS);
-        $($iframe.contents()[0]).find('body').append($iframeInput);
-
-        domUtils.getActiveElement().blur();
-        $input.focus();
 
         runAsyncTest(
             function () {
-                actionsAPI.press('tab');
+                window.QUnitGlobals.waitForIframe($iframe[0])
+                    .then(function () {
+                        $($iframe.contents()[0]).find('body').append($iframeInput);
+
+                        domUtils.getActiveElement().blur();
+                        $input.focus();
+
+                        actionsAPI.press('tab');
+                    });
             },
             function () {
                 ok(domUtils.getActiveElement() !== $input[0]);
             },
-            1000
+            5000
         );
+
+
     });
 
     module('Regression tests');
@@ -236,121 +299,84 @@ $(document).ready(function () {
             function () {
                 equal($input[0].value, 'test+');
             },
-            1000
+            TEST_TIMEOUT
         );
     });
 
     asyncTest('B253200 - TestCafe doesn\'t emulate browsers behavior for press "enter" key on the focused HyperLink editor (link with href)', function () {
-        var iFrameSrc = window.QUnitGlobals.getResourceUrl('../../../data/runner/iframe.html', 'runner-iframe.html'),
-            linkHref  = window.QUnitGlobals.getResourceUrl('../../../data/focus-blur-change/iframe.html', 'focus-iframe.html'),
-            $link     = $('<a>Link</a>').attr('href', linkHref),
-            clicked   = false;
+        var iFrameSrc = window.QUnitGlobals.getResourceUrl('../../../data/runner/iframe.html', 'runner-iframe.html');
+        var linkHref  = window.QUnitGlobals.getResourceUrl('../../../data/focus-blur-change/iframe.html', 'focus-iframe.html');
+        var $link     = $('<a>Link</a>').attr('href', linkHref).addClass(TEST_ELEMENT_CLASS);
+        var iframe    = createIFrame(iFrameSrc);
+        var clicked   = false;
 
-        var testActions = function () {
-            runAsyncTest(
-                function () {
-                    $link.click(function () {
-                        clicked = true;
+        $link.click(function () {
+            clicked = true;
+        });
+
+        runAsyncTest(
+            function () {
+                window.QUnitGlobals.waitForIframe(iframe)
+                    .then(function () {
+                        equal(iframe.contentWindow.location.pathname, '/sessionId!iframe/https://example.com/test-resource/runner-iframe.html', 'path is correct before click on link');
+
+                        iframe.contentWindow.document.body.appendChild($link[0]);
+                        $link.focus();
+
+                        //NOTE: we need setTimeout to wait for focus in IE
+                        window.setTimeout(function () {
+                            equal(domUtils.getActiveElement(), $link[0]);
+                            actionsAPI.press('enter');
+                        }, 500);
                     });
-                    equal($iFrame[0].contentWindow.location.pathname, '/sessionId!iframe/https://example.com/test-resource/runner-iframe.html');
-                    $link.focus();
 
-                    //NOTE: we need set timeout for waiting of focus in IE
-
-                    window.setTimeout(function () {
-                        equal(domUtils.getActiveElement(), $link[0]);
-                        actionsAPI.press('enter');
-                    }, 500);
-
-                },
-                function () {
-                    equal($iFrame[0].contentWindow.location.pathname, '/sessionId/https://example.com/test-resource/focus-iframe.html');
-                    ok(clicked);
-                },
-                2000,
-                1000
-            );
-        };
-
-        createIFrame($link, iFrameSrc, testActions);
+                document.body.appendChild(iframe);
+            },
+            function () {
+                equal(iframe.contentWindow.location.pathname, '/sessionId/https://example.com/test-resource/focus-iframe.html', 'path is correct after click on link');
+                ok(clicked);
+            },
+            5000,
+            1000
+        );
     });
 
     asyncTest('B253200 - TestCafe doesn\'t emulate browsers behavior for press "enter" key on the focused HyperLink editor (link with javascript)', function () {
         var iFrameSrc = window.QUnitGlobals.getResourceUrl('../../../data/runner/iframe.html', 'runner-iframe.html');
         var linkHref  = window.QUnitGlobals.getResourceUrl('../../../data/focus-blur-change/iframe.html', 'focus-iframe.html');
+        var $link     = $('<a>Link</a>').attr('href', 'javascript: window.location.href = "' + linkHref + '"');
+        var iframe    = createIFrame(iFrameSrc);
+        var clicked   = false;
 
-        var $link   = $('<a>Link</a>').attr('href', 'javascript: window.location.href = "' + linkHref + '"'),
-            clicked = false;
+        $link.click(function () {
+            clicked = true;
+        });
 
-        var testActions = function () {
-            runAsyncTest(
-                function () {
-                    $link.click(function () {
-                        clicked = true;
+        runAsyncTest(
+            function () {
+                window.QUnitGlobals.waitForIframe(iframe)
+                    .then(function () {
+                        equal(iframe.contentWindow.location.pathname, '/sessionId!iframe/https://example.com/test-resource/runner-iframe.html', 'path is correct before click on link');
+
+                        iframe.contentWindow.document.body.appendChild($link[0]);
+                        $link.focus();
+
+                        //NOTE: we need setTimeout to wait for focus in IE
+                        window.setTimeout(function () {
+                            equal(domUtils.getActiveElement(), $link[0]);
+
+                            actionsAPI.press('enter');
+                        }, 500);
                     });
-                    equal($iFrame[0].contentWindow.location.pathname, '/sessionId!iframe/https://example.com/test-resource/runner-iframe.html');
-                    $link.focus();
 
-                    //NOTE: we need set timeout for waiting of focus in IE
-                    window.setTimeout(function () {
-                        equal(domUtils.getActiveElement(), $link[0]);
-                        actionsAPI.press('enter');
-                    }, 500);
-                },
-                function () {
-                    equal($iFrame[0].contentWindow.location.pathname, '/sessionId!iframe/https://example.com/test-resource/focus-iframe.html');
-                    ok(clicked);
-                },
-                2000,
-                1000
-            );
-        };
-
-        createIFrame($link, iFrameSrc, testActions);
-    });
-
-    module('parse keys string');
-
-    asyncTest('press correct symbol', function () {
-        actionsAPI.press('a');
-        setTimeout(function () {
-            equal(currentErrorType, null);
-            start();
-        }, 300);
-    });
-
-    asyncTest('press correct symbol with spaces', function () {
-        actionsAPI.press(' a  ');
-        setTimeout(function () {
-            equal(currentErrorType, null);
-            start();
-        }, 300);
-    });
-
-    asyncTest('press correct keys combination', function () {
-        actionsAPI.press('g h g+h  f t');
-        setTimeout(function () {
-            equal(currentErrorType, null);
-            start();
-        }, 300);
-    });
-
-    asyncTest('press correct keys combination with shortcuts', function () {
-        actionsAPI.press('g home g+h  f t left+right');
-        setTimeout(function () {
-            equal(currentErrorType, null);
-            start();
-        }, 300);
-    });
-
-    asyncTest('press incorrect keys combination', function () {
-        SETTINGS.ENABLE_SOURCE_INDEX = true;
-        actionsAPI.press('incorrect', '#11');
-        setTimeout(function () {
-            equal(currentErrorType, ERROR_TYPE.incorrectPressActionArgument);
-            equal(currentSourceIndex, 11);
-
-            start();
-        }, 300);
+                document.body.appendChild(iframe);
+            },
+            function () {
+                equal(iframe.contentWindow.location.pathname, '/sessionId!iframe/https://example.com/test-resource/focus-iframe.html', 'path is correct after click on link');
+                ok(clicked);
+            },
+            5000,
+            1000
+        );
     });
 });
