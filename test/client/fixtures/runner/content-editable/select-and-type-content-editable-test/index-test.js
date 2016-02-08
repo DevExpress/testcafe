@@ -8,9 +8,10 @@ var domUtils        = testCafeCore.get('./utils/dom');
 
 var testCafeRunner           = window.getTestCafeModule('testCafeRunner');
 var automation               = testCafeRunner.get('./automation/automation');
-var pressPlaybackAutomation  = testCafeRunner.get('./automation/playback/press');
 var typePlaybackAutomation   = testCafeRunner.get('./automation/playback/type');
 var selectPlaybackAutomation = testCafeRunner.get('./automation/playback/select');
+var PressAutomation          = testCafeRunner.get('./automation/playback/press');
+var parseKeyString           = testCafeRunner.get('./automation/playback/press/parse-key-string');
 
 automation.init();
 
@@ -131,6 +132,14 @@ $(document).ready(function () {
         if (!browserUtils.isIE && textSelection.hasInverseSelection($el[0]))
             return elementText.substring(0, end) + text + elementText.substring(start);
         return elementText.substring(0, start) + text + elementText.substring(end);
+    };
+
+    var runPressAutomation = function (keys, callback) {
+        var pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+
+        pressAutomation
+            .run()
+            .then(callback);
     };
 
     QUnit.testStart(function () {
@@ -681,7 +690,7 @@ $(document).ready(function () {
             },
 
             'Press delete': function (callback) {
-                pressPlaybackAutomation('delete', callback);
+                runPressAutomation('delete', callback);
             },
 
             'Second check selection': function (callback) {
@@ -738,7 +747,7 @@ $(document).ready(function () {
             },
 
             'Press backspace': function (callback) {
-                pressPlaybackAutomation('backspace', callback);
+                runPressAutomation('backspace', callback);
             },
 
             'Type in element': function (callback) {
@@ -784,7 +793,7 @@ $(document).ready(function () {
             },
 
             'Press backspace': function (callback) {
-                pressPlaybackAutomation('backspace', callback);
+                runPressAutomation('backspace', callback);
             },
 
             'Type in element': function (callback) {
@@ -842,7 +851,7 @@ $(document).ready(function () {
             },
 
             'Press left': function (callback) {
-                pressPlaybackAutomation('left', callback);
+                runPressAutomation('left', callback);
             },
 
             'Second check selection': function (callback) {
@@ -899,7 +908,7 @@ $(document).ready(function () {
             },
 
             'Press left': function (callback) {
-                pressPlaybackAutomation('right', callback);
+                runPressAutomation('right', callback);
             },
 
             'Second check selection': function (callback) {

@@ -401,8 +401,6 @@ export function getPositionCoordinates (el, position, correctOptions) {
         rects             = null,
         selectionPosition = null,
         rect              = null,
-
-        isTextarea        = el.tagName.toLowerCase() === 'textarea',
         isContentEditable = domUtils.isContentEditableElement(el),
         offset            = positionUtils.getOffsetPosition(el);
 
@@ -478,7 +476,7 @@ export function getPositionCoordinates (el, position, correctOptions) {
         range.setStart(fakeDiv.firstChild, Math.min(position, el.value.length));
         range.setEnd(fakeDiv.firstChild, Math.min(position, el.value.length));
 
-        if (isTextarea) {
+        if (domUtils.isTextarea(el)) {
             rects = range.getClientRects();
             rect  = range.getBoundingClientRect();
 

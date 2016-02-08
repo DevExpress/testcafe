@@ -14,7 +14,8 @@ var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblcl
 var hoverPlaybackAutomation    = testCafeRunner.get('./automation/playback/hover');
 var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
 var selectPlaybackAutomation   = testCafeRunner.get('./automation/playback/select');
-var pressPlaybackAutomation    = testCafeRunner.get('./automation/playback/press');
+var PressAutomation            = testCafeRunner.get('./automation/playback/press');
+var parseKeyString             = testCafeRunner.get('./automation/playback/press/parse-key-string');
 
 automation.init();
 
@@ -755,24 +756,27 @@ $(document).ready(function () {
     });
 
     asyncTest('T133144 - Incorrect typing into an input with type "number" in FF during test executing (press digits)', function () {
-        var initText = '1',
-            text     = '1 2 3',
-            newText  = '1123',
-            $input   = createInput('number').attr('value', initText);
+        var initText        = '1',
+            text            = '1 2 3',
+            newText         = '1123',
+            $input          = createInput('number').attr('value', initText),
+            pressAutomation = new PressAutomation(parseKeyString(text).combinations);
 
         clickPlaybackAutomation($input[0], {}, function () {
             equal(domUtils.getActiveElement(), $input[0]);
 
-            pressPlaybackAutomation(text, function () {
-                equal($input[0].value, newText);
+            pressAutomation
+                .run()
+                .then(function () {
+                    equal($input[0].value, newText);
 
-                if (!isInputWithoutSelectionProperties($input)) {
-                    equal(textSelection.getSelectionStart($input[0]), newText.length, 'start selection correct');
-                    equal(textSelection.getSelectionEnd($input[0]), newText.length, 'end selection correct');
-                }
+                    if (!isInputWithoutSelectionProperties($input)) {
+                        equal(textSelection.getSelectionStart($input[0]), newText.length, 'start selection correct');
+                        equal(textSelection.getSelectionEnd($input[0]), newText.length, 'end selection correct');
+                    }
 
-                startNext();
-            });
+                    startNext();
+                });
         });
     });
 

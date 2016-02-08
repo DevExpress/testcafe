@@ -4,9 +4,10 @@ var browserUtils = hammerhead.utils.browser;
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var domUtils     = testCafeCore.get('./utils/dom');
 
-var testCafeRunner    = window.getTestCafeModule('testCafeRunner');
-var automation        = testCafeRunner.get('./automation/automation');
-var keyPressSimulator = testCafeRunner.get('./automation/playback/key-press-simulator');
+var testCafeRunner  = window.getTestCafeModule('testCafeRunner');
+var automation      = testCafeRunner.get('./automation/automation');
+var PressAutomation = testCafeRunner.get('./automation/playback/press');
+var parseKeyString  = testCafeRunner.get('./automation/playback/press/parse-key-string');
 
 
 automation.init();
@@ -48,8 +49,8 @@ $(document).ready(function () {
         $radioGroupSecond               = null,
         $radioInput5                    = null,
         $radioInput6                    = null,
-        $invisibleParentWithInput = null,
-        $invisibleInput = null;
+        $invisibleParentWithInput       = null,
+        $invisibleInput                 = null;
 
 
     //utils
@@ -89,8 +90,8 @@ $(document).ready(function () {
 
         //T297258
         $invisibleParentWithInput = $('<div style="display: none;"><input/></div>').addClass(TEST_ELEMENT_CLASS).appendTo($body);
-        var $hiddenParent = $('<div style="width: 0px; height: 0px;"></div>').addClass(TEST_ELEMENT_CLASS).appendTo($body);
-        $invisibleInput = $('<input style="width: 0px; height: 0px;"/>').addClass(TEST_ELEMENT_CLASS).appendTo($hiddenParent);
+        var $hiddenParent         = $('<div style="width: 0px; height: 0px;"></div>').addClass(TEST_ELEMENT_CLASS).appendTo($body);
+        $invisibleInput           = $('<input style="width: 0px; height: 0px;"/>').addClass(TEST_ELEMENT_CLASS).appendTo($hiddenParent);
     };
 
     var createExpectedLog = function () {
@@ -147,7 +148,15 @@ $(document).ready(function () {
         start();
     };
 
-    QUnit.testStart = function(){
+    var runPressAutomation = function (keys, callback) {
+        var pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+
+        pressAutomation
+            .run()
+            .then(callback);
+    };
+
+    QUnit.testStart = function () {
         $('#qunit-tests').css('display', 'none');
     };
 
@@ -165,7 +174,7 @@ $(document).ready(function () {
         createExpectedLog();
 
         var pressTabRecursive = function () {
-            keyPressSimulator('tab', function (callback) {
+            runPressAutomation('tab', function (callback) {
                 if (focusedElements.length === $expectedFocusedElements.length - 1) {
                     logElement();
                     finishActions('tab');
@@ -187,7 +196,7 @@ $(document).ready(function () {
         createExpectedLog();
 
         var pressShiftTabRecursive = function (callback) {
-            keyPressSimulator('shift+tab', function (callback) {
+            runPressAutomation('shift+tab', function (callback) {
                 if (focusedElements.length === $expectedFocusedElements.length - 1) {
                     logElement();
                     finishActions('shift+tab');

@@ -1,9 +1,10 @@
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
 
-var testCafeRunner    = window.getTestCafeModule('testCafeRunner');
-var automation        = testCafeRunner.get('./automation/automation');
-var keyPressSimulator = testCafeRunner.get('./automation/playback/key-press-simulator');
+var testCafeRunner  = window.getTestCafeModule('testCafeRunner');
+var automation      = testCafeRunner.get('./automation/automation');
+var PressAutomation = testCafeRunner.get('./automation/playback/press');
+var parseKeyString  = testCafeRunner.get('./automation/playback/press/parse-key-string');
 
 automation.init();
 
@@ -26,13 +27,21 @@ $(document).ready(function () {
         };
 
         $input[0].focus();
-        keyPressSimulator('enter', callback);
+        runPressAutomation('enter', callback);
     }
 
     function isInputValueValid ($el) {
         var el = $el[0];
 
         return browserUtils.isSafari || !el.validity || el.validity.valid;
+    }
+
+    function runPressAutomation (keys, callback) {
+        var pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+
+        pressAutomation
+            .run()
+            .then(callback);
     }
 
     QUnit.testDone(function () {
@@ -279,7 +288,7 @@ $(document).ready(function () {
         };
 
         $input[0].focus();
-        keyPressSimulator('enter', callback);
+        runPressAutomation('enter', callback);
     });
 
     asyncTest('check all handlers are executed - form without submit button', function () {
@@ -340,7 +349,7 @@ $(document).ready(function () {
         };
 
         $input[0].focus();
-        keyPressSimulator('enter', callback);
+        runPressAutomation('enter', callback);
     });
 
     //when enter pressed in a form input, browser sends click event to form submit button
@@ -367,7 +376,7 @@ $(document).ready(function () {
         };
 
         $input[0].focus();
-        keyPressSimulator('enter', callback);
+        runPressAutomation('enter', callback);
     });
 
     asyncTest('form must not be submitted if enter keydown event was prevented', function () {
@@ -385,7 +394,7 @@ $(document).ready(function () {
                 e.preventDefault();
         });
 
-        $form[0].addEventListener('submit', function (e) {
+        $form[0].addEventListener('submit', function () {
             submitHandlerExecuted = true;
         });
 
@@ -396,7 +405,7 @@ $(document).ready(function () {
         };
 
         $input[0].focus();
-        keyPressSimulator('enter', callback);
+        runPressAutomation('enter', callback);
     });
 
     asyncTest('form must not be submitted if it has inputs with failed validation', function () {
@@ -424,6 +433,6 @@ $(document).ready(function () {
         };
 
         $input[0].focus();
-        keyPressSimulator('enter', callback);
+        runPressAutomation('enter', callback);
     });
 });

@@ -26,8 +26,7 @@ var eventUtils      = testCafeCore.eventUtils;
 
 
 export default function (el, options, runCallback) {
-    var isTextarea        = el.tagName.toLowerCase() === 'textarea',
-        isTextEditable    = domUtils.isTextEditableElement(el),
+    var isTextEditable    = domUtils.isTextEditableElement(el),
         isContentEditable = domUtils.isContentEditableElement(el),
         topElement        = null,
         currentTopElement = null,
@@ -132,7 +131,6 @@ export default function (el, options, runCallback) {
                     }
 
                     isTextEditable = domUtils.isTextEditableElement(topElement);
-                    isTextarea     = topElement.tagName.toLowerCase() === 'textarea';
 
                     window.setTimeout(callback, automationSettings.DRAG_ACTION_STEP_DELAY);
                 });
@@ -233,8 +231,8 @@ export default function (el, options, runCallback) {
                 point = positionUtils.findCenter(topElement);
 
             automationSelectUtil.scrollElementByPoint(topElement, point);
-            point = automationSelectUtil.updatePointByScrollElement(topElement, point);
 
+            point         = automationSelectUtil.updatePointByScrollElement(topElement, point);
             screenPointTo = positionUtils.offsetToClientCoords(point);
             eventPointTo  = automationUtil.getEventOptionCoordinates(topElement, screenPointTo);
 
