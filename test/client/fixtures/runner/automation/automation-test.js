@@ -8,9 +8,10 @@ var position      = testCafeCore.get('./utils/position');
 
 var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
 var automation                 = testCafeRunner.get('./automation/automation');
+var DragOptions                = testCafeRunner.get('./automation/options/drag');
 var clickPlaybackAutomation    = testCafeRunner.get('./automation/playback/click');
 var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
-var dragPlaybackAutomation     = testCafeRunner.get('./automation/playback/drag');
+var DragAutomation             = testCafeRunner.get('./automation/playback/drag');
 var selectPlaybackAutomation   = testCafeRunner.get('./automation/playback/select');
 var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
 var PressAutomation            = testCafeRunner.get('./automation/playback/press');
@@ -241,15 +242,25 @@ $(document).ready(function () {
     });
 
     asyncTest('run drag playback', function () {
-        var $draggable = createDraggable(),
-            dragCoord  = { dragOffsetX: 10, dragOffsetY: -100 },
-            center     = position.findCenter($draggable[0]),
-            pointTo    = { x: center.x + dragCoord.dragOffsetX, y: center.y + dragCoord.dragOffsetY };
+        var $draggable  = createDraggable(),
+            dragOffsetX = 10,
+            dragOffsetY = -100,
+            center      = position.findCenter($draggable[0]),
+            pointTo     = { x: center.x + dragOffsetX, y: center.y + dragOffsetY };
 
-        dragPlaybackAutomation($draggable[0], dragCoord, {}, function () {
-            deepEqual(position.findCenter($draggable[0]), pointTo);
-            startNext();
-        });
+        var dragOptions = new DragOptions();
+
+        dragOptions.dragOffsetX = dragOffsetX;
+        dragOptions.dragOffsetY = dragOffsetY;
+
+        var dragAutomation = new DragAutomation($draggable[0], dragOptions);
+
+        dragAutomation
+            .run()
+            .then(function () {
+                deepEqual(position.findCenter($draggable[0]), pointTo);
+                startNext();
+            });
     });
 
     asyncTest('run select playback in input', function () {

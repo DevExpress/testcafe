@@ -1,209 +1,196 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import testCafeUI from '../../deps/testcafe-ui';
 import { fromPoint as getElementFromPoint } from '../get-element';
 import * as automationUtil from '../util';
 import * as automationSettings from '../settings';
 import MoveAutomation from '../playback/move';
 import MoveOptions from '../options/move';
-import async from '../../deps/async';
 import cursor from '../cursor';
+import * as mouseUtils from '../../utils/mouse';
+import delay from '../../utils/delay';
 
 const DRAGGING_SPEED = 4; // pixels/ms
 const MIN_MOVING_TIME = 25;
 
+var Promise          = hammerhead.Promise;
 var browserUtils     = hammerhead.utils.browser;
 var extend           = hammerhead.utils.extend;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
-var SETTINGS        = testCafeCore.SETTINGS;
 var contentEditable = testCafeCore.contentEditable;
 var positionUtils   = testCafeCore.positionUtils;
 var domUtils        = testCafeCore.domUtils;
 var styleUtils      = testCafeCore.styleUtils;
 
 
-export default function (el, to, options, runCallback) {
-    var dragElement = positionUtils.isContainOffset(el, options.offsetX, options.offsetY);
+export default class DragAutomation {
+    constructor (element, dragOptions) {
+        this.element = element;
 
-    var target            = dragElement ? el : automationUtil.getMouseActionPoint(el, options, false),
-        targetElement     = dragElement ? el : document.documentElement,
-        screenPointFrom   = null,
-        eventPointFrom    = null,
-        eventOptionsStart = null,
-        topElement        = null,
-        skipDragEmulation = SETTINGS.get().RECORDING && !SETTINGS.get().PLAYBACK && !positionUtils.isElementVisible(el),
-        currentDocument   = domUtils.findDocument(el),
-        pointTo           = null,
-        startPosition     = null,
-        screenPointTo     = null,
-        eventPointTo      = null,
-        eventOptionsEnd   = null,
+        this.modifiers = dragOptions.modifiers;
+        this.offsetX   = dragOptions.offsetX;
+        this.offsetY   = dragOptions.offsetY;
 
-        offsets           = dragElement ? automationUtil.getDefaultAutomationOffsets(el) : {
-            offsetX: target.x,
-            offsetY: target.y
-        },
+        this.destinationElement = dragOptions.destinationElement;
+        this.dragOffsetX        = dragOptions.dragOffsetX;
+        this.dragOffsetY        = dragOptions.dragOffsetY;
 
-        modifiers         = {
-            ctrl:  options.ctrl,
-            shift: options.shift,
-            alt:   options.alt,
-            meta:  options.meta
+        this.endPoint = null;
+
+        this.eventArgs = {
+            point:   null,
+            options: null,
+            element: null
+        };
+    }
+
+    _getMoveArguments () {
+        var containsOffset    = positionUtils.isContainOffset(this.element, this.offsetX, this.offsetY);
+        var moveActionOffsets = mouseUtils.getMoveAutomationOffsets(this.element, this.offsetX, this.offsetY);
+
+        return {
+            element: containsOffset ? this.element : document.documentElement,
+            offsetX: moveActionOffsets.offsetX,
+            offsetY: moveActionOffsets.offsetY
+        };
+    }
+
+    _calculateEventArguments () {
+        var screenPoint     = mouseUtils.getAutomationPoint(this.element, this.offsetX, this.offsetY);
+        var point           = mouseUtils.convertToClient(this.element, screenPoint);
+        var expectedElement = positionUtils.isContainOffset(this.element, this.offsetX, this.offsetY) ?
+                              this.element : null;
+
+        var options = extend({
+            clientX: point.x,
+            clientY: point.y
+        }, this.modifiers);
+
+
+        var topElement = getElementFromPoint(point.x, point.y, expectedElement);
+
+        return {
+            point:   point,
+            options: options,
+            element: topElement
+        };
+    }
+
+    _move ({ element, offsetX, offsetY }) {
+        var moveOptions = new MoveOptions();
+
+        moveOptions.offsetX   = offsetX;
+        moveOptions.offsetY   = offsetY;
+        moveOptions.modifiers = this.modifiers;
+
+        var moveAutomation = new MoveAutomation(element, moveOptions);
+
+        return moveAutomation
+            .run()
+            .then(() => delay(automationSettings.DRAG_ACTION_STEP_DELAY));
+    }
+
+    _getEndPoint () {
+        if (this.destinationElement)
+            return positionUtils.findCenter(this.destinationElement);
+
+        var startPoint = mouseUtils.getAutomationPoint(this.element, this.offsetX, this.offsetY);
+        var maxX       = styleUtils.getWidth(document);
+        var maxY       = styleUtils.getHeight(document);
+        var endPoint   = {
+            x: startPoint.x + this.dragOffsetX,
+            y: startPoint.y + this.dragOffsetY
         };
 
-    if (dragElement) {
-        if (typeof options.offsetX === 'number')
-            offsets.offsetX = Math.round(options.offsetX);
-        if (typeof options.offsetY === 'number')
-            offsets.offsetY = Math.round(options.offsetY);
+        return {
+            x: Math.min(Math.max(0, endPoint.x), maxX),
+            y: Math.min(Math.max(0, endPoint.y), maxY)
+        };
     }
 
-    if (skipDragEmulation) {
-        runCallback(el);
-        return;
+    _mousedown () {
+        return cursor
+            .leftButtonDown()
+            .then(() => {
+                this.eventArgs = this._calculateEventArguments();
+
+                if (browserUtils.hasTouchEvents)
+                    eventSimulator.touchstart(this.eventArgs.element, this.eventArgs.options);
+                else
+                    eventSimulator.mousedown(this.eventArgs.element, this.eventArgs.options);
+
+                return this._focus();
+            })
+            .then(() => delay(automationSettings.DRAG_ACTION_STEP_DELAY));
     }
 
-    async.series({
-        moveCursorToElement: function (callback) {
-            var moveOptions = new MoveOptions();
+    _focus () {
+        return new Promise(resolve => {
+            // NOTE: If a target element is a child of a contentEditable element, we need to call focus for its parent
+            var elementForFocus = domUtils.isContentEditableElement(this.element) ?
+                                  contentEditable.findContentEditableParent(this.element) : this.eventArgs.element;
 
-            moveOptions.offsetX   = offsets.offsetX;
-            moveOptions.offsetY   = offsets.offsetY;
-            moveOptions.modifiers = modifiers;
+            focusBlurSandbox.focus(elementForFocus, resolve, false, true);
+        });
+    }
 
-            var moveAutomation = new MoveAutomation(targetElement, moveOptions);
+    _drag () {
+        this.endPoint = this._getEndPoint();
 
-            moveAutomation
-                .run()
-                .then(()=> {
-                    startPosition   = automationUtil.getMouseActionPoint(el, options, false);
-                    screenPointFrom = positionUtils.offsetToClientCoords(startPosition);
-                    eventPointFrom  = automationUtil.getEventOptionCoordinates(el, screenPointFrom);
+        var element = this.destinationElement || document.documentElement;
+        var offsets = this.destinationElement ? automationUtil.getDefaultAutomationOffsets(this.destinationElement) : {
+            offsetX: this.endPoint.x,
+            offsetY: this.endPoint.y
+        };
 
-                    eventOptionsStart = extend({
-                        clientX: eventPointFrom.x,
-                        clientY: eventPointFrom.y
-                    }, options);
+        var dragOptions = new MoveOptions();
 
-                    if (domUtils.isDomElement(to))
-                        pointTo = positionUtils.findCenter(to);
-                    else
-                        pointTo = automationUtil.getDragEndPoint(startPosition, to, currentDocument);
+        dragOptions.offsetX       = offsets.offsetX;
+        dragOptions.offsetY       = offsets.offsetY;
+        dragOptions.modifiers     = this.modifiers;
+        dragOptions.speed         = DRAGGING_SPEED;
+        dragOptions.minMovingTime = MIN_MOVING_TIME;
+        dragOptions.dragMode      = true;
 
-                    topElement = getElementFromPoint(screenPointFrom.x, screenPointFrom.y);
+        var moveAutomation = new MoveAutomation(element, dragOptions);
 
-                    if (!topElement) {
-                        runCallback(el);
-                        return;
-                    }
+        return moveAutomation
+            .run()
+            .then(() => delay(automationSettings.DRAG_ACTION_STEP_DELAY));
+    }
 
-                    window.setTimeout(callback, automationSettings.DRAG_ACTION_STEP_DELAY);
-                });
-        },
-        cursorMouseDown:     function (callback) {
-            cursor
-                .leftButtonDown()
-                .then(() => callback());
-        },
+    _mouseup () {
+        return cursor
+            .buttonUp()
+            .then(() => {
+                var point      = positionUtils.offsetToClientCoords(this.endPoint);
+                var topElement = getElementFromPoint(point.x, point.y);
+                var options    = extend({
+                    clientX: point.x,
+                    clientY: point.y
+                }, this.modifiers);
 
-        take: function (callback) {
-            if (browserUtils.hasTouchEvents)
-                eventSimulator.touchstart(topElement, eventOptionsStart);
-            else
-                eventSimulator.mousedown(topElement, eventOptionsStart);
+                if (!topElement)
+                    return;
 
-            //NOTE: For contentEditable elements we should call focus directly for action's element
-            focusBlurSandbox.focus(domUtils.isContentEditableElement(el) ? contentEditable.findContentEditableParent(el) : topElement, function () {
-                window.setTimeout(callback, automationSettings.DRAG_ACTION_STEP_DELAY);
-            }, false, true);
-        },
+                if (browserUtils.hasTouchEvents)
+                    eventSimulator.touchend(topElement, options);
+                else
+                    eventSimulator.mouseup(topElement, options);
 
-        drag: function (callback) {
-            var isDomElement = domUtils.isDomElement(to);
-            var targetTo     = isDomElement ? to : document.documentElement;
+                //B231323
+                if (getElementFromPoint(point.x, point.y) === topElement)
+                    eventSimulator.click(topElement, options);
+            });
+    }
 
-            var offsetsTo = isDomElement ? automationUtil.getDefaultAutomationOffsets(to) : {
-                offsetX: pointTo.x,
-                offsetY: pointTo.y
-            };
+    run () {
+        var moveArguments = this._getMoveArguments();
 
-            var moveOptions = new MoveOptions();
-
-            moveOptions.offsetX       = offsetsTo.offsetX;
-            moveOptions.offsetY       = offsetsTo.offsetY;
-            moveOptions.modifiers     = modifiers;
-            moveOptions.speed         = DRAGGING_SPEED;
-            moveOptions.minMovingTime = MIN_MOVING_TIME;
-            moveOptions.dragMode      = true;
-
-            var moveAutomation = new MoveAutomation(targetTo, moveOptions);
-
-            moveAutomation
-                .run()
-                .then(() => window.setTimeout(callback, automationSettings.DRAG_ACTION_STEP_DELAY));
-        },
-
-
-        cursorMouseUp: function (callback) {
-            if (pointTo)
-                screenPointTo = positionUtils.offsetToClientCoords(pointTo);
-            else {
-                var offsetPos = positionUtils.getOffsetPosition(el);
-
-                screenPointTo = positionUtils.offsetToClientCoords({
-                    x: offsetPos.left,
-                    y: offsetPos.top
-                });
-            }
-
-            eventPointTo = automationUtil.getEventOptionCoordinates(el, screenPointTo);
-
-            if (domUtils.isElementInIframe(el)) {
-                var currentIFrame = domUtils.getIframeByElement(el);
-                if (currentIFrame) {
-                    var screenPointToInIFrame = {
-                        x: screenPointTo.x - styleUtils.getScrollLeft(currentIFrame.contentWindow),
-                        y: screenPointTo.y - styleUtils.getScrollTop(currentIFrame.contentWindow)
-                    };
-
-                    topElement = getElementFromPoint(screenPointToInIFrame.x, screenPointToInIFrame.y);
-                }
-            }
-            else
-                topElement = getElementFromPoint(screenPointTo.x, screenPointTo.y);
-
-            if (!topElement) {
-                runCallback();
-                return;
-            }
-
-            eventOptionsEnd = extend({
-                clientX: eventPointTo.x,
-                clientY: eventPointTo.y
-            }, options);
-
-            cursor
-                .buttonUp()
-                .then(() => callback());
-        },
-
-        mouseUp: function (callback) {
-            if (browserUtils.hasTouchEvents)
-                eventSimulator.touchend(topElement, eventOptionsEnd);
-            else
-                eventSimulator.mouseup(topElement, eventOptionsEnd);
-
-            callback();
-        },
-
-        click: function () {
-            //B231323
-            if (getElementFromPoint(screenPointTo.x, screenPointTo.y) === topElement)
-                eventSimulator.click(topElement, eventOptionsEnd);
-
-            runCallback();
-        }
-    });
-};
+        return this._move(moveArguments)
+            .then(() => this._mousedown())
+            .then(() => this._drag())
+            .then(() => this._mouseup());
+    }
+}

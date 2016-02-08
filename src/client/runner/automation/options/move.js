@@ -1,6 +1,6 @@
-import MouseActionOptions from './mouse-action';
+import MouseOptions from './mouse';
 
-export default class MoveOptions extends MouseActionOptions {
+export default class MoveOptions extends MouseOptions {
     constructor () {
         super();
 
