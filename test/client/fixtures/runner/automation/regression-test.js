@@ -15,7 +15,8 @@ var clickPlaybackAutomation    = testCafeRunner.get('./automation/playback/click
 var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
 var HoverAutomation            = testCafeRunner.get('./automation/playback/hover');
 var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
-var selectPlaybackAutomation   = testCafeRunner.get('./automation/playback/select');
+var SelectOptions              = testCafeRunner.get('./automation/options/select');
+var SelectAutomation           = testCafeRunner.get('./automation/playback/select');
 var PressAutomation            = testCafeRunner.get('./automation/playback/press');
 var parseKeyString             = testCafeRunner.get('./automation/playback/press/parse-key-string');
 
@@ -597,15 +598,21 @@ $(document).ready(function () {
                 endPos   = 11,
                 backward = true;
 
-            selectPlaybackAutomation($input[0], {
-                startPos: endPos,
-                endPos:   startPos
-            }, function () {
-                equal(textSelection.getSelectionStart($input[0]), startPos, 'start selection correct');
-                equal(textSelection.getSelectionEnd($input[0]), endPos, 'end selection correct');
-                equal(textSelection.hasInverseSelection($input[0]), backward, 'selection direction correct');
-                startNext();
-            });
+            var selectOptions = new SelectOptions();
+
+            selectOptions.startPos = endPos;
+            selectOptions.endPos   = startPos;
+
+            var selectAutomation = new SelectAutomation($input[0], selectOptions);
+
+            selectAutomation
+                .run()
+                .then(function () {
+                    equal(textSelection.getSelectionStart($input[0]), startPos, 'start selection correct');
+                    equal(textSelection.getSelectionEnd($input[0]), endPos, 'end selection correct');
+                    equal(textSelection.hasInverseSelection($input[0]), backward, 'selection direction correct');
+                    startNext();
+                });
         });
     }
 

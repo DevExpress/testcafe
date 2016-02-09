@@ -36,7 +36,9 @@ export default class DragAutomation {
         this.dragOffsetX        = dragOptions.dragOffsetX;
         this.dragOffsetY        = dragOptions.dragOffsetY;
 
-        this.endPoint = null;
+        this.endPoint  = null;
+        this.downEvent = browserUtils.hasTouchEvents ? 'touchstart' : 'mousedown';
+        this.upEvent   = browserUtils.hasTouchEvents ? 'touchend' : 'mouseup';
 
         this.eventArgs = {
             point:   null,
@@ -115,10 +117,7 @@ export default class DragAutomation {
             .then(() => {
                 this.eventArgs = this._calculateEventArguments();
 
-                if (browserUtils.hasTouchEvents)
-                    eventSimulator.touchstart(this.eventArgs.element, this.eventArgs.options);
-                else
-                    eventSimulator.mousedown(this.eventArgs.element, this.eventArgs.options);
+                eventSimulator[this.downEvent](this.eventArgs.element, this.eventArgs.options);
 
                 return this._focus();
             })
@@ -127,7 +126,7 @@ export default class DragAutomation {
 
     _focus () {
         return new Promise(resolve => {
-            // NOTE: If a target element is a child of a contentEditable element, we need to call focus for its parent
+            // NOTE: If the target element is a child of a contentEditable element, we need to call focus for its parent
             var elementForFocus = domUtils.isContentEditableElement(this.element) ?
                                   contentEditable.findContentEditableParent(this.element) : this.eventArgs.element;
 
@@ -174,10 +173,7 @@ export default class DragAutomation {
                 if (!topElement)
                     return;
 
-                if (browserUtils.hasTouchEvents)
-                    eventSimulator.touchend(topElement, options);
-                else
-                    eventSimulator.mouseup(topElement, options);
+                eventSimulator[this.upEvent](topElement, options);
 
                 //B231323
                 if (getElementFromPoint(point.x, point.y) === topElement)
@@ -188,7 +184,8 @@ export default class DragAutomation {
     run () {
         var moveArguments = this._getMoveArguments();
 
-        return this._move(moveArguments)
+        return this.
+            _move(moveArguments)
             .then(() => this._mousedown())
             .then(() => this._drag())
             .then(() => this._mouseup());
