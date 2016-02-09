@@ -704,7 +704,7 @@ export function upload (what, path) {
                 hammerhead.doUpload(element, path)
                     .then((errs) => {
                         if (errs.length) {
-                            var errPaths = arrayUtils.map(errs, err => err.filePath);
+                            var errPaths = arrayUtils.map(errs, err => err.path);
 
                             failWithError(ERROR_TYPE.uploadCanNotFindFileToUpload, { filePaths: errPaths });
                         }
