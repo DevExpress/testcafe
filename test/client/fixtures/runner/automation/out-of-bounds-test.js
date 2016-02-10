@@ -7,10 +7,11 @@ var textSelection = testCafeCore.get('./utils/text-selection');
 
 var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
 var automation                 = testCafeRunner.get('./automation/automation');
+var DragOptions                = testCafeRunner.get('./automation/options/drag');
 var clickPlaybackAutomation    = testCafeRunner.get('./automation/playback/click');
 var rClickPlaybackAutomation   = testCafeRunner.get('./automation/playback/rclick');
 var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
-var dragPlaybackAutomation     = testCafeRunner.get('./automation/playback/drag');
+var DragAutomation             = testCafeRunner.get('./automation/playback/drag');
 var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
 
 automation.init();
@@ -363,15 +364,7 @@ $(document).ready(function () {
             dragOffsetX          = 10,
             dragOffsetY          = -100,
             offsetX              = $smallDraggable.width() + 10,
-            offsetY              = $smallDraggable.height() + 10,
-            dragOffsets          = {
-                dragOffsetX: dragOffsetX,
-                dragOffsetY: dragOffsetY
-            },
-            dragOptions          = {
-                offsetX: offsetX,
-                offsetY: offsetY
-            };
+            offsetY              = $smallDraggable.height() + 10;
 
         var handler = function (e) {
             var smallDraggablePos       = position.getOffsetPosition($smallDraggable[0]),
@@ -409,15 +402,25 @@ $(document).ready(function () {
             backgroundColor: 'red'
         });
 
-        dragPlaybackAutomation($smallDraggable[0], dragOffsets, dragOptions, function () {
-            deepEqual(position.getOffsetPosition($smallDraggable[0]), smallDraggableOffset);
-            equal(position.getOffsetPosition($bigDraggable[0]).left, bigDraggableOffset.left + dragOffsetX);
-            equal(position.getOffsetPosition($bigDraggable[0]).top, bigDraggableOffset.top + dragOffsetY);
+        var dragOptions = new DragOptions();
 
-            expect(browserUtils.hasTouchEvents ? 3 : 9);
+        dragOptions.dragOffsetX = dragOffsetX;
+        dragOptions.dragOffsetY = dragOffsetY;
+        dragOptions.offsetX     = offsetX;
+        dragOptions.offsetY     = offsetY;
 
-            startNext();
+        var dragAutomation = new DragAutomation($smallDraggable[0], dragOptions);
 
-        });
+        dragAutomation
+            .run()
+            .then(function () {
+                deepEqual(position.getOffsetPosition($smallDraggable[0]), smallDraggableOffset);
+                equal(position.getOffsetPosition($bigDraggable[0]).left, bigDraggableOffset.left + dragOffsetX);
+                equal(position.getOffsetPosition($bigDraggable[0]).top, bigDraggableOffset.top + dragOffsetY);
+
+                expect(browserUtils.hasTouchEvents ? 3 : 9);
+
+                startNext();
+            });
     });
 });

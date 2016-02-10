@@ -1,6 +1,6 @@
 import OffsetOptions from './offset';
 
-export default class MouseActionOptions extends OffsetOptions {
+export default class MouseOptions extends OffsetOptions {
     constructor () {
         super();
 

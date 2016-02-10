@@ -2,9 +2,9 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import clickPlayback from './playback/click';
 import dblClickPlayback from './playback/dblclick';
-import dragPlayback from './playback/drag';
+import DragAutomation from './playback/drag';
 import hoverPlayback from './playback/hover';
-import pressPlayback from './playback/press';
+import PressAutomation from './playback/press';
 import rClickPlayback from './playback/rclick';
 import selectPlayback from './playback/select';
 import typePlayback from './playback/type';
@@ -24,7 +24,7 @@ var arrayUtils = testCafeCore.arrayUtils;
 const REAL_ACTION_EVENTS_REGEXP = /blur|focus|(dbl)?click|contextmenu|key|mouse|pointer/i;
 
 
-export var AUTOMATION_RUNNERS = 'tc-ar-73630b99';
+export var AUTOMATIONS = 'runner|automations';
 
 //NOTE: when test is run we should block real events (from mouse, keyboard), because it may lead to
 // unexpected test result.
@@ -46,7 +46,8 @@ var preventRealEvtHandler = function (e, dispatched, preventDefault) {
 
                 if (!isElementInvisible) {
                     elementParents   = domUtils.getParents(target);
-                    invisibleParents = arrayUtils.filter(elementParents, parent => styleUtils.get(parent, 'display') === 'none');
+                    invisibleParents = arrayUtils.filter(elementParents, parent => styleUtils.get(parent, 'display') ===
+                                                                                   'none');
                 }
 
                 if (isElementInvisible || invisibleParents.length) {
@@ -78,7 +79,7 @@ export function init () {
 }
 
 //Running
-window[AUTOMATION_RUNNERS] = {
+window[AUTOMATIONS] = {
     click:    {
         playback: clickPlayback
     },
@@ -88,19 +89,19 @@ window[AUTOMATION_RUNNERS] = {
     dblclick: {
         playback: dblClickPlayback
     },
-    drag:     {
-        playback: dragPlayback
-    },
-    select:   {
+
+    DragAutomation: DragAutomation,
+
+    select: {
         playback: selectPlayback
     },
-    press:    {
-        playback: pressPlayback
-    },
-    type:     {
+
+    PressAutomation: PressAutomation,
+
+    type:  {
         playback: typePlayback
     },
-    hover:    {
+    hover: {
         playback: hoverPlayback
     }
 };

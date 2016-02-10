@@ -1,10 +1,12 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import testCafeUI from '../deps/testcafe-ui';
-import * as automation from '../automation/automation';
+import { AUTOMATIONS } from '../automation/automation';
+import DragOptions from '../automation/options/drag.js';
+import { getOffsetOptions } from '../utils/mouse'
 import clickPlaybackAutomation from '../automation/playback/click';
 import dblClickPlaybackAutomation from '../automation/playback/dblclick';
-import dragPlaybackAutomation from '../automation/playback/drag';
+import DragAutomation from '../automation/playback/drag';
 import hoverPlaybackAutomation from '../automation/playback/hover';
 import PressAutomation from '../automation/playback/press';
 import rClickPlaybackAutomation from '../automation/playback/rclick';
@@ -292,8 +294,8 @@ export function click (what, options) {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].click.playback(element, options ||
-                                                                                                {}, callback, onerror);
+                    iframe.contentWindow[AUTOMATIONS].click.playback(element, options ||
+                                                                                         {}, callback, onerror);
                 else
                     clickPlaybackAutomation(element, options || {}, callback, onerror);
             });
@@ -315,8 +317,8 @@ export function rclick (what, options) {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].rclick.playback(element, options ||
-                                                                                                 {}, callback);
+                    iframe.contentWindow[AUTOMATIONS].rclick.playback(element, options ||
+                                                                                          {}, callback);
                 else
                     rClickPlaybackAutomation(element, options || {}, callback);
             });
@@ -338,8 +340,8 @@ export function dblclick (what, options) {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].dblclick.playback(element, options ||
-                                                                                                   {}, callback);
+                    iframe.contentWindow[AUTOMATIONS].dblclick.playback(element, options ||
+                                                                                            {}, callback);
                 else
                     dblClickPlaybackAutomation(element, options || {}, callback);
             });
@@ -347,32 +349,41 @@ export function dblclick (what, options) {
 }
 
 export function drag (what) {
-    var actionStarted = false,
-        args          = arguments,
-        elements      = ensureArray(what);
+    var actionStarted      = false;
+    var args               = arguments;
+    var elements           = ensureArray(what);
+    var secondArgIsCoord   = !(isNaN(parseInt(args[1])));
+    var options            = secondArgIsCoord ? args[3] : args[2];
+    var destinationElement = null;
+    var dragOffsetX        = null;
+    var dragOffsetY        = null;
 
-    var secondArgIsCoord = !(isNaN(parseInt(args[1])));
-
-    var to = args.length > 2 && secondArgIsCoord ? { dragOffsetX: args[1], dragOffsetY: args[2] } : args[1];
-
-    if (!to) {
-        failWithError(ERROR_TYPE.incorrectDraggingSecondArgument);
-        return;
+    if (args.length > 2 && secondArgIsCoord) {
+        dragOffsetX = args[1];
+        dragOffsetY = args[2];
     }
-    if (isJQueryObj(to)) {
-        if (to.length < 1) {
+    else {
+        destinationElement = args[1];
+
+        if (!destinationElement) {
+            failWithError(ERROR_TYPE.incorrectDraggingSecondArgument);
+            return;
+        }
+    }
+
+    if (isJQueryObj(destinationElement)) {
+        if (destinationElement.length < 1) {
             failWithError(ERROR_TYPE.incorrectDraggingSecondArgument);
             return;
         }
         else
-            to = to[0];
+            destinationElement = destinationElement[0];
     }
-    else if (!domUtils.isDomElement(to) && (isNaN(parseInt(to.dragOffsetX)) || isNaN(parseInt(to.dragOffsetY)))) {
+    else if (!domUtils.isDomElement(destinationElement) &&
+             (isNaN(parseInt(dragOffsetX)) || isNaN(parseInt(dragOffsetY)))) {
         failWithError(ERROR_TYPE.incorrectDraggingSecondArgument);
         return;
     }
-
-    var options = secondArgIsCoord ? args[3] : args[2];
 
     stepIterator.asyncActionSeries(
         elements,
@@ -384,11 +395,31 @@ export function drag (what) {
                     onTargetWaitingFinished();
                 }
 
-                if (iframe)
-                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].drag.playback(element, to, options ||
-                                                                                                   {}, callback);
-                else
-                    dragPlaybackAutomation(element, to, options || {}, callback);
+                options = options || {};
+
+                var dragOptions = new DragOptions();
+                var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
+
+                dragOptions.offsetX            = offsetX;
+                dragOptions.offsetY            = offsetY;
+                dragOptions.destinationElement = destinationElement;
+                dragOptions.dragOffsetX        = dragOffsetX;
+                dragOptions.dragOffsetY        = dragOffsetY;
+
+                dragOptions.modifiers.ctrl  = options.ctrl;
+                dragOptions.modifiers.alt   = options.alt;
+                dragOptions.modifiers.shift = options.shift;
+                dragOptions.modifiers.meta  = options.meta;
+
+                var dragAutomation = iframe ?
+                                     new iframe.contentWindow[AUTOMATIONS].DragAutomation(element, dragOptions) :
+                                     new DragAutomation(element, dragOptions);
+
+                dragAutomation
+                    .run()
+                    .then(() => {
+                        callback();
+                    });
             });
         });
 }
@@ -480,7 +511,7 @@ export function select () {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].select.playback(element, options, callback);
+                    iframe.contentWindow[AUTOMATIONS].select.playback(element, options, callback);
                 else
                     selectPlaybackAutomation(element, options, callback);
             });
@@ -507,8 +538,8 @@ export function type (what, text, options) {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].type.playback(element, text, options ||
-                                                                                                     {}, callback);
+                    iframe.contentWindow[AUTOMATIONS].type.playback(element, text, options ||
+                                                                                              {}, callback);
                 else
                     typePlaybackAutomation(element, text, options || {}, callback);
             });
@@ -530,7 +561,7 @@ export function hover (what, options) {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[automation.AUTOMATION_RUNNERS].hover.playback(element, callback);
+                    iframe.contentWindow[AUTOMATIONS].hover.playback(element, callback);
                 else
                     hoverPlaybackAutomation(element, options || {}, callback);
             });
