@@ -1,0 +1,8 @@
+{
+  "baseUrl": "./runner/using-shared-code/",
+  "modules": {
+    "testModule": [
+      "./module.js"
+    ]
+  }
+}
