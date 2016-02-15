@@ -4,11 +4,12 @@ import testCafeUI from '../deps/testcafe-ui';
 import { AUTOMATIONS } from '../automation/automation';
 import DragOptions from '../automation/options/drag.js';
 import ClickOptions from '../automation/options/click.js';
+import MouseOptions from '../automation/options/mouse.js';
 import { getOffsetOptions } from '../utils/mouse'
 import clickPlaybackAutomation from '../automation/playback/click';
 import dblClickPlaybackAutomation from '../automation/playback/dblclick';
 import DragAutomation from '../automation/playback/drag';
-import hoverPlaybackAutomation from '../automation/playback/hover';
+import HoverAutomation from '../automation/playback/hover';
 import PressAutomation from '../automation/playback/press';
 import RClickAutomation from '../automation/playback/rclick';
 import selectPlaybackAutomation from '../automation/playback/select';
@@ -338,7 +339,7 @@ export function rclick (what, options) {
                     .run()
                     .then(() => {
                         callback();
-                    })
+                    });
             });
         });
 }
@@ -576,10 +577,28 @@ export function hover (what, options) {
                     onTargetWaitingFinished();
                 }
 
-                if (iframe)
-                    iframe.contentWindow[AUTOMATIONS].hover.playback(element, callback);
-                else
-                    hoverPlaybackAutomation(element, options || {}, callback);
+                options = options || {};
+
+                var hoverOptions = new MouseOptions();
+                var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
+
+                hoverOptions.offsetX = offsetX;
+                hoverOptions.offsetY = offsetY;
+
+                hoverOptions.modifiers.ctrl  = options.ctrl;
+                hoverOptions.modifiers.alt   = options.alt;
+                hoverOptions.modifiers.shift = options.shift;
+                hoverOptions.modifiers.meta  = options.meta;
+
+                var hoverAutomation = iframe ?
+                                      new iframe.contentWindow[AUTOMATIONS].HoverAutomation(element, hoverOptions) :
+                                      new HoverAutomation(element, hoverOptions);
+
+                hoverAutomation
+                    .run()
+                    .then(() => {
+                        callback();
+                    });
             });
         });
 }

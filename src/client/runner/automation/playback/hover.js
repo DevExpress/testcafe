@@ -1,42 +1,47 @@
 import testCafeCore from '../../deps/testcafe-core';
-import * as automationSettings from '../settings';
-import * as automationUtil from '../util';
 import MoveAutomation from '../playback/move';
 import MoveOptions from '../options/move';
+import { getMoveAutomationOffsets } from '../../utils/mouse';
 
-var SETTINGS      = testCafeCore.SETTINGS;
 var positionUtils = testCafeCore.positionUtils;
 
 
-export default function (element, options, callback) {
-    if (SETTINGS.get().RECORDING && !SETTINGS.get().PLAYBACK && !positionUtils.isElementVisible(element)) {
-        window.setTimeout(callback, automationSettings.ACTION_STEP_DELAY);
-        return;
+export default class HoverAutomation {
+    constructor (element, hoverOptions) {
+        this.element   = element;
+        this.modifiers = hoverOptions.modifiers;
+
+        this.offsetX = hoverOptions.offsetX;
+        this.offsetY = hoverOptions.offsetY;
     }
 
-    var offsets = automationUtil.getDefaultAutomationOffsets(element);
+    _getMoveArguments () {
+        var clickOnElement    = positionUtils.isContainOffset(this.element, this.offsetX, this.offsetY);
+        var moveActionOffsets = getMoveAutomationOffsets(this.element, this.offsetX, this.offsetY);
 
-    var modifiers = {
-        ctrl:  options.ctrl,
-        shift: options.shift,
-        alt:   options.alt,
-        meta:  options.meta
-    };
+        return {
+            element: clickOnElement ? this.element : document.documentElement,
+            offsetX: moveActionOffsets.offsetX,
+            offsetY: moveActionOffsets.offsetY
+        };
+    }
 
-    if (typeof options.offsetX === 'number')
-        offsets.offsetX = Math.round(options.offsetX);
-    if (typeof options.offsetY === 'number')
-        offsets.offsetY = Math.round(options.offsetY);
+    _move ({ element, offsetX, offsetY }) {
+        var moveOptions = new MoveOptions();
 
-    var moveOptions = new MoveOptions();
+        moveOptions.offsetX   = offsetX;
+        moveOptions.offsetY   = offsetY;
+        moveOptions.modifiers = this.modifiers;
 
-    moveOptions.offsetX   = offsets.offsetX;
-    moveOptions.offsetY   = offsets.offsetY;
-    moveOptions.modifiers = modifiers;
+        var moveAutomation = new MoveAutomation(element, moveOptions);
 
-    var moveAutomation = new MoveAutomation(element, moveOptions);
+        return moveAutomation.run();
+    }
 
-    moveAutomation
-        .run()
-        .then(callback);
-};
+    run () {
+        var moveArguments = this._getMoveArguments();
+
+        return this._move(moveArguments);
+    }
+}
+

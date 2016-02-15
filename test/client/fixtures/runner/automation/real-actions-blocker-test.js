@@ -3,8 +3,10 @@ var nativeMethods = hammerhead.nativeMethods;
 
 var testCafeRunner          = window.getTestCafeModule('testCafeRunner');
 var automation              = testCafeRunner.get('./automation/automation');
+var mouseUtils              = testCafeRunner.get('./utils/mouse');
+var MouseOptions            = testCafeRunner.get('./automation/options/mouse');
 var clickPlaybackAutomation = testCafeRunner.get('./automation/playback/click');
-var hoverPlaybackAutomation = testCafeRunner.get('./automation/playback/hover');
+var HoverAutomation         = testCafeRunner.get('./automation/playback/hover');
 
 automation.init();
 
@@ -44,7 +46,17 @@ $(document).ready(function () {
 
         window.async.series({
             moveToFirstElement: function (callback) {
-                hoverPlaybackAutomation(div1, {}, callback);
+                var hoverOptions = new MouseOptions();
+                var offsets      = mouseUtils.getOffsetOptions(div1);
+
+                hoverOptions.offsetX = offsets.offsetX;
+                hoverOptions.offsetY = offsets.offsetY;
+
+                var hoverAutomation = new HoverAutomation(div1, hoverOptions);
+
+                hoverAutomation
+                    .run()
+                    .then(callback);
             },
 
             clickSecondElementAndSimulateRealEvent: function (callback) {
