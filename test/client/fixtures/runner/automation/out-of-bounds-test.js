@@ -8,8 +8,9 @@ var textSelection = testCafeCore.get('./utils/text-selection');
 var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
 var automation                 = testCafeRunner.get('./automation/automation');
 var DragOptions                = testCafeRunner.get('./automation/options/drag');
+var ClickOptions               = testCafeRunner.get('./automation/options/click');
 var clickPlaybackAutomation    = testCafeRunner.get('./automation/playback/click');
-var rClickPlaybackAutomation   = testCafeRunner.get('./automation/playback/rclick');
+var RClickAutomation           = testCafeRunner.get('./automation/playback/rclick');
 var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
 var DragAutomation             = testCafeRunner.get('./automation/playback/drag');
 var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
@@ -219,17 +220,12 @@ $(document).ready(function () {
     });
 
     asyncTest('RClick playback', function () {
-
         var $smallDiv       = createDiv(200, 200, 50, 50, 'red'),
             $bigDiv         = createDiv(150, 150, 150, 150, 'grey'),
             clickSmallCount = 0,
             clickBigCount   = 0,
             offsetX         = $smallDiv.width() + 10,
-            offsetY         = $smallDiv.height() + 10,
-            rclickOffsets   = {
-                offsetX: offsetX,
-                offsetY: offsetY
-            };
+            offsetY         = $smallDiv.height() + 10;
 
         $smallDiv.css('zIndex', '5');
 
@@ -251,12 +247,21 @@ $(document).ready(function () {
             clickBigCount++;
         });
 
-        rClickPlaybackAutomation($smallDiv[0], rclickOffsets, function () {
-            equal(clickSmallCount, 0);
-            equal(clickBigCount, 1);
-            expect(4);
-            startNext();
-        });
+        var clickOptions = new ClickOptions();
+
+        clickOptions.offsetX = offsetX;
+        clickOptions.offsetY = offsetY;
+
+        var rClickAutomation = new RClickAutomation($smallDiv[0], clickOptions);
+
+        rClickAutomation
+            .run()
+            .then(function () {
+                equal(clickSmallCount, 0);
+                equal(clickBigCount, 1);
+                expect(4);
+                startNext();
+            });
     });
 
     asyncTest('DblClick playback', function () {

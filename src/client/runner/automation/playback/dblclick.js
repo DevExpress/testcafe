@@ -44,7 +44,8 @@ export default function (el, options, actionCallback) {
     if (!curElement)
         curElement = el;
 
-    var isInvisibleElement = (SETTINGS.get().RECORDING && !SETTINGS.get().PLAYBACK) && !positionUtils.isElementVisible(el),
+    var isInvisibleElement = (SETTINGS.get().RECORDING && !SETTINGS.get().PLAYBACK) &&
+                             !positionUtils.isElementVisible(el),
         screenPoint        = automationUtil.getMouseActionPoint(el, options, true),
         eventPoint         = automationUtil.getEventOptionCoordinates(el, screenPoint),
         eventOptions       = hammerhead.utils.extend({
@@ -147,9 +148,12 @@ export default function (el, options, actionCallback) {
 
                     //NOTE: we should not call it after the second click because of the native browser behavior
                     if (!browserUtils.isIE) {
-                        //NOTE: For contentEditable elements we should call focus directly for action's element because
-                        //option 'caretPos' is indicated for this element and topElement may be a child of this element
-                        automationUtil.focusAndSetSelection(domUtils.isContentEditableElement(el) ? el : curElement, options, needFocus, callback);
+                        // NOTE: If a target element is a contentEditable element, we need to call focusAndSetSelection directly for
+                        // this element. Otherwise, if the element obtained by elementFromPoint is a child of the contentEditable
+                        // element, a selection position may be calculated incorrectly (by using the caretPos option).
+                        automationUtil
+                            .focusAndSetSelection(domUtils.isContentEditableElement(el) ? el : curElement, needFocus, options.caretPos)
+                            .then(callback);
                     }
                     else
                         callback();

@@ -346,9 +346,12 @@ export default function (el, options, runCallback, errorCallback) {
                 }
             }
 
-            //NOTE: For contentEditable elements we should call focus directly for action's element because
-            //option 'caretPos' is indicated for this element and topElement may be a child of this element
-            automationUtil.focusAndSetSelection(domUtils.isContentEditableElement(el) ? el : topElement, options, needFocus, mouseDownCallback);
+            // NOTE: If a target element is a contentEditable element, we need to call focusAndSetSelection directly for
+            // this element. Otherwise, if the element obtained by elementFromPoint is a child of the contentEditable
+            // element, a selection position may be calculated incorrectly (by using the caretPos option).
+            automationUtil
+                .focusAndSetSelection(domUtils.isContentEditableElement(el) ? el : topElement, needFocus, options.caretPos)
+                .then(mouseDownCallback);
         },
 
         cursorMouseUp: function (callback) {
@@ -393,7 +396,8 @@ export default function (el, options, runCallback, errorCallback) {
             if (!skipClickSimulation)
                 eventSimulator.click(topElement, eventOptions);
 
-            automationUtil.focusLabelChildElement(topElement);
+            if (!domUtils.isElementFocusable(topElement))
+                automationUtil.focusByRelatedElement(topElement);
 
             //NOTE: emulating click event on 'select' element doesn't expand dropdown with options (except chrome),
             // therefore we should emulate it.

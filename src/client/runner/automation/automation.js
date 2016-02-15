@@ -5,7 +5,7 @@ import dblClickPlayback from './playback/dblclick';
 import DragAutomation from './playback/drag';
 import hoverPlayback from './playback/hover';
 import PressAutomation from './playback/press';
-import rClickPlayback from './playback/rclick';
+import RClickAutomation from './playback/rclick';
 import selectPlayback from './playback/select';
 import typePlayback from './playback/type';
 
@@ -80,12 +80,12 @@ export function init () {
 
 //Running
 window[AUTOMATIONS] = {
-    click:    {
+    click: {
         playback: clickPlayback
     },
-    rclick:   {
-        playback: rClickPlayback
-    },
+
+    RClickAutomation: RClickAutomation,
+
     dblclick: {
         playback: dblClickPlayback
     },

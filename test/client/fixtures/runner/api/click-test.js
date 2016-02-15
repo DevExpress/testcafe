@@ -24,12 +24,11 @@ var correctTestWaitingTime = function (time) {
     return time;
 };
 
-var ELEMENT_WAITING_TIMEOUT = 400;
+var ELEMENT_WAITING_TIMEOUT       = 400;
+var ERROR_WAITING_TIMEOUT         = ELEMENT_WAITING_TIMEOUT + 100;
+var TEST_COMPLETE_WAITING_TIMEOUT = 2000;
 
 actionsAPI.setElementAvailabilityWaitingTimeout(ELEMENT_WAITING_TIMEOUT);
-
-var TEST_COMPLETE_WAITING_TIMEOUT = 2000,
-    ERROR_WAITING_TIMEOUT         = ELEMENT_WAITING_TIMEOUT + 50;
 
 $(document).ready(function () {
     var actionTargetWaitingCounter = 0,
@@ -179,6 +178,7 @@ $(document).ready(function () {
     });
 
     module('different arguments tests');
+
     asyncTest('dom element as a parameter', function () {
         var clicked = false;
         runAsyncTest(
@@ -283,30 +283,6 @@ $(document).ready(function () {
         );
     });
 
-    asyncTest('empty first argument raises error', function () {
-        SETTINGS.ENABLE_SOURCE_INDEX = true;
-        actionsAPI.click($('#nonExistentElement'), '#24');
-        setTimeout(function () {
-            equal(currentErrorType, ERROR_TYPE.emptyFirstArgument);
-            equal(currentActionSourceIndex, 24);
-            startNext();
-        }, ERROR_WAITING_TIMEOUT);
-    });
-
-    asyncTest('invisible first argument raises error', function () {
-        SETTINGS.ENABLE_SOURCE_INDEX = true;
-        $el.css('visibility', 'hidden');
-        actionsAPI.click($el, '#32');
-        setTimeout(function () {
-            $el.css('visibility', '');
-            equal(currentErrorType, ERROR_TYPE.invisibleActionElement);
-            equal(currentErrorElement, '&lt;input id=&quot;button1&quot; class=&quot;button testElement&quot;&gt;');
-            equal(currentActionSourceIndex, 32);
-
-            startNext();
-        }, correctTestWaitingTime(ERROR_WAITING_TIMEOUT));
-    });
-
     asyncTest('some elements created after click on the first one', function () {
         var secondElementClicked = false,
             thirdElementClicked  = false,
@@ -333,23 +309,7 @@ $(document).ready(function () {
                 ok(secondElementClicked, 'second element clicked');
                 ok(thirdElementClicked, 'third element clicked');
             },
-            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT));
-    });
-
-    asyncTest('expected element are not created after first click error', function () {
-        SETTINGS.ENABLE_SOURCE_INDEX = true;
-
-        asyncActionCallback = function () {
-        };
-
-        actionsAPI.click([$el, '#nonExistentElementId'], '#271');
-
-        setTimeout(function () {
-            equal(currentErrorType, ERROR_TYPE.emptyFirstArgument);
-            equal(currentActionSourceIndex, 271);
-
-            startNext();
-        }, correctTestWaitingTime(ERROR_WAITING_TIMEOUT * 2));
+            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT * 2));
     });
 
     asyncTest('function as a first argument', function () {
@@ -376,6 +336,59 @@ $(document).ready(function () {
                 ok(thirdElementClicked, 'third element clicked');
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT));
+    });
+
+    module('wrong arguments');
+
+    asyncTest('expected element are not created after first click error', function () {
+        SETTINGS.ENABLE_SOURCE_INDEX = true;
+
+        asyncActionCallback = function () {
+        };
+
+        var clicked = false;
+
+        $el.click(function () {
+            clicked = true;
+        });
+
+        actionsAPI.click([$el, '#nonExistentElementId'], '#271');
+
+        setTimeout(function () {
+            ok(clicked, 'click raised');
+            equal(currentErrorType, ERROR_TYPE.emptyFirstArgument, 'error type correct');
+            equal(currentActionSourceIndex, 271, 'source index correct');
+
+            startNext();
+        }, correctTestWaitingTime(ERROR_WAITING_TIMEOUT * 2));
+    });
+
+    asyncTest('empty first argument raises error', function () {
+        SETTINGS.ENABLE_SOURCE_INDEX = true;
+
+        actionsAPI.click($('#nonExistentElement'), '#24');
+
+        setTimeout(function () {
+            equal(currentErrorType, ERROR_TYPE.emptyFirstArgument);
+            equal(currentActionSourceIndex, 24);
+            startNext();
+        }, ERROR_WAITING_TIMEOUT);
+    });
+
+    asyncTest('invisible first argument raises error', function () {
+        SETTINGS.ENABLE_SOURCE_INDEX = true;
+        $el.css('visibility', 'hidden');
+
+        actionsAPI.click($el, '#32');
+
+        setTimeout(function () {
+            $el.css('visibility', '');
+            equal(currentErrorType, ERROR_TYPE.invisibleActionElement);
+            equal(currentErrorElement, '&lt;input id=&quot;button1&quot; class=&quot;button testElement&quot;&gt;');
+            equal(currentActionSourceIndex, 32);
+
+            startNext();
+        }, correctTestWaitingTime(ERROR_WAITING_TIMEOUT));
     });
 
     module('dom events tests');
@@ -718,6 +731,7 @@ $(document).ready(function () {
     });
 
     module('regression');
+
     asyncTest('Q558721 - Test running hangs if element is hidden in non-scrollable container', function () {
         var clickRaised = false,
             $container  = $('<div></div>')
@@ -1037,7 +1051,7 @@ $(document).ready(function () {
 
         runAsyncTest(
             function () {
-                $el.click(function() {
+                $el.click(function () {
                     try {
                         /*eslint-disable no-caller*/
 

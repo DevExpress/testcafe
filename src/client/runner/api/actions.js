@@ -3,13 +3,14 @@ import testCafeCore from '../deps/testcafe-core';
 import testCafeUI from '../deps/testcafe-ui';
 import { AUTOMATIONS } from '../automation/automation';
 import DragOptions from '../automation/options/drag.js';
+import ClickOptions from '../automation/options/click.js';
 import { getOffsetOptions } from '../utils/mouse'
 import clickPlaybackAutomation from '../automation/playback/click';
 import dblClickPlaybackAutomation from '../automation/playback/dblclick';
 import DragAutomation from '../automation/playback/drag';
 import hoverPlaybackAutomation from '../automation/playback/hover';
 import PressAutomation from '../automation/playback/press';
-import rClickPlaybackAutomation from '../automation/playback/rclick';
+import RClickAutomation from '../automation/playback/rclick';
 import selectPlaybackAutomation from '../automation/playback/select';
 import typePlaybackAutomation from '../automation/playback/type';
 import parseKeyString from '../automation/playback/press/parse-key-string';
@@ -294,8 +295,7 @@ export function click (what, options) {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[AUTOMATIONS].click.playback(element, options ||
-                                                                                         {}, callback, onerror);
+                    iframe.contentWindow[AUTOMATIONS].click.playback(element, options || {}, callback, onerror);
                 else
                     clickPlaybackAutomation(element, options || {}, callback, onerror);
             });
@@ -316,11 +316,29 @@ export function rclick (what, options) {
                     onTargetWaitingFinished();
                 }
 
-                if (iframe)
-                    iframe.contentWindow[AUTOMATIONS].rclick.playback(element, options ||
-                                                                                          {}, callback);
-                else
-                    rClickPlaybackAutomation(element, options || {}, callback);
+                options = options || {};
+
+                var clickOptions = new ClickOptions();
+                var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
+
+                clickOptions.offsetX  = offsetX;
+                clickOptions.offsetY  = offsetY;
+                clickOptions.caretPos = options.caretPos;
+
+                clickOptions.modifiers.ctrl  = options.ctrl;
+                clickOptions.modifiers.alt   = options.alt;
+                clickOptions.modifiers.shift = options.shift;
+                clickOptions.modifiers.meta  = options.meta;
+
+                var rClickAutomation = iframe ?
+                                       new iframe.contentWindow[AUTOMATIONS].RClickAutomation(element, clickOptions) :
+                                       new RClickAutomation(element, clickOptions);
+
+                rClickAutomation
+                    .run()
+                    .then(() => {
+                        callback();
+                    })
             });
         });
 }
@@ -340,8 +358,7 @@ export function dblclick (what, options) {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[AUTOMATIONS].dblclick.playback(element, options ||
-                                                                                            {}, callback);
+                    iframe.contentWindow[AUTOMATIONS].dblclick.playback(element, options || {}, callback);
                 else
                     dblClickPlaybackAutomation(element, options || {}, callback);
             });
@@ -538,8 +555,7 @@ export function type (what, text, options) {
                 }
 
                 if (iframe)
-                    iframe.contentWindow[AUTOMATIONS].type.playback(element, text, options ||
-                                                                                              {}, callback);
+                    iframe.contentWindow[AUTOMATIONS].type.playback(element, text, options || {}, callback);
                 else
                     typePlaybackAutomation(element, text, options || {}, callback);
             });

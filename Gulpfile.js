@@ -28,7 +28,7 @@ var promisify    = require('pify');
 var markdownlint = require('markdownlint');
 
 
-var readFile  = promisify(fs.readFile, Promise);
+var readFile = promisify(fs.readFile, Promise);
 
 
 ll
@@ -70,16 +70,8 @@ var CLIENT_TESTS_BROWSERS = [
         browserName: 'chrome'
     },
     {
-        browserName: 'chrome',
-        platform:    'OS X 10.11'
-    },
-    {
         platform:    'Windows 10',
         browserName: 'firefox'
-    },
-    {
-        browserName: 'firefox',
-        platform:    'OS X 10.11'
     },
     {
         platform:    'Windows 10',
@@ -103,22 +95,31 @@ var CLIENT_TESTS_BROWSERS = [
         deviceName:  'Android Emulator'
     },
     {
-        browserName: 'safari',
         platform:    'OS X 10.10',
+        browserName: 'safari',
         version:     '8.0'
     },
     {
-        browserName: 'iphone',
+        platform:    'OS X 10.11',
+        browserName: 'chrome'
+    },
+    {
+        platform:    'OS X 10.11',
+        browserName: 'firefox'
+    },
+    {
         platform:    'OS X 10.10',
+        browserName: 'iphone',
         version:     '8.1',
         deviceName:  'iPad Simulator'
     },
     {
-        browserName: 'iphone',
         platform:    'OS X 10.10',
+        browserName: 'iphone',
         version:     '9.1',
         deviceName:  'iPhone 6 Plus'
     }
+
 ];
 
 var SAUCELABS_SETTINGS = {
@@ -145,8 +146,9 @@ gulp.task('lint-client', function () {
             'src/client/runner/automation/playback/move.js',
             'src/client/runner/automation/playback/press/**/*.js',
             'src/client/runner/automation/playback/drag.js',
+            'src/client/runner/automation/playback/rclick.js',
             'src/client/runner/automation/cursor.js',
-            'src/client/runner/automation/utils/**/*.js',
+            'src/client/runner/automation/util.js',
             'src/client/runner/utils/**/*.js',
             'src/client/ui/cursor'
         ])
