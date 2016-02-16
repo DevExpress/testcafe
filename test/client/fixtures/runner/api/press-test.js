@@ -318,7 +318,7 @@ $(document).ready(function () {
             function () {
                 window.QUnitGlobals.waitForIframe(iframe)
                     .then(function () {
-                        equal(iframe.contentWindow.location.pathname, '/sessionId!iframe/https://example.com/test-resource/runner-iframe.html', 'path is correct before click on link');
+                        equal(iframe.contentWindow.location.pathname, '/sessionId!i/https://example.com/test-resource/runner-iframe.html', 'path is correct before click on link');
 
                         iframe.contentWindow.document.body.appendChild($link[0]);
                         $link.focus();
@@ -356,7 +356,7 @@ $(document).ready(function () {
             function () {
                 window.QUnitGlobals.waitForIframe(iframe)
                     .then(function () {
-                        equal(iframe.contentWindow.location.pathname, '/sessionId!iframe/https://example.com/test-resource/runner-iframe.html', 'path is correct before click on link');
+                        equal(iframe.contentWindow.location.pathname, '/sessionId!i/https://example.com/test-resource/runner-iframe.html', 'path is correct before click on link');
 
                         iframe.contentWindow.document.body.appendChild($link[0]);
                         $link.focus();
@@ -372,7 +372,7 @@ $(document).ready(function () {
                 document.body.appendChild(iframe);
             },
             function () {
-                equal(iframe.contentWindow.location.pathname, '/sessionId!iframe/https://example.com/test-resource/focus-iframe.html', 'path is correct after click on link');
+                equal(iframe.contentWindow.location.pathname, '/sessionId!i/https://example.com/test-resource/focus-iframe.html', 'path is correct after click on link');
                 ok(clicked);
             },
             5000,

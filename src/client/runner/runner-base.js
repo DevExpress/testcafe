@@ -346,10 +346,8 @@ RunnerBase.prototype.on = function (event, handler) {
     this.eventEmitter.on(event, handler);
 };
 
-function pingIframe (iframe, callback) {
-    messageSandbox
-        .pingIframe(iframe, CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_PING_DISPATCHER_CMD)
-        .then(callback);
+function pingIframe (iframe) {
+    return messageSandbox.pingIframe(iframe, CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_PING_DISPATCHER_CMD);
 }
 
 RunnerBase.prototype._runInIFrame = function (iframe, stepName, step, stepNum) {
@@ -373,18 +371,17 @@ RunnerBase.prototype._runInIFrame = function (iframe, stepName, step, stepNum) {
         }
     }
 
-    pingIframe(iframe, function (err) {
-        if (err) {
+    pingIframe(iframe)
+        .then(() => {
+            runner.iframeExistenceWatcherInterval = window.setInterval(iframeExistenceWatcher, IFRAME_EXISTENCE_WATCHING_INTERVAL);
+            messageSandbox.sendServiceMsg(msg, iframe.contentWindow);
+        })
+        .catch(() => {
             runner._onFatalError({
                 type:     ERROR_TYPE.inIFrameTargetLoadingTimeout,
                 stepName: runner.stepIterator.getCurrentStep()
             });
-        }
-        else {
-            runner.iframeExistenceWatcherInterval = window.setInterval(iframeExistenceWatcher, IFRAME_EXISTENCE_WATCHING_INTERVAL);
-            messageSandbox.sendServiceMsg(msg, iframe.contentWindow);
-        }
-    });
+        });
 };
 
 RunnerBase.prototype._ensureIFrame = function (arg) {

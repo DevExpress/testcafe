@@ -319,10 +319,10 @@ StepIterator.prototype._checkIFrame = function (element, callback) {
 
     var iFrame = domUtils.getIframeByElement(element);
 
-    this.pingIframe(iFrame, function () {
-        callback(iFrame);
-    });
-
+    this
+        .pingIframe(iFrame)
+        .then(() => callback(iFrame))
+        .catch(() => callback(iFrame));
 };
 
 StepIterator.prototype.asyncAction = function (action) {
