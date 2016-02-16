@@ -5,14 +5,12 @@ var JSON = hammerhead.json;
 const STORAGE_KEY_PREFIX = "runner|";
 
 export default class TestContextStorage {
-    constructor (window, sessionId) {
+    constructor (window, testRunId) {
         this.storage             = window.sessionStorage;
-        this.storageKey          = STORAGE_KEY_PREFIX + sessionId;
+        this.storageKey          = STORAGE_KEY_PREFIX + testRunId;
         this.data                = null;
-        this.beforeUnloadHandler = () => this._saveToStorage();
 
         this._loadFromStorage();
-        hammerhead.on(hammerhead.EVENTS.beforeUnload, this.beforeUnloadHandler);
     }
 
     _loadFromStorage () {
@@ -34,11 +32,15 @@ export default class TestContextStorage {
 
     set (newData) {
         this.data = newData;
+        this._saveToStorage();
+    }
+
+    setProperty (prop, value) {
+        this.data[prop] = value;
+        this._saveToStorage();
     }
 
     dispose () {
-        hammerhead.off(hammerhead.EVENTS.beforeUnload, this.beforeUnloadHandler);
-
         this.storage.removeItem(this.storageKey);
     }
 };

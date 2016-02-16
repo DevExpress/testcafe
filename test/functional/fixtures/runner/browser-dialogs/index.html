@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index</title>
+</head>
+<body>
+<div id='result'></div>
+
+<a href="confirm-page.html">Confirm page</a>
+<a href="index.html">This page</a>
+<button id="confirm" onclick="document.getElementById('result').textContent = (window.confirm('Confirm'))">Confirm</button>
+<button id="simpleButton">Button</button>
+<button id="enableBeforeUnload">Enable beforeunload dialog</button>
+<a id="fakeLink" href="javascript:alert()">Fake link</a>
+
+<script>
+    document.getElementById('enableBeforeUnload').onclick = function () {
+        window.onbeforeunload = function (e) {
+            e.returnValue = 'message';
+
+            return 'message';
+        };
+    };
+</script>
+</body>
+</html>

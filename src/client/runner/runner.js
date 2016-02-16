@@ -74,22 +74,22 @@ Runner.prototype._onTestComplete = function (e) {
 };
 
 Runner.prototype._onNextStepStarted = function (e) {
-    this.testContextStorage.get().nextStep = e.nextStep;
+    this.testContextStorage.setProperty('nextStep', e.nextStep);
 
     e.callback();
 };
 
-//NOTE: decrease step counter while an action is waiting for element available and decrease it when action running started (T230851)
+// NOTE: decrease the step counter if the action restarts while waiting for an element to be available (T230851)
 Runner.prototype._onActionTargetWaitingStarted = function (e) {
     RunnerBase.prototype._onActionTargetWaitingStarted.apply(this, [e]);
 
-    this.testContextStorage.get().actionTargetWaiting = true;
+    this.testContextStorage.setProperty('actionTargetWaiting', true);
 };
 
 Runner.prototype._onActionRun = function () {
     RunnerBase.prototype._onActionRun.apply(this, []);
 
-    this.testContextStorage.get().actionTargetWaiting = false;
+    this.testContextStorage.setProperty('actionTargetWaiting', false);
 };
 
 Runner.prototype._beforeScreenshot = function () {
@@ -130,12 +130,6 @@ Runner.prototype._reportErrorToServer = function (err, isAssertion) {
     return new Promise(resolve => {
         if (isAssertion)
             transport.assertionFailed(err, resolve);
-        else if (beforeUnloadRaised) {
-            // NOTE: we should not stop the test run if an error occured during page unloading because we
-            // would destroy the session in this case and wouldn't be able to get the next page in the browser.
-            // We should set the deferred error to the task to have the test fail after the page reloading.
-            this.testContextStorage.get().testError = err;
-        }
         else {
             this.testContextStorage.dispose();
             transport.fatalError(err, resolve);
@@ -146,9 +140,11 @@ Runner.prototype._reportErrorToServer = function (err, isAssertion) {
 Runner.prototype._onTestError = function (err, isAssertion) {
     // NOTE: we should not create multiple screenshots for a step. Create a screenshot if
     // it's the first error at this step or it's an error that occurs on page initialization.
-    err.pageUrl            = document.location.toString();
-    err.screenshotRequired = SETTINGS.get().TAKE_SCREENSHOTS && SETTINGS.get().TAKE_SCREENSHOTS_ON_FAILS &&
-                             this.stepIterator.state.curStepErrors.length < 2;
+    err.pageUrl = document.location.toString();
+
+    if (!err.hasOwnProperty('screenshotRequired'))
+        err.screenshotRequired = SETTINGS.get().TAKE_SCREENSHOTS && SETTINGS.get().TAKE_SCREENSHOTS_ON_FAILS &&
+                                 this.stepIterator.state.curStepErrors.length < 2;
 
     // NOTE: we should escape the test name because it may contain markup (GH-160)
     if (err.stepName)
@@ -176,8 +172,18 @@ Runner.prototype._onFatalError = function (err) {
 
     RunnerBase.prototype._onFatalError.call(this, err);
 
-    this._onTestError(err)
-        .then(Runner.checkStatus);
+    // NOTE: we should not stop the test running if an error occurs during page unload. As a result, we
+    // would destroy the session and wouldn't be able to get the next page in the browser.
+    // We have to set the deferred error to the task to have the test fail after page reload.
+    if (beforeUnloadRaised) {
+        err.screenshotRequired = false;
+        this.testContextStorage.setProperty('testError', err);
+    }
+    else {
+        this.
+            _onTestError(err)
+            .then(Runner.checkStatus);
+    }
 };
 
 Runner.prototype._onAssertionFailed = function (e) {
