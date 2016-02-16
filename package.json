@@ -54,7 +54,7 @@
     "uuid": "^2.0.1"
   },
   "devDependencies": {
-    "babel-eslint": "^4.1.6",
+    "babel-eslint": "^5.0.0",
     "babel-plugin-add-module-exports": "^0.1.2",
     "caller": "^1.0.1",
     "chai": "^3.0.0",
