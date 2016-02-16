@@ -9,9 +9,11 @@ var textSelection = testCafeCore.get('./utils/text-selection');
 
 var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
 var automation                 = testCafeRunner.get('./automation/automation');
+var mouseUtils                 = testCafeRunner.get('./utils/mouse');
+var MouseOptions               = testCafeRunner.get('./automation/options/mouse');
 var clickPlaybackAutomation    = testCafeRunner.get('./automation/playback/click');
 var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
-var hoverPlaybackAutomation    = testCafeRunner.get('./automation/playback/hover');
+var HoverAutomation            = testCafeRunner.get('./automation/playback/hover');
 var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
 var selectPlaybackAutomation   = testCafeRunner.get('./automation/playback/select');
 var PressAutomation            = testCafeRunner.get('./automation/playback/press');
@@ -126,6 +128,20 @@ $(document).ready(function () {
         return domUtils.isInputWithoutSelectionPropertiesInFirefox($el[0]);
     };
 
+    var runHoverAutomation = function (element, callback) {
+        var hoverOptions = new MouseOptions();
+        var offsets      = mouseUtils.getOffsetOptions(element);
+
+        hoverOptions.offsetX = offsets.offsetX;
+        hoverOptions.offsetY = offsets.offsetY;
+
+        var hoverAutomation = new HoverAutomation(element, hoverOptions);
+
+        hoverAutomation
+            .run()
+            .then(callback);
+    };
+
     var startNext = function () {
         if (browserUtils.isIE) {
             removeTestElements();
@@ -205,7 +221,7 @@ $(document).ready(function () {
                     firstEvent = 'mousemove';
             });
 
-            hoverPlaybackAutomation($element[0], {}, function () {
+            runHoverAutomation($element[0], function () {
                 equal(firstEvent, browserUtils.isIE ? 'mousemove' : 'mouseover');
                 startNext();
             });
@@ -414,7 +430,7 @@ $(document).ready(function () {
         var $input    = $('<input type="button" />').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             completed = false;
 
-        hoverPlaybackAutomation($input[0], {}, function () {
+        runHoverAutomation($input[0], function () {
             if (!completed) {
                 completed   = true;
                 ok('test success');

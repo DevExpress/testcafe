@@ -3,7 +3,7 @@ import testCafeCore from '../deps/testcafe-core';
 import clickPlayback from './playback/click';
 import dblClickPlayback from './playback/dblclick';
 import DragAutomation from './playback/drag';
-import hoverPlayback from './playback/hover';
+import HoverAutomation from './playback/hover';
 import PressAutomation from './playback/press';
 import RClickAutomation from './playback/rclick';
 import selectPlayback from './playback/select';
@@ -98,10 +98,9 @@ window[AUTOMATIONS] = {
 
     PressAutomation: PressAutomation,
 
-    type:  {
+    type: {
         playback: typePlayback
     },
-    hover: {
-        playback: hoverPlayback
-    }
+
+    HoverAutomation: HoverAutomation
 };
