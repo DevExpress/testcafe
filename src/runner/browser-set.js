@@ -5,7 +5,8 @@ import promisifyEvent from 'promisify-event';
 import noop from 'noop-fn';
 import mapReverse from 'map-reverse';
 import LocalBrowserConnection from '../browser-connection/local';
-import { MESSAGE, getText } from '../messages';
+import { GeneralError } from '../errors';
+import MESSAGE from '../errors/message';
 import remove from '../utils/array-remove';
 
 
@@ -63,7 +64,7 @@ export default class BrowserSet extends EventEmitter {
                 .map(bc => promisifyEvent(bc, 'ready'))
         );
 
-        var timeoutError = new Error(getText(MESSAGE.cantEstablishBrowserConnection));
+        var timeoutError = new GeneralError(MESSAGE.cantEstablishBrowserConnection);
 
         return timeLimit(connectionsReadyPromise, this.READY_TIMEOUT, { rejectWith: timeoutError });
     }
@@ -74,7 +75,7 @@ export default class BrowserSet extends EventEmitter {
             .map(bc => bc.userAgent);
 
         if (disconnectedUserAgents.length)
-            throw new Error(getText(MESSAGE.cantRunAgainstDisconnectedBrowsers, disconnectedUserAgents.join(', ')));
+            throw new GeneralError(MESSAGE.cantRunAgainstDisconnectedBrowsers, disconnectedUserAgents.join(', '));
     }
 
 

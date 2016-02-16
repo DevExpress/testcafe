@@ -3,7 +3,8 @@ import Mustache from 'mustache';
 import { parse as parseUserAgent } from 'useragent';
 import { readSync as read } from 'read-file-relative';
 import COMMAND from './command';
-import { MESSAGE, getText } from '../messages';
+import { GeneralError } from '../errors';
+import MESSAGE from '../errors/message';
 import remove from '../utils/array-remove';
 
 
@@ -44,7 +45,7 @@ export default class BrowserConnection extends EventEmitter {
 
     _waitForHeartbeat () {
         this.heartbeatTimeout = setTimeout(() => {
-            this.emit('error', new Error(getText(MESSAGE.browserDisconnected, this.userAgent)));
+            this.emit('error', new GeneralError(MESSAGE.browserDisconnected, this.userAgent));
         }, this.HEARTBEAT_TIMEOUT);
     }
 

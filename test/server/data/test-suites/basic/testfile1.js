@@ -12,8 +12,8 @@ test('Fixture1Test2', async () => {
     return 'F1T2';
 });
 
-fixture `Fixture${1 + 1}`;
-page('http://example.org');
+fixture `Fixture${1 + 1}`
+    .page('http://example.org');
 
 test('Fixture2Test1', async () => {
     return 'F2T1';

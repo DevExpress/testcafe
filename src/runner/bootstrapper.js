@@ -3,7 +3,8 @@ import { getBrowserInfo } from 'testcafe-browser-natives';
 import Compiler from '../compiler';
 import BrowserConnection from '../browser-connection';
 import LocalBrowserConnection from '../browser-connection/local';
-import { MESSAGE, getText } from '../messages';
+import { GeneralError } from '../errors';
+import MESSAGE from '../errors/message';
 import BrowserSet from './browser-set';
 
 
@@ -22,7 +23,7 @@ export default class Bootstrapper {
             var browserInfo = await getBrowserInfo(browser);
 
             if (!browserInfo)
-                throw new Error(getText(MESSAGE.cantFindBrowser, browser));
+                throw new GeneralError(MESSAGE.cantFindBrowser, browser);
 
             return browserInfo;
         }
@@ -39,7 +40,7 @@ export default class Bootstrapper {
 
     async _getBrowserConnections () {
         if (!this.browsers.length)
-            throw new Error(getText(MESSAGE.browserNotSet));
+            throw new GeneralError(MESSAGE.browserNotSet);
 
         var browsers           = await Promise.all(this.browsers.map(Bootstrapper._convertAliasOrPathToBrowserInfo));
         var browserConnections = browsers.map(browser => this._createConnectionFromBrowserInfo(browser));
@@ -49,7 +50,7 @@ export default class Bootstrapper {
 
     async _getTests () {
         if (!this.sources.length)
-            throw new Error(getText(MESSAGE.testSourcesNotSet));
+            throw new GeneralError(MESSAGE.testSourcesNotSet);
 
         var compiler = new Compiler(this.sources);
         var tests    = await compiler.getTests();
@@ -58,7 +59,7 @@ export default class Bootstrapper {
             tests = tests.filter(test => this.filter(test.name, test.fixture.name, test.fixture.path));
 
         if (!tests.length)
-            throw new Error(getText(MESSAGE.noTestsToRun));
+            throw new GeneralError(MESSAGE.noTestsToRun);
 
         return tests;
     }
@@ -73,7 +74,7 @@ export default class Bootstrapper {
                 pluginFactory = require('testcafe-reporter-' + alias);
             }
             catch (err) {
-                throw new Error(getText(MESSAGE.cantFindReporterForAlias, this.reporter));
+                throw new GeneralError(MESSAGE.cantFindReporterForAlias, this.reporter);
             }
         }
 

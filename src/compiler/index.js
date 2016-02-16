@@ -5,6 +5,8 @@ import find from 'array-find';
 import { Compiler as LegacyCompiler } from 'testcafe-legacy-api';
 import { wrapDomAccessors } from 'testcafe-hammerhead';
 import EsNextCompiler from './es-next';
+import { GeneralError } from '../errors';
+import MESSAGE from '../errors/message';
 import promisify from '../utils/promisify';
 
 var readFile = promisify(fs.readFile);
@@ -21,7 +23,14 @@ export default class Compiler {
     }
 
     async _compileFile (filename) {
-        var code = await readFile(filename);
+        var code = null;
+
+        try {
+            code = await readFile(filename);
+        }
+        catch (err) {
+            throw new GeneralError(MESSAGE.cantFindSpecifiedTestSource, filename);
+        }
 
         code = stripBom(code).toString();
 

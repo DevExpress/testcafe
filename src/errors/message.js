@@ -1,4 +1,4 @@
-export const MESSAGE = {
+export default {
     browserDisconnected:                'The {userAgent} browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues.',
     cantRunAgainstDisconnectedBrowsers: 'The following browsers disconnected: {userAgents}. Tests will not be run.',
     cantEstablishBrowserConnection:     'Unable to establish one or more of the specified browser connections. This can be caused by network issues or remote device failure.',
@@ -11,10 +11,11 @@ export const MESSAGE = {
     portNumberIsNotInteger:             'A port number should be a valid integer.',
     portsOptionRequiresTwoNumbers:      'The "--ports" option requires two numbers to be specified.',
     portIsNotFree:                      'The specified {portNum} port is already in use by another program.',
-    invalidHostname:                    'The specified "{hostname}" hostname cannot be resolved to the current machine.'
+    invalidHostname:                    'The specified "{hostname}" hostname cannot be resolved to the current machine.',
+    cantFindSpecifiedTestSource:        'Cannot find a test source file at "{path}".',
+    cannotPrepareTestsDueToError:       'Cannot prepare tests due to an error.\n\n {errMessage}',
+    fixtureNameIsNotAString:            'The fixture name is expected to be a string, but it was "{type}".',
+    fixturePageIsNotAString:            'The page URL is expected to be a string, but it was "{type}".',
+    testNameIsNotAString:               'The test name is expected to be a string, but it was "{type}".',
+    testBodyIsNotAFunction:             'The test body is expected to be a function, but it was "{type}".'
 };
-
-export function getText (template, ...args) {
-    return args.reduce((msg, arg) => msg.replace(/{.+?}/, arg), template);
-}
-

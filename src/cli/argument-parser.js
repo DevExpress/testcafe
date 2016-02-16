@@ -7,7 +7,8 @@ import globby from 'globby';
 import mkdirp from 'mkdirp';
 import { getInstallations as getBrowserInstallations } from 'testcafe-browser-natives';
 import { readSync as read } from 'read-file-relative';
-import { MESSAGE, getText } from '../messages';
+import { GeneralError } from '../errors';
+import MESSAGE from '../errors/message';
 import getViewPortWidth from '../utils/get-viewport-width';
 import wordWrap from '../utils/word-wrap';
 
@@ -47,7 +48,7 @@ export default class CliArgumentParser {
         var number = parseInt(value, 10);
 
         if (isNaN(value))
-            throw new Error(getText(MESSAGE.portNumberIsNotInteger));
+            throw new GeneralError(MESSAGE.portNumberIsNotInteger);
 
         return number;
     }
@@ -60,7 +61,7 @@ export default class CliArgumentParser {
             return new RegExp(value);
         }
         catch (err) {
-            throw new Error(getText(MESSAGE.optionValueIsNotValidRegExp, name));
+            throw new GeneralError(MESSAGE.optionValueIsNotValidRegExp, name);
         }
     }
 
@@ -145,7 +146,7 @@ export default class CliArgumentParser {
                 .map(CliArgumentParser._parsePortNumber);
 
             if (this.opts.ports.length < 2)
-                throw new Error(getText(MESSAGE.portsOptionRequiresTwoNumbers));
+                throw new GeneralError(MESSAGE.portsOptionRequiresTwoNumbers);
         }
     }
 
