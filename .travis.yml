@@ -11,5 +11,9 @@ matrix:
     env: GULP_TASK="test-functional"
  fast_finish: true
 
+branches:
+  except:
+    - /^greenkeeper-.*$/
+
 notifications:
  email: false
