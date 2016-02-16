@@ -16,6 +16,7 @@
     "eq": true,
     "notEq": true,
     /* functional harness */
-    "runTests": true
+    "runTests": true,
+    "testReport": true
   }
 }

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test fails on sending a request</title>
+</head>
+<body>
+<script type="text/javascript">
+    function sendRequest (callback) {
+        var request = new XMLHttpRequest();
+
+        request.addEventListener('load', function () {
+            callback(this.responseText);
+        });
+
+        request.open('GET', 'http://localhost:3002/');
+        request.send();
+    }
+
+    sendRequest(function (response) {
+        if (response === 'fail')
+            throw new Error('Failed by request!');
+    });
+
+</script>
+</body>
+</html>
