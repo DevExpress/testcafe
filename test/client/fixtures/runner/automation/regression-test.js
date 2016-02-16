@@ -7,19 +7,19 @@ var domUtils      = testCafeCore.get('./utils/dom');
 var eventUtils    = testCafeCore.get('./utils/event');
 var textSelection = testCafeCore.get('./utils/text-selection');
 
-var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
-var automation                 = testCafeRunner.get('./automation/automation');
-var mouseUtils                 = testCafeRunner.get('./utils/mouse');
-var MouseOptions               = testCafeRunner.get('./automation/options/mouse');
-var ClickOptions               = testCafeRunner.get('./automation/options/click');
-var ClickAutomation            = testCafeRunner.get('./automation/playback/click');
-var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
-var HoverAutomation            = testCafeRunner.get('./automation/playback/hover');
-var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
-var SelectOptions              = testCafeRunner.get('./automation/options/select');
-var SelectAutomation           = testCafeRunner.get('./automation/playback/select');
-var PressAutomation            = testCafeRunner.get('./automation/playback/press');
-var parseKeyString             = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var testCafeRunner         = window.getTestCafeModule('testCafeRunner');
+var automation             = testCafeRunner.get('./automation/automation');
+var MouseOptions           = testCafeRunner.get('./automation/options/mouse');
+var ClickOptions           = testCafeRunner.get('./automation/options/click');
+var ClickAutomation        = testCafeRunner.get('./automation/playback/click');
+var DblClickAutomation     = testCafeRunner.get('./automation/playback/dblclick');
+var HoverAutomation        = testCafeRunner.get('./automation/playback/hover');
+var typePlaybackAutomation = testCafeRunner.get('./automation/playback/type');
+var SelectOptions          = testCafeRunner.get('./automation/options/select');
+var SelectAutomation       = testCafeRunner.get('./automation/playback/select')
+var PressAutomation        = testCafeRunner.get('./automation/playback/press');
+var parseKeyString         = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var mouseUtils             = testCafeRunner.get('./utils/mouse');
 
 automation.init();
 
@@ -144,19 +144,6 @@ $(document).ready(function () {
             .then(callback);
     };
 
-    var startNext = function () {
-        if (browserUtils.isIE) {
-            removeTestElements();
-            window.setTimeout(start, 30);
-        }
-        else
-            start();
-    };
-
-    var removeTestElements = function () {
-        $('.' + TEST_ELEMENT_CLASS).remove();
-    };
-
     var runClickAutomation = function (el, options, callback) {
         var clickOptions = new ClickOptions();
         var offsets      = mouseUtils.getOffsetOptions(el, options.offsetX, options.offsetY);
@@ -177,6 +164,41 @@ $(document).ready(function () {
         clickAutomation
             .run()
             .then(callback);
+    };
+
+    var runDblClickAutomation = function (el, options, callback) {
+        var clickOptions = new ClickOptions();
+        var offsets      = mouseUtils.getOffsetOptions(el, options.offsetX, options.offsetY);
+
+        clickOptions.offsetX  = offsets.offsetX;
+        clickOptions.offsetY  = offsets.offsetY;
+        clickOptions.caretPos = options.caretPos;
+
+        clickOptions.mofifiers = {
+            ctrl:  options.ctrl,
+            alt:   options.ctrl,
+            shift: options.shift,
+            meta:  options.meta
+        };
+
+        var dblClickAutomation = new DblClickAutomation(el, clickOptions);
+
+        dblClickAutomation
+            .run()
+            .then(callback);
+    };
+
+    var startNext = function () {
+        if (browserUtils.isIE) {
+            removeTestElements();
+            window.setTimeout(start, 30);
+        }
+        else
+            start();
+    };
+
+    var removeTestElements = function () {
+        $('.' + TEST_ELEMENT_CLASS).remove();
     };
 
     QUnit.testDone(function () {
@@ -502,7 +524,7 @@ $(document).ready(function () {
             clickCount++;
         });
 
-        dblClickPlaybackAutomation($input[0], {
+        runDblClickAutomation($input[0], {
             caretPos: 3
         }, function () {
             equal($input[0].selectionStart, 3, 'start selection correct');
@@ -688,7 +710,7 @@ $(document).ready(function () {
                     $input1[0].focus();
                 });
 
-            dblClickPlaybackAutomation($input2[0], {}, function () {
+            runDblClickAutomation($input2[0], {}, function () {
                 equal(input1FocusCount, browserUtils.isIE ? 1 : 2);
                 equal(input2FocusCount, browserUtils.isIE ? 1 : 2);
 

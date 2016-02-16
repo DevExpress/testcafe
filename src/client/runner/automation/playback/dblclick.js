@@ -1,233 +1,122 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import testCafeUI from '../../deps/testcafe-ui';
 import { fromPoint as getElementFromPoint } from '../get-element';
-import * as automationUtils from '../utils';
-import * as automationSettings from '../settings';
 import ClickOptions from '../options/click';
 import ClickAutomation from '../playback/click';
-import { getOffsetOptions } from '../../utils/mouse';
-import async from '../../deps/async';
 import delay from '../../utils/delay';
-import cursor from '../cursor';
+import * as mouseUtils from '../../utils/mouse';
 
+var extend         = hammerhead.utils.extend;
 var browserUtils   = hammerhead.utils.browser;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
-var SETTINGS      = testCafeCore.SETTINGS;
-var domUtils      = testCafeCore.domUtils;
 var positionUtils = testCafeCore.positionUtils;
-var styleUtils    = testCafeCore.styleUtils;
 var eventUtils    = testCafeCore.eventUtils;
-
-var selectElement = testCafeUI.selectElement;
 
 
 const FIRST_CLICK_DELAY = browserUtils.hasTouchEvents ? 0 : 160;
 
-export default function (el, options, actionCallback) {
-    options = {
-        ctrl:     options.ctrl,
-        alt:      options.alt,
-        shift:    options.shift,
-        meta:     options.meta,
-        offsetX:  options.offsetX,
-        offsetY:  options.offsetY,
-        caretPos: options.caretPos
-    };
 
-    var curElement          = null,
-        point               = null,
-        currentTopElement   = null,
-        skipClickSimulation = false;
+export default class DblClickAutomation {
+    constructor (element, clickOptions) {
+        this.options = clickOptions;
 
-    if (!positionUtils.containsOffset(el, options.offsetX, options.offsetY)) {
-        point      = automationUtils.getMouseActionPoint(el, options, true);
-        curElement = getElementFromPoint(point.x, point.y);
+        this.element   = element;
+        this.modifiers = clickOptions.modifiers;
+        this.caretPos  = clickOptions.caretPos;
+
+        this.offsetX = clickOptions.offsetX;
+        this.offsetY = clickOptions.offsetY;
+
+        this.eventArgs = {
+            point:   null,
+            options: null,
+            element: null
+        };
+
+        this.eventState = {
+            skipClick: false
+        };
     }
 
-    if (!curElement)
-        curElement = el;
+    _calculateEventArguments () {
+        var point       = null;
+        var options     = null;
+        var screenPoint = null;
 
-    var isInvisibleElement = (SETTINGS.get().RECORDING && !SETTINGS.get().PLAYBACK) &&
-                             !positionUtils.isElementVisible(el),
-        screenPoint        = automationUtils.getMouseActionPoint(el, options, true),
-        eventPoint         = automationUtils.getEventOptionCoordinates(el, screenPoint),
-        eventOptions       = hammerhead.utils.extend({
-            clientX: eventPoint.x,
-            clientY: eventPoint.y
-        }, options);
+        if (!this.eventArgs.point) {
+            screenPoint = mouseUtils.getAutomationPoint(this.element, this.offsetX, this.offsetY);
+            point       = mouseUtils.convertToClient(this.element, screenPoint);
 
-    async.series({
-        firstClick: function (callback) {
-            var clickOptions = new ClickOptions();
-            var { offsetX, offsetY } = getOffsetOptions(el, options.offsetX, options.offsetY);
-
-            clickOptions.offsetX  = offsetX;
-            clickOptions.offsetY  = offsetY;
-            clickOptions.caretPos = options.caretPos;
-
-            clickOptions.mofifiers = {
-                ctrl:  options.ctrl,
-                alt:   options.ctrl,
-                shift: options.shift,
-                meta:  options.meta
-            };
-
-            var clickAutomation = new ClickAutomation(el, clickOptions);
-
-            clickAutomation
-                .run()
-                .then(() => {
-                    if (!isInvisibleElement) {
-                        currentTopElement = getElementFromPoint(screenPoint.x, screenPoint.y, el);
-
-                        if (currentTopElement && currentTopElement !== curElement)
-                            curElement = currentTopElement;
-                    }
-
-                    return delay(FIRST_CLICK_DELAY);
-                })
-                .then(callback);
-        },
-
-        secondClick: function (callback) {
-            var notPrevented = true;
-            async.series({
-                //NOTE: touch devices only
-                touchstart: function (callback) {
-                    if (browserUtils.hasTouchEvents)
-                        eventSimulator.touchstart(curElement, eventOptions);
-                    callback();
-                },
-
-                //NOTE: touch devices only
-                cursorTouchMouseDown: function (callback) {
-                    if (browserUtils.hasTouchEvents) {
-                        cursor
-                            .leftButtonDown()
-                            .then(() => callback());
-                    }
-                    else
-                        callback();
-                },
-
-                //NOTE: touch devices only
-                touchend: function (callback) {
-                    if (browserUtils.hasTouchEvents) {
-                        eventSimulator.touchend(curElement, eventOptions);
-
-                        window.setTimeout(callback, automationSettings.ACTION_STEP_DELAY);
-                    }
-                    else
-                        callback();
-                },
-
-                cursorMouseDown: function (callback) {
-                    if (!browserUtils.hasTouchEvents) {
-                        cursor.leftButtonDown()
-                            .then(() => callback());
-                    }
-                    else
-                        callback();
-                },
-
-                mousedown: function (callback) {
-                    //NOTE: in webkit and ie raising mousedown event opens select element's dropdown,
-                    // therefore we should handle it and hide the dropdown (B236416)
-                    var needHandleMousedown = (browserUtils.isWebKit || browserUtils.isIE) &&
-                                              domUtils.isSelectElement(curElement),
-                        wasPrevented        = null,
-                        activeElement       = domUtils.getActiveElement(),
-                        //in IE focus is not raised if element was focused before click, even if focus is lost during mousedown
-                        needFocus           = !(browserUtils.isIE && activeElement === curElement);
-
-                    if (needHandleMousedown) {
-                        var onmousedown = function (e) {
-                            wasPrevented = e.defaultPrevented;
-                            eventUtils.preventDefault(e);
-                            eventUtils.unbind(curElement, 'mousedown', onmousedown);
-                        };
-
-                        eventUtils.bind(curElement, 'mousedown', onmousedown);
-                    }
-
-                    notPrevented = eventSimulator.mousedown(curElement, eventOptions);
-
-                    if (!isInvisibleElement) {
-                        currentTopElement = getElementFromPoint(screenPoint.x, screenPoint.y, el);
-
-                        if (currentTopElement && currentTopElement !== curElement) {
-                            skipClickSimulation = true;
-                            curElement          = currentTopElement;
-                        }
-                    }
-
-                    if (notPrevented === false) {
-                        if (needHandleMousedown && !wasPrevented)
-                            notPrevented = true;
-                        else {
-                            callback();
-                            return;
-                        }
-                    }
-
-                    //NOTE: we should not call it after the second click because of the native browser behavior
-                    if (!browserUtils.isIE) {
-                        // NOTE: If a target element is a contentEditable element, we need to call focusAndSetSelection directly for
-                        // this element. Otherwise, if the element obtained by elementFromPoint is a child of the contentEditable
-                        // element, a selection position may be calculated incorrectly (by using the caretPos option).
-                        automationUtils
-                            .focusAndSetSelection(domUtils.isContentEditableElement(el) ? el : curElement, needFocus, options.caretPos)
-                            .then(callback);
-                    }
-                    else
-                        callback();
-                },
-
-                cursorMouseUp: function (callback) {
-                    cursor
-                        .buttonUp()
-                        .then(() => callback());
-                },
-
-                mouseup: function (callback) {
-                    eventSimulator.mouseup(curElement, eventOptions);
-                    callback();
-                },
-
-                click: function () {
-                    if (curElement.tagName.toLowerCase() === 'option')
-                        callback();
-                    else {
-                        // NOTE: If the element under the cursor has changed after the
-                        // 'mousedown' event, we should not raise the 'click' event
-                        if (!skipClickSimulation)
-                            eventSimulator.click(curElement, eventOptions);
-
-                        // NOTE: Emulating the click event on the 'select' element doesn't expand the
-                        // dropdown with options (except chrome), therefore we should emulate it.
-                        if ((!SETTINGS.get().RECORDING || SETTINGS.get().PLAYBACK) &&
-                            domUtils.isSelectElement(curElement) &&
-                            styleUtils.getSelectElementSize(curElement) === 1 && notPrevented !== false) {
-                            //if this select already have options list
-                            if (selectElement.isOptionListExpanded(curElement))
-                                selectElement.collapseOptionList();
-                            else
-                                selectElement.expandOptionList(curElement);
-                        }
-                        callback();
-                    }
-                }
-            });
-        },
-
-        dblclick: function () {
-            // NOTE: If the element under the cursor has changed after the
-            // 'mousedown' event, we should not raise the 'click' event
-            if (!skipClickSimulation)
-                eventSimulator.dblclick(curElement, eventOptions);
-            actionCallback();
+            options = extend({
+                clientX: point.x,
+                clientY: point.y
+            }, this.modifiers);
         }
-    });
-};
+
+        var expectedElement = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY) ?
+                              this.element : null;
+
+        var x          = point ? point.x : this.eventArgs.point.x;
+        var y          = point ? point.y : this.eventArgs.point.y;
+        var topElement = getElementFromPoint(x, y, expectedElement);
+
+        return {
+            screenPoint: screenPoint || this.eventArgs.screenPoint,
+            point:       point || this.eventArgs.point,
+            options:     options || this.eventArgs.options,
+            element:     topElement || this.element
+        };
+    }
+
+    _firstClick () {
+        this.eventArgs = this._calculateEventArguments();
+
+        var clickAutomation = new ClickAutomation(this.element, this.options);
+
+        return clickAutomation
+            .run()
+            .then(() => delay(FIRST_CLICK_DELAY));
+    }
+
+    _secondClick () {
+        this.eventArgs = this._calculateEventArguments();
+
+        //NOTE: we should not call focus after the second mousedown (except in IE) because of the native browser behavior
+        if (browserUtils.isIE)
+            eventUtils.bind(document, 'focus', eventUtils.preventDefault, true);
+
+        var clickOptions = new ClickOptions();
+
+        clickOptions.offsetX = this.eventArgs.screenPoint.x;
+        clickOptions.offsetY = this.eventArgs.screenPoint.y;
+
+        clickOptions.caretPos  = this.caretPos;
+        clickOptions.modifiers = this.modifiers;
+
+        var clickAutomation = new ClickAutomation(document.documentElement, clickOptions);
+
+        return clickAutomation
+            .run()
+            .then(() => {
+                this.eventState.skipClick = clickAutomation.eventState.skipClick;
+                this.eventArgs            = clickAutomation.eventArgs;
+
+                if (browserUtils.isIE)
+                    eventUtils.unbind(document, 'focus', eventUtils.preventDefault, true);
+            });
+    }
+
+    _dblClick () {
+        // NOTE: If an element under the cursor has changed after the second
+        // 'mousedown' event, we should not raise the 'dblclick' event
+        if (!this.eventState.skipClick)
+            eventSimulator.dblclick(this.eventArgs.element, this.eventArgs.options);
+    }
+
+    run () {
+        return this._firstClick()
+            .then(() => this._secondClick())
+            .then(() => this._dblClick());
+    }
+}

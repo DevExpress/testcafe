@@ -6,8 +6,8 @@ import DragOptions from '../automation/options/drag.js';
 import ClickOptions from '../automation/options/click.js';
 import MouseOptions from '../automation/options/mouse.js';
 import SelectOptions from '../automation/options/select.js';
-import dblClickPlaybackAutomation from '../automation/playback/dblclick';
 import ClickAutomation from '../automation/playback/click';
+import DblClickAutomation from '../automation/playback/dblclick';
 import DragAutomation from '../automation/playback/drag';
 import HoverAutomation from '../automation/playback/hover';
 import PressAutomation from '../automation/playback/press';
@@ -463,7 +463,7 @@ export function click (what, options) {
                 clickOptions.modifiers.meta  = options.meta;
 
                 var clickAutomation = iframe ?
-                                      new iframe.contentWindow[automation.AUTOMATION_RUNNERS].ClickAutomation(element, clickOptions) :
+                                      new iframe.contentWindow[AUTOMATIONS].ClickAutomation(element, clickOptions) :
                                       new ClickAutomation(element, clickOptions);
 
                 clickAutomation
@@ -507,9 +507,7 @@ export function rclick (what, options) {
 
                 rClickAutomation
                     .run()
-                    .then(() => {
-                        callback();
-                    });
+                    .then(callback);
             });
         });
 }
@@ -528,10 +526,27 @@ export function dblclick (what, options) {
                     onTargetWaitingFinished();
                 }
 
-                if (iframe)
-                    iframe.contentWindow[AUTOMATIONS].dblclick.playback(element, options || {}, callback);
-                else
-                    dblClickPlaybackAutomation(element, options || {}, callback);
+                options = options || {};
+
+                var clickOptions = new ClickOptions();
+                var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
+
+                clickOptions.offsetX  = offsetX;
+                clickOptions.offsetY  = offsetY;
+                clickOptions.caretPos = options.caretPos;
+
+                clickOptions.modifiers.ctrl  = options.ctrl;
+                clickOptions.modifiers.alt   = options.alt;
+                clickOptions.modifiers.shift = options.shift;
+                clickOptions.modifiers.meta  = options.meta;
+
+                var dblClickAutomation = iframe ?
+                                         new iframe.contentWindow[AUTOMATIONS].DblClickAutomation(element, clickOptions) :
+                                         new DblClickAutomation(element, clickOptions);
+
+                dblClickAutomation
+                    .run()
+                    .then(callback);
             });
         });
 }
@@ -605,9 +620,7 @@ export function drag (what) {
 
                 dragAutomation
                     .run()
-                    .then(() => {
-                        callback();
-                    });
+                    .then(callback);
             });
         });
 }
@@ -755,9 +768,7 @@ export function hover (what, options) {
 
                 hoverAutomation
                     .run()
-                    .then(() => {
-                        callback();
-                    });
+                    .then(callback);
             });
         });
 }

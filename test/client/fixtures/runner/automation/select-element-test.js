@@ -6,16 +6,16 @@ var testCafeCore = window.getTestCafeModule('testCafeCore');
 var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var SETTINGS     = testCafeCore.get('./settings').get();
 
-var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
-var StepIterator               = testCafeRunner.get('./step-iterator');
-var actionsAPI                 = testCafeRunner.get('./api/actions');
-var automation                 = testCafeRunner.get('./automation/automation');
-var ClickOptions               = testCafeRunner.get('./automation/options/click');
-var PressAutomation            = testCafeRunner.get('./automation/playback/press');
-var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
-var parseKeyString             = testCafeRunner.get('./automation/playback/press/parse-key-string');
-var ClickAutomation            = testCafeRunner.get('./automation/playback/click');
-var mouseUtils                 = testCafeRunner.get('./utils/mouse');
+var testCafeRunner     = window.getTestCafeModule('testCafeRunner');
+var StepIterator       = testCafeRunner.get('./step-iterator');
+var actionsAPI         = testCafeRunner.get('./api/actions');
+var automation         = testCafeRunner.get('./automation/automation');
+var ClickOptions       = testCafeRunner.get('./automation/options/click');
+var PressAutomation    = testCafeRunner.get('./automation/playback/press');
+var DblClickAutomation = testCafeRunner.get('./automation/playback/dblclick');
+var parseKeyString     = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var ClickAutomation    = testCafeRunner.get('./automation/playback/click');
+var mouseUtils         = testCafeRunner.get('./utils/mouse');
 
 var testCafeUI    = window.getTestCafeModule('testCafeUI');
 var selectElement = testCafeUI.get('./select-element');
@@ -140,6 +140,28 @@ $(document).ready(function () {
         var pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
 
         pressAutomation
+            .run()
+            .then(callback);
+    };
+
+    var runDblClickAutomation = function (el, options, callback) {
+        var clickOptions = new ClickOptions();
+        var offsets      = mouseUtils.getOffsetOptions(el, options.offsetX, options.offsetY);
+
+        clickOptions.offsetX  = offsets.offsetX;
+        clickOptions.offsetY  = offsets.offsetY;
+        clickOptions.caretPos = options.caretPos;
+
+        clickOptions.mofifiers = {
+            ctrl:  options.ctrl,
+            alt:   options.ctrl,
+            shift: options.shift,
+            meta:  options.meta
+        };
+
+        var dblClickAutomation = new DblClickAutomation(el, clickOptions);
+
+        dblClickAutomation
             .run()
             .then(callback);
     };
@@ -1286,7 +1308,7 @@ $(document).ready(function () {
 
         equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
 
-        dblClickPlaybackAutomation(select, {}, function () {
+        runDblClickAutomation(select, {}, function () {
             equal(select, document.activeElement);
             notEqual($(shadowUI.select('.' + OPTION_LIST_CLASS)).is(':visible'), true);
             equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
@@ -1300,7 +1322,7 @@ $(document).ready(function () {
 
         equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
 
-        dblClickPlaybackAutomation(select, {}, function () {
+        runDblClickAutomation(select, {}, function () {
             equal(select, document.activeElement);
             notEqual($(shadowUI.select('.' + OPTION_LIST_CLASS)).is(':visible'), true);
             equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
