@@ -38,7 +38,7 @@ export default class ScrollAutomation {
         left = Math.max(left, 0);
         top  = Math.max(top, 0);
 
-        if (domUtils.isDocumentRootElement(element)) {
+        if (domUtils.isHtmlElement(element)) {
             styleUtils.setScrollLeft(document.body, left);
             styleUtils.setScrollTop(document.body, top);
         }

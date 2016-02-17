@@ -7,7 +7,7 @@ import HoverAutomation from './playback/hover';
 import PressAutomation from './playback/press';
 import RClickAutomation from './playback/rclick';
 import SelectAutomation from './playback/select';
-import typePlayback from './playback/type';
+import TypeAutomation from './playback/type';
 
 
 var browserUtils   = hammerhead.utils.browser;
@@ -39,7 +39,7 @@ var preventRealEvtHandler = function (e, dispatched, preventDefault) {
         // element invisible don't lead to blurring (in MSEdge focus/blur is sync)
         if (e.type === 'blur') {
             if (browserUtils.isIE && browserUtils.version < 12) {
-                var isElementInvisible = !domUtils.isWindowInstance(target) &&
+                var isElementInvisible = !domUtils.isWindow(target) &&
                                          styleUtils.get(target, 'display') === 'none';
                 var elementParents     = null;
                 var invisibleParents   = false;
@@ -80,15 +80,12 @@ export function init () {
 
 //Running
 window[AUTOMATIONS] = {
-    type: {
-        playback: typePlayback
-    },
-
     ClickAutomation:    ClickAutomation,
-    DblClickAutomation: DblClickAutomation,
-    SelectAutomation:   SelectAutomation,
     RClickAutomation:   RClickAutomation,
+    DblClickAutomation: DblClickAutomation,
+    HoverAutomation:    HoverAutomation,
     DragAutomation:     DragAutomation,
+    SelectAutomation:   SelectAutomation,
     PressAutomation:    PressAutomation,
-    HoverAutomation:    HoverAutomation
+    TypeAutomation:     TypeAutomation
 };

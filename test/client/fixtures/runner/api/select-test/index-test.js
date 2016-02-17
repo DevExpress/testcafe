@@ -390,7 +390,7 @@ $(document).ready(function () {
 
                 checkSelection($input[0], 2, 4, true);
             },
-            correctTestWaitingTime(2000)
+            correctTestWaitingTime(4000)
         );
     });
 
@@ -507,7 +507,7 @@ $(document).ready(function () {
 
                 checkSelection($textarea[0], 3, 20, true);
             },
-            correctTestWaitingTime(2000)
+            correctTestWaitingTime(4000)
         );
     });
 

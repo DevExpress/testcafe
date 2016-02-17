@@ -20,14 +20,14 @@ export const WHICH_PARAMETER   = hammerhead.utils.event.WHICH_PARAMETER;
 export var preventDefault = hammerhead.utils.event.preventDefault;
 
 export function bind (el, event, handler, useCapture) {
-    if (domUtils.isWindowInstance(el))
+    if (domUtils.isWindow(el))
         nativeMethods.windowAddEventListener.call(el, event, handler, useCapture);
     else
         nativeMethods.addEventListener.call(el, event, handler, useCapture);
 }
 
 export function unbind (el, event, handler, useCapture) {
-    if (domUtils.isWindowInstance(el))
+    if (domUtils.isWindow(el))
         nativeMethods.windowRemoveEventListener.call(el, event, handler, useCapture);
     else
         nativeMethods.removeEventListener.call(el, event, handler, useCapture);

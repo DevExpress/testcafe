@@ -6,14 +6,14 @@ import * as arrayUtils from './array';
 function getOwnFirstVisibleTextNode (el) {
     var children = el.childNodes;
 
-    if (!children.length && el.nodeType === 3 && !isInvisibleTextNode(el))
+    if (!children.length && domUtils.isTextNode(el) && !isInvisibleTextNode(el))
         return el;
 
-    return arrayUtils.find(children, node => node.nodeType === 3 && !isInvisibleTextNode(node));
+    return arrayUtils.find(children, node => domUtils.isTextNode(node) && !isInvisibleTextNode(node));
 }
 
 function getOwnFirstVisibleNode (el) {
-    return arrayUtils.find(el.childNodes, node => node.nodeType === 3 && !isInvisibleTextNode(node) ||
+    return arrayUtils.find(el.childNodes, node => domUtils.isTextNode(node) && !isInvisibleTextNode(node) ||
                                                   domUtils.isRenderedNode(node) && getOwnFirstVisibleNode(node));
 }
 
@@ -41,7 +41,7 @@ function isNodeBlockWithBreakLine (parent, node) {
     var parentFirstVisibleChild = null,
         firstVisibleChild       = null;
 
-    if (!domUtils.isTheSameNode(node, parent) && node.childNodes.length && /div|p/.test(node.tagName.toLowerCase())) {
+    if (!domUtils.isTheSameNode(node, parent) && node.childNodes.length && /div|p/.test(domUtils.getTagName(node))) {
         parentFirstVisibleChild = getOwnFirstVisibleNode(parent);
 
         if (!parentFirstVisibleChild || domUtils.isTheSameNode(node, parentFirstVisibleChild))
@@ -63,12 +63,12 @@ function isNodeAfterNodeBlockWithBreakLine (parent, node) {
         previousSibling         = null;
 
     if (!domUtils.isTheSameNode(node, parent) &&
-        ((isRenderedNode && node.nodeType === 1 && node.childNodes.length &&
-          !/div|p/.test(node.tagName.toLowerCase())) ||
-         (node.nodeType === 3 && !domUtils.isTheSameNode(node, parent) && node.nodeValue.length &&
+        ((isRenderedNode && domUtils.isElementNode(node) && node.childNodes.length &&
+          !/div|p/.test(domUtils.getTagName(node))) ||
+         (domUtils.isTextNode(node) && !domUtils.isTheSameNode(node, parent) && node.nodeValue.length &&
           !isInvisibleTextNode(node)))) {
 
-        if (isRenderedNode && node.nodeType === 1) {
+        if (isRenderedNode && domUtils.isElementNode(node)) {
             parentFirstVisibleChild = getOwnFirstVisibleNode(parent);
 
             if (!parentFirstVisibleChild || domUtils.isTheSameNode(node, parentFirstVisibleChild))
@@ -81,8 +81,8 @@ function isNodeAfterNodeBlockWithBreakLine (parent, node) {
 
         previousSibling = getOwnPreviousVisibleSibling(node);
 
-        return (previousSibling && previousSibling.nodeType === 1 &&
-                /div|p/.test(previousSibling.tagName.toLowerCase()) && getOwnFirstVisibleTextNode(previousSibling));
+        return (previousSibling && domUtils.isElementNode(previousSibling) &&
+                /div|p/.test(domUtils.getTagName(previousSibling)) && getOwnFirstVisibleTextNode(previousSibling));
     }
     return false;
 }
@@ -93,16 +93,16 @@ export function getFirstVisibleTextNode (el) {
     var curNode        = null;
     var child          = null;
 
-    if (!childrenLength && el.nodeType === 3 && !isInvisibleTextNode(el))
+    if (!childrenLength && domUtils.isTextNode(el) && !isInvisibleTextNode(el))
         return el;
 
     for (var i = 0; i < childrenLength; i++) {
         curNode = children[i];
 
-        if (curNode.nodeType === 3 && !isInvisibleTextNode(curNode))
+        if (domUtils.isTextNode(curNode) && !isInvisibleTextNode(curNode))
             return curNode;
         else if (domUtils.isRenderedNode(curNode) &&
-                 (curNode.nodeType === 1 || curNode.childNodes && curNode.childNodes.length)) {
+                 (domUtils.isElementNode(curNode) || curNode.childNodes && curNode.childNodes.length)) {
             child = getFirstVisibleTextNode(curNode);
 
             if (child)
@@ -119,16 +119,16 @@ export function getLastTextNode (el, onlyVisible) {
     var curNode        = null;
     var child          = null;
 
-    if (!childrenLength && el.nodeType === 3 && !isInvisibleTextNode(el))
+    if (!childrenLength && domUtils.isTextNode(el) && !isInvisibleTextNode(el))
         return el;
 
     for (var i = childrenLength - 1; i >= 0; i--) {
         curNode = children[i];
 
-        if (curNode.nodeType === 3 && (onlyVisible ? !isInvisibleTextNode(curNode) : true))
+        if (domUtils.isTextNode(curNode) && (onlyVisible ? !isInvisibleTextNode(curNode) : true))
             return curNode;
         else if (domUtils.isRenderedNode(curNode) &&
-                 (curNode.nodeType === 1 || (curNode.childNodes && curNode.childNodes.length))) {
+                 (domUtils.isElementNode(curNode) || (curNode.childNodes && curNode.childNodes.length))) {
             child = getLastTextNode(curNode, false);
 
             if (child)
@@ -172,7 +172,7 @@ export function getLastNonWhitespaceSymbolIndex (nodeValue) {
 }
 
 export function isInvisibleTextNode (node) {
-    if (node.nodeType !== 3)
+    if (!domUtils.isTextNode(node))
         return false;
 
     var nodeValue         = node.nodeValue,
@@ -242,7 +242,7 @@ function getSelectedPositionInParentByOffset (node, offset) {
         currentOffset = 0;
     }
 
-    while (domUtils.isRenderedNode(currentNode) && currentNode.nodeType === 1) {
+    while (domUtils.isRenderedNode(currentNode) && domUtils.isElementNode(currentNode)) {
         if (currentNode.childNodes && currentNode.childNodes.length)
             currentNode = currentNode.childNodes[isSearchForLastChild ? currentNode.childNodes.length - 1 : 0];
         else {
@@ -271,7 +271,7 @@ function getSelectionStart (el, selection, inverseSelection) {
         };
 
     //NOTE: window.getSelection() can't returns not rendered node like selected node, so we shouldn't check it
-    if ((domUtils.isTheSameNode(el, startNode) || startNode.nodeType === 1) && startNode.childNodes &&
+    if ((domUtils.isTheSameNode(el, startNode) || domUtils.isElementNode(startNode)) && startNode.childNodes &&
         startNode.childNodes.length)
         correctedStartPosition = getSelectedPositionInParentByOffset(startNode, startOffset);
 
@@ -291,7 +291,7 @@ function getSelectionEnd (el, selection, inverseSelection) {
         };
 
     //NOTE: window.getSelection() can't returns not rendered node like selected node, so we shouldn't check it
-    if ((domUtils.isTheSameNode(el, endNode) || endNode.nodeType === 1) && endNode.childNodes &&
+    if ((domUtils.isTheSameNode(el, endNode) || domUtils.isElementNode(endNode)) && endNode.childNodes &&
         endNode.childNodes.length)
         correctedEndPosition = getSelectedPositionInParentByOffset(endNode, endOffset);
 
@@ -335,7 +335,7 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
         if (!domUtils.isRenderedNode(target))
             return point;
 
-        if (target.nodeType === 3) {
+        if (domUtils.isTextNode(target)) {
             if (point.offset <= target.nodeValue.length) {
                 point.node = target;
                 return point;
@@ -347,14 +347,14 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
                 point.offset -= target.nodeValue.length;
             }
         }
-        else if (target.nodeType === 1) {
+        else if (domUtils.isElementNode(target)) {
             if (point.offset === 0 && !getContentEditableValue(target).length) {
                 point.node = target;
                 return point;
             }
             if (!point.node && (isNodeBlockWithBreakLine(el, target) || isNodeAfterNodeBlockWithBreakLine(el, target)))
                 point.offset--;
-            else if (!childNodes.length && target.nodeType === 1 && target.tagName.toLowerCase() === 'br')
+            else if (!childNodes.length && domUtils.isElementNode(target) && domUtils.getTagName(target) === 'br')
                 point.offset--;
         }
 
@@ -394,7 +394,7 @@ export function calculatePositionByNodeAndOffset (el, {node, offset}) {
             currentOffset += target.nodeValue.length;
         }
 
-        else if (!childNodes.length && target.nodeType === 1 && target.tagName.toLowerCase() === 'br')
+        else if (!childNodes.length && domUtils.isElementNode(target) && domUtils.getTagName(target) === 'br')
             currentOffset++;
 
         else if (!find && (isNodeBlockWithBreakLine(el, target) || isNodeAfterNodeBlockWithBreakLine(el, target)))
@@ -418,7 +418,7 @@ export function getElementBySelection (selection) {
 // so we should create a range and select all text contents of the node.
 // Then range object will contain information about node's the first and last visible symbol.
 export function getFirstVisiblePosition (el) {
-    var firstVisibleTextChild = el.nodeType === 3 ? el : getFirstVisibleTextNode(el),
+    var firstVisibleTextChild = domUtils.isTextNode(el) ? el : getFirstVisibleTextNode(el),
         curDocument           = domUtils.findDocument(el),
         range                 = curDocument.createRange();
 
@@ -432,7 +432,7 @@ export function getFirstVisiblePosition (el) {
 }
 
 export function getLastVisiblePosition (el) {
-    var lastVisibleTextChild = el.nodeType === 3 ? el : getLastTextNode(el, true),
+    var lastVisibleTextChild = domUtils.isTextNode(el) ? el : getLastTextNode(el, true),
         curDocument          = domUtils.findDocument(el),
         range                = curDocument.createRange();
 
@@ -453,9 +453,9 @@ export function getContentEditableValue (target) {
     if (!domUtils.isRenderedNode(target))
         return elementValue;
 
-    if (!childNodes.length && target.nodeType === 3)
+    if (!childNodes.length && domUtils.isTextNode(target))
         return target.nodeValue;
-    else if (childNodes.length === 1 && childNodes[0].nodeType === 3)
+    else if (childNodes.length === 1 && domUtils.isTextNode(childNodes[0]))
         return childNodes[0].nodeValue;
 
     arrayUtils.forEach(childNodes, node => elementValue += getContentEditableValue(node));

@@ -209,7 +209,7 @@ StepIterator.prototype._setupUnloadPrediction = function () {
         };
 
     eventUtils.bind(document, 'submit', function (e) {
-        if (e.target.tagName.toLowerCase() === 'form')
+        if (domUtils.isFormElement(e.target))
             prolong();
     });
 
@@ -221,7 +221,7 @@ StepIterator.prototype._setupUnloadPrediction = function () {
     eventUtils.bind(document, 'click', function (e) {
         var target = (e.srcElement || e.target);
 
-        if (!e.defaultPrevented && target.tagName && target.tagName.toLowerCase() === 'a') {
+        if (!e.defaultPrevented && target.tagName && domUtils.isAnchorElement(target)) {
             var href = target.href;
 
             if (target.hasAttribute('href') && !/(^javascript:)|(^mailto:)|(^tel:)|(^#)/.test(href))
@@ -238,7 +238,7 @@ StepIterator.prototype._setupUnloadPrediction = function () {
         window.setTimeout(function () {
             //NOTE: except file downloading
             if (document.readyState === 'loading' &&
-                !(document.activeElement && document.activeElement.tagName.toLowerCase() === 'a' &&
+                !(document.activeElement && domUtils.isAnchorElement(document.activeElement) &&
                 document.activeElement.hasAttribute('download')))
                 beforeUnload();
         }, 0);

@@ -1,11 +1,11 @@
 import hammerhead from '../../../deps/hammerhead';
 import testCafeCore from '../../../deps/testcafe-core';
 import testCafeUI from '../../../deps/testcafe-ui';
-import * as automationSettings from '../../settings';
 import MoveAutomation from '../move';
 import { MoveOptions } from '../../options';
 import delay from '../../../utils/delay';
 import * as mouseUtils from '../../../utils/mouse';
+import { ACTION_STEP_DELAY } from '../../settings';
 
 var Promise = hammerhead.Promise;
 
@@ -36,7 +36,7 @@ export default class SelectChildClickAutomation {
         this.clickCausesChange  = false;
 
         if (this.parentSelect) {
-            var isOption      = this.element.tagName.toLowerCase() === 'option';
+            var isOption      = domUtils.isOptionElement(this.element);
             var selectedIndex = this.parentSelect.selectedIndex;
 
             this.childIndex = isOption ? domUtils.getOptionIndex(this.parentSelect, this.element) :
@@ -98,7 +98,7 @@ export default class SelectChildClickAutomation {
 
         return moveAutomation
             .run()
-            .then(() => delay(automationSettings.ACTION_STEP_DELAY));
+            .then(() => delay(ACTION_STEP_DELAY));
     }
 
     _mousedown () {

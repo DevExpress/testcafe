@@ -4,9 +4,11 @@ var browserUtils = hammerhead.utils.browser;
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var domUtils     = testCafeCore.get('./utils/dom');
 
-var testCafeRunner         = window.getTestCafeModule('testCafeRunner');
-var automation             = testCafeRunner.get('./automation/automation');
-var typePlaybackAutomation = testCafeRunner.get('./automation/playback/type');
+var testCafeRunner = window.getTestCafeModule('testCafeRunner');
+var automation     = testCafeRunner.get('./automation/automation');
+var mouseUtils     = testCafeRunner.get('./utils/mouse');
+var TypeOptions    = testCafeRunner.get('./automation/options').TypeOptions;
+var TypeAutomation = testCafeRunner.get('./automation/playback/type');
 
 automation.init();
 
@@ -97,9 +99,11 @@ $(document).ready(function () {
 
         window.async.series({
             'Type in child of body with contenteditable attribute': function (callback) {
-                typePlaybackAutomation($el[0], typingText, {}, function () {
-                    callback();
-                });
+                var typeAutomation = new TypeAutomation($el[0], typingText, new TypeOptions());
+
+                typeAutomation
+                    .run()
+                    .then(callback);
             },
 
             'Check result of typing': function () {

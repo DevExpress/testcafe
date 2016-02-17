@@ -6,14 +6,15 @@ var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
 
-var testCafeRunner         = window.getTestCafeModule('testCafeRunner');
-var automation             = testCafeRunner.get('./automation/automation');
-var ClickOptions           = testCafeRunner.get('./automation/options').ClickOptions;
-var ClickAutomation        = testCafeRunner.get('./automation/playback/click');
-var typePlaybackAutomation = testCafeRunner.get('./automation/playback/type');
-var PressAutomation        = testCafeRunner.get('./automation/playback/press');
-var parseKeyString         = testCafeRunner.get('./automation/playback/press/parse-key-string');
-var mouseUtils             = testCafeRunner.get('./utils/mouse');
+var testCafeRunner  = window.getTestCafeModule('testCafeRunner');
+var automation      = testCafeRunner.get('./automation/automation');
+var ClickOptions    = testCafeRunner.get('./automation/options').ClickOptions;
+var TypeOptions     = testCafeRunner.get('./automation/options').TypeOptions;
+var ClickAutomation = testCafeRunner.get('./automation/playback/click');
+var TypeAutomation  = testCafeRunner.get('./automation/playback/type');
+var PressAutomation = testCafeRunner.get('./automation/playback/press');
+var parseKeyString  = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var mouseUtils      = testCafeRunner.get('./utils/mouse');
 
 QUnit.begin(function () {
     automation.init();
@@ -332,23 +333,37 @@ var input1,
     },
 
     runClickAutomation           = function (el, options, callback) {
-        var clickOptions = new ClickOptions();
         var offsets      = mouseUtils.getOffsetOptions(el, options.offsetX, options.offsetY);
+        var clickOptions = new ClickOptions({
+            offsetX:  offsets.offsetX,
+            offsetY:  offsets.offsetY,
+            caretPos: options.caretPos,
 
-        clickOptions.offsetX  = offsets.offsetX;
-        clickOptions.offsetY  = offsets.offsetY;
-        clickOptions.caretPos = options.caretPos;
-
-        clickOptions.mofifiers = {
-            ctrl:  options.ctrl,
-            alt:   options.ctrl,
-            shift: options.shift,
-            meta:  options.meta
-        };
+            modifiers: {
+                ctrl:  options.ctrl,
+                alt:   options.ctrl,
+                shift: options.shift,
+                meta:  options.meta
+            }
+        });
 
         var clickAutomation = new ClickAutomation(el, clickOptions);
 
         clickAutomation
+            .run()
+            .then(callback);
+    },
+
+    runTypeAutomation            = function (element, text, callback) {
+        var offsets        = mouseUtils.getOffsetOptions(element);
+        var typeOptions    = new TypeOptions({
+            offsetX: offsets.offsetX,
+            offsetY: offsets.offsetY
+        });
+
+        var typeAutomation = new TypeAutomation(element, text, typeOptions);
+
+        typeAutomation
             .run()
             .then(callback);
     };
@@ -395,7 +410,7 @@ asyncTest('B236912 - change event raising if an element is focused before type a
                 changed = true;
             };
             input2.focus();
-            typePlaybackAutomation(input2, 'test', {}, function () {
+            runTypeAutomation(input2, 'test', function () {
                 focusBlurSandbox.focus(input1, function () {
                     ok(changed);
                     startNext();
@@ -417,8 +432,8 @@ asyncTest('B237366 - change event raising after sequential type actions', functi
             input2.onchange   = function () {
                 input2changed = true;
             };
-            typePlaybackAutomation(input1, 'test', {}, function () {
-                typePlaybackAutomation(input2, 'test', {}, function () {
+            runTypeAutomation(input1, 'test', function () {
+                runTypeAutomation(input2, 'test', function () {
                     focusBlurSandbox.blur(input2, function () {
                         ok(input1changed);
                         ok(input2changed);

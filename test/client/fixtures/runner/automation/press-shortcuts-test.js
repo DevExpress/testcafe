@@ -949,4 +949,36 @@ $(document).ready(function () {
             start();
         });
     });
+
+    asyncTest('T325474 - Press backspace works incorrectly with \'input\' type=number element in Google Chrome 47 (backspace)', function () {
+        var value = '-123.5',
+            input = $('<input type="number" step="0.1"/>')
+                .val(value)
+                .addClass(TEST_ELEMENT_CLASS)
+                .appendTo('body')[0];
+
+        input.focus();
+        nativeSelect(input, value.length, value.length);
+
+        runPressAutomation('backspace', function () {
+            checkShortcut(input, '-123', 4);
+            start();
+        });
+    });
+
+    asyncTest('T325474: Press backspace works incorrectly with \'input\' type=number element in Google Chrome 47 (delete)', function () {
+        var value = '-123.5',
+            input = $('<input type="number" step="0.1"/>')
+                .val(value)
+                .addClass(TEST_ELEMENT_CLASS)
+                .appendTo('body')[0];
+
+        input.focus();
+        nativeSelect(input, 1, 4);
+
+        runPressAutomation('delete', function () {
+            checkShortcut(input, '.5', 1);
+            start();
+        });
+    });
 });

@@ -147,6 +147,7 @@ gulp.task('lint-client', function () {
             'src/client/runner/automation/playback/move.js',
             'src/client/runner/automation/playback/press/**/*.js',
             'src/client/runner/automation/playback/select/**/*.js',
+            'src/client/runner/automation/playback/type/**/*.js',
             'src/client/runner/automation/playback/drag.js',
             'src/client/runner/automation/playback/rclick.js',
             'src/client/runner/automation/playback/hover.js',

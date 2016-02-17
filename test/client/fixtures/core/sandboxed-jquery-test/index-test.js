@@ -17,7 +17,7 @@
        ...
        // Prevent re-triggering of the same event, since we already bubbled it above
        jQuery.event.triggered = type;
-       if (!domUtils.isDocumentInstance(elem) || type !== 'ready')
+       if (!domUtils.isDocument(elem) || type !== 'ready')
            __call$(elem, type, []);
        ...
     }*/

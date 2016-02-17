@@ -1,12 +1,12 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../get-element';
-import * as automationSettings from '../settings';
 import MoveAutomation from '../playback/move';
 import { MoveOptions } from '../options';
 import cursor from '../cursor';
 import * as mouseUtils from '../../utils/mouse';
 import delay from '../../utils/delay';
+import { DRAG_ACTION_STEP_DELAY } from '../settings';
 
 const DRAGGING_SPEED = 4; // pixels/ms
 const MIN_MOVING_TIME = 25;
@@ -90,7 +90,7 @@ export default class DragAutomation {
 
         return moveAutomation
             .run()
-            .then(() => delay(automationSettings.DRAG_ACTION_STEP_DELAY));
+            .then(() => delay(DRAG_ACTION_STEP_DELAY));
     }
 
     _getEndPoint () {
@@ -121,7 +121,7 @@ export default class DragAutomation {
 
                 return this._focus();
             })
-            .then(() => delay(automationSettings.DRAG_ACTION_STEP_DELAY));
+            .then(() => delay(DRAG_ACTION_STEP_DELAY));
     }
 
     _focus () {
@@ -156,7 +156,7 @@ export default class DragAutomation {
 
         return moveAutomation
             .run()
-            .then(() => delay(automationSettings.DRAG_ACTION_STEP_DELAY));
+            .then(() => delay(DRAG_ACTION_STEP_DELAY));
     }
 
     _mouseup () {

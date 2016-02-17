@@ -350,46 +350,6 @@ $(document).ready(function () {
         );
     });
 
-    asyncTest('T138385 - input type="number" leave out "maxlength" attribute (act.type)', function () {
-        var $input          = $('<input type="number" maxlength="2"/>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
-            inputEventCount = 0;
-
-        runAsyncTest(
-            function () {
-                $input.bind('input', function () {
-                    inputEventCount++;
-                });
-                actionsAPI.type($input, '123');
-            },
-            function () {
-                equal(inputEventCount, 3);
-                equal($input.val(), browserUtils.isIE ? '12' : '123');
-            },
-            5000
-        );
-    });
-
-    asyncTest('T138385 - input type "number" leave out "maxlength" attribute (act.press)', function () {
-        var $input          = $('<input type="number" maxlength="2"/>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
-            inputEventCount = 0;
-
-        runAsyncTest(
-            function () {
-                $input.bind('input', function () {
-                    inputEventCount++;
-                });
-                $input.focus();
-
-                actionsAPI.press('1 2 3');
-            },
-            function () {
-                equal(inputEventCount, 3);
-                equal($input.val(), browserUtils.isIE ? '12' : '123');
-            },
-            5000
-        );
-    });
-
     asyncTest('T138385 - "input" event is raised if symbol count more than "maxlength" attribute (act.type)', function () {
         var $input          = $('<input type="text" maxlength="3"/>').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
             inputEventCount = 0;

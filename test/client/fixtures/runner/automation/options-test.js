@@ -5,6 +5,7 @@ var MouseOptions   = testCafeRunner.get('./automation/options').MouseOptions;
 var ClickOptions   = testCafeRunner.get('./automation/options').ClickOptions;
 var DragOptions    = testCafeRunner.get('./automation/options').DragOptions;
 var MoveOptions    = testCafeRunner.get('./automation/options').MoveOptions;
+var TypeOptions    = testCafeRunner.get('./automation/options').TypeOptions;
 var TYPE           = testCafeRunner.get('../../errors/test-run/type');
 var CATEGORY       = testCafeRunner.get('../../errors/test-run/category');
 
@@ -147,6 +148,35 @@ test('MoveOptions', function () {
     });
 });
 
+test('TypeOptions', function () {
+    var options = new TypeOptions({
+        offsetX:  15,
+        caretPos: 20,
+        replace:  true,
+        dummy:    false,
+
+        modifiers: {
+            ctrl:  true,
+            shift: true,
+            dummy: 'yo'
+        }
+    }, false);
+
+    deepEqual(JSON.parse(JSON.stringify(options)), {
+        offsetX:  15,
+        offsetY:  0,
+        caretPos: 20,
+        replace:  true,
+
+        modifiers: {
+            ctrl:  true,
+            alt:   false,
+            shift: true,
+            meta:  false
+        }
+    });
+});
+
 module('validation');
 
 test('OffsetOptions', function () {
@@ -157,10 +187,10 @@ test('OffsetOptions', function () {
             }, true);
         },
         {
-            category:         CATEGORY.actionError,
-            type:             TYPE.actionPositiveNumberOptionError,
-            actualValue:      'object',
-            optionName:       'offsetX'
+            category:    CATEGORY.actionError,
+            type:        TYPE.actionPositiveNumberOptionError,
+            actualValue: 'object',
+            optionName:  'offsetX'
         }
     );
 
@@ -171,10 +201,10 @@ test('OffsetOptions', function () {
             }, true);
         },
         {
-            category:         CATEGORY.actionError,
-            type:             TYPE.actionPositiveNumberOptionError,
-            actualValue:      '-3',
-            optionName:       'offsetY'
+            category:    CATEGORY.actionError,
+            type:        TYPE.actionPositiveNumberOptionError,
+            actualValue: '-3',
+            optionName:  'offsetY'
         }
     );
 });
@@ -237,10 +267,10 @@ test('ClickOptions', function () {
             }, true);
         },
         {
-            category:         CATEGORY.actionError,
-            type:             TYPE.actionPositiveNumberOptionError,
-            actualValue:      'object',
-            optionName:       'caretPos'
+            category:    CATEGORY.actionError,
+            type:        TYPE.actionPositiveNumberOptionError,
+            actualValue: 'object',
+            optionName:  'caretPos'
         }
     );
 });
@@ -253,10 +283,10 @@ test('DragOptions', function () {
             }, true);
         },
         {
-            category:         CATEGORY.actionError,
-            type:             TYPE.actionNumberOptionError,
-            actualValue:      'object',
-            optionName:       'dragOffsetX'
+            category:    CATEGORY.actionError,
+            type:        TYPE.actionNumberOptionError,
+            actualValue: 'object',
+            optionName:  'dragOffsetX'
         }
     );
 
@@ -267,10 +297,24 @@ test('DragOptions', function () {
             }, true);
         },
         {
-            category:         CATEGORY.actionError,
-            type:             TYPE.actionNumberOptionError,
-            actualValue:      'object',
-            optionName:       'dragOffsetY'
+            category:    CATEGORY.actionError,
+            type:        TYPE.actionNumberOptionError,
+            actualValue: 'object',
+            optionName:  'dragOffsetY'
+        }
+    );
+});
+
+test('TypeOptions', function () {
+    throws(
+        function () {
+            new TypeOptions({ replace: 42 }, true);
+        },
+        {
+            category:    CATEGORY.actionError,
+            type:        TYPE.actionBooleanOptionError,
+            actualValue: 'number',
+            optionName:  'replace'
         }
     );
 });

@@ -1,7 +1,8 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 
-var noop             = () => {};
+var noop = () => {
+};
 
 var Promise          = hammerhead.Promise;
 var browserUtils     = hammerhead.utils.browser;
@@ -10,8 +11,6 @@ var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 var contentEditable = testCafeCore.contentEditable;
 var textSelection   = testCafeCore.textSelection;
 var domUtils        = testCafeCore.domUtils;
-var positionUtils   = testCafeCore.positionUtils;
-var styleUtils      = testCafeCore.styleUtils;
 
 
 function setCaretPosition (element, caretPos) {
@@ -93,63 +92,4 @@ export function focusByRelatedElement (element) {
         return;
 
     focusBlurSandbox.focus(elementForFocus, noop, false, true);
-}
-
-//TODO: all methods below will be moved from this file
-export function getMouseActionPoint (el, actionOptions, convertToScreen) {
-    var elementOffset = positionUtils.getOffsetPosition(el);
-    var left          = el === document.documentElement ? 0 : elementOffset.left;
-    var top           = el === document.documentElement ? 0 : elementOffset.top;
-    var elementScroll = styleUtils.getElementScroll(el);
-    var point         = positionUtils.findCenter(el);
-
-    if (actionOptions && typeof actionOptions.offsetX !== 'undefined' && !isNaN(parseInt(actionOptions.offsetX, 10)))
-        point.x = left + (actionOptions.offsetX || 0);
-
-    if (actionOptions && typeof actionOptions.offsetY !== 'undefined' && !isNaN(parseInt(actionOptions.offsetY, 10)))
-        point.y = top + (actionOptions.offsetY || 0);
-
-    if (convertToScreen) {
-        if (!/html/i.test(el.tagName) && styleUtils.hasScroll(el)) {
-            point.x -= elementScroll.left;
-            point.y -= elementScroll.top;
-        }
-        return positionUtils.offsetToClientCoords(point);
-    }
-
-    return point;
-}
-
-export function getEventOptionCoordinates (element, screenPoint) {
-    var clientPoint = {
-        x: screenPoint.x,
-        y: screenPoint.y
-    };
-
-    if (domUtils.isElementInIframe(element)) {
-        var currentIframe = domUtils.getIframeByElement(element);
-
-        if (currentIframe) {
-            var iframePosition       = positionUtils.getOffsetPosition(currentIframe);
-            var iframeBorders        = styleUtils.getBordersWidth(currentIframe);
-            var iframeClientPosition = positionUtils.offsetToClientCoords({
-                x: iframePosition.left,
-                y: iframePosition.top
-            });
-
-            clientPoint.x -= iframeClientPosition.x + iframeBorders.left;
-            clientPoint.y -= iframeClientPosition.y + iframeBorders.top;
-        }
-    }
-
-    return clientPoint;
-}
-
-export function getDefaultAutomationOffsets (element) {
-    var elementCenter = positionUtils.getElementCenter(element);
-
-    return {
-        offsetX: elementCenter.x,
-        offsetY: elementCenter.y
-    };
 }

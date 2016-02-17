@@ -10,17 +10,17 @@ import { sendRequestToFrame } from '../../utils/iframe';
 import whilst from '../../utils/promise-whilst';
 import nextTick from '../../utils/next-tick';
 
-var Promise = hammerhead.Promise;
-
+var Promise        = hammerhead.Promise;
 var nativeMethods  = hammerhead.nativeMethods;
 var browserUtils   = hammerhead.utils.browser;
 var extend         = hammerhead.utils.extend;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 var messageSandbox = hammerhead.eventSandbox.message;
-var positionUtils  = testCafeCore.positionUtils;
-var domUtils       = testCafeCore.domUtils;
-var styleUtils     = testCafeCore.styleUtils;
-var eventUtils     = testCafeCore.eventUtils;
+
+var positionUtils = testCafeCore.positionUtils;
+var domUtils      = testCafeCore.domUtils;
+var styleUtils    = testCafeCore.styleUtils;
+var eventUtils    = testCafeCore.eventUtils;
 
 
 const MOVE_REQUEST_CMD  = 'automation|move|request';
@@ -31,8 +31,11 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     if (e.message.cmd === MOVE_REQUEST_CMD) {
         if (e.source.parent === window.self)
             MoveAutomation.onMoveToIframeRequest(e);
-        else
+        else {
+            hammerhead.on(hammerhead.EVENTS.beforeUnload, () => messageSandbox.sendServiceMsg({ cmd: MOVE_RESPONSE_CMD }, e.source));
+
             MoveAutomation.onMoveOutRequest(e);
+        }
     }
 });
 
@@ -171,7 +174,7 @@ export default class MoveAutomation {
     _getTargetClientPoint () {
         var scroll = styleUtils.getElementScroll(this.element);
 
-        if (domUtils.isDocumentRootElement(this.element)) {
+        if (domUtils.isHtmlElement(this.element)) {
             return {
                 x: this.offsetX - scroll.left,
                 y: this.offsetY - scroll.top
@@ -179,7 +182,7 @@ export default class MoveAutomation {
         }
 
         var clientPosition = positionUtils.getClientPosition(this.element);
-        var isDocumentBody = this.element.tagName && this.element.tagName.toLowerCase() === 'body';
+        var isDocumentBody = this.element.tagName && domUtils.isBodyElement(this.element);
 
         return {
             x: isDocumentBody ? clientPosition.x + this.offsetX : clientPosition.x + this.offsetX - scroll.left,

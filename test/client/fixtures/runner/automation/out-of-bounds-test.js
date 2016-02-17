@@ -5,15 +5,17 @@ var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var position      = testCafeCore.get('./utils/position');
 var textSelection = testCafeCore.get('./utils/text-selection');
 
-var testCafeRunner         = window.getTestCafeModule('testCafeRunner');
-var automation             = testCafeRunner.get('./automation/automation');
-var DragOptions            = testCafeRunner.get('./automation/options').DragOptions;
-var ClickOptions           = testCafeRunner.get('./automation/options').ClickOptions;
-var RClickAutomation       = testCafeRunner.get('./automation/playback/rclick');
-var ClickAutomation        = testCafeRunner.get('./automation/playback/click');
-var DblClickAutomation     = testCafeRunner.get('./automation/playback/dblclick');
-var DragAutomation         = testCafeRunner.get('./automation/playback/drag');
-var typePlaybackAutomation = testCafeRunner.get('./automation/playback/type');
+var testCafeRunner     = window.getTestCafeModule('testCafeRunner');
+var automation         = testCafeRunner.get('./automation/automation');
+var DragOptions        = testCafeRunner.get('./automation/options').DragOptions;
+var ClickOptions       = testCafeRunner.get('./automation/options').ClickOptions;
+var TypeOptions        = testCafeRunner.get('./automation/options').TypeOptions;
+var RClickAutomation   = testCafeRunner.get('./automation/playback/rclick');
+var ClickAutomation    = testCafeRunner.get('./automation/playback/click');
+var DblClickAutomation = testCafeRunner.get('./automation/playback/dblclick');
+var DragAutomation     = testCafeRunner.get('./automation/playback/drag');
+var TypeAutomation     = testCafeRunner.get('./automation/playback/type');
+var mouseUtils         = testCafeRunner.get('./utils/mouse');
 
 automation.init();
 
@@ -169,6 +171,15 @@ $(document).ready(function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     };
 
+    var runTypeAutomation = function (element, text, options, callback) {
+        var typeOptions    = new TypeOptions(options);
+        var typeAutomation = new TypeAutomation(element, text, typeOptions);
+
+        typeAutomation
+            .run()
+            .then(callback);
+    };
+
     QUnit.testDone(function () {
         if (!browserUtils.isIE)
             removeTestElements();
@@ -205,10 +216,10 @@ $(document).ready(function () {
             clickBigCount++;
         });
 
-        var clickOptions = new ClickOptions();
-
-        clickOptions.offsetX = offsetX;
-        clickOptions.offsetY = offsetY;
+        var clickOptions = new ClickOptions({
+            offsetX: offsetX,
+            offsetY: offsetY
+        });
 
         var clickAutomation = new ClickAutomation($smallDiv[0], clickOptions);
 
@@ -250,10 +261,10 @@ $(document).ready(function () {
             clickBigCount++;
         });
 
-        var clickOptions = new ClickOptions();
-
-        clickOptions.offsetX = offsetX;
-        clickOptions.offsetY = offsetY;
+        var clickOptions = new ClickOptions({
+            offsetX: offsetX,
+            offsetY: offsetY
+        });
 
         var rClickAutomation = new RClickAutomation($smallDiv[0], clickOptions);
 
@@ -297,12 +308,11 @@ $(document).ready(function () {
             clickBigCount++;
         });
 
-        var clickOptions = new ClickOptions();
-
-        clickOptions.offsetX = offsetX;
-        clickOptions.offsetY = offsetY;
-
-        clickOptions.mofifiers = {};
+        var clickOptions = new ClickOptions({
+            offsetX:   offsetX,
+            offsetY:   offsetY,
+            modifiers: {}
+        });
 
         var dblClickAutomation = new DblClickAutomation($smallDiv[0], clickOptions);
 
@@ -341,7 +351,7 @@ $(document).ready(function () {
             newInputText   = inputText.substring(0, startCursorPos) + typpingText + inputText.substring(startCursorPos);
         });
 
-        typePlaybackAutomation($input[0], typpingText, typeOptions, function () {
+        runTypeAutomation($input[0], typpingText, typeOptions, function () {
             equal($input[0].value, newInputText);
             equal(textSelection.getSelectionStart($input[0]), startCursorPos + typpingText.length);
             startNext();
@@ -362,7 +372,7 @@ $(document).ready(function () {
                 caretPos: inputCursorPosition
             };
 
-        typePlaybackAutomation($input[0], typpingText, typeOptions, function () {
+        runTypeAutomation($input[0], typpingText, typeOptions, function () {
             equal($input[0].value, inputText);
             equal(textSelection.getSelectionStart($input[0]), startCursorPos);
             startNext();
@@ -417,12 +427,12 @@ $(document).ready(function () {
             backgroundColor: 'red'
         });
 
-        var dragOptions = new DragOptions();
-
-        dragOptions.dragOffsetX = dragOffsetX;
-        dragOptions.dragOffsetY = dragOffsetY;
-        dragOptions.offsetX     = offsetX;
-        dragOptions.offsetY     = offsetY;
+        var dragOptions = new DragOptions({
+            dragOffsetX: dragOffsetX,
+            dragOffsetY: dragOffsetY,
+            offsetX:     offsetX,
+            offsetY:     offsetY
+        });
 
         var dragAutomation = new DragAutomation($smallDraggable[0], dragOptions);
 

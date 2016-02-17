@@ -1,4 +1,5 @@
 import hammerhead from '../deps/hammerhead';
+import { isTextNode, getTagName } from '../utils/dom';
 
 const START_SUBSTR_RE               = ':/';
 const END_SUBSTR_RE                 = '/';
@@ -9,13 +10,13 @@ const CONTAINS_OWN_TEXT_METHOD_NAME = 'containsExcludeChildren';
 const TEXT_ELEMENT_TAGS_RE          = /^i$|^b$|^big$|^small$|^em$|^strong$|^dfn$|^code$|^samp$|^kbd$|^var$|^cite$|^abbr$|^acronym$|^sub$|^sup$|span$|^bdo$|^address$|^div$|^a$|^object$|^p$|^h\d$|^pre$|^q$|^ins$|^del$|^dt$|^dd$|^li$|^label$|^option$|^textarea$|^fieldset$|^legend$|^button$|^caption$|^td$|^th$|^title$/;
 
 function getOwnTextForSelector (element) {
-    if (!element || !TEXT_ELEMENT_TAGS_RE.test(element.tagName.toLowerCase()))
+    if (!element || !TEXT_ELEMENT_TAGS_RE.test(getTagName(element)))
         return '';
 
     var text = '';
 
     for (var i = 0; i < element.childNodes.length; i++) {
-        if (element.childNodes[i].nodeType === 3 && element.childNodes[i].data)
+        if (isTextNode(element.childNodes[i]) && element.childNodes[i].data)
             text += element.childNodes[i].data;
     }
 

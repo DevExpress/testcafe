@@ -306,13 +306,13 @@ $(document).ready(function () {
     asyncTest('B253200 - TestCafe doesn\'t emulate browsers behavior for press "enter" key on the focused HyperLink editor (link with href)', function () {
         var iFrameSrc = window.QUnitGlobals.getResourceUrl('../../../data/runner/iframe.html', 'runner-iframe.html');
         var linkHref  = window.QUnitGlobals.getResourceUrl('../../../data/focus-blur-change/iframe.html', 'focus-iframe.html');
-        var $link     = $('<a>Link</a>').attr('href', linkHref).addClass(TEST_ELEMENT_CLASS);
+        var link      = $('<a>Link</a>').attr('href', linkHref).addClass(TEST_ELEMENT_CLASS)[0];
         var iframe    = createIFrame(iFrameSrc);
         var clicked   = false;
 
-        $link.click(function () {
+        link.onclick = function () {
             clicked = true;
-        });
+        };
 
         runAsyncTest(
             function () {
@@ -320,12 +320,14 @@ $(document).ready(function () {
                     .then(function () {
                         equal(iframe.contentWindow.location.pathname, '/sessionId!i/https://example.com/test-resource/runner-iframe.html', 'path is correct before click on link');
 
-                        iframe.contentWindow.document.body.appendChild($link[0]);
-                        $link.focus();
+                        iframe.contentDocument.body.appendChild(link);
+                        link.focus();
 
                         //NOTE: we need setTimeout to wait for focus in IE
                         window.setTimeout(function () {
-                            equal(domUtils.getActiveElement(), $link[0]);
+                            equal(domUtils.getActiveElement(), iframe);
+                            equal(domUtils.getActiveElement(iframe.contentDocument), link);
+
                             actionsAPI.press('enter');
                         }, 500);
                     });
@@ -344,13 +346,13 @@ $(document).ready(function () {
     asyncTest('B253200 - TestCafe doesn\'t emulate browsers behavior for press "enter" key on the focused HyperLink editor (link with javascript)', function () {
         var iFrameSrc = window.QUnitGlobals.getResourceUrl('../../../data/runner/iframe.html', 'runner-iframe.html');
         var linkHref  = window.QUnitGlobals.getResourceUrl('../../../data/focus-blur-change/iframe.html', 'focus-iframe.html');
-        var $link     = $('<a>Link</a>').attr('href', 'javascript: window.location.href = "' + linkHref + '"');
+        var link      = $('<a>Link</a>').attr('href', 'javascript: window.location.href = "' + linkHref + '"')[0];
         var iframe    = createIFrame(iFrameSrc);
         var clicked   = false;
 
-        $link.click(function () {
+        link.onclick = function () {
             clicked = true;
-        });
+        };
 
         runAsyncTest(
             function () {
@@ -358,12 +360,13 @@ $(document).ready(function () {
                     .then(function () {
                         equal(iframe.contentWindow.location.pathname, '/sessionId!i/https://example.com/test-resource/runner-iframe.html', 'path is correct before click on link');
 
-                        iframe.contentWindow.document.body.appendChild($link[0]);
-                        $link.focus();
+                        iframe.contentWindow.document.body.appendChild(link);
+                        link.focus();
 
                         //NOTE: we need setTimeout to wait for focus in IE
                         window.setTimeout(function () {
-                            equal(domUtils.getActiveElement(), $link[0]);
+                            equal(domUtils.getActiveElement(), iframe);
+                            equal(domUtils.getActiveElement(iframe.contentDocument), link);
 
                             actionsAPI.press('enter');
                         }, 500);
