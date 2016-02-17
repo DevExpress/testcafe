@@ -5,6 +5,7 @@
   "globals": {
     "handleConfirm": false,
     "handleBeforeUnload": false,
-    "handleAlert": false
+    "handleAlert": false,
+    "getInput":true
   }
 }
