@@ -6,6 +6,7 @@
     "handleConfirm": false,
     "handleBeforeUnload": false,
     "handleAlert": false,
-    "getInput":true
+    "handlePrompt": false,
+    "getInput": true
   }
 }
