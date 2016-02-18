@@ -16,7 +16,7 @@ The `browser-list-comma-separated` argument specifies the list of browsers (sepa
 ### Local Browsers
 
 You can specify local browsers by using paths or [aliases](/testcafe/documentation/using-testcafe/common-concepts/browser-aliases).
-A list of all the available aliases can be obtained by the [--list-browsers](#b) command.
+A list of all the available aliases can be obtained by the [--list-browsers](#b-list-browsers) command.
 
 The following example demonstrates how to run a test in several browsers.
 The browsers are specified differently: one by using the alias, the other by using the path.
@@ -31,7 +31,7 @@ To run tests against **all installed browsers**, use the `all` alias.
 testcafe all tests/sample-fixture.js
 ```
 
-### <a class="anchor" name="remotes"></a>Remote Browsers
+### Remote Browsers
 
 To run tests on a remote browser, specify `remote` as a browser alias.
 
@@ -87,7 +87,7 @@ Displays usage information for commands.
 testcafe --help
 ```
 
-### <a class="anchor" name="b"></a>-b, --list-browsers
+### -b, --list-browsers
 
 Lists [aliases](/testcafe/documentation/using-testcafe/common-concepts/browser-aliases) of the browsers available on this computer.
 
@@ -219,13 +219,13 @@ If ports are not specified, TestCafe selects ports.
 
 ### --hostname \<name\>
 
-Specifies the hostname of your computer. It is used when running tests on [remote browsers](#remotes).
+Specifies the hostname of your computer. It is used when running tests on [remote browsers](#remote-browsers).
 
 If it is not specified, TestCafe will use operating system hostname or network IP address of the current machine.
 
-### <a class="anchor" name="qr-code"></a>--qr-code
+### --qr-code
 
-Outputs QR-code that represents URLs used to connect the [remote browsers](#remotes).
+Outputs QR-code that represents URLs used to connect the [remote browsers](#remote-browsers).
 
 ```sh
 testcafe remote my-tests --qr-code

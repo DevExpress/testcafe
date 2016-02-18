@@ -18,7 +18,7 @@ const testCafe       = await createTestCafe('localhost', 1337, 1338);
 
 ## Methods
 
-### <a class="anchor" name="createBrowserConnection"></a>createBrowserConnection
+### createBrowserConnection
 
 Creates a [remote browser connection](/testcafe/documentation/using-testcafe/programming-interface/BrowserConnection/).
 
@@ -47,7 +47,7 @@ remoteConnection.once('ready', async () => {
 });
 ```
 
-### <a class="anchor" name="createRunner"></a>createRunner
+### createRunner
 
 Creates the [test runner](/testcafe/documentation/using-testcafe/programming-interface/Runner/) that is used to configure and launch test runs.
 
@@ -70,6 +70,6 @@ const failed = await testCafe
 console.log('Tests failed: ' + failed);
 ```
 
-### <a class="anchor" name="close"></a>close
+### close
 
 Stops the TestCafe server. Forcibly closes all connections and pending test runs immediately.

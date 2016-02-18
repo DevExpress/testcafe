@@ -30,13 +30,13 @@ remoteConnection.once('ready', async () => {
 
 ## Properties
 
-### <a class="anchor" name="url"></a>url
+### url
 
 String. A URL that should be visited from a remote browser to connect.
 
 ## Events
 
-### <a class="anchor" name="ready"></a>ready
+### ready
 
 Fires when a remote browser has been connected.
 
