@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test fails on sending a request</title>
+</head>
+<body>
+<script type="text/javascript">
+    function sendRequest (callback) {
+        var request = new XMLHttpRequest();
+
+        request.addEventListener('load', function () {
+            callback(this.responseText);
+        });
+
+        request.open('POST', 'http://localhost:3000/quarantine-mode/passing-sequence');
+        request.send();
+    }
+
+    sendRequest(function (response) {
+        if (response === 'fail')
+            throw new Error('Failed by request!');
+    });
+
+</script>
+</body>
+</html>

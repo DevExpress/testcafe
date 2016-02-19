@@ -1,8 +1,9 @@
-var express   = require('express');
-var http      = require('http');
-var fs        = require('fs');
-var path      = require('path');
-var promisify = require('../../../lib/utils/promisify.js');
+var express               = require('express');
+var http                  = require('http');
+var fs                    = require('fs');
+var path                  = require('path');
+var promisify             = require('../../../lib/utils/promisify');
+var quarantineModeTracker = require('../quarantine-mode-tracker');
 
 
 var CONTENT_TYPES = {
@@ -49,6 +50,14 @@ Server.prototype._setupRoutes = function () {
             .catch(function () {
                 res.sendStatus(404);
             });
+    });
+
+    this.app.post('/quarantine-mode/failing-sequence', function (req, res) {
+        res.send(quarantineModeTracker.handleFailingSequence(req.headers['user-agent']));
+    });
+
+    this.app.post('/quarantine-mode/passing-sequence', function (req, res) {
+        res.send(quarantineModeTracker.handlePassingSequence(req.headers['user-agent']));
     });
 };
 

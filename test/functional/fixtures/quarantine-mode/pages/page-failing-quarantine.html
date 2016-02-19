@@ -13,7 +13,7 @@
             callback(this.responseText);
         });
 
-        request.open('GET', 'http://localhost:3002/');
+        request.open('POST', 'http://localhost:3000/quarantine-mode/failing-sequence');
         request.send();
     }
 

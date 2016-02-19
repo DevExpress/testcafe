@@ -1,5 +1,5 @@
 '@fixture quarantine-mode';
-'@page ./quarantine-mode/fails-by-request.html';
+'@page ./quarantine-mode/pages/page-failing-quarantine.html';
 
 '@test'['Wait 200ms'] = {
     '1. Wait 200ms': function () {
