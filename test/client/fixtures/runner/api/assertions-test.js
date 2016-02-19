@@ -211,8 +211,8 @@ test('dom elements', function () {
 
     assertionsAPI.eq(div1, div2);
     equal(currentError.type, ERROR_TYPE.eqAssertion, 'correct error type sent');
-    equal(currentError.actual, '&lt;div&gt;');
-    equal(currentError.expected, '&lt;div class=&quot;testClass&quot;&gt;');
+    equal(currentError.actual, '<div>');
+    equal(currentError.expected, '<div class="testClass">');
 
     $(div1).remove();
     $(div2).remove();
@@ -228,8 +228,8 @@ test('jQuery objects', function () {
     $(divString).addClass(commonClass).addClass(specificClass).appendTo($body);
     $(divString).addClass(commonClass).appendTo($body);
 
-    var commonClassElementDescription   = '&lt;div class=&quot;common&quot;&gt;';
-    var specificClassElementDescription = '&lt;div class=&quot;common specific&quot;&gt;';
+    var commonClassElementDescription   = '<div class="common">';
+    var specificClassElementDescription = '<div class="common specific">';
 
     var commonClassElementsDescription = ['[',
         specificClassElementDescription,
@@ -268,8 +268,8 @@ test('NodeLists', function () {
     $(divString).addClass(commonClass).addClass(specificClass).appendTo($body);
     $(divString).addClass(commonClass).appendTo($body);
 
-    var commonClassElementDescription   = '&lt;div class=&quot;common&quot;&gt;';
-    var specificClassElementDescription = '&lt;div class=&quot;common specific&quot;&gt;';
+    var commonClassElementDescription   = '<div class="common">';
+    var specificClassElementDescription = '<div class="common specific">';
 
     var commonClassElementsDescription = ['[',
         specificClassElementDescription,

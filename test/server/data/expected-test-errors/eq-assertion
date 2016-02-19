@@ -1,11 +1,13 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
 CATEGORY=failedAssertion
-Assertion failed at step "Step":
+"<tagged> message" assertion failed at step "Step with <tag>":
 
-    eq(["12345678901"], ["00000000000"])
+    eq({"<tag>": "<some-tag>"}, {"<tag>": "<another-tag>"})
 
-Arrays differ at index 0:
+Objects differ at the <tag> field:
 
-Expected: [0]: "12345678901"
-Actual:   [0]: "00000000000"
-                ^
+Expected: "<another-tag>"
+Actual:   "<some-tag>"
+            ^
+
+Screenshot: /unix/path/with/<tag>

@@ -116,36 +116,3 @@ asyncTest('Test iterator should not call Transport.fail twice (with screenshots)
         start();
     }, 100);
 });
-
-asyncTest('Step name is escaped before it is sent to server (error in step)', function () {
-    var stepNames = ['1.Step <with markup> name'];
-    var testSteps = [function () {
-        throw 'Any type of error';
-    }];
-
-    transport.fatalError = function (err) {
-        equal(err.type, ERROR_TYPE.uncaughtJSErrorInTestCodeStep);
-        equal(err.stepName, '1.Step &lt;with markup&gt; name');
-
-        start();
-    };
-
-    testRunner.act._start(stepNames, testSteps, 0);
-});
-
-asyncTest('Step name is escaped before it is sent to server (failed assertion)', function () {
-    var stepNames = ['1.Assertion in element <input>'];
-    var eq        = testRunner.eq;
-    var testSteps = [function () {
-        eq(1, 0);
-    }];
-
-    transport.assertionFailed = function (err) {
-        equal(err.type, ERROR_TYPE.eqAssertion);
-        equal(err.stepName, '1.Assertion in element &lt;input&gt;');
-
-        start();
-    };
-
-    testRunner.act._start(stepNames, testSteps, 0);
-});

@@ -1,4 +1,3 @@
-import escapeHTML from 'escape-html';
 import hammerhead from '../deps/hammerhead';
 import * as styleUtils from './style';
 import * as arrayUtils from './array';
@@ -321,7 +320,7 @@ export function getElementDescription (el) {
 
     res.push('>');
 
-    return escapeHTML(res.join(''));
+    return res.join('');
 }
 
 export function getNextFocusableElement (element, reverse) {

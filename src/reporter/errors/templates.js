@@ -1,14 +1,15 @@
 import dedent from 'dedent';
+import escapeHtml from 'escape-html';
 import CATEGORY from './category';
 import TYPE from './type';
 import buildDiff from './assertion-diffs';
 
 function escapeNewLines (str) {
-    return str.replace(/(\r\n|\n|\r)/gm, '\\n');
+    return escapeHtml(str).replace(/(\r\n|\n|\r)/gm, '\\n');
 }
 
 function getStepCode (str) {
-    var lines = str.split(/\r?\n/g);
+    var lines = escapeHtml(str).split(/\r?\n/g);
     var last  = lines.pop();
 
     return lines
@@ -24,7 +25,7 @@ function getMsgPrefix (err, category) {
 }
 
 function getAssertionMsgPrefix (err) {
-    var assertionPrefix = err.message ? `"${err.message}" assertion` : 'Assertion';
+    var assertionPrefix = err.message ? `"${escapeHtml(err.message)}" assertion` : 'Assertion';
 
     return getMsgPrefix(err, CATEGORY.failedAssertion) + assertionPrefix;
 }
@@ -34,7 +35,7 @@ function getDiffHeader (err) {
         return `Arrays differ at index <code>${err.key}</code>:`;
 
     if (err.isObjects)
-        return `Objects differ at the <code>${err.key}</code> field:`;
+        return `Objects differ at the <code>${escapeHtml(err.key)}</code> field:`;
 
     if (err.isStrings)
         return `Strings differ at index <code>${err.key}</code>:`;
@@ -44,14 +45,14 @@ function getDiffHeader (err) {
 
 function getScreenshotInfoStr (err) {
     if (err.screenshotPath)
-        return `<div data-type="screenshot-info">Screenshot: <a data-type="screenshot-path">${err.screenshotPath}</a></div>`;
+        return `<div data-type="screenshot-info">Screenshot: <a data-type="screenshot-path">${escapeHtml(err.screenshotPath)}</a></div>`;
 
     return '';
 }
 
 export default {
     [TYPE.okAssertion]: err => dedent(`
-        ${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>:
+        ${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -62,7 +63,7 @@ export default {
     `),
 
     [TYPE.notOkAssertion]: err => dedent(`
-        ${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>:
+        ${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -77,7 +78,7 @@ export default {
         var diffMarkerStr = diff.marker ? `          ${diff.marker}` : '';
 
         return dedent(`
-            ${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>:
+            ${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
             <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -92,7 +93,7 @@ export default {
     },
 
     [TYPE.notEqAssertion]: err => dedent(`
-        ${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${err.stepName}</span>:
+        ${getAssertionMsgPrefix(err)} failed at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -109,7 +110,7 @@ export default {
     `),
 
     [TYPE.inIFrameTargetLoadingTimeout]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.timeout)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.timeout)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
         IFrame target loading timed out.
 
         ${getScreenshotInfoStr(err)}
@@ -118,35 +119,35 @@ export default {
     [TYPE.uncaughtJSError]: err => {
         if (err.pageUrl) {
             return dedent(`
-                ${getMsgPrefix(err, CATEGORY.unhandledException)}Uncaught JavaScript error <code>${err.scriptErr}</code> on page <a href="${err.pageUrl}">${err.pageUrl}</a>
+                ${getMsgPrefix(err, CATEGORY.unhandledException)}Uncaught JavaScript error <code>${escapeHtml(err.scriptErr)}</code> on page <a href="${err.pageUrl}">${err.pageUrl}</a>
 
                 ${getScreenshotInfoStr(err)}
             `);
         }
 
         return dedent(`
-            ${getMsgPrefix(err, CATEGORY.unhandledException)}Uncaught JavaScript error <code>${err.scriptErr}</code> on page.
+            ${getMsgPrefix(err, CATEGORY.unhandledException)}Uncaught JavaScript error <code>${escapeHtml(err.scriptErr)}</code> on page.
 
             ${getScreenshotInfoStr(err)}
         `);
     },
 
     [TYPE.uncaughtJSErrorInTestCodeStep]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.unhandledException)}Error at step <span data-type="step-name">${err.stepName}</span>:
-        Uncaught JavaScript error in test code - <code>${err.scriptErr}</code>.
+        ${getMsgPrefix(err, CATEGORY.unhandledException)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
+        Uncaught JavaScript error in test code - <code>${escapeHtml(err.scriptErr)}</code>.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.storeDomNodeOrJqueryObject]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.unhandledException)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.unhandledException)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
         It is not allowed to share the DOM element, jQuery object or a function between test steps via "this" object.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.emptyFirstArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -157,18 +158,18 @@ export default {
     `),
 
     [TYPE.invisibleActionElement]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
-        A target element <code>${err.element}</code> of the <code data-type="api">${err.action}</code> action is not visible.
+        A target element <code>${escapeHtml(err.element)}</code> of the <code data-type="api">${err.action}</code> action is not visible.
         If this element should appear when you are hovering over another element, make sure that you properly recorded the <code data-type="api">hover</code> action.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.incorrectDraggingSecondArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -178,7 +179,7 @@ export default {
     `),
 
     [TYPE.incorrectPressActionArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -188,7 +189,7 @@ export default {
     `),
 
     [TYPE.emptyTypeActionArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -198,21 +199,21 @@ export default {
     `),
 
     [TYPE.unexpectedDialog]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.nativeDialogError)}Error at step <span data-type="step-name">${err.stepName}</span>:
-        Unexpected system <code>${err.dialog}</code> dialog <code>${err.message}</code> appeared.
+        ${getMsgPrefix(err, CATEGORY.nativeDialogError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
+        Unexpected system <code>${err.dialog}</code> dialog <code>${escapeHtml(err.message)}</code> appeared.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.expectedDialogDoesntAppear]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.nativeDialogError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.nativeDialogError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
         The expected system <code>${err.dialog}</code> dialog did not appear.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.incorrectSelectActionArguments]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -222,7 +223,7 @@ export default {
     `),
 
     [TYPE.incorrectWaitActionMillisecondsArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -232,7 +233,7 @@ export default {
     `),
 
     [TYPE.incorrectWaitForActionEventArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -242,7 +243,7 @@ export default {
     `),
 
     [TYPE.incorrectWaitForActionTimeoutArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -252,7 +253,7 @@ export default {
     `),
 
     [TYPE.waitForActionTimeoutExceeded]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.timeout)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.timeout)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -262,7 +263,7 @@ export default {
     `),
 
     [TYPE.incorrectGlobalWaitForActionEventArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="api">__waitFor</code> action's first parameter should be a function.
 
@@ -270,7 +271,7 @@ export default {
     `),
 
     [TYPE.incorrectGlobalWaitForActionTimeoutArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="api">__waitFor</code> action's "timeout" parameter should be a positive number.
 
@@ -278,7 +279,7 @@ export default {
     `),
 
     [TYPE.globalWaitForActionTimeoutExceeded]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.timeout)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.timeout)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="api">__waitFor</code> action's timeout exceeded.
 
@@ -286,28 +287,28 @@ export default {
     `),
 
     [TYPE.emptyIFrameArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
         The selector within the <code data-type="api">inIFrame</code> function returns an empty value.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.iframeArgumentIsNotIFrame]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
         The selector within the <code data-type="api">inIFrame</code> function doesn’t return an iframe element.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.multipleIFrameArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
         The selector within the <code data-type="api">inIFrame</code> function returns more than one iframe element.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.incorrectIFrameArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
         The <code data-type="api">inIFrame</code> function contains an invalid argument.
 
         ${getScreenshotInfoStr(err)}
@@ -315,7 +316,7 @@ export default {
 
     [TYPE.uploadCanNotFindFileToUpload]: err => {
         var msg = dedent(`
-            ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+            ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
             <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -323,12 +324,12 @@ export default {
         `);
 
         return msg +
-               err.filePaths.map(path => `\n    <code>${path}</code>`).join(',') +
+               err.filePaths.map(path => `\n    <code>${escapeHtml(path)}</code>`).join(',') +
                (err.screenshotPath ? `\n\n${getScreenshotInfoStr(err)}` : '');
     },
 
     [TYPE.uploadElementIsNotFileInput]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
@@ -338,7 +339,7 @@ export default {
     `),
 
     [TYPE.uploadInvalidFilePathArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${err.stepName}</span>:
+        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span data-type="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code data-type="step-source">${getStepCode(err.relatedSourceCode)}</code>
 
