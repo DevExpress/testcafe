@@ -43,7 +43,7 @@
     "strip-bom": "^2.0.0",
     "testcafe-browser-natives": "^0.10.0",
     "testcafe-hammerhead": "^6.0.0",
-    "testcafe-legacy-api": "^0.2.0",
+    "testcafe-legacy-api": "^0.3.0",
     "testcafe-reporter-json": "^1.0.0",
     "testcafe-reporter-list": "^1.0.0",
     "testcafe-reporter-minimal": "^1.0.0",
