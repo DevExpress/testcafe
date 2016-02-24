@@ -1,7 +1,8 @@
 import TestCafe from './testcafe';
 import ReporterPluginHost from './reporter/plugin-host';
 import * as endpointUtils from 'endpoint-utils';
-import { MESSAGE, getText } from './messages';
+import { GeneralError } from './errors';
+import MESSAGE from './errors/message';
 import { Role, Hybrid } from './api/common';
 
 // Validations
@@ -10,7 +11,7 @@ async function getValidHostname (hostname) {
         var valid = await endpointUtils.isMyHostname(hostname);
 
         if (!valid)
-            throw new Error(getText(MESSAGE.invalidHostname, hostname));
+            throw new GeneralError(MESSAGE.invalidHostname, hostname);
     }
     else
         hostname = await endpointUtils.getMyHostname();
@@ -23,7 +24,7 @@ async function getValidPort (port) {
         var isFree = await endpointUtils.isFreePort(port);
 
         if (!isFree)
-            throw new Error(getText(MESSAGE.portIsNotFree, port));
+            throw new GeneralError(MESSAGE.portIsNotFree, port);
     }
     else
         port = await endpointUtils.getFreePort();

@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import { getInstallations as getBrowserInstallations } from 'testcafe-browser-natives';
+import { GeneralError, GlobalsAPIError } from '../errors';
 import CliArgumentParser from './argument-parser';
 import log from './log';
 import remotesWizard from './remotes-wizard';
@@ -16,8 +17,21 @@ function exit (code) {
 function error (err) {
     log.hideSpinner();
 
-    log.write(chalk.red('ERROR ') + err.message);
-    log.write(chalk.gray('Type "tescafe -h" for help.'));
+    var message = null;
+
+    // HACK: workaround for the `instanceof` problem
+    // (see: http://stackoverflow.com/questions/33870684/why-doesnt-instanceof-work-on-instances-of-error-subclasses-under-babel-node)
+    if (err.constructor === GeneralError)
+        message = err.message;
+
+    else if (err.constructor === GlobalsAPIError)
+        message = err.coloredStack;
+
+    else
+        message = err.stack;
+
+    log.write(chalk.red('ERROR ') + message + '\n');
+    log.write(chalk.gray('Type "testcafe -h" for help.'));
 
     exit(1);
 }

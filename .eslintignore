@@ -1,2 +1,2 @@
 src/compiler/legacy/**/*.js
-test/server/data/test-suite/**/*.js
+test/server/data/test-suites/**/*.js

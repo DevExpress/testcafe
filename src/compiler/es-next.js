@@ -4,6 +4,8 @@ import stripBom from 'strip-bom';
 import sourceMapSupport from 'source-map-support';
 import nodeVer from 'node-version';
 import Globals from '../api/globals';
+import { TestCompilationError, GlobalsAPIError } from '../errors';
+import stackCleaningHook from '../errors/stack-cleaning-hook';
 
 const COMMON_API_PATH   = join(__dirname, '../api/common');
 const NODE_MODULES_PATH = join(__dirname, '../../node_modules');
@@ -47,6 +49,7 @@ export default class ESNextCompiler {
             plugins:             [transformRuntime],
             filename:            filename,
             sourceMaps:          true,
+            retainLines:         true,
             ast:                 false,
             babelrc:             false,
             highlightCode:       false,
@@ -58,6 +61,15 @@ export default class ESNextCompiler {
         return relative(CWD, filename)
                    .split(pathSep)
                    .indexOf('node_modules') >= 0;
+    }
+
+    static _execAsModule (code, filename) {
+        var mod = new Module(filename, module.parent);
+
+        mod.filename = filename;
+        mod.paths    = ESNextCompiler._getNodeModulesLookupPath(filename);
+
+        mod._compile(code, filename);
     }
 
     _setupSourceMapsSupport () {
@@ -113,6 +125,24 @@ export default class ESNextCompiler {
         return origRequireExtension;
     }
 
+    _compileESForTestFile (code, filename) {
+        var compiledCode = null;
+
+        stackCleaningHook.enabled = true;
+
+        try {
+            compiledCode = this._compileES(code, filename);
+        }
+        catch (err) {
+            throw new TestCompilationError(err);
+        }
+        finally {
+            stackCleaningHook.enabled = false;
+        }
+
+        return compiledCode;
+    }
+
     canCompile (code, filename) {
         return /\.js$/.test(filename) &&
                FIXTURE_RE.test(code) &&
@@ -120,21 +150,32 @@ export default class ESNextCompiler {
     }
 
     compile (code, filename) {
-        var compiledCode = this._compileES(code, filename);
-        var mod          = new Module(filename, module.parent);
+        var compiledCode = this._compileESForTestFile(code, filename);
         var globals      = new Globals(filename);
-
-        mod.filename = filename;
-        mod.paths    = ESNextCompiler._getNodeModulesLookupPath(filename);
 
         globals.setup();
 
+        stackCleaningHook.enabled = true;
+
         var origRequireExtension = this._setupRequireHook(globals);
 
-        mod._compile(compiledCode, filename);
+        try {
+            ESNextCompiler._execAsModule(compiledCode, filename);
+        }
+        catch (err) {
+            // HACK: workaround for the `instanceof` problem
+            // (see: http://stackoverflow.com/questions/33870684/why-doesnt-instanceof-work-on-instances-of-error-subclasses-under-babel-node)
+            if (err.constructor !== GlobalsAPIError)
+                throw new TestCompilationError(err);
 
-        require.extensions['.js'] = origRequireExtension;
-        globals.remove();
+            throw err;
+        }
+        finally {
+            require.extensions['.js'] = origRequireExtension;
+            stackCleaningHook.enabled = false;
+
+            globals.remove();
+        }
 
         return globals.collectedTests;
     }
