@@ -1,9 +1,11 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
 CATEGORY=actionError
-Error at step "Step":
+Error at step "Step with <tag>":
 
-    code
+    code and <tag>
 
 Cannot find the following file(s) to upload:
-    path1,
+    /unix/path/with/<tag>,
     path2
+
+Screenshot: /unix/path/with/<tag>

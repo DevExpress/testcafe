@@ -414,7 +414,7 @@ $(document).ready(function () {
 
         setTimeout(function () {
             equal(currentErrorType, ERROR_TYPE.invisibleActionElement);
-            equal(currentErrorElement, '&lt;option class=&quot;testElement&quot;&gt;');
+            equal(currentErrorElement, '<option class="testElement">');
             equal(currentActionSourceIndex, 312);
 
             startNext();
@@ -432,7 +432,7 @@ $(document).ready(function () {
 
             setTimeout(function () {
                 equal(currentErrorType, ERROR_TYPE.invisibleActionElement);
-                equal(currentErrorElement, '&lt;option class=&quot;testElement&quot;&gt;');
+                equal(currentErrorElement, '<option class="testElement">');
                 equal(currentActionSourceIndex, 312);
 
                 startNext();
@@ -450,7 +450,7 @@ $(document).ready(function () {
 
             setTimeout(function () {
                 equal(currentErrorType, ERROR_TYPE.invisibleActionElement);
-                equal(currentErrorElement, '&lt;option class=&quot;testElement&quot;&gt;');
+                equal(currentErrorElement, '<option class="testElement">');
                 equal(currentActionSourceIndex, 312);
 
                 startNext();

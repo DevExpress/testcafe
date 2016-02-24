@@ -384,7 +384,7 @@ $(document).ready(function () {
         setTimeout(function () {
             $el.css('visibility', '');
             equal(currentErrorType, ERROR_TYPE.invisibleActionElement);
-            equal(currentErrorElement, '&lt;input id=&quot;button1&quot; class=&quot;button testElement&quot;&gt;');
+            equal(currentErrorElement, '<input id="button1" class="button testElement">');
             equal(currentActionSourceIndex, 32);
 
             startNext();

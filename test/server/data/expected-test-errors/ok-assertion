@@ -1,8 +1,10 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
 CATEGORY=failedAssertion
-Assertion failed at step "Step":
+"<tagged> message" assertion failed at step "Step with <tag>":
 
-    ok(false)
+    ok("<test>" === "<best>")
 
 Expected: not null, not undefined, not false, not NaN and not ''
 Actual:   false
+
+Screenshot: /unix/path/with/<tag>
