@@ -1,5 +1,5 @@
 import { sep, join } from 'path';
-import escapeRe from 'escape-regexp';
+import { escapeRegExp as escapeRe } from 'lodash';
 
 const BABEL             = require.resolve('babel-core');
 const BABEL_MODULES_DIR = BABEL.replace(new RegExp(`^(.*${escapeRe(sep)}node_modules${escapeRe(sep)})(.*)`), '$1');

@@ -4,7 +4,7 @@ import onceDone from 'once-done';
 import mapReverse from 'map-reverse';
 import { resolve as resolvePath } from 'path';
 import { EventEmitter } from 'events';
-import flatten from 'flatten';
+import { flattenDeep as flatten } from 'lodash';
 import remove from '../utils/array-remove';
 import Bootstrapper from './bootstrapper';
 import Reporter from '../reporter';

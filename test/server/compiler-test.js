@@ -3,8 +3,8 @@ var resolve     = require('path').resolve;
 var sep         = require('path').sep;
 var Promise     = require('pinkie');
 var stackParser = require('error-stack-parser');
-var compareFn   = require('compare-func');
 var stripAnsi   = require('strip-ansi');
+var sortBy      = require('lodash').sortBy;
 var Compiler    = require('../../lib/compiler');
 var Role        = require('../../lib/api/common/role');
 var Hybrid      = require('../../lib/api/common/hybrid');
@@ -28,20 +28,18 @@ describe('Compiler', function () {
 
         return compiler.getTests()
             .then(function (tests) {
-                var comparer = compareFn('name');
-
-                tests = tests.sort(comparer);
-
                 var fixtures = tests
                     .reduce(function (fxtrs, test) {
                         if (fxtrs.indexOf(test.fixture) < 0)
                             fxtrs.push(test.fixture);
 
                         return fxtrs;
-                    }, [])
-                    .sort(comparer);
+                    }, []);
 
-                return { tests: tests, fixtures: fixtures };
+                return {
+                    tests:    sortBy(tests, 'name'),
+                    fixtures: sortBy(fixtures, 'name')
+                };
             });
     }
 

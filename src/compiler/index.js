@@ -1,7 +1,6 @@
 import * as fs from 'fs';
-import flatten from 'flatten';
+import { flattenDeep as flatten, find } from 'lodash';
 import stripBom from 'strip-bom';
-import find from 'array-find';
 import { Compiler as LegacyCompiler } from 'testcafe-legacy-api';
 import { wrapDomAccessors } from 'testcafe-hammerhead';
 import EsNextCompiler from './es-next';

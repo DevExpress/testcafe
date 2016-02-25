@@ -1,5 +1,5 @@
 import dedent from 'dedent';
-import escapeHtml from 'escape-html';
+import { escape as escapeHtml } from 'lodash';
 import CATEGORY from './category';
 import TYPE from './type';
 import buildDiff from './assertion-diffs';

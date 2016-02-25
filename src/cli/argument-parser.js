@@ -86,9 +86,11 @@ export default class CliArgumentParser {
     }
 
     _describeProgram () {
+        var version = JSON.parse(read('../../package.json')).version;
+
         this.program
 
-            .version(JSON.parse(read('../../package.json')).version)
+            .version(version, '-v, --version')
             .usage('[options] <comma-separated-browser-list> <file-or-glob ...>')
             .description(CliArgumentParser._getDescription())
 

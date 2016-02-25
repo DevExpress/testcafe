@@ -1,6 +1,6 @@
 import { join as joinPath, dirname } from 'path';
 import uuid from 'uuid';
-import find from 'array-find';
+import { find } from 'lodash';
 import Capturer from './capturer';
 
 export default class Screenshots {
