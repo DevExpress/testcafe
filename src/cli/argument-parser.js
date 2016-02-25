@@ -1,20 +1,25 @@
-import { resolve } from 'path';
+import { resolve, join as pathJoin } from 'path';
 import { Command } from 'commander';
+import fs from 'fs';
 import Promise from 'pinkie';
-import promisify from '../utils/promisify';
 import dedent from 'dedent';
+import isGlob from 'is-glob';
 import globby from 'globby';
 import mkdirp from 'mkdirp';
+import OS from 'os-family';
 import { getInstallations as getBrowserInstallations } from 'testcafe-browser-natives';
 import { readSync as read } from 'read-file-relative';
+import promisify from '../utils/promisify';
 import { GeneralError } from '../errors';
 import MESSAGE from '../errors/message';
 import getViewPortWidth from '../utils/get-viewport-width';
 import wordWrap from '../utils/word-wrap';
 
 var ensureDir = promisify(mkdirp);
+var stat      = promisify(fs.stat);
 
-const REMOTE_ALIAS_RE = /^(\d*)remote$/;
+const REMOTE_ALIAS_RE          = /^(\d*)remote$/;
+const DEFAULT_TEST_LOOKUP_DIRS = OS.win ? ['test/', 'tests/'] : ['test/', 'tests/', 'Test/', 'Tests/'];
 
 const DESCRIPTION = dedent(`
     In the browser list, you can use aliases (e.g. "ie9", "chrome", etc.) as well as paths to executables.
@@ -30,10 +35,10 @@ const DESCRIPTION = dedent(`
 `);
 
 export default class CliArgumentParser {
-    constructor () {
+    constructor (cwd) {
         this.program = new Command('testcafe');
 
-        this.cwd = process.cwd();
+        this.cwd = cwd || process.cwd();
 
         this.src         = null;
         this.browsers    = null;
@@ -161,8 +166,36 @@ export default class CliArgumentParser {
             .reduce((browserList, browser) => CliArgumentParser._replaceAllBrowsersAlias(browserList, browser, allAliases), []);
     }
 
+    async _convertDirsToGlobs (fileList) {
+        fileList = await Promise.all(fileList.map(async file => {
+            if (!isGlob(file)) {
+                var absPath  = resolve(this.cwd, file);
+                var fileStat = null;
+
+                try {
+                    fileStat = await stat(absPath);
+                }
+                catch (err) {
+                    return null;
+                }
+
+                if (fileStat.isDirectory())
+                    return pathJoin(file, './**/*.js');
+            }
+
+            return file;
+        }));
+
+        return fileList.filter(file => !!file);
+    }
+
     async _parseFileList () {
         var fileList = this.program.args.slice(1);
+
+        if (!fileList.length)
+            fileList = DEFAULT_TEST_LOOKUP_DIRS;
+
+        fileList = await this._convertDirsToGlobs(fileList);
 
         this.src = await globby(fileList, {
             cwd:    this.cwd,

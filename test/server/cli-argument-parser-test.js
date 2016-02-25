@@ -9,8 +9,8 @@ var CliArgumentParser       = require('../../lib/cli/argument-parser');
 describe('CLI argument parser', function () {
     tmp.setGracefulCleanup();
 
-    function parse (args) {
-        var parser = new CliArgumentParser();
+    function parse (args, cwd) {
+        var parser = new CliArgumentParser(cwd);
 
         args = ['node', 'index.js'].concat(args.split(/\s+/));
 
@@ -176,6 +176,7 @@ describe('CLI argument parser', function () {
         var expected = [
             'test/server/data/file-list/file-1.js',
             'test/server/data/file-list/file-2.js',
+            'test/server/data/file-list/dir1/dir1-1/file-1-1-1.js',
             'test/server/data/file-list/dir1/file-1-1.js',
             'test/server/data/file-list/dir1/file-1-2.js',
             'test/server/data/file-list/dir2/file-2-2.js',
@@ -189,10 +190,28 @@ describe('CLI argument parser', function () {
         return parse('chrome ' +
                      'test/server/data/file-list/file-1.js ' +
                      path.join(cwd, 'test/server/data/file-list/file-2.js') + ' ' +
-                     'test/server/data/file-list/dir1/*.js ' +
+                     'test/server/data/file-list/dir1 ' +
                      'test/server/data/file-list/dir2/*.js ' +
                      '!test/server/data/file-list/dir2/file-2-1.js ' +
                      'test/server/data/file-list/dir3')
+            .then(function (parser) {
+                expect(parser.src).eql(expected);
+            });
+    });
+
+    it('Should use "test" and "tests" dirs if source files are not specified', function () {
+        var workingDir = path.join(__dirname, './data/file-list');
+
+        var expected = [
+            'test/test-dir-file.js',
+            'tests/tests-dir-file.js'
+        ];
+
+        expected = expected.map(function (file) {
+            return path.resolve(workingDir, file);
+        });
+
+        return parse('chrome', workingDir)
             .then(function (parser) {
                 expect(parser.src).eql(expected);
             });
