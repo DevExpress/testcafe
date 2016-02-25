@@ -1,13 +1,12 @@
 import chalk from 'chalk';
 import indentString from 'indent-string';
-import escapeHtml from 'escape-html';
+import { escape as escapeHtml, assignIn } from 'lodash';
 import moment from 'moment';
 import 'moment-duration-format';
 import OS from 'os-family';
 import wordWrap from '../utils/word-wrap';
 import getViewportWidth from '../utils/get-viewport-width';
 import format from './errors/format';
-import mixin from 'mixin-object';
 
 // NOTE: we should not expose internal state to
 // the plugin, to avoid accidental rewrites.
@@ -34,7 +33,7 @@ export default class ReporterPluginHost {
                        { ok: '√', err: '×' } :
                        { ok: '✓', err: '✖' };
 
-        mixin(this, plugin);
+        assignIn(this, plugin);
 
         this[errorDecorator] = this.createErrorDecorator();
     }

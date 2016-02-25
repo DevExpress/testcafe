@@ -1,4 +1,4 @@
-import find from 'array-find';
+import { find } from 'lodash';
 import ReporterPluginHost from './plugin-host';
 
 export default class Reporter {

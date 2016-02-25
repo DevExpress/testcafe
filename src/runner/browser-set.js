@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import Promise from 'pinkie';
 import timeLimit from 'time-limit-promise';
 import promisifyEvent from 'promisify-event';
-import noop from 'noop-fn';
+import { noop } from 'lodash';
 import mapReverse from 'map-reverse';
 import LocalBrowserConnection from '../browser-connection/local';
 import { GeneralError } from '../errors';

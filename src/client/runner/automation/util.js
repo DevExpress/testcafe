@@ -1,6 +1,7 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
-import noop from 'noop-fn';
+
+var noop             = () => {};
 
 var Promise          = hammerhead.Promise;
 var browserUtils     = hammerhead.utils.browser;
