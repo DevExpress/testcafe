@@ -13,6 +13,8 @@ var clickPlaybackAutomation    = testCafeRunner.get('./automation/playback/click
 var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
 var DragAutomation             = testCafeRunner.get('./automation/playback/drag');
 var selectPlaybackAutomation   = testCafeRunner.get('./automation/playback/select');
+var SelectOptions              = testCafeRunner.get('./automation/options/select');
+var SelectAutomation           = testCafeRunner.get('./automation/playback/select');
 var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
 var PressAutomation            = testCafeRunner.get('./automation/playback/press');
 var parseKeyString             = testCafeRunner.get('./automation/playback/press/parse-key-string');
@@ -268,10 +270,19 @@ $(document).ready(function () {
 
         $input[0].value = '123456789qwertyuiop';
 
-        selectPlaybackAutomation($input[0], { startPos: 10, endPos: 2 }, function () {
-            checkSelection($input[0], 2, 10, true);
-            startNext(300);
-        });
+        var selectOptions = new SelectOptions();
+
+        selectOptions.startPos = 10;
+        selectOptions.endPos   = 2;
+
+        var selectAutomation = new SelectAutomation($input[0], selectOptions);
+
+        selectAutomation
+            .run()
+            .then(function () {
+                checkSelection($input[0], 2, 10, true);
+                startNext(300);
+            });
     });
 
     asyncTest('run select playback in textarea', function () {
@@ -282,10 +293,19 @@ $(document).ready(function () {
         $textarea[0].textContent = value;
         $textarea.text(value);
 
-        selectPlaybackAutomation($textarea[0], { startPos: 2, endPos: value.length - 5 }, function () {
-            checkSelection($textarea[0], 2, value.length - 5, false);
-            startNext();
-        });
+        var selectOptions = new SelectOptions();
+
+        selectOptions.startPos = 2;
+        selectOptions.endPos   = value.length - 5;
+
+        var selectAutomation = new SelectAutomation($textarea[0], selectOptions);
+
+        selectAutomation
+            .run()
+            .then(function () {
+                checkSelection($textarea[0], 2, value.length - 5, false);
+                startNext();
+            });
     });
 
     asyncTest('run press playback', function () {

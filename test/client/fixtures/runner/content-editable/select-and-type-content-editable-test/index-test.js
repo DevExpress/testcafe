@@ -6,12 +6,13 @@ var textSelection   = testCafeCore.get('./utils/text-selection');
 var contentEditable = testCafeCore.get('./utils/content-editable');
 var domUtils        = testCafeCore.get('./utils/dom');
 
-var testCafeRunner           = window.getTestCafeModule('testCafeRunner');
-var automation               = testCafeRunner.get('./automation/automation');
-var typePlaybackAutomation   = testCafeRunner.get('./automation/playback/type');
-var selectPlaybackAutomation = testCafeRunner.get('./automation/playback/select');
-var PressAutomation          = testCafeRunner.get('./automation/playback/press');
-var parseKeyString           = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var testCafeRunner         = window.getTestCafeModule('testCafeRunner');
+var automation             = testCafeRunner.get('./automation/automation');
+var typePlaybackAutomation = testCafeRunner.get('./automation/playback/type');
+var SelectOptions          = testCafeRunner.get('./automation/options/select');
+var SelectAutomation       = testCafeRunner.get('./automation/playback/select');
+var PressAutomation        = testCafeRunner.get('./automation/playback/press');
+var parseKeyString         = testCafeRunner.get('./automation/playback/press/parse-key-string');
 
 automation.init();
 
@@ -142,6 +143,21 @@ $(document).ready(function () {
             .then(callback);
     };
 
+    var runSelectAutomation = function (element, options, callback) {
+        var selectOptions = new SelectOptions();
+
+        selectOptions.startPos  = options.startPos;
+        selectOptions.endPos    = options.endPos;
+        selectOptions.startNode = options.startNode;
+        selectOptions.endNode   = options.endNode;
+
+        var selectAutomation = new SelectAutomation(element, selectOptions);
+
+        selectAutomation
+            .run()
+            .then(callback);
+    };
+
     QUnit.testStart(function () {
         //before first test save page state
         if (!stateHelper.isStateSaved())
@@ -167,7 +183,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 15,
                     endPos:   151
                 }, callback);
@@ -208,7 +224,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 112,
                     endPos:   186
                 }, callback);
@@ -248,7 +264,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 186,
                     endPos:   112
                 }, callback);
@@ -294,7 +310,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 124,
                     endPos:   186
                 }, callback);
@@ -356,7 +372,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 186,
                     endPos:   124
                 }, callback);
@@ -404,7 +420,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 112,
                     endPos:   187
                 }, callback);
@@ -445,7 +461,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 124,
                     endPos:   184
                 }, callback);
@@ -492,7 +508,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 112,
                     endPos:   184
                 }, callback);
@@ -537,7 +553,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 124,
                     endPos:   187
                 }, callback);
@@ -590,7 +606,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 1,
                     endPos:   28
                 }, callback);
@@ -629,7 +645,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 152,
                     endPos:   186
                 }, callback);
@@ -677,7 +693,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 41,
                     endPos:   197
                 }, callback);
@@ -734,7 +750,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 0,
                     endPos:   17
                 }, callback);
@@ -761,9 +777,9 @@ $(document).ready(function () {
 
             'Check typing': function () {
                 var $typedElement = $parent.find('i:first');
-                checkSelection($parent, currentSelection.startNode, currentSelection.startOffset +
-                                                                    text.length, currentSelection.startNode, currentSelection.startOffset +
-                                                                                                             text.length);
+                checkSelection($parent, currentSelection.startPos.node, currentSelection.startPos.offset +
+                                                                        text.length, currentSelection.startPos.node, currentSelection.startPos.offset +
+                                                                                                                     text.length);
                 equal($typedElement.text().substring(0, 11), 'i el123b el');
                 startNext();
             }
@@ -780,7 +796,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 0,
                     endPos:   17
                 }, callback);
@@ -807,8 +823,8 @@ $(document).ready(function () {
 
             'Check typing': function () {
                 var $typedElement = $parent.find('i:first');
-                checkSelection($parent, currentSelection.startNode, currentSelection.startOffset +
-                                                                    text.length, currentSelection.startNode, currentSelection.startOffset +
+                checkSelection($parent, currentSelection.startPos.node, currentSelection.startPos.offset +
+                                                                    text.length, currentSelection.startPos.node, currentSelection.startPos.offset +
                                                                                                              text.length);
                 equal($typedElement.text().substring(0, 11), 'i el123b el');
                 //var node = $parent[0].childNodes[5].childNodes[0];
@@ -832,7 +848,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 197,
                     endPos:   41
                 }, callback);
@@ -889,7 +905,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                selectPlaybackAutomation($el[0], {
+                runSelectAutomation($el[0], {
                     startPos: 197,
                     endPos:   41
                 }, callback);

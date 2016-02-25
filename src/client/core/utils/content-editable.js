@@ -302,33 +302,28 @@ function getSelectionEnd (el, selection, inverseSelection) {
 }
 
 export function getSelection (el, selection, inverseSelection) {
-    var correctedStart = getSelectionStart(el, selection, inverseSelection),
-        correctedEnd   = getSelectionEnd(el, selection, inverseSelection);
-
     return {
-        startNode:   correctedStart.node,
-        startOffset: correctedStart.offset,
-        endNode:     correctedEnd.node,
-        endOffset:   correctedEnd.offset
+        startPos: getSelectionStart(el, selection, inverseSelection),
+        endPos:   getSelectionEnd(el, selection, inverseSelection)
     };
 }
 
 export function getSelectionStartPosition (el, selection, inverseSelection) {
     var correctedSelectionStart = getSelectionStart(el, selection, inverseSelection);
 
-    return calculatePositionByNodeAndOffset(el, correctedSelectionStart.node, correctedSelectionStart.offset);
+    return calculatePositionByNodeAndOffset(el, correctedSelectionStart);
 }
 
 export function getSelectionEndPosition (el, selection, inverseSelection) {
     var correctedSelectionEnd = getSelectionEnd(el, selection, inverseSelection);
 
-    return calculatePositionByNodeAndOffset(el, correctedSelectionEnd.node, correctedSelectionEnd.offset);
+    return calculatePositionByNodeAndOffset(el, correctedSelectionEnd);
 }
 
 export function calculateNodeAndOffsetByPosition (el, offset) {
     var point = {
-        offset: offset,
-        node:   null
+        node:   null,
+        offset: offset
     };
 
     function checkChildNodes (target) {
@@ -371,7 +366,7 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
     return checkChildNodes(el);
 }
 
-export function calculatePositionByNodeAndOffset (el, node, offset) {
+export function calculatePositionByNodeAndOffset (el, {node, offset}) {
     var currentOffset = 0,
         find          = false;
 
@@ -415,6 +410,7 @@ export function calculatePositionByNodeAndOffset (el, node, offset) {
 
 export function getElementBySelection (selection) {
     var el = getNearestCommonAncestor(selection.anchorNode, selection.focusNode);
+
     return domUtils.isTextNode(el) ? el.parentElement : el;
 }
 
@@ -428,8 +424,10 @@ export function getFirstVisiblePosition (el) {
 
     if (firstVisibleTextChild) {
         range.selectNodeContents(firstVisibleTextChild);
-        return calculatePositionByNodeAndOffset(el, firstVisibleTextChild, range.startOffset);
+
+        return calculatePositionByNodeAndOffset(el, { node: firstVisibleTextChild, offset: range.startOffset });
     }
+
     return 0;
 }
 
@@ -440,8 +438,10 @@ export function getLastVisiblePosition (el) {
 
     if (lastVisibleTextChild) {
         range.selectNodeContents(lastVisibleTextChild);
-        return calculatePositionByNodeAndOffset(el, lastVisibleTextChild, range.endOffset);
+
+        return calculatePositionByNodeAndOffset(el, { node: lastVisibleTextChild, offset: range.endOffset });
     }
+
     return 0;
 }
 

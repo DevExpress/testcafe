@@ -116,6 +116,13 @@ $(document).ready(function () {
             window.setProperty($el[0], 'innerHTML', innerHTML);
         },
 
+        selectByNodesAndOffsets       = function (startNode, startOffset, endNode, endOffset) {
+            var startPos = { node: startNode, offset: startOffset };
+            var endPos   = { node: endNode, offset: endOffset };
+
+            textSelection.selectByNodesAndOffsets(startPos, endPos, true);
+        },
+
         stateHelper                   = {
             isStateSaved: function () {
                 return firstElementInnerHTML;
@@ -238,7 +245,7 @@ $(document).ready(function () {
                     clicked = true;
                 };
                 ok(!clicked);
-                textSelection.selectByNodesAndOffsets($parent[0].childNodes[0], 3, $parent[0].childNodes[4], 7, true);
+                selectByNodesAndOffsets($parent[0].childNodes[0], 3, $parent[0].childNodes[4], 7);
                 actionsAPI.click($el[0], {
                     caretPos: 6
                 });
@@ -340,7 +347,6 @@ $(document).ready(function () {
 
         runAsyncTest(
             function () {
-                window.i = true;
                 actionsAPI.select($el[0], 21, 4);
             },
             function () {
@@ -685,7 +691,7 @@ $(document).ready(function () {
             function () {
                 $el          = $('#4');
                 oldNodeValue = $el[0].childNodes[1].childNodes[2].nodeValue;
-                textSelection.selectByNodesAndOffsets($el[0].childNodes[1].childNodes[2], 11, $el[0].childNodes[10].childNodes[0], 3, true);
+                selectByNodesAndOffsets($el[0].childNodes[1].childNodes[2], 11, $el[0].childNodes[10].childNodes[0], 3);
                 equal($el[0].childNodes[1].childNodes[2].nodeValue, oldNodeValue, 'nodeValue is correct');
                 actionsAPI.press('delete');
             },
@@ -706,7 +712,7 @@ $(document).ready(function () {
                 $el            = $parent.find('i:first');
                 element        = $parent[0].childNodes[5].childNodes[1];
                 oldElementText = $(element).text();
-                textSelection.selectByNodesAndOffsets($parent[0].childNodes[5].childNodes[1].childNodes[0], 0, $parent[0].childNodes[5].childNodes[1].childNodes[0], 17, true);
+                selectByNodesAndOffsets($parent[0].childNodes[5].childNodes[1].childNodes[0], 0, $parent[0].childNodes[5].childNodes[1].childNodes[0], 17);
                 window.setTimeout(function () {
                     equal($(element).text(), oldElementText, 'nodeValue is correct');
                     actionsAPI.press('backspace');
@@ -733,7 +739,7 @@ $(document).ready(function () {
                 startOffset = 11;
                 endNode     = $el[0].childNodes[10].childNodes[0];
                 endOffset   = 3;
-                textSelection.selectByNodesAndOffsets(startNode, startOffset, endNode, endOffset, true);
+                selectByNodesAndOffsets(startNode, startOffset, endNode, endOffset);
                 checkSelection($el, startNode, startOffset, endNode, endOffset);
                 actionsAPI.press('left');
             },
@@ -756,7 +762,7 @@ $(document).ready(function () {
                 startOffset = 11;
                 endNode     = $el[0].childNodes[10].childNodes[0];
                 endOffset   = 3;
-                textSelection.selectByNodesAndOffsets(startNode, startOffset, endNode, endOffset, true);
+                selectByNodesAndOffsets(startNode, startOffset, endNode, endOffset);
                 checkSelection($el, startNode, startOffset, endNode, endOffset);
                 actionsAPI.press('right');
             },
@@ -817,7 +823,7 @@ $(document).ready(function () {
 
         runAsyncTest(
             function () {
-                textSelection.selectByNodesAndOffsets($el[0].childNodes[0], 3, $el[0].childNodes[2], 7);
+                selectByNodesAndOffsets($el[0].childNodes[0], 3, $el[0].childNodes[2], 7);
                 actionsAPI.type($el[0], text, {
                     caretPos: 21
                 });
@@ -840,7 +846,7 @@ $(document).ready(function () {
 
         runAsyncTest(
             function () {
-                textSelection.selectByNodesAndOffsets($parent[0].childNodes[1].childNodes[4], 11, $parent[0].childNodes[5].childNodes[6].childNodes[0], 2);
+                selectByNodesAndOffsets($parent[0].childNodes[1].childNodes[4], 11, $parent[0].childNodes[5].childNodes[6].childNodes[0], 2);
                 actionsAPI.type($el[0], text, {
                     caretPos: 2
                 });
@@ -1123,7 +1129,7 @@ $(document).ready(function () {
         );
     });
 
-    module('errors');
+    module('errors for select action');
 
     asyncTest('invisible second element raise error', function () {
         asyncActionCallback = function () {

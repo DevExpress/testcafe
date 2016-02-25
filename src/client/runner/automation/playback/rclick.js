@@ -157,7 +157,8 @@ export default class RClickAutomation {
     run () {
         var moveArguments = this._getMoveArguments();
 
-        return this._move(moveArguments)
+        return this.
+            _move(moveArguments)
             .then(() => this._mousedown())
             .then(() => this._mouseup())
             .then(() => this._contextmenu());

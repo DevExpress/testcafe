@@ -100,45 +100,25 @@ function moveTextAreaCursorDown (element, withSelection) {
 function moveTextAreaCursor (element, startPos, endPos, hasInverseSelection, newPosition, withSelection) {
     var newStart = null;
     var newEnd   = null;
-    var inverse  = null;
 
     if (withSelection) {
         if (startPos === endPos) {
-            if (newPosition < startPos) {
-                newStart = newPosition;
-                newEnd   = startPos;
-                inverse  = true;
-            }
-            else {
-                newStart = startPos;
-                newEnd   = newPosition;
-            }
+            newStart = startPos;
+            newEnd   = newPosition;
         }
         else if (!hasInverseSelection) {
-            if (newPosition < startPos) {
-                newStart = newPosition;
-                newEnd   = startPos;
-                inverse  = true;
-            }
-            else {
-                newStart = startPos;
-                newEnd   = newPosition;
-            }
-        }
-        else if (newPosition > endPos) {
-            newStart = endPos;
+            newStart = startPos;
             newEnd   = newPosition;
         }
         else {
-            newStart = newPosition;
-            newEnd   = endPos;
-            inverse  = true;
+            newStart = endPos;
+            newEnd   = newPosition;
         }
     }
     else
         newEnd = newStart = newPosition;
 
-    textSelection.select(element, newStart, newEnd, inverse);
+    textSelection.select(element, newStart, newEnd);
 }
 
 function setElementValue (element, value) {
@@ -241,33 +221,35 @@ function del (element) {
 }
 
 function left (element) {
-    var startPos = null;
-    var endPos   = null;
+    var startPosition = null;
+    var endPosition   = null;
 
     if (domUtils.isSelectElement(element))
         selectElement.switchOptionsByKeys(element, 'left');
 
     if (domUtils.isTextEditableElement(element)) {
-        startPos        = textSelection.getSelectionStart(element) || 0;
-        endPos          = textSelection.getSelectionEnd(element);
-        var newPosition = startPos === endPos ? startPos - 1 : startPos;
+        startPosition = textSelection.getSelectionStart(element) || 0;
+        endPosition   = textSelection.getSelectionEnd(element);
+
+        var newPosition = startPosition === endPosition ? startPosition - 1 : startPosition;
 
         textSelection.select(element, newPosition, newPosition);
         updateTextAreaIndent(element);
     }
 
     if (domUtils.isContentEditableElement(element)) {
-        startPos = textSelection.getSelectionStart(element);
-        endPos   = textSelection.getSelectionEnd(element);
+        startPosition = textSelection.getSelectionStart(element);
+        endPosition   = textSelection.getSelectionEnd(element);
 
         // NOTE: we only remove selection
-        if (startPos !== endPos) {
+        if (startPosition !== endPosition) {
             var selection        = textSelection.getSelectionByElement(element);
             var inverseSelection = textSelection.hasInverseSelectionContentEditable(element);
             var startNode        = inverseSelection ? selection.focusNode : selection.anchorNode;
             var startOffset      = inverseSelection ? selection.focusOffset : selection.anchorOffset;
+            var startPos         = { node: startNode, offset: startOffset };
 
-            textSelection.selectByNodesAndOffsets(startNode, startOffset, startNode, startOffset, true, false);
+            textSelection.selectByNodesAndOffsets(startPos, startPos, true);
         }
     }
 
@@ -275,36 +257,38 @@ function left (element) {
 }
 
 function right (element) {
-    var startPos = null;
-    var endPos   = null;
+    var startPosition = null;
+    var endPosition   = null;
 
     if (domUtils.isSelectElement(element))
         selectElement.switchOptionsByKeys(element, 'right');
 
     if (domUtils.isTextEditableElement(element)) {
-        startPos        = textSelection.getSelectionStart(element);
-        endPos          = textSelection.getSelectionEnd(element);
-        var newPosition = startPos === endPos ? endPos + 1 : endPos;
+        startPosition = textSelection.getSelectionStart(element);
+        endPosition   = textSelection.getSelectionEnd(element);
 
-        if (startPos === element.value.length)
-            newPosition = startPos;
+        var newPosition = startPosition === endPosition ? endPosition + 1 : endPosition;
+
+        if (startPosition === element.value.length)
+            newPosition = startPosition;
 
         textSelection.select(element, newPosition, newPosition);
         updateTextAreaIndent(element);
     }
 
     if (domUtils.isContentEditableElement(element)) {
-        startPos = textSelection.getSelectionStart(element);
-        endPos   = textSelection.getSelectionEnd(element);
+        startPosition = textSelection.getSelectionStart(element);
+        endPosition   = textSelection.getSelectionEnd(element);
 
         //NOTE: we only remove selection
-        if (startPos !== endPos) {
+        if (startPosition !== endPosition) {
             var selection        = textSelection.getSelectionByElement(element);
             var inverseSelection = textSelection.hasInverseSelectionContentEditable(element);
             var endNode          = inverseSelection ? selection.anchorNode : selection.focusNode;
             var endOffset        = inverseSelection ? selection.anchorOffset : selection.focusOffset;
+            var startPos         = { node: endNode, offset: endOffset };
 
-            textSelection.selectByNodesAndOffsets(endNode, endOffset, endNode, endOffset, true, false);
+            textSelection.selectByNodesAndOffsets(startPos, startPos, true);
         }
     }
 
@@ -363,14 +347,12 @@ function home (element, withSelection) {
             newStartPos = newPosition;
             newEndPos   = withSelection ? referencePosition : newPosition;
 
-            textSelection.select(element, newStartPos, newEndPos, withSelection);
+            textSelection.select(element, newEndPos, newStartPos);
         }
-        else {
-            newStartPos = inverseSelection ? newPosition : startPos;
-            newEndPos   = inverseSelection ? endPos : newPosition;
-
-            textSelection.select(element, newStartPos, newEndPos, inverseSelection);
-        }
+        else if (!inverseSelection)
+            textSelection.select(element, startPos, newPosition);
+        else
+            textSelection.select(element, endPos, newPosition);
     }
 
     return Promise.resolve();
@@ -407,12 +389,10 @@ function end (element, withSelection) {
 
             textSelection.select(element, newStartPos, newEndPos);
         }
-        else {
-            newStartPos = inverseSelection ? newPosition : startPos;
-            newEndPos   = inverseSelection ? endPos : newPosition;
-
-            textSelection.select(element, newStartPos, newEndPos, inverseSelection);
-        }
+        else if (!inverseSelection)
+            textSelection.select(element, startPos, newPosition);
+        else
+            textSelection.select(element, endPos, newPosition);
     }
 
     return Promise.resolve();
@@ -451,9 +431,9 @@ function shiftLeft (element) {
         var endPos   = textSelection.getSelectionEnd(element);
 
         if (startPos === endPos || textSelection.hasInverseSelection(element))
-            textSelection.select(element, Math.max(startPos - 1, 0), endPos, true);
+            textSelection.select(element, endPos, Math.max(startPos - 1, 0));
         else
-            textSelection.select(element, startPos, Math.max(endPos - 1, 0), endPos - 1 < startPos);
+            textSelection.select(element, startPos, Math.max(endPos - 1, 0));
 
         updateTextAreaIndent(element);
     }
@@ -469,7 +449,7 @@ function shiftRight (element) {
         if (startPos === endPos || !textSelection.hasInverseSelection(element))
             textSelection.select(element, startPos, Math.min(endPos + 1, element.value.length));
         else
-            textSelection.select(element, Math.min(startPos + 1, element.value.length), endPos, startPos + 1 < endPos);
+            textSelection.select(element, endPos, Math.min(startPos + 1, element.value.length));
 
         updateTextAreaIndent(element);
     }

@@ -10,34 +10,28 @@ var textSelection   = testCafeCore.textSelection;
 
 
 function getCorrectElementSelection (element) {
-    var currentSelection = textSelection.getSelectionByElement(element),
-        inverseSelection = textSelection.hasInverseSelectionContentEditable(element);
+    var currentSelection = textSelection.getSelectionByElement(element);
+    var inverseSelection = textSelection.hasInverseSelectionContentEditable(element);
 
     if (textSelection.hasElementContainsSelection(element))
-        currentSelection = contentEditable.getSelection(element, currentSelection, inverseSelection);
-    else {
-        //NOTE: if we type text in element which don't contains selection
-        // we think selectionStart and selectionEnd positions are null in this element.
-        //So we calculate the necessary start and end nodes and offsets
-        var startSelectionPosition = contentEditable.calculateNodeAndOffsetByPosition(element, 0),
-            endSelectionPosition   = contentEditable.calculateNodeAndOffsetByPosition(element, 0);
+        return contentEditable.getSelection(element, currentSelection, inverseSelection);
 
-        currentSelection             = {};
-        currentSelection.startNode   = startSelectionPosition.node;
-        currentSelection.startOffset = startSelectionPosition.offset;
-        currentSelection.endNode     = endSelectionPosition.node;
-        currentSelection.endOffset   = endSelectionPosition.offset;
-    }
-    return currentSelection;
+    //NOTE: if we type text in element which don't contains selection
+    // we think selectionStart and selectionEnd positions are null in this element.
+    //So we calculate the necessary start and end nodes and offsets
+    return {
+        startPos: contentEditable.calculateNodeAndOffsetByPosition(element, 0),
+        endPos:   contentEditable.calculateNodeAndOffsetByPosition(element, 0)
+    };
 }
 
 function typeCharToContentEditable (element, characters) {
     var chars            = characters === ' ' ? String.fromCharCode(160) : characters,
         currentSelection = getCorrectElementSelection(element),
-        startNode        = currentSelection.startNode,
-        startOffset      = currentSelection.startOffset,
-        endNode          = currentSelection.endNode,
-        endOffset        = currentSelection.endOffset;
+        startNode        = currentSelection.startPos.node,
+        startOffset      = currentSelection.startPos.offset,
+        endNode          = currentSelection.endPos.node,
+        endOffset        = currentSelection.endPos.offset;
 
     if (!startNode || !domUtils.isContentEditableElement(startNode) || !endNode ||
         !domUtils.isContentEditableElement(endNode))
@@ -66,8 +60,8 @@ function typeCharToContentEditable (element, characters) {
             !domUtils.isElementContainsNode(element, startNode)) {
             currentSelection = getCorrectElementSelection(element);
             inverseSelection = textSelection.hasInverseSelectionContentEditable(element);
-            startNode        = inverseSelection ? currentSelection.endNode : currentSelection.startNode;
-            startOffset      = inverseSelection ? currentSelection.endOffset : currentSelection.startOffset;
+            startNode        = inverseSelection ? currentSelection.endPos.node : currentSelection.startPos.node;
+            startOffset      = inverseSelection ? currentSelection.endPos.offset : currentSelection.startPos.offset;
 
             if (!startNode || !domUtils.isContentEditableElement(startNode))
                 return;
@@ -79,6 +73,9 @@ function typeCharToContentEditable (element, characters) {
     if (!domUtils.isRenderedNode(startNode))
         return;
 
+    var startPos = null;
+    var endPos   = null;
+
     if (startNode.nodeType === 1) {
         correctedStartNode = document.createTextNode(chars);
         if (startNode.tagName.toLowerCase() === 'br')
@@ -86,7 +83,11 @@ function typeCharToContentEditable (element, characters) {
         else
             startNode.appendChild(correctedStartNode);
         newCaretPos = chars.length;
-        textSelection.selectByNodesAndOffsets(correctedStartNode, newCaretPos, correctedStartNode, newCaretPos);
+
+        startPos = { node: correctedStartNode, offset: newCaretPos };
+        endPos   = { node: correctedStartNode, offset: newCaretPos };
+
+        textSelection.selectByNodesAndOffsets(startPos, endPos);
         return;
     }
 
@@ -108,7 +109,11 @@ function typeCharToContentEditable (element, characters) {
     correctedStartNode.nodeValue = oldStartNodeValue.substring(0, correctedStartOffset) + chars +
                                    oldStartNodeValue.substring(correctedEndOffset, oldStartNodeValue.length);
     newCaretPos                  = correctedStartOffset + chars.length;
-    textSelection.selectByNodesAndOffsets(correctedStartNode, newCaretPos, correctedStartNode, newCaretPos);
+
+    startPos = { node: correctedStartNode, offset: newCaretPos };
+    endPos   = { node: correctedStartNode, offset: newCaretPos };
+
+    textSelection.selectByNodesAndOffsets(startPos, endPos);
 }
 
 export default function (element, characters, caretPos) {

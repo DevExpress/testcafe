@@ -1,10 +1,7 @@
 import hammerhead from '../deps/hammerhead';
 import * as domUtils from './dom';
-import * as positionUtils from './position';
-import * as styleUtils from './style';
 import * as contentEditable from './content-editable';
 import * as eventUtils from './event';
-import { forEach } from './array';
 
 
 var browserUtils     = hammerhead.utils.browser;
@@ -132,12 +129,13 @@ if (browserUtils.isIE)
     eventUtils.bind(document, 'selectionchange', onSelectionChange, true);
 
 //utils for contentEditable
-function selectContentEditable (el, from, to, needFocus, inverse) {
-    var endPosition         = null,
-        firstTextNodeChild  = null,
-        latestTextNodeChild = null,
-        startPosition       = null,
-        temp                = null;
+function selectContentEditable (el, from, to, needFocus) {
+    var endPosition         = null;
+    var firstTextNodeChild  = null;
+    var latestTextNodeChild = null;
+    var startPosition       = null;
+    var temp                = null;
+    var inverse             = false;
 
     if (typeof from !== 'undefined' && typeof to !== 'undefined' && from > to) {
         temp    = from;
@@ -148,7 +146,8 @@ function selectContentEditable (el, from, to, needFocus, inverse) {
 
     if (typeof from === 'undefined') {
         firstTextNodeChild = contentEditable.getFirstVisibleTextNode(el);
-        startPosition      = {
+
+        startPosition = {
             node:   firstTextNodeChild || el,
             offset: firstTextNodeChild && firstTextNodeChild.nodeValue ?
                     contentEditable.getFirstNonWhitespaceSymbolIndex(firstTextNodeChild.nodeValue) : 0
@@ -170,7 +169,10 @@ function selectContentEditable (el, from, to, needFocus, inverse) {
     if (!startPosition.node || !endPosition.node)
         return;
 
-    selectByNodesAndOffsets(startPosition.node, startPosition.offset, endPosition.node, endPosition.offset, needFocus, inverse);
+    if (inverse)
+        selectByNodesAndOffsets(endPosition, startPosition, needFocus);
+    else
+        selectByNodesAndOffsets(startPosition, endPosition, needFocus);
 }
 
 function correctContentEditableSelectionBeforeDelete (el) {
@@ -230,103 +232,12 @@ function correctContentEditableSelectionBeforeDelete (el) {
                                                     0 ? newStartOffset : startNode.nodeValue.length) : startOffset;
         newEndOffset   = newEndOffset !== null ? (newEndOffset ===
                                                   0 ? newEndOffset : endNode.nodeValue.length) : endOffset;
-        selectByNodesAndOffsets(startNode, newStartOffset, endNode, newEndOffset);
+
+        var startPos = { node: startNode, offset: newStartOffset };
+        var endPos   = { node: endNode, offset: newEndOffset };
+
+        selectByNodesAndOffsets(startPos, endPos);
     }
-}
-
-function correctRectangle (currentRect, options) {
-    var documentScroll       = options.documentScroll,
-        iFrameDocumentScroll = options.iFrameDocumentScroll,
-        iFrameOffset         = options.iFrameOffset,
-        iFramePadding        = options.iFramePadding,
-        iFrameBorders        = options.iFrameBorders,
-
-        currentRectHeight    = currentRect.top + options.elementHeight - 1,
-
-        clientOffset         = null,
-
-        currentLeft          = null,
-        currentTop           = null,
-        currentBottom        = null;
-
-    if (browserUtils.isIE && browserUtils.version < 11 && options.isInProcessedIFrame) {
-        if (browserUtils.version === 9 && !options.isContentEditable) {
-            currentLeft   = Math.ceil(currentRect.left) + options.windowTopScroll.left -
-                            options.crossDomainIFrameOffset.left - options.crossDomainIFrameBorders.left -
-                            options.crossDomainIFramePadding.left;
-            currentTop    = Math.ceil(currentRect.top) + options.windowTopScroll.top -
-                            options.crossDomainIFrameOffset.top - options.crossDomainIFrameBorders.top -
-                            options.crossDomainIFramePadding.top;
-            currentBottom = Math.ceil(currentRect.bottom) + options.windowTopScroll.top -
-                            options.crossDomainIFrameOffset.top - options.crossDomainIFrameBorders.top -
-                            options.crossDomainIFramePadding.top;
-        }
-        else if (browserUtils.version === 10 || options.isContentEditable) {
-            currentLeft   = Math.ceil(currentRect.left);
-            currentTop    = Math.ceil(currentRect.top);
-            currentBottom = Math.ceil(currentRect.bottom);
-        }
-    }
-    else {
-        if (options.isTextarea) {
-            currentLeft   = Math.ceil(currentRect.left);
-            currentTop    = Math.ceil(currentRect.top);
-            currentBottom = Math.ceil(currentRect.bottom);
-        }
-        else {
-            if (options.isInIFrame && (options.isContentEditable || browserUtils.isIE)) {
-                clientOffset = options.elementOffset;
-                clientOffset.left -= (iFrameOffset.left + iFrameBorders.left + iFramePadding.left);
-                clientOffset.top -= (iFrameOffset.top + iFrameBorders.top + iFramePadding.top);
-                clientOffset = positionUtils.offsetToClientCoords({ x: clientOffset.left, y: clientOffset.top });
-            }
-            else
-                clientOffset = positionUtils.offsetToClientCoords({
-                    x: options.elementOffset.left,
-                    y: options.elementOffset.top
-                });
-
-            currentLeft   = Math.ceil(Math.ceil(currentRect.left) <= clientOffset.x ? clientOffset.x +
-                                                                                      options.elementBorders.left +
-                                                                                      1 : currentRect.left);
-            currentTop    = Math.ceil(Math.ceil(currentRect.top) <= clientOffset.y ? clientOffset.y +
-                                                                                     options.elementBorders.top +
-                                                                                     1 : currentRect.top);
-            currentBottom = Math.floor(Math.floor(currentRect.bottom) >=
-                                       (clientOffset.y + options.elementBorders.top + options.elementBorders.bottom +
-                                        options.elementHeight) ? currentRectHeight : currentRect.bottom);
-        }
-    }
-
-    if (options.isInIFrame && (options.isContentEditable || (browserUtils.isIE && browserUtils.version !== 9))) {
-        currentLeft   = currentLeft + iFrameDocumentScroll.left + iFrameOffset.left + iFrameBorders.left +
-                        iFramePadding.left;
-        currentTop    = currentTop + iFrameDocumentScroll.top + iFrameOffset.top + iFrameBorders.top +
-                        iFramePadding.top;
-        currentBottom = currentBottom + iFrameDocumentScroll.top + iFrameOffset.top + iFrameBorders.top +
-                        iFramePadding.top;
-    }
-    else if (options.isInIFrame && browserUtils.isIE9) {
-        currentLeft   = currentLeft + iFrameDocumentScroll.left + documentScroll.left;
-        currentTop    = currentTop + iFrameDocumentScroll.top + documentScroll.top;
-        currentBottom = currentBottom + iFrameDocumentScroll.top + documentScroll.top;
-    }
-    else if (options.isContentEditable || (browserUtils.isIE && browserUtils.version < 11)) {
-        currentLeft   = currentLeft + documentScroll.left;
-        currentTop    = currentTop + documentScroll.top;
-        currentBottom = currentBottom + documentScroll.top;
-    }
-    else {
-        currentLeft   = currentLeft + documentScroll.left + iFrameDocumentScroll.left;
-        currentTop    = currentTop + documentScroll.top + iFrameDocumentScroll.top;
-        currentBottom = currentBottom + documentScroll.top + iFrameDocumentScroll.top;
-    }
-
-    return {
-        bottom: currentBottom,
-        left:   currentLeft,
-        top:    currentTop
-    };
 }
 
 //API
@@ -347,6 +258,13 @@ export function hasInverseSelectionContentEditable (el) {
     }
 
     return backward;
+}
+
+export function isInverseSelectionContentEditable (element, startPos, endPos) {
+    var startPosition = contentEditable.calculatePositionByNodeAndOffset(element, startPos);
+    var endPosition   = contentEditable.calculatePositionByNodeAndOffset(element, endPos);
+
+    return startPosition > endPosition;
 }
 
 export function getSelectionStart (el) {
@@ -379,10 +297,6 @@ export function getSelectionEnd (el) {
     return 0;
 }
 
-export function getSelectedText (el) {
-    return el.value.substring(getSelectionStart(el), getSelectionEnd(el));
-}
-
 export function hasInverseSelection (el) {
     if (domUtils.isContentEditableElement(el))
         return hasInverseSelectionContentEditable(el);
@@ -396,116 +310,17 @@ export function getSelectionByElement (el) {
     return currentDocument ? currentDocument.getSelection() : window.getSelection();
 }
 
-export function getPositionCoordinates (el, position, correctOptions) {
-    var range             = null,
-        rects             = null,
-        selectionPosition = null,
-        rect              = null,
-        isContentEditable = domUtils.isContentEditableElement(el),
-        offset            = positionUtils.getOffsetPosition(el);
-
-    //NOTE: we don't create fake div element for contentEditable elements
-    //because we can get the selection dimensions directly
-    if (isContentEditable) {
-        range             = domUtils.findDocument(el).createRange();
-        selectionPosition = contentEditable.calculateNodeAndOffsetByPosition(el, position);
-
-        range.setStart(selectionPosition.node, Math.min(selectionPosition.offset, selectionPosition.node.length));
-        range.setEnd(selectionPosition.node, Math.min(selectionPosition.offset, selectionPosition.node.length));
-        rect              = range.getClientRects()[0];
-
-        return rect ? correctRectangle(rect, correctOptions) : null;
-    }
-
-    //NOTE: for IE
-    if (typeof el.createTextRange === "function") {
-        range = el.createTextRange();
-        range.collapse(true);
-        range.moveStart('character', position);
-        range.moveEnd('character', position);
-        range.collapse(true);
-        rect  = range.getBoundingClientRect();
-
-        return rect ? correctRectangle(rect, correctOptions) : null;
-    }
-
-    var body          = document.body;
-    var bodyMargin    = styleUtils.getElementMargin(body);
-    var bodyLeft      = null;
-    var bodyTop       = null;
-    var elementMargin = styleUtils.getElementMargin(el);
-    var elementTop    = offset.top - elementMargin.top;
-    var elementLeft   = offset.left - elementMargin.left;
-    var width         = el.scrollWidth;
-
-    var fakeDiv          = document.createElement('div');
-    var fakeDivCssStyles = 'white-space:pre-wrap;border-style:solid;';
-    var listOfModifiers  = ['direction', 'font-family', 'font-size', 'font-size-adjust', 'font-variant', 'font-weight', 'font-style', 'letter-spacing', 'line-height', 'text-align', 'text-indent', 'text-transform', 'word-wrap', 'word-spacing', 'padding-top', 'padding-left', 'padding-right', 'padding-bottom', 'margin-top', 'margin-left', 'margin-right', 'margin-bottom', 'border-top-width', 'border-left-width', 'border-right-width', 'border-bottom-width'];
-
-    if (styleUtils.get(body, 'position') === 'absolute') {
-        elementLeft -= bodyMargin.left;
-        elementTop -= bodyMargin.top;
-        bodyLeft = styleUtils.get(body, 'left');
-
-        if (bodyLeft !== 'auto')
-            elementLeft -= parseInt(bodyLeft.replace('px', ''));
-
-        bodyTop = styleUtils.get(body, 'top');
-
-        if (bodyTop !== 'auto')
-            elementTop -= parseInt(bodyTop.replace('px', ''));
-    }
-
-    forEach(listOfModifiers, modifier => fakeDivCssStyles += `${modifier}:${styleUtils.get(el, modifier)};`);
-
-    body.appendChild(fakeDiv);
-
-    try {
-        styleUtils.set(fakeDiv, {
-            cssText:  fakeDivCssStyles,
-            position: 'absolute',
-            left:     elementLeft + 'px',
-            top:      elementTop + 'px',
-            width:    width + 'px',
-            height:   el.scrollHeight + 'px'
-        });
-
-        fakeDiv.textContent = !el.value.length ? ' ' : el.value;
-
-        range = document.createRange(); //B254723
-        range.setStart(fakeDiv.firstChild, Math.min(position, el.value.length));
-        range.setEnd(fakeDiv.firstChild, Math.min(position, el.value.length));
-
-        if (domUtils.isTextarea(el)) {
-            rects = range.getClientRects();
-            rect  = range.getBoundingClientRect();
-
-            if (rect.width === 0 && rect.height === 0)
-                rect = rects[0];
-        }
-        else
-            rect = range.getClientRects()[0];
-
-        domUtils.remove(fakeDiv);
-    } catch (err) {
-        domUtils.remove(fakeDiv);
-
-        return {};
-    }
-
-    return rect ? correctRectangle(rect, correctOptions) : null;
-}
-
-export function select (el, from, to, inverse) {
+export function select (el, from, to) {
     if (domUtils.isContentEditableElement(el)) {
-        selectContentEditable(el, from, to, true, inverse);
+        selectContentEditable(el, from, to, true);
 
         return;
     }
 
-    var start = from || 0,
-        end   = typeof to === 'undefined' ? el.value.length : to,
-        temp  = null;
+    var start   = from || 0;
+    var end     = typeof to === 'undefined' ? el.value.length : to;
+    var inverse = false;
+    var temp    = null;
 
     if (start > end) {
         temp    = start;
@@ -521,38 +336,51 @@ export function select (el, from, to, inverse) {
                          inverse ? BACKWARD_SELECTION_DIRECTION : FORWARD_SELECTION_DIRECTION;
 }
 
-export function selectByNodesAndOffsets (startNode, startOffset, endNode, endOffset, needFocus, inverse) {
-    var parentElement   = contentEditable.findContentEditableParent(startNode),
-        curDocument     = domUtils.findDocument(parentElement),
-        selection       = getSelectionByElement(parentElement),
-        range           = curDocument.createRange(),
+export function selectByNodesAndOffsets (startPos, endPos, needFocus) {
+    var startNode = startPos.node;
+    var endNode   = endPos.node;
 
-        startNodeLength = startNode.nodeValue ? startNode.length : 0,
-        endNodeLength   = endNode.nodeValue ? endNode.length : 0;
+    var startNodeLength = startNode.nodeValue ? startNode.length : 0;
+    var endNodeLength   = endNode.nodeValue ? endNode.length : 0;
+    var startOffset     = Math.min(startNodeLength, startPos.offset);
+    var endOffset       = Math.min(endNodeLength, endPos.offset);
+
+    var parentElement = contentEditable.findContentEditableParent(startNode);
+    var inverse       = isInverseSelectionContentEditable(parentElement, startPos, endPos);
+
+
+    var selection   = getSelectionByElement(parentElement);
+    var curDocument = domUtils.findDocument(parentElement);
+    var range       = curDocument.createRange();
 
     var selectionSetter = function () {
         selection.removeAllRanges();
 
         //NOTE: For IE we can't create inverse selection
-        if (!inverse || browserUtils.isIE) {
-            range.setStart(startNode, Math.min(startNodeLength, startOffset));
-            range.setEnd(endNode, Math.min(endNodeLength, endOffset));
+        if (!inverse) {
+            range.setStart(startNode, startOffset);
+            range.setEnd(endNode, endOffset);
+            selection.addRange(range);
+        }
+        else if (browserUtils.isIE) {
+            range.setStart(endNode, endOffset);
+            range.setEnd(startNode, startOffset);
             selection.addRange(range);
         }
         else {
-            range.setStart(endNode, Math.min(endNodeLength, endOffset));
-            range.setEnd(endNode, Math.min(endNodeLength, endOffset));
+            range.setStart(startNode, startOffset);
+            range.setEnd(startNode, startOffset);
             selection.addRange(range);
 
-            if (browserUtils.isWebKit && contentEditable.isInvisibleTextNode(startNode)) {
+            if (browserUtils.isWebKit && contentEditable.isInvisibleTextNode(endNode)) {
                 try {
-                    selection.extend(startNode, Math.min(startOffset, 1));
+                    selection.extend(endNode, Math.min(endOffset, 1));
                 } catch (err) {
-                    selection.extend(startNode, 0);
+                    selection.extend(endNode, 0);
                 }
             }
             else
-                selection.extend(startNode, Math.min(startNodeLength, startOffset));
+                selection.extend(endNode, endOffset);
         }
     };
 

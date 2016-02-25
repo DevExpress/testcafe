@@ -227,14 +227,14 @@ $(document).ready(function () {
 
             if (checkMousemove) {
                 $el1.bind('mousemove', function () {
-                    if ((eventMonitorObject.elementOneMousedownRaised && !eventMonitorObject.elementOneMouseupRaised) ||
-                        (eventMonitorObject.elementTwoMousedownRaised && !eventMonitorObject.elementTwoMouseupRaised))
+                    if (eventMonitorObject.elementOneMousedownRaised && !eventMonitorObject.elementOneMouseupRaised ||
+                        eventMonitorObject.elementTwoMousedownRaised && !eventMonitorObject.elementTwoMouseupRaised)
                         eventMonitorObject.elementOneSelectRaised = true;
                 });
 
                 $el2.bind('mousemove', function () {
-                    if ((eventMonitorObject.elementOneMousedownRaised && !eventMonitorObject.elementOneMouseupRaised) ||
-                        (eventMonitorObject.elementTwoMousedownRaised && !eventMonitorObject.elementTwoMouseupRaised))
+                    if (eventMonitorObject.elementOneMousedownRaised && !eventMonitorObject.elementOneMouseupRaised ||
+                        eventMonitorObject.elementTwoMousedownRaised && !eventMonitorObject.elementTwoMouseupRaised)
                         eventMonitorObject.elementTwoSelectRaised = true;
                 });
             }

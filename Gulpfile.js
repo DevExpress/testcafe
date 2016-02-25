@@ -145,10 +145,12 @@ gulp.task('lint-client', function () {
             'src/client/runner/automation/playback/scroll.js',
             'src/client/runner/automation/playback/move.js',
             'src/client/runner/automation/playback/press/**/*.js',
+            'src/client/runner/automation/playback/select/**/*.js',
             'src/client/runner/automation/playback/drag.js',
             'src/client/runner/automation/playback/rclick.js',
             'src/client/runner/automation/playback/hover.js',
             'src/client/runner/automation/cursor.js',
+            'src/client/runner/automation/automation.js',
             'src/client/runner/automation/util.js',
             'src/client/runner/utils/**/*.js',
             'src/client/ui/cursor'

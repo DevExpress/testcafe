@@ -86,6 +86,10 @@ $(document).ready(function () {
             .then(callback);
     };
 
+    var getSelectedText = function (el) {
+        return el.value.substring(textSelection.getSelectionStart(el), textSelection.getSelectionEnd(el));
+    };
+
     QUnit.testDone(function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
         $el = null;
@@ -145,7 +149,7 @@ $(document).ready(function () {
         });
 
         runPressAutomation('ctrl+a', function () {
-            notEqual(input.value, textSelection.getSelectedText(input), 'text not selected');
+            notEqual(input.value, getSelectedText(input), 'text not selected');
             equal(input.value, text, 'text is not changed');
             start();
         });

@@ -6,7 +6,7 @@ import DragAutomation from './playback/drag';
 import HoverAutomation from './playback/hover';
 import PressAutomation from './playback/press';
 import RClickAutomation from './playback/rclick';
-import selectPlayback from './playback/select';
+import SelectAutomation from './playback/select';
 import typePlayback from './playback/type';
 
 
@@ -52,7 +52,7 @@ var preventRealEvtHandler = function (e, dispatched, preventDefault) {
 
                 if (isElementInvisible || invisibleParents.length) {
                     //B254768 - reason of setTimeout method using
-                    window.setTimeout(function () {
+                    window.setTimeout(() => {
                         eventSimulator.blur(target);
                     }, 0);
                 }
@@ -92,9 +92,7 @@ window[AUTOMATIONS] = {
 
     DragAutomation: DragAutomation,
 
-    select: {
-        playback: selectPlayback
-    },
+    SelectAutomation: SelectAutomation,
 
     PressAutomation: PressAutomation,
 

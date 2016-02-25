@@ -62,8 +62,9 @@ $(document).ready(function () {
     });
 
     //constants
-    var TEXTAREA_SELECTOR = '#textarea';
-    var INPUT_SELECTOR    = '#input';
+    var TEXTAREA_SELECTOR    = '#textarea';
+    var INPUT_SELECTOR       = '#input';
+    var DIV_ELEMENT_SELECTOR = '#div';
 
     var INPUT_INITIAL_VALUE = '123456789';
 
@@ -254,6 +255,35 @@ $(document).ready(function () {
         setValueToTextarea('');
 
         unbindHandlers();
+    });
+
+    asyncTest('different arguments. not texteditable and contexteditable element', function () {
+        var $div      = $(DIV_ELEMENT_SELECTOR);
+        var mousedown = false;
+        var mouseup   = false;
+
+        runAsyncTest(
+            function () {
+                $div[0][startSelectEvent] = function () {
+                    mousedown = true;
+                };
+
+                $div[0][endSelectEvent] = function () {
+                    mouseup = true;
+                };
+
+                actionsAPI.select($div, 1, 2, 3, 4);
+            },
+            function () {
+                ok(mousedown, 'select started from div element');
+                ok(mouseup, 'select ended on div element');
+
+                deepEqual(document.activeElement, $div[0]);
+
+                $div.remove();
+            },
+            correctTestWaitingTime(4000)
+        );
     });
 
     module('different arguments tests. element is input');
