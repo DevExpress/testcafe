@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import resolveCwd from 'resolve-cwd';
 import { getInstallations as getBrowserInstallations } from 'testcafe-browser-natives';
 import { GeneralError, GlobalsAPIError } from '../errors';
 import CliArgumentParser from './argument-parser';
@@ -73,8 +74,22 @@ async function listBrowsers () {
     exit(0);
 }
 
+function useLocalInstallation () {
+    var local = resolveCwd('testcafe/lib/cli');
+
+    if (local && local !== __filename) {
+        require(local);
+        return true;
+    }
+
+    return false;
+}
+
 
 (async function cli () {
+    if (useLocalInstallation())
+        return;
+
     try {
         var argParser = new CliArgumentParser();
 

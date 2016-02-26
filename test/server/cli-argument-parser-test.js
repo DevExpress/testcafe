@@ -7,6 +7,8 @@ var getBrowserInstallations = require('testcafe-browser-natives').getInstallatio
 var CliArgumentParser       = require('../../lib/cli/argument-parser');
 
 describe('CLI argument parser', function () {
+    this.timeout(10000);
+
     tmp.setGracefulCleanup();
 
     function parse (args, cwd) {
