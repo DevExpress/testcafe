@@ -1,5 +1,5 @@
-import { GlobalsAPIError } from '../../errors';
-import MESSAGE from '../../errors/message';
+import { GlobalsAPIError } from '../../errors/runtime';
+import MESSAGE from '../../errors/runtime/message';
 
 export default class Test {
     constructor (name, fn, fixture) {

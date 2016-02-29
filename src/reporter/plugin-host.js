@@ -6,7 +6,7 @@ import 'moment-duration-format';
 import OS from 'os-family';
 import wordWrap from '../utils/word-wrap';
 import getViewportWidth from '../utils/get-viewport-width';
-import format from './errors/format';
+import formatErr from '../errors/test-run/format';
 
 // NOTE: we should not expose internal state to
 // the plugin, to avoid accidental rewrites.
@@ -71,7 +71,7 @@ export default class ReporterPluginHost {
 
     formatError (err, prefix = '') {
         var maxMsgLength = this[viewportWidth] - this[indent] - prefix.length;
-        var msg          = format(err, this[errorDecorator], maxMsgLength);
+        var msg          = formatErr(err, this[errorDecorator], maxMsgLength);
 
         if (this[wordWrapEnabled])
             msg = this.wordWrap(msg, prefix.length, maxMsgLength);

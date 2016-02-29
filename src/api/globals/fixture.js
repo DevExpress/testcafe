@@ -1,5 +1,5 @@
-import { GlobalsAPIError } from '../../errors';
-import MESSAGE from '../../errors/message';
+import { GlobalsAPIError } from '../../errors/runtime';
+import MESSAGE from '../../errors/runtime/message';
 import handleTagArgs from '../../utils/handle-tag-args';
 
 const PROTOCOL_RE          = /^https?:\/\//;

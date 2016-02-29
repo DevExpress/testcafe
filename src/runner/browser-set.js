@@ -5,8 +5,8 @@ import promisifyEvent from 'promisify-event';
 import { noop } from 'lodash';
 import mapReverse from 'map-reverse';
 import LocalBrowserConnection from '../browser-connection/local';
-import { GeneralError } from '../errors';
-import MESSAGE from '../errors/message';
+import { GeneralError } from '../errors/runtime';
+import MESSAGE from '../errors/runtime/message';
 import remove from '../utils/array-remove';
 
 
