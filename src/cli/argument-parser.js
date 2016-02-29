@@ -34,7 +34,7 @@ const DESCRIPTION = dedent(`
     More info: http://testcafe.devexpress.com/Documentation/CLI
 `);
 
-export default class CliArgumentParser {
+export default class CLIArgumentParser {
     constructor (cwd) {
         this.program = new Command('testcafe');
 
@@ -92,7 +92,7 @@ export default class CliArgumentParser {
 
             .version(version, '-v, --version')
             .usage('[options] <comma-separated-browser-list> <file-or-glob ...>')
-            .description(CliArgumentParser._getDescription())
+            .description(CLIArgumentParser._getDescription())
 
             .option('-b, --list-browsers', 'output the available browser aliases')
             .option('-r, --reporter <name>', 'specify the reporter type to use')
@@ -125,8 +125,8 @@ export default class CliArgumentParser {
     }
 
     _parseFilteringOptions () {
-        this.opts.testGrep    = CliArgumentParser._optionValueToRegExp('--test-grep', this.opts.testGrep);
-        this.opts.fixtureGrep = CliArgumentParser._optionValueToRegExp('--fixture-grep', this.opts.fixtureGrep);
+        this.opts.testGrep    = CLIArgumentParser._optionValueToRegExp('--test-grep', this.opts.testGrep);
+        this.opts.fixtureGrep = CLIArgumentParser._optionValueToRegExp('--fixture-grep', this.opts.fixtureGrep);
 
         this.filter = (testName, fixtureName) => {
 
@@ -150,7 +150,7 @@ export default class CliArgumentParser {
         if (this.opts.ports) {
             this.opts.ports = this.opts.ports
                 .split(',')
-                .map(CliArgumentParser._parsePortNumber);
+                .map(CLIArgumentParser._parsePortNumber);
 
             if (this.opts.ports.length < 2)
                 throw new GeneralError(MESSAGE.portsOptionRequiresTwoNumbers);
@@ -165,7 +165,7 @@ export default class CliArgumentParser {
         this.browsers = browsersArg
             .split(',')
             .filter(browser => browser && this._filterAndCountRemotes(browser))
-            .reduce((browserList, browser) => CliArgumentParser._replaceAllBrowsersAlias(browserList, browser, allAliases), []);
+            .reduce((browserList, browser) => CLIArgumentParser._replaceAllBrowsersAlias(browserList, browser, allAliases), []);
     }
 
     async _convertDirsToGlobs (fileList) {
