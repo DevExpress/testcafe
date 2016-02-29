@@ -143,8 +143,6 @@ export default function (element, characters, caretPos) {
                 startSelection += 1;
                 endSelection += 1;
             }
-            else if (domUtils.isInputWithoutSelectionPropertiesInFirefox(element)) //T133144
-                startSelection = endSelection = caretPos;
         }
 
         element.value = value.substring(0, startSelection) + characters + value.substring(endSelection, value.length);

@@ -33,9 +33,7 @@ export default class KeyPressSimulator {
     }
 
     _type (element, char) {
-        var caretPos = domUtils.isInputWithoutSelectionPropertiesInFirefox(element) ?
-                       element.value.length : null;
-
+        var caretPos                = null;
         var elementChanged          = element !== this.storedActiveElement;
         var shouldType              = !elementChanged;
         var elementForTyping        = element;

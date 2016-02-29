@@ -44,7 +44,6 @@ export default function (el, text, options, actionCallback) {
         elementForTyping                  = null,
         currPos                           = 0,
         isTextEditable                    = null,
-        isInputWithoutSelectionProperties = null,
         isContentEditable                 = domUtils.isContentEditableElement(el),
         notPrevented                      = true;
 
@@ -55,7 +54,6 @@ export default function (el, text, options, actionCallback) {
 
     curElement                        = findTextEditableChild(el) || el;
     isTextEditable                    = domUtils.isTextEditableElementAndEditingAllowed(curElement);
-    isInputWithoutSelectionProperties = domUtils.isInputWithoutSelectionPropertiesInFirefox(curElement); //T133144
 
     if (SETTINGS.get().RECORDING && !SETTINGS.get().PLAYBACK && !positionUtils.isElementVisible(curElement)) {
         actionCallback();
@@ -92,9 +90,7 @@ export default function (el, text, options, actionCallback) {
             curElement = isContentEditable ? el : domUtils.getActiveElement();
 
             if (options.replace) {
-                if (isInputWithoutSelectionProperties)
-                    curElement.value = '';
-                else if (isTextEditable) {
+                if (isTextEditable) {
                     textSelection.select(curElement);
                     typeCharPlaybackAutomation(curElement, '');
                 }
@@ -107,9 +103,6 @@ export default function (el, text, options, actionCallback) {
 
         type: function () {
             var caretPosition = null;
-
-            if (isInputWithoutSelectionProperties)
-                caretPosition = isNaN(parseInt(options.caretPos)) ? el.value.length : options.caretPos;
 
             async.whilst(
                 //are not all symbols typed
@@ -133,7 +126,6 @@ export default function (el, text, options, actionCallback) {
                                     curElement                        = domUtils.getActiveElement();
                                     curElement                        = findTextEditableChild(curElement) || curElement;
                                     isTextEditable                    = domUtils.isTextEditableElementAndEditingAllowed(curElement);
-                                    isInputWithoutSelectionProperties = domUtils.isInputWithoutSelectionPropertiesInFirefox(curElement);
                                 }
 
                                 //Element for typing can change last time only after keydown event
