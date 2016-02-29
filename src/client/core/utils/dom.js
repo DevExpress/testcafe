@@ -441,7 +441,6 @@ export var isElementInIframe                          = hammerhead.utils.dom.isE
 export var isFileInput                                = hammerhead.utils.dom.isFileInput;
 export var isInputElement                             = hammerhead.utils.dom.isInputElement;
 export var isHammerheadAttr                           = hammerhead.utils.dom.isHammerheadAttr;
-export var isInputWithoutSelectionPropertiesInFirefox = hammerhead.utils.dom.isInputWithoutSelectionPropertiesInFirefox;
 export var isRenderedNode                             = hammerhead.utils.dom.isRenderedNode;
 export var isShadowUIElement                          = hammerhead.utils.dom.isShadowUIElement;
 export var isSVGElement                               = hammerhead.utils.dom.isSVGElement;

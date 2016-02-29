@@ -125,10 +125,6 @@ $(document).ready(function () {
         return $draggable;
     };
 
-    var isInputWithoutSelectionProperties = function ($el) {
-        return domUtils.isInputWithoutSelectionPropertiesInFirefox($el[0]);
-    };
-
     var runHoverAutomation = function (element, callback) {
         var hoverOptions = new MouseOptions();
         var offsets      = mouseUtils.getOffsetOptions(element);
@@ -524,7 +520,7 @@ $(document).ready(function () {
 
     asyncTest('B254340 - click on input with type="number"', function () {
         var $input     = createInput('number'),
-            caretPos   = isInputWithoutSelectionProperties($input) ? 0 : 2,
+            caretPos   = 2,
             clickCount = 0;
 
         $input[0].value = '123';
@@ -556,10 +552,9 @@ $(document).ready(function () {
             caretPos: caretPos
         }, function () {
             equal($input[0].value, newText);
-            if (!isInputWithoutSelectionProperties($input)) {
-                equal(textSelection.getSelectionStart($input[0]), caretPos + newText.length, 'start selection correct');
-                equal(textSelection.getSelectionEnd($input[0]), caretPos + newText.length, 'end selection correct');
-            }
+            equal(textSelection.getSelectionStart($input[0]), caretPos + newText.length, 'start selection correct');
+            equal(textSelection.getSelectionEnd($input[0]), caretPos + newText.length, 'end selection correct');
+
             startNext();
         });
     });
@@ -728,10 +723,9 @@ $(document).ready(function () {
         typePlaybackAutomation($input[0], text, {}, function () {
             equal($input[0].value, newText);
 
-            if (!isInputWithoutSelectionProperties($input)) {
-                equal(textSelection.getSelectionStart($input[0]), newText.length, 'start selection correct');
-                equal(textSelection.getSelectionEnd($input[0]), newText.length, 'end selection correct');
-            }
+            equal(textSelection.getSelectionStart($input[0]), newText.length, 'start selection correct');
+            equal(textSelection.getSelectionEnd($input[0]), newText.length, 'end selection correct');
+
             startNext();
         });
     });
@@ -747,10 +741,8 @@ $(document).ready(function () {
         }, function () {
             equal($input[0].value, initText.substring(0, caretPos) + text + initText.substring(caretPos));
 
-            if (!isInputWithoutSelectionProperties($input)) {
-                equal(textSelection.getSelectionStart($input[0]), caretPos + text.length, 'start selection correct');
-                equal(textSelection.getSelectionEnd($input[0]), caretPos + text.length, 'end selection correct');
-            }
+            equal(textSelection.getSelectionStart($input[0]), caretPos + text.length, 'start selection correct');
+            equal(textSelection.getSelectionEnd($input[0]), caretPos + text.length, 'end selection correct');
 
             startNext();
         });
@@ -769,10 +761,8 @@ $(document).ready(function () {
         }, function () {
             equal($input[0].value, text);
 
-            if (!domUtils.isInputWithoutSelectionPropertiesInFirefox($input[0])) {
-                equal(textSelection.getSelectionStart($input[0]), text.length, 'start selection correct');
-                equal(textSelection.getSelectionEnd($input[0]), text.length, 'end selection correct');
-            }
+            equal(textSelection.getSelectionStart($input[0]), text.length, 'start selection correct');
+            equal(textSelection.getSelectionEnd($input[0]), text.length, 'end selection correct');
 
             startNext();
         });
@@ -793,10 +783,8 @@ $(document).ready(function () {
                 .then(function () {
                     equal($input[0].value, newText);
 
-                    if (!isInputWithoutSelectionProperties($input)) {
-                        equal(textSelection.getSelectionStart($input[0]), newText.length, 'start selection correct');
-                        equal(textSelection.getSelectionEnd($input[0]), newText.length, 'end selection correct');
-                    }
+                    equal(textSelection.getSelectionStart($input[0]), newText.length, 'start selection correct');
+                    equal(textSelection.getSelectionEnd($input[0]), newText.length, 'end selection correct');
 
                     startNext();
                 });
