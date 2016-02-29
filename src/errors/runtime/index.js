@@ -1,25 +1,12 @@
-import createCallsiteRecord from 'callsite-record';
 import { renderers } from 'callsite-record';
 import MESSAGE from './message';
-import stackFilter from './stack-filter';
-import stackCleaningHook from './stack-cleaning-hook';
+import stackFilter from '../stack-filter';
+import getCallsite from '../get-callsite';
 
 
 // Utils
 function getText (template, ...args) {
     return args.reduce((msg, arg) => msg.replace(/{.+?}/, arg), template);
-}
-
-function getCallsite (methodName, typeName) {
-    var stackCleaningEnabled = stackCleaningHook.enabled;
-
-    stackCleaningHook.enabled = false;
-
-    var callsiteRecord = createCallsiteRecord(methodName, typeName);
-
-    stackCleaningHook.enabled = stackCleaningEnabled;
-
-    return callsiteRecord;
 }
 
 // Errors

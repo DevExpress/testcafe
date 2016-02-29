@@ -3,7 +3,7 @@ import { readSync as read } from 'read-file-relative';
 import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
 import COMMAND from './command';
-import ERROR_TYPE from '../../reporter/errors/type';
+import ERROR_TYPE from '../../errors/test-run/type';
 
 
 // Const

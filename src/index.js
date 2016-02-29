@@ -1,8 +1,8 @@
 import TestCafe from './testcafe';
 import ReporterPluginHost from './reporter/plugin-host';
 import * as endpointUtils from 'endpoint-utils';
-import { GeneralError } from './errors';
-import MESSAGE from './errors/message';
+import { GeneralError } from './errors/runtime';
+import MESSAGE from './errors/runtime/message';
 import { Role, Hybrid } from './api/common';
 
 // Validations

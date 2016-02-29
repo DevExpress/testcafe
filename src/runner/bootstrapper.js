@@ -3,8 +3,8 @@ import { getBrowserInfo } from 'testcafe-browser-natives';
 import Compiler from '../compiler';
 import BrowserConnection from '../browser-connection';
 import LocalBrowserConnection from '../browser-connection/local';
-import { GeneralError } from '../errors';
-import MESSAGE from '../errors/message';
+import { GeneralError } from '../errors/runtime';
+import MESSAGE from '../errors/runtime/message';
 import BrowserSet from './browser-set';
 
 

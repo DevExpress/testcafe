@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import resolveCwd from 'resolve-cwd';
 import { getInstallations as getBrowserInstallations } from 'testcafe-browser-natives';
-import { GeneralError, GlobalsAPIError } from '../errors';
+import { GeneralError, GlobalsAPIError } from '../errors/runtime';
 import CliArgumentParser from './argument-parser';
 import log from './log';
 import remotesWizard from './remotes-wizard';

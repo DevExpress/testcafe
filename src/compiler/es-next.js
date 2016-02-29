@@ -4,7 +4,7 @@ import stripBom from 'strip-bom';
 import sourceMapSupport from 'source-map-support';
 import nodeVer from 'node-version';
 import Globals from '../api/globals';
-import { TestCompilationError, GlobalsAPIError } from '../errors';
+import { TestCompilationError, GlobalsAPIError } from '../errors/runtime';
 import stackCleaningHook from '../errors/stack-cleaning-hook';
 
 const COMMON_API_PATH   = join(__dirname, '../api/common');

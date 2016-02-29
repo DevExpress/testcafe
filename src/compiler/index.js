@@ -4,8 +4,8 @@ import stripBom from 'strip-bom';
 import { Compiler as LegacyCompiler } from 'testcafe-legacy-api';
 import { wrapDomAccessors } from 'testcafe-hammerhead';
 import EsNextCompiler from './es-next';
-import { GeneralError } from '../errors';
-import MESSAGE from '../errors/message';
+import { GeneralError } from '../errors/runtime';
+import MESSAGE from '../errors/runtime/message';
 import promisify from '../utils/promisify';
 
 var readFile = promisify(fs.readFile);

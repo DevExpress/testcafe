@@ -1,7 +1,7 @@
 var expect             = require('chai').expect;
 var read               = require('read-file-relative').readSync;
 var ReporterPluginHost = require('../../lib/reporter/plugin-host');
-var TYPE               = require('../../lib/reporter/errors/type');
+var TYPE               = require('../../lib/errors/test-run/type');
 var remove             = require('../../lib/utils/array-remove');
 
 

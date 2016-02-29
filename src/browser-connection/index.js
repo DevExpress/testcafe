@@ -3,8 +3,8 @@ import Mustache from 'mustache';
 import { parse as parseUserAgent } from 'useragent';
 import { readSync as read } from 'read-file-relative';
 import COMMAND from './command';
-import { GeneralError } from '../errors';
-import MESSAGE from '../errors/message';
+import { GeneralError } from '../errors/runtime';
+import MESSAGE from '../errors/runtime/message';
 import remove from '../utils/array-remove';
 
 
