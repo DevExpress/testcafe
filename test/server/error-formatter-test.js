@@ -1,11 +1,15 @@
 var expect             = require('chai').expect;
 var read               = require('read-file-relative').readSync;
+var remove             = require('lodash').pull;
 var ReporterPluginHost = require('../../lib/reporter/plugin-host');
-var TYPE               = require('../../lib/errors/test-run/type');
-var remove             = require('../../lib/utils/array-remove');
+var TYPE               = require('../../lib/legacy/test-run-error/type');
+var TestRunError       = require('../../lib/legacy/test-run-error');
 
 
-var untestedErrorTypes = Object.keys(TYPE);
+var untestedErrorTypes = Object.keys(TYPE).map(function (key) {
+    return TYPE[key];
+});
+
 var userAgentMock      = 'Chrome 15.0.874 / Mac OS X 10.8.1';
 
 var reporterPluginMock = {
@@ -77,13 +81,13 @@ function createOutStreamMock () {
     };
 }
 
-function assertErrorMessage (file, err) {
+function assertErrorMessage (file, clientErr) {
     var outStreamMock = createOutStreamMock();
     var plugin        = new ReporterPluginHost(reporterPluginMock, outStreamMock);
 
     plugin
         .useWordWrap(true)
-        .write(plugin.formatError(err));
+        .write(plugin.formatError(new TestRunError(clientErr)));
 
     var expectedMsg = read('./data/expected-test-errors/' + file)
         .replace(/(\r\n)/gm, '\n')
@@ -92,7 +96,7 @@ function assertErrorMessage (file, err) {
     expect(outStreamMock.data).eql(expectedMsg);
 
     //NOTE: remove tested messages from list
-    remove(untestedErrorTypes, err.type);
+    remove(untestedErrorTypes, clientErr.type);
 }
 
 describe('Error formatter', function () {

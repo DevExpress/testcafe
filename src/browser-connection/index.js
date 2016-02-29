@@ -1,11 +1,11 @@
 import { EventEmitter } from 'events';
 import Mustache from 'mustache';
+import { pull as remove } from 'lodash';
 import { parse as parseUserAgent } from 'useragent';
 import { readSync as read } from 'read-file-relative';
 import COMMAND from './command';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
-import remove from '../utils/array-remove';
 
 
 // Const
@@ -107,7 +107,7 @@ export default class BrowserConnection extends EventEmitter {
     getStatus () {
         if (this.switchingToIdle) {
             this.switchingToIdle = false;
-            this.idle = true;
+            this.idle            = true;
             this.emit('idle');
         }
 

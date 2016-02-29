@@ -1,5 +1,5 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
-CATEGORY=actionError
+CATEGORY=legacy|actionError
 Error at step "Step with <tag>":
 
     code and <tag>
