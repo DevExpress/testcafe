@@ -93,10 +93,10 @@ before(function () {
             global.testReport = null;
 
             global.runTests = function (fixture, testName, opts) {
-                var report          = '';
-                var runner          = testCafe.createRunner();
-                var fixturePath     = path.join(path.dirname(caller()), fixture);
-                var skipJsErrors    = opts && opts.skipJsErrors;
+                var report         = '';
+                var runner         = testCafe.createRunner();
+                var fixturePath    = path.join(path.dirname(caller()), fixture);
+                var skipJsErrors   = opts && opts.skipJsErrors;
                 var quarantineMode = opts && opts.quarantineMode;
 
                 var connections = browsersInfo.map(function (browserInfo) {
@@ -126,10 +126,11 @@ before(function () {
 
                         global.testReport = testReport;
 
-                        if (shouldFail)
-                            throw testError;
+                        if (shouldFail && !testError)
+                            throw new Error('Test should have failed but it succeeded');
 
-                        return testError;
+                        if (testError)
+                            throw testError;
                     });
             };
         });

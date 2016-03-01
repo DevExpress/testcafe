@@ -388,7 +388,7 @@ gulp.task('publish', ['test-server'], function () {
 
 gulp.task('test-functional', ['build'], function () {
     return gulp
-        .src(['test/functional/setup.js', 'test/functional/**/*-test.js'])
+        .src(['test/functional/setup.js', 'test/functional/**/test.js'])
         .pipe(mocha({
             ui:       'bdd',
             reporter: 'spec',

@@ -1,0 +1,8 @@
+{
+  "baseUrl": "./using-shared-code/pages/",
+  "modules": {
+    "testModule": [
+      "./helpers.js"
+    ]
+  }
+}
