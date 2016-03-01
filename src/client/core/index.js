@@ -1,7 +1,7 @@
 import hammerhead from './deps/hammerhead';
 
 import SETTINGS from './settings';
-import ERROR_TYPE from '../../errors/test-run/type';
+import ERROR_TYPE from '../../legacy/test-run-error/type';
 import COMMAND from '../../legacy/test-run/command';
 import CROSS_DOMAIN_MESSAGES from './cross-domain-messages';
 import * as transport from './transport';

@@ -3,7 +3,8 @@ import { readSync as read } from 'read-file-relative';
 import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
 import COMMAND from './command';
-import ERROR_TYPE from '../../errors/test-run/type';
+import ERROR_TYPE from '../test-run-error/type';
+import TestRunError from '../test-run-error';
 
 
 // Const
@@ -11,7 +12,7 @@ const TEST_RUN_TEMPLATE        = read('../../client/test-run/index.js.mustache')
 const IFRAME_TEST_RUN_TEMPLATE = read('../../client/test-run/iframe.js.mustache');
 
 
-export default class TestRun extends Session {
+export default class LegacyTestRun extends Session {
     constructor (test, browserConnection, screenshotCapturer, opts) {
         var uploadsRoot = path.dirname(test.fixture.path);
 
@@ -87,7 +88,7 @@ export default class TestRun extends Session {
             // reason (e.g. we don't have permissions to write a screenshot file).
         }
 
-        this.errs.push(err);
+        this.errs.push(new TestRunError(err));
     }
 
     async _fatalError (err) {
@@ -114,7 +115,7 @@ export default class TestRun extends Session {
 }
 
 // Service message handlers
-var ServiceMessages = TestRun.prototype;
+var ServiceMessages = LegacyTestRun.prototype;
 
 ServiceMessages[COMMAND.fatalError] = function (msg) {
     return this._fatalError(msg.err);
