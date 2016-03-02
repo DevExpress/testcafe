@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload regression</title>
+    <style>
+        .column {
+            width: 300px;
+            height: 100px;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<form method="POST" enctype="multipart/form-data" action="/file-upload">
+    <div id="addInputDiv" class="column">
+        <button id="addInputBtn" type="button" onclick=addInputElement();>Add input element</button>
+    </div>
+    <div id="replaceInputDiv" class="column">
+        <button id="replaceInputBtn" type="button" onclick=moveInputElement();>Replace input element</button>
+        <input id="input1" type="file" multiple>
+        <input id="input2" type="file" multiple>
+    </div>
+    <div id="delInputDiv" class="column">
+        <button id="delInputBtn" type="button" onclick=deleteInputElement();>Delete input element</button>
+        <input id="delInput" type="file" multiple>
+    </div>
+    <div id="submitDiv">
+        <button id="submitBtn" type="submit">Send files</button>
+    </div>
+</form>
+</body>
+<script>
+    function addInputElement () {
+        var parent = document.getElementById('addInputDiv');
+        var input  = document.createElement('input');
+
+        input.id       = 'addedInput';
+        input.multiple = true;
+        input.type     = 'file';
+
+        parent.appendChild(input);
+    }
+
+    function moveInputElement () {
+        var input1     = document.getElementById('input1');
+        var input2     = document.getElementById('input2');
+
+        input1.parentNode.replaceChild(input1, input2);
+    }
+
+    function deleteInputElement () {
+        var parent = document.getElementById('delInputDiv');
+        var input  = document.getElementById('delInput');
+
+        if (input)
+            parent.removeChild(input);
+    }
+</script>
+</html>
