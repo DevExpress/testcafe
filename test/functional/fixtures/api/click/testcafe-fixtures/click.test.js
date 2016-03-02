@@ -1,5 +1,5 @@
 '@fixture click';
-'@page ./runner/api/click/index.html';
+'@page ./index.html';
 
 
 var userAgent = window.navigator.userAgent.toLowerCase();
@@ -41,7 +41,7 @@ var isIE11 = !!(navigator.appCodeName === 'Mozilla' &&
     }
 };
 
-'@test'['Should fail when the first argument is invisible'] = {
+'@test'['Should fail if the first argument is invisible'] = {
     '1.Click on invisible element': function () {
         var $input = $('#input').css('visibility', 'hidden');
 

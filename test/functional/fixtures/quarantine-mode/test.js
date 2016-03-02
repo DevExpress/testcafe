@@ -30,12 +30,10 @@ describe('Quarantine mode tests', function () {
 
     it('Should pass if an unstable test passes in most of runs', function () {
         return runTests('testcafe-fixtures/passing-quarantine.test.js', 'Wait 200ms', { quarantineMode: true })
-            .then(function (err) {
-
+            .then(function () {
                 checkQuarantineTestRuns('passed-quarantine');
 
                 expect(testReport.unstable).to.be.true;
-                expect(err).to.equal('');
             });
     });
 

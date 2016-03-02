@@ -2,7 +2,7 @@
 '@page ./index.html';
 
 
-'@test'['The expected beforeUnload dialog - should be successful.'] = {
+'@test'['The expected beforeUnload dialog - should pass'] = {
     '1.Click submit button "Enable..."': function () {
         act.click('#enableBeforeUnload');
     },
@@ -13,7 +13,7 @@
     }
 };
 
-'@test'['An unexpected beforeUnload dialog - should fail.'] = {
+'@test'['An unexpected beforeUnload dialog - should fail'] = {
     '1.Click submit button "Enable..."': function () {
         act.click('#enableBeforeUnload');
     },
@@ -23,7 +23,7 @@
     }
 };
 
-'@test'['No expected beforeUnload dialog - should fail.'] = {
+'@test'['No expected beforeUnload dialog - should fail'] = {
     '1.Click link "This page"': function () {
         handleBeforeUnload();
         act.click(':containsExcludeChildren(This page)');

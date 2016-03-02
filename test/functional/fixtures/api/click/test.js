@@ -1,8 +1,9 @@
 var expect = require('chai').expect;
 
+
 describe('api click test', function () {
-    it('Should fail when the first argument is invisible', function () {
-        return runTests('click.test.js', 'Should fail when the first argument is invisible', { shouldFail: true })
+    it('Should fail if the first argument is invisible', function () {
+        return runTests('testcafe-fixtures/click.test.js', 'Should fail if the first argument is invisible', { shouldFail: true })
             .catch(function (err) {
                 var expectedError = [
                     'Error at step "1.Click on invisible element":',
@@ -19,9 +20,6 @@ describe('api click test', function () {
     });
 
     it('Pointer events test (T191183) [ONLY:ie]', function () {
-        return runTests('click.test.js', 'Pointer events test (T191183) [ONLY:ie]')
-            .then(function (err) {
-                expect(err).eql('');
-            });
+        return runTests('testcafe-fixtures/click.test.js', 'Pointer events test (T191183) [ONLY:ie]');
     });
 });

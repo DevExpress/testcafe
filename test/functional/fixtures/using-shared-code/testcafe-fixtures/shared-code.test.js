@@ -2,10 +2,10 @@
 '@page ./index.html';
 
 '@require :testModule';
-'@require ./mixin.js';
+'@require ./mixins.js';
 
 
-var basePath = 'http://localhost:3000/runner/using-shared-code/';
+var basePath = 'http://localhost:3000/using-shared-code/pages/';
 
 
 '@test'['Using shared code in iframe'] = {
