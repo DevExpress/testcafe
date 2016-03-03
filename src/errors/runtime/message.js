@@ -13,6 +13,7 @@ export default {
     portIsNotFree:                      'The specified {portNum} port is already in use by another program.',
     invalidHostname:                    'The specified "{hostname}" hostname cannot be resolved to the current machine.',
     cantFindSpecifiedTestSource:        'Cannot find a test source file at "{path}".',
+    cannotParseRawFile:                 'Cannot parse a test source file in the raw format at "{path}" due to an error.\n\n {errMessage}',
     cannotPrepareTestsDueToError:       'Cannot prepare tests due to an error.\n\n {errMessage}',
     fixtureNameIsNotAString:            'The fixture name is expected to be a string, but it was "{type}".',
     fixturePageIsNotAString:            'The page URL is expected to be a string, but it was "{type}".',

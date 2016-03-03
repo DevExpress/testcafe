@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import LegacyTestRun from '../legacy/test-run';
-import TestRun from './test-run';
+import TestRun from '../test-run';
 
 // Const
 const QUARANTINE_THRESHOLD = 3;

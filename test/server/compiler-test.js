@@ -409,4 +409,97 @@ describe('Compiler', function () {
                 });
         });
     });
+
+    describe('Raw data compiler', function () {
+        it('Should compile test files', function () {
+            var sources = ['test/server/data/test-suites/raw/test.testcafe'];
+
+            return compile(sources)
+                .then(function (compiled) {
+                    var testfile = resolve('test/server/data/test-suites/raw/test.testcafe');
+                    var tests    = compiled.tests;
+                    var fixtures = compiled.fixtures;
+
+                    expect(tests.length).eql(3);
+                    expect(fixtures.length).eql(2);
+
+                    expect(fixtures[0].name).eql('Fixture1');
+                    expect(fixtures[0].path).eql(testfile);
+                    expect(fixtures[0].page).eql('about:blank');
+
+                    expect(fixtures[1].name).eql('Fixture2');
+                    expect(fixtures[1].path).eql(testfile);
+                    expect(fixtures[1].page).eql('http://example.org');
+
+                    expect(tests[0].name).eql('Fixture1Test1');
+                    expect(tests[0].fixture).eql(fixtures[0]);
+
+                    expect(tests[1].name).eql('Fixture1Test2');
+                    expect(tests[1].fixture).eql(fixtures[0]);
+
+                    expect(tests[2].name).eql('Fixture2Test1');
+                    expect(tests[2].fixture).eql(fixtures[1]);
+                });
+        });
+
+        it('Should raise an error if it cannot parse a raw file', function () {
+            var testfile = resolve('test/server/data/test-suites/raw/invalid.testcafe');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection is expected');
+                })
+                .catch(function (err) {
+                    expect(err.message).eql('Cannot parse a test source file in the raw format at "' + testfile +
+                                            '" due to an error.\n\n SyntaxError: Unexpected token i');
+                });
+        });
+
+        describe('test.fn()', function () {
+            var TestRunMock = function (expectedError) {
+                this.commands      = [];
+                this.expectedError = expectedError;
+            };
+
+            TestRunMock.prototype.executeCommand = function (command) {
+                this.commands.push(command);
+
+                return this.expectedError ? Promise.reject(new Error(this.expectedError)) : Promise.resolve();
+            };
+
+            it('Should be resolved if the test passed', function () {
+                var sources = ['test/server/data/test-suites/raw/test.testcafe'];
+                var test    = null;
+                var testRun = new TestRunMock();
+
+                return compile(sources)
+                    .then(function (compiled) {
+                        test = compiled.tests[0];
+
+                        return test.fn(testRun);
+                    })
+                    .then(function () {
+                        expect(testRun.commands.length).eql(2);
+                    });
+            });
+
+            it('Should be rejected if the test failed', function () {
+                var sources       = ['test/server/data/test-suites/raw/test.testcafe'];
+                var expectedError = 'test-error';
+                var testRun       = new TestRunMock(expectedError);
+
+                return compile(sources)
+                    .then(function (compiled) {
+                        return compiled.tests[0].fn(testRun);
+                    })
+                    .then(function () {
+                        throw new Error('Promise rejection is expected');
+                    })
+                    .catch(function (err) {
+                        expect(err.message).eql(expectedError);
+                        expect(testRun.commands.length).eql(1);
+                    });
+            });
+        });
+    });
 });
