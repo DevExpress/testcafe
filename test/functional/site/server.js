@@ -2,9 +2,14 @@ var express               = require('express');
 var http                  = require('http');
 var fs                    = require('fs');
 var path                  = require('path');
+var readSync              = require('read-file-relative').readSync;
+var multer                = require('multer');
+var Mustache              = require('mustache');
 var promisify             = require('../../../lib/utils/promisify');
 var quarantineModeTracker = require('../quarantine-mode-tracker');
 
+var storage = multer.memoryStorage();
+var upload  = multer({ storage: storage });
 
 var CONTENT_TYPES = {
     '.js':   'application/javascript',
@@ -12,6 +17,8 @@ var CONTENT_TYPES = {
     '.html': 'text/html',
     '.png':  'image/png'
 };
+
+var UPLOAD_SUCCESS_PAGE_TEMPLATE = readSync('./views/upload-success.html.mustache');
 
 var readFile = promisify(fs.readFile);
 
@@ -58,6 +65,14 @@ Server.prototype._setupRoutes = function () {
 
     this.app.post('/quarantine-mode/passing-sequence', function (req, res) {
         res.send(quarantineModeTracker.handlePassingSequence(req.headers['user-agent']));
+    });
+
+    this.app.post('/file-upload', upload.any(), function (req, res) {
+        var filesData = req.files.map(function (file) {
+            return file.buffer.toString();
+        });
+
+        res.end(Mustache.render(UPLOAD_SUCCESS_PAGE_TEMPLATE, { uploadedDataArray: JSON.stringify(filesData) }));
     });
 };
 

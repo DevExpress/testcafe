@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload completed</title>
+</head>
+<body>
+<div id="uploadedContent">
+</div>
+<script>
+    var uploadedDataArray = JSON.parse('{{{uploadedDataArray}}}');
+    var contentDiv        = document.getElementById('uploadedContent');
+
+    uploadedDataArray.forEach(function (data) {
+        var p = document.createElement('p');
+
+        p.textContent = data;
+
+        contentDiv.appendChild(p);
+    });
+</script>
+</body>
+</html>
