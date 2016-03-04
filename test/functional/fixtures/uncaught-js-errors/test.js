@@ -55,4 +55,13 @@ describe('Uncaught js errors', function () {
     it('Should pass if the loaded page throws an error and skipJsErrors option enabled', function () {
         return runTests('testcafe-fixtures/loaded.test.js', null, { skipJsErrors: true });
     });
+
+    describe('Regression', function () {
+        it('Should include destination URL in the error message', function () {
+            return runTests('testcafe-fixtures/no-handler.test.js', null, { shouldFail: true })
+                .catch(function (err) {
+                    expect(err).to.contain('on page "http://localhost:3000/uncaught-js-errors/pages/no-handler.html"');
+                });
+        });
+    });
 });

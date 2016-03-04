@@ -10,7 +10,7 @@ var untestedErrorTypes = Object.keys(TYPE).map(function (key) {
     return TYPE[key];
 });
 
-var userAgentMock      = 'Chrome 15.0.874 / Mac OS X 10.8.1';
+var userAgentMock = 'Chrome 15.0.874 / Mac OS X 10.8.1';
 
 var reporterPluginMock = {
     noColors: true,
@@ -192,7 +192,7 @@ describe('Error formatter', function () {
             var err = {
                 type:           TYPE.uncaughtJSError,
                 scriptErr:      'test-error-with-<tag>',
-                pageUrl:        'http://page',
+                pageDestUrl:    'http://page',
                 screenshotPath: '/unix/path/with/<tag>',
                 userAgent:      userAgentMock
             };

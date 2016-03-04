@@ -83,11 +83,11 @@ var RunnerBase = function () {
             runner.stepIterator.stop();
         else if (!SETTINGS.get().SKIP_JS_ERRORS || SETTINGS.get().RECORDING) {
             runner._onFatalError({
-                type:      ERROR_TYPE.uncaughtJSError,
-                scriptErr: err.msg,
-                pageError: true,
-                pageUrl:   err.pageUrl,
-                stepName:  runner.stepIterator.getCurrentStep()
+                type:        ERROR_TYPE.uncaughtJSError,
+                scriptErr:   err.msg,
+                pageError:   true,
+                pageDestUrl: err.pageUrl,
+                stepName:    runner.stepIterator.getCurrentStep()
             });
         }
     });

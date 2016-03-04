@@ -117,9 +117,9 @@ export default {
     `),
 
     [TYPE.uncaughtJSError]: err => {
-        if (err.pageUrl) {
+        if (err.pageDestUrl) {
             return dedent(`
-                ${getMsgPrefix(err, CATEGORY.unhandledException)}Uncaught JavaScript error <code>${escapeHtml(err.scriptErr)}</code> on page <a href="${err.pageUrl}">${err.pageUrl}</a>
+                ${getMsgPrefix(err, CATEGORY.unhandledException)}Uncaught JavaScript error <code>${escapeHtml(err.scriptErr)}</code> on page <a href="${err.pageDestUrl}">${err.pageDestUrl}</a>
 
                 ${getScreenshotInfoStr(err)}
             `);
