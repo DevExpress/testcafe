@@ -2,10 +2,13 @@ import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
 import { fromPoint as getElementFromPoint } from '../get-element';
-import * as automationUtil from '../util';
+import * as automationUtils from '../utils';
 import * as automationSettings from '../settings';
-import clickPlaybackAutomation from '../playback/click';
+import ClickOptions from '../options/click';
+import ClickAutomation from '../playback/click';
+import { getOffsetOptions } from '../../utils/mouse';
 import async from '../../deps/async';
+import delay from '../../utils/delay';
 import cursor from '../cursor';
 
 var browserUtils   = hammerhead.utils.browser;
@@ -19,6 +22,8 @@ var eventUtils    = testCafeCore.eventUtils;
 
 var selectElement = testCafeUI.selectElement;
 
+
+const FIRST_CLICK_DELAY = browserUtils.hasTouchEvents ? 0 : 160;
 
 export default function (el, options, actionCallback) {
     options = {
@@ -36,8 +41,8 @@ export default function (el, options, actionCallback) {
         currentTopElement   = null,
         skipClickSimulation = false;
 
-    if (!positionUtils.isContainOffset(el, options.offsetX, options.offsetY)) {
-        point      = automationUtil.getMouseActionPoint(el, options, true);
+    if (!positionUtils.containsOffset(el, options.offsetX, options.offsetY)) {
+        point      = automationUtils.getMouseActionPoint(el, options, true);
         curElement = getElementFromPoint(point.x, point.y);
     }
 
@@ -46,8 +51,8 @@ export default function (el, options, actionCallback) {
 
     var isInvisibleElement = (SETTINGS.get().RECORDING && !SETTINGS.get().PLAYBACK) &&
                              !positionUtils.isElementVisible(el),
-        screenPoint        = automationUtil.getMouseActionPoint(el, options, true),
-        eventPoint         = automationUtil.getEventOptionCoordinates(el, screenPoint),
+        screenPoint        = automationUtils.getMouseActionPoint(el, options, true),
+        eventPoint         = automationUtils.getEventOptionCoordinates(el, screenPoint),
         eventOptions       = hammerhead.utils.extend({
             clientX: eventPoint.x,
             clientY: eventPoint.y
@@ -55,14 +60,35 @@ export default function (el, options, actionCallback) {
 
     async.series({
         firstClick: function (callback) {
-            clickPlaybackAutomation(el, options, function () {
-                if (!isInvisibleElement) {
-                    currentTopElement = getElementFromPoint(screenPoint.x, screenPoint.y, el);
-                    if (currentTopElement && currentTopElement !== curElement)
-                        curElement = currentTopElement;
-                }
-                window.setTimeout(callback, automationSettings.CLICK_STEP_DELAY);
-            });
+            var clickOptions = new ClickOptions();
+            var { offsetX, offsetY } = getOffsetOptions(el, options.offsetX, options.offsetY);
+
+            clickOptions.offsetX  = offsetX;
+            clickOptions.offsetY  = offsetY;
+            clickOptions.caretPos = options.caretPos;
+
+            clickOptions.mofifiers = {
+                ctrl:  options.ctrl,
+                alt:   options.ctrl,
+                shift: options.shift,
+                meta:  options.meta
+            };
+
+            var clickAutomation = new ClickAutomation(el, clickOptions);
+
+            clickAutomation
+                .run()
+                .then(() => {
+                    if (!isInvisibleElement) {
+                        currentTopElement = getElementFromPoint(screenPoint.x, screenPoint.y, el);
+
+                        if (currentTopElement && currentTopElement !== curElement)
+                            curElement = currentTopElement;
+                    }
+
+                    return delay(FIRST_CLICK_DELAY);
+                })
+                .then(callback);
         },
 
         secondClick: function (callback) {
@@ -151,7 +177,7 @@ export default function (el, options, actionCallback) {
                         // NOTE: If a target element is a contentEditable element, we need to call focusAndSetSelection directly for
                         // this element. Otherwise, if the element obtained by elementFromPoint is a child of the contentEditable
                         // element, a selection position may be calculated incorrectly (by using the caretPos option).
-                        automationUtil
+                        automationUtils
                             .focusAndSetSelection(domUtils.isContentEditableElement(el) ? el : curElement, needFocus, options.caretPos)
                             .then(callback);
                     }
@@ -174,12 +200,13 @@ export default function (el, options, actionCallback) {
                     if (curElement.tagName.toLowerCase() === 'option')
                         callback();
                     else {
-                        //NOTE: If the element under the cursor has changed after 'mousedown' event then we should not raise 'click' event
+                        // NOTE: If the element under the cursor has changed after the
+                        // 'mousedown' event, we should not raise the 'click' event
                         if (!skipClickSimulation)
                             eventSimulator.click(curElement, eventOptions);
 
-                        //NOTE: emulating click event on 'select' element doesn't expand dropdown with options (except chrome),
-                        // therefore we should emulate it.
+                        // NOTE: Emulating the click event on the 'select' element doesn't expand the
+                        // dropdown with options (except chrome), therefore we should emulate it.
                         if ((!SETTINGS.get().RECORDING || SETTINGS.get().PLAYBACK) &&
                             domUtils.isSelectElement(curElement) &&
                             styleUtils.getSelectElementSize(curElement) === 1 && notPrevented !== false) {
@@ -196,7 +223,8 @@ export default function (el, options, actionCallback) {
         },
 
         dblclick: function () {
-            //NOTE: If the element under the cursor has changed after 'mousedown' event then we should not raise 'dblclick' event
+            // NOTE: If the element under the cursor has changed after the
+            // 'mousedown' event, we should not raise the 'click' event
             if (!skipClickSimulation)
                 eventSimulator.dblclick(curElement, eventOptions);
             actionCallback();

@@ -9,8 +9,8 @@ var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
 var automation                 = testCafeRunner.get('./automation/automation');
 var DragOptions                = testCafeRunner.get('./automation/options/drag');
 var ClickOptions               = testCafeRunner.get('./automation/options/click');
-var clickPlaybackAutomation    = testCafeRunner.get('./automation/playback/click');
 var RClickAutomation           = testCafeRunner.get('./automation/playback/rclick');
+var ClickAutomation            = testCafeRunner.get('./automation/playback/click');
 var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
 var DragAutomation             = testCafeRunner.get('./automation/playback/drag');
 var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
@@ -178,17 +178,12 @@ $(document).ready(function () {
     module('actions with out of element\'s bounds offsets');
 
     asyncTest('Click playback', function () {
-
         var $smallDiv       = createDiv(200, 200, 50, 50, 'red'),
             $bigDiv         = createDiv(150, 150, 150, 150, 'grey'),
             clickSmallCount = 0,
             clickBigCount   = 0,
             offsetX         = $smallDiv.width() + 10,
-            offsetY         = $smallDiv.height() + 10,
-            clickOffsets    = {
-                offsetX: offsetX,
-                offsetY: offsetY
-            };
+            offsetY         = $smallDiv.height() + 10;
 
         $smallDiv.css('zIndex', '5');
 
@@ -210,13 +205,21 @@ $(document).ready(function () {
             clickBigCount++;
         });
 
-        clickPlaybackAutomation($smallDiv[0], clickOffsets, function () {
+        var clickOptions = new ClickOptions();
+
+        clickOptions.offsetX = offsetX;
+        clickOptions.offsetY = offsetY;
+
+        var clickAutomation = new ClickAutomation($smallDiv[0], clickOptions);
+
+        clickAutomation
+            .run()
+            .then(function () {
                 equal(clickSmallCount, 0);
                 equal(clickBigCount, 1);
                 expect(4);
                 startNext();
-            }
-        );
+            });
     });
 
     asyncTest('RClick playback', function () {

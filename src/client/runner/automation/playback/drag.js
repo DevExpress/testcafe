@@ -1,7 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../get-element';
-import * as automationUtil from '../util';
 import * as automationSettings from '../settings';
 import MoveAutomation from '../playback/move';
 import MoveOptions from '../options/move';
@@ -48,7 +47,7 @@ export default class DragAutomation {
     }
 
     _getMoveArguments () {
-        var containsOffset    = positionUtils.isContainOffset(this.element, this.offsetX, this.offsetY);
+        var containsOffset    = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY);
         var moveActionOffsets = mouseUtils.getMoveAutomationOffsets(this.element, this.offsetX, this.offsetY);
 
         return {
@@ -61,7 +60,7 @@ export default class DragAutomation {
     _calculateEventArguments () {
         var screenPoint     = mouseUtils.getAutomationPoint(this.element, this.offsetX, this.offsetY);
         var point           = mouseUtils.convertToClient(this.element, screenPoint);
-        var expectedElement = positionUtils.isContainOffset(this.element, this.offsetX, this.offsetY) ?
+        var expectedElement = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY) ?
                               this.element : null;
 
         var options = extend({
@@ -138,7 +137,7 @@ export default class DragAutomation {
         this.endPoint = this._getEndPoint();
 
         var element = this.destinationElement || document.documentElement;
-        var offsets = this.destinationElement ? automationUtil.getDefaultAutomationOffsets(this.destinationElement) : {
+        var offsets = this.destinationElement ? mouseUtils.getDefaultAutomationOffsets(this.destinationElement) : {
             offsetX: this.endPoint.x,
             offsetY: this.endPoint.y
         };

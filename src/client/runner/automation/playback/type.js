@@ -1,9 +1,12 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import * as automationSettings from '../settings';
+import ClickOptions from '../options/click';
+import ClickAutomation from '../playback/click';
 import typeCharPlaybackAutomation from './type-char';
-import clickPlaybackAutomation from './click';
 import getKeyCode from '../../utils/get-key-code';
+import { getOffsetOptions } from '../../utils/mouse';
+import delay from '../../utils/delay';
 import async from '../../deps/async';
 
 var browserUtils          = hammerhead.utils.browser;
@@ -64,10 +67,28 @@ export default function (el, text, options, actionCallback) {
 
     async.series({
         click: function (seriaCallback) {
-            if (domUtils.getActiveElement() !== curElement)
-                clickPlaybackAutomation(curElement, options, function () {
-                    window.setTimeout(seriaCallback, automationSettings.ACTION_STEP_DELAY);
-                });
+            if (domUtils.getActiveElement() !== curElement) {
+                var clickOptions = new ClickOptions();
+                var { offsetX, offsetY } = getOffsetOptions(curElement, options.offsetX, options.offsetY);
+
+                clickOptions.offsetX  = offsetX;
+                clickOptions.offsetY  = offsetY;
+                clickOptions.caretPos = options.caretPos;
+
+                clickOptions.mofifiers = {
+                    ctrl:  options.ctrl,
+                    alt:   options.ctrl,
+                    shift: options.shift,
+                    meta:  options.meta
+                };
+
+                var clickAutomation = new ClickAutomation(curElement, clickOptions);
+
+                clickAutomation
+                    .run()
+                    .then(() => delay(automationSettings.ACTION_STEP_DELAY))
+                    .then(seriaCallback);
+            }
             else {
                 if (isTextEditable)
                     elementEditingWatcher.watchElementEditing(curElement);

@@ -9,15 +9,16 @@ var position      = testCafeCore.get('./utils/position');
 var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
 var automation                 = testCafeRunner.get('./automation/automation');
 var DragOptions                = testCafeRunner.get('./automation/options/drag');
-var clickPlaybackAutomation    = testCafeRunner.get('./automation/playback/click');
-var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
-var DragAutomation             = testCafeRunner.get('./automation/playback/drag');
-var selectPlaybackAutomation   = testCafeRunner.get('./automation/playback/select');
+var ClickOptions               = testCafeRunner.get('./automation/options/click');
 var SelectOptions              = testCafeRunner.get('./automation/options/select');
+var ClickAutomation            = testCafeRunner.get('./automation/playback/click');
 var SelectAutomation           = testCafeRunner.get('./automation/playback/select');
 var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
+var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
+var DragAutomation             = testCafeRunner.get('./automation/playback/drag');
 var PressAutomation            = testCafeRunner.get('./automation/playback/press');
 var parseKeyString             = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var mouseUtils                 = testCafeRunner.get('./utils/mouse');
 
 QUnit.begin(function () {
     automation.init();
@@ -203,6 +204,28 @@ $(document).ready(function () {
             .then(callback);
     };
 
+    var runClickAutomation = function (el, options, callback) {
+        var clickOptions = new ClickOptions();
+        var offsets      = mouseUtils.getOffsetOptions(el, options.offsetX, options.offsetY);
+
+        clickOptions.offsetX  = offsets.offsetX;
+        clickOptions.offsetY  = offsets.offsetY;
+        clickOptions.caretPos = options.caretPos;
+
+        clickOptions.mofifiers = {
+            ctrl:  options.ctrl,
+            alt:   options.ctrl,
+            shift: options.shift,
+            meta:  options.meta
+        };
+
+        var clickAutomation = new ClickAutomation(el, clickOptions);
+
+        clickAutomation
+            .run()
+            .then(callback);
+    };
+
     QUnit.testDone(function () {
         if (!browserUtils.isIE)
             removeTestElements();
@@ -217,7 +240,7 @@ $(document).ready(function () {
             clickCount++;
         });
 
-        clickPlaybackAutomation($input[0], {}, function () {
+        runClickAutomation($input[0], {}, function () {
             equal(clickCount, 1);
             startNext();
         });
@@ -340,7 +363,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Click on textarea': function (callback) {
-                clickPlaybackAutomation($textarea[0], { caretPos: 5 }, callback);
+                runClickAutomation($textarea[0], { caretPos: 5 }, callback);
             },
             'First press down':  function (callback) {
                 ok(checkEditorSelection($textarea[0], 5));
@@ -372,7 +395,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Click on textarea': function (callback) {
-                clickPlaybackAutomation($textarea[0], { caretPos: 23 }, callback);
+                runClickAutomation($textarea[0], { caretPos: 23 }, callback);
             },
             'First press up':    function (callback) {
                 ok(checkEditorSelection($textarea[0], 23));
@@ -402,7 +425,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Click on textarea': function (callback) {
-                clickPlaybackAutomation($textarea[0], { caretPos: 5 }, callback);
+                runClickAutomation($textarea[0], { caretPos: 5 }, callback);
             },
 
             'Press home': function (callback) {
@@ -424,7 +447,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Click on textarea': function (callback) {
-                clickPlaybackAutomation($textarea[0], { caretPos: 15 }, callback);
+                runClickAutomation($textarea[0], { caretPos: 15 }, callback);
             },
 
             'Press end': function (callback) {
@@ -487,14 +510,14 @@ $(document).ready(function () {
 
         window.async.series({
             'First Click': function (callback) {
-                clickPlaybackAutomation($input[0], {}, callback);
+                runClickAutomation($input[0], {}, callback);
             },
 
             'Second Click': function (callback) {
                 equal(clickCount, 1);
                 bindScrollHandlers();
 
-                clickPlaybackAutomation($input[0], {}, callback);
+                runClickAutomation($input[0], {}, callback);
             },
 
             'Check assertions': function () {
@@ -517,7 +540,7 @@ $(document).ready(function () {
             focusRaised = true;
         };
 
-        clickPlaybackAutomation(input, {}, function () {
+        runClickAutomation(input, {}, function () {
             equal(focusRaised, false);
             notEqual(document.activeElement, input);
             startNext();

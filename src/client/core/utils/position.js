@@ -136,11 +136,12 @@ export function getClientDimensions (target) {
     };
 }
 
-export function isContainOffset (el, offsetX, offsetY) {
+export function containsOffset (el, offsetX, offsetY) {
     var dimensions = getClientDimensions(el);
-    var maxX       = dimensions.scrollbar.right + dimensions.border.left + dimensions.border.right + el.scrollWidth;
-    var maxY       = dimensions.scrollbar.bottom + dimensions.border.top + dimensions.border.bottom +
-                     el.scrollHeight;
+    var width      = Math.max(el.scrollWidth, dimensions.width);
+    var height     = Math.max(el.scrollHeight, dimensions.height);
+    var maxX       = dimensions.scrollbar.right + dimensions.border.left + dimensions.border.right + width;
+    var maxY       = dimensions.scrollbar.bottom + dimensions.border.top + dimensions.border.bottom + height;
 
     return (typeof offsetX === 'undefined' || (offsetX >= 0 && maxX >= offsetX)) &&
            (typeof offsetY === 'undefined' || ( offsetY >= 0 && maxY >= offsetY));

@@ -44,6 +44,13 @@ export function fromPoint (x, y, expectedElement) {
     if (!expectedElementDefined || !topElement || topElement === expectedElement)
         return topElement;
 
+    var isTREFElement = expectedElement.tagName.toLowerCase() === 'tref';
+    var isSVGElement  = domUtils.isSVGElement(expectedElement);
+
+    // NOTE: 'document.elementFromPoint' can't find these types of elements
+    if (isSVGElement && browserUtils.isOpera || isTREFElement)
+        return expectedElement;
+
     // NOTE: T299665 - Incorrect click automation for images with an associated map element in Firefox
     // All browsers return the <area> element from document.getElementFromPoint, but
     // Firefox returns the <img> element. We should accomplish this for Firefox as well.

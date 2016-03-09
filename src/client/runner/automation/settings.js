@@ -4,5 +4,4 @@ export const MINIMUM_MOVING_TIME = 25;
 
 //NOTE: some scripts work incorrectly when a delay between user actions too small, so we should make it more
 export const ACTION_STEP_DELAY      = 80;
-export const CLICK_STEP_DELAY       = 160;
 export const DRAG_ACTION_STEP_DELAY = 100;

@@ -6,12 +6,14 @@ var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
 
-var testCafeRunner          = window.getTestCafeModule('testCafeRunner');
-var automation              = testCafeRunner.get('./automation/automation');
-var clickPlaybackAutomation = testCafeRunner.get('./automation/playback/click');
-var typePlaybackAutomation  = testCafeRunner.get('./automation/playback/type');
-var PressAutomation         = testCafeRunner.get('./automation/playback/press');
-var parseKeyString          = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var testCafeRunner         = window.getTestCafeModule('testCafeRunner');
+var automation             = testCafeRunner.get('./automation/automation');
+var ClickOptions           = testCafeRunner.get('./automation/options/click');
+var ClickAutomation        = testCafeRunner.get('./automation/playback/click');
+var typePlaybackAutomation = testCafeRunner.get('./automation/playback/type');
+var PressAutomation        = testCafeRunner.get('./automation/playback/press');
+var parseKeyString         = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var mouseUtils             = testCafeRunner.get('./utils/mouse');
 
 QUnit.begin(function () {
     automation.init();
@@ -327,6 +329,28 @@ var input1,
         }
 
         return diff;
+    },
+
+    runClickAutomation           = function (el, options, callback) {
+        var clickOptions = new ClickOptions();
+        var offsets      = mouseUtils.getOffsetOptions(el, options.offsetX, options.offsetY);
+
+        clickOptions.offsetX  = offsets.offsetX;
+        clickOptions.offsetY  = offsets.offsetY;
+        clickOptions.caretPos = options.caretPos;
+
+        clickOptions.mofifiers = {
+            ctrl:  options.ctrl,
+            alt:   options.ctrl,
+            shift: options.shift,
+            meta:  options.meta
+        };
+
+        var clickAutomation = new ClickAutomation(el, clickOptions);
+
+        clickAutomation
+            .run()
+            .then(callback);
     };
 
 //tests
@@ -640,7 +664,7 @@ asyncTest('B239273 - An Input\'s focusout event is not raised after click on a b
         });
 
         focusBlurSandbox.focus($input[0], function () {
-            clickPlaybackAutomation($button[0], {}, function () {
+            runClickAutomation($button[0], {}, function () {
                 equal(focusOutCount, 1);
                 startNext();
             });
@@ -655,11 +679,10 @@ asyncTest('B251819 - Clicks on checkbox text don\'t change checkbox state during
             $checkbox = $('<input type="checkbox">').addClass(TEST_ELEMENT_CLASS).appendTo($label),
             $span     = $('<span>test</span>').addClass(TEST_ELEMENT_CLASS).appendTo($label);
 
-        clickPlaybackAutomation($span[0], {}, function () {
+        runClickAutomation($span[0], {}, function () {
             ok($checkbox[0].checked);
             startNext();
         });
-
     }, 2000);
 });
 
@@ -671,7 +694,7 @@ if (!browserUtils.isWebKit) {
 
             focusBlurSandbox.focus(input2, function () {
                 $(input2).css('display', 'none');
-                clickPlaybackAutomation(input1, {}, function () {
+                runClickAutomation(input1, {}, function () {
                     equal(input2BlurHandlersExecutedAmount, 1, 'blur handler executing checked');
                     startNext();
                 });
@@ -699,7 +722,7 @@ asyncTest('B253577 - Focus handlers should be executed synchronously after mouse
             focusHandled = true;
         });
 
-        clickPlaybackAutomation(input2, {}, function () {
+        runClickAutomation(input2, {}, function () {
             ok(focusHandled, 'check that focus was handled');
             ok(timeoutHandled, 'check that timeout was handled');
             startNext();
@@ -828,7 +851,7 @@ asyncTest('Change event not raised after press action if element was focused by 
             pressAutomation
                 .run()
                 .then(function () {
-                    clickPlaybackAutomation(input1, {}, function () {
+                    runClickAutomation(input1, {}, function () {
                         ok(changed, 'change event was raised');
                         startNext();
                     });
@@ -880,7 +903,8 @@ asyncTest('B254775 - Click action on already focused element must not raise focu
             input2.addEventListener('mousedown', function (e) {
                 e.target.blur();
             });
-            clickPlaybackAutomation(input2, {}, function () {
+
+            runClickAutomation(input2, {}, function () {
                 ok(blurred, 'blur event was raised');
                 if (browserUtils.isIE) {
                     ok(!focused, 'focus event was not raised');
