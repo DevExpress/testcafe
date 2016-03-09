@@ -425,11 +425,11 @@ describe('Compiler', function () {
 
                     expect(fixtures[0].name).eql('Fixture1');
                     expect(fixtures[0].path).eql(testfile);
-                    expect(fixtures[0].page).eql('about:blank');
+                    expect(fixtures[0].pageUrl).eql('about:blank');
 
                     expect(fixtures[1].name).eql('Fixture2');
                     expect(fixtures[1].path).eql(testfile);
-                    expect(fixtures[1].page).eql('http://example.org');
+                    expect(fixtures[1].pageUrl).eql('http://example.org');
 
                     expect(tests[0].name).eql('Fixture1Test1');
                     expect(tests[0].fixture).eql(fixtures[0]);

@@ -1,0 +1,150 @@
+{
+  "fixtures": [
+    {
+      "name": "Click",
+      "pageUrl": "http://localhost:3000/api/raw/click/pages/index.html",
+      "tests": [
+        {
+          "name": "Click simple button",
+          "commands": [
+            {
+              "type": "click",
+              "arguments": {
+                "selector": "#input",
+                "options": {
+                  "offsetX": 10,
+                  "offsetY": 10
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Click submit button",
+          "commands": [
+            {
+              "type": "click",
+              "arguments": {
+                "selector": "#submit",
+                "options": {
+                  "offsetX": 10,
+                  "offsetY": 10
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Redirect after a timeout",
+          "commands": [
+            {
+              "type": "click",
+              "arguments": {
+                "selector": "#link",
+                "options": {
+                  "offsetX": 10,
+                  "offsetY": 10
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Click error button",
+          "commands": [
+            {
+              "type": "click",
+              "arguments": {
+                "selector": "#error",
+                "options": {
+                  "offsetX": 10,
+                  "offsetY": 10
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Click xhr button",
+          "commands": [
+            {
+              "type": "click",
+              "arguments": {
+                "selector": "#xhr",
+                "options": {
+                  "offsetX": 10,
+                  "offsetY": 10
+                }
+              }
+            },
+            {
+              "type": "click",
+              "arguments": {
+                "selector": "#xhr-result",
+                "options": {
+                  "offsetX": 5,
+                  "offsetY": 5
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Wait for next action target appeared",
+          "commands": [
+            {
+              "type": "click",
+              "arguments": {
+                "selector": "#create-button",
+                "options": {
+                  "offsetX": 10,
+                  "offsetY": 10
+                }
+              }
+            },
+            {
+              "type": "click",
+              "arguments": {
+                "selector": "#new-button",
+                "options": {
+                  "offsetX": 5,
+                  "offsetY": 5
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Click non-existent button",
+          "commands": [
+            {
+              "type": "click",
+              "arguments": {
+                "selector": "#new-button",
+                "options": {
+                  "offsetX": 10,
+                  "offsetY": 10
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Click invisible button",
+          "commands": [
+            {
+              "type": "click",
+              "arguments": {
+                "selector": "#invisible-button",
+                "options": {
+                  "offsetX": 10,
+                  "offsetY": 10
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

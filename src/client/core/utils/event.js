@@ -43,27 +43,30 @@ export function documentReady () {
                 return;
 
             if (!document.body) {
-                window.setTimeout(ready, 1);
+                nativeMethods.setTimeout.call(window, ready, 1);
                 return;
             }
 
             isReady = true;
 
-            window.removeEventListener('load', ready);
+            unbind(window, 'load', ready);
 
             resolve();
         }
 
         function onContentLoaded () {
-            document.removeEventListener('DOMContentLoaded', onContentLoaded);
+            if (!domUtils.isIFrameWindowInDOM(window) && !domUtils.isTopWindow(window))
+                return;
+
+            unbind(document, 'DOMContentLoaded', onContentLoaded);
             ready();
         }
 
 
         if (document.readyState === 'complete')
-            return window.setTimeout(ready, 1);
+            return nativeMethods.setTimeout.call(window, onContentLoaded, 1);
 
-        document.addEventListener('DOMContentLoaded', onContentLoaded);
-        window.addEventListener('load', ready);
+        bind(document, 'DOMContentLoaded', onContentLoaded);
+        bind(window, 'load', ready);
     });
 }

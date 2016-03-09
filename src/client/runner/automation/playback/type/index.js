@@ -1,10 +1,9 @@
 import hammerhead from '../../../deps/hammerhead';
 import testCafeCore from '../../../deps/testcafe-core';
-import { ClickOptions } from '../../options';
+import { ClickOptions } from '../../../../../test-run/commands/options';
 import ClickAutomation from '../../playback/click';
 import typeChar from './type-char';
 import getKeyCode from '../../../utils/get-key-code';
-import delay from '../../../utils/delay';
 import whilst from '../../../utils/promise-whilst';
 import { getDefaultAutomationOffsets } from '../../../utils/mouse';
 import { ACTION_STEP_DELAY } from '../../settings';
@@ -17,7 +16,7 @@ var elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
 var domUtils        = testCafeCore.domUtils;
 var contentEditable = testCafeCore.contentEditable;
 var textSelection   = testCafeCore.textSelection;
-
+var delay           = testCafeCore.delay;
 
 export default class TypeAutomation {
     constructor (element, text, typeOptions) {

@@ -5,6 +5,7 @@ var nativeMap     = Array.prototype.map;
 var nativeFilter  = Array.prototype.filter;
 var nativeReverse = Array.prototype.reverse;
 var nativeReduce  = Array.prototype.reduce;
+var nativeSplice  = Array.prototype.splice;
 
 export function toArray (arg) {
     var arr    = [];
@@ -57,4 +58,11 @@ export function filter (arr, callback) {
 
 export function reduce (arr, callback, initialValue) {
     return nativeReduce.call(arr, callback, initialValue);
+}
+
+export function remove (arr, item) {
+    var index = indexOf(arr, item);
+
+    if (index > -1)
+        nativeSplice.call(arr, index, 1);
 }

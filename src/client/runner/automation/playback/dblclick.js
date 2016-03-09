@@ -1,9 +1,8 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../get-element';
-import { ClickOptions } from '../options';
+import { ClickOptions } from '../../../../test-run/commands/options';
 import ClickAutomation from '../playback/click';
-import delay from '../../utils/delay';
 import * as mouseUtils from '../../utils/mouse';
 
 var extend         = hammerhead.utils.extend;
@@ -12,7 +11,7 @@ var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
 var positionUtils = testCafeCore.positionUtils;
 var eventUtils    = testCafeCore.eventUtils;
-
+var delay         = testCafeCore.delay;
 
 const FIRST_CLICK_DELAY = browserUtils.hasTouchEvents ? 0 : 160;
 

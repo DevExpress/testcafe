@@ -4,10 +4,9 @@ import testCafeUI from '../../../deps/testcafe-ui';
 import { fromPoint as getElementFromPoint } from '../../get-element';
 import { focusAndSetSelection, focusByRelatedElement } from '../../utils';
 import MoveAutomation from '../move';
-import { MoveOptions } from '../../options';
+import { MoveOptions } from '../../../../../test-run/commands/options';
 import SelectChildClickAutomation from './select-child';
 import cursor from '../../cursor';
-import delay from '../../../utils/delay';
 import nextTick from '../../../utils/next-tick';
 import * as mouseUtils from '../../../utils/mouse';
 import { ACTION_STEP_DELAY } from '../../settings';
@@ -22,6 +21,7 @@ var domUtils      = testCafeCore.domUtils;
 var positionUtils = testCafeCore.positionUtils;
 var styleUtils    = testCafeCore.styleUtils;
 var eventUtils    = testCafeCore.eventUtils;
+var delay         = testCafeCore.delay;
 
 var selectElementUI = testCafeUI.selectElement;
 

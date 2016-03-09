@@ -1,6 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import { OffsetOptions, MoveOptions } from '../options';
+import { OffsetOptions, MoveOptions } from '../../../../test-run/commands/options';
 import ScrollAutomation from './scroll';
 import cursor from '../cursor';
 

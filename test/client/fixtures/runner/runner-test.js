@@ -8,7 +8,6 @@ var transport    = testCafeCore.get('./transport');
 var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
-var actionBarrier  = testCafeRunner.get('./action-barrier/action-barrier');
 var Runner         = testCafeRunner.get('./runner');
 
 
@@ -19,10 +18,6 @@ var savedTransportFatalError      = null;
 var savedTransportAssertionFailed = null;
 
 transport.batchUpdate = function (callback) {
-    callback();
-};
-
-actionBarrier.waitPageInitialization = function (callback) {
     callback();
 };
 

@@ -9,6 +9,11 @@ var testCallsite                    = require('./data/test-callsite');
 var ActionNumberOptionError         = require('../../lib/errors/test-run').ActionNumberOptionError;
 var ActionPositiveNumberOptionError = require('../../lib/errors/test-run').ActionPositiveNumberOptionError;
 var ActionBooleanOptionError        = require('../../lib/errors/test-run').ActionBooleanOptionError;
+var ActionSelectorTypeError         = require('../../lib/errors/test-run').ActionSelectorTypeError;
+var ActionOptionsTypeError          = require('../../lib/errors/test-run').ActionOptionsTypeError;
+var UncaughtErrorOnPage             = require('../../lib/errors/test-run').UncaughtErrorOnPage;
+var ActionElementNotFoundError      = require('../../lib/errors/test-run').ActionElementNotFoundError;
+var ActionElementIsInvisibleError   = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
 
 
 var TEST_FILE_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
@@ -76,6 +81,26 @@ describe('Error formatting', function () {
 
         it('Should format "actionBooleanOptionError" message', function () {
             assertErrorMessage('action-boolean-option-error', new ActionBooleanOptionError('modifier.ctrl', 'object'));
+        });
+
+        it('Should format "uncaughtErrorOnPage" message', function () {
+            assertErrorMessage('uncaught-js-error-on-page', new UncaughtErrorOnPage('Custom script error', 'http://example.org'));
+        });
+
+        it('Should format "actionElementNotFoundError" message', function () {
+            assertErrorMessage('action-element-not-found-error', new ActionElementNotFoundError());
+        });
+
+        it('Should format "actionElementIsInvisibleError" message', function () {
+            assertErrorMessage('action-element-is-invisible-error', new ActionElementIsInvisibleError());
+        });
+
+        it('Should format "actionSelectorTypeError" message', function () {
+            assertErrorMessage('action-selector-type-error', new ActionSelectorTypeError(typeof 1));
+        });
+
+        it('Should format "actionOptionsTypeError" message', function () {
+            assertErrorMessage('action-options-type-error', new ActionOptionsTypeError(typeof 1));
         });
     });
 

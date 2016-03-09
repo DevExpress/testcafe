@@ -23,6 +23,11 @@ class ActionOptionErrorBase extends TestRunErrorBase {
     }
 }
 
+class ActionError extends TestRunErrorBase {
+    constructor (type) {
+        super(CATEGORY.actionError, type);
+    }
+}
 
 // Action option errors
 export class ActionNumberOptionError extends ActionOptionErrorBase {
@@ -43,3 +48,43 @@ export class ActionBooleanOptionError extends ActionOptionErrorBase {
     }
 }
 
+
+// Test execution client errors
+export class UncaughtErrorOnPage extends TestRunErrorBase {
+    constructor (scriptErr, pageDestUrl) {
+        super(CATEGORY.unhandledException, TYPE.uncaughtErrorOnPage);
+
+        this.scriptErr   = scriptErr;
+        this.pageDestUrl = pageDestUrl;
+    }
+}
+
+// Action errors
+export class ActionSelectorTypeError extends ActionError {
+    constructor (actualType) {
+        super(TYPE.actionSelectorTypeError);
+
+        this.actualType = actualType;
+    }
+}
+
+export class ActionOptionsTypeError extends ActionError {
+    constructor (actualType) {
+        super(TYPE.actionOptionsTypeError);
+
+        this.actualType = actualType;
+    }
+}
+
+export class ActionElementNotFoundError extends ActionError {
+    constructor () {
+        super(TYPE.actionElementNotFoundError);
+    }
+}
+
+
+export class ActionElementIsInvisibleError extends ActionError {
+    constructor () {
+        super(TYPE.actionElementIsInvisibleError);
+    }
+}

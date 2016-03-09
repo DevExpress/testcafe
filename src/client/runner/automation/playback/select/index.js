@@ -3,9 +3,8 @@ import testCafeCore from '../../../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../../get-element';
 import * as selectUtils from './utils';
 import MoveAutomation from '../move';
-import { MoveOptions } from '../../options';
+import { MoveOptions } from '../../../../../test-run/commands/options';
 import cursor from '../../cursor';
-import delay from '../../../utils/delay';
 import { DRAG_ACTION_STEP_DELAY } from '../../settings';
 
 var Promise          = hammerhead.Promise;
@@ -18,6 +17,7 @@ var textSelection   = testCafeCore.textSelection;
 var domUtils        = testCafeCore.domUtils;
 var positionUtils   = testCafeCore.positionUtils;
 var eventUtils      = testCafeCore.eventUtils;
+var delay           = testCafeCore.delay;
 
 
 export default class SelectAutomation {
@@ -184,7 +184,8 @@ export default class SelectAutomation {
     }
 
     run () {
-        return this._moveToPoint(this.absoluteStartPoint)
+        return this
+            ._moveToPoint(this.absoluteStartPoint)
             .then(() => this._mousedown())
             .then(() => this._moveToPoint(this.absoluteEndPoint))
             .then(() => this._mouseup());

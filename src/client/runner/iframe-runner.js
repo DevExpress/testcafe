@@ -17,9 +17,6 @@ var IFrameRunner = function (startedCallback) {
 
 serviceUtils.inherit(IFrameRunner, RunnerBase);
 
-IFrameRunner.prototype._initPageLoadBarrier = function () {
-};
-
 IFrameRunner.prototype._prepareStepsExecuting = function (callback) {
     callback();
 };

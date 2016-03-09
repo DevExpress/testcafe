@@ -7,15 +7,14 @@ var textSelection = testCafeCore.get('./utils/text-selection');
 
 var testCafeRunner     = window.getTestCafeModule('testCafeRunner');
 var automation         = testCafeRunner.get('./automation/automation');
-var DragOptions        = testCafeRunner.get('./automation/options').DragOptions;
-var ClickOptions       = testCafeRunner.get('./automation/options').ClickOptions;
-var TypeOptions        = testCafeRunner.get('./automation/options').TypeOptions;
+var DragOptions        = testCafeRunner.get('../../test-run/commands/options').DragOptions;
+var ClickOptions       = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
+var TypeOptions        = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
 var RClickAutomation   = testCafeRunner.get('./automation/playback/rclick');
 var ClickAutomation    = testCafeRunner.get('./automation/playback/click');
 var DblClickAutomation = testCafeRunner.get('./automation/playback/dblclick');
 var DragAutomation     = testCafeRunner.get('./automation/playback/drag');
 var TypeAutomation     = testCafeRunner.get('./automation/playback/type');
-var mouseUtils         = testCafeRunner.get('./utils/mouse');
 
 automation.init();
 

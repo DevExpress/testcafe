@@ -6,5 +6,12 @@
 export default {
     actionNumberOptionError:         'actionNumberOptionError',
     actionPositiveNumberOptionError: 'actionPositiveNumberOptionError',
-    actionBooleanOptionError:        'actionBooleanOptionError'
+    actionBooleanOptionError:        'actionBooleanOptionError',
+    actionSelectorTypeError:         'actionSelectorTypeError',
+    actionOptionsTypeError:          'actionOptionsTypeError',
+
+    uncaughtErrorOnPage: 'uncaughtErrorOnPage',
+
+    actionElementNotFoundError:    'actionElementNotFoundError',
+    actionElementIsInvisibleError: 'actionElementIsInvisibleError'
 };

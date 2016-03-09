@@ -8,10 +8,10 @@ var position      = testCafeCore.get('./utils/position');
 
 var testCafeRunner     = window.getTestCafeModule('testCafeRunner');
 var automation         = testCafeRunner.get('./automation/automation');
-var DragOptions        = testCafeRunner.get('./automation/options').DragOptions;
-var ClickOptions       = testCafeRunner.get('./automation/options').ClickOptions;
-var SelectOptions      = testCafeRunner.get('./automation/options').SelectOptions;
-var TypeOptions        = testCafeRunner.get('./automation/options').TypeOptions;
+var DragOptions        = testCafeRunner.get('../../test-run/commands/options').DragOptions;
+var ClickOptions       = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
+var SelectOptions      = testCafeRunner.get('../../test-run/commands/options').SelectOptions;
+var TypeOptions        = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
 var ClickAutomation    = testCafeRunner.get('./automation/playback/click');
 var DblClickAutomation = testCafeRunner.get('./automation/playback/dblclick');
 var SelectAutomation   = testCafeRunner.get('./automation/playback/select');

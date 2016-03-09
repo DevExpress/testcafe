@@ -143,6 +143,8 @@ gulp.task('clean', function (cb) {
 gulp.task('lint-client', function () {
     return gulp
         .src([
+            'src/client/core/page-unload-barrier.js',
+            'src/client/core/xhr-barrier.js',
             'src/client/runner/automation/playback/scroll.js',
             'src/client/runner/automation/playback/move.js',
             'src/client/runner/automation/playback/press/**/*.js',
@@ -157,7 +159,8 @@ gulp.task('lint-client', function () {
             'src/client/runner/automation/automation.js',
             'src/client/runner/automation/utils.js',
             'src/client/runner/utils/**/*.js',
-            'src/client/ui/cursor'
+            'src/client/ui/cursor',
+            'src/client/driver/**/*.js'
         ])
         .pipe(eslint())
         .pipe(eslint.format())
@@ -206,6 +209,7 @@ gulp.task('client-scripts-bundle', ['clean'], function () {
     return gulp
         .src([
             'src/client/core/index.js',
+            'src/client/driver/index.js',
             'src/client/ui/index.js',
             'src/client/runner/index.js',
             'src/client/browser/idle-page/index.js'

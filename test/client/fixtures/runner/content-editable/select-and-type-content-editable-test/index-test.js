@@ -8,13 +8,12 @@ var domUtils        = testCafeCore.get('./utils/dom');
 
 var testCafeRunner   = window.getTestCafeModule('testCafeRunner');
 var automation       = testCafeRunner.get('./automation/automation');
-var SelectOptions    = testCafeRunner.get('./automation/options').SelectOptions;
-var TypeOptions      = testCafeRunner.get('./automation/options').TypeOptions;
-var SelectAutomation = testCafeRunner.get('./automation/playback/select');
 var TypeAutomation   = testCafeRunner.get('./automation/playback/type');
+var SelectOptions    = testCafeRunner.get('../../test-run/commands/options').SelectOptions;
+var TypeOptions      = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
+var SelectAutomation = testCafeRunner.get('./automation/playback/select');
 var PressAutomation  = testCafeRunner.get('./automation/playback/press');
 var parseKeyString   = testCafeRunner.get('./automation/playback/press/parse-key-string');
-var mouseUtils       = testCafeRunner.get('./utils/mouse');
 
 automation.init();
 
