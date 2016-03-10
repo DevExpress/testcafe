@@ -463,7 +463,7 @@ export function click (what, options) {
                 clickOptions.modifiers.meta  = options.meta;
 
                 var clickAutomation = iframe ?
-                                      new iframe.contentWindow[automation.AUTOMATION_RUNNERS].ClickAutomation(element, clickOptions) :
+                                      new iframe.contentWindow[AUTOMATIONS].ClickAutomation(element, clickOptions) :
                                       new ClickAutomation(element, clickOptions);
 
                 clickAutomation
