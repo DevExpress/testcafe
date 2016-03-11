@@ -5,15 +5,15 @@ var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var position      = testCafeCore.get('./utils/position');
 var textSelection = testCafeCore.get('./utils/text-selection');
 
-var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
-var automation                 = testCafeRunner.get('./automation/automation');
-var DragOptions                = testCafeRunner.get('./automation/options/drag');
-var ClickOptions               = testCafeRunner.get('./automation/options/click');
-var RClickAutomation           = testCafeRunner.get('./automation/playback/rclick');
-var ClickAutomation            = testCafeRunner.get('./automation/playback/click');
-var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
-var DragAutomation             = testCafeRunner.get('./automation/playback/drag');
-var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
+var testCafeRunner         = window.getTestCafeModule('testCafeRunner');
+var automation             = testCafeRunner.get('./automation/automation');
+var DragOptions            = testCafeRunner.get('./automation/options/drag');
+var ClickOptions           = testCafeRunner.get('./automation/options/click');
+var RClickAutomation       = testCafeRunner.get('./automation/playback/rclick');
+var ClickAutomation        = testCafeRunner.get('./automation/playback/click');
+var DblClickAutomation     = testCafeRunner.get('./automation/playback/dblclick');
+var DragAutomation         = testCafeRunner.get('./automation/playback/drag');
+var typePlaybackAutomation = testCafeRunner.get('./automation/playback/type');
 
 automation.init();
 
@@ -273,11 +273,7 @@ $(document).ready(function () {
             clickSmallCount = 0,
             clickBigCount   = 0,
             offsetX         = $smallDiv.width() + 10,
-            offsetY         = $smallDiv.height() + 10,
-            dblClickOffsets = {
-                offsetX: offsetX,
-                offsetY: offsetY
-            };
+            offsetY         = $smallDiv.height() + 10;
 
         var mousedownHandler = function (e) {
             var smallDivPos       = position.getOffsetPosition($smallDiv[0]),
@@ -301,12 +297,23 @@ $(document).ready(function () {
             clickBigCount++;
         });
 
-        dblClickPlaybackAutomation($smallDiv[0], dblClickOffsets, function () {
-            equal(clickSmallCount, 0);
-            equal(clickBigCount, 1);
-            expect(6);
-            startNext();
-        });
+        var clickOptions = new ClickOptions();
+
+        clickOptions.offsetX = offsetX;
+        clickOptions.offsetY = offsetY;
+
+        clickOptions.mofifiers = {};
+
+        var dblClickAutomation = new DblClickAutomation($smallDiv[0], clickOptions);
+
+        dblClickAutomation
+            .run()
+            .then(function () {
+                equal(clickSmallCount, 0);
+                equal(clickBigCount, 1);
+                expect(6);
+                startNext();
+            });
     });
 
     asyncTest('Type playback', function () {

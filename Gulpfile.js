@@ -150,6 +150,7 @@ gulp.task('lint-client', function () {
             'src/client/runner/automation/playback/rclick.js',
             'src/client/runner/automation/playback/hover.js',
             'src/client/runner/automation/playback/click/**/*.js',
+            'src/client/runner/automation/playback/dblclick.js',
             'src/client/runner/automation/cursor.js',
             'src/client/runner/automation/automation.js',
             'src/client/runner/automation/utils.js',

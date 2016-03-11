@@ -6,19 +6,19 @@ var domUtils      = testCafeCore.get('./utils/dom');
 var textSelection = testCafeCore.get('./utils/text-selection');
 var position      = testCafeCore.get('./utils/position');
 
-var testCafeRunner             = window.getTestCafeModule('testCafeRunner');
-var automation                 = testCafeRunner.get('./automation/automation');
-var DragOptions                = testCafeRunner.get('./automation/options/drag');
-var ClickOptions               = testCafeRunner.get('./automation/options/click');
-var SelectOptions              = testCafeRunner.get('./automation/options/select');
-var ClickAutomation            = testCafeRunner.get('./automation/playback/click');
-var SelectAutomation           = testCafeRunner.get('./automation/playback/select');
-var typePlaybackAutomation     = testCafeRunner.get('./automation/playback/type');
-var dblClickPlaybackAutomation = testCafeRunner.get('./automation/playback/dblclick');
-var DragAutomation             = testCafeRunner.get('./automation/playback/drag');
-var PressAutomation            = testCafeRunner.get('./automation/playback/press');
-var parseKeyString             = testCafeRunner.get('./automation/playback/press/parse-key-string');
-var mouseUtils                 = testCafeRunner.get('./utils/mouse');
+var testCafeRunner         = window.getTestCafeModule('testCafeRunner');
+var automation             = testCafeRunner.get('./automation/automation');
+var DragOptions            = testCafeRunner.get('./automation/options/drag');
+var ClickOptions           = testCafeRunner.get('./automation/options/click');
+var SelectOptions          = testCafeRunner.get('./automation/options/select');
+var ClickAutomation        = testCafeRunner.get('./automation/playback/click');
+var DblClickAutomation     = testCafeRunner.get('./automation/playback/dblclick');
+var SelectAutomation       = testCafeRunner.get('./automation/playback/select');
+var typePlaybackAutomation = testCafeRunner.get('./automation/playback/type');
+var DragAutomation         = testCafeRunner.get('./automation/playback/drag');
+var PressAutomation        = testCafeRunner.get('./automation/playback/press');
+var parseKeyString         = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var mouseUtils             = testCafeRunner.get('./utils/mouse');
 
 QUnit.begin(function () {
     automation.init();
@@ -259,11 +259,23 @@ $(document).ready(function () {
             clickCount++;
         });
 
-        dblClickPlaybackAutomation($input[0], {}, function () {
-            equal(clickCount, 2);
-            equal(dblclickCount, 1);
-            startNext();
-        });
+        var clickOptions = new ClickOptions();
+        var offsets      = mouseUtils.getOffsetOptions($input[0]);
+
+        clickOptions.offsetX = offsets.offsetX;
+        clickOptions.offsetY = offsets.offsetY;
+
+        clickOptions.mofifiers = {};
+
+        var dblClickAutomation = new DblClickAutomation($input[0], clickOptions);
+
+        dblClickAutomation
+            .run()
+            .then(function () {
+                equal(clickCount, 2);
+                equal(dblclickCount, 1);
+                startNext();
+            });
     });
 
     asyncTest('run drag playback', function () {
