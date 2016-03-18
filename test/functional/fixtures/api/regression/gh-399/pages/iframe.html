@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-399 (iframe)</title>
+</head>
+<body style="width: 200px; height: 200px">
+
+<script>
+    document.addEventListener('click', function () {
+        window.top.document.body.removeChild(window.frameElement);
+    });
+</script>
+</body>
+</html>
