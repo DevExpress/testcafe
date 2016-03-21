@@ -4,7 +4,7 @@ var util         = require('util');
 var Promise      = require('pinkie');
 var Reporter     = require('../../lib/reporter');
 
-describe('Reporters', function () {
+describe('Reporter', function () {
     // Runnable configuration mocks
     var screenshotDir = '/screenshots/1445437598847';
 
@@ -168,6 +168,12 @@ describe('Reporters', function () {
             }]
         }
     ];
+
+    chromeTestRunMocks.concat(firefoxTestRunMocks).forEach(function (testRunMock) {
+        testRunMock.errs.forEach(function (err) {
+            err.userAgent = testRunMock.browserConnection.userAgent;
+        });
+    });
 
     var ScreenshotsMock = function () {
         this.hasCapturedFor = function (testMock) {

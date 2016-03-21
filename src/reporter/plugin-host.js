@@ -70,7 +70,7 @@ export default class ReporterPluginHost {
 
     formatError (err, prefix = '') {
         var maxMsgLength = this[viewportWidth] - this[indent] - prefix.length;
-        var msg          = err.getMessage(this[errorDecorator], maxMsgLength);
+        var msg          = err.formatMessage(this[errorDecorator], maxMsgLength);
 
         if (this[wordWrapEnabled])
             msg = this.wordWrap(msg, prefix.length, maxMsgLength);

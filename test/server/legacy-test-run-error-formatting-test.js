@@ -1,9 +1,9 @@
-var expect             = require('chai').expect;
-var read               = require('read-file-relative').readSync;
-var remove             = require('lodash').pull;
-var ReporterPluginHost = require('../../lib/reporter/plugin-host');
-var TYPE               = require('../../lib/legacy/test-run-error/type');
-var TestRunError       = require('../../lib/legacy/test-run-error');
+var expect                               = require('chai').expect;
+var read                                 = require('read-file-relative').readSync;
+var remove                               = require('lodash').pull;
+var ReporterPluginHost                   = require('../../lib/reporter/plugin-host');
+var TYPE                                 = require('../../lib/legacy/test-run-error/type');
+var LegacyTestRunErrorFormattableAdapter = require('../../lib/legacy/test-run-error/formattable-adapter');
 
 
 var untestedErrorTypes = Object.keys(TYPE).map(function (key) {
@@ -87,9 +87,9 @@ function assertErrorMessage (file, clientErr) {
 
     plugin
         .useWordWrap(true)
-        .write(plugin.formatError(new TestRunError(clientErr)));
+        .write(plugin.formatError(new LegacyTestRunErrorFormattableAdapter(clientErr, userAgentMock)));
 
-    var expectedMsg = read('./data/expected-test-errors/' + file)
+    var expectedMsg = read('./data/expected-legacy-test-run-errors/' + file)
         .replace(/(\r\n)/gm, '\n')
         .trim();
 
@@ -110,7 +110,6 @@ describe('Error formatter', function () {
                 key:               '<tag>',
                 isObjects:         true,
                 type:              TYPE.eqAssertion,
-                userAgent:         userAgentMock,
                 screenshotPath:    '/unix/path/with/<tag>',
                 message:           '<tagged> message',
                 diffType:          {
@@ -130,8 +129,7 @@ describe('Error formatter', function () {
                 expected:          '"<test>"',
                 type:              TYPE.notEqAssertion,
                 screenshotPath:    '/unix/path/with/<tag>',
-                message:           '<tagged> message',
-                userAgent:         userAgentMock
+                message:           '<tagged> message'
             };
 
             assertErrorMessage('not-eq-assertion', err);
@@ -144,8 +142,7 @@ describe('Error formatter', function () {
                 actual:            'false',
                 type:              TYPE.okAssertion,
                 screenshotPath:    '/unix/path/with/<tag>',
-                message:           '<tagged> message',
-                userAgent:         userAgentMock
+                message:           '<tagged> message'
             };
 
             assertErrorMessage('ok-assertion', err);
@@ -158,8 +155,7 @@ describe('Error formatter', function () {
                 actual:            '"<test>"',
                 type:              TYPE.notOkAssertion,
                 screenshotPath:    '/unix/path/with/<tag>',
-                message:           '<tagged> message',
-                userAgent:         userAgentMock
+                message:           '<tagged> message'
             };
 
             assertErrorMessage('not-ok-assertion', err);
@@ -170,8 +166,7 @@ describe('Error formatter', function () {
         it('Should format "iframeLoadingTimeout" error message', function () {
             var err = {
                 type:           TYPE.iframeLoadingTimeout,
-                screenshotPath: '/unix/path/with/<tag>',
-                userAgent:      userAgentMock
+                screenshotPath: '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('iframe-loading-timeout', err);
@@ -181,8 +176,7 @@ describe('Error formatter', function () {
             var err = {
                 type:           TYPE.inIFrameTargetLoadingTimeout,
                 stepName:       'Step with <tag>',
-                screenshotPath: '/unix/path/with/<tag>',
-                userAgent:      userAgentMock
+                screenshotPath: '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('in-iframe-target-loading-timeout', err);
@@ -193,8 +187,7 @@ describe('Error formatter', function () {
                 type:           TYPE.uncaughtJSError,
                 scriptErr:      'test-error-with-<tag>',
                 pageDestUrl:    'http://page',
-                screenshotPath: '/unix/path/with/<tag>',
-                userAgent:      userAgentMock
+                screenshotPath: '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('uncaught-js-error', err);
@@ -205,8 +198,7 @@ describe('Error formatter', function () {
                 type:           TYPE.uncaughtJSErrorInTestCodeStep,
                 stepName:       'Step with <tag>',
                 scriptErr:      'error with <tag>',
-                screenshotPath: '/unix/path/with/<tag>',
-                userAgent:      userAgentMock
+                screenshotPath: '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('uncaught-js-error-in-test-code-step', err);
@@ -216,8 +208,7 @@ describe('Error formatter', function () {
             var err = {
                 type:           TYPE.storeDomNodeOrJqueryObject,
                 stepName:       'Step with <tag>',
-                screenshotPath: '/unix/path/with/<tag>',
-                userAgent:      userAgentMock
+                screenshotPath: '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('store-dom-node-or-jquery-object', err);
@@ -229,8 +220,7 @@ describe('Error formatter', function () {
                 stepName:          'Step with <tag>',
                 relatedSourceCode: 'code and <tag>',
                 action:            'testAction',
-                screenshotPath:    '/unix/path/with/<tag>',
-                userAgent:         userAgentMock
+                screenshotPath:    '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('empty-first-argument', err);
@@ -243,8 +233,7 @@ describe('Error formatter', function () {
                 relatedSourceCode: 'code and <tag>',
                 action:            'test-action',
                 element:           '<element>',
-                screenshotPath:    '/unix/path/with/<tag>',
-                userAgent:         userAgentMock
+                screenshotPath:    '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('invisible-action-element', err);
@@ -255,8 +244,7 @@ describe('Error formatter', function () {
                 type:              TYPE.incorrectDraggingSecondArgument,
                 stepName:          'Step with <tag>',
                 relatedSourceCode: 'code and <tag>',
-                screenshotPath:    '/unix/path/with/<tag>',
-                userAgent:         userAgentMock
+                screenshotPath:    '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('incorrect-dragging-second-argument', err);
@@ -267,8 +255,7 @@ describe('Error formatter', function () {
                 type:              TYPE.incorrectPressActionArgument,
                 stepName:          'Step with <tag>',
                 relatedSourceCode: 'code and <tag>',
-                screenshotPath:    '/unix/path/with/<tag>',
-                userAgent:         userAgentMock
+                screenshotPath:    '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('incorrect-press-action-argument', err);
@@ -279,8 +266,7 @@ describe('Error formatter', function () {
                 type:              TYPE.emptyTypeActionArgument,
                 stepName:          'Step with <tag>',
                 relatedSourceCode: 'code and <tag>',
-                screenshotPath:    '/unix/path/with/<tag>',
-                userAgent:         userAgentMock
+                screenshotPath:    '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('empty-type-action-argument', err);
@@ -292,8 +278,7 @@ describe('Error formatter', function () {
                 stepName:       'Step with <tag>',
                 dialog:         'test-dialog',
                 message:        'message with <tag>',
-                screenshotPath: '/unix/path/with/<tag>',
-                userAgent:      userAgentMock
+                screenshotPath: '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('unexpected-dialog', err);
@@ -304,8 +289,7 @@ describe('Error formatter', function () {
                 type:           TYPE.expectedDialogDoesntAppear,
                 stepName:       'Step with <tag>',
                 dialog:         'test-dialog',
-                screenshotPath: '/unix/path/with/<tag>',
-                userAgent:      userAgentMock
+                screenshotPath: '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('expected-dialog-doesnt-appear', err);
@@ -316,8 +300,7 @@ describe('Error formatter', function () {
                 type:              TYPE.incorrectSelectActionArguments,
                 stepName:          'Step with <tag>',
                 relatedSourceCode: 'code and <tag>',
-                screenshotPath:    '/unix/path/with/<tag>',
-                userAgent:         userAgentMock
+                screenshotPath:    '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('incorrect-select-action-arguments', err);
@@ -328,8 +311,7 @@ describe('Error formatter', function () {
                 type:              TYPE.incorrectWaitActionMillisecondsArgument,
                 stepName:          'Step with <tag>',
                 relatedSourceCode: 'code and <tag>',
-                screenshotPath:    '/unix/path/with/<tag>',
-                userAgent:         userAgentMock
+                screenshotPath:    '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('incorrect-wait-action-milliseconds-arguments', err);
@@ -340,8 +322,7 @@ describe('Error formatter', function () {
                 type:              TYPE.incorrectWaitForActionEventArgument,
                 stepName:          'Step with <tag>',
                 relatedSourceCode: 'code and <tag>',
-                screenshotPath:    '/unix/path/with/<tag>',
-                userAgent:         userAgentMock
+                screenshotPath:    '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('incorrect-wait-for-action-event-argument', err);
@@ -352,8 +333,7 @@ describe('Error formatter', function () {
                 type:              TYPE.incorrectWaitForActionTimeoutArgument,
                 stepName:          'Step with <tag>',
                 relatedSourceCode: 'code and <tag>',
-                screenshotPath:    '/unix/path/with/<tag>',
-                userAgent:         userAgentMock
+                screenshotPath:    '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('incorrect-wait-for-action-timeout-argument', err);
@@ -364,8 +344,7 @@ describe('Error formatter', function () {
                 type:              TYPE.waitForActionTimeoutExceeded,
                 stepName:          'Step with <tag>',
                 relatedSourceCode: 'act.waitFor(function(cb) {\n    $("<iframe>");\n    cb();\n}, 1000);',
-                screenshotPath:    '/unix/path/with/<tag>',
-                userAgent:         userAgentMock
+                screenshotPath:    '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('wait-for-action-timeout-exceeded', err);
@@ -375,8 +354,7 @@ describe('Error formatter', function () {
             var err = {
                 type:           TYPE.emptyIFrameArgument,
                 stepName:       'Step with <tag>',
-                screenshotPath: '/unix/path/with/<tag>',
-                userAgent:      userAgentMock
+                screenshotPath: '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('empty-iframe-argument', err);
@@ -386,8 +364,7 @@ describe('Error formatter', function () {
             var err = {
                 type:           TYPE.iframeArgumentIsNotIFrame,
                 stepName:       'Step with <tag>',
-                screenshotPath: '/unix/path/with/<tag>',
-                userAgent:      userAgentMock
+                screenshotPath: '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('iframe-argument-is-not-iframe', err);
@@ -397,8 +374,7 @@ describe('Error formatter', function () {
             var err = {
                 type:           TYPE.multipleIFrameArgument,
                 stepName:       'Step with <tag>',
-                screenshotPath: '/unix/path/with/<tag>',
-                userAgent:      userAgentMock
+                screenshotPath: '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('multiple-iframe-argument', err);
@@ -408,8 +384,7 @@ describe('Error formatter', function () {
             var err = {
                 type:           TYPE.incorrectIFrameArgument,
                 stepName:       'Step with <tag>',
-                screenshotPath: '/unix/path/with/<tag>',
-                userAgent:      userAgentMock
+                screenshotPath: '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('incorrect-iframe-argument', err);
@@ -421,8 +396,7 @@ describe('Error formatter', function () {
                 stepName:          'Step with <tag>',
                 relatedSourceCode: 'code and <tag>',
                 filePaths:         ['/unix/path/with/<tag>', 'path2'],
-                screenshotPath:    '/unix/path/with/<tag>',
-                userAgent:         userAgentMock
+                screenshotPath:    '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('upload-can-not-find-file-to-upload', err);
@@ -433,8 +407,7 @@ describe('Error formatter', function () {
                 type:              TYPE.uploadElementIsNotFileInput,
                 stepName:          'Step with <tag>',
                 relatedSourceCode: 'code and <tag>',
-                screenshotPath:    '/unix/path/with/<tag>',
-                userAgent:         userAgentMock
+                screenshotPath:    '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('upload-element-is-not-file-input', err);
@@ -445,8 +418,7 @@ describe('Error formatter', function () {
                 type:              TYPE.uploadInvalidFilePathArgument,
                 stepName:          'Step with <tag>',
                 relatedSourceCode: 'code and <tag>',
-                screenshotPath:    '/unix/path/with/<tag>',
-                userAgent:         userAgentMock
+                screenshotPath:    '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('upload-invalid-file-path-argument', err);
@@ -454,9 +426,8 @@ describe('Error formatter', function () {
 
         it('Should format "pageNotLoaded" error message', function () {
             var err = {
-                type:      TYPE.pageNotLoaded,
-                message:   'Failed to find a DNS-record for the resource at <a href="example.org">example.org</a>.',
-                userAgent: userAgentMock
+                type:    TYPE.pageNotLoaded,
+                message: 'Failed to find a DNS-record for the resource at <a href="example.org">example.org</a>.'
             };
 
             assertErrorMessage('page-not-loaded', err);
@@ -466,8 +437,7 @@ describe('Error formatter', function () {
             var err = {
                 type:           TYPE.incorrectGlobalWaitForActionEventArgument,
                 stepName:       'Step with <tag>',
-                screenshotPath: '/unix/path/with/<tag>',
-                userAgent:      userAgentMock
+                screenshotPath: '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('incorrect-global-wait-for-action-event-argument', err);
@@ -477,8 +447,7 @@ describe('Error formatter', function () {
             var err = {
                 type:           TYPE.incorrectGlobalWaitForActionTimeoutArgument,
                 stepName:       'Step with <tag>',
-                screenshotPath: '/unix/path/with/<tag>',
-                userAgent:      userAgentMock
+                screenshotPath: '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('incorrect-global-wait-for-action-timeout-argument', err);
@@ -488,8 +457,7 @@ describe('Error formatter', function () {
             var err = {
                 type:           TYPE.globalWaitForActionTimeoutExceeded,
                 stepName:       'Step with <tag>',
-                screenshotPath: '/unix/path/with/<tag>',
-                userAgent:      userAgentMock
+                screenshotPath: '/unix/path/with/<tag>'
             };
 
             assertErrorMessage('global-wait-for-action-timeout-exceed', err);
