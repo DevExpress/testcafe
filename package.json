@@ -1,6 +1,6 @@
 {
   "name": "testcafe",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "main": "lib/index",
   "bin": {
     "testcafe": "./bin/testcafe"
@@ -12,13 +12,14 @@
     "babel-preset-es2015-node4": "^2.0.2",
     "babel-preset-stage-2": "^6.3.13",
     "babel-runtime": "^6.3.19",
-    "callsite-record": "^1.0.2",
+    "callsite-record": "^2.0.0",
     "chalk": "^1.1.0",
     "commander": "^2.8.1",
     "dedent": "^0.4.0",
     "elegant-spinner": "^1.0.1",
     "endpoint-utils": "^1.0.0",
     "globby": "^3.0.1",
+    "highlight-es": "^1.0.0",
     "indent-string": "^1.2.2",
     "is-glob": "^2.0.1",
     "lodash": "^4.5.1",
@@ -106,6 +107,7 @@
       "elegant-spinner",
       "endpoint-utils",
       "globby",
+      "highlight-es",
       "indent-string",
       "is-glob",
       "lodash",

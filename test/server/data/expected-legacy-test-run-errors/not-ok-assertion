@@ -2,7 +2,7 @@ Chrome 15.0.874 / Mac OS X 10.8.1
 CATEGORY=legacy|failedAssertion
 "<tagged> message" assertion failed at step "Step with <tag>":
 
-    notOk("<test>")
+notOk("<test>")
 
 Expected: null, undefined, false, NaN or ''
 Actual:   "<test>"

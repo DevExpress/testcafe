@@ -1,21 +1,26 @@
-import { assignIn } from 'lodash';
+import { find, assignIn } from 'lodash';
 import { Parser } from 'parse5';
+import { renderers } from 'callsite-record';
+import stackFilter from '../stack-filter';
 
 var parser = new Parser();
 
 export default class TestRunErrorFormattableAdapter {
-    constructor (err, userAgent) {
+    constructor (err, userAgent, screenshotPath, callsite) {
         this.TEMPLATES = null;
-        this.userAgent = userAgent;
+
+        this.userAgent      = userAgent;
+        this.screenshotPath = screenshotPath;
+        this.callsite       = callsite;
 
         assignIn(this, err);
     }
 
     static _getSelector (node) {
-        var dataTypeAttr = node.attrs.filter(attr => attr.name === 'data-type')[0];
-        var type         = dataTypeAttr && dataTypeAttr.value || '';
+        var classAttr = find(node.attrs, { name: 'class' });
+        var cls       = classAttr && classAttr.value;
 
-        return type ? `${node.tagName} ${type}` : node.tagName;
+        return cls ? `${node.tagName} ${cls}` : node.tagName;
     }
 
     static _decorateHtml (node, decorator) {
@@ -38,6 +43,10 @@ export default class TestRunErrorFormattableAdapter {
         }
 
         return msg;
+    }
+
+    getCallsiteMarkup () {
+        return this.callsite.renderSync({ renderer: renderers.html, stackFilter });
     }
 
     formatMessage (decorator, viewportWidth) {

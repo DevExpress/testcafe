@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import indentString from 'indent-string';
-import { escape as escapeHtml, assignIn } from 'lodash';
+import { identity, escape as escapeHtml, assignIn } from 'lodash';
 import moment from 'moment';
 import 'moment-duration-format';
 import OS from 'os-family';
@@ -40,18 +40,39 @@ export default class ReporterPluginHost {
     // Error decorator
     createErrorDecorator () {
         return {
-            'span category':       () => '',
-            'span step-name':      str => `"${str}"`,
-            'span user-agent':     str => this.chalk.gray(str),
-            'div screenshot-info': str => str,
+            'span category':   () => '',
+            'span step-name':  str => `"${str}"`,
+            'span user-agent': str => this.chalk.gray(str),
+
+            'div screenshot-info': identity,
             'a screenshot-path':   str => this.chalk.underline(str),
-            'code':                str => this.chalk.yellow(str),
-            'code step-source':    str => this.chalk.magenta(this.indentString(str, 4)),
-            'span code-line':      str => `${str}\n`,
-            'span last-code-line': str => str,
-            'code api':            str => this.chalk.yellow(str),
-            'strong':              str => this.chalk.cyan(str),
-            'a':                   str => this.chalk.yellow(`"${str}"`)
+
+            'code':     str => this.chalk.yellow(str),
+            'code api': str => this.chalk.yellow(str),
+
+            'span syntax-string':     str => this.chalk.green(str),
+            'span syntax-punctuator': str => this.chalk.grey(str),
+            'span syntax-keyword':    str => this.chalk.cyan(str),
+            'span syntax-number':     str => this.chalk.magenta(str),
+            'span syntax-regex':      str => this.chalk.magenta(str),
+            'span syntax-comment':    str => this.chalk.grey.bold(str),
+            'span syntax-invalid':    str => this.chalk.inverse(str),
+
+            'div code-frame':         identity,
+            'div code-line':          str => str + '\n',
+            'div code-line-last':     identity,
+            'div code-line-num':      str => `   ${str} |`,
+            'div code-line-num-base': str => this.chalk.bgRed(` > ${str} `) + '|',
+            'div code-line-src':      identity,
+
+            'div stack':               str => '\n\n' + str,
+            'div stack-line':          str => str + '\n',
+            'div stack-line-last':     identity,
+            'div stack-line-name':     str => `   at ${this.chalk.bold(str)}`,
+            'div stack-line-location': str => ` (${this.chalk.grey.underline(str)})`,
+
+            'strong': str => this.chalk.cyan(str),
+            'a':      str => `"${this.chalk.underline(str)}"`
         };
     }
 
