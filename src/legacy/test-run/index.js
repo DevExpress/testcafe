@@ -4,7 +4,7 @@ import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
 import COMMAND from './command';
 import ERROR_TYPE from '../test-run-error/type';
-import TestRunError from '../test-run-error';
+import LegacyTestRunErrorFormattableAdapter from '../test-run-error/formattable-adapter';
 
 
 // Const
@@ -88,7 +88,7 @@ export default class LegacyTestRun extends Session {
             // reason (e.g. we don't have permissions to write a screenshot file).
         }
 
-        this.errs.push(new TestRunError(err));
+        this.errs.push(new LegacyTestRunErrorFormattableAdapter(err, this.browserConnection.userAgent));
     }
 
     async _fatalError (err) {

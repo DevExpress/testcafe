@@ -1,4 +1,4 @@
-import { find } from 'lodash';
+import { find, sortBy } from 'lodash';
 import ReporterPluginHost from './plugin-host';
 
 export default class Reporter {
@@ -32,17 +32,6 @@ export default class Reporter {
         };
     }
 
-    static _errorSorter (errs) {
-        errs.sort((err1, err2) => {
-            err1 = err1.userAgent + err1.type;
-            err2 = err2.userAgent + err2.type;
-
-            if (err1 > err2) return 1;
-            if (err1 < err2) return -1;
-            return 0;
-        });
-    }
-
     _getReportItemForTestRun (testRun) {
         var test = testRun.test;
 
@@ -60,7 +49,7 @@ export default class Reporter {
         if (!reportItem.errs.length)
             this.passed++;
 
-        Reporter._errorSorter(reportItem.errs);
+        reportItem.errs = sortBy(reportItem.errs, ['userAgent', 'type']);
 
         this.plugin.reportTestDone(reportItem.testName, reportItem.errs, durationMs, reportItem.unstable, reportItem.screenshotPath);
 
@@ -92,9 +81,6 @@ export default class Reporter {
 
         task.on('test-run-done', testRun => {
             var reportItem = this._getReportItemForTestRun(testRun);
-            var userAgent  = testRun.browserConnection.userAgent;
-
-            testRun.errs.forEach(err => err.userAgent = userAgent);
 
             reportItem.pendingRuns--;
             reportItem.errs     = reportItem.errs.concat(testRun.errs);
