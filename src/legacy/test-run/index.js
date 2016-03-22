@@ -75,20 +75,22 @@ export default class LegacyTestRun extends Session {
     }
 
     async _addError (err) {
-        if (err.__sourceIndex !== void 0 && err.__sourceIndex !== null) {
-            err.relatedSourceCode = this.test.sourceIndex[err.__sourceIndex];
-            delete err.__sourceIndex;
-        }
+        var screenshotPath = null;
+        var callsite       = err.__sourceIndex !== void 0 &&
+                             err.__sourceIndex !== null &&
+                             this.test.sourceIndex[err.__sourceIndex];
 
         try {
-            err.screenshotPath = await this.screenshotCapturer.captureError(err);
+            screenshotPath = await this.screenshotCapturer.captureError(err);
         }
         catch (e) {
             // NOTE: swallow the error silently if we can't take screenshots for some
             // reason (e.g. we don't have permissions to write a screenshot file).
         }
 
-        this.errs.push(new LegacyTestRunErrorFormattableAdapter(err, this.browserConnection.userAgent));
+        var errAdapter = new LegacyTestRunErrorFormattableAdapter(err, this.browserConnection.userAgent, screenshotPath, callsite);
+
+        this.errs.push(errAdapter);
     }
 
     async _fatalError (err) {
