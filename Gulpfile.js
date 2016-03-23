@@ -26,6 +26,7 @@ var serveStatic  = require('serve-static');
 var Promise      = require('pinkie');
 var promisify    = require('pify');
 var markdownlint = require('markdownlint');
+var isEqual      = require('lodash').isEqual;
 
 
 var readFile = promisify(fs.readFile, Promise);
@@ -285,13 +286,13 @@ gulp.task('update-greenkeeper', function () {
                     return !watchDepsRe.test(dep);
                 });
 
-            config.greenkeeper = {
-                ignore: ignoredDeps
-            };
+            if (!isEqual(config.greenkeeper.ignore, ignoredDeps)) {
+                config.greenkeeper.ignore = ignoredDeps;
 
-            // NOTE: We should write to the file synchronously to avoid collision
-            // with other tasks that may be reading from it asynchronously (GH-315)
-            fs.writeFileSync('package.json', JSON.stringify(config, null, 2) + '\n');
+                // NOTE: We should write to the file synchronously to avoid collision
+                // with other tasks that may be reading from it asynchronously (GH-315)
+                fs.writeFileSync('package.json', JSON.stringify(config, null, 2) + '\n');
+            }
         });
 });
 
