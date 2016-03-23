@@ -36,7 +36,7 @@ function getDiffHeader (err) {
 
 function getScreenshotInfoStr (err) {
     if (err.screenshotPath)
-        return `<div class="screenshot-info">Screenshot: <a class="screenshot-path">${escapeHtml(err.screenshotPath)}</a></div>`;
+        return `<div class="screenshot-info"><strong>Screenshot:</strong> <a class="screenshot-path">${escapeHtml(err.screenshotPath)}</a></div>`;
 
     return '';
 }
