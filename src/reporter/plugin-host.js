@@ -71,7 +71,7 @@ export default class ReporterPluginHost {
             'div stack-line-name':     str => `   at ${this.chalk.bold(str)}`,
             'div stack-line-location': str => ` (${this.chalk.grey.underline(str)})`,
 
-            'strong': str => this.chalk.cyan(str),
+            'strong': str => this.chalk.bold(str),
             'a':      str => `"${this.chalk.underline(str)}"`
         };
     }
