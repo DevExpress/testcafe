@@ -87,6 +87,14 @@ Displays usage information for commands.
 testcafe --help
 ```
 
+### -v, --version
+
+Displays the TestCafe version.
+
+```sh
+testcafe --version
+```
+
 ### -b, --list-browsers
 
 Lists [aliases](/testcafe/documentation/using-testcafe/common-concepts/browser-aliases) of the browsers available on this computer.
