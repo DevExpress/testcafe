@@ -1,12 +1,11 @@
 import hammerhead from '../deps/hammerhead';
 import { filter } from './array';
 
-
 export function inherit (Child, Parent) {
     var Func = function () {
     };
 
-    Func.prototype              = Parent.prototype;
+    Func.prototype = Parent.prototype;
 
     hammerhead.utils.extend(Child.prototype, new Func());
     Child.prototype.constructor = Child;

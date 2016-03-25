@@ -8,7 +8,7 @@ var SETTINGS     = testCafeCore.get('./settings').get();
 
 var testCafeRunner         = window.getTestCafeModule('testCafeRunner');
 var automation             = testCafeRunner.get('./automation/automation');
-var ClickOptions           = testCafeRunner.get('./automation/options/click');
+var ClickOptions           = testCafeRunner.get('./automation/options').ClickOptions;
 var ClickAutomation        = testCafeRunner.get('./automation/playback/click');
 var typePlaybackAutomation = testCafeRunner.get('./automation/playback/type');
 var PressAutomation        = testCafeRunner.get('./automation/playback/press');

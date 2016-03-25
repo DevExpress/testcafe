@@ -1,13 +1,14 @@
 import { find, assignIn } from 'lodash';
 import { Parser } from 'parse5';
 import { renderers } from 'callsite-record';
+import TEMPLATES from './templates';
 import stackFilter from '../stack-filter';
 
 var parser = new Parser();
 
 export default class TestRunErrorFormattableAdapter {
     constructor (err, userAgent, screenshotPath, callsite) {
-        this.TEMPLATES = null;
+        this.TEMPLATES = TEMPLATES;
 
         this.userAgent      = userAgent;
         this.screenshotPath = screenshotPath;
@@ -46,7 +47,16 @@ export default class TestRunErrorFormattableAdapter {
     }
 
     getCallsiteMarkup () {
-        return this.callsite.renderSync({ renderer: renderers.html, stackFilter });
+        // NOTE: for raw API callsites
+        if (typeof this.callsite === 'string')
+            return this.callsite;
+
+        try {
+            return this.callsite.renderSync({ renderer: renderers.html, stackFilter });
+        }
+        catch (err) {
+            return '';
+        }
     }
 
     formatMessage (decorator, viewportWidth) {

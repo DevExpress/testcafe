@@ -4,7 +4,7 @@ import { fromPoint as getElementFromPoint } from '../get-element';
 import { focusAndSetSelection, focusByRelatedElement } from '../utils';
 import * as automationSettings from '../settings';
 import MoveAutomation from '../playback/move';
-import MoveOptions from '../options/move';
+import { MoveOptions } from '../options';
 import cursor from '../cursor';
 import delay from '../../utils/delay';
 import nextTick from '../../utils/next-tick';
@@ -84,11 +84,12 @@ export default class RClickAutomation {
     }
 
     _move ({ element, offsetX, offsetY }) {
-        var moveOptions = new MoveOptions();
+        var moveOptions = new MoveOptions({
+            offsetX,
+            offsetY,
 
-        moveOptions.offsetX   = offsetX;
-        moveOptions.offsetY   = offsetY;
-        moveOptions.modifiers = this.modifiers;
+            modifiers: this.modifiers
+        }, false);
 
         var moveAutomation = new MoveAutomation(element, moveOptions);
 
@@ -156,8 +157,7 @@ export default class RClickAutomation {
     run () {
         var moveArguments = this._getMoveArguments();
 
-        return this.
-            _move(moveArguments)
+        return this._move(moveArguments)
             .then(() => this._mousedown())
             .then(() => this._mouseup())
             .then(() => this._contextmenu());

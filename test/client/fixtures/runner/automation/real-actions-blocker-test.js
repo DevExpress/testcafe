@@ -3,8 +3,8 @@ var nativeMethods = hammerhead.nativeMethods;
 
 var testCafeRunner  = window.getTestCafeModule('testCafeRunner');
 var automation      = testCafeRunner.get('./automation/automation');
-var MouseOptions    = testCafeRunner.get('./automation/options/mouse');
-var ClickOptions    = testCafeRunner.get('./automation/options/click');
+var MouseOptions    = testCafeRunner.get('./automation/options').MouseOptions;
+var ClickOptions    = testCafeRunner.get('./automation/options').ClickOptions;
 var HoverAutomation = testCafeRunner.get('./automation/playback/hover');
 var ClickAutomation = testCafeRunner.get('./automation/playback/click');
 var mouseUtils      = testCafeRunner.get('./utils/mouse');

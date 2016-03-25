@@ -3,7 +3,7 @@ import testCafeCore from '../../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../get-element';
 import * as automationSettings from '../settings';
 import MoveAutomation from '../playback/move';
-import MoveOptions from '../options/move';
+import { MoveOptions } from '../options';
 import cursor from '../cursor';
 import * as mouseUtils from '../../utils/mouse';
 import delay from '../../utils/delay';
@@ -79,11 +79,12 @@ export default class DragAutomation {
     }
 
     _move ({ element, offsetX, offsetY }) {
-        var moveOptions = new MoveOptions();
+        var moveOptions = new MoveOptions({
+            offsetX,
+            offsetY,
 
-        moveOptions.offsetX   = offsetX;
-        moveOptions.offsetY   = offsetY;
-        moveOptions.modifiers = this.modifiers;
+            modifiers: this.modifiers
+        }, false);
 
         var moveAutomation = new MoveAutomation(element, moveOptions);
 
@@ -142,14 +143,14 @@ export default class DragAutomation {
             offsetY: this.endPoint.y
         };
 
-        var dragOptions = new MoveOptions();
-
-        dragOptions.offsetX       = offsets.offsetX;
-        dragOptions.offsetY       = offsets.offsetY;
-        dragOptions.modifiers     = this.modifiers;
-        dragOptions.speed         = DRAGGING_SPEED;
-        dragOptions.minMovingTime = MIN_MOVING_TIME;
-        dragOptions.dragMode      = true;
+        var dragOptions = new MoveOptions({
+            offsetX:       offsets.offsetX,
+            offsetY:       offsets.offsetY,
+            modifiers:     this.modifiers,
+            speed:         DRAGGING_SPEED,
+            minMovingTime: MIN_MOVING_TIME,
+            dragMode:      true
+        }, false);
 
         var moveAutomation = new MoveAutomation(element, dragOptions);
 
@@ -183,8 +184,7 @@ export default class DragAutomation {
     run () {
         var moveArguments = this._getMoveArguments();
 
-        return this.
-            _move(moveArguments)
+        return this._move(moveArguments)
             .then(() => this._mousedown())
             .then(() => this._drag())
             .then(() => this._mouseup());

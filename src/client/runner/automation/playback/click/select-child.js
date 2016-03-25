@@ -3,7 +3,7 @@ import testCafeCore from '../../../deps/testcafe-core';
 import testCafeUI from '../../../deps/testcafe-ui';
 import * as automationSettings from '../../settings';
 import MoveAutomation from '../move';
-import MoveOptions from '../../options/move';
+import { MoveOptions } from '../../options';
 import delay from '../../../utils/delay';
 import * as mouseUtils from '../../../utils/mouse';
 
@@ -87,11 +87,12 @@ export default class SelectChildClickAutomation {
     }
 
     _move ({ element, offsetX, offsetY }) {
-        var moveOptions = new MoveOptions();
+        var moveOptions = new MoveOptions({
+            offsetX,
+            offsetY,
 
-        moveOptions.offsetX   = offsetX;
-        moveOptions.offsetY   = offsetY;
-        moveOptions.modifiers = this.modifiers;
+            modifiers: this.modifiers
+        }, false);
 
         var moveAutomation = new MoveAutomation(element, moveOptions);
 

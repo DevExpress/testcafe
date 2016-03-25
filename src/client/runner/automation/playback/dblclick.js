@@ -1,7 +1,7 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../get-element';
-import ClickOptions from '../options/click';
+import { ClickOptions } from '../options';
 import ClickAutomation from '../playback/click';
 import delay from '../../utils/delay';
 import * as mouseUtils from '../../utils/mouse';
@@ -86,13 +86,12 @@ export default class DblClickAutomation {
         if (browserUtils.isIE)
             eventUtils.bind(document, 'focus', eventUtils.preventDefault, true);
 
-        var clickOptions = new ClickOptions();
-
-        clickOptions.offsetX = this.eventArgs.screenPoint.x;
-        clickOptions.offsetY = this.eventArgs.screenPoint.y;
-
-        clickOptions.caretPos  = this.caretPos;
-        clickOptions.modifiers = this.modifiers;
+        var clickOptions = new ClickOptions({
+            offsetX:   this.eventArgs.screenPoint.x,
+            offsetY:   this.eventArgs.screenPoint.y,
+            caretPos:  this.caretPos,
+            modifiers: this.modifiers
+        });
 
         var clickAutomation = new ClickAutomation(document.documentElement, clickOptions);
 

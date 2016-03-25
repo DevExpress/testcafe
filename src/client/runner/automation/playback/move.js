@@ -1,8 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-
-import OffsetOptions from '../options/offset';
-import MoveOptions from '../options/move';
+import { OffsetOptions, MoveOptions } from '../options';
 import ScrollAutomation from './scroll';
 import cursor from '../cursor';
 
@@ -93,11 +91,11 @@ export default class MoveAutomation {
             y: intersectionPoint.y - iframeRectangle.top
         };
 
-        var moveOptions = new MoveOptions();
-
-        moveOptions.modifiers = e.message.modifiers;
-        moveOptions.offsetX   = intersectionRelatedToIframe.x + iframeBorders.left + iframePadding.left;
-        moveOptions.offsetY   = intersectionRelatedToIframe.y + iframeBorders.top + iframePadding.top;
+        var moveOptions = new MoveOptions({
+            modifiers: e.message.modifiers,
+            offsetX:   intersectionRelatedToIframe.x + iframeBorders.left + iframePadding.left,
+            offsetY:   intersectionRelatedToIframe.y + iframeBorders.top + iframePadding.top
+        }, false);
 
         var moveAutomation = new MoveAutomation(iframe, moveOptions);
 
@@ -148,11 +146,11 @@ export default class MoveAutomation {
         var endPoint          = { x: e.message.endX, y: e.message.endY };
         var intersectionPoint = getLineRectIntersection(startPoint, endPoint, iframeRectangle);
 
-        var moveOptions = new MoveOptions();
-
-        moveOptions.modifiers = e.message.modifiers;
-        moveOptions.offsetX   = intersectionPoint.x - iframeRectangle.left;
-        moveOptions.offsetY   = intersectionPoint.y - iframeRectangle.top;
+        var moveOptions = new MoveOptions({
+            modifiers: e.message.modifiers,
+            offsetX:   intersectionPoint.x - iframeRectangle.left,
+            offsetY:   intersectionPoint.y - iframeRectangle.top
+        }, false);
 
         var moveAutomation = new MoveAutomation(document.documentElement, moveOptions);
 
@@ -292,11 +290,7 @@ export default class MoveAutomation {
     }
 
     _scroll () {
-        var scrollOptions = new OffsetOptions();
-
-        scrollOptions.offsetX = this.offsetX;
-        scrollOptions.offsetY = this.offsetY;
-
+        var scrollOptions    = new OffsetOptions({ offsetX: this.offsetX, offsetY: this.offsetY }, false);
         var scrollAutomation = new ScrollAutomation(this.element, scrollOptions);
 
         return scrollAutomation.run();
