@@ -18,7 +18,7 @@ describe('Uncaught js errors', function () {
             });
     });
 
-    it('Should fail if iframe\'s onerror handler returns undefined', function () {
+    it("Should fail if iframe's onerror handler returns undefined", function () {
         return runTests('testcafe-fixtures/same-domain-iframe.test.js', null, { shouldFail: true })
             .catch(function (err) {
                 expect(err).to.contains(CUSTOM_JS_ERROR);
@@ -48,7 +48,7 @@ describe('Uncaught js errors', function () {
         return runTests('testcafe-fixtures/handler-returns-undefined.test.js', null, { skipJsErrors: true });
     });
 
-    it('Should pass if iframe\'s onerror handler returns undefined and skipJsErrors option enabled', function () {
+    it("Should pass if iframe's onerror handler returns undefined and skipJsErrors option enabled", function () {
         return runTests('testcafe-fixtures/same-domain-iframe.test.js', null, { skipJsErrors: true });
     });
 

@@ -2,7 +2,7 @@
 '@page ./index.html';
 
 
-'@test'['The expected beforeUnload dialog - should pass'] = {
+'@test'['Expected beforeUnload dialog - should pass'] = {
     '1.Click submit button "Enable..."': function () {
         act.click('#enableBeforeUnload');
     },
@@ -13,7 +13,7 @@
     }
 };
 
-'@test'['An unexpected beforeUnload dialog - should fail'] = {
+'@test'['Unexpected beforeUnload dialog - should fail'] = {
     '1.Click submit button "Enable..."': function () {
         act.click('#enableBeforeUnload');
     },
