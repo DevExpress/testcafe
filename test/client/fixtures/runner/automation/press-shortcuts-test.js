@@ -776,10 +776,7 @@ $(document).ready(function () {
             input = createTextInput(text, 2);
 
         runPressAutomation('shift+home', function () {
-            if (!browserUtils.isMSEdge)
-                checkShortcut(input, text, 0, 2, true);
-            else
-                expect(0);
+            checkShortcut(input, text, 0, 2, true);
             start();
         });
     });
