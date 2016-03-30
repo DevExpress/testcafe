@@ -1,6 +1,6 @@
 import testCafeCore from '../../deps/testcafe-core';
 import MoveAutomation from '../playback/move';
-import MoveOptions from '../options/move';
+import { MoveOptions } from '../options';
 import { getMoveAutomationOffsets } from '../../utils/mouse';
 
 var positionUtils = testCafeCore.positionUtils;
@@ -27,11 +27,12 @@ export default class HoverAutomation {
     }
 
     _move ({ element, offsetX, offsetY }) {
-        var moveOptions = new MoveOptions();
+        var moveOptions = new MoveOptions({
+            offsetX,
+            offsetY,
 
-        moveOptions.offsetX   = offsetX;
-        moveOptions.offsetY   = offsetY;
-        moveOptions.modifiers = this.modifiers;
+            modifiers: this.modifiers
+        }, false);
 
         var moveAutomation = new MoveAutomation(element, moveOptions);
 

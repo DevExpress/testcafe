@@ -55,7 +55,7 @@ function assertErrorMessage (file, err, callsite) {
     remove(untestedErrorTypes, err.type);
 }
 
-describe('Error formatter', function () {
+describe('Legacy error formatting', function () {
     describe('Assertions', function () {
         it('Should format "eq" assertion message', function () {
             var err = {

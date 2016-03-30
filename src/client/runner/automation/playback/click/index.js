@@ -5,7 +5,7 @@ import { fromPoint as getElementFromPoint } from '../../get-element';
 import { focusAndSetSelection, focusByRelatedElement } from '../../utils';
 import * as automationSettings from '../../settings';
 import MoveAutomation from '../move';
-import MoveOptions from '../../options/move';
+import { MoveOptions } from '../../options';
 import SelectChildClickAutomation from './select-child';
 import cursor from '../../cursor';
 import delay from '../../../utils/delay';
@@ -92,11 +92,12 @@ export default class ClickAutomation {
     }
 
     _move ({ element, offsetX, offsetY }) {
-        var moveOptions = new MoveOptions();
+        var moveOptions = new MoveOptions({
+            offsetX,
+            offsetY,
 
-        moveOptions.offsetX   = offsetX;
-        moveOptions.offsetY   = offsetY;
-        moveOptions.modifiers = this.modifiers;
+            modifiers: this.modifiers
+        }, false);
 
         var moveAutomation = new MoveAutomation(element, moveOptions);
 

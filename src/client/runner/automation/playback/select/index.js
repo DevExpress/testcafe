@@ -4,7 +4,7 @@ import { fromPoint as getElementFromPoint } from '../../get-element';
 import * as automationSettings from '../../settings';
 import * as selectUtils from './utils';
 import MoveAutomation from '../move';
-import MoveOptions from '../../options/move';
+import { MoveOptions } from '../../options';
 import cursor from '../../cursor';
 import delay from '../../../utils/delay';
 
@@ -58,10 +58,7 @@ export default class SelectAutomation {
     }
 
     _move ({ element, offsetX, offsetY }) {
-        var moveOptions = new MoveOptions();
-
-        moveOptions.offsetX = offsetX;
-        moveOptions.offsetY = offsetY;
+        var moveOptions = new MoveOptions({ offsetX, offsetY }, false);
 
         var moveAutomation = new MoveAutomation(element, moveOptions);
 
@@ -187,8 +184,7 @@ export default class SelectAutomation {
     }
 
     run () {
-        return this.
-            _moveToPoint(this.absoluteStartPoint)
+        return this._moveToPoint(this.absoluteStartPoint)
             .then(() => this._mousedown())
             .then(() => this._moveToPoint(this.absoluteEndPoint))
             .then(() => this._mouseup());

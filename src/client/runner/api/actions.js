@@ -2,10 +2,7 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import testCafeUI from '../deps/testcafe-ui';
 import { AUTOMATIONS } from '../automation/automation';
-import DragOptions from '../automation/options/drag.js';
-import ClickOptions from '../automation/options/click.js';
-import MouseOptions from '../automation/options/mouse.js';
-import SelectOptions from '../automation/options/select.js';
+import { DragOptions, MouseOptions, ClickOptions, SelectOptions } from '../automation/options';
 import ClickAutomation from '../automation/playback/click';
 import DblClickAutomation from '../automation/playback/dblclick';
 import DragAutomation from '../automation/playback/drag';
@@ -394,12 +391,7 @@ function getSelectAutomationOptions (element, args) {
     else
         options = getOptionsForContentEditableElement(element, options.startNode, options.endNode);
 
-    var selectOptions = new SelectOptions();
-
-    selectOptions.startPos = options.startPos;
-    selectOptions.endPos   = options.endPos;
-
-    return selectOptions;
+    return new SelectOptions(options, false);
 }
 
 //function exports only for tests
@@ -450,17 +442,14 @@ export function click (what, options) {
 
                 options = options || {};
 
-                var clickOptions = new ClickOptions();
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
 
-                clickOptions.offsetX  = offsetX;
-                clickOptions.offsetY  = offsetY;
-                clickOptions.caretPos = options.caretPos;
-
-                clickOptions.modifiers.ctrl  = options.ctrl;
-                clickOptions.modifiers.alt   = options.alt;
-                clickOptions.modifiers.shift = options.shift;
-                clickOptions.modifiers.meta  = options.meta;
+                var clickOptions = new ClickOptions({
+                    offsetX,
+                    offsetY,
+                    caretPos:  options.caretPos,
+                    modifiers: options
+                }, false);
 
                 var clickAutomation = iframe ?
                                       new iframe.contentWindow[AUTOMATIONS].ClickAutomation(element, clickOptions) :
@@ -489,17 +478,14 @@ export function rclick (what, options) {
 
                 options = options || {};
 
-                var clickOptions = new ClickOptions();
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
 
-                clickOptions.offsetX  = offsetX;
-                clickOptions.offsetY  = offsetY;
-                clickOptions.caretPos = options.caretPos;
-
-                clickOptions.modifiers.ctrl  = options.ctrl;
-                clickOptions.modifiers.alt   = options.alt;
-                clickOptions.modifiers.shift = options.shift;
-                clickOptions.modifiers.meta  = options.meta;
+                var clickOptions = new ClickOptions({
+                    offsetX,
+                    offsetY,
+                    caretPos:  options.caretPos,
+                    modifiers: options
+                }, false);
 
                 var rClickAutomation = iframe ?
                                        new iframe.contentWindow[AUTOMATIONS].RClickAutomation(element, clickOptions) :
@@ -528,17 +514,14 @@ export function dblclick (what, options) {
 
                 options = options || {};
 
-                var clickOptions = new ClickOptions();
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
 
-                clickOptions.offsetX  = offsetX;
-                clickOptions.offsetY  = offsetY;
-                clickOptions.caretPos = options.caretPos;
-
-                clickOptions.modifiers.ctrl  = options.ctrl;
-                clickOptions.modifiers.alt   = options.alt;
-                clickOptions.modifiers.shift = options.shift;
-                clickOptions.modifiers.meta  = options.meta;
+                var clickOptions = new ClickOptions({
+                    offsetX,
+                    offsetY,
+                    caretPos:  options.caretPos,
+                    modifiers: options
+                }, false);
 
                 var dblClickAutomation = iframe ?
                                          new iframe.contentWindow[AUTOMATIONS].DblClickAutomation(element, clickOptions) :
@@ -600,19 +583,16 @@ export function drag (what) {
 
                 options = options || {};
 
-                var dragOptions = new DragOptions();
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
+                var dragOptions = new DragOptions({
+                    offsetX,
+                    offsetY,
+                    destinationElement,
+                    dragOffsetX,
+                    dragOffsetY,
 
-                dragOptions.offsetX            = offsetX;
-                dragOptions.offsetY            = offsetY;
-                dragOptions.destinationElement = destinationElement;
-                dragOptions.dragOffsetX        = dragOffsetX;
-                dragOptions.dragOffsetY        = dragOffsetY;
-
-                dragOptions.modifiers.ctrl  = options.ctrl;
-                dragOptions.modifiers.alt   = options.alt;
-                dragOptions.modifiers.shift = options.shift;
-                dragOptions.modifiers.meta  = options.meta;
+                    modifiers: options
+                }, false);
 
                 var dragAutomation = iframe ?
                                      new iframe.contentWindow[AUTOMATIONS].DragAutomation(element, dragOptions) :
@@ -751,16 +731,13 @@ export function hover (what, options) {
 
                 options = options || {};
 
-                var hoverOptions = new MouseOptions();
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
 
-                hoverOptions.offsetX = offsetX;
-                hoverOptions.offsetY = offsetY;
-
-                hoverOptions.modifiers.ctrl  = options.ctrl;
-                hoverOptions.modifiers.alt   = options.alt;
-                hoverOptions.modifiers.shift = options.shift;
-                hoverOptions.modifiers.meta  = options.meta;
+                var hoverOptions = new MouseOptions({
+                    offsetX,
+                    offsetY,
+                    modifiers: options
+                }, false);
 
                 var hoverAutomation = iframe ?
                                       new iframe.contentWindow[AUTOMATIONS].HoverAutomation(element, hoverOptions) :

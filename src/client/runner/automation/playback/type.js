@@ -1,7 +1,7 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import * as automationSettings from '../settings';
-import ClickOptions from '../options/click';
+import { ClickOptions } from '../options';
 import ClickAutomation from '../playback/click';
 import typeCharPlaybackAutomation from './type-char';
 import getKeyCode from '../../utils/get-key-code';
@@ -68,19 +68,14 @@ export default function (el, text, options, actionCallback) {
     async.series({
         click: function (seriaCallback) {
             if (domUtils.getActiveElement() !== curElement) {
-                var clickOptions = new ClickOptions();
                 var { offsetX, offsetY } = getOffsetOptions(curElement, options.offsetX, options.offsetY);
 
-                clickOptions.offsetX  = offsetX;
-                clickOptions.offsetY  = offsetY;
-                clickOptions.caretPos = options.caretPos;
-
-                clickOptions.mofifiers = {
-                    ctrl:  options.ctrl,
-                    alt:   options.ctrl,
-                    shift: options.shift,
-                    meta:  options.meta
-                };
+                var clickOptions = new ClickOptions({
+                    offsetX,
+                    offsetY,
+                    caretPos:  options.caretPos,
+                    modifiers: options
+                });
 
                 var clickAutomation = new ClickAutomation(curElement, clickOptions);
 
