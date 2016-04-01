@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-418 second page</title>
+</head>
+<body>
+<h1>GH-418 - second page</h1>
+<div id="result"></div>
+<div id="div2">The second div</div>
+</body>
+<script>
+    var div2 = document.getElementById('div2');
+
+    div2.onclick = function () {
+        document
+                .getElementById('result')
+                .textContent = 'div2 click';
+    };
+</script>
+</html>

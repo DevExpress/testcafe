@@ -99,19 +99,23 @@ export default class MoveAutomation {
 
         var moveAutomation = new MoveAutomation(iframe, moveOptions);
 
-        moveAutomation
-            .run()
-            .then(() => {
-                cursor.activeWindow = iframeWin;
+        var responseMsg = {
+            cmd: MOVE_RESPONSE_CMD,
+            x:   intersectionRelatedToIframe.x,
+            y:   intersectionRelatedToIframe.y
+        };
 
-                var responseMsg = {
-                    cmd: MOVE_RESPONSE_CMD,
-                    x:   intersectionRelatedToIframe.x,
-                    y:   intersectionRelatedToIframe.y
-                };
+        if (cursor.activeWindow !== iframeWin) {
+            moveAutomation
+                .run()
+                .then(() => {
+                    cursor.activeWindow = iframeWin;
 
-                messageSandbox.sendServiceMsg(responseMsg, iframeWin);
-            });
+                    messageSandbox.sendServiceMsg(responseMsg, iframeWin);
+                });
+        }
+        else
+            messageSandbox.sendServiceMsg(responseMsg, iframeWin);
     }
 
     static onMoveOutRequest (e) {
@@ -340,7 +344,7 @@ export default class MoveAutomation {
         return this
             ._scroll()
             .then(() => {
-                var { x, y } = this._getTargetClientPoint();
+                var { x, y }     = this._getTargetClientPoint();
                 var windowWidth  = styleUtils.getWidth(window);
                 var windowHeight = styleUtils.getHeight(window);
 
