@@ -1,39 +1,53 @@
 - item: GETTING STARTED
   url: .
 - folder: TEST API
-  url: .
+  url: /testcafe/documentation/test-api/
   content:
-  - item: Test Structure
-    url: .
+  - item: Fixtures and Tests
+    url: /testcafe/documentation/test-api/fixtures-and-tests.html
   - item: Actions
-    url: .
+    url: /testcafe/documentation/test-api/actions.html
   - item: Assertions
-    url: .
+    url: /testcafe/documentation/test-api/assertions.html
   - item: Hybrid Functions
-    url: .  
+    url: /testcafe/documentation/test-api/hybrid-functions.html
   - item: Roles
-    url: .
+    url: /testcafe/documentation/test-api/roles.html
+  - item: Wait Functions
+    url: /testcafe/documentation/test-api/wait-functions.html
+  - item: Conditional Functions
+    url: /testcafe/documentation/test-api/conditional-functions.html
+  - item: Handling Native Dialogs
+    url: /testcafe/documentation/test-api/handling-native-dialogs.html
+  - item: HTTP Authentication
+    url: /testcafe/documentation/test-api/http-authentication.html
+  - item: Switching Frames
+    url: /testcafe/documentation/test-api/switching-frames.html
+  - item: Injecting Scripts
+    url: /testcafe/documentation/test-api/injecting-scripts.html
+  - item: Identifying Webpage Elements
+    url: /testcafe/documentation/test-api/identifying-webpage-elements.html
 - folder: USING TESTCAFE
-  url: /testcafe/documentation/using-testcafe
+  url: /testcafe/documentation/using-testcafe/
   content:
   - item: Command Line Interface
-    url: /testcafe/documentation/using-testcafe/command-line-interface
+    url: /testcafe/documentation/using-testcafe/command-line-interface.html
   - folder: Programming Interface
-    url: /testcafe/documentation/using-testcafe/programming-interface
+    url: /testcafe/documentation/using-testcafe/programming-interface/
     content:
     - item: TestCafe Class
-      url: /testcafe/documentation/using-testcafe/programming-interface/testCafe
+      url: /testcafe/documentation/using-testcafe/programming-interface/testCafe.html
     - item: BrowserConnection Class
-      url: /testcafe/documentation/using-testcafe/programming-interface/browserConnection
+      url: /testcafe/documentation/using-testcafe/programming-interface/browserConnection.html
     - item: Runner Class
-      url: /testcafe/documentation/using-testcafe/programming-interface/runner
+      url: /testcafe/documentation/using-testcafe/programming-interface/runner.html
     - item: createTestCafe Factory
-      url: /testcafe/documentation/using-testcafe/programming-interface/createTestCafe
+      url: /testcafe/documentation/using-testcafe/programming-interface/createTestCafe.html
   - folder: Common Concepts
-    url: /testcafe/documentation/using-testcafe/common-concepts
+    url: /testcafe/documentation/using-testcafe/common-concepts/
     content: 
     - item: Browser Aliases
-      url: /testcafe/documentation/using-testcafe/common-concepts/browser-aliases
+      url: /testcafe/documentation/using-testcafe/common-concepts/browser-aliases.html
 - folder: EXTENDING TESTCAFE
   url: .  
   content:

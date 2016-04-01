@@ -5,6 +5,6 @@ permalink: /documentation/using-testcafe/
 ---
 # Using TestCafe
 
-* [Command Line Interface](/testcafe/documentation/using-testcafe/command-line-interface)
-* [Programming Interface](/testcafe/documentation/using-testcafe/programming-interface)
-* [Common Concepts](/testcafe/documentation/using-testcafe/common-concepts)
+* [Command Line Interface](command-line-interface.md)
+* [Programming Interface](programming-interface/index.md)
+* [Common Concepts](common-concepts/index.md)

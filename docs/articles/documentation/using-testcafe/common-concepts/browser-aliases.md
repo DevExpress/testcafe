@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Browser Aliases
-permalink: /documentation/using-testcafe/common-concepts/browser-aliases/
+permalink: /documentation/using-testcafe/common-concepts/browser-aliases
 ---
 # Browser Aliases
 
@@ -20,8 +20,8 @@ Mozilla Firefox   | `ff`
 Opera             | `opera`
 Safari            | `safari`
 
-You can use these aliases when working both through the [command line](/testcafe/documentation/using-testcafe/command-line-interface/#local-browsers)
-and [programmatically](/testcafe/documentation/using-testcafe/programming-interface/Runner/#browsers).
+You can use these aliases when working both through the [command line](../command-line-interface.md#local-browsers)
+and [programmatically](../programming-interface/Runner.md#browsers).
 
 To obtain the list of browsers installed on the current machine, run TestCafe
-from the command line with the [-b option](/testcafe/documentation/using-testcafe/command-line-interface/#b-list-browsers).
+from the command line with the [-b option](../command-line-interface.md#-b---list-browsers).

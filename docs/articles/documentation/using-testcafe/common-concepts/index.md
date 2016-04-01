@@ -5,4 +5,4 @@ permalink: /documentation/using-testcafe/common-concepts/
 ---
 # Common Concepts
 
-* [Browser Aliases](/testcafe/documentation/using-testcafe/common-concepts/browser-aliases)
+* [Browser Aliases](browser-aliases.md)

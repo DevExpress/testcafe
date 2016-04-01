@@ -1,13 +1,13 @@
 ---
 layout: docs
 title: TestCafe Class
-permalink: /documentation/using-testcafe/programming-interface/TestCafe/
+permalink: /documentation/using-testcafe/programming-interface/TestCafe
 ---
 # TestCafe Class
 
 A TestCafe server.
 
-To create an instance, use the [createTestCafe](/testcafe/documentation/using-testcafe/programming-interface/createTestCafe/) factory function.
+To create an instance, use the [createTestCafe](createTestCafe.md) factory function.
 
 **Example**
 
@@ -20,13 +20,13 @@ const testCafe       = await createTestCafe('localhost', 1337, 1338);
 
 ### createBrowserConnection
 
-Creates a [remote browser connection](/testcafe/documentation/using-testcafe/programming-interface/BrowserConnection/).
+Creates a [remote browser connection](BrowserConnection.md).
 
 ```text
 createBrowserConnection() → BrowserConnection
 ```
 
-To connect a remote browser, navigate it to [BrowserConnection.url](/testcafe/documentation/using-testcafe/programming-interface/BrowserConnection/#url).
+To connect a remote browser, navigate it to [BrowserConnection.url](BrowserConnection.md#url).
 
 **Example**
 
@@ -49,7 +49,7 @@ remoteConnection.once('ready', async () => {
 
 ### createRunner
 
-Creates the [test runner](/testcafe/documentation/using-testcafe/programming-interface/Runner/) that is used to configure and launch test runs.
+Creates the [test runner](Runner.md) that is used to configure and launch test runs.
 
 ```text
 createRunner() → Runner

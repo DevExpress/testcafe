@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Command Line Interface
-permalink: /documentation/using-testcafe/command-line-interface/
+permalink: /documentation/using-testcafe/command-line-interface
 ---
 # Command Line Interface
 
@@ -15,8 +15,8 @@ The `browser-list-comma-separated` argument specifies the list of browsers (sepa
 
 ### Local Browsers
 
-You can specify local browsers by using paths or [aliases](/testcafe/documentation/using-testcafe/common-concepts/browser-aliases).
-A list of all the available aliases can be obtained by the [--list-browsers](#b-list-browsers) command.
+You can specify local browsers by using paths or [aliases](common-concepts/browser-aliases.md).
+A list of all the available aliases can be obtained by the [--list-browsers](#-b---list-browsers) command.
 
 The following example demonstrates how to run a test in several browsers.
 The browsers are specified differently: one by using the alias, the other by using the path.
@@ -48,7 +48,7 @@ testcafe 3remote tests/sample-fixture.js
 
 TestCafe will provide URLs that you need to open in required browsers on your remote device.
 
-You can also use the [--qr-code](#qr-code) option to display QR-codes that represent the same URLs.
+You can also use the [--qr-code](#--qr-code) option to display QR-codes that represent the same URLs.
 Scan the QR-codes by a device on which you are going to test the application.
 As a result, the browsers will be connected to TestCafe and tests will start.
 
@@ -97,7 +97,7 @@ testcafe --version
 
 ### -b, --list-browsers
 
-Lists [aliases](/testcafe/documentation/using-testcafe/common-concepts/browser-aliases) of the browsers available on this computer.
+Lists [aliases](common-concepts/browser-aliases.md) of the browsers available on this computer.
 
 ```sh
 testcafe --list-browsers
