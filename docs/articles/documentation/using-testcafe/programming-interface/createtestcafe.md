@@ -1,11 +1,11 @@
 ---
 layout: docs
 title: createTestCafe
-permalink: /documentation/using-testcafe/programming-interface/createTestCafe.html
+permalink: /documentation/using-testcafe/programming-interface/createtestcafe.html
 ---
 # createTestCafe Factory
 
-Creates a [TestCafe](TestCafe.md) server instance.
+Creates a [TestCafe](testcafe.md) server instance.
 
 ```text
 createTestCafe([hostname], [port1], [port2]) → Promise<TestCafe>
@@ -25,4 +25,4 @@ const testCafe       = await createTestCafe('localhost', 1337, 1338);
 
 ## See Also
 
-* [TestCafe Class](TestCafe.md)
+* [TestCafe Class](testcafe.md)

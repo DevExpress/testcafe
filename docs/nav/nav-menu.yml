@@ -1,32 +1,32 @@
 - item: GETTING STARTED
   url: .
 - folder: TEST API
-  url: /testcafe/documentation/test-api/
+  url: .
   content:
   - item: Fixtures and Tests
-    url: /testcafe/documentation/test-api/fixtures-and-tests.html
+    url: .
   - item: Actions
-    url: /testcafe/documentation/test-api/actions.html
+    url: .
   - item: Assertions
-    url: /testcafe/documentation/test-api/assertions.html
+    url: .
   - item: Hybrid Functions
-    url: /testcafe/documentation/test-api/hybrid-functions.html
+    url: .
   - item: Roles
-    url: /testcafe/documentation/test-api/roles.html
+    url: .
   - item: Wait Functions
-    url: /testcafe/documentation/test-api/wait-functions.html
+    url: .
   - item: Conditional Functions
-    url: /testcafe/documentation/test-api/conditional-functions.html
+    url: .
   - item: Handling Native Dialogs
-    url: /testcafe/documentation/test-api/handling-native-dialogs.html
+    url: .
   - item: HTTP Authentication
-    url: /testcafe/documentation/test-api/http-authentication.html
+    url: .
   - item: Switching Frames
-    url: /testcafe/documentation/test-api/switching-frames.html
+    url: .
   - item: Injecting Scripts
-    url: /testcafe/documentation/test-api/injecting-scripts.html
+    url: .
   - item: Identifying Webpage Elements
-    url: /testcafe/documentation/test-api/identifying-webpage-elements.html
+    url: .
 - folder: USING TESTCAFE
   url: /testcafe/documentation/using-testcafe/
   content:
@@ -36,13 +36,13 @@
     url: /testcafe/documentation/using-testcafe/programming-interface/
     content:
     - item: TestCafe Class
-      url: /testcafe/documentation/using-testcafe/programming-interface/testCafe.html
+      url: /testcafe/documentation/using-testcafe/programming-interface/testcafe.html
     - item: BrowserConnection Class
-      url: /testcafe/documentation/using-testcafe/programming-interface/browserConnection.html
+      url: /testcafe/documentation/using-testcafe/programming-interface/browserconnection.html
     - item: Runner Class
       url: /testcafe/documentation/using-testcafe/programming-interface/runner.html
     - item: createTestCafe Factory
-      url: /testcafe/documentation/using-testcafe/programming-interface/createTestCafe.html
+      url: /testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html
   - folder: Common Concepts
     url: /testcafe/documentation/using-testcafe/common-concepts/
     content: 

@@ -1,13 +1,13 @@
 ---
 layout: docs
 title: BrowserConnection Class
-permalink: /documentation/using-testcafe/programming-interface/BrowserConnection.html
+permalink: /documentation/using-testcafe/programming-interface/browserconnection.html
 ---
 # BrowserConnection Class
 
 Connection to a remote browser.
 
-Created by the [testCafe.createBrowserConnection](TestCafe.md#createBrowserConnection) function.
+Created by the [testCafe.createBrowserConnection](testcafe.md#createBrowserConnection) function.
 
 **Example**
 
@@ -45,6 +45,6 @@ browserConnection.once('ready', callback)
 ```
 
 Typically, you do not need to wait for the **ready** event to fire.
-The [runner.run](Runner.md#run) method automatically waits for all browser connections to be established.
+The [runner.run](runner.md#run) method automatically waits for all browser connections to be established.
 If this does not happen within *30* seconds, an error is thrown.
 Thus, you need to wait for the **ready** event only if there is a chance that any of your remote connections can take a significant amount of time (more than 30 sec) to establish.

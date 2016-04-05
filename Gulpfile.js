@@ -1,4 +1,5 @@
 var babel        = require('babel-core');
+var blc          = require('broken-link-checker');
 var gulp         = require('gulp');
 var gulpBabel    = require('gulp-babel');
 var less         = require('gulp-less');
@@ -136,6 +137,7 @@ var CLIENT_TESTS_SAUCELABS_SETTINGS = {
     timeout:   720
 };
 
+var websiteServer = null;
 
 gulp.task('clean', function (cb) {
     del('lib', cb);
@@ -396,13 +398,47 @@ gulp.task('build-website', ['prepare-website'], function (cb) {
         .on('exit', cb);
 });
 
-gulp.task('preview-website', ['build-website'], function (cb) {
-    connect()
-        .use('/testcafe', serveStatic('website/deploy'))
-        .listen(8080, function () {
-            opn('http://localhost:8080/testcafe');
-            cb();
-        });
+gulp.task('serve-website', ['build-website'], function (cb) {
+    var app = connect()
+        .use('/testcafe', serveStatic('website/deploy'));
+
+    websiteServer = app.listen(8080, cb);
+});
+
+gulp.task('preview-website', ['serve-website'], function () {
+    opn('http://localhost:8080/testcafe');
+});
+
+gulp.task('test-website', ['serve-website'], function (cb) {
+    var fail = false;
+    var brokenLinks = [];
+
+    var siteChecker = new blc.SiteChecker({ }, {
+        link: function (result) {
+            if (result.broken) {
+                brokenLinks.push(result.url.resolved ? result.url.resolved : result.url.original);
+                fail = true;
+            }
+        },
+        page: function (error, pageUrl) {
+            if (brokenLinks.length) {
+                util.log('URL: ' + pageUrl);
+                util.log(util.colors.red('Broken links:'));
+
+                while (brokenLinks.length)
+                    util.log(util.colors.red(brokenLinks.shift()));
+
+                util.log();
+            }
+        },
+        end: function () {
+            websiteServer.close(function () {
+                cb(fail ? 'Broken links found!' : void 0);
+            });
+        }
+    });
+
+    siteChecker.enqueue('http://localhost:8080/testcafe');
 });
 
 gulp.task('publish-website', ['build-website'], function () {

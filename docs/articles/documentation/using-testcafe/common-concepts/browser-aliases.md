@@ -21,7 +21,7 @@ Opera             | `opera`
 Safari            | `safari`
 
 You can use these aliases when working both through the [command line](../command-line-interface.md#local-browsers)
-and [programmatically](../programming-interface/Runner.md#browsers).
+and [programmatically](../programming-interface/runner.md#browsers).
 
 To obtain the list of browsers installed on the current machine, run TestCafe
 from the command line with the [-b option](../command-line-interface.md#-b---list-browsers).
