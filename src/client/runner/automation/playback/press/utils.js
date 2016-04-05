@@ -3,6 +3,7 @@ import isLetter from '../../../utils/is-letter';
 import KEY_MAPS from '../../../utils/key-maps';
 
 var arrayUtils = testCafeCore.arrayUtils;
+var domUtils   = testCafeCore.domUtils;
 
 
 function changeLetterCase (letter) {
@@ -67,5 +68,24 @@ export function getChar (key, shiftModified) {
     }
 
     return key;
+}
+
+export function getDeepActiveElement (currentDocument) {
+    var doc                   = currentDocument || document;
+    var activeElementInIframe = null;
+    var activeElement         = doc.activeElement &&
+                                domUtils.isDomElement(doc.activeElement) ? doc.activeElement : doc.body;
+
+    if (activeElement && domUtils.isIframeElement(activeElement) && activeElement.contentDocument) {
+        try {
+            activeElementInIframe = getDeepActiveElement(activeElement.contentDocument);
+        }
+            /*eslint-disable no-empty */
+        catch (e) {
+        }
+        /*eslint-enable no-empty */
+    }
+
+    return activeElementInIframe || activeElement;
 }
 

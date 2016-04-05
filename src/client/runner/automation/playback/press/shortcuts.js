@@ -25,7 +25,7 @@ function onTextAreaBlur () {
 }
 
 function updateTextAreaIndent (element) {
-    if (domUtils.isTextarea(element)) {
+    if (domUtils.isTextAreaElement(element)) {
         if (currentTextarea !== element) {
             eventUtils.bind(element, 'blur', onTextAreaBlur, true);
             currentTextarea = element;
@@ -122,6 +122,13 @@ function moveTextAreaCursor (element, startPos, endPos, hasInverseSelection, new
 }
 
 function setElementValue (element, value) {
+    if (value.charAt(0) === '-' && value.charAt(1) === '.')
+        value = value.substring(1);
+
+    if (value.charAt(value.length - 1) === '.')
+        value = value.substring(0, value.length - 1);
+
+
     element.value = value;
     eventSimulator.input(element);
 }
@@ -302,7 +309,7 @@ function up (element) {
     if (browserUtils.isWebKit && domUtils.isInputElement(element))
         return home(element);
 
-    if (domUtils.isTextarea(element))
+    if (domUtils.isTextAreaElement(element))
         moveTextAreaCursorUp(element, false);
 
     return Promise.resolve();
@@ -315,7 +322,7 @@ function down (element) {
     if (browserUtils.isWebKit && domUtils.isInputElement(element))
         return end(element);
 
-    if (domUtils.isTextarea(element))
+    if (domUtils.isTextAreaElement(element))
         moveTextAreaCursorDown(element, false);
 
     return Promise.resolve();
@@ -328,7 +335,7 @@ function home (element, withSelection) {
         var inverseSelection  = textSelection.hasInverseSelection(element);
         var referencePosition = null;
 
-        var isSingleLineSelection = !domUtils.isTextarea(element) ? true :
+        var isSingleLineSelection = !domUtils.isTextAreaElement(element) ? true :
                                     domUtils.getTextareaLineNumberByPosition(element, startPos) ===
                                     domUtils.getTextareaLineNumberByPosition(element, endPos);
 
@@ -365,7 +372,7 @@ function end (element, withSelection) {
         var inverseSelection  = textSelection.hasInverseSelection(element);
         var referencePosition = null;
 
-        var isSingleLineSelection = !domUtils.isTextarea(element) ? true :
+        var isSingleLineSelection = !domUtils.isTextAreaElement(element) ? true :
                                     domUtils.getTextareaLineNumberByPosition(element, startPos) ===
                                     domUtils.getTextareaLineNumberByPosition(element, endPos);
 
@@ -409,7 +416,7 @@ function shiftUp (element) {
     if (browserUtils.isWebKit && domUtils.isInputElement(element))
         return shiftHome(element);
 
-    if (domUtils.isTextarea(element))
+    if (domUtils.isTextAreaElement(element))
         moveTextAreaCursorUp(element, true);
 
     return Promise.resolve();
@@ -419,7 +426,7 @@ function shiftDown (element) {
     if (browserUtils.isWebKit && domUtils.isInputElement(element))
         return shiftEnd(element);
 
-    if (domUtils.isTextarea(element))
+    if (domUtils.isTextAreaElement(element))
         moveTextAreaCursorDown(element, true);
 
     return Promise.resolve();
@@ -481,7 +488,7 @@ function enter (element) {
         if (form)
             submitFormOnEnterPressInInput(form, element);
     }
-    else if (domUtils.isTextarea(element)) {
+    else if (domUtils.isTextAreaElement(element)) {
         var startPos          = textSelection.getSelectionStart(element);
         var valueBeforeCursor = element.value.substring(0, startPos);
         var valueAfterCursor  = element.value.substring(startPos);
@@ -492,7 +499,7 @@ function enter (element) {
         textSelection.select(element, newPosition, newPosition);
     }
     //S173120
-    else if (element.tagName && element.tagName.toLowerCase() === 'a')
+    else if (element.tagName && domUtils.isAnchorElement(element))
         eventSimulator.click(element);
 
     return Promise.resolve();

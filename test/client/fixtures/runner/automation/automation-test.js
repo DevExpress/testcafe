@@ -6,19 +6,20 @@ var domUtils      = testCafeCore.get('./utils/dom');
 var textSelection = testCafeCore.get('./utils/text-selection');
 var position      = testCafeCore.get('./utils/position');
 
-var testCafeRunner         = window.getTestCafeModule('testCafeRunner');
-var automation             = testCafeRunner.get('./automation/automation');
-var DragOptions            = testCafeRunner.get('./automation/options').DragOptions;
-var ClickOptions           = testCafeRunner.get('./automation/options').ClickOptions;
-var SelectOptions          = testCafeRunner.get('./automation/options').SelectOptions;
-var ClickAutomation        = testCafeRunner.get('./automation/playback/click');
-var DblClickAutomation     = testCafeRunner.get('./automation/playback/dblclick');
-var SelectAutomation       = testCafeRunner.get('./automation/playback/select');
-var typePlaybackAutomation = testCafeRunner.get('./automation/playback/type');
-var DragAutomation         = testCafeRunner.get('./automation/playback/drag');
-var PressAutomation        = testCafeRunner.get('./automation/playback/press');
-var parseKeyString         = testCafeRunner.get('./automation/playback/press/parse-key-string');
-var mouseUtils             = testCafeRunner.get('./utils/mouse');
+var testCafeRunner     = window.getTestCafeModule('testCafeRunner');
+var automation         = testCafeRunner.get('./automation/automation');
+var DragOptions        = testCafeRunner.get('./automation/options').DragOptions;
+var ClickOptions       = testCafeRunner.get('./automation/options').ClickOptions;
+var SelectOptions      = testCafeRunner.get('./automation/options').SelectOptions;
+var TypeOptions        = testCafeRunner.get('./automation/options').TypeOptions;
+var ClickAutomation    = testCafeRunner.get('./automation/playback/click');
+var DblClickAutomation = testCafeRunner.get('./automation/playback/dblclick');
+var SelectAutomation   = testCafeRunner.get('./automation/playback/select');
+var TypeAutomation     = testCafeRunner.get('./automation/playback/type');
+var DragAutomation     = testCafeRunner.get('./automation/playback/drag');
+var PressAutomation    = testCafeRunner.get('./automation/playback/press');
+var parseKeyString     = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var mouseUtils         = testCafeRunner.get('./utils/mouse');
 
 QUnit.begin(function () {
     automation.init();
@@ -205,23 +206,37 @@ $(document).ready(function () {
     };
 
     var runClickAutomation = function (el, options, callback) {
-        var clickOptions = new ClickOptions();
         var offsets      = mouseUtils.getOffsetOptions(el, options.offsetX, options.offsetY);
+        var clickOptions = new ClickOptions({
+            offsetX:  offsets.offsetX,
+            offsetY:  offsets.offsetY,
+            caretPos: options.caretPos,
 
-        clickOptions.offsetX  = offsets.offsetX;
-        clickOptions.offsetY  = offsets.offsetY;
-        clickOptions.caretPos = options.caretPos;
-
-        clickOptions.mofifiers = {
-            ctrl:  options.ctrl,
-            alt:   options.ctrl,
-            shift: options.shift,
-            meta:  options.meta
-        };
+            modifiers: {
+                ctrl:  options.ctrl,
+                alt:   options.ctrl,
+                shift: options.shift,
+                meta:  options.meta
+            }
+        });
 
         var clickAutomation = new ClickAutomation(el, clickOptions);
 
         clickAutomation
+            .run()
+            .then(callback);
+    };
+
+    var runTypeAutomation = function (element, text, callback) {
+        var offsets     = mouseUtils.getOffsetOptions(element);
+        var typeOptions = new TypeOptions({
+            offsetX: offsets.offsetX,
+            offsetY: offsets.offsetY
+        });
+
+        var typeAutomation = new TypeAutomation(element, text, typeOptions);
+
+        typeAutomation
             .run()
             .then(callback);
     };
@@ -259,13 +274,13 @@ $(document).ready(function () {
             clickCount++;
         });
 
-        var clickOptions = new ClickOptions();
         var offsets      = mouseUtils.getOffsetOptions($input[0]);
+        var clickOptions = new ClickOptions({
+            offsetX: offsets.offsetX,
+            offsetY: offsets.offsetY,
 
-        clickOptions.offsetX = offsets.offsetX;
-        clickOptions.offsetY = offsets.offsetY;
-
-        clickOptions.mofifiers = {};
+            modifiers: {}
+        });
 
         var dblClickAutomation = new DblClickAutomation($input[0], clickOptions);
 
@@ -285,10 +300,10 @@ $(document).ready(function () {
             center      = position.findCenter($draggable[0]),
             pointTo     = { x: center.x + dragOffsetX, y: center.y + dragOffsetY };
 
-        var dragOptions = new DragOptions();
-
-        dragOptions.dragOffsetX = dragOffsetX;
-        dragOptions.dragOffsetY = dragOffsetY;
+        var dragOptions = new DragOptions({
+            dragOffsetX: dragOffsetX,
+            dragOffsetY: dragOffsetY
+        });
 
         var dragAutomation = new DragAutomation($draggable[0], dragOptions);
 
@@ -305,10 +320,10 @@ $(document).ready(function () {
 
         $input[0].value = '123456789qwertyuiop';
 
-        var selectOptions = new SelectOptions();
-
-        selectOptions.startPos = 10;
-        selectOptions.endPos   = 2;
+        var selectOptions = new SelectOptions({
+            startPos: 10,
+            endPos:   2
+        });
 
         var selectAutomation = new SelectAutomation($input[0], selectOptions);
 
@@ -328,10 +343,10 @@ $(document).ready(function () {
         $textarea[0].textContent = value;
         $textarea.text(value);
 
-        var selectOptions = new SelectOptions();
-
-        selectOptions.startPos = 2;
-        selectOptions.endPos   = value.length - 5;
+        var selectOptions = new SelectOptions({
+            startPos: 2,
+            endPos:   value.length - 5
+        });
 
         var selectAutomation = new SelectAutomation($textarea[0], selectOptions);
 
@@ -349,7 +364,8 @@ $(document).ready(function () {
             input    = createTextInput()[0],
             keys     = 'backspace';
 
-        typePlaybackAutomation(input, initText, {}, function () {
+        runTypeAutomation(input, initText, function () {
+            equal(input.value, initText);
             runPressAutomation(keys, function () {
                 equal(input.value, newText);
                 startNext();
@@ -362,7 +378,7 @@ $(document).ready(function () {
             newText  = 'new',
             $input   = createTextInput().attr('value', initText);
 
-        typePlaybackAutomation($input[0], newText, {}, function () {
+        runTypeAutomation($input[0], newText, function () {
             equal($input[0].value, initText + newText);
             startNext();
         });
@@ -566,7 +582,7 @@ $(document).ready(function () {
 
         $input[0]['onkeydown'] = preventDefault;
 
-        typePlaybackAutomation($input[0], newText, {}, function () {
+        runTypeAutomation($input[0], newText, function () {
             equal($input[0].value, initText);
             startNext();
         });
@@ -582,7 +598,7 @@ $(document).ready(function () {
             changeCount++;
         });
 
-        typePlaybackAutomation(input, 'a', {}, function () {
+        runTypeAutomation(input, 'a', function () {
             equal(document.activeElement, input);
             equal(changeCount, 0);
 

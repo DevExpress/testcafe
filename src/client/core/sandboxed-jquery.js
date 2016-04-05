@@ -1,5 +1,5 @@
 import hammerhead from './deps/hammerhead';
-import { isDocumentInstance } from './utils/dom';
+import { isDocument } from './utils/dom';
 
 
 var nativeMethods = hammerhead.nativeMethods;
@@ -3344,7 +3344,7 @@ export function init (window, undefined) {
                             // Prevent re-triggering of the same event, since we already bubbled it above
                             jQuery.event.triggered = type;
 
-                            if (!isDocumentInstance(elem) || type !== 'ready')
+                            if (!isDocument(elem) || type !== 'ready')
                                 elem[type]();
 
                             jQuery.event.triggered = undefined;

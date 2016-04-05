@@ -47,11 +47,11 @@ $(document).ready(function () {
 
         window.async.series({
             moveToFirstElement: function (callback) {
-                var hoverOptions = new MouseOptions();
                 var offsets      = mouseUtils.getOffsetOptions(div1);
-
-                hoverOptions.offsetX = offsets.offsetX;
-                hoverOptions.offsetY = offsets.offsetY;
+                var hoverOptions = new MouseOptions({
+                    offsetX: offsets.offsetX,
+                    offsetY: offsets.offsetY
+                });
 
                 var hoverAutomation = new HoverAutomation(div1, hoverOptions);
 
@@ -61,8 +61,7 @@ $(document).ready(function () {
             },
 
             clickSecondElementAndSimulateRealEvent: function (callback) {
-                var clickOptions    = new ClickOptions();
-                var clickAutomation = new ClickAutomation(div2, clickOptions);
+                var clickAutomation = new ClickAutomation(div2, new ClickOptions());
 
                 clickAutomation
                     .run()

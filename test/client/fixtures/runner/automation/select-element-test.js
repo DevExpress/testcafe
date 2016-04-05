@@ -152,7 +152,7 @@ $(document).ready(function () {
         clickOptions.offsetY  = offsets.offsetY;
         clickOptions.caretPos = options.caretPos;
 
-        clickOptions.mofifiers = {
+        clickOptions.modifiers = {
             ctrl:  options.ctrl,
             alt:   options.ctrl,
             shift: options.shift,
@@ -415,7 +415,7 @@ $(document).ready(function () {
         clickOptions.offsetY  = offsets.offsetY;
         clickOptions.caretPos = options.caretPos;
 
-        clickOptions.mofifiers = {
+        clickOptions.modifiers = {
             ctrl:  options.ctrl,
             alt:   options.ctrl,
             shift: options.shift,

@@ -25,11 +25,11 @@ export function isNotVisibleNode (node) {
 
         var ancestors = getAncestorsAndSelf(node);
 
-        return some(ancestors, ancestor => ancestor.nodeType === 1 && get(ancestor, 'display') === "none");
+        return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'display') === "none");
     };
 
     var isVisibilityHiddenTextNode = function (textNode) {
-        var el = textNode.nodeType === 3 ? textNode.parentNode : null;
+        var el = domUtils.isTextNode(textNode) ? textNode.parentNode : null;
 
         return el && get(el, "visibility") === "hidden";
     };
@@ -46,7 +46,7 @@ export function getScrollableParents (el) {
         parentsArray.concat(iFrameParents);
     }
 
-    return filter(parentsArray, el => el.tagName.toLowerCase() !== 'body' && hasScroll(el));
+    return filter(parentsArray, el => !domUtils.isBodyElement(el) && hasScroll(el));
 }
 
 export function hasScroll (el) {

@@ -7,7 +7,7 @@ import {
     ActionNumberOptionError,
     ActionPositiveNumberOptionError,
     ActionBooleanOptionError
-} from '../../../errors/test-run';
+    } from '../../../errors/test-run';
 
 // Validators
 function number (option, val, positive) {
@@ -199,5 +199,21 @@ export class MoveOptions extends MouseOptions {
             { name: 'minMovingTime' },
             { name: 'dragMode' }
         ]);
+    }
+}
+
+
+// Type
+export class TypeOptions extends ClickOptions {
+    constructor (obj, validate) {
+        super();
+
+        this.replace = false;
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return super._getAssignableProperties().concat([{ name: 'replace', type: boolean }]);
     }
 }

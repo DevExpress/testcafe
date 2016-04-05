@@ -44,7 +44,7 @@ export function fromPoint (x, y, expectedElement) {
     if (!expectedElementDefined || !topElement || topElement === expectedElement)
         return topElement;
 
-    var isTREFElement = expectedElement.tagName.toLowerCase() === 'tref';
+    var isTREFElement = domUtils.getTagName(expectedElement) === 'tref';
     var isSVGElement  = domUtils.isSVGElement(expectedElement);
 
     // NOTE: 'document.elementFromPoint' can't find these types of elements
@@ -54,15 +54,14 @@ export function fromPoint (x, y, expectedElement) {
     // NOTE: T299665 - Incorrect click automation for images with an associated map element in Firefox
     // All browsers return the <area> element from document.getElementFromPoint, but
     // Firefox returns the <img> element. We should accomplish this for Firefox as well.
-    var isImageMapArea = expectedElement.tagName.toLowerCase() === 'area' &&
-                         topElement.tagName.toLowerCase() === 'img';
+    var isImageMapArea = domUtils.getTagName(expectedElement) === 'area' && domUtils.isImgElement(topElement);
 
     if (browserUtils.isFirefox && isImageMapArea)
         return ensureImageMap(topElement, expectedElement);
 
 
     // NOTE: try to find a multi-line link by its rectangle (T163678)
-    var isLinkOrChildExpected = expectedElement.tagName.toLowerCase() === 'a' ||
+    var isLinkOrChildExpected = domUtils.isAnchorElement(expectedElement) ||
                                 domUtils.getParents(expectedElement, 'a').length;
 
     var isTopElementChildOfLink = isLinkOrChildExpected &&

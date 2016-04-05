@@ -2,7 +2,7 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import testCafeUI from '../deps/testcafe-ui';
 import { AUTOMATIONS } from '../automation/automation';
-import { DragOptions, MouseOptions, ClickOptions, SelectOptions } from '../automation/options';
+import { DragOptions, MouseOptions, ClickOptions, SelectOptions, TypeOptions } from '../automation/options';
 import ClickAutomation from '../automation/playback/click';
 import DblClickAutomation from '../automation/playback/dblclick';
 import DragAutomation from '../automation/playback/drag';
@@ -10,7 +10,7 @@ import HoverAutomation from '../automation/playback/hover';
 import PressAutomation from '../automation/playback/press';
 import RClickAutomation from '../automation/playback/rclick';
 import SelectAutomation from '../automation/playback/select';
-import typePlaybackAutomation from '../automation/playback/type';
+import TypeAutomation from '../automation/playback/type';
 import { getOffsetOptions } from '../utils/mouse';
 import parseKeyString from '../automation/playback/press/parse-key-string';
 import * as sourceIndexTracker from '../source-index';
@@ -127,9 +127,8 @@ function ensureElementsExist (item, actionName, callback) {
 
 function ensureElementVisibility (element, actionName, callback) {
     var success = false;
-    var tagName = element.tagName.toLowerCase();
 
-    if (tagName === 'option' || tagName === 'optgroup') {
+    if (domUtils.isOptionElement(element) || domUtils.getTagName(element) === 'optgroup') {
         var parentSelect = domUtils.getSelectParent(element);
 
         if (!parentSelect) {
@@ -363,7 +362,7 @@ function getSelectAutomationOptions (element, args) {
 
     if (argsLength === 1)
         options = { offset: args[0] };
-    else if (argsLength === 2 || argsLength > 2 && !domUtils.isTextarea(element)) {
+    else if (argsLength === 2 || argsLength > 2 && !domUtils.isTextAreaElement(element)) {
         if (!isNaN(parseInt(args[0], 10))) {
             options = {
                 startPos: args[0],
@@ -445,8 +444,8 @@ export function click (what, options) {
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
 
                 var clickOptions = new ClickOptions({
-                    offsetX,
-                    offsetY,
+                               offsetX,
+                               offsetY,
                     caretPos:  options.caretPos,
                     modifiers: options
                 }, false);
@@ -481,8 +480,8 @@ export function rclick (what, options) {
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
 
                 var clickOptions = new ClickOptions({
-                    offsetX,
-                    offsetY,
+                               offsetX,
+                               offsetY,
                     caretPos:  options.caretPos,
                     modifiers: options
                 }, false);
@@ -517,8 +516,8 @@ export function dblclick (what, options) {
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
 
                 var clickOptions = new ClickOptions({
-                    offsetX,
-                    offsetY,
+                               offsetX,
+                               offsetY,
                     caretPos:  options.caretPos,
                     modifiers: options
                 }, false);
@@ -694,8 +693,8 @@ export function type (what, text, options) {
         return;
     }
 
-    var actionStarted = false,
-        elements      = ensureArray(what);
+    var actionStarted = false;
+    var elements      = ensureArray(what);
 
     stepIterator.asyncActionSeries(
         elements,
@@ -707,10 +706,25 @@ export function type (what, text, options) {
                     onTargetWaitingFinished();
                 }
 
-                if (iframe)
-                    iframe.contentWindow[AUTOMATIONS].type.playback(element, text, options || {}, callback);
-                else
-                    typePlaybackAutomation(element, text, options || {}, callback);
+                options = options || {};
+
+                var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
+                var typeOptions = new TypeOptions({
+                              offsetX,
+                              offsetY,
+                    caretPos: options.caretPos,
+                    replace:  options.replace,
+
+                    modifiers: options
+                }, false);
+
+                var typeAutomation = iframe ?
+                                     new iframe.contentWindow[AUTOMATIONS].TypeAutomation(element, text, typeOptions) :
+                                     new TypeAutomation(element, text, typeOptions);
+
+                typeAutomation
+                    .run()
+                    .then(callback);
             });
         });
 }
@@ -734,8 +748,8 @@ export function hover (what, options) {
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
 
                 var hoverOptions = new MouseOptions({
-                    offsetX,
-                    offsetY,
+                               offsetX,
+                               offsetY,
                     modifiers: options
                 }, false);
 

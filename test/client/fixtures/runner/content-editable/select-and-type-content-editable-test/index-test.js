@@ -6,13 +6,15 @@ var textSelection   = testCafeCore.get('./utils/text-selection');
 var contentEditable = testCafeCore.get('./utils/content-editable');
 var domUtils        = testCafeCore.get('./utils/dom');
 
-var testCafeRunner         = window.getTestCafeModule('testCafeRunner');
-var automation             = testCafeRunner.get('./automation/automation');
-var typePlaybackAutomation = testCafeRunner.get('./automation/playback/type');
-var SelectOptions          = testCafeRunner.get('./automation/options').SelectOptions;
-var SelectAutomation       = testCafeRunner.get('./automation/playback/select');
-var PressAutomation        = testCafeRunner.get('./automation/playback/press');
-var parseKeyString         = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var testCafeRunner   = window.getTestCafeModule('testCafeRunner');
+var automation       = testCafeRunner.get('./automation/automation');
+var SelectOptions    = testCafeRunner.get('./automation/options').SelectOptions;
+var TypeOptions      = testCafeRunner.get('./automation/options').TypeOptions;
+var SelectAutomation = testCafeRunner.get('./automation/playback/select');
+var TypeAutomation   = testCafeRunner.get('./automation/playback/type');
+var PressAutomation  = testCafeRunner.get('./automation/playback/press');
+var parseKeyString   = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var mouseUtils       = testCafeRunner.get('./utils/mouse');
 
 automation.init();
 
@@ -144,16 +146,19 @@ $(document).ready(function () {
     };
 
     var runSelectAutomation = function (element, options, callback) {
-        var selectOptions = new SelectOptions();
-
-        selectOptions.startPos  = options.startPos;
-        selectOptions.endPos    = options.endPos;
-        selectOptions.startNode = options.startNode;
-        selectOptions.endNode   = options.endNode;
-
+        var selectOptions    = new SelectOptions(options);
         var selectAutomation = new SelectAutomation(element, selectOptions);
 
         selectAutomation
+            .run()
+            .then(callback);
+    };
+
+    var runTypeAutomation = function (element, text, options, callback) {
+        var typeOptions    = new TypeOptions(options);
+        var typeAutomation = new TypeAutomation(element, text, typeOptions);
+
+        typeAutomation
             .run()
             .then(callback);
     };
@@ -197,7 +202,7 @@ $(document).ready(function () {
             'Type in element': function (callback) {
                 newElementText = getElementTextWithoutSelection($el, text);
                 nodeValue      = $el[0].childNodes[1].childNodes[0].nodeValue;
-                typePlaybackAutomation($el[0], text, {
+                runTypeAutomation($el[0], text, {
                     caretPos: 15
                 }, callback);
             },
@@ -237,7 +242,7 @@ $(document).ready(function () {
 
             'Type in element': function (callback) {
                 newElementText = getElementTextWithoutSelection($el, text);
-                typePlaybackAutomation($el[0], text, {
+                runTypeAutomation($el[0], text, {
                     caretPos: 112
                 }, callback);
             },
@@ -282,7 +287,7 @@ $(document).ready(function () {
 
             'Type in element': function (callback) {
                 newElementText = getElementTextWithoutSelection($el, text);
-                typePlaybackAutomation($el[0], text, {
+                runTypeAutomation($el[0], text, {
                     caretPos: 112
                 }, callback);
             },
@@ -334,7 +339,7 @@ $(document).ready(function () {
 
             'Type in element': function (callback) {
                 newElementText = getElementTextWithoutSelection($el, text);
-                typePlaybackAutomation($el[0], text, {
+                runTypeAutomation($el[0], text, {
                     caretPos: 124
                 }, callback);
             },
@@ -392,7 +397,7 @@ $(document).ready(function () {
 
             'Type in element': function (callback) {
                 newElementText = getElementTextWithoutSelection($el, text);
-                typePlaybackAutomation($el[0], text, {
+                runTypeAutomation($el[0], text, {
                     caretPos: 124
                 }, callback);
             },
@@ -433,7 +438,7 @@ $(document).ready(function () {
 
             'Type in element': function (callback) {
                 newElementText = getElementTextWithoutSelection($el, text);
-                typePlaybackAutomation($el[0], text, {
+                runTypeAutomation($el[0], text, {
                     caretPos: 112
                 }, callback);
             },
@@ -479,7 +484,7 @@ $(document).ready(function () {
 
             'Type in element': function (callback) {
                 newElementText = getElementTextWithoutSelection($el, text);
-                typePlaybackAutomation($el[0], text, {
+                runTypeAutomation($el[0], text, {
                     caretPos: 124
                 }, callback);
             },
@@ -525,7 +530,7 @@ $(document).ready(function () {
 
             'Type in element': function (callback) {
                 newElementText = getElementTextWithoutSelection($el, text);
-                typePlaybackAutomation($el[0], text, {
+                runTypeAutomation($el[0], text, {
                     caretPos: 112
                 }, callback);
             },
@@ -570,7 +575,7 @@ $(document).ready(function () {
 
             'Type in element': function (callback) {
                 newElementText = getElementTextWithoutSelection($el, text);
-                typePlaybackAutomation($el[0], text, {
+                runTypeAutomation($el[0], text, {
                     caretPos: 124
                 }, callback);
             },
@@ -619,7 +624,7 @@ $(document).ready(function () {
 
             'Type in element': function (callback) {
                 newElementText = getElementTextWithoutSelection($el, text);
-                typePlaybackAutomation($parent[0], text, {
+                runTypeAutomation($parent[0], text, {
                     caretPos: 126
                 }, callback);
             },
@@ -662,7 +667,7 @@ $(document).ready(function () {
 
             'Type in element': function (callback) {
                 newElementText = getElementTextWithoutSelection($el, text);
-                typePlaybackAutomation($el[0], text, {
+                runTypeAutomation($el[0], text, {
                     caretPos: 152
                 }, callback);
             },
@@ -715,7 +720,7 @@ $(document).ready(function () {
             },
 
             'Type in element': function (callback) {
-                typePlaybackAutomation($el[0], text, {
+                runTypeAutomation($el[0], text, {
                     caretPos: 41
                 }, callback);
             },
@@ -770,13 +775,15 @@ $(document).ready(function () {
                 //NOTE: we can not guarantee the exact position of selection after removal of content (after press 'delete', 'backspace' or etc.)
                 currentSelection = textSelection.getSelectionByElement($parent[0]);
                 currentSelection = contentEditable.getSelection($parent[0], currentSelection, textSelection.hasInverseSelectionContentEditable($parent[0]));
-                typePlaybackAutomation($parent[0], text, {
+
+                runTypeAutomation($parent[0], text, {
                     caretPos: 45
                 }, callback);
             },
 
             'Check typing': function () {
                 var $typedElement = $parent.find('i:first');
+
                 checkSelection($parent, currentSelection.startPos.node, currentSelection.startPos.offset +
                                                                         text.length, currentSelection.startPos.node, currentSelection.startPos.offset +
                                                                                                                      text.length);
@@ -816,7 +823,7 @@ $(document).ready(function () {
                 //NOTE: we can not guarantee the exact position of selection after removal of content (after press 'delete', 'backspace' or etc.)
                 currentSelection = textSelection.getSelectionByElement($parent[0]);
                 currentSelection = contentEditable.getSelection($parent[0], currentSelection, textSelection.hasInverseSelectionContentEditable($parent[0]));
-                typePlaybackAutomation($parent[0], text, {
+                runTypeAutomation($parent[0], text, {
                     caretPos: 45
                 }, callback);
             },
@@ -824,8 +831,8 @@ $(document).ready(function () {
             'Check typing': function () {
                 var $typedElement = $parent.find('i:first');
                 checkSelection($parent, currentSelection.startPos.node, currentSelection.startPos.offset +
-                                                                    text.length, currentSelection.startPos.node, currentSelection.startPos.offset +
-                                                                                                             text.length);
+                                                                        text.length, currentSelection.startPos.node, currentSelection.startPos.offset +
+                                                                                                                     text.length);
                 equal($typedElement.text().substring(0, 11), 'i el123b el');
                 //var node = $parent[0].childNodes[5].childNodes[0];
                 //checkSelection($parent, node, node.nodeValue.length, node, node.nodeValue.length);
@@ -878,7 +885,7 @@ $(document).ready(function () {
             },
 
             'Type in element': function (callback) {
-                typePlaybackAutomation($el[0], text, {
+                runTypeAutomation($el[0], text, {
                     caretPos: 41
                 }, callback);
             },
@@ -935,7 +942,7 @@ $(document).ready(function () {
             },
 
             'Type in element': function (callback) {
-                typePlaybackAutomation($el[0], text, {
+                runTypeAutomation($el[0], text, {
                     caretPos: 197
                 }, callback);
             },

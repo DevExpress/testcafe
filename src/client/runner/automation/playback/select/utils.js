@@ -23,7 +23,7 @@ function ensureRectangleInsideElement (element, rect) {
     var top           = Math.ceil(rect.top);
     var bottom        = Math.floor(rect.bottom);
 
-    if (!domUtils.isTextarea(element)) {
+    if (!domUtils.isTextAreaElement(element)) {
         var clientOffset = positionUtils.offsetToClientCoords({
             x: elementOffset.left,
             y: elementOffset.top
@@ -87,7 +87,7 @@ function getSelectionRectangle (element, position) {
         range.setStart(fakeDiv.firstChild, Math.min(position, element.value.length));
         range.setEnd(fakeDiv.firstChild, Math.min(position, element.value.length));
 
-        if (domUtils.isTextarea(element)) {
+        if (domUtils.isTextAreaElement(element)) {
             rect = range.getBoundingClientRect();
 
             if (rect.width === 0 && rect.height === 0)
@@ -222,7 +222,7 @@ export function scrollEditableElementByPoint (element, point) {
     if (!domUtils.isEditableElement(element))
         return;
 
-    var isTextarea     = domUtils.isTextarea(element);
+    var isTextarea     = domUtils.isTextAreaElement(element);
     var isInputElement = domUtils.isInputElement(element);
 
     // NOTE: we don't need to scroll input elements in Mozilla and

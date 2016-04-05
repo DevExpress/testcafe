@@ -2,13 +2,13 @@ import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../get-element';
 import { focusAndSetSelection, focusByRelatedElement } from '../utils';
-import * as automationSettings from '../settings';
 import MoveAutomation from '../playback/move';
 import { MoveOptions } from '../options';
 import cursor from '../cursor';
 import delay from '../../utils/delay';
 import nextTick from '../../utils/next-tick';
 import * as mouseUtils from '../../utils/mouse';
+import { ACTION_STEP_DELAY } from '../settings';
 
 var extend         = hammerhead.utils.extend;
 var browserUtils   = hammerhead.utils.browser;
@@ -95,7 +95,7 @@ export default class RClickAutomation {
 
         return moveAutomation
             .run()
-            .then(() => delay(automationSettings.ACTION_STEP_DELAY));
+            .then(() => delay(ACTION_STEP_DELAY));
     }
 
     _mousedown () {
@@ -104,7 +104,7 @@ export default class RClickAutomation {
             .then(() => {
                 this.eventArgs = this._calculateEventArguments();
 
-                var isBodyElement         = this.eventArgs.element.tagName.toLowerCase() === 'body';
+                var isBodyElement         = domUtils.isBodyElement(this.eventArgs.element);
                 var isContentEditable     = domUtils.isContentEditableElement(this.eventArgs.element);
                 var isContentEditableBody = isBodyElement && isContentEditable;
                 var activeElement         = domUtils.getActiveElement();
@@ -141,7 +141,7 @@ export default class RClickAutomation {
 
                 eventSimulator.mouseup(this.eventArgs.element, this.eventArgs.options);
 
-                return delay(automationSettings.ACTION_STEP_DELAY);
+                return delay(ACTION_STEP_DELAY);
             });
     }
 

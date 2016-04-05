@@ -3,7 +3,6 @@ import testCafeCore from '../../../deps/testcafe-core';
 import testCafeUI from '../../../deps/testcafe-ui';
 import { fromPoint as getElementFromPoint } from '../../get-element';
 import { focusAndSetSelection, focusByRelatedElement } from '../../utils';
-import * as automationSettings from '../../settings';
 import MoveAutomation from '../move';
 import { MoveOptions } from '../../options';
 import SelectChildClickAutomation from './select-child';
@@ -11,6 +10,7 @@ import cursor from '../../cursor';
 import delay from '../../../utils/delay';
 import nextTick from '../../../utils/next-tick';
 import * as mouseUtils from '../../../utils/mouse';
+import { ACTION_STEP_DELAY } from '../../settings';
 
 var Promise = hammerhead.Promise;
 
@@ -103,7 +103,7 @@ export default class ClickAutomation {
 
         return moveAutomation
             .run()
-            .then(() => delay(automationSettings.ACTION_STEP_DELAY));
+            .then(() => delay(ACTION_STEP_DELAY));
     }
 
     _bindMousedownHandler () {
@@ -140,7 +140,7 @@ export default class ClickAutomation {
         return cursor
             .leftButtonDown()
             .then(() => {
-                var isBodyElement         = this.eventArgs.element.tagName.toLowerCase() === 'body';
+                var isBodyElement         = domUtils.isBodyElement(this.eventArgs.element);
                 var isContentEditable     = domUtils.isContentEditableElement(this.eventArgs.element);
                 var isContentEditableBody = isBodyElement && isContentEditable;
                 var activeElement         = domUtils.getActiveElement();
@@ -171,7 +171,7 @@ export default class ClickAutomation {
                 return this._ensureActiveElementBlur(activeElement);
             })
             .then(() => this._focus())
-            .then(() => delay(automationSettings.ACTION_STEP_DELAY));
+            .then(() => delay(ACTION_STEP_DELAY));
     }
 
     _ensureActiveElementBlur (element) {
@@ -228,12 +228,12 @@ export default class ClickAutomation {
 
                 eventSimulator.mouseup(this.eventArgs.element, this.eventArgs.options);
 
-                return delay(automationSettings.ACTION_STEP_DELAY);
+                return delay(ACTION_STEP_DELAY);
             });
     }
 
     _click () {
-        if (this.eventArgs.element.tagName.toLowerCase() === 'option')
+        if (domUtils.isOptionElement(this.eventArgs.element))
             return;
 
         // NOTE: If the element under the cursor has changed after the
@@ -258,7 +258,7 @@ export default class ClickAutomation {
     }
 
     run () {
-        if (/option|optgroup/.test(this.element.tagName.toLowerCase())) {
+        if (/option|optgroup/.test(domUtils.getTagName(this.element))) {
             var selectChildClickAutomation = new SelectChildClickAutomation(this.element, this.options);
 
             return selectChildClickAutomation.run();

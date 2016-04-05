@@ -376,7 +376,7 @@ $(document).ready(function () {
                     equal(textSelection.hasInverseSelection($el[0]), true, 'selection direction correct');
                 }
             },
-            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
+            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT * 2)
         );
     });
 
@@ -408,7 +408,7 @@ $(document).ready(function () {
                 checkSelection($el, $el[0].childNodes[0], 0, $el[0].childNodes[2], browserUtils.isFirefox ||
                                                                                    browserUtils.isIE ? 8 : 7);
             },
-            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
+            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT * 2)
         );
     });
 

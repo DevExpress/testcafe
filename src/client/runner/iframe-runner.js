@@ -3,9 +3,10 @@ import testCafeCore from './deps/testcafe-core';
 import * as dialogsAPI from './api/native-dialogs';
 import RunnerBase from './runner-base.js';
 
-var SETTINGS                 = testCafeCore.SETTINGS;
-var messageSandbox           = hammerhead.eventSandbox.message;
-var serviceUtils             = testCafeCore.serviceUtils;
+var messageSandbox = hammerhead.eventSandbox.message;
+
+var SETTINGS     = testCafeCore.SETTINGS;
+var serviceUtils = testCafeCore.serviceUtils;
 
 
 var IFrameRunner = function (startedCallback) {
@@ -151,7 +152,6 @@ IFrameRunner.prototype._onBeforeUnload = function () {
 
     function onMessage (response) {
         if (response.message.cmd === RunnerBase.IFRAME_BEFORE_UNLOAD_RESPONSE_CMD) {
-
             messageSandbox.off(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
 
             if (response.message.res) {

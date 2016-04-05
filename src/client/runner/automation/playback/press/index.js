@@ -4,18 +4,35 @@ import KeyPressSimulator from './key-press-simulator';
 import supportedShortcutHandlers from './shortcuts';
 import each from '../../../utils/promise-each';
 import delay from '../../../utils/delay';
-import { getKeyArray, excludeShiftModifiedKeys } from './utils';
+import { sendRequestToFrame } from '../../../utils/iframe';
+import { getKeyArray, excludeShiftModifiedKeys, getDeepActiveElement } from './utils';
 import { ACTION_STEP_DELAY } from '../../settings';
 
-var Promise      = hammerhead.Promise;
-var browserUtils = hammerhead.utils.browser;
+var Promise        = hammerhead.Promise;
+var browserUtils   = hammerhead.utils.browser;
+var messageSandbox = hammerhead.eventSandbox.message;
 
 var arrayUtils = testCafeCore.arrayUtils;
 var domUtils   = testCafeCore.domUtils;
 
 
-const KEY_PRESS_DELAY = 80;
+const KEY_PRESS_DELAY    = 80;
+const PRESS_REQUEST_CMD  = 'automation|press|request';
+const PRESS_RESPONSE_CMD = 'automation|press|response';
 
+
+// Setup cross-iframe interaction
+messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
+    if (e.message.cmd === PRESS_REQUEST_CMD) {
+        hammerhead.on(hammerhead.EVENTS.beforeUnload, () => messageSandbox.sendServiceMsg({ cmd: PRESS_RESPONSE_CMD }, e.source));
+
+        var pressAutomation = new PressAutomation(e.message.keyCombinations);
+
+        pressAutomation
+            .run()
+            .then(() => messageSandbox.sendServiceMsg({ cmd: PRESS_RESPONSE_CMD }, e.source));
+    }
+});
 
 export default class PressAutomation {
     constructor (keyCombinations) {
@@ -107,7 +124,7 @@ export default class PressAutomation {
             keyPressPrevented = !keyPressSimulator.press(this.modifiersState);
 
         if ((!keyPressPrevented || this.isSelectElement) && currentShortcutHandler) {
-            return currentShortcutHandler(domUtils.getActiveElement())
+            return currentShortcutHandler(getDeepActiveElement())
                 .then(() => delay(KEY_PRESS_DELAY));
         }
 
@@ -122,7 +139,7 @@ export default class PressAutomation {
 
     _runCombination (keyCombination) {
         this.modifiersState   = { ctrl: false, alt: false, shift: false, meta: false };
-        this.isSelectElement  = domUtils.isSelectElement(domUtils.getActiveElement());
+        this.isSelectElement  = domUtils.isSelectElement(getDeepActiveElement());
         this.pressedKeyString = '';
         this.shortcutHandlers = PressAutomation._getShortcutHandlers(keyCombination);
 
@@ -141,6 +158,18 @@ export default class PressAutomation {
     }
 
     run () {
+        var activeElement         = domUtils.getActiveElement();
+        var activeElementIsIframe = domUtils.isIframeElement(activeElement);
+
+        if (window.top === window.self && activeElementIsIframe && activeElement.contentWindow) {
+            var msg = {
+                cmd:             PRESS_REQUEST_CMD,
+                keyCombinations: this.keyCombinations
+            };
+
+            return sendRequestToFrame(msg, PRESS_RESPONSE_CMD, activeElement.contentWindow);
+        }
+
         return each(this.keyCombinations, combination => {
             return this
                 ._runCombination(combination)

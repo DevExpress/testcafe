@@ -394,7 +394,7 @@ RunnerBase.prototype._ensureIFrame = function (arg) {
     }
 
     if (domUtils.isDomElement(arg)) {
-        if (arg.tagName && arg.tagName.toLowerCase() === 'iframe')
+        if (arg.tagName && domUtils.isIframeElement(arg))
             return arg;
         else {
             this._onFatalError({

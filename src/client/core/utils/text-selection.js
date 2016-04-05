@@ -193,7 +193,7 @@ function correctContentEditableSelectionBeforeDelete (el) {
         newStartOffset                    = null,
         newEndOffset                      = null;
 
-    if (startNode.nodeType === 3) {
+    if (domUtils.isTextNode(startNode)) {
         if (startOffset < startNodeFirstNonWhitespaceSymbol && startOffset !== 0)
             newStartOffset = 0;
         else if (startOffset !== startNode.nodeValue.length &&
@@ -202,7 +202,7 @@ function correctContentEditableSelectionBeforeDelete (el) {
             newStartOffset = startNode.nodeValue.length;
     }
 
-    if (endNode.nodeType === 3) {
+    if (domUtils.isTextNode(endNode)) {
         if (endOffset < endNodeFirstNonWhitespaceSymbol && endOffset !== 0)
             newEndOffset = 0;
         else if (endOffset !== endNode.nodeValue.length &&

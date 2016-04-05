@@ -35,9 +35,8 @@ function onDocumentMouseDown (e) {
 
 function createOption (realOption, parent) {
     var option           = document.createElement('div');
-    var isOptionDisabled = realOption.disabled ||
-                           (realOption.parentElement.tagName.toLowerCase() === 'optgroup' &&
-                            realOption.parentElement.disabled);
+    var isOptionDisabled = realOption.disabled || domUtils.getTagName(realOption.parentElement) === 'optgroup' &&
+                                                  realOption.parentElement.disabled;
 
     option.textContent = realOption.text;
     parent.appendChild(option);
@@ -112,9 +111,9 @@ function createGroup (realGroup, parent) {
 
 function createChildren (children, parent) {
     for (var i = 0; i < children.length; i++) {
-        if (children[i].tagName.toLowerCase() === 'option')
+        if (domUtils.isOptionElement(children[i]))
             createOption(children[i], parent);
-        else if (children[i].tagName.toLowerCase() === 'optgroup')
+        else if (domUtils.getTagName(children[i]) === 'optgroup')
             createGroup(children[i], parent);
     }
 }
@@ -186,7 +185,7 @@ export function isOptionListExpanded (select) {
 }
 
 export function getEmulatedChildElement (element) {
-    var isGroup      = element.tagName.toLowerCase() === 'optgroup';
+    var isGroup      = domUtils.getTagName(element) === 'optgroup';
     var elementIndex = isGroup ? domUtils.getOptionGroupIndex(curSelectEl, element) :
                        domUtils.getOptionIndex(curSelectEl, element);
 
@@ -253,7 +252,7 @@ export function switchOptionsByKeys (element, command) {
         for (var i = 0; i < options.length; i++) {
             var parent = options[i].parentElement;
 
-            if (!options[i].disabled && !(parent.tagName.toLowerCase() === 'optgroup' && parent.disabled))
+            if (!options[i].disabled && !(domUtils.getTagName(parent) === 'optgroup' && parent.disabled))
                 enabledOptions.push(options[i]);
         }
 
