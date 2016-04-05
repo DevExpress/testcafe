@@ -44,7 +44,7 @@ Fires when a remote browser has been connected.
 browserConnection.once('ready', callback)
 ```
 
-Typically, you do not need to wait for the **ready** event to fire.
+Typically, you do not need to wait for the `ready` event to fire.
 The [runner.run](runner.md#run) method automatically waits for all browser connections to be established.
-If this does not happen within *30* seconds, an error is thrown.
-Thus, you need to wait for the **ready** event only if there is a chance that any of your remote connections can take a significant amount of time (more than 30 sec) to establish.
+If this does not happen within **30** seconds, an error is thrown.
+Thus, you need to wait for the `ready` event only if there is a chance that any of your remote connections can take a significant amount of time (more than 30 sec) to establish.

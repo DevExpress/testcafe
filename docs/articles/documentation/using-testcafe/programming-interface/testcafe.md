@@ -18,6 +18,10 @@ const testCafe       = await createTestCafe('localhost', 1337, 1338);
 
 ## Methods
 
+* [createBrowserConnection](#createbrowserconnection)
+* [createRunner](#createrunner)
+* [close](#close)
+
 ### createBrowserConnection
 
 Creates a [remote browser connection](browserconnection.md).

@@ -10,6 +10,34 @@ checked: true
 testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
 ```
 
+* [Browser List](#browser-list)
+  * [Local Browsers](#local-browsers)
+  * [Remote Browsers](#remote-browsers)
+* [File Path/Glob Pattern](#file-pathglob-pattern)
+* [Options](#options)
+  * [-h, --help](#-h---help)
+  * [-v, --version](#-v---version)
+  * [-b, --list-browsers](#-b---list-browsers)
+  * [-r \<name\>, --reporter \<name\>](#-r-name---reporter-name)
+  * [-s \<path\>, --screenshots \<path\>](#-s-path---screenshots-path)
+  * [-S, --screenshots-on-fails](#-s---screenshots-on-fails)
+  * [-q, --quarantine-mode](#-q---quarantine-mode)
+  * [-e, --skip-js-errors](#-e---skip-js-errors)
+  * [-t \<name\>, --test \<name\>](#-t-name---test-name)
+  * [-T \<pattern\>, --test-grep \<pattern\>](#-t-pattern---test-grep-pattern)
+  * [-f \<name\>, --fixture \<name\>](#-f-name---fixture-name)
+  * [-F \<pattern\>, --fixture-grep \<pattern\>](#-f-pattern---fixture-grep-pattern)
+  * [--selector-timeout \<ms\>](#--selector-timeout-ms)
+  * [--ports \<port1,port2\>](#--ports-port1port2)
+  * [--hostname \<name\>](#--hostname-name)
+  * [--qr-code](#--qr-code)
+  * [--color](#--color)
+  * [--no-color](#--no-color)
+
+> Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
+> Inactive tabs and minimized browser windows switch to a lower resource consumption mode
+> where tests are not guaranteed to execute correctly.
+
 ## Browser List
 
 The `browser-list-comma-separated` argument specifies the list of browsers (separated by commas) where tests will be run.
@@ -138,6 +166,9 @@ to save screenshots to.
 testcafe all tests/sample-fixture.js -s screenshots
 ```
 
+> The screenshot functionality is not yet available on Linux.
+> See the corresponding [issue on Github](https://github.com/DevExpress/testcafe-browser-natives/issues/12).
+
 ### -S, --screenshots-on-fails
 
 Takes a screenshot whenever a test fails. Screenshots are saved to the directory
@@ -150,6 +181,9 @@ For example, the following command runs tests from the
 ```sh
 testcafe all tests/sample-fixture.js -S -s screenshots
 ```
+
+> The screenshot functionality is not yet available on Linux.
+> See the corresponding [issue on Github](https://github.com/DevExpress/testcafe-browser-natives/issues/12).
 
 ### -q, --quarantine-mode
 
@@ -218,7 +252,7 @@ testcafe ie my-tests -F "Page.*"
 
 ### --selector-timeout \<ms\>
 
-Specifies the amount of time, in milliseconds, within which [selectors](../test-api/executing-client-code/index.md#selector-functions) make attempts to obtain a node to be returned.
+Specifies the amount of time, in milliseconds, within which [selectors](../test-api/selecting-page-elements/selectors.md) make attempts to obtain a node to be returned.
 
 ```sh
 testcafe ie my-tests --selector-timeout 500000

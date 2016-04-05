@@ -26,18 +26,34 @@ console.log('Tests failed: ' + failed);
 
 ## Methods
 
+* [src](#src)
+* [filter](#filter)
+* [browsers](#browsers)
+    * [Using browser aliases](#using-browser-aliases)
+    * [Specifying the path to the browser executable](#specifying-the-path-to-the-browser-executable)
+    * [Specifying the path with command line parameters](#specifying-the-path-with-command-line-parameters)
+    * [Passing the remote browser connection](#passing-the-remote-browser-connection)
+* [screenshots](#screenshots)
+* [reporter](#reporter)
+    * [Specifying the reporter](#specifying-the-reporter)
+    * [Saving the report to a file](#saving-the-report-to-a-file)
+    * [Implementing a custom stream](#implementing-a-custom-stream)
+* [run](#run)
+    * [Cancelling test tasks](#cancelling-test-tasks)
+    * [Quarantine mode](#quarantine-mode)
+* [stop](#stop)
+
 ### src
 
 Configures the test runner to run tests from the specified files.
 
 ```text
 src(source) → this
-src([source, ...]) → this
 ```
 
-Parameter | Type   | Description
---------- | ------ | -----------------------------------------------------
-`source`  | String | The relative or absolute path to a test fixture file.
+Parameter | Type                | Description
+--------- | ------------------- | ----------------------------------------------------------------------------
+`source`  | String &#124; Array | The relative or absolute path to a test fixture file, or several such paths.
 
 Concatenates the settings when called several times.
 
@@ -85,17 +101,16 @@ Configures the test runner to run tests in the specified browsers.
 
 ```text
 browsers(browser) → this
-browsers([browser, ...]) → this
 ```
 
-Each `browser` parameter can be one of the following.
+The `browser` parameter can be any of the following, or an `Array` of those.
 
-Type                                                                                                 | Description                                                                                                                                                           | Local/Remote
----------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------
-String                                                                                               | The browser's short name - *alias*. Find the list of aliases in the [Browser Aliases](../common-concepts/browser-aliases.md) topic.                                   | Local browser
-String                                                                                               | The path to the browser executable.                                                                                                                                   | Local browser
-`{path: String, cmd: String}`                                                                        | The path to the browser executable (`path`) with command line parameters (`cmd`).                                                                                     | Local browser
-[BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | Remote browser
+Type                                      | Description                                                                                                                                                           | Local/Remote
+----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------
+String                                    | The browser's short name - *alias*. Find the list of aliases in the [Browser Aliases](../common-concepts/browser-aliases.md) topic.                                   | Local browser
+String                                    | The path to the browser executable.                                                                                                                                   | Local browser
+`{path: String, cmd: String}`             | The path to the browser executable (`path`) with command line parameters (`cmd`).                                                                                     | Local browser
+[BrowserConnection](browserconnection.md) | The remote browser connection.                                                                                                                                        | Remote browser
 
 You are free to mix different types of objects in one function call. The `browsers` function concatenates the settings when called several times.
 
@@ -153,9 +168,12 @@ Parameter                  | Type    | Description                              
 `takeOnFails` *(optional)* | Boolean | Specifies if screenshots should be taken automatically whenever a test fails. | `false`
 
 The `screenshots` function must be called in order to enable TestCafe to take screenshots whenever the `screenshot` action is called from test code.
-If the `screenshots` function is not called, the `screenshot` action is ignored.
 
 The `takeOnFails` parameter handles a separate scenario of capturing the webpage. Set it to `true` to make TestCafe take a screenshot whenever a test fails.
+
+> Important! If the `screenshots` function is not called, TestCafe does not take screenshots.
+
+The screenshot functionality is not yet available on Linux. See the corresponding [issue on Github](https://github.com/DevExpress/testcafe-browser-natives/issues/12).
 
 **Example**
 
@@ -218,13 +236,17 @@ Runs tests according to the current configuration. Returns the number of failed 
 run(options) → Promise<Number>
 ```
 
+> Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
+> Inactive tabs and minimized browser windows switch to a lower resource consumption mode
+> where tests are not guaranteed to execute correctly.
+
 You can pass the following options to this function.
 
 Parameter         | Type    | Description                                                                                                                                                                           | Default
 ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------
 `skipJsErrors`    | Boolean | Defines whether to continue running a test after a JavaScript error occurs on a page (`true`), or consider such a test failed (`false`).                                              | `false`
 `quarantineMode`  | Boolean | Defines whether to enable the [quarantine mode](#quarantine-mode).                                                                                                                    | `false`
-`selectorTimeout` | Numeric | Specifies the amount of time, in milliseconds, within which [selectors](../../test-api/executing-client-code/index.md#selector-functions) make attempts to obtain a node to be returned. | `10000`
+`selectorTimeout` | Number  | Specifies the amount of time, in milliseconds, within which [selectors](../../test-api/selecting-page-elements/selectors.md) make attempts to obtain a node to be returned. | `10000`
 
 **Example**
 
@@ -238,7 +260,7 @@ const failed = await runner.run({
 console.log('Tests failed: ' + failed);
 ```
 
-#### Cancelling Test Tasks
+#### Cancelling test tasks
 
 You can stop an individual test task at any moment by cancelling the corresponding promise.
 
@@ -254,7 +276,7 @@ await taskPromise.cancel();
 
 You can also cancel all pending tasks at once by using the [runner.stop](#stop) function.
 
-#### Quarantine Mode
+#### Quarantine mode
 
 The quarantine mode is designed to isolate non-deterministic tests (i.e., tests that sometimes pass and sometimes fail without a clear reason)
 from the rest of the test base (healthy tests).

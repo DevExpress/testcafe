@@ -2,6 +2,8 @@
 layout: docs
 title: Getting Started
 permalink: /documentation/getting-started/
+siteNavItemName: Documentation
+siteNavItemHighlightUrl: /documentation
 ---
 # Getting Started
 
@@ -35,19 +37,19 @@ This file must have the special structure: tests must be organized into fixtures
 fixture `Getting Started`
 ```
 
-In this tutorial, you will create a test for the [http://testcafe.devexpress.com/example](http://testcafe.devexpress.com/example) sample page.
+In this tutorial, you will create a test for the [http://devexpress.github.io/testcafe/example](/testcafe/example) sample page.
 Specify this page as a start page for the fixture by using the [page](../test-api/test-code-structure.md#specifying-the-start-webpage) function.
 
 ```js
 fixture `Getting Started`
-    .page('http://testcafe.devexpress.com/example');
+    .page('http://devexpress.github.io/testcafe/example');
 ```
 
 Then create the [test](../test-api/test-code-structure.md#tests) function where you will further place test code.
 
 ```js
 fixture `Getting Started`
-    .page('http://testcafe.devexpress.com/example');
+    .page('http://devexpress.github.io/testcafe/example');
 
 test('My first test', async t => {
     // Test code
@@ -64,6 +66,10 @@ testcafe safari test1.js
 
 TestCafe will automatically open the chosen browser and start the test execution within it.
 
+> Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
+> Inactive tabs and minimized browser windows switch to a lower resource consumption mode
+> where tests are not guaranteed to execute correctly.
+
 For more information on how to configure the test run, see [Command Line Interface](../using-testcafe/command-line-interface.md).
 
 ## Viewing the Test Results
@@ -78,14 +84,15 @@ For more information, see [Reporters](../using-testcafe/common-concepts/reporter
 
 ### Performing Actions on the Page
 
-Every test should be capable of interacting with a page content. To perform user actions, TestCafe provides a number of [actions](../test-api/actions.md): `click`, `hover`, `typeText`, `setFilesToUpload`, etc.
+Every test should be capable of interacting with a page content. To perform user actions, TestCafe provides
+a number of [actions](../test-api/actions/index.md): `click`, `hover`, `typeText`, `setFilesToUpload`, etc.
 They can be called in a chain.
 
 The following fixture contains a simple test that types a developer name into a text editor and then clicks the Submit button.
 
 ```js
 fixture `Getting Started`
-    .page('http://testcafe.devexpress.com/example');
+    .page('http://devexpress.github.io/testcafe/example');
 
 test('My first test', async t => {
     await t
@@ -94,14 +101,16 @@ test('My first test', async t => {
 });
 ```
 
-All test actions are implemented as async functions of the [test controller object](../test-api/test-code-structure.md#test-controller) `t`. This object is used to access test run API.
+All test actions are implemented as async functions of the [test controller object](../test-api/test-code-structure.md#test-controller) `t`.
+This object is used to access test run API.
 To wait for actions to be complete, use the `await` keyword when calling these actions or action chains.
 
 ### Observing Page State
 
 TestCafe allows you to observe the page state.
-For this purpose, it offers special kinds of functions that will execute your code on the client: [Selector](../test-api/executing-client-code/index.md#selector-functions) used to get direct access to DOM elements
-and [ClientFunction](../test-api/executing-client-code/index.md#client-functions) used to obtain arbitrary data from the client side.
+For this purpose, it offers special kinds of functions that will execute your code on the client:
+[Selector](../test-api/selecting-page-elements/selectors.md) used to get direct access to DOM elements
+and [ClientFunction](../test-api/obtaining-data-from-the-client.md) used to obtain arbitrary data from the client side.
 You call these functions as regular async functions, that is you can obtain their results and use parameters to pass data to them.
 
 For example, clicking the Submit button on the sample web page opens a "Thank you" page.
@@ -113,10 +122,10 @@ import { Selector } from 'testcafe';
 
 // Declare the parameterized Selector function
 // to get access to a DOM element identified by the `id` attribute
-const getElementById = Selector(id => document.querySelector(`#${id}`));
+const getElementById = Selector(id => document.getElementById(id));
 
 fixture `Getting Started`
-    .page('http://testcafe.devexpress.com/example');
+    .page('http://devexpress.github.io/testcafe/example');
 
 test('My first test', async t => {
     await t
@@ -131,7 +140,7 @@ test('My first test', async t => {
 });
 ```
 
-For more information, see [Executing Client Code](../test-api/executing-client-code/index.md).
+For more information, see [Selecting Page Elements](../test-api/selecting-page-elements/index.md).
 
 ### Assertions
 
@@ -149,12 +158,12 @@ Before running the test, install the assertion library by calling the `npm insta
 import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
-// Declare the parameterized hybrid function
+// Declare the parameterized selector function
 // to obtain text content of an element identified by the `id` attribute
-const getElementById = Selector(id => document.querySelector(`#${id}`));
+const getElementById = Selector(id => document.getElementById(id));
 
 fixture `Getting Started`
-    .page('http://testcafe.devexpress.com/example');
+    .page('http://devexpress.github.io/testcafe/example');
 
 test('My first test', async t => {
     await t
