@@ -58,10 +58,11 @@ var RunnerBase = function () {
     this.eventEmitter = new serviceUtils.EventEmitter();
     this.stepIterator = new StepIterator(pingIframe);
 
-    this.executingStepInIFrameWindow = null;
-    this.stopped                     = false;
-    this.listenNativeDialogs         = false;
-    this.isFileDownloadingIntervalID = null;
+    this.executingStepInIFrameWindow      = null;
+    this.stopped                          = false;
+    this.listenNativeDialogs              = false;
+    this.isFileDownloadingIntervalID      = null;
+    this.iframeActionTargetWaitingStarted = false;
 
     this.assertionsAPI = new AssertionsAPI(function (err) {
         runner.stepIterator.onAssertionFailed(err);
@@ -239,12 +240,12 @@ RunnerBase.prototype._initIFrameBehavior = function () {
                 break;
 
             case RunnerBase.IFRAME_ACTION_TARGET_WAITING_STARTED_CMD:
-                runner.actionTargetWaitingStarted = true;
+                runner.iframeActionTargetWaitingStarted = true;
                 runner._onActionTargetWaitingStarted(e.message.params);
                 break;
 
             case RunnerBase.IFRAME_ACTION_RUN_CMD:
-                runner.actionTargetWaitingStarted = false;
+                runner.iframeActionTargetWaitingStarted = false;
                 runner._onActionRun();
                 break;
 
@@ -278,7 +279,6 @@ RunnerBase.prototype._initIFrameBehavior = function () {
                 break;
 
             case RunnerBase.IFRAME_BEFORE_UNLOAD_REQUEST_CMD:
-                runner.actionTargetWaitingStarted = false;
                 runner._onActionRun();
 
                 runner._onBeforeUnload(true, function (res) {
@@ -550,8 +550,8 @@ RunnerBase.prototype._onTakeScreenshot = function (e) {
 RunnerBase.prototype._onIFrameStepExecuted = function () {
     this.executingStepInIFrameWindow = null;
 
-    if (this.actionTargetWaitingStarted) {
-        this.actionTargetWaitingStarted = false;
+    if (this.iframeActionTargetWaitingStarted) {
+        this.iframeActionTargetWaitingStarted = false;
         this.stepIterator.runLast();
     }
     else
