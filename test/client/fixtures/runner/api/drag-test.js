@@ -140,7 +140,7 @@ $(document).ready(function () {
         },
 
         createTarget       = function (left, top) {
-            return $('<div id="div"></div>')
+            return $('<div></div>')
                 .css({
                     width:           '120px',
                     height:          '120px',
@@ -487,4 +487,47 @@ $(document).ready(function () {
             correctTestWaitingTime(5000)
         );
     });
+
+    if (!browserUtils.hasTouchEvents) {
+        asyncTest('GH372-"mousemove" event sent to wrong element during dragging', function () {
+            var $firstTarget  = createTarget(10, 10);
+            var $secondTarget = createTarget(110, 110);
+            var elementCenter = getCenter($firstTarget[0]);
+
+            var mousedownRaised              = false;
+            var firstElementMousemoveRaised  = false;
+            var secondElementMousemoveRaised = false;
+            var mouseupRaised                = false;
+
+            $firstTarget.mousedown(function () {
+                mousedownRaised = true;
+            });
+
+            $firstTarget.mousemove(function () {
+                firstElementMousemoveRaised = true;
+            });
+
+            $secondTarget.mousemove(function () {
+                secondElementMousemoveRaised = true;
+            });
+
+            $secondTarget.mouseup(function () {
+                mouseupRaised = true;
+            });
+
+            runAsyncTest(
+                function () {
+                    actionsAPI.drag($firstTarget, 100, 100);
+                },
+                function () {
+                    deepEqual(getCenter($firstTarget[0]), elementCenter);
+                    ok(mousedownRaised, 'mousedown event was raised on first element');
+                    ok(firstElementMousemoveRaised, 'mousemove event was raised on first element');
+                    ok(secondElementMousemoveRaised, 'mousemove event was raised on second element');
+                    ok(mouseupRaised, 'mouseup event was raised on second element');
+                },
+                correctTestWaitingTime(3000)
+            );
+        });
+    }
 });

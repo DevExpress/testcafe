@@ -329,7 +329,7 @@ $(document).ready(function () {
                             equal(domUtils.getActiveElement(iframe.contentDocument), link);
 
                             actionsAPI.press('enter');
-                        }, 500);
+                        }, 1000);
                     });
 
                 document.body.appendChild(iframe);
@@ -369,7 +369,7 @@ $(document).ready(function () {
                             equal(domUtils.getActiveElement(iframe.contentDocument), link);
 
                             actionsAPI.press('enter');
-                        }, 500);
+                        }, 1000);
                     });
 
                 document.body.appendChild(iframe);

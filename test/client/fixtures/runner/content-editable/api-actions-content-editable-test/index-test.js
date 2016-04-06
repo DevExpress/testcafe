@@ -14,7 +14,8 @@ var StepIterator   = testCafeRunner.get('./step-iterator');
 
 actionsAPI.ELEMENT_AVAILABILITY_WAITING_TIMEOUT = 400;
 
-var TEST_COMPLETE_WAITING_TIMEOUT = 3500;
+var WAITING_TIMEOUT               = 3500;
+var TEST_COMPLETE_WAITING_TIMEOUT = browserUtils.hasTouchEvents ? WAITING_TIMEOUT * 2 : WAITING_TIMEOUT;
 var ERROR_WAITING_TIMEOUT         = actionsAPI.ELEMENT_AVAILABILITY_WAITING_TIMEOUT + 50;
 
 

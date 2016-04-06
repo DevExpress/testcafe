@@ -195,7 +195,8 @@ export default class MoveAutomation {
     }
 
     _emulateEvents () {
-        var currentElement = this.dragMode ? this.dragElement : getElementUnderCursor();
+        // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
+        var currentElement = this.dragMode && this.touchMode ? this.dragElement : getElementUnderCursor();
         var whichButton    = this.dragMode ? eventUtils.WHICH_PARAMETER.leftButton : eventUtils.WHICH_PARAMETER.noButton;
         var button         = this.dragMode ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
 
