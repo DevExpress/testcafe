@@ -1,8 +1,10 @@
 import hammerhead from '../../../deps/hammerhead';
 import testCafeCore from '../../../deps/testcafe-core';
+import nextTick from '../../../utils/next-tick';
 
 var browserUtils   = hammerhead.utils.browser;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
+var listeners      = hammerhead.eventSandbox.listeners;
 
 var domUtils        = testCafeCore.domUtils;
 var contentEditable = testCafeCore.contentEditable;
@@ -83,6 +85,23 @@ function _typeCharToContentEditable (element, text) {
     var startNode        = currentSelection.startPos.node;
     var endNode          = currentSelection.endPos.node;
 
+    // NOTE: some browsers raise the 'input' event after the element
+    // content is changed, but in others we should do it manually.
+    var inputEventRaised = false;
+    var onInput          = () => inputEventRaised = true;
+
+    var afterContentChanged = () => {
+        nextTick()
+            .then(() => {
+                if (!inputEventRaised)
+                    eventSimulator.input(element);
+
+                listeners.removeInternalEventListener(window, 'input', onInput);
+            });
+    };
+
+    listeners.addInternalEventListener(window, ['input'], onInput);
+
     if (!startNode || !endNode || !domUtils.isContentEditableElement(startNode) ||
         !domUtils.isContentEditableElement(endNode))
         return;
@@ -104,6 +123,7 @@ function _typeCharToContentEditable (element, text) {
     if (domUtils.isElementNode(startNode)) {
         _typeCharInElementNode(startNode, text);
 
+        afterContentChanged();
         return;
     }
 
@@ -119,6 +139,8 @@ function _typeCharToContentEditable (element, text) {
                           nodeValue.substring(endOffset, nodeValue.length);
 
     textSelection.selectByNodesAndOffsets(selectPosition, selectPosition);
+
+    afterContentChanged();
 }
 
 function _typeCharToTextEditable (element, text) {

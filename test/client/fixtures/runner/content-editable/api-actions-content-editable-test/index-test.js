@@ -81,7 +81,7 @@ $(document).ready(function () {
                 callbackFunction();
             };
             actions();
-            var timeoutId        = setTimeout(function () {
+            var timeoutId = setTimeout(function () {
                 callbackFunction = function () {
                 };
                 ok(false, 'Timeout is exceeded');
@@ -176,8 +176,8 @@ $(document).ready(function () {
             $el[0].onclick     = function () {
             };
         }
-        $el                 = null;
-        $parent             = null;
+        $el     = null;
+        $parent = null;
         stateHelper.restoreState();
         currentErrorType    = null;
         currentErrorElement = null;
@@ -776,10 +776,17 @@ $(document).ready(function () {
     module('act.type');
 
     asyncTest('simple type', function () {
-        var text      = "Test me all!",
-            fixedText = "Test" + String.fromCharCode(160) + "me" + String.fromCharCode(160) + "all!";
+        var text                  = "Test me all!";
+        var fixedText             = "Test" + String.fromCharCode(160) + "me" + String.fromCharCode(160) + "all!";
+        var inputEventRaisedCount = 0;
 
         $el = $("#2");
+
+        function onInput () {
+            inputEventRaisedCount++;
+        }
+
+        $el.bind('input', onInput);
 
         runAsyncTest(
             function () {
@@ -790,6 +797,33 @@ $(document).ready(function () {
             function () {
                 checkSelection($el, $el[0].childNodes[2], 4 + text.length, $el[0].childNodes[2], 4 + text.length);
                 equal($.trim($el[0].childNodes[2].nodeValue), "with" + fixedText + " br");
+                equal(inputEventRaisedCount, 12);
+                $el.unbind('input', onInput);
+            },
+            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
+        );
+    });
+
+    asyncTest('type in element node', function () {
+        var text                  = "Test";
+        var inputEventRaisedCount = 0;
+
+        $el = $("#8");
+
+        function onInput () {
+            inputEventRaisedCount++;
+        }
+
+        $el.bind('input', onInput);
+
+        runAsyncTest(
+            function () {
+                actionsAPI.type($el[0], text);
+            },
+            function () {
+                equal($.trim($el[0].textContent), text);
+                equal(inputEventRaisedCount, 4);
+                $el.unbind('input', onInput);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
