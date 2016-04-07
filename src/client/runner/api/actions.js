@@ -2,7 +2,7 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import testCafeUI from '../deps/testcafe-ui';
 import { AUTOMATIONS } from '../automation/automation';
-import { DragOptions, MouseOptions, ClickOptions, SelectOptions, TypeOptions } from '../automation/options';
+import { DragOptions, MouseOptions, ClickOptions, SelectOptions, TypeOptions } from '../../../test-run/commands/options';
 import ClickAutomation from '../automation/playback/click';
 import DblClickAutomation from '../automation/playback/dblclick';
 import DragAutomation from '../automation/playback/drag';
@@ -17,7 +17,8 @@ import * as sourceIndexTracker from '../source-index';
 import async from '../deps/async';
 
 
-var isJQueryObj = hammerhead.utils.isJQueryObj;
+var isJQueryObj   = hammerhead.utils.isJQueryObj;
+var nativeMethods = hammerhead.nativeMethods;
 
 var sandboxedJQuery = testCafeCore.sandboxedJQuery;
 var SETTINGS        = testCafeCore.SETTINGS;
@@ -110,14 +111,14 @@ function ensureElementsExist (item, actionName, callback) {
     if (ensureExists())
         return;
 
-    var interval = window.setInterval(function () {
+    var interval = nativeMethods.setInterval.call(window, function () {
         if (ensureExists()) {
             success = true;
             window.clearInterval(interval);
         }
     }, ELEMENT_AVAILABILITY_WAITING_DELAY);
 
-    window.setTimeout(function () {
+    nativeMethods.setTimeout.call(window, function () {
         if (!success) {
             window.clearInterval(interval);
             failWithError(ERROR_TYPE.emptyFirstArgument, { action: actionName });
@@ -156,7 +157,7 @@ function ensureElementVisibility (element, actionName, callback) {
         return;
     }
 
-    var interval = window.setInterval(function () {
+    var interval = nativeMethods.setInterval.call(window, function () {
         if (positionUtils.isElementVisible(element)) {
             success = true;
             window.clearInterval(interval);
@@ -164,7 +165,7 @@ function ensureElementVisibility (element, actionName, callback) {
         }
     }, ELEMENT_AVAILABILITY_WAITING_DELAY);
 
-    window.setTimeout(function () {
+    nativeMethods.setTimeout.call(window, function () {
         if (!success) {
             window.clearInterval(interval);
 
@@ -444,8 +445,8 @@ export function click (what, options) {
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
 
                 var clickOptions = new ClickOptions({
-                               offsetX,
-                               offsetY,
+                    offsetX,
+                    offsetY,
                     caretPos:  options.caretPos,
                     modifiers: options
                 }, false);
@@ -480,8 +481,8 @@ export function rclick (what, options) {
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
 
                 var clickOptions = new ClickOptions({
-                               offsetX,
-                               offsetY,
+                    offsetX,
+                    offsetY,
                     caretPos:  options.caretPos,
                     modifiers: options
                 }, false);
@@ -516,8 +517,8 @@ export function dblclick (what, options) {
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
 
                 var clickOptions = new ClickOptions({
-                               offsetX,
-                               offsetY,
+                    offsetX,
+                    offsetY,
                     caretPos:  options.caretPos,
                     modifiers: options
                 }, false);
@@ -710,8 +711,8 @@ export function type (what, text, options) {
 
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
                 var typeOptions = new TypeOptions({
-                              offsetX,
-                              offsetY,
+                    offsetX,
+                    offsetY,
                     caretPos: options.caretPos,
                     replace:  options.replace,
 
@@ -748,8 +749,8 @@ export function hover (what, options) {
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
 
                 var hoverOptions = new MouseOptions({
-                               offsetX,
-                               offsetY,
+                    offsetX,
+                    offsetY,
                     modifiers: options
                 }, false);
 
@@ -787,7 +788,7 @@ export function press () {
 var conditionIntervalId = null;
 
 function startConditionCheck (condition, onConditionReached) {
-    conditionIntervalId = window.setInterval(function () {
+    conditionIntervalId = nativeMethods.setInterval.call(window, function () {
         if (stepIterator.callWithSharedDataContext(condition))
             onConditionReached();
     }, CHECK_CONDITION_INTERVAL);
@@ -815,7 +816,7 @@ export function wait (ms, condition) {
             iteratorCallback();
         }
 
-        var timeout = window.setTimeout(onConditionReached, ms || 0);
+        var timeout = nativeMethods.setTimeout.call(window, onConditionReached, ms || 0);
 
         if (condition)
             startConditionCheck(condition, onConditionReached);
@@ -842,7 +843,7 @@ export function waitFor (event, timeout) {
     onTargetWaitingStarted(true);
 
     stepIterator.asyncAction(function (iteratorCallback) {
-        var timeoutID = window.setTimeout(function () {
+        var timeoutID = nativeMethods.setTimeout.call(window, function () {
             if (waitForElements)
                 stopConditionCheck();
 
@@ -904,7 +905,7 @@ export function navigateTo (url) {
         hammerhead.navigateTo(url);
 
         //NOTE: give browser some time to navigate
-        window.setTimeout(iteratorCallback, NAVIGATION_DELAY);
+        nativeMethods.setTimeout.call(window, iteratorCallback, NAVIGATION_DELAY);
     });
 }
 

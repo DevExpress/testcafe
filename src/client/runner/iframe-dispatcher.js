@@ -2,14 +2,16 @@ import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 import testCafeUI from './deps/testcafe-ui';
 
-import * as xhrBarrier from './action-barrier/xhr';
 import * as automation from './automation/automation';
 import * as automationIFrameBehavior from './automation/iframe-behavior';
 import RunnerBase from './runner-base';
 import IFrameRunner from './iframe-runner';
 
+var Promise               = hammerhead.Promise;
 var messageSandbox        = hammerhead.eventSandbox.message;
+var nativeMethods         = hammerhead.nativeMethods;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
+var XhrBarrier            = testCafeCore.XhrBarrier;
 var serviceUtils          = testCafeCore.serviceUtils;
 var domUtils              = testCafeCore.domUtils;
 var eventUtils            = testCafeCore.eventUtils;
@@ -22,6 +24,7 @@ var testRunInitializedCallback = null,
     testRunnerInitialized      = false,
 
     testRunner                 = null;
+
 
 export const MESSAGE_RECEIVED = 'messageReceived';
 
@@ -91,70 +94,52 @@ export function init (onTestRunInitialized) {
 }
 
 //Const
-var PAGE_LOAD_TIMEOUT     = 3000,
-    ANIMATIONS_WAIT_DELAY = 200;
-
-//Util
-function waitPageLoad (callback) {
-    var loaded          = false,
-        callbackWrapper = function () {
-            if (!loaded) {
-                loaded = true;
-                callback();
-            }
-        };
-
-    eventUtils.bind(window, 'load', callbackWrapper);
-    eventUtils
-        .documentReady()
-        .then(() => {
-            //NOTE: an iFrame may be removed in this moment
-            if (domUtils.isIFrameWindowInDOM(window))
-                window.setTimeout(callbackWrapper, PAGE_LOAD_TIMEOUT);
-        });
-}
-
+var ANIMATIONS_WAIT_DELAY = 200;
 
 var initialized = false;
 
 if (window.top !== window.self) {
-    waitPageLoad(function () {
-        if (!initialized) {
+    var xhrBarrier = null;
 
-            xhrBarrier.init();
-            automationIFrameBehavior.init();
+    eventUtils
+        .documentReady()
+        .then(() => {
+            if (!initialized) {
+                xhrBarrier = new XhrBarrier();
+                automationIFrameBehavior.init();
 
-            initialized = true;
+                initialized = true;
 
-            window.setTimeout(function () {
-                xhrBarrier.waitPageInitialRequests(function () {
-                    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, function (e) {
-                        var msg = e.message;
+                return new Promise(resolve => nativeMethods.setTimeout.call(window, resolve, ANIMATIONS_WAIT_DELAY));
+            }
+        })
+        .then(() => xhrBarrier.wait(true))
+        .then(() => {
+            messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, function (e) {
+                var msg = e.message;
 
-                        if (msg.cmd === CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_WAITING_STEP_COMPLETION_RESPONSE_CMD) {
-                            testRunner.onStepCompleted();
+                if (msg.cmd ===
+                    CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_WAITING_STEP_COMPLETION_RESPONSE_CMD) {
+                    testRunner.onStepCompleted();
 
-                            if (!testRunner.stepIterator.state.stopped) {
-                                messageSandbox.sendServiceMsg({
-                                    cmd: RunnerBase.IFRAME_STEP_COMPLETED_CMD
-                                }, window.top);
-                            }
-                        }
-                    });
-
-                    var stepWaitingRequestMsg = {
-                        cmd: CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_WAITING_STEP_COMPLETION_REQUEST_CMD
-                    };
-
-                    messageSandbox.sendServiceMsg(stepWaitingRequestMsg, window.top);
-
-                    pageInitialzied = true;
-
-                    for (var i = 0; i < actionsQueue.length; i++) {
-                        actionsQueue[i]();
+                    if (!testRunner.stepIterator.state.stopped) {
+                        messageSandbox.sendServiceMsg({
+                            cmd: RunnerBase.IFRAME_STEP_COMPLETED_CMD
+                        }, window.top);
                     }
-                });
-            }, ANIMATIONS_WAIT_DELAY);
-        }
-    });
+                }
+            });
+
+            var stepWaitingRequestMsg = {
+                cmd: CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_WAITING_STEP_COMPLETION_REQUEST_CMD
+            };
+
+            messageSandbox.sendServiceMsg(stepWaitingRequestMsg, window.top);
+
+            pageInitialzied = true;
+
+            for (var i = 0; i < actionsQueue.length; i++) {
+                actionsQueue[i]();
+            }
+        });
 }

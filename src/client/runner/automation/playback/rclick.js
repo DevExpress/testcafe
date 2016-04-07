@@ -3,9 +3,8 @@ import testCafeCore from '../../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../get-element';
 import { focusAndSetSelection, focusByRelatedElement } from '../utils';
 import MoveAutomation from '../playback/move';
-import { MoveOptions } from '../options';
+import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../cursor';
-import delay from '../../utils/delay';
 import nextTick from '../../utils/next-tick';
 import * as mouseUtils from '../../utils/mouse';
 import { ACTION_STEP_DELAY } from '../settings';
@@ -17,6 +16,7 @@ var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 var domUtils      = testCafeCore.domUtils;
 var positionUtils = testCafeCore.positionUtils;
 var eventUtils    = testCafeCore.eventUtils;
+var delay         = testCafeCore.delay;
 
 
 export default class RClickAutomation {
@@ -157,7 +157,8 @@ export default class RClickAutomation {
     run () {
         var moveArguments = this._getMoveArguments();
 
-        return this._move(moveArguments)
+        return this
+            ._move(moveArguments)
             .then(() => this._mousedown())
             .then(() => this._mouseup())
             .then(() => this._contextmenu());

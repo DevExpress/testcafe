@@ -2,8 +2,7 @@ import hammerhead from '../../../deps/hammerhead';
 import testCafeCore from '../../../deps/testcafe-core';
 import testCafeUI from '../../../deps/testcafe-ui';
 import MoveAutomation from '../move';
-import { MoveOptions } from '../../options';
-import delay from '../../../utils/delay';
+import { MoveOptions } from '../../../../../test-run/commands/options';
 import * as mouseUtils from '../../../utils/mouse';
 import { ACTION_STEP_DELAY } from '../../settings';
 
@@ -15,6 +14,7 @@ var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
 var domUtils   = testCafeCore.domUtils;
 var styleUtils = testCafeCore.styleUtils;
+var delay      = testCafeCore.delay;
 
 var selectElementUI = testCafeUI.selectElement;
 

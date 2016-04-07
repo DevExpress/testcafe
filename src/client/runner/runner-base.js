@@ -7,11 +7,12 @@ import * as actionsAPI from './api/actions';
 import * as dialogsAPI from './api/native-dialogs';
 import * as automation from './automation/automation';
 import * as automationIFrameBehavior from './automation/iframe-behavior';
-import * as actionBarrier from './action-barrier/action-barrier';
 
 
 var messageSandbox = hammerhead.eventSandbox.message;
+var nativeMethods  = hammerhead.nativeMethods;
 
+var XhrBarrier            = testCafeCore.XhrBarrier;
 var sandboxedJQuery       = testCafeCore.sandboxedJQuery;
 var SETTINGS              = testCafeCore.SETTINGS;
 var COMMAND               = testCafeCore.COMMAND;
@@ -25,31 +26,10 @@ var eventUtils            = testCafeCore.eventUtils;
 var modalBackground = testCafeUI.modalBackground;
 
 
-const PAGE_LOAD_TIMEOUT                  = 3000;
 const ANIMATIONS_WAIT_DELAY              = 200;
 const CHECK_FILE_DOWNLOADING_DELAY       = 500;
 const IFRAME_EXISTENCE_WATCHING_INTERVAL = 1000;
 
-
-//Util
-function waitPageLoad (callback) {
-    var loaded          = false,
-        callbackWrapper = function () {
-            if (!loaded) {
-                loaded = true;
-                callback();
-            }
-        };
-
-    eventUtils.bind(window, 'load', callbackWrapper);
-    eventUtils
-        .documentReady()
-        .then(() => {
-            //NOTE: an iFrame may be removed in this moment
-            if (domUtils.isIFrameWindowInDOM(window) || domUtils.isTopWindow(window))
-                window.setTimeout(callbackWrapper, PAGE_LOAD_TIMEOUT);
-        });
-}
 
 //Init
 var RunnerBase = function () {
@@ -63,6 +43,8 @@ var RunnerBase = function () {
     this.listenNativeDialogs              = false;
     this.isFileDownloadingIntervalID      = null;
     this.iframeActionTargetWaitingStarted = false;
+
+    this.pageInitialXhrBarrier = null;
 
     this.assertionsAPI = new AssertionsAPI(function (err) {
         runner.stepIterator.onAssertionFailed(err);
@@ -181,7 +163,7 @@ RunnerBase.prototype._destroy = function () {
 };
 
 RunnerBase.prototype._initBarrier = function () {
-    actionBarrier.init();
+    this.pageInitialXhrBarrier = new XhrBarrier();
 };
 
 RunnerBase.prototype._initIFrameBehavior = function () {
@@ -305,13 +287,17 @@ RunnerBase.prototype._prepareStepsExecuting = function (callback, skipPageWaitin
     if (skipPageWaiting)
         callback();
     else {
-        waitPageLoad(() => {
-            window.setTimeout(() => {
-                transport.batchUpdate(() => {
-                    actionBarrier.waitPageInitialization(callback);
-                });
-            }, ANIMATIONS_WAIT_DELAY);
-        });
+        eventUtils
+            .documentReady()
+            .then(() => {
+                nativeMethods.setTimeout.call(window, () => {
+                    transport.batchUpdate(() => {
+                        this.pageInitialXhrBarrier
+                            .wait(true)
+                            .then(callback);
+                    });
+                }, ANIMATIONS_WAIT_DELAY);
+            });
     }
 };
 
@@ -373,7 +359,7 @@ RunnerBase.prototype._runInIFrame = function (iframe, stepName, step, stepNum) {
 
     pingIframe(iframe)
         .then(() => {
-            runner.iframeExistenceWatcherInterval = window.setInterval(iframeExistenceWatcher, IFRAME_EXISTENCE_WATCHING_INTERVAL);
+            runner.iframeExistenceWatcherInterval = nativeMethods.setInterval.call(window, iframeExistenceWatcher, IFRAME_EXISTENCE_WATCHING_INTERVAL);
             messageSandbox.sendServiceMsg(msg, iframe.contentWindow);
         })
         .catch(() => {
@@ -575,7 +561,7 @@ RunnerBase.prototype._onBeforeUnload = function (fromIFrame, callback) {
     transport.asyncServiceMsg({ cmd: COMMAND.uncheckFileDownloadingFlag }, function () {
 
         //NOTE: we need check it to determinate file downloading
-        runner.isFileDownloadingIntervalID = window.setInterval(function () {
+        runner.isFileDownloadingIntervalID = nativeMethods.setInterval.call(window, function () {
             transport.asyncServiceMsg({ cmd: COMMAND.getAndUncheckFileDownloadingFlag }, function (res) {
                 if (res) {
                     window.clearInterval(runner.isFileDownloadingIntervalID);

@@ -1,22 +1,19 @@
 import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
-import * as actionBarrier from './action-barrier/action-barrier';
-import * as xhrBarrier from './action-barrier/xhr';
 import async from './deps/async';
 
-var browserUtils = hammerhead.utils.browser;
-var JSON         = hammerhead.json;
+var browserUtils  = hammerhead.utils.browser;
+var JSON          = hammerhead.json;
+var nativeMethods = hammerhead.nativeMethods;
 
-var SETTINGS     = testCafeCore.SETTINGS;
-var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
-var serviceUtils = testCafeCore.serviceUtils;
-var domUtils     = testCafeCore.domUtils;
-var eventUtils   = testCafeCore.eventUtils;
+var SETTINGS          = testCafeCore.SETTINGS;
+var ERROR_TYPE        = testCafeCore.ERROR_TYPE;
+var XhrBarrier        = testCafeCore.XhrBarrier;
+var pageUnloadBarrier = testCafeCore.pageUnloadBarrier;
+var serviceUtils      = testCafeCore.serviceUtils;
+var domUtils          = testCafeCore.domUtils;
+var eventUtils        = testCafeCore.eventUtils;
 
-
-const STEP_DELAY                 = 500;
-const PROLONGED_STEP_DELAY       = 3000;
-const SHORT_PROLONGED_STEP_DELAY = 30;
 
 const SUSPEND_ACTIONS = {
     runStep:           'runStep',
@@ -31,11 +28,7 @@ var StepIterator = function (pingIframe) {
         step:                     0,
         stepNames:                null,
         testSteps:                null,
-        pageUnloading:            false,
-        stepDelayTimeout:         null,
         inAsyncAction:            false,
-        prolongStepDelay:         false,
-        shortProlongStepDelay:    false,
         stepsSharedData:          {},
         lastSyncedSharedDataJSON: null,
         stopped:                  false,
@@ -135,9 +128,7 @@ StepIterator.prototype._runStep = function () {
 
                 iterator.state.stepDoneCalled = false;
 
-                iterator.state.inAsyncAction         = false;
-                iterator.state.prolongStepDelay      = false;
-                iterator.state.shortProlongStepDelay = false;
+                iterator.state.inAsyncAction = false;
 
                 try {
                     iterator.callWithSharedDataContext(stepToRun);
@@ -179,78 +170,24 @@ StepIterator.prototype._runStep = function () {
     });
 };
 
-StepIterator.prototype._setupUnloadPrediction = function () {
-    var iterator       = this,
-        forms          = document.getElementsByTagName('form'),
-        prolong        = function () {
-            iterator.state.prolongStepDelay = true;
-        },
-        shortProlong   = function () {
-            iterator.state.shortProlongStepDelay = true;
-        },
-        beforeUnload   = function () {
-            iterator.state.pageUnloading = true;
-
-            iterator.eventEmitter.emit(StepIterator.BEFORE_UNLOAD_EVENT_RAISED);
-        },
-        unload         = function () {
-            iterator.state.pageUnloading = true;
-
-            iterator.eventEmitter.emit(StepIterator.UNLOAD_EVENT_RAISED);
-        },
-
-        overrideSubmit = function (form) {
-            var submit = form.submit;
-
-            form.submit = function () {
-                prolong();
-                submit.apply(form, arguments);
-            };
-        };
-
-    eventUtils.bind(document, 'submit', function (e) {
-        if (domUtils.isFormElement(e.target))
-            prolong();
-    });
-
-    for (var i = 0; i < forms.length; i++)
-        overrideSubmit(forms[i]);
-
-    var skipBeforeUnloadEvent = false;
-
-    eventUtils.bind(document, 'click', function (e) {
-        var target = (e.srcElement || e.target);
-
-        if (!e.defaultPrevented && target.tagName && domUtils.isAnchorElement(target)) {
-            var href = target.href;
-
-            if (target.hasAttribute('href') && !/(^javascript:)|(^mailto:)|(^tel:)|(^#)/.test(href))
-                prolong();
-            else if (browserUtils.isIE)
-                skipBeforeUnloadEvent = true;
-        }
-    });
+StepIterator.prototype._setupUnloadHandlers = function () {
+    var iterator       = this;
+    var onBeforeUnload = () => iterator.eventEmitter.emit(StepIterator.BEFORE_UNLOAD_EVENT_RAISED);
+    var onUnload       = () => iterator.eventEmitter.emit(StepIterator.UNLOAD_EVENT_RAISED);
 
     //NOTE: IE fires onbeforeunload even if link was just clicked without actual unloading
     function onBeforeUnloadIE () {
-        shortProlong();
-
-        window.setTimeout(function () {
+        nativeMethods.setTimeout.call(window, function () {
             //NOTE: except file downloading
             if (document.readyState === 'loading' &&
                 !(document.activeElement && domUtils.isAnchorElement(document.activeElement) &&
                 document.activeElement.hasAttribute('download')))
-                beforeUnload();
+                onBeforeUnload();
         }, 0);
     }
 
-    hammerhead.on(hammerhead.EVENTS.beforeUnload, browserUtils.isIE ? onBeforeUnloadIE : beforeUnload);
-
-    hammerhead.on(hammerhead.EVENTS.beforeUnload, function () {
-        skipBeforeUnloadEvent = false;
-    });
-
-    eventUtils.bind(window, 'unload', unload);
+    hammerhead.on(hammerhead.EVENTS.beforeUnload, browserUtils.isIE ? onBeforeUnloadIE : onBeforeUnload);
+    eventUtils.bind(window, 'unload', onUnload);
 };
 
 StepIterator.prototype._syncSharedDataWithServer = function (callback) {
@@ -280,31 +217,25 @@ StepIterator.prototype._syncSharedDataWithServer = function (callback) {
     }
 };
 
+StepIterator.prototype._waitActionSideEffectsCompletion = function (action, callback) {
+    var xhrBarrier = new XhrBarrier();
+
+    action.call(window, () => {
+        xhrBarrier
+            .wait()
+            .then(callback);
+    });
+};
+
 StepIterator.prototype._completeAsyncAction = function () {
     var iterator = this;
 
     if (iterator.state.stopped)
         return;
 
-    var run = function () {
-        if (!iterator.state.pageUnloading) {
-            iterator._runStep();
-            window.clearTimeout(iterator.state.stepDelayTimeout);
-            iterator.state.stepDelayTimeout = null;
-        }
-    };
-
-    //NOTE: browsers continues to execute script even if the request for the new page occurs. To workaround this
-    //we are using heuristic-based delays for the next step execution (see setupUnloadPrediction() method).
-    iterator.state.stepDelayTimeout = window.setTimeout(function () {
-        if (iterator.state.prolongStepDelay || iterator.state.shortProlongStepDelay) {
-            iterator.state.stepDelayTimeout = window.setTimeout(function () {
-                run();
-            }, iterator.state.prolongStepDelay ? PROLONGED_STEP_DELAY : SHORT_PROLONGED_STEP_DELAY);
-        }
-        else
-            run();
-    }, STEP_DELAY);
+    pageUnloadBarrier
+        .wait()
+        .then(() => iterator._runStep());
 };
 
 StepIterator.prototype.callWithSharedDataContext = function (func) {
@@ -336,10 +267,10 @@ StepIterator.prototype.asyncAction = function (action) {
 
     this.state.inAsyncAction = true;
 
+    iterator._waitActionSideEffectsCompletion(action, function () {
+        iterator._completeAsyncAction.apply(iterator, arguments);
+    });
     iterator._syncSharedDataWithServer(function () {
-        actionBarrier.waitActionSideEffectsCompletion(action, function () {
-            iterator._completeAsyncAction.apply(iterator, arguments);
-        });
     });
 };
 
@@ -362,15 +293,12 @@ StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator
                 // But we should support old-style iframes, so it'll be resolved here.
                 iterator._checkIFrame(element, function (iframe) {
                     if (!iframe) {
-                        actionBarrier.waitActionSideEffectsCompletion(function (barrierCallback) {
+                        iterator._waitActionSideEffectsCompletion(function (barrierCallback) {
                             action(element, barrierCallback);
                         }, asyncCallback);
                     }
                     else {
-                        var iFrameStartXhrBarrier = iframe.contentWindow[xhrBarrier.GLOBAL_START_XHR_BARRIER],
-                            iFrameWaitXhrBarrier  = iframe.contentWindow[xhrBarrier.GLOBAL_WAIT_XHR_BARRIER];
-
-                        actionBarrier.waitActionSideEffectsCompletion(function (barrierCallback) {
+                        iterator._waitActionSideEffectsCompletion(function (barrierCallback) {
                             var iFrameBeforeUnloadRaised = false;
 
                             iterator.iFrameActionCallback = function () {
@@ -381,11 +309,6 @@ StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator
 
                             iterator.waitedIFrame = iframe;
 
-                            iFrameStartXhrBarrier(function () {
-                                if (!iFrameBeforeUnloadRaised)
-                                    iterator.iFrameActionCallback();
-                            });
-
                             function onBeforeUnload () {
                                 eventUtils.unbind(iframe.contentWindow, 'beforeunload', onBeforeUnload);
                                 iFrameBeforeUnloadRaised = true;
@@ -393,8 +316,16 @@ StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator
 
                             eventUtils.bind(iframe.contentWindow, 'beforeunload', onBeforeUnload);
 
-                            action(element, function () {
-                                iFrameWaitXhrBarrier();
+                            var IframeXhrBarrier = iframe.contentWindow[XhrBarrier.GLOBAL_XHR_BARRIER_FIELD];
+                            var iframeXhrBarrier = new IframeXhrBarrier();
+
+                            action(element, () => {
+                                iframeXhrBarrier
+                                    .wait()
+                                    .then(() => {
+                                        if (!iFrameBeforeUnloadRaised)
+                                            iterator.iFrameActionCallback();
+                                    });
                             }, iframe);
                         }, asyncCallback);
                     }
@@ -418,7 +349,8 @@ StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator
 StepIterator.prototype._init = function () {
     this.initialized = true;
 
-    this._setupUnloadPrediction();
+    this._setupUnloadHandlers();
+    pageUnloadBarrier.init();
 };
 
 StepIterator.prototype.start = function (stepNames, testSteps, stepSetup, stepDone, nextStep) {
@@ -573,7 +505,7 @@ StepIterator.prototype.__waitFor = function (callback) {
     if (typeof this.globalWaitForTimeout !== 'number')
         this.globalWaitForTimeout = 0;
 
-    var timeoutID = window.setTimeout(function () {
+    var timeoutID = nativeMethods.setTimeout.call(window, function () {
         iterator.onError({
             type:     ERROR_TYPE.globalWaitForActionTimeoutExceeded,
             stepName: SETTINGS.get().CURRENT_TEST_STEP_NAME

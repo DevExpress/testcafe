@@ -9,10 +9,10 @@ var textSelection = testCafeCore.get('./utils/text-selection');
 
 var testCafeRunner     = window.getTestCafeModule('testCafeRunner');
 var automation         = testCafeRunner.get('./automation/automation');
-var MouseOptions       = testCafeRunner.get('./automation/options').MouseOptions;
-var ClickOptions       = testCafeRunner.get('./automation/options').ClickOptions;
-var TypeOptions        = testCafeRunner.get('./automation/options').TypeOptions;
-var SelectOptions      = testCafeRunner.get('./automation/options').SelectOptions;
+var MouseOptions       = testCafeRunner.get('../../test-run/commands/options').MouseOptions;
+var ClickOptions       = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
+var TypeOptions        = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
+var SelectOptions      = testCafeRunner.get('../../test-run/commands/options').SelectOptions;
 var ClickAutomation    = testCafeRunner.get('./automation/playback/click');
 var DblClickAutomation = testCafeRunner.get('./automation/playback/dblclick');
 var HoverAutomation    = testCafeRunner.get('./automation/playback/hover');
@@ -84,7 +84,7 @@ $(document).ready(function () {
                 .appendTo($(curDocument).find('body'));
 
         $(curDocument).bind(browserUtils.hasTouchEvents ? 'touchmove' : 'mousemove', function (e) {
-            var curMousePos    = browserUtils.hasTouchEvents ? {
+            var curMousePos = browserUtils.hasTouchEvents ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                 y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
             } : {
@@ -513,7 +513,7 @@ $(document).ready(function () {
 
         runHoverAutomation($input[0], function () {
             if (!completed) {
-                completed   = true;
+                completed = true;
                 ok('test success');
                 window.Date = savedDateNow;
                 startNext();
@@ -522,7 +522,7 @@ $(document).ready(function () {
 
         window.setTimeout(function () {
             if (!completed) {
-                completed       = true;
+                completed = true;
                 ok(false, 'timeout expired');
                 window.Date.now = savedDateNow;
                 startNext();

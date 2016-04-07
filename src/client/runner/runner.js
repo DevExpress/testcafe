@@ -5,11 +5,12 @@ import TestContextStorage from './test-context-storage';
 import * as browser from '../browser';
 
 
-var SETTINGS     = testCafeCore.SETTINGS;
-var COMMAND      = testCafeCore.COMMAND;
-var transport    = testCafeCore.transport;
-var serviceUtils = testCafeCore.serviceUtils;
-var Promise      = hammerhead.Promise;
+var SETTINGS      = testCafeCore.SETTINGS;
+var COMMAND       = testCafeCore.COMMAND;
+var transport     = testCafeCore.transport;
+var serviceUtils  = testCafeCore.serviceUtils;
+var Promise       = hammerhead.Promise;
+var nativeMethods = hammerhead.nativeMethods;
 
 
 const WAITING_FOR_SERVICE_MESSAGES_COMPLETED_DELAY = 1000;
@@ -100,7 +101,7 @@ Runner.prototype._beforeScreenshot = function () {
 
     // NOTE: we should keep the page url in document.title
     // while the screenshot is being created
-    this.checkTitleIntervalId = window.setInterval(() => {
+    this.checkTitleIntervalId = nativeMethods.setInterval.call(window, () => {
         if (document.title !== assignedTitle) {
             this.savedDocumentTitle = document.title;
             document.title          = assignedTitle;
@@ -109,7 +110,7 @@ Runner.prototype._beforeScreenshot = function () {
 
     document.title = assignedTitle;
 
-    return new Promise(resolve => window.setTimeout(resolve), APPLY_DOCUMENT_TITLE_TIMEOUT);
+    return new Promise(resolve => nativeMethods.setTimeout.call(window, resolve, APPLY_DOCUMENT_TITLE_TIMEOUT));
 };
 
 Runner.prototype._afterScreenshot = function () {
@@ -122,7 +123,7 @@ Runner.prototype._afterScreenshot = function () {
     this.eventEmitter.emit(RunnerBase.SCREENSHOT_CREATING_FINISHED_EVENT, {});
     this.stepIterator.resume();
 
-    return new Promise(resolve => window.setTimeout(resolve), RESTORE_DOCUMENT_TITLE_TIMEOUT);
+    return new Promise(resolve => nativeMethods.setTimeout.call(window, resolve, RESTORE_DOCUMENT_TITLE_TIMEOUT));
 };
 
 Runner.prototype._reportErrorToServer = function (err, isAssertion) {

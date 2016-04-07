@@ -7,7 +7,7 @@ var domUtils     = testCafeCore.get('./utils/dom');
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var automation     = testCafeRunner.get('./automation/automation');
 var mouseUtils     = testCafeRunner.get('./utils/mouse');
-var TypeOptions    = testCafeRunner.get('./automation/options').TypeOptions;
+var TypeOptions    = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
 var TypeAutomation = testCafeRunner.get('./automation/playback/type');
 
 automation.init();

@@ -2,7 +2,7 @@
   "fixtures": [
     {
       "name": "Fixture1",
-      "page": "about:blank",
+      "pageUrl": "about:blank",
       "tests": [
         {
           "name": "Fixture1Test1",
@@ -30,16 +30,18 @@
     },
     {
       "name": "Fixture2",
-      "page": "http://example.org",
-      "tests": [{
-        "name": "Fixture2Test1",
-        "commands": [
-          {
-            "type": "click",
-            "arguments": {}
-          }
-        ]
-      }]
+      "pageUrl": "http://example.org",
+      "tests": [
+        {
+          "name": "Fixture2Test1",
+          "commands": [
+            {
+              "type": "click",
+              "arguments": {}
+            }
+          ]
+        }
+      ]
     }
   ]
 }

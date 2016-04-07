@@ -314,7 +314,7 @@ $(document).ready(function () {
         var $a          = $('<a href="http://test.org">Link</a>').appendTo('body'),
             clickRaised = false;
 
-        stepIterator._setupUnloadPrediction();
+        stepIterator._setupUnloadHandlers();
 
         $a.on('click', function (e) {
             clickRaised = true;

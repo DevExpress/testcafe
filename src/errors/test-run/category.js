@@ -4,5 +4,6 @@
 // -------------------------------------------------------------
 
 export default {
-    actionError: 'actionError'
+    actionError:        'actionError',
+    unhandledException: 'unhandledException'
 };

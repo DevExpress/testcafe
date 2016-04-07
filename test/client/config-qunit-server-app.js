@@ -27,6 +27,11 @@ function urlRewriteProxyRequest (req, res, next) {
     next();
 }
 
+function preventCaching (res) {
+    res.setHeader('cache-control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('pragma', 'no-cache');
+}
+
 
 module.exports = function (app) {
     app.use(urlRewriteProxyRequest);
@@ -42,6 +47,8 @@ module.exports = function (app) {
 
     app.all('/xhr-test/:delay', function (req, res) {
         var delay = req.params.delay || 0;
+
+        preventCaching(res);
 
         setTimeout(function () {
             res.send(req.originalUrl || req.url);

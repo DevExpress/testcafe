@@ -1,11 +1,11 @@
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
-var SelectOptions  = testCafeRunner.get('./automation/options').SelectOptions;
-var OffsetOptions  = testCafeRunner.get('./automation/options').OffsetOptions;
-var MouseOptions   = testCafeRunner.get('./automation/options').MouseOptions;
-var ClickOptions   = testCafeRunner.get('./automation/options').ClickOptions;
-var DragOptions    = testCafeRunner.get('./automation/options').DragOptions;
-var MoveOptions    = testCafeRunner.get('./automation/options').MoveOptions;
-var TypeOptions    = testCafeRunner.get('./automation/options').TypeOptions;
+var SelectOptions  = testCafeRunner.get('../../test-run/commands/options').SelectOptions;
+var OffsetOptions  = testCafeRunner.get('../../test-run/commands/options').OffsetOptions;
+var MouseOptions   = testCafeRunner.get('../../test-run/commands/options').MouseOptions;
+var ClickOptions   = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
+var DragOptions    = testCafeRunner.get('../../test-run/commands/options').DragOptions;
+var MoveOptions    = testCafeRunner.get('../../test-run/commands/options').MoveOptions;
+var TypeOptions    = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
 var TYPE           = testCafeRunner.get('../../errors/test-run/type');
 var CATEGORY       = testCafeRunner.get('../../errors/test-run/category');
 
@@ -263,7 +263,7 @@ test('ClickOptions', function () {
     throws(
         function () {
             new ClickOptions({
-                caretPos: null
+                caretPos: -1
             }, true);
         },
         {

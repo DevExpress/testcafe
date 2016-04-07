@@ -8,6 +8,8 @@ import * as transport from './transport';
 import * as sandboxedJQuery from './sandboxed-jquery';
 import extendJQuerySelectors from './jquery-extensions/custom-selectors';
 import * as jQueryDataMethodProxy from './jquery-extensions/data-proxy';
+import XhrBarrier from './xhr-barrier';
+import * as pageUnloadBarrier from './page-unload-barrier';
 
 import * as serviceUtils from './utils/service';
 import * as domUtils from './utils/dom';
@@ -17,6 +19,8 @@ import * as styleUtils from './utils/style';
 import * as eventUtils from './utils/event';
 import * as arrayUtils from './utils/array';
 import * as textSelection from './utils/text-selection';
+import waitFor from './utils/wait-for';
+import delay from './utils/delay';
 
 exports.SETTINGS              = SETTINGS;
 exports.CROSS_DOMAIN_MESSAGES = CROSS_DOMAIN_MESSAGES;
@@ -26,6 +30,8 @@ exports.extendJQuerySelectors = extendJQuerySelectors;
 exports.jQueryDataMethodProxy = jQueryDataMethodProxy;
 exports.transport             = transport;
 exports.sandboxedJQuery       = sandboxedJQuery;
+exports.XhrBarrier            = XhrBarrier;
+exports.pageUnloadBarrier     = pageUnloadBarrier;
 
 exports.serviceUtils    = serviceUtils;
 exports.domUtils        = domUtils;
@@ -35,6 +41,8 @@ exports.styleUtils      = styleUtils;
 exports.eventUtils      = eventUtils;
 exports.arrayUtils      = arrayUtils;
 exports.textSelection   = textSelection;
+exports.waitFor         = waitFor;
+exports.delay           = delay;
 
 exports.get = require;
 

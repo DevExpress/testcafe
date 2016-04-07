@@ -37,4 +37,4 @@ export default {
             cmd: CURSOR_UI_MESSAGES.buttonUpRequest
         }, CURSOR_UI_MESSAGES.buttonUpResponse, window.parent);
     }
-}
+};

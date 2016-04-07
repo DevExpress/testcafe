@@ -6,6 +6,7 @@ import Runner from './runner';
 
 // Const
 const CORE_SCRIPT   = read('./client/core/index.js');
+const DRIVER_SCRIPT = read('./client/driver/index.js');
 const RUNNER_SCRIPT = read('./client/runner/index.js');
 const UI_SCRIPT     = read('./client/ui/index.js');
 const UI_STYLE      = read('./client/ui/styles.css');
@@ -24,6 +25,7 @@ export default class TestCafe {
 
     _registerAssets () {
         this.proxy.GET('/testcafe-core.js', { content: CORE_SCRIPT, contentType: 'application/x-javascript' });
+        this.proxy.GET('/testcafe-driver.js', { content: DRIVER_SCRIPT, contentType: 'application/x-javascript' });
         this.proxy.GET('/testcafe-runner.js', { content: RUNNER_SCRIPT, contentType: 'application/x-javascript' });
         this.proxy.GET('/testcafe-ui.js', { content: UI_SCRIPT, contentType: 'application/x-javascript' });
         this.proxy.GET('/testcafe-ui-sprite.png', { content: UI_SPRITE, contentType: 'image/png' });

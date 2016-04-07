@@ -8,8 +8,8 @@ var SETTINGS     = testCafeCore.get('./settings').get();
 
 var testCafeRunner  = window.getTestCafeModule('testCafeRunner');
 var automation      = testCafeRunner.get('./automation/automation');
-var ClickOptions    = testCafeRunner.get('./automation/options').ClickOptions;
-var TypeOptions     = testCafeRunner.get('./automation/options').TypeOptions;
+var ClickOptions    = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
+var TypeOptions     = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
 var ClickAutomation = testCafeRunner.get('./automation/playback/click');
 var TypeAutomation  = testCafeRunner.get('./automation/playback/type');
 var PressAutomation = testCafeRunner.get('./automation/playback/press');
@@ -355,8 +355,8 @@ var input1,
     },
 
     runTypeAutomation            = function (element, text, callback) {
-        var offsets        = mouseUtils.getOffsetOptions(element);
-        var typeOptions    = new TypeOptions({
+        var offsets     = mouseUtils.getOffsetOptions(element);
+        var typeOptions = new TypeOptions({
             offsetX: offsets.offsetX,
             offsetY: offsets.offsetY
         });
@@ -569,7 +569,7 @@ asyncTest('B238617 - Label with "for" attribute focusing - check no internal fla
                 newLabelProperties = dumpProperties($label[0]);
                 deepEqual(getArrayDiff(labelProperties, newLabelProperties), getArrayDiff([], []), 'check properties');
             });
-            newLabelProperties     = dumpProperties($label[0]);
+            newLabelProperties = dumpProperties($label[0]);
             deepEqual(getArrayDiff(labelProperties, newLabelProperties), getArrayDiff([], []), 'check properties');
 
         }, 2000);
@@ -598,7 +598,7 @@ asyncTest('B238617 - Label with "for" attribute focusing - non-valid "for", chec
                 newLabelProperties = dumpProperties($label[0]);
                 deepEqual(getArrayDiff(labelProperties, newLabelProperties), getArrayDiff([], []), 'check properties');
             });
-            newLabelProperties     = dumpProperties($label[0]);
+            newLabelProperties = dumpProperties($label[0]);
             deepEqual(getArrayDiff(labelProperties, newLabelProperties), getArrayDiff([], []), 'check properties');
 
         }, 2000);
@@ -782,7 +782,7 @@ if (browserUtils.isIE && browserUtils.version < 12)
                         //this code prevent page hanging
                         if (Date.now() - startTime < timeout) {
                             if (document.activeElement !== this) {
-                                var savedActiveElement   = document.activeElement;
+                                var savedActiveElement = document.activeElement;
                                 element.focus();
                                 var activeElementChanged = savedActiveElement !== document.activeElement;
                                 if (e.eventPhase === 2)
@@ -830,7 +830,7 @@ if (browserUtils.isIE)
             $input[0].focus();
             ok(savedActiveElement !==
                document.activeElement, 'check that active element was changed synchronously after focus');
-            savedActiveElement     = document.activeElement;
+            savedActiveElement = document.activeElement;
 
             if (browserUtils.version < 12)
                 ok(!focusHandled, 'check that focus event was not raised synchronously after focus() method calling');
@@ -878,9 +878,9 @@ asyncTest('Change event not raised after press action if element was focused by 
 if (browserUtils.isIE)
     asyncTest('B254768 - Blur event should be raised after focus event, if element becomes invisible synchronously after focus() method executing', function () {
         runAsyncTest(function () {
-            var focused          = false,
-                blurred          = false,
-                lastEvent        = undefined;
+            var focused   = false,
+                blurred   = false,
+                lastEvent = undefined;
 
             input2.addEventListener('focus', function (e) {
                 focused   = true;
