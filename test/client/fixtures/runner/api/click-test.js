@@ -1018,8 +1018,7 @@ $(document).ready(function () {
             .appendTo('body')
             .addClass(TEST_ELEMENT_CLASS);
         var $area = $('<area shape="rect" coords="0,0,200,200" title="Area"/>').appendTo($map);
-
-        $('<img usemap="#map"/>')
+        var $img  = $('<img usemap="#map"/>')
             .attr('src', window.QUnitGlobals.getResourceUrl("../../../data/runner/img.png"))
             .css({
                 width:  '200px',
@@ -1028,23 +1027,27 @@ $(document).ready(function () {
             .appendTo('body')
             .addClass(TEST_ELEMENT_CLASS);
 
+        function clickHandler (e) {
+            if (this === e.target)
+                $(this).data('clicked', true);
+        }
+
         runAsyncTest(
             function () {
                 $('#button1').remove();
 
-                $area.click(function (e) {
-                    if (this === e.target)
-                        $area.data('clicked', true);
-                });
+                $area.click(clickHandler);
+                $img.click(clickHandler);
 
                 window.setTimeout(function () {
                     actionsAPI.click($area);
-                }, 500);
+                }, 1500);
             },
             function () {
-                ok($("area").data('clicked'));
+                ok($area.data('clicked'), 'area element was clicked');
+                notOk($img.data('clicked'), 'img element was not clicked');
             },
-            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
+            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT * 2)
         );
     });
 
