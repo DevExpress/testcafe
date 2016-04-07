@@ -1,13 +1,13 @@
 ---
 layout: docs
 title: Runner Class
-permalink: /documentation/using-testcafe/programming-interface/Runner/
+permalink: /documentation/using-testcafe/programming-interface/Runner
 ---
 # Runner Class
 
 An object that configures and launches test runs.
 
-Created by the [testCafe.createRunner](/testcafe/documentation/using-testcafe/programming-interface/TestCafe/#createRunner) function.
+Created by the [testCafe.createRunner](TestCafe.md#createRunner) function.
 
 **Example**
 
@@ -92,10 +92,10 @@ Each `browser` parameter can be one of the following.
 
 Type                                                                                                 | Description                                                                                                                                                           | Local/Remote
 ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------
-String                                                                                               | The browser's short name - *alias*. Find the list of aliases in the [Browser Aliases](/testcafe/documentation/using-testcafe/common-concepts/browser-aliases/) topic. | Local browser
+String                                                                                               | The browser's short name - *alias*. Find the list of aliases in the [Browser Aliases](../common-concepts/browser-aliases.md) topic.                                   | Local browser
 String                                                                                               | The path to the browser executable.                                                                                                                                   | Local browser
 `{path: String, cmd: String}`                                                                        | The path to the browser executable (`path`) with command line parameters (`cmd`).                                                                                     | Local browser
-[BrowserConnection](/testcafe/documentation/using-testcafe/programming-interface/BrowserConnection/) | The remote browser connection.                                                                                                                                        | Remote browser
+[BrowserConnection](BrowserConnection.md)                                                            | The remote browser connection.                                                                                                                                        | Remote browser
 
 You are free to mix different types of objects in one function call. The `browsers` function concatenates the settings when called several times.
 

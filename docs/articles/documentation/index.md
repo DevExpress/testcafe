@@ -8,6 +8,6 @@ inMainMenu: true
 
 * [Getting Started](.)
 * [Test API](.)
-* [Using TestCafe](/testcafe/documentation/using-testcafe)
+* [Using TestCafe](using-testcafe/index.md)
 * [Extending TestCafe](.)
 * [Recipes](.)
