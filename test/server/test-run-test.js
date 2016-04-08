@@ -2,7 +2,7 @@ var expect          = require('chai').expect;
 var Promise         = require('pinkie');
 var noop            = require('lodash').noop;
 var TestRun         = require('../../lib/test-run');
-var ClickCommand    = require('../../lib/test-run/commands').Click;
+var createCommand   = require('../../lib/test-run/commands').createCommandFromObject;
 var COMMAND_TYPE    = require('../../lib/test-run/commands/type');
 var CLIENT_MESSAGES = require('../../lib/test-run/client-messages');
 
@@ -17,7 +17,7 @@ function nextTick () {
 }
 
 describe('TestRun', function () {
-    it('Should raise an error on an attempt to execute a new command while the previous command execution is not yet finished.', function () {
+    it('Should raise an error on an attempt to execute a new command while the previous command execution is not yet finished', function () {
         var expectedErrorMessage = 'An attempt to execute a command when a previous command is still being executed was detected.';
         var actualError          = null;
         var testMock             = {
@@ -27,10 +27,16 @@ describe('TestRun', function () {
 
         var testRun = new TestRun(testMock);
 
-        testRun.executeCommand(new ClickCommand());
+        testRun.executeCommand(createCommand({
+            type:     COMMAND_TYPE.click,
+            selector: '#yo'
+        }));
 
         try {
-            testRun.executeCommand(new ClickCommand());
+            testRun.executeCommand(createCommand({
+                type:     COMMAND_TYPE.click,
+                selector: '#yo'
+            }));
         }
         catch (err) {
             actualError = err;
@@ -41,12 +47,17 @@ describe('TestRun', function () {
 
     //TODO: replace the following tests with functional when we have enough functionality
     it('Should reject the next command if there is no pending command and a js-error is raised', function () {
-        var clickCommand = new ClickCommand();
-        var callsite     = 'callsite';
+        var clickCommand = createCommand({
+            type:     COMMAND_TYPE.click,
+            selector: '#yo'
+        });
+
+        var callsite = 'callsite';
 
         var testMock = {
             fixture: 'fixture',
-            fn:      function (testRun) {
+
+            fn: function (testRun) {
                 return testRun.executeCommand(clickCommand, callsite);
             }
         };

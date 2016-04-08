@@ -59,7 +59,7 @@ function runAutomation (element, command) {
     var automation = null;
 
     if (command.type === COMMAND_TYPE.click)
-        automation = new ClickAutomation(element, command.arguments.options);
+        automation = new ClickAutomation(element, command.options);
 
     return automation
         .run()
@@ -75,7 +75,7 @@ export default function executeActionCommand (command) {
     var completePromise = new Promise(resolve => {
         var xhrBarrier    = null;
         var commandResult = null;
-        var selector      = () => window.eval(command.arguments.selector);
+        var selector      = () => window.eval(command.selector);
 
         ensureElement(selector)
             .then(element => {

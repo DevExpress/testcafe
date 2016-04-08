@@ -1,77 +1,153 @@
-var expect                          = require('chai').expect;
-var TYPE                            = require('../../lib/test-run/commands/type');
-var createCommand                   = require('../../lib/test-run/commands').createCommandFromObject;
-var ClickCommand                    = require('../../lib/test-run/commands').Click;
-var TestDoneCommand                 = require('../../lib/test-run/commands').TestDone;
-var ClickOptions                    = require('../../lib/test-run/commands/options').ClickOptions;
-var ActionSelectorTypeError         = require('../../lib/errors/test-run').ActionSelectorTypeError;
-var ActionOptionsTypeError          = require('../../lib/errors/test-run').ActionOptionsTypeError;
-var ActionPositiveNumberOptionError = require('../../lib/errors/test-run').ActionPositiveNumberOptionError;
+var expect         = require('chai').expect;
+var TYPE           = require('../../lib/test-run/commands/type');
+var createCommand  = require('../../lib/test-run/commands').createCommandFromObject;
+var ERROR_TYPE     = require('../../lib/errors/test-run/type');
+var ERROR_CATEGORY = require('../../lib/errors/test-run/category');
 
-function wrapWithQuerySelectorFunction (str) {
-    return '(function () { return document.querySelector(\'' + str + '\') })()';
+// NOTE: chai's throws doesn't perform deep comparison of error objects
+function assertThrow (fn, expectedErr) {
+    var actualErr = null;
+
+    try {
+        fn();
+    }
+    catch (err) {
+        actualErr = err;
+    }
+
+    expect(actualErr).eql(expectedErr);
 }
 
 describe('Test run commands', function () {
-    describe('Construction from object', function () {
+    describe('Construction from object and serialization', function () {
         it('Should create ClickCommand from object', function () {
             var commandObj = {
-                type:      TYPE.click,
-                arguments: {
-                    selector: '',
-                    options:  {}
+                type:     TYPE.click,
+                selector: '#yo',
+                yo:       'test',
+
+                options: {
+                    offsetX: 23,
+                    dummy:   'yo'
                 }
             };
 
             var command = createCommand(commandObj);
 
-            expect(command instanceof ClickCommand).to.be.true;
-            expect(command.type).eql(commandObj.type);
-            expect(command.arguments.options).eql(new ClickOptions());
-            expect(command.arguments.selector).eql(wrapWithQuerySelectorFunction(commandObj.arguments.selector));
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.click,
+                selector: "(function () { return document.querySelector('#yo') })()",
+
+                options: {
+                    offsetX:  23,
+                    offsetY:  0,
+                    caretPos: null,
+
+                    modifiers: {
+                        ctrl:  false,
+                        alt:   false,
+                        shift: false,
+                        meta:  false
+                    }
+                }
+            });
+
+            commandObj = {
+                type:     TYPE.click,
+                selector: '#yo'
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.click,
+                selector: "(function () { return document.querySelector('#yo') })()",
+
+                options: {
+                    offsetX:  0,
+                    offsetY:  0,
+                    caretPos: null,
+
+                    modifiers: {
+                        ctrl:  false,
+                        alt:   false,
+                        shift: false,
+                        meta:  false
+                    }
+                }
+            });
         });
 
-        it('TestDone', function () {
-            var commandObj = {
-                type: TYPE.testDone
-            };
+        it('Should create TestDone command from object', function () {
+            var commandObj = { type: TYPE.testDone, hey: '42' };
 
             var command = createCommand(commandObj);
 
-            expect(command instanceof TestDoneCommand).to.be.true;
-            expect(command.type).eql(commandObj.type);
+            expect(JSON.parse(JSON.stringify(command))).eql({ type: TYPE.testDone });
         });
     });
 
     describe('Validation', function () {
         it('Should validate СlickСommand', function () {
-            expect(function () {
-                return new ClickCommand({
-                    arguments: {
-                        selector: 1
-                    }
-                });
-            }).to.throw(ActionSelectorTypeError);
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.click
+                    });
+                },
+                {
+                    category:   ERROR_CATEGORY.actionError,
+                    type:       ERROR_TYPE.actionSelectorTypeError,
+                    actualType: 'undefined'
+                }
+            );
 
-            expect(function () {
-                return new ClickCommand({
-                    arguments: {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.click,
+                        selector: 1
+                    });
+                },
+                {
+                    category:   ERROR_CATEGORY.actionError,
+                    type:       ERROR_TYPE.actionSelectorTypeError,
+                    actualType: 'number'
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.click,
                         selector: 'element',
                         options:  1
-                    }
-                });
-            }).to.throw(ActionOptionsTypeError);
+                    });
+                },
+                {
+                    category:   ERROR_CATEGORY.actionError,
+                    type:       ERROR_TYPE.actionOptionsTypeError,
+                    actualType: 'number'
+                }
+            );
 
-            expect(function () {
-                return new ClickCommand({
-                    arguments: {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.click,
                         selector: 'element',
                         options:  {
                             offsetX: 'offsetX'
                         }
-                    }
-                });
-            }).to.throw(ActionPositiveNumberOptionError);
+                    });
+                },
+                {
+                    category:    ERROR_CATEGORY.actionError,
+                    type:        ERROR_TYPE.actionPositiveNumberOptionError,
+                    optionName:  'offsetX',
+                    actualValue: 'string'
+                }
+            );
         });
     });
 });

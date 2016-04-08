@@ -1,18 +1,30 @@
-/*eslint no-unused-vars:0*/
+var expect         = require('chai').expect;
+var SelectOptions  = require('../../lib/test-run/commands/options').SelectOptions;
+var OffsetOptions  = require('../../lib/test-run/commands/options').OffsetOptions;
+var MouseOptions   = require('../../lib/test-run/commands/options').MouseOptions;
+var ClickOptions   = require('../../lib/test-run/commands/options').ClickOptions;
+var DragOptions    = require('../../lib/test-run/commands/options').DragOptions;
+var MoveOptions    = require('../../lib/test-run/commands/options').MoveOptions;
+var TypeOptions    = require('../../lib/test-run/commands/options').TypeOptions;
+var ERROR_TYPE     = require('../../lib/errors/test-run/type');
+var ERROR_CATEGORY = require('../../lib/errors/test-run/category');
 
-var expect        = require('chai').expect;
-var SelectOptions = require('../../lib/test-run/commands/options').SelectOptions;
-var OffsetOptions = require('../../lib/test-run/commands/options').OffsetOptions;
-var MouseOptions  = require('../../lib/test-run/commands/options').MouseOptions;
-var ClickOptions  = require('../../lib/test-run/commands/options').ClickOptions;
-var DragOptions   = require('../../lib/test-run/commands/options').DragOptions;
-var MoveOptions   = require('../../lib/test-run/commands/options').MoveOptions;
-var TypeOptions   = require('../../lib/test-run/commands/options').TypeOptions;
-var TYPE          = require('../../lib/errors/test-run/type');
-var CATEGORY      = require('../../lib/errors/test-run/category');
+// NOTE: chai's throws doesn't perform deep comparison of error objects
+function assertThrow (fn, expectedErr) {
+    var actualErr = null;
+
+    try {
+        fn();
+    }
+    catch (err) {
+        actualErr = err;
+    }
+
+    expect(actualErr).eql(expectedErr);
+}
 
 describe('Test run command options', function () {
-    describe('Construction from object', function () {
+    describe('Construction from object and serialization', function () {
         it('Should create SelectOptions from object', function () {
             var options = new SelectOptions({
                 endPos: 15,
@@ -181,113 +193,133 @@ describe('Test run command options', function () {
 
     describe('Validation', function () {
         it('Should validate OffsetOptions', function () {
-            expect(function () {
-                new OffsetOptions({
-                    offsetX: null
-                }, true);
-            }).to.throw({
-                category:    CATEGORY.actionError,
-                type:        TYPE.actionPositiveNumberOptionError,
-                actualValue: 'object',
-                optionName:  'offsetX'
-            });
+            assertThrow(
+                function () {
+                    return new OffsetOptions({ offsetX: null }, true);
+                },
+                {
+                    category:    ERROR_CATEGORY.actionError,
+                    type:        ERROR_TYPE.actionPositiveNumberOptionError,
+                    actualValue: 'object',
+                    optionName:  'offsetX'
+                }
+            );
 
-            expect(function () {
-                new OffsetOptions({
-                    offsetY: -3
-                }, true);
-            }).to.throw({
-                category:    CATEGORY.actionError,
-                type:        TYPE.actionPositiveNumberOptionError,
-                actualValue: '-3',
-                optionName:  'offsetY'
-            });
+            assertThrow(
+                function () {
+                    return new OffsetOptions({ offsetY: -3 }, true);
+                },
+                {
+                    category:    ERROR_CATEGORY.actionError,
+                    type:        ERROR_TYPE.actionPositiveNumberOptionError,
+                    actualValue: -3,
+                    optionName:  'offsetY'
+                }
+            );
         });
 
         it('Should validate MouseOptions', function () {
-            expect(function () {
-                new MouseOptions({ modifiers: { ctrl: 42 } }, true);
-            }).to.throw({
-                category:    CATEGORY.actionError,
-                type:        TYPE.actionBooleanOptionError,
-                actualValue: 'number',
-                optionName:  'modifiers.ctrl'
-            });
+            assertThrow(
+                function () {
+                    return new MouseOptions({ modifiers: { ctrl: 42 } }, true);
+                },
+                {
+                    category:    ERROR_CATEGORY.actionError,
+                    type:        ERROR_TYPE.actionBooleanOptionError,
+                    actualValue: 'number',
+                    optionName:  'modifiers.ctrl'
+                }
+            );
 
-            expect(function () {
-                new MouseOptions({ modifiers: { alt: 42 } }, true);
-            }).to.throw({
-                category:    CATEGORY.actionError,
-                type:        TYPE.actionBooleanOptionError,
-                actualValue: 'number',
-                optionName:  'modifiers.alt'
-            });
+            assertThrow(
+                function () {
+                    return new MouseOptions({ modifiers: { alt: 42 } }, true);
+                },
+                {
+                    category:    ERROR_CATEGORY.actionError,
+                    type:        ERROR_TYPE.actionBooleanOptionError,
+                    actualValue: 'number',
+                    optionName:  'modifiers.alt'
+                }
+            );
 
-            expect(function () {
-                new MouseOptions({ modifiers: { shift: 42 } }, true);
-            }).to.throw({
-                category:    CATEGORY.actionError,
-                type:        TYPE.actionBooleanOptionError,
-                actualValue: 'number',
-                optionName:  'modifiers.shift'
-            });
+            assertThrow(
+                function () {
+                    return new MouseOptions({ modifiers: { shift: 42 } }, true);
+                },
+                {
+                    category:    ERROR_CATEGORY.actionError,
+                    type:        ERROR_TYPE.actionBooleanOptionError,
+                    actualValue: 'number',
+                    optionName:  'modifiers.shift'
+                }
+            );
 
-            expect(function () {
-                new MouseOptions({ modifiers: { meta: 42 } }, true);
-            }).to.throw({
-                category:    CATEGORY.actionError,
-                type:        TYPE.actionBooleanOptionError,
-                actualValue: 'number',
-                optionName:  'modifiers.meta'
-            });
+            assertThrow(
+                function () {
+                    return new MouseOptions({ modifiers: { meta: 42 } }, true);
+                },
+                {
+                    category:    ERROR_CATEGORY.actionError,
+                    type:        ERROR_TYPE.actionBooleanOptionError,
+                    actualValue: 'number',
+                    optionName:  'modifiers.meta'
+                }
+            );
         });
 
         it('Should validate ClickOptions', function () {
-            expect(function () {
-                new ClickOptions({
-                    caretPos: -1
-                }, true);
-            }).to.throw({
-                category:    CATEGORY.actionError,
-                type:        TYPE.actionPositiveNumberOptionError,
-                actualValue: 'object',
-                optionName:  'caretPos'
-            });
+            assertThrow(
+                function () {
+                    return new ClickOptions({ caretPos: -1 }, true);
+                },
+                {
+                    category:    ERROR_CATEGORY.actionError,
+                    type:        ERROR_TYPE.actionPositiveNumberOptionError,
+                    actualValue: -1,
+                    optionName:  'caretPos'
+                }
+            );
         });
 
         it('Should validate DragOptions', function () {
-            expect(function () {
-                new DragOptions({
-                    dragOffsetX: null
-                }, true);
-            }).to.throw({
-                category:    CATEGORY.actionError,
-                type:        TYPE.actionNumberOptionError,
-                actualValue: 'object',
-                optionName:  'dragOffsetX'
-            });
+            assertThrow(
+                function () {
+                    return new DragOptions({ dragOffsetX: null }, true);
+                },
+                {
+                    category:    ERROR_CATEGORY.actionError,
+                    type:        ERROR_TYPE.actionNumberOptionError,
+                    actualValue: 'object',
+                    optionName:  'dragOffsetX'
+                }
+            );
 
-            expect(function () {
-                new DragOptions({
-                    dragOffsetY: null
-                }, true);
-            }).to.throw({
-                category:    CATEGORY.actionError,
-                type:        TYPE.actionNumberOptionError,
-                actualValue: 'object',
-                optionName:  'dragOffsetY'
-            });
+            assertThrow(
+                function () {
+                    return new DragOptions({ dragOffsetY: null }, true);
+                },
+                {
+                    category:    ERROR_CATEGORY.actionError,
+                    type:        ERROR_TYPE.actionNumberOptionError,
+                    actualValue: 'object',
+                    optionName:  'dragOffsetY'
+                }
+            );
         });
 
         it('Should validate TypeOptions', function () {
-            expect(function () {
-                new TypeOptions({ replace: 42 }, true);
-            }).to.throw({
-                category:    CATEGORY.actionError,
-                type:        TYPE.actionBooleanOptionError,
-                actualValue: 'number',
-                optionName:  'replace'
-            });
+            assertThrow(
+                function () {
+                    return new TypeOptions({ replace: 42 }, true);
+                },
+                {
+                    category:    ERROR_CATEGORY.actionError,
+                    type:        ERROR_TYPE.actionBooleanOptionError,
+                    actualValue: 'number',
+                    optionName:  'replace'
+                }
+            );
         });
 
     });

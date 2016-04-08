@@ -9,11 +9,11 @@
           "commands": [
             {
               "type": "click",
-              "arguments": {}
+              "selector": "#yo"
             },
             {
-              "type": "assertion",
-              "arguments": {}
+              "type": "click",
+              "selector": "#yo"
             }
           ]
         },
@@ -22,7 +22,7 @@
           "commands": [
             {
               "type": "click",
-              "arguments": {}
+              "selector": "#yo"
             }
           ]
         }
@@ -37,7 +37,7 @@
           "commands": [
             {
               "type": "click",
-              "arguments": {}
+              "selector": "#yo"
             }
           ]
         }
