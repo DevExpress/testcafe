@@ -4,7 +4,7 @@ import Promise from 'pinkie';
 import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import { TestDone as TestDoneCommand } from './commands';
+import { TestDoneCommand } from './commands';
 import COMMAND_TYPE from './commands/type';
 import CLIENT_MESSAGES from './client-messages';
 

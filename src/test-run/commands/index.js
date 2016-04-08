@@ -18,32 +18,36 @@ function actionOptions (option, val) {
         throw new ActionOptionsTypeError(type);
 }
 
+// Initializers
+function initSelector (val) {
+    return `(function () { return document.querySelector('${val}') })()`;
+}
+
+function initClickOptions (val) {
+    return new ClickOptions(val, true);
+}
+
 // Commands
-export class Click extends Assignable {
+class ClickCommand extends Assignable {
     constructor (obj) {
         super(obj);
 
-        this.type      = TYPE.click;
-        this.arguments = {
-            selector: null,
-            options:  {}
-        };
+        this.type     = TYPE.click;
+        this.selector = null;
+        this.options  = null;
 
         this._assignFrom(obj, true);
-
-        this.arguments.selector = `(function () { return document.querySelector('${this.arguments.selector}') })()`;
-        this.arguments.options  = new ClickOptions(this.arguments.options, true);
     }
 
     _getAssignableProperties () {
         return [
-            { name: 'arguments.selector', type: selector },
-            { name: 'arguments.options', type: actionOptions }
+            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'options', type: actionOptions, init: initClickOptions, required: true }
         ];
     }
 }
 
-export class TestDone {
+export class TestDoneCommand {
     constructor () {
         this.type = TYPE.testDone;
     }
@@ -52,9 +56,9 @@ export class TestDone {
 // Factory
 export function createCommandFromObject (obj) {
     if (obj.type === TYPE.click)
-        return new Click(obj);
+        return new ClickCommand(obj);
 
     if (obj.type === TYPE.testDone)
-        return new TestDone();
+        return new TestDoneCommand();
 }
 

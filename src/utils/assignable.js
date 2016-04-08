@@ -15,13 +15,13 @@ export default class Assignable {
         var props = this._getAssignableProperties();
 
         for (var i = 0; i < props.length; i++) {
-            var name      = props[i].name;
-            var validator = props[i].type;
-            var path      = name.split('.');
-            var lastIdx   = path.length - 1;
-            var last      = path[lastIdx];
-            var srcObj    = obj;
-            var destObj   = this;
+            var { name, type, required, init } = props[i];
+
+            var path    = name.split('.');
+            var lastIdx = path.length - 1;
+            var last    = path[lastIdx];
+            var srcObj  = obj;
+            var destObj = this;
 
             for (var j = 0; j < lastIdx && srcObj && destObj; j++) {
                 srcObj  = srcObj[path[j]];
@@ -31,11 +31,11 @@ export default class Assignable {
             if (srcObj && destObj) {
                 var srcVal = srcObj[last];
 
-                if (srcVal !== void 0) {
-                    if (validate && validator)
-                        validator(name, srcVal);
+                if (srcVal !== void 0 || required) {
+                    if (validate && type)
+                        type(name, srcVal);
 
-                    destObj[last] = srcVal;
+                    destObj[last] = init ? init(srcVal) : srcVal;
                 }
             }
         }
