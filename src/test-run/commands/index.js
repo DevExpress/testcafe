@@ -23,7 +23,8 @@ export class Click extends Assignable {
     constructor (obj) {
         super(obj);
 
-        this.type      = TYPE.click;
+        this.type = TYPE.click;
+
         this.arguments = {
             selector: null,
             options:  {}

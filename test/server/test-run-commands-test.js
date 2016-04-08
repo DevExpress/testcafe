@@ -12,9 +12,9 @@ function wrapWithQuerySelectorFunction (str) {
     return '(function () { return document.querySelector(\'' + str + '\') })()';
 }
 
-describe('Commands', function () {
-    describe('Create command from obj', function () {
-        it('Click', function () {
+describe('Test run commands', function () {
+    describe('Construction from object', function () {
+        it('Should create ClickCommand from object', function () {
             var commandObj = {
                 type:      TYPE.click,
                 arguments: {
@@ -44,7 +44,7 @@ describe('Commands', function () {
     });
 
     describe('Validation', function () {
-        it('Click', function () {
+        it('Should validate СlickСommand', function () {
             expect(function () {
                 return new ClickCommand({
                     arguments: {
