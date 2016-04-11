@@ -1,7 +1,7 @@
 import TYPE from './type';
 import Assignable from '../../utils/assignable';
 import { ActionSelectorTypeError, ActionOptionsTypeError } from '../../errors/test-run';
-import { ClickOptions } from './options';
+import { ClickOptions, MouseOptions } from './options';
 
 // Validators
 function selector (option, val) {
@@ -25,6 +25,10 @@ function initSelector (val) {
 
 function initClickOptions (val) {
     return new ClickOptions(val, true);
+}
+
+function initMouseOptions (val) {
+    return new MouseOptions(val, true);
 }
 
 // Commands
@@ -85,6 +89,26 @@ class DoubleClickCommand extends Assignable {
     }
 }
 
+
+class HoverCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type     = TYPE.hover;
+        this.selector = null;
+        this.options  = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'options', type: actionOptions, init: initMouseOptions, required: true }
+        ];
+    }
+}
+
 export class TestDoneCommand {
     constructor () {
         this.type = TYPE.testDone;
@@ -101,6 +125,9 @@ export function createCommandFromObject (obj) {
 
     if (obj.type === TYPE.doubleClick)
         return new DoubleClickCommand(obj);
+
+    if (obj.type === TYPE.hover)
+        return new HoverCommand(obj);
 
     if (obj.type === TYPE.testDone)
         return new TestDoneCommand();
