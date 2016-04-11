@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 
 
-it('T200501 - Wait parameters are not verified', function () {
+it('[Regression](T200501) Wait parameters are not verified', function () {
     return runTests('testcafe-fixtures/index.test.js', null, { shouldFail: true })
         .catch(function (err) {
             var expectedError = [
