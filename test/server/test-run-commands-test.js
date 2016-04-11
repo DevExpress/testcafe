@@ -98,7 +98,8 @@ describe('Test run commands', function () {
                 {
                     category:   ERROR_CATEGORY.actionError,
                     type:       ERROR_TYPE.actionSelectorTypeError,
-                    actualType: 'undefined'
+                    actualType: 'undefined',
+                    callsite:   null
                 }
             );
 
@@ -112,7 +113,8 @@ describe('Test run commands', function () {
                 {
                     category:   ERROR_CATEGORY.actionError,
                     type:       ERROR_TYPE.actionSelectorTypeError,
-                    actualType: 'number'
+                    actualType: 'number',
+                    callsite:   null
                 }
             );
 
@@ -127,7 +129,8 @@ describe('Test run commands', function () {
                 {
                     category:   ERROR_CATEGORY.actionError,
                     type:       ERROR_TYPE.actionOptionsTypeError,
-                    actualType: 'number'
+                    actualType: 'number',
+                    callsite:   null
                 }
             );
 
@@ -145,7 +148,8 @@ describe('Test run commands', function () {
                     category:    ERROR_CATEGORY.actionError,
                     type:        ERROR_TYPE.actionPositiveNumberOptionError,
                     optionName:  'offsetX',
-                    actualValue: 'string'
+                    actualValue: 'string',
+                    callsite:    null
                 }
             );
         });

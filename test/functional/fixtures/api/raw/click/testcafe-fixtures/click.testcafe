@@ -49,6 +49,7 @@
                         {
                             "type": "click",
                             "selector": "#error",
+                            "callsite": "[[Click error button callsite]]",
                             "options": {
                                 "offsetX": 10,
                                 "offsetY": 10
@@ -104,6 +105,7 @@
                         {
                             "type": "click",
                             "selector": "#new-button",
+                            "callsite": "[[Click non-existent button callsite]]",
                             "options": {
                                 "offsetX": 10,
                                 "offsetY": 10
@@ -117,8 +119,37 @@
                         {
                             "type": "click",
                             "selector": "#invisible-button",
+                            "callsite": "[[Click invisible button callsite]]",
                             "options": {
                                 "offsetX": 10,
+                                "offsetY": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Incorrect action selector",
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector": 123,
+                            "callsite": "[[Incorrect action selector callsite]]",
+                            "options": {
+                                "offsetX": 10,
+                                "offsetY": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Incorrect action option",
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector": "#invisible-button",
+                            "callsite": "[[Incorrect action option callsite]]",
+                            "options": {
+                                "offsetX": "yo",
                                 "offsetY": 10
                             }
                         }

@@ -28,7 +28,7 @@ function initClickOptions (val) {
 }
 
 // Commands
-class ClickCommand extends Assignable {
+export class ClickCommand extends Assignable {
     constructor (obj) {
         super(obj);
 

@@ -1,4 +1,5 @@
 import { GlobalsAPIError } from '../../errors/runtime';
+import TestController from '../test-controller';
 import MESSAGE from '../../errors/runtime/message';
 
 export default class Test {
@@ -14,7 +15,7 @@ export default class Test {
             throw new GlobalsAPIError('test', null, MESSAGE.testBodyIsNotAFunction, fnType);
 
         this.name    = name;
-        this.fn      = fn;
         this.fixture = fixture;
+        this.fn      = testRun => fn(new TestController(testRun));
     }
 }
