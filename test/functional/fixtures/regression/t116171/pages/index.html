@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>T116171 - index page</title>
+    <style>
+        div {
+            border: 1px solid black;
+        }
+
+        div.square {
+            width: 100px;
+            height: 100px;
+        }
+
+        div.black {
+            border-color: black;
+        }
+
+        div.red {
+            border-color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="black square" onclick="window.blackClick++">black</div>
+<div class="red square" onclick="window.redClick++">red</div>
+<script>
+    window.blackClick = 0;
+    window.redClick = 0;
+</script>
+</body>
+</html>

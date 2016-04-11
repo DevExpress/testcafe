@@ -48,11 +48,15 @@ Server.prototype._setupRoutes = function () {
     this.app.get('*', function (req, res) {
         var reqPath      = req.params[0] || '';
         var resourcePath = path.join(server.basePath, reqPath);
+        var delay        = req.query.delay ? parseInt(req.query.delay, 10) : 0;
 
         readFile(resourcePath)
             .then(function (content) {
                 res.setHeader('content-type', CONTENT_TYPES[path.extname(resourcePath)]);
-                res.send(content);
+
+                setTimeout(function () {
+                    res.send(content);
+                }, delay);
             })
             .catch(function () {
                 res.sendStatus(404);
