@@ -4,7 +4,8 @@
 // -------------------------------------------------------------
 
 export default {
-    click:      'click',
-    rightClick: 'right-click',
-    testDone:   'test-done'
+    click:       'click',
+    rightClick:  'right-click',
+    doubleClick: 'double-click',
+    testDone:    'test-done'
 };
