@@ -12,6 +12,7 @@ var positionUtils     = testCafeCore.positionUtils;
 var waitFor           = testCafeCore.waitFor;
 var ClickAutomation   = testCafeRunner.get('./automation/playback/click');
 var RClickAutomation  = testCafeRunner.get('./automation/playback/rclick');
+var DblClickAutomation = testCafeRunner.get('./automation/playback/dblclick');
 var ProgressPanel     = testCafeUI.ProgressPanel;
 
 
@@ -63,6 +64,8 @@ function runAutomation (element, command) {
         automation = new ClickAutomation(element, command.options);
     else if (command.type === COMMAND_TYPE.rightClick)
         automation = new RClickAutomation(element, command.options);
+    else if (command.type === COMMAND_TYPE.doubleClick)
+        automation = new DblClickAutomation(element, command.options);
 
     return automation
         .run()
