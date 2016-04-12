@@ -11,6 +11,7 @@ var pageUnloadBarrier = testCafeCore.pageUnloadBarrier;
 var positionUtils     = testCafeCore.positionUtils;
 var waitFor           = testCafeCore.waitFor;
 var ClickAutomation   = testCafeRunner.get('./automation/playback/click');
+var RClickAutomation  = testCafeRunner.get('./automation/playback/rclick');
 var ProgressPanel     = testCafeUI.ProgressPanel;
 
 
@@ -60,6 +61,8 @@ function runAutomation (element, command) {
 
     if (command.type === COMMAND_TYPE.click)
         automation = new ClickAutomation(element, command.options);
+    else if (command.type === COMMAND_TYPE.rightClick)
+        automation = new RClickAutomation(element, command.options);
 
     return automation
         .run()

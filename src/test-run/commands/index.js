@@ -47,6 +47,25 @@ class ClickCommand extends Assignable {
     }
 }
 
+class RightClickCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type     = TYPE.rightClick;
+        this.selector = null;
+        this.options  = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'options', type: actionOptions, init: initClickOptions, required: true }
+        ];
+    }
+}
+
 export class TestDoneCommand {
     constructor () {
         this.type = TYPE.testDone;
@@ -57,6 +76,9 @@ export class TestDoneCommand {
 export function createCommandFromObject (obj) {
     if (obj.type === TYPE.click)
         return new ClickCommand(obj);
+
+    if (obj.type === TYPE.rightClick)
+        return new RightClickCommand(obj);
 
     if (obj.type === TYPE.testDone)
         return new TestDoneCommand();
