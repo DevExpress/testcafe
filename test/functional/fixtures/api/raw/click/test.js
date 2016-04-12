@@ -25,7 +25,7 @@ describe('[Raw API] Click action', function () {
     it('Should fail when a js-error appears on page load', function () {
         return runTests('./testcafe-fixtures/page-with-error.testcafe', null, { shouldFail: true })
             .catch(function (err) {
-                expect(err).to.contains('Uncaught JavaScript error Uncaught Error: Custom error');
+                expect(err).to.contains('Error on page "http://localhost:3000/api/raw/click/pages/error.html":  Uncaught Error: Custom error');
                 expect(err).to.contains('[[Click on simple button callsite]]');
             });
     });
@@ -33,7 +33,7 @@ describe('[Raw API] Click action', function () {
     it('Should fail when a js-error appears during click execution', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click error button', { shouldFail: true })
             .catch(function (err) {
-                expect(err).to.contains('Uncaught JavaScript error Uncaught Error: Custom error');
+                expect(err).to.contains('Error on page "http://localhost:3000/api/raw/click/pages/index.html":  Uncaught Error: Custom error');
                 expect(err).to.contains('[[Click error button callsite]]');
             });
     });

@@ -36,7 +36,9 @@ export default {
     `),
 
     [TYPE.uncaughtErrorOnPage]: err => markup(err, `
-        Uncaught JavaScript error <code>${escapeHtml(err.scriptErr)}</code> on page <a href="${err.pageDestUrl}">${err.pageDestUrl}</a>.
+        Error on page <a href="${err.pageDestUrl}">${err.pageDestUrl}</a>:
+
+        <code>${escapeHtml(err.scriptErr)}</code>
 
         ${err.getCallsiteMarkup()}
     `),

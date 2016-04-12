@@ -35,7 +35,7 @@ describe('[API] t.click()', function () {
                     ' 13 |' +
                     ' 14 |test(\'Click button\', async t => {' +
                     ' 15 |    await t.click(\'#btn\'); 16 |});'
-                )
+                );
             });
     });
 
@@ -55,7 +55,7 @@ describe('[API] t.click()', function () {
                     ' 10 |test(\'Incorrect action option\', async t => {' +
                     ' 11 |    await t.click(\'#btn\', { offsetX: -3 });' +
                     ' 12 |});'
-                )
+                );
             });
     });
 });
