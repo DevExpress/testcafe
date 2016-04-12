@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 
-describe('Run click from a raw file', function () {
+describe('[Raw API] Click action', function () {
     it('Should make click on a button', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click simple button', { shouldFail: true })
             .catch(function (err) {

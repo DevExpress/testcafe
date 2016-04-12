@@ -36,7 +36,9 @@ export default class TestController {
 
         this.executionChain = this.executionChain.then(() => this.testRun.executeCommand(command, callsite));
 
-        return this._mixinFunctionalityToPromise(this.executionChain);
+        this._mixinFunctionalityToPromise(this.executionChain);
+
+        return this.executionChain;
     }
 
     click (selector, options) {
