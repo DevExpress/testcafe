@@ -1,6 +1,6 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
 CATEGORY=actionError
-The selector is expected to be a string, but it was number.
+The destination selector is expected to be a string, but it was number.
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');

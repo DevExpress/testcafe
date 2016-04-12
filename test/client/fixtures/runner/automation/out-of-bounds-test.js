@@ -5,16 +5,16 @@ var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var position      = testCafeCore.get('./utils/position');
 var textSelection = testCafeCore.get('./utils/text-selection');
 
-var testCafeRunner     = window.getTestCafeModule('testCafeRunner');
-var automation         = testCafeRunner.get('./automation/automation');
-var DragOptions        = testCafeRunner.get('../../test-run/commands/options').DragOptions;
-var ClickOptions       = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
-var TypeOptions        = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
-var RClickAutomation   = testCafeRunner.get('./automation/playback/rclick');
-var ClickAutomation    = testCafeRunner.get('./automation/playback/click');
-var DblClickAutomation = testCafeRunner.get('./automation/playback/dblclick');
-var DragAutomation     = testCafeRunner.get('./automation/playback/drag');
-var TypeAutomation     = testCafeRunner.get('./automation/playback/type');
+var testCafeRunner         = window.getTestCafeModule('testCafeRunner');
+var automation             = testCafeRunner.get('./automation/automation');
+var MouseOptions           = testCafeRunner.get('../../test-run/commands/options').MouseOptions;
+var ClickOptions           = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
+var TypeOptions            = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
+var RClickAutomation       = testCafeRunner.get('./automation/playback/rclick');
+var ClickAutomation        = testCafeRunner.get('./automation/playback/click');
+var DblClickAutomation     = testCafeRunner.get('./automation/playback/dblclick');
+var DragToOffsetAutomation = testCafeRunner.get('./automation/playback/drag/to-offset');
+var TypeAutomation         = testCafeRunner.get('./automation/playback/type');
 
 automation.init();
 
@@ -426,14 +426,12 @@ $(document).ready(function () {
             backgroundColor: 'red'
         });
 
-        var dragOptions = new DragOptions({
-            dragOffsetX: dragOffsetX,
-            dragOffsetY: dragOffsetY,
-            offsetX:     offsetX,
-            offsetY:     offsetY
+        var mouseOptions = new MouseOptions({
+            offsetX: offsetX,
+            offsetY: offsetY
         });
 
-        var dragAutomation = new DragAutomation($smallDraggable[0], dragOptions);
+        var dragAutomation = new DragToOffsetAutomation($smallDraggable[0], dragOffsetX, dragOffsetY, mouseOptions);
 
         dragAutomation
             .run()

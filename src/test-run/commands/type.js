@@ -4,9 +4,11 @@
 // -------------------------------------------------------------
 
 export default {
-    click:       'click',
-    rightClick:  'right-click',
-    doubleClick: 'double-click',
-    hover:       'hover',
-    testDone:    'test-done'
+    click:         'click',
+    rightClick:    'right-click',
+    doubleClick:   'double-click',
+    drag:          'drag',
+    dragToElement: 'drag-to-element',
+    hover:         'hover',
+    testDone:      'test-done'
 };

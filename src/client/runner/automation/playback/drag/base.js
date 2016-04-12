@@ -1,11 +1,11 @@
-import hammerhead from '../../deps/hammerhead';
-import testCafeCore from '../../deps/testcafe-core';
-import { fromPoint as getElementFromPoint } from '../get-element';
-import MoveAutomation from '../playback/move';
-import { MoveOptions } from '../../../../test-run/commands/options';
-import cursor from '../cursor';
-import * as mouseUtils from '../../utils/mouse';
-import { DRAG_ACTION_STEP_DELAY } from '../settings';
+import hammerhead from '../../../deps/hammerhead';
+import testCafeCore from '../../../deps/testcafe-core';
+import { fromPoint as getElementFromPoint } from '../../get-element';
+import MoveAutomation from '../move';
+import { MoveOptions } from '../../../../../test-run/commands/options';
+import cursor from '../../cursor';
+import * as mouseUtils from '../../../utils/mouse';
+import { DRAG_ACTION_STEP_DELAY } from '../../settings';
 
 
 const DRAGGING_SPEED = 4; // pixels/ms
@@ -24,17 +24,13 @@ var styleUtils      = testCafeCore.styleUtils;
 var delay           = testCafeCore.delay;
 
 
-export default class DragAutomation {
-    constructor (element, dragOptions) {
+export default class DragAutomationBase {
+    constructor (element, mouseOptions) {
         this.element = element;
 
-        this.modifiers = dragOptions.modifiers;
-        this.offsetX   = dragOptions.offsetX;
-        this.offsetY   = dragOptions.offsetY;
-
-        this.destinationElement = dragOptions.destinationElement;
-        this.dragOffsetX        = dragOptions.dragOffsetX;
-        this.dragOffsetY        = dragOptions.dragOffsetY;
+        this.modifiers = mouseOptions.modifiers;
+        this.offsetX   = mouseOptions.offsetX;
+        this.offsetY   = mouseOptions.offsetY;
 
         this.endPoint  = null;
         this.downEvent = browserUtils.hasTouchEvents ? 'touchstart' : 'mousedown';
@@ -95,21 +91,7 @@ export default class DragAutomation {
     }
 
     _getEndPoint () {
-        if (this.destinationElement)
-            return positionUtils.findCenter(this.destinationElement);
-
-        var startPoint = mouseUtils.getAutomationPoint(this.element, this.offsetX, this.offsetY);
-        var maxX       = styleUtils.getWidth(document);
-        var maxY       = styleUtils.getHeight(document);
-        var endPoint   = {
-            x: startPoint.x + this.dragOffsetX,
-            y: startPoint.y + this.dragOffsetY
-        };
-
-        return {
-            x: Math.min(Math.max(0, endPoint.x), maxX),
-            y: Math.min(Math.max(0, endPoint.y), maxY)
-        };
+        throw new Error('Not implemented');
     }
 
     _mousedown () {
@@ -135,14 +117,14 @@ export default class DragAutomation {
         });
     }
 
+    _getDestination () {
+        throw new Error('Not implemented');
+    }
+
     _drag () {
         this.endPoint = this._getEndPoint();
 
-        var element = this.destinationElement || document.documentElement;
-        var offsets = this.destinationElement ? mouseUtils.getDefaultAutomationOffsets(this.destinationElement) : {
-            offsetX: this.endPoint.x,
-            offsetY: this.endPoint.y
-        };
+        var { element, offsets } = this._getDestination();
 
         var dragOptions = new MoveOptions({
             offsetX:       offsets.offsetX,

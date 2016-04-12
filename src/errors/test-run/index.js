@@ -126,6 +126,13 @@ export class ActionSelectorTypeError extends ActionError {
     }
 }
 
+export class DragDestinationSelectorTypeError extends ActionError {
+    constructor (actualType) {
+        super(TYPE.dragDestinationSelectorTypeError);
+
+        this.actualType = actualType;
+    }
+}
 
 // Action execution errors
 //--------------------------------------------------------------------
@@ -138,5 +145,17 @@ export class ActionElementNotFoundError extends ActionError {
 export class ActionElementIsInvisibleError extends ActionError {
     constructor () {
         super(TYPE.actionElementIsInvisibleError);
+    }
+}
+
+export class DragDestinationNotFoundError extends ActionError {
+    constructor () {
+        super(TYPE.dragDestinationNotFoundError);
+    }
+}
+
+export class DragDestinationIsInvisibleError extends ActionError {
+    constructor () {
+        super(TYPE.dragDestinationIsInvisibleError);
     }
 }

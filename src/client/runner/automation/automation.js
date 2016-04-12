@@ -2,7 +2,8 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import ClickAutomation from './playback/click';
 import DblClickAutomation from './playback/dblclick';
-import DragAutomation from './playback/drag';
+import DragToOffsetAutomation from './playback/drag/to-offset';
+import DragToElementAutomation from './playback/drag/to-element';
 import HoverAutomation from './playback/hover';
 import PressAutomation from './playback/press';
 import RClickAutomation from './playback/rclick';
@@ -80,12 +81,13 @@ export function init () {
 
 //Running
 window[AUTOMATIONS] = {
-    ClickAutomation:    ClickAutomation,
-    RClickAutomation:   RClickAutomation,
-    DblClickAutomation: DblClickAutomation,
-    HoverAutomation:    HoverAutomation,
-    DragAutomation:     DragAutomation,
-    SelectAutomation:   SelectAutomation,
-    PressAutomation:    PressAutomation,
-    TypeAutomation:     TypeAutomation
+    ClickAutomation:         ClickAutomation,
+    RClickAutomation:        RClickAutomation,
+    DblClickAutomation:      DblClickAutomation,
+    HoverAutomation:         HoverAutomation,
+    DragToOffsetAutomation:  DragToOffsetAutomation,
+    DragToElementAutomation: DragToElementAutomation,
+    SelectAutomation:        SelectAutomation,
+    PressAutomation:         PressAutomation,
+    TypeAutomation:          TypeAutomation
 };

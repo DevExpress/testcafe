@@ -3,7 +3,6 @@ var SelectOptions  = require('../../lib/test-run/commands/options').SelectOption
 var OffsetOptions  = require('../../lib/test-run/commands/options').OffsetOptions;
 var MouseOptions   = require('../../lib/test-run/commands/options').MouseOptions;
 var ClickOptions   = require('../../lib/test-run/commands/options').ClickOptions;
-var DragOptions    = require('../../lib/test-run/commands/options').DragOptions;
 var MoveOptions    = require('../../lib/test-run/commands/options').MoveOptions;
 var TypeOptions    = require('../../lib/test-run/commands/options').TypeOptions;
 var ERROR_TYPE     = require('../../lib/errors/test-run/type');
@@ -91,35 +90,6 @@ describe('Test run command options', function () {
                 offsetX:  15,
                 offsetY:  0,
                 caretPos: 20,
-
-                modifiers: {
-                    ctrl:  true,
-                    alt:   false,
-                    shift: true,
-                    meta:  false
-                }
-            });
-        });
-
-        it('Should create DragOptions from object', function () {
-            var options = new DragOptions({
-                offsetX:     15,
-                dragOffsetX: -20,
-                dummy:       false,
-
-                modifiers: {
-                    ctrl:  true,
-                    shift: true,
-                    dummy: 'yo'
-                }
-            }, false);
-
-            expect(JSON.parse(JSON.stringify(options))).eql({
-                offsetX:            15,
-                offsetY:            0,
-                destinationElement: null,
-                dragOffsetX:        -20,
-                dragOffsetY:        0,
 
                 modifiers: {
                     ctrl:  true,
@@ -333,50 +303,6 @@ describe('Test run command options', function () {
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     actualValue:     3.14,
                     optionName:      'caretPos',
-                    callsite:        null
-                }
-            );
-        });
-
-        it('Should validate DragOptions', function () {
-            assertThrow(
-                function () {
-                    return new DragOptions({ dragOffsetX: null }, true);
-                },
-                {
-                    isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
-                    actualValue:     'object',
-                    optionName:      'dragOffsetX',
-                    callsite:        null
-                }
-            );
-
-            assertThrow(
-                function () {
-                    return new DragOptions({ dragOffsetY: null }, true);
-                },
-                {
-                    isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
-                    actualValue:     'object',
-                    optionName:      'dragOffsetY',
-                    callsite:        null
-                }
-            );
-
-            assertThrow(
-                function () {
-                    return new DragOptions({ dragOffsetY: 3.14 }, true);
-                },
-                {
-                    isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
-                    actualValue:     3.14,
-                    optionName:      'dragOffsetY',
                     callsite:        null
                 }
             );

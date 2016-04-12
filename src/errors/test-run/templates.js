@@ -61,13 +61,19 @@ export default {
     `),
 
     [TYPE.actionSelectorTypeError]: err => markup(err, `
-        Action selector is expected to be a string, but it was <code>${err.actualType}</code>.
+        The selector is expected to be a string, but it was <code>${err.actualType}</code>.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionOptionsTypeError]: err => markup(err, `
         Action options is expected to be an object, null or undefined but it was <code>${err.actualType}</code>.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.dragDestinationSelectorTypeError]: err => markup(err, `
+        The destination selector is expected to be a string, but it was <code>${err.actualType}</code>.
 
         ${err.getCallsiteMarkup()}
     `),
@@ -80,6 +86,18 @@ export default {
 
     [TYPE.actionElementIsInvisibleError]: err => markup(err, `
         The element that matches the specified selector is not visible.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.dragDestinationNotFoundError]: err => markup(err, `
+        The specified destination selector does not match any element in the DOM tree.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.dragDestinationIsInvisibleError]: err => markup(err, `
+        The element that matches the specified destination selector is not visible.
 
         ${err.getCallsiteMarkup()}
     `),
