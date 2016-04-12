@@ -16,6 +16,7 @@ export default {
     actionOptionsTypeError:           'actionOptionsTypeError',
     actionSelectorTypeError:          'actionSelectorTypeError',
     dragDestinationSelectorTypeError: 'dragDestinationSelectorTypeError',
+    actionStringArgumentError:        'actionStringArgumentError',
 
     actionElementNotFoundError:      'actionElementNotFoundError',
     actionElementIsInvisibleError:   'actionElementIsInvisibleError',

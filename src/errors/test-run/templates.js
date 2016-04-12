@@ -78,6 +78,12 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
+    [TYPE.actionStringArgumentError]: err => markup(err, `
+        The <code>${err.argumentName}</code> argument is expected to be a non-empty string, but it was ${err.actualType !== 'empty' ? `<code>${err.actualType}</code>` : err.actualType}.
+
+         ${err.getCallsiteMarkup()}
+    `),
+
     [TYPE.actionElementNotFoundError]: err => markup(err, `
         The specified selector does not match any element in the DOM tree.
 

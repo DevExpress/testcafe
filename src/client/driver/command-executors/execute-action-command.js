@@ -23,6 +23,7 @@ var DblClickAutomation      = testCafeRunner.get('./automation/playback/dblclick
 var DragToOffsetAutomation  = testCafeRunner.get('./automation/playback/drag/to-offset');
 var DragToElementAutomation = testCafeRunner.get('./automation/playback/drag/to-element');
 var HoverAutomation         = testCafeRunner.get('./automation/playback/hover');
+var TypeAutomation          = testCafeRunner.get('./automation/playback/type');
 var ProgressPanel           = testCafeUI.ProgressPanel;
 
 
@@ -99,6 +100,9 @@ function createAutomation (elements, command) {
 
         case COMMAND_TYPE.dragToElement :
             return new DragToElementAutomation(elements[0], elements[1], command.options);
+
+        case COMMAND_TYPE.typeText:
+            return new TypeAutomation(elements[0], command.text, command.options);
 
         case COMMAND_TYPE.hover :
             return new HoverAutomation(elements[0], command.options);
