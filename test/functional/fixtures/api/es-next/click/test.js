@@ -39,7 +39,7 @@ describe('[API] t.click()', function () {
             });
     });
 
-    it.only('Should validate selector [ONLY:chrome]', function () {
+    it('Should validate selector [ONLY:chrome]', function () {
         return runTests('./testcafe-fixtures/click-test.js', 'Incorrect action selector', { shouldFail: true })
             .catch(function (err) {
                 expect(err).to.contains('Action selector is expected to be a string, but it was number.');
