@@ -22,7 +22,7 @@ describe('[API] Drag actions', function () {
         it('Should validate dragOffsetX', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to offset with incorrect dragOffsetX', { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('Action option dragOffsetX is expected to be an integer, but it was NaN.');
+                    expect(errs[0]).to.contain('The dragOffsetX argument is expected to be an integer, but it was NaN.');
                     expect(errs[0]).to.contain('> 18 |    await t.drag(\'#draggable-div-1\', NaN, 20);');
                 });
         });
@@ -30,7 +30,7 @@ describe('[API] Drag actions', function () {
         it('Should validate dragOffsetY', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to offset with incorrect dragOffsetY', { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('Action option dragOffsetY is expected to be an integer, but it was 3.14.');
+                    expect(errs[0]).to.contain('The dragOffsetY argument is expected to be an integer, but it was 3.14.');
                     expect(errs[0]).to.contain('> 22 |    await t.drag(\'#draggable-div-1\', 10, 3.14);');
                 });
         });
@@ -64,7 +64,7 @@ describe('[API] Drag actions', function () {
         it('Should validate destinationSelector', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to element with incorrect destinationSelector', { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('The destination selector is expected to be a string, but it was object.');
+                    expect(errs[0]).to.contain('The destinationSelector argument is expected to be a string, but it was object.');
                     expect(errs[0]).to.contain('> 41 |    await t.dragToElement(\'#draggable-div-2\', null);');
                 });
         });

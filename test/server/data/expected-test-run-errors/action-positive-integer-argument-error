@@ -1,6 +1,6 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
 CATEGORY=actionError
-The destination selector is expected to be a string, but it was number.
+The startPos argument is expected to be a positive integer, but it was -1.
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');

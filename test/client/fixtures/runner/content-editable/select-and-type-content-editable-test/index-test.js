@@ -6,14 +6,13 @@ var textSelection   = testCafeCore.get('./utils/text-selection');
 var contentEditable = testCafeCore.get('./utils/content-editable');
 var domUtils        = testCafeCore.get('./utils/dom');
 
-var testCafeRunner   = window.getTestCafeModule('testCafeRunner');
-var automation       = testCafeRunner.get('./automation/automation');
-var TypeAutomation   = testCafeRunner.get('./automation/playback/type');
-var SelectOptions    = testCafeRunner.get('../../test-run/commands/options').SelectOptions;
-var TypeOptions      = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
-var SelectAutomation = testCafeRunner.get('./automation/playback/select');
-var PressAutomation  = testCafeRunner.get('./automation/playback/press');
-var parseKeyString   = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var testCafeRunner       = window.getTestCafeModule('testCafeRunner');
+var automation           = testCafeRunner.get('./automation/automation');
+var TypeAutomation       = testCafeRunner.get('./automation/playback/type');
+var TypeOptions          = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
+var SelectTextAutomation = testCafeRunner.get('./automation/playback/select/select-text');
+var PressAutomation      = testCafeRunner.get('./automation/playback/press');
+var parseKeyString       = testCafeRunner.get('./automation/playback/press/parse-key-string');
 
 automation.init();
 
@@ -144,11 +143,10 @@ $(document).ready(function () {
             .then(callback);
     };
 
-    var runSelectAutomation = function (element, options, callback) {
-        var selectOptions    = new SelectOptions(options);
-        var selectAutomation = new SelectAutomation(element, selectOptions);
+    var runSelectAutomation = function (element, startPos, endPos, callback) {
+        var selectTextAutomation = new SelectTextAutomation(element, startPos, endPos);
 
-        selectAutomation
+        selectTextAutomation
             .run()
             .then(callback);
     };
@@ -187,10 +185,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 15,
-                    endPos:   151
-                }, callback);
+                runSelectAutomation($el[0], 15, 151, callback);
             },
 
             'Check selection': function (callback) {
@@ -228,10 +223,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 112,
-                    endPos:   186
-                }, callback);
+                runSelectAutomation($el[0], 112, 186, callback);
             },
 
             'Check selection': function (callback) {
@@ -268,10 +260,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 186,
-                    endPos:   112
-                }, callback);
+                runSelectAutomation($el[0], 186, 112, callback);
             },
 
             'Check selection': function (callback) {
@@ -314,10 +303,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 124,
-                    endPos:   186
-                }, callback);
+                runSelectAutomation($el[0], 124, 186, callback);
             },
 
             'Check selection': function (callback) {
@@ -376,10 +362,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 186,
-                    endPos:   124
-                }, callback);
+                runSelectAutomation($el[0], 186, 124, callback);
             },
 
             'Check selection': function (callback) {
@@ -424,10 +407,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 112,
-                    endPos:   187
-                }, callback);
+                runSelectAutomation($el[0], 112, 187, callback);
             },
 
             'Check selection': function (callback) {
@@ -465,10 +445,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 124,
-                    endPos:   184
-                }, callback);
+                runSelectAutomation($el[0], 124, 184, callback);
             },
 
             'Check selection': function (callback) {
@@ -512,10 +489,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 112,
-                    endPos:   184
-                }, callback);
+                runSelectAutomation($el[0], 112, 184, callback);
             },
 
             'Check selection': function (callback) {
@@ -557,10 +531,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 124,
-                    endPos:   187
-                }, callback);
+                runSelectAutomation($el[0], 124, 187, callback);
             },
 
             'Check selection': function (callback) {
@@ -610,10 +581,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 1,
-                    endPos:   28
-                }, callback);
+                runSelectAutomation($el[0], 1, 28, callback);
             },
 
             'Check selection': function (callback) {
@@ -649,10 +617,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 152,
-                    endPos:   186
-                }, callback);
+                runSelectAutomation($el[0], 152, 186, callback);
             },
 
             'Check selection': function (callback) {
@@ -697,10 +662,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 41,
-                    endPos:   197
-                }, callback);
+                runSelectAutomation($el[0], 41, 197, callback);
             },
 
             'Check selection': function (callback) {
@@ -754,10 +716,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 0,
-                    endPos:   17
-                }, callback);
+                runSelectAutomation($el[0], 0, 17, callback);
             },
 
             'Check selection': function (callback) {
@@ -802,10 +761,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 0,
-                    endPos:   17
-                }, callback);
+                runSelectAutomation($el[0], 0, 17, callback);
             },
 
             'Check selection': function (callback) {
@@ -854,10 +810,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 197,
-                    endPos:   41
-                }, callback);
+                runSelectAutomation($el[0], 197, 41, callback);
             },
 
             'Check selection': function (callback) {
@@ -911,10 +864,7 @@ $(document).ready(function () {
 
         window.async.series({
             'Select': function (callback) {
-                runSelectAutomation($el[0], {
-                    startPos: 197,
-                    endPos:   41
-                }, callback);
+                runSelectAutomation($el[0], 197, 41, callback);
             },
 
             'Check selection': function (callback) {

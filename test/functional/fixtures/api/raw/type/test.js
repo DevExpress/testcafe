@@ -20,7 +20,7 @@ describe('[Raw API] Type action', function () {
     it("Should fail if a 'text' argument is empty", function () {
         return runTests('./testcafe-fixtures/type.testcafe', 'Type with empty text argument', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).eql('The text argument is expected to be a non-empty string, but it was empty.  ' +
+                expect(errs[0]).eql('The text argument is expected to be a non-empty string, but it was "".  ' +
                                     '[[Type with empty text argument callsite]]');
             });
     });

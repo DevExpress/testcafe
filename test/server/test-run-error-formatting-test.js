@@ -1,27 +1,33 @@
-var expect                           = require('chai').expect;
-var read                             = require('read-file-relative').readSync;
-var remove                           = require('lodash').pull;
-var escapeRe                         = require('lodash').escapeRegExp;
-var ReporterPluginHost               = require('../../lib/reporter/plugin-host');
-var TYPE                             = require('../../lib/errors/test-run/type');
-var TestRunErrorFormattableAdapter   = require('../../lib/errors/test-run/formattable-adapter');
-var testCallsite                     = require('./data/test-callsite');
-var ActionIntegerOptionError         = require('../../lib/errors/test-run').ActionIntegerOptionError;
-var ActionPositiveIntegerOptionError = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
-var ActionBooleanOptionError         = require('../../lib/errors/test-run').ActionBooleanOptionError;
-var ActionSelectorTypeError          = require('../../lib/errors/test-run').ActionSelectorTypeError;
-var ActionOptionsTypeError           = require('../../lib/errors/test-run').ActionOptionsTypeError;
-var DragDestinationSelectorTypeError = require('../../lib/errors/test-run').DragDestinationSelectorTypeError;
-var ActionStringArgumentError        = require('../../lib/errors/test-run').ActionStringArgumentError;
-var UncaughtErrorOnPage              = require('../../lib/errors/test-run').UncaughtErrorOnPage;
-var UncaughtErrorInTestCode          = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
-var UncaughtNonErrorObjectInTestCode = require('../../lib/errors/test-run').UncaughtNonErrorObjectInTestCode;
-var ActionElementNotFoundError       = require('../../lib/errors/test-run').ActionElementNotFoundError;
-var ActionElementIsInvisibleError    = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
-var DragDestinationNotFoundError     = require('../../lib/errors/test-run').DragDestinationNotFoundError;
-var DragDestinationIsInvisibleError  = require('../../lib/errors/test-run').DragDestinationIsInvisibleError;
-var MissingAwaitError                = require('../../lib/errors/test-run').MissingAwaitError;
-var ExternalAssertionLibraryError    = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
+var expect                                   = require('chai').expect;
+var read                                     = require('read-file-relative').readSync;
+var remove                                   = require('lodash').pull;
+var escapeRe                                 = require('lodash').escapeRegExp;
+var ReporterPluginHost                       = require('../../lib/reporter/plugin-host');
+var TYPE                                     = require('../../lib/errors/test-run/type');
+var TestRunErrorFormattableAdapter           = require('../../lib/errors/test-run/formattable-adapter');
+var testCallsite                             = require('./data/test-callsite');
+var ActionIntegerOptionError                 = require('../../lib/errors/test-run').ActionIntegerOptionError;
+var ActionPositiveIntegerOptionError         = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
+var ActionIntegerArgumentError               = require('../../lib/errors/test-run').ActionIntegerArgumentError;
+var ActionPositiveIntegerArgumentError       = require('../../lib/errors/test-run').ActionPositiveIntegerArgumentError;
+var ActionBooleanOptionError                 = require('../../lib/errors/test-run').ActionBooleanOptionError;
+var ActionSelectorTypeError                  = require('../../lib/errors/test-run').ActionSelectorTypeError;
+var ActionOptionsTypeError                   = require('../../lib/errors/test-run').ActionOptionsTypeError;
+var ActionStringArgumentError                = require('../../lib/errors/test-run').ActionStringArgumentError;
+var ActionAdditionalSelectorTypeError        = require('../../lib/errors/test-run').ActionAdditionalSelectorTypeError;
+var UncaughtErrorOnPage                      = require('../../lib/errors/test-run').UncaughtErrorOnPage;
+var UncaughtErrorInTestCode                  = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
+var UncaughtNonErrorObjectInTestCode         = require('../../lib/errors/test-run').UncaughtNonErrorObjectInTestCode;
+var ActionElementNotFoundError               = require('../../lib/errors/test-run').ActionElementNotFoundError;
+var ActionElementIsInvisibleError           = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
+var ActionAdditionalElementNotFoundError    = require('../../lib/errors/test-run').ActionAdditionalElementNotFoundError;
+var ActionAdditionalElementIsInvisibleError = require('../../lib/errors/test-run').ActionAdditionalElementIsInvisibleError;
+var ActionElementNonEditableError           = require('../../lib/errors/test-run').ActionElementNonEditableError;
+var ActionElementNonContentEditableError    = require('../../lib/errors/test-run').ActionElementNonContentEditableError;
+var ActionRootContainerNotFoundError        = require('../../lib/errors/test-run').ActionRootContainerNotFoundError;
+var ActionElementNotTextAreaError           = require('../../lib/errors/test-run').ActionElementNotTextAreaError;
+var MissingAwaitError                       = require('../../lib/errors/test-run').MissingAwaitError;
+var ExternalAssertionLibraryError           = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
 
@@ -98,8 +104,16 @@ describe('Error formatting', function () {
             assertErrorMessage('action-integer-option-error', new ActionIntegerOptionError('offsetX', 'NaN'));
         });
 
-        it('Should format "actionPositiveIntegerNumberError" message', function () {
+        it('Should format "ActionPositiveIntegerOptionError" message', function () {
             assertErrorMessage('action-positive-integer-option-error', new ActionPositiveIntegerOptionError('caretPos', '-1'));
+        });
+
+        it('Should format "actionIntegerArgumentError" message', function () {
+            assertErrorMessage('action-integer-argument-error', new ActionIntegerArgumentError('dragOffsetX', 'NaN'));
+        });
+
+        it('Should format "ActionPositiveIntegerArgumentError" message', function () {
+            assertErrorMessage('action-positive-integer-argument-error', new ActionPositiveIntegerArgumentError('startPos', '-1'));
         });
 
         it('Should format "actionBooleanOptionError" message', function () {
@@ -126,6 +140,22 @@ describe('Error formatting', function () {
             assertErrorMessage('action-element-is-invisible-error', new ActionElementIsInvisibleError());
         });
 
+        it('Should format "actionElementNonEditableError" message', function () {
+            assertErrorMessage('action-element-non-editable-error', new ActionElementNonEditableError());
+        });
+
+        it('Should format "actionRootContainerNotFoundError" message', function () {
+            assertErrorMessage('action-root-container-not-found-error', new ActionRootContainerNotFoundError());
+        });
+
+        it('Should format "actionElementNonContentEditableError" message', function () {
+            assertErrorMessage('action-element-non-content-editable-error', new ActionElementNonContentEditableError('startSelector'));
+        });
+
+        it('Should format "actionElementNotTextAreaError" message', function () {
+            assertErrorMessage('action-element-not-text-area-error', new ActionElementNotTextAreaError());
+        });
+
         it('Should format "actionSelectorTypeError" message', function () {
             assertErrorMessage('action-selector-type-error', new ActionSelectorTypeError(typeof 1));
         });
@@ -134,16 +164,16 @@ describe('Error formatting', function () {
             assertErrorMessage('action-options-type-error', new ActionOptionsTypeError(typeof 1));
         });
 
-        it('Should format "dragDestinationSelectorTypeError" message', function () {
-            assertErrorMessage('drag-destination-selector-type-error', new DragDestinationSelectorTypeError(typeof 1));
+        it('Should format "actionAdditionalSelectorTypeError" message', function () {
+            assertErrorMessage('action-additional-selector-type-error', new ActionAdditionalSelectorTypeError('startSelector', typeof 1));
         });
 
-        it('Should format "dragDestinationNotFoundError" message', function () {
-            assertErrorMessage('drag-destination-not-found-error', new DragDestinationNotFoundError());
+        it('Should format "actionAdditionalElementNotFoundError" message', function () {
+            assertErrorMessage('action-additional-element-not-found-error', new ActionAdditionalElementNotFoundError('startSelector'));
         });
 
-        it('Should format "dragDestinationIsInvisibleError" message', function () {
-            assertErrorMessage('drag-destination-is-invisible-error', new DragDestinationIsInvisibleError());
+        it('Should format "actionAdditionalElementIsInvisibleError" message', function () {
+            assertErrorMessage('action-additional-element-is-invisible-error', new ActionAdditionalElementIsInvisibleError('startSelector'));
         });
 
         it('Should format "actionStringArgumentError" message', function () {

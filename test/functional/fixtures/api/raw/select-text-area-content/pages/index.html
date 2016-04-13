@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select textarea content</title>
+</head>
+<body>
+<textarea id="textarea">
+123
+456</textarea>
+
+<input id="input" value="input"/>
+<script>
+    document.getElementById('textarea').addEventListener('mouseup', function () {
+        if (this.selectionStart === 2 && this.selectionEnd === 7)
+            throw new Error('Selected text in textarea');
+    });
+</script>
+</body>
+</html>

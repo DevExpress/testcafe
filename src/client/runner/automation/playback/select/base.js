@@ -13,22 +13,18 @@ var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
 var contentEditable = testCafeCore.contentEditable;
-var textSelection   = testCafeCore.textSelection;
 var domUtils        = testCafeCore.domUtils;
 var positionUtils   = testCafeCore.positionUtils;
 var eventUtils      = testCafeCore.eventUtils;
 var delay           = testCafeCore.delay;
 
 
-export default class SelectAutomation {
-    constructor (element, selectOptions) {
+export default class SelectBaseAutomation {
+    constructor (element) {
         this.element = element;
 
-        this.startPos = selectOptions.startPos;
-        this.endPos   = selectOptions.endPos;
-
-        this.absoluteStartPoint = this._calculateAbsoluteStartPoint();
-        this.absoluteEndPoint   = this._calculateAbsoluteEndPoint();
+        this.absoluteStartPoint = null;
+        this.absoluteEndPoint   = null;
         this.clientPoint        = null;
 
         this.downEvent = browserUtils.hasTouchEvents ? 'touchstart' : 'mousedown';
@@ -78,32 +74,11 @@ export default class SelectAutomation {
     }
 
     _calculateAbsoluteStartPoint () {
-        var point = null;
-
-        if (!this.startPos.node)
-            point = selectUtils.getSelectionCoordinatesByPosition(this.element, this.startPos);
-        else
-            point = selectUtils.getSelectionCoordinatesByNodeAndOffset(this.element, this.startPos);
-
-        return point || positionUtils.findCenter(this.element);
+        throw new Error('Not implemented');
     }
 
     _calculateAbsoluteEndPoint () {
-        var point = null;
-
-        if (!this.startPos.node)
-            point = selectUtils.getSelectionCoordinatesByPosition(this.element, this.endPos);
-        else
-            point = selectUtils.getSelectionCoordinatesByNodeAndOffset(this.element, this.endPos);
-
-        if (point)
-            return point;
-
-        // NOTE: if selection ends on an invisible symbol, we should try to find the last visible selection position
-        if (domUtils.isContentEditableElement(this.element) && !this.startPos.node)
-            return selectUtils.getLastVisibleSelectionPosition(this.element, this.startPos, this.endPos);
-
-        return positionUtils.findCenter(this.element);
+        throw new Error('Not implemented');
     }
 
     _moveToPoint (point) {
@@ -124,7 +99,7 @@ export default class SelectAutomation {
         return cursor
             .leftButtonDown()
             .then(() => {
-                this.eventArgs = SelectAutomation._calculateEventArguments(this.clientPoint);
+                this.eventArgs = SelectBaseAutomation._calculateEventArguments(this.clientPoint);
 
                 // NOTE: In WebKit and IE, the mousedown event opens the select element's dropdown;
                 // therefore, we should prevent mousedown and hide the dropdown (B236416).
@@ -157,18 +132,7 @@ export default class SelectAutomation {
     }
 
     _setSelection () {
-        var isTextEditable    = domUtils.isTextEditableElement(this.element);
-        var isContentEditable = domUtils.isContentEditableElement(this.element);
-
-        if (!(isTextEditable || isContentEditable) || this.eventState.simulateDefaultBehavior === false)
-            return;
-
-        // NOTE: The same cursor position may correspond to different nodes, so, if we
-        // know which nodes should be selected eventually, we should select them directly.
-        if (this.startPos.node)
-            textSelection.selectByNodesAndOffsets(this.startPos, this.endPos, true);
-        else
-            textSelection.select(this.element, this.startPos, this.endPos);
+        throw new Error('Not implemented');
     }
 
     _mouseup () {
@@ -177,13 +141,16 @@ export default class SelectAutomation {
             .then(() => {
                 this._setSelection();
 
-                this.eventArgs = SelectAutomation._calculateEventArguments(this.clientPoint);
+                this.eventArgs = SelectBaseAutomation._calculateEventArguments(this.clientPoint);
 
                 eventSimulator[this.upEvent](this.eventArgs.element, this.eventArgs.options);
             });
     }
 
     run () {
+        this.absoluteStartPoint = this._calculateAbsoluteStartPoint();
+        this.absoluteEndPoint   = this._calculateAbsoluteEndPoint();
+
         return this
             ._moveToPoint(this.absoluteStartPoint)
             .then(() => this._mousedown())
