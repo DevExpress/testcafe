@@ -76,7 +76,7 @@ describe('[Raw API] Click action', function () {
             });
     });
 
-    it('Should fail if action has option', function () {
+    it('Should fail if action has an incorrect option', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Incorrect action option', { shouldFail: true })
             .catch(function (err) {
                 expect(err).eql('Action option offsetX is expected to be a positive number, but it was string.  ' +

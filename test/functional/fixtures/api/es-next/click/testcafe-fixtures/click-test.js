@@ -1,4 +1,4 @@
-// NOTE: to preserve callsites add new tests AFTER existing
+// NOTE: to preserve callsites, add new tests AFTER the existing ones
 
 fixture `Click`
     .page `http://localhost:3000/api/es-next/click/pages/index.html`;

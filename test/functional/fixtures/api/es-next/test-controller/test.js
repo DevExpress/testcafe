@@ -3,14 +3,14 @@ var expect = require('chai').expect;
 // NOTE: we run tests in chrome only, because we mainly test server API functionality.
 // Actions functionality is tested in lower-level raw API.
 describe('[API] TestController', function () {
-    it('Should should support chaining [ONLY:chrome]', function () {
+    it('Should support chaining [ONLY:chrome]', function () {
         return runTests('./testcafe-fixtures/test-controller-test.js', 'Chaining', { shouldFail: true })
             .catch(function (err) {
                 expect(err).to.contains('-btn1-btn2-btn3-page2-btn1-page2-btn2');
             });
     });
 
-    it('Should should produce correct callsites for chained calls [ONLY:chrome]', function () {
+    it('Should produce correct callsites for chained calls [ONLY:chrome]', function () {
         return runTests('./testcafe-fixtures/test-controller-test.js', 'Chaining callsites', { shouldFail: true })
             .catch(function (err) {
                 expect(err).to.contains(
@@ -35,14 +35,6 @@ describe('[API] TestController', function () {
                 .catch(function (err) {
                     expect(err).to.contains(missingAwaitErrMsg);
                     expect(err).to.contains("> 28 |    t.click(\'#page2-btn1\');");
-                });
-        });
-
-        it('Should track missing `await` in chain [ONLY:chrome]', function () {
-            return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await in chain', { shouldFail: true })
-                .catch(function (err) {
-                    expect(err).to.contains(missingAwaitErrMsg);
-                    expect(err).to.contains("> 38 |        .click('#page2-btn2');");
                 });
         });
 

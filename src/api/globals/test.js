@@ -21,12 +21,12 @@ export default class Test {
 
     static _createTestFunction (fn) {
         return async testRun => {
-            // NOTE: fn() result used for the testing purposes
+            // NOTE: fn() result used for testing purposes
             var controller = new TestController(testRun);
             var result     = await fn(controller);
 
-            // NOTE: check if last command in the test
-            // function missing `await` keyword.
+            // NOTE: check if the last command in the test
+            // function is missing the `await` keyword.
             controller._checkForMissingAwait();
 
             return result;

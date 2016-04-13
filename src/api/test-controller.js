@@ -19,13 +19,13 @@ export default class TestController {
     }
 
 
-    // NOTE: we track missing `awaits` by exposing special custom Promise to user code.
+    // NOTE: we track missing `awaits` by exposing a special custom Promise to user code.
     // Action or assertion is awaited if:
     // a)someone used `await` so Promise's `then` function executed
     // b)Promise chained by using one of the mixed-in controller methods
     //
-    // In both scenarios we check that callsite that produced Promise is equal to the one
-    // which currently missing await. This is required to workaround scenarios like this:
+    // In both scenarios, we check that callsite that produced Promise is equal to the one
+    // that is currently missing await. This is required to workaround scenarios like this:
     //
     // var t2 = t.click('#btn1'); // <-- stores new callsiteWithoutAwait
     // await t2;                  // <-- callsiteWithoutAwait = null
