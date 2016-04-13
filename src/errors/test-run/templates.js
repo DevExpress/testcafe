@@ -65,5 +65,11 @@ export default {
         The element that matches the specified selector is not visible.
 
         ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.missingAwaitError]: err => markup(err, `
+        A call to an async function is not awaited. Use the <code>await</code> keyword before actions, assertions or chains of them to ensure that they run in the right sequence.
+
+        ${err.getCallsiteMarkup()}
     `)
 };

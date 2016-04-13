@@ -14,6 +14,7 @@ var ActionOptionsTypeError          = require('../../lib/errors/test-run').Actio
 var UncaughtErrorOnPage             = require('../../lib/errors/test-run').UncaughtErrorOnPage;
 var ActionElementNotFoundError      = require('../../lib/errors/test-run').ActionElementNotFoundError;
 var ActionElementIsInvisibleError   = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
+var MissingAwaitError               = require('../../lib/errors/test-run').MissingAwaitError;
 
 
 var TEST_FILE_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
@@ -101,6 +102,10 @@ describe('Error formatting', function () {
 
         it('Should format "actionOptionsTypeError" message', function () {
             assertErrorMessage('action-options-type-error', new ActionOptionsTypeError(typeof 1));
+        });
+
+        it('Should format "missingAwaitError', function () {
+            assertErrorMessage('missing-await-error', new MissingAwaitError(testCallsite));
         });
     });
 

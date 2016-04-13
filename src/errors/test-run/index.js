@@ -7,6 +7,7 @@ import TYPE from './type';
 
 
 // Base
+//--------------------------------------------------------------------
 class TestRunErrorBase {
     constructor (category, type) {
         this.category = category;
@@ -30,7 +31,32 @@ class ActionError extends TestRunErrorBase {
     }
 }
 
-// Action option errors
+
+// Synchronization errors
+//--------------------------------------------------------------------
+export class MissingAwaitError extends TestRunErrorBase {
+    constructor (callsite) {
+        super(CATEGORY.synchronizationError, TYPE.missingAwaitError);
+
+        this.callsite = callsite;
+    }
+}
+
+
+// Uncaught errors
+//--------------------------------------------------------------------
+export class UncaughtErrorOnPage extends TestRunErrorBase {
+    constructor (scriptErr, pageDestUrl) {
+        super(CATEGORY.uncaughtError, TYPE.uncaughtErrorOnPage);
+
+        this.scriptErr   = scriptErr;
+        this.pageDestUrl = pageDestUrl;
+    }
+}
+
+
+// Action parameters errors
+//--------------------------------------------------------------------
 export class ActionNumberOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
         super(TYPE.actionNumberOptionError, optionName, actualValue);
@@ -49,26 +75,6 @@ export class ActionBooleanOptionError extends ActionOptionErrorBase {
     }
 }
 
-
-// Test execution client errors
-export class UncaughtErrorOnPage extends TestRunErrorBase {
-    constructor (scriptErr, pageDestUrl) {
-        super(CATEGORY.unhandledException, TYPE.uncaughtErrorOnPage);
-
-        this.scriptErr   = scriptErr;
-        this.pageDestUrl = pageDestUrl;
-    }
-}
-
-// Action errors
-export class ActionSelectorTypeError extends ActionError {
-    constructor (actualType) {
-        super(TYPE.actionSelectorTypeError);
-
-        this.actualType = actualType;
-    }
-}
-
 export class ActionOptionsTypeError extends ActionError {
     constructor (actualType) {
         super(TYPE.actionOptionsTypeError);
@@ -77,12 +83,22 @@ export class ActionOptionsTypeError extends ActionError {
     }
 }
 
+export class ActionSelectorTypeError extends ActionError {
+    constructor (actualType) {
+        super(TYPE.actionSelectorTypeError);
+
+        this.actualType = actualType;
+    }
+}
+
+
+// Action execution errors
+//--------------------------------------------------------------------
 export class ActionElementNotFoundError extends ActionError {
     constructor () {
         super(TYPE.actionElementNotFoundError);
     }
 }
-
 
 export class ActionElementIsInvisibleError extends ActionError {
     constructor () {

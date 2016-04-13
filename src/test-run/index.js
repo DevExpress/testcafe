@@ -59,7 +59,7 @@ export default class TestRun extends Session {
             await this.test.fn(this);
         }
         catch (err) {
-            this.errs.push(new TestRunErrorFormattableAdapter(err, this.browserConnection.userAgent, '', this.currentCommandCallsite));
+            this._addError(err);
         }
         finally {
             this._done();
@@ -68,7 +68,7 @@ export default class TestRun extends Session {
 
     async _done () {
         if (this.pendingJsError) {
-            this.errs.push(new TestRunErrorFormattableAdapter(this.pendingJsError, this.browserConnection.userAgent, '', this.currentCommandCallsite));
+            this._addError(this.pendingJsError);
             this.pendingJsError = null;
         }
 
@@ -91,6 +91,12 @@ export default class TestRun extends Session {
         this.pendingRequest = null;
     }
 
+    _addError (err) {
+        var adapter = new TestRunErrorFormattableAdapter(err, this.browserConnection.userAgent, '', this.currentCommandCallsite);
+
+        this.errs.push(adapter);
+    }
+
     getAuthCredentials () {
         // TODO
     }
@@ -105,7 +111,7 @@ export default class TestRun extends Session {
 
     executeCommand (command, callsite) {
         if (this.pendingCommand)
-            throw new Error('An attempt to execute a command when a previous command is still being executed was detected.');
+            throw new Error('Assertion failed: an attempt to execute a command when a previous command is still being executed was detected.');
 
         this.currentCommandCallsite = callsite;
 

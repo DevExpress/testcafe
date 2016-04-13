@@ -1,6 +1,6 @@
 import { GlobalsAPIError } from '../../errors/runtime';
-import TestController from '../test-controller';
 import MESSAGE from '../../errors/runtime/message';
+import TestController from '../test-controller';
 
 export default class Test {
     constructor (name, fn, fixture) {
@@ -16,6 +16,20 @@ export default class Test {
 
         this.name    = name;
         this.fixture = fixture;
-        this.fn      = testRun => fn(new TestController(testRun));
+        this.fn      = Test._createTestFunction(fn);
+    }
+
+    static _createTestFunction (fn) {
+        return async testRun => {
+            // NOTE: fn() result used for the testing purposes
+            var controller = new TestController(testRun);
+            var result     = await fn(controller);
+
+            // NOTE: check if last command in the test
+            // function missing `await` keyword.
+            controller._checkForMissingAwait();
+
+            return result;
+        };
     }
 }

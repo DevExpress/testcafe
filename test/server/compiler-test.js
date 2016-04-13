@@ -148,8 +148,9 @@ describe('Compiler', function () {
     it('Should provide common API functions via lib dependency', function () {
         return compile('test/server/data/test-suites/common-runtime-dep/testfile.js')
             .then(function (compiled) {
-                var commons = compiled.tests[0].fn();
-
+                return compiled.tests[0].fn();
+            })
+            .then(function (commons) {
                 expect(commons.Role).eql(Role);
                 expect(commons.Hybrid).eql(Hybrid);
             });
@@ -158,7 +159,10 @@ describe('Compiler', function () {
     it('Should not leak globals to dependencies and test body', function () {
         return compile('test/server/data/test-suites/globals-in-dep/testfile.js')
             .then(function (compiled) {
-                expect(compiled.tests[0].fn()).to.be.true;
+                return compiled.tests[0].fn();
+            })
+            .then(function (noLeak) {
+                expect(noLeak).to.be.true;
             });
     });
 

@@ -25,4 +25,57 @@ describe('[API] TestController', function () {
                 );
             });
     });
+
+    describe('Missing `await` tracking', function () {
+        var missingAwaitErrMsg = 'A call to an async function is not awaited. Use the await keyword before actions, ' +
+                                 'assertions or chains of them to ensure that they run in the right sequence.';
+
+        it('Should track missing `await` [ONLY:chrome]', function () {
+            return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await', { shouldFail: true })
+                .catch(function (err) {
+                    expect(err).to.contains(missingAwaitErrMsg);
+                    expect(err).to.contains("> 28 |    t.click(\'#page2-btn1\');");
+                });
+        });
+
+        it('Should track missing `await` in chain [ONLY:chrome]', function () {
+            return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await in chain', { shouldFail: true })
+                .catch(function (err) {
+                    expect(err).to.contains(missingAwaitErrMsg);
+                    expect(err).to.contains("> 38 |        .click('#page2-btn2');");
+                });
+        });
+
+        it('Should track missing `await` in chain [ONLY:chrome]', function () {
+            return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await in chain', { shouldFail: true })
+                .catch(function (err) {
+                    expect(err).to.contains(missingAwaitErrMsg);
+                    expect(err).to.contains("> 38 |        .click('#page2-btn2');");
+                });
+        });
+
+        it('Should track missing `await` in the end of test [ONLY:chrome]', function () {
+            return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await in the end of the test', { shouldFail: true })
+                .catch(function (err) {
+                    expect(err).to.contains(missingAwaitErrMsg);
+                    expect(err).to.contains("> 44 |    t.click('#btn3');");
+                });
+        });
+
+        it('Should track missing `await` with disrupted chain [ONLY:chrome]', function () {
+            return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await with disrupted chain', { shouldFail: true })
+                .catch(function (err) {
+                    expect(err).to.contains(missingAwaitErrMsg);
+                    expect(err).to.contains("> 58 |    t.click('#btn2');");
+                });
+        });
+
+        it('Should track missing `await` in helper [ONLY:chrome]', function () {
+            return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await in helper', { shouldFail: true })
+                .catch(function (err) {
+                    expect(err).to.contains(missingAwaitErrMsg);
+                    expect(err).to.contains("> 2 |    t.click('#yo');");
+                });
+        });
+    });
 });
