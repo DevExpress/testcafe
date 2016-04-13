@@ -62,6 +62,14 @@ describe('[API] TestController', function () {
                 });
         });
 
+        it('Should track missing `await` for actions with error [ONLY:chrome]', function () {
+            return runTests('./testcafe-fixtures/test-controller-test.js', 'Error caused by action with missing await', { shouldFail: true })
+                .catch(function (err) {
+                    expect(err).to.contains(missingAwaitErrMsg);
+                    expect(err).to.contains("> 48 |    t.click('#error'); ");
+                });
+        });
+
         it('Should track missing `await` with disrupted chain [ONLY:chrome]', function () {
             return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await with disrupted chain', { shouldFail: true })
                 .catch(function (err) {
