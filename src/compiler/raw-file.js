@@ -13,9 +13,18 @@ export default class RawFileCompiler {
 
         test.fn = async testRun => {
             for (var i = 0; i < test.commands.length; i++) {
-                var command = createCommandFromObject(test.commands[i]);
+                var callsite = test.commands[i] && test.commands[i].callsite;
+                var command  = null;
 
-                await testRun.executeCommand(command);
+                try {
+                    command = createCommandFromObject(test.commands[i]);
+                }
+                catch (err) {
+                    err.callsite = callsite;
+                    throw err;
+                }
+
+                await testRun.executeCommand(command, callsite);
             }
         };
 

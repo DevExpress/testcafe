@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+    <input type="button" id="page2-btn1" value="btn1"/>
+    <input type="button" id="page2-btn2" value="btn2"/>
+</form>
+<script>
+    var clicked = document.location.search.split('=')[1];
+
+    document.querySelector('#page2-btn1').addEventListener('click', function () {
+        clicked += '-page2-btn1';
+    });
+
+    document.querySelector('#page2-btn2').addEventListener('click', function () {
+        clicked += '-page2-btn2';
+        throw new Error(clicked);
+    });
+</script>
+</body>
+</html>

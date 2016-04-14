@@ -12,7 +12,7 @@
     "babel-preset-es2015-node4": "^2.0.2",
     "babel-preset-stage-2": "^6.3.13",
     "babel-runtime": "^6.3.19",
-    "callsite-record": "^2.0.2",
+    "callsite-record": "^3.0.2",
     "chalk": "^1.1.0",
     "commander": "^2.8.1",
     "dedent": "^0.4.0",

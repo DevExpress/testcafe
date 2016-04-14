@@ -10,6 +10,7 @@
                         {
                             "type": "click",
                             "selector": "#input",
+                            "callsite": "[[Click on simple button callsite]]",
                             "options": {
                                 "offsetX": 10,
                                 "offsetY": 10

@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 
 
-describe("Should restart a test step if redirect occurs while waiting for the action's target element", function () {
+describe("[Regression](GH-414) Should restart a test step if redirect occurs while waiting for the action's target element", function () {
     it('Should restart a user action after redirect', function () {
         return runTests('testcafe-fixtures/index.test.js', 'Click on the element after redirect - should pass');
     });

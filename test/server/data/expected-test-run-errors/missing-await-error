@@ -1,8 +1,8 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
-CATEGORY=uncaughtError
-Error on page "http://example.org":
-
-Custom script error
+CATEGORY=synchronizationError
+A call to an async function is not awaited. Use the await keyword before
+actions, assertions or chains of them to ensure that they run in the right
+sequence.
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');

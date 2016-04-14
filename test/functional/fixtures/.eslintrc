@@ -7,6 +7,7 @@
     "handleBeforeUnload": false,
     "handleAlert": false,
     "handlePrompt": false,
-    "getInput": true
+    "getInput": true,
+    "fixture": true
   }
 }

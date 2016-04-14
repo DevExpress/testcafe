@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="btn" style="background: red; width: 20px; height: 20px;">Button</div>
+
+<script>
+    document.querySelector('#btn').addEventListener('click', function () {
+        throw new Error('Button clicked');
+    });
+</script>
+</body>
+</html>

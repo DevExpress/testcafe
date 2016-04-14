@@ -12,9 +12,10 @@ export default class TestRunErrorFormattableAdapter {
 
         this.userAgent      = userAgent;
         this.screenshotPath = screenshotPath;
-        this.callsite       = callsite;
 
         assignIn(this, err);
+
+        this.callsite = this.callsite || callsite;
     }
 
     static _getSelector (node) {

@@ -18,7 +18,7 @@ function nextTick () {
 
 describe('TestRun', function () {
     it('Should raise an error on an attempt to execute a new command while the previous command execution is not yet finished', function () {
-        var expectedErrorMessage = 'An attempt to execute a command when a previous command is still being executed was detected.';
+        var expectedErrorMessage = 'Assertion failed: an attempt to execute a command when a previous command is still being executed was detected.';
         var actualError          = null;
         var testMock             = {
             fixture: 'fixture',

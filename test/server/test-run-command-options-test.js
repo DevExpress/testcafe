@@ -201,7 +201,8 @@ describe('Test run command options', function () {
                     category:    ERROR_CATEGORY.actionError,
                     type:        ERROR_TYPE.actionPositiveNumberOptionError,
                     actualValue: 'object',
-                    optionName:  'offsetX'
+                    optionName:  'offsetX',
+                    callsite:    null
                 }
             );
 
@@ -213,7 +214,8 @@ describe('Test run command options', function () {
                     category:    ERROR_CATEGORY.actionError,
                     type:        ERROR_TYPE.actionPositiveNumberOptionError,
                     actualValue: -3,
-                    optionName:  'offsetY'
+                    optionName:  'offsetY',
+                    callsite:    null
                 }
             );
         });
@@ -227,7 +229,8 @@ describe('Test run command options', function () {
                     category:    ERROR_CATEGORY.actionError,
                     type:        ERROR_TYPE.actionBooleanOptionError,
                     actualValue: 'number',
-                    optionName:  'modifiers.ctrl'
+                    optionName:  'modifiers.ctrl',
+                    callsite:    null
                 }
             );
 
@@ -239,7 +242,8 @@ describe('Test run command options', function () {
                     category:    ERROR_CATEGORY.actionError,
                     type:        ERROR_TYPE.actionBooleanOptionError,
                     actualValue: 'number',
-                    optionName:  'modifiers.alt'
+                    optionName:  'modifiers.alt',
+                    callsite:    null
                 }
             );
 
@@ -251,7 +255,8 @@ describe('Test run command options', function () {
                     category:    ERROR_CATEGORY.actionError,
                     type:        ERROR_TYPE.actionBooleanOptionError,
                     actualValue: 'number',
-                    optionName:  'modifiers.shift'
+                    optionName:  'modifiers.shift',
+                    callsite:    null
                 }
             );
 
@@ -263,7 +268,8 @@ describe('Test run command options', function () {
                     category:    ERROR_CATEGORY.actionError,
                     type:        ERROR_TYPE.actionBooleanOptionError,
                     actualValue: 'number',
-                    optionName:  'modifiers.meta'
+                    optionName:  'modifiers.meta',
+                    callsite:    null
                 }
             );
         });
@@ -277,7 +283,8 @@ describe('Test run command options', function () {
                     category:    ERROR_CATEGORY.actionError,
                     type:        ERROR_TYPE.actionPositiveNumberOptionError,
                     actualValue: -1,
-                    optionName:  'caretPos'
+                    optionName:  'caretPos',
+                    callsite:    null
                 }
             );
         });
@@ -291,7 +298,8 @@ describe('Test run command options', function () {
                     category:    ERROR_CATEGORY.actionError,
                     type:        ERROR_TYPE.actionNumberOptionError,
                     actualValue: 'object',
-                    optionName:  'dragOffsetX'
+                    optionName:  'dragOffsetX',
+                    callsite:    null
                 }
             );
 
@@ -303,7 +311,8 @@ describe('Test run command options', function () {
                     category:    ERROR_CATEGORY.actionError,
                     type:        ERROR_TYPE.actionNumberOptionError,
                     actualValue: 'object',
-                    optionName:  'dragOffsetY'
+                    optionName:  'dragOffsetY',
+                    callsite:    null
                 }
             );
         });
@@ -317,7 +326,8 @@ describe('Test run command options', function () {
                     category:    ERROR_CATEGORY.actionError,
                     type:        ERROR_TYPE.actionBooleanOptionError,
                     actualValue: 'number',
-                    optionName:  'replace'
+                    optionName:  'replace',
+                    callsite:    null
                 }
             );
         });

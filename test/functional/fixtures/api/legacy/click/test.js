@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 
 
-describe('api click test', function () {
+describe('[Legacy API] act.click()', function () {
     it('Should fail if the first argument is invisible', function () {
         return runTests('testcafe-fixtures/click.test.js', 'Should fail if the first argument is invisible', { shouldFail: true })
             .catch(function (err) {
