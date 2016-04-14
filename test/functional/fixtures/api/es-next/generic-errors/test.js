@@ -34,4 +34,27 @@ describe('[API] Generic errors', function () {
                 });
         });
     });
+
+    describe('External assertion library error', function () {
+        it('Should handle Node built-in assertion lib error [ONLY:chrome]', function () {
+            return runTests('./testcafe-fixtures/external-assertion-lib-errors-test.js', 'Built-in assertion lib error', { shouldFail: true })
+                .catch(function (err) {
+                    expect(err).to.contains("AssertionError: 'answer' === '42'");
+                });
+        });
+
+        it('Should handle Chai assertion error [ONLY:chrome]', function () {
+            return runTests('./testcafe-fixtures/external-assertion-lib-errors-test.js', 'Chai assertion error', { shouldFail: true })
+                .catch(function (err) {
+                    expect(err).to.contains("AssertionError: expected 'answer' to deeply equal '42'");
+                });
+        });
+
+        it('Should handle assertion errors in helper code [ONLY:chrome]', function () {
+            return runTests('./testcafe-fixtures/external-assertion-lib-errors-test.js', 'Assertion error in helper', { shouldFail: true })
+                .catch(function (err) {
+                    expect(err).to.contains('AssertionError: false == true');
+                });
+        });
+    });
 });

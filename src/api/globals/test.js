@@ -1,5 +1,9 @@
 import { GlobalsAPIError } from '../../errors/runtime';
-import { UncaughtErrorInTestCode, UncaughtNonErrorObjectInTestCode } from '../../errors/test-run';
+import {
+    UncaughtErrorInTestCode,
+    UncaughtNonErrorObjectInTestCode,
+    ExternalAssertionLibraryError
+} from '../../errors/test-run';
 import getCallsite from '../../errors/get-callsite';
 import MESSAGE from '../../errors/runtime/message';
 import TestController from '../test-controller';
@@ -25,8 +29,14 @@ export default class Test {
         if (err && err.isTestCafeError)
             return err;
 
-        if (err instanceof Error)
-            return new UncaughtErrorInTestCode(String(err), getCallsite(err));
+        if (err instanceof Error) {
+            var callsite         = getCallsite(err);
+            var isAssertionError = err.name === 'AssertionError' || err.constructor.name === 'AssertionError';
+
+            return isAssertionError ?
+                   new ExternalAssertionLibraryError(err, callsite) :
+                   new UncaughtErrorInTestCode(err, callsite);
+        }
 
         return new UncaughtNonErrorObjectInTestCode(err);
     }

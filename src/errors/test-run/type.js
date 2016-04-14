@@ -4,18 +4,20 @@
 // -------------------------------------------------------------
 
 export default {
-    actionNumberOptionError:         'actionNumberOptionError',
-    actionPositiveNumberOptionError: 'actionPositiveNumberOptionError',
-    actionBooleanOptionError:        'actionBooleanOptionError',
-    actionOptionsTypeError:          'actionOptionsTypeError',
-
     uncaughtErrorOnPage:              'uncaughtErrorOnPage',
     uncaughtErrorInTestCode:          'uncaughtErrorInTestCode',
     uncaughtNonErrorObjectInTestCode: 'uncaughtNonErrorObjectInTestCode',
 
     missingAwaitError: 'missingAwaitError',
 
+    actionNumberOptionError:         'actionNumberOptionError',
+    actionPositiveNumberOptionError: 'actionPositiveNumberOptionError',
+    actionBooleanOptionError:        'actionBooleanOptionError',
+    actionOptionsTypeError:          'actionOptionsTypeError',
+
     actionSelectorTypeError:       'actionSelectorTypeError',
     actionElementNotFoundError:    'actionElementNotFoundError',
-    actionElementIsInvisibleError: 'actionElementIsInvisibleError'
+    actionElementIsInvisibleError: 'actionElementIsInvisibleError',
+
+    externalAssertionLibraryError: 'externalAssertionLibraryError'
 };

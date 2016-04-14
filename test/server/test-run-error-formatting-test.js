@@ -17,9 +17,9 @@ var UncaughtNonErrorObjectInTestCode = require('../../lib/errors/test-run').Unca
 var ActionElementNotFoundError       = require('../../lib/errors/test-run').ActionElementNotFoundError;
 var ActionElementIsInvisibleError    = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
 var MissingAwaitError                = require('../../lib/errors/test-run').MissingAwaitError;
+var ExternalAssertionLibraryError    = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
 
-
-var TEST_FILE_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
+var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
 
 var untestedErrorTypes = Object.keys(TYPE).map(function (key) {
     return TYPE[key];
@@ -38,6 +38,17 @@ var reporterPluginMock = {
         return decorator;
     }
 };
+
+var testAssertionError = (function () {
+    try {
+        expect(true).eql(false);
+    }
+    catch (err) {
+        return err;
+    }
+
+    return null;
+})();
 
 // Output stream and errorDecorator mocks
 function createOutStreamMock () {
@@ -64,7 +75,7 @@ function assertErrorMessage (file, err) {
         .replace(/(\r\n)/gm, '\n')
         .trim();
 
-    var actual = outStreamMock.data.replace(TEST_FILE_RE, ' (testfile.js');
+    var actual = outStreamMock.data.replace(TEST_FILE_STACK_ENTRY_RE, ' (testfile.js');
 
     expect(actual).eql(expectedMsg);
 
@@ -91,7 +102,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "uncaughtErrorInTestCode" message', function () {
-            assertErrorMessage('uncaught-js-error-in-test-code', new UncaughtErrorInTestCode('Custom script error', testCallsite));
+            assertErrorMessage('uncaught-js-error-in-test-code', new UncaughtErrorInTestCode(new Error('Custom script error'), testCallsite));
         });
 
         it('Should format "uncaughtNonErrorObjectInTestCode" message', function () {
@@ -116,6 +127,10 @@ describe('Error formatting', function () {
 
         it('Should format "missingAwaitError', function () {
             assertErrorMessage('missing-await-error', new MissingAwaitError(testCallsite));
+        });
+
+        it('Should format "externalAssertionLibraryError', function () {
+            assertErrorMessage('external-assertion-library-error', new ExternalAssertionLibraryError(testAssertionError, testCallsite));
         });
     });
 

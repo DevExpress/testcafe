@@ -32,6 +32,11 @@ class ActionError extends TestRunErrorBase {
     }
 }
 
+class UncaughtError extends TestRunErrorBase {
+    constructor (type) {
+        super(CATEGORY.uncaughtError, type);
+    }
+}
 
 // Synchronization errors
 //--------------------------------------------------------------------
@@ -46,32 +51,45 @@ export class MissingAwaitError extends TestRunErrorBase {
 
 // Uncaught errors
 //--------------------------------------------------------------------
-export class UncaughtErrorOnPage extends TestRunErrorBase {
+export class UncaughtErrorOnPage extends UncaughtError {
     constructor (errMsg, pageDestUrl) {
-        super(CATEGORY.uncaughtError, TYPE.uncaughtErrorOnPage);
+        super(TYPE.uncaughtErrorOnPage);
 
         this.errMsg      = errMsg;
         this.pageDestUrl = pageDestUrl;
     }
 }
 
-export class UncaughtErrorInTestCode extends TestRunErrorBase {
-    constructor (errMsg, callsite) {
-        super(CATEGORY.uncaughtError, TYPE.uncaughtErrorInTestCode);
+export class UncaughtErrorInTestCode extends UncaughtError {
+    constructor (err, callsite) {
+        super(TYPE.uncaughtErrorInTestCode);
 
-        this.errMsg   = errMsg;
+        this.errMsg   = String(err);
         this.callsite = callsite;
     }
 }
 
-export class UncaughtNonErrorObjectInTestCode extends TestRunErrorBase {
+export class UncaughtNonErrorObjectInTestCode extends UncaughtError {
     constructor (obj) {
-        super(CATEGORY.uncaughtError, TYPE.uncaughtNonErrorObjectInTestCode);
+        super(TYPE.uncaughtNonErrorObjectInTestCode);
 
         this.objType = typeof obj;
         this.objStr  = String(obj);
     }
 }
+
+
+// Assertion errors
+//--------------------------------------------------------------------
+export class ExternalAssertionLibraryError extends TestRunErrorBase {
+    constructor (err, callsite) {
+        super(CATEGORY.assertionError, TYPE.externalAssertionLibraryError);
+
+        this.errMsg   = String(err);
+        this.callsite = callsite;
+    }
+}
+
 
 // Action parameters errors
 //--------------------------------------------------------------------

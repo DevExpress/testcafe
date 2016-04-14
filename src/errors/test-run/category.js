@@ -6,5 +6,6 @@
 export default {
     actionError:          'actionError',
     uncaughtError:        'uncaughtError',
-    synchronizationError: 'synchronizationError'
+    synchronizationError: 'synchronizationError',
+    assertionError:       'assertionError'
 };
