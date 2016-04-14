@@ -9,8 +9,11 @@ export default {
     actionBooleanOptionError:        'actionBooleanOptionError',
     actionOptionsTypeError:          'actionOptionsTypeError',
 
-    uncaughtErrorOnPage: 'uncaughtErrorOnPage',
-    missingAwaitError:   'missingAwaitError',
+    uncaughtErrorOnPage:              'uncaughtErrorOnPage',
+    uncaughtErrorInTestCode:          'uncaughtErrorInTestCode',
+    uncaughtNonErrorObjectInTestCode: 'uncaughtNonErrorObjectInTestCode',
+
+    missingAwaitError: 'missingAwaitError',
 
     actionSelectorTypeError:       'actionSelectorTypeError',
     actionElementNotFoundError:    'actionElementNotFoundError',

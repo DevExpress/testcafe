@@ -198,11 +198,12 @@ describe('Test run command options', function () {
                     return new OffsetOptions({ offsetX: null }, true);
                 },
                 {
-                    category:    ERROR_CATEGORY.actionError,
-                    type:        ERROR_TYPE.actionPositiveNumberOptionError,
-                    actualValue: 'object',
-                    optionName:  'offsetX',
-                    callsite:    null
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionPositiveNumberOptionError,
+                    actualValue:     'object',
+                    optionName:      'offsetX',
+                    callsite:        null
                 }
             );
 
@@ -211,11 +212,12 @@ describe('Test run command options', function () {
                     return new OffsetOptions({ offsetY: -3 }, true);
                 },
                 {
-                    category:    ERROR_CATEGORY.actionError,
-                    type:        ERROR_TYPE.actionPositiveNumberOptionError,
-                    actualValue: -3,
-                    optionName:  'offsetY',
-                    callsite:    null
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionPositiveNumberOptionError,
+                    actualValue:     -3,
+                    optionName:      'offsetY',
+                    callsite:        null
                 }
             );
         });
@@ -226,11 +228,12 @@ describe('Test run command options', function () {
                     return new MouseOptions({ modifiers: { ctrl: 42 } }, true);
                 },
                 {
-                    category:    ERROR_CATEGORY.actionError,
-                    type:        ERROR_TYPE.actionBooleanOptionError,
-                    actualValue: 'number',
-                    optionName:  'modifiers.ctrl',
-                    callsite:    null
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    actualValue:     'number',
+                    optionName:      'modifiers.ctrl',
+                    callsite:        null
                 }
             );
 
@@ -239,11 +242,12 @@ describe('Test run command options', function () {
                     return new MouseOptions({ modifiers: { alt: 42 } }, true);
                 },
                 {
-                    category:    ERROR_CATEGORY.actionError,
-                    type:        ERROR_TYPE.actionBooleanOptionError,
-                    actualValue: 'number',
-                    optionName:  'modifiers.alt',
-                    callsite:    null
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    actualValue:     'number',
+                    optionName:      'modifiers.alt',
+                    callsite:        null
                 }
             );
 
@@ -252,11 +256,12 @@ describe('Test run command options', function () {
                     return new MouseOptions({ modifiers: { shift: 42 } }, true);
                 },
                 {
-                    category:    ERROR_CATEGORY.actionError,
-                    type:        ERROR_TYPE.actionBooleanOptionError,
-                    actualValue: 'number',
-                    optionName:  'modifiers.shift',
-                    callsite:    null
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    actualValue:     'number',
+                    optionName:      'modifiers.shift',
+                    callsite:        null
                 }
             );
 
@@ -265,11 +270,12 @@ describe('Test run command options', function () {
                     return new MouseOptions({ modifiers: { meta: 42 } }, true);
                 },
                 {
-                    category:    ERROR_CATEGORY.actionError,
-                    type:        ERROR_TYPE.actionBooleanOptionError,
-                    actualValue: 'number',
-                    optionName:  'modifiers.meta',
-                    callsite:    null
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    actualValue:     'number',
+                    optionName:      'modifiers.meta',
+                    callsite:        null
                 }
             );
         });
@@ -280,11 +286,12 @@ describe('Test run command options', function () {
                     return new ClickOptions({ caretPos: -1 }, true);
                 },
                 {
-                    category:    ERROR_CATEGORY.actionError,
-                    type:        ERROR_TYPE.actionPositiveNumberOptionError,
-                    actualValue: -1,
-                    optionName:  'caretPos',
-                    callsite:    null
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionPositiveNumberOptionError,
+                    actualValue:     -1,
+                    optionName:      'caretPos',
+                    callsite:        null
                 }
             );
         });
@@ -295,11 +302,12 @@ describe('Test run command options', function () {
                     return new DragOptions({ dragOffsetX: null }, true);
                 },
                 {
-                    category:    ERROR_CATEGORY.actionError,
-                    type:        ERROR_TYPE.actionNumberOptionError,
-                    actualValue: 'object',
-                    optionName:  'dragOffsetX',
-                    callsite:    null
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionNumberOptionError,
+                    actualValue:     'object',
+                    optionName:      'dragOffsetX',
+                    callsite:        null
                 }
             );
 
@@ -308,11 +316,12 @@ describe('Test run command options', function () {
                     return new DragOptions({ dragOffsetY: null }, true);
                 },
                 {
-                    category:    ERROR_CATEGORY.actionError,
-                    type:        ERROR_TYPE.actionNumberOptionError,
-                    actualValue: 'object',
-                    optionName:  'dragOffsetY',
-                    callsite:    null
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionNumberOptionError,
+                    actualValue:     'object',
+                    optionName:      'dragOffsetY',
+                    callsite:        null
                 }
             );
         });
@@ -323,11 +332,12 @@ describe('Test run command options', function () {
                     return new TypeOptions({ replace: 42 }, true);
                 },
                 {
-                    category:    ERROR_CATEGORY.actionError,
-                    type:        ERROR_TYPE.actionBooleanOptionError,
-                    actualValue: 'number',
-                    optionName:  'replace',
-                    callsite:    null
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    actualValue:     'number',
+                    optionName:      'replace',
+                    callsite:        null
                 }
             );
         });

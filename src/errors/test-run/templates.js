@@ -38,9 +38,19 @@ export default {
     [TYPE.uncaughtErrorOnPage]: err => markup(err, `
         Error on page <a href="${err.pageDestUrl}">${err.pageDestUrl}</a>:
 
-        <code>${escapeHtml(err.scriptErr)}</code>
+        <code>${escapeHtml(err.errMsg)}</code>
 
         ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.uncaughtErrorInTestCode]: err => markup(err, `
+        <code>${escapeHtml(err.errMsg)}</code>
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.uncaughtNonErrorObjectInTestCode]: err => markup(err, `
+        Uncaught ${err.objType} "${escapeHtml(err.objStr)}" was thrown. Throw <code>Error</code> instead.
     `),
 
     [TYPE.actionSelectorTypeError]: err => markup(err, `

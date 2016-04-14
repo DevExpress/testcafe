@@ -1,20 +1,22 @@
-var expect                          = require('chai').expect;
-var read                            = require('read-file-relative').readSync;
-var remove                          = require('lodash').pull;
-var escapeRe                        = require('lodash').escapeRegExp;
-var ReporterPluginHost              = require('../../lib/reporter/plugin-host');
-var TYPE                            = require('../../lib/errors/test-run/type');
-var TestRunErrorFormattableAdapter  = require('../../lib/errors/test-run/formattable-adapter');
-var testCallsite                    = require('./data/test-callsite');
-var ActionNumberOptionError         = require('../../lib/errors/test-run').ActionNumberOptionError;
-var ActionPositiveNumberOptionError = require('../../lib/errors/test-run').ActionPositiveNumberOptionError;
-var ActionBooleanOptionError        = require('../../lib/errors/test-run').ActionBooleanOptionError;
-var ActionSelectorTypeError         = require('../../lib/errors/test-run').ActionSelectorTypeError;
-var ActionOptionsTypeError          = require('../../lib/errors/test-run').ActionOptionsTypeError;
-var UncaughtErrorOnPage             = require('../../lib/errors/test-run').UncaughtErrorOnPage;
-var ActionElementNotFoundError      = require('../../lib/errors/test-run').ActionElementNotFoundError;
-var ActionElementIsInvisibleError   = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
-var MissingAwaitError               = require('../../lib/errors/test-run').MissingAwaitError;
+var expect                           = require('chai').expect;
+var read                             = require('read-file-relative').readSync;
+var remove                           = require('lodash').pull;
+var escapeRe                         = require('lodash').escapeRegExp;
+var ReporterPluginHost               = require('../../lib/reporter/plugin-host');
+var TYPE                             = require('../../lib/errors/test-run/type');
+var TestRunErrorFormattableAdapter   = require('../../lib/errors/test-run/formattable-adapter');
+var testCallsite                     = require('./data/test-callsite');
+var ActionNumberOptionError          = require('../../lib/errors/test-run').ActionNumberOptionError;
+var ActionPositiveNumberOptionError  = require('../../lib/errors/test-run').ActionPositiveNumberOptionError;
+var ActionBooleanOptionError         = require('../../lib/errors/test-run').ActionBooleanOptionError;
+var ActionSelectorTypeError          = require('../../lib/errors/test-run').ActionSelectorTypeError;
+var ActionOptionsTypeError           = require('../../lib/errors/test-run').ActionOptionsTypeError;
+var UncaughtErrorOnPage              = require('../../lib/errors/test-run').UncaughtErrorOnPage;
+var UncaughtErrorInTestCode          = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
+var UncaughtNonErrorObjectInTestCode = require('../../lib/errors/test-run').UncaughtNonErrorObjectInTestCode;
+var ActionElementNotFoundError       = require('../../lib/errors/test-run').ActionElementNotFoundError;
+var ActionElementIsInvisibleError    = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
+var MissingAwaitError                = require('../../lib/errors/test-run').MissingAwaitError;
 
 
 var TEST_FILE_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
@@ -86,6 +88,14 @@ describe('Error formatting', function () {
 
         it('Should format "uncaughtErrorOnPage" message', function () {
             assertErrorMessage('uncaught-js-error-on-page', new UncaughtErrorOnPage('Custom script error', 'http://example.org'));
+        });
+
+        it('Should format "uncaughtErrorInTestCode" message', function () {
+            assertErrorMessage('uncaught-js-error-in-test-code', new UncaughtErrorInTestCode('Custom script error', testCallsite));
+        });
+
+        it('Should format "uncaughtNonErrorObjectInTestCode" message', function () {
+            assertErrorMessage('uncaught-non-error-object-in-test-code', new UncaughtNonErrorObjectInTestCode('Hey ya!'));
         });
 
         it('Should format "actionElementNotFoundError" message', function () {

@@ -10,9 +10,10 @@ import TYPE from './type';
 //--------------------------------------------------------------------
 class TestRunErrorBase {
     constructor (category, type) {
-        this.category = category;
-        this.type     = type;
-        this.callsite = null;
+        this.isTestCafeError = true;
+        this.category        = category;
+        this.type            = type;
+        this.callsite        = null;
     }
 }
 
@@ -46,14 +47,31 @@ export class MissingAwaitError extends TestRunErrorBase {
 // Uncaught errors
 //--------------------------------------------------------------------
 export class UncaughtErrorOnPage extends TestRunErrorBase {
-    constructor (scriptErr, pageDestUrl) {
+    constructor (errMsg, pageDestUrl) {
         super(CATEGORY.uncaughtError, TYPE.uncaughtErrorOnPage);
 
-        this.scriptErr   = scriptErr;
+        this.errMsg      = errMsg;
         this.pageDestUrl = pageDestUrl;
     }
 }
 
+export class UncaughtErrorInTestCode extends TestRunErrorBase {
+    constructor (errMsg, callsite) {
+        super(CATEGORY.uncaughtError, TYPE.uncaughtErrorInTestCode);
+
+        this.errMsg   = errMsg;
+        this.callsite = callsite;
+    }
+}
+
+export class UncaughtNonErrorObjectInTestCode extends TestRunErrorBase {
+    constructor (obj) {
+        super(CATEGORY.uncaughtError, TYPE.uncaughtNonErrorObjectInTestCode);
+
+        this.objType = typeof obj;
+        this.objStr  = String(obj);
+    }
+}
 
 // Action parameters errors
 //--------------------------------------------------------------------
