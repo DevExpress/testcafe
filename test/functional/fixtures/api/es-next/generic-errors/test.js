@@ -30,7 +30,7 @@ describe('[API] Generic errors', function () {
             return runTests('./testcafe-fixtures/error-in-test-code-test.js', 'Helper code throws Error', { shouldFail: true })
                 .catch(function (err) {
                     expect(err).to.contains('Error: yo!');
-                    expect(err).to.contains('> 2 |    throw new Error(\'yo!\');');
+                    expect(err).to.contains('> 4 |    throw new Error(\'yo!\');');
                 });
         });
     });
