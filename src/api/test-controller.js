@@ -31,7 +31,7 @@ export default class TestController {
     // await t2;                  // <-- callsiteWithoutAwait = null
     // t.click('#btn2');          // <-- stores new callsiteWithoutAwait
     // await t2.click('#btn3');   // <-- without check it will set callsiteWithoutAwait = null, so we will lost tracking
-    _createExtendedPromises (promise, callsite) {
+    _createExtendedPromise (promise, callsite) {
         var extendedPromise = promise.then(identity);
         var originalThen    = extendedPromise.then;
 
@@ -74,7 +74,7 @@ export default class TestController {
         this.executionChain       = this.executionChain.then(() => this.testRun.executeCommand(command, callsite));
         this.callsiteWithoutAwait = callsite;
 
-        return this._createExtendedPromises(this.executionChain, callsite);
+        return this._createExtendedPromise(this.executionChain, callsite);
     }
 
     _checkForMissingAwait () {
