@@ -1,6 +1,6 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
 CATEGORY=actionError
-Action option offsetX is expected to be a number, but it was NaN.
+Action option offsetX is expected to be an integer, but it was NaN.
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');

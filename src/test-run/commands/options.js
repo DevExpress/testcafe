@@ -6,35 +6,39 @@
 import Assignable from '../../utils/assignable';
 
 import {
-    ActionNumberOptionError,
-    ActionPositiveNumberOptionError,
+    ActionIntegerOptionError,
+    ActionPositiveIntegerOptionError,
     ActionBooleanOptionError
 } from '../../errors/test-run';
 
 // Validators
-function number (option, val, positive) {
+function integer (option, val, positive) {
     var valType   = typeof val;
-    var ErrorCtor = positive ? ActionPositiveNumberOptionError : ActionNumberOptionError;
+    var ErrorCtor = positive ? ActionPositiveIntegerOptionError : ActionIntegerOptionError;
 
     if (valType !== 'number')
         throw new ErrorCtor(option, valType);
 
-    if (isNaN(val))
-        throw new ErrorCtor(option, valType);
+    var isInteger = !isNaN(val) &&
+                    isFinite(val) &&
+                    val === Math.floor(val);
+
+    if (!isInteger)
+        throw new ErrorCtor(option, val);
 }
 
-function positiveNumber (option, val) {
-    number(option, val, true);
+function positiveInteger (option, val) {
+    integer(option, val, true);
 
     if (val < 0)
-        throw new ActionPositiveNumberOptionError(option, val, true);
+        throw new ActionPositiveIntegerOptionError(option, val, true);
 }
 
-function positiveNumberOrNull (option, val) {
+function positiveIntegerOrNull (option, val) {
     if (val === null)
         return;
 
-    positiveNumber(option, val);
+    positiveInteger(option, val);
 }
 
 function boolean (option, val) {
@@ -79,8 +83,8 @@ export class OffsetOptions extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'offsetX', type: positiveNumber },
-            { name: 'offsetY', type: positiveNumber }
+            { name: 'offsetX', type: positiveInteger },
+            { name: 'offsetY', type: positiveInteger }
         ];
     }
 }
@@ -124,7 +128,7 @@ export class ClickOptions extends MouseOptions {
 
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
-            { name: 'caretPos', type: positiveNumberOrNull }
+            { name: 'caretPos', type: positiveIntegerOrNull }
         ]);
     }
 }
@@ -145,8 +149,8 @@ export class DragOptions extends MouseOptions {
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
             { name: 'destinationElement' },
-            { name: 'dragOffsetX', type: number },
-            { name: 'dragOffsetY', type: number }
+            { name: 'dragOffsetX', type: integer },
+            { name: 'dragOffsetY', type: integer }
         ]);
     }
 }

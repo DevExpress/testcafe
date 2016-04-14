@@ -584,6 +584,11 @@ export function drag (what) {
                 options = options || {};
 
                 var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
+
+                // NOTE: Need to round offsets due to GH-365
+                dragOffsetX = Math.round(dragOffsetX);
+                dragOffsetY = Math.round(dragOffsetY);
+
                 var dragOptions = new DragOptions({
                     offsetX,
                     offsetY,

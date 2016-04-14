@@ -6,8 +6,8 @@ var ReporterPluginHost               = require('../../lib/reporter/plugin-host')
 var TYPE                             = require('../../lib/errors/test-run/type');
 var TestRunErrorFormattableAdapter   = require('../../lib/errors/test-run/formattable-adapter');
 var testCallsite                     = require('./data/test-callsite');
-var ActionNumberOptionError          = require('../../lib/errors/test-run').ActionNumberOptionError;
-var ActionPositiveNumberOptionError  = require('../../lib/errors/test-run').ActionPositiveNumberOptionError;
+var ActionIntegerOptionError         = require('../../lib/errors/test-run').ActionIntegerOptionError;
+var ActionPositiveIntegerOptionError = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
 var ActionBooleanOptionError         = require('../../lib/errors/test-run').ActionBooleanOptionError;
 var ActionSelectorTypeError          = require('../../lib/errors/test-run').ActionSelectorTypeError;
 var ActionOptionsTypeError           = require('../../lib/errors/test-run').ActionOptionsTypeError;
@@ -85,12 +85,12 @@ function assertErrorMessage (file, err) {
 
 describe('Error formatting', function () {
     describe('Errors', function () {
-        it('Should format "actionNumberOptionError" message', function () {
-            assertErrorMessage('action-number-option-error', new ActionNumberOptionError('offsetX', 'NaN'));
+        it('Should format "actionIntegerOptionError" message', function () {
+            assertErrorMessage('action-integer-option-error', new ActionIntegerOptionError('offsetX', 'NaN'));
         });
 
-        it('Should format "actionPositiveNumberOptionError" message', function () {
-            assertErrorMessage('action-positive-number-option-error', new ActionPositiveNumberOptionError('caretPos', '-1'));
+        it('Should format "actionPositiveIntegerNumberError" message', function () {
+            assertErrorMessage('action-positive-integer-option-error', new ActionPositiveIntegerOptionError('caretPos', '-1'));
         });
 
         it('Should format "actionBooleanOptionError" message', function () {

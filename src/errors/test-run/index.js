@@ -93,15 +93,15 @@ export class ExternalAssertionLibraryError extends TestRunErrorBase {
 
 // Action parameters errors
 //--------------------------------------------------------------------
-export class ActionNumberOptionError extends ActionOptionErrorBase {
+export class ActionIntegerOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
-        super(TYPE.actionNumberOptionError, optionName, actualValue);
+        super(TYPE.actionIntegerOptionError, optionName, actualValue);
     }
 }
 
-export class ActionPositiveNumberOptionError extends ActionOptionErrorBase {
+export class ActionPositiveIntegerOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
-        super(TYPE.actionPositiveNumberOptionError, optionName, actualValue);
+        super(TYPE.actionPositiveIntegerOptionError, optionName, actualValue);
     }
 }
 

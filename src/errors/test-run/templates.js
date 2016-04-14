@@ -17,14 +17,14 @@ function markup (err, msgMarkup) {
 }
 
 export default {
-    [TYPE.actionNumberOptionError]: err => markup(err, `
-        Action option <code>${err.optionName}</code> is expected to be a number, but it was <code>${err.actualValue}</code>.
+    [TYPE.actionIntegerOptionError]: err => markup(err, `
+        Action option <code>${err.optionName}</code> is expected to be an integer, but it was <code>${err.actualValue}</code>.
 
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.actionPositiveNumberOptionError]: err => markup(err, `
-        Action option <code>${err.optionName}</code> is expected to be a positive number, but it was <code>${err.actualValue}</code>.
+    [TYPE.actionPositiveIntegerOptionError]: err => markup(err, `
+        Action option <code>${err.optionName}</code> is expected to be a positive integer, but it was <code>${err.actualValue}</code>.
 
         ${err.getCallsiteMarkup()}
     `),
