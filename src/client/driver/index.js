@@ -17,7 +17,8 @@ var eventUtils        = testCafeCore.eventUtils;
 var modalBackground   = testCafeUI.modalBackground;
 
 
-const commandExecutionFlag = 'testcafe|driver|command-execution-flag';
+const COMMAND_EXECUTING_FLAG            = 'testcafe|driver|command-executing-flag';
+const COMMAND_INTERRUPTED_BY_ERROR_FLAG = 'testcafe|driver|command-interrupted-by-error-flag';
 
 
 export default class ClientDriver {
@@ -42,15 +43,21 @@ export default class ClientDriver {
             .documentReady()
             .then(() => this.pageInitialXhrBarrier.wait(true))
             .then(() => {
-                var inCommandExecution = this.contextStorage.getItem(commandExecutionFlag);
-                var commandResult      = inCommandExecution ? { failed: false } : null; //TODO: store errors between page reloads
+                var inCommandExecution        = this.contextStorage.getItem(COMMAND_EXECUTING_FLAG);
+                var commandInterruptedByError = this.contextStorage.getItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG);
 
                 modalBackground.hide();
-                this._onReady(commandResult);
+
+                if (inCommandExecution && !commandInterruptedByError)
+                    this._onReady({ failed: false });
+                else
+                    this._onReady(null);
             });
     }
 
     _onJsError (err) {
+        this.contextStorage.setItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG, true);
+
         return transport
             .asyncServiceMsg({
                 cmd: MESSAGE.jsError,
@@ -72,6 +79,8 @@ export default class ClientDriver {
     }
 
     _onCommand (command) {
+        this.contextStorage.setItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG, false);
+
         if (command.type === COMMAND_TYPE.testDone) {
             this._onTestDone();
             return;
@@ -79,14 +88,16 @@ export default class ClientDriver {
 
         var { startPromise, completePromise } = executeActionCommand(command);
 
-        startPromise.then(() => this.contextStorage.setItem(commandExecutionFlag, true));
+        startPromise.then(() => this.contextStorage.setItem(COMMAND_EXECUTING_FLAG, true));
 
         completePromise
             .catch(err => this._onJsError(err))
             .then(commandResult => {
-                this.contextStorage.setItem(commandExecutionFlag, false);
+                var commandInterruptedByError = this.contextStorage.getItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG);
 
-                return this._onReady(commandResult);
+                this.contextStorage.setItem(COMMAND_EXECUTING_FLAG, false);
+
+                return this._onReady(commandInterruptedByError ? null : commandResult);
             });
     }
 

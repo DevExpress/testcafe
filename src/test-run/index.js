@@ -65,6 +65,12 @@ export default class TestRun extends Session {
             return false;
         }
 
+        if (this.pendingJsError) {
+            this._addError(this.pendingJsError);
+            this.pendingJsError = null;
+            return false;
+        }
+
         return true;
     }
 
@@ -80,15 +86,6 @@ export default class TestRun extends Session {
 
             if (afterEachFn)
                 await this._executeTestFn(STATE.inAfterEach, afterEachFn);
-        }
-
-        this._done();
-    }
-
-    async _done () {
-        if (this.pendingJsError) {
-            this._addError(this.pendingJsError);
-            this.pendingJsError = null;
         }
 
         await this.executeCommand(new TestDoneCommand());

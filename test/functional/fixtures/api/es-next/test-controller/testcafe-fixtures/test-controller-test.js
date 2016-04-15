@@ -44,7 +44,7 @@ test('Missing await in the end of the test', async t => {
     t.click('#btn3');
 });
 
-test('Error caused by action with missing await', async t => {
+test('Error caused by action with missing await [ONLY:chrome]', async t => {
     t.click('#error');
 
     await t.click('#btn2');

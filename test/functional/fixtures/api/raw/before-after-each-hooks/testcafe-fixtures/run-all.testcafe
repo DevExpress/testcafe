@@ -1,0 +1,44 @@
+{
+    "fixtures": [
+        {
+            "name": "Run all",
+            "pageUrl": "http://localhost:3000/api/raw/before-after-each-hooks/pages/index.html",
+            "beforeEachCommands": [
+                {
+                    "type": "click",
+                    "selector": "#beforeEach"
+                }
+            ],
+            "afterEachCommands": [
+                {
+                    "type": "click",
+                    "selector": "#afterEach"
+                },
+                {
+                    "type": "click",
+                    "selector": "#failAndReport"
+                }
+            ],
+            "tests": [
+                {
+                    "name": "Test1",
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector": "#test"
+                        }
+                    ]
+                },
+                {
+                    "name": "Test2",
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector": "#test"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
