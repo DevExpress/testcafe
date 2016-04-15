@@ -1,0 +1,31 @@
+{
+    "fixtures": [
+        {
+            "name": "Hover",
+            "pageUrl": "http://localhost:3000/api/raw/hover/pages/index.html",
+            "tests": [
+                {
+                    "name": "Hover on simple buttons",
+                    "commands": [
+                        {
+                            "type": "hover",
+                            "selector": "#input1",
+                            "options": {
+                                "offsetX": 10,
+                                "offsetY": 10
+                            }
+                        },
+                        {
+                            "type": "hover",
+                            "selector": "#input2",
+                            "options": {
+                                "offsetX": 10,
+                                "offsetY": 10
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

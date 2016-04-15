@@ -7,5 +7,6 @@ export default {
     click:       'click',
     rightClick:  'right-click',
     doubleClick: 'double-click',
+    hover:       'hover',
     testDone:    'test-done'
 };

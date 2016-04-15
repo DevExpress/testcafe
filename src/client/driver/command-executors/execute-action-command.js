@@ -5,15 +5,16 @@ import testCafeUI from '../deps/testcafe-ui';
 import { ActionElementNotFoundError, ActionElementIsInvisibleError } from '../../../errors/test-run';
 import COMMAND_TYPE from '../../../test-run/commands/type';
 
-var Promise           = hammerhead.Promise;
-var XhrBarrier        = testCafeCore.XhrBarrier;
-var pageUnloadBarrier = testCafeCore.pageUnloadBarrier;
-var positionUtils     = testCafeCore.positionUtils;
-var waitFor           = testCafeCore.waitFor;
-var ClickAutomation   = testCafeRunner.get('./automation/playback/click');
-var RClickAutomation  = testCafeRunner.get('./automation/playback/rclick');
+var Promise            = hammerhead.Promise;
+var XhrBarrier         = testCafeCore.XhrBarrier;
+var pageUnloadBarrier  = testCafeCore.pageUnloadBarrier;
+var positionUtils      = testCafeCore.positionUtils;
+var waitFor            = testCafeCore.waitFor;
+var ClickAutomation    = testCafeRunner.get('./automation/playback/click');
+var RClickAutomation   = testCafeRunner.get('./automation/playback/rclick');
 var DblClickAutomation = testCafeRunner.get('./automation/playback/dblclick');
-var ProgressPanel     = testCafeUI.ProgressPanel;
+var HoverAutomation    = testCafeRunner.get('./automation/playback/hover');
+var ProgressPanel      = testCafeUI.ProgressPanel;
 
 
 const PROGRESS_PANEL_TEXT   = 'Waiting for the target element of the next action to appear';
@@ -62,10 +63,15 @@ function runAutomation (element, command) {
 
     if (command.type === COMMAND_TYPE.click)
         automation = new ClickAutomation(element, command.options);
-    else if (command.type === COMMAND_TYPE.rightClick)
+
+    if (command.type === COMMAND_TYPE.rightClick)
         automation = new RClickAutomation(element, command.options);
-    else if (command.type === COMMAND_TYPE.doubleClick)
+
+    if (command.type === COMMAND_TYPE.doubleClick)
         automation = new DblClickAutomation(element, command.options);
+
+    if (command.type === COMMAND_TYPE.hover)
+        automation = new HoverAutomation(element, command.options);
 
     return automation
         .run()
