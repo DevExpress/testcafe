@@ -7,6 +7,7 @@ import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapt
 import { TestDoneCommand } from './commands';
 import COMMAND_TYPE from './commands/type';
 import CLIENT_MESSAGES from './client-messages';
+import STATE from './state';
 
 
 //Const
@@ -24,7 +25,9 @@ export default class TestRun extends Session {
         this.browserConnection  = browserConnection;
         this.screenshotCapturer = screenshotCapturer;
 
-        this.running                = false;
+        this.running = false;
+        this.state   = STATE.initial;
+
         this.pendingCommand         = null;
         this.pendingRequest         = null;
         this.pendingJsError         = null;
@@ -51,19 +54,35 @@ export default class TestRun extends Session {
         // TODO
     }
 
-    async _start () {
-        this.running = true;
-        this.emit('start');
+    async _executeTestFn (state, fn) {
+        this.state = state;
 
         try {
-            await this.test.fn(this);
+            await fn(this);
         }
         catch (err) {
             this._addError(err);
+            return false;
         }
-        finally {
-            this._done();
+
+        return true;
+    }
+
+    async _start () {
+        var beforeEachFn = this.test.fixture.beforeEachFn;
+        var afterEachFn  = this.test.fixture.afterEachFn;
+
+        this.running = true;
+        this.emit('start');
+
+        if (!beforeEachFn || await this._executeTestFn(STATE.inBeforeEach, beforeEachFn)) {
+            await this._executeTestFn(STATE.inTest, this.test.fn);
+
+            if (afterEachFn)
+                await this._executeTestFn(STATE.inAfterEach, afterEachFn);
         }
+
+        this._done();
     }
 
     async _done () {
@@ -95,7 +114,8 @@ export default class TestRun extends Session {
         var adapter = new TestRunErrorFormattableAdapter(err, {
             userAgent:      this.browserConnection.userAgent,
             screenshotPath: '',
-            callsite:       this.currentCommandCallsite
+            callsite:       this.currentCommandCallsite,
+            testRunState:   this.state
         });
 
         this.errs.push(adapter);
