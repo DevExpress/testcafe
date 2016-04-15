@@ -96,10 +96,11 @@ describe('Test run commands', function () {
                     });
                 },
                 {
-                    category:   ERROR_CATEGORY.actionError,
-                    type:       ERROR_TYPE.actionSelectorTypeError,
-                    actualType: 'undefined',
-                    callsite:   null
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionSelectorTypeError,
+                    actualType:      'undefined',
+                    callsite:        null
                 }
             );
 
@@ -111,10 +112,11 @@ describe('Test run commands', function () {
                     });
                 },
                 {
-                    category:   ERROR_CATEGORY.actionError,
-                    type:       ERROR_TYPE.actionSelectorTypeError,
-                    actualType: 'number',
-                    callsite:   null
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionSelectorTypeError,
+                    actualType:      'number',
+                    callsite:        null
                 }
             );
 
@@ -127,10 +129,11 @@ describe('Test run commands', function () {
                     });
                 },
                 {
-                    category:   ERROR_CATEGORY.actionError,
-                    type:       ERROR_TYPE.actionOptionsTypeError,
-                    actualType: 'number',
-                    callsite:   null
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    actualType:      'number',
+                    callsite:        null
                 }
             );
 
@@ -145,11 +148,12 @@ describe('Test run commands', function () {
                     });
                 },
                 {
-                    category:    ERROR_CATEGORY.actionError,
-                    type:        ERROR_TYPE.actionPositiveNumberOptionError,
-                    optionName:  'offsetX',
-                    actualValue: 'string',
-                    callsite:    null
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionPositiveNumberOptionError,
+                    optionName:      'offsetX',
+                    actualValue:     'string',
+                    callsite:        null
                 }
             );
         });

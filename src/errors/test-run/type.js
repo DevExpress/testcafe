@@ -4,15 +4,20 @@
 // -------------------------------------------------------------
 
 export default {
+    uncaughtErrorOnPage:              'uncaughtErrorOnPage',
+    uncaughtErrorInTestCode:          'uncaughtErrorInTestCode',
+    uncaughtNonErrorObjectInTestCode: 'uncaughtNonErrorObjectInTestCode',
+
+    missingAwaitError: 'missingAwaitError',
+
     actionNumberOptionError:         'actionNumberOptionError',
     actionPositiveNumberOptionError: 'actionPositiveNumberOptionError',
     actionBooleanOptionError:        'actionBooleanOptionError',
     actionOptionsTypeError:          'actionOptionsTypeError',
 
-    uncaughtErrorOnPage: 'uncaughtErrorOnPage',
-    missingAwaitError:   'missingAwaitError',
-
     actionSelectorTypeError:       'actionSelectorTypeError',
     actionElementNotFoundError:    'actionElementNotFoundError',
-    actionElementIsInvisibleError: 'actionElementIsInvisibleError'
+    actionElementIsInvisibleError: 'actionElementIsInvisibleError',
+
+    externalAssertionLibraryError: 'externalAssertionLibraryError'
 };

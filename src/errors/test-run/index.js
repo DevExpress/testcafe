@@ -10,9 +10,10 @@ import TYPE from './type';
 //--------------------------------------------------------------------
 class TestRunErrorBase {
     constructor (category, type) {
-        this.category = category;
-        this.type     = type;
-        this.callsite = null;
+        this.isTestCafeError = true;
+        this.category        = category;
+        this.type            = type;
+        this.callsite        = null;
     }
 }
 
@@ -31,6 +32,11 @@ class ActionError extends TestRunErrorBase {
     }
 }
 
+class UncaughtError extends TestRunErrorBase {
+    constructor (type) {
+        super(CATEGORY.uncaughtError, type);
+    }
+}
 
 // Synchronization errors
 //--------------------------------------------------------------------
@@ -45,12 +51,42 @@ export class MissingAwaitError extends TestRunErrorBase {
 
 // Uncaught errors
 //--------------------------------------------------------------------
-export class UncaughtErrorOnPage extends TestRunErrorBase {
-    constructor (scriptErr, pageDestUrl) {
-        super(CATEGORY.uncaughtError, TYPE.uncaughtErrorOnPage);
+export class UncaughtErrorOnPage extends UncaughtError {
+    constructor (errMsg, pageDestUrl) {
+        super(TYPE.uncaughtErrorOnPage);
 
-        this.scriptErr   = scriptErr;
+        this.errMsg      = errMsg;
         this.pageDestUrl = pageDestUrl;
+    }
+}
+
+export class UncaughtErrorInTestCode extends UncaughtError {
+    constructor (err, callsite) {
+        super(TYPE.uncaughtErrorInTestCode);
+
+        this.errMsg   = String(err);
+        this.callsite = callsite;
+    }
+}
+
+export class UncaughtNonErrorObjectInTestCode extends UncaughtError {
+    constructor (obj) {
+        super(TYPE.uncaughtNonErrorObjectInTestCode);
+
+        this.objType = typeof obj;
+        this.objStr  = String(obj);
+    }
+}
+
+
+// Assertion errors
+//--------------------------------------------------------------------
+export class ExternalAssertionLibraryError extends TestRunErrorBase {
+    constructor (err, callsite) {
+        super(CATEGORY.assertionError, TYPE.externalAssertionLibraryError);
+
+        this.errMsg   = String(err);
+        this.callsite = callsite;
     }
 }
 
