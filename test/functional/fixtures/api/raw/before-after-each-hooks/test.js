@@ -1,7 +1,8 @@
 var expect = require('chai').expect;
 
-describe('[Raw API] beforeEach/afterEach hooks', function () {
-    it('Should hooks for all tests', function () {
+// NOTE: we run tests in chrome only, because we mainly test server API functionality.
+describe('[Raw API] beforeEach/afterEach hooks [ONLY:chrome]', function () {
+    it('Should run hooks for all tests', function () {
         var test1Err = null;
 
         return runTests('./testcafe-fixtures/run-all.testcafe', 'Test1', { shouldFail: true })
@@ -20,7 +21,7 @@ describe('[Raw API] beforeEach/afterEach hooks', function () {
             });
     });
 
-    it('Should not run test and afterEach if fails in beforeEach', function () {
+    it('Should not run test and afterEach if fails in beforeEach [ONLY:chrome]', function () {
         return runTests('./testcafe-fixtures/fail-in-before-each.testcafe', 'Test', { shouldFail: true })
             .catch(function (err) {
                 expect(err).eql('- Error in beforeEach hook - ' +
@@ -31,7 +32,7 @@ describe('[Raw API] beforeEach/afterEach hooks', function () {
             });
     });
 
-    it('Should run test and afterEach and beforeEach if test fails', function () {
+    it('Should run test and afterEach and beforeEach if test fails [ONLY:chrome]', function () {
         return runTests('./testcafe-fixtures/fail-in-test.testcafe', 'Test', { shouldFail: true })
             .catch(function (err) {
                 expect(err).to.contains('Error on page "http://localhost:3000/api/raw/before-after-each-hooks/pages/index.html":  ' +

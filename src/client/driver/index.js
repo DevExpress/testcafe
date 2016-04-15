@@ -79,12 +79,12 @@ export default class ClientDriver {
     }
 
     _onCommand (command) {
-        this.contextStorage.setItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG, false);
-
         if (command.type === COMMAND_TYPE.testDone) {
             this._onTestDone();
             return;
         }
+
+        this.contextStorage.setItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG, false);
 
         var { startPromise, completePromise } = executeActionCommand(command);
 

@@ -130,7 +130,14 @@ export default class TestRun extends Session {
         // TODO
     }
 
+    /* eslint no-console: 0*/
+
     executeCommand (command, callsite) {
+        if (this.browserConnection.userAgent.indexOf('IE') > -1) {
+            console.log('--Command:');
+            console.log(command);
+        }
+
         if (this.pendingCommand)
             throw new Error('Assertion failed: an attempt to execute a command when a previous command is still being executed was detected.');
 
@@ -154,6 +161,11 @@ export default class TestRun extends Session {
 var ServiceMessages = TestRun.prototype;
 
 ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
+    if (this.browserConnection.userAgent.indexOf('IE') > -1) {
+        console.log('--Message:');
+        console.log(msg);
+    }
+
     var commandResult = msg.commandResult;
 
     this.pendingRequest = null;
@@ -177,7 +189,12 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 };
 
 ServiceMessages[CLIENT_MESSAGES.jsError] = function (msg) {
-    if (this.pendingCommand)
+    if (this.browserConnection.userAgent.indexOf('IE') > -1) {
+        console.log('--Error:');
+        console.log(msg.err);
+    }
+
+    if (this.pendingCommand && this.pendingCommand.command.type !== COMMAND_TYPE.testDone)
         this._rejectPendingCommand(msg.err);
     else
         this.pendingJsError = msg.err;
