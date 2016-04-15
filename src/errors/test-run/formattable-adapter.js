@@ -7,15 +7,15 @@ import stackFilter from '../stack-filter';
 var parser = new Parser();
 
 export default class TestRunErrorFormattableAdapter {
-    constructor (err, userAgent, screenshotPath, callsite) {
+    constructor (err, metaInfo) {
         this.TEMPLATES = TEMPLATES;
 
-        this.userAgent      = userAgent;
-        this.screenshotPath = screenshotPath;
+        this.userAgent      = metaInfo.userAgent;
+        this.screenshotPath = metaInfo.screenshotPath;
 
         assignIn(this, err);
 
-        this.callsite = this.callsite || callsite;
+        this.callsite = this.callsite || metaInfo.callsite;
     }
 
     static _getSelector (node) {

@@ -12,8 +12,8 @@ var renderer = ['string', 'punctuator', 'keyword', 'number', 'regex', 'comment',
 }, {});
 
 export default class LegacyTestRunErrorFormattableAdapter extends TestRunErrorFormattableAdapter {
-    constructor (err, userAgent, screenshotPath, callsite) {
-        super(err, userAgent, screenshotPath, callsite);
+    constructor (err, metaInfo) {
+        super(err, metaInfo);
 
         this.TEMPLATES = TEMPLATES;
     }

@@ -88,7 +88,11 @@ export default class LegacyTestRun extends Session {
             // reason (e.g. we don't have permissions to write a screenshot file).
         }
 
-        var errAdapter = new LegacyTestRunErrorFormattableAdapter(err, this.browserConnection.userAgent, screenshotPath, callsite);
+        var errAdapter = new LegacyTestRunErrorFormattableAdapter(err, {
+            userAgent:      this.browserConnection.userAgent,
+            screenshotPath: screenshotPath,
+            callsite:       callsite
+        });
 
         this.errs.push(errAdapter);
     }

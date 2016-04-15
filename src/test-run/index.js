@@ -92,7 +92,11 @@ export default class TestRun extends Session {
     }
 
     _addError (err) {
-        var adapter = new TestRunErrorFormattableAdapter(err, this.browserConnection.userAgent, '', this.currentCommandCallsite);
+        var adapter = new TestRunErrorFormattableAdapter(err, {
+            userAgent:      this.browserConnection.userAgent,
+            screenshotPath: '',
+            callsite:       this.currentCommandCallsite
+        });
 
         this.errs.push(adapter);
     }
