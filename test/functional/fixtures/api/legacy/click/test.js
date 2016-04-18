@@ -4,7 +4,7 @@ var expect = require('chai').expect;
 describe('[Legacy API] act.click()', function () {
     it('Should fail if the first argument is invisible', function () {
         return runTests('testcafe-fixtures/click.test.js', 'Should fail if the first argument is invisible', { shouldFail: true })
-            .catch(function (err) {
+            .catch(function (errs) {
                 var expectedError = [
                     'Error at step "1.Click on invisible element":',
                     '',
@@ -15,11 +15,11 @@ describe('[Legacy API] act.click()', function () {
                     'element, make sure that you properly recorded the hover action.'
                 ].join(' ');
 
-                expect(err).eql(expectedError);
+                expect(errs[0]).eql(expectedError);
             });
     });
 
     it('Pointer events test (T191183) [ONLY:ie]', function () {
-        return runTests('testcafe-fixtures/click.test.js', 'Pointer events test (T191183) [ONLY:ie]');
+        return runTests('testcafe-fixtures/click.test.js', 'Pointer events test (T191183)', { only: 'ie' });
     });
 });

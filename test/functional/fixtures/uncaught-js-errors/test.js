@@ -1,34 +1,33 @@
-var expect = require('chai').expect;
-
-var CUSTOM_JS_ERROR = '%TC_TEST_ERR%';
+var CUSTOM_JS_ERROR            = '%TC_TEST_ERR%';
+var errorInEachBrowserContains = require('../../assertion-helper.js').errorInEachBrowserContains;
 
 
 describe('Uncaught js errors', function () {
     it('Should fail if there is no onerror handler', function () {
         return runTests('testcafe-fixtures/no-handler.test.js', null, { shouldFail: true })
-            .catch(function (err) {
-                expect(err).to.contains(CUSTOM_JS_ERROR);
+            .catch(function (errs) {
+                errorInEachBrowserContains(errs, CUSTOM_JS_ERROR, 0);
             });
     });
 
     it('Should fail if the onerror handler returns undefined', function () {
         return runTests('testcafe-fixtures/handler-returns-undefined.test.js', null, { shouldFail: true })
-            .catch(function (err) {
-                expect(err).to.contains(CUSTOM_JS_ERROR);
+            .catch(function (errs) {
+                errorInEachBrowserContains(errs, CUSTOM_JS_ERROR, 0);
             });
     });
 
     it("Should fail if iframe's onerror handler returns undefined", function () {
         return runTests('testcafe-fixtures/same-domain-iframe.test.js', null, { shouldFail: true })
-            .catch(function (err) {
-                expect(err).to.contains(CUSTOM_JS_ERROR);
+            .catch(function (errs) {
+                errorInEachBrowserContains(errs, CUSTOM_JS_ERROR, 0);
             });
     });
 
     it('Should fail if the loaded page throws an error', function () {
         return runTests('testcafe-fixtures/loaded.test.js', null, { shouldFail: true })
-            .catch(function (err) {
-                expect(err).to.contains(CUSTOM_JS_ERROR);
+            .catch(function (errs) {
+                errorInEachBrowserContains(errs, CUSTOM_JS_ERROR, 0);
             });
     });
 
@@ -59,8 +58,8 @@ describe('Uncaught js errors', function () {
     describe('Regression', function () {
         it('Should include destination URL in the error message', function () {
             return runTests('testcafe-fixtures/no-handler.test.js', null, { shouldFail: true })
-                .catch(function (err) {
-                    expect(err).to.contain('on page "http://localhost:3000/uncaught-js-errors/pages/no-handler.html"');
+                .catch(function (errs) {
+                    errorInEachBrowserContains(errs, 'on page "http://localhost:3000/uncaught-js-errors/pages/no-handler.html"', 0);
                 });
         });
     });

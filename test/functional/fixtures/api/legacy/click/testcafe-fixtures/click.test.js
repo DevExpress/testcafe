@@ -9,7 +9,7 @@ var isIE11 = !!(navigator.appCodeName === 'Mozilla' &&
                 /trident\/7.0/.test(userAgent));
 
 
-'@test'['Pointer events test (T191183) [ONLY:ie]'] = {
+'@test'['Pointer events test (T191183)'] = {
     '1.Bind pointer event handlers and call click': function () {
         var input  = $('#input')[0];
         var shared = this;

@@ -98,8 +98,17 @@ before(function () {
                 var fixturePath    = path.join(path.dirname(caller()), fixture);
                 var skipJsErrors   = opts && opts.skipJsErrors;
                 var quarantineMode = opts && opts.quarantineMode;
+                var skipOption     = opts && opts.skip;
+                var onlyOption     = opts && opts.only;
 
-                var connections = browsersInfo.map(function (browserInfo) {
+                var actualBrowsers = browsersInfo.filter(function (browserInfo) {
+                    var only = onlyOption ? onlyOption.indexOf(browserInfo.settings.alias) > -1 : true;
+                    var skip = skipOption ? skipOption.indexOf(browserInfo.settings.alias) > -1 : false;
+
+                    return only && !skip;
+                });
+
+                var connections = actualBrowsers.map(function (browserInfo) {
                     return browserInfo.connection;
                 });
 
@@ -121,7 +130,7 @@ before(function () {
                     .run({ skipJsErrors: skipJsErrors, quarantineMode: quarantineMode })
                     .then(function () {
                         var testReport = JSON.parse(report).fixtures[0].tests[0];
-                        var testError  = getTestError(testReport, browsersInfo);
+                        var testError  = getTestError(testReport, actualBrowsers);
                         var shouldFail = opts && opts.shouldFail;
 
                         global.testReport = testReport;

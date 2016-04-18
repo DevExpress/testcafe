@@ -1,23 +1,12 @@
-function isBrowserRelevant (test, browserAlias) {
-    var matchesOnly = test.match(/\[ONLY\:([,\s\w]*)\]/);
-    var matchesSkip = test.match(/\[SKIP\:([,\s\w]*)\]/);
+function areErrorsSame (errors) {
+    for (var i = 0; i < errors.length; i++) {
+        for (var j = i + 1; j < errors.length; j++) {
+            if (errors[i] !== errors[j])
+                return false;
+        }
+    }
 
-    var only = true;
-    var skip = false;
-
-    if (matchesOnly !== null)
-        only = matchesOnly[1].indexOf(browserAlias) > -1;
-
-    if (matchesSkip !== null)
-        skip = matchesSkip[1].indexOf(browserAlias) > -1;
-
-    return only && !skip;
-}
-
-function filterErrors (errors, userAgents) {
-    return errors.filter(function (error) {
-        return userAgents.indexOf(error.split('\n')[0]) > -1;
-    });
+    return true;
 }
 
 function sanitizeError (err) {
@@ -30,28 +19,37 @@ function sanitizeError (err) {
         .join(' ');
 }
 
-module.exports = function getTestError (testReport, browsersInfo) {
-    var testError = '';
+// NOTE: This method should return either a dictionary or array object with errors depending on the number of browsers
+// and errors. The possible variants:
+// If tests run in one browser, the method returns an array with errors regardless of the number of errors.
+// If tests run in several browsers and the same error occurs in all of them, the method returns an array as well.
+// If different errors occur in several browsers, a dictionary object is returned. In this case, browser aliases are
+// keys, and values are arrays of errors.
+module.exports = function getTestError (testReport, browsers) {
+    if (!testReport.errs.length)
+        return null;
 
-    var actualUserAgents = browsersInfo
-        .filter(function (browserInfo) {
-            return isBrowserRelevant(testReport.name, browserInfo.settings.alias);
-        })
-        .map(function (browserInfo) {
-            return browserInfo.connection.userAgent;
+    var croppedErrors = testReport.errs.map(sanitizeError);
+
+    if (areErrorsSame(croppedErrors) && croppedErrors.length === browsers.length)
+        return [croppedErrors[0]];
+
+    if (browsers.length > 1) {
+        var testError = {};
+
+        browsers.forEach(function (browserInfo) {
+            var errorsArray = testReport.errs
+                .filter(function (error) {
+                    return error.indexOf(browserInfo.connection.userAgent) > -1;
+                })
+                .map(sanitizeError);
+
+            if (errorsArray.length)
+                testError[browserInfo.settings.alias] = errorsArray;
         });
 
-    var actualBrowsersCount = actualUserAgents.length;
-    var actualErrors        = filterErrors(testReport.errs, actualUserAgents);
-    var actualErrorsCount   = actualErrors.length;
-
-    if (actualErrorsCount) {
-        //NOTE: if the test failed in different browsers with the same error we join it to one error
-        if (actualErrorsCount !== actualBrowsersCount)
-            testError = actualErrors.map(sanitizeError).join(' ');
-        else
-            testError = sanitizeError(actualErrors[0]);
+        return testError;
     }
 
-    return testError;
+    return croppedErrors;
 };
