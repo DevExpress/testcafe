@@ -1,8 +1,10 @@
 import path from 'path';
+import assert from 'assert';
 import { readSync as read } from 'read-file-relative';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
+import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import { TestDoneCommand } from './commands';
 import COMMAND_TYPE from './commands/type';
@@ -32,6 +34,8 @@ export default class TestRun extends Session {
         this.pendingRequest         = null;
         this.pendingJsError         = null;
         this.currentCommandCallsite = null;
+
+        this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
         this.injectable.scripts.push('/testcafe-core.js');
         this.injectable.scripts.push('/testcafe-ui.js');
@@ -130,16 +134,10 @@ export default class TestRun extends Session {
         // TODO
     }
 
-    /* eslint no-console: 0*/
-
     executeCommand (command, callsite) {
-        if (this.browserConnection.userAgent.indexOf('IE') > -1) {
-            console.log('--Command:');
-            console.log(command);
-        }
+        assert(!this.pendingCommand, 'Internal error: an attempt to execute a command when a previous command is still being executed was detected.');
 
-        if (this.pendingCommand)
-            throw new Error('Assertion failed: an attempt to execute a command when a previous command is still being executed was detected.');
+        this.debugLog.command(command);
 
         this.currentCommandCallsite = callsite;
 
@@ -161,12 +159,9 @@ export default class TestRun extends Session {
 var ServiceMessages = TestRun.prototype;
 
 ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
-    if (this.browserConnection.userAgent.indexOf('IE') > -1) {
-        console.log('--Message:');
-        console.log(msg);
-    }
-
     var commandResult = msg.commandResult;
+
+    this.debugLog.driverMessage(msg);
 
     this.pendingRequest = null;
 
@@ -189,10 +184,7 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 };
 
 ServiceMessages[CLIENT_MESSAGES.jsError] = function (msg) {
-    if (this.browserConnection.userAgent.indexOf('IE') > -1) {
-        console.log('--Error:');
-        console.log(msg.err);
-    }
+    this.debugLog.error(msg.err);
 
     if (this.pendingCommand && this.pendingCommand.command.type !== COMMAND_TYPE.testDone)
         this._rejectPendingCommand(msg.err);

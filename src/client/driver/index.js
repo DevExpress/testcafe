@@ -58,16 +58,15 @@ export default class ClientDriver {
     _onJsError (err) {
         this.contextStorage.setItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG, true);
 
-        return transport
-            .asyncServiceMsg({
-                cmd: MESSAGE.jsError,
-                err: new UncaughtErrorOnPage(err.msg || err.message, err.pageUrl)
-            });
+        return transport.queuedAsyncServiceMsg({
+            cmd: MESSAGE.jsError,
+            err: new UncaughtErrorOnPage(err.msg || err.message, err.pageUrl)
+        });
     }
 
     _onReady (commandResult) {
         transport
-            .asyncServiceMsg({ cmd: MESSAGE.ready, commandResult })
+            .queuedAsyncServiceMsg({ cmd: MESSAGE.ready, commandResult })
             .then(command => {
                 if (command)
                     this._onCommand(command);
@@ -103,7 +102,7 @@ export default class ClientDriver {
 
     _onTestDone () {
         transport
-            .asyncServiceMsg({ cmd: MESSAGE.done })
+            .queuedAsyncServiceMsg({ cmd: MESSAGE.done })
             .then(() => browser.checkStatus(this.browserStatusUrl, hammerhead.nativeMethods.XMLHttpRequest));
     }
 
