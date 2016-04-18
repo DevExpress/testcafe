@@ -193,5 +193,6 @@ ServiceMessages[CLIENT_MESSAGES.jsError] = function (msg) {
 };
 
 ServiceMessages[CLIENT_MESSAGES.done] = function () {
+    this.debugLog.testDone();
     this.pendingCommand.resolve();
 };

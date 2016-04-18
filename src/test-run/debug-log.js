@@ -1,21 +1,35 @@
 import debugLogger from 'debug';
+import indentString from 'indent-string';
 
 export default class TestRunDebugLog {
     constructor (userAgent) {
         this.driverMessageLogger = debugLogger(`testcafe:test-run:${userAgent}:driver-message`);
         this.commandLogger       = debugLogger(`testcafe:test-run:${userAgent}:command`);
         this.errorLogger         = debugLogger(`testcafe:test-run:${userAgent}:error`);
+        this.testDoneLogger      = debugLogger(`testcafe:test-run:${userAgent}:test-done`);
+    }
+
+    static _addEntry (logger, data) {
+        var entry = data ?
+                    indentString(`\n${JSON.stringify(data, null, 2)}\n`, ' ', 4) :
+                    '';
+
+        logger(entry);
     }
 
     driverMessage (msg) {
-        this.driverMessageLogger(JSON.stringify(msg, null, 2));
+        TestRunDebugLog._addEntry(this.driverMessageLogger, msg);
     }
 
     command (cmd) {
-        this.commandLogger(JSON.stringify(cmd, null, 2));
+        TestRunDebugLog._addEntry(this.commandLogger, cmd);
     }
 
     error (err) {
-        this.errorLogger(JSON.stringify(err, null, 2));
+        TestRunDebugLog._addEntry(this.errorLogger, err);
+    }
+
+    testDone () {
+        TestRunDebugLog._addEntry(this.testDoneLogger);
     }
 }
