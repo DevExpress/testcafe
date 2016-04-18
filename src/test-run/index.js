@@ -45,6 +45,8 @@ export default class TestRun extends Session {
         this.errs = [];
     }
 
+
+    // Hammerhead payload
     _getPayloadScript () {
         return Mustache.render(TEST_RUN_TEMPLATE, {
             testRunId:           this.id,
@@ -57,6 +59,22 @@ export default class TestRun extends Session {
         // TODO
     }
 
+
+    // Hammerhead handlers
+    getAuthCredentials () {
+        // TODO
+    }
+
+    handleFileDownload () {
+        // TODO
+    }
+
+    handlePageError () {
+        // TODO
+    }
+
+
+    // Test function execution
     async _executeTestFn (state, fn) {
         this.state = state;
 
@@ -90,6 +108,8 @@ export default class TestRun extends Session {
         this.emit('done');
     }
 
+
+    // Errors
     _addPendingErrorIfAny () {
         if (this.pendingJsError) {
             this._addError(this.pendingJsError);
@@ -100,6 +120,19 @@ export default class TestRun extends Session {
         return false;
     }
 
+    _addError (err) {
+        var adapter = new TestRunErrorFormattableAdapter(err, {
+            userAgent:      this.browserConnection.userAgent,
+            screenshotPath: '',
+            callsite:       this.currentCommandCallsite,
+            testRunState:   this.state
+        });
+
+        this.errs.push(adapter);
+    }
+
+
+    // Pending command and request
     _resolvePendingCommand () {
         this.pendingCommand.resolve();
         this.pendingCommand = null;
@@ -115,29 +148,12 @@ export default class TestRun extends Session {
         this.pendingRequest = null;
     }
 
-    _addError (err) {
-        var adapter = new TestRunErrorFormattableAdapter(err, {
-            userAgent:      this.browserConnection.userAgent,
-            screenshotPath: '',
-            callsite:       this.currentCommandCallsite,
-            testRunState:   this.state
-        });
-
-        this.errs.push(adapter);
+    _addPendingCommand (command) {
+        return new Promise((resolve, reject) => this.pendingCommand = { command, resolve, reject });
     }
 
-    getAuthCredentials () {
-        // TODO
-    }
 
-    handleFileDownload () {
-        // TODO
-    }
-
-    handlePageError () {
-        // TODO
-    }
-
+    // Execute command
     executeCommand (command, callsite) {
         assert(!this.pendingCommand, 'Internal error: an attempt to execute a command when a previous command is still being executed was detected.');
 
@@ -145,17 +161,18 @@ export default class TestRun extends Session {
 
         this.currentCommandCallsite = callsite;
 
-        var pendingJsError = this.pendingJsError;
+        if (this.pendingJsError && !isTestDoneCommand(command)) {
+            var result = Promise.reject(this.pendingJsError);
 
-        if (pendingJsError && !isTestDoneCommand(command)) {
             this.pendingJsError = null;
-            return Promise.reject(pendingJsError);
+
+            return result;
         }
 
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
-        return new Promise((resolve, reject) => this.pendingCommand = { command, resolve, reject });
+        return this._addPendingCommand(command);
     }
 }
 
