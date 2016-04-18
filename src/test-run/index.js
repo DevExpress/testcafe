@@ -68,13 +68,7 @@ export default class TestRun extends Session {
             return false;
         }
 
-        if (this.pendingJsError) {
-            this._addError(this.pendingJsError);
-            this.pendingJsError = null;
-            return false;
-        }
-
-        return true;
+        return !this._addPendingErrorIfAny();
     }
 
     async _start () {
@@ -92,7 +86,18 @@ export default class TestRun extends Session {
         }
 
         await this.executeCommand(new TestDoneCommand());
+        this._addPendingErrorIfAny();
         this.emit('done');
+    }
+
+    _addPendingErrorIfAny () {
+        if (this.pendingJsError) {
+            this._addError(this.pendingJsError);
+            this.pendingJsError = null;
+            return true;
+        }
+
+        return false;
     }
 
     _resolvePendingCommand () {
