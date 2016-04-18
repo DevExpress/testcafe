@@ -10,7 +10,7 @@ matrix:
   - node_js: "stable"
     env: GULP_TASK="test-client-travis"
   - node_js: "stable"
-    env: GULP_TASK="test-functional"
+    env: GULP_TASK="test-functional" DEBUG="testcafe:test-run:IE 7.0.0 / Windows 10 0.0.0:*"
  fast_finish: true
 
 branches:
