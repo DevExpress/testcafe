@@ -6,8 +6,7 @@ import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import { TestDoneCommand } from './commands';
-import COMMAND_TYPE from './commands/type';
+import { TestDoneCommand, isTestDoneCommand } from './commands';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
 
@@ -143,7 +142,7 @@ export default class TestRun extends Session {
 
         var pendingJsError = this.pendingJsError;
 
-        if (pendingJsError) {
+        if (pendingJsError && !isTestDoneCommand(command)) {
             this.pendingJsError = null;
             return Promise.reject(pendingJsError);
         }
@@ -170,7 +169,7 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 
     if (this.pendingCommand) {
         //NOTE: ignore client messages if testDone command is received
-        if (this.pendingCommand.command.type !== COMMAND_TYPE.testDone && commandResult) {
+        if (commandResult && !isTestDoneCommand(this.pendingCommand)) {
             if (commandResult.failed)
                 this._rejectPendingCommand(commandResult.err);
             else
@@ -186,7 +185,7 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 ServiceMessages[CLIENT_MESSAGES.jsError] = function (msg) {
     this.debugLog.error(msg.err);
 
-    if (this.pendingCommand && this.pendingCommand.command.type !== COMMAND_TYPE.testDone)
+    if (this.pendingCommand && !isTestDoneCommand(this.pendingCommand))
         this._rejectPendingCommand(msg.err);
     else
         this.pendingJsError = msg.err;
