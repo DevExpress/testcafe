@@ -364,7 +364,7 @@ $(document).ready(function () {
         );
     });
 
-    asyncTest('not int x or y argument raise error', function () {
+    asyncTest('non-numeric x or y argument raises an error', function () {
         var $draggable               = createDraggable(0, 0);
         SETTINGS.ENABLE_SOURCE_INDEX = true;
         asyncActionCallback          = function () {
@@ -375,6 +375,31 @@ $(document).ready(function () {
             equal(currentSourceIndex, 211);
             start();
         }, correctTestWaitingTime(500));
+    });
+
+    asyncTest('drag with offset when the second and third arguments are fractional coordinates', function () {
+        var $draggable      = createDraggable(10, 10),
+            draggableOffset = $draggable.offset(),
+            dragOffsetX     = 99.8,
+            dragOffsetY     = 100.3,
+            offsetX         = 40,
+            offsetY         = 40,
+            pointTo         = {
+                x: draggableOffset.left + offsetX + Math.round(dragOffsetX),
+                y: draggableOffset.top + offsetY + Math.round(dragOffsetY)
+            };
+
+        runAsyncTest(
+            function () {
+                actionsAPI.drag($draggable[0], dragOffsetX, dragOffsetY, { offsetX: offsetX, offsetY: offsetY });
+            },
+            function () {
+                var elementCenter = getCenter($draggable[0]);
+                equal(elementCenter.x, pointTo.x, 'element has correct x coordinate');
+                equal(elementCenter.y, pointTo.y, 'element has correct y coordinate');
+            },
+            correctTestWaitingTime(5000)
+        );
     });
 
     asyncTest('drag_ function calling with empty second argument raises error', function () {

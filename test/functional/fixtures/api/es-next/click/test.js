@@ -23,7 +23,7 @@ describe('[API] t.click()', function () {
     it('Should validate options [ONLY:chrome]', function () {
         return runTests('./testcafe-fixtures/click-test.js', 'Incorrect action option', { shouldFail: true })
             .catch(function (err) {
-                expect(err).to.contains('Action option offsetX is expected to be a positive number, but it was -3.');
+                expect(err).to.contains('Action option offsetX is expected to be a positive integer, but it was -3.');
                 expect(err).to.contains(
                     ' 6 |test(\'Incorrect action selector\', async t => {' +
                     ' 7 |    await t.click(123);' +

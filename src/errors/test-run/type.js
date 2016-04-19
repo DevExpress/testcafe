@@ -10,10 +10,10 @@ export default {
 
     missingAwaitError: 'missingAwaitError',
 
-    actionNumberOptionError:         'actionNumberOptionError',
-    actionPositiveNumberOptionError: 'actionPositiveNumberOptionError',
-    actionBooleanOptionError:        'actionBooleanOptionError',
-    actionOptionsTypeError:          'actionOptionsTypeError',
+    actionIntegerOptionError:         'actionIntegerOptionError',
+    actionPositiveIntegerOptionError: 'actionPositiveIntegerOptionError',
+    actionBooleanOptionError:         'actionBooleanOptionError',
+    actionOptionsTypeError:           'actionOptionsTypeError',
 
     actionSelectorTypeError:       'actionSelectorTypeError',
     actionElementNotFoundError:    'actionElementNotFoundError',

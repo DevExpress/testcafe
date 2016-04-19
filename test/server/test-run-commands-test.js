@@ -150,7 +150,7 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionPositiveNumberOptionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     optionName:      'offsetX',
                     actualValue:     'string',
                     callsite:        null

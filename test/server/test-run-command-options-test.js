@@ -200,7 +200,7 @@ describe('Test run command options', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionPositiveNumberOptionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     actualValue:     'object',
                     optionName:      'offsetX',
                     callsite:        null
@@ -214,9 +214,37 @@ describe('Test run command options', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionPositiveNumberOptionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     actualValue:     -3,
                     optionName:      'offsetY',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new OffsetOptions({ offsetX: NaN }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    actualValue:     NaN,
+                    optionName:      'offsetX',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new OffsetOptions({ offsetX: 3.14 }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    actualValue:     3.14,
+                    optionName:      'offsetX',
                     callsite:        null
                 }
             );
@@ -288,8 +316,22 @@ describe('Test run command options', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionPositiveNumberOptionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     actualValue:     -1,
+                    optionName:      'caretPos',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new ClickOptions({ caretPos: 3.14 }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    actualValue:     3.14,
                     optionName:      'caretPos',
                     callsite:        null
                 }
@@ -304,7 +346,7 @@ describe('Test run command options', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionNumberOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError,
                     actualValue:     'object',
                     optionName:      'dragOffsetX',
                     callsite:        null
@@ -318,8 +360,22 @@ describe('Test run command options', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionNumberOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError,
                     actualValue:     'object',
+                    optionName:      'dragOffsetY',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new DragOptions({ dragOffsetY: 3.14 }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError,
+                    actualValue:     3.14,
                     optionName:      'dragOffsetY',
                     callsite:        null
                 }
