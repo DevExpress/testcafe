@@ -1,8 +1,14 @@
 import Promise from 'pinkie';
 import { identity } from 'lodash';
-import { ClickCommand, RightClickCommand, DoubleClickCommand } from '../test-run/commands';
 import { MissingAwaitError } from '../errors/test-run';
 import getCallsite from '../errors/get-callsite';
+
+import {
+    ClickCommand,
+    RightClickCommand,
+    DoubleClickCommand,
+    HoverCommand
+} from '../test-run/commands';
 
 export default class TestController {
     constructor (testRun) {
@@ -98,6 +104,10 @@ export default class TestController {
         return this._enqueueAction('doubleClick', DoubleClickCommand, { selector, options });
     }
 
+    _hoverImpl (selector, options) {
+        return this._enqueueAction('hover', HoverCommand, { selector, options });
+    }
+
     // API
     click (selector, options) {
         return this._clickImpl(selector, options);
@@ -109,6 +119,10 @@ export default class TestController {
 
     doubleClick (selector, options) {
         return this._doubleClickImpl(selector, options);
+    }
+
+    hover (selector, options) {
+        return this._hoverImpl(selector, options);
     }
 }
 
