@@ -70,7 +70,7 @@ export class RightClickCommand extends Assignable {
     }
 }
 
-class DoubleClickCommand extends Assignable {
+export class DoubleClickCommand extends Assignable {
     constructor (obj) {
         super(obj);
 
