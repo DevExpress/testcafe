@@ -51,7 +51,7 @@ export class ClickCommand extends Assignable {
     }
 }
 
-class RightClickCommand extends Assignable {
+export class RightClickCommand extends Assignable {
     constructor (obj) {
         super(obj);
 

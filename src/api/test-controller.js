@@ -1,6 +1,6 @@
 import Promise from 'pinkie';
 import { identity } from 'lodash';
-import { ClickCommand } from '../test-run/commands';
+import { ClickCommand, RightClickCommand } from '../test-run/commands';
 import { MissingAwaitError } from '../errors/test-run';
 import getCallsite from '../errors/get-callsite';
 
@@ -90,9 +90,17 @@ export default class TestController {
         return this._enqueueAction('click', ClickCommand, { selector, options });
     }
 
+    _rightClickImpl (selector, options) {
+        return this._enqueueAction('rightClick', RightClickCommand, { selector, options });
+    }
+
     // API
     click (selector, options) {
         return this._clickImpl(selector, options);
+    }
+
+    rightClick (selector, options) {
+        return this._rightClickImpl(selector, options);
     }
 }
 
