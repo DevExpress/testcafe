@@ -65,7 +65,12 @@ function assertErrorMessage (file, err) {
     var screenshotPath = '/unix/path/with/<tag>';
     var outStreamMock  = createOutStreamMock();
     var plugin         = new ReporterPluginHost(reporterPluginMock, outStreamMock);
-    var errAdapter     = new TestRunErrorFormattableAdapter(err, userAgentMock, screenshotPath, testCallsite);
+
+    var errAdapter = new TestRunErrorFormattableAdapter(err, {
+        userAgent:      userAgentMock,
+        screenshotPath: screenshotPath,
+        callsite:       testCallsite
+    });
 
     plugin
         .useWordWrap(true)

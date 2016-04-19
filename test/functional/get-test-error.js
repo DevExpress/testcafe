@@ -20,6 +20,16 @@ function filterErrors (errors, userAgents) {
     });
 }
 
+function sanitizeError (err) {
+    return err
+        .split('\n')
+        .slice(1)
+        .map(function (str) {
+            return str.trim();
+        })
+        .join(' ');
+}
+
 module.exports = function getTestError (testReport, browsersInfo) {
     var testError = '';
 
@@ -38,16 +48,9 @@ module.exports = function getTestError (testReport, browsersInfo) {
     if (actualErrorsCount) {
         //NOTE: if the test failed in different browsers with the same error we join it to one error
         if (actualErrorsCount !== actualBrowsersCount)
-            testError = actualErrors.join('\n');
-        else {
-            testError = actualErrors[0]
-                .split('\n')
-                .slice(1)
-                .map(function (str) {
-                    return str.trim();
-                })
-                .join(' ');
-        }
+            testError = actualErrors.map(sanitizeError).join(' ');
+        else
+            testError = sanitizeError(actualErrors[0]);
     }
 
     return testError;

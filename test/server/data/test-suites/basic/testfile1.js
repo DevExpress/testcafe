@@ -13,7 +13,9 @@ test('Fixture1Test2', async () => {
 });
 
 fixture `Fixture${1 + 1}`
-    .page('http://example.org');
+    .page('http://example.org')
+    .beforeEach(() => 'yo')
+    .afterEach(() => 'yo');
 
 test('Fixture2Test1', async () => {
     return 'F2T1';

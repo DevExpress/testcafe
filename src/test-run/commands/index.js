@@ -133,3 +133,7 @@ export function createCommandFromObject (obj) {
         return new TestDoneCommand();
 }
 
+export function isTestDoneCommand (command) {
+    return command.type === TYPE.testDone;
+}
+

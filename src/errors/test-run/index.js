@@ -5,7 +5,6 @@
 import CATEGORY from './category';
 import TYPE from './type';
 
-
 // Base
 //--------------------------------------------------------------------
 class TestRunErrorBase {

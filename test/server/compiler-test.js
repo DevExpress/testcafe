@@ -412,6 +412,54 @@ describe('Compiler', function () {
                     });
                 });
         });
+
+        it('Should raise error if beforeEach is not a function', function () {
+            var testfile = resolve('test/server/data/test-suites/before-each-is-not-a-function/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertGlobalsAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Fixture\'s "beforeEach" method takes a function, but "string" was passed.',
+
+                        callsite: '   1 |fixture `beforeEach is not a function`\n' +
+                                  " > 2 |    .beforeEach('yo');\n" +
+                                  '   3 |\n' +
+                                  "   4 |test('Some test', () => {\n" +
+                                  '   5 |\n' +
+                                  '   6 |});\n' +
+                                  '   7 |'
+                    });
+                });
+        });
+
+        it('Should raise error if afterEach is not a function', function () {
+            var testfile = resolve('test/server/data/test-suites/after-each-is-not-a-function/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertGlobalsAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Fixture\'s "afterEach" method takes a function, but "string" was passed.',
+
+                        callsite: '   1 |fixture `afterEach is not a function`\n' +
+                                  " > 2 |    .afterEach('yo');\n" +
+                                  '   3 |\n' +
+                                  "   4 |test('Some test', () => {\n" +
+                                  '   5 |\n' +
+                                  '   6 |});\n' +
+                                  '   7 |'
+                    });
+                });
+        });
     });
 
     describe('Raw data compiler', function () {

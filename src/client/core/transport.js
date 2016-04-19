@@ -1,15 +1,15 @@
 import hammerhead from './deps/hammerhead';
 import COMMAND from '../../legacy/test-run/command';
 
-var transport          = hammerhead.transport;
+var transport = hammerhead.transport;
 
 
 //Exports
 //-------------------------------------------------------------------------------------
 export function fatalError (err, callback) {
     var testFailMsg = {
-        cmd:      COMMAND.fatalError,
-        err:      err
+        cmd: COMMAND.fatalError,
+        err: err
     };
 
     asyncServiceMsg(testFailMsg, callback);

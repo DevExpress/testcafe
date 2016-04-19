@@ -18,5 +18,7 @@ export default {
     fixtureNameIsNotAString:            'The fixture name is expected to be a string, but it was "{type}".',
     fixturePageIsNotAString:            'The page URL is expected to be a string, but it was "{type}".',
     testNameIsNotAString:               'The test name is expected to be a string, but it was "{type}".',
-    testBodyIsNotAFunction:             'The test body is expected to be a function, but it was "{type}".'
+    testBodyIsNotAFunction:             'The test body is expected to be a function, but it was "{type}".',
+    beforeEachIsNotAFunction:           `Fixture's "beforeEach" method takes a function, but "{type}" was passed.`,
+    afterEachIsNotAFunction:            `Fixture's "afterEach" method takes a function, but "{type}" was passed.`
 };

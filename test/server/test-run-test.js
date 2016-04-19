@@ -18,14 +18,17 @@ function nextTick () {
 
 describe('TestRun', function () {
     it('Should raise an error on an attempt to execute a new command while the previous command execution is not yet finished', function () {
-        var expectedErrorMessage = 'Assertion failed: an attempt to execute a command when a previous command is still being executed was detected.';
-        var actualError          = null;
-        var testMock             = {
+        var expectedErrorMessage = 'Internal error: an attempt to execute a command when a previous command is still being executed was detected.';
+
+        var actualError           = null;
+        var browserConnectionMock = { userAgent: 'userAgent' };
+
+        var testMock = {
             fixture: 'fixture',
             fn:      noop
         };
 
-        var testRun = new TestRun(testMock);
+        var testRun = new TestRun(testMock, browserConnectionMock);
 
         testRun.executeCommand(createCommand({
             type:     COMMAND_TYPE.click,

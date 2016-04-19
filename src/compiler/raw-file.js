@@ -8,16 +8,14 @@ export default class RawFileCompiler {
         return /\.testcafe$/.test(filename);
     }
 
-    _compileTest (fixture, test) {
-        test.fixture = fixture;
-
-        test.fn = async testRun => {
-            for (var i = 0; i < test.commands.length; i++) {
-                var callsite = test.commands[i] && test.commands[i].callsite;
+    static _createTestFn (commands) {
+        return async testRun => {
+            for (var i = 0; i < commands.length; i++) {
+                var callsite = commands[i] && commands[i].callsite;
                 var command  = null;
 
                 try {
-                    command = createCommandFromObject(test.commands[i]);
+                    command = createCommandFromObject(commands[i]);
                 }
                 catch (err) {
                     err.callsite = callsite;
@@ -27,6 +25,11 @@ export default class RawFileCompiler {
                 await testRun.executeCommand(command, callsite);
             }
         };
+    }
+
+    static _compileTest (fixture, test) {
+        test.fixture = fixture;
+        test.fn      = RawFileCompiler._createTestFn(test.commands);
 
         return test;
     }
@@ -46,8 +49,14 @@ export default class RawFileCompiler {
 
         fixtures.forEach(fixture => {
             fixture.path  = filename;
-            fixture.tests = fixture.tests.map(test => this._compileTest(fixture, test));
+            fixture.tests = fixture.tests.map(test => RawFileCompiler._compileTest(fixture, test));
             tests         = tests.concat(fixture.tests);
+
+            if (fixture.beforeEachCommands)
+                fixture.beforeEachFn = RawFileCompiler._createTestFn(fixture.beforeEachCommands);
+
+            if (fixture.afterEachCommands)
+                fixture.afterEachFn = RawFileCompiler._createTestFn(fixture.afterEachCommands);
         });
 
         return tests;

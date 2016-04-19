@@ -1,14 +1,21 @@
 import dedent from 'dedent';
 import { escape as escapeHtml } from 'lodash';
 import TYPE from './type';
+import TEST_RUN_STATE from '../../test-run/state';
 
 function markup (err, msgMarkup) {
-    msgMarkup = dedent(msgMarkup);
-
-    msgMarkup = dedent(`
+    var prefix = dedent(`
         <span class="user-agent">${err.userAgent}</span>
         <span class="category">${err.category}</span>
-    `) + msgMarkup;
+    `);
+
+    if (err.testRunState === TEST_RUN_STATE.inBeforeEach)
+        prefix += `<strong>- Error in <code>beforeEach</code> hook -</strong>\n`;
+
+    else if (err.testRunState === TEST_RUN_STATE.inAfterEach)
+        prefix += `<strong>- Error in <code>afterEach</code> hook -</strong>\n`;
+
+    msgMarkup = prefix + dedent(msgMarkup);
 
     if (err.screenshotPath)
         msgMarkup += `\n\n<div class="screenshot-info"><strong>Screenshot:</strong> <a class="screenshot-path">${escapeHtml(err.screenshotPath)}</a></div>`;

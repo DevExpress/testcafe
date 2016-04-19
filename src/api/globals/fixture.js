@@ -1,6 +1,7 @@
 import { GlobalsAPIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 import handleTagArgs from '../../utils/handle-tag-args';
+import wrapTestFunction from './wrap-test-function';
 
 const PROTOCOL_RE          = /^https?:\/\//;
 const IMPLICIT_PROTOCOL_RE = /^\/\//;
@@ -12,9 +13,11 @@ export default class Fixture {
         if (nameType !== 'string')
             throw new GlobalsAPIError('fixture', null, MESSAGE.fixtureNameIsNotAString, nameType);
 
-        this.name    = name;
-        this.path    = filename;
-        this.pageUrl = 'about:blank';
+        this.name         = name;
+        this.path         = filename;
+        this.pageUrl      = 'about:blank';
+        this.beforeEachFn = null;
+        this.afterEachFn  = null;
     }
 
     page (url, ...rest) {
@@ -30,5 +33,29 @@ export default class Fixture {
 
             this.pageUrl = protocol + this.pageUrl;
         }
+
+        return this;
+    }
+
+    beforeEach (fn) {
+        var fnType = typeof fn;
+
+        if (fnType !== 'function')
+            throw new GlobalsAPIError('beforeEach', null, MESSAGE.beforeEachIsNotAFunction, fnType);
+
+        this.beforeEachFn = wrapTestFunction(fn);
+
+        return this;
+    }
+
+    afterEach (fn) {
+        var fnType = typeof fn;
+
+        if (fnType !== 'function')
+            throw new GlobalsAPIError('afterEach', null, MESSAGE.afterEachIsNotAFunction, fnType);
+
+        this.afterEachFn = wrapTestFunction(fn);
+
+        return this;
     }
 }
