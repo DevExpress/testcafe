@@ -84,6 +84,22 @@ describe('Runner', function () {
                 });
         });
 
+
+        it('Should raise an error if an unprefixed path is provided', function () {
+            return runner
+                .browsers('/Applications/Firefox.app')
+                .reporter('list')
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run()
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    expect(err.message).eql('Unable to find the browser. "/Applications/Firefox.app" is not a ' +
+                                            'browser alias or path to an executable file.');
+                });
+        });
+
         it('Should raise an error if browser was not set', function () {
             return runner
                 .reporter('list')

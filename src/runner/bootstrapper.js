@@ -1,11 +1,14 @@
 import Promise from 'pinkie';
-import { getBrowserInfo } from 'testcafe-browser-natives';
+import { getBrowserInfo, getInstallations as getBrowserInstallations } from 'testcafe-browser-natives';
 import Compiler from '../compiler';
 import BrowserConnection from '../browser-connection';
 import LocalBrowserConnection from '../browser-connection/local';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import BrowserSet from './browser-set';
+
+
+const BROWSER_PATH_DESCRIPTOR_RE = /^path:(.*)$/;
 
 
 export default class Bootstrapper {
@@ -18,9 +21,18 @@ export default class Bootstrapper {
         this.reporter = null;
     }
 
-    static async _convertAliasOrPathToBrowserInfo (browser) {
+    static async _convertAliasOrPathToBrowserInfo (browser, installations) {
         if (typeof browser === 'string') {
-            var browserInfo = await getBrowserInfo(browser);
+            if (browser in installations)
+                return installations[browser];
+
+            var pathDescriptorMatch = BROWSER_PATH_DESCRIPTOR_RE.exec(browser);
+
+            if (!pathDescriptorMatch)
+                throw new GeneralError(MESSAGE.cantFindBrowser, browser);
+
+            var path        = pathDescriptorMatch[1];
+            var browserInfo = await getBrowserInfo(path);
 
             if (!browserInfo)
                 throw new GeneralError(MESSAGE.cantFindBrowser, browser);
@@ -38,12 +50,19 @@ export default class Bootstrapper {
         return new LocalBrowserConnection(this.browserConnectionGateway, browserInfo);
     }
 
-    async _getBrowserConnections () {
+    async _getBrowserInfo () {
         if (!this.browsers.length)
             throw new GeneralError(MESSAGE.browserNotSet);
 
-        var browsers           = await Promise.all(this.browsers.map(Bootstrapper._convertAliasOrPathToBrowserInfo));
-        var browserConnections = browsers.map(browser => this._createConnectionFromBrowserInfo(browser));
+        var installations = await getBrowserInstallations();
+
+        return await Promise.all(
+            this.browsers.map(browser => Bootstrapper._convertAliasOrPathToBrowserInfo(browser, installations))
+        );
+    }
+
+    async _getBrowserConnections (browserInfo) {
+        var browserConnections = browserInfo.map(browser => this._createConnectionFromBrowserInfo(browser));
 
         return await BrowserSet.from(browserConnections);
     }
@@ -86,8 +105,13 @@ export default class Bootstrapper {
     async createRunnableConfiguration () {
         var reporterPlugin = this._getReporterPlugin();
 
-        var tests      = await this._getTests();
-        var browserSet = await this._getBrowserConnections();
+        // NOTE: If a user forgot to specify a browser, but has specified a path to tests, the specified path will be
+        // considered as the browser argument, and the tests path argument will have the predefined default value.
+        // It's very ambiguous for the user, who might be confused by compilation errors from an unexpected test.
+        // So, we need to retrieve the browser aliases and paths before tests compilation.
+        var browserInfo = await this._getBrowserInfo();
+        var tests       = await this._getTests();
+        var browserSet  = await this._getBrowserConnections(browserInfo);
 
         return { reporterPlugin, browserSet, tests };
     }

@@ -85,6 +85,46 @@ export default class CLIArgumentParser {
         return '\n' + wordWrap(DESCRIPTION, 2, getViewPortWidth(process.stdout));
     }
 
+    static _parseBrowserArg (browserArg) {
+        var currentBrowser = '';
+        var browsers       = [];
+        var quoteChar      = null;
+
+        for (var i = 0; i < browserArg.length; i++) {
+            var currentChar = browserArg[i];
+
+            switch (currentChar) {
+            case ',':
+                if (quoteChar)
+                    currentBrowser += currentChar;
+                else {
+                    browsers.push(currentBrowser);
+                    currentBrowser = '';
+                }
+                break;
+
+            case '"':
+            case '\'':
+                if (quoteChar === currentChar)
+                    quoteChar = null;
+                else if (!quoteChar)
+                    quoteChar = currentChar;
+                else
+                    currentBrowser += currentChar;
+                break;
+
+            default:
+                currentBrowser += currentChar;
+                break;
+            }
+        }
+
+        if (currentBrowser)
+            browsers.push(currentBrowser);
+
+        return browsers;
+    }
+
     _describeProgram () {
         var version = JSON.parse(read('../../package.json')).version;
 
@@ -162,8 +202,8 @@ export default class CLIArgumentParser {
         var installations = await getBrowserInstallations();
         var allAliases    = Object.keys(installations);
 
-        this.browsers = browsersArg
-            .split(',')
+        this.browsers = CLIArgumentParser
+            ._parseBrowserArg(browsersArg)
             .filter(browser => browser && this._filterAndCountRemotes(browser))
             .reduce((browserList, browser) => CLIArgumentParser._replaceAllBrowsersAlias(browserList, browser, allAliases), []);
     }
