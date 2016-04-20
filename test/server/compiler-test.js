@@ -218,7 +218,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 ' SyntaxError: ' + dep + ': Unexpected token (1:7)'
+                                 'SyntaxError: ' + dep + ': Unexpected token (1:7)'
                     });
                 });
         });
@@ -239,7 +239,7 @@ describe('Compiler', function () {
                         ],
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 " Error: Cannot find module './yo'"
+                                 "Error: Cannot find module './yo'"
                     });
                 });
         });
@@ -260,7 +260,7 @@ describe('Compiler', function () {
                         ],
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 ' Error: Hey ya!'
+                                 'Error: Hey ya!'
                     });
                 });
         });
@@ -277,7 +277,7 @@ describe('Compiler', function () {
                         stackTop: null,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 ' SyntaxError: ' + testfile + ': Unexpected token (1:7)'
+                                 'SyntaxError: ' + testfile + ': Unexpected token (1:7)'
                     });
                 });
         });
@@ -294,7 +294,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 " Error: Cannot find module './yo'"
+                                 "Error: Cannot find module './yo'"
                     });
                 });
         });
@@ -311,7 +311,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 ' Error: Hey ya!'
+                                 'Error: Hey ya!'
                     });
                 });
         });
@@ -327,7 +327,8 @@ describe('Compiler', function () {
                     assertGlobalsAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'The fixture name is expected to be a string, but it was "object".',
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'The fixture name is expected to be a string, but it was "object".',
 
                         callsite: '    2 |// (to treat a file as a test, it requires at least one fixture definition\n' +
                                   '    3 |//  with the string argument).\n' +
@@ -355,7 +356,8 @@ describe('Compiler', function () {
                     assertGlobalsAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'The page URL is expected to be a string, but it was "object".',
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'The page URL is expected to be a string, but it was "object".',
 
                         callsite: '   1 |fixture `Yo`\n' +
                                   ' > 2 |    .page({ answer: 42 });\n' +
@@ -379,7 +381,8 @@ describe('Compiler', function () {
                     assertGlobalsAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'The test name is expected to be a string, but it was "number".',
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'The test name is expected to be a string, but it was "number".',
 
                         callsite: '    4 |// (to treat a file as a test, it requires at least one fixture definition\n' +
                                   '    5 |//  with the string argument).\n' +
@@ -403,7 +406,8 @@ describe('Compiler', function () {
                     assertGlobalsAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'The test body is expected to be a function, but it was "string".',
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'The test body is expected to be a function, but it was "string".',
 
                         callsite: '   1 |fixture `Test body is not a function`;\n' +
                                   '   2 |\n' +
@@ -424,7 +428,8 @@ describe('Compiler', function () {
                     assertGlobalsAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Fixture\'s "beforeEach" method takes a function, but "string" was passed.',
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Fixture\'s "beforeEach" method takes a function, but "string" was passed.',
 
                         callsite: '   1 |fixture `beforeEach is not a function`\n' +
                                   " > 2 |    .beforeEach('yo');\n" +
@@ -448,7 +453,8 @@ describe('Compiler', function () {
                     assertGlobalsAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Fixture\'s "afterEach" method takes a function, but "string" was passed.',
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Fixture\'s "afterEach" method takes a function, but "string" was passed.',
 
                         callsite: '   1 |fixture `afterEach is not a function`\n' +
                                   " > 2 |    .afterEach('yo');\n" +
@@ -503,7 +509,8 @@ describe('Compiler', function () {
                 })
                 .catch(function (err) {
                     expect(err.message).eql('Cannot parse a test source file in the raw format at "' + testfile +
-                                            '" due to an error.\n\n SyntaxError: Unexpected token i');
+                                            '" due to an error.\n\n' +
+                                            'SyntaxError: Unexpected token i');
                 });
         });
 

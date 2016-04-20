@@ -33,7 +33,9 @@ export class TestCompilationError extends Error {
 
 export class GlobalsAPIError extends Error {
     constructor (methodName, typeName, template, ...args) {
-        super(getText(template, ...args));
+        var text = getText(template, ...args);
+
+        super(getText(MESSAGE.cannotPrepareTestsDueToError, text));
 
         this.callsiteRecord = getCallsite(methodName, typeName);
         this.constructor    = GlobalsAPIError;
