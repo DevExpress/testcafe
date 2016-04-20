@@ -38,13 +38,14 @@
         var stepNames = {{{stepNames}}};
 
         testCafeCore.SETTINGS.set({
-            CURRENT_TEST_STEP_NAME:   'Page Load',
-            BROWSER_STATUS_URL:       '{{{browserStatusUrl}}}',
-            TAKE_SCREENSHOTS:         {{{takeScreenshots}}},
-            TAKE_SCREENSHOTS_ON_FAILS: {{{takeScreenshotsOnFails}}},
-            SKIP_JS_ERRORS:           {{{skipJsErrors}}},
-            ENABLE_SOURCE_INDEX:      true,
-            NATIVE_DIALOGS_INFO:      {{{nativeDialogsInfo}}}
+            CURRENT_TEST_STEP_NAME:        'Page Load',
+            BROWSER_STATUS_URL:            '{{{browserStatusUrl}}}',
+            TAKE_SCREENSHOTS:              {{{takeScreenshots}}},
+            TAKE_SCREENSHOTS_ON_FAILS:     {{{takeScreenshotsOnFails}}},
+            SKIP_JS_ERRORS:                {{{skipJsErrors}}},
+            ELEMENT_AVAILABILITY_TIMEOUT:  {{{elementAvailabilityTimeout}}},
+            ENABLE_SOURCE_INDEX:           true,
+            NATIVE_DIALOGS_INFO:           {{{nativeDialogsInfo}}}
         });
 
         var transport                = testCafeCore.transport;
@@ -91,7 +92,7 @@
                 progressPanel = new ProgressPanel();
 
             if (!e.isWaitAction)
-                progressPanel.show(RunnerBase.WAITING_FOR_ACTION_TARGET_MESSAGE, e.maxTimeout);
+                progressPanel.show(RunnerBase.WAITING_FOR_ACTION_TARGET_MESSAGE, testCafeCore.SETTINGS.get().ELEMENT_AVAILABILITY_TIMEOUT);
         });
 
         runner.on(runner.ACTION_RUN_EVENT, function () {

@@ -25,11 +25,12 @@ const TEST_DONE_SENT_FLAG               = 'testcafe|driver|test-done-sent-flag';
 
 
 export default class ClientDriver {
-    constructor (testRunId, heartbeatUrl, browserStatusUrl) {
-        this.testRunId        = testRunId;
-        this.heartbeatUrl     = heartbeatUrl;
-        this.browserStatusUrl = browserStatusUrl;
-        this.contextStorage   = new ContextStorage(window, testRunId);
+    constructor (testRunId, heartbeatUrl, browserStatusUrl, elementAvailabilityTimeout) {
+        this.testRunId                  = testRunId;
+        this.heartbeatUrl               = heartbeatUrl;
+        this.browserStatusUrl           = browserStatusUrl;
+        this.elementAvailabilityTimeout = elementAvailabilityTimeout;
+        this.contextStorage             = new ContextStorage(window, testRunId);
 
         this.pageInitialXhrBarrier = new XhrBarrier();
 
@@ -95,7 +96,7 @@ export default class ClientDriver {
     _onActionCommand (command) {
         this.contextStorage.setItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG, false);
 
-        var { startPromise, completionPromise } = executeActionCommand(command);
+        var { startPromise, completionPromise } = executeActionCommand(command, this.elementAvailabilityTimeout);
 
         startPromise.then(() => this.contextStorage.setItem(COMMAND_EXECUTING_FLAG, true));
 

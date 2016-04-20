@@ -15,6 +15,9 @@ var slConnector = null;
 var slBrowsers  = null;
 
 
+const FUNCTIONAL_TESTS_ELEMENT_AVAILABILITY_TIMEOUT = 200;
+
+
 function initBrowsersInfo (tc) {
     browsersInfo = config.browsers
         .filter(function (browser) {
@@ -93,13 +96,15 @@ before(function () {
             global.testReport = null;
 
             global.runTests = function (fixture, testName, opts) {
-                var report         = '';
-                var runner         = testCafe.createRunner();
-                var fixturePath    = path.join(path.dirname(caller()), fixture);
-                var skipJsErrors   = opts && opts.skipJsErrors;
-                var quarantineMode = opts && opts.quarantineMode;
-                var skipOption     = opts && opts.skip;
-                var onlyOption     = opts && opts.only;
+                var report                     = '';
+                var runner                     = testCafe.createRunner();
+                var fixturePath                = path.join(path.dirname(caller()), fixture);
+                var skipJsErrors               = opts && opts.skipJsErrors;
+                var quarantineMode             = opts && opts.quarantineMode;
+                var elementAvailabilityTimeout = opts && opts.elementAvailabilityTimeout ||
+                                                 FUNCTIONAL_TESTS_ELEMENT_AVAILABILITY_TIMEOUT;
+                var skipOption                 = opts && opts.skip;
+                var onlyOption                 = opts && opts.only;
 
                 var actualBrowsers = browsersInfo.filter(function (browserInfo) {
                     var only = onlyOption ? onlyOption.indexOf(browserInfo.settings.alias) > -1 : true;
@@ -127,7 +132,11 @@ before(function () {
                         }
                     })
                     .src(fixturePath)
-                    .run({ skipJsErrors: skipJsErrors, quarantineMode: quarantineMode })
+                    .run({
+                        skipJsErrors:               skipJsErrors,
+                        quarantineMode:             quarantineMode,
+                        elementAvailabilityTimeout: elementAvailabilityTimeout
+                    })
                     .then(function () {
                         var testReport = JSON.parse(report).fixtures[0].tests[0];
                         var testError  = getTestError(testReport, actualBrowsers);

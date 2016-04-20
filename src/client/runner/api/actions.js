@@ -2,7 +2,13 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import testCafeUI from '../deps/testcafe-ui';
 import { AUTOMATIONS } from '../automation/automation';
-import { MouseOptions, ClickOptions, SelectOptions, TypeOptions } from '../../../test-run/commands/options';
+import {
+    DragOptions,
+    MouseOptions,
+    ClickOptions,
+    SelectOptions,
+    TypeOptions
+} from '../../../test-run/commands/options';
 import ClickAutomation from '../automation/playback/click';
 import DblClickAutomation from '../automation/playback/dblclick';
 import DragToOffsetAutomation from '../automation/playback/drag/to-offset';
@@ -30,9 +36,6 @@ var positionUtils   = testCafeCore.positionUtils;
 var styleUtils      = testCafeCore.styleUtils;
 var arrayUtils      = testCafeCore.arrayUtils;
 var selectElement   = testCafeUI.selectElement;
-
-
-var ELEMENT_AVAILABILITY_WAITING_TIMEOUT = 10000;
 
 
 const ELEMENT_AVAILABILITY_WAITING_DELAY = 200;
@@ -124,7 +127,7 @@ function ensureElementsExist (item, actionName, callback) {
             window.clearInterval(interval);
             failWithError(ERROR_TYPE.emptyFirstArgument, { action: actionName });
         }
-    }, ELEMENT_AVAILABILITY_WAITING_TIMEOUT);
+    }, SETTINGS.get().ELEMENT_AVAILABILITY_TIMEOUT);
 }
 
 function ensureElementVisibility (element, actionName, callback) {
@@ -175,7 +178,7 @@ function ensureElementVisibility (element, actionName, callback) {
                 action:  actionName
             });
         }
-    }, ELEMENT_AVAILABILITY_WAITING_TIMEOUT);
+    }, SETTINGS.get().ELEMENT_AVAILABILITY_TIMEOUT);
 }
 
 function actionArgumentsIterator (actionName) {
@@ -239,7 +242,6 @@ function pressActionArgumentsIterator () {
 
 function onTargetWaitingStarted (isWaitAction) {
     stepIterator.onActionTargetWaitingStarted({
-        maxTimeout:   ELEMENT_AVAILABILITY_WAITING_TIMEOUT,
         isWaitAction: isWaitAction
     });
 }
@@ -970,7 +972,7 @@ export function screenshot (filePath) {
 
 //NOTE: published for tests purposes only
 export function setElementAvailabilityWaitingTimeout (ms) {
-    ELEMENT_AVAILABILITY_WAITING_TIMEOUT = ms;
+    SETTINGS.get().ELEMENT_AVAILABILITY_TIMEOUT = ms;
 }
 
 //NOTE: add sourceIndex wrapper

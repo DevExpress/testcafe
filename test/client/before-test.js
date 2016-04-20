@@ -62,7 +62,8 @@
     var tcSettings      = testCafeCore.get('./settings');
     var sandboxedJQuery = testCafeCore.get('./sandboxed-jquery');
 
-    tcSettings.get().REFERER = 'https://example.com';
+    tcSettings.get().REFERER                      = 'https://example.com';
+    tcSettings.get().ELEMENT_AVAILABILITY_TIMEOUT = 10000;
 
     sandboxedJQuery.init(window);
 

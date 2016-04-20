@@ -49,9 +49,10 @@ export default class TestRun extends Session {
     // Hammerhead payload
     _getPayloadScript () {
         return Mustache.render(TEST_RUN_TEMPLATE, {
-            testRunId:           this.id,
-            browserHeartbeatUrl: this.browserConnection.heartbeatUrl,
-            browserStatusUrl:    this.browserConnection.statusUrl
+            testRunId:                  this.id,
+            browserHeartbeatUrl:        this.browserConnection.heartbeatUrl,
+            browserStatusUrl:           this.browserConnection.statusUrl,
+            elementAvailabilityTimeout: this.opts.elementAvailabilityTimeout
         });
     }
 
