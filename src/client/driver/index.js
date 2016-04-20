@@ -19,6 +19,7 @@ var modalBackground   = testCafeUI.modalBackground;
 
 const COMMAND_EXECUTING_FLAG            = 'testcafe|driver|command-executing-flag';
 const COMMAND_INTERRUPTED_BY_ERROR_FLAG = 'testcafe|driver|command-interrupted-by-error-flag';
+const TEST_DONE_SENT_FLAG               = 'testcafe|driver|test-done-sent-flag';
 
 
 export default class ClientDriver {
@@ -39,6 +40,13 @@ export default class ClientDriver {
         modalBackground.initAndShowLoadingText();
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
 
+        // NOTE: we should not send any message to the server if we've
+        // sent the 'test-done' message but haven't got the response.
+        if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG)) {
+            browser.checkStatus(this.browserStatusUrl, hammerhead.nativeMethods.XMLHttpRequest);
+            return;
+        }
+
         eventUtils
             .documentReady()
             .then(() => this.pageInitialXhrBarrier.wait(true))
@@ -56,6 +64,11 @@ export default class ClientDriver {
     }
 
     _onJsError (err) {
+        // NOTE: we should not send any message to the server if we've
+        // sent the 'test-done' message but haven't got the response.
+        if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
+            return Promise.resolve();
+
         this.contextStorage.setItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG, true);
 
         return transport.queuedAsyncServiceMsg({
@@ -101,6 +114,8 @@ export default class ClientDriver {
     }
 
     _onTestDone () {
+        this.contextStorage.setItem(TEST_DONE_SENT_FLAG, true);
+
         transport
             .queuedAsyncServiceMsg({ cmd: MESSAGE.done })
             .then(() => browser.checkStatus(this.browserStatusUrl, hammerhead.nativeMethods.XMLHttpRequest));
