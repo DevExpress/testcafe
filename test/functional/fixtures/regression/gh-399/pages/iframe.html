@@ -4,10 +4,19 @@
     <title>GH-399 (iframe)</title>
 </head>
 <body style="width: 200px; height: 200px">
+<button id="button1">Remove iframe</button>
+<button id="button2">Remove iframe container</button>
 
 <script>
-    document.addEventListener('click', function () {
-        window.top.document.body.removeChild(window.frameElement);
+    var iframe = window.top.document.getElementById('iframe');
+    var container = iframe.parentNode;
+
+    document.getElementById('button1').addEventListener('click', function () {
+        container.removeChild(iframe);
+    });
+
+    document.getElementById('button2').addEventListener('click', function () {
+        window.top.document.body.removeChild(container);
     });
 </script>
 </body>
