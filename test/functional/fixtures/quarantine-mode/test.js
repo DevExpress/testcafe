@@ -1,6 +1,7 @@
-var expect                = require('chai').expect;
-var config                = require('../../config');
-var quarantineModeTracker = require('../../quarantine-mode-tracker');
+var expect                     = require('chai').expect;
+var config                     = require('../../config');
+var quarantineModeTracker      = require('../../quarantine-mode-tracker');
+var errorInEachBrowserContains = require('../../assertion-helper.js').errorInEachBrowserContains;
 
 
 function checkQuarantineTestRuns (quarantineState) {
@@ -38,14 +39,18 @@ describe('Quarantine mode tests', function () {
     });
 
     it('Should fail if an unstable test fails in most of runs', function () {
-        return runTests('testcafe-fixtures/failing-quarantine.test.js', 'Wait 200ms', { shouldFail: true, quarantineMode: true })
-            .catch(function (err) {
-                var expectedError = 'Uncaught JavaScript error Uncaught Error: Failed by request! on page';
+        return runTests('testcafe-fixtures/failing-quarantine.test.js', 'Wait 200ms', {
+            shouldFail:     true,
+            quarantineMode: true
+        })
+            .catch(function (errs) {
+                var expectedError = 'Failed by request! on page';
 
                 checkQuarantineTestRuns('failed-quarantine');
 
                 expect(testReport.unstable).to.be.true;
-                expect(err).contains(expectedError);
+
+                errorInEachBrowserContains(errs, expectedError, 0);
             });
     });
 });

@@ -12,17 +12,17 @@ describe('Upload', function () {
 
     it('Should fail when uploading a non-existent file', function () {
         return runTests('testcafe-fixtures/upload.test.js', 'Upload a non-existent file - should fail', { shouldFail: true })
-            .catch(function (err) {
-                expect(err).contains('fake.jpg');
+            .catch(function (errs) {
+                expect(errs[0]).contains('fake.jpg');
             });
     });
 
     it('Should fail when uploading multiple files including non-existent files', function () {
         return runTests('testcafe-fixtures/upload.test.js', 'Upload multiple files inc. non-existent - should fail', { shouldFail: true })
-            .catch(function (err) {
-                expect(err).contains('fake1.jpg');
-                expect(err).contains('fake2.jpg');
-                expect(err).not.contains('text1.txt');
+            .catch(function (errs) {
+                expect(errs[0]).contains('fake1.jpg');
+                expect(errs[0]).contains('fake2.jpg');
+                expect(errs[0]).not.contains('text1.txt');
             });
     });
 

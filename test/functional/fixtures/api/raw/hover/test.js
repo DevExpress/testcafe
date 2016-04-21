@@ -1,10 +1,11 @@
-var expect = require('chai').expect;
+var errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
+
 
 describe('[Raw API] Hover action', function () {
     it('Should make hover on a buttons', function () {
         return runTests('./testcafe-fixtures/hover.testcafe', 'Hover on simple buttons', { shouldFail: true })
-            .catch(function (err) {
-                expect(err).to.contains('Hover on inputs raised');
+            .catch(function (errs) {
+                errorInEachBrowserContains(errs, 'Hover on inputs raised', 0);
             });
     });
 });
