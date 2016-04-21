@@ -351,7 +351,7 @@ RunnerBase.prototype._runInIFrame = function (iframe, stepName, step, stepNum) {
     this._clearIFrameExistenceWatcherInterval();
 
     function iframeExistenceWatcher () {
-        if (!iframe.parentNode) {
+        if (!domUtils.isElementInDocument(iframe)) {
             runner._onIFrameStepExecuted();
             runner._clearIFrameExistenceWatcherInterval();
         }
@@ -492,7 +492,7 @@ RunnerBase.prototype._initNativeDialogs = function () {
     });
 };
 //Handlers
-RunnerBase.prototype._onTestComplete = function (e) {
+RunnerBase.prototype._onTestComplete    = function (e) {
     this.stopped = true;
     this.eventEmitter.emit(this.TEST_COMPLETED_EVENT, {});
     e.callback();
