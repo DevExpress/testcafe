@@ -180,6 +180,14 @@ class DragToElementCommand extends Assignable {
     }
 }
 
+export class ExecuteHybridFunctionCommand {
+    constructor (fnCode, args) {
+        this.type   = TYPE.execHybridFn;
+        this.fnCode = fnCode;
+        this.args   = args;
+    }
+}
+
 export class TestDoneCommand {
     constructor () {
         this.type = TYPE.testDone;
@@ -212,5 +220,9 @@ export function createCommandFromObject (obj) {
 
 export function isTestDoneCommand (command) {
     return command.type === TYPE.testDone;
+}
+
+export function isCommandRejectableByPageError (command) {
+    return !isTestDoneCommand(command) && command.type !== TYPE.execHybridFn;
 }
 

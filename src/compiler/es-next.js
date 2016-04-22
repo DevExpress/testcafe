@@ -1,8 +1,9 @@
 import { dirname, join, relative, sep as pathSep } from 'path';
 import { readFileSync } from 'fs';
+import nodeVer from 'node-version';
 import stripBom from 'strip-bom';
 import sourceMapSupport from 'source-map-support';
-import nodeVer from 'node-version';
+import { wrapDomAccessors } from 'testcafe-hammerhead';
 import Globals from '../api/globals';
 import { TestCompilationError, GlobalsAPIError } from '../errors/runtime';
 import stackCleaningHook from '../errors/stack-cleaning-hook';
@@ -36,13 +37,21 @@ export default class ESNextCompiler {
         return paths;
     }
 
+    // NOTE: lazy load heavy dependencies
+    static _getBabelLibs () {
+        return {
+            babel:             require('babel-core'),
+            presetStage2:      require('babel-preset-stage-2'),
+            transformRuntime:  require('babel-plugin-transform-runtime'),
+            presetES2015Loose: require('babel-preset-es2015-loose'),
+            presetES2015Node4: require('babel-preset-es2015-node4')
+        };
+    }
+
     static _getBabelOptions (filename) {
-        // NOTE: lazy load heavy dependencies
-        var presetStage2     = require('babel-preset-stage-2');
-        var transformRuntime = require('babel-plugin-transform-runtime');
-        var presetES2015     = NODE_VER < 4 ?
-                               require('babel-preset-es2015-loose') :
-                               require('babel-preset-es2015-node4');
+        var { presetStage2, transformRuntime, presetES2015Loose, presetES2015Node4 } = ESNextCompiler._getBabelLibs();
+
+        var presetES2015 = NODE_VER < 4 ? presetES2015Loose : presetES2015Node4;
 
         return {
             presets:             [presetStage2, presetES2015],
@@ -72,6 +81,32 @@ export default class ESNextCompiler {
         mod._compile(code, filename);
     }
 
+    static compileHybridFunction (fnCode) {
+        // NOTE: we need to recompile ES6 code for the browser if we are on newer versions of Node.
+        try {
+            if (NODE_VER >= 4) {
+                var { babel, presetES2015Loose } = ESNextCompiler._getBabelLibs();
+
+                var compiled = babel.transform(fnCode, {
+                    presets:       [presetES2015Loose],
+                    sourceMaps:    false,
+                    retainLines:   true,
+                    ast:           false,
+                    babelrc:       false,
+                    highlightCode: false
+                });
+
+                fnCode = compiled.code;
+            }
+
+            return wrapDomAccessors(fnCode, true);
+        }
+
+        catch (err) {
+            return fnCode;
+        }
+    }
+
     _setupSourceMapsSupport () {
         sourceMapSupport.install({
             handleUncaughtExceptions: false,
@@ -86,8 +121,7 @@ export default class ESNextCompiler {
     }
 
     _compileES (code, filename) {
-        // NOTE: lazy load heavy dependencies
-        var babel = require('babel-core');
+        var { babel } = ESNextCompiler._getBabelLibs();
 
         if (this.cache[filename])
             return this.cache[filename];

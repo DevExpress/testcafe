@@ -8,6 +8,7 @@ import { UncaughtErrorOnPage } from '../../errors/test-run';
 
 import * as browser from '../browser';
 import executeActionCommand from './command-executors/execute-action-command';
+import executeHybridFnCommand from './command-executors/execute-hybrid-fn-command';
 import ContextStorage from './storage';
 
 var transport         = hammerhead.transport;
@@ -90,19 +91,14 @@ export default class ClientDriver {
             });
     }
 
-    _onCommand (command) {
-        if (command.type === COMMAND_TYPE.testDone) {
-            this._onTestDone();
-            return;
-        }
-
+    _onActionCommand (command) {
         this.contextStorage.setItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG, false);
 
-        var { startPromise, completePromise } = executeActionCommand(command);
+        var { startPromise, completionPromise } = executeActionCommand(command);
 
         startPromise.then(() => this.contextStorage.setItem(COMMAND_EXECUTING_FLAG, true));
 
-        completePromise
+        completionPromise
             .catch(err => this._onJsError(err))
             .then(commandResult => {
                 var commandInterruptedByError = this.contextStorage.getItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG);
@@ -111,6 +107,17 @@ export default class ClientDriver {
 
                 return this._onReady(commandInterruptedByError ? null : commandResult);
             });
+    }
+
+    _onCommand (command) {
+        if (command.type === COMMAND_TYPE.testDone)
+            this._onTestDone();
+
+        else if (command.type === COMMAND_TYPE.execHybridFn)
+            executeHybridFnCommand(command).then(commandResult => this._onReady(commandResult));
+
+        else
+            this._onActionCommand(command);
     }
 
     _onTestDone () {
