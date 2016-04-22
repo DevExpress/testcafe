@@ -9654,7 +9654,7 @@ export function init (window, undefined) {
 
     };
 
-    eval('(' + processScript(jQueryFunction.toString(), false, true) + '(window))');
+    eval(`${processScript(`(${jQueryFunction.toString()})`, false, true)}(window)`);
 
     exportJQuery();
 }

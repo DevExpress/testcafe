@@ -48,11 +48,11 @@ serviceUtils.inherit(Runner, RunnerBase);
 
 //Static
 Runner.startHeartbeat = function (heartbeatUrl) {
-    browser.startHeartbeat(heartbeatUrl, hammerhead.nativeMethods.XMLHttpRequest);
+    browser.startHeartbeat(heartbeatUrl, hammerhead.createNativeXHR);
 };
 
 Runner.checkStatus = function () {
-    browser.checkStatus(SETTINGS.get().BROWSER_STATUS_URL, hammerhead.nativeMethods.XMLHttpRequest);
+    browser.checkStatus(SETTINGS.get().BROWSER_STATUS_URL, hammerhead.createNativeXHR);
 };
 
 

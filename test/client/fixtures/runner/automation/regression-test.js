@@ -732,7 +732,11 @@ $(document).ready(function () {
             '</style>'
         ].join('\n');
 
-        $(style)
+        // NOTE: we need to use a sandboxed jQuery to process the 'style' element content.
+        // Since Hammerhead 8.0.0, proxying is performed on prototypes (instead of elements)
+        var sandboxedJQuery = window.sandboxedJQuery.jQuery;
+
+        sandboxedJQuery(style)
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo(body);
 

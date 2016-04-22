@@ -35,7 +35,7 @@ export default class ClientDriver {
     }
 
     start () {
-        browser.startHeartbeat(this.heartbeatUrl, hammerhead.nativeMethods.XMLHttpRequest);
+        browser.startHeartbeat(this.heartbeatUrl, hammerhead.createNativeXHR);
 
         modalBackground.initAndShowLoadingText();
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
@@ -43,7 +43,7 @@ export default class ClientDriver {
         // NOTE: we should not send any message to the server if we've
         // sent the 'test-done' message but haven't got the response.
         if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG)) {
-            browser.checkStatus(this.browserStatusUrl, hammerhead.nativeMethods.XMLHttpRequest);
+            browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR);
             return;
         }
 
@@ -118,7 +118,7 @@ export default class ClientDriver {
 
         transport
             .queuedAsyncServiceMsg({ cmd: MESSAGE.done })
-            .then(() => browser.checkStatus(this.browserStatusUrl, hammerhead.nativeMethods.XMLHttpRequest));
+            .then(() => browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR));
     }
 
 }

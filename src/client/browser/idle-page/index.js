@@ -5,13 +5,15 @@ import COMMAND from '../../../browser-connection/command';
 
 const CHECK_STATUS_DELAY = 1000;
 
+var createXHR = () => new XMLHttpRequest();
+
 
 class IdlePage {
     constructor (statusUrl, heartbeatUrl) {
         this.statusUrl       = statusUrl;
         this.statusIndicator = new StatusIndicator();
 
-        browser.startHeartbeat(heartbeatUrl, window.XMLHttpRequest);
+        browser.startHeartbeat(heartbeatUrl, createXHR);
         this._checkStatus();
 
         document.title = '[' + document.location.toString() + ']';
@@ -19,7 +21,7 @@ class IdlePage {
 
     _checkStatus () {
         browser
-            .checkStatus(this.statusUrl, window.XMLHttpRequest)
+            .checkStatus(this.statusUrl, createXHR)
             .then((cmd) => {
                 if (cmd === COMMAND.idle)
                     window.setTimeout(() => this._checkStatus(), CHECK_STATUS_DELAY);

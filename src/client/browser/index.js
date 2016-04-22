@@ -9,9 +9,9 @@ const HEARTBEAT_INTERVAL = 30 * 1000;
 //Utils
 // NOTE: the window.XMLHttpRequest may have been wrapped by Hammerhead, while we should send a request to
 // the original URL. That's why we need the XMLHttpRequest argument to send the request via native methods.
-function sendXHR (url, XMLHttpRequest) {
+function sendXHR (url, createXHR) {
     return new Promise((resolve, reject) => {
-        var xhr = new XMLHttpRequest();
+        var xhr = createXHR();
 
         xhr.open('GET', url, true);
 
@@ -34,14 +34,14 @@ function isCurrentLocation (url) {
 
 
 //API
-export function startHeartbeat (heartbeatUrl, XMLHttpRequest) {
-    sendXHR(heartbeatUrl, XMLHttpRequest);
+export function startHeartbeat (heartbeatUrl, createXHR) {
+    sendXHR(heartbeatUrl, createXHR);
 
-    window.setInterval(() => sendXHR(heartbeatUrl, XMLHttpRequest), HEARTBEAT_INTERVAL);
+    window.setInterval(() => sendXHR(heartbeatUrl, createXHR), HEARTBEAT_INTERVAL);
 }
 
-export function checkStatus (statusUrl, XMLHttpRequest) {
-    return sendXHR(statusUrl, XMLHttpRequest)
+export function checkStatus (statusUrl, createXHR) {
+    return sendXHR(statusUrl, createXHR)
         .then((res) => {
             if (res.cmd === COMMAND.run || res.cmd === COMMAND.idle && !isCurrentLocation(res.url))
                 document.location = res.url;
