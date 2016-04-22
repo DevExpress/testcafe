@@ -12,6 +12,7 @@ import executeHybridFnCommand from './command-executors/execute-hybrid-fn-comman
 import ContextStorage from './storage';
 
 var transport         = hammerhead.transport;
+var Promise           = hammerhead.Promise;
 var XhrBarrier        = testCafeCore.XhrBarrier;
 var pageUnloadBarrier = testCafeCore.pageUnloadBarrier;
 var eventUtils        = testCafeCore.eventUtils;

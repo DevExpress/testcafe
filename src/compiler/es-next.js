@@ -44,8 +44,11 @@ export default class ESNextCompiler {
             presetStage2:      require('babel-preset-stage-2'),
             transformRuntime:  require('babel-plugin-transform-runtime'),
             presetES2015Loose: require('babel-preset-es2015-loose'),
-            presetES2015Node4: require('babel-preset-es2015-node4')
+
+            // NOTE: we don't need this preset if we are on older versions of Node
+            presetES2015Node4: NODE_VER >= 4 ? require('babel-preset-es2015-node4') : null
         };
+
     }
 
     static _getBabelOptions (filename) {

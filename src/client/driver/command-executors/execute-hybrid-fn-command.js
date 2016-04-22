@@ -1,3 +1,7 @@
+import hammerhead from '../deps/hammerhead';
+
+var Promise = hammerhead.Promise;
+
 export default function executeHybridFnCommand (command) {
     return new Promise(resolve => {
         try {
