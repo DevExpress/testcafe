@@ -275,15 +275,6 @@ export function calcRelativePosition (dimensions, toDimensions) {
     };
 }
 
-export function getElementCenter (el) {
-    var rect = getElementRectangle(el);
-
-    return {
-        x: Math.floor(rect.width / 2),
-        y: Math.floor(rect.height / 2)
-    };
-}
-
 export function isInRectangle ({ x, y }, rectangle) {
     return x >= rectangle.left && x <= rectangle.right && y >= rectangle.top && y <= rectangle.bottom;
 }

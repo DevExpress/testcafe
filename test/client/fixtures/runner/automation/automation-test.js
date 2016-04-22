@@ -6,20 +6,20 @@ var domUtils      = testCafeCore.get('./utils/dom');
 var textSelection = testCafeCore.get('./utils/text-selection');
 var position      = testCafeCore.get('./utils/position');
 
-var testCafeRunner     = window.getTestCafeModule('testCafeRunner');
-var automation         = testCafeRunner.get('./automation/automation');
-var DragOptions        = testCafeRunner.get('../../test-run/commands/options').DragOptions;
-var ClickOptions       = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
-var SelectOptions      = testCafeRunner.get('../../test-run/commands/options').SelectOptions;
-var TypeOptions        = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
-var ClickAutomation    = testCafeRunner.get('./automation/playback/click');
-var DblClickAutomation = testCafeRunner.get('./automation/playback/dblclick');
-var SelectAutomation   = testCafeRunner.get('./automation/playback/select');
-var TypeAutomation     = testCafeRunner.get('./automation/playback/type');
-var DragAutomation     = testCafeRunner.get('./automation/playback/drag');
-var PressAutomation    = testCafeRunner.get('./automation/playback/press');
-var parseKeyString     = testCafeRunner.get('./automation/playback/press/parse-key-string');
-var mouseUtils         = testCafeRunner.get('./utils/mouse');
+var testCafeRunner          = window.getTestCafeModule('testCafeRunner');
+var automation              = testCafeRunner.get('./automation/automation');
+var MouseOptions            = testCafeRunner.get('../../test-run/commands/options').MouseOptions;
+var ClickOptions            = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
+var SelectOptions           = testCafeRunner.get('../../test-run/commands/options').SelectOptions;
+var TypeOptions             = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
+var ClickAutomation         = testCafeRunner.get('./automation/playback/click');
+var DblClickAutomation      = testCafeRunner.get('./automation/playback/dblclick');
+var SelectAutomation        = testCafeRunner.get('./automation/playback/select');
+var TypeAutomation          = testCafeRunner.get('./automation/playback/type');
+var DragToOffsetAutomation  = testCafeRunner.get('./automation/playback/drag/to-offset');
+var PressAutomation         = testCafeRunner.get('./automation/playback/press');
+var parseKeyString          = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var mouseUtils              = testCafeRunner.get('./utils/mouse');
 
 QUnit.begin(function () {
     automation.init();
@@ -300,12 +300,7 @@ $(document).ready(function () {
             center      = position.findCenter($draggable[0]),
             pointTo     = { x: center.x + dragOffsetX, y: center.y + dragOffsetY };
 
-        var dragOptions = new DragOptions({
-            dragOffsetX: dragOffsetX,
-            dragOffsetY: dragOffsetY
-        });
-
-        var dragAutomation = new DragAutomation($draggable[0], dragOptions);
+        var dragAutomation = new DragToOffsetAutomation($draggable[0], dragOffsetX, dragOffsetY, new MouseOptions());
 
         dragAutomation
             .run()

@@ -14,10 +14,13 @@ export default {
     actionPositiveIntegerOptionError: 'actionPositiveIntegerOptionError',
     actionBooleanOptionError:         'actionBooleanOptionError',
     actionOptionsTypeError:           'actionOptionsTypeError',
+    actionSelectorTypeError:          'actionSelectorTypeError',
+    dragDestinationSelectorTypeError: 'dragDestinationSelectorTypeError',
 
-    actionSelectorTypeError:       'actionSelectorTypeError',
-    actionElementNotFoundError:    'actionElementNotFoundError',
-    actionElementIsInvisibleError: 'actionElementIsInvisibleError',
+    actionElementNotFoundError:      'actionElementNotFoundError',
+    actionElementIsInvisibleError:   'actionElementIsInvisibleError',
+    dragDestinationNotFoundError:    'dragDestinationNotFoundError',
+    dragDestinationIsInvisibleError: 'dragDestinationIsInvisibleError',
 
     externalAssertionLibraryError: 'externalAssertionLibraryError'
 };

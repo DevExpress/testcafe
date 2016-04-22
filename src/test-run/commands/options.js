@@ -133,29 +133,6 @@ export class ClickOptions extends MouseOptions {
     }
 }
 
-
-// Drag
-export class DragOptions extends MouseOptions {
-    constructor (obj, validate) {
-        super();
-
-        this.destinationElement = null; // TODO
-        this.dragOffsetX = 0;
-        this.dragOffsetY = 0;
-
-        this._assignFrom(obj, validate);
-    }
-
-    _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
-            { name: 'destinationElement' },
-            { name: 'dragOffsetX', type: integer },
-            { name: 'dragOffsetY', type: integer }
-        ]);
-    }
-}
-
-
 // Move
 export class MoveOptions extends MouseOptions {
     constructor (obj, validate) {

@@ -5,11 +5,11 @@ var styleUtils    = testCafeCore.styleUtils;
 
 
 export function getDefaultAutomationOffsets (element) {
-    var elementCenter = positionUtils.getElementCenter(element);
+    var rect = positionUtils.getElementRectangle(element);
 
     return {
-        offsetX: elementCenter.x,
-        offsetY: elementCenter.y
+        offsetX: Math.round(rect.width / 2),
+        offsetY: Math.round(rect.height / 2)
     };
 }
 

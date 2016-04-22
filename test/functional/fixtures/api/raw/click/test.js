@@ -58,7 +58,7 @@ describe('[Raw API] Click action', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click non-existent button', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).eql('The specified selector does not match any element in the DOM tree.  ' +
-                                   '[[Click non-existent button callsite]]');
+                                    '[[Click non-existent button callsite]]');
             });
     });
 
@@ -66,15 +66,15 @@ describe('[Raw API] Click action', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click invisible button', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).eql('The element that matches the specified selector is not visible.  ' +
-                                   '[[Click invisible button callsite]]');
+                                    '[[Click invisible button callsite]]');
             });
     });
 
     it('Should fail if action has incorrect selector', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Incorrect action selector', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).eql('Action selector is expected to be a string, but it was number.  ' +
-                                   '[[Incorrect action selector callsite]]');
+                expect(errs[0]).eql('The selector is expected to be a string, but it was number.  ' +
+                                    '[[Incorrect action selector callsite]]');
             });
     });
 
@@ -82,7 +82,7 @@ describe('[Raw API] Click action', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Incorrect action option', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).eql('Action option offsetX is expected to be a positive integer, but it was string.  ' +
-                                   '[[Incorrect action option callsite]]');
+                                    '[[Incorrect action option callsite]]');
             });
     });
 });

@@ -11,11 +11,14 @@ var ActionPositiveIntegerOptionError = require('../../lib/errors/test-run').Acti
 var ActionBooleanOptionError         = require('../../lib/errors/test-run').ActionBooleanOptionError;
 var ActionSelectorTypeError          = require('../../lib/errors/test-run').ActionSelectorTypeError;
 var ActionOptionsTypeError           = require('../../lib/errors/test-run').ActionOptionsTypeError;
+var DragDestinationSelectorTypeError = require('../../lib/errors/test-run').DragDestinationSelectorTypeError;
 var UncaughtErrorOnPage              = require('../../lib/errors/test-run').UncaughtErrorOnPage;
 var UncaughtErrorInTestCode          = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
 var UncaughtNonErrorObjectInTestCode = require('../../lib/errors/test-run').UncaughtNonErrorObjectInTestCode;
 var ActionElementNotFoundError       = require('../../lib/errors/test-run').ActionElementNotFoundError;
 var ActionElementIsInvisibleError    = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
+var DragDestinationNotFoundError     = require('../../lib/errors/test-run').DragDestinationNotFoundError;
+var DragDestinationIsInvisibleError  = require('../../lib/errors/test-run').DragDestinationIsInvisibleError;
 var MissingAwaitError                = require('../../lib/errors/test-run').MissingAwaitError;
 var ExternalAssertionLibraryError    = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
 
@@ -128,6 +131,18 @@ describe('Error formatting', function () {
 
         it('Should format "actionOptionsTypeError" message', function () {
             assertErrorMessage('action-options-type-error', new ActionOptionsTypeError(typeof 1));
+        });
+
+        it('Should format "dragDestinationSelectorTypeError" message', function () {
+            assertErrorMessage('drag-destination-selector-type-error', new DragDestinationSelectorTypeError(typeof 1));
+        });
+
+        it('Should format "dragDestinationNotFoundError" message', function () {
+            assertErrorMessage('drag-destination-not-found-error', new DragDestinationNotFoundError());
+        });
+
+        it('Should format "dragDestinationIsInvisibleError" message', function () {
+            assertErrorMessage('drag-destination-is-invisible-error', new DragDestinationIsInvisibleError());
         });
 
         it('Should format "missingAwaitError', function () {

@@ -1,6 +1,12 @@
 import TYPE from './type';
 import Assignable from '../../utils/assignable';
-import { ActionSelectorTypeError, ActionOptionsTypeError } from '../../errors/test-run';
+import {
+    ActionSelectorTypeError,
+    ActionOptionsTypeError,
+    ActionIntegerOptionError,
+    DragDestinationSelectorTypeError
+} from '../../errors/test-run';
+
 import { ClickOptions, MouseOptions } from './options';
 
 // Validators
@@ -11,11 +17,32 @@ function selector (option, val) {
         throw new ActionSelectorTypeError(type);
 }
 
+function dragDestinationSelector (option, val) {
+    var type = typeof val;
+
+    if (type !== 'string')
+        throw new DragDestinationSelectorTypeError(type);
+}
+
 function actionOptions (option, val) {
     var type = typeof val;
 
     if (type !== 'object' && val !== null && val !== void 0)
         throw new ActionOptionsTypeError(type);
+}
+
+function integer (option, val) {
+    var valType = typeof val;
+
+    if (valType !== 'number')
+        throw new ActionIntegerOptionError(option, valType);
+
+    var isInteger = !isNaN(val) &&
+                    isFinite(val) &&
+                    val === Math.floor(val);
+
+    if (!isInteger)
+        throw new ActionIntegerOptionError(option, val);
 }
 
 // Initializers
@@ -89,7 +116,6 @@ export class DoubleClickCommand extends Assignable {
     }
 }
 
-
 class HoverCommand extends Assignable {
     constructor (obj) {
         super(obj);
@@ -104,6 +130,51 @@ class HoverCommand extends Assignable {
     _getAssignableProperties () {
         return [
             { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'options', type: actionOptions, init: initMouseOptions, required: true }
+        ];
+    }
+}
+
+class DragCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type        = TYPE.drag;
+        this.selector    = null;
+        this.dragOffsetX = null;
+        this.dragOffsetY = null;
+        this.options     = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'dragOffsetX', type: integer, required: true },
+            { name: 'dragOffsetY', type: integer, required: true },
+            { name: 'options', type: actionOptions, init: initMouseOptions, required: true }
+        ];
+    }
+}
+
+class DragToElementCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type = TYPE.dragToElement;
+
+        this.selector            = null;
+        this.destinationSelector = null;
+        this.options             = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'destinationSelector', type: dragDestinationSelector, init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initMouseOptions, required: true }
         ];
     }
@@ -128,6 +199,12 @@ export function createCommandFromObject (obj) {
 
     if (obj.type === TYPE.hover)
         return new HoverCommand(obj);
+
+    if (obj.type === TYPE.drag)
+        return new DragCommand(obj);
+
+    if (obj.type === TYPE.dragToElement)
+        return new DragToElementCommand(obj);
 
     if (obj.type === TYPE.testDone)
         return new TestDoneCommand();

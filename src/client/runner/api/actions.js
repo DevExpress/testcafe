@@ -2,10 +2,11 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import testCafeUI from '../deps/testcafe-ui';
 import { AUTOMATIONS } from '../automation/automation';
-import { DragOptions, MouseOptions, ClickOptions, SelectOptions, TypeOptions } from '../../../test-run/commands/options';
+import { MouseOptions, ClickOptions, SelectOptions, TypeOptions } from '../../../test-run/commands/options';
 import ClickAutomation from '../automation/playback/click';
 import DblClickAutomation from '../automation/playback/dblclick';
-import DragAutomation from '../automation/playback/drag';
+import DragToOffsetAutomation from '../automation/playback/drag/to-offset';
+import DragToElementAutomation from '../automation/playback/drag/to-element';
 import HoverAutomation from '../automation/playback/hover';
 import PressAutomation from '../automation/playback/press';
 import RClickAutomation from '../automation/playback/rclick';
@@ -539,6 +540,8 @@ export function drag (what) {
     var args               = arguments;
     var elements           = ensureArray(what);
     var secondArgIsCoord   = !(isNaN(parseInt(args[1])));
+    var DragAutomationCtor = null;
+    var dragAutomation     = null;
     var options            = secondArgIsCoord ? args[3] : args[2];
     var destinationElement = null;
     var dragOffsetX        = null;
@@ -589,19 +592,26 @@ export function drag (what) {
                 dragOffsetX = Math.round(dragOffsetX);
                 dragOffsetY = Math.round(dragOffsetY);
 
-                var dragOptions = new DragOptions({
+                var mouseOptions = new MouseOptions({
                     offsetX,
                     offsetY,
-                    destinationElement,
-                    dragOffsetX,
-                    dragOffsetY,
-
                     modifiers: options
                 }, false);
 
-                var dragAutomation = iframe ?
-                                     new iframe.contentWindow[AUTOMATIONS].DragAutomation(element, dragOptions) :
-                                     new DragAutomation(element, dragOptions);
+                if (destinationElement) {
+                    DragAutomationCtor = iframe ?
+                                         iframe.contentWindow[AUTOMATIONS].DragToElementAutomation :
+                                         DragToElementAutomation;
+
+                    dragAutomation = new DragAutomationCtor(element, destinationElement, mouseOptions);
+                }
+                else {
+                    DragAutomationCtor = iframe ?
+                                         iframe.contentWindow[AUTOMATIONS].DragToOffsetAutomation :
+                                         DragToOffsetAutomation;
+
+                    dragAutomation = new DragAutomationCtor(element, dragOffsetX, dragOffsetY, mouseOptions);
+                }
 
                 dragAutomation
                     .run()
