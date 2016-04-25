@@ -61,7 +61,7 @@ var CLIENT_TESTS_SETTINGS = {
     configApp: require('./test/client/config-qunit-server-app')
 };
 
-var CLIENT_TESTS_BROWSERS = [
+var CLIENT_TESTS_DESKTOP_BROWSERS = [
     {
         platform:    'Windows 10',
         browserName: 'microsoftedge'
@@ -90,12 +90,6 @@ var CLIENT_TESTS_BROWSERS = [
         version:     '9.0'
     },
     {
-        platform:    'Linux',
-        browserName: 'android',
-        version:     '5.1',
-        deviceName:  'Android Emulator'
-    },
-    {
         platform:    'OS X 10.10',
         browserName: 'safari',
         version:     '8.0'
@@ -107,6 +101,15 @@ var CLIENT_TESTS_BROWSERS = [
     {
         platform:    'OS X 10.11',
         browserName: 'firefox'
+    }
+];
+
+var CLIENT_TESTS_MOBILE_BROWSERS = [
+    {
+        platform:    'Linux',
+        browserName: 'android',
+        version:     '5.1',
+        deviceName:  'Android Emulator'
     },
     {
         platform:    'OS X 10.10',
@@ -120,15 +123,13 @@ var CLIENT_TESTS_BROWSERS = [
         version:     '9.1',
         deviceName:  'iPhone 6 Plus'
     }
-
 ];
 
-var SAUCELABS_SETTINGS = {
+var CLIENT_TESTS_SAUCELABS_SETTINGS = {
     username:  process.env.SAUCE_USERNAME,
     accessKey: process.env.SAUCE_ACCESS_KEY,
     build:     process.env.TRAVIS_JOB_ID || '',
     tags:      [process.env.TRAVIS_BRANCH || 'master'],
-    browsers:  CLIENT_TESTS_BROWSERS,
     name:      'testcafe client tests',
     timeout:   720
 };
@@ -322,9 +323,23 @@ gulp.task('test-client', ['build'], function () {
 });
 
 gulp.task('test-client-travis', ['build'], function () {
+    var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
+
+    saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS;
+
     return gulp
         .src('test/client/fixtures/**/*-test.js')
-        .pipe(qunitHarness(CLIENT_TESTS_SETTINGS, SAUCELABS_SETTINGS));
+        .pipe(qunitHarness(CLIENT_TESTS_SETTINGS, saucelabsSettings));
+});
+
+gulp.task('test-client-travis-mobile', ['build'], function () {
+    var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
+
+    saucelabsSettings.browsers = CLIENT_TESTS_MOBILE_BROWSERS;
+
+    return gulp
+        .src('test/client/fixtures/**/*-test.js')
+        .pipe(qunitHarness(CLIENT_TESTS_SETTINGS, saucelabsSettings));
 });
 
 gulp.task('travis', [process.env.GULP_TASK || '']);
