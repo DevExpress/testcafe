@@ -13,8 +13,9 @@ const NODE_MODULES_PATH = join(__dirname, '../../node_modules');
 const NODE_VER          = parseInt(nodeVer.major, 10);
 const CWD               = process.cwd();
 
-const FIXTURE_RE = /(^|;|\s+)fixture\s*(\(\s*('|").+?\3\s*\)|`.+?`)/;
-const TEST_RE    = /(^|;|\s+)test\s*(\(\s*('|").+?\3\s*,)/;
+const FIXTURE_RE      = /(^|;|\s+)fixture\s*(\(\s*('|").+?\3\s*\)|`.+?`)/;
+const TEST_RE         = /(^|;|\s+)test\s*(\(\s*('|").+?\3\s*,)/;
+const ANONYMOUS_FN_RE = /^function\s*\(/;
 
 var Module = module.constructor;
 
@@ -85,6 +86,9 @@ export default class ESNextCompiler {
     }
 
     static compileHybridFunction (fnCode) {
+        if (ANONYMOUS_FN_RE.test(fnCode))
+            fnCode = `(${fnCode})`;
+
         // NOTE: we need to recompile ES6 code for the browser if we are on newer versions of Node.
         try {
             if (NODE_VER >= 4) {

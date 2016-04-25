@@ -9,7 +9,7 @@ export default function executeHybridFnCommand (command) {
             var fn = eval(command.fnCode);
             /* eslint-enable no-eval */
 
-            var fnResult = fn.apply(command.args);
+            var fnResult = fn.apply(window, command.args);
 
             resolve({ failed: false, fnResult });
         }

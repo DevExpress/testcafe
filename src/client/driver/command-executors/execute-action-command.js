@@ -110,7 +110,7 @@ function createAutomation (elements, command) {
 export default function executeActionCommand (command) {
     var resolveStartPromise = null;
     var startPromise        = new Promise(resolve => resolveStartPromise = resolve);
-    
+
     var completionPromise = new Promise(resolve => {
         var xhrBarrier = null;
 

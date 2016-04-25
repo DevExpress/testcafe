@@ -9,11 +9,19 @@ describe('[API] Hybrid function', function () {
             expect(ua.indexOf(expected)).eql(0);
         }
 
-        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Get user agent', { shouldFail: true })
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Dispatch', { shouldFail: true })
             .catch(function (errs) {
                 assertUA(errs, 'chrome', 'Chrome');
                 assertUA(errs, 'ff', 'Firefox');
                 assertUA(errs, 'ie', 'IE');
             });
+    });
+
+    it('Should accept arguments', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Call with arguments');
+    });
+
+    it('Should perform Hammerhead code instrumentation on function code', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Hammerhead code instrumentation');
     });
 });
