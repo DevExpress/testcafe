@@ -10,6 +10,8 @@ var Role        = require('../../lib/api/common/role');
 var Hybrid      = require('../../lib/api/common/hybrid');
 
 describe('Compiler', function () {
+    var testRunMock = { id: 'yo' };
+
     this.timeout(20000);
 
     // FIXME: Babel errors always contain POSIX-format file paths.
@@ -99,10 +101,10 @@ describe('Compiler', function () {
 
         return compile(sources)
             .then(function (compiled) {
-                var testfile1 = resolve('test/server/data/test-suites/basic/testfile1.js');
-                var testfile2 = resolve('test/server/data/test-suites/basic/testfile2.js');
-                var tests     = compiled.tests;
-                var fixtures  = compiled.fixtures;
+                var testfile1   = resolve('test/server/data/test-suites/basic/testfile1.js');
+                var testfile2   = resolve('test/server/data/test-suites/basic/testfile2.js');
+                var tests       = compiled.tests;
+                var fixtures    = compiled.fixtures;
 
                 expect(tests.length).eql(4);
                 expect(fixtures.length).eql(3);
@@ -132,7 +134,7 @@ describe('Compiler', function () {
                 expect(tests[3].fixture).eql(fixtures[2]);
 
                 return Promise.all(tests.map(function (test) {
-                    return test.fn();
+                    return test.fn(testRunMock);
                 }));
             })
             .then(function (results) {
@@ -148,7 +150,7 @@ describe('Compiler', function () {
     it('Should provide common API functions via lib dependency', function () {
         return compile('test/server/data/test-suites/common-runtime-dep/testfile.js')
             .then(function (compiled) {
-                return compiled.tests[0].fn();
+                return compiled.tests[0].fn(testRunMock);
             })
             .then(function (commons) {
                 expect(commons.Role).eql(Role);
@@ -159,7 +161,7 @@ describe('Compiler', function () {
     it('Should not leak globals to dependencies and test body', function () {
         return compile('test/server/data/test-suites/globals-in-dep/testfile.js')
             .then(function (compiled) {
-                return compiled.tests[0].fn();
+                return compiled.tests[0].fn(testRunMock);
             })
             .then(function (noLeak) {
                 expect(noLeak).to.be.true;

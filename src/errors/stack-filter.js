@@ -18,7 +18,8 @@ export default function stackFilter (frame) {
     var filename = frame.getFileName();
 
     // NOTE: filter node, Babel and TestCafe internals
-    return filename.indexOf(sep) > -1 &&
+    return filename &&
+           filename.indexOf(sep) > -1 &&
            filename.indexOf(INTERNAL) !== 0 &&
            filename.indexOf(TESTCAFE_LIB) !== 0 &&
            filename.indexOf(TESTCAFE_BIN) !== 0 &&

@@ -19,7 +19,7 @@
     "no-multi-str": 2,
     "no-native-reassign": 2,
     "no-new": 2,
-    "no-new-func": 2,
+    "no-new-func": 0,
     "no-new-object": 2,
     "no-new-wrappers": 2,
     "no-octal-escape": 2,

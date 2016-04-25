@@ -1,10 +1,13 @@
 import TestController from '../test-controller';
 import getCallsite from '../../errors/get-callsite';
+import hybridFnTestRunTracker from '../common/hybrid/test-run-tracker';
+
 import {
     UncaughtErrorInTestCode,
     UncaughtNonErrorObjectInTestCode,
     ExternalAssertionLibraryError
 } from '../../errors/test-run';
+
 
 function processTestFnError (err) {
     if (err && err.isTestCafeError)
@@ -27,9 +30,12 @@ export default function wrapTestFunction (fn) {
         // NOTE: fn() result used for testing purposes
         var result     = null;
         var controller = new TestController(testRun);
+        var markeredfn = hybridFnTestRunTracker.addTrackingMarkerToFunction(testRun.id, fn);
+
+        hybridFnTestRunTracker.ensureEnabled();
 
         try {
-            result = await fn(controller);
+            result = await markeredfn(controller);
         }
         catch (err) {
             throw processTestFnError(err);

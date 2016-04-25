@@ -111,7 +111,7 @@ export default function executeActionCommand (command) {
     var resolveStartPromise = null;
     var startPromise        = new Promise(resolve => resolveStartPromise = resolve);
 
-    var completePromise = new Promise(resolve => {
+    var completionPromise = new Promise(resolve => {
         var xhrBarrier = null;
 
         ensureCommandElements(command)
@@ -132,6 +132,6 @@ export default function executeActionCommand (command) {
             .catch(err => resolve({ failed: true, err }));
     });
 
-    return { startPromise, completePromise };
+    return { startPromise, completionPromise };
 }
 

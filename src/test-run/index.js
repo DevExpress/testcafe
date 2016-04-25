@@ -6,7 +6,7 @@ import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import { TestDoneCommand, isTestDoneCommand } from './commands';
+import { TestDoneCommand, isTestDoneCommand, isCommandRejectableByPageError } from './commands';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
 
@@ -93,6 +93,8 @@ export default class TestRun extends Session {
         var beforeEachFn = this.test.fixture.beforeEachFn;
         var afterEachFn  = this.test.fixture.afterEachFn;
 
+        TestRun.activeTestRuns[this.id] = this;
+
         this.running = true;
         this.emit('start');
 
@@ -105,6 +107,9 @@ export default class TestRun extends Session {
 
         await this.executeCommand(new TestDoneCommand());
         this._addPendingErrorIfAny();
+
+        delete TestRun.activeTestRuns[this.id];
+
         this.emit('done');
     }
 
@@ -133,8 +138,8 @@ export default class TestRun extends Session {
 
 
     // Pending command and request
-    _resolvePendingCommand () {
-        this.pendingCommand.resolve();
+    _resolvePendingCommand (commandResult) {
+        this.pendingCommand.resolve(commandResult);
         this.pendingCommand = null;
     }
 
@@ -161,7 +166,7 @@ export default class TestRun extends Session {
 
         this.currentCommandCallsite = callsite;
 
-        if (this.pendingJsError && !isTestDoneCommand(command)) {
+        if (this.pendingJsError && isCommandRejectableByPageError(command)) {
             var result = Promise.reject(this.pendingJsError);
 
             this.pendingJsError = null;
@@ -175,6 +180,11 @@ export default class TestRun extends Session {
         return this._addPendingCommand(command);
     }
 }
+
+
+// Active test runs pool, used by hybrid functions
+TestRun.activeTestRuns = {};
+
 
 // Service message handlers
 var ServiceMessages = TestRun.prototype;
@@ -195,7 +205,7 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
             if (commandResult.failed)
                 this._rejectPendingCommand(commandResult.err);
             else
-                this._resolvePendingCommand();
+                this._resolvePendingCommand(commandResult);
         }
         else
             return Promise.resolve(this.pendingCommand.command);
@@ -207,7 +217,7 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 ServiceMessages[CLIENT_MESSAGES.jsError] = function (msg) {
     this.debugLog.error(msg.err);
 
-    if (this.pendingCommand && !isTestDoneCommand(this.pendingCommand))
+    if (this.pendingCommand && isCommandRejectableByPageError(this.pendingCommand))
         this._rejectPendingCommand(msg.err);
     else
         this.pendingJsError = msg.err;
