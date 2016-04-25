@@ -84,10 +84,10 @@ export default {
         var frames = this._getStackFrames();
 
         // OPTIMIZATION: we start traversing from the bottom of the stack,
-        // because we'll more likely encounter marker there.
+        // because we'll more likely encounter a marker there.
         // Async/await and Promise machinery executes lots of intrinsics
-        // on timeouts (where we have mark). And, since timeout initiates new
-        // stack, marker will be at the very bottom of the stack.
+        // on timers (where we have a marker). And, since a timer initiates a new
+        // stack, the marker will be at the very bottom of it.
         for (var i = frames.length - 1; i >= 0; i--) {
             var fnName = frames[i].getFunctionName();
             var match  = fnName && fnName.match(TRACKING_MARK_RE);
