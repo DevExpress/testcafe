@@ -6,3 +6,4 @@ permalink: /documentation/using-testcafe/common-concepts/
 # Common Concepts
 
 * [Browser Aliases](browser-aliases.md)
+* [Reporters](reporters.md)

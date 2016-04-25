@@ -105,13 +105,7 @@ testcafe --list-browsers
 
 ### -r \<name\>, --reporter \<name\>
 
-Specifies a built-in or custom reporter that will be used to generate test reports.
-The available built-in reporters are [json](https://github.com/DevExpress/testcafe-reporter-json),
-[list](https://github.com/DevExpress/testcafe-reporter-list),
-[minimal](https://github.com/DevExpress/testcafe-reporter-minimal),
-[spec](https://github.com/DevExpress/testcafe-reporter-spec),
-[xunit](https://github.com/DevExpress/testcafe-reporter-xunit).
-By default, the `spec` reporter is used.
+Specifies the name of the [built-in](/testcafe/documentation/using-testcafe/common-concepts/reporters/) or [custom reporter](/testcafe/documentation/extending-testcafe/creating-custom-reporter/) that will be used to generate test reports.
 
 The following command runs tests in all available browsers and generates a report in the xunit format.
 

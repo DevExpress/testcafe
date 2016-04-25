@@ -48,11 +48,16 @@
     content: 
     - item: Browser Aliases
       url: /testcafe/documentation/using-testcafe/common-concepts/browser-aliases.html
+    - item: Reporters
+      url: /testcafe/documentation/using-testcafe/common-concepts/reporters.html
 - folder: EXTENDING TESTCAFE
-  url: .  
+  url: /testcafe/documentation/extending-testcafe/
   content:
-  - item: Reporter Plugins
-    url: .
+  - folder: Custom Reporter Plugin
+    url: /testcafe/documentation/extending-testcafe/custom-reporter-plugin/
+    content:
+    - item: Helper Methods
+      url: /testcafe/documentation/extending-testcafe/custom-reporter-plugin/helper-methods.html
   - item: Browser Provider Plugins
     url: .
   - item: Selector Extensions

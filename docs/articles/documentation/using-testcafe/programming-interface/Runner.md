@@ -173,18 +173,8 @@ reporter(name [, outStream]) → this
 
 Parameter                | Type                        | Description                                     | Default
 ------------------------ | --------------------------- | ----------------------------------------------- | --------
-`name`                   | String                      | The name of the reporter to use.
+`name`                   | String                      | The name of the [reporter](/testcafe/documentation/using-testcafe/common-concepts/reporters/) to use.
 `outStream` *(optional)* | Writable Stream implementer | The stream to which the report will be written. | `stdout`
-
-Reporters are plugins used to output test run reports in a certain format.
-
-TestCafe ships with the following reporters:
-
-* [spec](https://github.com/DevExpress/testcafe-reporter-spec) - used by default
-* [list](https://github.com/DevExpress/testcafe-reporter-list)
-* [minimal](https://github.com/DevExpress/testcafe-reporter-minimal)
-* [xUnit](https://github.com/DevExpress/testcafe-reporter-xunit)
-* [JSON](https://github.com/DevExpress/testcafe-reporter-json)
 
 #### Specifying the reporter
 
@@ -218,7 +208,7 @@ const stream = new MyStream();
 runner.reporter('json', stream);
 ```
 
-You can also build your own reporter. Use a [dedicated Yeoman generator](https://github.com/DevExpress/generator-testcafe-reporter) to scaffold out a custom reporter plugin.
+You can also build your own reporter. Use a [dedicated Yeoman generator](https://github.com/DevExpress/generator-testcafe-reporter) to scaffold out a [custom reporter plugin](/testcafe/documentation/extending-testcafe/creating-custom-reporter/).
 
 ### run
 
