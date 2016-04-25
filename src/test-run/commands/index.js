@@ -116,7 +116,7 @@ export class DoubleClickCommand extends Assignable {
     }
 }
 
-class HoverCommand extends Assignable {
+export class HoverCommand extends Assignable {
     constructor (obj) {
         super(obj);
 
