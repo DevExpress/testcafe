@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Runner Class
-permalink: /documentation/using-testcafe/programming-interface/Runner
+permalink: /documentation/using-testcafe/programming-interface/Runner.html
 ---
 # Runner Class
 

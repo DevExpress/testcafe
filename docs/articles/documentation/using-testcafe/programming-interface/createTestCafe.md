@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: createTestCafe
-permalink: /documentation/using-testcafe/programming-interface/createTestCafe
+permalink: /documentation/using-testcafe/programming-interface/createTestCafe.html
 ---
 # createTestCafe Factory
 

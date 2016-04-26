@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: TestCafe Class
-permalink: /documentation/using-testcafe/programming-interface/TestCafe
+permalink: /documentation/using-testcafe/programming-interface/TestCafe.html
 ---
 # TestCafe Class
 

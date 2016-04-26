@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Helper Methods
-permalink: /documentation/extending-testcafe/custom-reporter-plugin/helper-methods
+permalink: /documentation/extending-testcafe/custom-reporter-plugin/helper-methods.html
 ---
 # Helper Methods
 

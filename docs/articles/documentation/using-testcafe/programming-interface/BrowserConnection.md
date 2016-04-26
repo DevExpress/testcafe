@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: BrowserConnection Class
-permalink: /documentation/using-testcafe/programming-interface/BrowserConnection
+permalink: /documentation/using-testcafe/programming-interface/BrowserConnection.html
 ---
 # BrowserConnection Class
 
