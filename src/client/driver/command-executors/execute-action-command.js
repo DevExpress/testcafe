@@ -27,13 +27,12 @@ var TypeAutomation          = testCafeRunner.get('./automation/playback/type');
 var ProgressPanel           = testCafeUI.ProgressPanel;
 
 
-const PROGRESS_PANEL_TEXT   = 'Waiting for the target element of the next action to appear';
-const CHECK_ELEMENT_DELAY   = 200;
-const CHECK_ELEMENT_TIMEOUT = 10000;
+const PROGRESS_PANEL_TEXT = 'Waiting for the target element of the next action to appear';
+const CHECK_ELEMENT_DELAY = 200;
 
 
-function ensureElementExists (selector, ErrorCtor) {
-    return waitFor(selector, CHECK_ELEMENT_DELAY, CHECK_ELEMENT_TIMEOUT)
+function ensureElementExists (selector, timeout, ErrorCtor) {
+    return waitFor(selector, CHECK_ELEMENT_DELAY, timeout)
         .catch(() => {
             throw new ErrorCtor();
         });
@@ -46,29 +45,29 @@ function ensureElementVisible (element, timeout, ErrorCtor) {
         });
 }
 
-function ensureElement (selector, NotFoundErrorCtor, IsInvisibleErrorCtor) {
+function ensureElement (selector, timeout, NotFoundErrorCtor, IsInvisibleErrorCtor) {
     var startTime = new Date();
 
-    return ensureElementExists(() => nativeMethods.eval.call(window, selector), NotFoundErrorCtor)
+    return ensureElementExists(() => nativeMethods.eval.call(window, selector), timeout, NotFoundErrorCtor)
         .then(element => {
-            var checkVisibilityTimeout = CHECK_ELEMENT_TIMEOUT - (new Date() - startTime);
+            var checkVisibilityTimeout = timeout - (new Date() - startTime);
 
             return ensureElementVisible(element, checkVisibilityTimeout, IsInvisibleErrorCtor);
         });
 }
 
-function ensureCommandElements (command) {
+function ensureCommandElements (command, timeout) {
     var progressPanel = new ProgressPanel();
 
-    progressPanel.show(PROGRESS_PANEL_TEXT, CHECK_ELEMENT_TIMEOUT);
+    progressPanel.show(PROGRESS_PANEL_TEXT, timeout);
 
     var ensureElementPromises = [];
 
     if (command.selector)
-        ensureElementPromises.push(ensureElement(command.selector, ActionElementNotFoundError, ActionElementIsInvisibleError));
+        ensureElementPromises.push(ensureElement(command.selector, timeout, ActionElementNotFoundError, ActionElementIsInvisibleError));
 
     if (command.type === COMMAND_TYPE.dragToElement)
-        ensureElementPromises.push(ensureElement(command.destinationSelector, DragDestinationNotFoundError, DragDestinationIsInvisibleError));
+        ensureElementPromises.push(ensureElement(command.destinationSelector, timeout, DragDestinationNotFoundError, DragDestinationIsInvisibleError));
 
     return Promise.all(ensureElementPromises)
         .catch(err => {
@@ -110,15 +109,14 @@ function createAutomation (elements, command) {
     /* eslint-enable indent*/
 }
 
-
-export default function executeActionCommand (command) {
+export default function executeActionCommand (command, elementAvailabilityTimeout) {
     var resolveStartPromise = null;
     var startPromise        = new Promise(resolve => resolveStartPromise = resolve);
 
     var completionPromise = new Promise(resolve => {
         var xhrBarrier = null;
 
-        ensureCommandElements(command)
+        ensureCommandElements(command, elementAvailabilityTimeout)
             .then(elements => {
                 resolveStartPromise();
 

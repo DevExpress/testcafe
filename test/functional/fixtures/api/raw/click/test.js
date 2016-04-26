@@ -48,7 +48,8 @@ describe('[Raw API] Click action', function () {
     });
 
     it('Should wait for the next action element to appear', function () {
-        return runTests('./testcafe-fixtures/click.testcafe', 'Wait for next action target appeared', { shouldFail: true })
+        return runTests('./testcafe-fixtures/click.testcafe', 'Wait for the next action target to appear',
+            { shouldFail: true, elementAvailabilityTimeout: 3000 })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'Click on the new button raised', 0);
             });

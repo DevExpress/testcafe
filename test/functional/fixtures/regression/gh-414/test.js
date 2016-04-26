@@ -3,7 +3,8 @@ var expect = require('chai').expect;
 
 describe("[Regression](GH-414) Should restart a test step if redirect occurs while waiting for the action's target element", function () {
     it('Should restart a user action after redirect', function () {
-        return runTests('testcafe-fixtures/index.test.js', 'Click on the element after redirect - should pass');
+        return runTests('testcafe-fixtures/index.test.js', 'Click on the element after redirect - should pass',
+            { elementAvailabilityTimeout: 4000 });
     });
 
     it('Should fail when redirected before the target element for the click action appears', function () {

@@ -79,7 +79,7 @@
                     ]
                 },
                 {
-                    "name": "Wait for next action target appeared",
+                    "name": "Wait for the next action target to appear",
                     "commands": [
                         {
                             "type": "click",

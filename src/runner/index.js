@@ -10,6 +10,9 @@ import Reporter from '../reporter';
 import Task from './task';
 
 
+const DEFAULT_ELEMENT_AVAILABILITY_TIMEOUT = 10000;
+
+
 export default class Runner extends EventEmitter {
     constructor (proxy, browserConnectionGateway) {
         super();
@@ -19,11 +22,12 @@ export default class Runner extends EventEmitter {
         this.pendingTaskPromises = [];
 
         this.opts = {
-            screenshotPath:         null,
-            takeScreenshotsOnFails: false,
-            skipJsErrors:           false,
-            quarantineMode:         false,
-            reportOutStream:        void 0
+            screenshotPath:             null,
+            takeScreenshotsOnFails:     false,
+            skipJsErrors:               false,
+            quarantineMode:             false,
+            reportOutStream:            void 0,
+            elementAvailabilityTimeout: DEFAULT_ELEMENT_AVAILABILITY_TIMEOUT
         };
     }
 
@@ -121,9 +125,11 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    run ({ skipJsErrors, quarantineMode } = {}) {
-        this.opts.skipJsErrors   = !!skipJsErrors;
-        this.opts.quarantineMode = !!quarantineMode;
+    run ({ skipJsErrors, quarantineMode, elementAvailabilityTimeout } = {}) {
+        this.opts.skipJsErrors               = !!skipJsErrors;
+        this.opts.quarantineMode             = !!quarantineMode;
+        this.opts.elementAvailabilityTimeout = elementAvailabilityTimeout === void 0 ?
+                                               DEFAULT_ELEMENT_AVAILABILITY_TIMEOUT : elementAvailabilityTimeout;
 
         var runTaskPromise = this.bootstrapper.createRunnableConfiguration()
             .then(({ reporterPlugin, browserSet, tests }) => {

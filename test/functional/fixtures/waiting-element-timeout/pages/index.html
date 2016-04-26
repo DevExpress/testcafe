@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Waiting element timeout</title>
+</head>
+<body>
+<button id="button1">Start of element appearance</button>
+<button id="button2" style="display: none">After 1500 ms</button>
+
+<script>
+    document.getElementById('button1').addEventListener('click', function () {
+        window.setTimeout(function () {
+            document.getElementById('button2').style.display = "block";
+        }, 1500);
+    });
+</script>
+</body>
+</html>
