@@ -42,6 +42,8 @@ const failedCount = await runner
 
 For details, see the reference topics below.
 
+----
+
 ## Reference
 
 * [createTestCafe factory function](createTestCafe.md)
