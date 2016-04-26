@@ -5,8 +5,6 @@ export default class TestRunDebugLog {
     constructor (userAgent) {
         this.driverMessageLogger = debugLogger(`testcafe:test-run:${userAgent}:driver-message`);
         this.commandLogger       = debugLogger(`testcafe:test-run:${userAgent}:command`);
-        this.errorLogger         = debugLogger(`testcafe:test-run:${userAgent}:error`);
-        this.testDoneLogger      = debugLogger(`testcafe:test-run:${userAgent}:test-done`);
     }
 
     static _addEntry (logger, data) {
@@ -23,13 +21,5 @@ export default class TestRunDebugLog {
 
     command (cmd) {
         TestRunDebugLog._addEntry(this.commandLogger, cmd);
-    }
-
-    error (err) {
-        TestRunDebugLog._addEntry(this.errorLogger, err);
-    }
-
-    testDone () {
-        TestRunDebugLog._addEntry(this.testDoneLogger);
     }
 }

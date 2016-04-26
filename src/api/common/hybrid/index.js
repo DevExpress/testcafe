@@ -33,9 +33,7 @@ function createHybridFunction (fnCode, boundTestRun) {
         var callsite = getCallsite('hybridFunction');
         var command  = new ExecuteHybridFunctionCommand(fnCode, args);
 
-        return testRun
-            .executeCommand(command, callsite)
-            .then(commandResult => commandResult.fnResult);
+        return testRun.executeCommand(command, callsite);
     };
 
     hybridFn.bindTestRun = function bindTestRun (t) {
