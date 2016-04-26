@@ -33,6 +33,24 @@
     '3. Check text2 upload': '@mixin Check text2.txt upload'
 };
 
+'@test'['Clear upload'] = {
+    '1.Upload text1.txt': function () {
+        var file = './files/text1.txt';
+
+        act.upload('#fileInput', file);
+    },
+
+    '1.Clear file upload': function () {
+        act.upload('#fileInput');
+    },
+
+    '3.Submit files': function () {
+        act.click('#submitBtn');
+    },
+
+    '4. Check that text1 is not uploaded': '@mixin Check empty upload'
+};
+
 '@test'['Upload a non-existent file - should fail'] = {
     '1.Upload "fake.jpg" file': function () {
         var file = './files/fake.jpg';

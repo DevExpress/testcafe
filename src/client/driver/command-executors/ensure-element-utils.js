@@ -4,7 +4,8 @@ import {
     ActionElementNonEditableError,
     ActionElementNonContentEditableError,
     ActionRootContainerNotFoundError,
-    ActionElementNotTextAreaError
+    ActionElementNotTextAreaError,
+    ActionElementIsNotFileInput
 } from '../../../errors/test-run';
 
 
@@ -57,4 +58,9 @@ export function ensureElement (selector, timeout, createNotFoundError, createIsI
 
             return ensureElementVisible(element, checkVisibilityTimeout, createIsInvisibleError);
         });
+}
+
+export function ensureFileInput (element) {
+    if (!domUtils.isFileInput(element))
+        throw new ActionElementIsNotFileInput();
 }

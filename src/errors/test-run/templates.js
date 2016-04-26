@@ -98,6 +98,18 @@ export default {
          ${err.getCallsiteMarkup()}
     `),
 
+    [TYPE.actionStringOrStringArrayArgumentError]: err => markup(err, `
+        The <code>${err.argumentName}</code> argument is expected to be a non-empty string or a string array, but it was ${err.actualValue}.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionStringArrayElementError]: err => markup(err, `
+        Elements of the <code>${err.argumentName}</code> argument are expected to be non-empty strings, but the element at index ${err.elementIndex} was ${err.actualValue}.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
     [TYPE.actionIntegerArgumentError]: err => markup(err, `
         The <code>${err.argumentName}</code> argument is expected to be an integer, but it was <code>${err.actualValue}</code>.
 
@@ -148,6 +160,22 @@ export default {
 
     [TYPE.actionRootContainerNotFoundError]: err => markup(err, `
         Content between the action elements cannot be selected because the root container for the selection range cannot be found, i.e. these elements do not have a common ancestor with the contentEditable attribute.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionElementIsNotFileInputError]: err => markup(err, `
+        The specified selector does not match a file input element.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionCanNotFindFileToUploadError]: err => markup(err, `
+        Cannot find the following file(s) to upload:
+        ${err.filePaths
+            .map(path => `<code>${escapeHtml(path)}</code>`)
+            .join(', ')
+        }
 
         ${err.getCallsiteMarkup()}
     `),

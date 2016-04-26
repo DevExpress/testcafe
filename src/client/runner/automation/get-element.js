@@ -45,7 +45,6 @@ export function fromPoint (x, y, expectedElement) {
         return topElement;
 
     var isTREFElement = domUtils.getTagName(expectedElement) === 'tref';
-    var isSVGElement  = domUtils.isSVGElement(expectedElement);
 
     // NOTE: 'document.elementFromPoint' can't find these types of elements
     if (isTREFElement)

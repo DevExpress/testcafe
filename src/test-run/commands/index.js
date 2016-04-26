@@ -7,7 +7,9 @@ import {
     ActionIntegerArgumentError,
     ActionPositiveIntegerArgumentError,
     ActionAdditionalSelectorTypeError,
-    ActionUnsupportedUrlProtocolError
+    ActionUnsupportedUrlProtocolError,
+    ActionStringOrStringArrayArgumentError,
+    ActionStringArrayElementError
 } from '../../errors/test-run';
 
 import { ClickOptions, MouseOptions, TypeOptions } from './options';
@@ -46,9 +48,8 @@ function actionOptions (name, val) {
         throw new ActionOptionsTypeError(type);
 }
 
-function integerArgument (name, val, positive) {
-    var valType   = typeof val;
-    var ErrorCtor = positive ? ActionPositiveIntegerArgumentError : ActionIntegerArgumentError;
+function integerArgument (name, val, ErrorCtor = ActionIntegerArgumentError) {
+    var valType = typeof val;
 
     if (valType !== 'number')
         throw new ErrorCtor(name, valType);
@@ -62,20 +63,23 @@ function integerArgument (name, val, positive) {
 }
 
 function positiveIntegerArgument (name, val) {
-    integerArgument(name, val, true);
+    integerArgument(name, val, ActionPositiveIntegerArgumentError);
 
     if (val < 0)
         throw new ActionPositiveIntegerArgumentError(name, val);
 }
 
-function nonEmptyStringArgument (name, val) {
+function nonEmptyStringArgument (argument, val, createError) {
+    if (!createError)
+        createError = actualValue => new ActionStringArgumentError(argument, actualValue);
+
     var type = typeof val;
 
     if (type !== 'string')
-        throw new ActionStringArgumentError(name, type);
+        throw createError(type);
 
     if (!val.length)
-        throw new ActionStringArgumentError(name);
+        throw createError('""');
 }
 
 function navigateToUrlArgument (name, val) {
@@ -86,6 +90,30 @@ function navigateToUrlArgument (name, val) {
 
     if (protocol && !SUPPORTED_PROTOCOL_RE.test(protocol[0]))
         throw new ActionUnsupportedUrlProtocolError(name, protocol[0]);
+}
+
+function stringOrStringArrayArgument (argument, val) {
+    var type = typeof val;
+
+    if (type === 'string') {
+        if (!val.length)
+            throw new ActionStringOrStringArrayArgumentError(argument, '""');
+    }
+    else if (Array.isArray(val)) {
+        if (!val.length)
+            throw new ActionStringOrStringArrayArgumentError(argument, '[]');
+
+        var validateElement = elementIndex => nonEmptyStringArgument(
+            argument,
+            val[elementIndex],
+            actualValue => new ActionStringArrayElementError(argument, actualValue, elementIndex)
+        );
+
+        for (var i = 0; i < val.length; i++)
+            validateElement(i);
+    }
+    else
+        throw new ActionStringOrStringArrayArgumentError(argument, type);
 }
 
 // Initializers
@@ -382,6 +410,44 @@ export class NavigateToCommand extends Assignable {
     }
 }
 
+export class UploadFileCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type = TYPE.uploadFile;
+
+        this.selector = null;
+        this.filePath = '';
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'filePath', type: stringOrStringArrayArgument, required: true }
+        ];
+    }
+}
+
+export class ClearUploadCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type = TYPE.clearUpload;
+
+        this.selector = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', type: selector, init: initSelector, required: true }
+        ];
+    }
+}
+
 export class ExecuteHybridFunctionCommand {
     constructor (fnCode, args) {
         this.type   = TYPE.execHybridFn;
@@ -439,6 +505,12 @@ export function createCommandFromObject (obj) {
 
     if (obj.type === TYPE.navigateTo)
         return new NavigateToCommand(obj);
+
+    if (obj.type === TYPE.uploadFile)
+        return new UploadFileCommand(obj);
+
+    if (obj.type === TYPE.clearUpload)
+        return new ClearUploadCommand(obj);
 
     if (obj.type === TYPE.testDone)
         return new TestDoneCommand();

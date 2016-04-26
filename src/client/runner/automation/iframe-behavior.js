@@ -1,13 +1,12 @@
 import hammerhead from '../deps/hammerhead';
-import testCafeCore from '../deps/testcafe-core';
-import testCafeUI from '../deps/testcafe-ui';
-import movePlaybackAutomation from './playback/move';
+import {
+    CROSS_DOMAIN_MESSAGES,
+    domUtils,
+    positionUtils,
+    styleUtils
+} from '../deps/testcafe-core';
 
 var messageSandbox = hammerhead.eventSandbox.message;
-
-var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
-var domUtils              = testCafeCore.domUtils;
-var positionUtils         = testCafeCore.positionUtils;
 
 
 function onMessage (e) {

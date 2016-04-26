@@ -11,16 +11,18 @@ export default {
 
     missingAwaitError: 'missingAwaitError',
 
-    actionIntegerOptionError:           'actionIntegerOptionError',
-    actionPositiveIntegerOptionError:   'actionPositiveIntegerOptionError',
-    actionBooleanOptionError:           'actionBooleanOptionError',
-    actionOptionsTypeError:             'actionOptionsTypeError',
-    actionStringArgumentError:          'actionStringArgumentError',
-    actionIntegerArgumentError:         'actionIntegerArgumentError',
-    actionPositiveIntegerArgumentError: 'actionPositiveIntegerArgumentError',
-    actionSelectorTypeError:            'actionSelectorTypeError',
-    actionAdditionalSelectorTypeError:  'actionAdditionalSelectorTypeError',
-    actionUnsupportedUrlProtocolError:  'actionUnsupportedUrlProtocolError',
+    actionIntegerOptionError:               'actionIntegerOptionError',
+    actionPositiveIntegerOptionError:       'actionPositiveIntegerOptionError',
+    actionBooleanOptionError:               'actionBooleanOptionError',
+    actionOptionsTypeError:                 'actionOptionsTypeError',
+    actionStringArgumentError:              'actionStringArgumentError',
+    actionStringOrStringArrayArgumentError: 'actionStringOrStringArrayArgumentError',
+    actionStringArrayElementError:          'actionStringArrayElementError',
+    actionIntegerArgumentError:             'actionIntegerArgumentError',
+    actionPositiveIntegerArgumentError:     'actionPositiveIntegerArgumentError',
+    actionSelectorTypeError:                'actionSelectorTypeError',
+    actionAdditionalSelectorTypeError:      'actionAdditionalSelectorTypeError',
+    actionUnsupportedUrlProtocolError:      'actionUnsupportedUrlProtocolError',
 
     actionElementNotFoundError:              'actionElementNotFoundError',
     actionElementIsInvisibleError:           'actionElementIsInvisibleError',
@@ -29,8 +31,10 @@ export default {
     actionElementNonEditableError:           'actionElementNonEditableError',
     actionElementNotTextAreaError:           'actionElementNotTextAreaError',
     actionElementNonContentEditableError:    'actionElementNonContentEditableError',
+    actionElementIsNotFileInputError:        'actionElementIsNotFileInputError',
     actionRootContainerNotFoundError:        'actionRootContainerNotFoundError',
     actionIncorrectKeysError:                'actionIncorrectKeysError',
+    actionCanNotFindFileToUploadError:       'actionCanNotFindFileToUpload',
 
     externalAssertionLibraryError: 'externalAssertionLibraryError'
 };

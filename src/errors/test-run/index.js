@@ -141,8 +141,6 @@ export class ActionOptionsTypeError extends ActionError {
 export class ActionStringArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
         super(TYPE.actionStringArgumentError, argumentName, actualValue);
-
-        this.actualValue = actualValue === void 0 ? '""' : actualValue;
     }
 }
 
@@ -155,6 +153,20 @@ export class ActionIntegerArgumentError extends ActionArgumentErrorBase {
 export class ActionPositiveIntegerArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
         super(TYPE.actionPositiveIntegerArgumentError, argumentName, actualValue);
+    }
+}
+
+export class ActionStringOrStringArrayArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TYPE.actionStringOrStringArrayArgumentError, argumentName, actualValue);
+    }
+}
+
+export class ActionStringArrayElementError extends ActionArgumentErrorBase {
+    constructor (argumentName, actualValue, elementIndex) {
+        super(TYPE.actionStringArrayElementError, argumentName, actualValue);
+
+        this.elementIndex = elementIndex;
     }
 }
 
@@ -247,5 +259,19 @@ export class ActionIncorrectKeysError extends ActionError {
         super(TYPE.actionIncorrectKeysError);
 
         this.argumentName = argumentName;
+    }
+}
+
+export class ActionCanNotFindFileToUploadError extends ActionError {
+    constructor (filePaths) {
+        super(TYPE.actionCanNotFindFileToUploadError);
+
+        this.filePaths = filePaths;
+    }
+}
+
+export class ActionElementIsNotFileInput extends ActionError {
+    constructor () {
+        super(TYPE.actionElementIsNotFileInputError);
     }
 }

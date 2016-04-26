@@ -8,7 +8,8 @@ import {
     ActionElementIsInvisibleError,
     ActionAdditionalElementNotFoundError,
     ActionAdditionalElementIsInvisibleError,
-    ActionIncorrectKeysError
+    ActionIncorrectKeysError,
+    ActionCanNotFindFileToUploadError
 } from '../../../errors/test-run';
 
 import COMMAND_TYPE from '../../../test-run/commands/type';
@@ -17,7 +18,8 @@ import {
     ensureTextAreaElement,
     ensureContentEditableElement,
     ensureRootContainer,
-    ensureElement
+    ensureElement,
+    ensureFileInput
 } from './ensure-element-utils';
 
 var Promise                         = hammerhead.Promise;
@@ -35,6 +37,7 @@ var SelectEditableContentAutomation = testCafeRunner.get('./automation/playback/
 var PressAutomation                 = testCafeRunner.get('./automation/playback/press');
 var parseKeySequence                = testCafeRunner.get('./automation/playback/press/parse-key-sequence');
 var getSelectPositionArguments      = testCafeRunner.get('./automation/playback/select/get-select-position-arguments');
+var UploadAutomation                = testCafeRunner.get('./automation/playback/upload');
 var ProgressPanel                   = testCafeUI.ProgressPanel;
 
 
@@ -88,6 +91,9 @@ function ensureCommandElements (command, timeout) {
                 ensureContentEditableElement(elements[1], END_SELECTOR_ARGUMENT_NAME);
                 ensureRootContainer(elements);
             }
+
+            if (command.type === COMMAND_TYPE.uploadFile || command.type === COMMAND_TYPE.clearUpload)
+                ensureFileInput(elements[0]);
 
             return elements;
         })
@@ -149,6 +155,14 @@ function createAutomation (elements, command) {
 
         case COMMAND_TYPE.pressKey:
             return new PressAutomation(parseKeySequence(command.keys).combinations);
+
+        case COMMAND_TYPE.uploadFile :
+            return new UploadAutomation(elements[0], command.filePath,
+                filePaths => new ActionCanNotFindFileToUploadError(filePaths)
+            );
+
+        case COMMAND_TYPE.clearUpload :
+            return new UploadAutomation(elements[0]);
     }
     /* eslint-enable indent*/
 }

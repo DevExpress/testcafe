@@ -1,5 +1,10 @@
 import hammerhead from '../../../deps/hammerhead';
-import testCafeCore from '../../../deps/testcafe-core';
+import {
+    contentEditable,
+    positionUtils,
+    domUtils,
+    delay
+} from '../../../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../../get-element';
 import MoveAutomation from '../move';
 import { MoveOptions } from '../../../../../test-run/commands/options';
@@ -16,12 +21,6 @@ var browserUtils     = hammerhead.utils.browser;
 var extend           = hammerhead.utils.extend;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
-
-var contentEditable = testCafeCore.contentEditable;
-var positionUtils   = testCafeCore.positionUtils;
-var domUtils        = testCafeCore.domUtils;
-var styleUtils      = testCafeCore.styleUtils;
-var delay           = testCafeCore.delay;
 
 
 export default class DragAutomationBase {
