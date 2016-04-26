@@ -12,6 +12,7 @@ var ActionBooleanOptionError         = require('../../lib/errors/test-run').Acti
 var ActionSelectorTypeError          = require('../../lib/errors/test-run').ActionSelectorTypeError;
 var ActionOptionsTypeError           = require('../../lib/errors/test-run').ActionOptionsTypeError;
 var DragDestinationSelectorTypeError = require('../../lib/errors/test-run').DragDestinationSelectorTypeError;
+var ActionStringArgumentError        = require('../../lib/errors/test-run').ActionStringArgumentError;
 var UncaughtErrorOnPage              = require('../../lib/errors/test-run').UncaughtErrorOnPage;
 var UncaughtErrorInTestCode          = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
 var UncaughtNonErrorObjectInTestCode = require('../../lib/errors/test-run').UncaughtNonErrorObjectInTestCode;
@@ -143,6 +144,10 @@ describe('Error formatting', function () {
 
         it('Should format "dragDestinationIsInvisibleError" message', function () {
             assertErrorMessage('drag-destination-is-invisible-error', new DragDestinationIsInvisibleError());
+        });
+
+        it('Should format "actionStringArgumentError" message', function () {
+            assertErrorMessage('action-string-argument-error', new ActionStringArgumentError('text', typeof 1));
         });
 
         it('Should format "missingAwaitError', function () {

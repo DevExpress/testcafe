@@ -118,6 +118,15 @@ export class ActionOptionsTypeError extends ActionError {
     }
 }
 
+export class ActionStringArgumentError extends ActionError {
+    constructor (argumentName, actualType) {
+        super(TYPE.actionStringArgumentError);
+
+        this.argumentName = argumentName;
+        this.actualType = actualType;
+    }
+}
+
 export class ActionSelectorTypeError extends ActionError {
     constructor (actualType) {
         super(TYPE.actionSelectorTypeError);

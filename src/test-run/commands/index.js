@@ -4,10 +4,16 @@ import {
     ActionSelectorTypeError,
     ActionOptionsTypeError,
     ActionIntegerOptionError,
-    DragDestinationSelectorTypeError
+    DragDestinationSelectorTypeError,
+
+    ActionStringArgumentError
 } from '../../errors/test-run';
 
-import { ClickOptions, MouseOptions } from './options';
+import { ClickOptions, MouseOptions, TypeOptions } from './options';
+
+
+const EMPTY_STRING_MESSAGE = 'empty';
+
 
 // Validators
 function selector (option, val) {
@@ -45,6 +51,16 @@ function integer (option, val) {
         throw new ActionIntegerOptionError(option, val);
 }
 
+function nonEmptyStringArgument (option, val) {
+    var type = typeof val;
+
+    if (type !== 'string')
+        throw new ActionStringArgumentError(option, type);
+
+    if (!val.length)
+        throw new ActionStringArgumentError(option, EMPTY_STRING_MESSAGE);
+}
+
 // Initializers
 function initSelector (val) {
     return `(function () { return document.querySelector('${val}') })()`;
@@ -56,6 +72,10 @@ function initClickOptions (val) {
 
 function initMouseOptions (val) {
     return new MouseOptions(val, true);
+}
+
+function initTypeOptions (val) {
+    return new TypeOptions(val, true);
 }
 
 // Commands
@@ -135,7 +155,28 @@ export class HoverCommand extends Assignable {
     }
 }
 
-class DragCommand extends Assignable {
+export class TypeTextCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type     = TYPE.typeText;
+        this.selector = null;
+        this.text     = null;
+        this.options  = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'text', type: nonEmptyStringArgument, required: true },
+            { name: 'options', type: actionOptions, init: initTypeOptions, required: true }
+        ];
+    }
+}
+
+export class DragCommand extends Assignable {
     constructor (obj) {
         super(obj);
 
@@ -158,7 +199,7 @@ class DragCommand extends Assignable {
     }
 }
 
-class DragToElementCommand extends Assignable {
+export class DragToElementCommand extends Assignable {
     constructor (obj) {
         super(obj);
 
@@ -213,6 +254,9 @@ export function createCommandFromObject (obj) {
 
     if (obj.type === TYPE.dragToElement)
         return new DragToElementCommand(obj);
+
+    if (obj.type === TYPE.typeText)
+        return new TypeTextCommand(obj);
 
     if (obj.type === TYPE.testDone)
         return new TestDoneCommand();

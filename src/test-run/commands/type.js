@@ -10,6 +10,7 @@ export default {
     drag:          'drag',
     dragToElement: 'drag-to-element',
     hover:         'hover',
+    typeText:      'type-text',
     execHybridFn:  'execHybridFn',
     testDone:      'test-done'
 };
