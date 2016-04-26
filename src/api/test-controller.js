@@ -7,7 +7,9 @@ import {
     ClickCommand,
     RightClickCommand,
     DoubleClickCommand,
-    HoverCommand
+    HoverCommand,
+    DragCommand,
+    DragToElementCommand
 } from '../test-run/commands';
 
 export default class TestController {
@@ -108,6 +110,14 @@ export default class TestController {
         return this._enqueueAction('hover', HoverCommand, { selector, options });
     }
 
+    _dragImpl (selector, dragOffsetX, dragOffsetY, options) {
+        return this._enqueueAction('drag', DragCommand, { selector, dragOffsetX, dragOffsetY, options });
+    }
+
+    _dragToElementImpl (selector, destinationSelector, options) {
+        return this._enqueueAction('dragToElement', DragToElementCommand, { selector, destinationSelector, options });
+    }
+
     // API
     click (selector, options) {
         return this._clickImpl(selector, options);
@@ -123,6 +133,14 @@ export default class TestController {
 
     hover (selector, options) {
         return this._hoverImpl(selector, options);
+    }
+
+    drag (selector, dragOffsetX, dragOffsetY, options) {
+        return this._dragImpl(selector, dragOffsetX, dragOffsetY, options);
+    }
+
+    dragToElement (selector, destinationSelector, options) {
+        return this._dragToElementImpl(selector, destinationSelector, options);
     }
 }
 
