@@ -415,6 +415,6 @@ gulp.task('test-functional', ['build'], function () {
         .pipe(mocha({
             ui:       'bdd',
             reporter: 'spec',
-            timeout:  typeof v8debug === 'undefined' ? 600000 : Infinity // NOTE: disable timeouts in debug
+            timeout:  typeof v8debug === 'undefined' ? 30000 : Infinity // NOTE: disable timeouts in debug
         }));
 });

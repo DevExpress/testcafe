@@ -14,6 +14,9 @@ var browsersInfo = null;
 var slConnector = null;
 var slBrowsers  = null;
 
+const SAUCE_LABS_REQUESTED_MACHINES_COUNT      = 3;
+const WAIT_FOR_FREE_MACHINES_REQUEST_INTERVAL  = 60000;
+const WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT = 45;
 
 const FUNCTIONAL_TESTS_ELEMENT_AVAILABILITY_TIMEOUT = 200;
 
@@ -36,6 +39,10 @@ function openRemoteBrowsers () {
 
     return slConnector
         .connect()
+        .then(function () {
+            return slConnector.waitForFreeMachines(SAUCE_LABS_REQUESTED_MACHINES_COUNT,
+                WAIT_FOR_FREE_MACHINES_REQUEST_INTERVAL, WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT);
+        })
         .then(function () {
             var openBrowserPromises = browsersInfo.map(function (browserInfo) {
                 return slConnector.startBrowser(browserInfo.settings, browserInfo.connection.url,
@@ -80,6 +87,8 @@ function closeLocalBrowsers () {
 }
 
 before(function () {
+    var mocha = this;
+
     return createTestCafe(config.testCafe.hostname, config.testCafe.port1, config.testCafe.port2)
         .then(function (tc) {
             testCafe = tc;
@@ -87,8 +96,14 @@ before(function () {
             initBrowsersInfo(tc);
             site.create(config.site.port1, config.site.port2, config.site.viewsPath);
 
-            if (config.isTravisTask)
+            if (config.isTravisTask) {
+                // NOTE: we need to disable this particular timeout for preventing mocha timeout
+                // error while establishing connection to Sauce Labs. If connection wouldn't be
+                // established after a specified number of attempts, an error will be thrown.
+                mocha.timeout(0);
+
                 return openRemoteBrowsers();
+            }
 
             return openLocalBrowsers();
         })
