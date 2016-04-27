@@ -1,4 +1,4 @@
-import { GlobalsAPIError } from '../../errors/runtime';
+import { APIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 import handleTagArgs from '../../utils/handle-tag-args';
 import wrapTestFunction from './wrap-test-function';
@@ -11,7 +11,7 @@ export default class Fixture {
         var nameType = typeof name;
 
         if (nameType !== 'string')
-            throw new GlobalsAPIError('fixture', null, MESSAGE.fixtureNameIsNotAString, nameType);
+            throw new APIError('fixture', null, MESSAGE.fixtureNameIsNotAString, nameType);
 
         this.name         = name;
         this.path         = filename;
@@ -26,7 +26,7 @@ export default class Fixture {
         var urlType = typeof this.pageUrl;
 
         if (urlType !== 'string')
-            throw new GlobalsAPIError('page', null, MESSAGE.fixturePageIsNotAString, urlType);
+            throw new APIError('page', null, MESSAGE.fixturePageIsNotAString, urlType);
 
         if (!PROTOCOL_RE.test(this.pageUrl)) {
             var protocol = IMPLICIT_PROTOCOL_RE.test(this.pageUrl) ? 'http:' : 'http://';
@@ -41,7 +41,7 @@ export default class Fixture {
         var fnType = typeof fn;
 
         if (fnType !== 'function')
-            throw new GlobalsAPIError('beforeEach', null, MESSAGE.beforeEachIsNotAFunction, fnType);
+            throw new APIError('beforeEach', null, MESSAGE.beforeEachIsNotAFunction, fnType);
 
         this.beforeEachFn = wrapTestFunction(fn);
 
@@ -52,7 +52,7 @@ export default class Fixture {
         var fnType = typeof fn;
 
         if (fnType !== 'function')
-            throw new GlobalsAPIError('afterEach', null, MESSAGE.afterEachIsNotAFunction, fnType);
+            throw new APIError('afterEach', null, MESSAGE.afterEachIsNotAFunction, fnType);
 
         this.afterEachFn = wrapTestFunction(fn);
 

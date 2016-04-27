@@ -1,5 +1,6 @@
 import TestController from '../test-controller';
 import getCallsite from '../../errors/get-callsite';
+import { APIError } from '../../errors/runtime';
 import hybridFnTestRunTracker from '../common/hybrid/test-run-tracker';
 
 import {
@@ -12,6 +13,9 @@ import {
 function processTestFnError (err) {
     if (err && err.isTestCafeError)
         return err;
+
+    if (err && err.constructor === APIError)
+        return new UncaughtErrorInTestCode(err.rawMessage, err.callsite);
 
     if (err instanceof Error) {
         var callsite         = getCallsite(err);

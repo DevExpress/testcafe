@@ -53,7 +53,7 @@ describe('Compiler', function () {
         assertStack(err, expected);
     }
 
-    function assertGlobalsAPIError (err, expected) {
+    function assertAPIError (err, expected) {
         assertError(err, expected);
 
         expect(err.stack.indexOf(expected.message + '\n\n' + expected.callsite)).eql(0);
@@ -326,7 +326,7 @@ describe('Compiler', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    assertGlobalsAPIError(err, {
+                    assertAPIError(err, {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
@@ -355,7 +355,7 @@ describe('Compiler', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    assertGlobalsAPIError(err, {
+                    assertAPIError(err, {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
@@ -380,7 +380,7 @@ describe('Compiler', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    assertGlobalsAPIError(err, {
+                    assertAPIError(err, {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
@@ -405,7 +405,7 @@ describe('Compiler', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    assertGlobalsAPIError(err, {
+                    assertAPIError(err, {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
@@ -427,7 +427,7 @@ describe('Compiler', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    assertGlobalsAPIError(err, {
+                    assertAPIError(err, {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
@@ -452,7 +452,7 @@ describe('Compiler', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    assertGlobalsAPIError(err, {
+                    assertAPIError(err, {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
@@ -465,6 +465,146 @@ describe('Compiler', function () {
                                   '   5 |\n' +
                                   '   6 |});\n' +
                                   '   7 |'
+                    });
+                });
+        });
+
+        it('Should raise error if Hybrid argument is not a function', function () {
+            var testfile = resolve('test/server/data/test-suites/hybrid-arg-is-not-a-function/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Client code is expected to be specified as a function, but "number" was passed.',
+
+                        callsite: "   1 |import { Hybrid } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  ' > 5 |Hybrid(123);\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});\n' +
+                                  '   9 |'
+                    });
+                });
+        });
+
+        it('Should raise error if Hybrid argument is not a function (if called as ctor)', function () {
+            var testfile = resolve('test/server/data/test-suites/hybrid-arg-is-not-a-function-as-ctor/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Client code is expected to be specified as a function, but "number" was passed.',
+
+                        callsite: "   1 |import { Hybrid } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  ' > 5 |var h = new Hybrid(123);\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});\n' +
+                                  '   9 |'
+                    });
+                });
+        });
+
+
+        it('Should raise error if Hybrid function not able to resolve test run', function () {
+            var testfile = resolve('test/server/data/test-suites/hybrid-fn-cant-resolve-test-run/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'The hybrid function cannot implicitly resolve the test run in context of which it ' +
+                                 'should be executed. If you need to call the hybrid function from the Node.js API ' +
+                                 "callback, pass the test controller manually via hybrid function's `.bindTestRun(t)` " +
+                                 'method first. Note that you cannot execute hybrid functions outside the test code.',
+
+                        callsite: "   1 |import { Hybrid } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  ' > 5 |Hybrid(() => 123)();\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});\n' +
+                                  '   9 |'
+                    });
+                });
+        });
+
+        it('Should raise error if Hybrid function uses async function', function () {
+            var testfile = resolve('test/server/data/test-suites/async-function-in-hybrid/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Code executed on the client cannot contain generators or `async/await` syntax (use Promises instead).',
+
+                        callsite: "    1 |import { Hybrid } from 'testcafe';\n" +
+                                  '    2 |\n' +
+                                  '    3 |fixture `Test`;\n' +
+                                  '    4 |\n' +
+                                  ' >  5 |Hybrid(async function () {\n' +
+                                  '    6 |});\n' +
+                                  '    7 |\n' +
+                                  "    8 |test('yo', () => {\n" +
+                                  '    9 |});\n'
+                    });
+                });
+        });
+
+        it('Should raise error if Hybrid function uses generator', function () {
+            var testfile = resolve('test/server/data/test-suites/generator-in-hybrid/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Code executed on the client cannot contain generators or `async/await` syntax (use Promises instead).',
+
+                        callsite: "    1 |import { Hybrid } from 'testcafe';\n" +
+                                  '    2 |\n' +
+                                  '    3 |fixture `Test`;\n' +
+                                  '    4 |\n' +
+                                  ' >  5 |Hybrid(function* () {\n' +
+                                  '    6 |    yield 1;\n' +
+                                  '    7 |});\n' +
+                                  '    8 |\n' +
+                                  "    9 |test('yo', () => {\n" +
+                                  '   10 |});'
                     });
                 });
         });

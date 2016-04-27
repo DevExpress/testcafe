@@ -5,7 +5,7 @@ import stripBom from 'strip-bom';
 import sourceMapSupport from 'source-map-support';
 import { wrapDomAccessors } from 'testcafe-hammerhead';
 import Globals from '../api/globals';
-import { TestCompilationError, GlobalsAPIError } from '../errors/runtime';
+import { TestCompilationError, APIError } from '../errors/runtime';
 import stackCleaningHook from '../errors/stack-cleaning-hook';
 
 const COMMON_API_PATH   = join(__dirname, '../api/common');
@@ -15,7 +15,7 @@ const CWD               = process.cwd();
 
 const FIXTURE_RE      = /(^|;|\s+)fixture\s*(\(\s*('|").+?\3\s*\)|`.+?`)/;
 const TEST_RE         = /(^|;|\s+)test\s*(\(\s*('|").+?\3\s*,)/;
-const ANONYMOUS_FN_RE = /^function\s*\(/;
+const ANONYMOUS_FN_RE = /^function\*?\s*\(/;
 
 var Module = module.constructor;
 
@@ -206,7 +206,7 @@ export default class ESNextCompiler {
         catch (err) {
             // HACK: workaround for the `instanceof` problem
             // (see: http://stackoverflow.com/questions/33870684/why-doesnt-instanceof-work-on-instances-of-error-subclasses-under-babel-node)
-            if (err.constructor !== GlobalsAPIError)
+            if (err.constructor !== APIError)
                 throw new TestCompilationError(err);
 
             throw err;

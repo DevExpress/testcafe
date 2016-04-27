@@ -31,23 +31,25 @@ export class TestCompilationError extends Error {
     }
 }
 
-export class GlobalsAPIError extends Error {
+export class APIError extends Error {
     constructor (methodName, typeName, template, ...args) {
-        var text = getText(template, ...args);
+        var rawMessage = getText(template, ...args);
 
-        super(getText(MESSAGE.cannotPrepareTestsDueToError, text));
+        super(getText(MESSAGE.cannotPrepareTestsDueToError, rawMessage));
 
-        this.callsiteRecord = getCallsite(methodName, typeName);
-        this.constructor    = GlobalsAPIError;
+        // NOTE: `rawMessage` is used in error substitution if it occurs in test run.
+        this.rawMessage  = rawMessage;
+        this.callsite    = getCallsite(methodName, typeName);
+        this.constructor = APIError;
 
         // HACK: prototype properties don't work with built-in subclasses
         // (see: http://stackoverflow.com/questions/33870684/why-doesnt-instanceof-work-on-instances-of-error-subclasses-under-babel-node)
         Object.defineProperty(this, 'stack', {
-            get: () => GlobalsAPIError._createStack(this.message, this.callsiteRecord, renderers.noColor)
+            get: () => APIError._createStack(this.message, this.callsite, renderers.noColor)
         });
 
         Object.defineProperty(this, 'coloredStack', {
-            get: () => GlobalsAPIError._createStack(this.message, this.callsiteRecord, renderers.default)
+            get: () => APIError._createStack(this.message, this.callsite, renderers.default)
         });
     }
 

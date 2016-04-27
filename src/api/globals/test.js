@@ -1,4 +1,4 @@
-import { GlobalsAPIError } from '../../errors/runtime';
+import { APIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 import wrapTestFunction from './wrap-test-function';
 
@@ -7,12 +7,12 @@ export default class Test {
         var nameType = typeof name;
 
         if (nameType !== 'string')
-            throw new GlobalsAPIError('test', null, MESSAGE.testNameIsNotAString, nameType);
+            throw new APIError('test', null, MESSAGE.testNameIsNotAString, nameType);
 
         var fnType = typeof fn;
 
         if (fnType !== 'function')
-            throw new GlobalsAPIError('test', null, MESSAGE.testBodyIsNotAFunction, fnType);
+            throw new APIError('test', null, MESSAGE.testBodyIsNotAFunction, fnType);
 
         this.name    = name;
         this.fixture = fixture;

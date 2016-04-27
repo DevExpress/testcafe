@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import resolveCwd from 'resolve-cwd';
 import { getInstallations as getBrowserInstallations } from 'testcafe-browser-natives';
-import { GeneralError, GlobalsAPIError } from '../errors/runtime';
+import { GeneralError, APIError } from '../errors/runtime';
 import CliArgumentParser from './argument-parser';
 import log from './log';
 import remotesWizard from './remotes-wizard';
@@ -25,7 +25,7 @@ function error (err) {
     if (err.constructor === GeneralError)
         message = err.message;
 
-    else if (err.constructor === GlobalsAPIError)
+    else if (err.constructor === APIError)
         message = err.coloredStack;
 
     else

@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 
-describe('[API] Double click action', function () {
+describe('[API] t.doubleClick()', function () {
     it('Should make double click on a button', function () {
         return runTests('./testcafe-fixtures/double-click-test.js', 'Double click on a button', { shouldFail: true, only: 'chrome' })
             .catch(function (errs) {
