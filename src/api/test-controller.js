@@ -9,7 +9,8 @@ import {
     DoubleClickCommand,
     HoverCommand,
     DragCommand,
-    DragToElementCommand
+    DragToElementCommand,
+    TypeTextCommand
 } from '../test-run/commands';
 
 export default class TestController {
@@ -118,6 +119,10 @@ export default class TestController {
         return this._enqueueAction('dragToElement', DragToElementCommand, { selector, destinationSelector, options });
     }
 
+    _typeTextImpl (selector, text, options) {
+        return this._enqueueAction('typeText', TypeTextCommand, { selector, text, options });
+    }
+
     // API
     click (selector, options) {
         return this._clickImpl(selector, options);
@@ -141,6 +146,10 @@ export default class TestController {
 
     dragToElement (selector, destinationSelector, options) {
         return this._dragToElementImpl(selector, destinationSelector, options);
+    }
+
+    typeText (selector, text, options) {
+        return this._typeTextImpl(selector, text, options);
     }
 }
 

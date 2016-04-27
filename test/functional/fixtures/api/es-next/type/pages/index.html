@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Type</title>
+</head>
+<body>
+    <input id="input" value="input"/>
+    <div id="status">
+    </div>
+<script>
+    var keydownRaised = false;
+    var keypressRaised = false;
+    var inputRaised = false;
+
+    var statusDiv = document.getElementById('status');
+
+    document.getElementById('input').addEventListener('keydown', function () {
+        keydownRaised = true;
+    });
+
+    document.getElementById('input').addEventListener('keypress', function () {
+        keypressRaised = true;
+    });
+
+    document.getElementById('input').addEventListener('input', function () {
+        inputRaised = true;
+    });
+
+    document.getElementById('input').addEventListener('keyup', function () {
+        if (keydownRaised && keypressRaised && inputRaised && this.value === 'a')
+            statusDiv.textContent = 'Type in input raised';
+    });
+</script>
+</body>
+</html>
