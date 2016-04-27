@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Reporters
-permalink: /documentation/using-testcafe/common-concepts/reporters
+permalink: /documentation/using-testcafe/common-concepts/reporters.html
 ---
 # Reporters
 

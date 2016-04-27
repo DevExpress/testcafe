@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Browser Aliases
-permalink: /documentation/using-testcafe/common-concepts/browser-aliases
+permalink: /documentation/using-testcafe/common-concepts/browser-aliases.html
 ---
 # Browser Aliases
 

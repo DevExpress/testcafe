@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Command Line Interface
-permalink: /documentation/using-testcafe/command-line-interface
+permalink: /documentation/using-testcafe/command-line-interface.html
 ---
 # Command Line Interface
 
