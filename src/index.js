@@ -1,5 +1,6 @@
 import TestCafe from './testcafe';
 import ReporterPluginHost from './reporter/plugin-host';
+import TestRunErrorFormattableAdapter from './errors/test-run/formattable-adapter';
 import * as endpointUtils from 'endpoint-utils';
 import { GeneralError } from './errors/runtime';
 import MESSAGE from './errors/runtime/message';
@@ -50,6 +51,11 @@ createTestCafe.pluginTestingUtils = {
 
         return new ReporterPluginHost(plugin, outStream);
     }
+};
+
+// Embedding utils
+createTestCafe.embeddingUtils = {
+    TestRunErrorFormattableAdapter: TestRunErrorFormattableAdapter
 };
 
 // Common runtime

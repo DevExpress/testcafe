@@ -48,7 +48,7 @@ export default class TestRunErrorFormattableAdapter {
         return msg;
     }
 
-    _getErrorMarkup (viewportWidth) {
+    getErrorMarkup (viewportWidth) {
         return this.TEMPLATES[this.type](this, viewportWidth);
     }
 
@@ -75,7 +75,7 @@ export default class TestRunErrorFormattableAdapter {
     }
 
     formatMessage (decorator, viewportWidth) {
-        var msgHtml  = this._getErrorMarkup(viewportWidth);
+        var msgHtml  = this.getErrorMarkup(viewportWidth);
         var fragment = parser.parseFragment(msgHtml);
 
         return TestRunErrorFormattableAdapter._decorateHtml(fragment, decorator);
