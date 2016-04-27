@@ -34,9 +34,9 @@ describe('CLI argument parser', function () {
 
     describe('Browser list', function () {
         it('Should be parsed as array of aliases or paths', function () {
-            return parse('/Applications/Firefox.app,ie,chrome,ff,')
+            return parse('path:"/Applications/Firefox.app",ie,chrome,ff,')
                 .then(function (parser) {
-                    expect(parser.browsers).eql(['/Applications/Firefox.app', 'ie', 'chrome', 'ff']);
+                    expect(parser.browsers).eql(['path:/Applications/Firefox.app', 'ie', 'chrome', 'ff']);
                 });
         });
 
@@ -59,6 +59,16 @@ describe('CLI argument parser', function () {
                     var parser      = results[1];
 
                     expect(parser.browsers).eql(['ie', 'chrome'].concat(allAliasses));
+                });
+        });
+
+        it('Should split browsers correctly if paths have commas and quotes', function () {
+            return parse('path:"/Apps,Libs/\'Firefox.app",ie,chrome,ff,path:\'/Apps,Libs/"Chrome.app\'')
+                .then(function (parser) {
+                    expect(parser.browsers).eql([
+                        'path:/Apps,Libs/\'Firefox.app', 'ie', 'chrome', 'ff',
+                        'path:/Apps,Libs/"Chrome.app'
+                    ]);
                 });
         });
     });
