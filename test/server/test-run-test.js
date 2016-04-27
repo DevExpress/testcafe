@@ -24,7 +24,7 @@ describe('TestRun', function () {
         var browserConnectionMock = { userAgent: 'userAgent' };
 
         var testMock = {
-            fixture: 'fixture',
+            fixture: { path: 'yo' },
             fn:      noop
         };
 
@@ -58,7 +58,7 @@ describe('TestRun', function () {
         var callsite = 'callsite';
 
         var testMock = {
-            fixture: 'fixture',
+            fixture: { path: 'yo' },
 
             fn: function (testRun) {
                 return testRun.executeCommand(clickCommand, callsite);
@@ -84,8 +84,9 @@ describe('TestRun', function () {
 
     it('Should store the pending error when the test is done', function () {
         var testMock = {
-            fixture: 'fixture',
-            fn:      function () {
+            fixture: { path: 'yo' },
+
+            fn: function () {
                 return nextTick()
                     .then(Promise.resolve);
             }
