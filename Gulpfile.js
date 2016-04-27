@@ -27,6 +27,8 @@ var Promise      = require('pinkie');
 var promisify    = require('pify');
 var markdownlint = require('markdownlint');
 var isEqual      = require('lodash').isEqual;
+var ghpages      = require('gulp-gh-pages');
+var prompt       = require('gulp-prompt');
 
 
 var readFile = promisify(fs.readFile, Promise);
@@ -401,6 +403,16 @@ gulp.task('preview-website', ['build-website'], function (cb) {
             opn('http://localhost:8080/testcafe');
             cb();
         });
+});
+
+gulp.task('publish-website', ['build-website'], function () {
+    return gulp
+        .src('website/deploy/**/*')
+        .pipe(prompt.confirm({
+            message: 'Are you sure you want to publish the website?',
+            default: false
+        }))
+        .pipe(ghpages());
 });
 
 // Publish
