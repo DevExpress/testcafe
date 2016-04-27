@@ -5,7 +5,7 @@ permalink: /documentation/extending-testcafe/custom-reporter-plugin/
 ---
 # Custom Reporter Plugin
 
-TestCafe has a number of [built-in reporters](../../../using-testcafe/common-concepts/reporters.md) to generate test reports in different formats.
+TestCafe has a number of [built-in reporters](../../using-testcafe/common-concepts/reporters.md) to generate test reports in different formats.
 You can also create a **custom reporter** that will output information in your own format and style.
 For this purpose, you can use the [TestCafe reporter generator](https://github.com/DevExpress/generator-testcafe-reporter).
 The generator will scaffold out a reporter plugin, so that you only need to write a few lines of code.
@@ -115,8 +115,8 @@ reportFixtureStart (name) {
 },
 
 reportTestDone (name, errs) {
-    const hasErr    = !!errs.length;
-    const result    = hasErr ? `passed` : `failed`;
+    const hasErr = !!errs.length;
+    const result = hasErr ? `passed` : `failed`;
 
     name = `${this.currentFixtureName} - ${name}`;
 
@@ -128,10 +128,12 @@ reportTestDone (name, errs) {
 
 reportTaskDone (endTime, passed) {
     const durationMs  = endTime - this.startTime;
-    const durationStr = this.moment.duration(durationMs).format('h[h] mm[m] ss[s]');
-    let footer      = passed === this.testCount ?
-                      `${this.testCount} passed` :
-                      `${this.testCount - passed}/${this.testCount} failed`;
+    const durationStr = this.moment
+                            .duration(durationMs)
+                            .format('h[h] mm[m] ss[s]');
+    let footer = passed === this.testCount ?
+                 `${this.testCount} passed` :
+                 `${this.testCount - passed}/${this.testCount} failed`;
 
     footer += ` (Duration: ${durationStr})`;
 
@@ -213,7 +215,7 @@ npm link
 
 After that TestCafe will use the reporter version you are currently developing.
 
-For information on how to specify a reporter in tests, see [Using Reporters](/testcafe/documentation/using-testcafe/common-concepts/reporters/#using-reporters).
+For information on how to specify a reporter in tests, see [Using Reporters](../../using-testcafe/common-concepts/reporters.md#using-reporters).
 
 ## Publishing Reporter to NPM
 
@@ -225,7 +227,7 @@ That is why it is recommended to use this Gulp task instead of `npm publish`.
 gulp publish
 ```
 
-After that you can install the reporter and use as you do with [built-in reporters](/testcafe/documentation/using-testcafe/common-concepts/reporters/#using-reporters).
+After that you can install the reporter and use as you do with [built-in reporters](../../using-testcafe/common-concepts/reporters.md#using-reporters).
 
 ## Reference
 
