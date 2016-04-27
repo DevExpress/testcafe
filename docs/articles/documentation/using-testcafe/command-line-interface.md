@@ -105,7 +105,7 @@ testcafe --list-browsers
 
 ### -r \<name\>, --reporter \<name\>
 
-Specifies the name of the [built-in](/testcafe/documentation/using-testcafe/common-concepts/reporters/) or [custom reporter](/testcafe/documentation/extending-testcafe/creating-custom-reporter/) that will be used to generate test reports.
+Specifies the name of the [built-in](common-concepts/reporters.md) or [custom reporter](../extending-testcafe/custom-reporter-plugin/index.md) that will be used to generate test reports.
 
 The following command runs tests in all available browsers and generates a report in the xunit format.
 

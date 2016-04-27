@@ -56,5 +56,5 @@ You can install reporter packages from npm in two ways:
 
 When running tests, you can select a reporter to generate test reports.
 You can do this when working both through the
-[command line](/testcafe/documentation/using-testcafe/command-line-interface/#r-name-reporter-name)
-and [programmatically](/testcafe/documentation/using-testcafe/programming-interface/Runner/#reporter).
+[command line](../command-line-interface.md#-r-name---reporter-name)
+and [programmatically](../programming-interface/Runner.md#reporter).

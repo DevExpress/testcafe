@@ -284,8 +284,8 @@ The following example demonstrates how to color test results.
 
 ```js
 reportTestDone (name, errs) {
-    const hasErr    = !!errs.length;
-    const result    = hasErr ? this.chalk.green(`passed`) : this.chalk.red(`failed`);
+    const hasErr = !!errs.length;
+    const result = hasErr ? this.chalk.green(`passed`) : this.chalk.red(`failed`);
 
     name = `${this.currentFixtureName} - ${name}`;
 
@@ -327,7 +327,9 @@ moment().format() → this
 ```js
 reportTaskDone (endTime, passed) {
     const durationMs  = endTime - this.startTime;
-    const durationStr = this.moment.duration(durationMs).format('h[h] mm[m] ss[s]');
+    const durationStr = this.moment
+                            .duration(durationMs)
+                            .format('h[h] mm[m] ss[s]');
 
     this.write(`Duration: ${durationStr}`)
     ...

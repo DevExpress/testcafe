@@ -173,7 +173,7 @@ reporter(name [, outStream]) → this
 
 Parameter                | Type                        | Description                                     | Default
 ------------------------ | --------------------------- | ----------------------------------------------- | --------
-`name`                   | String                      | The name of the [reporter](/testcafe/documentation/using-testcafe/common-concepts/reporters/) to use.
+`name`                   | String                      | The name of the [reporter](../common-concepts/reporters.md) to use.
 `outStream` *(optional)* | Writable Stream implementer | The stream to which the report will be written. | `stdout`
 
 #### Specifying the reporter
@@ -208,7 +208,7 @@ const stream = new MyStream();
 runner.reporter('json', stream);
 ```
 
-You can also build your own reporter. Use a [dedicated Yeoman generator](https://github.com/DevExpress/generator-testcafe-reporter) to scaffold out a [custom reporter plugin](/testcafe/documentation/extending-testcafe/creating-custom-reporter/).
+You can also build your own reporter. Use a [dedicated Yeoman generator](https://github.com/DevExpress/generator-testcafe-reporter) to scaffold out a [custom reporter plugin](../../extending-testcafe/custom-reporter-plugin/index.md).
 
 ### run
 
