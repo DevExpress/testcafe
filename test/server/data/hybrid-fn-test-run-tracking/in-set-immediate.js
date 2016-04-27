@@ -5,7 +5,7 @@ fixture `In setImmediate`;
 test('test', async () => {
     return new Promise(resolve => {
         setImmediate(() => {
-            resolve(hybridFnTestRunTracker.getOwnerTestRunId())
+            resolve(hybridFnTestRunTracker.getContextTestRunId())
         }, 0);
     });
 });

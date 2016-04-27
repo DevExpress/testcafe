@@ -3,7 +3,7 @@ import hybridFnTestRunTracker from '../../../../lib/api/common/hybrid/test-run-t
 fixture `In helper after "await"`;
 
 function yo () {
-    return hybridFnTestRunTracker.getOwnerTestRunId();
+    return hybridFnTestRunTracker.getContextTestRunId();
 }
 
 function hey () {

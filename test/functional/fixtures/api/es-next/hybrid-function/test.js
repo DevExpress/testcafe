@@ -76,4 +76,21 @@ describe('[API] Hybrid function', function () {
             expect(errs[0]).contains('> 55 |    Hybrid(function*() { ');
         });
     });
+
+    it('Should be able to bind test run using `.bindTestRun(t)` method', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Bind Hybrid function', { only: 'chrome' });
+    });
+
+    it('Should raise error if Hybrid bound to non-TestController object', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Invalid Hybrid test run binding', {
+            shouldFail: true,
+            only:       'chrome'
+        }).catch(function (errs) {
+            expect(errs[0].indexOf(
+                'The `bindTestRun` function is expected to take a test controller.'
+            )).eql(0);
+
+            expect(errs[0]).contains('> 91 |    Hybrid(() => 123).bindTestRun({});');
+        });
+    });
 });

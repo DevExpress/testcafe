@@ -11,6 +11,6 @@ test('test', async () => {
         await yo();
     }
     catch (err) {
-        return hybridFnTestRunTracker.getOwnerTestRunId();
+        return hybridFnTestRunTracker.getContextTestRunId();
     }
 });

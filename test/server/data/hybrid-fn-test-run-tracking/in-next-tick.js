@@ -5,7 +5,7 @@ fixture `In nextTick`;
 test('test', async () => {
     return new Promise(resolve => {
         process.nextTick(() => {
-            resolve(hybridFnTestRunTracker.getOwnerTestRunId())
+            resolve(hybridFnTestRunTracker.getContextTestRunId())
         });
     });
 });
