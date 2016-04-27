@@ -101,10 +101,10 @@ describe('Compiler', function () {
 
         return compile(sources)
             .then(function (compiled) {
-                var testfile1   = resolve('test/server/data/test-suites/basic/testfile1.js');
-                var testfile2   = resolve('test/server/data/test-suites/basic/testfile2.js');
-                var tests       = compiled.tests;
-                var fixtures    = compiled.fixtures;
+                var testfile1 = resolve('test/server/data/test-suites/basic/testfile1.js');
+                var testfile2 = resolve('test/server/data/test-suites/basic/testfile2.js');
+                var tests     = compiled.tests;
+                var fixtures  = compiled.fixtures;
 
                 expect(tests.length).eql(4);
                 expect(fixtures.length).eql(3);
@@ -510,9 +510,9 @@ describe('Compiler', function () {
                     throw new Error('Promise rejection is expected');
                 })
                 .catch(function (err) {
-                    expect(err.message).eql('Cannot parse a test source file in the raw format at "' + testfile +
-                                            '" due to an error.\n\n' +
-                                            'SyntaxError: Unexpected token i');
+                    expect(err.message).contains('Cannot parse a test source file in the raw format at "' + testfile +
+                                                 '" due to an error.\n\n' +
+                                                 'SyntaxError: Unexpected token i');
                 });
         });
 

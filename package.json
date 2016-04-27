@@ -144,6 +144,7 @@
       "cross-spawn-async",
       "del",
       "error-stack-parser",
+      "eslint-plugin-hammerhead",
       "express",
       "gulp",
       "gulp-connect",
