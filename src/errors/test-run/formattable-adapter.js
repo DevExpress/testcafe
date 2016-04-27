@@ -48,6 +48,10 @@ export default class TestRunErrorFormattableAdapter {
         return msg;
     }
 
+    _getErrorMarkup (viewportWidth) {
+        return this.TEMPLATES[this.type](this, viewportWidth);
+    }
+
     getCallsiteMarkup (opts) {
         if (!this.callsite)
             return '';
@@ -71,7 +75,7 @@ export default class TestRunErrorFormattableAdapter {
     }
 
     formatMessage (decorator, viewportWidth) {
-        var msgHtml  = this.TEMPLATES[this.type](this, viewportWidth);
+        var msgHtml  = this._getErrorMarkup(viewportWidth);
         var fragment = parser.parseFragment(msgHtml);
 
         return TestRunErrorFormattableAdapter._decorateHtml(fragment, decorator);
