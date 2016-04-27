@@ -1,6 +1,12 @@
 {
+  "rules": {
+    "hammerhead/use-hh-promise": 2
+  },
   "env": {
     "browser": true,
     "node": false
-  }
+  },
+  "plugins": [
+    "hammerhead"
+  ]
 }
