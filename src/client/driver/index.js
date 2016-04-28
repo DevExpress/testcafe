@@ -23,7 +23,10 @@ var modalBackground   = testCafeUI.modalBackground;
 const COMMAND_EXECUTING_FLAG = 'testcafe|driver|command-executing-flag';
 const PENDING_PAGE_ERROR     = 'testcafe|driver|pending-page-error';
 const TEST_DONE_SENT_FLAG    = 'testcafe|driver|test-done-sent-flag';
+const PENDING_STATUS         = 'testcafe|driver|pending-status';
 
+var noop = () => {
+};
 
 export default class ClientDriver {
     constructor (testRunId, heartbeatUrl, browserStatusUrl, elementAvailabilityTimeout) {
@@ -32,6 +35,7 @@ export default class ClientDriver {
         this.browserStatusUrl           = browserStatusUrl;
         this.elementAvailabilityTimeout = elementAvailabilityTimeout;
         this.contextStorage             = new ContextStorage(window, testRunId);
+        this.beforeUnloadRaised         = false;
 
         this.pageInitialXhrBarrier = new XhrBarrier();
 
@@ -43,11 +47,18 @@ export default class ClientDriver {
 
         modalBackground.initAndShowLoadingText();
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
+        hammerhead.on(hammerhead.EVENTS.beforeUnload, () => this.beforeUnloadRaised = true);
+
+        var pendingStatus = this.contextStorage.getItem(PENDING_STATUS, status);
 
         // NOTE: we should not send any message to the server if we've
         // sent the 'test-done' message but haven't got the response.
         if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG)) {
-            browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR);
+            if (pendingStatus)
+                this._onTestDone();
+            else
+                browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR);
+
             return;
         }
 
@@ -59,7 +70,7 @@ export default class ClientDriver {
 
                 modalBackground.hide();
 
-                var status = new DriverStatus({ isCommandResult: inCommandExecution });
+                var status = pendingStatus || new DriverStatus({ isCommandResult: inCommandExecution });
 
                 this._onReady(status);
             });
@@ -86,12 +97,28 @@ export default class ClientDriver {
         }
     }
 
-    _onReady (status) {
+    _sendStatusToServer (status) {
         this._addPendingErrorToStatus(status);
 
-        transport
-            .queuedAsyncServiceMsg({ cmd: MESSAGE.ready, status })
+        // NOTE: postpone status sending if the page is unloading
+        if (this.beforeUnloadRaised) {
+            this.contextStorage.setItem(PENDING_STATUS, status);
+
+            return new Promise(noop);
+        }
+
+        this.contextStorage.setItem(PENDING_STATUS, null);
+
+        return transport.queuedAsyncServiceMsg({ cmd: MESSAGE.ready, status });
+    }
+
+    _onReady (status) {
+        this._sendStatusToServer(status)
             .then(command => {
+                //NOTE: do not execute the next command if the page is unloading
+                if (this.beforeUnloadRaised)
+                    return;
+
                 if (command)
                     this._onCommand(command);
                 else {
@@ -130,13 +157,10 @@ export default class ClientDriver {
     }
 
     _onTestDone () {
-        var status = new DriverStatus({ isCommandResult: true });
-
-        this._addPendingErrorToStatus(status);
         this.contextStorage.setItem(TEST_DONE_SENT_FLAG, true);
 
-        transport
-            .queuedAsyncServiceMsg({ cmd: MESSAGE.ready, status })
+        this
+            ._sendStatusToServer(new DriverStatus({ isCommandResult: true }))
             .then(() => browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR));
     }
 
