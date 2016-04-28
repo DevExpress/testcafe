@@ -48,7 +48,7 @@ export function fromPoint (x, y, expectedElement) {
     var isSVGElement  = domUtils.isSVGElement(expectedElement);
 
     // NOTE: 'document.elementFromPoint' can't find these types of elements
-    if (isSVGElement && browserUtils.isOpera || isTREFElement)
+    if (isTREFElement)
         return expectedElement;
 
     // NOTE: T299665 - Incorrect click automation for images with an associated map element in Firefox

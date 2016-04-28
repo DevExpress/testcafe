@@ -139,7 +139,7 @@ function getFocusableElements (doc) {
             needPush = true;
         else if (browserUtils.isIE && isIframeElement(el))
             focusableElements.push(el);
-        else if (!browserUtils.isOpera && isAnchorElement(el) && el.hasAttribute('href'))
+        else if (isAnchorElement(el) && el.hasAttribute('href'))
             needPush = el.getAttribute('href') !== '' || !browserUtils.isIE || tabIndex !== null;
 
         var contentEditableAttr = el.getAttribute('contenteditable');
@@ -333,8 +333,7 @@ export function getNextFocusableElement (element, reverse) {
 
     //NOTE: in all browsers except Mozilla and Opera focus sets on one radio set from group only.
     // in Mozilla and Opera focus sets on any radio set.
-    if (isInputElement(element) && element.type === "radio" && element.name !== "" &&
-        !(browserUtils.isFirefox || browserUtils.isOpera))
+    if (isInputElement(element) && element.type === "radio" && element.name !== "" && !browserUtils.isFirefox)
         allFocusable = arrayUtils.filter(allFocusable, item => {
             return !item.name || item === element || item.name !== element.name;
         });
