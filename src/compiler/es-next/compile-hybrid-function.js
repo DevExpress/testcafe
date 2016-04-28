@@ -2,8 +2,9 @@ import { wrapDomAccessors } from 'testcafe-hammerhead';
 import NODE_VER from '../../utils/node-version';
 import loadBabelLibs from './load-babel-libs';
 
-const ANONYMOUS_FN_RE = /^function\*?\s*\(/;
-const USE_STRICT_RE   = /^('|")use strict('|");?/;
+const ANONYMOUS_FN_RE       = /^function\*?\s*\(/;
+const USE_STRICT_RE         = /^('|")use strict('|");?/;
+const TRAILING_SEMICOLON_RE = /;\s*$/;
 
 var babelArtifactPolyfills = {
     Promise: {
@@ -59,6 +60,9 @@ export default function compileHybridFunction (fnCode) {
     }
 
     finally {
+        if (!TRAILING_SEMICOLON_RE.test(fnCode))
+            fnCode += ';';
+
         return `(function(){${getBabelArtifactsPolyfill(fnCode)} return ${fnCode}})();`;
     }
 }

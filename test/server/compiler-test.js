@@ -222,6 +222,10 @@ describe('Compiler', function () {
         it('Should compile basic Hybrid function', function () {
             return testHybridCompilation('basic');
         });
+
+        it.only('Should polyfill Promises', function () {
+            return testHybridCompilation('promises');
+        });
     });
 
     describe('Errors', function () {
