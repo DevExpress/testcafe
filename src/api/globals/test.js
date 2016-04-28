@@ -7,12 +7,12 @@ export default class Test {
         var nameType = typeof name;
 
         if (nameType !== 'string')
-            throw new APIError('test', null, MESSAGE.testNameIsNotAString, nameType);
+            throw new APIError('test', MESSAGE.testNameIsNotAString, nameType);
 
         var fnType = typeof fn;
 
         if (fnType !== 'function')
-            throw new APIError('test', null, MESSAGE.testBodyIsNotAFunction, fnType);
+            throw new APIError('test', MESSAGE.testBodyIsNotAFunction, fnType);
 
         this.name    = name;
         this.fixture = fixture;

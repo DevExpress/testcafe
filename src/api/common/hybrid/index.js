@@ -1,5 +1,3 @@
-import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
-import { noop } from 'lodash';
 import testRunTracker from './test-run-tracker';
 import TestRun from '../../../test-run';
 import compileHybridFunction from '../../../compiler/es-next/compile-hybrid-function';
@@ -8,15 +6,13 @@ import { APIError } from '../../../errors/runtime';
 import MESSAGE from '../../../errors/runtime/message';
 import getCallsite from '../../../errors/get-callsite';
 
-const ASYNC_TO_GEN_CODE         = asyncToGenerator(noop).toString();
-const REGENERATOR_FOOTPRINTS_RE = /(_regenerator(\d+).default|regeneratorRuntime).wrap\(function _callee\$\(_context\)/;
 
 function resolveContextTestRun () {
     var testRunId = testRunTracker.getContextTestRunId();
     var testRun   = TestRun.activeTestRuns[testRunId];
 
     if (!testRun)
-        throw new APIError('hybridFunction', null, MESSAGE.hybridFunctionCantResolveTestRun);
+        throw new APIError('hybridFunction', MESSAGE.hybridFunctionCantResolveTestRun);
 
     return testRun;
 }
@@ -40,7 +36,7 @@ function createHybridFunction (fnCode, boundTestRun) {
         // NOTE: we can't use strict `t instanceof TestController`
         // check due to module circular reference
         if (!t || !(t.testRun instanceof TestRun))
-            throw new APIError('bindTestRun', null, MESSAGE.invalidHybridTestRunBinding);
+            throw new APIError('bindTestRun', MESSAGE.invalidHybridTestRunBinding);
 
         return createHybridFunction(fnCode, t.testRun);
     };
@@ -51,25 +47,12 @@ function createHybridFunction (fnCode, boundTestRun) {
 // NOTE: we use runtime APIError in most places because these errors may appear
 // at the test compilation time when we don't have any test runs yet.
 export default function Hybrid (fn) {
-    var fnType        = typeof fn;
-    var calledWithNew = this instanceof Hybrid;
-    var fnName        = calledWithNew ? 'constructor' : 'Hybrid';
-    var typeName      = calledWithNew ? 'Hybrid' : null;
+    var fnType = typeof fn;
 
     if (fnType !== 'function')
-        throw new APIError(fnName, typeName, MESSAGE.clientCodeIsNotAFunction, fnType);
+        throw new APIError('Hybrid', MESSAGE.clientCodeIsNotAFunction, fnType);
 
-    var fnCode = fn.toString();
-
-    if (fnCode === ASYNC_TO_GEN_CODE)
-        throw new APIError(fnName, typeName, MESSAGE.regeneratorInClientCode);
-
-    fnCode = compileHybridFunction(fnCode);
-
-    // NOTE: check compiled code for regenerator injection: we have either generator
-    // recompiled in Node.js 4+ for client or async function declared in function code.
-    if (REGENERATOR_FOOTPRINTS_RE.test(fnCode))
-        throw new APIError(fnName, typeName, MESSAGE.regeneratorInClientCode);
+    var fnCode = compileHybridFunction(fn.toString());
 
     return createHybridFunction(fnCode, null);
 }

@@ -11,7 +11,7 @@ export default class Fixture {
         var nameType = typeof name;
 
         if (nameType !== 'string')
-            throw new APIError('fixture', null, MESSAGE.fixtureNameIsNotAString, nameType);
+            throw new APIError('fixture', MESSAGE.fixtureNameIsNotAString, nameType);
 
         this.name         = name;
         this.path         = filename;
@@ -26,7 +26,7 @@ export default class Fixture {
         var urlType = typeof this.pageUrl;
 
         if (urlType !== 'string')
-            throw new APIError('page', null, MESSAGE.fixturePageIsNotAString, urlType);
+            throw new APIError('page', MESSAGE.fixturePageIsNotAString, urlType);
 
         if (!PROTOCOL_RE.test(this.pageUrl)) {
             var protocol = IMPLICIT_PROTOCOL_RE.test(this.pageUrl) ? 'http:' : 'http://';
@@ -41,7 +41,7 @@ export default class Fixture {
         var fnType = typeof fn;
 
         if (fnType !== 'function')
-            throw new APIError('beforeEach', null, MESSAGE.beforeEachIsNotAFunction, fnType);
+            throw new APIError('beforeEach', MESSAGE.beforeEachIsNotAFunction, fnType);
 
         this.beforeEachFn = wrapTestFunction(fn);
 
@@ -52,7 +52,7 @@ export default class Fixture {
         var fnType = typeof fn;
 
         if (fnType !== 'function')
-            throw new APIError('afterEach', null, MESSAGE.afterEachIsNotAFunction, fnType);
+            throw new APIError('afterEach', MESSAGE.afterEachIsNotAFunction, fnType);
 
         this.afterEachFn = wrapTestFunction(fn);
 

@@ -4,5 +4,5 @@
         var hostname         = __get$(_window$location, "hostname");
         var port             = __get$(_window$location, "port");
         return hostname + ':' + port;
-    })
+    });
 })();

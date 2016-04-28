@@ -223,7 +223,7 @@ describe('Compiler', function () {
             return testHybridCompilation('basic');
         });
 
-        it.only('Should polyfill Promises', function () {
+        it('Should polyfill Promises', function () {
             return testHybridCompilation('promises');
         });
     });
