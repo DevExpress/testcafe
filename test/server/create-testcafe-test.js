@@ -84,8 +84,9 @@ describe('TestCafe factory function', function () {
             });
     });
 
-    it('Should contain plugin testing utils and common runtime functions', function () {
+    it('Should contain plugin testing, embedding utils and common runtime functions', function () {
         expect(createTestCafe.pluginTestingUtils).to.be.an.object;
+        expect(createTestCafe.embeddingUtils).to.be.an.object;
         expect(createTestCafe.Role).eql(Role);
         expect(createTestCafe.Hybrid).eql(Hybrid);
     });
