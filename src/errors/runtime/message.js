@@ -9,6 +9,7 @@ export default {
     cantFindReporterForAlias:           'The provided "{name}" reporter does not exist. Check that you have specified the report format correctly.',
     optionValueIsNotValidRegExp:        'The "{optionName}" option value is not a valid regular expression.',
     portNumberIsNotInteger:             'A port number should be a valid integer.',
+    elementTimeoutIsNotAnInteger:       'The element availability timeout should be an integer.',
     portsOptionRequiresTwoNumbers:      'The "--ports" option requires two numbers to be specified.',
     portIsNotFree:                      'The specified {portNum} port is already in use by another program.',
     invalidHostname:                    'The specified "{hostname}" hostname cannot be resolved to the current machine.',
