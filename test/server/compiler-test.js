@@ -1,6 +1,7 @@
 var expect      = require('chai').expect;
 var resolve     = require('path').resolve;
 var sep         = require('path').sep;
+var readFile    = require('fs').readFileSync;
 var Promise     = require('pinkie');
 var stackParser = require('error-stack-parser');
 var stripAnsi   = require('strip-ansi');
@@ -193,6 +194,34 @@ describe('Compiler', function () {
                 expect(compiled.tests[0].fixture.pageUrl).eql('http://example.org');
                 expect(compiled.tests[1].fixture.pageUrl).eql('http://example.org');
             });
+    });
+
+    describe('Hybrid function compilation', function () {
+        function normalizeCode (code) {
+            return code
+                .replace(/(\r\n|\n|\r)/gm, ' ')
+                .replace(/'/gm, '"')
+                .replace(/\s+/gm, '');
+        }
+
+
+        function testHybridCompilation (testName) {
+            var testDir  = 'test/server/data/hybrid-fn-compilation/' + testName;
+            var src      = testDir + '/testfile.js';
+            var expected = readFile(testDir + '/expected.js').toString();
+
+            return compile(src)
+                .then(function (compiled) {
+                    return compiled.tests[0].fn({ id: 'test' });
+                })
+                .then(function (compiledHybrid) {
+                    expect(normalizeCode(compiledHybrid)).eql(normalizeCode(expected));
+                });
+        }
+
+        it('Should compile basic Hybrid function', function () {
+            return testHybridCompilation('basic');
+        });
     });
 
     describe('Errors', function () {

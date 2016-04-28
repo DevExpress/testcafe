@@ -3,6 +3,14 @@ import NODE_VER from '../../utils/node-version';
 import loadBabelLibs from './load-babel-libs';
 
 const ANONYMOUS_FN_RE = /^function\*?\s*\(/;
+const USE_STRICT_RE   = /^('|")use strict('|");?/;
+
+var babelArtifactPolyfills = {
+    Promise: {
+        re:     /_promise(\d+)\.default/,
+        create: match => `var _promise${match[1]} = { default: Promise };`
+    }
+};
 
 function getBabelOptions () {
     var { presetES2015Loose } = loadBabelLibs();
@@ -15,28 +23,42 @@ function getBabelOptions () {
         babelrc:       false,
         highlightCode: false
     };
+}
 
+function downgradeES (fnCode) {
+    var { babel } = loadBabelLibs();
+
+    var opts     = getBabelOptions();
+    var compiled = babel.transform(fnCode, opts);
+
+    return compiled.code
+        .replace(USE_STRICT_RE, '')
+        .trim();
+}
+
+function getBabelArtifactsPolyfill (fnCode) {
+    return Object
+        .values(babelArtifactPolyfills)
+        .reduce((code, polyfill) => {
+            var match = fnCode.match(polyfill.re);
+
+            return match ? code + polyfill.create(match) : code;
+        }, '');
 }
 
 export default function compileHybridFunction (fnCode) {
     if (ANONYMOUS_FN_RE.test(fnCode))
         fnCode = `(${fnCode})`;
 
-    // NOTE: we need to recompile ES6 code for the browser if we are on newer versions of Node.
     try {
-        if (NODE_VER >= 4) {
-            var { babel } = loadBabelLibs();
+        // NOTE: we need to recompile ES6 code for the browser if we are on newer versions of Node.
+        if (NODE_VER >= 4)
+            fnCode = downgradeES(fnCode);
 
-            var opts     = getBabelOptions();
-            var compiled = babel.transform(fnCode, opts);
-
-            fnCode = compiled.code;
-        }
-
-        return wrapDomAccessors(fnCode, true);
+        fnCode = wrapDomAccessors(fnCode, true);
     }
 
-    catch (err) {
-        return fnCode;
+    finally {
+        return `(function(){${getBabelArtifactsPolyfill(fnCode)} return ${fnCode}})();`;
     }
 }

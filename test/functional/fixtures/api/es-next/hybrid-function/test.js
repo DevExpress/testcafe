@@ -1,7 +1,7 @@
 var expect         = require('chai').expect;
 var parseUserAgent = require('useragent').parse;
 
-describe('[API] Hybrid function', function () {
+describe.only('[API] Hybrid function', function () {
     it('Should be correctly dispatched to test run', function () {
         function assertUA (errs, alias, expected) {
             var ua = parseUserAgent(errs[alias][0]).toString();
