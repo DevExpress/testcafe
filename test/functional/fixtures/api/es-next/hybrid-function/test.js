@@ -93,4 +93,8 @@ describe('[API] Hybrid function', function () {
             expect(errs[0]).contains('> 91 |    Hybrid(() => 123).bindTestRun({});');
         });
     });
+
+    it('Should support Promises as a result', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Promises support');
+    });
 });

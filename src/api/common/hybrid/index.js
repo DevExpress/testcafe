@@ -2,7 +2,7 @@ import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
 import { noop } from 'lodash';
 import testRunTracker from './test-run-tracker';
 import TestRun from '../../../test-run';
-import { compileHybridFunction } from '../../../compiler/es-next';
+import compileHybridFunction from '../../../compiler/es-next/compile-hybrid-function';
 import { ExecuteHybridFunctionCommand } from '../../../test-run/commands';
 import { APIError } from '../../../errors/runtime';
 import MESSAGE from '../../../errors/runtime/message';
