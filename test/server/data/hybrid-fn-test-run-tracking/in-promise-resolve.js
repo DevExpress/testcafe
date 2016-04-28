@@ -5,7 +5,7 @@ fixture `In Promise.then()`;
 test('test', async () => {
     return Promise
         .resolve(() => {
-            return hybridFnTestRunTracker.getOwnerTestRunId()
+            return hybridFnTestRunTracker.getContextTestRunId()
         })
         .then(fn => fn());
 });

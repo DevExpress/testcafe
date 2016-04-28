@@ -9,5 +9,5 @@ async function yo () {
 test('test', async () => {
     await yo();
 
-    return hybridFnTestRunTracker.getOwnerTestRunId();
+    return hybridFnTestRunTracker.getContextTestRunId();
 });

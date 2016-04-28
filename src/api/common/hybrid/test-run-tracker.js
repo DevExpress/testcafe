@@ -25,7 +25,7 @@ export default {
         var tracker = this;
 
         return function () {
-            var testRunId = tracker.getOwnerTestRunId();
+            var testRunId = tracker.getContextTestRunId();
 
             if (testRunId) {
                 for (var i = 0; i < patchedArgsCount; i++) {
@@ -80,7 +80,7 @@ export default {
         return new Function('fn', markerFactoryBody)(fn);
     },
 
-    getOwnerTestRunId () {
+    getContextTestRunId () {
         var frames = this._getStackFrames();
 
         // OPTIMIZATION: we start traversing from the bottom of the stack,

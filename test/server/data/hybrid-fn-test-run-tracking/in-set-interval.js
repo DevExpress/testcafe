@@ -6,7 +6,7 @@ test('test', async () => {
     return new Promise(resolve => {
         const interval = setInterval(() => {
             clearInterval(interval);
-            resolve(hybridFnTestRunTracker.getOwnerTestRunId())
+            resolve(hybridFnTestRunTracker.getContextTestRunId())
         }, 0);
     });
 });

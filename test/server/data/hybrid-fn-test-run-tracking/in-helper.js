@@ -3,7 +3,7 @@ import hybridFnTestRunTracker from '../../../../lib/api/common/hybrid/test-run-t
 fixture `In helper`;
 
 function yo () {
-    return hybridFnTestRunTracker.getOwnerTestRunId();
+    return hybridFnTestRunTracker.getContextTestRunId();
 }
 
 test('test', async () => {

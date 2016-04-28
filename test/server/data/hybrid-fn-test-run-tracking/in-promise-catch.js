@@ -7,5 +7,5 @@ test('test', async () => {
         .then(() => {
             throw new Error('yo')
         })
-        .catch(() => hybridFnTestRunTracker.getOwnerTestRunId());
+        .catch(() => hybridFnTestRunTracker.getContextTestRunId());
 });

@@ -56,3 +56,37 @@ test('Generator in Hybrid', async () => {
         yield 1;
     });
 });
+
+test('Bind Hybrid function', async t => {
+    const fs               = require('fs');
+    const boundGetLocation = getLocation.bindTestRun(t);
+
+    // NOTE: binding does not modify the original function,
+    // but creates a new bound function instead, so here it will throw an error.
+    var originalHybridExec = new Promise((resolve, reject) => {
+        fs.readFile('not/exists', () => {
+            try {
+                getLocation();
+                resolve();
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    });
+
+    return originalHybridExec
+        .then(() => {
+            throw new Error('Promise rejection expected');
+        })
+        .catch(() => {
+            return new Promise(resolve => {
+                fs.readFile('not/exists', () => resolve(boundGetLocation()));
+            });
+        })
+        .then(location => expect(location).eql('http://localhost:3000/api/es-next/hybrid-function/pages/index.html'));
+});
+
+test('Invalid Hybrid test run binding', () => {
+    Hybrid(() => 123).bindTestRun({});
+});

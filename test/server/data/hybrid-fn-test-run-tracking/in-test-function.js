@@ -2,12 +2,12 @@ import hybridFnTestRunTracker from '../../../../lib/api/common/hybrid/test-run-t
 
 fixture `In test function`
     .beforeEach(async () => {
-        return hybridFnTestRunTracker.getOwnerTestRunId();
+        return hybridFnTestRunTracker.getContextTestRunId();
     })
     .afterEach(async () => {
-        return hybridFnTestRunTracker.getOwnerTestRunId();
+        return hybridFnTestRunTracker.getContextTestRunId();
     });
 
 test('test', async () => {
-    return hybridFnTestRunTracker.getOwnerTestRunId();
+    return hybridFnTestRunTracker.getContextTestRunId();
 });

@@ -3,5 +3,5 @@ import hybridFnTestRunTracker from '../../../../lib/api/common/hybrid/test-run-t
 fixture `In Promise ctor`;
 
 test('test', async () => {
-    return new Promise(resolve => resolve(hybridFnTestRunTracker.getOwnerTestRunId()));
+    return new Promise(resolve => resolve(hybridFnTestRunTracker.getContextTestRunId()));
 });
