@@ -25,19 +25,19 @@ function markup (err, msgMarkup) {
 
 export default {
     [TYPE.actionIntegerOptionError]: err => markup(err, `
-        Action option <code>${err.optionName}</code> is expected to be an integer, but it was <code>${err.actualValue}</code>.
+        The <code>${err.optionName}</code> option is expected to be an integer, but it was <code>${err.actualValue}</code>.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionPositiveIntegerOptionError]: err => markup(err, `
-        Action option <code>${err.optionName}</code> is expected to be a positive integer, but it was <code>${err.actualValue}</code>.
+        The <code>${err.optionName}</code> option is expected to be a positive integer, but it was <code>${err.actualValue}</code>.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionBooleanOptionError]: err => markup(err, `
-        Action option <code>${err.optionName}</code> is expected to be a boolean value, but it was <code>${err.actualValue}</code>.
+        The <code>${err.optionName}</code> option is expected to be a boolean value, but it was <code>${err.actualValue}</code>.
 
         ${err.getCallsiteMarkup()}
     `),
@@ -142,6 +142,12 @@ export default {
         The action element is expected to be a textarea.
 
         ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionIncorrectKeysError]: err => markup(err, `
+         The <code>${err.argumentName}</code> argument contains an incorrect key or key combination.
+
+         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.missingAwaitError]: err => markup(err, `

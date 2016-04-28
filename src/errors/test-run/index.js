@@ -224,3 +224,11 @@ export class ActionRootContainerNotFoundError extends ActionError {
         super(TYPE.actionRootContainerNotFoundError);
     }
 }
+
+export class ActionIncorrectKeysError extends ActionError {
+    constructor (argumentName) {
+        super(TYPE.actionIncorrectKeysError);
+
+        this.argumentName = argumentName;
+    }
+}

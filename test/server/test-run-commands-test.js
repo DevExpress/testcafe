@@ -629,6 +629,36 @@ describe('Test run commands', function () {
             });
         });
 
+        it('Should create PressKeyCommand from object', function () {
+            var commandObj = {
+                type:     TYPE.pressKey,
+                selector: '#yo',
+                keys:     'a+b c',
+                yo:       'test',
+
+                options: {
+                    offsetX: 23,
+                    offsetY: 32,
+                    dummy:   'yo',
+
+                    modifiers: {
+                        ctrl:  true,
+                        shift: false,
+                        dummy: 'yo',
+                        alt:   false,
+                        meta:  false
+                    }
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type: TYPE.pressKey,
+                keys: 'a+b c'
+            });
+        });
+
         it('Should create TestDone command from object', function () {
             var commandObj = { type: TYPE.testDone, hey: '42' };
 
@@ -1362,7 +1392,7 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'startPos',
                     actualValue:     'string',
                     callsite:        null
@@ -1380,7 +1410,7 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'startPos',
                     actualValue:     5.5,
                     callsite:        null
@@ -1398,7 +1428,7 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'endPos',
                     actualValue:     NaN,
                     callsite:        null
@@ -1467,7 +1497,7 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'startLine',
                     actualValue:     'string',
                     callsite:        null
@@ -1485,7 +1515,7 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'startLine',
                     actualValue:     5.5,
                     callsite:        null
@@ -1503,7 +1533,7 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'endLine',
                     actualValue:     NaN,
                     callsite:        null
@@ -1577,6 +1607,58 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
                     argumentName:    'endSelector',
                     actualType:      'boolean',
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate PressKeyСommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.pressKey
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'keys',
+                    actualValue:     'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.pressKey,
+                        keys: true
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'keys',
+                    actualValue:     'boolean',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.pressKey,
+                        keys: ''
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'keys',
+                    actualValue:     '""',
                     callsite:        null
                 }
             );

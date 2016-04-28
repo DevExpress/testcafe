@@ -12,7 +12,7 @@ var TypeAutomation       = testCafeRunner.get('./automation/playback/type');
 var TypeOptions          = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
 var SelectTextAutomation = testCafeRunner.get('./automation/playback/select/select-text');
 var PressAutomation      = testCafeRunner.get('./automation/playback/press');
-var parseKeyString       = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var parseKeySequence     = testCafeRunner.get('./automation/playback/press/parse-key-sequence');
 
 automation.init();
 
@@ -136,7 +136,7 @@ $(document).ready(function () {
     };
 
     var runPressAutomation = function (keys, callback) {
-        var pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+        var pressAutomation = new PressAutomation(parseKeySequence(keys).combinations);
 
         pressAutomation
             .run()

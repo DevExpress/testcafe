@@ -12,7 +12,7 @@ describe('[API] Hover action', function () {
     it('Should validate options', function () {
         return runTests('./testcafe-fixtures/hover-test.js', 'Incorrect action option', { shouldFail: true, only: 'chrome' })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('Action option offsetX is expected to be a positive integer, but it was NaN.');
+                expect(errs[0]).to.contains('The offsetX option is expected to be a positive integer, but it was NaN.');
                 expect(errs[0]).to.contains(' > 16 |    await t.hover(\'#container1\', { offsetX: NaN });');
             });
     });

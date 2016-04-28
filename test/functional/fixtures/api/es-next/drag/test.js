@@ -38,7 +38,7 @@ describe('[API] Drag actions', function () {
         it('Should validate action options', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to offset with incorrect action option', { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('Action option offsetX is expected to be a positive integer, but it was string.');
+                    expect(errs[0]).to.contain('The offsetX option is expected to be a positive integer, but it was string.');
                     expect(errs[0]).to.contain('> 26 |    await t.drag(\'#draggable-div-1\', 10, 20, { offsetX: \'test\' });');
                 });
         });
@@ -72,7 +72,7 @@ describe('[API] Drag actions', function () {
         it('Should validate action options', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to element with incorrect action option', { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('Action option modifiers.shift is expected to be a boolean value, but it was number.');
+                    expect(errs[0]).to.contain('The modifiers.shift option is expected to be a boolean value, but it was number.');
                     expect(errs[0]).to.contain('> 45 |    await t.dragToElement(\'#draggable-div-2\', \'#destination-div\'');
                 });
         });

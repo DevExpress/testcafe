@@ -1,6 +1,6 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
 CATEGORY=actionError
-Action option caretPos is expected to be a positive integer, but it was -1.
+The caretPos option is expected to be a positive integer, but it was -1.
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');

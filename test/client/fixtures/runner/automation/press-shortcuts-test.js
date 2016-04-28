@@ -5,10 +5,10 @@ var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var textSelection = testCafeCore.get('./utils/text-selection');
 var domUtils      = testCafeCore.get('./utils/dom');
 
-var testCafeRunner  = window.getTestCafeModule('testCafeRunner');
-var automation      = testCafeRunner.get('./automation/automation');
-var PressAutomation = testCafeRunner.get('./automation/playback/press');
-var parseKeyString  = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var testCafeRunner   = window.getTestCafeModule('testCafeRunner');
+var automation       = testCafeRunner.get('./automation/automation');
+var PressAutomation  = testCafeRunner.get('./automation/playback/press');
+var parseKeySequence = testCafeRunner.get('./automation/playback/press/parse-key-sequence');
 
 automation.init();
 
@@ -77,8 +77,8 @@ $(document).ready(function () {
         ok(inverseSelection === (typeof inverse === 'undefined' ? false : inverse));
     };
 
-    var runPressAutomation = function (keyString, callback) {
-        var keyCombinations = parseKeyString(keyString).combinations;
+    var runPressAutomation = function (keySequence, callback) {
+        var keyCombinations = parseKeySequence(keySequence).combinations;
         var pressAutomation = new PressAutomation(keyCombinations);
 
         pressAutomation
@@ -511,7 +511,7 @@ $(document).ready(function () {
             cursorPosition  = 6,
             textarea        = createTextarea(text, cursorPosition),
             keys            = 'shift+left',
-            pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+            pressAutomation = new PressAutomation(parseKeySequence(keys).combinations);
 
         pressAutomation
             .run()
@@ -537,7 +537,7 @@ $(document).ready(function () {
             endSelection    = 10,
             textarea        = createTextarea(text, startSelection, endSelection),
             keys            = 'shift+left',
-            pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+            pressAutomation = new PressAutomation(parseKeySequence(keys).combinations);
 
         pressAutomation
             .run()
@@ -563,7 +563,7 @@ $(document).ready(function () {
             endSelection    = 10,
             textarea        = createTextarea(text, startSelection, endSelection, true),
             keys            = 'shift+left',
-            pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+            pressAutomation = new PressAutomation(parseKeySequence(keys).combinations);
 
         pressAutomation
             .run()
@@ -590,7 +590,7 @@ $(document).ready(function () {
             cursorPosition  = 3,
             textarea        = createTextarea(text, cursorPosition),
             keys            = 'shift+right',
-            pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+            pressAutomation = new PressAutomation(parseKeySequence(keys).combinations);
 
         pressAutomation
             .run()
@@ -616,7 +616,7 @@ $(document).ready(function () {
             endSelection    = 7,
             textarea        = createTextarea(text, startSelection, endSelection),
             keys            = 'shift+right',
-            pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+            pressAutomation = new PressAutomation(parseKeySequence(keys).combinations);
 
         pressAutomation
             .run()
@@ -642,7 +642,7 @@ $(document).ready(function () {
             endSelection    = 12,
             textarea        = createTextarea(text, startSelection, endSelection, true),
             keys            = 'shift+right',
-            pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+            pressAutomation = new PressAutomation(parseKeySequence(keys).combinations);
 
         pressAutomation
             .run()

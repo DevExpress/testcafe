@@ -1,10 +1,10 @@
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
 
-var testCafeRunner  = window.getTestCafeModule('testCafeRunner');
-var automation      = testCafeRunner.get('./automation/automation');
-var PressAutomation = testCafeRunner.get('./automation/playback/press');
-var parseKeyString  = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var testCafeRunner   = window.getTestCafeModule('testCafeRunner');
+var automation       = testCafeRunner.get('./automation/automation');
+var PressAutomation  = testCafeRunner.get('./automation/playback/press');
+var parseKeySequence = testCafeRunner.get('./automation/playback/press/parse-key-sequence');
 
 automation.init();
 
@@ -37,7 +37,7 @@ $(document).ready(function () {
     }
 
     function runPressAutomation (keys, callback) {
-        var pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+        var pressAutomation = new PressAutomation(parseKeySequence(keys).combinations);
 
         pressAutomation
             .run()

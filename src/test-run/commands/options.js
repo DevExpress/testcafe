@@ -31,7 +31,7 @@ function positiveInteger (option, val) {
     integer(option, val, true);
 
     if (val < 0)
-        throw new ActionPositiveIntegerOptionError(option, val, true);
+        throw new ActionPositiveIntegerOptionError(option, val);
 }
 
 function boolean (option, val) {

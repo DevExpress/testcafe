@@ -14,6 +14,7 @@ export default {
     selectText:            'select-text',
     selectTextAreaContent: 'select-text-area-content',
     selectEditableContent: 'select-editable-content',
+    pressKey:              'press-key',
     execHybridFn:          'execHybridFn',
     testDone:              'test-done'
 };
