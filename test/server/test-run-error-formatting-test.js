@@ -1,24 +1,25 @@
-var expect                                   = require('chai').expect;
-var read                                     = require('read-file-relative').readSync;
-var remove                                   = require('lodash').pull;
-var escapeRe                                 = require('lodash').escapeRegExp;
-var ReporterPluginHost                       = require('../../lib/reporter/plugin-host');
-var TYPE                                     = require('../../lib/errors/test-run/type');
-var TestRunErrorFormattableAdapter           = require('../../lib/errors/test-run/formattable-adapter');
-var testCallsite                             = require('./data/test-callsite');
-var ActionIntegerOptionError                 = require('../../lib/errors/test-run').ActionIntegerOptionError;
-var ActionPositiveIntegerOptionError         = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
-var ActionIntegerArgumentError               = require('../../lib/errors/test-run').ActionIntegerArgumentError;
-var ActionPositiveIntegerArgumentError       = require('../../lib/errors/test-run').ActionPositiveIntegerArgumentError;
-var ActionBooleanOptionError                 = require('../../lib/errors/test-run').ActionBooleanOptionError;
-var ActionSelectorTypeError                  = require('../../lib/errors/test-run').ActionSelectorTypeError;
-var ActionOptionsTypeError                   = require('../../lib/errors/test-run').ActionOptionsTypeError;
-var ActionStringArgumentError                = require('../../lib/errors/test-run').ActionStringArgumentError;
-var ActionAdditionalSelectorTypeError        = require('../../lib/errors/test-run').ActionAdditionalSelectorTypeError;
-var UncaughtErrorOnPage                      = require('../../lib/errors/test-run').UncaughtErrorOnPage;
-var UncaughtErrorInTestCode                  = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
-var UncaughtNonErrorObjectInTestCode         = require('../../lib/errors/test-run').UncaughtNonErrorObjectInTestCode;
-var ActionElementNotFoundError               = require('../../lib/errors/test-run').ActionElementNotFoundError;
+var expect                                  = require('chai').expect;
+var read                                    = require('read-file-relative').readSync;
+var remove                                  = require('lodash').pull;
+var escapeRe                                = require('lodash').escapeRegExp;
+var ReporterPluginHost                      = require('../../lib/reporter/plugin-host');
+var TYPE                                    = require('../../lib/errors/test-run/type');
+var TestRunErrorFormattableAdapter          = require('../../lib/errors/test-run/formattable-adapter');
+var testCallsite                            = require('./data/test-callsite');
+var ActionIntegerOptionError                = require('../../lib/errors/test-run').ActionIntegerOptionError;
+var ActionPositiveIntegerOptionError        = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
+var ActionIntegerArgumentError              = require('../../lib/errors/test-run').ActionIntegerArgumentError;
+var ActionPositiveIntegerArgumentError      = require('../../lib/errors/test-run').ActionPositiveIntegerArgumentError;
+var ActionBooleanOptionError                = require('../../lib/errors/test-run').ActionBooleanOptionError;
+var ActionSelectorTypeError                 = require('../../lib/errors/test-run').ActionSelectorTypeError;
+var ActionOptionsTypeError                  = require('../../lib/errors/test-run').ActionOptionsTypeError;
+var ActionStringArgumentError               = require('../../lib/errors/test-run').ActionStringArgumentError;
+var ActionAdditionalSelectorTypeError       = require('../../lib/errors/test-run').ActionAdditionalSelectorTypeError;
+var UncaughtErrorOnPage                     = require('../../lib/errors/test-run').UncaughtErrorOnPage;
+var UncaughtErrorInTestCode                 = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
+var UncaughtErrorInClientExecutedCode       = require('../../lib/errors/test-run').UncaughtErrorInClientExecutedCode;
+var UncaughtNonErrorObjectInTestCode        = require('../../lib/errors/test-run').UncaughtNonErrorObjectInTestCode;
+var ActionElementNotFoundError              = require('../../lib/errors/test-run').ActionElementNotFoundError;
 var ActionElementIsInvisibleError           = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
 var ActionAdditionalElementNotFoundError    = require('../../lib/errors/test-run').ActionAdditionalElementNotFoundError;
 var ActionAdditionalElementIsInvisibleError = require('../../lib/errors/test-run').ActionAdditionalElementIsInvisibleError;
@@ -186,6 +187,10 @@ describe('Error formatting', function () {
 
         it('Should format "externalAssertionLibraryError', function () {
             assertErrorMessage('external-assertion-library-error', new ExternalAssertionLibraryError(testAssertionError, testCallsite));
+        });
+
+        it('Should format "uncaughtErrorInClientExecutedCode"', function () {
+            assertErrorMessage('uncaught-error-in-client-executed-code', new UncaughtErrorInClientExecutedCode(new Error('Some error.')));
         });
     });
 

@@ -1,5 +1,6 @@
 import hammerhead from '../deps/hammerhead';
 import DriverStatus from '../status';
+import { UncaughtErrorInClientExecutedCode } from '../../../errors/test-run';
 
 var Promise = hammerhead.Promise;
 
@@ -14,5 +15,8 @@ export default function executeHybridFnCommand (command) {
         })
         .then(fn => fn.apply(window, command.args))
         .then(result => new DriverStatus({ isCommandResult: true, result }))
-        .catch(err => new DriverStatus({ isCommandResult: true, result: err.message }));
+        .catch(err => new DriverStatus({
+            isCommandResult: true,
+            executionError:  new UncaughtErrorInClientExecutedCode(err)
+        }));
 }

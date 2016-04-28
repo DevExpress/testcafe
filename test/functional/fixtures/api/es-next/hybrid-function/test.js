@@ -101,4 +101,22 @@ describe('[API] Hybrid function', function () {
     it('Should polyfill Babel artifacts', function () {
         return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Babel artifacts polyfills');
     });
+
+    it('Should handle error in Hybrid code', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Error in code', { shouldFail: true })
+            .catch(function (errs) {
+                expect(errs[0]).contains('An error occurred in code executed on the client:');
+                expect(errs[0]).contains('Error: Hey ya!');
+                expect(errs[0]).contains('> 123 |    await fn();');
+            });
+    });
+
+    it('Should handle error in Promise in Hybrid code', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Error in Promise', { shouldFail: true })
+            .catch(function (errs) {
+                expect(errs[0]).contains('An error occurred in code executed on the client:');
+                expect(errs[0]).contains('Error: 42');
+                expect(errs[0]).contains('> 133 |    await fn();');
+            });
+    });
 });
