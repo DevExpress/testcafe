@@ -21,6 +21,7 @@ import * as arrayUtils from './utils/array';
 import * as textSelection from './utils/text-selection';
 import waitFor from './utils/wait-for';
 import delay from './utils/delay';
+import noop from './utils/noop';
 
 exports.SETTINGS              = SETTINGS;
 exports.CROSS_DOMAIN_MESSAGES = CROSS_DOMAIN_MESSAGES;
@@ -43,6 +44,7 @@ exports.arrayUtils      = arrayUtils;
 exports.textSelection   = textSelection;
 exports.waitFor         = waitFor;
 exports.delay           = delay;
+exports.noop            = noop;
 
 exports.get = require;
 

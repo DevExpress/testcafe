@@ -25,8 +25,6 @@ const PENDING_PAGE_ERROR     = 'testcafe|driver|pending-page-error';
 const TEST_DONE_SENT_FLAG    = 'testcafe|driver|test-done-sent-flag';
 const PENDING_STATUS         = 'testcafe|driver|pending-status';
 
-var noop = () => {
-};
 
 export default class ClientDriver {
     constructor (testRunId, heartbeatUrl, browserStatusUrl, elementAvailabilityTimeout) {
@@ -104,7 +102,7 @@ export default class ClientDriver {
         if (this.beforeUnloadRaised) {
             this.contextStorage.setItem(PENDING_STATUS, status);
 
-            return new Promise(noop);
+            return new Promise(testCafeCore.noop);
         }
 
         this.contextStorage.setItem(PENDING_STATUS, null);

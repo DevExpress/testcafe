@@ -1,9 +1,6 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 
-var noop = () => {
-};
-
 var Promise          = hammerhead.Promise;
 var browserUtils     = hammerhead.utils.browser;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
@@ -91,5 +88,5 @@ export function focusByRelatedElement (element) {
     if (!elementForFocus || domUtils.getActiveElement() === elementForFocus)
         return;
 
-    focusBlurSandbox.focus(elementForFocus, noop, false, true);
+    focusBlurSandbox.focus(elementForFocus, testCafeCore.noop, false, true);
 }
