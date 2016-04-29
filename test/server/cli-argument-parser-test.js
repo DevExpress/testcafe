@@ -90,6 +90,19 @@ describe('CLI argument parser', function () {
         });
     });
 
+    describe('Element availability timeout', function () {
+        it('Should parse "--element-timeout" option as integer value', function () {
+            return parse('--element-timeout 1000')
+                .then(function (parser) {
+                    expect(parser.opts.elementTimeout).eql(1000);
+                });
+        });
+
+        it('Should raise an error if the "--element-timeout" option value is not an integer', function () {
+            return assertRaisesError('--element-timeout yo', 'The element availability timeout should be an integer.');
+        });
+    });
+
 
     describe('Filtering options', function () {
         it('Should filter by test name with "-t, --test" option', function () {
