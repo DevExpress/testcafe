@@ -13,6 +13,8 @@ var actionsAPI     = testCafeRunner.get('./api/actions');
 var automation     = testCafeRunner.get('./automation/automation');
 var StepIterator   = testCafeRunner.get('./step-iterator');
 
+var Promise = hammerhead.Promise;
+
 automation.init();
 
 var stepIterator = new StepIterator();
@@ -73,7 +75,7 @@ $(document).ready(function () {
                 window.setTimeout(callbackFunction, delayBeforeAssertions || 0);
             };
             actions();
-            var timeoutId        = setTimeout(function () {
+            var timeoutId = setTimeout(function () {
                 callbackFunction = function () {
                 };
                 ok(false, 'Timeout is exceeded');
@@ -81,10 +83,26 @@ $(document).ready(function () {
             }, timeout);
         };
 
+    var waitForIframeReloaded = function (iframe) {
+        var iframeUnloadPromise = new Promise(function (resolve) {
+            iframe.contentWindow.addEventListener('unload', resolve);
+        });
+
+        return iframeUnloadPromise.then(function () {
+            return window.QUnitGlobals.waitForIframe(iframe);
+        });
+    };
+
+    var wait = function (ms) {
+        return new Promise(function (resolve) {
+            window.setTimeout(resolve, ms);
+        });
+    };
+
     //tests
     QUnit.testStart(function () {
-        $input              = $('<input type="text" id="input" class="input"/>').addClass(TEST_ELEMENT_CLASS).appendTo($('body'));
-        $input[0].value     = 'test';
+        $input          = $('<input type="text" id="input" class="input"/>').addClass(TEST_ELEMENT_CLASS).appendTo($('body'));
+        $input[0].value = 'test';
         $input[0].focus();
         textSelection.select($input[0], 4, 4);
         asyncActionCallback = function () {
@@ -304,82 +322,110 @@ $(document).ready(function () {
     });
 
     asyncTest('B253200 - TestCafe doesn\'t emulate browsers behavior for press "enter" key on the focused HyperLink editor (link with href)', function () {
-        var iFrameSrc = window.QUnitGlobals.getResourceUrl('../../../data/runner/iframe.html', 'runner-iframe.html');
-        var linkHref  = window.QUnitGlobals.getResourceUrl('../../../data/focus-blur-change/iframe.html', 'focus-iframe.html');
-        var link      = $('<a>Link</a>').attr('href', linkHref).addClass(TEST_ELEMENT_CLASS)[0];
-        var iframe    = createIFrame(iFrameSrc);
-        var clicked   = false;
+        var iFrameSrc    = window.QUnitGlobals.getResourceUrl('../../../data/runner/iframe.html', 'runner-iframe.html');
+        var linkHref     = window.QUnitGlobals.getResourceUrl('../../../data/focus-blur-change/iframe.html', 'focus-iframe.html');
+        var link         = $('<a>Link</a>').attr('href', linkHref).addClass(TEST_ELEMENT_CLASS)[0];
+        var iframe       = createIFrame(iFrameSrc);
+        var clicked      = false;
+        var testFinished = false;
 
         link.onclick = function () {
             clicked = true;
         };
 
-        runAsyncTest(
-            function () {
-                window.QUnitGlobals.waitForIframe(iframe)
-                    .then(function () {
-                        equal(iframe.contentWindow.location.pathname, '/sessionId!i/https://example.com/test-resource/runner-iframe.html', 'path is correct before click on link');
+        var watchdog = wait(10000);
 
-                        iframe.contentDocument.body.appendChild(link);
-                        link.focus();
+        var runTest = function () {
+            return window.QUnitGlobals
+                .waitForIframe(iframe)
+                .then(function () {
+                    equal(iframe.contentWindow.location.pathname, '/sessionId!i/https://example.com/test-resource/runner-iframe.html', 'path is correct before click on link');
 
-                        //NOTE: we need setTimeout to wait for focus in IE
-                        window.setTimeout(function () {
-                            equal(domUtils.getActiveElement(), iframe);
-                            equal(domUtils.getActiveElement(iframe.contentDocument), link);
+                    iframe.contentDocument.body.appendChild(link);
+                    link.focus();
 
-                            actionsAPI.press('enter');
-                        }, 1000);
-                    });
+                    // NOTE: we need setTimeout to wait for focus in IE
+                    return wait(browserUtils.isIE ? 1000 : 0);
+                })
+                .then(function () {
+                    equal(domUtils.getActiveElement(), iframe);
+                    equal(domUtils.getActiveElement(iframe.contentDocument), link);
 
-                document.body.appendChild(iframe);
-            },
-            function () {
-                equal(iframe.contentWindow.location.pathname, '/sessionId/https://example.com/test-resource/focus-iframe.html', 'path is correct after click on link');
-                ok(clicked);
-            },
-            5000,
-            1000
-        );
+                    actionsAPI.press('enter');
+
+                    return waitForIframeReloaded(iframe);
+                })
+                .then(function () {
+                    equal(iframe.contentWindow.location.pathname, '/sessionId/https://example.com/test-resource/focus-iframe.html', 'path is correct before click on link');
+                    ok(clicked);
+
+                    testFinished = true;
+                });
+        };
+
+        Promise
+            .race([watchdog, runTest()])
+            .then(function () {
+                if (!testFinished)
+                    ok(false, 'Test timeout is exceed');
+
+                start();
+            });
+
+        document.body.appendChild(iframe);
     });
 
     asyncTest('B253200 - TestCafe doesn\'t emulate browsers behavior for press "enter" key on the focused HyperLink editor (link with javascript)', function () {
-        var iFrameSrc = window.QUnitGlobals.getResourceUrl('../../../data/runner/iframe.html', 'runner-iframe.html');
-        var linkHref  = window.QUnitGlobals.getResourceUrl('../../../data/focus-blur-change/iframe.html', 'focus-iframe.html');
-        var link      = $('<a>Link</a>').attr('href', 'javascript: window.location.href = "' + linkHref + '"')[0];
-        var iframe    = createIFrame(iFrameSrc);
-        var clicked   = false;
+        var iFrameSrc    = window.QUnitGlobals.getResourceUrl('../../../data/runner/iframe.html', 'runner-iframe.html');
+        var linkHref     = window.QUnitGlobals.getResourceUrl('../../../data/focus-blur-change/iframe.html', 'focus-iframe.html');
+        var link         = $('<a>Link</a>').attr('href', 'javascript: window.location.href = "' + linkHref + '"')[0];
+        var iframe       = createIFrame(iFrameSrc);
+        var clicked      = false;
+        var testFinished = false;
 
         link.onclick = function () {
             clicked = true;
         };
 
-        runAsyncTest(
-            function () {
-                window.QUnitGlobals.waitForIframe(iframe)
-                    .then(function () {
-                        equal(iframe.contentWindow.location.pathname, '/sessionId!i/https://example.com/test-resource/runner-iframe.html', 'path is correct before click on link');
+        var watchdog = wait(10000);
 
-                        iframe.contentWindow.document.body.appendChild(link);
-                        link.focus();
+        var runTest = function () {
+            return window.QUnitGlobals
+                .waitForIframe(iframe)
+                .then(function () {
+                    equal(iframe.contentWindow.location.pathname, '/sessionId!i/https://example.com/test-resource/runner-iframe.html', 'path is correct before click on link');
 
-                        //NOTE: we need setTimeout to wait for focus in IE
-                        window.setTimeout(function () {
-                            equal(domUtils.getActiveElement(), iframe);
-                            equal(domUtils.getActiveElement(iframe.contentDocument), link);
+                    iframe.contentDocument.body.appendChild(link);
+                    link.focus();
 
-                            actionsAPI.press('enter');
-                        }, 1000);
-                    });
+                    // NOTE: we need setTimeout to wait for focus in IE
+                    return wait(browserUtils.isIE ? 1000 : 0);
+                })
+                .then(function () {
+                    equal(domUtils.getActiveElement(), iframe);
+                    equal(domUtils.getActiveElement(iframe.contentDocument), link);
 
-                document.body.appendChild(iframe);
-            },
-            function () {
-                equal(iframe.contentWindow.location.pathname, '/sessionId!i/https://example.com/test-resource/focus-iframe.html', 'path is correct after click on link');
-                ok(clicked);
-            },
-            5000,
-            1000
-        );
+                    actionsAPI.press('enter');
+
+                    return waitForIframeReloaded(iframe);
+                })
+                .then(function () {
+                    equal(iframe.contentWindow.location.pathname, '/sessionId!i/https://example.com/test-resource/focus-iframe.html', 'path is correct after click on link');
+                    ok(clicked);
+
+                    testFinished = true;
+                });
+        };
+
+        Promise
+            .race([watchdog, runTest()])
+            .then(function () {
+                if (!testFinished)
+                    ok(false, 'Test timeout is exceed');
+
+                start();
+            });
+
+        document.body.appendChild(iframe);
     });
 });
