@@ -29,7 +29,7 @@ export default class TestRun extends Session {
         this.running = false;
         this.state   = STATE.initial;
 
-        this.pendingCommand         = null;
+        this.pendingDriverTask      = null;
         this.pendingRequest         = null;
         this.pendingJsError         = null;
         this.currentCommandCallsite = null;
@@ -139,14 +139,14 @@ export default class TestRun extends Session {
 
 
     // Pending command and request
-    _resolvePendingCommand (commandResult) {
-        this.pendingCommand.resolve(commandResult);
-        this.pendingCommand = null;
+    _resolvePendingDriverTask (result) {
+        this.pendingDriverTask.resolve(result);
+        this.pendingDriverTask = null;
     }
 
-    _rejectPendingCommand (err) {
-        this.pendingCommand.reject(err);
-        this.pendingCommand = null;
+    _rejectPendingDriverTask (err) {
+        this.pendingDriverTask.reject(err);
+        this.pendingDriverTask = null;
     }
 
     _resolvePendingRequest (command) {
@@ -155,13 +155,13 @@ export default class TestRun extends Session {
     }
 
     _addPendingCommand (command) {
-        return new Promise((resolve, reject) => this.pendingCommand = { command, resolve, reject });
+        return new Promise((resolve, reject) => this.pendingDriverTask = { command, resolve, reject });
     }
 
 
     // Execute command
     executeCommand (command, callsite) {
-        assert(!this.pendingCommand, 'Internal error: an attempt to execute a command when a previous command is still being executed was detected.');
+        assert(!this.pendingDriverTask, 'Internal error: an attempt to execute a command when a previous command is still being executed was detected.');
 
         this.debugLog.command(command);
 
@@ -191,7 +191,7 @@ TestRun.activeTestRuns = {};
 var ServiceMessages = TestRun.prototype;
 
 ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
-    var commandResult = msg.commandResult;
+    var driverStatus = msg.status;
 
     this.debugLog.driverMessage(msg);
 
@@ -200,31 +200,27 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     if (!this.running)
         this._start();
 
-    if (this.pendingCommand) {
-        //NOTE: ignore client messages if testDone command is received
-        if (commandResult && !isTestDoneCommand(this.pendingCommand)) {
-            if (commandResult.failed)
-                this._rejectPendingCommand(commandResult.err);
+
+    if (driverStatus.pageError && this.pendingDriverTask && isCommandRejectableByPageError(this.pendingDriverTask.command))
+        this._rejectPendingDriverTask(driverStatus.pageError);
+    else {
+        this.pendingJsError = this.pendingJsError || driverStatus.pageError;
+
+        if (this.pendingDriverTask) {
+            if (!driverStatus.isCommandResult)
+                return Promise.resolve(this.pendingDriverTask.command);
+
+            if (isTestDoneCommand(this.pendingDriverTask.command)) {
+                this.pendingDriverTask.resolve();
+                return null;
+            }
+
+            if (driverStatus.executionError)
+                this._rejectPendingDriverTask(driverStatus.executionError);
             else
-                this._resolvePendingCommand(commandResult);
+                this._resolvePendingDriverTask(driverStatus.result);
         }
-        else
-            return Promise.resolve(this.pendingCommand.command);
     }
 
     return new Promise((resolve, reject) => this.pendingRequest = { resolve, reject });
-};
-
-ServiceMessages[CLIENT_MESSAGES.jsError] = function (msg) {
-    this.debugLog.error(msg.err);
-
-    if (this.pendingCommand && isCommandRejectableByPageError(this.pendingCommand))
-        this._rejectPendingCommand(msg.err);
-    else
-        this.pendingJsError = msg.err;
-};
-
-ServiceMessages[CLIENT_MESSAGES.done] = function () {
-    this.debugLog.testDone();
-    this.pendingCommand.resolve();
 };

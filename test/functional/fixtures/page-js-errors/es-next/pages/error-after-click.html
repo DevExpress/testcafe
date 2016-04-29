@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error after click</title>
+</head>
+<body>
+<input type="button" id="button" value="Click to raise an error"/>
+
+<script>
+    document.getElementById('button').addEventListener('click', function () {
+        throw new Error('Error on click');
+    });
+</script>
+</body>
+</html>

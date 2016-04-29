@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error before reload</title>
+</head>
+<body>
+<input type="button" id="button" value="Click to raise an error and reload"/>
+
+<script>
+    document.getElementById('button').addEventListener('click', function () {
+        window.location = 'index.html';
+    });
+
+    document.getElementById('button').addEventListener('click', function () {
+        throw new Error('Error before reload');
+    });
+</script>
+</body>
+</html>

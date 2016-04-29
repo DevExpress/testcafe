@@ -1,4 +1,5 @@
 import hammerhead from '../deps/hammerhead';
+import DriverStatus from '../status';
 
 var Promise = hammerhead.Promise;
 
@@ -9,13 +10,13 @@ export default function executeHybridFnCommand (command) {
             var fn = eval(command.fnCode);
             /* eslint-enable no-eval */
 
-            var fnResult = fn.apply(window, command.args);
+            var result = fn.apply(window, command.args);
 
-            resolve({ failed: false, fnResult });
+            resolve(new DriverStatus({ isCommandResult: true, result }));
         }
         catch (err) {
             // TODO proper error handling
-            resolve({ failed: false, fnResult: err.message });
+            resolve(new DriverStatus({ isCommandResult: true, result: err.message }));
         }
     });
 }

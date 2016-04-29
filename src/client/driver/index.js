@@ -10,6 +10,7 @@ import * as browser from '../browser';
 import executeActionCommand from './command-executors/execute-action-command';
 import executeHybridFnCommand from './command-executors/execute-hybrid-fn-command';
 import ContextStorage from './storage';
+import DriverStatus from './status';
 
 var transport         = hammerhead.transport;
 var Promise           = hammerhead.Promise;
@@ -19,9 +20,10 @@ var eventUtils        = testCafeCore.eventUtils;
 var modalBackground   = testCafeUI.modalBackground;
 
 
-const COMMAND_EXECUTING_FLAG            = 'testcafe|driver|command-executing-flag';
-const COMMAND_INTERRUPTED_BY_ERROR_FLAG = 'testcafe|driver|command-interrupted-by-error-flag';
-const TEST_DONE_SENT_FLAG               = 'testcafe|driver|test-done-sent-flag';
+const COMMAND_EXECUTING_FLAG = 'testcafe|driver|command-executing-flag';
+const PENDING_PAGE_ERROR     = 'testcafe|driver|pending-page-error';
+const TEST_DONE_SENT_FLAG    = 'testcafe|driver|test-done-sent-flag';
+const PENDING_STATUS         = 'testcafe|driver|pending-status';
 
 
 export default class ClientDriver {
@@ -31,6 +33,7 @@ export default class ClientDriver {
         this.browserStatusUrl           = browserStatusUrl;
         this.elementAvailabilityTimeout = elementAvailabilityTimeout;
         this.contextStorage             = new ContextStorage(window, testRunId);
+        this.beforeUnloadRaised         = false;
 
         this.pageInitialXhrBarrier = new XhrBarrier();
 
@@ -42,11 +45,18 @@ export default class ClientDriver {
 
         modalBackground.initAndShowLoadingText();
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
+        hammerhead.on(hammerhead.EVENTS.beforeUnload, () => this.beforeUnloadRaised = true);
+
+        var pendingStatus = this.contextStorage.getItem(PENDING_STATUS, status);
 
         // NOTE: we should not send any message to the server if we've
         // sent the 'test-done' message but haven't got the response.
         if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG)) {
-            browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR);
+            if (pendingStatus)
+                this._onTestDone();
+            else
+                browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR);
+
             return;
         }
 
@@ -54,15 +64,13 @@ export default class ClientDriver {
             .documentReady()
             .then(() => this.pageInitialXhrBarrier.wait(true))
             .then(() => {
-                var inCommandExecution        = this.contextStorage.getItem(COMMAND_EXECUTING_FLAG);
-                var commandInterruptedByError = this.contextStorage.getItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG);
+                var inCommandExecution = this.contextStorage.getItem(COMMAND_EXECUTING_FLAG);
 
                 modalBackground.hide();
 
-                if (inCommandExecution && !commandInterruptedByError)
-                    this._onReady({ failed: false });
-                else
-                    this._onReady(null);
+                var status = pendingStatus || new DriverStatus({ isCommandResult: inCommandExecution });
+
+                this._onReady(status);
             });
     }
 
@@ -72,18 +80,43 @@ export default class ClientDriver {
         if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
             return Promise.resolve();
 
-        this.contextStorage.setItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG, true);
+        var error = new UncaughtErrorOnPage(err.msg || err.message, err.pageUrl);
 
-        return transport.queuedAsyncServiceMsg({
-            cmd: MESSAGE.jsError,
-            err: new UncaughtErrorOnPage(err.msg || err.message, err.pageUrl)
-        });
+        if (!this.contextStorage.getItem(PENDING_PAGE_ERROR))
+            this.contextStorage.setItem(PENDING_PAGE_ERROR, error);
     }
 
-    _onReady (commandResult) {
-        transport
-            .queuedAsyncServiceMsg({ cmd: MESSAGE.ready, commandResult })
+    _addPendingErrorToStatus (status) {
+        var pendingPageError = this.contextStorage.getItem(PENDING_PAGE_ERROR);
+
+        if (pendingPageError) {
+            this.contextStorage.setItem(PENDING_PAGE_ERROR, null);
+            status.pageError = pendingPageError;
+        }
+    }
+
+    _sendStatusToServer (status) {
+        this._addPendingErrorToStatus(status);
+
+        // NOTE: postpone status sending if the page is unloading
+        if (this.beforeUnloadRaised) {
+            this.contextStorage.setItem(PENDING_STATUS, status);
+
+            return new Promise(testCafeCore.noop);
+        }
+
+        this.contextStorage.setItem(PENDING_STATUS, null);
+
+        return transport.queuedAsyncServiceMsg({ cmd: MESSAGE.ready, status });
+    }
+
+    _onReady (status) {
+        this._sendStatusToServer(status)
             .then(command => {
+                //NOTE: do not execute the next command if the page is unloading
+                if (this.beforeUnloadRaised)
+                    return;
+
                 if (command)
                     this._onCommand(command);
                 else {
@@ -94,20 +127,16 @@ export default class ClientDriver {
     }
 
     _onActionCommand (command) {
-        this.contextStorage.setItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG, false);
-
         var { startPromise, completionPromise } = executeActionCommand(command, this.elementAvailabilityTimeout);
 
         startPromise.then(() => this.contextStorage.setItem(COMMAND_EXECUTING_FLAG, true));
 
         completionPromise
             .catch(err => this._onJsError(err))
-            .then(commandResult => {
-                var commandInterruptedByError = this.contextStorage.getItem(COMMAND_INTERRUPTED_BY_ERROR_FLAG);
-
+            .then(driverStatus => {
                 this.contextStorage.setItem(COMMAND_EXECUTING_FLAG, false);
 
-                return this._onReady(commandInterruptedByError ? null : commandResult);
+                return this._onReady(driverStatus);
             });
     }
 
@@ -116,7 +145,10 @@ export default class ClientDriver {
             this._onTestDone();
 
         else if (command.type === COMMAND_TYPE.execHybridFn)
-            executeHybridFnCommand(command).then(commandResult => this._onReady(commandResult));
+            executeHybridFnCommand(command).then(driverStatus => this._onReady(driverStatus));
+
+        else if (this.contextStorage.getItem(PENDING_PAGE_ERROR))
+            this._onReady(new DriverStatus({ isCommandResult: true }));
 
         else
             this._onActionCommand(command);
@@ -125,8 +157,8 @@ export default class ClientDriver {
     _onTestDone () {
         this.contextStorage.setItem(TEST_DONE_SENT_FLAG, true);
 
-        transport
-            .queuedAsyncServiceMsg({ cmd: MESSAGE.done })
+        this
+            ._sendStatusToServer(new DriverStatus({ isCommandResult: true }))
             .then(() => browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR));
     }
 

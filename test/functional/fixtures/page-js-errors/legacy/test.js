@@ -1,8 +1,8 @@
 var CUSTOM_JS_ERROR            = '%TC_TEST_ERR%';
-var errorInEachBrowserContains = require('../../assertion-helper.js').errorInEachBrowserContains;
+var errorInEachBrowserContains = require('../../../assertion-helper.js').errorInEachBrowserContains;
 
 
-describe('Uncaught js errors', function () {
+describe('[Legacy] Uncaught js errors', function () {
     it('Should fail if there is no onerror handler', function () {
         return runTests('testcafe-fixtures/no-handler.test.js', null, { shouldFail: true })
             .catch(function (errs) {
@@ -59,7 +59,7 @@ describe('Uncaught js errors', function () {
         it('Should include destination URL in the error message', function () {
             return runTests('testcafe-fixtures/no-handler.test.js', null, { shouldFail: true })
                 .catch(function (errs) {
-                    errorInEachBrowserContains(errs, 'on page "http://localhost:3000/uncaught-js-errors/pages/no-handler.html"', 0);
+                    errorInEachBrowserContains(errs, 'on page "http://localhost:3000/page-js-errors/legacy/pages/no-handler.html"', 0);
                 });
         });
     });

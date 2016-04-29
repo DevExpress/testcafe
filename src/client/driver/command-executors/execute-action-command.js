@@ -2,6 +2,7 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import testCafeRunner from '../deps/testcafe-runner';
 import testCafeUI from '../deps/testcafe-ui';
+import DriverStatus from '../status';
 import {
     ActionElementNotFoundError,
     ActionElementIsInvisibleError,
@@ -130,8 +131,8 @@ export default function executeActionCommand (command, elementAvailabilityTimeou
                     pageUnloadBarrier.wait()
                 ]);
             })
-            .then(() => resolve({ failed: false }))
-            .catch(err => resolve({ failed: true, err }));
+            .then(() => resolve(new DriverStatus({ isCommandResult: true })))
+            .catch(err => resolve(new DriverStatus({ isCommandResult: true, executionError: err })));
     });
 
     return { startPromise, completionPromise };
