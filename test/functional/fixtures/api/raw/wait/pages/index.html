@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wait</title>
+</head>
+<body>
+<button id="button1">Call overloading</button>
+<button id="button2" style="display: none">After 1000 ms</button>
+
+<script>
+    window.setTimeout(function () {
+        document.getElementById('button2').style.display = "block";
+    }, 1000);
+
+    document.getElementById('button1').addEventListener('click', function () {
+        window.setTimeout(function () {
+            window.location.href = window.location.href;
+        }, 500);
+    });
+</script>
+</body>
+</html>

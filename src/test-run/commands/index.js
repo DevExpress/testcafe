@@ -188,6 +188,42 @@ export class TypeTextCommand extends Assignable {
     }
 }
 
+export class WaitCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type    = TYPE.wait;
+        this.timeout = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'timeout', type: positiveIntegerArgument, required: true }
+        ];
+    }
+}
+
+export class WaitForElementCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type     = TYPE.waitForElement;
+        this.selector = null;
+        this.timeout  = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'timeout', type: positiveIntegerArgument }
+        ];
+    }
+}
+
 export class DragCommand extends Assignable {
     constructor (obj) {
         super(obj);
@@ -364,6 +400,12 @@ export function createCommandFromObject (obj) {
     if (obj.type === TYPE.pressKey)
         return new PressKeyCommand(obj);
 
+    if (obj.type === TYPE.wait)
+        return new WaitCommand(obj);
+
+    if (obj.type === TYPE.waitForElement)
+        return new WaitForElementCommand(obj);
+
     if (obj.type === TYPE.testDone)
         return new TestDoneCommand();
 }
@@ -373,6 +415,6 @@ export function isTestDoneCommand (command) {
 }
 
 export function isCommandRejectableByPageError (command) {
-    return !isTestDoneCommand(command) && command.type !== TYPE.execHybridFn;
+    return !isTestDoneCommand(command) && command.type !== TYPE.execHybridFn && command.type !== TYPE.waitForElement;
 }
 
