@@ -14,9 +14,24 @@ const ASYNC_TO_GENERATOR_OUTPUT_CODE = asyncToGenerator(noop).toString();
 
 
 var babelArtifactPolyfills = {
-    Promise: {
+    'Promise': {
         re:     /_promise(\d+)\.default/,
         create: match => `var _promise${match[1]} = { default: Promise };`
+    },
+
+    'Object.keys()': {
+        re:     /_keys(\d+)\.default/,
+        create: match => `var _keys${match[1]} = { default: Object.keys };`
+    },
+
+    'JSON.stringify()': {
+        re:     /_stringify(\d+)\.default/,
+        create: match => `var _stringify${match[1]} = { default: JSON.stringify };`
+    },
+
+    'typeof': {
+        re:     /_typeof(\d+)\.default/,
+        create: match => `var _typeof${match[1]} = { default: function(obj) { return typeof obj; } };`
     }
 };
 
