@@ -138,7 +138,11 @@ export default class TestRun extends Session {
     }
 
 
-    // Pending command and request
+    // Pending driver task and request
+    _addPendingDriverTask (command) {
+        return new Promise((resolve, reject) => this.pendingDriverTask = { command, resolve, reject });
+    }
+
     _resolvePendingDriverTask (result) {
         this.pendingDriverTask.resolve(result);
         this.pendingDriverTask = null;
@@ -152,10 +156,6 @@ export default class TestRun extends Session {
     _resolvePendingRequest (command) {
         this.pendingRequest.resolve(command);
         this.pendingRequest = null;
-    }
-
-    _addPendingCommand (command) {
-        return new Promise((resolve, reject) => this.pendingDriverTask = { command, resolve, reject });
     }
 
 
@@ -178,7 +178,7 @@ export default class TestRun extends Session {
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
-        return this._addPendingCommand(command);
+        return this._addPendingDriverTask(command);
     }
 }
 
@@ -191,8 +191,6 @@ TestRun.activeTestRuns = {};
 var ServiceMessages = TestRun.prototype;
 
 ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
-    var driverStatus = msg.status;
-
     this.debugLog.driverMessage(msg);
 
     this.pendingRequest = null;
@@ -200,8 +198,12 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     if (!this.running)
         this._start();
 
+    var driverStatus                  = msg.status;
+    var shouldRejectPendingDriverTask = driverStatus.pageError &&
+                                        this.pendingDriverTask &&
+                                        isCommandRejectableByPageError(this.pendingDriverTask.command);
 
-    if (driverStatus.pageError && this.pendingDriverTask && isCommandRejectableByPageError(this.pendingDriverTask.command))
+    if (shouldRejectPendingDriverTask)
         this._rejectPendingDriverTask(driverStatus.pageError);
     else {
         this.pendingJsError = this.pendingJsError || driverStatus.pageError;
