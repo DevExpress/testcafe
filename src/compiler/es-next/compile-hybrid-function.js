@@ -1,6 +1,6 @@
 import { wrapDomAccessors } from 'testcafe-hammerhead';
 import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
-import { noop } from 'lodash';
+import { noop, escapeRegExp as escapeRe } from 'lodash';
 import loadBabelLibs from './load-babel-libs';
 import NODE_VER from '../../utils/node-version';
 import { APIError } from '../../errors/runtime';
@@ -15,23 +15,38 @@ const ASYNC_TO_GENERATOR_OUTPUT_CODE = asyncToGenerator(noop).toString();
 
 var babelArtifactPolyfills = {
     'Promise': {
-        re:     /_promise(\d+)\.default/,
-        create: match => `var _promise${match[1]} = { default: Promise };`
+        re:                 /_promise(\d+)\.default/,
+        create:             match => `var _promise${match[1]} = { default: Promise };`,
+        removeMatchingCode: false
     },
 
     'Object.keys()': {
-        re:     /_keys(\d+)\.default/,
-        create: match => `var _keys${match[1]} = { default: Object.keys };`
+        re:                 /_keys(\d+)\.default/,
+        create:             match => `var _keys${match[1]} = { default: Object.keys };`,
+        removeMatchingCode: false
     },
 
     'JSON.stringify()': {
-        re:     /_stringify(\d+)\.default/,
-        create: match => `var _stringify${match[1]} = { default: JSON.stringify };`
+        re:                 /_stringify(\d+)\.default/,
+        create:             match => `var _stringify${match[1]} = { default: JSON.stringify };`,
+        removeMatchingCode: false
+    },
+
+    'typeof (Node.js 10)': {
+        re:                 /_typeof(\d+)\.default/,
+        create:             match => `var _typeof${match[1]} = { default: function(obj) { return typeof obj; } };`,
+        removeMatchingCode: false
     },
 
     'typeof': {
-        re:     /_typeof(\d+)\.default/,
-        create: match => `var _typeof${match[1]} = { default: function(obj) { return typeof obj; } };`
+        re: new RegExp(escapeRe(
+            'var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? ' +
+            'function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" ' +
+            '&& obj.constructor === Symbol ? "symbol" : typeof obj;};'
+        )),
+
+        create:             () => 'var _typeof = function(obj) { return typeof obj; };',
+        removeMatchingCode: true
     }
 };
 
@@ -60,14 +75,23 @@ function downgradeES (fnCode) {
         .trim();
 }
 
-function getBabelArtifactsPolyfill (fnCode) {
-    return Object
+function addBabelArtifactsPolyfills (fnCode) {
+    var polyfills = Object
         .values(babelArtifactPolyfills)
-        .reduce((code, polyfill) => {
+        .reduce((polyfillsCode, polyfill) => {
             var match = fnCode.match(polyfill.re);
 
-            return match ? code + polyfill.create(match) : code;
+            if (match) {
+                if (polyfill.removeMatchingCode)
+                    fnCode = fnCode.replace(polyfill.re, '');
+
+                return polyfillsCode + polyfill.create(match);
+            }
+
+            return polyfillsCode;
         }, '');
+
+    return `(function(){${polyfills} return ${fnCode}})();`;
 }
 
 export default function compileHybridFunction (fnCode) {
@@ -91,5 +115,5 @@ export default function compileHybridFunction (fnCode) {
     if (!TRAILING_SEMICOLON_RE.test(fnCode))
         fnCode += ';';
 
-    return `(function(){${getBabelArtifactsPolyfill(fnCode)} return ${fnCode}})();`;
+    return addBabelArtifactsPolyfills(fnCode);
 }

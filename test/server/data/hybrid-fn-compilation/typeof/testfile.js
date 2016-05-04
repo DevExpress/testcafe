@@ -8,8 +8,6 @@ function compile (fn) {
 
 test('Test', () => {
     return compile(() => {
-        return function (someParam) {
-            return typeof someParam;
-        };
+        return typeof someObj;
     });
 });

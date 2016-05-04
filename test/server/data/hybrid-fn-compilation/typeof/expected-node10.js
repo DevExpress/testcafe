@@ -5,8 +5,6 @@
         }
     };
     return (function () {
-        return function (someParam) {
-            return typeof someParam === 'undefined' ? 'undefined' : (0, _typeof3.default)(someParam);
-        };
+        return typeof someObj === "undefined" ? "undefined" : (0, _typeof3.default)(someObj);
     });
 })();
