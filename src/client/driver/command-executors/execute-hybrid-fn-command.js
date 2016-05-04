@@ -12,13 +12,7 @@ export default function executeHybridFnCommand (command) {
             return eval(command.fnCode);
             /* eslint-enable no-eval */
         })
-        .then(fn => {
-            return fn.apply(window, command.args);
-        })
-        .then(result => {
-            return new DriverStatus({ isCommandResult: true, result });
-        })
-        .catch(err => {
-            return new DriverStatus({ isCommandResult: true, result: err.message });
-        });
+        .then(fn => fn.apply(window, command.args))
+        .then(result => new DriverStatus({ isCommandResult: true, result }))
+        .catch(err => new DriverStatus({ isCommandResult: true, result: err.message }));
 }
