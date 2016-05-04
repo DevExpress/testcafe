@@ -97,4 +97,8 @@ describe('[API] Hybrid function', function () {
     it('Should support Promises as a result', function () {
         return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Promises support');
     });
+
+    it('Should polyfill Babel artifacts', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Babel artifacts polyfills');
+    });
 });

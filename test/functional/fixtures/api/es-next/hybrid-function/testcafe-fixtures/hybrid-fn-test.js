@@ -105,3 +105,12 @@ test('Promises support', async () => {
     expect(res).eql(42);
 });
 
+test('Babel artifacts polyfills', async () => {
+    var res = await Hybrid(() => {
+        var obj = { 1: '1', '2': 2 };
+
+        return typeof obj === 'object' ? JSON.stringify(Object.keys(obj)) : null;
+    })();
+
+    expect(JSON.parse(res)).eql(['1', '2']);
+});
