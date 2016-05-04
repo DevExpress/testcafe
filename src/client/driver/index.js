@@ -9,6 +9,7 @@ import { UncaughtErrorOnPage } from '../../errors/test-run';
 import * as browser from '../browser';
 import executeActionCommand from './command-executors/execute-action-command';
 import executeWaitForElementCommand from './command-executors/execute-wait-for-element-command';
+import executeNavigateToCommand from './command-executors/execute-navigate-to-command';
 import executeHybridFnCommand from './command-executors/execute-hybrid-fn-command';
 import ContextStorage from './storage';
 import DriverStatus from './status';
@@ -146,6 +147,17 @@ export default class ClientDriver {
             .then(driverStatus => this._onReady(driverStatus));
     }
 
+    _onNavigateToCommand (command) {
+        this.contextStorage.setItem(COMMAND_EXECUTING_FLAG, true);
+
+        executeNavigateToCommand(command)
+            .then(driverStatus => {
+                this.contextStorage.setItem(COMMAND_EXECUTING_FLAG, false);
+
+                return this._onReady(driverStatus);
+            });
+    }
+
     _onCommand (command) {
         if (command.type === COMMAND_TYPE.testDone)
             this._onTestDone();
@@ -158,6 +170,9 @@ export default class ClientDriver {
 
         else if (command.type === COMMAND_TYPE.waitForElement)
             this._onWaitForElementCommand(command);
+
+        else if (command.type === COMMAND_TYPE.navigateTo)
+            this._onNavigateToCommand(command);
 
         else
             this._onActionCommand(command);

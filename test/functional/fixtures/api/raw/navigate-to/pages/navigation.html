@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page after navigation</title>
+</head>
+<body>
+<button id="button">Button</button>
+<script>
+    document.getElementById('button').addEventListener('click', function () {
+        throw new Error("Click raised on page after navigation");
+    });
+</script>
+</body>
+</html>

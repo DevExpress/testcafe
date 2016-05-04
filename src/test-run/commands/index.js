@@ -6,10 +6,15 @@ import {
     ActionStringArgumentError,
     ActionIntegerArgumentError,
     ActionPositiveIntegerArgumentError,
-    ActionAdditionalSelectorTypeError
+    ActionAdditionalSelectorTypeError,
+    ActionUnsupportedUrlProtocolError
 } from '../../errors/test-run';
 
 import { ClickOptions, MouseOptions, TypeOptions } from './options';
+
+
+const PROTOCOL_RE           = /^([\w-]+?)(?=\:)/;
+const SUPPORTED_PROTOCOL_RE = /^https?/i;
 
 
 // Validators
@@ -63,14 +68,24 @@ function positiveIntegerArgument (name, val) {
         throw new ActionPositiveIntegerArgumentError(name, val);
 }
 
-function nonEmptyStringArgument (option, val) {
+function nonEmptyStringArgument (name, val) {
     var type = typeof val;
 
     if (type !== 'string')
-        throw new ActionStringArgumentError(option, type);
+        throw new ActionStringArgumentError(name, type);
 
     if (!val.length)
-        throw new ActionStringArgumentError(option);
+        throw new ActionStringArgumentError(name);
+}
+
+function navigateToUrlArgument (name, val) {
+    nonEmptyStringArgument(name, val);
+
+    var url      = val.trim();
+    var protocol = url.match(PROTOCOL_RE);
+
+    if (protocol && !SUPPORTED_PROTOCOL_RE.test(protocol[0]))
+        throw new ActionUnsupportedUrlProtocolError(name, protocol[0]);
 }
 
 // Initializers
@@ -184,42 +199,6 @@ export class TypeTextCommand extends Assignable {
             { name: 'selector', type: selector, init: initSelector, required: true },
             { name: 'text', type: nonEmptyStringArgument, required: true },
             { name: 'options', type: actionOptions, init: initTypeOptions, required: true }
-        ];
-    }
-}
-
-export class WaitCommand extends Assignable {
-    constructor (obj) {
-        super(obj);
-
-        this.type    = TYPE.wait;
-        this.timeout = null;
-
-        this._assignFrom(obj, true);
-    }
-
-    _getAssignableProperties () {
-        return [
-            { name: 'timeout', type: positiveIntegerArgument, required: true }
-        ];
-    }
-}
-
-export class WaitForElementCommand extends Assignable {
-    constructor (obj) {
-        super(obj);
-
-        this.type     = TYPE.waitForElement;
-        this.selector = null;
-        this.timeout  = null;
-
-        this._assignFrom(obj, true);
-    }
-
-    _getAssignableProperties () {
-        return [
-            { name: 'selector', type: selector, init: initSelector, required: true },
-            { name: 'timeout', type: positiveIntegerArgument }
         ];
     }
 }
@@ -351,6 +330,58 @@ export class PressKeyCommand extends Assignable {
     }
 }
 
+export class WaitCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type    = TYPE.wait;
+        this.timeout = null;
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'timeout', type: positiveIntegerArgument, required: true }
+        ];
+    }
+}
+
+export class WaitForElementCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type     = TYPE.waitForElement;
+        this.selector = null;
+        this.timeout  = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'timeout', type: positiveIntegerArgument }
+        ];
+    }
+}
+
+export class NavigateToCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type = TYPE.navigateTo;
+        this.url  = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'url', type: navigateToUrlArgument, required: true }
+        ];
+    }
+}
+
 export class ExecuteHybridFunctionCommand {
     constructor (fnCode, args) {
         this.type   = TYPE.execHybridFn;
@@ -405,6 +436,9 @@ export function createCommandFromObject (obj) {
 
     if (obj.type === TYPE.waitForElement)
         return new WaitForElementCommand(obj);
+
+    if (obj.type === TYPE.navigateTo)
+        return new NavigateToCommand(obj);
 
     if (obj.type === TYPE.testDone)
         return new TestDoneCommand();

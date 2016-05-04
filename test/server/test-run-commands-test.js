@@ -700,6 +700,20 @@ describe('Test run commands', function () {
             });
         });
 
+        it('Should create NavigateToCommand from object', function () {
+            var commandObj = {
+                type: TYPE.navigateTo,
+                url:  'localhost'
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type: TYPE.navigateTo,
+                url:  'localhost'
+            });
+        });
+
         it('Should create TestDone command from object', function () {
             var commandObj = { type: TYPE.testDone, hey: '42' };
 
@@ -1786,6 +1800,75 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'timeout',
                     actualValue:     10.5,
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate NavigateToCommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.navigateTo
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'url',
+                    actualValue:     'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.navigateTo,
+                        url:  true
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'url',
+                    actualValue:     'boolean',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.navigateTo,
+                        url:  ''
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'url',
+                    actualValue:     '""',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.navigateTo,
+                        url:  'file://index.html'
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionUnsupportedUrlProtocolError,
+                    protocol:        'file',
+                    argumentName:    'url',
                     callsite:        null
                 }
             );
