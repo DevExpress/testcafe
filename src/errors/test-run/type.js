@@ -4,9 +4,10 @@
 // -------------------------------------------------------------
 
 export default {
-    uncaughtErrorOnPage:              'uncaughtErrorOnPage',
-    uncaughtErrorInTestCode:          'uncaughtErrorInTestCode',
-    uncaughtNonErrorObjectInTestCode: 'uncaughtNonErrorObjectInTestCode',
+    uncaughtErrorOnPage:               'uncaughtErrorOnPage',
+    uncaughtErrorInTestCode:           'uncaughtErrorInTestCode',
+    uncaughtNonErrorObjectInTestCode:  'uncaughtNonErrorObjectInTestCode',
+    uncaughtErrorInClientExecutedCode: 'uncaughtErrorInClientExecutedCode',
 
     missingAwaitError: 'missingAwaitError',
 

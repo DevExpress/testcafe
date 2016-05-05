@@ -56,6 +56,14 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
+    [TYPE.uncaughtErrorInClientExecutedCode]: err => markup(err, `
+        An error occurred in code executed on the client:
+
+        <code>${escapeHtml(err.errMsg)}</code>
+
+        ${err.getCallsiteMarkup()}
+    `),
+
     [TYPE.uncaughtNonErrorObjectInTestCode]: err => markup(err, `
         Uncaught ${err.objType} "${escapeHtml(err.objStr)}" was thrown. Throw <code>Error</code> instead.
     `),

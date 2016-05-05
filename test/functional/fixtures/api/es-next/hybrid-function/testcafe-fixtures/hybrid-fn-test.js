@@ -114,3 +114,21 @@ test('Babel artifacts polyfills', async () => {
 
     expect(JSON.parse(res)).eql(['1', '2']);
 });
+
+test('Error in code', async () => {
+    var fn = Hybrid(() => {
+        throw new Error('Hey ya!');
+    });
+
+    await fn();
+});
+
+test('Error in Promise', async () => {
+    var fn = Hybrid(() => {
+        return Promise.resolve().then(()=> {
+            throw new Error('42');
+        });
+    });
+
+    await fn();
+});

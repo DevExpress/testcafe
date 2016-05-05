@@ -86,6 +86,14 @@ export class UncaughtNonErrorObjectInTestCode extends UncaughtError {
     }
 }
 
+export class UncaughtErrorInClientExecutedCode extends UncaughtError {
+    constructor (err) {
+        super(TYPE.uncaughtErrorInClientExecutedCode);
+
+        this.errMsg = String(err);
+    }
+}
+
 
 // Assertion errors
 //--------------------------------------------------------------------
