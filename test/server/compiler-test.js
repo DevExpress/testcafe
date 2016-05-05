@@ -1,6 +1,7 @@
 var expect      = require('chai').expect;
 var resolve     = require('path').resolve;
 var sep         = require('path').sep;
+var readFile    = require('fs').readFileSync;
 var Promise     = require('pinkie');
 var stackParser = require('error-stack-parser');
 var stripAnsi   = require('strip-ansi');
@@ -8,6 +9,7 @@ var sortBy      = require('lodash').sortBy;
 var Compiler    = require('../../lib/compiler');
 var Role        = require('../../lib/api/common/role');
 var Hybrid      = require('../../lib/api/common/hybrid');
+var NODE_VER    = require('../../lib/utils/node-version');
 
 describe('Compiler', function () {
     var testRunMock = { id: 'yo' };
@@ -193,6 +195,62 @@ describe('Compiler', function () {
                 expect(compiled.tests[0].fixture.pageUrl).eql('http://example.org');
                 expect(compiled.tests[1].fixture.pageUrl).eql('http://example.org');
             });
+    });
+
+    describe('Hybrid function compilation', function () {
+        function normalizeCode (code) {
+            return code
+                .replace(/(\r\n|\n|\r)/gm, ' ')
+                .replace(/'/gm, '"')
+                .replace(/\s+/gm, '');
+        }
+
+        function getExpected (testDir) {
+            if (NODE_VER < 4) {
+                try {
+                    return readFile(testDir + '/expected-node10.js').toString();
+                }
+                catch (err) {
+                    // NOTE: ignore error - we don't have version-specific data
+                }
+            }
+
+            return readFile(testDir + '/expected.js').toString();
+        }
+
+        function testHybridCompilation (testName) {
+            var testDir  = 'test/server/data/hybrid-fn-compilation/' + testName;
+            var src      = testDir + '/testfile.js';
+            var expected = getExpected(testDir);
+
+            return compile(src)
+                .then(function (compiled) {
+                    return compiled.tests[0].fn({ id: 'test' });
+                })
+                .then(function (compiledHybrid) {
+                    expect(normalizeCode(compiledHybrid)).eql(normalizeCode(expected));
+                });
+        }
+
+        it('Should compile basic Hybrid function', function () {
+            return testHybridCompilation('basic');
+        });
+
+        it('Should polyfill Babel `Promises` artifacts', function () {
+            return testHybridCompilation('promises');
+        });
+
+        it('Should polyfill Babel `Object.keys()` artifacts', function () {
+            return testHybridCompilation('object-keys');
+        });
+
+        it('Should polyfill Babel `JSON.stringify()` artifacts', function () {
+            return testHybridCompilation('json-stringify');
+        });
+
+        it('Should polyfill Babel `typeof` artifacts', function () {
+            return testHybridCompilation('typeof');
+        });
     });
 
     describe('Errors', function () {

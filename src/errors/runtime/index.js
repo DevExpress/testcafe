@@ -32,14 +32,14 @@ export class TestCompilationError extends Error {
 }
 
 export class APIError extends Error {
-    constructor (methodName, typeName, template, ...args) {
+    constructor (methodName, template, ...args) {
         var rawMessage = getText(template, ...args);
 
         super(getText(MESSAGE.cannotPrepareTestsDueToError, rawMessage));
 
         // NOTE: `rawMessage` is used in error substitution if it occurs in test run.
         this.rawMessage  = rawMessage;
-        this.callsite    = getCallsite(methodName, typeName);
+        this.callsite    = getCallsite(methodName);
         this.constructor = APIError;
 
         // HACK: prototype properties don't work with built-in subclasses

@@ -90,3 +90,27 @@ test('Bind Hybrid function', async t => {
 test('Invalid Hybrid test run binding', () => {
     Hybrid(() => 123).bindTestRun({});
 });
+
+test('Promises support', async () => {
+    var res = await Hybrid(() => {
+        return Promise
+            .resolve()
+            .then(()=> {
+                return new Promise(resolve => {
+                    window.setTimeout(() => resolve(42), 100);
+                });
+            });
+    })();
+
+    expect(res).eql(42);
+});
+
+test('Babel artifacts polyfills', async () => {
+    var res = await Hybrid(() => {
+        var obj = { 1: '1', '2': 2 };
+
+        return typeof obj === 'object' ? JSON.stringify(Object.keys(obj)) : null;
+    })();
+
+    expect(JSON.parse(res)).eql(['1', '2']);
+});

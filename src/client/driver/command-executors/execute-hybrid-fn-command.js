@@ -4,19 +4,15 @@ import DriverStatus from '../status';
 var Promise = hammerhead.Promise;
 
 export default function executeHybridFnCommand (command) {
-    return new Promise(resolve => {
-        try {
+    return Promise.resolve()
+        .then(() => {
+            // NOTE: `eval` in strict mode will not override context variables
+            'use strict';
             /* eslint-disable no-eval */
-            var fn = eval(command.fnCode);
+            return eval(command.fnCode);
             /* eslint-enable no-eval */
-
-            var result = fn.apply(window, command.args);
-
-            resolve(new DriverStatus({ isCommandResult: true, result }));
-        }
-        catch (err) {
-            // TODO proper error handling
-            resolve(new DriverStatus({ isCommandResult: true, result: err.message }));
-        }
-    });
+        })
+        .then(fn => fn.apply(window, command.args))
+        .then(result => new DriverStatus({ isCommandResult: true, result }))
+        .catch(err => new DriverStatus({ isCommandResult: true, result: err.message }));
 }
