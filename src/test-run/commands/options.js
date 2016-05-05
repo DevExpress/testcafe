@@ -34,39 +34,11 @@ function positiveInteger (option, val) {
         throw new ActionPositiveIntegerOptionError(option, val, true);
 }
 
-function positiveIntegerOrNull (option, val) {
-    if (val === null)
-        return;
-
-    positiveInteger(option, val);
-}
-
 function boolean (option, val) {
     var valType = typeof val;
 
     if (valType !== 'boolean')
         throw new ActionBooleanOptionError(option, valType);
-}
-
-// Select
-export class SelectOptions extends Assignable {
-    constructor (obj, validate) {
-        super();
-
-        // NOTE: start and end positions can be defined by integer values (for 'inputs'
-        // and 'textareas') or {node, offset} objects (for contentEditable elements)
-        this.startPos = null; // TODO
-        this.endPos = null;
-
-        this._assignFrom(obj, validate);
-    }
-
-    _getAssignableProperties () {
-        return [
-            { name: 'startPos' },
-            { name: 'endPos' }
-        ];
-    }
 }
 
 
@@ -128,7 +100,7 @@ export class ClickOptions extends MouseOptions {
 
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
-            { name: 'caretPos', type: positiveIntegerOrNull }
+            { name: 'caretPos', type: positiveInteger }
         ]);
     }
 }

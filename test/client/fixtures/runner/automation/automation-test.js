@@ -10,11 +10,10 @@ var testCafeRunner          = window.getTestCafeModule('testCafeRunner');
 var automation              = testCafeRunner.get('./automation/automation');
 var MouseOptions            = testCafeRunner.get('../../test-run/commands/options').MouseOptions;
 var ClickOptions            = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
-var SelectOptions           = testCafeRunner.get('../../test-run/commands/options').SelectOptions;
 var TypeOptions             = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
 var ClickAutomation         = testCafeRunner.get('./automation/playback/click');
 var DblClickAutomation      = testCafeRunner.get('./automation/playback/dblclick');
-var SelectAutomation        = testCafeRunner.get('./automation/playback/select');
+var SelectTextAutomation = testCafeRunner.get('./automation/playback/select/select-text');
 var TypeAutomation          = testCafeRunner.get('./automation/playback/type');
 var DragToOffsetAutomation  = testCafeRunner.get('./automation/playback/drag/to-offset');
 var PressAutomation         = testCafeRunner.get('./automation/playback/press');
@@ -315,14 +314,9 @@ $(document).ready(function () {
 
         $input[0].value = '123456789qwertyuiop';
 
-        var selectOptions = new SelectOptions({
-            startPos: 10,
-            endPos:   2
-        });
+        var selectTextAutomation = new SelectTextAutomation($input[0], 10, 2);
 
-        var selectAutomation = new SelectAutomation($input[0], selectOptions);
-
-        selectAutomation
+        selectTextAutomation
             .run()
             .then(function () {
                 checkSelection($input[0], 2, 10, true);
@@ -338,14 +332,9 @@ $(document).ready(function () {
         $textarea[0].textContent = value;
         $textarea.text(value);
 
-        var selectOptions = new SelectOptions({
-            startPos: 2,
-            endPos:   value.length - 5
-        });
+        var selectTextAutomation = new SelectTextAutomation($textarea[0], 2, value.length - 5);
 
-        var selectAutomation = new SelectAutomation($textarea[0], selectOptions);
-
-        selectAutomation
+        selectTextAutomation
             .run()
             .then(function () {
                 checkSelection($textarea[0], 2, value.length - 5, false);

@@ -1,5 +1,4 @@
 var expect         = require('chai').expect;
-var SelectOptions  = require('../../lib/test-run/commands/options').SelectOptions;
 var OffsetOptions  = require('../../lib/test-run/commands/options').OffsetOptions;
 var MouseOptions   = require('../../lib/test-run/commands/options').MouseOptions;
 var ClickOptions   = require('../../lib/test-run/commands/options').ClickOptions;
@@ -24,18 +23,6 @@ function assertThrow (fn, expectedErr) {
 
 describe('Test run command options', function () {
     describe('Construction from object and serialization', function () {
-        it('Should create SelectOptions from object', function () {
-            var options = new SelectOptions({
-                endPos: 15,
-                dummy:  false
-            }, false);
-
-            expect(JSON.parse(JSON.stringify(options))).eql({
-                startPos: null,
-                endPos:   15
-            });
-        });
-
         it('Should create OffsetOptions from object', function () {
             var options = new OffsetOptions({
                 offsetY: 15,

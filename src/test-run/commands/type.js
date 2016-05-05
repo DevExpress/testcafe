@@ -4,13 +4,16 @@
 // -------------------------------------------------------------
 
 export default {
-    click:         'click',
-    rightClick:    'right-click',
-    doubleClick:   'double-click',
-    drag:          'drag',
-    dragToElement: 'drag-to-element',
-    hover:         'hover',
-    typeText:      'type-text',
-    execHybridFn:  'execHybridFn',
-    testDone:      'test-done'
+    click:                 'click',
+    rightClick:            'right-click',
+    doubleClick:           'double-click',
+    drag:                  'drag',
+    dragToElement:         'drag-to-element',
+    hover:                 'hover',
+    typeText:              'type-text',
+    selectText:            'select-text',
+    selectTextAreaContent: 'select-text-area-content',
+    selectEditableContent: 'select-editable-content',
+    execHybridFn:          'execHybridFn',
+    testDone:              'test-done'
 };

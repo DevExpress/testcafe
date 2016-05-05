@@ -72,16 +72,28 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.dragDestinationSelectorTypeError]: err => markup(err, `
-        The destination selector is expected to be a string, but it was <code>${err.actualType}</code>.
+    [TYPE.actionAdditionalSelectorTypeError]: err => markup(err, `
+        The <code>${err.argumentName}</code> argument is expected to be a string, but it was <code>${err.actualType}</code>.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionStringArgumentError]: err => markup(err, `
-        The <code>${err.argumentName}</code> argument is expected to be a non-empty string, but it was ${err.actualType !== 'empty' ? `<code>${err.actualType}</code>` : err.actualType}.
+        The <code>${err.argumentName}</code> argument is expected to be a non-empty string, but it was <code>${err.actualValue}</code>.
 
          ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionIntegerArgumentError]: err => markup(err, `
+        The <code>${err.argumentName}</code> argument is expected to be an integer, but it was <code>${err.actualValue}</code>.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionPositiveIntegerArgumentError]: err => markup(err, `
+        The <code>${err.argumentName}</code> argument is expected to be a positive integer, but it was <code>${err.actualValue}</code>.
+
+        ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionElementNotFoundError]: err => markup(err, `
@@ -96,14 +108,38 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.dragDestinationNotFoundError]: err => markup(err, `
-        The specified destination selector does not match any element in the DOM tree.
+    [TYPE.actionAdditionalElementNotFoundError]: err => markup(err, `
+        The specified <code>${err.argumentName}</code> does not match any element in the DOM tree.
 
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.dragDestinationIsInvisibleError]: err => markup(err, `
-        The element that matches the specified destination selector is not visible.
+    [TYPE.actionAdditionalElementIsInvisibleError]: err => markup(err, `
+        The element that matches the specified <code>${err.argumentName}</code> is not visible.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionElementNonEditableError]: err => markup(err, `
+        The action element is expected to be editable (an input, textarea or element with the contentEditable attribute).
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionElementNonContentEditableError]: err => markup(err, `
+        The element that matches the specified <code>${err.argumentName}</code> is expected to have the contentEditable attribute enabled or the entire document should be in design mode.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionRootContainerNotFoundError]: err => markup(err, `
+        Content between the action elements cannot be selected because the root container for the selection range cannot be found, i.e. these elements do not have a common ancestor with the contentEditable attribute.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionElementNotTextAreaError]: err => markup(err, `
+        The action element is expected to be a textarea.
 
         ${err.getCallsiteMarkup()}
     `),

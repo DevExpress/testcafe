@@ -10,18 +10,24 @@ export default {
 
     missingAwaitError: 'missingAwaitError',
 
-    actionIntegerOptionError:         'actionIntegerOptionError',
-    actionPositiveIntegerOptionError: 'actionPositiveIntegerOptionError',
-    actionBooleanOptionError:         'actionBooleanOptionError',
-    actionOptionsTypeError:           'actionOptionsTypeError',
-    actionSelectorTypeError:          'actionSelectorTypeError',
-    dragDestinationSelectorTypeError: 'dragDestinationSelectorTypeError',
-    actionStringArgumentError:        'actionStringArgumentError',
+    actionIntegerOptionError:           'actionIntegerOptionError',
+    actionPositiveIntegerOptionError:   'actionPositiveIntegerOptionError',
+    actionBooleanOptionError:           'actionBooleanOptionError',
+    actionOptionsTypeError:             'actionOptionsTypeError',
+    actionStringArgumentError:          'actionStringArgumentError',
+    actionIntegerArgumentError:         'actionIntegerArgumentError',
+    actionPositiveIntegerArgumentError: 'actionPositiveIntegerArgumentError',
+    actionSelectorTypeError:            'actionSelectorTypeError',
+    actionAdditionalSelectorTypeError:  'actionAdditionalSelectorTypeError',
 
-    actionElementNotFoundError:      'actionElementNotFoundError',
-    actionElementIsInvisibleError:   'actionElementIsInvisibleError',
-    dragDestinationNotFoundError:    'dragDestinationNotFoundError',
-    dragDestinationIsInvisibleError: 'dragDestinationIsInvisibleError',
+    actionElementNotFoundError:              'actionElementNotFoundError',
+    actionElementIsInvisibleError:           'actionElementIsInvisibleError',
+    actionAdditionalElementNotFoundError:    'actionAdditionalElementNotFoundError',
+    actionAdditionalElementIsInvisibleError: 'actionAdditionalElementIsInvisibleError',
+    actionElementNonEditableError:           'actionElementNonEditableError',
+    actionElementNotTextAreaError:           'actionElementNotTextAreaError',
+    actionElementNonContentEditableError:    'actionElementNonContentEditableError',
+    actionRootContainerNotFoundError:        'actionRootContainerNotFoundError',
 
     externalAssertionLibraryError: 'externalAssertionLibraryError'
 };

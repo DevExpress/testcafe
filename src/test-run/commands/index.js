@@ -3,52 +3,63 @@ import Assignable from '../../utils/assignable';
 import {
     ActionSelectorTypeError,
     ActionOptionsTypeError,
-    ActionIntegerOptionError,
-    DragDestinationSelectorTypeError,
-
-    ActionStringArgumentError
+    ActionStringArgumentError,
+    ActionIntegerArgumentError,
+    ActionPositiveIntegerArgumentError,
+    ActionAdditionalSelectorTypeError
 } from '../../errors/test-run';
 
 import { ClickOptions, MouseOptions, TypeOptions } from './options';
 
 
-const EMPTY_STRING_MESSAGE = 'empty';
-
-
 // Validators
-function selector (option, val) {
+function selector (name, val) {
     var type = typeof val;
 
     if (type !== 'string')
         throw new ActionSelectorTypeError(type);
 }
 
-function dragDestinationSelector (option, val) {
+function selectActionSelector (name, val) {
     var type = typeof val;
 
     if (type !== 'string')
-        throw new DragDestinationSelectorTypeError(type);
+        throw new ActionAdditionalSelectorTypeError(name, type);
 }
 
-function actionOptions (option, val) {
+function dragDestinationSelector (name, val) {
+    var type = typeof val;
+
+    if (type !== 'string')
+        throw new ActionAdditionalSelectorTypeError(name, type);
+}
+
+function actionOptions (name, val) {
     var type = typeof val;
 
     if (type !== 'object' && val !== null && val !== void 0)
         throw new ActionOptionsTypeError(type);
 }
 
-function integer (option, val) {
+function integerArgument (name, val) {
     var valType = typeof val;
 
     if (valType !== 'number')
-        throw new ActionIntegerOptionError(option, valType);
+        throw new ActionIntegerArgumentError(name, valType);
 
     var isInteger = !isNaN(val) &&
                     isFinite(val) &&
                     val === Math.floor(val);
 
     if (!isInteger)
-        throw new ActionIntegerOptionError(option, val);
+        throw new ActionIntegerArgumentError(name, val);
+}
+
+function positiveIntegerArgument (name, val) {
+    integerArgument(name, val, true);
+
+    if (val < 0)
+        throw new ActionPositiveIntegerArgumentError(name, val);
 }
 
 function nonEmptyStringArgument (option, val) {
@@ -58,7 +69,7 @@ function nonEmptyStringArgument (option, val) {
         throw new ActionStringArgumentError(option, type);
 
     if (!val.length)
-        throw new ActionStringArgumentError(option, EMPTY_STRING_MESSAGE);
+        throw new ActionStringArgumentError(option);
 }
 
 // Initializers
@@ -192,8 +203,8 @@ export class DragCommand extends Assignable {
     _getAssignableProperties () {
         return [
             { name: 'selector', type: selector, init: initSelector, required: true },
-            { name: 'dragOffsetX', type: integer, required: true },
-            { name: 'dragOffsetY', type: integer, required: true },
+            { name: 'dragOffsetX', type: integerArgument, required: true },
+            { name: 'dragOffsetY', type: integerArgument, required: true },
             { name: 'options', type: actionOptions, init: initMouseOptions, required: true }
         ];
     }
@@ -217,6 +228,71 @@ export class DragToElementCommand extends Assignable {
             { name: 'selector', type: selector, init: initSelector, required: true },
             { name: 'destinationSelector', type: dragDestinationSelector, init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initMouseOptions, required: true }
+        ];
+    }
+}
+
+export class SelectTextCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type     = TYPE.selectText;
+        this.selector = null;
+        this.startPos = null;
+        this.endPos   = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'startPos', type: positiveIntegerArgument },
+            { name: 'endPos', type: positiveIntegerArgument }
+        ];
+    }
+}
+
+export class SelectEditableContentCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type          = TYPE.selectEditableContent;
+        this.startSelector = null;
+        this.endSelector   = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'startSelector', type: selectActionSelector, init: initSelector, required: true },
+            { name: 'endSelector', type: selectActionSelector, init: initSelector }
+        ];
+    }
+}
+
+export class SelectTextAreaContentCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type      = TYPE.selectTextAreaContent;
+        this.selector  = null;
+        this.startLine = null;
+        this.startPos  = null;
+        this.endLine   = null;
+        this.endPos    = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'startLine', type: positiveIntegerArgument },
+            { name: 'startPos', type: positiveIntegerArgument },
+            { name: 'endLine', type: positiveIntegerArgument },
+            { name: 'endPos', type: positiveIntegerArgument }
         ];
     }
 }
@@ -257,6 +333,15 @@ export function createCommandFromObject (obj) {
 
     if (obj.type === TYPE.typeText)
         return new TypeTextCommand(obj);
+
+    if (obj.type === TYPE.selectText)
+        return new SelectTextCommand(obj);
+
+    if (obj.type === TYPE.selectTextAreaContent)
+        return new SelectTextAreaContentCommand(obj);
+
+    if (obj.type === TYPE.selectEditableContent)
+        return new SelectEditableContentCommand(obj);
 
     if (obj.type === TYPE.testDone)
         return new TestDoneCommand();

@@ -37,6 +37,15 @@ class UncaughtError extends TestRunErrorBase {
     }
 }
 
+class ActionArgumentErrorBase extends ActionError {
+    constructor (type, argumentName, actualValue) {
+        super(type);
+
+        this.argumentName = argumentName;
+        this.actualValue  = actualValue;
+    }
+}
+
 // Synchronization errors
 //--------------------------------------------------------------------
 export class MissingAwaitError extends TestRunErrorBase {
@@ -92,6 +101,7 @@ export class ExternalAssertionLibraryError extends TestRunErrorBase {
 
 // Action parameters errors
 //--------------------------------------------------------------------
+// Options errors
 export class ActionIntegerOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
         super(TYPE.actionIntegerOptionError, optionName, actualValue);
@@ -118,15 +128,30 @@ export class ActionOptionsTypeError extends ActionError {
     }
 }
 
-export class ActionStringArgumentError extends ActionError {
-    constructor (argumentName, actualType) {
-        super(TYPE.actionStringArgumentError);
 
-        this.argumentName = argumentName;
-        this.actualType = actualType;
+// Arguments errors
+export class ActionStringArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TYPE.actionStringArgumentError, argumentName, actualValue);
+
+        this.actualValue = actualValue === void 0 ? '""' : actualValue;
     }
 }
 
+export class ActionIntegerArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TYPE.actionIntegerArgumentError, argumentName, actualValue);
+    }
+}
+
+export class ActionPositiveIntegerArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TYPE.actionPositiveIntegerArgumentError, argumentName, actualValue);
+    }
+}
+
+
+// Selector errors
 export class ActionSelectorTypeError extends ActionError {
     constructor (actualType) {
         super(TYPE.actionSelectorTypeError);
@@ -135,11 +160,12 @@ export class ActionSelectorTypeError extends ActionError {
     }
 }
 
-export class DragDestinationSelectorTypeError extends ActionError {
-    constructor (actualType) {
-        super(TYPE.dragDestinationSelectorTypeError);
+export class ActionAdditionalSelectorTypeError extends ActionError {
+    constructor (argumentName, actualType) {
+        super(TYPE.actionAdditionalSelectorTypeError);
 
-        this.actualType = actualType;
+        this.argumentName = argumentName;
+        this.actualType   = actualType;
     }
 }
 
@@ -157,14 +183,44 @@ export class ActionElementIsInvisibleError extends ActionError {
     }
 }
 
-export class DragDestinationNotFoundError extends ActionError {
-    constructor () {
-        super(TYPE.dragDestinationNotFoundError);
+export class ActionAdditionalElementNotFoundError extends ActionError {
+    constructor (argumentName) {
+        super(TYPE.actionAdditionalElementNotFoundError);
+
+        this.argumentName = argumentName;
     }
 }
 
-export class DragDestinationIsInvisibleError extends ActionError {
+export class ActionAdditionalElementIsInvisibleError extends ActionError {
+    constructor (argumentName) {
+        super(TYPE.actionAdditionalElementIsInvisibleError);
+
+        this.argumentName = argumentName;
+    }
+}
+
+export class ActionElementNonEditableError extends ActionError {
     constructor () {
-        super(TYPE.dragDestinationIsInvisibleError);
+        super(TYPE.actionElementNonEditableError);
+    }
+}
+
+export class ActionElementNotTextAreaError extends ActionError {
+    constructor () {
+        super(TYPE.actionElementNotTextAreaError);
+    }
+}
+
+export class ActionElementNonContentEditableError extends ActionError {
+    constructor (argumentName) {
+        super(TYPE.actionElementNonContentEditableError);
+
+        this.argumentName = argumentName;
+    }
+}
+
+export class ActionRootContainerNotFoundError extends ActionError {
+    constructor () {
+        super(TYPE.actionRootContainerNotFoundError);
     }
 }

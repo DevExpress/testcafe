@@ -7,20 +7,19 @@ var domUtils      = testCafeCore.get('./utils/dom');
 var eventUtils    = testCafeCore.get('./utils/event');
 var textSelection = testCafeCore.get('./utils/text-selection');
 
-var testCafeRunner     = window.getTestCafeModule('testCafeRunner');
-var automation         = testCafeRunner.get('./automation/automation');
-var MouseOptions       = testCafeRunner.get('../../test-run/commands/options').MouseOptions;
-var ClickOptions       = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
-var TypeOptions        = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
-var SelectOptions      = testCafeRunner.get('../../test-run/commands/options').SelectOptions;
-var ClickAutomation    = testCafeRunner.get('./automation/playback/click');
-var DblClickAutomation = testCafeRunner.get('./automation/playback/dblclick');
-var HoverAutomation    = testCafeRunner.get('./automation/playback/hover');
-var TypeAutomation     = testCafeRunner.get('./automation/playback/type');
-var SelectAutomation   = testCafeRunner.get('./automation/playback/select');
-var PressAutomation    = testCafeRunner.get('./automation/playback/press');
-var parseKeyString     = testCafeRunner.get('./automation/playback/press/parse-key-string');
-var mouseUtils         = testCafeRunner.get('./utils/mouse');
+var testCafeRunner       = window.getTestCafeModule('testCafeRunner');
+var automation           = testCafeRunner.get('./automation/automation');
+var MouseOptions         = testCafeRunner.get('../../test-run/commands/options').MouseOptions;
+var ClickOptions         = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
+var TypeOptions          = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
+var ClickAutomation      = testCafeRunner.get('./automation/playback/click');
+var DblClickAutomation   = testCafeRunner.get('./automation/playback/dblclick');
+var HoverAutomation      = testCafeRunner.get('./automation/playback/hover');
+var TypeAutomation       = testCafeRunner.get('./automation/playback/type');
+var SelectTextAutomation = testCafeRunner.get('./automation/playback/select/select-text');
+var PressAutomation      = testCafeRunner.get('./automation/playback/press');
+var parseKeyString       = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var mouseUtils           = testCafeRunner.get('./utils/mouse');
 
 automation.init();
 
@@ -805,14 +804,9 @@ $(document).ready(function () {
                     endPos   = 11,
                     backward = true;
 
-                var selectOptions = new SelectOptions({
-                    startPos: endPos,
-                    endPos:   startPos
-                });
+                var selectTextAutomation = new SelectTextAutomation(input, endPos, startPos);
 
-                var selectAutomation = new SelectAutomation(input, selectOptions);
-
-                selectAutomation
+                selectTextAutomation
                     .run()
                     .then(function () {
                         equal(textSelection.getSelectionStart(input), startPos, 'start selection correct');

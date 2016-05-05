@@ -176,11 +176,11 @@ export function getSelectionCoordinatesByPosition (element, position) {
     return getPositionCoordinates(element, position);
 }
 
-export function getSelectionCoordinatesByNodeAndOffset (element, position) {
+export function getSelectionCoordinatesByNodeAndOffset (element, node, offset) {
     var range = domUtils.findDocument(element).createRange();
 
-    range.setStart(position.node, Math.min(position.offset, position.node.length));
-    range.setEnd(position.node, Math.min(position.offset, position.node.length));
+    range.setStart(node, Math.min(offset, node.length));
+    range.setEnd(node, Math.min(offset, node.length));
 
     var rect = range.getClientRects()[0];
 

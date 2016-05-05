@@ -510,6 +510,125 @@ describe('Test run commands', function () {
             });
         });
 
+        it('Should create SelectTextCommand from object', function () {
+            var commandObj = {
+                type:     TYPE.selectText,
+                selector: '#yo',
+                startPos: 1,
+                endPos:   2,
+                yo:       'test',
+
+                options: {
+                    offsetX: 23,
+                    dummy:   'yo'
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.selectText,
+                selector: "(function () { return document.querySelector('#yo') })()",
+                startPos: 1,
+                endPos:   2
+            });
+
+            commandObj = {
+                type:     TYPE.selectText,
+                selector: '#yo'
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.selectText,
+                selector: "(function () { return document.querySelector('#yo') })()",
+                startPos: null,
+                endPos:   null
+            });
+        });
+
+        it('Should create SelectTextAreaContentCommand from object', function () {
+            var commandObj = {
+                type:      TYPE.selectTextAreaContent,
+                selector:  '#yo',
+                startLine: 0,
+                startPos:  1,
+                endLine:   2,
+                endPos:    3,
+                yo:        5,
+
+                options: {
+                    offsetX: 23,
+                    dummy:   'yo'
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:      TYPE.selectTextAreaContent,
+                selector:  "(function () { return document.querySelector('#yo') })()",
+                startLine: 0,
+                startPos:  1,
+                endLine:   2,
+                endPos:    3
+            });
+
+            commandObj = {
+                type:     TYPE.selectTextAreaContent,
+                selector: '#yo'
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:      TYPE.selectTextAreaContent,
+                selector:  "(function () { return document.querySelector('#yo') })()",
+                startLine: null,
+                startPos:  null,
+                endLine:   null,
+                endPos:    null
+            });
+        });
+
+        it('Should create SelectEditableContentCommand from object', function () {
+            var commandObj = {
+                type:          TYPE.selectEditableContent,
+                selector:      '#yo',
+                startSelector: '#node1',
+                endSelector:   '#node2',
+                yo:            'test',
+
+                options: {
+                    offsetX: 23,
+                    dummy:   'yo'
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:          TYPE.selectEditableContent,
+                startSelector: "(function () { return document.querySelector('#node1') })()",
+                endSelector:   "(function () { return document.querySelector('#node2') })()"
+            });
+
+            commandObj = {
+                type:          TYPE.selectEditableContent,
+                selector:      '#yo',
+                startSelector: '#node1'
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:          TYPE.selectEditableContent,
+                startSelector: "(function () { return document.querySelector('#node1') })()",
+                endSelector:   null
+            });
+        });
+
         it('Should create TestDone command from object', function () {
             var commandObj = { type: TYPE.testDone, hey: '42' };
 
@@ -904,8 +1023,8 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
-                    optionName:      'dragOffsetX',
+                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    argumentName:    'dragOffsetX',
                     actualValue:     'undefined',
                     callsite:        null
                 }
@@ -922,8 +1041,8 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
-                    optionName:      'dragOffsetY',
+                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    argumentName:    'dragOffsetY',
                     actualValue:     'undefined',
                     callsite:        null
                 }
@@ -941,8 +1060,8 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.actionIntegerOptionError,
-                    optionName:      'dragOffsetY',
+                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    argumentName:    'dragOffsetY',
                     actualValue:     10.5,
                     callsite:        null
                 }
@@ -1010,7 +1129,8 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.dragDestinationSelectorTypeError,
+                    type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
+                    argumentName:    'destinationSelector',
                     actualType:      'undefined',
                     callsite:        null
                 }
@@ -1027,7 +1147,8 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     category:        ERROR_CATEGORY.actionError,
-                    type:            ERROR_TYPE.dragDestinationSelectorTypeError,
+                    type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
+                    argumentName:    'destinationSelector',
                     actualType:      'number',
                     callsite:        null
                 }
@@ -1096,7 +1217,7 @@ describe('Test run commands', function () {
                     category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'text',
-                    actualType:      'undefined',
+                    actualValue:     'undefined',
                     callsite:        null
                 }
             );
@@ -1114,7 +1235,7 @@ describe('Test run commands', function () {
                     category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'text',
-                    actualType:      'number',
+                    actualValue:     'number',
                     callsite:        null
                 }
             );
@@ -1132,7 +1253,7 @@ describe('Test run commands', function () {
                     category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'text',
-                    actualType:      'empty',
+                    actualValue:     '""',
                     callsite:        null
                 }
             );
@@ -1193,6 +1314,269 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionBooleanOptionError,
                     optionName:      'replace',
                     actualValue:     'number',
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate SelectTextСommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.selectText
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionSelectorTypeError,
+                    actualType:      'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.selectText,
+                        selector: {}
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionSelectorTypeError,
+                    actualType:      'object',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.selectText,
+                        selector: 'element',
+                        startPos: ''
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    argumentName:    'startPos',
+                    actualValue:     'string',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.selectText,
+                        selector: 'element',
+                        startPos: 5.5
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    argumentName:    'startPos',
+                    actualValue:     5.5,
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.selectText,
+                        selector: 'element',
+                        endPos:   NaN
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    argumentName:    'endPos',
+                    actualValue:     NaN,
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.selectText,
+                        selector: 'element',
+                        endPos:   -1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    argumentName:    'endPos',
+                    actualValue:     -1,
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate SelectTextAreaContentСommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.selectTextAreaContent
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionSelectorTypeError,
+                    actualType:      'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.selectTextAreaContent,
+                        selector: {}
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionSelectorTypeError,
+                    actualType:      'object',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:      TYPE.selectTextAreaContent,
+                        selector:  'element',
+                        startLine: ''
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    argumentName:    'startLine',
+                    actualValue:     'string',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:      TYPE.selectTextAreaContent,
+                        selector:  'element',
+                        startLine: 5.5
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    argumentName:    'startLine',
+                    actualValue:     5.5,
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.selectTextAreaContent,
+                        selector: 'element',
+                        endLine:  NaN
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionIntegerArgumentError,
+                    argumentName:    'endLine',
+                    actualValue:     NaN,
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.selectTextAreaContent,
+                        selector: 'element',
+                        endLine:  -1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    argumentName:    'endLine',
+                    actualValue:     -1,
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate SelectEditableContentСommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.selectEditableContent
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
+                    argumentName:    'startSelector',
+                    actualType:      'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:          TYPE.selectEditableContent,
+                        startSelector: 1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
+                    argumentName:    'startSelector',
+                    actualType:      'number',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:          TYPE.selectEditableContent,
+                        startSelector: 'node1',
+                        endSelector:   true
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
+                    argumentName:    'endSelector',
+                    actualType:      'boolean',
                     callsite:        null
                 }
             );

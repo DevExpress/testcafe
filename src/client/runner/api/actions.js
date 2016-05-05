@@ -6,7 +6,6 @@ import {
     DragOptions,
     MouseOptions,
     ClickOptions,
-    SelectOptions,
     TypeOptions
 } from '../../../test-run/commands/options';
 import ClickAutomation from '../automation/playback/click';
@@ -16,10 +15,12 @@ import DragToElementAutomation from '../automation/playback/drag/to-element';
 import HoverAutomation from '../automation/playback/hover';
 import PressAutomation from '../automation/playback/press';
 import RClickAutomation from '../automation/playback/rclick';
-import SelectAutomation from '../automation/playback/select';
+import SelectTextAutomation from '../automation/playback/select/select-text';
+import SelectEditableContentAutomation from '../automation/playback/select/select-editable-content';
 import TypeAutomation from '../automation/playback/type';
 import { getOffsetOptions } from '../utils/mouse';
 import parseKeyString from '../automation/playback/press/parse-key-string';
+import getSelectPositionArguments from '../automation/playback/select/get-select-position-arguments';
 import * as sourceIndexTracker from '../source-index';
 import async from '../deps/async';
 
@@ -250,151 +251,33 @@ function onTargetWaitingFinished () {
     stepIterator.onActionRun();
 }
 
-function getSelectPositions (element, options) {
-    var isTextEditable    = domUtils.isTextEditableElement(element);
-    var isContentEditable = domUtils.isContentEditableElement(element);
-
-    var offset         = void 0 !== options.offset ? options.offset : null;
-    var startPos       = void 0 !== options.startPos ? options.startPos : null;
-    var endPos         = void 0 !== options.endPos ? options.endPos : null;
-    var startLineIndex = void 0 !== options.startLine ? options.startLine : null;
-    var endLineIndex   = void 0 !== options.endLine ? options.endLine : null;
-
-    var isEmptyPropertyObject = offset === null && startPos === null;
-    var value                 = element.value;
-    var linesArray            = value && value.length ? value.split('\n') : [];
-    var startPosition         = null;
-    var endPosition           = null;
-
-
-    if (isTextEditable && !value.length ||
-        isContentEditable && !contentEditable.getContentEditableValue(element).length) {
-
-        return {
-            startPos: 0,
-            endPos:   0
-        };
-    }
-
-    if (isEmptyPropertyObject) {
-        return {
-            startPos: isTextEditable ? 0 : contentEditable.getFirstVisiblePosition(element),
-            endPos:   isTextEditable ? value.length : contentEditable.getLastVisiblePosition(element)
-        };
-    }
-
-    if (offset !== null) {
-        if (isTextEditable) {
-            if (offset >= 0) {
-                startPosition = 0;
-                endPosition   = Math.min(offset, value.length);
-            }
-            else {
-                startPosition = value.length;
-                endPosition   = Math.max(0, value.length + offset);
-            }
-        }
-        else if (offset >= 0) {
-            startPosition = contentEditable.getFirstVisiblePosition(element);
-            endPosition   = Math.min(offset, contentEditable.getLastVisiblePosition(element));
-        }
-        else {
-            startPosition = contentEditable.getLastVisiblePosition(element);
-            endPosition   = Math.max(0, contentEditable.getLastVisiblePosition(element) + offset);
-        }
-    }
-
-    if (startLineIndex !== null) {
-        if (startLineIndex >= linesArray.length)
-            startPosition = value.length;
-        else {
-            var startLinePosition = domUtils.getTextareaPositionByLineAndOffset(element, startLineIndex, 0);
-
-            startPosition = startLinePosition + Math.min(startPos, linesArray[startLineIndex].length);
-        }
-
-        if (endLineIndex >= linesArray.length)
-            endPosition = value.length;
-        else {
-            var endLinePosition = domUtils.getTextareaPositionByLineAndOffset(element, endLineIndex, 0);
-            var endLineLength   = linesArray[endLineIndex].length;
-
-            if (endPos === null)
-                endPosition = endLinePosition + endLineLength;
-            else
-                endPosition = endLinePosition + Math.min(endPos, endLineLength);
-        }
-    }
-    else if (startPos !== null) {
-        var lastPos = isTextEditable ? value.length : contentEditable.getLastVisiblePosition(element);
-
-        startPosition = Math.min(startPos, lastPos);
-        endPosition   = Math.min(endPos, lastPos);
-    }
-
-    return {
-        startPos: startPosition,
-        endPos:   endPosition
-    };
-}
-
-function getOptionsForContentEditableElement (element, startNode, endNode) {
-    var startOffset   = contentEditable.getFirstVisiblePosition(startNode);
-    var endOffset     = contentEditable.getLastVisiblePosition(endNode);
-    var startPos      = { node: startNode, offset: startOffset };
-    var endPos        = { node: endNode, offset: endOffset };
-    var startPosition = contentEditable.calculatePositionByNodeAndOffset(element, startPos);
-    var endPosition   = contentEditable.calculatePositionByNodeAndOffset(element, endPos);
-    var backward      = startPosition > endPosition;
-
-    if (backward) {
-        startOffset = contentEditable.getLastVisiblePosition(startNode);
-        endOffset   = contentEditable.getFirstVisiblePosition(endNode);
-    }
-
-    // NOTE: We should recalculate nodes and offsets for selection because we
-    // may have to select children of expectedStartNode and expectedEndNode
-    return {
-        startPos: contentEditable.calculateNodeAndOffsetByPosition(startNode, startOffset),
-        endPos:   contentEditable.calculateNodeAndOffsetByPosition(endNode, endOffset)
-    };
-}
-
-function getSelectAutomationOptions (element, args) {
-    var argsLength = args.length;
-    var options    = {};
+function getSelectAutomationArgumentsObject (element, apiArgs) {
+    var argsLength = apiArgs.length;
 
     if (argsLength === 1)
-        options = { offset: args[0] };
+        return { offset: apiArgs[0] };
     else if (argsLength === 2 || argsLength > 2 && !domUtils.isTextAreaElement(element)) {
-        if (!isNaN(parseInt(args[0], 10))) {
-            options = {
-                startPos: args[0],
-                endPos:   args[1]
+        if (!isNaN(parseInt(apiArgs[0], 10))) {
+            return {
+                startPos: apiArgs[0],
+                endPos:   apiArgs[1]
             };
         }
         else {
-            options = {
-                startNode: args[0],
-                endNode:   args[1]
+            return {
+                startNode: apiArgs[0],
+                endNode:   apiArgs[1]
             };
         }
     }
-    else if (args.length > 2) {
-        options = {
-            startLine: args[0],
-            startPos:  args[1],
-            endLine:   args[2],
-            endPos:    args[3]
+    else if (apiArgs.length > 2) {
+        return {
+            startLine: apiArgs[0],
+            startPos:  apiArgs[1],
+            endLine:   apiArgs[2],
+            endPos:    apiArgs[3]
         };
     }
-
-    if (!options.startNode)
-        options = getSelectPositions(element, options);
-    else
-        options = getOptionsForContentEditableElement(element, options.startNode, options.endNode);
-
-    return new SelectOptions(options, false);
 }
 
 //function exports only for tests
@@ -680,8 +563,6 @@ export function select () {
         return;
     }
 
-    var selectArgs = startNode && endNode ? [startNode, endNode] : args;
-
     stepIterator.asyncActionSeries(
         commonParentElement ? [commonParentElement] : elements,
         actionArgumentsIterator('select').run,
@@ -692,11 +573,21 @@ export function select () {
                     onTargetWaitingFinished();
                 }
 
-                var selectOptions = getSelectAutomationOptions(element, selectArgs);
+                var iframeAutomations    = iframe ? iframe.contentWindow[AUTOMATIONS] : null;
+                var SelectAutomationCtor = null;
+                var selectAutomation     = null;
 
-                var selectAutomation = iframe ?
-                                       new iframe.contentWindow[AUTOMATIONS].SelectAutomation(element, selectOptions) :
-                                       new SelectAutomation(element, selectOptions);
+                if (startNode && endNode) {
+                    SelectAutomationCtor = iframe ? iframeAutomations.SelectEditableContentAutomation : SelectEditableContentAutomation;
+                    selectAutomation     = new SelectAutomationCtor(startNode, endNode);
+                }
+                else {
+                    var selectArgsObject = getSelectAutomationArgumentsObject(element, args);
+                    var { startPos, endPos }    = getSelectPositionArguments(element, selectArgsObject);
+
+                    SelectAutomationCtor = iframe ? iframeAutomations.SelectTextAutomation : SelectTextAutomation;
+                    selectAutomation     = new SelectAutomationCtor(element, startPos, endPos);
+                }
 
                 selectAutomation
                     .run()
