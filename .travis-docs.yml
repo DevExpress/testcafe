@@ -5,6 +5,8 @@ matrix:
     env: GULP_TASK="test-server"
   - node_js: "4"
     env: GULP_TASK="test-server"
+  - node_js: "stable"
+    env: GULP_TASK="test-server"
  fast_finish: true
 
 branches:
