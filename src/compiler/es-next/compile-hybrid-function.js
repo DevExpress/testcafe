@@ -2,6 +2,7 @@ import { wrapDomAccessors } from 'testcafe-hammerhead';
 import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
 import { noop, escapeRegExp as escapeRe } from 'lodash';
 import loadBabelLibs from './load-babel-libs';
+import compiledCode from '../../api/common/hybrid/compiled-code-symbol';
 import NODE_VER from '../../utils/node-version';
 import { APIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
@@ -15,25 +16,25 @@ const ASYNC_TO_GENERATOR_OUTPUT_CODE = asyncToGenerator(noop).toString();
 var babelArtifactPolyfills = {
     'Promise': {
         re:                 /_promise(\d+)\.default/,
-        create:             match => `var _promise${match[1]} = { default: Promise };`,
+        getCode:            match => `var _promise${match[1]} = { default: Promise };`,
         removeMatchingCode: false
     },
 
     'Object.keys()': {
         re:                 /_keys(\d+)\.default/,
-        create:             match => `var _keys${match[1]} = { default: Object.keys };`,
+        getCode:            match => `var _keys${match[1]} = { default: Object.keys };`,
         removeMatchingCode: false
     },
 
     'JSON.stringify()': {
         re:                 /_stringify(\d+)\.default/,
-        create:             match => `var _stringify${match[1]} = { default: JSON.stringify };`,
+        getCode:            match => `var _stringify${match[1]} = { default: JSON.stringify };`,
         removeMatchingCode: false
     },
 
     'typeof (Node.js 10)': {
         re:                 /_typeof(\d+)\.default/,
-        create:             match => `var _typeof${match[1]} = { default: function(obj) { return typeof obj; } };`,
+        getCode:            match => `var _typeof${match[1]} = { default: function(obj) { return typeof obj; } };`,
         removeMatchingCode: false
     },
 
@@ -44,7 +45,7 @@ var babelArtifactPolyfills = {
             '&& obj.constructor === Symbol ? "symbol" : typeof obj;};'
         )),
 
-        create:             () => 'var _typeof = function(obj) { return typeof obj; };',
+        getCode:            () => 'var _typeof = function(obj) { return typeof obj; };',
         removeMatchingCode: true
     }
 };
@@ -75,6 +76,8 @@ function downgradeES (fnCode) {
 }
 
 function addBabelArtifactsPolyfills (fnCode) {
+    var modifiedFnCode = fnCode;
+
     var polyfills = Object
         .values(babelArtifactPolyfills)
         .reduce((polyfillsCode, polyfill) => {
@@ -82,18 +85,31 @@ function addBabelArtifactsPolyfills (fnCode) {
 
             if (match) {
                 if (polyfill.removeMatchingCode)
-                    fnCode = fnCode.replace(polyfill.re, '');
+                    modifiedFnCode = modifiedFnCode.replace(polyfill.re, '');
 
-                return polyfillsCode + polyfill.create(match);
+                return polyfillsCode + polyfill.getCode(match);
             }
 
             return polyfillsCode;
         }, '');
 
-    return `(function(){${polyfills} return ${fnCode}})();`;
+    return { polyfills, modifiedFnCode };
 }
 
-export default function compileHybridFunction (fnCode) {
+function getDependenciesCode (dependencies) {
+    return Object
+        .keys(dependencies)
+        .reduce((code, name) => {
+            var dependencyCode = dependencies[name][compiledCode];
+
+            if (!dependencyCode)
+                throw new APIError('Hybrid', MESSAGE.hybridDependencyIsNotAHybrid, name);
+
+            return code + `var ${name}=${dependencyCode}`;
+        }, '');
+}
+
+export default function compileHybridFunction (fnCode, dependencies = {}) {
     if (fnCode === ASYNC_TO_GENERATOR_OUTPUT_CODE)
         throw new APIError('Hybrid', MESSAGE.regeneratorInClientCode);
 
@@ -114,5 +130,9 @@ export default function compileHybridFunction (fnCode) {
     if (!TRAILING_SEMICOLON_RE.test(fnCode))
         fnCode += ';';
 
-    return addBabelArtifactsPolyfills(fnCode);
+    var dependenciesCode = getDependenciesCode(dependencies);
+
+    var { polyfills, modifiedFnCode } = addBabelArtifactsPolyfills(fnCode);
+
+    return `(function(){${dependenciesCode}${polyfills} return ${modifiedFnCode}})();`;
 }

@@ -666,6 +666,53 @@ describe('Compiler', function () {
                     });
                 });
         });
+
+        it('Should raise error if Hybrid function dependencies is not an object', function () {
+            var testfile = resolve('test/server/data/test-suites/hybrid-deps-not-object/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Hybrid function constructor\'s "dependencies" argument is expected to be an object, but it was "string".',
+
+                        callsite: "   1 |import { Hybrid } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  " > 5 |var selectYo = Hybrid(() => document.querySelector('#yo'), '42');\n"
+                    });
+                });
+        });
+
+        it('Should raise error if Hybrid function dependency is not a Hybrid function', function () {
+            var testfile = resolve('test/server/data/test-suites/hybrid-dep-not-hybrid/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Hybrid function\'s dependency "getText" is not a hybrid function.',
+
+                        callsite: '    3 |fixture `Test`;\n' +
+                                  '    4 |\n' +
+                                  '    5 |const select  = Hybrid(id => document.querySelector(id));\n' +
+                                  "    6 |const getText = '42';\n" +
+                                  '    7 |\n' +
+                                  " >  8 |var selectYo = Hybrid(() => select('#yo'), { select, getText });\n"
+                    });
+                });
+        });
     });
 
     describe('Raw data compiler', function () {
