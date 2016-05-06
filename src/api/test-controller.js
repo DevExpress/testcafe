@@ -10,7 +10,10 @@ import {
     HoverCommand,
     DragCommand,
     DragToElementCommand,
-    TypeTextCommand
+    TypeTextCommand,
+    SelectTextCommand,
+    SelectTextAreaContentCommand,
+    SelectEditableContentCommand
 } from '../test-run/commands';
 
 export default class TestController {
@@ -123,6 +126,18 @@ export default class TestController {
         return this._enqueueAction('typeText', TypeTextCommand, { selector, text, options });
     }
 
+    _selectTextImpl (selector, startPos, endPos) {
+        return this._enqueueAction('selectText', SelectTextCommand, { selector, startPos, endPos });
+    }
+
+    _selectTextAreaContentImpl (selector, startLine, startPos, endLine, endPos) {
+        return this._enqueueAction('selectTextAreaContent', SelectTextAreaContentCommand, { selector, startLine, startPos, endLine, endPos });
+    }
+
+    _selectEditableContentImpl (startSelector, endSelector) {
+        return this._enqueueAction('selectEditableContent', SelectEditableContentCommand, { startSelector, endSelector });
+    }
+
     // API
     click (selector, options) {
         return this._clickImpl(selector, options);
@@ -150,6 +165,18 @@ export default class TestController {
 
     typeText (selector, text, options) {
         return this._typeTextImpl(selector, text, options);
+    }
+
+    selectText (selector, startPos, endPos) {
+        return this._selectTextImpl(selector, startPos, endPos);
+    }
+
+    selectTextAreaContent (selector, startLine, startPos, endLine, endPos) {
+        return this._selectTextAreaContentImpl(selector, startLine, startPos, endLine, endPos);
+    }
+
+    selectEditableContent (startSelector, endSelector) {
+        return this._selectEditableContentImpl(startSelector, endSelector);
     }
 }
 
