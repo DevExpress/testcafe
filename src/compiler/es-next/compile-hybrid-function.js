@@ -97,14 +97,16 @@ function addBabelArtifactsPolyfills (fnCode) {
 }
 
 function getDependenciesCode (dependencies) {
-    return Object.keys(dependencies).reduce((code, name) => {
-        var dependencyCode = dependencies[name][compiledCode];
+    return Object
+        .keys(dependencies)
+        .reduce((code, name) => {
+            var dependencyCode = dependencies[name][compiledCode];
 
-        if (!dependencyCode)
-            throw new APIError('Hybrid', MESSAGE.hybridDependencyIsNotAHybrid, name);
+            if (!dependencyCode)
+                throw new APIError('Hybrid', MESSAGE.hybridDependencyIsNotAHybrid, name);
 
-        return code + `var ${name}=${dependencyCode}`;
-    }, '');
+            return code + `var ${name}=${dependencyCode}`;
+        }, '');
 }
 
 export default function compileHybridFunction (fnCode, dependencies = {}) {
