@@ -451,6 +451,8 @@ gulp.task('publish-website', ['build-website'], function () {
         .pipe(ghpages());
 });
 
+gulp.task('test-docs', ['test-website', 'lint']);
+
 // Publish
 gulp.task('publish', ['test-server'], function () {
     // TODO switch publish tag once we'll be ready to release
