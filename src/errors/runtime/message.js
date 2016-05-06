@@ -25,5 +25,7 @@ export default {
     clientCodeIsNotAFunction:           'Client code is expected to be specified as a function, but "{type}" was passed.',
     hybridFunctionCantResolveTestRun:   "The hybrid function cannot implicitly resolve the test run in context of which it should be executed. If you need to call the hybrid function from the Node.js API callback, pass the test controller manually via hybrid function's `.bindTestRun(t)` method first. Note that you cannot execute hybrid functions outside the test code.",
     regeneratorInClientCode:            'Code executed on the client cannot contain generators or `async/await` syntax (use Promises instead).',
-    invalidHybridTestRunBinding:        'The `bindTestRun` function is expected to take a test controller.'
+    invalidHybridTestRunBinding:        'The `bindTestRun` function is expected to take a test controller.',
+    hybridDependenciesIsNotAnObject:    `Hybrid function constructor's "dependencies" argument is expected to be an object, but it was "{type}".`,
+    hybridDependencyIsNotAHybrid:       `Hybrid function's dependency "{fieldName}" is not a hybrid function.`
 };

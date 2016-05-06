@@ -132,3 +132,19 @@ test('Error in Promise', async () => {
 
     await fn();
 });
+
+const selectByClassName = Hybrid(className => document.querySelectorAll('.' + className));
+const nthByClass        = Hybrid((className, n) => selectByClassName(className)[n], { selectByClassName });
+
+test('Hybrid dependencies', async () => {
+    const getAnswer = Hybrid(() => {
+        const el       = nthByClass('item', 3);
+        const answerEl = selectByClassName(el.textContent.toLowerCase())[0];
+
+        return answerEl.textContent;
+    }, { selectByClassName, nthByClass });
+
+    const answer = await getAnswer();
+
+    expect(answer).eql('42!');
+});

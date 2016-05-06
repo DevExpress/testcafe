@@ -94,7 +94,7 @@ before(function () {
             testCafe = tc;
 
             initBrowsersInfo(tc);
-            site.create(config.site.port1, config.site.port2, config.site.viewsPath);
+            site.getCode(config.site.port1, config.site.port2, config.site.viewsPath);
 
             if (config.isTravisTask) {
                 // NOTE: we need to disable this particular timeout for preventing mocha timeout

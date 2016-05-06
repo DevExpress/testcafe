@@ -119,4 +119,8 @@ describe('[API] Hybrid function', function () {
                 expect(errs[0]).contains('> 133 |    await fn();');
             });
     });
+
+    it('Should execute Hybrid function with dependencies', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Hybrid dependencies');
+    });
 });
