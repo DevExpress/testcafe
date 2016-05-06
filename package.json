@@ -59,6 +59,7 @@
   "devDependencies": {
     "babel-eslint": "^6.0.0",
     "babel-plugin-add-module-exports": "^0.1.2",
+    "broken-link-checker": "^0.7.0",
     "caller": "^1.0.1",
     "chai": "^3.0.0",
     "connect": "^3.4.0",
@@ -140,6 +141,7 @@
       "time-limit-promise",
       "useragent",
       "uuid",
+      "broken-link-checker",
       "caller",
       "chai",
       "connect",

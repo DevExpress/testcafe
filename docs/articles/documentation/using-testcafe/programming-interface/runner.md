@@ -1,13 +1,13 @@
 ---
 layout: docs
 title: Runner Class
-permalink: /documentation/using-testcafe/programming-interface/Runner.html
+permalink: /documentation/using-testcafe/programming-interface/runner.html
 ---
 # Runner Class
 
 An object that configures and launches test runs.
 
-Created by the [testCafe.createRunner](TestCafe.md#createRunner) function.
+Created by the [testCafe.createRunner](testcafe.md#createRunner) function.
 
 **Example**
 
@@ -95,7 +95,7 @@ Type                                                                            
 String                                                                                               | The browser's short name - *alias*. Find the list of aliases in the [Browser Aliases](../common-concepts/browser-aliases.md) topic.                                   | Local browser
 String                                                                                               | The path to the browser executable.                                                                                                                                   | Local browser
 `{path: String, cmd: String}`                                                                        | The path to the browser executable (`path`) with command line parameters (`cmd`).                                                                                     | Local browser
-[BrowserConnection](BrowserConnection.md)                                                            | The remote browser connection.                                                                                                                                        | Remote browser
+[BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | Remote browser
 
 You are free to mix different types of objects in one function call. The `browsers` function concatenates the settings when called several times.
 
