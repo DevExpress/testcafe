@@ -690,7 +690,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if Hybrid function dependency is not a Hyybrid function', function () {
+        it('Should raise error if Hybrid function dependency is not a Hybrid function', function () {
             var testfile = resolve('test/server/data/test-suites/hybrid-dep-not-hybrid/testfile.js');
 
             return compile(testfile)
