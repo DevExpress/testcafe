@@ -213,6 +213,14 @@ TestCafe will run fixtures whose names match the specified pattern.
 testcafe ie my-tests --fixture-grep *Page*
 ```
 
+### --element-timeout \<ms\>
+
+Specifies the amount of time, in milliseconds, allowed for a page element on which an action is being performed to become visible and appear in the DOM before the test fails.
+
+```sh
+testcafe ie my-tests --element-timeout 500000
+```
+
 ### --ports \<port1,port2\>
 
 Specifies the custom port numbers used by TestCafe to perform testing. Number [0-65535].
