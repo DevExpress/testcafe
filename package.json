@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^6.0.0",
-    "babel-plugin-add-module-exports": "^0.1.2",
+    "babel-plugin-add-module-exports": "^0.2.0",
     "broken-link-checker": "^0.7.0",
     "caller": "^1.0.1",
     "chai": "^3.0.0",
