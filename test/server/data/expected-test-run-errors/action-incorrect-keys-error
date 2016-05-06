@@ -1,6 +1,6 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
 CATEGORY=actionError
-The offsetX option is expected to be an integer, but it was NaN.
+The keys argument contains an incorrect key or key combination.
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');

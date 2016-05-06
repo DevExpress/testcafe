@@ -11,7 +11,8 @@ import {
     ActionElementNonEditableError,
     ActionElementNonContentEditableError,
     ActionRootContainerNotFoundError,
-    ActionElementNotTextAreaError
+    ActionElementNotTextAreaError,
+    ActionIncorrectKeysError
 } from '../../../errors/test-run';
 
 import COMMAND_TYPE from '../../../test-run/commands/type';
@@ -33,6 +34,8 @@ var HoverAutomation                 = testCafeRunner.get('./automation/playback/
 var TypeAutomation                  = testCafeRunner.get('./automation/playback/type');
 var SelectTextAutomation            = testCafeRunner.get('./automation/playback/select/select-text');
 var SelectEditableContentAutomation = testCafeRunner.get('./automation/playback/select/select-editable-content');
+var PressAutomation                 = testCafeRunner.get('./automation/playback/press');
+var parseKeySequence                = testCafeRunner.get('./automation/playback/press/parse-key-sequence');
 var getSelectPositionArguments      = testCafeRunner.get('./automation/playback/select/get-select-position-arguments');
 var ProgressPanel                   = testCafeUI.ProgressPanel;
 
@@ -42,6 +45,7 @@ const CHECK_ELEMENT_DELAY                = 200;
 const START_SELECTOR_ARGUMENT_NAME       = 'startSelector';
 const END_SELECTOR_ARGUMENT_NAME         = 'endSelector';
 const DESTINATION_SELECTOR_ARGUMENT_NAME = 'destinationSelector';
+const KEYS_ARGUMENT_NAME                 = 'keys';
 
 
 function ensureElementEditable (element) {
@@ -148,6 +152,15 @@ function ensureCommandElements (command, timeout) {
         });
 }
 
+function ensureCommandArguments (command) {
+    if (command.type === COMMAND_TYPE.pressKey) {
+        var parsedKeySequence = parseKeySequence(command.keys);
+
+        if (parsedKeySequence.error)
+            throw new ActionIncorrectKeysError(KEYS_ARGUMENT_NAME);
+    }
+}
+
 function createAutomation (elements, command) {
     var selectArgs = null;
 
@@ -184,6 +197,9 @@ function createAutomation (elements, command) {
 
         case COMMAND_TYPE.selectEditableContent:
             return new SelectEditableContentAutomation(elements[0], elements[1]);
+
+        case COMMAND_TYPE.pressKey:
+            return new PressAutomation(parseKeySequence(command.keys).combinations);
     }
     /* eslint-enable indent*/
 }
@@ -200,6 +216,8 @@ export default function executeActionCommand (command, elementAvailabilityTimeou
                 resolveStartPromise();
 
                 xhrBarrier = new XhrBarrier();
+
+                ensureCommandArguments(command);
 
                 return createAutomation(elements, command).run();
             })

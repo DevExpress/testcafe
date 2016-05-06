@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Press key</title>
+</head>
+<body>
+<input id="input" value="input"/>
+
+<script>
+    var input = document.getElementById('input');
+
+    input.focus();
+
+    input.addEventListener('blur', function () {
+        throw new Error('Input value is "' + input.value + '"');
+    });
+</script>
+</body>
+</html>

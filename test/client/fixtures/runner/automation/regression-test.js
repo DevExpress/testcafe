@@ -18,7 +18,7 @@ var HoverAutomation      = testCafeRunner.get('./automation/playback/hover');
 var TypeAutomation       = testCafeRunner.get('./automation/playback/type');
 var SelectTextAutomation = testCafeRunner.get('./automation/playback/select/select-text');
 var PressAutomation      = testCafeRunner.get('./automation/playback/press');
-var parseKeyString       = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var parseKeySequence     = testCafeRunner.get('./automation/playback/press/parse-key-sequence');
 var mouseUtils           = testCafeRunner.get('./utils/mouse');
 
 automation.init();
@@ -887,8 +887,8 @@ $(document).ready(function () {
         asyncTest('T138385 - input type "number" leave out "maxlength" attribute (act.press)', function () {
             var $input          = createInput('number').attr('maxLength', 2),
                 inputEventCount = 0,
-                text            = '1 2 3',
-                pressAutomation = new PressAutomation(parseKeyString(text).combinations);
+                keySequence     = '1 2 3',
+                pressAutomation = new PressAutomation(parseKeySequence(keySequence).combinations);
 
             $input.bind('input', function () {
                 inputEventCount++;

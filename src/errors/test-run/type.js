@@ -29,6 +29,7 @@ export default {
     actionElementNotTextAreaError:           'actionElementNotTextAreaError',
     actionElementNonContentEditableError:    'actionElementNonContentEditableError',
     actionRootContainerNotFoundError:        'actionRootContainerNotFoundError',
+    actionIncorrectKeysError:                'actionIncorrectKeysError',
 
     externalAssertionLibraryError: 'externalAssertionLibraryError'
 };

@@ -41,18 +41,19 @@ function actionOptions (name, val) {
         throw new ActionOptionsTypeError(type);
 }
 
-function integerArgument (name, val) {
-    var valType = typeof val;
+function integerArgument (name, val, positive) {
+    var valType   = typeof val;
+    var ErrorCtor = positive ? ActionPositiveIntegerArgumentError : ActionIntegerArgumentError;
 
     if (valType !== 'number')
-        throw new ActionIntegerArgumentError(name, valType);
+        throw new ErrorCtor(name, valType);
 
     var isInteger = !isNaN(val) &&
                     isFinite(val) &&
                     val === Math.floor(val);
 
     if (!isInteger)
-        throw new ActionIntegerArgumentError(name, val);
+        throw new ErrorCtor(name, val);
 }
 
 function positiveIntegerArgument (name, val) {
@@ -297,6 +298,23 @@ export class SelectTextAreaContentCommand extends Assignable {
     }
 }
 
+export class PressCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type = TYPE.pressKey;
+        this.keys = '';
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'keys', type: nonEmptyStringArgument, required: true }
+        ];
+    }
+}
+
 export class ExecuteHybridFunctionCommand {
     constructor (fnCode, args) {
         this.type   = TYPE.execHybridFn;
@@ -342,6 +360,9 @@ export function createCommandFromObject (obj) {
 
     if (obj.type === TYPE.selectEditableContent)
         return new SelectEditableContentCommand(obj);
+
+    if (obj.type === TYPE.pressKey)
+        return new PressCommand(obj);
 
     if (obj.type === TYPE.testDone)
         return new TestDoneCommand();

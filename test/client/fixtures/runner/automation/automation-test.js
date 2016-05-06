@@ -6,19 +6,19 @@ var domUtils      = testCafeCore.get('./utils/dom');
 var textSelection = testCafeCore.get('./utils/text-selection');
 var position      = testCafeCore.get('./utils/position');
 
-var testCafeRunner          = window.getTestCafeModule('testCafeRunner');
-var automation              = testCafeRunner.get('./automation/automation');
-var MouseOptions            = testCafeRunner.get('../../test-run/commands/options').MouseOptions;
-var ClickOptions            = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
-var TypeOptions             = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
-var ClickAutomation         = testCafeRunner.get('./automation/playback/click');
-var DblClickAutomation      = testCafeRunner.get('./automation/playback/dblclick');
-var SelectTextAutomation = testCafeRunner.get('./automation/playback/select/select-text');
-var TypeAutomation          = testCafeRunner.get('./automation/playback/type');
-var DragToOffsetAutomation  = testCafeRunner.get('./automation/playback/drag/to-offset');
-var PressAutomation         = testCafeRunner.get('./automation/playback/press');
-var parseKeyString          = testCafeRunner.get('./automation/playback/press/parse-key-string');
-var mouseUtils              = testCafeRunner.get('./utils/mouse');
+var testCafeRunner         = window.getTestCafeModule('testCafeRunner');
+var automation             = testCafeRunner.get('./automation/automation');
+var MouseOptions           = testCafeRunner.get('../../test-run/commands/options').MouseOptions;
+var ClickOptions           = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
+var TypeOptions            = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
+var ClickAutomation        = testCafeRunner.get('./automation/playback/click');
+var DblClickAutomation     = testCafeRunner.get('./automation/playback/dblclick');
+var SelectTextAutomation   = testCafeRunner.get('./automation/playback/select/select-text');
+var TypeAutomation         = testCafeRunner.get('./automation/playback/type');
+var DragToOffsetAutomation = testCafeRunner.get('./automation/playback/drag/to-offset');
+var PressAutomation        = testCafeRunner.get('./automation/playback/press');
+var parseKeySequence       = testCafeRunner.get('./automation/playback/press/parse-key-sequence');
+var mouseUtils             = testCafeRunner.get('./utils/mouse');
 
 QUnit.begin(function () {
     automation.init();
@@ -197,7 +197,7 @@ $(document).ready(function () {
     };
 
     var runPressAutomation = function (keys, callback) {
-        var pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+        var pressAutomation = new PressAutomation(parseKeySequence(keys).combinations);
 
         pressAutomation
             .run()

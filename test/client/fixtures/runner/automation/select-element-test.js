@@ -13,7 +13,7 @@ var automation         = testCafeRunner.get('./automation/automation');
 var ClickOptions       = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
 var PressAutomation    = testCafeRunner.get('./automation/playback/press');
 var DblClickAutomation = testCafeRunner.get('./automation/playback/dblclick');
-var parseKeyString     = testCafeRunner.get('./automation/playback/press/parse-key-string');
+var parseKeySequence   = testCafeRunner.get('./automation/playback/press/parse-key-sequence');
 var ClickAutomation    = testCafeRunner.get('./automation/playback/click');
 var mouseUtils         = testCafeRunner.get('./utils/mouse');
 
@@ -137,7 +137,7 @@ $(document).ready(function () {
     };
 
     var runPressAutomation = function (keys, callback) {
-        var pressAutomation = new PressAutomation(parseKeyString(keys).combinations);
+        var pressAutomation = new PressAutomation(parseKeySequence(keys).combinations);
 
         pressAutomation
             .run()
@@ -1084,9 +1084,9 @@ $(document).ready(function () {
     if (!isMobileBrowser) {
         module('mouse actions with select with the "groups" option and size more than one');
         asyncTest('click optgroup', function () {
-            var select           = createSelectWithGroups(),
-                $select          = $(select),
-                group            = $select.find('optgroup')[0];
+            var select  = createSelectWithGroups(),
+                $select = $(select),
+                group   = $select.find('optgroup')[0];
 
             $select.attr('size', '4');
             select.selectedIndex = 0;
@@ -1105,9 +1105,9 @@ $(document).ready(function () {
         });
 
         asyncTest('click option', function () {
-            var select           = createSelectWithGroups(),
-                $select          = $(select),
-                option           = $select.find('option')[1];
+            var select  = createSelectWithGroups(),
+                $select = $(select),
+                option  = $select.find('option')[1];
 
             $select.css({
                 position: 'absolute',
@@ -1143,7 +1143,7 @@ $(document).ready(function () {
                 left:     '300px'
             });
             $select.attr('size', '5');
-            select.selectedIndex    = 0;
+            select.selectedIndex = 0;
             //NOTE: when setting the selected option, IE and Mozilla scroll the select
             $select.scrollTop(selectElementScroll);
 
@@ -1172,7 +1172,7 @@ $(document).ready(function () {
                 left:     '300px'
             });
             $select.attr('size', '5');
-            select.selectedIndex    = 8;
+            select.selectedIndex = 8;
             $select.scrollTop(selectElementScroll);
 
             window.setTimeout(function () {
@@ -1189,13 +1189,13 @@ $(document).ready(function () {
         });
 
         asyncTest('click option in subgroup', function () {
-            var select           = createSelectWithGroups(),
-                $select          = $(select),
-                $optgroup        = $select.find('optgroup').eq(1),
-                $newOptgroup     = $('<optgroup label="subgroup"></optgroup>')
+            var select       = createSelectWithGroups(),
+                $select      = $(select),
+                $optgroup    = $select.find('optgroup').eq(1),
+                $newOptgroup = $('<optgroup label="subgroup"></optgroup>')
                     .addClass(TEST_ELEMENT_CLASS)
                     .appendTo($optgroup[0]),
-                $newOption       = $('<option></option>').text('sub option')
+                $newOption   = $('<option></option>').text('sub option')
                     .addClass(TEST_ELEMENT_CLASS)
                     .appendTo($newOptgroup[0]);
 
@@ -1222,13 +1222,13 @@ $(document).ready(function () {
         });
 
         asyncTest('click subgroup', function () {
-            var select           = createSelectWithGroups(),
-                $select          = $(select),
-                $optgroup        = $select.find('optgroup').eq(1),
-                $newOptgroup     = $('<optgroup label="subgroup"></optgroup>')
+            var select       = createSelectWithGroups(),
+                $select      = $(select),
+                $optgroup    = $select.find('optgroup').eq(1),
+                $newOptgroup = $('<optgroup label="subgroup"></optgroup>')
                     .addClass(TEST_ELEMENT_CLASS)
                     .appendTo($optgroup[0]),
-                $newOption       = $('<option></option>').text('sub option')
+                $newOption   = $('<option></option>').text('sub option')
                     .addClass(TEST_ELEMENT_CLASS)
                     .appendTo($newOptgroup[0]);
 
@@ -1255,10 +1255,10 @@ $(document).ready(function () {
         });
 
         asyncTest('click option out of group', function () {
-            var select           = createSelectWithGroups(),
-                $select          = $(select),
-                $optgroup        = $select.find('optgroup').eq(2),
-                $newOption       = $('<option></option>').text('outer option')
+            var select     = createSelectWithGroups(),
+                $select    = $(select),
+                $optgroup  = $select.find('optgroup').eq(2),
+                $newOption = $('<option></option>').text('outer option')
                     .addClass(TEST_ELEMENT_CLASS)
                     .insertAfter($optgroup);
 
@@ -1282,7 +1282,7 @@ $(document).ready(function () {
 
         module('press actions with select with the "groups" option and size more than one');
         asyncTest('press down/up', function () {
-            var select           = createSelectWithGroupsForCheckPress();
+            var select = createSelectWithGroupsForCheckPress();
 
             $(select).attr('size', '5');
             select.selectedIndex = 0;
@@ -1292,7 +1292,7 @@ $(document).ready(function () {
         });
 
         asyncTest('press right/left', function () {
-            var select           = createSelectWithGroupsForCheckPress();
+            var select = createSelectWithGroupsForCheckPress();
 
             $(select).attr('size', '5');
             select.selectedIndex = 0;

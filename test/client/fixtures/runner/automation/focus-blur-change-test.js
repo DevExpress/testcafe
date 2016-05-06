@@ -6,15 +6,15 @@ var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var SETTINGS     = testCafeCore.get('./settings').get();
 
-var testCafeRunner  = window.getTestCafeModule('testCafeRunner');
-var automation      = testCafeRunner.get('./automation/automation');
-var ClickOptions    = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
-var TypeOptions     = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
-var ClickAutomation = testCafeRunner.get('./automation/playback/click');
-var TypeAutomation  = testCafeRunner.get('./automation/playback/type');
-var PressAutomation = testCafeRunner.get('./automation/playback/press');
-var parseKeyString  = testCafeRunner.get('./automation/playback/press/parse-key-string');
-var mouseUtils      = testCafeRunner.get('./utils/mouse');
+var testCafeRunner   = window.getTestCafeModule('testCafeRunner');
+var automation       = testCafeRunner.get('./automation/automation');
+var ClickOptions     = testCafeRunner.get('../../test-run/commands/options').ClickOptions;
+var TypeOptions      = testCafeRunner.get('../../test-run/commands/options').TypeOptions;
+var ClickAutomation  = testCafeRunner.get('./automation/playback/click');
+var TypeAutomation   = testCafeRunner.get('./automation/playback/type');
+var PressAutomation  = testCafeRunner.get('./automation/playback/press');
+var parseKeySequence = testCafeRunner.get('./automation/playback/press/parse-key-sequence');
+var mouseUtils       = testCafeRunner.get('./utils/mouse');
 
 QUnit.begin(function () {
     automation.init();
@@ -855,7 +855,7 @@ if (browserUtils.isIE)
 asyncTest('Change event not raised after press action if element was focused by client script', function () {
     runAsyncTest(function () {
         var changed         = false;
-        var pressAutomation = new PressAutomation(parseKeyString('ctrl+a delete').combinations);
+        var pressAutomation = new PressAutomation(parseKeySequence('ctrl+a delete').combinations);
 
         input2.value = 'test';
         $(input2).change(function () {

@@ -19,8 +19,8 @@ import SelectTextAutomation from '../automation/playback/select/select-text';
 import SelectEditableContentAutomation from '../automation/playback/select/select-editable-content';
 import TypeAutomation from '../automation/playback/type';
 import { getOffsetOptions } from '../utils/mouse';
-import parseKeyString from '../automation/playback/press/parse-key-string';
 import getSelectPositionArguments from '../automation/playback/select/get-select-position-arguments';
+import parseKeySequence from '../automation/playback/press/parse-key-sequence';
 import * as sourceIndexTracker from '../source-index';
 import async from '../deps/async';
 
@@ -677,13 +677,13 @@ export function press () {
     stepIterator.asyncActionSeries(
         arguments,
         pressActionArgumentsIterator().run,
-        function (keyString, callback) {
-            var parsedKeyString = parseKeyString(keyString);
+        function (keySequence, callback) {
+            var parsedKeySequence = parseKeySequence(keySequence);
 
-            if (parsedKeyString.error)
+            if (parsedKeySequence.error)
                 failWithError(ERROR_TYPE.incorrectPressActionArgument);
             else {
-                var pressAutomation = new PressAutomation(parsedKeyString.combinations);
+                var pressAutomation = new PressAutomation(parsedKeySequence.combinations);
 
                 pressAutomation
                     .run()

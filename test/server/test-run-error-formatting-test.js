@@ -27,6 +27,7 @@ var ActionElementNonEditableError           = require('../../lib/errors/test-run
 var ActionElementNonContentEditableError    = require('../../lib/errors/test-run').ActionElementNonContentEditableError;
 var ActionRootContainerNotFoundError        = require('../../lib/errors/test-run').ActionRootContainerNotFoundError;
 var ActionElementNotTextAreaError           = require('../../lib/errors/test-run').ActionElementNotTextAreaError;
+var ActionIncorrectKeysError                = require('../../lib/errors/test-run').ActionIncorrectKeysError;
 var MissingAwaitError                       = require('../../lib/errors/test-run').MissingAwaitError;
 var ExternalAssertionLibraryError           = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
 
@@ -179,6 +180,10 @@ describe('Error formatting', function () {
 
         it('Should format "actionStringArgumentError" message', function () {
             assertErrorMessage('action-string-argument-error', new ActionStringArgumentError('text', typeof 1));
+        });
+
+        it('Should format "actionIncorrectKeysError" message', function () {
+            assertErrorMessage('action-incorrect-keys-error', new ActionIncorrectKeysError('keys'));
         });
 
         it('Should format "missingAwaitError', function () {

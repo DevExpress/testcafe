@@ -14,7 +14,7 @@ describe('[API] t.rightClick()', function () {
     it('Should validate options', function () {
         return runTests('./testcafe-fixtures/right-click-test.js', 'Incorrect action option', { shouldFail: true, only: 'chrome' })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('Action option offsetX is expected to be a positive integer, but it was -3.');
+                expect(errs[0]).to.contains('The offsetX option is expected to be a positive integer, but it was -3.');
                 expect(errs[0]).to.contains(' > 15 |    await t.rightClick(\'#button\', { offsetX: -3 });');
             });
     });

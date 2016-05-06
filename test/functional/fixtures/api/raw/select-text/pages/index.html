@@ -15,8 +15,6 @@
 
 <button id="button">Button</button>
 <script>
-    var statusDiv = document.getElementById('status');
-
     document.getElementById('input').addEventListener('mouseup', function () {
         if (this.selectionStart === 2 && this.selectionEnd === 4)
             throw new Error('Selected text in input');

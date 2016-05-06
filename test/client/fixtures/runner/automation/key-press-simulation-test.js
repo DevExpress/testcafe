@@ -4,11 +4,11 @@ var browserUtils = hammerhead.utils.browser;
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 var eventUtils   = testCafeCore.get('./utils/event');
 
-var testCafeRunner  = window.getTestCafeModule('testCafeRunner');
-var automation      = testCafeRunner.get('./automation/automation');
-var PressAutomation = testCafeRunner.get('./automation/playback/press');
-var parseKeyString  = testCafeRunner.get('./automation/playback/press/parse-key-string');
-var KEY_MAPS        = testCafeRunner.get('./utils/key-maps');
+var testCafeRunner   = window.getTestCafeModule('testCafeRunner');
+var automation       = testCafeRunner.get('./automation/automation');
+var PressAutomation  = testCafeRunner.get('./automation/playback/press');
+var parseKeySequence = testCafeRunner.get('./automation/playback/press/parse-key-sequence');
+var KEY_MAPS         = testCafeRunner.get('./utils/key-maps');
 
 automation.init();
 
@@ -112,8 +112,8 @@ $(document).ready(function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     });
 
-    function testKeysPress (keyString, expectedEvents) {
-        var keyCombinations = parseKeyString(keyString).combinations;
+    function testKeysPress (keySequence, expectedEvents) {
+        var keyCombinations = parseKeySequence(keySequence).combinations;
         var pressAutomation = new PressAutomation(keyCombinations);
 
         pressAutomation
@@ -124,8 +124,8 @@ $(document).ready(function () {
             });
     }
 
-    function runPressAutomation (keyString, callback) {
-        var keyCombinations = parseKeyString(keyString).combinations;
+    function runPressAutomation (keySequence, callback) {
+        var keyCombinations = parseKeySequence(keySequence).combinations;
         var pressAutomation = new PressAutomation(keyCombinations);
 
         pressAutomation
