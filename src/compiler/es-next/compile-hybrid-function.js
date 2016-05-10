@@ -96,22 +96,22 @@ function addBabelArtifactsPolyfills (fnCode) {
     return { polyfills, modifiedFnCode };
 }
 
-function getDependenciesCode (dependencies) {
+function getDependenciesCode (dependencies, callsiteNames) {
     return Object
         .keys(dependencies)
         .reduce((code, name) => {
             var dependencyCode = dependencies[name][compiledCode];
 
             if (!dependencyCode)
-                throw new APIError('Hybrid', MESSAGE.hybridDependencyIsNotAHybrid, name);
+                throw new APIError(callsiteNames.instantiation, MESSAGE.hybridDependencyIsNotAHybrid, name);
 
             return code + `var ${name}=${dependencyCode}`;
         }, '');
 }
 
-export default function compileHybridFunction (fnCode, dependencies = {}) {
+export default function compileHybridFunction (fnCode, dependencies = {}, callsiteNames) {
     if (fnCode === ASYNC_TO_GENERATOR_OUTPUT_CODE)
-        throw new APIError('Hybrid', MESSAGE.regeneratorInClientCode);
+        throw new APIError(callsiteNames.instantiation, MESSAGE.regeneratorInClientCode);
 
     if (ANONYMOUS_FN_RE.test(fnCode))
         fnCode = `(${fnCode})`;
@@ -125,12 +125,12 @@ export default function compileHybridFunction (fnCode, dependencies = {}) {
     // NOTE: check compiled code for regenerator injection: we have either generator
     // recompiled in Node.js 4+ for client or async function declared in function code.
     if (REGENERATOR_FOOTPRINTS_RE.test(fnCode))
-        throw new APIError('Hybrid', MESSAGE.regeneratorInClientCode);
+        throw new APIError(callsiteNames.instantiation, MESSAGE.regeneratorInClientCode);
 
     if (!TRAILING_SEMICOLON_RE.test(fnCode))
         fnCode += ';';
 
-    var dependenciesCode = getDependenciesCode(dependencies);
+    var dependenciesCode = getDependenciesCode(dependencies, callsiteNames);
 
     var { polyfills, modifiedFnCode } = addBabelArtifactsPolyfills(fnCode);
 

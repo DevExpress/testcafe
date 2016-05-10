@@ -7,8 +7,7 @@ var stackParser = require('error-stack-parser');
 var stripAnsi   = require('strip-ansi');
 var sortBy      = require('lodash').sortBy;
 var Compiler    = require('../../lib/compiler');
-var Role        = require('../../lib/api/common/role');
-var Hybrid      = require('../../lib/api/common/hybrid');
+var commonAPI   = require('../../lib/api/common');
 var NODE_VER    = require('../../lib/utils/node-version');
 
 describe('Compiler', function () {
@@ -155,8 +154,7 @@ describe('Compiler', function () {
                 return compiled.tests[0].fn(testRunMock);
             })
             .then(function (commons) {
-                expect(commons.Role).eql(Role);
-                expect(commons.Hybrid).eql(Hybrid);
+                expect(commons).eql(commonAPI);
             });
     });
 
