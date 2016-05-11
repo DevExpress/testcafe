@@ -37,7 +37,6 @@ const failedCount = await runner
     .browsers([remoteConnection, 'chrome'])
     .reporter('json')
     .run();
-});
 ```
 
 For details, see the reference topics below.

@@ -73,3 +73,7 @@ console.log('Tests failed: ' + failed);
 ### close
 
 Stops the TestCafe server. Forcibly closes all connections and pending test runs immediately.
+
+```text
+close()
+```
