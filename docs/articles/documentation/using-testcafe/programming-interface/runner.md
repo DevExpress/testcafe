@@ -223,19 +223,8 @@ You can pass the following options to this function.
 Parameter                    | Type    | Description                                                                                                                                                                                            | Default
 ---------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------
 `skipJsErrors`               | Boolean | Defines whether to continue running a test after a JavaScript error occurs on a page (`true`), or consider such a test failed (`false`).                                                               | `false`
-`quarantineMode`             | Boolean | Defines whether to enable the *quarantine mode* (see below).                                                                                                                                           | `false`
+`quarantineMode`             | Boolean | Defines whether to enable the [quarantine mode](#quarantine-mode).                                                                                                                                           | `false`
 `elementAvailabilityTimeout` | Numeric | Specifies the amount of time, in milliseconds, allowed for a page element on which an action is being performed to become visible and appear in the DOM before the test fails.                         | `10000`
-
-#### Quarantine Mode
-
-The quarantine mode is designed to isolate non-deterministic tests (i.e., tests that sometimes pass and sometimes fail without a clear reason)
-from the rest of the test base (healthy tests).
-
-When the quarantine mode is enabled, tests are not marked as *failed* after the first unsuccessful run but rather sent to the quarantine.
-After that, these tests are run several more times. The outcome of the most runs (*passed* or *failed*) is recorded as the test result.
-A test is separately marked *unstable* if the outcome varies between runs. The run that led to quarantining the test counts.
-
-To learn more about the issue of non-deterministic tests, see Martin Fowler's [Eradicating Non-Determinism in Tests](http://martinfowler.com/articles/nonDeterminism.html) article.
 
 **Example**
 
@@ -248,3 +237,40 @@ const failed = await runner.run({
 
 console.log('Tests failed: ' + failed);
 ```
+
+#### Cancelling Test Tasks
+
+You can stop an individual test task at any moment by cancelling the corresponding promise.
+
+```js
+const taskPromise = runner
+    .src('tests/fixture1.js')
+    .browsers([remoteConnection, 'chrome'])
+    .reporter('json')
+    .run();
+
+await taskPromise.cancel();
+```
+
+You can also cancel all pending tasks at once by using the [runner.stop](#stop) function.
+
+#### Quarantine Mode
+
+The quarantine mode is designed to isolate non-deterministic tests (i.e., tests that sometimes pass and sometimes fail without a clear reason)
+from the rest of the test base (healthy tests).
+
+When the quarantine mode is enabled, tests are not marked as *failed* after the first unsuccessful run but rather sent to the quarantine.
+After that, these tests are run several more times. The outcome of the most runs (*passed* or *failed*) is recorded as the test result.
+A test is separately marked *unstable* if the outcome varies between runs. The run that led to quarantining the test counts.
+
+To learn more about the issue of non-deterministic tests, see Martin Fowler's [Eradicating Non-Determinism in Tests](http://martinfowler.com/articles/nonDeterminism.html) article.
+
+### stop
+
+Stops all pending test tasks.
+
+```text
+async stop()
+```
+
+You can also stop an individual pending task by [cancelling the corresponding promise](#cancelling-test-tasks).
