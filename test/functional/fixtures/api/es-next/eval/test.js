@@ -2,7 +2,7 @@ var expect         = require('chai').expect;
 var parseUserAgent = require('useragent').parse;
 
 describe('[API] t.eval', function () {
-    it('Should execute anonymous hybrid function', function () {
+    it('Should execute an anonymous hybrid function', function () {
         function assertUA (errs, alias, expected) {
             var ua = parseUserAgent(errs[alias][0]).toString();
 
@@ -17,11 +17,11 @@ describe('[API] t.eval', function () {
             });
     });
 
-    it('Should execute anonymous hybrid function with dependencies', function () {
+    it('Should execute an anonymous hybrid function with dependencies', function () {
         return runTests('./testcafe-fixtures/eval-test.js', 'Eval with dependencies');
     });
 
-    it('Should have correct callsite if error occurs on instantiation', function () {
+    it('Should have the correct callsite if an error occurs on instantiation', function () {
         return runTests('./testcafe-fixtures/eval-test.js', 'Error on instantiation', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('Client code is expected to be specified as a function, but "string" was passed.');
@@ -29,7 +29,7 @@ describe('[API] t.eval', function () {
             });
     });
 
-    it('Should have correct callsite if error occurs during execution', function () {
+    it('Should have the correct callsite if an error occurs during execution', function () {
         return runTests('./testcafe-fixtures/eval-test.js', 'Error during execution', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('An error occurred in code executed on the client:  Error: Hi there!');
