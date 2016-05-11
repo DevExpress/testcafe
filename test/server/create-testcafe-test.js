@@ -2,8 +2,7 @@ var expect         = require('chai').expect;
 var url            = require('url');
 var net            = require('net');
 var createTestCafe = require('../../lib/');
-var Role           = require('../../lib/api/common/role');
-var Hybrid         = require('../../lib/api/common/hybrid');
+var commonAPI      = require('../../lib/api/common');
 var Promise        = require('pinkie');
 
 
@@ -87,7 +86,7 @@ describe('TestCafe factory function', function () {
     it('Should contain plugin testing, embedding utils and common runtime functions', function () {
         expect(createTestCafe.pluginTestingUtils).to.be.an.object;
         expect(createTestCafe.embeddingUtils).to.be.an.object;
-        expect(createTestCafe.Role).eql(Role);
-        expect(createTestCafe.Hybrid).eql(Hybrid);
+        expect(createTestCafe.Role).eql(commonAPI.Role);
+        expect(createTestCafe.Hybrid).eql(commonAPI.Hybrid);
     });
 });

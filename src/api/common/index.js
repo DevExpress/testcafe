@@ -1,4 +1,11 @@
 import Role from './role';
-import Hybrid from './hybrid';
+import createHybridFunction from './hybrid';
 
-export default { Role, Hybrid };
+export default {
+    Role,
+
+    Hybrid (fn, dependencies) {
+        return createHybridFunction(fn, dependencies);
+    }
+};
+

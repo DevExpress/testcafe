@@ -18,7 +18,7 @@ function resolveContextTestRun () {
     return testRun;
 }
 
-function getHybridFunctionInstance (fnCode, boundTestRun) {
+function buildHybridFunctionInstance (fnCode, boundTestRun, callsiteNames) {
     var hybridFn = function hybridFunction () {
         var testRun = boundTestRun || resolveContextTestRun(boundTestRun);
         var args    = [];
@@ -27,7 +27,7 @@ function getHybridFunctionInstance (fnCode, boundTestRun) {
         for (var i = 0; i < arguments.length; i++)
             args.push(arguments[i]);
 
-        var callsite = getCallsite('hybridFunction');
+        var callsite = getCallsite(callsiteNames.execution);
         var command  = new ExecuteHybridFunctionCommand(fnCode, args);
 
         return testRun.executeCommand(command, callsite);
@@ -41,7 +41,7 @@ function getHybridFunctionInstance (fnCode, boundTestRun) {
         if (!t || !(t.testRun instanceof TestRun))
             throw new APIError('bindTestRun', MESSAGE.invalidHybridTestRunBinding);
 
-        return getHybridFunctionInstance(fnCode, t.testRun);
+        return buildHybridFunctionInstance(fnCode, t.testRun, callsiteNames);
     };
 
     return hybridFn;
@@ -49,17 +49,20 @@ function getHybridFunctionInstance (fnCode, boundTestRun) {
 
 // NOTE: we use runtime APIError in most places because these errors may appear
 // at the test compilation time when we don't have any test runs yet.
-export default function Hybrid (fn, dependencies = {}) {
+export default function createHybridFunction (fn, dependencies = {}, boundTestRun = null, callsiteNames = {
+    instantiation: 'Hybrid',
+    execution:     'hybridFunction'
+}) {
     var fnType           = typeof fn;
     var dependenciesType = typeof dependencies;
 
     if (fnType !== 'function')
-        throw new APIError('Hybrid', MESSAGE.clientCodeIsNotAFunction, fnType);
+        throw new APIError(callsiteNames.instantiation, MESSAGE.clientCodeIsNotAFunction, fnType);
 
     if (dependenciesType !== 'object')
-        throw new APIError('Hybrid', MESSAGE.hybridDependenciesIsNotAnObject, dependenciesType);
+        throw new APIError(callsiteNames.instantiation, MESSAGE.hybridDependenciesIsNotAnObject, dependenciesType);
 
-    var fnCode = compileHybridFunction(fn.toString(), dependencies);
+    var fnCode = compileHybridFunction(fn.toString(), dependencies, callsiteNames);
 
-    return getHybridFunctionInstance(fnCode, null);
+    return buildHybridFunctionInstance(fnCode, boundTestRun, callsiteNames);
 }

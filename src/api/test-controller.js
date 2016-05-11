@@ -2,6 +2,7 @@ import Promise from 'pinkie';
 import { identity } from 'lodash';
 import { MissingAwaitError } from '../errors/test-run';
 import getCallsite from '../errors/get-callsite';
+import createHybridFunction from './common/hybrid';
 
 import {
     ClickCommand,
@@ -16,6 +17,8 @@ import {
     SelectEditableContentCommand
 } from '../test-run/commands';
 
+const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$$/;
+
 export default class TestController {
     constructor (testRun) {
         this.testRun              = testRun;
@@ -27,7 +30,12 @@ export default class TestController {
     _createAPIMethodsList () {
         return Object
             .keys(TestController.prototype)
-            .filter(name => !/^_/.test(name) && typeof TestController.prototype[name] === 'function');
+            .map(prop => {
+                var match = prop.match(API_IMPLEMENTATION_METHOD_RE);
+
+                return match && match[1];
+            })
+            .filter(name => !!name);
     }
 
 
@@ -62,7 +70,7 @@ export default class TestController {
 
             extendedPromise[name] = function () {
                 ensureAwait();
-                return controller[`_${name}Impl`].apply(controller, arguments);
+                return controller[`_${name}$`].apply(controller, arguments);
             };
         });
 
@@ -98,86 +106,70 @@ export default class TestController {
     // We need implementation methods to obtain correct callsites. If we use plain API
     // methods in chained wrappers then we will have callsite for the wrapped method
     // in this file instead of chained method callsite in user code.
-    _clickImpl (selector, options) {
+    _click$ (selector, options) {
         return this._enqueueAction('click', ClickCommand, { selector, options });
     }
 
-    _rightClickImpl (selector, options) {
+    _rightClick$ (selector, options) {
         return this._enqueueAction('rightClick', RightClickCommand, { selector, options });
     }
 
-    _doubleClickImpl (selector, options) {
+    _doubleClick$ (selector, options) {
         return this._enqueueAction('doubleClick', DoubleClickCommand, { selector, options });
     }
 
-    _hoverImpl (selector, options) {
+    _hover$ (selector, options) {
         return this._enqueueAction('hover', HoverCommand, { selector, options });
     }
 
-    _dragImpl (selector, dragOffsetX, dragOffsetY, options) {
+    _drag$ (selector, dragOffsetX, dragOffsetY, options) {
         return this._enqueueAction('drag', DragCommand, { selector, dragOffsetX, dragOffsetY, options });
     }
 
-    _dragToElementImpl (selector, destinationSelector, options) {
+    _dragToElement$ (selector, destinationSelector, options) {
         return this._enqueueAction('dragToElement', DragToElementCommand, { selector, destinationSelector, options });
     }
 
-    _typeTextImpl (selector, text, options) {
+    _typeText$ (selector, text, options) {
         return this._enqueueAction('typeText', TypeTextCommand, { selector, text, options });
     }
 
-    _selectTextImpl (selector, startPos, endPos) {
+    _selectText$ (selector, startPos, endPos) {
         return this._enqueueAction('selectText', SelectTextCommand, { selector, startPos, endPos });
     }
 
-    _selectTextAreaContentImpl (selector, startLine, startPos, endLine, endPos) {
+    _selectTextAreaContent$ (selector, startLine, startPos, endLine, endPos) {
         return this._enqueueAction('selectTextAreaContent', SelectTextAreaContentCommand, { selector, startLine, startPos, endLine, endPos });
     }
 
-    _selectEditableContentImpl (startSelector, endSelector) {
+    _selectEditableContent$ (startSelector, endSelector) {
         return this._enqueueAction('selectEditableContent', SelectEditableContentCommand, { startSelector, endSelector });
     }
 
-    // API
-    click (selector, options) {
-        return this._clickImpl(selector, options);
-    }
+    _eval$ (fn, dependencies) {
+        var hybridFn = createHybridFunction(fn, dependencies, this.testRun, {
+            instantiation: 'eval',
+            execution:     'eval'
+        });
 
-    rightClick (selector, options) {
-        return this._rightClickImpl(selector, options);
-    }
-
-    doubleClick (selector, options) {
-        return this._doubleClickImpl(selector, options);
-    }
-
-    hover (selector, options) {
-        return this._hoverImpl(selector, options);
-    }
-
-    drag (selector, dragOffsetX, dragOffsetY, options) {
-        return this._dragImpl(selector, dragOffsetX, dragOffsetY, options);
-    }
-
-    dragToElement (selector, destinationSelector, options) {
-        return this._dragToElementImpl(selector, destinationSelector, options);
-    }
-
-    typeText (selector, text, options) {
-        return this._typeTextImpl(selector, text, options);
-    }
-
-    selectText (selector, startPos, endPos) {
-        return this._selectTextImpl(selector, startPos, endPos);
-    }
-
-    selectTextAreaContent (selector, startLine, startPos, endLine, endPos) {
-        return this._selectTextAreaContentImpl(selector, startLine, startPos, endLine, endPos);
-    }
-
-    selectEditableContent (startSelector, endSelector) {
-        return this._selectEditableContentImpl(startSelector, endSelector);
+        return hybridFn();
     }
 }
+
+(function createAPIMethods () {
+    Object
+        .keys(TestController.prototype)
+        .forEach(prop => {
+            var match = prop.match(API_IMPLEMENTATION_METHOD_RE);
+
+            if (match) {
+                var apiMethodName = match[1];
+
+                TestController.prototype[apiMethodName] = function () {
+                    return TestController.prototype[prop].apply(this, arguments);
+                };
+            }
+        });
+})();
 
 
