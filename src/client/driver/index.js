@@ -8,6 +8,7 @@ import { UncaughtErrorOnPage } from '../../errors/test-run';
 
 import * as browser from '../browser';
 import executeActionCommand from './command-executors/execute-action-command';
+import executeWaitForElementCommand from './command-executors/execute-wait-for-element-command';
 import executeHybridFnCommand from './command-executors/execute-hybrid-fn-command';
 import ContextStorage from './storage';
 import DriverStatus from './status';
@@ -140,6 +141,11 @@ export default class ClientDriver {
             });
     }
 
+    _onWaitForElementCommand (command) {
+        executeWaitForElementCommand(command, this.elementAvailabilityTimeout)
+            .then(driverStatus => this._onReady(driverStatus));
+    }
+
     _onCommand (command) {
         if (command.type === COMMAND_TYPE.testDone)
             this._onTestDone();
@@ -149,6 +155,9 @@ export default class ClientDriver {
 
         else if (this.contextStorage.getItem(PENDING_PAGE_ERROR))
             this._onReady(new DriverStatus({ isCommandResult: true }));
+
+        else if (command.type === COMMAND_TYPE.waitForElement)
+            this._onWaitForElementCommand(command);
 
         else
             this._onActionCommand(command);

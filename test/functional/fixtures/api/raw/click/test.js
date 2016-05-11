@@ -40,7 +40,7 @@ describe('[Raw API] Click action', function () {
             });
     });
 
-    it('Should wait for xhr-requests after an aciton', function () {
+    it('Should wait for xhr-requests after an action', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click xhr button', { shouldFail: true })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'Xhr requests are finished', 0);

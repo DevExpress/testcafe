@@ -9,6 +9,7 @@ import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapt
 import { TestDoneCommand, isTestDoneCommand, isCommandRejectableByPageError } from './commands';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
+import COMMAND_TYPE from './commands/type';
 
 
 //Const
@@ -166,6 +167,9 @@ export default class TestRun extends Session {
         this.debugLog.command(command);
 
         this.currentCommandCallsite = callsite;
+
+        if (command.type === COMMAND_TYPE.wait)
+            return new Promise(resolve => setTimeout(resolve, command.timeout));
 
         if (this.pendingJsError && isCommandRejectableByPageError(command)) {
             var result = Promise.reject(this.pendingJsError);

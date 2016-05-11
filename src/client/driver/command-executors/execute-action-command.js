@@ -8,23 +8,21 @@ import {
     ActionElementIsInvisibleError,
     ActionAdditionalElementNotFoundError,
     ActionAdditionalElementIsInvisibleError,
-    ActionElementNonEditableError,
-    ActionElementNonContentEditableError,
-    ActionRootContainerNotFoundError,
-    ActionElementNotTextAreaError,
     ActionIncorrectKeysError
 } from '../../../errors/test-run';
 
 import COMMAND_TYPE from '../../../test-run/commands/type';
+import {
+    ensureElementEditable,
+    ensureTextAreaElement,
+    ensureContentEditableElement,
+    ensureRootContainer,
+    ensureElement
+} from './ensure-element-utils';
 
 var Promise                         = hammerhead.Promise;
-var nativeMethods                   = hammerhead.nativeMethods;
 var XhrBarrier                      = testCafeCore.XhrBarrier;
 var pageUnloadBarrier               = testCafeCore.pageUnloadBarrier;
-var positionUtils                   = testCafeCore.positionUtils;
-var domUtils                        = testCafeCore.domUtils;
-var waitFor                         = testCafeCore.waitFor;
-var contentEditable                 = testCafeCore.contentEditable;
 var ClickAutomation                 = testCafeRunner.get('./automation/playback/click');
 var RClickAutomation                = testCafeRunner.get('./automation/playback/rclick');
 var DblClickAutomation              = testCafeRunner.get('./automation/playback/dblclick');
@@ -41,60 +39,11 @@ var ProgressPanel                   = testCafeUI.ProgressPanel;
 
 
 const PROGRESS_PANEL_TEXT                = 'Waiting for the target element of the next action to appear';
-const CHECK_ELEMENT_DELAY                = 200;
 const START_SELECTOR_ARGUMENT_NAME       = 'startSelector';
 const END_SELECTOR_ARGUMENT_NAME         = 'endSelector';
 const DESTINATION_SELECTOR_ARGUMENT_NAME = 'destinationSelector';
 const KEYS_ARGUMENT_NAME                 = 'keys';
 
-
-function ensureElementEditable (element) {
-    if (!domUtils.isEditableElement(element))
-        throw new ActionElementNonEditableError();
-}
-
-function ensureTextAreaElement (element) {
-    if (!domUtils.isTextAreaElement(element))
-        throw new ActionElementNotTextAreaError();
-}
-
-function ensureContentEditableElement (element, argumentTitle) {
-    if (!domUtils.isContentEditableElement(element))
-        throw new ActionElementNonContentEditableError(argumentTitle);
-}
-
-function ensureRootContainer (elements) {
-    // NOTE: We should find a common element for the nodes to perform the select action
-    if (!contentEditable.getNearestCommonAncestor(elements[0], elements[1]))
-        throw new ActionRootContainerNotFoundError();
-
-    return elements;
-}
-
-function ensureElementExists (selector, timeout, createError) {
-    return waitFor(selector, CHECK_ELEMENT_DELAY, timeout)
-        .catch(() => {
-            throw createError();
-        });
-}
-
-function ensureElementVisible (element, timeout, createError) {
-    return waitFor(() => positionUtils.isElementVisible(element) ? element : null, CHECK_ELEMENT_DELAY, timeout)
-        .catch(() => {
-            throw createError();
-        });
-}
-
-function ensureElement (selector, timeout, createNotFoundError, createIsInvisibleError) {
-    var startTime = new Date();
-
-    return ensureElementExists(() => nativeMethods.eval.call(window, selector), timeout, createNotFoundError)
-        .then(element => {
-            var checkVisibilityTimeout = timeout - (new Date() - startTime);
-
-            return ensureElementVisible(element, checkVisibilityTimeout, createIsInvisibleError);
-        });
-}
 
 function ensureCommandElements (command, timeout) {
     var progressPanel = new ProgressPanel();

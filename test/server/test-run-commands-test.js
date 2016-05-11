@@ -659,6 +659,47 @@ describe('Test run commands', function () {
             });
         });
 
+        it('Should create WaitCommand from object', function () {
+            var commandObj = {
+                type:    TYPE.wait,
+                timeout: 1000
+            };
+            var command    = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:    TYPE.wait,
+                timeout: 1000
+            });
+        });
+
+        it('Should create WaitForElementCommand from object', function () {
+            var commandObj = {
+                type:     TYPE.waitForElement,
+                selector: '#yo',
+                timeout:  1000
+            };
+            var command    = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.waitForElement,
+                selector: "(function () { return document.querySelector('#yo') })()",
+                timeout:  1000
+            });
+
+            commandObj = {
+                type:     TYPE.waitForElement,
+                selector: '#yo'
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.waitForElement,
+                timeout:  null,
+                selector: "(function () { return document.querySelector('#yo') })()"
+            });
+        });
+
         it('Should create TestDone command from object', function () {
             var commandObj = { type: TYPE.testDone, hey: '42' };
 
@@ -1659,6 +1700,92 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'keys',
                     actualValue:     '""',
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate WaitСommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.wait
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    argumentName:    'timeout',
+                    actualValue:     'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.wait,
+                        timeout: -5
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    argumentName:    'timeout',
+                    actualValue:     -5,
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate WaitForElementСommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.waitForElement
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionSelectorTypeError,
+                    actualType:      'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.waitForElement,
+                        selector: 1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionSelectorTypeError,
+                    actualType:      'number',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.waitForElement,
+                        selector: 'element',
+                        timeout:  10.5
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    argumentName:    'timeout',
+                    actualValue:     10.5,
                     callsite:        null
                 }
             );

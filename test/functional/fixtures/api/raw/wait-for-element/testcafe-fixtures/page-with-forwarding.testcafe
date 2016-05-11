@@ -1,0 +1,20 @@
+{
+    "fixtures": [
+        {
+            "name": "Wait for element",
+            "pageUrl": "http://localhost:3000/api/raw/wait-for-element/pages/page-with-forwarding.html",
+            "tests": [
+                {
+                    "name": "Wait for element with timeout enough for it to appear",
+                    "commands": [
+                        {
+                            "type": "wait-for-element",
+                            "selector": "#button",
+                            "timeout": 2000
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

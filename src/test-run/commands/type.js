@@ -15,6 +15,8 @@ export default {
     selectTextAreaContent: 'select-text-area-content',
     selectEditableContent: 'select-editable-content',
     pressKey:              'press-key',
+    wait:                  'wait',
+    waitForElement:        'wait-for-element',
     execHybridFn:          'exec-hybrid-fn',
     testDone:              'test-done'
 };
