@@ -298,7 +298,7 @@ export class SelectTextAreaContentCommand extends Assignable {
     }
 }
 
-export class PressCommand extends Assignable {
+export class PressKeyCommand extends Assignable {
     constructor (obj) {
         super(obj);
 
@@ -362,7 +362,7 @@ export function createCommandFromObject (obj) {
         return new SelectEditableContentCommand(obj);
 
     if (obj.type === TYPE.pressKey)
-        return new PressCommand(obj);
+        return new PressKeyCommand(obj);
 
     if (obj.type === TYPE.testDone)
         return new TestDoneCommand();

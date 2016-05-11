@@ -14,7 +14,8 @@ import {
     TypeTextCommand,
     SelectTextCommand,
     SelectTextAreaContentCommand,
-    SelectEditableContentCommand
+    SelectEditableContentCommand,
+    PressKeyCommand
 } from '../test-run/commands';
 
 const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$$/;
@@ -144,6 +145,10 @@ export default class TestController {
 
     _selectEditableContent$ (startSelector, endSelector) {
         return this._enqueueAction('selectEditableContent', SelectEditableContentCommand, { startSelector, endSelector });
+    }
+
+    _pressKey$ (keys) {
+        return this._enqueueAction('pressKey', PressKeyCommand, { keys });
     }
 
     _eval$ (fn, dependencies) {
