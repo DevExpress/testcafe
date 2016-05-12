@@ -17,6 +17,7 @@ export default {
     pressKey:              'press-key',
     wait:                  'wait',
     waitForElement:        'wait-for-element',
+    navigateTo:            'navigate-to',
     execHybridFn:          'exec-hybrid-fn',
     testDone:              'test-done'
 };

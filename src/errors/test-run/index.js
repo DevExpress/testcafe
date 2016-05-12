@@ -177,6 +177,15 @@ export class ActionAdditionalSelectorTypeError extends ActionError {
     }
 }
 
+export class ActionUnsupportedUrlProtocolError extends ActionError {
+    constructor (argumentName, protocol) {
+        super(TYPE.actionUnsupportedUrlProtocolError);
+
+        this.argumentName = argumentName;
+        this.protocol     = protocol;
+    }
+}
+
 // Action execution errors
 //--------------------------------------------------------------------
 export class ActionElementNotFoundError extends ActionError {

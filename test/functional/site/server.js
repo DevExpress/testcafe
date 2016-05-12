@@ -59,7 +59,8 @@ Server.prototype._setupRoutes = function () {
                 }, delay);
             })
             .catch(function () {
-                res.sendStatus(404);
+                res.status(404);
+                res.send('Not found');
             });
     });
 

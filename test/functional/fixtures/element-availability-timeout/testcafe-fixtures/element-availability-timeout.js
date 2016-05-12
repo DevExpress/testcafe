@@ -2,8 +2,14 @@
 fixture `Wait for element appearance before click`
     .page `http://localhost:3000/element-availability-timeout/pages/index.html`;
 
-test('Wait for element appearance before click', async t => {
+test('Wait for element with timeout enough for it to appear', async t => {
     await t
         .click('#button1')
-        .click('#button2');
+        .click('#button');
+});
+
+test('Wait for element with insufficient timeout', async t => {
+    await t
+        .click('#button2')
+        .click('#button');
 });
