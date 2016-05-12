@@ -118,10 +118,18 @@ before(function () {
                 var quarantineMode             = opts && opts.quarantineMode;
                 var elementAvailabilityTimeout = opts && opts.elementAvailabilityTimeout ||
                                                  FUNCTIONAL_TESTS_ELEMENT_AVAILABILITY_TIMEOUT;
+                var onlyLocal                  = opts && opts.only === 'local';
+                var onlyOption                 = !onlyLocal && opts && opts.only;
                 var skipOption                 = opts && opts.skip;
-                var onlyOption                 = opts && opts.only;
 
-                var actualBrowsers = browsersInfo.filter(function (browserInfo) {
+                if (onlyLocal && config.isTravisTask)
+                    return Promise.resolve();
+
+                var screenshotPath = opts && opts.setScreenshotPath ?
+                                     path.join(config.site.viewsPath, 'screenshots') : '';
+
+                var screenshotsOnFails = opts && opts.screenshotsOnFails;
+                var actualBrowsers     = browsersInfo.filter(function (browserInfo) {
                     var only = onlyOption ? onlyOption.indexOf(browserInfo.settings.alias) > -1 : true;
                     var skip = skipOption ? skipOption.indexOf(browserInfo.settings.alias) > -1 : false;
 
@@ -147,6 +155,7 @@ before(function () {
                         }
                     })
                     .src(fixturePath)
+                    .screenshots(screenshotPath, screenshotsOnFails)
                     .run({
                         skipJsErrors:               skipJsErrors,
                         quarantineMode:             quarantineMode,

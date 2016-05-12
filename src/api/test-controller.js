@@ -20,7 +20,8 @@ import {
     WaitForElementCommand,
     NavigateToCommand,
     UploadFileCommand,
-    ClearUploadCommand
+    ClearUploadCommand,
+    TakeScreenshotCommand
 } from '../test-run/commands';
 
 const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$$/;
@@ -145,11 +146,20 @@ export default class TestController {
     }
 
     _selectTextAreaContent$ (selector, startLine, startPos, endLine, endPos) {
-        return this._enqueueAction('selectTextAreaContent', SelectTextAreaContentCommand, { selector, startLine, startPos, endLine, endPos });
+        return this._enqueueAction('selectTextAreaContent', SelectTextAreaContentCommand, {
+            selector,
+            startLine,
+            startPos,
+            endLine,
+            endPos
+        });
     }
 
     _selectEditableContent$ (startSelector, endSelector) {
-        return this._enqueueAction('selectEditableContent', SelectEditableContentCommand, { startSelector, endSelector });
+        return this._enqueueAction('selectEditableContent', SelectEditableContentCommand, {
+            startSelector,
+            endSelector
+        });
     }
 
     _pressKey$ (keys) {
@@ -174,6 +184,10 @@ export default class TestController {
 
     _clearUpload$ (selector) {
         return this._enqueueAction('clearUpload', ClearUploadCommand, { selector });
+    }
+
+    _takeScreenshot$ (customPath) {
+        return this._enqueueAction('takeScreenshot', TakeScreenshotCommand, { customPath });
     }
 
     _eval$ (fn, dependencies) {

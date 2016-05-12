@@ -1,12 +1,12 @@
-import { nativeMethods } from '../deps/hammerhead';
-import { waitFor, positionUtils, domUtils, contentEditable } from '../deps/testcafe-core';
+import { nativeMethods } from './deps/hammerhead';
+import { waitFor, positionUtils, domUtils, contentEditable } from './deps/testcafe-core';
 import {
     ActionElementNonEditableError,
     ActionElementNonContentEditableError,
     ActionRootContainerNotFoundError,
     ActionElementNotTextAreaError,
     ActionElementIsNotFileInputError
-} from '../../../errors/test-run';
+} from '../../errors/test-run';
 
 
 const CHECK_ELEMENT_DELAY = 200;
