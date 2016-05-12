@@ -4,6 +4,7 @@ export default class DriverStatus extends Assignable {
     constructor (obj) {
         super(obj);
 
+        this.id              = Date.now();
         this.isCommandResult = false;
         this.executionError  = null;
         this.pageError       = null;

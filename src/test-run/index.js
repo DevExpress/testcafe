@@ -43,7 +43,8 @@ export default class TestRun extends Session {
         this.injectable.scripts.push('/testcafe-driver.js');
         this.injectable.styles.push('/testcafe-ui-styles.css');
 
-        this.errs = [];
+        this.errs                = [];
+        this.driverResponseCache = {};
     }
 
 
@@ -155,6 +156,7 @@ export default class TestRun extends Session {
     }
 
     _resolvePendingRequest (command) {
+        this.driverResponseCache[this.pendingRequest.statusId] = command;
         this.pendingRequest.resolve(command);
         this.pendingRequest = null;
     }
@@ -199,10 +201,15 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 
     this.pendingRequest = null;
 
+    var driverStatus   = msg.status;
+    var cachedResponse = this.driverResponseCache[driverStatus.id];
+
+    if (cachedResponse)
+        return Promise.resolve(cachedResponse);
+
     if (!this.running)
         this._start();
 
-    var driverStatus                  = msg.status;
     var shouldRejectPendingDriverTask = driverStatus.pageError &&
                                         this.pendingDriverTask &&
                                         isCommandRejectableByPageError(this.pendingDriverTask.command);
@@ -213,11 +220,16 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
         this.pendingJsError = this.pendingJsError || driverStatus.pageError;
 
         if (this.pendingDriverTask) {
-            if (!driverStatus.isCommandResult)
+            if (!driverStatus.isCommandResult) {
+                this.driverResponseCache[driverStatus.id] = this.pendingDriverTask.command;
+
                 return Promise.resolve(this.pendingDriverTask.command);
+            }
 
             if (isTestDoneCommand(this.pendingDriverTask.command)) {
                 this.pendingDriverTask.resolve();
+                this.driverResponseCache[driverStatus.id] = null;
+
                 return null;
             }
 
@@ -228,5 +240,5 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
         }
     }
 
-    return new Promise((resolve, reject) => this.pendingRequest = { resolve, reject });
+    return new Promise((resolve, reject) => this.pendingRequest = { statusId: driverStatus.id, resolve, reject });
 };

@@ -98,26 +98,28 @@ export default class ClientDriver {
 
     _sendStatusToServer (status) {
         this._addPendingErrorToStatus(status);
+        this.contextStorage.setItem(PENDING_STATUS, status);
 
         // NOTE: postpone status sending if the page is unloading
-        if (this.beforeUnloadRaised) {
-            this.contextStorage.setItem(PENDING_STATUS, status);
-
+        if (this.beforeUnloadRaised)
             return new Promise(testCafeCore.noop);
-        }
 
-        this.contextStorage.setItem(PENDING_STATUS, null);
+        return transport
+            .queuedAsyncServiceMsg({ cmd: MESSAGE.ready, status })
+            .then(res => {
+                //NOTE: do not execute the next command if the page is unloading
+                if (this.beforeUnloadRaised)
+                    return new Promise(testCafeCore.noop);
 
-        return transport.queuedAsyncServiceMsg({ cmd: MESSAGE.ready, status });
+                this.contextStorage.setItem(PENDING_STATUS, null);
+
+                return res;
+            });
     }
 
     _onReady (status) {
         this._sendStatusToServer(status)
             .then(command => {
-                //NOTE: do not execute the next command if the page is unloading
-                if (this.beforeUnloadRaised)
-                    return;
-
                 if (command)
                     this._onCommand(command);
                 else {
