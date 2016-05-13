@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wait</title>
+</head>
+<body>
+<button id="button1">Create button</button>
+<script>
+    var button2 = document.createElement('button');
+
+    button2.id          = 'button2';
+    button2.textContent = 'Click';
+
+    document.getElementById('button1').addEventListener('click', function () {
+        window.setTimeout(function () {
+            document.body.appendChild(button2);
+        }, 1000);
+    });
+</script>
+</body>
+</html>

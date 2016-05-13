@@ -15,7 +15,9 @@ import {
     SelectTextCommand,
     SelectTextAreaContentCommand,
     SelectEditableContentCommand,
-    PressKeyCommand
+    PressKeyCommand,
+    WaitCommand,
+    WaitForElementCommand
 } from '../test-run/commands';
 
 const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$$/;
@@ -149,6 +151,14 @@ export default class TestController {
 
     _pressKey$ (keys) {
         return this._enqueueAction('pressKey', PressKeyCommand, { keys });
+    }
+
+    _wait$ (timeout) {
+        return this._enqueueAction('wait', WaitCommand, { timeout });
+    }
+
+    _waitForElement$ (selector, timeout) {
+        return this._enqueueAction('waitForElement', WaitForElementCommand, { selector, timeout });
     }
 
     _eval$ (fn, dependencies) {
