@@ -6,8 +6,8 @@ inMainMenu: true
 ---
 # Documentation
 
-* [Getting Started](.)
+* [Getting Started](getting-started/index.md)
 * [Test API](.)
 * [Using TestCafe](using-testcafe/index.md)
-* [Extending TestCafe](.)
+* [Extending TestCafe](extending-testcafe/index.md)
 * [Recipes](.)

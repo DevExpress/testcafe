@@ -1,5 +1,5 @@
 - item: GETTING STARTED
-  url: .
+  url: /testcafe/documentation/getting-started/
 - folder: TEST API
   url: .
   content:
