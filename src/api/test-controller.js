@@ -17,7 +17,8 @@ import {
     SelectEditableContentCommand,
     PressKeyCommand,
     WaitCommand,
-    WaitForElementCommand
+    WaitForElementCommand,
+    NavigateToCommand
 } from '../test-run/commands';
 
 const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$$/;
@@ -159,6 +160,10 @@ export default class TestController {
 
     _waitForElement$ (selector, timeout) {
         return this._enqueueAction('waitForElement', WaitForElementCommand, { selector, timeout });
+    }
+
+    _navigateTo$ (url) {
+        return this._enqueueAction('navigateTo', NavigateToCommand, { url });
     }
 
     _eval$ (fn, dependencies) {
