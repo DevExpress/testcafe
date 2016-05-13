@@ -410,10 +410,10 @@ gulp.task('preview-website', ['serve-website'], function () {
 });
 
 gulp.task('test-website', ['serve-website'], function (cb) {
-    var fail = false;
+    var fail        = false;
     var brokenLinks = [];
 
-    var siteChecker = new blc.SiteChecker({ }, {
+    var siteChecker = new blc.SiteChecker({}, {
         link: function (result) {
             if (result.broken) {
                 brokenLinks.push(result.url.resolved ? result.url.resolved : result.url.original);
@@ -431,6 +431,7 @@ gulp.task('test-website', ['serve-website'], function (cb) {
                 util.log();
             }
         },
+
         end: function () {
             websiteServer.close(function () {
                 cb(fail ? 'Broken links found!' : void 0);
