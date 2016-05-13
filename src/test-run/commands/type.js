@@ -18,6 +18,8 @@ export default {
     wait:                  'wait',
     waitForElement:        'wait-for-element',
     navigateTo:            'navigate-to',
+    uploadFile:            'upload-file',
+    clearUpload:           'clear-upload',
     execHybridFn:          'exec-hybrid-fn',
     testDone:              'test-done'
 };

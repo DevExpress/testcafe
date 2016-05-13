@@ -77,7 +77,7 @@ Server.prototype._setupRoutes = function () {
             return file.buffer.toString();
         });
 
-        res.end(Mustache.render(UPLOAD_SUCCESS_PAGE_TEMPLATE, { uploadedDataArray: JSON.stringify(filesData) }));
+        res.end(Mustache.render(UPLOAD_SUCCESS_PAGE_TEMPLATE, { uploadedDataArray: filesData }));
     });
 
     this.app.post('/xhr/:delay', function (req, res) {

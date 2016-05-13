@@ -15,6 +15,8 @@ var ActionSelectorTypeError                 = require('../../lib/errors/test-run
 var ActionOptionsTypeError                  = require('../../lib/errors/test-run').ActionOptionsTypeError;
 var ActionStringArgumentError               = require('../../lib/errors/test-run').ActionStringArgumentError;
 var ActionUnsupportedUrlProtocolError       = require('../../lib/errors/test-run').ActionUnsupportedUrlProtocolError;
+var ActionStringOrStringArrayArgumentError  = require('../../lib/errors/test-run').ActionStringOrStringArrayArgumentError;
+var ActionStringArrayElementError           = require('../../lib/errors/test-run').ActionStringArrayElementError;
 var ActionAdditionalSelectorTypeError       = require('../../lib/errors/test-run').ActionAdditionalSelectorTypeError;
 var UncaughtErrorOnPage                     = require('../../lib/errors/test-run').UncaughtErrorOnPage;
 var UncaughtErrorInTestCode                 = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
@@ -29,6 +31,8 @@ var ActionElementNonContentEditableError    = require('../../lib/errors/test-run
 var ActionRootContainerNotFoundError        = require('../../lib/errors/test-run').ActionRootContainerNotFoundError;
 var ActionElementNotTextAreaError           = require('../../lib/errors/test-run').ActionElementNotTextAreaError;
 var ActionIncorrectKeysError                = require('../../lib/errors/test-run').ActionIncorrectKeysError;
+var ActionCanNotFindFileToUploadError       = require('../../lib/errors/test-run').ActionCanNotFindFileToUploadError;
+var ActionElementIsNotFileInput             = require('../../lib/errors/test-run').ActionElementIsNotFileInput;
 var MissingAwaitError                       = require('../../lib/errors/test-run').MissingAwaitError;
 var ExternalAssertionLibraryError           = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
 
@@ -189,6 +193,22 @@ describe('Error formatting', function () {
 
         it('Should format "actionIncorrectKeysError" message', function () {
             assertErrorMessage('action-incorrect-keys-error', new ActionIncorrectKeysError('keys'));
+        });
+
+        it('Should format "actionNonEmptyStringArrayArgumentError" message', function () {
+            assertErrorMessage('action-string-or-string-array-argument-error', new ActionStringOrStringArrayArgumentError('array', null));
+        });
+
+        it('Should format "actionStringArrayElementError" message', function () {
+            assertErrorMessage('action-string-array-element-error', new ActionStringArrayElementError('array', 'number', 1));
+        });
+
+        it('Should format "actionElementIsNotFileInputError" message', function () {
+            assertErrorMessage('action-element-is-not-file-input-error', new ActionElementIsNotFileInput());
+        });
+
+        it('Should format "actionCanNotFindFileToUploadError" message', function () {
+            assertErrorMessage('action-can-not-find-file-to-upload-error', new ActionCanNotFindFileToUploadError(['/path/1', '/path/2']));
         });
 
         it('Should format "missingAwaitError', function () {

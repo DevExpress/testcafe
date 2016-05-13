@@ -5,18 +5,9 @@
 </head>
 <body>
 <div id="uploadedContent">
+    {{#uploadedDataArray}}
+        <p>{{{.}}}</p>
+    {{/uploadedDataArray}}
 </div>
-<script>
-    var uploadedDataArray = JSON.parse('{{{uploadedDataArray}}}');
-    var contentDiv        = document.getElementById('uploadedContent');
-
-    uploadedDataArray.forEach(function (data) {
-        var p = document.createElement('p');
-
-        p.textContent = data;
-
-        contentDiv.appendChild(p);
-    });
-</script>
 </body>
 </html>

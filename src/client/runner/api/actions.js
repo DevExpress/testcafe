@@ -18,6 +18,7 @@ import RClickAutomation from '../automation/playback/rclick';
 import SelectTextAutomation from '../automation/playback/select/select-text';
 import SelectEditableContentAutomation from '../automation/playback/select/select-editable-content';
 import TypeAutomation from '../automation/playback/type';
+import UploadAutomation from '../automation/playback/upload';
 import { getOffsetOptions } from '../utils/mouse';
 import getSelectPositionArguments from '../automation/playback/select/get-select-position-arguments';
 import parseKeySequence from '../automation/playback/press/parse-key-sequence';
@@ -837,17 +838,13 @@ export function upload (what, path) {
                     onTargetWaitingFinished();
                 }
 
-                hammerhead.doUpload(element, path)
-                    .then((errs) => {
-                        if (errs.length) {
-                            var errPaths = arrayUtils.map(errs, err => err.path);
+                var uploadAutomation = new UploadAutomation(element, path,
+                    filePaths => failWithError(ERROR_TYPE.uploadCanNotFindFileToUpload, { filePaths })
+                );
 
-                            failWithError(ERROR_TYPE.uploadCanNotFindFileToUpload, { filePaths: errPaths });
-                        }
-
-                        else
-                            callback();
-                    });
+                uploadAutomation
+                    .run()
+                    .then(callback);
             }
         }
     );

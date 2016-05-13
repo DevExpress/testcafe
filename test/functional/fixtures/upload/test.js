@@ -10,6 +10,10 @@ describe('Upload', function () {
         return runTests('testcafe-fixtures/upload.test.js', 'Upload multiple files');
     });
 
+    it('Should clear the upload', function () {
+        return runTests('testcafe-fixtures/upload.test.js', 'Clear upload');
+    });
+
     it('Should fail when uploading a non-existent file', function () {
         return runTests('testcafe-fixtures/upload.test.js', 'Upload a non-existent file - should fail', { shouldFail: true })
             .catch(function (errs) {

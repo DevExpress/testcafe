@@ -714,6 +714,65 @@ describe('Test run commands', function () {
             });
         });
 
+        it('Should create UploadFileCommand from object', function () {
+            var commandObj = {
+                type:     TYPE.uploadFile,
+                selector: '#yo',
+                filePath: '/test/path',
+                dummy:    'test',
+
+                options: {
+                    dummy: 'yo'
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.uploadFile,
+                selector: "(function () { return document.querySelector('#yo') })()",
+                filePath: '/test/path'
+            });
+
+            commandObj = {
+                type:     TYPE.uploadFile,
+                selector: '#yo',
+                filePath: ['/test/path/1', '/test/path/2'],
+                dummy:    'test',
+
+                options: {
+                    dummy: 'yo'
+                }
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.uploadFile,
+                selector: "(function () { return document.querySelector('#yo') })()",
+                filePath: ['/test/path/1', '/test/path/2']
+            });
+        });
+
+        it('Should create ClearUploadCommand from object', function () {
+            var commandObj = {
+                type:     TYPE.clearUpload,
+                selector: '#yo',
+                dummy:    'test',
+
+                options: {
+                    dummy: 'yo'
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.clearUpload,
+                selector: "(function () { return document.querySelector('#yo') })()"
+            });
+        });
+
         it('Should create TestDone command from object', function () {
             var commandObj = { type: TYPE.testDone, hey: '42' };
 
@@ -1869,6 +1928,199 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionUnsupportedUrlProtocolError,
                     protocol:        'file',
                     argumentName:    'url',
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate UploadFileСommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.uploadFile
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionSelectorTypeError,
+                    actualType:      'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.uploadFile,
+                        selector: 1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionSelectorTypeError,
+                    actualType:      'number',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.uploadFile,
+                        selector: 'element'
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
+                    argumentName:    'filePath',
+                    actualValue:     'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.uploadFile,
+                        selector: 'element',
+                        filePath: 2
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
+                    argumentName:    'filePath',
+                    actualValue:     'number',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.uploadFile,
+                        selector: 'element',
+                        filePath: ''
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
+                    argumentName:    'filePath',
+                    actualValue:     '""',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.uploadFile,
+                        selector: 'element',
+                        filePath: {}
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
+                    argumentName:    'filePath',
+                    actualValue:     'object',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.uploadFile,
+                        selector: 'element',
+                        filePath: []
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
+                    argumentName:    'filePath',
+                    actualValue:     '[]',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.uploadFile,
+                        selector: 'element',
+                        filePath: ['123', 42]
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringArrayElementError,
+                    argumentName:    'filePath',
+                    actualValue:     'number',
+                    elementIndex:    1,
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.uploadFile,
+                        selector: 'element',
+                        filePath: ['123', '']
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringArrayElementError,
+                    argumentName:    'filePath',
+                    actualValue:     '""',
+                    elementIndex:    1,
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate ClearUploadСommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.clearUpload
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionSelectorTypeError,
+                    actualType:      'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.clearUpload,
+                        selector: 1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionSelectorTypeError,
+                    actualType:      'number',
                     callsite:        null
                 }
             );

@@ -10,6 +10,7 @@ import RClickAutomation from './playback/rclick';
 import SelectTextAutomation from './playback/select/select-text';
 import SelectEditableContentAutomation from './playback/select/select-editable-content';
 import TypeAutomation from './playback/type';
+import UploadAutomation from './playback/upload';
 
 
 var browserUtils   = hammerhead.utils.browser;
@@ -91,5 +92,6 @@ window[AUTOMATIONS] = {
     SelectTextAutomation:            SelectTextAutomation,
     SelectEditableContentAutomation: SelectEditableContentAutomation,
     PressAutomation:                 PressAutomation,
-    TypeAutomation:                  TypeAutomation
+    TypeAutomation:                  TypeAutomation,
+    UploadAutomation:                UploadAutomation
 };
