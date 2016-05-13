@@ -20,7 +20,6 @@ export default class XhrBarrier extends EventEmitter {
 
         this.BARRIER_TIMEOUT = 3000;
 
-        this.passed         = false;
         this.collectingReqs = true;
         this.requests       = [];
         this.watchdog       = null;
@@ -44,10 +43,6 @@ export default class XhrBarrier extends EventEmitter {
             hammerhead.off(hammerhead.EVENTS.xhrCompleted, onXhrCompleted);
             hammerhead.off(hammerhead.EVENTS.xhrError, onXhrError);
         };
-    }
-
-    _removeXhrFromQueue (xhr) {
-        removeItem(this.requests, xhr);
     }
 
     _onXhrSend (xhr) {
