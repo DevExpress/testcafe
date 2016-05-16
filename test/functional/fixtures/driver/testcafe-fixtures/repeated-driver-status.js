@@ -1,7 +1,7 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 
-fixture `Click`
-    .page `http://localhost:3000/api/es-next/click/pages/page1.html`;
+fixture `Driver`
+    .page `http://localhost:3000/driver/pages/page1.html`;
 
 function wait (ms) {
     return new Promise(resolve => setTimeout(resolve, ms));

@@ -13,7 +13,8 @@ import COMMAND_TYPE from './commands/type';
 
 
 //Const
-const TEST_RUN_TEMPLATE = read('../client/test-run/index.js.mustache');
+const TEST_RUN_TEMPLATE              = read('../client/test-run/index.js.mustache');
+const TEST_DONE_CONFIRMATION_COMMAND = {};
 
 
 export default class TestRun extends Session {
@@ -182,7 +183,7 @@ export default class TestRun extends Session {
                 if (isTestDoneCommand(this.pendingDriverTask.command)) {
                     this.pendingDriverTask.resolve();
 
-                    return {};
+                    return TEST_DONE_CONFIRMATION_COMMAND;
                 }
 
                 if (driverStatus.executionError)
@@ -235,19 +236,16 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 
     this.pendingRequest = null;
 
-    var driverStatus   = msg.status;
-    var cachedResponse = this.lastDriverStatusId === driverStatus.id ? this.lastDriverStatusResponse : null;
-
     // NOTE: driver send repeated status if it didn't get the response for the first one.
     // It's possible when the page was unloaded after driver sent the status.
-    if (cachedResponse)
-        return Promise.resolve(cachedResponse);
+    if (msg.status.id === this.lastDriverStatusId && this.lastDriverStatusResponse)
+        return this.lastDriverStatusResponse;
 
-    this.lastDriverStatusId       = driverStatus.id;
-    this.lastDriverStatusResponse = this._handleDriverRequest(driverStatus);
+    this.lastDriverStatusId       = msg.status.id;
+    this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
 
     if (this.lastDriverStatusResponse)
-        return Promise.resolve(this.lastDriverStatusResponse);
+        return this.lastDriverStatusResponse;
 
     return new Promise((resolve, reject) => this.pendingRequest = { resolve, reject });
 };

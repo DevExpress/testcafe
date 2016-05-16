@@ -1,5 +1,4 @@
-var expect                     = require('chai').expect;
-var errorInEachBrowserContains = require('../../../../assertion-helper').errorInEachBrowserContains;
+var expect = require('chai').expect;
 
 // NOTE: we run tests in chrome only, because we mainly test server API functionality.
 // Actions functionality is tested in lower-level raw API.
@@ -63,25 +62,6 @@ describe('[API] t.click()', function () {
                     ' 11 |    await t.click(\'#btn\', { offsetX: -3 });' +
                     ' 12 |});'
                 );
-            });
-    });
-
-    it('Should not process the same driver status twice', function () {
-        return runTests('./testcafe-fixtures/repeated-driver-status.js', 'Click and wait for page unloading', {
-            shouldFail: true,
-            only:       'chrome'
-        })
-            .catch(function (errs) {
-                errorInEachBrowserContains(errs, 'Button clicked', 0);
-                errorInEachBrowserContains(errs,
-                    '8 |}' +
-                    ' 9 |' +
-                    ' 10 |test(\'Click and wait for page unloading\', async t => {' +
-                    ' 11 |    await t.click(\'#link\');' +
-                    ' 12 |    await wait(1000); >' +
-                    ' 13 |    await t.click(\'#btn\');' +
-                    ' 14 |});'
-                    , 0);
             });
     });
 });
