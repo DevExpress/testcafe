@@ -18,7 +18,9 @@ import {
     PressKeyCommand,
     WaitCommand,
     WaitForElementCommand,
-    NavigateToCommand
+    NavigateToCommand,
+    UploadFileCommand,
+    ClearUploadCommand
 } from '../test-run/commands';
 
 const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$$/;
@@ -164,6 +166,14 @@ export default class TestController {
 
     _navigateTo$ (url) {
         return this._enqueueAction('navigateTo', NavigateToCommand, { url });
+    }
+
+    _uploadFile$ (selector, filePath) {
+        return this._enqueueAction('uploadFile', UploadFileCommand, { selector, filePath });
+    }
+
+    _clearUpload$ (selector) {
+        return this._enqueueAction('clearUpload', ClearUploadCommand, { selector });
     }
 
     _eval$ (fn, dependencies) {
