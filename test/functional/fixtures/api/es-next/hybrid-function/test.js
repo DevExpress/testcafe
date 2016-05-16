@@ -123,4 +123,12 @@ describe('[API] Hybrid function', function () {
     it('Should execute Hybrid function with dependencies', function () {
         return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Hybrid dependencies');
     });
+
+    it('Should raise an error if Hybrid function execution was interrupted by page unload', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Redirect during execution', { shouldFail: true })
+            .catch(function (errs) {
+                expect(errs[0]).contains('Client code execution was interrupted by page unload.');
+                expect(errs[0]).contains("> 153 |    await Hybrid(() => new Promise(() => window.location = 'index.html'))();");
+            });
+    });
 });
