@@ -87,7 +87,7 @@ export default {
     `),
 
     [TYPE.actionUnsupportedUrlProtocolError]: err => markup(err, `
-        The <code>${err.argumentName}</code> argument specifies a URL that uses an unsupported <code>${err.protocol}</code> protocol. Only HTTP and HTTPS are supported, as well as protocol-relative and relative URLs.
+        The <code>${err.argumentName}</code> argument specifies a URL that uses an unsupported <code>${err.protocol}://</code> protocol. Only HTTP and HTTPS are supported, as well as protocol-relative and relative URLs.
 
         ${err.getCallsiteMarkup()}
     `),
