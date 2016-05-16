@@ -13,8 +13,8 @@ import COMMAND_TYPE from './commands/type';
 
 
 //Const
-const TEST_RUN_TEMPLATE              = read('../client/test-run/index.js.mustache');
-const TEST_DONE_CONFIRMATION_COMMAND = {};
+const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache');
+const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 
 
 export default class TestRun extends Session {
@@ -183,7 +183,7 @@ export default class TestRun extends Session {
                 if (isTestDoneCommand(this.pendingDriverTask.command)) {
                     this.pendingDriverTask.resolve();
 
-                    return TEST_DONE_CONFIRMATION_COMMAND;
+                    return TEST_DONE_CONFIRMATION_RESPONSE;
                 }
 
                 if (driverStatus.executionError)
@@ -236,8 +236,8 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 
     this.pendingRequest = null;
 
-    // NOTE: driver send repeated status if it didn't get the response for the first one.
-    // It's possible when the page was unloaded after driver sent the status.
+    // NOTE: the driver sends the status for the second time if it didn't get a response at the
+    // first try. This is possible when the page was unloaded after the driver sent the status.
     if (msg.status.id === this.lastDriverStatusId && this.lastDriverStatusResponse)
         return this.lastDriverStatusResponse;
 

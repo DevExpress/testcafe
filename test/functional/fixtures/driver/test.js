@@ -2,15 +2,19 @@ var errorInEachBrowserContains = require('../../assertion-helper').errorInEachBr
 
 describe('TestRun - Driver protocol', function () {
     it('TestRun should not process the same driver status twice', function () {
-        // NOTE: test scenario is not trivial, so I describe it here:
-        // 1) TestRun send the Click command to the driver.
-        // 2) Driver executes a click action and send status to the server, but don't get the response at once because
-        //    TestRun has no a pending command in the queue.
-        // 3) 900 ms after the click page location is changed. But server response with a new page is delayed and the
-        //    current page is in unloading state for about 2 seconds.
-        // 4) 1 sec after the click TestRun send a new command to driver but driver ignores it because the page is unloading.
-        // 5) After the page reloaded driver resend the last status (since it didn't get the response for the last request).
-        // 6) TestRun should not process the status but just returns cached response.
+        /*
+        This test scenario is not trivial, so here's what it does:
+        1) The TestRun sends the Click command to the driver.
+        2) The driver executes the click action and sends the status to the server, but doesn't
+           get the response immediately because TestRun has no pending command in the queue.
+        3) 900 ms after the click the page location is changed. But the server response with the
+           new page is delayed and the current page stays in the unloading state for about 2 seconds.
+        4) 1 sec after the click the TestRun sends a new command to the driver, but the driver ignores
+           it because the page is unloading.
+        5) After the page is reloaded, the driver resends the last status (since it didn't get the
+           response for the previous request).
+        6) The TestRun should not process this status. It should just return the cached response.
+        */
 
         return runTests('./testcafe-fixtures/repeated-driver-status.js', 'Click and wait for page unloading', { shouldFail: true })
             .catch(function (errs) {
