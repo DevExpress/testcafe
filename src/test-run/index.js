@@ -15,6 +15,7 @@ import COMMAND_TYPE from './commands/type';
 //Const
 const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache');
 const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
+const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
 
 export default class TestRun extends Session {
@@ -157,10 +158,17 @@ export default class TestRun extends Session {
         this.pendingDriverTask = null;
     }
 
+    _clearPendingRequest () {
+        if (this.pendingRequest && this.pendingRequest.responseTimeout)
+            clearTimeout(this.pendingRequest.responseTimeout);
+
+        this.pendingRequest = null;
+    }
+
     _resolvePendingRequest (command) {
         this.lastDriverStatusResponse = command;
         this.pendingRequest.resolve(command);
-        this.pendingRequest = null;
+        this._clearPendingRequest();
     }
 
     _handleDriverRequest (driverStatus) {
@@ -234,7 +242,7 @@ var ServiceMessages = TestRun.prototype;
 ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     this.debugLog.driverMessage(msg);
 
-    this.pendingRequest = null;
+    this._clearPendingRequest();
 
     // NOTE: the driver sends the status for the second time if it didn't get a response at the
     // first try. This is possible when the page was unloaded after the driver sent the status.
@@ -247,5 +255,9 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     if (this.lastDriverStatusResponse)
         return this.lastDriverStatusResponse;
 
-    return new Promise((resolve, reject) => this.pendingRequest = { resolve, reject });
+    // NOTE: browsers abort opened xhr request after some timeout (timeout depends on the browser).
+    // To avoid this we send an empty response after 2 minutes if we didn't get any command.
+    var responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
+
+    return new Promise((resolve, reject) => this.pendingRequest = { resolve, reject, responseTimeout });
 };

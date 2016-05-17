@@ -124,10 +124,10 @@ export default class ClientDriver {
             .then(command => {
                 if (command)
                     this._onCommand(command);
-                else {
-                    //TODO: resend the command with some interval (we will
-                    // implement this when we have wait command on the server)
-                }
+
+                // NOTE: driver gets an empty response if TestRun doesn't get a new command for 2 minutes
+                else
+                    this._onReady(new DriverStatus());
             });
     }
 
@@ -188,7 +188,6 @@ export default class ClientDriver {
             ._sendStatusToServer(new DriverStatus({ isCommandResult: true }))
             .then(() => browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR));
     }
-
 }
 
 Object.defineProperty(window, '%testCafeClientDriver%', {
