@@ -27,6 +27,7 @@ const PENDING_PAGE_ERROR     = 'testcafe|driver|pending-page-error';
 const TEST_DONE_SENT_FLAG    = 'testcafe|driver|test-done-sent-flag';
 const PENDING_STATUS         = 'testcafe|driver|pending-status';
 
+var hangingPromise = new Promise(testCafeCore.noop);
 
 export default class ClientDriver {
     constructor (testRunId, heartbeatUrl, browserStatusUrl, elementAvailabilityTimeout) {
@@ -99,26 +100,28 @@ export default class ClientDriver {
 
     _sendStatusToServer (status) {
         this._addPendingErrorToStatus(status);
+        this.contextStorage.setItem(PENDING_STATUS, status);
 
         // NOTE: postpone status sending if the page is unloading
-        if (this.beforeUnloadRaised) {
-            this.contextStorage.setItem(PENDING_STATUS, status);
+        if (this.beforeUnloadRaised)
+            return hangingPromise;
 
-            return new Promise(testCafeCore.noop);
-        }
+        return transport
+            .queuedAsyncServiceMsg({ cmd: MESSAGE.ready, status })
+            .then(res => {
+                //NOTE: do not execute the next command if the page is unloading
+                if (this.beforeUnloadRaised)
+                    return hangingPromise;
 
-        this.contextStorage.setItem(PENDING_STATUS, null);
+                this.contextStorage.setItem(PENDING_STATUS, null);
 
-        return transport.queuedAsyncServiceMsg({ cmd: MESSAGE.ready, status });
+                return res;
+            });
     }
 
     _onReady (status) {
         this._sendStatusToServer(status)
             .then(command => {
-                //NOTE: do not execute the next command if the page is unloading
-                if (this.beforeUnloadRaised)
-                    return;
-
                 if (command)
                     this._onCommand(command);
                 else {

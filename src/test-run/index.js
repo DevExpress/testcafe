@@ -13,7 +13,8 @@ import COMMAND_TYPE from './commands/type';
 
 
 //Const
-const TEST_RUN_TEMPLATE = read('../client/test-run/index.js.mustache');
+const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache');
+const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 
 
 export default class TestRun extends Session {
@@ -43,7 +44,9 @@ export default class TestRun extends Session {
         this.injectable.scripts.push('/testcafe-driver.js');
         this.injectable.styles.push('/testcafe-ui-styles.css');
 
-        this.errs = [];
+        this.errs                     = [];
+        this.lastDriverStatusId       = null;
+        this.lastDriverStatusResponse = null;
     }
 
 
@@ -155,8 +158,42 @@ export default class TestRun extends Session {
     }
 
     _resolvePendingRequest (command) {
+        this.lastDriverStatusResponse = command;
         this.pendingRequest.resolve(command);
         this.pendingRequest = null;
+    }
+
+    _handleDriverRequest (driverStatus) {
+        if (!this.running)
+            this._start();
+
+        var shouldRejectPendingDriverTask = driverStatus.pageError &&
+                                            this.pendingDriverTask &&
+                                            isCommandRejectableByPageError(this.pendingDriverTask.command);
+
+        if (shouldRejectPendingDriverTask)
+            this._rejectPendingDriverTask(driverStatus.pageError);
+        else {
+            this.pendingJsError = this.pendingJsError || driverStatus.pageError;
+
+            if (this.pendingDriverTask) {
+                if (!driverStatus.isCommandResult)
+                    return this.pendingDriverTask.command;
+
+                if (isTestDoneCommand(this.pendingDriverTask.command)) {
+                    this.pendingDriverTask.resolve();
+
+                    return TEST_DONE_CONFIRMATION_RESPONSE;
+                }
+
+                if (driverStatus.executionError)
+                    this._rejectPendingDriverTask(driverStatus.executionError);
+                else
+                    this._resolvePendingDriverTask(driverStatus.result);
+            }
+        }
+
+        return null;
     }
 
 
@@ -199,34 +236,16 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 
     this.pendingRequest = null;
 
-    if (!this.running)
-        this._start();
+    // NOTE: the driver sends the status for the second time if it didn't get a response at the
+    // first try. This is possible when the page was unloaded after the driver sent the status.
+    if (msg.status.id === this.lastDriverStatusId && this.lastDriverStatusResponse)
+        return this.lastDriverStatusResponse;
 
-    var driverStatus                  = msg.status;
-    var shouldRejectPendingDriverTask = driverStatus.pageError &&
-                                        this.pendingDriverTask &&
-                                        isCommandRejectableByPageError(this.pendingDriverTask.command);
+    this.lastDriverStatusId       = msg.status.id;
+    this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
 
-    if (shouldRejectPendingDriverTask)
-        this._rejectPendingDriverTask(driverStatus.pageError);
-    else {
-        this.pendingJsError = this.pendingJsError || driverStatus.pageError;
-
-        if (this.pendingDriverTask) {
-            if (!driverStatus.isCommandResult)
-                return Promise.resolve(this.pendingDriverTask.command);
-
-            if (isTestDoneCommand(this.pendingDriverTask.command)) {
-                this.pendingDriverTask.resolve();
-                return null;
-            }
-
-            if (driverStatus.executionError)
-                this._rejectPendingDriverTask(driverStatus.executionError);
-            else
-                this._resolvePendingDriverTask(driverStatus.result);
-        }
-    }
+    if (this.lastDriverStatusResponse)
+        return this.lastDriverStatusResponse;
 
     return new Promise((resolve, reject) => this.pendingRequest = { resolve, reject });
 };
