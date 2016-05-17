@@ -161,6 +161,9 @@ $(document).ready(function () {
     $('<div></div>').css({ width: 1, height: 1500, position: 'absolute' }).appendTo('body');
     $('body').css('height', '1500px');
 
+    if (browserUtils.isIOS)
+        window.preventNativeScrolling();
+
     //tests
     QUnit.testStart(function () {
         //before first test save page state
