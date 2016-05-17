@@ -46,14 +46,14 @@ class ActionArgumentErrorBase extends ActionError {
     }
 }
 
-// Synchronization errors
-//--------------------------------------------------------------------
-export class SynchronizationError extends TestRunErrorBase {
+class SynchronizationError extends TestRunErrorBase {
     constructor (type) {
         super(CATEGORY.synchronizationError, type);
     }
 }
 
+// Synchronization errors
+//--------------------------------------------------------------------
 export class MissingAwaitError extends SynchronizationError {
     constructor (callsite) {
         super(TYPE.missingAwaitError);
