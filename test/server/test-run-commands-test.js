@@ -809,6 +809,63 @@ describe('Test run commands', function () {
             });
         });
 
+        it('Should create ResizeWindowCommand from object', function () {
+            var commandObj = {
+                type:     TYPE.resizeWindow,
+                selector: '#yo',
+                dummy:    'test',
+                width:    100,
+                height:   100,
+
+                options: {
+                    dummy: 'yo'
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:   TYPE.resizeWindow,
+                width:  100,
+                height: 100
+            });
+        });
+
+        it('Should create ResizeWindowToFitDeviceCommand from object', function () {
+            var commandObj = {
+                type:     TYPE.resizeWindowToFitDevice,
+                selector: '#yo',
+                dummy:    'test',
+                device:   'iPhone',
+                portrait: true,
+
+                options: {
+                    dummy: 'yo'
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.resizeWindowToFitDevice,
+                device:   'iPhone',
+                portrait: true
+            });
+
+            commandObj = {
+                type:   TYPE.resizeWindowToFitDevice,
+                device: 'iPhone'
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.resizeWindowToFitDevice,
+                device:   'iPhone',
+                portrait: false
+            });
+        });
+
         it('Should create TestDone command from object', function () {
             var commandObj = { type: TYPE.testDone, hey: '42' };
 
@@ -2115,6 +2172,122 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionStringArgumentError,
                     actualValue:     '""',
                     argumentName:    'path',
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate ResizeWindowСommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.resizeWindow
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    argumentName:    'width',
+                    actualValue:     'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:   TYPE.resizeWindow,
+                        width:  5,
+                        height: -5
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    argumentName:    'height',
+                    actualValue:     -5,
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate ResizeWindowToFitDeviceСommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.resizeWindowToFitDevice
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'device',
+                    actualValue:     'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:   TYPE.resizeWindowToFitDevice,
+                        device: 5
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'device',
+                    actualValue:     'number',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:   TYPE.resizeWindowToFitDevice,
+                        device: ''
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'device',
+                    actualValue:     '""',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:   TYPE.resizeWindowToFitDevice,
+                        device: 'iPhone 555'
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionUnsupportedDeviceTypeError,
+                    argumentName:    'device',
+                    actualValue:     'iPhone 555',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.resizeWindowToFitDevice,
+                        device:   'iPhone',
+                        portrait: {}
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionBooleanArgumentError,
+                    argumentName:    'portrait',
+                    actualValue:     'object',
                     callsite:        null
                 }
             );

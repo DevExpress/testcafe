@@ -159,6 +159,12 @@ export class ActionPositiveIntegerArgumentError extends ActionArgumentErrorBase 
     }
 }
 
+export class ActionBooleanArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TYPE.actionBooleanArgumentError, argumentName, actualValue);
+    }
+}
+
 export class ActionStringOrStringArrayArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
         super(TYPE.actionStringOrStringArrayArgumentError, argumentName, actualValue);
@@ -170,6 +176,21 @@ export class ActionStringArrayElementError extends ActionArgumentErrorBase {
         super(TYPE.actionStringArrayElementError, argumentName, actualValue);
 
         this.elementIndex = elementIndex;
+    }
+}
+
+export class ActionUnsupportedUrlProtocolError extends TestRunErrorBase {
+    constructor (argumentName, protocol) {
+        super(TYPE.actionUnsupportedUrlProtocolError);
+
+        this.argumentName = argumentName;
+        this.protocol     = protocol;
+    }
+}
+
+export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
+    constructor (argumentName, argumentValue) {
+        super(TYPE.actionUnsupportedDeviceTypeError, argumentName, argumentValue);
     }
 }
 
@@ -189,15 +210,6 @@ export class ActionAdditionalSelectorTypeError extends TestRunErrorBase {
 
         this.argumentName = argumentName;
         this.actualType   = actualType;
-    }
-}
-
-export class ActionUnsupportedUrlProtocolError extends TestRunErrorBase {
-    constructor (argumentName, protocol) {
-        super(TYPE.actionUnsupportedUrlProtocolError);
-
-        this.argumentName = argumentName;
-        this.protocol     = protocol;
     }
 }
 

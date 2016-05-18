@@ -10,6 +10,7 @@ var ActionIntegerOptionError                           = require('../../lib/erro
 var ActionPositiveIntegerOptionError                   = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
 var ActionIntegerArgumentError                         = require('../../lib/errors/test-run').ActionIntegerArgumentError;
 var ActionPositiveIntegerArgumentError                 = require('../../lib/errors/test-run').ActionPositiveIntegerArgumentError;
+var ActionBooleanArgumentError                         = require('../../lib/errors/test-run').ActionBooleanArgumentError;
 var ActionBooleanOptionError                           = require('../../lib/errors/test-run').ActionBooleanOptionError;
 var ActionSelectorTypeError                            = require('../../lib/errors/test-run').ActionSelectorTypeError;
 var ActionOptionsTypeError                             = require('../../lib/errors/test-run').ActionOptionsTypeError;
@@ -33,6 +34,7 @@ var ActionElementNotTextAreaError                      = require('../../lib/erro
 var ActionIncorrectKeysError                           = require('../../lib/errors/test-run').ActionIncorrectKeysError;
 var ActionCanNotFindFileToUploadError                  = require('../../lib/errors/test-run').ActionCanNotFindFileToUploadError;
 var ActionElementIsNotFileInputError                   = require('../../lib/errors/test-run').ActionElementIsNotFileInputError;
+var ActionUnsupportedDeviceTypeError                   = require('../../lib/errors/test-run').ActionUnsupportedDeviceTypeError;
 var ClientCodeExecutionInterruptionError               = require('../../lib/errors/test-run').ClientCodeExecutionInterruptionError;
 var MissingAwaitError                                  = require('../../lib/errors/test-run').MissingAwaitError;
 var ExternalAssertionLibraryError                      = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
@@ -111,6 +113,10 @@ describe('Error formatting', function () {
 
         it('Should format "ActionPositiveIntegerArgumentError" message', function () {
             assertErrorMessage('action-positive-integer-argument-error', new ActionPositiveIntegerArgumentError('startPos', '-1'));
+        });
+
+        it('Should format "actionBooleanArgumentError" message', function () {
+            assertErrorMessage('action-boolean-argument-error', new ActionBooleanArgumentError('portrait', 'object'));
         });
 
         it('Should format "actionBooleanOptionError" message', function () {
@@ -199,6 +205,10 @@ describe('Error formatting', function () {
 
         it('Should format "actionCanNotFindFileToUploadError" message', function () {
             assertErrorMessage('action-can-not-find-file-to-upload-error', new ActionCanNotFindFileToUploadError(['/path/1', '/path/2']));
+        });
+
+        it('Should format "actionUnsupportedDeviceTypeError" message', function () {
+            assertErrorMessage('action-unsupported-device-type-error', new ActionUnsupportedDeviceTypeError('device', 'iPhone 555'));
         });
 
         it('Should format "missingAwaitError', function () {

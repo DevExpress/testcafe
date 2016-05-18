@@ -118,17 +118,13 @@ before(function () {
                 var quarantineMode             = opts && opts.quarantineMode;
                 var elementAvailabilityTimeout = opts && opts.elementAvailabilityTimeout ||
                                                  FUNCTIONAL_TESTS_ELEMENT_AVAILABILITY_TIMEOUT;
-                var onlyLocal                  = opts && opts.only === 'local';
-                var onlyOption                 = !onlyLocal && opts && opts.only;
-                var skipOption                 = opts && opts.skip;
 
-                if (onlyLocal && config.isTravisTask)
-                    return Promise.resolve();
-
-                var screenshotPath = opts && opts.setScreenshotPath ? '___test-screenshots___' : '';
-
+                var onlyOption         = opts && opts.only;
+                var skipOption         = opts && opts.skip;
+                var screenshotPath     = opts && opts.setScreenshotPath ? '___test-screenshots___' : '';
                 var screenshotsOnFails = opts && opts.screenshotsOnFails;
-                var actualBrowsers     = browsersInfo.filter(function (browserInfo) {
+
+                var actualBrowsers = browsersInfo.filter(function (browserInfo) {
                     var only = onlyOption ? onlyOption.indexOf(browserInfo.settings.alias) > -1 : true;
                     var skip = skipOption ? skipOption.indexOf(browserInfo.settings.alias) > -1 : false;
 
