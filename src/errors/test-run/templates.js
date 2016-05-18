@@ -64,6 +64,12 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
+    [TYPE.clientCodeExecutionInterruptionError]: err => markup(err, `
+        Client code execution was interrupted by page unload. This problem may appear if you trigger page navigation from client code.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
     [TYPE.uncaughtNonErrorObjectInTestCode]: err => markup(err, `
         Uncaught ${err.objType} "${escapeHtml(err.objStr)}" was thrown. Throw <code>Error</code> instead.
     `),
@@ -187,9 +193,9 @@ export default {
     `),
 
     [TYPE.actionIncorrectKeysError]: err => markup(err, `
-         The <code>${err.argumentName}</code> argument contains an incorrect key or key combination.
+        The <code>${err.argumentName}</code> argument contains an incorrect key or key combination.
 
-         ${err.getCallsiteMarkup()}
+        ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.missingAwaitError]: err => markup(err, `

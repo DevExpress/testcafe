@@ -4,7 +4,7 @@ import testCafeUI from './deps/testcafe-ui';
 
 import MESSAGE from '../../test-run/client-messages';
 import COMMAND_TYPE from '../../test-run/commands/type';
-import { UncaughtErrorOnPage } from '../../errors/test-run';
+import { UncaughtErrorOnPage, ClientCodeExecutionInterruptionError } from '../../errors/test-run';
 
 import * as browser from '../browser';
 import executeActionCommand from './command-executors/execute-action-command';
@@ -22,10 +22,11 @@ var eventUtils        = testCafeCore.eventUtils;
 var modalBackground   = testCafeUI.modalBackground;
 
 
-const COMMAND_EXECUTING_FLAG = 'testcafe|driver|command-executing-flag';
-const PENDING_PAGE_ERROR     = 'testcafe|driver|pending-page-error';
-const TEST_DONE_SENT_FLAG    = 'testcafe|driver|test-done-sent-flag';
-const PENDING_STATUS         = 'testcafe|driver|pending-status';
+const COMMAND_EXECUTING_FLAG   = 'testcafe|driver|command-executing-flag';
+const HYBRID_FN_EXECUTING_FLAG = 'testcafe|driver|hybrid-fn-executing-flag';
+const PENDING_PAGE_ERROR       = 'testcafe|driver|pending-page-error';
+const TEST_DONE_SENT_FLAG      = 'testcafe|driver|test-done-sent-flag';
+const PENDING_STATUS           = 'testcafe|driver|pending-status';
 
 var hangingPromise = new Promise(testCafeCore.noop);
 
@@ -59,6 +60,17 @@ export default class ClientDriver {
                 this._onTestDone();
             else
                 browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR);
+
+            return;
+        }
+
+        // NOTE: Hybrids should be used primarily for observation. We raise
+        // an error if the page was reloaded during Hybrid function execution.
+        if (this.contextStorage.getItem(HYBRID_FN_EXECUTING_FLAG)) {
+            this._onReady(new DriverStatus({
+                isCommandResult: true,
+                executionError:  new ClientCodeExecutionInterruptionError()
+            }));
 
             return;
         }
@@ -161,12 +173,22 @@ export default class ClientDriver {
             });
     }
 
+    _onHybridFnCommand (command) {
+        this.contextStorage.setItem(HYBRID_FN_EXECUTING_FLAG, true);
+
+        executeHybridFnCommand(command)
+            .then(driverStatus => {
+                this.contextStorage.setItem(HYBRID_FN_EXECUTING_FLAG, false);
+                this._onReady(driverStatus);
+            });
+    }
+
     _onCommand (command) {
         if (command.type === COMMAND_TYPE.testDone)
             this._onTestDone();
 
         else if (command.type === COMMAND_TYPE.execHybridFn)
-            executeHybridFnCommand(command).then(driverStatus => this._onReady(driverStatus));
+            this._onHybridFnCommand(command);
 
         else if (this.contextStorage.getItem(PENDING_PAGE_ERROR))
             this._onReady(new DriverStatus({ isCommandResult: true }));

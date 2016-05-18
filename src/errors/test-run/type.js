@@ -35,6 +35,7 @@ export default {
     actionRootContainerNotFoundError:        'actionRootContainerNotFoundError',
     actionIncorrectKeysError:                'actionIncorrectKeysError',
     actionCanNotFindFileToUploadError:       'actionCanNotFindFileToUpload',
+    clientCodeExecutionInterruptionError:    'clientCodeExecutionInterruptionError',
 
     externalAssertionLibraryError: 'externalAssertionLibraryError'
 };

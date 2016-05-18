@@ -148,3 +148,7 @@ test('Hybrid dependencies', async () => {
 
     expect(answer).eql('42!');
 });
+
+test('Redirect during execution', async () => {
+    await Hybrid(() => new Promise(() => window.location = 'index.html'))();
+});

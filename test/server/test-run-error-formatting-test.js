@@ -33,6 +33,7 @@ var ActionElementNotTextAreaError           = require('../../lib/errors/test-run
 var ActionIncorrectKeysError                = require('../../lib/errors/test-run').ActionIncorrectKeysError;
 var ActionCanNotFindFileToUploadError       = require('../../lib/errors/test-run').ActionCanNotFindFileToUploadError;
 var ActionElementIsNotFileInput             = require('../../lib/errors/test-run').ActionElementIsNotFileInput;
+var ClientCodeExecutionInterruptionError    = require('../../lib/errors/test-run').ClientCodeExecutionInterruptionError;
 var MissingAwaitError                       = require('../../lib/errors/test-run').MissingAwaitError;
 var ExternalAssertionLibraryError           = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
 
@@ -221,6 +222,10 @@ describe('Error formatting', function () {
 
         it('Should format "uncaughtErrorInClientExecutedCode"', function () {
             assertErrorMessage('uncaught-error-in-client-executed-code', new UncaughtErrorInClientExecutedCode(new Error('Some error.')));
+        });
+
+        it('Should format "clientCodeExecutionInterruptionError"', function () {
+            assertErrorMessage('client-code-execution-interruption-error', new ClientCodeExecutionInterruptionError());
         });
     });
 
