@@ -232,6 +232,9 @@ $(document).ready(function () {
     if (browserUtils.isIE9)
         $(window.top.document).find('body').css('marginTop', '0px');
 
+    if (browserUtils.isIOS)
+        window.preventNativeScrolling();
+
     //tests
     QUnit.testStart(function () {
         asyncActionCallback = function () {
