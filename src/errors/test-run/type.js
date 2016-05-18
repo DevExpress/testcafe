@@ -34,7 +34,7 @@ export default {
     actionElementIsNotFileInputError:        'actionElementIsNotFileInputError',
     actionRootContainerNotFoundError:        'actionRootContainerNotFoundError',
     actionIncorrectKeysError:                'actionIncorrectKeysError',
-    actionCanNotFindFileToUploadError:       'actionCanNotFindFileToUpload',
+    actionCanNotFindFileToUploadError:       'actionCanNotFindFileToUploadError',
     clientCodeExecutionInterruptionError:    'clientCodeExecutionInterruptionError',
 
     externalAssertionLibraryError: 'externalAssertionLibraryError'

@@ -5,7 +5,7 @@ import {
     ActionElementNonContentEditableError,
     ActionRootContainerNotFoundError,
     ActionElementNotTextAreaError,
-    ActionElementIsNotFileInput
+    ActionElementIsNotFileInputError
 } from '../../../errors/test-run';
 
 
@@ -62,5 +62,5 @@ export function ensureElement (selector, timeout, createNotFoundError, createIsI
 
 export function ensureFileInput (element) {
     if (!domUtils.isFileInput(element))
-        throw new ActionElementIsNotFileInput();
+        throw new ActionElementIsNotFileInputError();
 }

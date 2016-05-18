@@ -32,7 +32,7 @@ var ActionRootContainerNotFoundError        = require('../../lib/errors/test-run
 var ActionElementNotTextAreaError           = require('../../lib/errors/test-run').ActionElementNotTextAreaError;
 var ActionIncorrectKeysError                = require('../../lib/errors/test-run').ActionIncorrectKeysError;
 var ActionCanNotFindFileToUploadError       = require('../../lib/errors/test-run').ActionCanNotFindFileToUploadError;
-var ActionElementIsNotFileInput             = require('../../lib/errors/test-run').ActionElementIsNotFileInput;
+var ActionElementIsNotFileInputError        = require('../../lib/errors/test-run').ActionElementIsNotFileInputError;
 var ClientCodeExecutionInterruptionError    = require('../../lib/errors/test-run').ClientCodeExecutionInterruptionError;
 var MissingAwaitError                       = require('../../lib/errors/test-run').MissingAwaitError;
 var ExternalAssertionLibraryError           = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
@@ -205,7 +205,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "actionElementIsNotFileInputError" message', function () {
-            assertErrorMessage('action-element-is-not-file-input-error', new ActionElementIsNotFileInput());
+            assertErrorMessage('action-element-is-not-file-input-error', new ActionElementIsNotFileInputError());
         });
 
         it('Should format "actionCanNotFindFileToUploadError" message', function () {

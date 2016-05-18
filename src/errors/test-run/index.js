@@ -282,7 +282,7 @@ export class ActionCanNotFindFileToUploadError extends ActionError {
     }
 }
 
-export class ActionElementIsNotFileInput extends ActionError {
+export class ActionElementIsNotFileInputError extends ActionError {
     constructor () {
         super(TYPE.actionElementIsNotFileInputError);
     }
