@@ -131,7 +131,7 @@ var CLIENT_TESTS_MOBILE_BROWSERS = [
 var CLIENT_TESTS_SAUCELABS_SETTINGS = {
     username:  process.env.SAUCE_USERNAME,
     accessKey: process.env.SAUCE_ACCESS_KEY,
-    build:     process.env.TRAVIS_JOB_ID || '',
+    build:     process.env.TRAVIS_BUILD_ID || '',
     tags:      [process.env.TRAVIS_BRANCH || 'master'],
     name:      'testcafe client tests',
     timeout:   720
