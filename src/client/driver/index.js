@@ -125,7 +125,7 @@ export default class ClientDriver {
                 if (command)
                     this._onCommand(command);
 
-                // NOTE: driver gets an empty response if TestRun doesn't get a new command for 2 minutes
+                // NOTE: the driver gets an empty response if TestRun doesn't get a new command within 2 minutes
                 else
                     this._onReady(new DriverStatus());
             });

@@ -255,8 +255,8 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     if (this.lastDriverStatusResponse)
         return this.lastDriverStatusResponse;
 
-    // NOTE: browsers abort opened xhr request after some timeout (timeout depends on the browser).
-    // To avoid this we send an empty response after 2 minutes if we didn't get any command.
+    // NOTE: browsers abort an opened xhr request after a certain timeout (the actual duration depends on the browser).
+    // To avoid this, we send an empty response after 2 minutes if we didn't get any command.
     var responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
 
     return new Promise((resolve, reject) => this.pendingRequest = { resolve, reject, responseTimeout });
