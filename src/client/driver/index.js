@@ -16,7 +16,7 @@ import DriverStatus from './status';
 
 var transport         = hammerhead.transport;
 var Promise           = hammerhead.Promise;
-var XhrBarrier        = testCafeCore.XhrBarrier;
+var RequestBarrier    = testCafeCore.RequestBarrier;
 var pageUnloadBarrier = testCafeCore.pageUnloadBarrier;
 var eventUtils        = testCafeCore.eventUtils;
 var modalBackground   = testCafeUI.modalBackground;
@@ -39,7 +39,7 @@ export default class ClientDriver {
         this.contextStorage             = new ContextStorage(window, testRunId);
         this.beforeUnloadRaised         = false;
 
-        this.pageInitialXhrBarrier = new XhrBarrier();
+        this.pageInitialRequestBarrier = new RequestBarrier();
 
         pageUnloadBarrier.init();
     }
@@ -77,7 +77,7 @@ export default class ClientDriver {
 
         eventUtils
             .documentReady()
-            .then(() => this.pageInitialXhrBarrier.wait(true))
+            .then(() => this.pageInitialRequestBarrier.wait(true))
             .then(() => {
                 var inCommandExecution = this.contextStorage.getItem(COMMAND_EXECUTING_FLAG);
 

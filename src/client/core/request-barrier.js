@@ -12,9 +12,9 @@ const ADDITIONAL_REQUESTS_COLLECTION_DELAY   = 100;
 const PAGE_INITIAL_REQUESTS_COLLECTION_DELAY = 50;
 const REQUESTS_FINISHED_EVENT                = 'requests-finished';
 
-const GLOBAL_XHR_BARRIER_FIELD = 'testcafe|xhr-barrier';
+const GLOBAL_REQUEST_BARRIER_FIELD = 'testcafe|request-barrier';
 
-export default class XhrBarrier extends EventEmitter {
+export default class RequestBarrier extends EventEmitter {
     constructor () {
         super();
 
@@ -30,46 +30,61 @@ export default class XhrBarrier extends EventEmitter {
     }
 
     _init () {
-        var onXhrSend      = e => this._onXhrSend(e.xhr);
-        var onXhrCompleted = e => this._onXhrCompleted(e.xhr);
-        var onXhrError     = e => this._onXhrError(e.xhr, e.err);
+        var onXhrSend      = e => this._onRequestSend(e.xhr);
+        var onXhrCompleted = e => this._onRequestCompleted(e.xhr);
+        var onXhrError     = e => this._onRequestError(e.xhr, e.err);
+        var onFetchSend    = e => this._onFetchSend(e);
 
         hammerhead.on(hammerhead.EVENTS.xhrSend, onXhrSend);
         hammerhead.on(hammerhead.EVENTS.xhrCompleted, onXhrCompleted);
         hammerhead.on(hammerhead.EVENTS.xhrError, onXhrError);
+        hammerhead.on(hammerhead.EVENTS.fetchSend, onFetchSend);
 
         this._unbindHandlers = () => {
             hammerhead.off(hammerhead.EVENTS.xhrSend, onXhrSend);
             hammerhead.off(hammerhead.EVENTS.xhrCompleted, onXhrCompleted);
             hammerhead.off(hammerhead.EVENTS.xhrError, onXhrError);
+            hammerhead.off(hammerhead.EVENTS.fetchSend, onFetchSend);
         };
     }
 
-    _onXhrSend (xhr) {
+    _onRequestSend (request) {
         if (this.collectingReqs)
-            this.requests.push(xhr);
+            this.requests.push(request);
     }
 
-    _onXhrCompleted (xhr) {
+    _onRequestCompleted (request) {
         // NOTE: let the last real XHR handler finish its job and try to obtain
         // any additional requests if they were initiated by this handler
         delay(ADDITIONAL_REQUESTS_COLLECTION_DELAY)
-            .then(() => this._onXhrFinished(xhr));
+            .then(() => this._onRequestFinished(request));
     }
 
-    _onXhrError (xhr) {
-        this._onXhrFinished(xhr);
+    _onRequestError (request) {
+        this._onRequestFinished(request);
     }
 
-    _onXhrFinished (xhr) {
-        if (indexOf(this.requests, xhr) > -1) {
-            removeItem(this.requests, xhr);
+    _onRequestFinished (request) {
+        if (indexOf(this.requests, request) > -1) {
+            removeItem(this.requests, request);
 
             if (!this.collectingReqs && !this.requests.length)
                 this.emit(REQUESTS_FINISHED_EVENT);
         }
     }
 
+    _onFetchSend (request) {
+        if (this.collectingReqs) {
+            this.requests.push(request);
+
+            var onFetchRequestCompleted = () => this._onRequestCompleted(request);
+            var onFetchRequestError     = () => this._onRequestError(request);
+
+            request.then(onFetchRequestCompleted);
+            request.catch(onFetchRequestError);
+        }
+
+    }
 
     wait (isPageLoad) {
         return new Promise(resolve => {
@@ -96,6 +111,6 @@ export default class XhrBarrier extends EventEmitter {
     }
 }
 
-XhrBarrier.GLOBAL_XHR_BARRIER_FIELD = GLOBAL_XHR_BARRIER_FIELD;
+RequestBarrier.GLOBAL_REQUEST_BARRIER_FIELD = GLOBAL_REQUEST_BARRIER_FIELD;
 
-window[XhrBarrier.GLOBAL_XHR_BARRIER_FIELD] = XhrBarrier;
+window[RequestBarrier.GLOBAL_REQUEST_BARRIER_FIELD] = RequestBarrier;
