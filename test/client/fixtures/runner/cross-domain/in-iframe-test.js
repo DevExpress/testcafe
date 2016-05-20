@@ -1,10 +1,20 @@
-var hammerhead = window.getTestCafeModule('hammerhead');
-var hhsettings = hammerhead.get('./settings').get();
+var hammerhead   = window.getTestCafeModule('hammerhead');
+var hhsettings   = hammerhead.get('./settings').get();
+var browserUtils = hammerhead.utils.browser;
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var RunnerBase     = testCafeRunner.get('./runner-base');
 
 hhsettings.serviceMsgUrl = '/ping/10';
+
+// HACK: we shouldn't override native dialogs methods, while testing on the
+// android simulator, because this results in an unexpected window.alert call.
+// https://github.com/DevExpress/testcafe/issues/471#issuecomment-220386269.
+if (browserUtils.isAndroid) {
+    RunnerBase.prototype._initNativeDialogs = function () {
+
+    };
+}
 
 asyncTest('run steps in iframe', function () {
     var $iframe = $('<iframe>');
