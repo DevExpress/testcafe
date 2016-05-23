@@ -8,7 +8,7 @@ var nativeMethods = hammerhead.nativeMethods;
 
 var SETTINGS          = testCafeCore.SETTINGS;
 var ERROR_TYPE        = testCafeCore.ERROR_TYPE;
-var XhrBarrier        = testCafeCore.XhrBarrier;
+var RequestBarrier    = testCafeCore.RequestBarrier;
 var pageUnloadBarrier = testCafeCore.pageUnloadBarrier;
 var serviceUtils      = testCafeCore.serviceUtils;
 var domUtils          = testCafeCore.domUtils;
@@ -218,10 +218,10 @@ StepIterator.prototype._syncSharedDataWithServer = function (callback) {
 };
 
 StepIterator.prototype._waitActionSideEffectsCompletion = function (action, callback) {
-    var xhrBarrier = new XhrBarrier();
+    var requestBarrier = new RequestBarrier();
 
     action.call(window, () => {
-        xhrBarrier
+        requestBarrier
             .wait()
             .then(callback);
     });
@@ -316,11 +316,11 @@ StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator
 
                             eventUtils.bind(iframe.contentWindow, 'beforeunload', onBeforeUnload);
 
-                            var IframeXhrBarrier = iframe.contentWindow[XhrBarrier.GLOBAL_XHR_BARRIER_FIELD];
-                            var iframeXhrBarrier = new IframeXhrBarrier();
+                            var IframeRequestBarrier = iframe.contentWindow[RequestBarrier.GLOBAL_REQUEST_BARRIER_FIELD];
+                            var iframeRequestBarrier = new IframeRequestBarrier();
 
                             action(element, () => {
-                                iframeXhrBarrier
+                                iframeRequestBarrier
                                     .wait()
                                     .then(() => {
                                         if (!iFrameBeforeUnloadRaised)
