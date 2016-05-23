@@ -49,7 +49,7 @@
 <<<<<<< d2846d54c6a2f9dae8a694b71f731961d1f59b8a
 <<<<<<< 0c33665cd2a204c6cadd3d7734e34832fbe253fc
     "testcafe-browser-natives": "^0.11.0",
-    "testcafe-hammerhead": "^9.0.0",
+    "testcafe-hammerhead": "^9.0.1",
     "testcafe-legacy-api": "^0.4.0",
 =======
     "testcafe-browser-natives": "^0.10.0",
