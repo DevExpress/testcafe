@@ -7,7 +7,6 @@ var Promise = hammerhead.Promise;
 var RequestBarrier    = testCafeCore.RequestBarrier;
 var pageUnloadBarrier = testCafeCore.pageUnloadBarrier;
 
-
 export default function executeNavigateTo (command) {
     var requestBarrier = new RequestBarrier();
 
