@@ -159,10 +159,10 @@ export default class TestRun extends Session {
     }
 
     _clearPendingRequest () {
-        if (this.pendingRequest && this.pendingRequest.responseTimeout)
+        if (this.pendingRequest) {
             clearTimeout(this.pendingRequest.responseTimeout);
-
-        this.pendingRequest = null;
+            this.pendingRequest = null;
+        }
     }
 
     _resolvePendingRequest (command) {
