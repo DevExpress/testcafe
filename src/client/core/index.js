@@ -8,7 +8,7 @@ import * as transport from './transport';
 import * as sandboxedJQuery from './sandboxed-jquery';
 import extendJQuerySelectors from './jquery-extensions/custom-selectors';
 import * as jQueryDataMethodProxy from './jquery-extensions/data-proxy';
-import XhrBarrier from './xhr-barrier';
+import RequestBarrier from './request-barrier';
 import * as pageUnloadBarrier from './page-unload-barrier';
 
 import * as serviceUtils from './utils/service';
@@ -31,7 +31,7 @@ exports.extendJQuerySelectors = extendJQuerySelectors;
 exports.jQueryDataMethodProxy = jQueryDataMethodProxy;
 exports.transport             = transport;
 exports.sandboxedJQuery       = sandboxedJQuery;
-exports.XhrBarrier            = XhrBarrier;
+exports.RequestBarrier        = RequestBarrier;
 exports.pageUnloadBarrier     = pageUnloadBarrier;
 
 exports.serviceUtils    = serviceUtils;
