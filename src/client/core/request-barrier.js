@@ -77,11 +77,9 @@ export default class RequestBarrier extends EventEmitter {
         if (this.collectingReqs) {
             this.requests.push(request);
 
-            var onFetchRequestCompleted = () => this._onRequestCompleted(request);
-            var onFetchRequestError     = () => this._onRequestError(request);
-
-            request.then(onFetchRequestCompleted);
-            request.catch(onFetchRequestError);
+            request
+                .then(() => this._onRequestCompleted(request))
+                .catch(() => this._onRequestError(request));
         }
 
     }
