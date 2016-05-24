@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Iframe switching</title>
+</head>
+<body>
+<div id="log"></div>
+
+<h1>Main page</h1>
+
+<button id="btn">button</button>
+
+<h2>Same-domain iframes</h2>
+
+<iframe id="iframe" src="iframe.html" width="500px"></iframe>
+<iframe name="long" id="slowly-loading-iframe" src="iframe.html?delay=1000"></iframe>
+<iframe id="too-slowly-loading-iframe" src="iframe.html?delay=10000"></iframe>
+
+<script>
+    document.getElementById('btn').addEventListener('click', function () {
+        window.btnClickCount = (window.btnClickCount || 0) + 1;
+    });
+</script>
+
+<h2>Without src iframes</h2>
+<iframe id="iframe-without-src"></iframe>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var iframeDocument = document.getElementById('iframe-without-src').contentWindow.document;
+
+        var btn = iframeDocument.createElement('button');
+
+        btn.id          = 'btn';
+        btn.textContent = 'button';
+        iframeDocument.body.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+            window.top.iframeWithoutSrcBtnClickCount = (window.top.iframeWithoutSrcBtnClickCount || 0) + 1;
+        });
+    });
+</script>
+
+<h2>Cross-domain iframes</h2>
+<iframe id="cross-domain-iframe" src="http://localhost:3001/api/es-next/iframe-switching/pages/iframe.html"></iframe>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nested Second page</title>
+</head>
+<body>
+<button id="nested-second-page-btn">button</button>
+
+<script>
+    document.getElementById('nested-second-page-btn').addEventListener('click', function () {
+        window.nestedSecondPageBtnClickCount = (window.nestedSecondPageBtnClickCount || 0) + 1;
+    });
+</script>
+</body>
+</html>

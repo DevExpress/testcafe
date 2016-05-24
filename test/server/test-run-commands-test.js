@@ -845,6 +845,30 @@ describe('Test run commands', function () {
                 options: { portraitOrientation: false }
             });
         });
+
+        it('Should create SwitchToIframeCommand from object', function () {
+            var commandObj = {
+                type:     TYPE.switchToIframe,
+                selector: '#iframe'
+            };
+            var command    = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.switchToIframe,
+                selector: "(function () { return document.querySelector('#iframe') })()"
+            });
+        });
+
+        it('Should create SwitchToMainWindowCommand from object', function () {
+            var commandObj = {
+                type: TYPE.switchToMainWindow
+            };
+            var command    = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type: TYPE.switchToMainWindow
+            });
+        });
     });
 
     describe('Validation', function () {

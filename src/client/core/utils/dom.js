@@ -389,8 +389,8 @@ export function isTopWindow (win) {
     }
 }
 
-export function findIframeInTopWindow (iframeWindow) {
-    var iframes = window.top.document.getElementsByTagName('iframe');
+export function findIframeByWindow (iframeWindow, iframeDestinationWindow) {
+    var iframes = (iframeDestinationWindow || window).document.getElementsByTagName('iframe');
 
     for (var i = 0; i < iframes.length; i++) {
         if (iframes[i].contentWindow === iframeWindow)
