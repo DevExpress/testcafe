@@ -147,6 +147,7 @@ gulp.task('clean', function () {
 gulp.task('lint-client', function () {
     return gulp
         .src([
+            'src/client/core/prevent-real-events.js',
             'src/client/core/page-unload-barrier.js',
             'src/client/core/xhr-barrier.js',
             'src/client/runner/automation/**/*.js',

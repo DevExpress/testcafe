@@ -22,4 +22,8 @@ describe('TestRun - Driver protocol', function () {
                 errorInEachBrowserContains(errs, '> 13 |    await t.click(\'#btn\');', 0);
             });
     });
+
+    it('Driver should prevent a real action', function () {
+        return runTests('./testcafe-fixtures/prevent-real-action-test.js', 'Perform native click');
+    });
 });

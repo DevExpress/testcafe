@@ -23,6 +23,7 @@ var XhrBarrier        = testCafeCore.XhrBarrier;
 var pageUnloadBarrier = testCafeCore.pageUnloadBarrier;
 var eventUtils        = testCafeCore.eventUtils;
 var modalBackground   = testCafeUI.modalBackground;
+var preventRealEvents = testCafeCore.preventRealEvents;
 
 
 const COMMAND_EXECUTING_FLAG   = 'testcafe|driver|command-executing-flag';
@@ -45,6 +46,7 @@ export default class ClientDriver {
         this.pageInitialXhrBarrier = new XhrBarrier();
 
         pageUnloadBarrier.init();
+        preventRealEvents();
     }
 
     start () {
