@@ -2,7 +2,7 @@ import testRunTracker from './test-run-tracker';
 import compiledCode from './compiled-code-symbol';
 import TestRun from '../../../test-run';
 import compileHybridFunction from '../../../compiler/es-next/compile-hybrid-function';
-import { ExecuteHybridFunctionCommand } from '../../../test-run/commands';
+import { ExecuteClientCodeCommand } from '../../../test-run/commands';
 import { APIError } from '../../../errors/runtime';
 import MESSAGE from '../../../errors/runtime/message';
 import getCallsite from '../../../errors/get-callsite';
@@ -28,7 +28,7 @@ function buildHybridFunctionInstance (fnCode, boundTestRun, callsiteNames) {
             args.push(arguments[i]);
 
         var callsite = getCallsite(callsiteNames.execution);
-        var command  = new ExecuteHybridFunctionCommand(fnCode, args);
+        var command  = new ExecuteClientCodeCommand(fnCode, args);
 
         return testRun.executeCommand(command, callsite);
     };

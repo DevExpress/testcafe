@@ -4,13 +4,13 @@ import { UncaughtErrorInClientExecutedCode } from '../../../errors/test-run';
 
 var Promise = hammerhead.Promise;
 
-export default function executeHybridFnCommand (command) {
+export default function executeClientCode (command) {
     return Promise.resolve()
         .then(() => {
             // NOTE: `eval` in strict mode will not override context variables
             'use strict';
             /* eslint-disable no-eval */
-            return eval(command.fnCode);
+            return eval(command.src);
             /* eslint-enable no-eval */
         })
         .then(fn => fn.apply(window, command.args))
