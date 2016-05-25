@@ -152,3 +152,18 @@ test('Hybrid dependencies', async () => {
 test('Redirect during execution', async () => {
     await Hybrid(() => new Promise(() => window.location = 'index.html'))();
 });
+
+test('Hybrid call with complex argument types', async () => {
+    const fn = Hybrid((re, err, undef, nan) => {
+        return re instanceof RegExp &&
+               re.source === '\\S+' &&
+               err instanceof Error &&
+               err.message === 'Hey!' &&
+               undef === void 0 &&
+               isNaN(nan);
+    });
+
+    const res = await fn(/\S+/ig, new Error('Hey!'), void 0, NaN);
+
+    expect(res).to.be.true;
+});

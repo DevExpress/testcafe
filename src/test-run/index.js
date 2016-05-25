@@ -6,7 +6,7 @@ import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import { TestDoneCommand, isTestDoneCommand, isCommandRejectableByPageError } from './commands';
+import { TestDoneCommand, isCommandRejectableByPageError } from './commands';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
 import COMMAND_TYPE from './commands/type';
@@ -171,6 +171,23 @@ export default class TestRun extends Session {
         this._clearPendingRequest();
     }
 
+
+    // Handle driver request
+    _handleCommandResult (driverStatus) {
+        if (this.pendingDriverTask.command.type === COMMAND_TYPE.testDone) {
+            this.pendingDriverTask.resolve();
+
+            return TEST_DONE_CONFIRMATION_RESPONSE;
+        }
+
+        if (driverStatus.executionError)
+            this._rejectPendingDriverTask(driverStatus.executionError);
+        else
+            this._resolvePendingDriverTask(driverStatus.result);
+
+        return null;
+    }
+
     _handleDriverRequest (driverStatus) {
         if (!this.running)
             this._start();
@@ -179,27 +196,16 @@ export default class TestRun extends Session {
                                             this.pendingDriverTask &&
                                             isCommandRejectableByPageError(this.pendingDriverTask.command);
 
-        if (shouldRejectPendingDriverTask)
+        if (shouldRejectPendingDriverTask) {
             this._rejectPendingDriverTask(driverStatus.pageError);
-        else {
-            this.pendingJsError = this.pendingJsError || driverStatus.pageError;
 
-            if (this.pendingDriverTask) {
-                if (!driverStatus.isCommandResult)
-                    return this.pendingDriverTask.command;
-
-                if (isTestDoneCommand(this.pendingDriverTask.command)) {
-                    this.pendingDriverTask.resolve();
-
-                    return TEST_DONE_CONFIRMATION_RESPONSE;
-                }
-
-                if (driverStatus.executionError)
-                    this._rejectPendingDriverTask(driverStatus.executionError);
-                else
-                    this._resolvePendingDriverTask(driverStatus.result);
-            }
+            return null;
         }
+
+        this.pendingJsError = this.pendingJsError || driverStatus.pageError;
+
+        if (this.pendingDriverTask)
+            return driverStatus.isCommandResult ? this._handleCommandResult(driverStatus) : this.pendingDriverTask.command;
 
         return null;
     }

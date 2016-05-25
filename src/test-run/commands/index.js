@@ -1,5 +1,12 @@
+// -------------------------------------------------------------
+// WARNING: this file is used by both the client and the server.
+// Do not use any browser or node-specific API!
+// -------------------------------------------------------------
+
 import TYPE from './type';
 import Assignable from '../../utils/assignable';
+import replicator from './replicator';
+
 import {
     ActionSelectorTypeError,
     ActionOptionsTypeError,
@@ -452,7 +459,7 @@ export class ExecuteClientCodeCommand {
     constructor (src, args) {
         this.type = TYPE.executeClientCode;
         this.src  = src;
-        this.args = args;
+        this.args = replicator.encode(args);
     }
 }
 
@@ -520,10 +527,6 @@ export function createCommandFromObject (obj) {
             return new TestDoneCommand();
     }
     /* eslint-enable indent*/
-}
-
-export function isTestDoneCommand (command) {
-    return command.type === TYPE.testDone;
 }
 
 export function isCommandRejectableByPageError (command) {

@@ -1,5 +1,6 @@
 import hammerhead from '../deps/hammerhead';
 import DriverStatus from '../status';
+import replicator from '../../../test-run/commands/replicator';
 import { UncaughtErrorInClientExecutedCode } from '../../../errors/test-run';
 
 var Promise = hammerhead.Promise;
@@ -13,7 +14,11 @@ export default function executeClientCode (command) {
             return eval(command.src);
             /* eslint-enable no-eval */
         })
-        .then(fn => fn.apply(window, command.args))
+        .then(fn => {
+            var args = replicator.decode(command.args);
+
+            return fn.apply(window, args);
+        })
         .then(result => new DriverStatus({ isCommandResult: true, result }))
         .catch(err => new DriverStatus({
             isCommandResult: true,
