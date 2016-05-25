@@ -7,6 +7,7 @@ import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import { TestDoneCommand, isCommandRejectableByPageError } from './commands';
+import replicator from './commands/replicator';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
 import COMMAND_TYPE from './commands/type';
@@ -174,7 +175,9 @@ export default class TestRun extends Session {
 
     // Handle driver request
     _handleCommandResult (driverStatus) {
-        if (this.pendingDriverTask.command.type === COMMAND_TYPE.testDone) {
+        var commandType = this.pendingDriverTask.command.type;
+
+        if (commandType === COMMAND_TYPE.testDone) {
             this.pendingDriverTask.resolve();
 
             return TEST_DONE_CONFIRMATION_RESPONSE;
@@ -182,8 +185,12 @@ export default class TestRun extends Session {
 
         if (driverStatus.executionError)
             this._rejectPendingDriverTask(driverStatus.executionError);
-        else
+        else {
+            if (commandType === COMMAND_TYPE.executeClientCode)
+                driverStatus.result = replicator.decode(driverStatus.result);
+
             this._resolvePendingDriverTask(driverStatus.result);
+        }
 
         return null;
     }

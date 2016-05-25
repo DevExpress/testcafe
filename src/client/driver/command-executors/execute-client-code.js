@@ -19,7 +19,10 @@ export default function executeClientCode (command) {
 
             return fn.apply(window, args);
         })
-        .then(result => new DriverStatus({ isCommandResult: true, result }))
+        .then(result => new DriverStatus({
+            isCommandResult: true,
+            result:          replicator.encode(result)
+        }))
         .catch(err => new DriverStatus({
             isCommandResult: true,
             executionError:  new UncaughtErrorInClientExecutedCode(err)

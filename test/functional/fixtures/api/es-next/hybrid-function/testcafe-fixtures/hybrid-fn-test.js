@@ -167,3 +167,18 @@ test('Hybrid call with complex argument types', async () => {
 
     expect(res).to.be.true;
 });
+
+test('Hybrid call with complex return types', async () => {
+    const fn = Hybrid(() => {
+        return [/\S+/ig, new Error('Hey!'), void 0, NaN];
+    });
+
+    const res = await fn();
+
+    expect(res[0]).to.be.instanceof(RegExp);
+    expect(res[0].source).eql('\\S+');
+    expect(res[1]).to.be.instanceof(Error);
+    expect(res[1].message).eql('Hey!');
+    expect(res[2]).to.be.undefined;
+    expect(res[3]).to.be.NaN;
+});
