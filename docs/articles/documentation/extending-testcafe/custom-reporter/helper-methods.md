@@ -5,7 +5,7 @@ permalink: /documentation/extending-testcafe/custom-reporter-plugin/helper-metho
 ---
 # Helper Methods
 
-The helper methods are used while [implementing a reporter](creating-reporter-plugin.md#implementing-reporter)
+The helper methods are used while [implementing a reporter](index.md#implementing-reporter)
 to format a report output. TestCafe mixins these methods to the reporter.
 
 To access the helper methods, use `this`.
