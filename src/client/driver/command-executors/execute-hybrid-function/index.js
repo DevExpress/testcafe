@@ -5,7 +5,7 @@ import { UncaughtErrorInClientExecutedCode } from '../../../../errors/test-run';
 
 var Promise = hammerhead.Promise;
 
-export default function executeClientCode (command) {
+export default function executeHybridFunction (command) {
     return Promise.resolve()
         .then(() => {
             // NOTE: `eval` in strict mode will not override context variables

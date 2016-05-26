@@ -1,8 +1,9 @@
 import testRunTracker from './test-run-tracker';
 import compiledCode from './compiled-code-symbol';
+import replicator from './replicator';
 import TestRun from '../../../test-run';
-import compileHybridFunction from '../../../compiler/es-next/compile-hybrid-function';
-import { ExecuteClientCodeCommand } from '../../../test-run/commands';
+import { compileHybridFunction } from '../../../compiler/es-next/hybrid-function';
+import { ExecuteHybridFunctionCommand } from '../../../test-run/commands';
 import { APIError } from '../../../errors/runtime';
 import MESSAGE from '../../../errors/runtime/message';
 import getCallsite from '../../../errors/get-callsite';
@@ -27,10 +28,16 @@ function buildHybridFunctionInstance (fnCode, boundTestRun, callsiteNames) {
         for (var i = 0; i < arguments.length; i++)
             args.push(arguments[i]);
 
-        var callsite = getCallsite(callsiteNames.execution);
-        var command  = new ExecuteClientCodeCommand(fnCode, args);
+        args = replicator.encode(args);
 
-        return testRun.executeCommand(command, callsite);
+        var callsite = getCallsite(callsiteNames.execution);
+        var command  = new ExecuteHybridFunctionCommand(fnCode, args);
+
+        // NOTE: don't use async/await here to enable
+        // sync errors for context test run resolving.
+        return testRun
+            .executeCommand(command, callsite)
+            .then(result => replicator.decode(result));
     };
 
     hybridFn[compiledCode] = fnCode;

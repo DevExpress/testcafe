@@ -5,7 +5,6 @@
 
 import TYPE from './type';
 import Assignable from '../../utils/assignable';
-import replicator from './replicator';
 
 import {
     ActionSelectorTypeError,
@@ -455,11 +454,11 @@ export class ClearUploadCommand extends Assignable {
     }
 }
 
-export class ExecuteClientCodeCommand {
+export class ExecuteHybridFunctionCommand {
     constructor (src, args) {
-        this.type = TYPE.executeClientCode;
+        this.type = TYPE.executeHybridFunction;
         this.src  = src;
-        this.args = replicator.encode(args);
+        this.args = args;
     }
 }
 
@@ -568,7 +567,7 @@ export function isCommandRejectableByPageError (command) {
     // an old eslint version (v1.x.x). We should migrate to v2.x.x
     switch (command.type) {
         case TYPE.testDone:
-        case TYPE.executeClientCode:
+        case TYPE.executeHybridFunction:
         case TYPE.waitForElement:
             return false;
         default:
