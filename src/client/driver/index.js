@@ -10,7 +10,7 @@ import * as browser from '../browser';
 import executeActionCommand from './command-executors/execute-action-command';
 import executeWaitForElementCommand from './command-executors/execute-wait-for-element-command';
 import executeNavigateToCommand from './command-executors/execute-navigate-to-command';
-import executeHybridFnCommand from './command-executors/execute-hybrid-fn-command';
+import executeClientCode from './command-executors/execute-client-code';
 import ContextStorage from './storage';
 import DriverStatus from './status';
 
@@ -173,10 +173,10 @@ export default class ClientDriver {
             });
     }
 
-    _onHybridFnCommand (command) {
+    _onExecuteClientCodeCommand (command) {
         this.contextStorage.setItem(HYBRID_FN_EXECUTING_FLAG, true);
 
-        executeHybridFnCommand(command)
+        executeClientCode(command)
             .then(driverStatus => {
                 this.contextStorage.setItem(HYBRID_FN_EXECUTING_FLAG, false);
                 this._onReady(driverStatus);
@@ -187,8 +187,8 @@ export default class ClientDriver {
         if (command.type === COMMAND_TYPE.testDone)
             this._onTestDone();
 
-        else if (command.type === COMMAND_TYPE.execHybridFn)
-            this._onHybridFnCommand(command);
+        else if (command.type === COMMAND_TYPE.executeClientCode)
+            this._onExecuteClientCodeCommand(command);
 
         else if (this.contextStorage.getItem(PENDING_PAGE_ERROR))
             this._onReady(new DriverStatus({ isCommandResult: true }));

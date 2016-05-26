@@ -131,4 +131,12 @@ describe('[API] Hybrid function', function () {
                 expect(errs[0]).contains("> 153 |    await Hybrid(() => new Promise(() => window.location = 'index.html'))();");
             });
     });
+
+    it('Should accept complex argument types', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Hybrid call with complex argument types');
+    });
+
+    it('Should accept complex return types', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Hybrid call with complex return types');
+    });
 });

@@ -1,5 +1,12 @@
+// -------------------------------------------------------------
+// WARNING: this file is used by both the client and the server.
+// Do not use any browser or node-specific API!
+// -------------------------------------------------------------
+
 import TYPE from './type';
 import Assignable from '../../utils/assignable';
+import replicator from './replicator';
+
 import {
     ActionSelectorTypeError,
     ActionOptionsTypeError,
@@ -448,11 +455,11 @@ export class ClearUploadCommand extends Assignable {
     }
 }
 
-export class ExecuteHybridFunctionCommand {
-    constructor (fnCode, args) {
-        this.type   = TYPE.execHybridFn;
-        this.fnCode = fnCode;
-        this.args   = args;
+export class ExecuteClientCodeCommand {
+    constructor (src, args) {
+        this.type = TYPE.executeClientCode;
+        this.src  = src;
+        this.args = replicator.encode(args);
     }
 }
 
@@ -464,63 +471,76 @@ export class TestDoneCommand {
 
 // Factory
 export function createCommandFromObject (obj) {
-    if (obj.type === TYPE.click)
-        return new ClickCommand(obj);
+    /* eslint-disable indent*/
+    // TODO: eslint raises an 'incorrect indent' error here. We use
+    // an old eslint version (v1.x.x). We should migrate to v2.x.x
+    switch (obj.type) {
+        case TYPE.click:
+            return new ClickCommand(obj);
 
-    if (obj.type === TYPE.rightClick)
-        return new RightClickCommand(obj);
+        case TYPE.rightClick:
+            return new RightClickCommand(obj);
 
-    if (obj.type === TYPE.doubleClick)
-        return new DoubleClickCommand(obj);
+        case TYPE.doubleClick:
+            return new DoubleClickCommand(obj);
 
-    if (obj.type === TYPE.hover)
-        return new HoverCommand(obj);
+        case TYPE.hover:
+            return new HoverCommand(obj);
 
-    if (obj.type === TYPE.drag)
-        return new DragCommand(obj);
+        case TYPE.drag:
+            return new DragCommand(obj);
 
-    if (obj.type === TYPE.dragToElement)
-        return new DragToElementCommand(obj);
+        case TYPE.dragToElement:
+            return new DragToElementCommand(obj);
 
-    if (obj.type === TYPE.typeText)
-        return new TypeTextCommand(obj);
+        case TYPE.typeText:
+            return new TypeTextCommand(obj);
 
-    if (obj.type === TYPE.selectText)
-        return new SelectTextCommand(obj);
+        case TYPE.selectText:
+            return new SelectTextCommand(obj);
 
-    if (obj.type === TYPE.selectTextAreaContent)
-        return new SelectTextAreaContentCommand(obj);
+        case TYPE.selectTextAreaContent:
+            return new SelectTextAreaContentCommand(obj);
 
-    if (obj.type === TYPE.selectEditableContent)
-        return new SelectEditableContentCommand(obj);
+        case TYPE.selectEditableContent:
+            return new SelectEditableContentCommand(obj);
 
-    if (obj.type === TYPE.pressKey)
-        return new PressKeyCommand(obj);
+        case TYPE.pressKey:
+            return new PressKeyCommand(obj);
 
-    if (obj.type === TYPE.wait)
-        return new WaitCommand(obj);
+        case TYPE.wait:
+            return new WaitCommand(obj);
 
-    if (obj.type === TYPE.waitForElement)
-        return new WaitForElementCommand(obj);
+        case TYPE.waitForElement:
+            return new WaitForElementCommand(obj);
 
-    if (obj.type === TYPE.navigateTo)
-        return new NavigateToCommand(obj);
+        case TYPE.navigateTo:
+            return new NavigateToCommand(obj);
 
-    if (obj.type === TYPE.uploadFile)
-        return new UploadFileCommand(obj);
+        case TYPE.uploadFile:
+            return new UploadFileCommand(obj);
 
-    if (obj.type === TYPE.clearUpload)
-        return new ClearUploadCommand(obj);
+        case TYPE.clearUpload:
+            return new ClearUploadCommand(obj);
 
-    if (obj.type === TYPE.testDone)
-        return new TestDoneCommand();
-}
-
-export function isTestDoneCommand (command) {
-    return command.type === TYPE.testDone;
+        case TYPE.testDone:
+            return new TestDoneCommand();
+    }
+    /* eslint-enable indent*/
 }
 
 export function isCommandRejectableByPageError (command) {
-    return !isTestDoneCommand(command) && command.type !== TYPE.execHybridFn && command.type !== TYPE.waitForElement;
+    /* eslint-disable indent*/
+    // TODO: eslint raises an 'incorrect indent' error here. We use
+    // an old eslint version (v1.x.x). We should migrate to v2.x.x
+    switch (command.type) {
+        case TYPE.testDone:
+        case TYPE.executeClientCode:
+        case TYPE.waitForElement:
+            return false;
+        default:
+            return true;
+    }
+    /* eslint-enable indent*/
 }
 
