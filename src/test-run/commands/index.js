@@ -473,7 +473,7 @@ export class TestDoneCommand {
 export function createCommandFromObject (obj) {
     /* eslint-disable indent*/
     // TODO: eslint raises an 'incorrect indent' error here. We use
-    // the old eslint version (v1.x.x). We should migrate to v2.x.x
+    // an old eslint version (v1.x.x). We should migrate to v2.x.x
     switch (obj.type) {
         case TYPE.click:
             return new ClickCommand(obj);
@@ -532,7 +532,7 @@ export function createCommandFromObject (obj) {
 export function isCommandRejectableByPageError (command) {
     /* eslint-disable indent*/
     // TODO: eslint raises an 'incorrect indent' error here. We use
-    // the old eslint version (v1.x.x). We should migrate to v2.x.x
+    // an old eslint version (v1.x.x). We should migrate to v2.x.x
     switch (command.type) {
         case TYPE.testDone:
         case TYPE.executeClientCode:
