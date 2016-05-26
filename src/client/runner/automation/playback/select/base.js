@@ -6,6 +6,7 @@ import MoveAutomation from '../move';
 import { MoveOptions } from '../../../../../test-run/commands/options';
 import cursor from '../../cursor';
 import { DRAG_ACTION_STEP_DELAY } from '../../settings';
+import AUTOMATION_ERROR_TYPES from '../../errors';
 
 var Promise          = hammerhead.Promise;
 var browserUtils     = hammerhead.utils.browser;
@@ -43,10 +44,13 @@ export default class SelectBaseAutomation {
 
     static _calculateEventArguments (point) {
         var clientPoint = positionUtils.offsetToClientCoords(point);
+        var element     = getElementFromPoint(clientPoint.x, clientPoint.y);
+
+        if (!element)
+            throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 
         return {
-            element: getElementFromPoint(clientPoint.x, clientPoint.y),
-            options: {
+            element, options: {
                 clientX: clientPoint.x,
                 clientY: clientPoint.y
             }

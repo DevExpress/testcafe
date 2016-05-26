@@ -39,6 +39,7 @@ var PressAutomation                 = testCafeRunner.get('./automation/playback/
 var parseKeySequence                = testCafeRunner.get('./automation/playback/press/parse-key-sequence');
 var getSelectPositionArguments      = testCafeRunner.get('./automation/playback/select/get-select-position-arguments');
 var UploadAutomation                = testCafeRunner.get('./automation/playback/upload');
+var AUTOMATION_ERROR_TYPES          = testCafeRunner.get('./automation/errors');
 var ProgressPanel                   = testCafeUI.ProgressPanel;
 
 
@@ -202,7 +203,14 @@ export default function executeAction (command, elementAvailabilityTimeout) {
                 ]);
             })
             .then(() => resolve(new DriverStatus({ isCommandResult: true })))
-            .catch(err => resolve(new DriverStatus({ isCommandResult: true, executionError: err })));
+            .catch(err => {
+                // NOTE: in case we couldn't find an element for event
+                // simulation, we raise an error of this type (GH - 337)
+                var error = err.message === AUTOMATION_ERROR_TYPES.elementIsInvisibleError ?
+                            new ActionElementIsInvisibleError() : err;
+
+                return resolve(new DriverStatus({ isCommandResult: true, executionError: error }));
+            });
     });
 
     return { startPromise, completionPromise };

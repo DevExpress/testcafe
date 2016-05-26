@@ -8,6 +8,7 @@ import cursor from '../cursor';
 import nextTick from '../../utils/next-tick';
 import * as mouseUtils from '../../utils/mouse';
 import { ACTION_STEP_DELAY } from '../settings';
+import AUTOMATION_ERROR_TYPES from '../errors';
 
 var extend         = hammerhead.utils.extend;
 var browserUtils   = hammerhead.utils.browser;
@@ -76,10 +77,13 @@ export default class RClickAutomation {
         var y          = point ? point.y : this.eventArgs.point.y;
         var topElement = getElementFromPoint(x, y, expectedElement);
 
+        if (!topElement)
+            throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
+
         return {
             point:   point || this.eventArgs.point,
             options: options || this.eventArgs.options,
-            element: topElement || this.element
+            element: topElement
         };
     }
 

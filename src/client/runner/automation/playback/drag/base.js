@@ -11,9 +11,10 @@ import { MoveOptions } from '../../../../../test-run/commands/options';
 import cursor from '../../cursor';
 import * as mouseUtils from '../../../utils/mouse';
 import { DRAG_ACTION_STEP_DELAY } from '../../settings';
+import AUTOMATION_ERROR_TYPES from '../../errors';
 
 
-const DRAGGING_SPEED = 4; // pixels/ms
+const DRAGGING_SPEED  = 4; // pixels/ms
 const MIN_MOVING_TIME = 25;
 
 var Promise          = hammerhead.Promise;
@@ -66,6 +67,9 @@ export default class DragAutomationBase {
 
 
         var topElement = getElementFromPoint(point.x, point.y, expectedElement);
+
+        if (!topElement)
+            throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 
         return {
             point:   point,

@@ -71,6 +71,14 @@ describe('[Raw API] Click action', function () {
             });
     });
 
+    it('Should fail if an action target is out of the visible area', function () {
+        return runTests('./testcafe-fixtures/click.testcafe', 'Click a button that is out of the visible area', { shouldFail: true })
+            .catch(function (errs) {
+                expect(errs[0]).eql('The element that matches the specified selector is not visible.  ' +
+                                    '[[Click a button that is out of the visible area callsite]]');
+            });
+    });
+
     it('Should fail if action has incorrect selector', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Incorrect action selector', { shouldFail: true })
             .catch(function (errs) {

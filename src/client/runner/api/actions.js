@@ -24,6 +24,7 @@ import getSelectPositionArguments from '../automation/playback/select/get-select
 import parseKeySequence from '../automation/playback/press/parse-key-sequence';
 import * as sourceIndexTracker from '../source-index';
 import async from '../deps/async';
+import AUTOMATION_ERROR_TYPES from '../automation/errors';
 
 
 var isJQueryObj   = hammerhead.utils.isJQueryObj;
@@ -84,6 +85,17 @@ function failWithError (type, additionalParams) {
     }
 
     stepIterator.onError(err);
+}
+
+function failIfActionElementIsInvisible (err, type, element) {
+    // NOTE: in case we couldn't find an element for event
+    // simulation, we raise an error of this type (GH - 337)
+    if (err.message === AUTOMATION_ERROR_TYPES.elementIsInvisibleError) {
+        failWithError(ERROR_TYPE.invisibleActionElement, {
+            element: domUtils.getElementDescription(element),
+            action:  type
+        });
+    }
 }
 
 function ensureElementsExist (item, actionName, callback) {
@@ -308,20 +320,14 @@ export function init (iterator) {
 
 export function click (what, options) {
     var actionStarted = false,
+        actionType    = 'click',
         elements      = ensureArray(what);
 
     stepIterator.asyncActionSeries(
         elements,
-        actionArgumentsIterator('click').run,
+        actionArgumentsIterator(actionType).run,
         function (element, callback, iframe) {
-            ensureElementVisibility(element, 'click', function () {
-                function onerror (err) {
-                    failWithError(err.type, {
-                        element: err.element,
-                        action:  'click'
-                    });
-                }
-
+            ensureElementVisibility(element, actionType, function () {
                 if (!actionStarted) {
                     actionStarted = true;
                     onTargetWaitingFinished();
@@ -344,6 +350,7 @@ export function click (what, options) {
 
                 clickAutomation
                     .run()
+                    .catch(err => failIfActionElementIsInvisible(err, actionType, element))
                     .then(callback);
             });
         });
@@ -351,13 +358,14 @@ export function click (what, options) {
 
 export function rclick (what, options) {
     var actionStarted = false,
+        actionType    = 'rclick',
         elements      = ensureArray(what);
 
     stepIterator.asyncActionSeries(
         elements,
-        actionArgumentsIterator('rclick').run,
+        actionArgumentsIterator(actionType).run,
         function (element, callback, iframe) {
-            ensureElementVisibility(element, 'rclick', function () {
+            ensureElementVisibility(element, actionType, function () {
                 if (!actionStarted) {
                     actionStarted = true;
                     onTargetWaitingFinished();
@@ -380,6 +388,7 @@ export function rclick (what, options) {
 
                 rClickAutomation
                     .run()
+                    .catch(err => failIfActionElementIsInvisible(err, actionType, element))
                     .then(callback);
             });
         });
@@ -387,13 +396,14 @@ export function rclick (what, options) {
 
 export function dblclick (what, options) {
     var actionStarted = false,
+        actionType    = 'dblclick',
         elements      = ensureArray(what);
 
     stepIterator.asyncActionSeries(
         elements,
-        actionArgumentsIterator('dblclick').run,
+        actionArgumentsIterator(actionType).run,
         function (element, callback, iframe) {
-            ensureElementVisibility(element, 'dblclick', function () {
+            ensureElementVisibility(element, actionType, function () {
                 if (!actionStarted) {
                     actionStarted = true;
                     onTargetWaitingFinished();
@@ -416,6 +426,7 @@ export function dblclick (what, options) {
 
                 dblClickAutomation
                     .run()
+                    .catch(err => failIfActionElementIsInvisible(err, actionType, element))
                     .then(callback);
             });
         });
@@ -423,6 +434,7 @@ export function dblclick (what, options) {
 
 export function drag (what) {
     var actionStarted      = false;
+    var actionType         = 'drag';
     var args               = arguments;
     var elements           = ensureArray(what);
     var secondArgIsCoord   = !(isNaN(parseInt(args[1])));
@@ -462,9 +474,9 @@ export function drag (what) {
 
     stepIterator.asyncActionSeries(
         elements,
-        actionArgumentsIterator('drag').run,
+        actionArgumentsIterator(actionType).run,
         function (element, callback, iframe) {
-            ensureElementVisibility(element, 'drag', function () {
+            ensureElementVisibility(element, actionType, function () {
                 if (!actionStarted) {
                     actionStarted = true;
                     onTargetWaitingFinished();
@@ -501,6 +513,7 @@ export function drag (what) {
 
                 dragAutomation
                     .run()
+                    .catch(err => failIfActionElementIsInvisible(err, actionType, element))
                     .then(callback);
             });
         });
@@ -508,6 +521,7 @@ export function drag (what) {
 
 export function select () {
     var actionStarted       = false;
+    var actionType          = 'select';
     var elements            = arguments[0] ? ensureArray(arguments[0]) : null;
     var args                = arrayUtils.toArray(arguments).slice(1);
     var firstArg            = args ? args[0] : null;
@@ -566,9 +580,9 @@ export function select () {
 
     stepIterator.asyncActionSeries(
         commonParentElement ? [commonParentElement] : elements,
-        actionArgumentsIterator('select').run,
+        actionArgumentsIterator(actionType).run,
         function (element, callback, iframe) {
-            ensureElementVisibility(element, 'select', function () {
+            ensureElementVisibility(element, actionType, function () {
                 if (!actionStarted) {
                     actionStarted = true;
                     onTargetWaitingFinished();
@@ -592,6 +606,7 @@ export function select () {
 
                 selectAutomation
                     .run()
+                    .catch(err => failIfActionElementIsInvisible(err, actionType, element))
                     .then(callback);
             });
         });
@@ -604,13 +619,14 @@ export function type (what, text, options) {
     }
 
     var actionStarted = false;
+    var actionType    = 'type';
     var elements      = ensureArray(what);
 
     stepIterator.asyncActionSeries(
         elements,
-        actionArgumentsIterator('type').run,
+        actionArgumentsIterator(actionType).run,
         function (element, callback, iframe) {
-            ensureElementVisibility(element, 'type', function () {
+            ensureElementVisibility(element, actionType, function () {
                 if (!actionStarted) {
                     actionStarted = true;
                     onTargetWaitingFinished();
@@ -640,14 +656,15 @@ export function type (what, text, options) {
 }
 
 export function hover (what, options) {
-    var actionStarted = false,
-        elements      = ensureArray(what);
+    var actionStarted = false;
+    var actionType    = 'hover';
+    var elements      = ensureArray(what);
 
     stepIterator.asyncActionSeries(
         elements,
-        actionArgumentsIterator('hover').run,
+        actionArgumentsIterator(actionType).run,
         function (element, callback, iframe) {
-            ensureElementVisibility(element, 'hover', function () {
+            ensureElementVisibility(element, actionType, function () {
                 if (!actionStarted) {
                     actionStarted = true;
                     onTargetWaitingFinished();
@@ -669,6 +686,7 @@ export function hover (what, options) {
 
                 hoverAutomation
                     .run()
+                    .catch(err => failIfActionElementIsInvisible(err, actionType, element))
                     .then(callback);
             });
         });
