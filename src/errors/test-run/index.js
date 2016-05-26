@@ -2,42 +2,28 @@
 // WARNING: this file is used by both the client and the server.
 // Do not use any browser or node-specific API!
 // -------------------------------------------------------------
-import CATEGORY from './category';
 import TYPE from './type';
 
 // Base
 //--------------------------------------------------------------------
 class TestRunErrorBase {
-    constructor (category, type) {
-        this.isTestCafeError = true;
-        this.category        = category;
+    constructor (type) {
         this.type            = type;
+        this.isTestCafeError = true;
         this.callsite        = null;
     }
 }
 
 class ActionOptionErrorBase extends TestRunErrorBase {
     constructor (type, optionName, actualValue) {
-        super(CATEGORY.actionError, type);
+        super(type);
 
         this.optionName  = optionName;
         this.actualValue = actualValue;
     }
 }
 
-class ActionError extends TestRunErrorBase {
-    constructor (type) {
-        super(CATEGORY.actionError, type);
-    }
-}
-
-class UncaughtError extends TestRunErrorBase {
-    constructor (type) {
-        super(CATEGORY.uncaughtError, type);
-    }
-}
-
-class ActionArgumentErrorBase extends ActionError {
+class ActionArgumentErrorBase extends TestRunErrorBase {
     constructor (type, argumentName, actualValue) {
         super(type);
 
@@ -46,15 +32,9 @@ class ActionArgumentErrorBase extends ActionError {
     }
 }
 
-class SynchronizationError extends TestRunErrorBase {
-    constructor (type) {
-        super(CATEGORY.synchronizationError, type);
-    }
-}
-
 // Synchronization errors
 //--------------------------------------------------------------------
-export class MissingAwaitError extends SynchronizationError {
+export class MissingAwaitError extends TestRunErrorBase {
     constructor (callsite) {
         super(TYPE.missingAwaitError);
 
@@ -62,7 +42,7 @@ export class MissingAwaitError extends SynchronizationError {
     }
 }
 
-export class ClientCodeExecutionInterruptionError extends SynchronizationError {
+export class ClientCodeExecutionInterruptionError extends TestRunErrorBase {
     constructor () {
         super(TYPE.clientCodeExecutionInterruptionError);
     }
@@ -71,7 +51,7 @@ export class ClientCodeExecutionInterruptionError extends SynchronizationError {
 
 // Uncaught errors
 //--------------------------------------------------------------------
-export class UncaughtErrorOnPage extends UncaughtError {
+export class UncaughtErrorOnPage extends TestRunErrorBase {
     constructor (errMsg, pageDestUrl) {
         super(TYPE.uncaughtErrorOnPage);
 
@@ -80,7 +60,7 @@ export class UncaughtErrorOnPage extends UncaughtError {
     }
 }
 
-export class UncaughtErrorInTestCode extends UncaughtError {
+export class UncaughtErrorInTestCode extends TestRunErrorBase {
     constructor (err, callsite) {
         super(TYPE.uncaughtErrorInTestCode);
 
@@ -89,7 +69,7 @@ export class UncaughtErrorInTestCode extends UncaughtError {
     }
 }
 
-export class UncaughtNonErrorObjectInTestCode extends UncaughtError {
+export class UncaughtNonErrorObjectInTestCode extends TestRunErrorBase {
     constructor (obj) {
         super(TYPE.uncaughtNonErrorObjectInTestCode);
 
@@ -98,7 +78,7 @@ export class UncaughtNonErrorObjectInTestCode extends UncaughtError {
     }
 }
 
-export class UncaughtErrorInClientExecutedCode extends UncaughtError {
+export class UncaughtErrorInClientExecutedCode extends TestRunErrorBase {
     constructor (err) {
         super(TYPE.uncaughtErrorInClientExecutedCode);
 
@@ -111,7 +91,7 @@ export class UncaughtErrorInClientExecutedCode extends UncaughtError {
 //--------------------------------------------------------------------
 export class ExternalAssertionLibraryError extends TestRunErrorBase {
     constructor (err, callsite) {
-        super(CATEGORY.assertionError, TYPE.externalAssertionLibraryError);
+        super(TYPE.externalAssertionLibraryError);
 
         this.errMsg   = String(err);
         this.callsite = callsite;
@@ -140,7 +120,7 @@ export class ActionBooleanOptionError extends ActionOptionErrorBase {
     }
 }
 
-export class ActionOptionsTypeError extends ActionError {
+export class ActionOptionsTypeError extends TestRunErrorBase {
     constructor (actualType) {
         super(TYPE.actionOptionsTypeError);
 
@@ -184,7 +164,7 @@ export class ActionStringArrayElementError extends ActionArgumentErrorBase {
 
 
 // Selector errors
-export class ActionSelectorTypeError extends ActionError {
+export class ActionSelectorTypeError extends TestRunErrorBase {
     constructor (actualType) {
         super(TYPE.actionSelectorTypeError);
 
@@ -192,7 +172,7 @@ export class ActionSelectorTypeError extends ActionError {
     }
 }
 
-export class ActionAdditionalSelectorTypeError extends ActionError {
+export class ActionAdditionalSelectorTypeError extends TestRunErrorBase {
     constructor (argumentName, actualType) {
         super(TYPE.actionAdditionalSelectorTypeError);
 
@@ -201,7 +181,7 @@ export class ActionAdditionalSelectorTypeError extends ActionError {
     }
 }
 
-export class ActionUnsupportedUrlProtocolError extends ActionError {
+export class ActionUnsupportedUrlProtocolError extends TestRunErrorBase {
     constructor (argumentName, protocol) {
         super(TYPE.actionUnsupportedUrlProtocolError);
 
@@ -212,19 +192,19 @@ export class ActionUnsupportedUrlProtocolError extends ActionError {
 
 // Action execution errors
 //--------------------------------------------------------------------
-export class ActionElementNotFoundError extends ActionError {
+export class ActionElementNotFoundError extends TestRunErrorBase {
     constructor () {
         super(TYPE.actionElementNotFoundError);
     }
 }
 
-export class ActionElementIsInvisibleError extends ActionError {
+export class ActionElementIsInvisibleError extends TestRunErrorBase {
     constructor () {
         super(TYPE.actionElementIsInvisibleError);
     }
 }
 
-export class ActionAdditionalElementNotFoundError extends ActionError {
+export class ActionAdditionalElementNotFoundError extends TestRunErrorBase {
     constructor (argumentName) {
         super(TYPE.actionAdditionalElementNotFoundError);
 
@@ -232,7 +212,7 @@ export class ActionAdditionalElementNotFoundError extends ActionError {
     }
 }
 
-export class ActionAdditionalElementIsInvisibleError extends ActionError {
+export class ActionAdditionalElementIsInvisibleError extends TestRunErrorBase {
     constructor (argumentName) {
         super(TYPE.actionAdditionalElementIsInvisibleError);
 
@@ -240,19 +220,19 @@ export class ActionAdditionalElementIsInvisibleError extends ActionError {
     }
 }
 
-export class ActionElementNonEditableError extends ActionError {
+export class ActionElementNonEditableError extends TestRunErrorBase {
     constructor () {
         super(TYPE.actionElementNonEditableError);
     }
 }
 
-export class ActionElementNotTextAreaError extends ActionError {
+export class ActionElementNotTextAreaError extends TestRunErrorBase {
     constructor () {
         super(TYPE.actionElementNotTextAreaError);
     }
 }
 
-export class ActionElementNonContentEditableError extends ActionError {
+export class ActionElementNonContentEditableError extends TestRunErrorBase {
     constructor (argumentName) {
         super(TYPE.actionElementNonContentEditableError);
 
@@ -260,13 +240,13 @@ export class ActionElementNonContentEditableError extends ActionError {
     }
 }
 
-export class ActionRootContainerNotFoundError extends ActionError {
+export class ActionRootContainerNotFoundError extends TestRunErrorBase {
     constructor () {
         super(TYPE.actionRootContainerNotFoundError);
     }
 }
 
-export class ActionIncorrectKeysError extends ActionError {
+export class ActionIncorrectKeysError extends TestRunErrorBase {
     constructor (argumentName) {
         super(TYPE.actionIncorrectKeysError);
 
@@ -274,7 +254,7 @@ export class ActionIncorrectKeysError extends ActionError {
     }
 }
 
-export class ActionCanNotFindFileToUploadError extends ActionError {
+export class ActionCanNotFindFileToUploadError extends TestRunErrorBase {
     constructor (filePaths) {
         super(TYPE.actionCanNotFindFileToUploadError);
 
@@ -282,7 +262,7 @@ export class ActionCanNotFindFileToUploadError extends ActionError {
     }
 }
 
-export class ActionElementIsNotFileInputError extends ActionError {
+export class ActionElementIsNotFileInputError extends TestRunErrorBase {
     constructor () {
         super(TYPE.actionElementIsNotFileInputError);
     }

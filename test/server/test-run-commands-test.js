@@ -2,7 +2,6 @@ var expect         = require('chai').expect;
 var TYPE           = require('../../lib/test-run/commands/type');
 var createCommand  = require('../../lib/test-run/commands').createCommandFromObject;
 var ERROR_TYPE     = require('../../lib/errors/test-run/type');
-var ERROR_CATEGORY = require('../../lib/errors/test-run/category');
 
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects
@@ -792,7 +791,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'undefined',
                     callsite:        null
@@ -808,7 +806,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'number',
                     callsite:        null
@@ -825,7 +822,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionOptionsTypeError,
                     actualType:      'number',
                     callsite:        null
@@ -844,7 +840,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     optionName:      'offsetX',
                     actualValue:     'string',
@@ -864,7 +859,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     optionName:      'offsetX',
                     actualValue:     10.5,
@@ -882,7 +876,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'undefined',
                     callsite:        null
@@ -898,7 +891,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'boolean',
                     callsite:        null
@@ -915,7 +907,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionOptionsTypeError,
                     actualType:      'string',
                     callsite:        null
@@ -934,7 +925,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     optionName:      'offsetX',
                     actualValue:     'boolean',
@@ -956,7 +946,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionBooleanOptionError,
                     optionName:      'modifiers.shift',
                     actualValue:     'string',
@@ -974,7 +963,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'undefined',
                     callsite:        null
@@ -990,7 +978,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'boolean',
                     callsite:        null
@@ -1007,7 +994,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionOptionsTypeError,
                     actualType:      'number',
                     callsite:        null
@@ -1026,7 +1012,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     optionName:      'caretPos',
                     actualValue:     'string',
@@ -1044,7 +1029,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'undefined',
                     callsite:        null
@@ -1060,7 +1044,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'number',
                     callsite:        null
@@ -1077,7 +1060,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionOptionsTypeError,
                     actualType:      'boolean',
                     callsite:        null
@@ -1096,7 +1078,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     optionName:      'offsetX',
                     actualValue:     'string',
@@ -1116,7 +1097,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     optionName:      'offsetY',
                     actualValue:     -10,
@@ -1134,7 +1114,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'undefined',
                     callsite:        null
@@ -1150,7 +1129,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'number',
                     callsite:        null
@@ -1166,7 +1144,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionIntegerArgumentError,
                     argumentName:    'dragOffsetX',
                     actualValue:     'undefined',
@@ -1184,7 +1161,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionIntegerArgumentError,
                     argumentName:    'dragOffsetY',
                     actualValue:     'undefined',
@@ -1203,7 +1179,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionIntegerArgumentError,
                     argumentName:    'dragOffsetY',
                     actualValue:     10.5,
@@ -1223,7 +1198,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionOptionsTypeError,
                     actualType:      'number',
                     callsite:        null
@@ -1240,7 +1214,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'undefined',
                     callsite:        null
@@ -1256,7 +1229,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'number',
                     callsite:        null
@@ -1272,7 +1244,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
                     argumentName:    'destinationSelector',
                     actualType:      'undefined',
@@ -1290,7 +1261,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
                     argumentName:    'destinationSelector',
                     actualType:      'number',
@@ -1309,7 +1279,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionOptionsTypeError,
                     actualType:      'number',
                     callsite:        null
@@ -1326,7 +1295,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'undefined',
                     callsite:        null
@@ -1342,7 +1310,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'number',
                     callsite:        null
@@ -1358,7 +1325,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'text',
                     actualValue:     'undefined',
@@ -1376,7 +1342,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'text',
                     actualValue:     'number',
@@ -1394,7 +1359,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'text',
                     actualValue:     '""',
@@ -1413,7 +1377,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionOptionsTypeError,
                     actualType:      'boolean',
                     callsite:        null
@@ -1433,7 +1396,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     optionName:      'offsetX',
                     actualValue:     'string',
@@ -1454,7 +1416,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionBooleanOptionError,
                     optionName:      'replace',
                     actualValue:     'number',
@@ -1472,7 +1433,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'undefined',
                     callsite:        null
@@ -1488,7 +1448,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'object',
                     callsite:        null
@@ -1505,7 +1464,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'startPos',
                     actualValue:     'string',
@@ -1523,7 +1481,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'startPos',
                     actualValue:     5.5,
@@ -1541,7 +1498,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'endPos',
                     actualValue:     NaN,
@@ -1559,7 +1515,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'endPos',
                     actualValue:     -1,
@@ -1577,7 +1532,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'undefined',
                     callsite:        null
@@ -1593,7 +1547,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'object',
                     callsite:        null
@@ -1610,7 +1563,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'startLine',
                     actualValue:     'string',
@@ -1628,7 +1580,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'startLine',
                     actualValue:     5.5,
@@ -1646,7 +1597,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'endLine',
                     actualValue:     NaN,
@@ -1664,7 +1614,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'endLine',
                     actualValue:     -1,
@@ -1682,7 +1631,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
                     argumentName:    'startSelector',
                     actualType:      'undefined',
@@ -1699,7 +1647,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
                     argumentName:    'startSelector',
                     actualType:      'number',
@@ -1717,7 +1664,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
                     argumentName:    'endSelector',
                     actualType:      'boolean',
@@ -1735,7 +1681,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'keys',
                     actualValue:     'undefined',
@@ -1752,7 +1697,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'keys',
                     actualValue:     'boolean',
@@ -1769,7 +1713,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'keys',
                     actualValue:     '""',
@@ -1787,7 +1730,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'timeout',
                     actualValue:     'undefined',
@@ -1804,7 +1746,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'timeout',
                     actualValue:     -5,
@@ -1822,7 +1763,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'undefined',
                     callsite:        null
@@ -1838,7 +1778,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'number',
                     callsite:        null
@@ -1855,7 +1794,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'timeout',
                     actualValue:     10.5,
@@ -1873,7 +1811,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'url',
                     actualValue:     'undefined',
@@ -1890,7 +1827,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'url',
                     actualValue:     'boolean',
@@ -1907,7 +1843,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'url',
                     actualValue:     '""',
@@ -1924,7 +1859,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionUnsupportedUrlProtocolError,
                     protocol:        'file',
                     argumentName:    'url',
@@ -1942,7 +1876,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'undefined',
                     callsite:        null
@@ -1958,7 +1891,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'number',
                     callsite:        null
@@ -1974,7 +1906,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
                     argumentName:    'filePath',
                     actualValue:     'undefined',
@@ -1992,7 +1923,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
                     argumentName:    'filePath',
                     actualValue:     'number',
@@ -2010,7 +1940,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
                     argumentName:    'filePath',
                     actualValue:     '""',
@@ -2028,7 +1957,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
                     argumentName:    'filePath',
                     actualValue:     'object',
@@ -2046,7 +1974,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringOrStringArrayArgumentError,
                     argumentName:    'filePath',
                     actualValue:     '[]',
@@ -2064,7 +1991,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArrayElementError,
                     argumentName:    'filePath',
                     actualValue:     'number',
@@ -2083,7 +2009,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArrayElementError,
                     argumentName:    'filePath',
                     actualValue:     '""',
@@ -2102,7 +2027,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'undefined',
                     callsite:        null
@@ -2118,7 +2042,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'number',
                     callsite:        null
