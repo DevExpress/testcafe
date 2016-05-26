@@ -400,7 +400,7 @@ gulp.task('test-website', ['serve-website'], function (cb) {
     var fail        = false;
     var brokenLinks = [];
 
-    var siteChecker = new blc.SiteChecker({}, {
+    var siteChecker = new blc.SiteChecker({ excludeLinksToSamePage: false }, {
         link: function (result) {
             if (result.broken) {
                 brokenLinks.push(result.url.resolved ? result.url.resolved : result.url.original);
