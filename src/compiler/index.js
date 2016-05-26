@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import { flattenDeep as flatten, find } from 'lodash';
 import stripBom from 'strip-bom';
 import { Compiler as LegacyCompiler } from 'testcafe-legacy-api';
-import { wrapDomAccessors } from 'testcafe-hammerhead';
+import hammerhead from 'testcafe-hammerhead';
 import EsNextCompiler from './es-next';
 import RawFileCompiler from './raw-file';
 import { GeneralError } from '../errors/runtime';
@@ -18,7 +18,7 @@ export default class Compiler {
         this.rawDataCompiler = new RawFileCompiler();
 
         this.compilers = [
-            new LegacyCompiler(wrapDomAccessors),
+            new LegacyCompiler(hammerhead.processScript),
             this.esNextCompiler,
             this.rawDataCompiler
         ];
