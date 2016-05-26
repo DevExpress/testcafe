@@ -1,7 +1,7 @@
-import hammerhead from '../deps/hammerhead';
-import DriverStatus from '../status';
-import replicator from '../../../test-run/commands/replicator';
-import { UncaughtErrorInClientExecutedCode } from '../../../errors/test-run';
+import hammerhead from '../../deps/hammerhead';
+import DriverStatus from '../../status';
+import replicator from './replicator';
+import { UncaughtErrorInClientExecutedCode } from '../../../../errors/test-run';
 
 var Promise = hammerhead.Promise;
 
