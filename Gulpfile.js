@@ -16,7 +16,6 @@ var util         = require('gulp-util');
 var gulpif       = require('gulp-if');
 var uglify       = require('gulp-uglify');
 var ll           = require('gulp-ll');
-var publish      = require('publish-please');
 var del          = require('del');
 var fs           = require('fs');
 var path         = require('path');
@@ -441,12 +440,6 @@ gulp.task('publish-website', ['build-website'], function () {
 });
 
 gulp.task('test-docs', ['test-website', 'lint']);
-
-// Publish
-gulp.task('publish', ['test-server'], function () {
-    // TODO switch publish tag once we'll be ready to release
-    return publish({ tag: 'alpha' });
-});
 
 gulp.task('test-functional', ['build'], function () {
     return gulp

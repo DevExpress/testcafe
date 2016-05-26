@@ -20,6 +20,6 @@ export default {
     navigateTo:            'navigate-to',
     uploadFile:            'upload-file',
     clearUpload:           'clear-upload',
-    execHybridFn:          'exec-hybrid-fn',
+    executeClientCode:     'execute-client-code',
     testDone:              'test-done'
 };
