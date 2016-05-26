@@ -1,4 +1,4 @@
-import { wrapDomAccessors } from 'testcafe-hammerhead';
+import hammerhead from 'testcafe-hammerhead';
 import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
 import { noop, escapeRegExp as escapeRe } from 'lodash';
 import loadBabelLibs from './load-babel-libs';
@@ -120,7 +120,7 @@ export default function compileHybridFunction (fnCode, dependencies = {}, callsi
     if (NODE_VER >= 4)
         fnCode = downgradeES(fnCode);
 
-    fnCode = wrapDomAccessors(fnCode, true);
+    fnCode = hammerhead.processScript(fnCode, false);
 
     // NOTE: check compiled code for regenerator injection: we have either generator
     // recompiled in Node.js 4+ for client or async function declared in function code.
