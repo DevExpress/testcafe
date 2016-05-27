@@ -67,7 +67,7 @@ exports.errorInEachBrowserNotContains = function errorInEachBrowserNotContains (
 };
 
 exports.checkScreenshotsCreated = function checkScreenshotsCreated (withoutScreenshot, count) {
-    var screenshotsPath        = './test/functional/fixtures/screenshots';
+    var screenshotsPath        = '___test-screenshots___';
     var expectedCount          = count || 2;
     var screenshotFolderExists = isFolderExists(screenshotsPath);
 

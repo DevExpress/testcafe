@@ -125,8 +125,7 @@ before(function () {
                 if (onlyLocal && config.isTravisTask)
                     return Promise.resolve();
 
-                var screenshotPath = opts && opts.setScreenshotPath ?
-                                     path.join(config.site.viewsPath, 'screenshots') : '';
+                var screenshotPath = opts && opts.setScreenshotPath ? '___test-screenshots___' : '';
 
                 var screenshotsOnFails = opts && opts.screenshotsOnFails;
                 var actualBrowsers     = browsersInfo.filter(function (browserInfo) {
