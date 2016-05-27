@@ -5,7 +5,6 @@ var ClickOptions   = require('../../lib/test-run/commands/options').ClickOptions
 var MoveOptions    = require('../../lib/test-run/commands/options').MoveOptions;
 var TypeOptions    = require('../../lib/test-run/commands/options').TypeOptions;
 var ERROR_TYPE     = require('../../lib/errors/test-run/type');
-var ERROR_CATEGORY = require('../../lib/errors/test-run/category');
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects
 function assertThrow (fn, expectedErr) {
@@ -156,7 +155,6 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     actualValue:     'object',
                     optionName:      'offsetX',
@@ -170,7 +168,6 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     actualValue:     -3,
                     optionName:      'offsetY',
@@ -184,7 +181,6 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     actualValue:     NaN,
                     optionName:      'offsetX',
@@ -198,7 +194,6 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     actualValue:     3.14,
                     optionName:      'offsetX',
@@ -214,7 +209,6 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionBooleanOptionError,
                     actualValue:     'number',
                     optionName:      'modifiers.ctrl',
@@ -228,7 +222,6 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionBooleanOptionError,
                     actualValue:     'number',
                     optionName:      'modifiers.alt',
@@ -242,7 +235,6 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionBooleanOptionError,
                     actualValue:     'number',
                     optionName:      'modifiers.shift',
@@ -256,7 +248,6 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionBooleanOptionError,
                     actualValue:     'number',
                     optionName:      'modifiers.meta',
@@ -272,7 +263,6 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     actualValue:     -1,
                     optionName:      'caretPos',
@@ -286,7 +276,6 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     actualValue:     3.14,
                     optionName:      'caretPos',
@@ -302,7 +291,6 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionBooleanOptionError,
                     actualValue:     'number',
                     optionName:      'replace',

@@ -1,5 +1,4 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
-CATEGORY=actionError
 Elements of the array argument are expected to be non-empty strings, but the
 element at index 1 was number.
 

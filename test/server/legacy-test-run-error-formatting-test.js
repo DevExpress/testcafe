@@ -12,18 +12,6 @@ var untestedErrorTypes = Object.keys(TYPE).map(function (key) {
 
 var userAgentMock = 'Chrome 15.0.874 / Mac OS X 10.8.1';
 
-var reporterPluginMock = {
-    createErrorDecorator: function () {
-        var decorator = ReporterPluginHost.prototype.createErrorDecorator.call(this);
-
-        decorator ['span category'] = function (str) {
-            return 'CATEGORY=' + str + '\n';
-        };
-
-        return decorator;
-    }
-};
-
 // Output stream and errorDecorator mocks
 function createOutStreamMock () {
     return {
@@ -38,7 +26,7 @@ function createOutStreamMock () {
 function assertErrorMessage (file, err, callsite) {
     var screenshotPath = '/unix/path/with/<tag>';
     var outStreamMock  = createOutStreamMock();
-    var plugin         = new ReporterPluginHost(reporterPluginMock, outStreamMock);
+    var plugin         = new ReporterPluginHost({}, outStreamMock);
 
     var errAdapter = new LegacyTestRunErrorFormattableAdapter(err, {
         userAgent:      userAgentMock,

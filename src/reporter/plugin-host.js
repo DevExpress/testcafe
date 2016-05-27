@@ -40,7 +40,6 @@ export default class ReporterPluginHost {
     // Error decorator
     createErrorDecorator () {
         return {
-            'span category':   () => '',
             'span step-name':  str => `"${str}"`,
             'span user-agent': str => this.chalk.gray(str),
 
