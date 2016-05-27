@@ -5,7 +5,7 @@ var errorInEachBrowserNotContains = require('../../assertion-helper.js').errorIn
 var checkScreenshotsCreated       = require('../../assertion-helper.js').checkScreenshotsCreated;
 
 
-var SCREENSHOT_PATH_MESSAGE_TEXT = 'Screenshot: test\\functional\\fixtures\\screenshots';
+var SCREENSHOT_PATH_MESSAGE_TEXT = 'Screenshot: ___test-screenshots___';
 var testOnTravis                 = config.isTravisTask;
 var testErrors                   = null;
 
