@@ -2096,6 +2096,10 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
+<<<<<<< e8cb9c35813fdf7814793df0504da89b0e0966ab
+=======
+                    category:        ERROR_CATEGORY.actionError,
+>>>>>>> TakeScreenshot, TakeScreenshotOnFail commands (part of #441, part of #240) (#552)
                     type:            ERROR_TYPE.actionStringArgumentError,
                     actualValue:     'number',
                     argumentName:    'path',
@@ -2112,6 +2116,10 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
+<<<<<<< e8cb9c35813fdf7814793df0504da89b0e0966ab
+=======
+                    category:        ERROR_CATEGORY.actionError,
+>>>>>>> TakeScreenshot, TakeScreenshotOnFail commands (part of #441, part of #240) (#552)
                     type:            ERROR_TYPE.actionStringArgumentError,
                     actualValue:     '""',
                     argumentName:    'path',
