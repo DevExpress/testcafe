@@ -1,5 +1,4 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
-CATEGORY=actionError
 Content between the action elements cannot be selected because the root
 container for the selection range cannot be found, i.e. these elements do not
 have a common ancestor with the contentEditable attribute.

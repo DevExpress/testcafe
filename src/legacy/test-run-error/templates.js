@@ -1,6 +1,5 @@
 import dedent from 'dedent';
 import { escape as escapeHtml } from 'lodash';
-import CATEGORY from './category';
 import TYPE from './type';
 import buildDiff from '../../errors/test-run/assertion-diffs';
 
@@ -8,17 +7,14 @@ function escapeNewLines (str) {
     return escapeHtml(str).replace(/(\r\n|\n|\r)/gm, '\\n');
 }
 
-function getMsgPrefix (err, category) {
-    return dedent(`
-        <span class="user-agent">${err.userAgent}</span>
-        <span class="category">${category}</span>
-    `);
+function getMsgPrefix (err) {
+    return `<span class="user-agent">${err.userAgent}</span>\n`;
 }
 
 function getAssertionMsgPrefix (err) {
     var assertionPrefix = err.message ? `"${escapeHtml(err.message)}" assertion` : 'Assertion';
 
-    return getMsgPrefix(err, CATEGORY.failedAssertion) + assertionPrefix;
+    return getMsgPrefix(err) + assertionPrefix;
 }
 
 function getDiffHeader (err) {
@@ -95,13 +91,13 @@ export default {
     `),
 
     [TYPE.iframeLoadingTimeout]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.timeout)}IFrame loading timed out.
+        ${getMsgPrefix(err)}IFrame loading timed out.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.inIFrameTargetLoadingTimeout]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.timeout)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
         IFrame target loading timed out.
 
         ${getScreenshotInfoStr(err)}
@@ -110,35 +106,35 @@ export default {
     [TYPE.uncaughtJSError]: err => {
         if (err.pageDestUrl) {
             return dedent(`
-                ${getMsgPrefix(err, CATEGORY.unhandledException)}Uncaught JavaScript error <code>${escapeHtml(err.scriptErr)}</code> on page <a href="${err.pageDestUrl}">${err.pageDestUrl}</a>
+                ${getMsgPrefix(err)}Uncaught JavaScript error <code>${escapeHtml(err.scriptErr)}</code> on page <a href="${err.pageDestUrl}">${err.pageDestUrl}</a>
 
                 ${getScreenshotInfoStr(err)}
             `);
         }
 
         return dedent(`
-            ${getMsgPrefix(err, CATEGORY.unhandledException)}Uncaught JavaScript error <code>${escapeHtml(err.scriptErr)}</code> on page.
+            ${getMsgPrefix(err)}Uncaught JavaScript error <code>${escapeHtml(err.scriptErr)}</code> on page.
 
             ${getScreenshotInfoStr(err)}
         `);
     },
 
     [TYPE.uncaughtJSErrorInTestCodeStep]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.unhandledException)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
         Uncaught JavaScript error in test code - <code>${escapeHtml(err.scriptErr)}</code>.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.storeDomNodeOrJqueryObject]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.unhandledException)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
         It is not allowed to share the DOM element, jQuery object or a function between test steps via "this" object.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.emptyFirstArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         ${err.getCallsiteMarkup()}
 
@@ -149,7 +145,7 @@ export default {
     `),
 
     [TYPE.invisibleActionElement]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         ${err.getCallsiteMarkup()}
 
@@ -160,7 +156,7 @@ export default {
     `),
 
     [TYPE.incorrectDraggingSecondArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         ${err.getCallsiteMarkup()}
 
@@ -170,7 +166,7 @@ export default {
     `),
 
     [TYPE.incorrectPressActionArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         ${err.getCallsiteMarkup()}
 
@@ -180,7 +176,7 @@ export default {
     `),
 
     [TYPE.emptyTypeActionArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         ${err.getCallsiteMarkup()}
 
@@ -190,21 +186,21 @@ export default {
     `),
 
     [TYPE.unexpectedDialog]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.nativeDialogError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
         Unexpected system <code>${err.dialog}</code> dialog <code>${escapeHtml(err.message)}</code> appeared.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.expectedDialogDoesntAppear]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.nativeDialogError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
         The expected system <code>${err.dialog}</code> dialog did not appear.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.incorrectSelectActionArguments]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         ${err.getCallsiteMarkup()}
 
@@ -214,7 +210,7 @@ export default {
     `),
 
     [TYPE.incorrectWaitActionMillisecondsArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         ${err.getCallsiteMarkup()}
 
@@ -224,7 +220,7 @@ export default {
     `),
 
     [TYPE.incorrectWaitForActionEventArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         ${err.getCallsiteMarkup()}
 
@@ -234,7 +230,7 @@ export default {
     `),
 
     [TYPE.incorrectWaitForActionTimeoutArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         ${err.getCallsiteMarkup()}
 
@@ -244,7 +240,7 @@ export default {
     `),
 
     [TYPE.waitForActionTimeoutExceeded]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.timeout)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         ${err.getCallsiteMarkup()}
 
@@ -254,7 +250,7 @@ export default {
     `),
 
     [TYPE.incorrectGlobalWaitForActionEventArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code class="api">__waitFor</code> action's first parameter should be a function.
 
@@ -262,7 +258,7 @@ export default {
     `),
 
     [TYPE.incorrectGlobalWaitForActionTimeoutArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code class="api">__waitFor</code> action's "timeout" parameter should be a positive number.
 
@@ -270,7 +266,7 @@ export default {
     `),
 
     [TYPE.globalWaitForActionTimeoutExceeded]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.timeout)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         <code class="api">__waitFor</code> action's timeout exceeded.
 
@@ -278,28 +274,28 @@ export default {
     `),
 
     [TYPE.emptyIFrameArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
         The selector within the <code class="api">inIFrame</code> function returns an empty value.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.iframeArgumentIsNotIFrame]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
         The selector within the <code class="api">inIFrame</code> function doesn’t return an iframe element.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.multipleIFrameArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
         The selector within the <code class="api">inIFrame</code> function returns more than one iframe element.
 
         ${getScreenshotInfoStr(err)}
     `),
 
     [TYPE.incorrectIFrameArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.inIFrameSelectorError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
         The <code class="api">inIFrame</code> function contains an invalid argument.
 
         ${getScreenshotInfoStr(err)}
@@ -307,7 +303,7 @@ export default {
 
     [TYPE.uploadCanNotFindFileToUpload]: err => {
         var msg = dedent(`
-            ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+            ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
             ${err.getCallsiteMarkup()}
 
@@ -320,7 +316,7 @@ export default {
     },
 
     [TYPE.uploadElementIsNotFileInput]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         ${err.getCallsiteMarkup()}
 
@@ -330,7 +326,7 @@ export default {
     `),
 
     [TYPE.uploadInvalidFilePathArgument]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.actionError)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
+        ${getMsgPrefix(err)}Error at step <span class="step-name">${escapeHtml(err.stepName)}</span>:
 
         ${err.getCallsiteMarkup()}
 
@@ -340,6 +336,6 @@ export default {
     `),
 
     [TYPE.pageNotLoaded]: err => dedent(`
-        ${getMsgPrefix(err, CATEGORY.pageLoadError)}${err.message}
+        ${getMsgPrefix(err)}${err.message}
     `)
 };

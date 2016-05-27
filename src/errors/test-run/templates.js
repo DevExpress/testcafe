@@ -4,10 +4,7 @@ import TYPE from './type';
 import TEST_RUN_STATE from '../../test-run/state';
 
 function markup (err, msgMarkup) {
-    var prefix = dedent(`
-        <span class="user-agent">${err.userAgent}</span>
-        <span class="category">${err.category}</span>
-    `);
+    var prefix = `<span class="user-agent">${err.userAgent}</span>\n`;
 
     if (err.testRunState === TEST_RUN_STATE.inBeforeEach)
         prefix += `<strong>- Error in <code>beforeEach</code> hook -</strong>\n`;
