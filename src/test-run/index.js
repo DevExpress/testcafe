@@ -225,6 +225,8 @@ export default class TestRun extends Session {
         }
 
         return null;
+=======
+>>>>>>> 4aa7aee... Add driver response timeout (#541)
     }
 
     _handleDriverRequest (driverStatus) {
@@ -311,6 +313,7 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     var responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
 
     return new Promise((resolve, reject) => this.pendingRequest = { resolve, reject, responseTimeout });
+<<<<<<< HEAD
 };
 
 ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (msg) {
@@ -323,4 +326,6 @@ ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (m
 
     if (pendingCommandType === COMMAND_TYPE.takeScreenshotOnFail)
         return await this.browserManipulationManager.takeScreenshotOnFail(msg.pageUrl);
+=======
+>>>>>>> 4aa7aee... Add driver response timeout (#541)
 };
