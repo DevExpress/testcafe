@@ -1,3 +1,4 @@
 export default {
-    ready: 'ready'
+    ready:                       'ready',
+    readyForBrowserManipulation: 'ready-for-browser-manipulation'
 };

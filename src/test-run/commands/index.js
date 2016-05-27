@@ -463,6 +463,35 @@ export class ExecuteClientCodeCommand {
     }
 }
 
+export class TakeScreenshotCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type = TYPE.takeScreenshot;
+        this.path = '';
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'path', type: nonEmptyStringArgument }
+        ];
+    }
+}
+
+export class TakeScreenshotOnFailCommand {
+    constructor () {
+        this.type = TYPE.takeScreenshotOnFail;
+    }
+}
+
+export class PrepareBrowserManipulationCommand {
+    constructor () {
+        this.type = TYPE.prepareBrowserManipulation;
+    }
+}
+
 export class TestDoneCommand {
     constructor () {
         this.type = TYPE.testDone;
@@ -523,6 +552,10 @@ export function createCommandFromObject (obj) {
         case TYPE.clearUpload:
             return new ClearUploadCommand(obj);
 
+        case TYPE.takeScreenshot:
+            return new TakeScreenshotCommand(obj);
+
+        case TYPE:
         case TYPE.testDone:
             return new TestDoneCommand();
     }
@@ -542,5 +575,9 @@ export function isCommandRejectableByPageError (command) {
             return true;
     }
     /* eslint-enable indent*/
+}
+
+export function isWindowManipulationCommand (command) {
+    return command.type === TYPE.takeScreenshot || command.type === TYPE.takeScreenshotOnFail;
 }
 

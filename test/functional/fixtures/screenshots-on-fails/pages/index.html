@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Screenshots on fails</title>
+</head>
+<body>
+<button id="raiseError">Raise error</button>
+<script>
+    var startTitle = 1;
+
+    document.title = startTitle;
+
+    window.setInterval(function () {
+        document.title = startTitle++;
+    }, 300);
+
+    document.getElementById('raiseError').addEventListener('click', function () {
+        throw new Error('Custom error');
+    });
+</script>
+</body>
+</html>

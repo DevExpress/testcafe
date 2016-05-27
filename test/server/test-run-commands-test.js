@@ -773,6 +773,43 @@ describe('Test run commands', function () {
             });
         });
 
+        it('Should create TakeScreenshotCommand from object', function () {
+            var commandObj = {
+                type:     TYPE.takeScreenshot,
+                selector: '#yo',
+                path:     'custom',
+                dummy:    'test',
+
+                options: {
+                    dummy: 'yo'
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type: TYPE.takeScreenshot,
+                path: 'custom'
+            });
+
+            commandObj = {
+                type:     TYPE.takeScreenshot,
+                selector: '#yo',
+                dummy:    'test',
+
+                options: {
+                    dummy: 'yo'
+                }
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type: TYPE.takeScreenshot,
+                path: ''
+            });
+        });
+
         it('Should create TestDone command from object', function () {
             var commandObj = { type: TYPE.testDone, hey: '42' };
 
@@ -2121,6 +2158,42 @@ describe('Test run commands', function () {
                     category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionSelectorTypeError,
                     actualType:      'number',
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate TakeScreenshot', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.takeScreenshot,
+                        path: 1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    actualValue:     'number',
+                    argumentName:    'path',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.takeScreenshot,
+                        path: ''
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    category:        ERROR_CATEGORY.actionError,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    actualValue:     '""',
+                    argumentName:    'path',
                     callsite:        null
                 }
             );

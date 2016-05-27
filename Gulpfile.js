@@ -138,8 +138,8 @@ var CLIENT_TESTS_SAUCELABS_SETTINGS = {
 
 var websiteServer = null;
 
-gulp.task('clean', function (cb) {
-    del('lib', cb);
+gulp.task('clean', function () {
+    return del('lib');
 });
 
 
@@ -358,8 +358,8 @@ gulp.task('lint-docs', function () {
     return globby('docs/articles/**/*.md').then(lintFiles);
 });
 
-gulp.task('clean-website', function (cb) {
-    del('website', cb);
+gulp.task('clean-website', function () {
+    return del('website');
 });
 
 gulp.task('fetch-assets-repo', ['clean-website'], function (cb) {
