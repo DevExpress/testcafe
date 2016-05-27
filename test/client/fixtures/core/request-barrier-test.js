@@ -26,314 +26,21 @@ QUnit.testDone(function () {
 });
 
 $(document).ready(function () {
-<<<<<<< 00b21fbfa476a5c9d8ef527b46a46b7cee991b4e
     module('xhr', function () {
         asyncTest('waitPageInitialRequests', function () {
             var completeReqCount       = 0;
             var reqCount               = 4;
             var barrierTimeoutExceeded = false;
-=======
-    // module('xhr', function () {
-    //     asyncTest('waitPageInitialRequests', function () {
-    //         var completeReqCount       = 0;
-    //         var reqCount               = 4;
-    //         var barrierTimeoutExceeded = false;
-    //
-    //         expect(1);
-    //
-    //         var requestBarrier = new RequestBarrier();
-    //
-    //         for (var i = 0; i < reqCount; i++) {
-    //             $.get('/xhr-test/200', function () {
-    //                 completeReqCount++;
-    //             });
-    //         }
-    //
-    //         // NOTE: ignore slow connection on the testing
-    //         // farm that leads to unstable tests appearing
-    //         delay(requestBarrier.BARRIER_TIMEOUT)
-    //             .then(function () {
-    //                 barrierTimeoutExceeded = true;
-    //             });
-    //
-    //         requestBarrier
-    //             .wait(true)
-    //             .then(function () {
-    //                 ok(completeReqCount === reqCount || barrierTimeoutExceeded);
-    //                 start();
-    //             });
-    //     });
-    //
-    //     asyncTest('barrier - Wait requests complete', function () {
-    //         var completeReqCount       = 0;
-    //         var reqCount               = 2;
-    //         var barrierTimeoutExceeded = false;
-    //
-    //         expect(1);
-    //
-    //         var requestBarrier = new RequestBarrier();
-    //
-    //         for (var i = 0; i < reqCount; i++) {
-    //             $.get('/xhr-test/1000', function () {
-    //                 completeReqCount++;
-    //             });
-    //         }
-    //
-    //         // NOTE: ignore slow connection on the testing
-    //         // farm that leads to unstable tests appearing
-    //         delay(requestBarrier.BARRIER_TIMEOUT)
-    //             .then(function () {
-    //                 barrierTimeoutExceeded = true;
-    //             });
-    //
-    //         requestBarrier
-    //             .wait()
-    //             .then(function () {
-    //                 ok(completeReqCount === reqCount || barrierTimeoutExceeded);
-    //                 start();
-    //             });
-    //     });
-    //
-    //     asyncTest('barrier - Skip TestCafeClient requests', function () {
-    //         var jqxhr                     = null,
-    //             TestCafeClientReqComplete = false;
-    //
-    //         expect(1);
-    //
-    //         var requestBarrier = new RequestBarrier();
-    //
-    //         hhsettings.serviceMsgUrl = '/xhr-test/8000';
-    //
-    //         var action = function (callback) {
-    //             jqxhr = $.ajax(hhsettings.serviceMsgUrl);
-    //
-    //             jqxhr.always(function () {
-    //                 TestCafeClientReqComplete = true;
-    //             });
-    //             callback();
-    //         };
-    //
-    //         action(function () {
-    //             requestBarrier
-    //                 .wait()
-    //                 .then(function () {
-    //                     ok(!TestCafeClientReqComplete);
-    //                     jqxhr.abort();
-    //                     hhsettings.serviceMsgUrl = null;
-    //                     start();
-    //                 });
-    //         });
-    //     });
-    //
-    //     asyncTest('barrier - Timeout', function () {
-    //         var jqxhr = null;
-    //
-    //         expect(1);
-    //
-    //         var requestBarrier = new RequestBarrier();
-    //
-    //         requestBarrier.BARRIER_TIMEOUT = 0;
-    //
-    //         jqxhr = $.get('/xhr-test/8000');
-    //
-    //         window.setTimeout(function () {
-    //             jqxhr.abort();
-    //         }, 500);
-    //
-    //         requestBarrier
-    //             .wait()
-    //             .then(function () {
-    //                 ok(true, 'just check barrier waiting is resolved');
-    //                 start();
-    //             });
-    //     });
-    //
-    //     asyncTest('T135542 - act.wait method works too-o-o-o long', function () {
-    //         var firstRequestCompleted  = false,
-    //             secondRequestCompleted = false;
-    //
-    //         $.get('/xhr-test/3000', function () {
-    //             firstRequestCompleted = true;
-    //         }).always(function () {
-    //             start();
-    //         });
-    //
-    //         expect(2);
-    //
-    //         var requestBarrier = new RequestBarrier();
-    //
-    //         window.setTimeout(function () {
-    //             requestBarrier
-    //                 .wait()
-    //                 .then(function () {
-    //                     ok(!firstRequestCompleted);
-    //                     ok(secondRequestCompleted);
-    //                 });
-    //
-    //             $.get('/xhr-test/200', function () {
-    //                 secondRequestCompleted = true;
-    //             });
-    //         }, 100);
-    //     });
-    //
-    //     asyncTest('T233907 - TestRunning waits cancelled xhrs', function () {
-    //         var timeout = 300;  //NOTE: equals to REQUESTS_COLLECTION_DELAY
-    //         var barrierCompleted = false;
-    //
-    //         expect(1);
-    //
-    //         var requestBarrier = new RequestBarrier();
-    //
-    //         requestBarrier
-    //             .wait()
-    //             .then(function () {
-    //                 barrierCompleted = true;
-    //             });
-    //
-    //         var xhr = new XMLHttpRequest();
-    //
-    //         xhr.open('GET', '/xhr-test/' + 2 * timeout);
-    //         xhr.send(null);
-    //         xhr.abort();
-    //
-    //         window.setTimeout(function () {
-    //             ok(barrierCompleted);
-    //             start();
-    //         }, timeout * 1.1);
-    //     });
-    //
-    //     module('regression');
-    //
-    //     asyncTest('barrier - creating new iframe without src (B236650)', function () {
-    //         var $iframe           = null;
-    //         var windowErrorRaised = false;
-    //
-    //         window.onerror = function () {
-    //             windowErrorRaised = true;
-    //         };
-    //
-    //         var action = function (callback) {
-    //             if ($iframe) {
-    //                 $iframe.remove();
-    //             }
-    //
-    //             window.setTimeout(function () {
-    //                 $iframe = $('<iframe id="test1">').attr('src', 'about:blank').appendTo('body');
-    //             }, 0);
-    //
-    //             callback();
-    //         };
-    //
-    //         var requestBarrier = new RequestBarrier();
-    //
-    //         action.call(window, function () {
-    //             requestBarrier
-    //                 .wait()
-    //                 .then(function () {
-    //                     ok(!windowErrorRaised);
-    //                 });
-    //         });
-    //
-    //         window.setTimeout(function () {
-    //             expect(1);
-    //
-    //             $iframe.remove();
-    //
-    //             start();
-    //         }, 1000)
-    //     });
-    //
-    //     asyncTest('B237815 - Test runner - can\'t execute simple test', function () {
-    //         var $iframe        = null;
-    //         var callbackRaised = false;
-    //
-    //         var action = function (callback) {
-    //             $iframe = $('<iframe id="test2">').appendTo('body');
-    //
-    //             window.setTimeout(function () {
-    //                 $iframe.remove();
-    //             }, 50);
-    //
-    //             callback();
-    //         };
-    //
-    //         var requestBarrier = new RequestBarrier();
-    //
-    //         action.call(window, function () {
-    //             requestBarrier
-    //                 .wait()
-    //                 .then(function () {
-    //                     callbackRaised = true;
-    //                 });
-    //         });
-    //
-    //         window.setTimeout(function () {
-    //             ok(callbackRaised);
-    //             start();
-    //         }, 2000);
-    //     });
-    // });
-
-    if (window.fetch) {
-        module('fetch', function () {
-            // asyncTest('success request', function () {
-            //     var requestIsSuccess       = false;
-            //     var barrierTimeoutExceeded = false;
-            //
-            //     expect(1);
-            //
-            //     var requestBarrier = new RequestBarrier();
-            //
-            //     fetch('/xhr-test/200')
-            //         .then(function (response) {
-            //             return response.text();
-            //         })
-            //         .then(function () {
-            //             requestIsSuccess = true;
-            //         });
-            //
-            //     // NOTE: ignore slow connection on the testing
-            //     // farm that leads to unstable tests appearing
-            //     delay(requestBarrier.BARRIER_TIMEOUT)
-            //         .then(function () {
-            //             barrierTimeoutExceeded = true;
-            //         });
-            //
-            //     requestBarrier
-            //         .wait(true)
-            //         .then(function () {
-            //             ok(requestIsSuccess || barrierTimeoutExceeded);
-            //             start();
-            //         });
-            // });
-
-            asyncTest('failed request', function () {
-                var requestIsFailed        = false;
-                var barrierTimeoutExceeded = false;
->>>>>>> request barrier
 
             expect(1);
 
             var requestBarrier = new RequestBarrier();
 
-<<<<<<< 00b21fbfa476a5c9d8ef527b46a46b7cee991b4e
             for (var i = 0; i < reqCount; i++) {
                 $.get('/xhr-test/200', function () {
                     completeReqCount++;
                 });
             }
-=======
-                fetch('/respond-500')
-                    .then(function (response) {
-                        return response.text();
-                    })
-                    .then(function (body) {
-
-                    })
-                    .catch(function () {
-                        requestIsFailed = true;
-                    });
->>>>>>> request barrier
 
             // NOTE: ignore slow connection on the testing
             // farm that leads to unstable tests appearing
@@ -342,7 +49,6 @@ $(document).ready(function () {
                     barrierTimeoutExceeded = true;
                 });
 
-<<<<<<< 00b21fbfa476a5c9d8ef527b46a46b7cee991b4e
             requestBarrier
                 .wait(true)
                 .then(function () {
@@ -401,17 +107,16 @@ $(document).ready(function () {
             };
 
             action(function () {
-=======
->>>>>>> request barrier
                 requestBarrier
                     .wait()
                     .then(function () {
-                        ok(requestIsFailed || barrierTimeoutExceeded);
+                        ok(!TestCafeClientReqComplete);
+                        jqxhr.abort();
+                        hhsettings.serviceMsgUrl = null;
                         start();
                     });
             });
         });
-<<<<<<< 00b21fbfa476a5c9d8ef527b46a46b7cee991b4e
 
         asyncTest('barrier - Timeout', function () {
             var jqxhr = null;
@@ -595,8 +300,36 @@ $(document).ready(function () {
                     });
             });
 
-            asyncTest('failed request', function () { start(); });
-=======
+            asyncTest('failed request', function () {
+                            var requestIsFailed        = false;
+                            var barrierTimeoutExceeded = false;
+
+                            expect(1);
+
+                            var requestBarrier = new RequestBarrier();
+
+                            fetch('/respond-500')
+                                .then(function (response) {
+                                    return response.text();
+                                })
+                                .catch(function () {
+                                    requestIsFailed = true;
+                                });
+
+                            // NOTE: ignore slow connection on the testing
+                            // farm that leads to unstable tests appearing
+                            delay(requestBarrier.BARRIER_TIMEOUT)
+                                .then(function () {
+                                    barrierTimeoutExceeded = true;
+                                });
+
+                            requestBarrier
+                                .wait(true)
+                                .then(function () {
+                                    ok(requestIsFailed || barrierTimeoutExceeded);
+                                    start();
+                                });
+                        });
+        });
     }
 });
->>>>>>> request barrier

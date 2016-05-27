@@ -125,20 +125,7 @@ before(function () {
                 if (onlyLocal && config.isTravisTask)
                     return Promise.resolve();
 
-<<<<<<< HEAD
-<<<<<<< 1c90f95a121f2fda659a8449048ad28b21020f96
-<<<<<<< e8cb9c35813fdf7814793df0504da89b0e0966ab
                 var screenshotPath = opts && opts.setScreenshotPath ? '___test-screenshots___' : '';
-=======
-                var screenshotPath = opts && opts.setScreenshotPath ?
-                                     path.join(config.site.viewsPath, 'screenshots') : '';
->>>>>>> TakeScreenshot, TakeScreenshotOnFail commands (part of #441, part of #240) (#552)
-=======
-                var screenshotPath = opts && opts.setScreenshotPath ? '___test-screenshots___' : '';
->>>>>>> fix problems after merge TakeScreenshotCommand PR (#558)
-=======
-                var screenshotPath = opts && opts.setScreenshotPath ? '___test-screenshots___' : '';
->>>>>>> 9089b3f8cf2f815abd863913636403286f43aac2
 
                 var screenshotsOnFails = opts && opts.screenshotsOnFails;
                 var actualBrowsers     = browsersInfo.filter(function (browserInfo) {

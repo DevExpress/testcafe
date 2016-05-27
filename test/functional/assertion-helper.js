@@ -67,19 +67,7 @@ exports.errorInEachBrowserNotContains = function errorInEachBrowserNotContains (
 };
 
 exports.checkScreenshotsCreated = function checkScreenshotsCreated (withoutScreenshot, count) {
-<<<<<<< HEAD
-<<<<<<< 1c90f95a121f2fda659a8449048ad28b21020f96
-<<<<<<< e8cb9c35813fdf7814793df0504da89b0e0966ab
     var screenshotsPath        = '___test-screenshots___';
-=======
-    var screenshotsPath        = './test/functional/fixtures/screenshots';
->>>>>>> TakeScreenshot, TakeScreenshotOnFail commands (part of #441, part of #240) (#552)
-=======
-    var screenshotsPath        = '___test-screenshots___';
->>>>>>> fix problems after merge TakeScreenshotCommand PR (#558)
-=======
-    var screenshotsPath        = '___test-screenshots___';
->>>>>>> 9089b3f8cf2f815abd863913636403286f43aac2
     var expectedCount          = count || 2;
     var screenshotFolderExists = isFolderExists(screenshotsPath);
 
