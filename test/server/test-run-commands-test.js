@@ -2096,7 +2096,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArgumentError,
                     actualValue:     'number',
                     argumentName:    'path',
@@ -2113,7 +2112,6 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    category:        ERROR_CATEGORY.actionError,
                     type:            ERROR_TYPE.actionStringArgumentError,
                     actualValue:     '""',
                     argumentName:    'path',

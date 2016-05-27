@@ -18,5 +18,5 @@ test('Take a screenshot with a custom path', async t => {
     const ua       = await getUserAgent();
     const parsedUA = parse(ua);
 
-    await t.takeScreenshot('../../../../screenshots/custom/' + parsedUA.family);
+    await t.takeScreenshot('../../../../../../../___test-screenshots___/custom/' + parsedUA.family);
 });
