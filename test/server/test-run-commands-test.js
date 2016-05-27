@@ -2096,6 +2096,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
+<<<<<<< HEAD
 <<<<<<< 4c8d51becf8afd9d66783cc0d707241e2ef9f268
 <<<<<<< e8cb9c35813fdf7814793df0504da89b0e0966ab
 =======
@@ -2103,6 +2104,8 @@ describe('Test run commands', function () {
 >>>>>>> TakeScreenshot, TakeScreenshotOnFail commands (part of #441, part of #240) (#552)
 =======
 >>>>>>> request barrier
+=======
+>>>>>>> 9089b3f8cf2f815abd863913636403286f43aac2
                     type:            ERROR_TYPE.actionStringArgumentError,
                     actualValue:     'number',
                     argumentName:    'path',
@@ -2119,6 +2122,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
+<<<<<<< HEAD
 <<<<<<< 4c8d51becf8afd9d66783cc0d707241e2ef9f268
 <<<<<<< e8cb9c35813fdf7814793df0504da89b0e0966ab
 =======
@@ -2126,6 +2130,8 @@ describe('Test run commands', function () {
 >>>>>>> TakeScreenshot, TakeScreenshotOnFail commands (part of #441, part of #240) (#552)
 =======
 >>>>>>> request barrier
+=======
+>>>>>>> 9089b3f8cf2f815abd863913636403286f43aac2
                     type:            ERROR_TYPE.actionStringArgumentError,
                     actualValue:     '""',
                     argumentName:    'path',

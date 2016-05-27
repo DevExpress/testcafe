@@ -17,6 +17,7 @@ test('Take a screenshot', async t => {
 test('Take a screenshot with a custom path', async t => {
     const ua       = await getUserAgent();
     const parsedUA = parse(ua);
+<<<<<<< HEAD
 <<<<<<< f50d7d4b70565973bbb14668756ae946101e0b80
 
 <<<<<<< 1c90f95a121f2fda659a8449048ad28b21020f96
@@ -32,4 +33,8 @@ test('Take a screenshot with a custom path', async t => {
     
     await t.takeScreenshot('../../../../screenshots/custom/' + parsedUA.family);
 >>>>>>> TakeScreenshot, TakeScreenshotOnFail commands (part of #441, part of #240) (#552)
+=======
+    
+    await t.takeScreenshot('../../../../screenshots/custom/' + parsedUA.family);
+>>>>>>> 9089b3f8cf2f815abd863913636403286f43aac2
 });
