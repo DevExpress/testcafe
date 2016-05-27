@@ -45,7 +45,7 @@
     "source-map-support": "^0.4.0",
     "stack-chain": "^1.3.6",
     "strip-bom": "^2.0.0",
-    "testcafe-browser-natives": "^0.10.0",
+    "testcafe-browser-natives": "^0.11.0",
     "testcafe-hammerhead": "^9.0.1",
     "testcafe-legacy-api": "^0.4.0",
     "testcafe-reporter-json": "^1.0.0",
