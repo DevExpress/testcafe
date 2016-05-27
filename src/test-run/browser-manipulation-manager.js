@@ -9,13 +9,12 @@ export default class BrowserManipulationManager {
         this.screenshotCapturer = screenshotCapturer;
     }
 
-    async takeScreenshot (pageUrl, customPath) {
+    async takeScreenshot (windowId, customPath) {
         try {
-            return await this.screenshotCapturer.captureAction({
-                pageUrl:    pageUrl,
-                stepName:   uuid.v4(),
-                customPath: customPath
-            });
+            return await this.screenshotCapturer.captureAction(
+                windowId,
+                { stepName: uuid.v4(), customPath: customPath }
+            );
         }
         catch (e) {
             // NOTE: swallow the error silently if we can't take screenshots for some
@@ -24,13 +23,12 @@ export default class BrowserManipulationManager {
         }
     }
 
-    async takeScreenshotOnFail (pageUrl) {
+    async takeScreenshotOnFail (windowId) {
         try {
-            return await this.screenshotCapturer.captureError({
-                pageUrl:            pageUrl,
-                stepName:           uuid.v4(),
-                screenshotRequired: true
-            });
+            return await this.screenshotCapturer.captureError(
+                windowId,
+                { stepName: uuid.v4(), screenshotRequired: true }
+            );
         }
         catch (e) {
             // NOTE: swallow the error silently if we can't take screenshots for some

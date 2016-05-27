@@ -319,8 +319,8 @@ ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (m
     var pendingCommandType = this.pendingWindowManipulation.type;
 
     if (pendingCommandType === COMMAND_TYPE.takeScreenshot)
-        return await this.browserManipulationManager.takeScreenshot(msg.pageUrl, pendingCommandType.customPath);
+        return await this.browserManipulationManager.takeScreenshot(this.id, pendingCommandType.customPath);
 
     if (pendingCommandType === COMMAND_TYPE.takeScreenshotOnFail)
-        return await this.browserManipulationManager.takeScreenshotOnFail(msg.pageUrl);
+        return await this.browserManipulationManager.takeScreenshotOnFail(this.id);
 };

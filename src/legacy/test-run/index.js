@@ -83,7 +83,7 @@ export default class LegacyTestRun extends Session {
                              this.test.sourceIndex[err.__sourceIndex];
 
         try {
-            screenshotPath = await this.screenshotCapturer.captureError(err);
+            screenshotPath = await this.screenshotCapturer.captureError(this.id, err);
         }
         catch (e) {
             // NOTE: swallow the error silently if we can't take screenshots for some
@@ -168,7 +168,7 @@ ServiceMessages[COMMAND.nativeDialogsInfoSet] = function (msg) {
 
 ServiceMessages[COMMAND.takeScreenshot] = async function (msg) {
     try {
-        return await this.screenshotCapturer.captureAction(msg);
+        return await this.screenshotCapturer.captureAction(this.id, msg);
     }
     catch (e) {
         // NOTE: swallow the error silently if we can't take screenshots for some

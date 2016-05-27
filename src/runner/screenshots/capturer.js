@@ -18,31 +18,31 @@ export default class Capturer {
         return `${stepName && stepName.replace(/\s|\\|\/|"|\*|\?|<|>|\|/g, '_') || 'page-load'}.png`;
     }
 
-    async _takeScreenshot (url, filePath) {
+    async _takeScreenshot (windowId, filePath) {
         await ensureDir(dirname(filePath));
-        await takeScreenshot(url, filePath);
+        await takeScreenshot(windowId, filePath);
 
         this.testEntry.hasScreenshots = true;
 
         return filePath;
     }
 
-    async captureAction ({ pageUrl, stepName, customPath }) {
+    async captureAction (windowId, { stepName, customPath }) {
         var fileName = Capturer._getFileName(stepName);
         var filePath = customPath ?
                        joinPath(this.testDirPath, customPath, fileName) :
                        joinPath(this.path, fileName);
 
-        return await this._takeScreenshot(pageUrl, filePath);
+        return await this._takeScreenshot(windowId, filePath);
     }
 
-    async captureError ({ pageUrl, stepName, screenshotRequired }) {
+    async captureError (windowId, { stepName, screenshotRequired }) {
         if (!screenshotRequired)
             return null;
 
         var filePath = joinPath(this.path, 'errors', Capturer._getFileName(stepName));
 
-        return await this._takeScreenshot(pageUrl, filePath);
+        return await this._takeScreenshot(windowId, filePath);
     }
 }
 
