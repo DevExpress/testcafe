@@ -7,10 +7,11 @@ import COMMAND_TYPE from '../../test-run/commands/type';
 import { UncaughtErrorOnPage, ClientCodeExecutionInterruptionError } from '../../errors/test-run';
 
 import * as browser from '../browser';
-import executeActionCommand from './command-executors/execute-action-command';
-import executeWaitForElementCommand from './command-executors/execute-wait-for-element-command';
-import executeNavigateToCommand from './command-executors/execute-navigate-to-command';
+import executeActionCommand from './command-executors/execute-action';
+import executeWaitForElementCommand from './command-executors/execute-wait-for-element';
+import executeNavigateToCommand from './command-executors/execute-navigate-to';
 import executeClientCode from './command-executors/execute-client-code';
+import prepareBrowserManipulation from './command-executors/prepare-browser-manipulation';
 import ContextStorage from './storage';
 import DriverStatus from './status';
 
@@ -183,6 +184,16 @@ export default class ClientDriver {
             });
     }
 
+    _onPrepareBrowserManipulationCommand () {
+        this.contextStorage.setItem(COMMAND_EXECUTING_FLAG, true);
+
+        prepareBrowserManipulation()
+            .then(driverStatus => {
+                this.contextStorage.setItem(COMMAND_EXECUTING_FLAG, false);
+                return this._onReady(driverStatus);
+            });
+    }
+
     _onCommand (command) {
         if (command.type === COMMAND_TYPE.testDone)
             this._onTestDone();
@@ -198,6 +209,9 @@ export default class ClientDriver {
 
         else if (command.type === COMMAND_TYPE.navigateTo)
             this._onNavigateToCommand(command);
+
+        else if (command.type === COMMAND_TYPE.prepareBrowserManipulation)
+            this._onPrepareBrowserManipulationCommand();
 
         else
             this._onActionCommand(command);

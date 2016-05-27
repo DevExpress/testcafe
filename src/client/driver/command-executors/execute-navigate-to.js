@@ -8,7 +8,7 @@ var RequestBarrier    = testCafeCore.RequestBarrier;
 var pageUnloadBarrier = testCafeCore.pageUnloadBarrier;
 
 
-export default function executeNavigateToCommand (command) {
+export default function executeNavigateTo (command) {
     var requestBarrier = new RequestBarrier();
 
     hammerhead.navigateTo(command.url);

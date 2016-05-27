@@ -6,8 +6,15 @@ import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import { TestDoneCommand, isCommandRejectableByPageError } from './commands';
 import replicator from './commands/replicator';
+import BrowserManipulationManager from './browser-manipulation-manager';
+import {
+    TestDoneCommand,
+    TakeScreenshotOnFailCommand,
+    PrepareBrowserManipulationCommand,
+    isCommandRejectableByPageError,
+    isWindowManipulationCommand
+} from './commands';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
 import COMMAND_TYPE from './commands/type';
@@ -25,18 +32,19 @@ export default class TestRun extends Session {
 
         super(uploadsRoot);
 
-        this.opts               = opts;
-        this.test               = test;
-        this.browserConnection  = browserConnection;
-        this.screenshotCapturer = screenshotCapturer;
+        this.opts                       = opts;
+        this.test                       = test;
+        this.browserConnection          = browserConnection;
+        this.browserManipulationManager = new BrowserManipulationManager(screenshotCapturer);
 
         this.running = false;
         this.state   = STATE.initial;
 
-        this.pendingDriverTask      = null;
-        this.pendingRequest         = null;
-        this.pendingJsError         = null;
-        this.currentCommandCallsite = null;
+        this.pendingDriverTask         = null;
+        this.pendingRequest            = null;
+        this.pendingJsError            = null;
+        this.currentCommandCallsite    = null;
+        this.pendingWindowManipulation = null;
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
@@ -89,7 +97,12 @@ export default class TestRun extends Session {
             await fn(this);
         }
         catch (err) {
-            this._addError(err);
+            var screenshotPath = null;
+
+            if (this.opts.takeScreenshotsOnFails)
+                screenshotPath = await this.executeCommand(new TakeScreenshotOnFailCommand());
+
+            this._addError(err, screenshotPath);
             return false;
         }
 
@@ -132,10 +145,10 @@ export default class TestRun extends Session {
         return false;
     }
 
-    _addError (err) {
+    _addError (err, screenshotPath) {
         var adapter = new TestRunErrorFormattableAdapter(err, {
             userAgent:      this.browserConnection.userAgent,
-            screenshotPath: '',
+            screenshotPath: screenshotPath || '',
             callsite:       this.currentCommandCallsite,
             testRunState:   this.state
         });
@@ -147,6 +160,25 @@ export default class TestRun extends Session {
     // Pending driver task and request
     _addPendingDriverTask (command) {
         return new Promise((resolve, reject) => this.pendingDriverTask = { command, resolve, reject });
+    }
+
+    _addPendingWindowTask () {
+        var command = new PrepareBrowserManipulationCommand();
+
+        if (this.pendingRequest)
+            this._resolvePendingRequest(command);
+
+        return new Promise((resolve, reject) => {
+            this._addPendingDriverTask(command)
+                .then(res => {
+                    this.pendingWindowManipulation = null;
+                    resolve(res);
+                })
+                .catch(err => {
+                    this.pendingWindowManipulation = null;
+                    reject(err);
+                });
+        });
     }
 
     _resolvePendingDriverTask (result) {
@@ -229,6 +261,12 @@ export default class TestRun extends Session {
         if (command.type === COMMAND_TYPE.wait)
             return new Promise(resolve => setTimeout(resolve, command.timeout));
 
+        if (isWindowManipulationCommand(command)) {
+            this.pendingWindowManipulation = command;
+
+            return this._addPendingWindowTask();
+        }
+
         if (this.pendingJsError && isCommandRejectableByPageError(command)) {
             var result = Promise.reject(this.pendingJsError);
 
@@ -273,4 +311,16 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     var responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
 
     return new Promise((resolve, reject) => this.pendingRequest = { resolve, reject, responseTimeout });
+};
+
+ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (msg) {
+    this.debugLog.driverMessage(msg);
+
+    var pendingCommandType = this.pendingWindowManipulation.type;
+
+    if (pendingCommandType === COMMAND_TYPE.takeScreenshot)
+        return await this.browserManipulationManager.takeScreenshot(msg.pageUrl, pendingCommandType.customPath);
+
+    if (pendingCommandType === COMMAND_TYPE.takeScreenshotOnFail)
+        return await this.browserManipulationManager.takeScreenshotOnFail(msg.pageUrl);
 };

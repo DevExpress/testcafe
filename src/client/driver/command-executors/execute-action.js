@@ -20,7 +20,7 @@ import {
     ensureRootContainer,
     ensureElement,
     ensureFileInput
-} from './ensure-element-utils';
+} from '../ensure-element-utils';
 
 var Promise                         = hammerhead.Promise;
 var RequestBarrier                  = testCafeCore.RequestBarrier;
@@ -167,7 +167,7 @@ function createAutomation (elements, command) {
     /* eslint-enable indent*/
 }
 
-export default function executeActionCommand (command, elementAvailabilityTimeout) {
+export default function executeAction (command, elementAvailabilityTimeout) {
     var resolveStartPromise = null;
     var startPromise        = new Promise(resolve => resolveStartPromise = resolve);
 

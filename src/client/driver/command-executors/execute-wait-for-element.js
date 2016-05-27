@@ -4,10 +4,10 @@ import {
     ActionElementIsInvisibleError
 } from '../../../errors/test-run';
 
-import { ensureElement } from './ensure-element-utils';
+import { ensureElement } from '../ensure-element-utils';
 
 
-export default function executeWaitForElementCommand (command, elementAvailabilityTimeout) {
+export default function executeWaitForElement (command, elementAvailabilityTimeout) {
     return ensureElement(command.selector, command.timeout || elementAvailabilityTimeout,
         () => new ActionElementNotFoundError(),
         () => new ActionElementIsInvisibleError())
