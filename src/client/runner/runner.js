@@ -26,6 +26,7 @@ hammerhead.on(hammerhead.EVENTS.beforeUnload, () => beforeUnloadRaised = true);
 var Runner = function (startedCallback, testRunId) {
     RunnerBase.apply(this, [startedCallback]);
 
+    this.testRunId          = testRunId;
     this.testContextStorage = new TestContextStorage(window, testRunId);
 
     if (!this.testContextStorage.get()) {
@@ -97,7 +98,7 @@ Runner.prototype._beforeScreenshot = function () {
     this.eventEmitter.emit(RunnerBase.SCREENSHOT_CREATING_STARTED_EVENT, {});
     this.savedDocumentTitle = document.title;
 
-    var assignedTitle = `[ ${window.location.toString()} ]`;
+    var assignedTitle = this.testRunId;
 
     // NOTE: we should keep the page url in document.title
     // while the screenshot is being created
@@ -140,8 +141,6 @@ Runner.prototype._reportErrorToServer = function (err, isAssertion) {
 Runner.prototype._onTestError = function (err, isAssertion) {
     // NOTE: we should not create multiple screenshots for a step. Create a screenshot if
     // it's the first error at this step or it's an error that occurs on page initialization.
-    err.pageUrl = document.location.toString();
-
     if (!err.hasOwnProperty('screenshotRequired'))
         err.screenshotRequired = SETTINGS.get().TAKE_SCREENSHOTS && SETTINGS.get().TAKE_SCREENSHOTS_ON_FAILS &&
                                  this.stepIterator.state.curStepErrors.length < 2;
@@ -213,7 +212,6 @@ Runner.prototype._onTakeScreenshot = function (e) {
             return new Promise(resolve => {
                 var msg = {
                     cmd:        COMMAND.takeScreenshot,
-                    pageUrl:    document.location.toString(),
                     stepName:   e.stepName,
                     customPath: e.filePath
                 };
