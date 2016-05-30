@@ -8,14 +8,14 @@ describe('[API] t.click()', function () {
             .catch(function (errs) {
                 expect(errs[0]).to.contains('Button clicked');
                 expect(errs[0]).to.contains(
-                    ' 10 |test(\'Incorrect action option\', async t => {' +
-                    ' 11 |    await t.click(\'#btn\', { offsetX: -3 });' +
-                    ' 12 |});' +
-                    ' 13 |' +
-                    ' 14 |test(\'Click button\', async t => {' +
-                    ' > 15 |    await t.click(\'#btn\');' +
-                    ' 16 |});' +
-                    ' 17 |  '
+                    ' 15 |test(\'Incorrect action option\', async t => {' +
+                    ' 16 |    await t.click(\'#btn\', { offsetX: -3 });' +
+                    ' 17 |});' +
+                    ' 18 |' +
+                    ' 19 |test(\'Click button\', async t => {' +
+                    ' > 20 |    await t.click(\'#btn\');' +
+                    ' 21 |});' +
+                    ' 22 | '
                 );
             });
     });
@@ -28,16 +28,17 @@ describe('[API] t.click()', function () {
             .catch(function (errs) {
                 expect(errs[0]).to.contains('The offsetX option is expected to be a positive integer, but it was -3.');
                 expect(errs[0]).to.contains(
-                    ' 6 |test(\'Incorrect action selector\', async t => {' +
-                    ' 7 |    await t.click(123);' +
-                    ' 8 |});' +
-                    ' 9 |' +
-                    ' 10 |test(\'Incorrect action option\', async t => {' +
-                    ' > 11 |    await t.click(\'#btn\', { offsetX: -3 });' +
-                    ' 12 |});' +
-                    ' 13 |' +
-                    ' 14 |test(\'Click button\', async t => {' +
-                    ' 15 |    await t.click(\'#btn\'); 16 |});'
+                    ' 11 |test(\'Incorrect action selector\', async t => {' +
+                    ' 12 |    await t.click(123);' +
+                    ' 13 |});' +
+                    ' 14 |' +
+                    ' 15 |test(\'Incorrect action option\', async t => {' +
+                    ' > 16 |    await t.click(\'#btn\', { offsetX: -3 });' +
+                    ' 17 |});' +
+                    ' 18 |' +
+                    ' 19 |test(\'Click button\', async t => {' +
+                    ' 20 |    await t.click(\'#btn\');' +
+                    ' 21 |});'
                 );
             });
     });
@@ -50,18 +51,22 @@ describe('[API] t.click()', function () {
             .catch(function (errs) {
                 expect(errs[0]).to.contains('The selector is expected to be a string, but it was number.');
                 expect(errs[0]).to.contains(
-                    '2 |' +
-                    ' 3 |fixture `Click`' +
-                    ' 4 |    .page `http://localhost:3000/api/es-next/click/pages/index.html`;' +
-                    ' 5 |' +
-                    ' 6 |test(\'Incorrect action selector\', async t => {' +
-                    ' >  7 |    await t.click(123);' +
-                    ' 8 |});' +
-                    ' 9 |' +
-                    ' 10 |test(\'Incorrect action option\', async t => {' +
-                    ' 11 |    await t.click(\'#btn\', { offsetX: -3 });' +
-                    ' 12 |});'
+                    '7 |    .page `http://localhost:3000/api/es-next/click/pages/index.html`;' +
+                    ' 8 |' +
+                    ' 9 |const getClickOffset = Hybrid(() => window.clickOffset);' +
+                    ' 10 |' +
+                    ' 11 |test(\'Incorrect action selector\', async t => {' +
+                    ' > 12 |    await t.click(123);' +
+                    ' 13 |});' +
+                    ' 14 |' +
+                    ' 15 |test(\'Incorrect action option\', async t => {' +
+                    ' 16 |    await t.click(\'#btn\', { offsetX: -3 });' +
+                    ' 17 |});'
                 );
             });
+    });
+
+    it('Should click at the center of the target if offset options are not specified', function () {
+        return runTests('./testcafe-fixtures/click-test.js', 'Click without offset options', { only: 'chrome' });
     });
 });

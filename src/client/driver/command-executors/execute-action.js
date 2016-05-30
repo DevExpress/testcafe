@@ -21,6 +21,7 @@ import {
     ensureElement,
     ensureFileInput
 } from '../ensure-element-utils';
+import { getOffsetOptions } from '../../runner/utils/mouse';
 
 var Promise                         = hammerhead.Promise;
 var XhrBarrier                      = testCafeCore.XhrBarrier;
@@ -116,8 +117,18 @@ function ensureCommandArguments (command) {
     }
 }
 
+function ensureOffsetOptions (element, options) {
+    var { offsetX, offsetY } = getOffsetOptions(element, options.offsetX, options.offsetY);
+
+    options.offsetX = offsetX;
+    options.offsetY = offsetY;
+}
+
 function createAutomation (elements, command) {
     var selectArgs = null;
+
+    if (command.options && 'offsetX' in command.options && 'offsetY' in command.options)
+        ensureOffsetOptions(elements[0], command.options);
 
     /* eslint-disable indent*/
     // TODO: eslint raises an 'incorrect indent' error here. We use
