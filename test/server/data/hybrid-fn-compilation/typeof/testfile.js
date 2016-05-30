@@ -1,4 +1,4 @@
-import compileHybridFunction from '../../../../../lib/compiler/es-next/compile-hybrid-function';
+import { compileHybridFunction } from '../../../../../lib/compiler/es-next/hybrid-function';
 
 fixture `Fixture`;
 

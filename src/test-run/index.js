@@ -6,8 +6,11 @@ import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import replicator from './commands/replicator';
 import BrowserManipulationManager from './browser-manipulation-manager';
+import CLIENT_MESSAGES from './client-messages';
+import STATE from './state';
+import COMMAND_TYPE from './commands/type';
+
 import {
     TestDoneCommand,
     TakeScreenshotOnFailCommand,
@@ -15,9 +18,6 @@ import {
     isCommandRejectableByPageError,
     isWindowManipulationCommand
 } from './commands';
-import CLIENT_MESSAGES from './client-messages';
-import STATE from './state';
-import COMMAND_TYPE from './commands/type';
 
 
 //Const
@@ -217,12 +217,8 @@ export default class TestRun extends Session {
 
         if (driverStatus.executionError)
             this._rejectPendingDriverTask(driverStatus.executionError);
-        else {
-            if (commandType === COMMAND_TYPE.executeClientCode)
-                driverStatus.result = replicator.decode(driverStatus.result);
-
+        else
             this._resolvePendingDriverTask(driverStatus.result);
-        }
 
         return null;
     }

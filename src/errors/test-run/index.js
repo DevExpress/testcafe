@@ -42,9 +42,20 @@ export class MissingAwaitError extends TestRunErrorBase {
     }
 }
 
+
+// Hybrid function errors
+//--------------------------------------------------------------------
 export class ClientCodeExecutionInterruptionError extends TestRunErrorBase {
     constructor () {
         super(TYPE.clientCodeExecutionInterruptionError);
+    }
+}
+
+export class RegeneratorInFunctionArgumentOfHybridFunctionError extends TestRunErrorBase {
+    constructor (callsite) {
+        super(TYPE.regeneratorInFunctionArgumentOfHybridFunctionError);
+
+        this.callsite = callsite;
     }
 }
 

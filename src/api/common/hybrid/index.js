@@ -1,36 +1,43 @@
 import testRunTracker from './test-run-tracker';
 import compiledCode from './compiled-code-symbol';
+import replicator from './replicator';
 import TestRun from '../../../test-run';
-import compileHybridFunction from '../../../compiler/es-next/compile-hybrid-function';
-import { ExecuteClientCodeCommand } from '../../../test-run/commands';
+import { compileHybridFunction } from '../../../compiler/es-next/hybrid-function';
+import { ExecuteHybridFunctionCommand } from '../../../test-run/commands';
 import { APIError } from '../../../errors/runtime';
 import MESSAGE from '../../../errors/runtime/message';
 import getCallsite from '../../../errors/get-callsite';
 
 
-function resolveContextTestRun () {
+function resolveContextTestRun (callsiteNames) {
     var testRunId = testRunTracker.getContextTestRunId();
     var testRun   = TestRun.activeTestRuns[testRunId];
 
     if (!testRun)
-        throw new APIError('hybridFunction', MESSAGE.hybridFunctionCantResolveTestRun);
+        throw new APIError(callsiteNames.execution, MESSAGE.hybridFunctionCantResolveTestRun);
 
     return testRun;
 }
 
 function buildHybridFunctionInstance (fnCode, boundTestRun, callsiteNames) {
-    var hybridFn = function hybridFunction () {
-        var testRun = boundTestRun || resolveContextTestRun(boundTestRun);
+    var hybridFn = function __$$hybridFunction$$ () {
+        var testRun = boundTestRun || resolveContextTestRun(callsiteNames);
         var args    = [];
 
         // OPTIMIZATION: don't leak `arguments` object.
         for (var i = 0; i < arguments.length; i++)
             args.push(arguments[i]);
 
-        var callsite = getCallsite(callsiteNames.execution);
-        var command  = new ExecuteClientCodeCommand(fnCode, args);
+        args = replicator.encode(args);
 
-        return testRun.executeCommand(command, callsite);
+        var command  = new ExecuteHybridFunctionCommand(fnCode, args);
+        var callsite = getCallsite(callsiteNames.execution);
+
+        // NOTE: don't use async/await here to enable
+        // sync errors for resolving the context test run
+        return testRun
+            .executeCommand(command, callsite)
+            .then(result => replicator.decode(result));
     };
 
     hybridFn[compiledCode] = fnCode;
@@ -51,7 +58,7 @@ function buildHybridFunctionInstance (fnCode, boundTestRun, callsiteNames) {
 // at the test compilation time when we don't have any test runs yet.
 export default function createHybridFunction (fn, dependencies = {}, boundTestRun = null, callsiteNames = {
     instantiation: 'Hybrid',
-    execution:     'hybridFunction'
+    execution:     '__$$hybridFunction$$'
 }) {
     var fnType           = typeof fn;
     var dependenciesType = typeof dependencies;

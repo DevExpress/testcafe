@@ -139,4 +139,23 @@ describe('[API] Hybrid function', function () {
     it('Should accept complex return types', function () {
         return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Hybrid call with complex return types');
     });
+
+    it('Should accept a function as an argument', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Hybrid function with function argument');
+    });
+
+    it('Should raise an error if a function argument contains async code', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Async code in function argument of Hybrid function', { shouldFail: true, only: 'chrome' })
+            .catch(function (errs) {
+                expect(errs[0]).contains(
+                   'Hybrid function argument is a function that contains either generators or the async/await syntax. ' +
+                   'These features cannot be used in client code. Use Promises instead.'
+                );
+                expect(errs[0]).contains(' > 202 |    await hfn(async () => Promise.resolve());');
+            });
+    });
+
+    it('Should accept a hybrid as an argument', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Hybrid function with hybrid argument');
+    });
 });

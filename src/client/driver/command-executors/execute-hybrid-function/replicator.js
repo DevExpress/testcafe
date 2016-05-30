@@ -1,4 +1,5 @@
 import Replicator from 'replicator';
+import evalFunction from './eval-function';
 
 var identityFn = val => val;
 
@@ -6,7 +7,20 @@ var identityFn = val => val;
 // to JSON with a command or command result.
 // Therefore there is no need to do additional job here,
 // so we use identity functions for serialization.
-export default new Replicator({
+var replicator = new Replicator({
     serialize:   identityFn,
     deserialize: identityFn
 });
+
+export default replicator.addTransforms([
+    {
+        type: 'Function',
+
+        shouldTransform () {
+            return false;
+        },
+
+        fromSerializable: evalFunction
+    }
+]);
+

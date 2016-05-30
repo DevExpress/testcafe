@@ -5,6 +5,8 @@ import loadBabelLibs from './load-babel-libs';
 import compiledCode from '../../api/common/hybrid/compiled-code-symbol';
 import NODE_VER from '../../utils/node-version';
 import { APIError } from '../../errors/runtime';
+import getCallsite from '../../errors/get-callsite';
+import { RegeneratorInFunctionArgumentOfHybridFunctionError } from '../../errors/test-run';
 import MESSAGE from '../../errors/runtime/message';
 
 const ANONYMOUS_FN_RE                = /^function\*?\s*\(/;
@@ -109,9 +111,9 @@ function getDependenciesCode (dependencies, callsiteNames) {
         }, '');
 }
 
-export default function compileHybridFunction (fnCode, dependencies = {}, callsiteNames) {
+function compile (fnCode, dependenciesCode, createRegeneratorInClientCodeError) {
     if (fnCode === ASYNC_TO_GENERATOR_OUTPUT_CODE)
-        throw new APIError(callsiteNames.instantiation, MESSAGE.regeneratorInClientCode);
+        throw createRegeneratorInClientCodeError();
 
     if (ANONYMOUS_FN_RE.test(fnCode))
         fnCode = `(${fnCode})`;
@@ -125,14 +127,28 @@ export default function compileHybridFunction (fnCode, dependencies = {}, callsi
     // NOTE: check compiled code for regenerator injection: we have either generator
     // recompiled in Node.js 4+ for client or async function declared in function code.
     if (REGENERATOR_FOOTPRINTS_RE.test(fnCode))
-        throw new APIError(callsiteNames.instantiation, MESSAGE.regeneratorInClientCode);
+        throw createRegeneratorInClientCodeError();
 
     if (!TRAILING_SEMICOLON_RE.test(fnCode))
         fnCode += ';';
 
-    var dependenciesCode = getDependenciesCode(dependencies, callsiteNames);
-
     var { polyfills, modifiedFnCode } = addBabelArtifactsPolyfills(fnCode);
 
     return `(function(){${dependenciesCode}${polyfills} return ${modifiedFnCode}})();`;
+}
+
+export function compileFunctionArgumentOfHybridFunction (argumentFnCode) {
+    // NOTE: it is safe to use a test run error here, because this code
+    // will be hit only if the context test run has already been validated.
+    var callsite                           = getCallsite('__$$hybridFunction$$');
+    var createRegeneratorInClientCodeError = () => new RegeneratorInFunctionArgumentOfHybridFunctionError(callsite);
+
+    return compile(argumentFnCode, '', createRegeneratorInClientCodeError);
+}
+
+export function compileHybridFunction (fnCode, dependencies = {}, callsiteNames) {
+    var dependenciesCode                   = getDependenciesCode(dependencies, callsiteNames);
+    var createRegeneratorInClientCodeError = () => new APIError(callsiteNames.instantiation, MESSAGE.regeneratorInClientCode);
+
+    return compile(fnCode, dependenciesCode, createRegeneratorInClientCodeError);
 }
