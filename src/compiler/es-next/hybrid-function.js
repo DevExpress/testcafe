@@ -5,6 +5,8 @@ import loadBabelLibs from './load-babel-libs';
 import compiledCode from '../../api/common/hybrid/compiled-code-symbol';
 import NODE_VER from '../../utils/node-version';
 import { APIError } from '../../errors/runtime';
+import getCallsite from '../../errors/get-callsite';
+import { RegeneratorInFunctionArgumentOfHybridFunctionError } from '../../errors/test-run';
 import MESSAGE from '../../errors/runtime/message';
 
 const ANONYMOUS_FN_RE                = /^function\*?\s*\(/;
@@ -135,8 +137,13 @@ function compile (fnCode, dependenciesCode, createRegeneratorInClientCodeError) 
     return `(function(){${dependenciesCode}${polyfills} return ${modifiedFnCode}})();`;
 }
 
-export function compileHybridFunctionArgument (/* argumentFnCode, argumentIdx */) {
-    //TODO
+export function compileFunctionArgumentOfHybridFunction (argumentFnCode) {
+    // NOTE: it safe to use test run error here, because this code
+    // will be hit only if context test run validation already passed.
+    var callsite                           = getCallsite('__$$hybridFunction$$');
+    var createRegeneratorInClientCodeError = () => new RegeneratorInFunctionArgumentOfHybridFunctionError(callsite);
+
+    return compile(argumentFnCode, '', createRegeneratorInClientCodeError);
 }
 
 export function compileHybridFunction (fnCode, dependencies = {}, callsiteNames) {

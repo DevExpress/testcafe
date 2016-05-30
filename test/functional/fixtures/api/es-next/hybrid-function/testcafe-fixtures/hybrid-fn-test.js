@@ -182,3 +182,30 @@ test('Hybrid call with complex return types', async () => {
     expect(res[2]).to.be.undefined;
     expect(res[3]).to.be.NaN;
 });
+
+test('Hybrid function with function argument', async () => {
+    function getAnswer () {
+        return new Promise(resolve => {
+            setTimeout(() => resolve(42), 30);
+        });
+    }
+
+    const hfn    = Hybrid(fn => fn());
+    const answer = await hfn(getAnswer);
+
+    expect(answer).eql(42);
+});
+
+test('Async code in function argument of Hybrid function', async () => {
+    const hfn = Hybrid(fn => fn());
+
+    await hfn(async () => Promise.resolve());
+});
+
+test('Hybrid function with hybrid argument', async () => {
+    const hfn      = Hybrid(fn => fn());
+    const location = await hfn(getLocation);
+
+    expect(location).eql('http://localhost:3000/api/es-next/hybrid-function/pages/index.html');
+
+});

@@ -176,8 +176,8 @@ export default {
     [TYPE.actionCanNotFindFileToUploadError]: err => markup(err, `
         Cannot find the following file(s) to upload:
         ${err.filePaths
-            .map(path => `<code>${escapeHtml(path)}</code>`)
-            .join(', ')
+        .map(path => `<code>${escapeHtml(path)}</code>`)
+        .join(', ')
         }
 
         ${err.getCallsiteMarkup()}
@@ -203,5 +203,11 @@ export default {
 
     [TYPE.externalAssertionLibraryError]: err => markup(err, `
         ${escapeHtml(err.errMsg)} ${err.getCallsiteMarkup({ stackOnly: true })}
+    `),
+
+    [TYPE.regeneratorInFunctionArgumentOfHybridFunctionError]: err => markup(err, `
+        Hybrid function argument is a function that contains either generators or the <code>async/await</code> syntax. These features cannot be used in client code. Use Promises instead.
+
+        ${err.getCallsiteMarkup()}
     `)
 };

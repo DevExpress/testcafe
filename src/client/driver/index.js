@@ -11,7 +11,7 @@ import * as browser from '../browser';
 import executeActionCommand from './command-executors/execute-action';
 import executeWaitForElementCommand from './command-executors/execute-wait-for-element';
 import executeNavigateToCommand from './command-executors/execute-navigate-to';
-import executeClientCode from './command-executors/execute-hybrid-function';
+import executeHybridFunction from './command-executors/execute-hybrid-function';
 import prepareBrowserManipulation from './command-executors/prepare-browser-manipulation';
 
 import ContextStorage from './storage';
