@@ -1,6 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 
-// NOTE: expose Promise for function code
+// NOTE: expose Promise to the function code
 /* eslint-disable no-unused-vars */
 var Promise = hammerhead.Promise;
 /* eslint-enable no-unused-vars */

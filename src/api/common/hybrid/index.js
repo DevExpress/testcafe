@@ -34,7 +34,7 @@ function buildHybridFunctionInstance (fnCode, boundTestRun, callsiteNames) {
         var callsite = getCallsite(callsiteNames.execution);
 
         // NOTE: don't use async/await here to enable
-        // sync errors for context test run resolving.
+        // sync errors for resolving the context test run
         return testRun
             .executeCommand(command, callsite)
             .then(result => replicator.decode(result));

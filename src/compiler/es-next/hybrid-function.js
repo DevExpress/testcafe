@@ -138,8 +138,8 @@ function compile (fnCode, dependenciesCode, createRegeneratorInClientCodeError) 
 }
 
 export function compileFunctionArgumentOfHybridFunction (argumentFnCode) {
-    // NOTE: it safe to use test run error here, because this code
-    // will be hit only if context test run validation already passed.
+    // NOTE: it is safe to use a test run error here, because this code
+    // will be hit only if the context test run has already been validated.
     var callsite                           = getCallsite('__$$hybridFunction$$');
     var createRegeneratorInClientCodeError = () => new RegeneratorInFunctionArgumentOfHybridFunctionError(callsite);
 
