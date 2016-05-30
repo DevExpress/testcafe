@@ -11,7 +11,7 @@ var Promise               = hammerhead.Promise;
 var messageSandbox        = hammerhead.eventSandbox.message;
 var nativeMethods         = hammerhead.nativeMethods;
 var CROSS_DOMAIN_MESSAGES = testCafeCore.CROSS_DOMAIN_MESSAGES;
-var XhrBarrier            = testCafeCore.XhrBarrier;
+var RequestBarrier        = testCafeCore.RequestBarrier;
 var serviceUtils          = testCafeCore.serviceUtils;
 var domUtils              = testCafeCore.domUtils;
 var eventUtils            = testCafeCore.eventUtils;
@@ -99,13 +99,13 @@ var ANIMATIONS_WAIT_DELAY = 200;
 var initialized = false;
 
 if (window.top !== window.self) {
-    var xhrBarrier = null;
+    var requestBarrier = null;
 
     eventUtils
         .documentReady()
         .then(() => {
             if (!initialized) {
-                xhrBarrier = new XhrBarrier();
+                requestBarrier = new RequestBarrier();
                 automationIFrameBehavior.init();
 
                 initialized = true;
@@ -113,7 +113,7 @@ if (window.top !== window.self) {
                 return new Promise(resolve => nativeMethods.setTimeout.call(window, resolve, ANIMATIONS_WAIT_DELAY));
             }
         })
-        .then(() => xhrBarrier.wait(true))
+        .then(() => requestBarrier.wait(true))
         .then(() => {
             messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, function (e) {
                 var msg = e.message;

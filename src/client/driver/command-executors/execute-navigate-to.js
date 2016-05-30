@@ -4,16 +4,15 @@ import DriverStatus from '../status';
 
 var Promise = hammerhead.Promise;
 
-var XhrBarrier        = testCafeCore.XhrBarrier;
+var RequestBarrier    = testCafeCore.RequestBarrier;
 var pageUnloadBarrier = testCafeCore.pageUnloadBarrier;
 
-
 export default function executeNavigateTo (command) {
-    var xhrBarrier = new XhrBarrier();
+    var requestBarrier = new RequestBarrier();
 
     hammerhead.navigateTo(command.url);
 
-    return Promise.all([xhrBarrier.wait(), pageUnloadBarrier.wait()])
+    return Promise.all([requestBarrier.wait(), pageUnloadBarrier.wait()])
         .then(() => new DriverStatus({ isCommandResult: true }))
         .catch(err => new DriverStatus({ isCommandResult: true, executionError: err }));
 }

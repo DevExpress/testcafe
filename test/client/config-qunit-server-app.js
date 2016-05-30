@@ -61,4 +61,9 @@ module.exports = function (app) {
             res.send(image);
         });
     });
+
+    app.get('/respond-500', function () {
+        res.statusCode = 500;
+        res.send('Server error');
+    });
 };
