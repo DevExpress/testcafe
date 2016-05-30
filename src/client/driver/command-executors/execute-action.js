@@ -24,7 +24,7 @@ import {
 import { getOffsetOptions } from '../../runner/utils/mouse';
 
 var Promise                         = hammerhead.Promise;
-var XhrBarrier                      = testCafeCore.XhrBarrier;
+var RequestBarrier                  = testCafeCore.RequestBarrier;
 var pageUnloadBarrier               = testCafeCore.pageUnloadBarrier;
 var ClickAutomation                 = testCafeRunner.get('./automation/playback/click');
 var RClickAutomation                = testCafeRunner.get('./automation/playback/rclick');
@@ -183,13 +183,13 @@ export default function executeAction (command, elementAvailabilityTimeout) {
     var startPromise        = new Promise(resolve => resolveStartPromise = resolve);
 
     var completionPromise = new Promise(resolve => {
-        var xhrBarrier = null;
+        var requestBarrier = null;
 
         ensureCommandElements(command, elementAvailabilityTimeout)
             .then(elements => {
                 resolveStartPromise();
 
-                xhrBarrier = new XhrBarrier();
+                requestBarrier = new RequestBarrier();
 
                 ensureCommandArguments(command);
 
@@ -197,7 +197,7 @@ export default function executeAction (command, elementAvailabilityTimeout) {
             })
             .then(() => {
                 return Promise.all([
-                    xhrBarrier.wait(),
+                    requestBarrier.wait(),
                     pageUnloadBarrier.wait()
                 ]);
             })
