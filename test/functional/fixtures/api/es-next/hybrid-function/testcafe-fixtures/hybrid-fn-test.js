@@ -207,5 +207,8 @@ test('Hybrid function with hybrid argument', async () => {
     const location = await hfn(getLocation);
 
     expect(location).eql('http://localhost:3000/api/es-next/hybrid-function/pages/index.html');
+});
 
+test('Hybrid function without `await`', async () => {
+    getLocation();
 });

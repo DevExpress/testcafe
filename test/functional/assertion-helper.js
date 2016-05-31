@@ -21,7 +21,7 @@ function getScreenshotFilesCount (dir) {
     return results;
 }
 
-function isFolderExists (folderPath) {
+function isDirExists (folderPath) {
     var exists = false;
 
     try {
@@ -67,11 +67,11 @@ exports.errorInEachBrowserNotContains = function errorInEachBrowserNotContains (
 };
 
 exports.checkScreenshotsCreated = function checkScreenshotsCreated (withoutScreenshot, count) {
-    var screenshotsPath        = '___test-screenshots___';
-    var expectedCount          = count || 2;
-    var screenshotFolderExists = isFolderExists(screenshotsPath);
+    var screenshotsPath     = '___test-screenshots___';
+    var expectedCount       = count || 2;
+    var screenshotDirExists = isDirExists(screenshotsPath);
 
-    if (!screenshotFolderExists)
+    if (!screenshotDirExists)
         return !!withoutScreenshot;
 
     var fixtureDirs    = fs.readdirSync(screenshotsPath);
@@ -84,7 +84,7 @@ exports.checkScreenshotsCreated = function checkScreenshotsCreated (withoutScree
         workerDirs     = fs
             .readdirSync(fixtureDirPath)
             .filter(function (file) {
-                return isFolderExists(path.join(fixtureDirPath, file));
+                return isDirExists(path.join(fixtureDirPath, file));
             });
 
         hasScreenshots = workerDirs.every(function (dir) {
@@ -94,7 +94,7 @@ exports.checkScreenshotsCreated = function checkScreenshotsCreated (withoutScree
 
     return del(screenshotsPath)
         .then(function () {
-            return screenshotFolderExists && fixtureDirs.length === 1 && workerDirs.length === 3 && hasScreenshots;
+            return screenshotDirExists && fixtureDirs.length === 1 && workerDirs.length === 3 && hasScreenshots;
         });
 };
 

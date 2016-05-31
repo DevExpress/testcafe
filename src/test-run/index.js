@@ -1,5 +1,4 @@
 import path from 'path';
-import assert from 'assert';
 import { readSync as read } from 'read-file-relative';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
@@ -16,7 +15,8 @@ import {
     TakeScreenshotOnFailCommand,
     PrepareBrowserManipulationCommand,
     isCommandRejectableByPageError,
-    isWindowManipulationCommand
+    isWindowManipulationCommand,
+    isServiceCommand
 } from './commands';
 
 
@@ -40,11 +40,12 @@ export default class TestRun extends Session {
         this.running = false;
         this.state   = STATE.initial;
 
-        this.pendingDriverTask         = null;
-        this.pendingRequest            = null;
-        this.pendingJsError            = null;
-        this.currentCommandCallsite    = null;
-        this.pendingWindowManipulation = null;
+        this.driverTaskQueue          = [];
+        this.browserManipulationQueue = [];
+        this.testDoneCommandQueued    = false;
+
+        this.pendingRequest           = null;
+        this.pendingPageError         = null;
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
@@ -106,7 +107,7 @@ export default class TestRun extends Session {
             return false;
         }
 
-        return !this._addPendingErrorIfAny();
+        return !this._addPendingPageErrorIfAny();
     }
 
     async _start () {
@@ -126,7 +127,7 @@ export default class TestRun extends Session {
         }
 
         await this.executeCommand(new TestDoneCommand());
-        this._addPendingErrorIfAny();
+        this._addPendingPageErrorIfAny();
 
         delete TestRun.activeTestRuns[this.id];
 
@@ -135,10 +136,10 @@ export default class TestRun extends Session {
 
 
     // Errors
-    _addPendingErrorIfAny () {
-        if (this.pendingJsError) {
-            this._addError(this.pendingJsError);
-            this.pendingJsError = null;
+    _addPendingPageErrorIfAny () {
+        if (this.pendingPageError) {
+            this._addError(this.pendingPageError);
+            this.pendingPageError = null;
             return true;
         }
 
@@ -149,7 +150,6 @@ export default class TestRun extends Session {
         var adapter = new TestRunErrorFormattableAdapter(err, {
             userAgent:      this.browserConnection.userAgent,
             screenshotPath: screenshotPath || '',
-            callsite:       this.currentCommandCallsite,
             testRunState:   this.state
         });
 
@@ -157,40 +157,41 @@ export default class TestRun extends Session {
     }
 
 
-    // Pending driver task and request
-    _addPendingDriverTask (command) {
-        return new Promise((resolve, reject) => this.pendingDriverTask = { command, resolve, reject });
-    }
-
-    _addPendingWindowTask () {
-        var command = new PrepareBrowserManipulationCommand();
-
+    // Task queue
+    _enqueueCommand (command, callsite) {
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
-        return new Promise((resolve, reject) => {
-            this._addPendingDriverTask(command)
-                .then(res => {
-                    this.pendingWindowManipulation = null;
-                    resolve(res);
-                })
-                .catch(err => {
-                    this.pendingWindowManipulation = null;
-                    reject(err);
-                });
-        });
+        return new Promise((resolve, reject) => this.driverTaskQueue.push({ command, resolve, reject, callsite }));
     }
 
-    _resolvePendingDriverTask (result) {
-        this.pendingDriverTask.resolve(result);
-        this.pendingDriverTask = null;
+    _removeAllNonServiceTasks () {
+        this.driverTaskQueue = this.driverTaskQueue.filter(driverTask => isServiceCommand(driverTask.command));
     }
 
-    _rejectPendingDriverTask (err) {
-        this.pendingDriverTask.reject(err);
-        this.pendingDriverTask = null;
+
+    // Current driver task
+    get currentDriverTask () {
+        return this.driverTaskQueue[0];
     }
 
+    _resolveCurrentDriverTask (result) {
+        this.currentDriverTask.resolve(result);
+        this.driverTaskQueue.shift();
+
+        if (this.testDoneCommandQueued)
+            this._removeAllNonServiceTasks();
+    }
+
+    _rejectCurrentDriverTask (err) {
+        err.callsite = err.callsite || this.driverTaskQueue[0].callsite;
+
+        this.currentDriverTask.reject(err);
+        this._removeAllNonServiceTasks();
+    }
+
+
+    // Pending request
     _clearPendingRequest () {
         if (this.pendingRequest) {
             clearTimeout(this.pendingRequest.responseTimeout);
@@ -206,75 +207,74 @@ export default class TestRun extends Session {
 
 
     // Handle driver request
-    _handleCommandResult (driverStatus) {
-        var commandType = this.pendingDriverTask.command.type;
+    _fulfillCurrentDriverTask (driverStatus) {
+        if (driverStatus.executionError)
+            this._rejectCurrentDriverTask(driverStatus.executionError);
+        else
+            this._resolveCurrentDriverTask(driverStatus.result);
+    }
 
-        if (commandType === COMMAND_TYPE.testDone) {
-            this.pendingDriverTask.resolve();
+    _handlePageErrorStatus (pageError) {
+        if (this.currentDriverTask && isCommandRejectableByPageError(this.currentDriverTask.command)) {
+            this._rejectCurrentDriverTask(pageError);
 
-            return TEST_DONE_CONFIRMATION_RESPONSE;
+            return true;
         }
 
-        if (driverStatus.executionError)
-            this._rejectPendingDriverTask(driverStatus.executionError);
-        else
-            this._resolvePendingDriverTask(driverStatus.result);
+        this.pendingPageError = this.pendingPageError || pageError;
 
-        return null;
+        return false;
     }
 
     _handleDriverRequest (driverStatus) {
         if (!this.running)
             this._start();
 
-        var shouldRejectPendingDriverTask = driverStatus.pageError &&
-                                            this.pendingDriverTask &&
-                                            isCommandRejectableByPageError(this.pendingDriverTask.command);
+        var currentTaskRejectedByError = driverStatus.pageError && this._handlePageErrorStatus(driverStatus.pageError);
 
-        if (shouldRejectPendingDriverTask) {
-            this._rejectPendingDriverTask(driverStatus.pageError);
+        if (!currentTaskRejectedByError && driverStatus.isCommandResult) {
+            if (this.currentDriverTask.command.type === COMMAND_TYPE.testDone) {
+                this._resolveCurrentDriverTask();
 
-            return null;
+                return TEST_DONE_CONFIRMATION_RESPONSE;
+            }
+
+            this._fulfillCurrentDriverTask(driverStatus);
         }
 
-        this.pendingJsError = this.pendingJsError || driverStatus.pageError;
-
-        if (this.pendingDriverTask)
-            return driverStatus.isCommandResult ? this._handleCommandResult(driverStatus) : this.pendingDriverTask.command;
-
-        return null;
+        return this.currentDriverTask ? this.currentDriverTask.command : null;
     }
 
 
     // Execute command
     executeCommand (command, callsite) {
-        assert(!this.pendingDriverTask, 'Internal error: an attempt to execute a command when a previous command is still being executed was detected.');
-
         this.debugLog.command(command);
 
-        this.currentCommandCallsite = callsite;
+        if (this.pendingPageError && isCommandRejectableByPageError(command))
+            return this._rejectCommandWithPageError(callsite);
+
+        if (isWindowManipulationCommand(command)) {
+            this.browserManipulationQueue.push(command);
+
+            return this.executeCommand(new PrepareBrowserManipulationCommand());
+        }
 
         if (command.type === COMMAND_TYPE.wait)
             return new Promise(resolve => setTimeout(resolve, command.timeout));
 
-        if (isWindowManipulationCommand(command)) {
-            this.pendingWindowManipulation = command;
+        if (command.type === COMMAND_TYPE.testDone)
+            this.testDoneCommandQueued = true;
 
-            return this._addPendingWindowTask();
-        }
+        return this._enqueueCommand(command, callsite);
+    }
 
-        if (this.pendingJsError && isCommandRejectableByPageError(command)) {
-            var result = Promise.reject(this.pendingJsError);
+    _rejectCommandWithPageError (callsite) {
+        var err = this.pendingPageError;
 
-            this.pendingJsError = null;
+        err.callsite          = callsite;
+        this.pendingPageError = null;
 
-            return result;
-        }
-
-        if (this.pendingRequest)
-            this._resolvePendingRequest(command);
-
-        return this._addPendingDriverTask(command);
+        return Promise.reject(err);
     }
 }
 
@@ -293,7 +293,7 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 
     // NOTE: the driver sends the status for the second time if it didn't get a response at the
     // first try. This is possible when the page was unloaded after the driver sent the status.
-    if (msg.status.id === this.lastDriverStatusId && this.lastDriverStatusResponse)
+    if (msg.status.id === this.lastDriverStatusId)
         return this.lastDriverStatusResponse;
 
     this.lastDriverStatusId       = msg.status.id;
@@ -312,11 +312,11 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (msg) {
     this.debugLog.driverMessage(msg);
 
-    var pendingCommandType = this.pendingWindowManipulation.type;
+    var command = this.browserManipulationQueue.shift();
 
-    if (pendingCommandType === COMMAND_TYPE.takeScreenshot)
-        return await this.browserManipulationManager.takeScreenshot(this.id, pendingCommandType.customPath);
+    if (command.type === COMMAND_TYPE.takeScreenshot)
+        return await this.browserManipulationManager.takeScreenshot(this.id, command.customPath);
 
-    if (pendingCommandType === COMMAND_TYPE.takeScreenshotOnFail)
+    if (command.type === COMMAND_TYPE.takeScreenshotOnFail)
         return await this.browserManipulationManager.takeScreenshotOnFail(this.id);
 };
