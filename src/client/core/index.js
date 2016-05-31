@@ -10,6 +10,7 @@ import extendJQuerySelectors from './jquery-extensions/custom-selectors';
 import * as jQueryDataMethodProxy from './jquery-extensions/data-proxy';
 import XhrBarrier from './xhr-barrier';
 import * as pageUnloadBarrier from './page-unload-barrier';
+import preventRealEvents from './prevent-real-events';
 
 import * as serviceUtils from './utils/service';
 import * as domUtils from './utils/dom';
@@ -33,6 +34,7 @@ exports.transport             = transport;
 exports.sandboxedJQuery       = sandboxedJQuery;
 exports.XhrBarrier            = XhrBarrier;
 exports.pageUnloadBarrier     = pageUnloadBarrier;
+exports.preventRealEvents     = preventRealEvents;
 
 exports.serviceUtils    = serviceUtils;
 exports.domUtils        = domUtils;
