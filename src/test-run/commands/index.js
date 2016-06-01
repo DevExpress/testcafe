@@ -554,7 +554,6 @@ export function createCommandFromObject (obj) {
         case TYPE.takeScreenshot:
             return new TakeScreenshotCommand(obj);
 
-        case TYPE:
         case TYPE.testDone:
             return new TestDoneCommand();
     }
@@ -562,21 +561,22 @@ export function createCommandFromObject (obj) {
 }
 
 export function isCommandRejectableByPageError (command) {
-    /* eslint-disable indent*/
-    // TODO: eslint raises an 'incorrect indent' error here. We use
-    // an old eslint version (v1.x.x). We should migrate to v2.x.x
-    switch (command.type) {
-        case TYPE.testDone:
-        case TYPE.executeHybridFunction:
-        case TYPE.waitForElement:
-            return false;
-        default:
-            return true;
-    }
-    /* eslint-enable indent*/
+    return !isObservationCommand(command) && !isWindowManipulationCommand(command) && !isServiceCommand(command);
+}
+
+function isObservationCommand (command) {
+    return command.type === TYPE.executeHybridFunction ||
+           command.type === TYPE.wait ||
+           command.type === TYPE.waitForElement;
 }
 
 export function isWindowManipulationCommand (command) {
     return command.type === TYPE.takeScreenshot || command.type === TYPE.takeScreenshotOnFail;
+}
+
+export function isServiceCommand (command) {
+    return command.type === TYPE.testDone ||
+           command.type === TYPE.takeScreenshotOnFail ||
+           command.type === TYPE.prepareBrowserManipulation;
 }
 

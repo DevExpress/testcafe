@@ -16,14 +16,20 @@ describe('TestRun - Driver protocol', function () {
         6) The TestRun should not process this status. It should just return the cached response.
         */
 
-        return runTests('./testcafe-fixtures/repeated-driver-status.js', 'Click and wait for page unloading', { shouldFail: true })
+        return runTests('./testcafe-fixtures/driver-test.js', 'Click and wait for page unloading', { shouldFail: true })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'Button clicked', 0);
-                errorInEachBrowserContains(errs, '> 13 |    await t.click(\'#btn\');', 0);
+                errorInEachBrowserContains(errs, '> 15 |    await t.click(\'#btn\');', 0);
             });
     });
 
     it('Driver should prevent a real action', function () {
         return runTests('./testcafe-fixtures/prevent-real-action-test.js', 'Perform native click');
+    });
+
+    describe('Regression', function () {
+        it('Should allow mixed execution order (GH-564)', function () {
+            return runTests('./testcafe-fixtures/driver-test.js', 'Mixed execution order');
+        });
     });
 });
