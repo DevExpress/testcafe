@@ -34,11 +34,11 @@ replicator.addTransforms([
         },
 
         fromSerializable (fnCode) {
-            // NOTE: all functions that come to client are hybrid functions
+            // NOTE: all functions that come to the client are hybrid functions
             var fn = evalFunction(fnCode);
 
-            // NOTE: store hybrid function code, to avoid recompilation
-            // if it's later will be used as a return value
+            // NOTE: store hybrid function code to avoid recompilation
+            // if it will be used later as a return value.
             fn[HYBRID_COMPILED_CODE] = fnCode;
 
             return fn;

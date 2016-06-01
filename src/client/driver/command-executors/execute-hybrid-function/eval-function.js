@@ -5,8 +5,8 @@ import hammerhead from '../../deps/hammerhead';
 var Promise = hammerhead.Promise;
 /* eslint-enable no-unused-vars */
 
-// NOTE: evalFunction is isolated into separate module to
-// restrict evaluated code access to the TestCafe intrinsics.
+// NOTE: evalFunction is isolated into a separate module to
+// restrict access to TestCafe intrinsics for the evaluated code.
 export default function evalFunction (fnCode) {
     // NOTE: `eval` in strict mode will not override context variables
     'use strict';
