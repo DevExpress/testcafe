@@ -1,10 +1,10 @@
-var expect         = require('chai').expect;
-var OffsetOptions  = require('../../lib/test-run/commands/options').OffsetOptions;
-var MouseOptions   = require('../../lib/test-run/commands/options').MouseOptions;
-var ClickOptions   = require('../../lib/test-run/commands/options').ClickOptions;
-var MoveOptions    = require('../../lib/test-run/commands/options').MoveOptions;
-var TypeOptions    = require('../../lib/test-run/commands/options').TypeOptions;
-var ERROR_TYPE     = require('../../lib/errors/test-run/type');
+var expect        = require('chai').expect;
+var OffsetOptions = require('../../lib/test-run/commands/options').OffsetOptions;
+var MouseOptions  = require('../../lib/test-run/commands/options').MouseOptions;
+var ClickOptions  = require('../../lib/test-run/commands/options').ClickOptions;
+var MoveOptions   = require('../../lib/test-run/commands/options').MoveOptions;
+var TypeOptions   = require('../../lib/test-run/commands/options').TypeOptions;
+var ERROR_TYPE    = require('../../lib/errors/test-run/type');
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects
 function assertThrow (fn, expectedErr) {
@@ -29,7 +29,7 @@ describe('Test run command options', function () {
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
-                offsetX: 0,
+                offsetX: null,
                 offsetY: 15
             });
         });
@@ -48,7 +48,7 @@ describe('Test run command options', function () {
 
             expect(JSON.parse(JSON.stringify(options))).eql({
                 offsetX: 15,
-                offsetY: 0,
+                offsetY: null,
 
                 modifiers: {
                     ctrl:  true,
@@ -74,7 +74,7 @@ describe('Test run command options', function () {
 
             expect(JSON.parse(JSON.stringify(options))).eql({
                 offsetX:  15,
-                offsetY:  0,
+                offsetY:  null,
                 caretPos: 20,
 
                 modifiers: {
@@ -102,7 +102,7 @@ describe('Test run command options', function () {
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
-                offsetX:       0,
+                offsetX:       null,
                 offsetY:       15,
                 speed:         20,
                 minMovingTime: null,
@@ -133,7 +133,7 @@ describe('Test run command options', function () {
 
             expect(JSON.parse(JSON.stringify(options))).eql({
                 offsetX:  15,
-                offsetY:  0,
+                offsetY:  null,
                 caretPos: 20,
                 replace:  true,
 

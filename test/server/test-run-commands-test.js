@@ -1,7 +1,7 @@
-var expect         = require('chai').expect;
-var TYPE           = require('../../lib/test-run/commands/type');
-var createCommand  = require('../../lib/test-run/commands').createCommandFromObject;
-var ERROR_TYPE     = require('../../lib/errors/test-run/type');
+var expect        = require('chai').expect;
+var TYPE          = require('../../lib/test-run/commands/type');
+var createCommand = require('../../lib/test-run/commands').createCommandFromObject;
+var ERROR_TYPE    = require('../../lib/errors/test-run/type');
 
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects
@@ -74,8 +74,8 @@ describe('Test run commands', function () {
                 selector: "(function () { return document.querySelector('#yo') })()",
 
                 options: {
-                    offsetX:  0,
-                    offsetY:  0,
+                    offsetX:  null,
+                    offsetY:  null,
                     caretPos: null,
 
                     modifiers: {
@@ -142,8 +142,8 @@ describe('Test run commands', function () {
                 selector: "(function () { return document.querySelector('#yo') })()",
 
                 options: {
-                    offsetX:  0,
-                    offsetY:  0,
+                    offsetX:  null,
+                    offsetY:  null,
                     caretPos: null,
 
                     modifiers: {
@@ -210,8 +210,8 @@ describe('Test run commands', function () {
                 selector: "(function () { return document.querySelector('#yo') })()",
 
                 options: {
-                    offsetX:  0,
-                    offsetY:  0,
+                    offsetX:  null,
+                    offsetY:  null,
                     caretPos: null,
 
                     modifiers: {
@@ -277,8 +277,8 @@ describe('Test run commands', function () {
                 selector: "(function () { return document.querySelector('#yo') })()",
 
                 options: {
-                    offsetX: 0,
-                    offsetY: 0,
+                    offsetX: null,
+                    offsetY: null,
 
                     modifiers: {
                         ctrl:  false,
@@ -351,8 +351,8 @@ describe('Test run commands', function () {
                 dragOffsetY: -15,
 
                 options: {
-                    offsetX: 0,
-                    offsetY: 0,
+                    offsetX: null,
+                    offsetY: null,
 
                     modifiers: {
                         ctrl:  false,
@@ -421,8 +421,8 @@ describe('Test run commands', function () {
                 destinationSelector: "(function () { return document.querySelector('#destination') })()",
 
                 options: {
-                    offsetX: 0,
-                    offsetY: 0,
+                    offsetX: null,
+                    offsetY: null,
 
                     modifiers: {
                         ctrl:  false,
@@ -494,8 +494,8 @@ describe('Test run commands', function () {
                 text:     'testText',
 
                 options: {
-                    offsetX:  0,
-                    offsetY:  0,
+                    offsetX:  null,
+                    offsetY:  null,
                     caretPos: null,
                     replace:  false,
 

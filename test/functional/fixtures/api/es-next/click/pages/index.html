@@ -6,10 +6,19 @@
 </head>
 <body>
 <div id="btn" style="background: red; width: 20px; height: 20px;">Button</div>
-
+<div id="div" style="background: grey; width: 100px; height: 100px;">Div</div>
+<!--Click button test-->
 <script>
     document.querySelector('#btn').addEventListener('click', function () {
         throw new Error('Button clicked');
+    });
+</script>
+<!--Click without offset options test-->
+<script>
+    document.querySelector('#div').addEventListener('click', function (e) {
+        var rect = document.getElementById('div').getBoundingClientRect();
+
+        window.clickOffset = { x: e.pageX - rect.left, y: e.pageY - rect.top };
     });
 </script>
 </body>
