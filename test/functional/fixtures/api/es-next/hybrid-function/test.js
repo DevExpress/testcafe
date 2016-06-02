@@ -162,6 +162,10 @@ describe('[API] Hybrid function', function () {
         return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Hybrid function with hybrid argument');
     });
 
+    it('Should allow function as return value', function () {
+        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Function return value');
+    });
+
     describe('Regression', function () {
         it('Should successfully pass if Hybrid missing `await` (GH-564)', function () {
             return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Hybrid function without `await`');

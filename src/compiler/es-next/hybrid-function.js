@@ -122,7 +122,8 @@ function compile (fnCode, dependenciesCode, createRegeneratorInClientCodeError) 
     if (NODE_VER >= 4)
         fnCode = downgradeES(fnCode);
 
-    fnCode = hammerhead.processScript(fnCode, false);
+    if (!hammerhead.isScriptProcessed(fnCode))
+        fnCode = hammerhead.processScript(fnCode, false);
 
     // NOTE: check compiled code for regenerator injection: we have either generator
     // recompiled in Node.js 4+ for client or async function declared in function code.
@@ -137,10 +138,10 @@ function compile (fnCode, dependenciesCode, createRegeneratorInClientCodeError) 
     return `(function(){${dependenciesCode}${polyfills} return ${modifiedFnCode}})();`;
 }
 
-export function compileFunctionArgumentOfHybridFunction (argumentFnCode) {
+export function compileFunctionArgumentOfHybridFunction (argumentFnCode, callsiteName) {
     // NOTE: it is safe to use a test run error here, because this code
     // will be hit only if the context test run has already been validated.
-    var callsite                           = getCallsite('__$$hybridFunction$$');
+    var callsite                           = getCallsite(callsiteName);
     var createRegeneratorInClientCodeError = () => new RegeneratorInFunctionArgumentOfHybridFunctionError(callsite);
 
     return compile(argumentFnCode, '', createRegeneratorInClientCodeError);

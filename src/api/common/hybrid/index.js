@@ -1,12 +1,53 @@
+import { identity } from 'lodash';
+import Replicator from 'replicator';
 import testRunTracker from './test-run-tracker';
 import compiledCode from './compiled-code-symbol';
-import replicator from './replicator';
 import TestRun from '../../../test-run';
-import { compileHybridFunction } from '../../../compiler/es-next/hybrid-function';
+import { compileHybridFunction, compileFunctionArgumentOfHybridFunction } from '../../../compiler/es-next/hybrid-function';
 import { ExecuteHybridFunctionCommand } from '../../../test-run/commands';
 import { APIError } from '../../../errors/runtime';
 import MESSAGE from '../../../errors/runtime/message';
 import getCallsite from '../../../errors/get-callsite';
+
+const DEFAULT_CALLSITE_NAMES = {
+    instantiation: 'Hybrid',
+    execution:     '__$$hybridFunction$$'
+};
+
+// NOTE: we will serialize replicator results
+// to JSON with a command or command result.
+// Therefore there is no need to do additional job here,
+// so we use identity functions for serialization.
+var replicator = new Replicator({
+    serialize:   identity,
+    deserialize: identity
+});
+
+replicator.addTransforms([
+    {
+        type: 'Function',
+
+        shouldTransform (type) {
+            return type === 'function';
+        },
+
+        toSerializable (fn) {
+            var isHybrid = !!fn[compiledCode];
+
+            if (isHybrid)
+                return fn[compiledCode];
+
+            return compileFunctionArgumentOfHybridFunction(fn.toString(), DEFAULT_CALLSITE_NAMES.execution);
+        },
+
+        fromSerializable (fnDescriptor) {
+            if (!fnDescriptor.isHybridCode)
+                fnDescriptor.fnCode = compileHybridFunction(fnDescriptor.fnCode, {}, DEFAULT_CALLSITE_NAMES);
+
+            return buildHybridFunctionInstance(fnDescriptor.fnCode);
+        }
+    }
+]);
 
 
 function resolveContextTestRun (callsiteNames) {
@@ -19,7 +60,7 @@ function resolveContextTestRun (callsiteNames) {
     return testRun;
 }
 
-function buildHybridFunctionInstance (fnCode, boundTestRun, callsiteNames) {
+function buildHybridFunctionInstance (fnCode, boundTestRun, callsiteNames = DEFAULT_CALLSITE_NAMES) {
     var hybridFn = function __$$hybridFunction$$ () {
         var testRun = boundTestRun || resolveContextTestRun(callsiteNames);
         var args    = [];
@@ -56,10 +97,7 @@ function buildHybridFunctionInstance (fnCode, boundTestRun, callsiteNames) {
 
 // NOTE: we use runtime APIError in most places because these errors may appear
 // at the test compilation time when we don't have any test runs yet.
-export default function createHybridFunction (fn, dependencies = {}, boundTestRun = null, callsiteNames = {
-    instantiation: 'Hybrid',
-    execution:     '__$$hybridFunction$$'
-}) {
+export default function createHybridFunction (fn, dependencies = {}, boundTestRun = null, callsiteNames = DEFAULT_CALLSITE_NAMES) {
     var fnType           = typeof fn;
     var dependenciesType = typeof dependencies;
 
