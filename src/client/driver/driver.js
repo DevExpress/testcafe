@@ -71,11 +71,12 @@ const CURRENT_IFRAME_ERROR_CTORS = {
 var hangingPromise = new Promise(noop);
 
 export default class Driver {
-    constructor (testRunId, communicationUrls, options) {
+    constructor (ids, communicationUrls, options) {
         this.COMMAND_EXECUTING_FLAG   = 'testcafe|driver|command-executing-flag';
         this.EXECUTING_IN_IFRAME_FLAG = 'testcafe|driver|executing-in-iframe-flag';
 
-        this.testRunId        = testRunId;
+        this.testRunId        = ids.testRun;
+        this.windowId         = ids.window;
         this.heartbeatUrl     = communicationUrls.heartbeat;
         this.browserStatusUrl = communicationUrls.status;
         this.selectorTimeout  = options.selectorTimeout;
@@ -357,7 +358,7 @@ export default class Driver {
     _onPrepareBrowserManipulationCommand () {
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true);
 
-        prepareBrowserManipulation(this.testRunId)
+        prepareBrowserManipulation(this.windowId)
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
                 return this._onReady(driverStatus);

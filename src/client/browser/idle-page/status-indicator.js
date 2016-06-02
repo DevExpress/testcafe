@@ -18,7 +18,6 @@ const DISCONNECTED_TEXT = 'DISCONNECTED';
 
 const PAGE_BACKGROUND_CLASS_NAME    = 'page-background';
 const CONTAINER_CLASS_NAME          = 'container';
-const STATUS_TEXT_AREA_CLASS_NAME   = 'status-text-area';
 const USER_AGENT_ELEMENT_CLASS_NAME = 'user-agent';
 const STATUS_ELEMENT_CLASS_NAME     = 'status';
 const CANVAS_CLASS_NAME             = 'spinner';
@@ -44,22 +43,21 @@ function rotateAxes (point, rotationAngle) {
     return {
         x: Math.round(point.x * Math.cos(angle) - point.y * Math.sin(angle)),
         y: Math.round(point.x * Math.sin(angle) + point.y * Math.cos(angle))
-    }
+    };
 }
 
 function moveAxes (point, distance) {
     return {
         x: Math.round(point.x - distance),
         y: Math.round(point.y - distance)
-    }
-
+    };
 }
 
 export default class StatusIndicator {
     constructor () {
         this.connected     = true;
         this.canvas        = document.getElementsByClassName(CANVAS_CLASS_NAME)[0];
-        this.canvasContext = this.canvas.getContext("2d");
+        this.canvasContext = this.canvas.getContext('2d');
 
         this.spinnerAnimationInterval = null;
         this.rotationAngle            = 0;
@@ -81,7 +79,7 @@ export default class StatusIndicator {
 
     //Markup
     static _getContainer () {
-        return document.getElementsByClassName('container')[0];
+        return document.getElementsByClassName(CONTAINER_CLASS_NAME)[0];
     }
 
     static _getStatusElementSpan () {
@@ -144,7 +142,7 @@ export default class StatusIndicator {
     }
 
     _watchWindowResize () {
-        window.onresize = (() => {
+        window.onresize = () => {
             var oldSize = this.size;
 
             this._setSize();
@@ -158,7 +156,7 @@ export default class StatusIndicator {
 
                 this._drawSpinner(this.connected, this.rotationAngle);
             }
-        });
+        };
     }
 
 

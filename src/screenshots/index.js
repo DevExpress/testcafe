@@ -1,6 +1,7 @@
 import { join as joinPath } from 'path';
 import shortId from 'shortid';
 import { find } from 'lodash';
+import sanitize from 'sanitize-filename';
 import Capturer from './capturer';
 
 export default class Screenshots {
@@ -11,11 +12,13 @@ export default class Screenshots {
     }
 
     static _escapeUserAgent (userAgent) {
-        return userAgent
-            .toString()
-            .split('/')
-            .map(str => str.trim().replace(/\s/g, '_'))
-            .join('_');
+        return sanitize(
+            userAgent
+                .toString()
+                .split('/')
+                .map(str => str.trim().replace(/\s/g, '_'))
+                .join('_')
+        );
     }
 
     _addTestEntry (test) {
@@ -42,14 +45,14 @@ export default class Screenshots {
         return this._getTestEntry(test).path;
     }
 
-    createCapturerFor (test, userAgent) {
+    createCapturerFor (test, connection) {
         var testEntry = this._getTestEntry(test);
 
         if (!testEntry)
             testEntry = this._addTestEntry(test);
 
-        var testScreenshotsPath = joinPath(testEntry.path, Screenshots._escapeUserAgent(userAgent));
+        var testScreenshotsPath = joinPath(testEntry.path, Screenshots._escapeUserAgent(connection.userAgent));
 
-        return new Capturer(this.screenshotsPath, testScreenshotsPath, testEntry);
+        return new Capturer(this.screenshotsPath, testScreenshotsPath, testEntry, connection);
     }
 }

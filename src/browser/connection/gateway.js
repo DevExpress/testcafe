@@ -1,11 +1,11 @@
 import { readSync as read } from 'read-file-relative';
-import { respond404, respond500, respondWithJSON, redirect, preventCaching } from '../utils/http';
+import { respond404, respond500, respondWithJSON, redirect, preventCaching } from '../../utils/http';
 
 
 // Const
-const IDLE_PAGE_SCRIPT = read('../client/browser/idle-page/index.js');
-const IDLE_PAGE_STYLE  = read('../client/browser/idle-page/styles.css');
-const IDLE_PAGE_LOGO   = read('../client/browser/idle-page/logo.svg', true);
+const IDLE_PAGE_SCRIPT = read('../../client/browser/idle-page/index.js');
+const IDLE_PAGE_STYLE  = read('../../client/browser/idle-page/styles.css');
+const IDLE_PAGE_LOGO   = read('../../client/browser/idle-page/logo.svg', true);
 
 
 // Gateway
@@ -17,8 +17,8 @@ export default class BrowserConnectionGateway {
         this._registerRoutes(proxy);
     }
 
-    _dispatch (url, proxy, handler) {
-        proxy.GET(url, (req, res, si, params) => {
+    _dispatch (url, proxy, handler, method = 'GET') {
+        proxy[method](url, (req, res, si, params) => {
             var connection = this.connections[params.id];
 
             preventCaching(res);
@@ -35,6 +35,8 @@ export default class BrowserConnectionGateway {
         this._dispatch('/browser/heartbeat/{id}', proxy, BrowserConnectionGateway.onHeartbeat);
         this._dispatch('/browser/idle/{id}', proxy, BrowserConnectionGateway.onIdle);
         this._dispatch('/browser/status/{id}', proxy, BrowserConnectionGateway.onStatusRequest);
+        this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway.onInitScriptRequest);
+        this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway.onInitScriptResponse, 'POST');
 
         proxy.GET('/browser/assets/index.js', { content: IDLE_PAGE_SCRIPT, contentType: 'application/x-javascript' });
         proxy.GET('/browser/assets/styles.css', { content: IDLE_PAGE_STYLE, contentType: 'text/css' });
@@ -82,6 +84,30 @@ export default class BrowserConnectionGateway {
             var status = connection.getStatus();
 
             respondWithJSON(res, status);
+        }
+    }
+
+    static onInitScriptRequest (req, res, connection) {
+        if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
+            var script = connection.getInitScript();
+
+            respondWithJSON(res, script);
+        }
+    }
+
+    static onInitScriptResponse (req, res, connection) {
+        if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
+            var data = '';
+
+            req.on('data', chunk => {
+                data += chunk;
+            });
+
+            req.on('end', () => {
+                connection.handleInitScriptResult(data);
+
+                res.end();
+            });
         }
     }
 

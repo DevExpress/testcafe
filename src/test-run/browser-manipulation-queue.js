@@ -1,28 +1,35 @@
 import shortId from 'shortid';
-import OS from 'os-family';
-import { resize as resizeWindow, getViewportSize } from 'testcafe-browser-natives';
+import { getViewportSize, generateThumbnail } from 'testcafe-browser-natives';
 import { isServiceCommand } from './commands/utils';
 import COMMAND_TYPE from './commands/type';
 import WARNING_MESSAGE from '../warnings/message';
 
 export default class BrowserManipulationQueue {
-    constructor (windowId, screenshotCapturer, warningLog) {
+    constructor (browserConnection, screenshotCapturer, warningLog) {
         this.commands           = [];
-        this.windowId           = windowId;
+        this.windowId           = browserConnection.id;
+        this.browserProvider    = browserConnection.provider;
         this.screenshotCapturer = screenshotCapturer;
         this.warningLog         = warningLog;
     }
 
-    async _resizeWindow (currentWidth, currentHeight, width, height) {
-        return await resizeWindow(this.windowId, currentWidth, currentHeight, width, height);
+
+    async _resizeWindow (pageInfo, width, height) {
+        try {
+            return await this.browserProvider.resizeWindow(this.windowId, pageInfo, width, height);
+        }
+        catch (err) {
+            this.warningLog.addWarning(WARNING_MESSAGE.resizeError, err.message);
+            return null;
+        }
     }
 
-    async _resizeWindowToFitDevice (currentWidth, currentHeight, device, portrait) {
+    async _resizeWindowToFitDevice (pageInfo, device, portrait) {
         var { landscapeWidth, portraitWidth } = getViewportSize(device);
         var width  = portrait ? portraitWidth : landscapeWidth;
         var height = portrait ? landscapeWidth : portraitWidth;
 
-        return await resizeWindow(this.windowId, currentWidth, currentHeight, width, height);
+        return await this._resizeWindow(pageInfo, width, height);
     }
 
     async _takeScreenshot (capture) {
@@ -32,7 +39,11 @@ export default class BrowserManipulationQueue {
         }
 
         try {
-            return await capture();
+            var fileName = await capture();
+
+            await generateThumbnail(fileName);
+
+            return fileName;
         }
         catch (err) {
             this.warningLog.addWarning(WARNING_MESSAGE.screenshotError, err.message);
@@ -41,32 +52,28 @@ export default class BrowserManipulationQueue {
     }
 
     async executePendingManipulation (driverMsg) {
-        // TODO: remove once https://github.com/DevExpress/testcafe-browser-natives/issues/12 implemented
-        if (OS.linux) {
-            this.warningLog.addWarning(WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
-            return null;
-        }
-
         var command = this.commands.shift();
 
         switch (command.type) {
             case COMMAND_TYPE.takeScreenshot:
-                return await this._takeScreenshot(() => this.screenshotCapturer.captureAction(this.windowId, {
+                return await this._takeScreenshot(() => this.screenshotCapturer.captureAction({
+                    pageInfo:   driverMsg.pageInfo,
                     stepName:   shortId.generate(),
                     customPath: command.path
                 }));
 
             case COMMAND_TYPE.takeScreenshotOnFail:
-                return await this._takeScreenshot(() => this.screenshotCapturer.captureError(this.windowId, {
+                return await this._takeScreenshot(() => this.screenshotCapturer.captureError({
+                    pageInfo:           driverMsg.pageInfo,
                     stepName:           shortId.generate(),
                     screenshotRequired: true
                 }));
 
             case COMMAND_TYPE.resizeWindow:
-                return await this._resizeWindow(driverMsg.currentWidth, driverMsg.currentHeight, command.width, command.height);
+                return await this._resizeWindow(driverMsg.pageInfo, command.width, command.height);
 
             case COMMAND_TYPE.resizeWindowToFitDevice:
-                return await this._resizeWindowToFitDevice(driverMsg.currentWidth, driverMsg.currentHeight, command.device, command.options.portraitOrientation);
+                return await this._resizeWindowToFitDevice(driverMsg.pageInfo, command.device, command.options.portraitOrientation);
         }
 
         return null;

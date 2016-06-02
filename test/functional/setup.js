@@ -27,13 +27,22 @@ config.browsers = environment.browsers;
 const SAUCE_LABS_REQUESTED_MACHINES_COUNT = environment.browsers.length;
 
 
-function initBrowsersInfo (tc) {
-    browsersInfo = environment.browsers
-        .map(function (settings) {
+function getBrowserInfo (settings) {
+    return testCafe
+        .createBrowserConnection()
+        .then(function (connection) {
             return {
                 settings:   settings,
-                connection: tc.createBrowserConnection()
+                connection: connection
             };
+        });
+}
+
+function initBrowsersInfo () {
+    return Promise
+        .all(environment.browsers.map(getBrowserInfo))
+        .then(function (info) {
+            browsersInfo = info;
         });
 }
 
@@ -97,7 +106,9 @@ before(function () {
         .then(function (tc) {
             testCafe = tc;
 
-            initBrowsersInfo(tc);
+            return initBrowsersInfo();
+        })
+        .then(function () {
             site.create(config.site.port1, config.site.port2, config.site.viewsPath);
 
             if (!config.useLocalBrowsers) {

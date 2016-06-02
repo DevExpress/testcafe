@@ -1,7 +1,6 @@
 import { join as joinPath, dirname } from 'path';
 import promisify from '../utils/promisify';
 import mkdirp from 'mkdirp';
-import { screenshot as takeScreenshot } from 'testcafe-browser-natives';
 
 var ensureDir = promisify(mkdirp);
 
@@ -9,11 +8,13 @@ const PNG_EXTENSION_RE = /(\.png)$/;
 
 
 export default class Capturer {
-    constructor (baseScreenshotsPath, testScreenshotsPath, testEntry) {
+    constructor (baseScreenshotsPath, testScreenshotsPath, testEntry, connection) {
         this.enabled             = !!baseScreenshotsPath;
         this.baseScreenshotsPath = baseScreenshotsPath;
         this.testScreenshotsPath = testScreenshotsPath;
         this.testEntry           = testEntry;
+        this.provider            = connection.provider;
+        this.id                  = connection.id;
     }
 
     static _getFileName (stepName) {
@@ -24,12 +25,12 @@ export default class Capturer {
         return PNG_EXTENSION_RE.test(customPath) ? customPath : `${customPath}.png`;
     }
 
-    async _takeScreenshot (windowId, filePath) {
+    async _takeScreenshot (pageInfo, filePath) {
         await ensureDir(dirname(filePath));
-        await takeScreenshot(windowId, filePath);
+        await this.provider.takeScreenshot(this.id, pageInfo, filePath);
     }
 
-    async captureAction (windowId, { stepName, customPath }) {
+    async captureAction ({ pageInfo, stepName, customPath }) {
         if (!this.enabled)
             return null;
 
@@ -44,20 +45,20 @@ export default class Capturer {
         else
             filePath = joinPath(this.testScreenshotsPath, fileName);
 
-        await this._takeScreenshot(windowId, filePath);
+        await this._takeScreenshot(pageInfo, filePath);
 
         this.testEntry.hasScreenshots = true;
 
         return filePath;
     }
 
-    async captureError (windowId, { stepName, screenshotRequired }) {
+    async captureError ({ pageInfo, stepName, screenshotRequired }) {
         if (!screenshotRequired || !this.enabled)
             return null;
 
         var filePath = joinPath(this.testScreenshotsPath, 'errors', Capturer._getFileName(stepName));
 
-        await this._takeScreenshot(windowId, filePath);
+        await this._takeScreenshot(pageInfo, filePath);
 
         return filePath;
     }

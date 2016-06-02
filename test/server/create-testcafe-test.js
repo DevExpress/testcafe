@@ -32,7 +32,9 @@ describe('TestCafe factory function', function () {
     it('Should automatically assign host and ports if they are not specified', function () {
         return getTestCafe()
             .then(function () {
-                var bc    = testCafe.createBrowserConnection();
+                return testCafe.createBrowserConnection();
+            })
+            .then(function (bc) {
                 var bcUrl = url.parse(bc.url);
                 var port  = parseInt(bcUrl.port, 10);
 
@@ -45,7 +47,9 @@ describe('TestCafe factory function', function () {
     it('Should accept custom port and hostname', function () {
         return getTestCafe('localhost', 1338)
             .then(function () {
-                var bc    = testCafe.createBrowserConnection();
+                return testCafe.createBrowserConnection();
+            })
+            .then(function (bc) {
                 var bcUrl = url.parse(bc.url);
                 var port  = parseInt(bcUrl.port, 10);
 

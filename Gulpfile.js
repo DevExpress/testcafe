@@ -163,7 +163,6 @@ gulp.task('lint', function () {
 
             // TODO: fix linting in client scripts completely
             '!src/client/core/utils/**/*.js',
-            '!src/client/browser/**/*.js',
             '!src/client/ui/**/*.js',
 
             'test/**/*.js',

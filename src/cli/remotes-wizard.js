@@ -21,7 +21,7 @@ export default async function (testCafe, remoteCount, showQRCode) {
             log.write('You can either enter the URL or scan the QR-code.');
 
         for (var i = 0; i < remoteCount; i++) {
-            var browserConnection = testCafe.createBrowserConnection();
+            var browserConnection = await testCafe.createBrowserConnection();
 
             log.write(`Browser #${i + 1}: ${chalk.underline.blue(browserConnection.url)}`);
 

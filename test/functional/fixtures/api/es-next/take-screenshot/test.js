@@ -16,6 +16,11 @@ describe('[API] t.takeScreenshot()', function () {
                 .then(function () {
                     expect(testReport.screenshotPath).contains(SCREENSHOT_PATH_MESSAGE_TEXT);
                     expect(assertionHelper.checkScreenshotsCreated()).eql(true);
+
+                    expect(testReport.warnings).includes(
+                        'The screenshot and window resize functionality are not supported on a remote browser. ' +
+                        'They might be performed only if the browser is running on the same machine and environment as the testcafe server.'
+                    );
                 });
         });
 
@@ -77,10 +82,11 @@ describe('[API] t.takeScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot', { setScreenshotPath: true })
                 .catch(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
-                    expect(testReport.warnings).eql([
+
+                    expect(testReport.warnings).includes(
                         'The screenshot and window resize functionality are not yet supported on Linux. ' +
                         'Subscribe to the following issue to keep track: https://github.com/DevExpress/testcafe-browser-natives/issues/12'
-                    ]);
+                    );
                 });
         });
     }
