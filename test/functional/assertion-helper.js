@@ -2,6 +2,11 @@ var expect = require('chai').expect;
 var path   = require('path');
 var fs     = require('fs');
 var del    = require('del');
+var config = require('./config.js');
+
+
+const SCREENSHOTS_PATH = '___test-screenshots___';
+
 
 function getScreenshotFilesCount (dir) {
     var results          = 0;
@@ -66,39 +71,44 @@ exports.errorInEachBrowserNotContains = function errorInEachBrowserNotContains (
     }
 };
 
-exports.checkScreenshotsCreated = function checkScreenshotsCreated (withoutScreenshot, count, customPath) {
-    var screenshotsPath     = '___test-screenshots___';
-    var expectedCount       = count || 2;
-    var screenshotDirExists = isDirExists(screenshotsPath);
+exports.isScreenshotDirExists = function () {
+    return isDirExists(SCREENSHOTS_PATH);
+};
 
-    if (!screenshotDirExists)
-        return !!withoutScreenshot;
+exports.checkScreenshotsCreated = function checkScreenshotsCreated (count, customPath) {
+    var expectedBrowserDirCount = config.browsers.length;
+    var expectedScreenshotCount = count || 2;
 
-    var fixtureDirs    = fs.readdirSync(screenshotsPath);
+    if (!isDirExists(SCREENSHOTS_PATH))
+        return false;
+
+    var fixtureDirs    = fs.readdirSync(SCREENSHOTS_PATH);
     var fixtureDirPath = null;
-    var workerDirs     = null;
+    var browserDirs    = null;
     var hasScreenshots = true;
 
     if (fixtureDirs && fixtureDirs[0]) {
-        fixtureDirPath = path.join(screenshotsPath, fixtureDirs[0]);
+        fixtureDirPath = path.join(SCREENSHOTS_PATH, fixtureDirs[0]);
 
-        workerDirs = fs
+        browserDirs = fs
             .readdirSync(fixtureDirPath)
             .filter(function (file) {
                 return isDirExists(path.join(fixtureDirPath, file));
             });
 
-        hasScreenshots = workerDirs.every(function (dir) {
-            return getScreenshotFilesCount(path.join(fixtureDirPath, dir)) === expectedCount;
+        hasScreenshots = browserDirs.every(function (dir) {
+            return getScreenshotFilesCount(path.join(fixtureDirPath, dir)) === expectedScreenshotCount;
         });
     }
 
-    return del(screenshotsPath)
-        .then(function () {
-            var customDirExists = customPath ? fixtureDirPath.indexOf(customPath) !== -1 : true;
+    var customDirExists = customPath ? fixtureDirPath.indexOf(customPath) !== -1 : true;
 
-            return customDirExists && screenshotDirExists && fixtureDirs.length === 1 && workerDirs.length === 3 &&
-                   hasScreenshots;
-        });
+    return customDirExists && fixtureDirs.length === 1 && browserDirs.length === expectedBrowserDirCount &&
+           hasScreenshots;
+};
+
+exports.removeScreenshotDir = function () {
+    if (isDirExists(SCREENSHOTS_PATH))
+        del(SCREENSHOTS_PATH);
 };
 

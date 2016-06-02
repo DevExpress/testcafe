@@ -1,15 +1,17 @@
-var expect                        = require('chai').expect;
-var config                        = require('../../config.js');
-var errorInEachBrowserContains    = require('../../assertion-helper.js').errorInEachBrowserContains;
-var errorInEachBrowserNotContains = require('../../assertion-helper.js').errorInEachBrowserNotContains;
-var checkScreenshotsCreated       = require('../../assertion-helper.js').checkScreenshotsCreated;
+var expect          = require('chai').expect;
+var config          = require('../../config.js');
+var assertionHelper = require('../../assertion-helper.js');
 
+var SCREENSHOT_PATH_MESSAGE_TEXT   = 'Screenshot: ___test-screenshots___';
+var ERROR_SCREENSHOT_PATH          = '\\errors\\';
+var SCREENSHOT_DIR_NOT_SET_MESSAGE = '[cannot take screenshots because the screenshot directory is not specified]';
 
-var SCREENSHOT_PATH_MESSAGE_TEXT = 'Screenshot: ___test-screenshots___';
-var testErrors                   = null;
 
 if (!config.isTravisTask) {
     describe('Screenshots on fails', function () {
+
+        afterEach(assertionHelper.removeScreenshotDir);
+
         it('Should take a screenshot if the ensureElement method fails', function () {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail',
                 {
@@ -19,12 +21,9 @@ if (!config.isTravisTask) {
                     setScreenshotPath:          true
                 })
                 .catch(function (errs) {
-                    testErrors = errs;
-                    return checkScreenshotsCreated();
-                })
-                .then(function (success) {
-                    errorInEachBrowserContains(testErrors, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
-                    expect(success).eql(true);
+                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
+                    assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 0);
+                    expect(assertionHelper.checkScreenshotsCreated()).eql(true);
                 });
         });
 
@@ -32,12 +31,9 @@ if (!config.isTravisTask) {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on page error',
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
-                    testErrors = errs;
-                    return checkScreenshotsCreated();
-                })
-                .then(function (success) {
-                    errorInEachBrowserContains(testErrors, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
-                    expect(success).eql(true);
+                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
+                    assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 0);
+                    expect(assertionHelper.checkScreenshotsCreated()).eql(true);
                 });
         });
 
@@ -45,12 +41,9 @@ if (!config.isTravisTask) {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on test code error',
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
-                    testErrors = errs;
-                    return checkScreenshotsCreated();
-                })
-                .then(function (success) {
-                    errorInEachBrowserContains(testErrors, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
-                    expect(success).eql(true);
+                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
+                    assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 0);
+                    expect(assertionHelper.checkScreenshotsCreated()).eql(true);
                 });
         });
 
@@ -58,12 +51,9 @@ if (!config.isTravisTask) {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the assertion fail',
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
-                    testErrors = errs;
-                    return checkScreenshotsCreated();
-                })
-                .then(function (success) {
-                    errorInEachBrowserContains(testErrors, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
-                    expect(success).eql(true);
+                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
+                    assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 0);
+                    expect(assertionHelper.checkScreenshotsCreated()).eql(true);
                 });
         });
 
@@ -71,12 +61,9 @@ if (!config.isTravisTask) {
             return runTests('./testcafe-fixtures/fail-in-before-each.js', 'Screenshot on a beforeEach error',
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
-                    testErrors = errs;
-                    return checkScreenshotsCreated();
-                })
-                .then(function (success) {
-                    errorInEachBrowserContains(testErrors, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
-                    expect(success).eql(true);
+                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
+                    assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 0);
+                    expect(assertionHelper.checkScreenshotsCreated()).eql(true);
                 });
         });
 
@@ -84,13 +71,11 @@ if (!config.isTravisTask) {
             return runTests('./testcafe-fixtures/fail-in-test-and-after-each.js', 'Screenshots on afterEach and test errors',
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
-                    testErrors = errs;
-                    return checkScreenshotsCreated(false, 4);
-                })
-                .then(function (success) {
-                    errorInEachBrowserContains(testErrors, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
-                    errorInEachBrowserContains(testErrors, SCREENSHOT_PATH_MESSAGE_TEXT, 1);
-                    expect(success).eql(true);
+                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
+                    assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 0);
+                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 1);
+                    assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 1);
+                    expect(assertionHelper.checkScreenshotsCreated(4)).eql(true);
                 });
         });
 
@@ -98,12 +83,8 @@ if (!config.isTravisTask) {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail',
                 { shouldFail: true, elementAvailabilityTimeout: 0, setScreenshotPath: true })
                 .catch(function (errs) {
-                    testErrors = errs;
-                    return checkScreenshotsCreated(true);
-                })
-                .then(function (success) {
-                    errorInEachBrowserNotContains(testErrors, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
-                    expect(success).eql(true);
+                    expect(assertionHelper.isScreenshotDirExists()).eql(false);
+                    assertionHelper.errorInEachBrowserNotContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
                 });
         });
 
@@ -111,12 +92,9 @@ if (!config.isTravisTask) {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail',
                 { shouldFail: true, elementAvailabilityTimeout: 0, screenshotsOnFails: true })
                 .catch(function (errs) {
-                    testErrors = errs;
-                    return checkScreenshotsCreated(true);
-                })
-                .then(function (success) {
-                    errorInEachBrowserNotContains(testErrors, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
-                    expect(success).eql(true);
+                    expect(assertionHelper.isScreenshotDirExists()).eql(false);
+                    assertionHelper.errorInEachBrowserNotContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
+                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_DIR_NOT_SET_MESSAGE, 0);
                 });
         });
     });
