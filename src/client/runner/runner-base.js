@@ -12,7 +12,7 @@ import * as automationIFrameBehavior from './automation/iframe-behavior';
 var messageSandbox = hammerhead.eventSandbox.message;
 var nativeMethods  = hammerhead.nativeMethods;
 
-var XhrBarrier            = testCafeCore.XhrBarrier;
+var RequestBarrier        = testCafeCore.RequestBarrier;
 var sandboxedJQuery       = testCafeCore.sandboxedJQuery;
 var SETTINGS              = testCafeCore.SETTINGS;
 var COMMAND               = testCafeCore.COMMAND;
@@ -44,7 +44,7 @@ var RunnerBase = function () {
     this.isFileDownloadingIntervalID      = null;
     this.iframeActionTargetWaitingStarted = false;
 
-    this.pageInitialXhrBarrier = null;
+    this.pageInitialRequestBarrier = null;
 
     this.assertionsAPI = new AssertionsAPI(function (err) {
         runner.stepIterator.onAssertionFailed(err);
@@ -163,7 +163,7 @@ RunnerBase.prototype._destroy = function () {
 };
 
 RunnerBase.prototype._initBarrier = function () {
-    this.pageInitialXhrBarrier = new XhrBarrier();
+    this.pageInitialRequestBarrier = new RequestBarrier();
 };
 
 RunnerBase.prototype._initIFrameBehavior = function () {
@@ -292,7 +292,7 @@ RunnerBase.prototype._prepareStepsExecuting = function (callback, skipPageWaitin
             .then(() => {
                 nativeMethods.setTimeout.call(window, () => {
                     transport.batchUpdate(() => {
-                        this.pageInitialXhrBarrier
+                        this.pageInitialRequestBarrier
                             .wait(true)
                             .then(callback);
                     });
