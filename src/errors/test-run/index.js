@@ -59,6 +59,12 @@ export class RegeneratorInFunctionArgumentOfHybridFunctionError extends TestRunE
     }
 }
 
+export class DomNodeHybridResultError extends TestRunErrorBase {
+    constructor () {
+        super(TYPE.domNodeHybridResultError);
+    }
+}
+
 
 // Uncaught errors
 //--------------------------------------------------------------------

@@ -40,6 +40,7 @@ export default {
 
     clientCodeExecutionInterruptionError:               'clientCodeExecutionInterruptionError',
     regeneratorInFunctionArgumentOfHybridFunctionError: 'generatorInFunctionArgumentOfHybridFunctionError',
+    domNodeHybridResultError:                           'domNodeHybridResultError',
 
     externalAssertionLibraryError: 'externalAssertionLibraryError'
 };

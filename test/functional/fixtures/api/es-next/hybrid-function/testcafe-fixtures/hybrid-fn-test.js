@@ -227,3 +227,13 @@ test('Function return value', async () => {
     expect(await res[0]()).eql(42);
     expect(await res[1]()).eql('http://localhost:3000/api/es-next/hybrid-function/pages/index.html');
 });
+
+test('DOM node return value', async () => {
+    const getSomeNodes = Hybrid(() => {
+        const answer = document.querySelector('.answer');
+
+        return [answer.childNodes[0], document];
+    });
+
+    await getSomeNodes();
+});

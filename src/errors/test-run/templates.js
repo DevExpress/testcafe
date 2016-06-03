@@ -181,10 +181,7 @@ export default {
 
     [TYPE.actionCanNotFindFileToUploadError]: err => markup(err, `
         Cannot find the following file(s) to upload:
-        ${err.filePaths
-        .map(path => `<code>${escapeHtml(path)}</code>`)
-        .join(', ')
-        }
+        ${err.filePaths.map(path => `<code>${escapeHtml(path)}</code>`).join(', ')}
 
         ${err.getCallsiteMarkup()}
     `),
@@ -221,5 +218,11 @@ export default {
         Hybrid function argument is a function that contains either generators or the <code>async/await</code> syntax. These features cannot be used in client code. Use Promises instead.
 
         ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.domNodeHybridResultError]: err => markup(err, `
+       Regular Hybrid functions cannot return DOM elements. Use <code>Selector</code> functions for this purpose.
+
+       ${err.getCallsiteMarkup()}
     `)
 };

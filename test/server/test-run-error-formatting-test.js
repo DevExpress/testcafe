@@ -39,6 +39,8 @@ var ClientCodeExecutionInterruptionError               = require('../../lib/erro
 var MissingAwaitError                                  = require('../../lib/errors/test-run').MissingAwaitError;
 var ExternalAssertionLibraryError                      = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
 var RegeneratorInFunctionArgumentOfHybridFunctionError = require('../../lib/errors/test-run').RegeneratorInFunctionArgumentOfHybridFunctionError;
+var DomNodeHybridResultError                           = require('../../lib/errors/test-run').DomNodeHybridResultError;
+
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
 
@@ -229,6 +231,10 @@ describe('Error formatting', function () {
 
         it('Should format "regeneratorInFunctionArgumentOfHybridFunctionError"', function () {
             assertErrorMessage('regenerator-in-function-argument-of-hybrid-function-error', new RegeneratorInFunctionArgumentOfHybridFunctionError(testCallsite));
+        });
+
+        it('Should format "domNodeHybridResultError"', function () {
+            assertErrorMessage('dom-node-hybrid-result-error', new DomNodeHybridResultError());
         });
     });
 
