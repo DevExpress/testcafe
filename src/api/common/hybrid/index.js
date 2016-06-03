@@ -9,10 +9,7 @@ import { APIError } from '../../../errors/runtime';
 import MESSAGE from '../../../errors/runtime/message';
 import getCallsite from '../../../errors/get-callsite';
 
-const DEFAULT_CALLSITE_NAMES = {
-    instantiation: 'Hybrid',
-    execution:     '__$$hybridFunction$$'
-};
+var DEFAULT_EXECUTION_CALLSITE_NAME = '__$$hybridFunction$$';
 
 // NOTE: we will serialize replicator results
 // to JSON with a command or command result.
@@ -37,32 +34,32 @@ replicator.addTransforms([
             if (isHybrid)
                 return fn[compiledCode];
 
-            return compileFunctionArgumentOfHybridFunction(fn.toString(), DEFAULT_CALLSITE_NAMES.execution);
+            return compileFunctionArgumentOfHybridFunction(fn.toString(), DEFAULT_EXECUTION_CALLSITE_NAME);
         },
 
         fromSerializable (fnDescriptor) {
             if (!fnDescriptor.isHybridCode)
-                fnDescriptor.fnCode = compileHybridFunction(fnDescriptor.fnCode, {}, DEFAULT_CALLSITE_NAMES);
+                fnDescriptor.fnCode = compileHybridFunction(fnDescriptor.fnCode, {}, '');
 
-            return buildHybridFunctionInstance(fnDescriptor.fnCode);
+            return buildHybridFunctionInstance(fnDescriptor.fnCode, null, DEFAULT_EXECUTION_CALLSITE_NAME);
         }
     }
 ]);
 
 
-function resolveContextTestRun (callsiteNames) {
+function resolveContextTestRun (executionCallsiteName) {
     var testRunId = testRunTracker.getContextTestRunId();
     var testRun   = TestRun.activeTestRuns[testRunId];
 
     if (!testRun)
-        throw new APIError(callsiteNames.execution, MESSAGE.hybridFunctionCantResolveTestRun);
+        throw new APIError(executionCallsiteName, MESSAGE.hybridFunctionCantResolveTestRun);
 
     return testRun;
 }
 
-function buildHybridFunctionInstance (fnCode, boundTestRun, callsiteNames = DEFAULT_CALLSITE_NAMES) {
+function buildHybridFunctionInstance (fnCode, boundTestRun, executionCallsiteName) {
     var hybridFn = function __$$hybridFunction$$ () {
-        var testRun = boundTestRun || resolveContextTestRun(callsiteNames);
+        var testRun = boundTestRun || resolveContextTestRun(executionCallsiteName);
         var args    = [];
 
         // OPTIMIZATION: don't leak `arguments` object.
@@ -72,7 +69,7 @@ function buildHybridFunctionInstance (fnCode, boundTestRun, callsiteNames = DEFA
         args = replicator.encode(args);
 
         var command  = new ExecuteHybridFunctionCommand(fnCode, args);
-        var callsite = getCallsite(callsiteNames.execution);
+        var callsite = getCallsite(executionCallsiteName);
 
         // NOTE: don't use async/await here to enable
         // sync errors for resolving the context test run
@@ -89,7 +86,7 @@ function buildHybridFunctionInstance (fnCode, boundTestRun, callsiteNames = DEFA
         if (!t || !(t.testRun instanceof TestRun))
             throw new APIError('bindTestRun', MESSAGE.invalidHybridTestRunBinding);
 
-        return buildHybridFunctionInstance(fnCode, t.testRun, callsiteNames);
+        return buildHybridFunctionInstance(fnCode, t.testRun, executionCallsiteName);
     };
 
     return hybridFn;
@@ -97,17 +94,20 @@ function buildHybridFunctionInstance (fnCode, boundTestRun, callsiteNames = DEFA
 
 // NOTE: we use runtime APIError in most places because these errors may appear
 // at the test compilation time when we don't have any test runs yet.
-export default function createHybridFunction (fn, dependencies = {}, boundTestRun = null, callsiteNames = DEFAULT_CALLSITE_NAMES) {
+export default function createHybridFunction (fn, opts) {
+    opts.dependencies            = opts.dependencies || {};
+    opts.callsiteNames.execution = opts.callsiteNames.execution || DEFAULT_EXECUTION_CALLSITE_NAME;
+
     var fnType           = typeof fn;
-    var dependenciesType = typeof dependencies;
+    var dependenciesType = typeof opts.dependencies;
 
     if (fnType !== 'function')
-        throw new APIError(callsiteNames.instantiation, MESSAGE.hybridFunctionCodeIsNotAFunction, fnType);
+        throw new APIError(opts.callsiteNames.instantiation, MESSAGE.hybridFunctionCodeIsNotAFunction, fnType);
 
     if (dependenciesType !== 'object')
-        throw new APIError(callsiteNames.instantiation, MESSAGE.hybridDependenciesIsNotAnObject, dependenciesType);
+        throw new APIError(opts.callsiteNames.instantiation, MESSAGE.hybridDependenciesIsNotAnObject, dependenciesType);
 
-    var fnCode = compileHybridFunction(fn.toString(), dependencies, callsiteNames);
+    var fnCode = compileHybridFunction(fn.toString(), opts.dependencies, opts.callsiteNames.instantiation);
 
-    return buildHybridFunctionInstance(fnCode, boundTestRun, callsiteNames);
+    return buildHybridFunctionInstance(fnCode, opts.boundTestRun, opts.callsiteNames.execution);
 }

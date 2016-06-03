@@ -5,7 +5,11 @@ export default {
     Role,
 
     Hybrid (fn, dependencies) {
-        return createHybridFunction(fn, dependencies);
+        return createHybridFunction(fn, {
+            dependencies:  dependencies,
+            boundTestRun:  null,
+            callsiteNames: { instantiation: 'Hybrid' }
+        });
     }
 };
 

@@ -98,14 +98,14 @@ function addBabelArtifactsPolyfills (fnCode) {
     return { polyfills, modifiedFnCode };
 }
 
-function getDependenciesCode (dependencies, callsiteNames) {
+function getDependenciesCode (dependencies, instantiationCallsiteName) {
     return Object
         .keys(dependencies)
         .reduce((code, name) => {
             var dependencyCode = dependencies[name][compiledCode];
 
             if (!dependencyCode)
-                throw new APIError(callsiteNames.instantiation, MESSAGE.hybridDependencyIsNotAHybrid, name);
+                throw new APIError(instantiationCallsiteName, MESSAGE.hybridDependencyIsNotAHybrid, name);
 
             return code + `var ${name}=${dependencyCode}`;
         }, '');
@@ -138,18 +138,18 @@ function compile (fnCode, dependenciesCode, createRegeneratorInClientCodeError) 
     return `(function(){${dependenciesCode}${polyfills} return ${modifiedFnCode}})();`;
 }
 
-export function compileFunctionArgumentOfHybridFunction (argumentFnCode, callsiteName) {
+export function compileFunctionArgumentOfHybridFunction (argumentFnCode, executionCallsiteName) {
     // NOTE: it is safe to use a test run error here, because this code
     // will be hit only if the context test run has already been validated.
-    var callsite                           = getCallsite(callsiteName);
+    var callsite                           = getCallsite(executionCallsiteName);
     var createRegeneratorInClientCodeError = () => new RegeneratorInFunctionArgumentOfHybridFunctionError(callsite);
 
     return compile(argumentFnCode, '', createRegeneratorInClientCodeError);
 }
 
-export function compileHybridFunction (fnCode, dependencies = {}, callsiteNames) {
-    var dependenciesCode                   = getDependenciesCode(dependencies, callsiteNames);
-    var createRegeneratorInClientCodeError = () => new APIError(callsiteNames.instantiation, MESSAGE.regeneratorInHybridFunctionCode);
+export function compileHybridFunction (fnCode, dependencies = {}, instantiationCallsiteName) {
+    var dependenciesCode                   = getDependenciesCode(dependencies, instantiationCallsiteName);
+    var createRegeneratorInClientCodeError = () => new APIError(instantiationCallsiteName, MESSAGE.regeneratorInHybridFunctionCode);
 
     return compile(fnCode, dependenciesCode, createRegeneratorInClientCodeError);
 }
