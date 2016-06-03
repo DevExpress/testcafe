@@ -7,7 +7,7 @@ export default {
     uncaughtErrorOnPage:               'uncaughtErrorOnPage',
     uncaughtErrorInTestCode:           'uncaughtErrorInTestCode',
     uncaughtNonErrorObjectInTestCode:  'uncaughtNonErrorObjectInTestCode',
-    uncaughtErrorInClientExecutedCode: 'uncaughtErrorInClientExecutedCode',
+    uncaughtErrorInHybridFunctionCode: 'uncaughtErrorInHybridFunctionCode',
 
     missingAwaitError: 'missingAwaitError',
 
@@ -38,7 +38,7 @@ export default {
     actionCanNotFindFileToUploadError:       'actionCanNotFindFileToUploadError',
     actionUnsupportedDeviceTypeError:        'actionUnsupportedDeviceTypeError',
 
-    clientCodeExecutionInterruptionError:               'clientCodeExecutionInterruptionError',
+    hybridFunctionExecutionInterruptionError:           'hybridFunctionExecutionInterruptionError',
     regeneratorInFunctionArgumentOfHybridFunctionError: 'generatorInFunctionArgumentOfHybridFunctionError',
     domNodeHybridResultError:                           'domNodeHybridResultError',
 

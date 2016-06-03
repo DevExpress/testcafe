@@ -24,7 +24,7 @@ describe('[API] t.eval', function () {
     it('Should have the correct callsite if an error occurs on instantiation', function () {
         return runTests('./testcafe-fixtures/eval-test.js', 'Error on instantiation', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('Client code is expected to be specified as a function, but "string" was passed.');
+                expect(errs[0]).contains('Hybrid function code is expected to be specified as a function, but "string" was passed.');
                 expect(errs[0]).contains("> 21 |    await t.eval('42');");
             });
     });

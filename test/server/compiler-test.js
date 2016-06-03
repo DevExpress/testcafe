@@ -537,7 +537,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Client code is expected to be specified as a function, but "number" was passed.',
+                                 'Hybrid function code is expected to be specified as a function, but "number" was passed.',
 
                         callsite: "   1 |import { Hybrid } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -564,7 +564,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Client code is expected to be specified as a function, but "number" was passed.',
+                                 'Hybrid function code is expected to be specified as a function, but "number" was passed.',
 
                         callsite: "   1 |import { Hybrid } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -622,7 +622,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Code executed on the client cannot contain generators or `async/await` syntax (use Promises instead).',
+                                 'Hybrid function code cannot contain generators or `async/await` syntax (use Promises instead).',
 
                         callsite: "    1 |import { Hybrid } from 'testcafe';\n" +
                                   '    2 |\n' +
@@ -649,7 +649,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Code executed on the client cannot contain generators or `async/await` syntax (use Promises instead).',
+                                 'Hybrid function code cannot contain generators or `async/await` syntax (use Promises instead).',
 
                         callsite: "    1 |import { Hybrid } from 'testcafe';\n" +
                                   '    2 |\n' +

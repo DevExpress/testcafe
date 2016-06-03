@@ -31,7 +31,7 @@ describe('[API] Hybrid function', function () {
             only:       'chrome'
         }).catch(function (errs) {
             expect(errs[0].indexOf(
-                'Client code is expected to be specified as a function, but "number" was passed.'
+                'Hybrid function code is expected to be specified as a function, but "number" was passed.'
             )).eql(0);
 
             expect(errs[0]).contains('> 29 |    await Hybrid(123)();');
@@ -57,7 +57,7 @@ describe('[API] Hybrid function', function () {
             only:       'chrome'
         }).catch(function (errs) {
             expect(errs[0].indexOf(
-                'Code executed on the client cannot contain generators or `async/await` syntax (use Promises instead).'
+                'Hybrid function code cannot contain generators or `async/await` syntax (use Promises instead).'
             )).eql(0);
 
             expect(errs[0]).contains('> 51 |    Hybrid(async () => Promise.resolve());');
@@ -70,7 +70,7 @@ describe('[API] Hybrid function', function () {
             only:       'chrome'
         }).catch(function (errs) {
             expect(errs[0].indexOf(
-                'Code executed on the client cannot contain generators or `async/await` syntax (use Promises instead).'
+                'Hybrid function code cannot contain generators or `async/await` syntax (use Promises instead).'
             )).eql(0);
 
             expect(errs[0]).contains('> 55 |    Hybrid(function*() { ');
@@ -105,7 +105,7 @@ describe('[API] Hybrid function', function () {
     it('Should handle error in Hybrid code', function () {
         return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Error in code', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('An error occurred in code executed on the client:');
+                expect(errs[0]).contains('An error occurred in hybrid function code:');
                 expect(errs[0]).contains('Error: Hey ya!');
                 expect(errs[0]).contains('> 123 |    await fn();');
             });
@@ -114,7 +114,7 @@ describe('[API] Hybrid function', function () {
     it('Should handle error in Promise in Hybrid code', function () {
         return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Error in Promise', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('An error occurred in code executed on the client:');
+                expect(errs[0]).contains('An error occurred in hybrid function code:');
                 expect(errs[0]).contains('Error: 42');
                 expect(errs[0]).contains('> 133 |    await fn();');
             });
@@ -127,7 +127,7 @@ describe('[API] Hybrid function', function () {
     it('Should raise an error if Hybrid function execution was interrupted by page unload', function () {
         return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Redirect during execution', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('Client code execution was interrupted by page unload.');
+                expect(errs[0]).contains('Hybrid function execution was interrupted by page unload.');
                 expect(errs[0]).contains("> 153 |    await Hybrid(() => new Promise(() => window.location = 'index.html'))();");
             });
     });
@@ -152,7 +152,7 @@ describe('[API] Hybrid function', function () {
             .catch(function (errs) {
                 expect(errs[0]).contains(
                     'Hybrid function argument is a function that contains either generators or the async/await syntax. ' +
-                    'These features cannot be used in client code. Use Promises instead.'
+                    'These features cannot be used in hybrid function code. Use Promises instead.'
                 );
                 expect(errs[0]).contains(' > 202 |    await hfn(async () => Promise.resolve());');
             });

@@ -4,7 +4,7 @@ import testCafeUI from './deps/testcafe-ui';
 
 import MESSAGE from '../../test-run/client-messages';
 import COMMAND_TYPE from '../../test-run/commands/type';
-import { UncaughtErrorOnPage, ClientCodeExecutionInterruptionError } from '../../errors/test-run';
+import { UncaughtErrorOnPage, HybridFunctionExecutionInterruptionError } from '../../errors/test-run';
 
 import * as browser from '../browser';
 
@@ -74,7 +74,7 @@ export default class ClientDriver {
         if (this.contextStorage.getItem(HYBRID_FN_EXECUTING_FLAG)) {
             this._onReady(new DriverStatus({
                 isCommandResult: true,
-                executionError:  new ClientCodeExecutionInterruptionError()
+                executionError:  new HybridFunctionExecutionInterruptionError()
             }));
 
             return;

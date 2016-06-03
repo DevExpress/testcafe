@@ -1,6 +1,7 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
-Client code execution was interrupted by page unload. This problem may appear
-if you trigger page navigation from client code.
+An error occurred in hybrid function code:
+
+Error: Some error.
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');

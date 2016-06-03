@@ -45,9 +45,9 @@ export class MissingAwaitError extends TestRunErrorBase {
 
 // Hybrid function errors
 //--------------------------------------------------------------------
-export class ClientCodeExecutionInterruptionError extends TestRunErrorBase {
+export class HybridFunctionExecutionInterruptionError extends TestRunErrorBase {
     constructor () {
-        super(TYPE.clientCodeExecutionInterruptionError);
+        super(TYPE.hybridFunctionExecutionInterruptionError);
     }
 }
 
@@ -95,9 +95,9 @@ export class UncaughtNonErrorObjectInTestCode extends TestRunErrorBase {
     }
 }
 
-export class UncaughtErrorInClientExecutedCode extends TestRunErrorBase {
+export class UncaughtErrorInHybridFunctionCode extends TestRunErrorBase {
     constructor (err) {
-        super(TYPE.uncaughtErrorInClientExecutedCode);
+        super(TYPE.uncaughtErrorInHybridFunctionCode);
 
         this.errMsg = String(err);
     }

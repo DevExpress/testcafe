@@ -2,7 +2,7 @@ import hammerhead from '../../deps/hammerhead';
 import DriverStatus from '../../status';
 import Replicator from 'replicator';
 import evalFunction from './eval-function';
-import { UncaughtErrorInClientExecutedCode, DomNodeHybridResultError } from '../../../../errors/test-run';
+import { UncaughtErrorInHybridFunctionCode, DomNodeHybridResultError } from '../../../../errors/test-run';
 
 const HYBRID_COMPILED_CODE = '[[hybridCompiledCode]]';
 
@@ -77,7 +77,7 @@ export default function executeHybridFunction (command) {
         }))
         .catch(err => {
             if (!err.isTestCafeError)
-                err = new UncaughtErrorInClientExecutedCode(err);
+                err = new UncaughtErrorInHybridFunctionCode(err);
 
             return new DriverStatus({
                 isCommandResult: true,

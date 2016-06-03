@@ -149,7 +149,7 @@ export function compileFunctionArgumentOfHybridFunction (argumentFnCode, callsit
 
 export function compileHybridFunction (fnCode, dependencies = {}, callsiteNames) {
     var dependenciesCode                   = getDependenciesCode(dependencies, callsiteNames);
-    var createRegeneratorInClientCodeError = () => new APIError(callsiteNames.instantiation, MESSAGE.regeneratorInClientCode);
+    var createRegeneratorInClientCodeError = () => new APIError(callsiteNames.instantiation, MESSAGE.regeneratorInHybridFunctionCode);
 
     return compile(fnCode, dependenciesCode, createRegeneratorInClientCodeError);
 }

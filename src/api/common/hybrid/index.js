@@ -102,7 +102,7 @@ export default function createHybridFunction (fn, dependencies = {}, boundTestRu
     var dependenciesType = typeof dependencies;
 
     if (fnType !== 'function')
-        throw new APIError(callsiteNames.instantiation, MESSAGE.clientCodeIsNotAFunction, fnType);
+        throw new APIError(callsiteNames.instantiation, MESSAGE.hybridFunctionCodeIsNotAFunction, fnType);
 
     if (dependenciesType !== 'object')
         throw new APIError(callsiteNames.instantiation, MESSAGE.hybridDependenciesIsNotAnObject, dependenciesType);
