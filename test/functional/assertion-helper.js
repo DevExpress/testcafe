@@ -66,7 +66,7 @@ exports.errorInEachBrowserNotContains = function errorInEachBrowserNotContains (
     }
 };
 
-exports.checkScreenshotsCreated = function checkScreenshotsCreated (withoutScreenshot, count) {
+exports.checkScreenshotsCreated = function checkScreenshotsCreated (withoutScreenshot, count, customPath) {
     var screenshotsPath     = '___test-screenshots___';
     var expectedCount       = count || 2;
     var screenshotDirExists = isDirExists(screenshotsPath);
@@ -81,7 +81,8 @@ exports.checkScreenshotsCreated = function checkScreenshotsCreated (withoutScree
 
     if (fixtureDirs && fixtureDirs[0]) {
         fixtureDirPath = path.join(screenshotsPath, fixtureDirs[0]);
-        workerDirs     = fs
+
+        workerDirs = fs
             .readdirSync(fixtureDirPath)
             .filter(function (file) {
                 return isDirExists(path.join(fixtureDirPath, file));
@@ -94,7 +95,10 @@ exports.checkScreenshotsCreated = function checkScreenshotsCreated (withoutScree
 
     return del(screenshotsPath)
         .then(function () {
-            return screenshotDirExists && fixtureDirs.length === 1 && workerDirs.length === 3 && hasScreenshots;
+            var customDirExists = customPath ? fixtureDirPath.indexOf(customPath) !== -1 : true;
+
+            return customDirExists && screenshotDirExists && fixtureDirs.length === 1 && workerDirs.length === 3 &&
+                   hasScreenshots;
         });
 };
 

@@ -21,7 +21,9 @@ import {
     NavigateToCommand,
     UploadFileCommand,
     ClearUploadCommand,
-    TakeScreenshotCommand
+    TakeScreenshotCommand,
+    ResizeWindowCommand,
+    ResizeWindowToFitDeviceCommand
 } from '../test-run/commands';
 
 const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$$/;
@@ -186,8 +188,16 @@ export default class TestController {
         return this._enqueueAction('clearUpload', ClearUploadCommand, { selector });
     }
 
-    _takeScreenshot$ (customPath) {
-        return this._enqueueAction('takeScreenshot', TakeScreenshotCommand, { customPath });
+    _takeScreenshot$ (path) {
+        return this._enqueueAction('takeScreenshot', TakeScreenshotCommand, { path });
+    }
+
+    _resizeWindow$ (width, height) {
+        return this._enqueueAction('resizeWindow', ResizeWindowCommand, { width, height });
+    }
+
+    _resizeWindowToFitDevice$ (device, portrait) {
+        return this._enqueueAction('resizeWindowToFitDevice', ResizeWindowToFitDeviceCommand, { device, portrait });
     }
 
     _eval$ (fn, dependencies) {

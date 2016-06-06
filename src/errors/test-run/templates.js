@@ -125,6 +125,12 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
+    [TYPE.actionBooleanArgumentError]: err => markup(err, `
+        The <code>${err.argumentName}</code> argument is expected to be a boolean value, but it was <code>${err.actualValue}</code>.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
     [TYPE.actionElementNotFoundError]: err => markup(err, `
         The specified selector does not match any element in the DOM tree.
 
@@ -191,6 +197,12 @@ export default {
 
     [TYPE.actionIncorrectKeysError]: err => markup(err, `
         The <code>${err.argumentName}</code> argument contains an incorrect key or key combination.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionUnsupportedDeviceTypeError]: err => markup(err, `
+        The <code>${err.argumentName}</code> argument specifies an unsupported <code>${err.actualValue}</code> device. For a list of supported devices, refer to <a href="http://viewportsizes.com">http://viewportsizes.com</a>
 
         ${err.getCallsiteMarkup()}
     `),

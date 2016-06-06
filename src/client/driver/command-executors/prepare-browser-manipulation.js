@@ -14,7 +14,7 @@ const RESTORE_DOCUMENT_TITLE_TIMEOUT = 100;
 
 export default function prepareBrowserManipulation (testRunId) {
     var savedDocumentTitle   = document.title;
-    var assignedTitle        = `[ ${window.location.toString()} ]`;
+    var assignedTitle        = `[ ${testRunId} ]`;
     var checkTitleIntervalId = null;
     var result               = null;
 
@@ -27,12 +27,14 @@ export default function prepareBrowserManipulation (testRunId) {
         }
     }, CHECK_TITLE_INTERVAL);
 
-    document.title = testRunId;
+    document.title = assignedTitle;
 
     return delay(APPLY_DOCUMENT_TITLE_TIMEOUT)
         .then(() => {
             var message = {
-                cmd: MESSAGE.readyForBrowserManipulation
+                cmd:           MESSAGE.readyForBrowserManipulation,
+                currentWidth:  window.innerWidth,
+                currentHeight: window.innerHeight
             };
 
             return transport.queuedAsyncServiceMsg(message);

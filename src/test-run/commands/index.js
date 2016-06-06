@@ -5,17 +5,20 @@
 
 import TYPE from './type';
 import Assignable from '../../utils/assignable';
+import { isValidDeviceName } from 'testcafe-browser-natives';
 
 import {
     ActionSelectorTypeError,
     ActionOptionsTypeError,
     ActionStringArgumentError,
+    ActionBooleanArgumentError,
     ActionIntegerArgumentError,
     ActionPositiveIntegerArgumentError,
     ActionAdditionalSelectorTypeError,
     ActionUnsupportedUrlProtocolError,
     ActionStringOrStringArrayArgumentError,
-    ActionStringArrayElementError
+    ActionStringArrayElementError,
+    ActionUnsupportedDeviceTypeError
 } from '../../errors/test-run';
 
 import { ClickOptions, MouseOptions, TypeOptions } from './options';
@@ -52,6 +55,13 @@ function actionOptions (name, val) {
 
     if (type !== 'object' && val !== null && val !== void 0)
         throw new ActionOptionsTypeError(type);
+}
+
+function booleanArgument (name, val) {
+    var valType = typeof val;
+
+    if (valType !== 'boolean')
+        throw new ActionBooleanArgumentError(name, valType);
 }
 
 function integerArgument (name, val, ErrorCtor = ActionIntegerArgumentError) {
@@ -96,6 +106,13 @@ function navigateToUrlArgument (name, val) {
 
     if (protocol && !SUPPORTED_PROTOCOL_RE.test(protocol[0]))
         throw new ActionUnsupportedUrlProtocolError(name, protocol[0]);
+}
+
+function resizeWindowDeviceArgument (name, val) {
+    nonEmptyStringArgument(name, val);
+
+    if (!isValidDeviceName(val))
+        throw new ActionUnsupportedDeviceTypeError(name, val);
 }
 
 function stringOrStringArrayArgument (argument, val) {
@@ -491,6 +508,43 @@ export class PrepareBrowserManipulationCommand {
     }
 }
 
+export class ResizeWindowCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type   = TYPE.resizeWindow;
+        this.width  = 0;
+        this.height = 0;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'width', type: positiveIntegerArgument, required: true },
+            { name: 'height', type: positiveIntegerArgument, required: true }
+        ];
+    }
+}
+
+export class ResizeWindowToFitDeviceCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type     = TYPE.resizeWindowToFitDevice;
+        this.device   = null;
+        this.portrait = false;
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'device', type: resizeWindowDeviceArgument, required: true },
+            { name: 'portrait', type: booleanArgument }
+        ];
+    }
+}
+
 export class TestDoneCommand {
     constructor () {
         this.type = TYPE.testDone;
@@ -554,6 +608,12 @@ export function createCommandFromObject (obj) {
         case TYPE.takeScreenshot:
             return new TakeScreenshotCommand(obj);
 
+        case TYPE.resizeWindow:
+            return new ResizeWindowCommand(obj);
+
+        case TYPE.resizeWindowToFitDevice:
+            return new ResizeWindowToFitDeviceCommand(obj);
+
         case TYPE.testDone:
             return new TestDoneCommand();
     }
@@ -571,7 +631,10 @@ function isObservationCommand (command) {
 }
 
 export function isWindowManipulationCommand (command) {
-    return command.type === TYPE.takeScreenshot || command.type === TYPE.takeScreenshotOnFail;
+    return command.type === TYPE.takeScreenshot ||
+           command.type === TYPE.takeScreenshotOnFail ||
+           command.type === TYPE.resizeWindow ||
+           command.type === TYPE.resizeWindowToFitDevice;
 }
 
 export function isServiceCommand (command) {

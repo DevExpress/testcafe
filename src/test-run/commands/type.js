@@ -24,5 +24,7 @@ export default {
     takeScreenshot:             'take-screenshot',
     takeScreenshotOnFail:       'take-screenshot-on-fail',
     prepareBrowserManipulation: 'prepare-browser-manipulation',
+    resizeWindow:               'resize-window',
+    resizeWindowToFitDevice:    'resize-window-to-fit-device',
     testDone:                   'test-done'
 };

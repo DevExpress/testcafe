@@ -44,8 +44,8 @@ export default class TestRun extends Session {
         this.browserManipulationQueue = [];
         this.testDoneCommandQueued    = false;
 
-        this.pendingRequest           = null;
-        this.pendingPageError         = null;
+        this.pendingRequest   = null;
+        this.pendingPageError = null;
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
@@ -245,7 +245,6 @@ export default class TestRun extends Session {
         return this.currentDriverTask ? this.currentDriverTask.command : null;
     }
 
-
     // Execute command
     executeCommand (command, callsite) {
         this.debugLog.command(command);
@@ -315,8 +314,14 @@ ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (m
     var command = this.browserManipulationQueue.shift();
 
     if (command.type === COMMAND_TYPE.takeScreenshot)
-        return await this.browserManipulationManager.takeScreenshot(this.id, command.customPath);
+        return await this.browserManipulationManager.takeScreenshot(this.id, command.path);
 
     if (command.type === COMMAND_TYPE.takeScreenshotOnFail)
         return await this.browserManipulationManager.takeScreenshotOnFail(this.id);
+
+    if (command.type === COMMAND_TYPE.resizeWindow)
+        return await BrowserManipulationManager.resizeWindow(this.id, msg.currentWidth, msg.currentHeight, command.width, command.height);
+
+    if (command.type === COMMAND_TYPE.resizeWindowToFitDevice)
+        return await BrowserManipulationManager.resizeWindowToFitDevice(this.id, msg.currentWidth, msg.currentHeight, command.device, command.portrait);
 };

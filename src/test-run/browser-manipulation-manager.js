@@ -1,7 +1,10 @@
 import uuid from 'uuid';
+import { resize as resizeWindow } from 'testcafe-browser-natives';
 
 
 const SCREENSHOT_CAN_NOT_BE_CREATED_MESSAGE = '[was unable to take a screenshot due to some error]';
+const PORTRAIT_ORIENTATION                  = 'portrait';
+const LANDSCAPE_ORIENTATION                 = 'landscape';
 
 
 export default class BrowserManipulationManager {
@@ -35,5 +38,14 @@ export default class BrowserManipulationManager {
             // reason (e.g. we don't have permissions to write a screenshot file).
             return SCREENSHOT_CAN_NOT_BE_CREATED_MESSAGE;
         }
+    }
+
+    static async resizeWindow (windowId, currentWidth, currentHeight, width, height) {
+        return await resizeWindow(windowId, currentWidth, currentHeight, width, height);
+    }
+
+    static async resizeWindowToFitDevice (windowId, currentWidth, currentHeight, device, portrait) {
+        return await resizeWindow(windowId, currentWidth, currentHeight, device,
+            portrait ? PORTRAIT_ORIENTATION : LANDSCAPE_ORIENTATION);
     }
 }
