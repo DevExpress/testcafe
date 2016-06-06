@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 
 
-describe('[API] Select', function () {
+describe('[API] Select text', function () {
     describe('t.selectText', function () {
         it('Should select text in input', function () {
             return runTests('./testcafe-fixtures/select-test.js', 'Select text in input', { only: 'chrome' });

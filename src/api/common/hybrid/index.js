@@ -49,10 +49,21 @@ var functionTransform = {
     }
 };
 
+var nodeTransform = {
+    type: 'Node',
+
+    shouldTransform () {
+        return false;
+    },
+
+    fromSerializable (snapshot) {
+        return snapshot;
+    }
+};
 
 // Replicators
 var replicatorForHybrid   = createReplicator([functionTransform]);
-var replicatorForSelector = createReplicator([functionTransform]);
+var replicatorForSelector = createReplicator([functionTransform, nodeTransform]);
 
 
 function resolveContextTestRun (executionCallsiteName) {

@@ -2,12 +2,14 @@ import hammerhead from '../../deps/hammerhead';
 import DriverStatus from '../../status';
 import Replicator from 'replicator';
 import evalFunction from './eval-function';
+import { ElementSnapshot } from './node-snapshots';
 import { UncaughtErrorInHybridFunctionCode, DomNodeHybridResultError } from '../../../../errors/test-run';
 
 const HYBRID_COMPILED_CODE = '[[hybridCompiledCode]]';
 
 // NOTE: save original ctors because they may be overwritten by use code
-var Node = window.Node;
+var Node    = window.Node;
+var Element = window.Element;
 
 var Promise    = hammerhead.Promise;
 var identityFn = val => val;
@@ -61,8 +63,21 @@ var nodeTransformForHybrid = {
     }
 };
 
+var nodeTransformForSelector = {
+    type: 'Node',
+
+    shouldTransform (type, val) {
+        return val instanceof Node;
+    },
+
+    toSerializable (node) {
+        if (node instanceof Element)
+            return new ElementSnapshot(node);
+    }
+};
+
 var replicatorForHybrid   = createReplicator([functionTransform, nodeTransformForHybrid]);
-var replicatorForSelector = createReplicator([functionTransform]);
+var replicatorForSelector = createReplicator([functionTransform, nodeTransformForSelector]);
 
 export default function executeHybridFunction (command) {
     var replicator = command.isSelector ? replicatorForSelector : replicatorForHybrid;
