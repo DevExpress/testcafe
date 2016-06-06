@@ -61,19 +61,22 @@ var nodeTransformForHybrid = {
     }
 };
 
-var replicatorForHybrid = createReplicator([functionTransform, nodeTransformForHybrid]);
+var replicatorForHybrid   = createReplicator([functionTransform, nodeTransformForHybrid]);
+var replicatorForSelector = createReplicator([functionTransform]);
 
 export default function executeHybridFunction (command) {
+    var replicator = command.isSelector ? replicatorForSelector : replicatorForHybrid;
+
     return Promise.resolve()
         .then(() => evalFunction(command.fnCode))
         .then(fn => {
-            var args = replicatorForHybrid.decode(command.args);
+            var args = replicator.decode(command.args);
 
             return fn.apply(window, args);
         })
         .then(result => new DriverStatus({
             isCommandResult: true,
-            result:          replicatorForHybrid.encode(result)
+            result:          replicator.encode(result)
         }))
         .catch(err => {
             if (!err.isTestCafeError)

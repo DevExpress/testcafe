@@ -153,8 +153,9 @@ describe('Compiler', function () {
             .then(function (compiled) {
                 return compiled.tests[0].fn(testRunMock);
             })
-            .then(function (commons) {
-                expect(commons).eql(commonAPI);
+            .then(function (result) {
+                expect(result.commonsEql).to.be.true;
+                expect(result.commons).eql(commonAPI);
             });
     });
 

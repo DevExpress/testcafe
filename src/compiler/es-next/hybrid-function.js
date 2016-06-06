@@ -122,8 +122,7 @@ function compile (fnCode, dependenciesCode, createRegeneratorInClientCodeError) 
     if (NODE_VER >= 4)
         fnCode = downgradeES(fnCode);
 
-    if (!hammerhead.isScriptProcessed(fnCode))
-        fnCode = hammerhead.processScript(fnCode, false);
+    fnCode = hammerhead.processScript(fnCode, false);
 
     // NOTE: check compiled code for regenerator injection: we have either generator
     // recompiled in Node.js 4+ for client or async function declared in function code.

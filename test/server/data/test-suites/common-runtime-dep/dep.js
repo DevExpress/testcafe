@@ -1,3 +1,3 @@
-import { Role } from 'testcafe';
+import commons from 'testcafe';
 
-export default Role;
+export default commons;

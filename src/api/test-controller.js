@@ -202,8 +202,10 @@ export default class TestController {
 
     _eval$ (fn, dependencies) {
         var hybridFn = createHybridFunction(fn, {
-            dependencies:  dependencies,
-            boundTestRun:  this.testRun,
+            dependencies: dependencies,
+            isSelector:   false,
+            boundTestRun: this.testRun,
+
             callsiteNames: {
                 instantiation: 'eval',
                 execution:     'eval'

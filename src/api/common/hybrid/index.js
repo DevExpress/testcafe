@@ -11,40 +11,48 @@ import getCallsite from '../../../errors/get-callsite';
 
 var DEFAULT_EXECUTION_CALLSITE_NAME = '__$$hybridFunction$$';
 
-// NOTE: we will serialize replicator results
-// to JSON with a command or command result.
-// Therefore there is no need to do additional job here,
-// so we use identity functions for serialization.
-var replicator = new Replicator({
-    serialize:   identity,
-    deserialize: identity
-});
+function createReplicator (transforms) {
+    // NOTE: we will serialize replicator results
+    // to JSON with a command or command result.
+    // Therefore there is no need to do additional job here,
+    // so we use identity functions for serialization.
+    var replicator = new Replicator({
+        serialize:   identity,
+        deserialize: identity
+    });
 
-replicator.addTransforms([
-    {
-        type: 'Function',
+    return replicator.addTransforms(transforms);
+}
 
-        shouldTransform (type) {
-            return type === 'function';
-        },
+// Replicator transforms
+var functionTransform = {
+    type: 'Function',
 
-        toSerializable (fn) {
-            var isHybrid = !!fn[compiledCode];
+    shouldTransform (type) {
+        return type === 'function';
+    },
 
-            if (isHybrid)
-                return fn[compiledCode];
+    toSerializable (fn) {
+        var isHybrid = !!fn[compiledCode];
 
-            return compileFunctionArgumentOfHybridFunction(fn.toString(), DEFAULT_EXECUTION_CALLSITE_NAME);
-        },
+        if (isHybrid)
+            return fn[compiledCode];
 
-        fromSerializable (fnDescriptor) {
-            if (!fnDescriptor.isHybridCode)
-                fnDescriptor.fnCode = compileHybridFunction(fnDescriptor.fnCode, {}, '');
+        return compileFunctionArgumentOfHybridFunction(fn.toString(), DEFAULT_EXECUTION_CALLSITE_NAME);
+    },
 
-            return buildHybridFunctionInstance(fnDescriptor.fnCode, null, DEFAULT_EXECUTION_CALLSITE_NAME);
-        }
+    fromSerializable (fnDescriptor) {
+        if (!fnDescriptor.isHybridCode)
+            fnDescriptor.fnCode = compileHybridFunction(fnDescriptor.fnCode, {}, '');
+
+        return buildHybridFunctionInstance(fnDescriptor.fnCode, false, null, DEFAULT_EXECUTION_CALLSITE_NAME);
     }
-]);
+};
+
+
+// Replicators
+var replicatorForHybrid   = createReplicator([functionTransform]);
+var replicatorForSelector = createReplicator([functionTransform]);
 
 
 function resolveContextTestRun (executionCallsiteName) {
@@ -57,10 +65,11 @@ function resolveContextTestRun (executionCallsiteName) {
     return testRun;
 }
 
-function buildHybridFunctionInstance (fnCode, boundTestRun, executionCallsiteName) {
+function buildHybridFunctionInstance (fnCode, isSelector, boundTestRun, executionCallsiteName) {
     var hybridFn = function __$$hybridFunction$$ () {
-        var testRun = boundTestRun || resolveContextTestRun(executionCallsiteName);
-        var args    = [];
+        var testRun    = boundTestRun || resolveContextTestRun(executionCallsiteName);
+        var replicator = isSelector ? replicatorForSelector : replicatorForHybrid;
+        var args       = [];
 
         // OPTIMIZATION: don't leak `arguments` object.
         for (var i = 0; i < arguments.length; i++)
@@ -68,7 +77,7 @@ function buildHybridFunctionInstance (fnCode, boundTestRun, executionCallsiteNam
 
         args = replicator.encode(args);
 
-        var command  = new ExecuteHybridFunctionCommand(fnCode, args);
+        var command  = new ExecuteHybridFunctionCommand(fnCode, args, isSelector);
         var callsite = getCallsite(executionCallsiteName);
 
         // NOTE: don't use async/await here to enable
@@ -86,7 +95,7 @@ function buildHybridFunctionInstance (fnCode, boundTestRun, executionCallsiteNam
         if (!t || !(t.testRun instanceof TestRun))
             throw new APIError('bindTestRun', MESSAGE.invalidHybridTestRunBinding);
 
-        return buildHybridFunctionInstance(fnCode, t.testRun, executionCallsiteName);
+        return buildHybridFunctionInstance(fnCode, isSelector, t.testRun, executionCallsiteName);
     };
 
     return hybridFn;
@@ -109,5 +118,5 @@ export default function createHybridFunction (fn, opts) {
 
     var fnCode = compileHybridFunction(fn.toString(), opts.dependencies, opts.callsiteNames.instantiation);
 
-    return buildHybridFunctionInstance(fnCode, opts.boundTestRun, opts.callsiteNames.execution);
+    return buildHybridFunctionInstance(fnCode, opts.isSelector, opts.boundTestRun, opts.callsiteNames.execution);
 }
