@@ -1,9 +1,12 @@
-import testCafeCore from '../../deps/testcafe-core';
+import {
+    positionUtils
+} from '../../deps/testcafe-core';
+import { fromPoint as getElementFromPoint } from '../get-element';
 import MoveAutomation from '../playback/move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import { getMoveAutomationOffsets } from '../../utils/mouse';
-
-var positionUtils = testCafeCore.positionUtils;
+import * as mouseUtils from '../../utils/mouse';
+import AUTOMATION_ERROR_TYPES from '../errors';
 
 
 export default class HoverAutomation {
@@ -39,10 +42,23 @@ export default class HoverAutomation {
         return moveAutomation.run();
     }
 
+    _checkTopElementVisibility () {
+        var screenPoint     = mouseUtils.getAutomationPoint(this.element, this.offsetX, this.offsetY);
+        var point           = mouseUtils.convertToClient(this.element, screenPoint);
+        var expectedElement = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY) ?
+                              this.element : null;
+
+        var topElement = getElementFromPoint(point.x, point.y, expectedElement);
+
+        if (!topElement)
+            throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
+    }
+
     run () {
         var moveArguments = this._getMoveArguments();
 
-        return this._move(moveArguments);
+        return this._move(moveArguments)
+            .then(() => this._checkTopElementVisibility());
     }
 }
 

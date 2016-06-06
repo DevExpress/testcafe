@@ -4,6 +4,7 @@ import { fromPoint as getElementFromPoint } from '../get-element';
 import { ClickOptions } from '../../../../test-run/commands/options';
 import ClickAutomation from '../playback/click';
 import * as mouseUtils from '../../utils/mouse';
+import AUTOMATION_ERROR_TYPES from '../errors';
 
 var extend         = hammerhead.utils.extend;
 var browserUtils   = hammerhead.utils.browser;
@@ -60,11 +61,14 @@ export default class DblClickAutomation {
         var y          = point ? point.y : this.eventArgs.point.y;
         var topElement = getElementFromPoint(x, y, expectedElement);
 
+        if (!topElement)
+            throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
+
         return {
             screenPoint: screenPoint || this.eventArgs.screenPoint,
             point:       point || this.eventArgs.point,
             options:     options || this.eventArgs.options,
-            element:     topElement || this.element
+            element:     topElement
         };
     }
 

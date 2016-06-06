@@ -132,7 +132,7 @@ $(document).ready(function () {
                 callbackFunction();
             };
             actions();
-            var timeoutId        = setTimeout(function () {
+            var timeoutId = setTimeout(function () {
                 callbackFunction = function () {
                 };
                 ok(false, 'Timeout is exceeded');
@@ -613,8 +613,8 @@ $(document).ready(function () {
     });
 
     asyncTest('double click in the same position', function () {
-        var clicksCount     = 0,
-            el              = $el[0];
+        var clicksCount = 0,
+            el          = $el[0];
         $el.click(function () {
             clicksCount++;
         });
@@ -712,10 +712,10 @@ $(document).ready(function () {
                         divClicked = true;
                     });
                 $el.css({
-                    marginTop:  '10px',
-                    marginLeft: '10px',
-                    position:   'relative'
-                })
+                        marginTop:  '10px',
+                        marginLeft: '10px',
+                        position:   'relative'
+                    })
                     .click(function () {
                         btnClicked = true;
                     })
@@ -737,21 +737,23 @@ $(document).ready(function () {
             $container  = $('<div></div>')
                 .addClass(TEST_ELEMENT_CLASS)
                 .css({
-                    width:    100,
-                    height:   100,
-                    overflow: 'hidden'
+                    width:      100,
+                    height:     100,
+                    overflow:   'hidden',
+                    border:     '1px solid green',
+                    marginLeft: 50
                 })
                 .appendTo('body'),
 
             $button     = $('<button>Button</button>')
                 .css({
                     position: 'relative',
-                    left:     -5200
-                })
-                .click(function () {
-                    clickRaised = true;
+                    left:     -60
                 }).appendTo($container);
 
+        $(document).click(function () {
+            clickRaised = true;
+        });
 
         runAsyncTest(
             function () {
@@ -960,12 +962,9 @@ $(document).ready(function () {
     asyncTest('T253883 - Playback - It is impossible to type a password', function () {
         $el.css({ display: 'none' });
 
-        var $label       = $('<label></label>').
-                attr('for', 'input').
-                addClass(TEST_ELEMENT_CLASS)
-                .appendTo('body'),
-            $spanInLabel = $('<span>label for input</span>').
-                addClass(TEST_ELEMENT_CLASS)
+        var $label       = $('<label></label>').attr('for', 'input').addClass(TEST_ELEMENT_CLASS)
+            .appendTo('body'),
+            $spanInLabel = $('<span>label for input</span>').addClass(TEST_ELEMENT_CLASS)
                 .appendTo($label),
             $input       = $('<input />')
                 .attr('id', 'input')
@@ -978,36 +977,6 @@ $(document).ready(function () {
             },
             function () {
                 equal(document.activeElement, $input[0]);
-            },
-            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
-        );
-    });
-
-    asyncTest('T303226 - Fixed content scrolls in IE11 while clicking on the invisible element', function () {
-        var htmlEl    = document.documentElement;
-        var oldScroll = styleUtils.getElementScroll($(htmlEl));
-        var clicked   = false;
-
-        htmlEl.style.overflow = 'hidden';
-        $el.css('marginTop', htmlEl.clientHeight + 50);
-
-        $el.click(function () {
-            clicked = true;
-        });
-
-        $el.mousedown(function (e) {
-            //NOTE: to prevent scrolling on focus event
-            e.preventDefault();
-        });
-
-        runAsyncTest(
-            function () {
-                actionsAPI.click($el);
-            },
-            function () {
-                ok(clicked);
-                deepEqual(styleUtils.getElementScroll($(htmlEl)), oldScroll);
-                htmlEl.style.overflow = '';
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );

@@ -24,6 +24,16 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "Hover on a button that is out of the visible area",
+                    "commands": [
+                        {
+                            "type": "hover",
+                            "selector": "#out-of-visible-area",
+                            "callsite": "[[Hover on a button that is out of the visible area callsite]]"
+                        }
+                    ]
                 }
             ]
         }

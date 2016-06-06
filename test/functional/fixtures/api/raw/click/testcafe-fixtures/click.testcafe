@@ -128,6 +128,20 @@
                     ]
                 },
                 {
+                    "name": "Click a button that is out of the visible area",
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector": "#out-of-visible-area",
+                            "callsite": "[[Click a button that is out of the visible area callsite]]",
+                            "options": {
+                                "offsetX": 10,
+                                "offsetY": 10
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "Incorrect action selector",
                     "commands": [
                         {
