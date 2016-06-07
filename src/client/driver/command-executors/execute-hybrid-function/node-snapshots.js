@@ -29,6 +29,7 @@ class NodeSnapshot {
         this.nodeType       = node.nodeType;
         this.childNodeCount = childNodes.length;
         this.hasChildNodes  = !!this.childNodeCount;
+        this.textContent    = node.textContent;
     }
 }
 
