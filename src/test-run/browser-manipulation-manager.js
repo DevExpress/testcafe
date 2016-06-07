@@ -1,10 +1,6 @@
 import uuid from 'uuid';
-import { resize as resizeWindow } from 'testcafe-browser-natives';
+import { resize as resizeWindow, getViewportSize } from 'testcafe-browser-natives';
 import SCREENSHOTS_WARNING_MESSAGES from '../runner/screenshots/warning-messages';
-
-
-const PORTRAIT_ORIENTATION  = 'portrait';
-const LANDSCAPE_ORIENTATION = 'landscape';
 
 
 export default class BrowserManipulationManager {
@@ -46,7 +42,10 @@ export default class BrowserManipulationManager {
     }
 
     static async resizeWindowToFitDevice (windowId, currentWidth, currentHeight, device, portrait) {
-        return await resizeWindow(windowId, currentWidth, currentHeight, device,
-            portrait ? PORTRAIT_ORIENTATION : LANDSCAPE_ORIENTATION);
+        var { landscapeWidth, portraitWidth } = getViewportSize(device);
+        var width  = portrait ? portraitWidth : landscapeWidth;
+        var height = portrait ? landscapeWidth : portraitWidth;
+
+        return await resizeWindow(windowId, currentWidth, currentHeight, width, height);
     }
 }

@@ -1,5 +1,6 @@
-var config = require('../../../../config.js');
-var expect = require('chai').expect;
+var expect                     = require('chai').expect;
+var config                     = require('../../../../config.js');
+var errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 
 
 if (!config.isTravisTask) {
@@ -17,17 +18,18 @@ if (!config.isTravisTask) {
                     .catch(function (errs) {
                         expect(errs[0]).to.contains('The height argument is expected to be a positive integer, but it was -5.');
                         expect(errs[0]).to.contains(
-                            '40 |    expect(await getWindowWidth()).equals(newWidth); ' +
-                            '41 |    expect(await getWindowHeight()).equals(newHeight); ' +
-                            '42 |}); ' +
-                            '43 | ' +
-                            '44 |test(\'Incorrect action height argument\', async t => {' +
-                            ' > 45 |    await t.resizeWindow(500, -5); ' +
-                            '46 |}); ' +
-                            '47 | ' +
-                            '48 |test(\'Resize the window to fit a device\', async t => { ' +
-                            '49 |    await t.resizeWindowToFitDevice(\'iPhone\');'
+                            '51 |test(\'Incorrect action height argument\', async t => {' +
+                            ' > 52 |    await t.resizeWindow(500, -5);'
                         );
+                    });
+            });
+
+            it('Should fail when a js-error appears during resizeWindow execution', function () {
+                return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window leads to js-error', { shouldFail: true })
+                    .catch(function (errs) {
+                        errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/api/es-next/resize-window/pages/index.html":', 0);
+                        errorInEachBrowserContains(errs, 'Resize error', 0);
+                        errorInEachBrowserContains(errs, '> 77 |    await t.resizeWindow(500, 500);', 0);
                     });
             });
         });
@@ -49,14 +51,18 @@ if (!config.isTravisTask) {
                     .catch(function (errs) {
                         expect(errs[0]).to.contains('The device argument specifies an unsupported iPhone555 device. For a list of supported devices, refer to "http://viewportsizes.com"');
                         expect(errs[0]).to.contains(
-                            '58 |    expect(await getWindowWidth()).equals(iPhoneSize.height); ' +
-                            '59 |    expect(await getWindowHeight()).equals(iPhoneSize.width); ' +
-                            '60 |}); ' +
-                            '61 | ' +
-                            '62 |test(\'Incorrect action device argument\', async t => {' +
-                            ' > 63 |    await t.resizeWindowToFitDevice(\'iPhone555\'); ' +
-                            '64 |});'
+                            '70 |test(\'Incorrect action device argument\', async t => {' +
+                            ' > 71 |    await t.resizeWindowToFitDevice(\'iPhone555\'); '
                         );
+                    });
+            });
+
+            it('Should fail when a js-error appears during resizeWindowToFitDevice execution', function () {
+                return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window to fit a device leads to js-error', { shouldFail: true })
+                    .catch(function (errs) {
+                        errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/api/es-next/resize-window/pages/index.html":', 0);
+                        errorInEachBrowserContains(errs, 'Resize error', 0);
+                        errorInEachBrowserContains(errs, '> 83 |    await t.resizeWindowToFitDevice(\'iPhone\');', 0);
                     });
             });
         });

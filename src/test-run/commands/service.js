@@ -2,8 +2,9 @@ import TYPE from './type';
 
 // Commands
 export class PrepareBrowserManipulationCommand {
-    constructor () {
-        this.type = TYPE.prepareBrowserManipulation;
+    constructor (manipulationCommandType) {
+        this.type                    = TYPE.prepareBrowserManipulation;
+        this.manipulationCommandType = manipulationCommandType;
     }
 }
 
