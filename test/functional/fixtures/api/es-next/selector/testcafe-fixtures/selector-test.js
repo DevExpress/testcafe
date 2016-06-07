@@ -82,7 +82,7 @@ test('SVGElement snapshot basic properties', async () => {
     expect(el.classNames).eql(['svg1', 'svg2']);
 });
 
-test('Input-specific element snapshots properties', async t => {
+test('Input-specific element snapshot properties', async t => {
     let el = await getElementById('textInput');
 
     expect(el.focused).to.be.false;
@@ -110,4 +110,10 @@ test('Input-specific element snapshots properties', async t => {
     expect(el.focused).to.be.true;
     expect(el.value).eql('on');
     expect(el.checked).to.be.true;
+});
+
+test('`innerText` element snapshot property', async () => {
+    const el = await getElementById('htmlElementWithInnerText');
+
+    expect(el.innerText).eql('Hey\nyo test ');
 });
