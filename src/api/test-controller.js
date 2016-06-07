@@ -2,7 +2,7 @@ import Promise from 'pinkie';
 import { identity } from 'lodash';
 import { MissingAwaitError } from '../errors/test-run';
 import getCallsite from '../errors/get-callsite';
-import createHybridFunction from './common/hybrid';
+import createHybridFunction from './hybrid-functions';
 
 import {
     ClickCommand,

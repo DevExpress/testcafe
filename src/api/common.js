@@ -1,4 +1,4 @@
-import createHybridFunction from './hybrid';
+import createHybridFunction from './hybrid-functions';
 
 export default {
     Hybrid (fn, dependencies) {

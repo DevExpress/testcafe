@@ -2,12 +2,12 @@ import { identity } from 'lodash';
 import Replicator from 'replicator';
 import testRunTracker from './test-run-tracker';
 import compiledCode from './compiled-code-symbol';
-import TestRun from '../../../test-run';
-import { compileHybridFunction, compileFunctionArgumentOfHybridFunction } from '../../../compiler/es-next/hybrid-function';
-import { ExecuteHybridFunctionCommand } from '../../../test-run/commands';
-import { APIError } from '../../../errors/runtime';
-import MESSAGE from '../../../errors/runtime/message';
-import getCallsite from '../../../errors/get-callsite';
+import TestRun from '../../test-run';
+import { compileHybridFunction, compileFunctionArgumentOfHybridFunction } from '../../compiler/es-next/hybrid-function';
+import { ExecuteHybridFunctionCommand } from '../../test-run/commands';
+import { APIError } from '../../errors/runtime';
+import MESSAGE from '../../errors/runtime/message';
+import getCallsite from '../../errors/get-callsite';
 
 var DEFAULT_EXECUTION_CALLSITE_NAME = '__$$hybridFunction$$';
 
@@ -41,11 +41,8 @@ var functionTransform = {
         return compileFunctionArgumentOfHybridFunction(fn.toString(), DEFAULT_EXECUTION_CALLSITE_NAME);
     },
 
-    fromSerializable (fnDescriptor) {
-        if (!fnDescriptor.isHybridCode)
-            fnDescriptor.fnCode = compileHybridFunction(fnDescriptor.fnCode, {}, '');
-
-        return buildHybridFunctionInstance(fnDescriptor.fnCode, false, null, DEFAULT_EXECUTION_CALLSITE_NAME);
+    fromSerializable () {
+        return void 0;
     }
 };
 

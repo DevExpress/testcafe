@@ -5,8 +5,6 @@ import evalFunction from './eval-function';
 import { NodeSnapshot, ElementSnapshot } from './node-snapshots';
 import { UncaughtErrorInHybridFunctionCode, DomNodeHybridResultError } from '../../../../errors/test-run';
 
-const HYBRID_COMPILED_CODE = '[[hybridCompiledCode]]';
-
 // NOTE: save original ctors because they may be overwritten by use code
 var Node       = window.Node;
 var Promise    = hammerhead.Promise;
@@ -33,22 +31,12 @@ var functionTransform = {
         return type === 'function';
     },
 
-    toSerializable (fn) {
-        return {
-            isHybridCode: !!fn[HYBRID_COMPILED_CODE],
-            fnCode:       fn[HYBRID_COMPILED_CODE] || fn.toString()
-        };
+    toSerializable () {
+        return '';
     },
 
     fromSerializable (fnCode) {
-        // NOTE: all functions that come to the client are hybrid functions
-        var fn = evalFunction(fnCode);
-
-        // NOTE: store hybrid function code to avoid recompilation
-        // if it will be used later as a return value.
-        fn[HYBRID_COMPILED_CODE] = fnCode;
-
-        return fn;
+        return evalFunction(fnCode);
     }
 };
 

@@ -1,4 +1,4 @@
-describe.only('[API] Selector', function () {
+describe('[API] Selector', function () {
     it('Should provide basic properties in HTMLElement snapshot', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'HTMLElement snapshot basic properties');
     });

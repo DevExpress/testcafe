@@ -1,7 +1,7 @@
 import TestController from '../test-controller';
 import getCallsite from '../../errors/get-callsite';
 import { APIError } from '../../errors/runtime';
-import hybridFnTestRunTracker from '../common/hybrid/test-run-tracker';
+import hybridFnTestRunTracker from '../hybrid-functions/test-run-tracker';
 
 import {
     UncaughtErrorInTestCode,

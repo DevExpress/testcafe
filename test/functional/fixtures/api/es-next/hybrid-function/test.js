@@ -162,15 +162,11 @@ describe('[API] Hybrid function', function () {
         return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Hybrid function with hybrid argument');
     });
 
-    it('Should allow function as return value', function () {
-        return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'Function return value');
-    });
-
     it('Should raise error if DOM node is returned', function () {
         return runTests('./testcafe-fixtures/hybrid-fn-test.js', 'DOM node return value', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('Regular Hybrid functions cannot return DOM elements. Use Selector functions for this purpose.');
-                expect(errs[0]).contains(' > 238 |    await getSomeNodes();');
+                expect(errs[0]).contains(' > 223 |    await getSomeNodes();');
             });
     });
 

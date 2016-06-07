@@ -1,4 +1,4 @@
-import hybridFnTestRunTracker from '../../../../lib/api/common/hybrid/test-run-tracker';
+import hybridFnTestRunTracker from '../../../../lib/api/hybrid-functions/test-run-tracker';
 
 fixture `In Promise.then()`;
 
