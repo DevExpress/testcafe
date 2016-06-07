@@ -16,7 +16,6 @@ var getTextContent = sandboxed(node => node.textContent);
 var getClassName   = sandboxed(element => element.className);
 var getInnerText   = sandboxed(element => element.innerText);
 
-
 class NodeSnapshot {
     constructor (node) {
         var childNodes = getChildNodes(node);
@@ -39,6 +38,7 @@ export class ElementSnapshot extends NodeSnapshot {
         this.attributes         = ElementSnapshot._getAttrsDictionary(element);
         this.boundingClientRect = ElementSnapshot._getBoundingClientRect(element);
         this.classNames         = ElementSnapshot._getClassNames(element);
+        this.style              = ElementSnapshot._getStyle(element);
 
         [
             'namespaceURI', 'id',
@@ -76,6 +76,19 @@ export class ElementSnapshot extends NodeSnapshot {
 
         for (var i = attrs.length - 1; i >= 0; i--)
             result[attrs[i].name] = attrs[i].value;
+
+        return result;
+    }
+
+    static _getStyle (element) {
+        var result   = {};
+        var computed = window.getComputedStyle(element);
+
+        for (var i = 0; i < computed.length; i++) {
+            var prop = computed[i];
+
+            result[prop] = computed[prop];
+        }
 
         return result;
     }

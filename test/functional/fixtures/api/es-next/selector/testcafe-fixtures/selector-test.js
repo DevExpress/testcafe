@@ -18,6 +18,12 @@ test('HTMLElement snapshot basic properties', async () => {
     expect(el.attributes['class']).eql('yo hey cool');
     expect(el.attributes['style']).contains('width: 40px; height: 30px; padding-top: 2px; padding-left: 2px;');
 
+    expect(el.style['width']).eql('40px');
+    expect(el.style['height']).eql('30px');
+    expect(el.style['padding-top']).eql('2px');
+    expect(el.style['padding-left']).eql('2px');
+    expect(el.style['display']).eql('block');
+
     expect(el.namespaceURI).eql('http://www.w3.org/1999/xhtml');
     expect(el.hasChildNodes).to.be.true;
     expect(el.childNodeCount).eql(3);
@@ -58,6 +64,9 @@ test('SVGElement snapshot basic properties', async () => {
     expect(el.attributes['height']).eql('100px');
     expect(el.attributes['class']).eql('svg1 svg2');
     expect(el.attributes['style']).to.be.a.string;
+
+    expect(el.style['display']).eql('inline');
+    expect(el.style['visibility']).eql('visible');
 
     expect(el.namespaceURI).eql('http://www.w3.org/2000/svg');
     expect(el.hasChildNodes).to.be.true;
