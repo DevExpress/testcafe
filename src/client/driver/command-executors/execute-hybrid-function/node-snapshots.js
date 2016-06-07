@@ -12,19 +12,39 @@ function sandboxed (fn) {
 
 var getAttrs       = sandboxed(element => element.attributes);
 var getChildNodes  = sandboxed(node => node.childNodes);
+var getChildren    = sandboxed(node => node.children);
 var getTextContent = sandboxed(node => node.textContent);
 var getClassName   = sandboxed(element => element.className);
 var getInnerText   = sandboxed(element => element.innerText);
 
-class NodeSnapshot {
+export class NodeSnapshot {
     constructor (node) {
-        var childNodes = getChildNodes(node);
+        this.nodeType    = node.nodeType;
+        this.textContent = getTextContent(node);
 
-        this.nodeType       = node.nodeType;
-        this.childNodeCount = childNodes.length;
+        this.childNodeCount = getChildNodes(node).length;
         this.hasChildNodes  = !!this.childNodeCount;
-        this.textContent    = getTextContent(node);
-        this.innerText      = getInnerText(node);
+
+        this.childElementCount = NodeSnapshot._getChildElementCount(node);
+        this.hasChildElements  = !!this.childElementCount;
+    }
+
+    static _getChildElementCount (node) {
+        var children = getChildren(node);
+
+        if (children)
+            return children.length;
+
+        // NOTE: doesn't have `children` for non-element nodes =/
+        var childElementCount = 0;
+        var childNodeCount    = node.childNodes.length;
+
+        for (var i = 0; i < childNodeCount; i++) {
+            if (node.childNodes[i].nodeType === 1)
+                childElementCount++;
+        }
+
+        return childElementCount;
     }
 }
 
@@ -39,6 +59,7 @@ export class ElementSnapshot extends NodeSnapshot {
         this.boundingClientRect = ElementSnapshot._getBoundingClientRect(element);
         this.classNames         = ElementSnapshot._getClassNames(element);
         this.style              = ElementSnapshot._getStyle(element);
+        this.innerText          = getInnerText(element);
 
         [
             'namespaceURI', 'id',

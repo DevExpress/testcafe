@@ -2,15 +2,13 @@ import hammerhead from '../../deps/hammerhead';
 import DriverStatus from '../../status';
 import Replicator from 'replicator';
 import evalFunction from './eval-function';
-import { ElementSnapshot } from './node-snapshots';
+import { NodeSnapshot, ElementSnapshot } from './node-snapshots';
 import { UncaughtErrorInHybridFunctionCode, DomNodeHybridResultError } from '../../../../errors/test-run';
 
 const HYBRID_COMPILED_CODE = '[[hybridCompiledCode]]';
 
 // NOTE: save original ctors because they may be overwritten by use code
-var Node    = window.Node;
-var Element = window.Element;
-
+var Node       = window.Node;
 var Promise    = hammerhead.Promise;
 var identityFn = val => val;
 
@@ -71,8 +69,7 @@ var nodeTransformForSelector = {
     },
 
     toSerializable (node) {
-        if (node instanceof Element)
-            return new ElementSnapshot(node);
+        return node.nodeType === 1 ? new ElementSnapshot(node) : new NodeSnapshot(node);
     }
 };
 
