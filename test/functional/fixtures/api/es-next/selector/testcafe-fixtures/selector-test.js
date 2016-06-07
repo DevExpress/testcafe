@@ -15,7 +15,7 @@ test('HTMLElement snapshot basic properties', async () => {
     expect(el.tagName).eql('div');
 
     expect(el.attributes['id']).eql('htmlElement');
-    expect(el.attributes['class']).eql('yo hey');
+    expect(el.attributes['class']).eql('yo hey cool');
     expect(el.attributes['style']).contains('width: 40px; height: 30px; padding-top: 2px; padding-left: 2px;');
 
     expect(el.namespaceURI).eql('http://www.w3.org/1999/xhtml');
@@ -43,6 +43,7 @@ test('HTMLElement snapshot basic properties', async () => {
     expect(el.checked).to.be.undefined;
 
     expect(el.textContent).eql('\n    \n        42\n    \n    Yo\n');
+    expect(el.classNames).eql(['yo', 'hey', 'cool']);
 });
 
 test('SVGElement snapshot basic properties', async () => {
@@ -55,6 +56,7 @@ test('SVGElement snapshot basic properties', async () => {
     expect(el.attributes['id']).eql('svgElement');
     expect(el.attributes['width']).eql('300px');
     expect(el.attributes['height']).eql('100px');
+    expect(el.attributes['class']).eql('svg1 svg2');
     expect(el.attributes['style']).to.be.a.string;
 
     expect(el.namespaceURI).eql('http://www.w3.org/2000/svg');
@@ -77,6 +79,7 @@ test('SVGElement snapshot basic properties', async () => {
     expect(el.checked).to.be.undefined;
 
     expect(el.textContent).eql('Hey');
+    expect(el.classNames).eql(['svg1', 'svg2']);
 });
 
 test('Input-specific element snapshots properties', async t => {

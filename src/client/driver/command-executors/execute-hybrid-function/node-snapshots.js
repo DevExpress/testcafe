@@ -20,7 +20,10 @@ var getElementAttrs = sandboxed(element => {
     return result;
 });
 
-var getChildNodes = sandboxed(node => node.childNodes);
+var getChildNodes  = sandboxed(node => node.childNodes);
+var getTextContent = sandboxed(node => node.textContent);
+var getClassName   = sandboxed(element => element.className);
+
 
 class NodeSnapshot {
     constructor (node) {
@@ -29,7 +32,7 @@ class NodeSnapshot {
         this.nodeType       = node.nodeType;
         this.childNodeCount = childNodes.length;
         this.hasChildNodes  = !!this.childNodeCount;
-        this.textContent    = node.textContent;
+        this.textContent    = getTextContent(node);
     }
 }
 
@@ -37,19 +40,12 @@ export class ElementSnapshot extends NodeSnapshot {
     constructor (element) {
         super(element);
 
-        this.tagName    = element.tagName.toLowerCase();
-        this.attributes = getElementAttrs(element);
-        this.visible    = positionUtils.isElementVisible(element);
-        this.focused    = document.activeElement === element;
-
-        var rect = element.getBoundingClientRect();
-
-        this.boundingClientRect = {
-            left:   rect.left,
-            top:    rect.top,
-            width:  rect.width,
-            height: rect.height
-        };
+        this.tagName            = element.tagName.toLowerCase();
+        this.attributes         = getElementAttrs(element);
+        this.visible            = positionUtils.isElementVisible(element);
+        this.focused            = document.activeElement === element;
+        this.boundingClientRect = ElementSnapshot._getBoundingClientRect(element);
+        this.classNames         = ElementSnapshot._getClassNames(element);
 
         [
             'namespaceURI', 'id',
@@ -58,5 +54,26 @@ export class ElementSnapshot extends NodeSnapshot {
             'offsetWidth', 'offsetHeight', 'offsetLeft', 'offsetTop',
             'clientWidth', 'clientHeight', 'clientLeft', 'clientTop'
         ].forEach(prop => this[prop] = element[prop]);
+    }
+
+    static _getBoundingClientRect (element) {
+        var rect = element.getBoundingClientRect();
+
+        return {
+            left:   rect.left,
+            top:    rect.top,
+            width:  rect.width,
+            height: rect.height
+        };
+    }
+
+    static _getClassNames (element) {
+        var className = getClassName(element);
+
+        className = className.animVal || className;
+
+        return className
+            .replace(/^\s+|\s+$/g, '')
+            .split(/\s+/g);
     }
 }
