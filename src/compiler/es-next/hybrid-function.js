@@ -2,7 +2,7 @@ import hammerhead from 'testcafe-hammerhead';
 import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
 import { noop, escapeRegExp as escapeRe } from 'lodash';
 import loadBabelLibs from './load-babel-libs';
-import compiledCode from '../../api/hybrid-functions/compiled-code-symbol';
+import { compiledCodeSymbol } from '../../hybrid-functions/common';
 import NODE_VER from '../../utils/node-version';
 import { APIError } from '../../errors/runtime';
 import getCallsite from '../../errors/get-callsite';
@@ -102,7 +102,7 @@ function getDependenciesCode (dependencies, instantiationCallsiteName) {
     return Object
         .keys(dependencies)
         .reduce((code, name) => {
-            var dependencyCode = dependencies[name][compiledCode];
+            var dependencyCode = dependencies[name][compiledCodeSymbol];
 
             if (!dependencyCode)
                 throw new APIError(instantiationCallsiteName, MESSAGE.hybridDependencyIsNotAHybrid, name);

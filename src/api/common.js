@@ -1,22 +1,13 @@
-import createHybridFunction from './hybrid-functions';
+import ClientHybridFunction from '../hybrid-functions/client-function';
+import SelectorHybridFunction from '../hybrid-functions/selector';
 
 export default {
     Hybrid (fn, dependencies) {
-        return createHybridFunction(fn, {
-            dependencies:  dependencies,
-            isSelector:    false,
-            boundTestRun:  null,
-            callsiteNames: { instantiation: 'Hybrid' }
-        });
+        return new ClientHybridFunction(fn, dependencies, null, { instantiation: 'Hybrid' });
     },
 
     Selector (fn, dependencies) {
-        return createHybridFunction(fn, {
-            dependencies:  dependencies,
-            isSelector:    true,
-            boundTestRun:  null,
-            callsiteNames: { instantiation: 'Selector' }
-        });
+        return new SelectorHybridFunction(fn, dependencies, null, { instantiation: 'Selector' });
     }
 };
 

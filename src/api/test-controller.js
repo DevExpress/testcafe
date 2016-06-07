@@ -2,7 +2,7 @@ import Promise from 'pinkie';
 import { identity } from 'lodash';
 import { MissingAwaitError } from '../errors/test-run';
 import getCallsite from '../errors/get-callsite';
-import createHybridFunction from './hybrid-functions';
+import ClientHybridFunction from '../hybrid-functions/client-function';
 
 import {
     ClickCommand,
@@ -201,18 +201,12 @@ export default class TestController {
     }
 
     _eval$ (fn, dependencies) {
-        var hybridFn = createHybridFunction(fn, {
-            dependencies: dependencies,
-            isSelector:   false,
-            boundTestRun: this.testRun,
-
-            callsiteNames: {
-                instantiation: 'eval',
-                execution:     'eval'
-            }
+        var clientFn = new ClientHybridFunction(fn, dependencies, this.testRun, {
+            instantiation: 'eval',
+            execution:     'eval'
         });
 
-        return hybridFn();
+        return clientFn();
     }
 }
 
