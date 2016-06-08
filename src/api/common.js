@@ -1,9 +1,9 @@
-import ClientHybridFunction from '../hybrid-functions/client-function';
-import SelectorHybridFunction from '../hybrid-functions/selector';
+import HybridFunction from '../hybrid-function';
+import SelectorHybridFunction from '../hybrid-function/selector';
 
 export default {
     Hybrid (fn, dependencies) {
-        return new ClientHybridFunction(fn, dependencies, null, { instantiation: 'Hybrid' });
+        return new HybridFunction(fn, dependencies, null, { instantiation: 'Hybrid' });
     },
 
     Selector (fn, dependencies) {

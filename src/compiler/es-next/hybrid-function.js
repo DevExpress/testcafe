@@ -2,7 +2,7 @@ import hammerhead from 'testcafe-hammerhead';
 import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
 import { noop, escapeRegExp as escapeRe } from 'lodash';
 import loadBabelLibs from './load-babel-libs';
-import { compiledCodeSymbol } from '../../hybrid-functions/common';
+import { compiledCodeSymbol } from '../../hybrid-function/common';
 import NODE_VER from '../../utils/node-version';
 import { APIError } from '../../errors/runtime';
 import getCallsite from '../../errors/get-callsite';

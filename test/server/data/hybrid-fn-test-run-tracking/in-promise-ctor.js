@@ -1,4 +1,4 @@
-import hybridFnTestRunTracker from '../../../../lib/hybrid-functions/test-run-tracker';
+import hybridFnTestRunTracker from '../../../../lib/hybrid-function/test-run-tracker';
 
 fixture `In Promise ctor`;
 

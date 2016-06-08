@@ -1,18 +1,19 @@
 import testRunTracker from './test-run-tracker';
 import { compiledCodeSymbol, DEFAULT_EXECUTION_CALLSITE_NAME } from './common';
+import { replicatorForHybrid } from './replicators';
+import { ExecuteHybridFunctionCommand } from '../test-run/commands';
 import TestRun from '../test-run';
 import { compileHybridFunction } from '../compiler/es-next/hybrid-function';
 import { APIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import getCallsite from '../errors/get-callsite';
 
-export default class HybridFunctionBase {
+export default class HybridFunction {
     constructor (fn, dependencies, boundTestRun, callsiteNames) {
         this.callsiteNames = {
             instantiation: callsiteNames.instantiation,
             execution:     callsiteNames.execution || DEFAULT_EXECUTION_CALLSITE_NAME
         };
-
 
         this._validateDependencies(dependencies);
 
@@ -84,16 +85,21 @@ export default class HybridFunctionBase {
         return executableFn;
     }
 
-    // Abstract methods
-    _getFnCode (/* fn */) {
-        throw new Error('Not implemented');
+    // Descendants override points
+    _getFnCode (fn) {
+        var fnType = typeof fn;
+
+        if (fnType !== 'function')
+            throw new APIError(this.callsiteNames.instantiation, MESSAGE.hybridFunctionCodeIsNotAFunction, fnType);
+
+        return fn.toString();
+    }
+
+    _createExecutionTestRunCommand (args) {
+        return new ExecuteHybridFunctionCommand(this.compiledFnCode, args);
     }
 
     _getReplicator () {
-        throw new Error('Not implemented');
-    }
-
-    _createExecutionTestRunCommand (/* args */) {
-        throw new Error('Not implemented');
+        return replicatorForHybrid;
     }
 }
