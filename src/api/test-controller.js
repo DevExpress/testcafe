@@ -201,12 +201,12 @@ export default class TestController {
     }
 
     _eval$ (fn, dependencies) {
-        var clientFn = new HybridFunction(fn, dependencies, this.testRun, {
+        var hybridFn = new HybridFunction(fn, dependencies, this.testRun, {
             instantiation: 'eval',
             execution:     'eval'
         });
 
-        return clientFn();
+        return hybridFn();
     }
 }
 

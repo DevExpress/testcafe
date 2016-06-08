@@ -1,4 +1,4 @@
-import { Hybrid } from 'testcafe';
+import { ClientFunction } from 'testcafe';
 import { parse } from 'useragent';
 
 
@@ -7,7 +7,7 @@ fixture `Take a screenshot`
     .page `http://localhost:3000/api/es-next/take-screenshot/pages/index.html`;
 
 
-const getUserAgent = Hybrid(() => navigator.userAgent.toString());
+const getUserAgent = ClientFunction(() => navigator.userAgent.toString());
 
 
 test('Take a screenshot', async t => {

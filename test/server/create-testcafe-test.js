@@ -87,6 +87,6 @@ describe('TestCafe factory function', function () {
         expect(createTestCafe.pluginTestingUtils).to.be.an.object;
         expect(createTestCafe.embeddingUtils).to.be.an.object;
         expect(createTestCafe.Role).eql(commonAPI.Role);
-        expect(createTestCafe.Hybrid).eql(commonAPI.Hybrid);
+        expect(createTestCafe.ClientFunction).eql(commonAPI.ClientFunction);
     });
 });

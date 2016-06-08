@@ -1,18 +1,18 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
-import { Hybrid } from 'testcafe';
+import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
 
 fixture `Select`
     .page `http://localhost:3000/api/es-next/select-text/pages/index.html`;
 
-const getSelectionByElementId = Hybrid(id => {
+const getSelectionByElementId = ClientFunction(id => {
     var element = document.getElementById(id);
 
     return { start: element.selectionStart, end: element.selectionEnd };
 });
 
-const checkEditableContentSelection = Hybrid(() => {
+const checkEditableContentSelection = ClientFunction(() => {
     var selection = window.getSelection();
     var div       = document.getElementById('div');
     var startNode = div.childNodes[1].childNodes[0];

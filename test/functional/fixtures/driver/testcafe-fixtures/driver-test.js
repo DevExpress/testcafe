@@ -1,5 +1,5 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
-import { Hybrid } from 'testcafe';
+import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
 fixture `Driver`
@@ -16,8 +16,8 @@ test('Click and wait for page unloading', async t => {
 });
 
 test('Mixed execution order', async t => {
-    const getLocation = Hybrid(() => document.location.toString());
-    const getHostname = Hybrid(() => document.location.hostname);
+    const getLocation = ClientFunction(() => document.location.toString());
+    const getHostname = ClientFunction(() => document.location.hostname);
 
     const clickPromise = t.click('#btn1');
 

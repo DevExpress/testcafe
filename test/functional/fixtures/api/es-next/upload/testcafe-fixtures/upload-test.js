@@ -1,11 +1,11 @@
 import { expect } from 'chai';
-import { Hybrid } from 'testcafe';
+import { ClientFunction } from 'testcafe';
 
 
 fixture `Upload`
     .page `http://localhost:3000/api/es-next/upload/pages/index.html`;
 
-const getUploadedText = Hybrid(() => document.getElementById('uploadedContent').textContent.trim());
+const getUploadedText = ClientFunction(() => document.getElementById('uploadedContent').textContent.trim());
 
 test('Upload the file', async t => {
     await t

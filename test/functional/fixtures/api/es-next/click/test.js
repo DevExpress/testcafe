@@ -53,7 +53,7 @@ describe('[API] t.click()', function () {
                 expect(errs[0]).to.contains(
                     '7 |    .page `http://localhost:3000/api/es-next/click/pages/index.html`;' +
                     ' 8 |' +
-                    ' 9 |const getClickOffset = Hybrid(() => window.clickOffset);' +
+                    ' 9 |const getClickOffset = ClientFunction(() => window.clickOffset);' +
                     ' 10 |' +
                     ' 11 |test(\'Incorrect action selector\', async t => {' +
                     ' > 12 |    await t.click(123);' +

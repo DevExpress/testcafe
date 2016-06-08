@@ -1,11 +1,11 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
-import { Hybrid } from 'testcafe';
+import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
 fixture `t.eval`
     .page `http://localhost:3000/api/es-next/eval/pages/index.html`;
 
-const getById = Hybrid(id => document.getElementById(id));
+const getById = ClientFunction(id => document.getElementById(id));
 
 test('Get UA', async t => {
     throw await t.eval(() => navigator.userAgent);
