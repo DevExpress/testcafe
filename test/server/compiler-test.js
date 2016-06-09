@@ -581,7 +581,7 @@ describe('Compiler', function () {
         });
 
 
-        it('Should raise an error if ClientFunction function not able to resolve test run', function () {
+        it('Should raise an error if ClientFunction not able to resolve test run', function () {
             var testfile = resolve('test/server/data/test-suites/client-fn-cant-resolve-test-run/testfile.js');
 
             return compile(testfile)
@@ -611,7 +611,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise an error if ClientFunction function uses async function', function () {
+        it('Should raise an error if ClientFunction uses async function', function () {
             var testfile = resolve('test/server/data/test-suites/async-function-in-client-fn/testfile.js');
 
             return compile(testfile)
@@ -638,7 +638,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise an error if ClientFunction function uses generator', function () {
+        it('Should raise an error if ClientFunction uses generator', function () {
             var testfile = resolve('test/server/data/test-suites/generator-in-client-fn/testfile.js');
 
             return compile(testfile)
@@ -666,7 +666,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise an error if ClientFunction function dependencies is not an object', function () {
+        it('Should raise an error if ClientFunction dependencies is not an object', function () {
             var testfile = resolve('test/server/data/test-suites/client-fn-deps-not-object/testfile.js');
 
             return compile(testfile)
@@ -689,7 +689,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise an error if ClientFunction function dependency is not a hybrid function', function () {
+        it('Should raise an error if ClientFunction dependency is not a hybrid function', function () {
             var testfile = resolve('test/server/data/test-suites/client-fn-dep-not-hybrid/testfile.js');
 
             return compile(testfile)
