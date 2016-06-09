@@ -1,6 +1,14 @@
-import { processScript } from '../../deps/hammerhead';
+import { processScript, PROCESSING_COMMENTS } from '../../deps/hammerhead';
 import { positionUtils } from '../../deps/testcafe-core';
 import evalFunction from './eval-function';
+
+// NOTE: taken from https://github.com/benjamingr/RegExp.escape
+function escapeRe (str) {
+    return str.replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
+const SCRIPT_RE     = new RegExp(`${escapeRe(PROCESSING_COMMENTS.scriptStart)}.*?${escapeRe(PROCESSING_COMMENTS.scriptEnd)}`, 'g');
+const STYLESHEET_RE = new RegExp(`${escapeRe(PROCESSING_COMMENTS.stylesheetStart)}.*?${escapeRe(PROCESSING_COMMENTS.stylesheetEnd)}`, 'g');
 
 function sandboxed (fn) {
     var code = `(${fn.toString()})`;
@@ -59,7 +67,7 @@ export class ElementSnapshot extends NodeSnapshot {
         this.boundingClientRect = ElementSnapshot._getBoundingClientRect(element);
         this.classNames         = ElementSnapshot._getClassNames(element);
         this.style              = ElementSnapshot._getStyle(element);
-        this.innerText          = getInnerText(element);
+        this.innerText          = ElementSnapshot._getInnerText(element);
 
         [
             'namespaceURI', 'id',
@@ -114,5 +122,15 @@ export class ElementSnapshot extends NodeSnapshot {
         }
 
         return result;
+    }
+
+    static _getInnerText (element) {
+        var innerText = getInnerText(element);
+
+        // NOTE: IE includes scripts and stylesheets in innerText
+        return innerText
+            .replace(SCRIPT_RE, '')
+            .replace(STYLESHEET_RE, '')
+            .replace(/\r\n/g, '\n');
     }
 }

@@ -12,9 +12,7 @@ describe('[API] Selector', function () {
     });
 
     it('Should provide `innerText` property in element snapshots', function () {
-        // TODO: enable tests for IE once we have https://github.com/DevExpress/testcafe-hammerhead/issues/626
-        // resolved and `innerText` normalization implemented
-        return runTests('./testcafe-fixtures/selector-test.js', '`innerText` element snapshot property', { only: ['chrome', 'ff'] });
+        return runTests('./testcafe-fixtures/selector-test.js', '`innerText` element snapshot property');
     });
 
     it('Should provide node snapshots for non-element nodes', function () {

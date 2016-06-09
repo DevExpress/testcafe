@@ -128,7 +128,7 @@ test('Input-specific element snapshot properties', async t => {
 test('`innerText` element snapshot property', async () => {
     const el = await getElementById('htmlElementWithInnerText');
 
-    expect(el.innerText).eql('Hey\nyo test ');
+    expect(el.innerText.trim()).eql('Hey\nyo test');
 });
 
 test('Non-element node snapshots', async t => {
