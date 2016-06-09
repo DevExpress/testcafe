@@ -1,10 +1,10 @@
-import HybridFunction from './';
+import ClientFunctionFactory from './client-function-factory';
 import { replicatorForSelector } from './replicators';
 import { APIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import { ExecuteHybridFunctionCommand } from '../test-run/commands';
 
-export default class SelectorHybridFunction extends HybridFunction {
+export default class SelectorFactory extends ClientFunctionFactory {
     constructor (fn, dependencies, boundTestRun, callsiteNames) {
         super(fn, dependencies, boundTestRun, callsiteNames);
     }

@@ -8,8 +8,8 @@ import { APIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import getCallsite from '../errors/get-callsite';
 
-export default class HybridFunction {
-    constructor (fn, dependencies, boundTestRun, callsiteNames) {
+export default class ClientFunctionFactory {
+    constructor (fn, dependencies, callsiteNames) {
         this.callsiteNames = {
             instantiation: callsiteNames.instantiation,
             execution:     callsiteNames.execution || DEFAULT_EXECUTION_CALLSITE_NAME
@@ -20,8 +20,6 @@ export default class HybridFunction {
         var fnCode = this._getFnCode(fn);
 
         this.compiledFnCode = compileHybridFunction(fnCode, dependencies || {}, this.callsiteNames.instantiation);
-
-        return this._buildExecutableFunction(boundTestRun);
     }
 
     _validateDependencies (dependencies) {
@@ -41,27 +39,27 @@ export default class HybridFunction {
         return testRun;
     }
 
-    _decorateExecutableFunction (executableFn) {
-        executableFn[compiledCodeSymbol] = this.compiledFnCode;
+    _decorateFunction (clientFn) {
+        clientFn[compiledCodeSymbol] = this.compiledFnCode;
 
-        var hybrid = this;
+        var factory = this;
 
-        executableFn.bindTestRun = function bindTestRun (t) {
+        clientFn.bindTestRun = function bindTestRun (t) {
             // NOTE: we can't use strict `t instanceof TestController`
             // check due to module circular reference
             if (!t || !(t.testRun instanceof TestRun))
                 throw new APIError('bindTestRun', MESSAGE.invalidHybridTestRunBinding);
 
-            return hybrid._buildExecutableFunction(t.testRun);
+            return factory.getFunction(t.testRun);
         };
     }
 
-    _buildExecutableFunction (boundTestRun) {
-        var hybrid = this;
+    getFunction (boundTestRun) {
+        var factory = this;
 
-        var executableFn = function __$$hybridFunction$$ () {
-            var testRun    = boundTestRun || hybrid._resolveContextTestRun();
-            var replicator = hybrid._getReplicator();
+        var clientFn = function __$$hybridFunction$$ () {
+            var testRun    = boundTestRun || factory._resolveContextTestRun();
+            var replicator = factory._getReplicator();
             var args       = [];
 
             // OPTIMIZATION: don't leak `arguments` object.
@@ -70,8 +68,8 @@ export default class HybridFunction {
 
             args = replicator.encode(args);
 
-            var command  = hybrid._createExecutionTestRunCommand(args);
-            var callsite = getCallsite(hybrid.callsiteNames.execution);
+            var command  = factory._createExecutionTestRunCommand(args);
+            var callsite = getCallsite(factory.callsiteNames.execution);
 
             // NOTE: don't use async/await here to enable
             // sync errors for resolving the context test run
@@ -80,9 +78,9 @@ export default class HybridFunction {
                 .then(result => replicator.decode(result));
         };
 
-        this._decorateExecutableFunction(executableFn);
+        this._decorateFunction(clientFn);
 
-        return executableFn;
+        return clientFn;
     }
 
     // Descendants override points

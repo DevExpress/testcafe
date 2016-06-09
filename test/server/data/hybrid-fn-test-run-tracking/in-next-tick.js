@@ -1,4 +1,4 @@
-import hybridFnTestRunTracker from '../../../../lib/hybrid-function/test-run-tracker';
+import hybridFnTestRunTracker from '../../../../lib/client-functions/test-run-tracker';
 
 fixture `In nextTick`;
 
