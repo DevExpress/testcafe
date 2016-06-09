@@ -12,7 +12,7 @@ export default class SelectorHybridFunction extends HybridFunction {
     _getFnCode (fn) {
         var fnType = typeof fn;
 
-        // TODO needs it's own error and should accepts strings
+        // TODO needs its own error and should accept strings
         if (fnType !== 'function')
             throw new APIError(this.callsiteNames.instantiation, MESSAGE.hybridFunctionCodeIsNotAFunction, fnType);
 
@@ -20,7 +20,7 @@ export default class SelectorHybridFunction extends HybridFunction {
     }
 
     _createExecutionTestRunCommand (args) {
-        // TODO needs it's own command
+        // TODO needs its own command
         return new ExecuteHybridFunctionCommand(this.compiledFnCode, args, true);
     }
 

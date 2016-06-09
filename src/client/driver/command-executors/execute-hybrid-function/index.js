@@ -5,7 +5,7 @@ import evalFunction from './eval-function';
 import { NodeSnapshot, ElementSnapshot } from './node-snapshots';
 import { UncaughtErrorInHybridFunctionCode, DomNodeHybridResultError } from '../../../../errors/test-run';
 
-// NOTE: save original ctors because they may be overwritten by use code
+// NOTE: save original ctors because they may be overwritten by page code
 var Node       = window.Node;
 var Promise    = hammerhead.Promise;
 var identityFn = val => val;

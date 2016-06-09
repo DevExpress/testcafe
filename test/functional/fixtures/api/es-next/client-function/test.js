@@ -1,7 +1,7 @@
 var expect         = require('chai').expect;
 var parseUserAgent = require('useragent').parse;
 
-describe('[API] ClientFunction function', function () {
+describe('[API] ClientFunction', function () {
     it('Should be correctly dispatched to test run', function () {
         function assertUA (errs, alias, expected) {
             var ua = parseUserAgent(errs[alias][0]).toString();
@@ -25,7 +25,7 @@ describe('[API] ClientFunction function', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Hammerhead code instrumentation');
     });
 
-    it('Should raise error if ClientFunction argument is not a function', function () {
+    it('Should raise an error if ClientFunction argument is not a function', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction fn is not a function', {
             shouldFail: true,
             only:       'chrome'
@@ -38,7 +38,7 @@ describe('[API] ClientFunction function', function () {
         });
     });
 
-    it('Should raise error if ClientFunction function not able to resolve test run', function () {
+    it('Should raise an error if ClientFunction not able to resolve test run', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction fn test run is unresolvable', {
             shouldFail: true,
             only:       'chrome'
@@ -51,7 +51,7 @@ describe('[API] ClientFunction function', function () {
         });
     });
 
-    it('Should raise error if ClientFunction function contains async/await syntax', function () {
+    it('Should raise an error if ClientFunction contains async/await syntax', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Async syntax in ClientFunction', {
             shouldFail: true,
             only:       'chrome'
@@ -64,7 +64,7 @@ describe('[API] ClientFunction function', function () {
         });
     });
 
-    it('Should raise error if ClientFunction function contains generator', function () {
+    it('Should raise an error if ClientFunction contains generator', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Generator in ClientFunction', {
             shouldFail: true,
             only:       'chrome'
@@ -77,11 +77,11 @@ describe('[API] ClientFunction function', function () {
         });
     });
 
-    it('Should be able to bind test run using `.bindTestRun(t)` method', function () {
-        return runTests('./testcafe-fixtures/client-fn-test.js', 'Bind ClientFunction function', { only: 'chrome' });
+    it('Should be able to bind a test run using `.bindTestRun(t)` method', function () {
+        return runTests('./testcafe-fixtures/client-fn-test.js', 'Bind ClientFunction', { only: 'chrome' });
     });
 
-    it('Should raise error if ClientFunction bound to non-TestController object', function () {
+    it('Should raise an error if ClientFunction bound to a non-TestController object', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Invalid ClientFunction test run binding', {
             shouldFail: true,
             only:       'chrome'
@@ -102,7 +102,7 @@ describe('[API] ClientFunction function', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Babel artifacts polyfills');
     });
 
-    it('Should handle error in ClientFunction code', function () {
+    it('Should handle errors in ClientFunction code', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Error in code', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('An error occurred in hybrid function code:');
@@ -111,7 +111,7 @@ describe('[API] ClientFunction function', function () {
             });
     });
 
-    it('Should handle error in Promise in ClientFunction code', function () {
+    it('Should handle error in a Promise in ClientFunction code', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Error in Promise', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('An error occurred in hybrid function code:');
@@ -120,11 +120,11 @@ describe('[API] ClientFunction function', function () {
             });
     });
 
-    it('Should execute ClientFunction function with dependencies', function () {
+    it('Should execute ClientFunction with dependencies', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction dependencies');
     });
 
-    it('Should raise an error if ClientFunction function execution was interrupted by page unload', function () {
+    it('Should raise an error if ClientFunction execution was interrupted by page unload', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Redirect during execution', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('Hybrid function execution was interrupted by page unload.');
@@ -141,11 +141,11 @@ describe('[API] ClientFunction function', function () {
     });
 
     it('Should accept a function as an argument', function () {
-        return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction function with function argument');
+        return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction with function argument');
     });
 
     it('Should raise an error if a function argument contains async code', function () {
-        return runTests('./testcafe-fixtures/client-fn-test.js', 'Async code in function argument of ClientFunction function', {
+        return runTests('./testcafe-fixtures/client-fn-test.js', 'Async code in function argument of ClientFunction', {
             shouldFail: true,
             only:       'chrome'
         })
@@ -162,7 +162,7 @@ describe('[API] ClientFunction function', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction with hybrid argument');
     });
 
-    it('Should raise error if DOM node is returned', function () {
+    it('Should raise an error if a DOM node is returned', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'DOM node return value', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('Regular Hybrid functions cannot return DOM elements. Use Selector functions for this purpose.');

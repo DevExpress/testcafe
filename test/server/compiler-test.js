@@ -253,7 +253,7 @@ describe('Compiler', function () {
     });
 
     describe('Errors', function () {
-        it("Should raise error if the specified source file doesn't exists", function () {
+        it("Should raise an error if the specified source file doesn't exists", function () {
             return compile('does/not/exists.js')
                 .then(function () {
                     throw new Error('Promise rejection expected');
@@ -264,7 +264,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if test dependency has a syntax error', function () {
+        it('Should raise an error if test dependency has a syntax error', function () {
             var testfile = resolve('test/server/data/test-suites/syntax-error-in-dep/testfile.js');
             var dep      = posixResolve('test/server/data/test-suites/syntax-error-in-dep/dep.js');
 
@@ -282,7 +282,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it("Should raise error if dependency can't require a module", function () {
+        it("Should raise an error if dependency can't require a module", function () {
             var testfile = resolve('test/server/data/test-suites/require-error-in-dep/testfile.js');
             var dep      = resolve('test/server/data/test-suites/require-error-in-dep/dep.js');
 
@@ -303,7 +303,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if dependency throws runtime error', function () {
+        it('Should raise an error if dependency throws runtime error', function () {
             var testfile = resolve('test/server/data/test-suites/runtime-error-in-dep/testfile.js');
             var dep      = resolve('test/server/data/test-suites/runtime-error-in-dep/dep.js');
 
@@ -324,7 +324,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if test file has a syntax error', function () {
+        it('Should raise an error if test file has a syntax error', function () {
             var testfile = posixResolve('test/server/data/test-suites/syntax-error-in-testfile/testfile.js');
 
             return compile(testfile)
@@ -341,7 +341,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it("Should raise error if test file can't require a module", function () {
+        it("Should raise an error if test file can't require a module", function () {
             var testfile = resolve('test/server/data/test-suites/require-error-in-testfile/testfile.js');
 
             return compile(testfile)
@@ -358,7 +358,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if test file throws runtime error', function () {
+        it('Should raise an error if test file throws runtime error', function () {
             var testfile = resolve('test/server/data/test-suites/runtime-error-in-testfile/testfile.js');
 
             return compile(testfile)
@@ -375,7 +375,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if fixture name is not a string', function () {
+        it('Should raise an error if fixture name is not a string', function () {
             var testfile = resolve('test/server/data/test-suites/fixture-name-is-not-a-string/testfile.js');
 
             return compile(testfile)
@@ -404,7 +404,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if fixture page is not a string', function () {
+        it('Should raise an error if fixture page is not a string', function () {
             var testfile = resolve('test/server/data/test-suites/fixture-page-is-not-a-string/testfile.js');
 
             return compile(testfile)
@@ -429,7 +429,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if test name is not a string', function () {
+        it('Should raise an error if test name is not a string', function () {
             var testfile = resolve('test/server/data/test-suites/test-name-is-not-a-string/testfile.js');
 
             return compile(testfile)
@@ -454,7 +454,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if test body is not a function', function () {
+        it('Should raise an error if test body is not a function', function () {
             var testfile = resolve('test/server/data/test-suites/test-body-is-not-a-function/testfile.js');
 
             return compile(testfile)
@@ -476,7 +476,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if beforeEach is not a function', function () {
+        it('Should raise an error if beforeEach is not a function', function () {
             var testfile = resolve('test/server/data/test-suites/before-each-is-not-a-function/testfile.js');
 
             return compile(testfile)
@@ -501,7 +501,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if afterEach is not a function', function () {
+        it('Should raise an error if afterEach is not a function', function () {
             var testfile = resolve('test/server/data/test-suites/after-each-is-not-a-function/testfile.js');
 
             return compile(testfile)
@@ -526,7 +526,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if ClientFunction argument is not a function', function () {
+        it('Should raise an error if ClientFunction argument is not a function', function () {
             var testfile = resolve('test/server/data/test-suites/client-fn-arg-is-not-a-function/testfile.js');
 
             return compile(testfile)
@@ -553,7 +553,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if ClientFunction argument is not a function (if called as ctor)', function () {
+        it('Should raise an error if ClientFunction argument is not a function (if called as ctor)', function () {
             var testfile = resolve('test/server/data/test-suites/client-fn-arg-is-not-a-function-as-ctor/testfile.js');
 
             return compile(testfile)
@@ -581,7 +581,7 @@ describe('Compiler', function () {
         });
 
 
-        it('Should raise error if ClientFunction function not able to resolve test run', function () {
+        it('Should raise an error if ClientFunction function not able to resolve test run', function () {
             var testfile = resolve('test/server/data/test-suites/client-fn-cant-resolve-test-run/testfile.js');
 
             return compile(testfile)
@@ -611,7 +611,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if ClientFunction function uses async function', function () {
+        it('Should raise an error if ClientFunction function uses async function', function () {
             var testfile = resolve('test/server/data/test-suites/async-function-in-client-fn/testfile.js');
 
             return compile(testfile)
@@ -638,7 +638,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if ClientFunction function uses generator', function () {
+        it('Should raise an error if ClientFunction function uses generator', function () {
             var testfile = resolve('test/server/data/test-suites/generator-in-client-fn/testfile.js');
 
             return compile(testfile)
@@ -666,7 +666,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if ClientFunction function dependencies is not an object', function () {
+        it('Should raise an error if ClientFunction function dependencies is not an object', function () {
             var testfile = resolve('test/server/data/test-suites/client-fn-deps-not-object/testfile.js');
 
             return compile(testfile)
@@ -689,7 +689,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if ClientFunction function dependency is not a hybrid function', function () {
+        it('Should raise an error if ClientFunction function dependency is not a hybrid function', function () {
             var testfile = resolve('test/server/data/test-suites/client-fn-dep-not-hybrid/testfile.js');
 
             return compile(testfile)

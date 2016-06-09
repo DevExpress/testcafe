@@ -57,7 +57,7 @@ test('Generator in ClientFunction', async () => {
     });
 });
 
-test('Bind ClientFunction function', async t => {
+test('Bind ClientFunction', async t => {
     const fs               = require('fs');
     const boundGetLocation = getLocation.bindTestRun(t);
 
@@ -183,7 +183,7 @@ test('ClientFunction call with complex return types', async () => {
     expect(res[3]).to.be.NaN;
 });
 
-test('ClientFunction function with function argument', async () => {
+test('ClientFunction with function argument', async () => {
     function getAnswer () {
         return new Promise(resolve => {
             setTimeout(() => resolve(42), 30);
@@ -196,7 +196,7 @@ test('ClientFunction function with function argument', async () => {
     expect(answer).eql(42);
 });
 
-test('Async code in function argument of ClientFunction function', async () => {
+test('Async code in function argument of ClientFunction', async () => {
     const hfn = ClientFunction(fn => fn());
 
     await hfn(async () => Promise.resolve());

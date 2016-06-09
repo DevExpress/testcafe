@@ -35,7 +35,7 @@ export class NodeSnapshot {
         if (children)
             return children.length;
 
-        // NOTE: doesn't have `children` for non-element nodes =/
+        // NOTE: IE doesn't have `children` for non-element nodes =/
         var childElementCount = 0;
         var childNodeCount    = node.childNodes.length;
 
@@ -75,7 +75,9 @@ export class ElementSnapshot extends NodeSnapshot {
 
         return {
             left:   rect.left,
+            right:  rect.right,
             top:    rect.top,
+            bottom: rect.bottom,
             width:  rect.width,
             height: rect.height
         };
