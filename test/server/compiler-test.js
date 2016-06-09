@@ -153,8 +153,9 @@ describe('Compiler', function () {
             .then(function (compiled) {
                 return compiled.tests[0].fn(testRunMock);
             })
-            .then(function (commons) {
-                expect(commons).eql(commonAPI);
+            .then(function (result) {
+                expect(result.commonsEql).to.be.true;
+                expect(result.commons).eql(commonAPI);
             });
     });
 
@@ -252,7 +253,7 @@ describe('Compiler', function () {
     });
 
     describe('Errors', function () {
-        it("Should raise error if the specified source file doesn't exists", function () {
+        it("Should raise an error if the specified source file doesn't exists", function () {
             return compile('does/not/exists.js')
                 .then(function () {
                     throw new Error('Promise rejection expected');
@@ -263,7 +264,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if test dependency has a syntax error', function () {
+        it('Should raise an error if test dependency has a syntax error', function () {
             var testfile = resolve('test/server/data/test-suites/syntax-error-in-dep/testfile.js');
             var dep      = posixResolve('test/server/data/test-suites/syntax-error-in-dep/dep.js');
 
@@ -281,7 +282,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it("Should raise error if dependency can't require a module", function () {
+        it("Should raise an error if dependency can't require a module", function () {
             var testfile = resolve('test/server/data/test-suites/require-error-in-dep/testfile.js');
             var dep      = resolve('test/server/data/test-suites/require-error-in-dep/dep.js');
 
@@ -302,7 +303,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if dependency throws runtime error', function () {
+        it('Should raise an error if dependency throws runtime error', function () {
             var testfile = resolve('test/server/data/test-suites/runtime-error-in-dep/testfile.js');
             var dep      = resolve('test/server/data/test-suites/runtime-error-in-dep/dep.js');
 
@@ -323,7 +324,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if test file has a syntax error', function () {
+        it('Should raise an error if test file has a syntax error', function () {
             var testfile = posixResolve('test/server/data/test-suites/syntax-error-in-testfile/testfile.js');
 
             return compile(testfile)
@@ -340,7 +341,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it("Should raise error if test file can't require a module", function () {
+        it("Should raise an error if test file can't require a module", function () {
             var testfile = resolve('test/server/data/test-suites/require-error-in-testfile/testfile.js');
 
             return compile(testfile)
@@ -357,7 +358,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if test file throws runtime error', function () {
+        it('Should raise an error if test file throws runtime error', function () {
             var testfile = resolve('test/server/data/test-suites/runtime-error-in-testfile/testfile.js');
 
             return compile(testfile)
@@ -374,7 +375,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if fixture name is not a string', function () {
+        it('Should raise an error if fixture name is not a string', function () {
             var testfile = resolve('test/server/data/test-suites/fixture-name-is-not-a-string/testfile.js');
 
             return compile(testfile)
@@ -403,7 +404,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if fixture page is not a string', function () {
+        it('Should raise an error if fixture page is not a string', function () {
             var testfile = resolve('test/server/data/test-suites/fixture-page-is-not-a-string/testfile.js');
 
             return compile(testfile)
@@ -428,7 +429,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if test name is not a string', function () {
+        it('Should raise an error if test name is not a string', function () {
             var testfile = resolve('test/server/data/test-suites/test-name-is-not-a-string/testfile.js');
 
             return compile(testfile)
@@ -453,7 +454,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if test body is not a function', function () {
+        it('Should raise an error if test body is not a function', function () {
             var testfile = resolve('test/server/data/test-suites/test-body-is-not-a-function/testfile.js');
 
             return compile(testfile)
@@ -475,7 +476,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if beforeEach is not a function', function () {
+        it('Should raise an error if beforeEach is not a function', function () {
             var testfile = resolve('test/server/data/test-suites/before-each-is-not-a-function/testfile.js');
 
             return compile(testfile)
@@ -500,7 +501,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if afterEach is not a function', function () {
+        it('Should raise an error if afterEach is not a function', function () {
             var testfile = resolve('test/server/data/test-suites/after-each-is-not-a-function/testfile.js');
 
             return compile(testfile)
@@ -525,8 +526,8 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if Hybrid argument is not a function', function () {
-            var testfile = resolve('test/server/data/test-suites/hybrid-arg-is-not-a-function/testfile.js');
+        it('Should raise an error if ClientFunction argument is not a function', function () {
+            var testfile = resolve('test/server/data/test-suites/client-fn-arg-is-not-a-function/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -537,13 +538,13 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Client code is expected to be specified as a function, but "number" was passed.',
+                                 'Hybrid function code is expected to be specified as a function, but "number" was passed.',
 
-                        callsite: "   1 |import { Hybrid } from 'testcafe';\n" +
+                        callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
                                   '   3 |fixture `Test`;\n' +
                                   '   4 |\n' +
-                                  ' > 5 |Hybrid(123);\n' +
+                                  ' > 5 |ClientFunction(123);\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});\n' +
@@ -552,8 +553,8 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if Hybrid argument is not a function (if called as ctor)', function () {
-            var testfile = resolve('test/server/data/test-suites/hybrid-arg-is-not-a-function-as-ctor/testfile.js');
+        it('Should raise an error if ClientFunction argument is not a function (if called as ctor)', function () {
+            var testfile = resolve('test/server/data/test-suites/client-fn-arg-is-not-a-function-as-ctor/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -564,13 +565,13 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Client code is expected to be specified as a function, but "number" was passed.',
+                                 'Hybrid function code is expected to be specified as a function, but "number" was passed.',
 
-                        callsite: "   1 |import { Hybrid } from 'testcafe';\n" +
+                        callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
                                   '   3 |fixture `Test`;\n' +
                                   '   4 |\n' +
-                                  ' > 5 |var h = new Hybrid(123);\n' +
+                                  ' > 5 |var h = new ClientFunction(123);\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});\n' +
@@ -580,8 +581,8 @@ describe('Compiler', function () {
         });
 
 
-        it('Should raise error if Hybrid function not able to resolve test run', function () {
-            var testfile = resolve('test/server/data/test-suites/hybrid-fn-cant-resolve-test-run/testfile.js');
+        it('Should raise an error if ClientFunction not able to resolve test run', function () {
+            var testfile = resolve('test/server/data/test-suites/client-fn-cant-resolve-test-run/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -597,11 +598,11 @@ describe('Compiler', function () {
                                  "callback, pass the test controller manually via hybrid function's `.bindTestRun(t)` " +
                                  'method first. Note that you cannot execute hybrid functions outside the test code.',
 
-                        callsite: "   1 |import { Hybrid } from 'testcafe';\n" +
+                        callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
                                   '   3 |fixture `Test`;\n' +
                                   '   4 |\n' +
-                                  ' > 5 |Hybrid(() => 123)();\n' +
+                                  ' > 5 |ClientFunction(() => 123)();\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});\n' +
@@ -610,8 +611,8 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if Hybrid function uses async function', function () {
-            var testfile = resolve('test/server/data/test-suites/async-function-in-hybrid/testfile.js');
+        it('Should raise an error if ClientFunction uses async function', function () {
+            var testfile = resolve('test/server/data/test-suites/async-function-in-client-fn/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -622,13 +623,13 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Code executed on the client cannot contain generators or `async/await` syntax (use Promises instead).',
+                                 'Hybrid function code cannot contain generators or `async/await` syntax (use Promises instead).',
 
-                        callsite: "    1 |import { Hybrid } from 'testcafe';\n" +
+                        callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
                                   '    2 |\n' +
                                   '    3 |fixture `Test`;\n' +
                                   '    4 |\n' +
-                                  ' >  5 |Hybrid(async function () {\n' +
+                                  ' >  5 |ClientFunction(async function () {\n' +
                                   '    6 |});\n' +
                                   '    7 |\n' +
                                   "    8 |test('yo', () => {\n" +
@@ -637,8 +638,8 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if Hybrid function uses generator', function () {
-            var testfile = resolve('test/server/data/test-suites/generator-in-hybrid/testfile.js');
+        it('Should raise an error if ClientFunction uses generator', function () {
+            var testfile = resolve('test/server/data/test-suites/generator-in-client-fn/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -649,13 +650,13 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Code executed on the client cannot contain generators or `async/await` syntax (use Promises instead).',
+                                 'Hybrid function code cannot contain generators or `async/await` syntax (use Promises instead).',
 
-                        callsite: "    1 |import { Hybrid } from 'testcafe';\n" +
+                        callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
                                   '    2 |\n' +
                                   '    3 |fixture `Test`;\n' +
                                   '    4 |\n' +
-                                  ' >  5 |Hybrid(function* () {\n' +
+                                  ' >  5 |ClientFunction(function* () {\n' +
                                   '    6 |    yield 1;\n' +
                                   '    7 |});\n' +
                                   '    8 |\n' +
@@ -665,8 +666,8 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise error if Hybrid function dependencies is not an object', function () {
-            var testfile = resolve('test/server/data/test-suites/hybrid-deps-not-object/testfile.js');
+        it('Should raise an error if ClientFunction dependencies is not an object', function () {
+            var testfile = resolve('test/server/data/test-suites/client-fn-deps-not-object/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -679,17 +680,17 @@ describe('Compiler', function () {
                         message: 'Cannot prepare tests due to an error.\n\n' +
                                  'Hybrid function constructor\'s "dependencies" argument is expected to be an object, but it was "string".',
 
-                        callsite: "   1 |import { Hybrid } from 'testcafe';\n" +
+                        callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
                                   '   3 |fixture `Test`;\n' +
                                   '   4 |\n' +
-                                  " > 5 |var selectYo = Hybrid(() => document.querySelector('#yo'), '42');\n"
+                                  " > 5 |var selectYo = ClientFunction(() => document.querySelector('#yo'), '42');\n"
                     });
                 });
         });
 
-        it('Should raise error if Hybrid function dependency is not a Hybrid function', function () {
-            var testfile = resolve('test/server/data/test-suites/hybrid-dep-not-hybrid/testfile.js');
+        it('Should raise an error if ClientFunction dependency is not a hybrid function', function () {
+            var testfile = resolve('test/server/data/test-suites/client-fn-dep-not-hybrid/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -704,10 +705,10 @@ describe('Compiler', function () {
 
                         callsite: '    3 |fixture `Test`;\n' +
                                   '    4 |\n' +
-                                  '    5 |const select  = Hybrid(id => document.querySelector(id));\n' +
+                                  '    5 |const select  = ClientFunction(id => document.querySelector(id));\n' +
                                   "    6 |const getText = '42';\n" +
                                   '    7 |\n' +
-                                  " >  8 |var selectYo = Hybrid(() => select('#yo'), { select, getText });\n"
+                                  " >  8 |var selectYo = ClientFunction(() => select('#yo'), { select, getText });\n"
                     });
                 });
         });

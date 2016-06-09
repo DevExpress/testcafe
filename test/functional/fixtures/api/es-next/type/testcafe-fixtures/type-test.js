@@ -1,11 +1,11 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
-import { Hybrid } from 'testcafe';
+import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
 fixture `Type`
     .page `http://localhost:3000/api/es-next/type/pages/index.html`;
 
-const getStatusText = Hybrid(() => document.getElementById('status').textContent);
+const getStatusText = ClientFunction(() => document.getElementById('status').textContent);
 
 test('Type text in input', async t => {
     await t.typeText('#input', 'a', { replace: true });

@@ -4,7 +4,7 @@ import TestRunErrorFormattableAdapter from './errors/test-run/formattable-adapte
 import * as endpointUtils from 'endpoint-utils';
 import { GeneralError } from './errors/runtime';
 import MESSAGE from './errors/runtime/message';
-import { Role, Hybrid } from './api/common';
+import commonAPI from './api/common';
 
 // Validations
 async function getValidHostname (hostname) {
@@ -58,8 +58,7 @@ createTestCafe.embeddingUtils = {
     TestRunErrorFormattableAdapter: TestRunErrorFormattableAdapter
 };
 
-// Common runtime
-createTestCafe.Role   = Role;
-createTestCafe.Hybrid = Hybrid;
+// Common API
+Object.keys(commonAPI).forEach(key => createTestCafe[key] = commonAPI[key]);
 
 export default createTestCafe;

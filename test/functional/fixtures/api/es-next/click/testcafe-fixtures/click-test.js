@@ -1,12 +1,12 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 
 import { expect } from 'chai';
-import { Hybrid } from 'testcafe';
+import { ClientFunction } from 'testcafe';
 
 fixture `Click`
     .page `http://localhost:3000/api/es-next/click/pages/index.html`;
 
-const getClickOffset = Hybrid(() => window.clickOffset);
+const getClickOffset = ClientFunction(() => window.clickOffset);
 
 test('Incorrect action selector', async t => {
     await t.click(123);

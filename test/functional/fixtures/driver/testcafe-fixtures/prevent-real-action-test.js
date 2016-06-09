@@ -1,9 +1,9 @@
-import { Hybrid } from 'testcafe';
+import { ClientFunction } from 'testcafe';
 
 fixture `Driver`
     .page `http://localhost:3000/driver/pages/prevent-real-action.html`;
 
-const performNativeClick  = Hybrid(() => window['%hammerhead%'].nativeMethods.click.call(document.getElementById('button')));
+const performNativeClick  = ClientFunction(() => window['%hammerhead%'].nativeMethods.click.call(document.getElementById('button')));
 
 test('Perform native click', async () => {
     await performNativeClick();

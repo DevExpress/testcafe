@@ -1,4 +1,4 @@
-import hybridFnTestRunTracker from '../../../../lib/api/common/hybrid/test-run-tracker';
+import hybridFnTestRunTracker from '../../../../lib/hybrid-function/test-run-tracker';
 
 fixture `In test function`
     .beforeEach(async () => {

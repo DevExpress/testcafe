@@ -53,16 +53,16 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.uncaughtErrorInClientExecutedCode]: err => markup(err, `
-        An error occurred in code executed on the client:
+    [TYPE.uncaughtErrorInHybridFunctionCode]: err => markup(err, `
+        An error occurred in hybrid function code:
 
         <code>${escapeHtml(err.errMsg)}</code>
 
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.clientCodeExecutionInterruptionError]: err => markup(err, `
-        Client code execution was interrupted by page unload. This problem may appear if you trigger page navigation from client code.
+    [TYPE.hybridFunctionExecutionInterruptionError]: err => markup(err, `
+        Hybrid function execution was interrupted by page unload. This problem may appear if you trigger page navigation from hybrid function code.
 
         ${err.getCallsiteMarkup()}
     `),
@@ -181,10 +181,7 @@ export default {
 
     [TYPE.actionCanNotFindFileToUploadError]: err => markup(err, `
         Cannot find the following file(s) to upload:
-        ${err.filePaths
-        .map(path => `<code>${escapeHtml(path)}</code>`)
-        .join(', ')
-        }
+        ${err.filePaths.map(path => `<code>${escapeHtml(path)}</code>`).join(', ')}
 
         ${err.getCallsiteMarkup()}
     `),
@@ -218,8 +215,14 @@ export default {
     `),
 
     [TYPE.regeneratorInFunctionArgumentOfHybridFunctionError]: err => markup(err, `
-        Hybrid function argument is a function that contains either generators or the <code>async/await</code> syntax. These features cannot be used in client code. Use Promises instead.
+        Hybrid function argument is a function that contains either generators or the <code>async/await</code> syntax. These features cannot be used in hybrid function code. Use Promises instead.
 
         ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.domNodeHybridResultError]: err => markup(err, `
+       Regular Hybrid functions cannot return DOM elements. Use <code>Selector</code> functions for this purpose.
+
+       ${err.getCallsiteMarkup()}
     `)
 };

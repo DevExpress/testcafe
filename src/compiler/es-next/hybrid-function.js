@@ -2,7 +2,7 @@ import hammerhead from 'testcafe-hammerhead';
 import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
 import { noop, escapeRegExp as escapeRe } from 'lodash';
 import loadBabelLibs from './load-babel-libs';
-import compiledCode from '../../api/common/hybrid/compiled-code-symbol';
+import { compiledCodeSymbol } from '../../hybrid-function/common';
 import NODE_VER from '../../utils/node-version';
 import { APIError } from '../../errors/runtime';
 import getCallsite from '../../errors/get-callsite';
@@ -98,14 +98,14 @@ function addBabelArtifactsPolyfills (fnCode) {
     return { polyfills, modifiedFnCode };
 }
 
-function getDependenciesCode (dependencies, callsiteNames) {
+function getDependenciesCode (dependencies, instantiationCallsiteName) {
     return Object
         .keys(dependencies)
         .reduce((code, name) => {
-            var dependencyCode = dependencies[name][compiledCode];
+            var dependencyCode = dependencies[name][compiledCodeSymbol];
 
             if (!dependencyCode)
-                throw new APIError(callsiteNames.instantiation, MESSAGE.hybridDependencyIsNotAHybrid, name);
+                throw new APIError(instantiationCallsiteName, MESSAGE.hybridDependencyIsNotAHybrid, name);
 
             return code + `var ${name}=${dependencyCode}`;
         }, '');
@@ -122,8 +122,7 @@ function compile (fnCode, dependenciesCode, createRegeneratorInClientCodeError) 
     if (NODE_VER >= 4)
         fnCode = downgradeES(fnCode);
 
-    if (!hammerhead.isScriptProcessed(fnCode))
-        fnCode = hammerhead.processScript(fnCode, false);
+    fnCode = hammerhead.processScript(fnCode, false);
 
     // NOTE: check compiled code for regenerator injection: we have either generator
     // recompiled in Node.js 4+ for client or async function declared in function code.
@@ -138,18 +137,18 @@ function compile (fnCode, dependenciesCode, createRegeneratorInClientCodeError) 
     return `(function(){${dependenciesCode}${polyfills} return ${modifiedFnCode}})();`;
 }
 
-export function compileFunctionArgumentOfHybridFunction (argumentFnCode, callsiteName) {
+export function compileFunctionArgumentOfHybridFunction (argumentFnCode, executionCallsiteName) {
     // NOTE: it is safe to use a test run error here, because this code
     // will be hit only if the context test run has already been validated.
-    var callsite                           = getCallsite(callsiteName);
+    var callsite                           = getCallsite(executionCallsiteName);
     var createRegeneratorInClientCodeError = () => new RegeneratorInFunctionArgumentOfHybridFunctionError(callsite);
 
     return compile(argumentFnCode, '', createRegeneratorInClientCodeError);
 }
 
-export function compileHybridFunction (fnCode, dependencies = {}, callsiteNames) {
-    var dependenciesCode                   = getDependenciesCode(dependencies, callsiteNames);
-    var createRegeneratorInClientCodeError = () => new APIError(callsiteNames.instantiation, MESSAGE.regeneratorInClientCode);
+export function compileHybridFunction (fnCode, dependencies = {}, instantiationCallsiteName) {
+    var dependenciesCode                   = getDependenciesCode(dependencies, instantiationCallsiteName);
+    var createRegeneratorInClientCodeError = () => new APIError(instantiationCallsiteName, MESSAGE.regeneratorInHybridFunctionCode);
 
     return compile(fnCode, dependenciesCode, createRegeneratorInClientCodeError);
 }
