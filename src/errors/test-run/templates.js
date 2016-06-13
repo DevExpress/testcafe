@@ -61,8 +61,8 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.hybridFunctionExecutionInterruptionError]: err => markup(err, `
-        Hybrid function execution was interrupted by page unload. This problem may appear if you trigger page navigation from hybrid function code.
+    [TYPE.clientFunctionExecutionInterruptionError]: err => markup(err, `
+        <code>${err.instantiationCallsiteName}</code> execution was interrupted by page unload. This problem may appear if you trigger page navigation from <code>${err.instantiationCallsiteName}</code> code.
 
         ${err.getCallsiteMarkup()}
     `),

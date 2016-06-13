@@ -144,7 +144,7 @@ describe('[API] ClientFunction', function () {
         it('Should raise an error if ClientFunction execution was interrupted by page unload', function () {
             return runTests('./testcafe-fixtures/client-fn-test.js', 'Redirect during execution', { shouldFail: true })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('Hybrid function execution was interrupted by page unload.');
+                    expect(errs[0]).contains('ClientFunction execution was interrupted by page unload.');
                     expect(errs[0]).contains("> 153 |    await ClientFunction(() => new Promise(() => window.location = 'index.html'))();");
                 });
         });

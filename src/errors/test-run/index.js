@@ -45,9 +45,11 @@ export class MissingAwaitError extends TestRunErrorBase {
 
 // Hybrid function errors
 //--------------------------------------------------------------------
-export class HybridFunctionExecutionInterruptionError extends TestRunErrorBase {
-    constructor () {
-        super(TYPE.hybridFunctionExecutionInterruptionError);
+export class ClientFunctionExecutionInterruptionError extends TestRunErrorBase {
+    constructor (instantiationCallsiteName) {
+        super(TYPE.clientFunctionExecutionInterruptionError);
+
+        this.instantiationCallsiteName = instantiationCallsiteName;
     }
 }
 

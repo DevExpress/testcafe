@@ -38,7 +38,7 @@ export default {
     actionCanNotFindFileToUploadError:       'actionCanNotFindFileToUploadError',
     actionUnsupportedDeviceTypeError:        'actionUnsupportedDeviceTypeError',
 
-    hybridFunctionExecutionInterruptionError:           'hybridFunctionExecutionInterruptionError',
+    clientFunctionExecutionInterruptionError:           'clientFunctionExecutionInterruptionError',
     regeneratorInFunctionArgumentOfHybridFunctionError: 'generatorInFunctionArgumentOfHybridFunctionError',
     domNodeHybridResultError:                           'domNodeHybridResultError',
 

@@ -35,7 +35,7 @@ var ActionIncorrectKeysError                           = require('../../lib/erro
 var ActionCanNotFindFileToUploadError                  = require('../../lib/errors/test-run').ActionCanNotFindFileToUploadError;
 var ActionElementIsNotFileInputError                   = require('../../lib/errors/test-run').ActionElementIsNotFileInputError;
 var ActionUnsupportedDeviceTypeError                   = require('../../lib/errors/test-run').ActionUnsupportedDeviceTypeError;
-var HybridFunctionExecutionInterruptionError           = require('../../lib/errors/test-run').HybridFunctionExecutionInterruptionError;
+var ClientFunctionExecutionInterruptionError           = require('../../lib/errors/test-run').ClientFunctionExecutionInterruptionError;
 var MissingAwaitError                                  = require('../../lib/errors/test-run').MissingAwaitError;
 var ExternalAssertionLibraryError                      = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
 var RegeneratorInFunctionArgumentOfHybridFunctionError = require('../../lib/errors/test-run').RegeneratorInFunctionArgumentOfHybridFunctionError;
@@ -225,8 +225,8 @@ describe('Error formatting', function () {
             assertErrorMessage('uncaught-error-in-client-function-code', new UncaughtErrorInClientFunctionCode('Selector', new Error('Some error.')));
         });
 
-        it('Should format "hybridFunctionExecutionInterruptionError"', function () {
-            assertErrorMessage('hybrid-function-execution-interruption-error', new HybridFunctionExecutionInterruptionError());
+        it('Should format "clientFunctionExecutionInterruptionError"', function () {
+            assertErrorMessage('client-function-execution-interruption-error', new ClientFunctionExecutionInterruptionError('eval'));
         });
 
         it('Should format "regeneratorInFunctionArgumentOfHybridFunctionError"', function () {

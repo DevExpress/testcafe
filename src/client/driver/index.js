@@ -4,7 +4,7 @@ import testCafeUI from './deps/testcafe-ui';
 
 import MESSAGE from '../../test-run/client-messages';
 import COMMAND_TYPE from '../../test-run/commands/type';
-import { UncaughtErrorOnPage, HybridFunctionExecutionInterruptionError } from '../../errors/test-run';
+import { UncaughtErrorOnPage, ClientFunctionExecutionInterruptionError } from '../../errors/test-run';
 
 import * as browser from '../browser';
 
@@ -26,11 +26,11 @@ var modalBackground   = testCafeUI.modalBackground;
 var preventRealEvents = testCafeCore.preventRealEvents;
 
 
-const COMMAND_EXECUTING_FLAG   = 'testcafe|driver|command-executing-flag';
-const HYBRID_FN_EXECUTING_FLAG = 'testcafe|driver|hybrid-fn-executing-flag';
-const PENDING_PAGE_ERROR       = 'testcafe|driver|pending-page-error';
-const TEST_DONE_SENT_FLAG      = 'testcafe|driver|test-done-sent-flag';
-const PENDING_STATUS           = 'testcafe|driver|pending-status';
+const COMMAND_EXECUTING_FLAG      = 'testcafe|driver|command-executing-flag';
+const EXECUTING_CLIENT_DESCRIPTOR = 'testcafe|driver|hybrid-fn-executing-flag';
+const PENDING_PAGE_ERROR          = 'testcafe|driver|pending-page-error';
+const TEST_DONE_SENT_FLAG         = 'testcafe|driver|test-done-sent-flag';
+const PENDING_STATUS              = 'testcafe|driver|pending-status';
 
 var hangingPromise = new Promise(testCafeCore.noop);
 
@@ -69,12 +69,14 @@ export default class ClientDriver {
             return;
         }
 
-        // NOTE: Hybrids should be used primarily for observation. We raise
-        // an error if the page was reloaded during Hybrid function execution.
-        if (this.contextStorage.getItem(HYBRID_FN_EXECUTING_FLAG)) {
+        // NOTE: ClientFunction should be used primarily for observation. We raise
+        // an error if the page was reloaded during ClientFunction execution.
+        var executingClientFnDescriptor = this.contextStorage.getItem(EXECUTING_CLIENT_DESCRIPTOR);
+
+        if (executingClientFnDescriptor) {
             this._onReady(new DriverStatus({
                 isCommandResult: true,
-                executionError:  new HybridFunctionExecutionInterruptionError()
+                executionError:  new ClientFunctionExecutionInterruptionError(executingClientFnDescriptor.instantiationCallsiteName)
             }));
 
             return;
@@ -179,11 +181,11 @@ export default class ClientDriver {
     }
 
     _onExecuteHybridFunctionCommand (command) {
-        this.contextStorage.setItem(HYBRID_FN_EXECUTING_FLAG, true);
+        this.contextStorage.setItem(EXECUTING_CLIENT_DESCRIPTOR, { instantiationCallsiteName: command.instantiationCallsiteName });
 
         executeHybridFunction(command)
             .then(driverStatus => {
-                this.contextStorage.setItem(HYBRID_FN_EXECUTING_FLAG, false);
+                this.contextStorage.setItem(EXECUTING_CLIENT_DESCRIPTOR, null);
                 this._onReady(driverStatus);
             });
     }
