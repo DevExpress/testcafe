@@ -95,11 +95,12 @@ export class UncaughtNonErrorObjectInTestCode extends TestRunErrorBase {
     }
 }
 
-export class UncaughtErrorInHybridFunctionCode extends TestRunErrorBase {
-    constructor (err) {
-        super(TYPE.uncaughtErrorInHybridFunctionCode);
+export class UncaughtErrorInClientFunctionCode extends TestRunErrorBase {
+    constructor (instantiationCallsiteName, err) {
+        super(TYPE.uncaughtErrorInClientFunctionCode);
 
-        this.errMsg = String(err);
+        this.errMsg                    = String(err);
+        this.instantiationCallsiteName = instantiationCallsiteName;
     }
 }
 

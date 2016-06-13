@@ -3,7 +3,7 @@ import DriverStatus from '../../status';
 import Replicator from 'replicator';
 import evalFunction from './eval-function';
 import { NodeSnapshot, ElementSnapshot } from './node-snapshots';
-import { UncaughtErrorInHybridFunctionCode, DomNodeHybridResultError } from '../../../../errors/test-run';
+import { UncaughtErrorInClientFunctionCode, DomNodeHybridResultError } from '../../../../errors/test-run';
 
 // NOTE: save original ctors because they may be overwritten by page code
 var Node       = window.Node;
@@ -80,7 +80,7 @@ export default function executeHybridFunction (command) {
         }))
         .catch(err => {
             if (!err.isTestCafeError)
-                err = new UncaughtErrorInHybridFunctionCode(err);
+                err = new UncaughtErrorInClientFunctionCode(command.instantiationCallsiteName, err);
 
             return new DriverStatus({
                 isCommandResult: true,

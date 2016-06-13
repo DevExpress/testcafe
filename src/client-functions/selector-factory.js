@@ -21,7 +21,7 @@ export default class SelectorFactory extends ClientFunctionFactory {
 
     _createExecutionTestRunCommand (args) {
         // TODO needs its own command
-        return new ExecuteHybridFunctionCommand(this.compiledFnCode, args, true);
+        return new ExecuteHybridFunctionCommand(this.callsiteNames.instantiation, this.compiledFnCode, args, true);
     }
 
     _getReplicator () {

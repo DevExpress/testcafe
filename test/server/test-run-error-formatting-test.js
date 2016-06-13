@@ -21,7 +21,7 @@ var ActionStringArrayElementError                      = require('../../lib/erro
 var ActionAdditionalSelectorTypeError                  = require('../../lib/errors/test-run').ActionAdditionalSelectorTypeError;
 var UncaughtErrorOnPage                                = require('../../lib/errors/test-run').UncaughtErrorOnPage;
 var UncaughtErrorInTestCode                            = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
-var UncaughtErrorInHybridFunctionCode                  = require('../../lib/errors/test-run').UncaughtErrorInHybridFunctionCode;
+var UncaughtErrorInClientFunctionCode                  = require('../../lib/errors/test-run').UncaughtErrorInClientFunctionCode;
 var UncaughtNonErrorObjectInTestCode                   = require('../../lib/errors/test-run').UncaughtNonErrorObjectInTestCode;
 var ActionElementNotFoundError                         = require('../../lib/errors/test-run').ActionElementNotFoundError;
 var ActionElementIsInvisibleError                      = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
@@ -221,8 +221,8 @@ describe('Error formatting', function () {
             assertErrorMessage('external-assertion-library-error', new ExternalAssertionLibraryError(testAssertionError, testCallsite));
         });
 
-        it('Should format "uncaughtErrorInHybridFunctionCode"', function () {
-            assertErrorMessage('uncaught-error-in-hybrid-function-code', new UncaughtErrorInHybridFunctionCode(new Error('Some error.')));
+        it('Should format "uncaughtErrorInClientFunctionCode"', function () {
+            assertErrorMessage('uncaught-error-in-client-function-code', new UncaughtErrorInClientFunctionCode('Selector', new Error('Some error.')));
         });
 
         it('Should format "hybridFunctionExecutionInterruptionError"', function () {

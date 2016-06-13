@@ -7,7 +7,7 @@ export default {
     uncaughtErrorOnPage:               'uncaughtErrorOnPage',
     uncaughtErrorInTestCode:           'uncaughtErrorInTestCode',
     uncaughtNonErrorObjectInTestCode:  'uncaughtNonErrorObjectInTestCode',
-    uncaughtErrorInHybridFunctionCode: 'uncaughtErrorInHybridFunctionCode',
+    uncaughtErrorInClientFunctionCode: 'uncaughtErrorInClientFunctionCode',
 
     missingAwaitError: 'missingAwaitError',
 

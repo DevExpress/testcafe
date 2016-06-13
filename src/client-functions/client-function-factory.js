@@ -94,7 +94,7 @@ export default class ClientFunctionFactory {
     }
 
     _createExecutionTestRunCommand (args) {
-        return new ExecuteHybridFunctionCommand(this.compiledFnCode, args);
+        return new ExecuteHybridFunctionCommand(this.callsiteNames.instantiation, this.compiledFnCode, args, false);
     }
 
     _getReplicator () {

@@ -472,11 +472,12 @@ export class ClearUploadCommand extends Assignable {
 }
 
 export class ExecuteHybridFunctionCommand {
-    constructor (fnCode, args, isSelector) {
-        this.type       = TYPE.executeHybridFunction;
-        this.fnCode     = fnCode;
-        this.args       = args;
-        this.isSelector = isSelector;
+    constructor (instantiationCallsiteName, fnCode, args, isSelector) {
+        this.type                      = TYPE.executeHybridFunction;
+        this.instantiationCallsiteName = instantiationCallsiteName;
+        this.fnCode                    = fnCode;
+        this.args                      = args;
+        this.isSelector                = isSelector;
     }
 }
 

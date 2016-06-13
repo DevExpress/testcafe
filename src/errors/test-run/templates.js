@@ -53,8 +53,8 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.uncaughtErrorInHybridFunctionCode]: err => markup(err, `
-        An error occurred in hybrid function code:
+    [TYPE.uncaughtErrorInClientFunctionCode]: err => markup(err, `
+        An error occurred in <code>${err.instantiationCallsiteName}</code> code:
 
         <code>${escapeHtml(err.errMsg)}</code>
 
