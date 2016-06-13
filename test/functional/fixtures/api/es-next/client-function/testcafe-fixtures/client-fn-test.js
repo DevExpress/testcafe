@@ -202,7 +202,7 @@ test('Async/await in function argument of ClientFunction', async () => {
     await hfn(async () => Promise.resolve());
 });
 
-test('ClientFunction with hybrid argument', async () => {
+test('ClientFunction with ClientFunction argument', async () => {
     const hfn      = ClientFunction(fn => fn());
     const location = await hfn(getLocation);
 

@@ -20,7 +20,7 @@ export default {
     navigateTo:                 'navigate-to',
     uploadFile:                 'upload-file',
     clearUpload:                'clear-upload',
-    executeHybridFunction:      'execute-hybrid-function',
+    executeClientFunction:      'execute-client-function',
     takeScreenshot:             'take-screenshot',
     takeScreenshotOnFail:       'take-screenshot-on-fail',
     prepareBrowserManipulation: 'prepare-browser-manipulation',

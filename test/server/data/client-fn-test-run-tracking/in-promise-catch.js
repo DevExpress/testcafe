@@ -1,4 +1,4 @@
-import hybridFnTestRunTracker from '../../../../lib/client-functions/test-run-tracker';
+import clientFnTestRunTracker from '../../../../lib/client-functions/test-run-tracker';
 
 fixture `In Promise.catch()`;
 
@@ -7,5 +7,5 @@ test('test', async () => {
         .then(() => {
             throw new Error('yo')
         })
-        .catch(() => hybridFnTestRunTracker.getContextTestRunId());
+        .catch(() => clientFnTestRunTracker.getContextTestRunId());
 });

@@ -1,14 +1,14 @@
 import testRunTracker from './test-run-tracker';
 import compiledCodeSymbol from './compiled-code-symbol';
 import { createReplicator, FunctionTransform } from './replicator';
-import { ExecuteHybridFunctionCommand } from '../test-run/commands';
+import { ExecuteClientFunctionCommand } from '../test-run/commands';
 import TestRun from '../test-run';
-import { compileHybridFunction } from '../compiler/es-next/hybrid-function';
+import { compileClientFunction } from '../compiler/es-next/client-functions';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import getCallsite from '../errors/get-callsite';
 
-const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$hybridFunction$$';
+const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
 export default class ClientFunctionFactory {
     constructor (fn, dependencies, callsiteNames) {
@@ -21,7 +21,7 @@ export default class ClientFunctionFactory {
 
         var fnCode = this._getFnCode(fn);
 
-        this.compiledFnCode = compileHybridFunction(fnCode, dependencies || {}, this.callsiteNames.instantiation);
+        this.compiledFnCode = compileClientFunction(fnCode, dependencies || {}, this.callsiteNames.instantiation);
     }
 
     _validateDependencies (dependencies) {
@@ -59,7 +59,7 @@ export default class ClientFunctionFactory {
     getFunction (boundTestRun) {
         var factory = this;
 
-        var clientFn = function __$$hybridFunction$$ () {
+        var clientFn = function __$$clientFunction$$ () {
             var testRun    = boundTestRun || factory._resolveContextTestRun();
             var replicator = factory._getReplicator();
             var args       = [];
@@ -96,7 +96,7 @@ export default class ClientFunctionFactory {
     }
 
     _createExecutionTestRunCommand (args) {
-        return new ExecuteHybridFunctionCommand(this.callsiteNames.instantiation, this.compiledFnCode, args, false);
+        return new ExecuteClientFunctionCommand(this.callsiteNames.instantiation, this.compiledFnCode, args, false);
     }
 
     _getReplicator () {

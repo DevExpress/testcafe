@@ -471,9 +471,9 @@ export class ClearUploadCommand extends Assignable {
     }
 }
 
-export class ExecuteHybridFunctionCommand {
+export class ExecuteClientFunctionCommand {
     constructor (instantiationCallsiteName, fnCode, args, isSelector) {
-        this.type                      = TYPE.executeHybridFunction;
+        this.type                      = TYPE.executeClientFunction;
         this.instantiationCallsiteName = instantiationCallsiteName;
         this.fnCode                    = fnCode;
         this.args                      = args;
@@ -627,7 +627,7 @@ export function isCommandRejectableByPageError (command) {
 }
 
 function isObservationCommand (command) {
-    return command.type === TYPE.executeHybridFunction ||
+    return command.type === TYPE.executeClientFunction ||
            command.type === TYPE.wait ||
            command.type === TYPE.waitForElement;
 }

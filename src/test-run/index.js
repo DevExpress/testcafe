@@ -278,7 +278,7 @@ export default class TestRun extends Session {
 }
 
 
-// Active test runs pool, used by hybrid functions
+// Active test runs pool, used by client functions
 TestRun.activeTestRuns = {};
 
 

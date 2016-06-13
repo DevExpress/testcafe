@@ -43,7 +43,7 @@ export class MissingAwaitError extends TestRunErrorBase {
 }
 
 
-// Hybrid function errors
+// Client function errors
 //--------------------------------------------------------------------
 export class ClientFunctionExecutionInterruptionError extends TestRunErrorBase {
     constructor (instantiationCallsiteName) {

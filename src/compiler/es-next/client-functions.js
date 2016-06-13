@@ -137,7 +137,7 @@ function compile (fnCode, dependenciesCode, createRegeneratorInClientCodeError) 
     return `(function(){${dependenciesCode}${polyfills} return ${modifiedFnCode}})();`;
 }
 
-export function compileFunctionArgumentOfHybridFunction (argumentFnCode, callsiteNames) {
+export function compileFunctionArgumentOfClientFunction (argumentFnCode, callsiteNames) {
     // NOTE: it is safe to use a test run error here, because this code
     // will be hit only if the context test run has already been validated.
     var callsite                           = getCallsite(callsiteNames.execution);
@@ -146,7 +146,7 @@ export function compileFunctionArgumentOfHybridFunction (argumentFnCode, callsit
     return compile(argumentFnCode, '', createRegeneratorInClientCodeError);
 }
 
-export function compileHybridFunction (fnCode, dependencies = {}, instantiationCallsiteName) {
+export function compileClientFunction (fnCode, dependencies = {}, instantiationCallsiteName) {
     var dependenciesCode                   = getDependenciesCode(dependencies, instantiationCallsiteName);
     var createRegeneratorInClientCodeError = () => new ClientFunctionAPIError(instantiationCallsiteName, instantiationCallsiteName, MESSAGE.regeneratorInClientFunctionCode);
 

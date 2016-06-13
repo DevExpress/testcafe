@@ -1,9 +1,9 @@
-import { compileHybridFunction } from '../../../../../lib/compiler/es-next/hybrid-function';
+import { compileClientFunction } from '../../../../../lib/compiler/es-next/client-functions';
 
 fixture `Fixture`;
 
 function compile (fn) {
-    return compileHybridFunction(fn.toString());
+    return compileClientFunction(fn.toString());
 }
 
 test('Test', () => {

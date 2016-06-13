@@ -1,7 +1,7 @@
 import { identity } from 'lodash';
 import Replicator from 'replicator';
 import compiledCodeSymbol from './compiled-code-symbol';
-import { compileFunctionArgumentOfHybridFunction } from '../compiler/es-next/hybrid-function';
+import { compileFunctionArgumentOfClientFunction } from '../compiler/es-next/client-functions';
 
 export function createReplicator (transforms) {
     // NOTE: we will serialize replicator results
@@ -28,12 +28,12 @@ export class FunctionTransform {
     }
 
     toSerializable (fn) {
-        var isHybrid = !!fn[compiledCodeSymbol];
+        var isClientFn = !!fn[compiledCodeSymbol];
 
-        if (isHybrid)
+        if (isClientFn)
             return fn[compiledCodeSymbol];
 
-        return compileFunctionArgumentOfHybridFunction(fn.toString(), this.callsiteNames);
+        return compileFunctionArgumentOfClientFunction(fn.toString(), this.callsiteNames);
     }
 
     fromSerializable () {

@@ -1,4 +1,4 @@
-import hybridFnTestRunTracker from '../../../../lib/client-functions/test-run-tracker';
+import clientFnTestRunTracker from '../../../../lib/client-functions/test-run-tracker';
 
 fixture `In test function after "await" with error`;
 
@@ -11,6 +11,6 @@ test('test', async () => {
         await yo();
     }
     catch (err) {
-        return hybridFnTestRunTracker.getContextTestRunId();
+        return clientFnTestRunTracker.getContextTestRunId();
     }
 });

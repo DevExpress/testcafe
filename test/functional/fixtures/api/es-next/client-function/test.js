@@ -53,8 +53,8 @@ describe('[API] ClientFunction', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction with function argument');
     });
 
-    it('Should accept a hybrid as an argument', function () {
-        return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction with hybrid argument');
+    it('Should accept a ClientFunction as an argument', function () {
+        return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction with ClientFunction argument');
     });
 
     describe('Errors', function () {

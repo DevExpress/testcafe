@@ -1,7 +1,7 @@
 import TestController from '../test-controller';
 import getCallsite from '../../errors/get-callsite';
 import { APIError } from '../../errors/runtime';
-import hybridFnTestRunTracker from '../../client-functions/test-run-tracker';
+import clientFnTestRunTracker from '../../client-functions/test-run-tracker';
 
 import {
     UncaughtErrorInTestCode,
@@ -34,9 +34,9 @@ export default function wrapTestFunction (fn) {
         // NOTE: fn() result used for testing purposes
         var result     = null;
         var controller = new TestController(testRun);
-        var markeredfn = hybridFnTestRunTracker.addTrackingMarkerToFunction(testRun.id, fn);
+        var markeredfn = clientFnTestRunTracker.addTrackingMarkerToFunction(testRun.id, fn);
 
-        hybridFnTestRunTracker.ensureEnabled();
+        clientFnTestRunTracker.ensureEnabled();
 
         try {
             result = await markeredfn(controller);

@@ -18,7 +18,7 @@ function createReplicatorForSelector () {
     ]);
 }
 
-export default function executeHybridFunction (command) {
+export default function executeClientFunction (command) {
     var replicator = command.isSelector ? createReplicatorForSelector() : createReplicatorForClientFunction(command);
 
     return Promise.resolve()

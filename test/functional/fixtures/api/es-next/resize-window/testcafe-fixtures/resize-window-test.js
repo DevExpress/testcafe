@@ -1,9 +1,9 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
-import { Hybrid } from 'testcafe';
+import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
-const getWindowWidth  = Hybrid(() => window.innerWidth);
-const getWindowHeight = Hybrid(() => window.innerHeight);
+const getWindowWidth  = ClientFunction(() => window.innerWidth);
+const getWindowHeight = ClientFunction(() => window.innerHeight);
 const iPhoneSize      = { width: 480, height: 320 };
 
 var initialWindowWidth  = null;
