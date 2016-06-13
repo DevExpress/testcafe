@@ -1,7 +1,7 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
-Hybrid function argument is a function that contains either generators or the
-async/await syntax. These features cannot be used in hybrid function code.
-Use Promises instead.
+ClientFunction argument is a function that contains either generators or the
+async/await syntax. These features cannot be used in ClientFunction code. Use
+Promises instead.
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');

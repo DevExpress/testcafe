@@ -214,8 +214,8 @@ export default {
         ${escapeHtml(err.errMsg)} ${err.getCallsiteMarkup({ stackOnly: true })}
     `),
 
-    [TYPE.regeneratorInFunctionArgumentOfHybridFunctionError]: err => markup(err, `
-        Hybrid function argument is a function that contains either generators or the <code>async/await</code> syntax. These features cannot be used in hybrid function code. Use Promises instead.
+    [TYPE.regeneratorInFunctionArgumentOfClientFunctionError]: err => markup(err, `
+        <code>${err.instantiationCallsiteName}</code> argument is a function that contains either generators or the <code>async/await</code> syntax. These features cannot be used in <code>${err.instantiationCallsiteName}</code> code. Use Promises instead.
 
         ${err.getCallsiteMarkup()}
     `),

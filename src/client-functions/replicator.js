@@ -1,9 +1,9 @@
 import { identity } from 'lodash';
 import Replicator from 'replicator';
-import { compiledCodeSymbol, DEFAULT_EXECUTION_CALLSITE_NAME } from './common';
+import compiledCodeSymbol from './compiled-code-symbol';
 import { compileFunctionArgumentOfHybridFunction } from '../compiler/es-next/hybrid-function';
 
-function createReplicator (transforms) {
+export function createReplicator (transforms) {
     // NOTE: we will serialize replicator results
     // to JSON with a command or command result.
     // Therefore there is no need to do additional job here,
@@ -17,12 +17,15 @@ function createReplicator (transforms) {
 }
 
 // Replicator transforms
-var functionTransform = {
-    type: 'Function',
+export class FunctionTransform {
+    constructor (callsiteNames) {
+        this.type          = 'Function';
+        this.callsiteNames = callsiteNames;
+    }
 
     shouldTransform (type) {
         return type === 'function';
-    },
+    }
 
     toSerializable (fn) {
         var isHybrid = !!fn[compiledCodeSymbol];
@@ -30,15 +33,15 @@ var functionTransform = {
         if (isHybrid)
             return fn[compiledCodeSymbol];
 
-        return compileFunctionArgumentOfHybridFunction(fn.toString(), DEFAULT_EXECUTION_CALLSITE_NAME);
-    },
+        return compileFunctionArgumentOfHybridFunction(fn.toString(), this.callsiteNames);
+    }
 
     fromSerializable () {
         return void 0;
     }
-};
+}
 
-var nodeTransform = {
+export var nodeTransform = {
     type: 'Node',
 
     shouldTransform () {
@@ -47,7 +50,3 @@ var nodeTransform = {
 
     fromSerializable: identity
 };
-
-// Replicators
-export var replicatorForHybrid   = createReplicator([functionTransform]);
-export var replicatorForSelector = createReplicator([functionTransform, nodeTransform]);

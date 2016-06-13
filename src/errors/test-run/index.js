@@ -53,11 +53,12 @@ export class ClientFunctionExecutionInterruptionError extends TestRunErrorBase {
     }
 }
 
-export class RegeneratorInFunctionArgumentOfHybridFunctionError extends TestRunErrorBase {
-    constructor (callsite) {
-        super(TYPE.regeneratorInFunctionArgumentOfHybridFunctionError);
+export class RegeneratorInFunctionArgumentOfClientFunctionError extends TestRunErrorBase {
+    constructor (instantiationCallsiteName, callsite) {
+        super(TYPE.regeneratorInFunctionArgumentOfClientFunctionError);
 
-        this.callsite = callsite;
+        this.instantiationCallsiteName = instantiationCallsiteName;
+        this.callsite                  = callsite;
     }
 }
 

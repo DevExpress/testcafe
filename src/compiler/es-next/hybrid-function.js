@@ -2,11 +2,11 @@ import hammerhead from 'testcafe-hammerhead';
 import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
 import { noop, escapeRegExp as escapeRe } from 'lodash';
 import loadBabelLibs from './load-babel-libs';
-import { compiledCodeSymbol } from '../../client-functions/common';
+import compiledCodeSymbol from '../../client-functions/compiled-code-symbol';
 import NODE_VER from '../../utils/node-version';
 import { ClientFunctionAPIError } from '../../errors/runtime';
 import getCallsite from '../../errors/get-callsite';
-import { RegeneratorInFunctionArgumentOfHybridFunctionError } from '../../errors/test-run';
+import { RegeneratorInFunctionArgumentOfClientFunctionError } from '../../errors/test-run';
 import MESSAGE from '../../errors/runtime/message';
 
 const ANONYMOUS_FN_RE                = /^function\*?\s*\(/;
@@ -137,11 +137,11 @@ function compile (fnCode, dependenciesCode, createRegeneratorInClientCodeError) 
     return `(function(){${dependenciesCode}${polyfills} return ${modifiedFnCode}})();`;
 }
 
-export function compileFunctionArgumentOfHybridFunction (argumentFnCode, executionCallsiteName) {
+export function compileFunctionArgumentOfHybridFunction (argumentFnCode, callsiteNames) {
     // NOTE: it is safe to use a test run error here, because this code
     // will be hit only if the context test run has already been validated.
-    var callsite                           = getCallsite(executionCallsiteName);
-    var createRegeneratorInClientCodeError = () => new RegeneratorInFunctionArgumentOfHybridFunctionError(callsite);
+    var callsite                           = getCallsite(callsiteNames.execution);
+    var createRegeneratorInClientCodeError = () => new RegeneratorInFunctionArgumentOfClientFunctionError(callsiteNames.instantiation, callsite);
 
     return compile(argumentFnCode, '', createRegeneratorInClientCodeError);
 }

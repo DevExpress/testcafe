@@ -1,12 +1,14 @@
 import testRunTracker from './test-run-tracker';
-import { compiledCodeSymbol, DEFAULT_EXECUTION_CALLSITE_NAME } from './common';
-import { replicatorForHybrid } from './replicators';
+import compiledCodeSymbol from './compiled-code-symbol';
+import { createReplicator, FunctionTransform } from './replicator';
 import { ExecuteHybridFunctionCommand } from '../test-run/commands';
 import TestRun from '../test-run';
 import { compileHybridFunction } from '../compiler/es-next/hybrid-function';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import getCallsite from '../errors/get-callsite';
+
+const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$hybridFunction$$';
 
 export default class ClientFunctionFactory {
     constructor (fn, dependencies, callsiteNames) {
@@ -98,6 +100,8 @@ export default class ClientFunctionFactory {
     }
 
     _getReplicator () {
-        return replicatorForHybrid;
+        var functionTransform = new FunctionTransform(this.callsiteNames);
+
+        return createReplicator([functionTransform]);
     }
 }

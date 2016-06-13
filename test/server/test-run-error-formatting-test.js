@@ -38,7 +38,7 @@ var ActionUnsupportedDeviceTypeError                   = require('../../lib/erro
 var ClientFunctionExecutionInterruptionError           = require('../../lib/errors/test-run').ClientFunctionExecutionInterruptionError;
 var MissingAwaitError                                  = require('../../lib/errors/test-run').MissingAwaitError;
 var ExternalAssertionLibraryError                      = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
-var RegeneratorInFunctionArgumentOfHybridFunctionError = require('../../lib/errors/test-run').RegeneratorInFunctionArgumentOfHybridFunctionError;
+var RegeneratorInFunctionArgumentOfClientFunctionError = require('../../lib/errors/test-run').RegeneratorInFunctionArgumentOfClientFunctionError;
 var DomNodeHybridResultError                           = require('../../lib/errors/test-run').DomNodeHybridResultError;
 
 
@@ -229,8 +229,8 @@ describe('Error formatting', function () {
             assertErrorMessage('client-function-execution-interruption-error', new ClientFunctionExecutionInterruptionError('eval'));
         });
 
-        it('Should format "regeneratorInFunctionArgumentOfHybridFunctionError"', function () {
-            assertErrorMessage('regenerator-in-function-argument-of-hybrid-function-error', new RegeneratorInFunctionArgumentOfHybridFunctionError(testCallsite));
+        it('Should format "regeneratorInFunctionArgumentOfClientFunctionError"', function () {
+            assertErrorMessage('regenerator-in-function-argument-of-client-function-error', new RegeneratorInFunctionArgumentOfClientFunctionError('ClientFunction', testCallsite));
         });
 
         it('Should format "domNodeHybridResultError"', function () {

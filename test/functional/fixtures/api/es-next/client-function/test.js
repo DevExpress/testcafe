@@ -149,15 +149,15 @@ describe('[API] ClientFunction', function () {
                 });
         });
 
-        it('Should raise an error if a function argument contains async code', function () {
-            return runTests('./testcafe-fixtures/client-fn-test.js', 'Async code in function argument of ClientFunction', {
+        it('Should raise an error if a function argument contains `async/await` syntax', function () {
+            return runTests('./testcafe-fixtures/client-fn-test.js', 'Async/await in function argument of ClientFunction', {
                 shouldFail: true,
                 only:       'chrome'
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'Hybrid function argument is a function that contains either generators or the async/await syntax. ' +
-                        'These features cannot be used in hybrid function code. Use Promises instead.'
+                        'ClientFunction argument is a function that contains either generators or the async/await syntax. ' +
+                        'These features cannot be used in ClientFunction code. Use Promises instead.'
                     );
                     expect(errs[0]).contains(' > 202 |    await hfn(async () => Promise.resolve());');
                 });

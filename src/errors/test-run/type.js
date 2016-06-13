@@ -39,7 +39,7 @@ export default {
     actionUnsupportedDeviceTypeError:        'actionUnsupportedDeviceTypeError',
 
     clientFunctionExecutionInterruptionError:           'clientFunctionExecutionInterruptionError',
-    regeneratorInFunctionArgumentOfHybridFunctionError: 'generatorInFunctionArgumentOfHybridFunctionError',
+    regeneratorInFunctionArgumentOfClientFunctionError: 'regeneratorInFunctionArgumentOfClientFunctionError',
     domNodeHybridResultError:                           'domNodeHybridResultError',
 
     externalAssertionLibraryError: 'externalAssertionLibraryError'
