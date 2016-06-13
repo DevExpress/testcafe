@@ -1,5 +1,5 @@
 import ClientFunctionFactory from './client-function-factory';
-import { createReplicator, FunctionTransform, nodeTransform } from './replicator';
+import { createReplicator, FunctionTransform, SelectorNodeTransform } from './replicator';
 import { ClientFunctionAPIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import { ExecuteHybridFunctionCommand } from '../test-run/commands';
@@ -25,8 +25,9 @@ export default class SelectorFactory extends ClientFunctionFactory {
     }
 
     _getReplicator () {
-        var functionTransform = new FunctionTransform(this.callsiteNames);
-
-        return createReplicator([functionTransform, nodeTransform]);
+        return createReplicator([
+            new FunctionTransform(this.callsiteNames),
+            new SelectorNodeTransform()
+        ]);
     }
 }

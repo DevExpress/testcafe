@@ -1,71 +1,25 @@
-import hammerhead from '../../deps/hammerhead';
+import { Promise } from '../../deps/hammerhead';
 import DriverStatus from '../../status';
-import Replicator from 'replicator';
+import { createReplicator, FunctionTransform, SelectorNodeTransform, ClientFunctionNodeTransform } from './replicator';
 import evalFunction from './eval-function';
-import { NodeSnapshot, ElementSnapshot } from './node-snapshots';
-import { UncaughtErrorInClientFunctionCode, DomNodeHybridResultError } from '../../../../errors/test-run';
+import { UncaughtErrorInClientFunctionCode } from '../../../../errors/test-run';
 
-// NOTE: save original ctors because they may be overwritten by page code
-var Node       = window.Node;
-var Promise    = hammerhead.Promise;
-var identityFn = val => val;
-
-function createReplicator (transforms) {
-    // NOTE: we will serialize replicator results
-    // to JSON with a command or command result.
-    // Therefore there is no need to do additional job here,
-    // so we use identity functions for serialization.
-    var replicator = new Replicator({
-        serialize:   identityFn,
-        deserialize: identityFn
-    });
-
-    return replicator.addTransforms(transforms);
+function createReplicatorForClientFunction (command) {
+    return createReplicator([
+        new ClientFunctionNodeTransform(command.instantiationCallsiteName),
+        new FunctionTransform()
+    ]);
 }
 
-// Replicator transforms
-var functionTransform = {
-    type: 'Function',
-
-    shouldTransform (type) {
-        return type === 'function';
-    },
-
-    toSerializable () {
-        return '';
-    },
-
-    fromSerializable (fnCode) {
-        return evalFunction(fnCode);
-    }
-};
-
-var nodeTransformForHybrid = {
-    type: 'Node',
-
-    shouldTransform (type, val) {
-        if (val instanceof Node)
-            throw new DomNodeHybridResultError();
-    }
-};
-
-var nodeTransformForSelector = {
-    type: 'Node',
-
-    shouldTransform (type, val) {
-        return val instanceof Node;
-    },
-
-    toSerializable (node) {
-        return node.nodeType === 1 ? new ElementSnapshot(node) : new NodeSnapshot(node);
-    }
-};
-
-var replicatorForHybrid   = createReplicator([functionTransform, nodeTransformForHybrid]);
-var replicatorForSelector = createReplicator([functionTransform, nodeTransformForSelector]);
+function createReplicatorForSelector () {
+    return createReplicator([
+        new SelectorNodeTransform(),
+        new FunctionTransform()
+    ]);
+}
 
 export default function executeHybridFunction (command) {
-    var replicator = command.isSelector ? replicatorForSelector : replicatorForHybrid;
+    var replicator = command.isSelector ? createReplicatorForSelector() : createReplicatorForClientFunction(command);
 
     return Promise.resolve()
         .then(() => evalFunction(command.fnCode))

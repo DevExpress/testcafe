@@ -220,8 +220,8 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.domNodeHybridResultError]: err => markup(err, `
-       Regular Hybrid functions cannot return DOM elements. Use <code>Selector</code> functions for this purpose.
+    [TYPE.domNodeClientFunctionResultError]: err => markup(err, `
+       <code>${err.instantiationCallsiteName}</code> cannot return DOM elements. Use <code>Selector</code> functions for this purpose.
 
        ${err.getCallsiteMarkup()}
     `)

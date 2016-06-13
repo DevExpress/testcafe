@@ -62,9 +62,11 @@ export class RegeneratorInFunctionArgumentOfClientFunctionError extends TestRunE
     }
 }
 
-export class DomNodeHybridResultError extends TestRunErrorBase {
-    constructor () {
-        super(TYPE.domNodeHybridResultError);
+export class DomNodeClientFunctionResultError extends TestRunErrorBase {
+    constructor (instantiationCallsiteName) {
+        super(TYPE.domNodeClientFunctionResultError);
+
+        this.instantiationCallsiteName = instantiationCallsiteName;
     }
 }
 

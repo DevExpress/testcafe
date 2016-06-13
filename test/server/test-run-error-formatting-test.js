@@ -39,7 +39,7 @@ var ClientFunctionExecutionInterruptionError           = require('../../lib/erro
 var MissingAwaitError                                  = require('../../lib/errors/test-run').MissingAwaitError;
 var ExternalAssertionLibraryError                      = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
 var RegeneratorInFunctionArgumentOfClientFunctionError = require('../../lib/errors/test-run').RegeneratorInFunctionArgumentOfClientFunctionError;
-var DomNodeHybridResultError                           = require('../../lib/errors/test-run').DomNodeHybridResultError;
+var DomNodeClientFunctionResultError                   = require('../../lib/errors/test-run').DomNodeClientFunctionResultError;
 
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
@@ -233,8 +233,8 @@ describe('Error formatting', function () {
             assertErrorMessage('regenerator-in-function-argument-of-client-function-error', new RegeneratorInFunctionArgumentOfClientFunctionError('ClientFunction', testCallsite));
         });
 
-        it('Should format "domNodeHybridResultError"', function () {
-            assertErrorMessage('dom-node-hybrid-result-error', new DomNodeHybridResultError());
+        it('Should format "domNodeClientFunctionResultError"', function () {
+            assertErrorMessage('dom-node-client-function-result-error', new DomNodeClientFunctionResultError('ClientFunction'));
         });
     });
 

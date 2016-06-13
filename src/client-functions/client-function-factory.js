@@ -100,8 +100,8 @@ export default class ClientFunctionFactory {
     }
 
     _getReplicator () {
-        var functionTransform = new FunctionTransform(this.callsiteNames);
-
-        return createReplicator([functionTransform]);
+        return createReplicator([
+            new FunctionTransform(this.callsiteNames)
+        ]);
     }
 }

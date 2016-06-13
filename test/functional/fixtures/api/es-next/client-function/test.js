@@ -166,7 +166,7 @@ describe('[API] ClientFunction', function () {
         it('Should raise an error if a DOM node is returned', function () {
             return runTests('./testcafe-fixtures/client-fn-test.js', 'DOM node return value', { shouldFail: true })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('Regular Hybrid functions cannot return DOM elements. Use Selector functions for this purpose.');
+                    expect(errs[0]).contains('ClientFunction cannot return DOM elements. Use Selector functions for this purpose.');
                     expect(errs[0]).contains(' > 223 |    await getSomeNodes();');
                 });
         });

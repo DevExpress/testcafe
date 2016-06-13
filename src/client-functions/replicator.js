@@ -41,12 +41,16 @@ export class FunctionTransform {
     }
 }
 
-export var nodeTransform = {
-    type: 'Node',
+export class SelectorNodeTransform {
+    constructor () {
+        this.type = 'Node';
+    }
 
     shouldTransform () {
         return false;
-    },
+    }
 
-    fromSerializable: identity
-};
+    fromSerializable (nodeSnapshot) {
+        return nodeSnapshot;
+    }
+}
