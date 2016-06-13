@@ -4,7 +4,7 @@ import { replicatorForHybrid } from './replicators';
 import { ExecuteHybridFunctionCommand } from '../test-run/commands';
 import TestRun from '../test-run';
 import { compileHybridFunction } from '../compiler/es-next/hybrid-function';
-import { APIError } from '../errors/runtime';
+import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import getCallsite from '../errors/get-callsite';
 
@@ -26,7 +26,7 @@ export default class ClientFunctionFactory {
         var dependenciesType = typeof dependencies;
 
         if (dependenciesType !== 'object' && dependenciesType !== 'undefined')
-            throw new APIError(this.callsiteNames.instantiation, MESSAGE.hybridDependenciesIsNotAnObject, dependenciesType);
+            throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionDependenciesIsNotAnObject, dependenciesType);
     }
 
     _resolveContextTestRun () {
@@ -34,7 +34,7 @@ export default class ClientFunctionFactory {
         var testRun   = TestRun.activeTestRuns[testRunId];
 
         if (!testRun)
-            throw new APIError(this.callsiteNames.execution, MESSAGE.hybridFunctionCantResolveTestRun);
+            throw new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, MESSAGE.clientFunctionCantResolveTestRun);
 
         return testRun;
     }
@@ -48,7 +48,7 @@ export default class ClientFunctionFactory {
             // NOTE: we can't use strict `t instanceof TestController`
             // check due to module circular reference
             if (!t || !(t.testRun instanceof TestRun))
-                throw new APIError('bindTestRun', MESSAGE.invalidHybridTestRunBinding);
+                throw new APIError('bindTestRun', MESSAGE.invalidClientFunctionTestRunBinding);
 
             return factory.getFunction(t.testRun);
         };
@@ -88,7 +88,7 @@ export default class ClientFunctionFactory {
         var fnType = typeof fn;
 
         if (fnType !== 'function')
-            throw new APIError(this.callsiteNames.instantiation, MESSAGE.hybridFunctionCodeIsNotAFunction, fnType);
+            throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionCodeIsNotAFunction, fnType);
 
         return fn.toString();
     }

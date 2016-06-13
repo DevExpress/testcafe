@@ -1,6 +1,6 @@
 import ClientFunctionFactory from './client-function-factory';
 import { replicatorForSelector } from './replicators';
-import { APIError } from '../errors/runtime';
+import { ClientFunctionAPIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import { ExecuteHybridFunctionCommand } from '../test-run/commands';
 
@@ -14,7 +14,7 @@ export default class SelectorFactory extends ClientFunctionFactory {
 
         // TODO needs its own error and should accept strings
         if (fnType !== 'function')
-            throw new APIError(this.callsiteNames.instantiation, MESSAGE.hybridFunctionCodeIsNotAFunction, fnType);
+            throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionCodeIsNotAFunction, fnType);
 
         return fn.toString();
     }

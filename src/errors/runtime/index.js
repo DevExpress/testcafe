@@ -57,3 +57,11 @@ export class APIError extends Error {
         return message + '\n\n' + callsiteRecord.renderSync({ renderer, stackFilter });
     }
 }
+
+export class ClientFunctionAPIError extends APIError {
+    constructor (methodName, instantiationCallsiteName, template, ...args) {
+        template = template.replace(/\{#instantiationCallsiteName\}/g, instantiationCallsiteName);
+
+        super(methodName, template, ...args);
+    }
+}

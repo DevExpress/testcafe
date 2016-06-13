@@ -538,7 +538,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Hybrid function code is expected to be specified as a function, but "number" was passed.',
+                                 'ClientFunction code is expected to be specified as a function, but "number" was passed.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -565,7 +565,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Hybrid function code is expected to be specified as a function, but "number" was passed.',
+                                 'ClientFunction code is expected to be specified as a function, but "number" was passed.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -593,10 +593,10 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'The hybrid function cannot implicitly resolve the test run in context of which it ' +
-                                 'should be executed. If you need to call the hybrid function from the Node.js API ' +
-                                 "callback, pass the test controller manually via hybrid function's `.bindTestRun(t)` " +
-                                 'method first. Note that you cannot execute hybrid functions outside the test code.',
+                                 'ClientFunction cannot implicitly resolve the test run in context of which it ' +
+                                 'should be executed. If you need to call ClientFunction from the Node.js API ' +
+                                 "callback, pass the test controller manually via ClientFunction's `.bindTestRun(t)` " +
+                                 'method first. Note that you cannot execute ClientFunction outside the test code.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -623,7 +623,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Hybrid function code cannot contain generators or `async/await` syntax (use Promises instead).',
+                                 'ClientFunction code cannot contain generators or `async/await` syntax (use Promises instead).',
 
                         callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
                                   '    2 |\n' +
@@ -650,7 +650,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Hybrid function code cannot contain generators or `async/await` syntax (use Promises instead).',
+                                 'ClientFunction code cannot contain generators or `async/await` syntax (use Promises instead).',
 
                         callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
                                   '    2 |\n' +
@@ -678,7 +678,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Hybrid function constructor\'s "dependencies" argument is expected to be an object, but it was "string".',
+                                 'ClientFunction "dependencies" argument is expected to be an object, but it was "string".',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -701,7 +701,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Hybrid function\'s dependency "getText" is not a hybrid function.',
+                                 'ClientFunction dependency "getText" is not a client function.',
 
                         callsite: '    3 |fixture `Test`;\n' +
                                   '    4 |\n' +

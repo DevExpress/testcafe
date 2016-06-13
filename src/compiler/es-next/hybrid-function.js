@@ -4,7 +4,7 @@ import { noop, escapeRegExp as escapeRe } from 'lodash';
 import loadBabelLibs from './load-babel-libs';
 import { compiledCodeSymbol } from '../../client-functions/common';
 import NODE_VER from '../../utils/node-version';
-import { APIError } from '../../errors/runtime';
+import { ClientFunctionAPIError } from '../../errors/runtime';
 import getCallsite from '../../errors/get-callsite';
 import { RegeneratorInFunctionArgumentOfHybridFunctionError } from '../../errors/test-run';
 import MESSAGE from '../../errors/runtime/message';
@@ -105,7 +105,7 @@ function getDependenciesCode (dependencies, instantiationCallsiteName) {
             var dependencyCode = dependencies[name][compiledCodeSymbol];
 
             if (!dependencyCode)
-                throw new APIError(instantiationCallsiteName, MESSAGE.hybridDependencyIsNotAHybrid, name);
+                throw new ClientFunctionAPIError(instantiationCallsiteName, instantiationCallsiteName, MESSAGE.clientFunctionDependencyIsNotAClientFunction, name);
 
             return code + `var ${name}=${dependencyCode}`;
         }, '');
@@ -148,7 +148,7 @@ export function compileFunctionArgumentOfHybridFunction (argumentFnCode, executi
 
 export function compileHybridFunction (fnCode, dependencies = {}, instantiationCallsiteName) {
     var dependenciesCode                   = getDependenciesCode(dependencies, instantiationCallsiteName);
-    var createRegeneratorInClientCodeError = () => new APIError(instantiationCallsiteName, MESSAGE.regeneratorInHybridFunctionCode);
+    var createRegeneratorInClientCodeError = () => new ClientFunctionAPIError(instantiationCallsiteName, instantiationCallsiteName, MESSAGE.regeneratorInClientFunctionCode);
 
     return compile(fnCode, dependenciesCode, createRegeneratorInClientCodeError);
 }
