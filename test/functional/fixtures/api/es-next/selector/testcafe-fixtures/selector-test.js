@@ -178,3 +178,15 @@ test('Non-element node snapshots', async t => {
     expect(fragment.hasChildElements).to.be.true;
     expect(fragment.textContent).eql('42');
 });
+
+test('Selector fn is not a function or string', async () => {
+    await Selector(123)();
+});
+
+test('String ctor argument', async () => {
+    const el1 = await Selector('#htmlElement')();
+    const el2 = await Selector('.svg1')();
+
+    expect(el1.tagName).eql('div');
+    expect(el2.tagName).eql('rect');
+});

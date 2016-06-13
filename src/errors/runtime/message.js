@@ -23,6 +23,7 @@ export default {
     beforeEachIsNotAFunction:                     `Fixture's "beforeEach" method takes a function, but "{type}" was passed.`,
     afterEachIsNotAFunction:                      `Fixture's "afterEach" method takes a function, but "{type}" was passed.`,
     clientFunctionCodeIsNotAFunction:             '{#instantiationCallsiteName} code is expected to be specified as a function, but "{type}" was passed.',
+    selectorCodeIsNotAFunctionOrString:           '{#instantiationCallsiteName} code is expected to be specified as a function or string, but "{type}" was passed.',
     clientFunctionCantResolveTestRun:             "{#instantiationCallsiteName} cannot implicitly resolve the test run in context of which it should be executed. If you need to call {#instantiationCallsiteName} from the Node.js API callback, pass the test controller manually via {#instantiationCallsiteName}'s `.bindTestRun(t)` method first. Note that you cannot execute {#instantiationCallsiteName} outside the test code.",
     regeneratorInClientFunctionCode:              '{#instantiationCallsiteName} code cannot contain generators or `async/await` syntax (use Promises instead).',
     clientFunctionDependenciesIsNotAnObject:      `{#instantiationCallsiteName} "dependencies" argument is expected to be an object, but it was "{type}".`,

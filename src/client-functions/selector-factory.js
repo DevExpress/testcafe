@@ -12,11 +12,10 @@ export default class SelectorFactory extends ClientFunctionFactory {
     _getFnCode (fn) {
         var fnType = typeof fn;
 
-        // TODO needs its own error and should accept strings
-        if (fnType !== 'function')
-            throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionCodeIsNotAFunction, fnType);
+        if (fnType !== 'function' && fnType !== 'string')
+            throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.selectorCodeIsNotAFunctionOrString, fnType);
 
-        return fn.toString();
+        return fnType === 'string' ? `function(){return document.querySelector('${fn}');}` : fn.toString();
     }
 
     _createExecutionTestRunCommand (args) {

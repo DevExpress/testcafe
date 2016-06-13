@@ -553,6 +553,34 @@ describe('Compiler', function () {
                 });
         });
 
+        it('Should raise an error if Selector argument is not a function or string', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-arg-is-not-a-function-or-string/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Selector code is expected to be specified as a function or string, but "number" was passed.',
+
+                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  ' > 5 |Selector(123);\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});\n' +
+                                  '   9 |'
+                    });
+                });
+        });
+
+
         it('Should raise an error if ClientFunction argument is not a function (if called as ctor)', function () {
             var testfile = resolve('test/server/data/test-suites/client-fn-arg-is-not-a-function-as-ctor/testfile.js');
 
