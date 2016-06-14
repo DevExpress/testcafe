@@ -462,13 +462,39 @@ export class ClearUploadCommand extends Assignable {
     }
 }
 
-export class ExecuteClientFunctionCommand {
-    constructor (instantiationCallsiteName, fnCode, args, isSelector) {
-        this.type                      = TYPE.executeClientFunction;
-        this.instantiationCallsiteName = instantiationCallsiteName;
-        this.fnCode                    = fnCode;
-        this.args                      = args;
-        this.isSelector                = isSelector;
+class ExecuteClientFunctionCommandBase extends Assignable {
+    constructor (type, obj) {
+        super(obj);
+
+        this.type = type;
+
+        this.instantiationCallsiteName = '';
+        this.fnCode                    = '';
+        this.args                      = [];
+
+        // NOTE: we don't need to validate options because command
+        // is always produced by client function factory internally.
+        this._assignFrom(obj, false);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'instantiationCallsiteName' },
+            { name: 'fnCode' },
+            { name: 'args' }
+        ];
+    }
+}
+
+export class ExecuteClientFunctionCommand extends ExecuteClientFunctionCommandBase {
+    constructor (obj) {
+        super(TYPE.executeClientFunction, obj);
+    }
+}
+
+export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
+    constructor (obj) {
+        super(TYPE.executeSelector, obj);
     }
 }
 
@@ -620,6 +646,7 @@ export function isCommandRejectableByPageError (command) {
 
 function isObservationCommand (command) {
     return command.type === TYPE.executeClientFunction ||
+           command.type === TYPE.executeSelector ||
            command.type === TYPE.wait ||
            command.type === TYPE.waitForElement;
 }

@@ -2,7 +2,7 @@ import ClientFunctionFactory from './client-function-factory';
 import { createReplicator, FunctionTransform, SelectorNodeTransform } from './replicator';
 import { ClientFunctionAPIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
-import { ExecuteClientFunctionCommand } from '../test-run/commands';
+import { ExecuteSelectorCommand } from '../test-run/commands';
 
 export default class SelectorFactory extends ClientFunctionFactory {
     constructor (fn, dependencies, boundTestRun, callsiteNames) {
@@ -19,7 +19,11 @@ export default class SelectorFactory extends ClientFunctionFactory {
     }
 
     _createExecutionTestRunCommand (args) {
-        return new ExecuteClientFunctionCommand(this.callsiteNames.instantiation, this.compiledFnCode, args, true);
+        return new ExecuteSelectorCommand({
+            instantiationCallsiteName: this.callsiteNames.instantiation,
+            fnCode:                    this.compiledFnCode,
+            args:                      args
+        });
     }
 
     _createReplicator () {

@@ -21,6 +21,7 @@ export default {
     uploadFile:                 'upload-file',
     clearUpload:                'clear-upload',
     executeClientFunction:      'execute-client-function',
+    executeSelector:            'execute-selector',
     takeScreenshot:             'take-screenshot',
     takeScreenshotOnFail:       'take-screenshot-on-fail',
     prepareBrowserManipulation: 'prepare-browser-manipulation',

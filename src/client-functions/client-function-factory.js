@@ -68,7 +68,7 @@ export default class ClientFunctionFactory {
             for (var i = 0; i < arguments.length; i++)
                 args.push(arguments[i]);
 
-            var command  = factory.getCommand(args);
+            var command = factory.getCommand(args);
             var callsite = getCallsite(factory.callsiteNames.execution);
 
             // NOTE: don't use async/await here to enable
@@ -100,7 +100,11 @@ export default class ClientFunctionFactory {
     }
 
     _createExecutionTestRunCommand (args) {
-        return new ExecuteClientFunctionCommand(this.callsiteNames.instantiation, this.compiledFnCode, args, false);
+        return new ExecuteClientFunctionCommand({
+            instantiationCallsiteName: this.callsiteNames.instantiation,
+            fnCode:                    this.compiledFnCode,
+            args:                      args
+        });
     }
 
     _createReplicator () {
