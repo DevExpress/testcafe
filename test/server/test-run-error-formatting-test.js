@@ -19,6 +19,7 @@ var ActionUnsupportedUrlProtocolError                  = require('../../lib/erro
 var ActionStringOrStringArrayArgumentError             = require('../../lib/errors/test-run').ActionStringOrStringArrayArgumentError;
 var ActionStringArrayElementError                      = require('../../lib/errors/test-run').ActionStringArrayElementError;
 var ActionAdditionalSelectorTypeError                  = require('../../lib/errors/test-run').ActionAdditionalSelectorTypeError;
+var CouldNotOpenPageError                                = require('../../lib/errors/test-run').CouldNotOpenPageError;
 var UncaughtErrorOnPage                                = require('../../lib/errors/test-run').UncaughtErrorOnPage;
 var UncaughtErrorInTestCode                            = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
 var UncaughtErrorInHybridFunctionCode                  = require('../../lib/errors/test-run').UncaughtErrorInHybridFunctionCode;
@@ -123,6 +124,10 @@ describe('Error formatting', function () {
 
         it('Should format "actionBooleanOptionError" message', function () {
             assertErrorMessage('action-boolean-option-error', new ActionBooleanOptionError('modifier.ctrl', 'object'));
+        });
+
+        it('Should format "couldNotOpenPage" message', function () {
+            assertErrorMessage('could-not-open-page-error', new CouldNotOpenPageError('Failed to find a DNS-record for the resource'));
         });
 
         it('Should format "uncaughtErrorOnPage" message', function () {

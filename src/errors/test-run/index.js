@@ -66,6 +66,17 @@ export class DomNodeHybridResultError extends TestRunErrorBase {
 }
 
 
+// Page errors
+//--------------------------------------------------------------------
+export class CouldNotOpenPageError extends TestRunErrorBase {
+    constructor (err) {
+        super(TYPE.couldNotOpenPage);
+
+        this.errMsg = err;
+    }
+}
+
+
 // Uncaught errors
 //--------------------------------------------------------------------
 export class UncaughtErrorOnPage extends TestRunErrorBase {

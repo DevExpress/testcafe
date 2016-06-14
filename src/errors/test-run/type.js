@@ -42,5 +42,7 @@ export default {
     regeneratorInFunctionArgumentOfHybridFunctionError: 'generatorInFunctionArgumentOfHybridFunctionError',
     domNodeHybridResultError:                           'domNodeHybridResultError',
 
-    externalAssertionLibraryError: 'externalAssertionLibraryError'
+    externalAssertionLibraryError: 'externalAssertionLibraryError',
+
+    couldNotOpenPage: 'couldNotOpenPageError'
 };
