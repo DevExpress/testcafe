@@ -19,11 +19,10 @@ export default class SelectorFactory extends ClientFunctionFactory {
     }
 
     _createExecutionTestRunCommand (args) {
-        // TODO needs its own command
         return new ExecuteClientFunctionCommand(this.callsiteNames.instantiation, this.compiledFnCode, args, true);
     }
 
-    _getReplicator () {
+    _createReplicator () {
         return createReplicator([
             new FunctionTransform(this.callsiteNames),
             new SelectorNodeTransform()

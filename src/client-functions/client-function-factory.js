@@ -22,6 +22,7 @@ export default class ClientFunctionFactory {
         var fnCode = this._getFnCode(fn);
 
         this.compiledFnCode = compileClientFunction(fnCode, dependencies || {}, this.callsiteNames.instantiation);
+        this.replicator     = this._createReplicator();
     }
 
     _validateDependencies (dependencies) {
@@ -60,24 +61,21 @@ export default class ClientFunctionFactory {
         var factory = this;
 
         var clientFn = function __$$clientFunction$$ () {
-            var testRun    = boundTestRun || factory._resolveContextTestRun();
-            var replicator = factory._getReplicator();
-            var args       = [];
+            var testRun = boundTestRun || factory._resolveContextTestRun();
+            var args    = [];
 
             // OPTIMIZATION: don't leak `arguments` object.
             for (var i = 0; i < arguments.length; i++)
                 args.push(arguments[i]);
 
-            args = replicator.encode(args);
-
-            var command  = factory._createExecutionTestRunCommand(args);
+            var command  = factory.getCommand(args);
             var callsite = getCallsite(factory.callsiteNames.execution);
 
             // NOTE: don't use async/await here to enable
             // sync errors for resolving the context test run
             return testRun
                 .executeCommand(command, callsite)
-                .then(result => replicator.decode(result));
+                .then(result => factory.replicator.decode(result));
         };
 
         this._decorateFunction(clientFn);
@@ -85,7 +83,13 @@ export default class ClientFunctionFactory {
         return clientFn;
     }
 
-    // Descendants override points
+    getCommand (args) {
+        args = this.replicator.encode(args);
+
+        return this._createExecutionTestRunCommand(args);
+    }
+
+    // Overridable methods
     _getFnCode (fn) {
         var fnType = typeof fn;
 
@@ -99,7 +103,7 @@ export default class ClientFunctionFactory {
         return new ExecuteClientFunctionCommand(this.callsiteNames.instantiation, this.compiledFnCode, args, false);
     }
 
-    _getReplicator () {
+    _createReplicator () {
         return createReplicator([
             new FunctionTransform(this.callsiteNames)
         ]);

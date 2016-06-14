@@ -25,7 +25,24 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'String ctor argument');
     });
 
+    it('Should wait for element to appear in DOM', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Wait for element in DOM', { elementAvailabilityTimeout: 2500 });
+    });
+
+    it('Should return `null` or `undefined` if element does not appear within given time', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Element do not appear', { elementAvailabilityTimeout: 300 });
+    });
+
     describe('Errors', function () {
+        it('Should handle errors in Selector code', function () {
+            return runTests('./testcafe-fixtures/selector-test.js', 'Error in code', { shouldFail: true })
+                .catch(function (errs) {
+                    expect(errs[0]).contains('An error occurred in Selector code:');
+                    expect(errs[0]).contains('Error: Hey ya!');
+                    expect(errs[0]).contains('> 213 |    await fn();');
+                });
+        });
+
         it('Should raise an error if Selector ctor argument is not a function or string', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Selector fn is not a function or string', {
                 shouldFail: true,

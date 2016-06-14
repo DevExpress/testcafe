@@ -183,7 +183,7 @@ export default class ClientDriver {
     _onExecuteClientFunctionCommand (command) {
         this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, { instantiationCallsiteName: command.instantiationCallsiteName });
 
-        executeClientFunction(command)
+        executeClientFunction(command, this.elementAvailabilityTimeout)
             .then(driverStatus => {
                 this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, null);
                 this._onReady(driverStatus);

@@ -27,5 +27,19 @@
 </form>
 <div id="htmlElementWithInnerText">Hey<br><script>42</script>yo test<script>'hey hey';</script><style>.someClass {}</style>
 </div>
+
+<input type="button" id="createElement">
+
+<script>
+    document.querySelector('#createElement').addEventListener('click', function(){
+       var div = document.createElement('div');
+
+        div.id = 'newElement';
+
+        window.setTimeout(function(){
+            document.body.appendChild(div);
+        }, 500);
+    });
+</script>
 </body>
 </html>

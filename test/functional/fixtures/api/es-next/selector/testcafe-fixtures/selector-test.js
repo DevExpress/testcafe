@@ -190,3 +190,25 @@ test('String ctor argument', async () => {
     expect(el1.tagName).eql('div');
     expect(el2.tagName).eql('rect');
 });
+
+test('Wait for element in DOM', async t => {
+    await t.click('#createElement');
+
+    var el = await Selector('#newElement')();
+
+    expect(el.tagName).eql('div');
+});
+
+test('Element do not appear', async () => {
+    var el = await Selector('#someElement')();
+
+    expect(el).eql(null);
+});
+
+test('Error in code', async () => {
+    var fn = Selector(() => {
+        throw new Error('Hey ya!');
+    });
+
+    await fn();
+});

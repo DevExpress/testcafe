@@ -1,8 +1,3 @@
-// -------------------------------------------------------------
-// WARNING: this file is used by both the client and the server.
-// Do not use any browser or node-specific API!
-// -------------------------------------------------------------
-
 import TYPE from './type';
 import Assignable from '../../utils/assignable';
 import { isValidDeviceName } from 'testcafe-browser-natives';
