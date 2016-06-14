@@ -140,3 +140,20 @@ export class TypeOptions extends ClickOptions {
         return super._getAssignableProperties().concat([{ name: 'replace', type: boolean }]);
     }
 }
+
+//ResizeToFitDevice
+export class ResizeToFitDeviceOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this.portraitOrientation = false;
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'portraitOrientation', type: boolean }
+        ];
+    }
+}

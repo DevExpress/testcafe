@@ -1,10 +1,11 @@
-var expect        = require('chai').expect;
-var OffsetOptions = require('../../lib/test-run/commands/options').OffsetOptions;
-var MouseOptions  = require('../../lib/test-run/commands/options').MouseOptions;
-var ClickOptions  = require('../../lib/test-run/commands/options').ClickOptions;
-var MoveOptions   = require('../../lib/test-run/commands/options').MoveOptions;
-var TypeOptions   = require('../../lib/test-run/commands/options').TypeOptions;
-var ERROR_TYPE    = require('../../lib/errors/test-run/type');
+var expect                   = require('chai').expect;
+var OffsetOptions            = require('../../lib/test-run/commands/options').OffsetOptions;
+var MouseOptions             = require('../../lib/test-run/commands/options').MouseOptions;
+var ClickOptions             = require('../../lib/test-run/commands/options').ClickOptions;
+var MoveOptions              = require('../../lib/test-run/commands/options').MoveOptions;
+var TypeOptions              = require('../../lib/test-run/commands/options').TypeOptions;
+var ResizeToFitDeviceOptions = require('../../lib/test-run/commands/options').ResizeToFitDeviceOptions;
+var ERROR_TYPE               = require('../../lib/errors/test-run/type');
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects
 function assertThrow (fn, expectedErr) {
@@ -143,6 +144,17 @@ describe('Test run command options', function () {
                     shift: true,
                     meta:  false
                 }
+            });
+        });
+
+        it('Should create ResizeToFitDeviceOptions from object', function () {
+            var options = new ResizeToFitDeviceOptions({
+                portraitOrientation: true,
+                dummy:               false
+            }, false);
+
+            expect(JSON.parse(JSON.stringify(options))).eql({
+                portraitOrientation: true
             });
         });
     });
@@ -299,5 +311,19 @@ describe('Test run command options', function () {
             );
         });
 
+        it('Should validate ResizeToFitDeviceOptions', function () {
+            assertThrow(
+                function () {
+                    return new ResizeToFitDeviceOptions({ portraitOrientation: 1 }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    actualValue:     'number',
+                    optionName:      'portraitOrientation',
+                    callsite:        null
+                }
+            );
+        });
     });
 });

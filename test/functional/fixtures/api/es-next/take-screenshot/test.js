@@ -33,5 +33,24 @@ if (!config.isTravisTask) {
                     expect(success).eql(true);
                 });
         });
+
+        it('Should validate path argument', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Incorrect action path argument', {
+                shouldFail: true,
+                only:       'chrome'
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains('The path argument is expected to be a non-empty string, but it was number.');
+                    expect(errs[0]).to.contains(
+                        '20 | ' +
+                        '21 |    await t.takeScreenshot(\'../../../../../../../___test-screenshots___/custom/\' + parsedUA.family); ' +
+                        '22 |}); ' +
+                        '23 | ' +
+                        '24 |test(\'Incorrect action path argument\', async t => {' +
+                        ' > 25 |    await t.takeScreenshot(1); ' +
+                        '26 |});'
+                    );
+                });
+        });
     });
 }

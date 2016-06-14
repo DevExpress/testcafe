@@ -10,7 +10,6 @@ var ActionIntegerOptionError                           = require('../../lib/erro
 var ActionPositiveIntegerOptionError                   = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
 var ActionIntegerArgumentError                         = require('../../lib/errors/test-run').ActionIntegerArgumentError;
 var ActionPositiveIntegerArgumentError                 = require('../../lib/errors/test-run').ActionPositiveIntegerArgumentError;
-var ActionBooleanArgumentError                         = require('../../lib/errors/test-run').ActionBooleanArgumentError;
 var ActionBooleanOptionError                           = require('../../lib/errors/test-run').ActionBooleanOptionError;
 var ActionSelectorTypeError                            = require('../../lib/errors/test-run').ActionSelectorTypeError;
 var ActionOptionsTypeError                             = require('../../lib/errors/test-run').ActionOptionsTypeError;
@@ -115,10 +114,6 @@ describe('Error formatting', function () {
 
         it('Should format "ActionPositiveIntegerArgumentError" message', function () {
             assertErrorMessage('action-positive-integer-argument-error', new ActionPositiveIntegerArgumentError('startPos', '-1'));
-        });
-
-        it('Should format "actionBooleanArgumentError" message', function () {
-            assertErrorMessage('action-boolean-argument-error', new ActionBooleanArgumentError('portrait', 'object'));
         });
 
         it('Should format "actionBooleanOptionError" message', function () {

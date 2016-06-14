@@ -196,8 +196,8 @@ export default class TestController {
         return this._enqueueAction('resizeWindow', ResizeWindowCommand, { width, height });
     }
 
-    _resizeWindowToFitDevice$ (device, portrait) {
-        return this._enqueueAction('resizeWindowToFitDevice', ResizeWindowToFitDeviceCommand, { device, portrait });
+    _resizeWindowToFitDevice$ (device, options) {
+        return this._enqueueAction('resizeWindowToFitDevice', ResizeWindowToFitDeviceCommand, { device, options });
     }
 
     _eval$ (fn, dependencies) {

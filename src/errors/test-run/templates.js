@@ -125,12 +125,6 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.actionBooleanArgumentError]: err => markup(err, `
-        The <code>${err.argumentName}</code> argument is expected to be a boolean value, but it was <code>${err.actualValue}</code>.
-
-        ${err.getCallsiteMarkup()}
-    `),
-
     [TYPE.actionElementNotFoundError]: err => markup(err, `
         The specified selector does not match any element in the DOM tree.
 

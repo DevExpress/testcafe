@@ -837,19 +837,19 @@ describe('Test run commands', function () {
                 selector: '#yo',
                 dummy:    'test',
                 device:   'iPhone',
-                portrait: true,
 
                 options: {
-                    dummy: 'yo'
+                    dummy:               'yo',
+                    portraitOrientation: true
                 }
             };
 
             var command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.resizeWindowToFitDevice,
-                device:   'iPhone',
-                portrait: true
+                type:    TYPE.resizeWindowToFitDevice,
+                device:  'iPhone',
+                options: { portraitOrientation: true }
             });
 
             commandObj = {
@@ -860,9 +860,9 @@ describe('Test run commands', function () {
             command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.resizeWindowToFitDevice,
-                device:   'iPhone',
-                portrait: false
+                type:    TYPE.resizeWindowToFitDevice,
+                device:  'iPhone',
+                options: { portraitOrientation: false }
             });
         });
 
@@ -2278,15 +2278,15 @@ describe('Test run commands', function () {
             assertThrow(
                 function () {
                     return createCommand({
-                        type:     TYPE.resizeWindowToFitDevice,
-                        device:   'iPhone',
-                        portrait: {}
+                        type:    TYPE.resizeWindowToFitDevice,
+                        device:  'iPhone',
+                        options: { portraitOrientation: {} }
                     });
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionBooleanArgumentError,
-                    argumentName:    'portrait',
+                    type:            ERROR_TYPE.actionBooleanOptionError,
+                    optionName:      'portraitOrientation',
                     actualValue:     'object',
                     callsite:        null
                 }

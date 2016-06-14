@@ -20,7 +20,6 @@ export default {
     actionStringArrayElementError:          'actionStringArrayElementError',
     actionIntegerArgumentError:             'actionIntegerArgumentError',
     actionPositiveIntegerArgumentError:     'actionPositiveIntegerArgumentError',
-    actionBooleanArgumentError:             'actionBooleanArgumentError',
     actionSelectorTypeError:                'actionSelectorTypeError',
     actionAdditionalSelectorTypeError:      'actionAdditionalSelectorTypeError',
     actionUnsupportedUrlProtocolError:      'actionUnsupportedUrlProtocolError',
