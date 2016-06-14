@@ -35,7 +35,9 @@ asyncTest('isIFrameWindowInDOM', function () {
 
     window.addEventListener('message', onMessage, false);
 
-    var iframe = $('<iframe>').attr('src', window.getCrossDomainPageUrl('../../data/dom-utils/iframe.html'))[0];
+    var iframe = $('<iframe>')[0];
+
+    iframe.src = window.getCrossDomainPageUrl('../../data/dom-utils/iframe.html');
 
     window.QUnitGlobals.waitForIframe(iframe).then(function () {
         iframe.contentWindow.postMessage('isIFrameWindowInDOM', '*');

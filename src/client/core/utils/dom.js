@@ -70,7 +70,7 @@ function insertIFramesContentElements (elements, iFrames) {
                 elementsWithTabIndex = elementsWithTabIndex.sort(sortBy('tabIndex'));
                 results              = results.concat(elementsWithTabIndex);
                 results.push(elements[i]);
-                results              = results.concat(elementsWithoutTabIndexArray);
+                results = results.concat(elementsWithoutTabIndexArray);
             }
             else {
                 if (browserUtils.isWebKit && iFramesElements[arrayUtils.indexOf(iFrames, elements[i])].length)
@@ -361,18 +361,22 @@ export function isIFrameWindowInDOM (win) {
     if (!win.setTimeout)
         return false;
 
-    //NOTE: Cross-domain iframes in Firefox have null in frameElement even if they are in DOM
-    //But Firefox doesn't execute scripts in removed iframes, so we suppose that the iframe is in DOM
-    if (browserUtils.isFirefox && win.top !== win.self && !win.frameElement)
-        return true;
+    var frameElement = null;
 
     try {
-        //NOTE: This raises a cross-domain policy error in WebKit-based browsers.
-        return !!(win.frameElement && win.frameElement.contentDocument);
+        //NOTE: This may raise a cross-domain policy error in some browsers.
+        frameElement = win.frameElement;
     }
     catch (e) {
         return !!win.top;
     }
+
+    // NOTE: in Firefox and WebKit, frameElement is null for cross-domain iframes even if they are in the DOM.
+    // But these browsers don't execute scripts in removed iframes, so we suppose that the iframe is in the DOM.
+    if ((browserUtils.isFirefox || browserUtils.isWebKit) && win.top !== win.self && !frameElement)
+        return true;
+
+    return !!(frameElement && frameElement.contentDocument);
 }
 
 export function isTopWindow (win) {
