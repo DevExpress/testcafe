@@ -3,11 +3,11 @@ var fill     = require('lodash/fill');
 var Promise  = require('pinkie');
 var Compiler = require('../../lib/compiler');
 
-describe('Hybrid function test run tracker', function () {
+describe('Client function test run tracker', function () {
     this.timeout(20000);
 
     function runTest (testName) {
-        var src         = 'test/server/data/hybrid-fn-test-run-tracking/' + testName;
+        var src         = 'test/server/data/client-fn-test-run-tracking/' + testName;
         var compiler    = new Compiler([src]);
         var testRunMock = { id: 'dB_J4h-H' };
         var expected    = fill(Array(3), testRunMock.id);

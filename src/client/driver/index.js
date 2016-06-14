@@ -4,14 +4,14 @@ import testCafeUI from './deps/testcafe-ui';
 
 import MESSAGE from '../../test-run/client-messages';
 import COMMAND_TYPE from '../../test-run/commands/type';
-import { UncaughtErrorOnPage, HybridFunctionExecutionInterruptionError } from '../../errors/test-run';
+import { UncaughtErrorOnPage, ClientFunctionExecutionInterruptionError } from '../../errors/test-run';
 
 import * as browser from '../browser';
 
 import executeActionCommand from './command-executors/execute-action';
 import executeWaitForElementCommand from './command-executors/execute-wait-for-element';
 import executeNavigateToCommand from './command-executors/execute-navigate-to';
-import executeHybridFunction from './command-executors/execute-hybrid-function';
+import executeClientFunction from './command-executors/execute-client-function';
 import prepareBrowserManipulation from './command-executors/prepare-browser-manipulation';
 
 import ContextStorage from './storage';
@@ -26,11 +26,11 @@ var modalBackground   = testCafeUI.modalBackground;
 var preventRealEvents = testCafeCore.preventRealEvents;
 
 
-const COMMAND_EXECUTING_FLAG   = 'testcafe|driver|command-executing-flag';
-const HYBRID_FN_EXECUTING_FLAG = 'testcafe|driver|hybrid-fn-executing-flag';
-const PENDING_PAGE_ERROR       = 'testcafe|driver|pending-page-error';
-const TEST_DONE_SENT_FLAG      = 'testcafe|driver|test-done-sent-flag';
-const PENDING_STATUS           = 'testcafe|driver|pending-status';
+const COMMAND_EXECUTING_FLAG               = 'testcafe|driver|command-executing-flag';
+const EXECUTING_CLIENT_FUNCTION_DESCRIPTOR = 'testcafe|driver|executing-client-function-descriptor';
+const PENDING_PAGE_ERROR                   = 'testcafe|driver|pending-page-error';
+const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
+const PENDING_STATUS                       = 'testcafe|driver|pending-status';
 
 var hangingPromise = new Promise(testCafeCore.noop);
 
@@ -69,12 +69,14 @@ export default class ClientDriver {
             return;
         }
 
-        // NOTE: Hybrids should be used primarily for observation. We raise
-        // an error if the page was reloaded during Hybrid function execution.
-        if (this.contextStorage.getItem(HYBRID_FN_EXECUTING_FLAG)) {
+        // NOTE: ClientFunction should be used primarily for observation. We raise
+        // an error if the page was reloaded during ClientFunction execution.
+        var executingClientFnDescriptor = this.contextStorage.getItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR);
+
+        if (executingClientFnDescriptor) {
             this._onReady(new DriverStatus({
                 isCommandResult: true,
-                executionError:  new HybridFunctionExecutionInterruptionError()
+                executionError:  new ClientFunctionExecutionInterruptionError(executingClientFnDescriptor.instantiationCallsiteName)
             }));
 
             return;
@@ -178,12 +180,12 @@ export default class ClientDriver {
             });
     }
 
-    _onExecuteHybridFunctionCommand (command) {
-        this.contextStorage.setItem(HYBRID_FN_EXECUTING_FLAG, true);
+    _onExecuteClientFunctionCommand (command) {
+        this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, { instantiationCallsiteName: command.instantiationCallsiteName });
 
-        executeHybridFunction(command)
+        executeClientFunction(command)
             .then(driverStatus => {
-                this.contextStorage.setItem(HYBRID_FN_EXECUTING_FLAG, false);
+                this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, null);
                 this._onReady(driverStatus);
             });
     }
@@ -202,8 +204,8 @@ export default class ClientDriver {
         if (command.type === COMMAND_TYPE.testDone)
             this._onTestDone();
 
-        else if (command.type === COMMAND_TYPE.executeHybridFunction)
-            this._onExecuteHybridFunctionCommand(command);
+        else if (command.type === COMMAND_TYPE.executeClientFunction)
+            this._onExecuteClientFunctionCommand(command);
 
         else if (this.contextStorage.getItem(PENDING_PAGE_ERROR))
             this._onReady(new DriverStatus({ isCommandResult: true }));

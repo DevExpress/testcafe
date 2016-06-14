@@ -7,7 +7,7 @@ export default {
     uncaughtErrorOnPage:               'uncaughtErrorOnPage',
     uncaughtErrorInTestCode:           'uncaughtErrorInTestCode',
     uncaughtNonErrorObjectInTestCode:  'uncaughtNonErrorObjectInTestCode',
-    uncaughtErrorInHybridFunctionCode: 'uncaughtErrorInHybridFunctionCode',
+    uncaughtErrorInClientFunctionCode: 'uncaughtErrorInClientFunctionCode',
 
     missingAwaitError: 'missingAwaitError',
 
@@ -38,9 +38,9 @@ export default {
     actionCanNotFindFileToUploadError:       'actionCanNotFindFileToUploadError',
     actionUnsupportedDeviceTypeError:        'actionUnsupportedDeviceTypeError',
 
-    hybridFunctionExecutionInterruptionError:           'hybridFunctionExecutionInterruptionError',
-    regeneratorInFunctionArgumentOfHybridFunctionError: 'generatorInFunctionArgumentOfHybridFunctionError',
-    domNodeHybridResultError:                           'domNodeHybridResultError',
+    clientFunctionExecutionInterruptionError:           'clientFunctionExecutionInterruptionError',
+    regeneratorInFunctionArgumentOfClientFunctionError: 'regeneratorInFunctionArgumentOfClientFunctionError',
+    domNodeClientFunctionResultError:                   'domNodeClientFunctionResultError',
 
     externalAssertionLibraryError: 'externalAssertionLibraryError'
 };

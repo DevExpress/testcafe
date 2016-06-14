@@ -196,7 +196,7 @@ describe('Compiler', function () {
             });
     });
 
-    describe('Hybrid function compilation', function () {
+    describe('Client function compilation', function () {
         function normalizeCode (code) {
             return code
                 .replace(/(\r\n|\n|\r)/gm, ' ')
@@ -217,8 +217,8 @@ describe('Compiler', function () {
             return readFile(testDir + '/expected.js').toString();
         }
 
-        function testHybridCompilation (testName) {
-            var testDir  = 'test/server/data/hybrid-fn-compilation/' + testName;
+        function testClientFnCompilation (testName) {
+            var testDir  = 'test/server/data/client-fn-compilation/' + testName;
             var src      = testDir + '/testfile.js';
             var expected = getExpected(testDir);
 
@@ -226,29 +226,29 @@ describe('Compiler', function () {
                 .then(function (compiled) {
                     return compiled.tests[0].fn({ id: 'test' });
                 })
-                .then(function (compiledHybrid) {
-                    expect(normalizeCode(compiledHybrid)).eql(normalizeCode(expected));
+                .then(function (compiledClientFn) {
+                    expect(normalizeCode(compiledClientFn)).eql(normalizeCode(expected));
                 });
         }
 
-        it('Should compile basic Hybrid function', function () {
-            return testHybridCompilation('basic');
+        it('Should compile basic client function', function () {
+            return testClientFnCompilation('basic');
         });
 
         it('Should polyfill Babel `Promises` artifacts', function () {
-            return testHybridCompilation('promises');
+            return testClientFnCompilation('promises');
         });
 
         it('Should polyfill Babel `Object.keys()` artifacts', function () {
-            return testHybridCompilation('object-keys');
+            return testClientFnCompilation('object-keys');
         });
 
         it('Should polyfill Babel `JSON.stringify()` artifacts', function () {
-            return testHybridCompilation('json-stringify');
+            return testClientFnCompilation('json-stringify');
         });
 
         it('Should polyfill Babel `typeof` artifacts', function () {
-            return testHybridCompilation('typeof');
+            return testClientFnCompilation('typeof');
         });
     });
 
@@ -538,7 +538,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Hybrid function code is expected to be specified as a function, but "number" was passed.',
+                                 'ClientFunction code is expected to be specified as a function, but "number" was passed.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -553,6 +553,34 @@ describe('Compiler', function () {
                 });
         });
 
+        it('Should raise an error if Selector argument is not a function or string', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-arg-is-not-a-function-or-string/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Selector code is expected to be specified as a function or string, but "number" was passed.',
+
+                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  ' > 5 |Selector(123);\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});\n' +
+                                  '   9 |'
+                    });
+                });
+        });
+
+
         it('Should raise an error if ClientFunction argument is not a function (if called as ctor)', function () {
             var testfile = resolve('test/server/data/test-suites/client-fn-arg-is-not-a-function-as-ctor/testfile.js');
 
@@ -565,7 +593,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Hybrid function code is expected to be specified as a function, but "number" was passed.',
+                                 'ClientFunction code is expected to be specified as a function, but "number" was passed.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -593,10 +621,10 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'The hybrid function cannot implicitly resolve the test run in context of which it ' +
-                                 'should be executed. If you need to call the hybrid function from the Node.js API ' +
-                                 "callback, pass the test controller manually via hybrid function's `.bindTestRun(t)` " +
-                                 'method first. Note that you cannot execute hybrid functions outside the test code.',
+                                 'ClientFunction cannot implicitly resolve the test run in context of which it ' +
+                                 'should be executed. If you need to call ClientFunction from the Node.js API ' +
+                                 "callback, pass the test controller manually via ClientFunction's `.bindTestRun(t)` " +
+                                 'method first. Note that you cannot execute ClientFunction outside the test code.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -623,7 +651,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Hybrid function code cannot contain generators or `async/await` syntax (use Promises instead).',
+                                 'ClientFunction code cannot contain generators or `async/await` syntax (use Promises instead).',
 
                         callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
                                   '    2 |\n' +
@@ -650,7 +678,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Hybrid function code cannot contain generators or `async/await` syntax (use Promises instead).',
+                                 'ClientFunction code cannot contain generators or `async/await` syntax (use Promises instead).',
 
                         callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
                                   '    2 |\n' +
@@ -678,7 +706,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Hybrid function constructor\'s "dependencies" argument is expected to be an object, but it was "string".',
+                                 'ClientFunction "dependencies" argument is expected to be an object, but it was "string".',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -689,8 +717,8 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise an error if ClientFunction dependency is not a hybrid function', function () {
-            var testfile = resolve('test/server/data/test-suites/client-fn-dep-not-hybrid/testfile.js');
+        it('Should raise an error if ClientFunction dependency is not a ClientFunction', function () {
+            var testfile = resolve('test/server/data/test-suites/client-fn-dep-not-client-fn/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -701,7 +729,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Hybrid function\'s dependency "getText" is not a hybrid function.',
+                                 'ClientFunction dependency "getText" is not a client function.',
 
                         callsite: '    3 |fixture `Test`;\n' +
                                   '    4 |\n' +

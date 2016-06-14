@@ -43,25 +43,30 @@ export class MissingAwaitError extends TestRunErrorBase {
 }
 
 
-// Hybrid function errors
+// Client function errors
 //--------------------------------------------------------------------
-export class HybridFunctionExecutionInterruptionError extends TestRunErrorBase {
-    constructor () {
-        super(TYPE.hybridFunctionExecutionInterruptionError);
+export class ClientFunctionExecutionInterruptionError extends TestRunErrorBase {
+    constructor (instantiationCallsiteName) {
+        super(TYPE.clientFunctionExecutionInterruptionError);
+
+        this.instantiationCallsiteName = instantiationCallsiteName;
     }
 }
 
-export class RegeneratorInFunctionArgumentOfHybridFunctionError extends TestRunErrorBase {
-    constructor (callsite) {
-        super(TYPE.regeneratorInFunctionArgumentOfHybridFunctionError);
+export class RegeneratorInFunctionArgumentOfClientFunctionError extends TestRunErrorBase {
+    constructor (instantiationCallsiteName, callsite) {
+        super(TYPE.regeneratorInFunctionArgumentOfClientFunctionError);
 
-        this.callsite = callsite;
+        this.instantiationCallsiteName = instantiationCallsiteName;
+        this.callsite                  = callsite;
     }
 }
 
-export class DomNodeHybridResultError extends TestRunErrorBase {
-    constructor () {
-        super(TYPE.domNodeHybridResultError);
+export class DomNodeClientFunctionResultError extends TestRunErrorBase {
+    constructor (instantiationCallsiteName) {
+        super(TYPE.domNodeClientFunctionResultError);
+
+        this.instantiationCallsiteName = instantiationCallsiteName;
     }
 }
 
@@ -95,11 +100,12 @@ export class UncaughtNonErrorObjectInTestCode extends TestRunErrorBase {
     }
 }
 
-export class UncaughtErrorInHybridFunctionCode extends TestRunErrorBase {
-    constructor (err) {
-        super(TYPE.uncaughtErrorInHybridFunctionCode);
+export class UncaughtErrorInClientFunctionCode extends TestRunErrorBase {
+    constructor (instantiationCallsiteName, err) {
+        super(TYPE.uncaughtErrorInClientFunctionCode);
 
-        this.errMsg = String(err);
+        this.errMsg                    = String(err);
+        this.instantiationCallsiteName = instantiationCallsiteName;
     }
 }
 

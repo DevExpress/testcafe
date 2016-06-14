@@ -9,7 +9,7 @@
     url: .
   - item: Assertions
     url: .
-  - item: Hybrid Functions
+  - item: Client Functions
     url: .
   - item: Roles
     url: .
@@ -45,7 +45,7 @@
       url: /testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html
   - folder: Common Concepts
     url: /testcafe/documentation/using-testcafe/common-concepts/
-    content: 
+    content:
     - item: Browser Aliases
       url: /testcafe/documentation/using-testcafe/common-concepts/browser-aliases.html
     - item: Reporters

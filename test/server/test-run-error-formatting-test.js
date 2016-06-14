@@ -21,7 +21,7 @@ var ActionStringArrayElementError                      = require('../../lib/erro
 var ActionAdditionalSelectorTypeError                  = require('../../lib/errors/test-run').ActionAdditionalSelectorTypeError;
 var UncaughtErrorOnPage                                = require('../../lib/errors/test-run').UncaughtErrorOnPage;
 var UncaughtErrorInTestCode                            = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
-var UncaughtErrorInHybridFunctionCode                  = require('../../lib/errors/test-run').UncaughtErrorInHybridFunctionCode;
+var UncaughtErrorInClientFunctionCode                  = require('../../lib/errors/test-run').UncaughtErrorInClientFunctionCode;
 var UncaughtNonErrorObjectInTestCode                   = require('../../lib/errors/test-run').UncaughtNonErrorObjectInTestCode;
 var ActionElementNotFoundError                         = require('../../lib/errors/test-run').ActionElementNotFoundError;
 var ActionElementIsInvisibleError                      = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
@@ -35,11 +35,11 @@ var ActionIncorrectKeysError                           = require('../../lib/erro
 var ActionCanNotFindFileToUploadError                  = require('../../lib/errors/test-run').ActionCanNotFindFileToUploadError;
 var ActionElementIsNotFileInputError                   = require('../../lib/errors/test-run').ActionElementIsNotFileInputError;
 var ActionUnsupportedDeviceTypeError                   = require('../../lib/errors/test-run').ActionUnsupportedDeviceTypeError;
-var HybridFunctionExecutionInterruptionError           = require('../../lib/errors/test-run').HybridFunctionExecutionInterruptionError;
+var ClientFunctionExecutionInterruptionError           = require('../../lib/errors/test-run').ClientFunctionExecutionInterruptionError;
 var MissingAwaitError                                  = require('../../lib/errors/test-run').MissingAwaitError;
 var ExternalAssertionLibraryError                      = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
-var RegeneratorInFunctionArgumentOfHybridFunctionError = require('../../lib/errors/test-run').RegeneratorInFunctionArgumentOfHybridFunctionError;
-var DomNodeHybridResultError                           = require('../../lib/errors/test-run').DomNodeHybridResultError;
+var RegeneratorInFunctionArgumentOfClientFunctionError = require('../../lib/errors/test-run').RegeneratorInFunctionArgumentOfClientFunctionError;
+var DomNodeClientFunctionResultError                   = require('../../lib/errors/test-run').DomNodeClientFunctionResultError;
 
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
@@ -221,20 +221,20 @@ describe('Error formatting', function () {
             assertErrorMessage('external-assertion-library-error', new ExternalAssertionLibraryError(testAssertionError, testCallsite));
         });
 
-        it('Should format "uncaughtErrorInHybridFunctionCode"', function () {
-            assertErrorMessage('uncaught-error-in-hybrid-function-code', new UncaughtErrorInHybridFunctionCode(new Error('Some error.')));
+        it('Should format "uncaughtErrorInClientFunctionCode"', function () {
+            assertErrorMessage('uncaught-error-in-client-function-code', new UncaughtErrorInClientFunctionCode('Selector', new Error('Some error.')));
         });
 
-        it('Should format "hybridFunctionExecutionInterruptionError"', function () {
-            assertErrorMessage('hybrid-function-execution-interruption-error', new HybridFunctionExecutionInterruptionError());
+        it('Should format "clientFunctionExecutionInterruptionError"', function () {
+            assertErrorMessage('client-function-execution-interruption-error', new ClientFunctionExecutionInterruptionError('eval'));
         });
 
-        it('Should format "regeneratorInFunctionArgumentOfHybridFunctionError"', function () {
-            assertErrorMessage('regenerator-in-function-argument-of-hybrid-function-error', new RegeneratorInFunctionArgumentOfHybridFunctionError(testCallsite));
+        it('Should format "regeneratorInFunctionArgumentOfClientFunctionError"', function () {
+            assertErrorMessage('regenerator-in-function-argument-of-client-function-error', new RegeneratorInFunctionArgumentOfClientFunctionError('ClientFunction', testCallsite));
         });
 
-        it('Should format "domNodeHybridResultError"', function () {
-            assertErrorMessage('dom-node-hybrid-result-error', new DomNodeHybridResultError());
+        it('Should format "domNodeClientFunctionResultError"', function () {
+            assertErrorMessage('dom-node-client-function-result-error', new DomNodeClientFunctionResultError('ClientFunction'));
         });
     });
 

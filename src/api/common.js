@@ -1,13 +1,17 @@
-import HybridFunction from '../hybrid-function';
-import SelectorHybridFunction from '../hybrid-function/selector';
+import ClientFunctionFactory from '../client-functions/client-function-factory';
+import SelectorFactory from '../client-functions/selector-factory';
 
 export default {
     ClientFunction (fn, dependencies) {
-        return new HybridFunction(fn, dependencies, null, { instantiation: 'ClientFunction' });
+        var factory = new ClientFunctionFactory(fn, dependencies, { instantiation: 'ClientFunction' });
+
+        return factory.getFunction();
     },
 
     Selector (fn, dependencies) {
-        return new SelectorHybridFunction(fn, dependencies, null, { instantiation: 'Selector' });
+        var factory = new SelectorFactory(fn, dependencies, { instantiation: 'Selector' });
+
+        return factory.getFunction();
     }
 };
 

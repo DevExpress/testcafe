@@ -53,16 +53,16 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.uncaughtErrorInHybridFunctionCode]: err => markup(err, `
-        An error occurred in hybrid function code:
+    [TYPE.uncaughtErrorInClientFunctionCode]: err => markup(err, `
+        An error occurred in <code>${err.instantiationCallsiteName}</code> code:
 
         <code>${escapeHtml(err.errMsg)}</code>
 
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.hybridFunctionExecutionInterruptionError]: err => markup(err, `
-        Hybrid function execution was interrupted by page unload. This problem may appear if you trigger page navigation from hybrid function code.
+    [TYPE.clientFunctionExecutionInterruptionError]: err => markup(err, `
+        <code>${err.instantiationCallsiteName}</code> execution was interrupted by page unload. This problem may appear if you trigger page navigation from <code>${err.instantiationCallsiteName}</code> code.
 
         ${err.getCallsiteMarkup()}
     `),
@@ -214,14 +214,14 @@ export default {
         ${escapeHtml(err.errMsg)} ${err.getCallsiteMarkup({ stackOnly: true })}
     `),
 
-    [TYPE.regeneratorInFunctionArgumentOfHybridFunctionError]: err => markup(err, `
-        Hybrid function argument is a function that contains either generators or the <code>async/await</code> syntax. These features cannot be used in hybrid function code. Use Promises instead.
+    [TYPE.regeneratorInFunctionArgumentOfClientFunctionError]: err => markup(err, `
+        <code>${err.instantiationCallsiteName}</code> argument is a function that contains either generators or the <code>async/await</code> syntax. These features cannot be used in <code>${err.instantiationCallsiteName}</code> code. Use Promises instead.
 
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.domNodeHybridResultError]: err => markup(err, `
-       Regular Hybrid functions cannot return DOM elements. Use <code>Selector</code> functions for this purpose.
+    [TYPE.domNodeClientFunctionResultError]: err => markup(err, `
+       <code>${err.instantiationCallsiteName}</code> cannot return DOM elements. Use <code>Selector</code> functions for this purpose.
 
        ${err.getCallsiteMarkup()}
     `)

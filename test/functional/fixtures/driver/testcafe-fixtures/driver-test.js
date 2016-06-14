@@ -21,11 +21,11 @@ test('Mixed execution order', async t => {
 
     const clickPromise = t.click('#btn1');
 
-    const hybridsPromise = Promise.all([getLocation(), getHostname()]);
+    const clientFnPromise = Promise.all([getLocation(), getHostname()]);
 
     await clickPromise;
 
-    const [location, hostname] = await hybridsPromise;
+    const [location, hostname] = await clientFnPromise;
 
     expect(location).eql('http://localhost:3000/driver/pages/page1.html');
     expect(hostname).eql('localhost');
