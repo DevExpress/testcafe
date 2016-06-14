@@ -2,6 +2,7 @@
 layout: docs
 title: Reporters
 permalink: /documentation/using-testcafe/common-concepts/reporters.html
+checked: true
 ---
 # Reporters
 
@@ -15,28 +16,28 @@ TestCafe ships with the following reporters:
 * [xUnit](https://github.com/DevExpress/testcafe-reporter-xunit)
 * [JSON](https://github.com/DevExpress/testcafe-reporter-json)
 
-You can also create a [custom reporter](/testcafe/documentation/extending-testcafe/custom-reporter-plugin/) that will fit your needs.
+You can also create a [custom reporter](/testcafe/documentation/extending-testcafe/custom-reporter-plugin/) that will fulfill your needs.
 
-For more information about reporters, see the following sections.
+For more information about the reporters, see the following sections.
 
 * [Searching for Reporter Plugins](#searching-for-reporter-plugins)
-* [Installing Reporters](#installing-reporters)
-* [Using Reporters](#using-reporters)
+* [Installing the Reporters](#installing-the-reporters)
+* [Using the Reporters](#using-the-reporters)
 
 ## Searching for Reporter Plugins
 
-Reporter plugins are npm packages. A reporter package name consists of two parts - the `{testcafe-reporter-}` prefix and the name of a reporter itself, for example, `{testcafe-reporter-list}`.
+Reporter plugins are npm packages. The reporter package name consists of two parts - the `{testcafe-reporter-}` prefix and the name of a reporter itself; for example, `{testcafe-reporter-list}`.
 
 You can search for available reporter packages on npm: [https://www.npmjs.com/search?q=testcafe-reporter](https://www.npmjs.com/search?q=testcafe-reporter).
 
-## Installing Reporters
+## Installing the Reporters
 
 You can install reporter packages from npm in two ways:
 
 * **locally** - if you are going to use reporters within TestCafe installed locally.
 
     Navigate to your project directory and run `npm install --save-dev testcafe-reporter-{reporterName}`.
-    Note that a reporter package name has to follow the `testcafe-reporter-{reporterName}` pattern.
+    Note that the reporter package name must follow the `testcafe-reporter-{reporterName}` pattern.
 
     The following example demonstrates how you can install the list reporter package.
 
@@ -46,13 +47,13 @@ You can install reporter packages from npm in two ways:
 
 * **globally** - if the TestCafe module is installed globally or you are going to use reporters within other projects as well.
 
-    Run the `npm install` command with `-g` flag.
+    Run the `npm install` command with the `-g` flag.
 
     ```bash
     npm install -g testcafe-reporter-list
     ```
 
-## Using Reporters
+## Using the Reporters
 
 When running tests, you can select a reporter to generate test reports.
 You can do this when working both through the
