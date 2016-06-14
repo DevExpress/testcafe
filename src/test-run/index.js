@@ -319,9 +319,13 @@ ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (m
     if (command.type === COMMAND_TYPE.takeScreenshotOnFail)
         return await this.browserManipulationManager.takeScreenshotOnFail(this.id);
 
-    if (command.type === COMMAND_TYPE.resizeWindow)
-        return await BrowserManipulationManager.resizeWindow(this.id, msg.currentWidth, msg.currentHeight, command.width, command.height);
+    if (command.type === COMMAND_TYPE.resizeWindow) {
+        return await BrowserManipulationManager.resizeWindow(this.id, msg.currentWidth, msg.currentHeight,
+            command.width, command.height);
+    }
 
-    if (command.type === COMMAND_TYPE.resizeWindowToFitDevice)
-        return await BrowserManipulationManager.resizeWindowToFitDevice(this.id, msg.currentWidth, msg.currentHeight, command.device, command.portrait);
+    if (command.type === COMMAND_TYPE.resizeWindowToFitDevice) {
+        return await BrowserManipulationManager.resizeWindowToFitDevice(this.id, msg.currentWidth, msg.currentHeight,
+            command.device, command.options.portraitOrientation);
+    }
 };

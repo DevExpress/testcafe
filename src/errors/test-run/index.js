@@ -171,12 +171,6 @@ export class ActionPositiveIntegerArgumentError extends ActionArgumentErrorBase 
     }
 }
 
-export class ActionBooleanArgumentError extends ActionArgumentErrorBase {
-    constructor (argumentName, actualValue) {
-        super(TYPE.actionBooleanArgumentError, argumentName, actualValue);
-    }
-}
-
 export class ActionStringOrStringArrayArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
         super(TYPE.actionStringOrStringArrayArgumentError, argumentName, actualValue);

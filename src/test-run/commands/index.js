@@ -11,7 +11,6 @@ import {
     ActionSelectorTypeError,
     ActionOptionsTypeError,
     ActionStringArgumentError,
-    ActionBooleanArgumentError,
     ActionIntegerArgumentError,
     ActionPositiveIntegerArgumentError,
     ActionAdditionalSelectorTypeError,
@@ -21,7 +20,7 @@ import {
     ActionUnsupportedDeviceTypeError
 } from '../../errors/test-run';
 
-import { ClickOptions, MouseOptions, TypeOptions } from './options';
+import { ClickOptions, MouseOptions, TypeOptions, ResizeToFitDeviceOptions } from './options';
 
 
 const PROTOCOL_RE           = /^([\w-]+?)(?=\:)/;
@@ -55,13 +54,6 @@ function actionOptions (name, val) {
 
     if (type !== 'object' && val !== null && val !== void 0)
         throw new ActionOptionsTypeError(type);
-}
-
-function booleanArgument (name, val) {
-    var valType = typeof val;
-
-    if (valType !== 'boolean')
-        throw new ActionBooleanArgumentError(name, valType);
 }
 
 function integerArgument (name, val, ErrorCtor = ActionIntegerArgumentError) {
@@ -154,6 +146,10 @@ function initMouseOptions (val) {
 
 function initTypeOptions (val) {
     return new TypeOptions(val, true);
+}
+
+function initResizeToFitDeviceOptions (val) {
+    return new ResizeToFitDeviceOptions(val, true);
 }
 
 // Commands
@@ -533,16 +529,17 @@ export class ResizeWindowToFitDeviceCommand extends Assignable {
     constructor (obj) {
         super(obj);
 
-        this.type     = TYPE.resizeWindowToFitDevice;
-        this.device   = null;
-        this.portrait = false;
+        this.type    = TYPE.resizeWindowToFitDevice;
+        this.device  = null;
+        this.options = null;
+
         this._assignFrom(obj, true);
     }
 
     _getAssignableProperties () {
         return [
             { name: 'device', type: resizeWindowDeviceArgument, required: true },
-            { name: 'portrait', type: booleanArgument }
+            { name: 'options', type: actionOptions, init: initResizeToFitDeviceOptions, required: true }
         ];
     }
 }

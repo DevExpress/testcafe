@@ -20,3 +20,7 @@ test('Take a screenshot with a custom path', async t => {
 
     await t.takeScreenshot('../../../../../../../___test-screenshots___/custom/' + parsedUA.family);
 });
+
+test('Incorrect action path argument', async t => {
+    await t.takeScreenshot(1);
+});
