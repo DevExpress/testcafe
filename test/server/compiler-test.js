@@ -623,7 +623,7 @@ describe('Compiler', function () {
                         message: 'Cannot prepare tests due to an error.\n\n' +
                                  'ClientFunction cannot implicitly resolve the test run in context of which it ' +
                                  'should be executed. If you need to call ClientFunction from the Node.js API ' +
-                                 "callback, pass the test controller manually via ClientFunction's `.bindTestRun(t)` " +
+                                 "callback, pass the test controller manually via ClientFunction's `.with({ boundTestRun: t })` " +
                                  'method first. Note that you cannot execute ClientFunction outside the test code.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +

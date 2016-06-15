@@ -59,7 +59,7 @@ test('Generator in ClientFunction', async () => {
 
 test('Bind ClientFunction', async t => {
     const fs               = require('fs');
-    const boundGetLocation = getLocation.bindTestRun(t);
+    const boundGetLocation = getLocation.with({ boundTestRun: t });
 
     // NOTE: binding does not modify the original function,
     // but creates a new bound function instead, so here it will throw an error.
@@ -88,7 +88,7 @@ test('Bind ClientFunction', async t => {
 });
 
 test('Invalid ClientFunction test run binding', () => {
-    ClientFunction(() => 123).bindTestRun({});
+    ClientFunction(() => 123).with({ boundTestRun: {} });
 });
 
 test('Promises support', async () => {

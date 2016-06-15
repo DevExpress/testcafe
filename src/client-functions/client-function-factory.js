@@ -1,3 +1,4 @@
+import { isNil as isNullOrUndefined } from 'lodash';
 import testRunTracker from './test-run-tracker';
 import compiledCodeSymbol from './compiled-code-symbol';
 import { createReplicator, FunctionTransform } from './replicator';
@@ -47,28 +48,29 @@ export default class ClientFunctionFactory {
 
         var factory = this;
 
-        clientFn.bindTestRun = function bindTestRun (t) {
-            // NOTE: we can't use strict `t instanceof TestController`
-            // check due to module circular reference
-            if (!t || !(t.testRun instanceof TestRun))
-                throw new APIError('bindTestRun', MESSAGE.invalidClientFunctionTestRunBinding);
+        clientFn.with = function (options) {
+            factory._validateOptions(options);
 
-            return factory.getFunction(t.testRun);
+            return factory.getFunction(options);
         };
     }
 
-    getFunction (boundTestRun) {
+    getFunction (options) {
+        options = options || {};
+
         var factory = this;
 
         var clientFn = function __$$clientFunction$$ () {
-            var testRun = boundTestRun || factory._resolveContextTestRun();
+            var testRun = options.boundTestRun || factory._resolveContextTestRun();
             var args    = [];
 
             // OPTIMIZATION: don't leak `arguments` object.
             for (var i = 0; i < arguments.length; i++)
                 args.push(arguments[i]);
 
-            var command = factory.getCommand(args);
+            args = factory.replicator.encode(args);
+
+            var command  = factory._createExecutionTestRunCommand(args, options);
             var callsite = getCallsite(factory.callsiteNames.execution);
 
             // NOTE: don't use async/await here to enable
@@ -83,13 +85,20 @@ export default class ClientFunctionFactory {
         return clientFn;
     }
 
-    getCommand (args) {
-        args = this.replicator.encode(args);
+    // Overridable methods
+    _validateOptions (options) {
+        // TODO options object and individual option validation
+        if (!isNullOrUndefined(options.boundTestRun)) {
+            // NOTE: we can't use strict `t instanceof TestController`
+            // check due to module circular reference
+            if (!(options.boundTestRun.testRun instanceof TestRun))
+                throw new APIError('with', MESSAGE.invalidClientFunctionTestRunBinding);
 
-        return this._createExecutionTestRunCommand(args);
+            // NOTE: boundTestRun is actually a TestController, so we need to unpack it
+            options.boundTestRun = options.boundTestRun.testRun;
+        }
     }
 
-    // Overridable methods
     _getFnCode (fn) {
         var fnType = typeof fn;
 

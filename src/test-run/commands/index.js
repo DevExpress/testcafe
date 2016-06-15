@@ -464,7 +464,7 @@ export class ClearUploadCommand extends Assignable {
 
 class ExecuteClientFunctionCommandBase extends Assignable {
     constructor (type, obj) {
-        super(obj);
+        super();
 
         this.type = type;
 
@@ -472,8 +472,6 @@ class ExecuteClientFunctionCommandBase extends Assignable {
         this.fnCode                    = '';
         this.args                      = [];
 
-        // NOTE: we don't need to validate options because command
-        // is always produced by client function factory internally.
         this._assignFrom(obj, false);
     }
 
@@ -495,6 +493,16 @@ export class ExecuteClientFunctionCommand extends ExecuteClientFunctionCommandBa
 export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
     constructor (obj) {
         super(TYPE.executeSelector, obj);
+
+        this.ensureVisible = false;
+        this.timeout       = null;
+    }
+
+    _getAssignableProperties () {
+        return super._getAssignableProperties().concat([
+            { name: 'ensureVisible' },
+            { name: 'timeout' }
+        ]);
     }
 }
 

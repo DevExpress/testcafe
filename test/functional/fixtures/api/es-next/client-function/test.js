@@ -25,7 +25,7 @@ describe('[API] ClientFunction', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Hammerhead code instrumentation');
     });
 
-    it('Should be able to bind a test run using `.bindTestRun(t)` method', function () {
+    it('Should be able to bind a test run using', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Bind ClientFunction', { only: 'chrome' });
     });
 
@@ -134,10 +134,10 @@ describe('[API] ClientFunction', function () {
                 only:       'chrome'
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
-                    'The `bindTestRun` function is expected to take a test controller.'
+                    'The `boundTestRun` option value is expected to be a test controller.'
                 )).eql(0);
 
-                expect(errs[0]).contains('> 91 |    ClientFunction(() => 123).bindTestRun({});');
+                expect(errs[0]).contains('> 91 |    ClientFunction(() => 123).with({ boundTestRun: {} });');
             });
         });
 

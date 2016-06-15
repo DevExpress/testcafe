@@ -18,11 +18,12 @@ export default class SelectorFactory extends ClientFunctionFactory {
         return fnType === 'string' ? `function(){return document.querySelector('${fn}');}` : fn.toString();
     }
 
-    _createExecutionTestRunCommand (args) {
+    _createExecutionTestRunCommand (args, options) {
         return new ExecuteSelectorCommand({
             instantiationCallsiteName: this.callsiteNames.instantiation,
             fnCode:                    this.compiledFnCode,
-            args:                      args
+            args:                      args,
+            options:                   options
         });
     }
 

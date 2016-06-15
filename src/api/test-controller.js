@@ -202,7 +202,7 @@ export default class TestController {
 
     _eval$ (fn, dependencies) {
         var factory  = new ClientFunctionFactory(fn, dependencies, { instantiation: 'eval', execution: 'eval' });
-        var clientFn = factory.getFunction(this.testRun);
+        var clientFn = factory.getFunction({ boundTestRun: this.testRun });
 
         return clientFn();
     }
