@@ -1,13 +1,12 @@
 import { Promise, eventSandbox, nativeMethods } from '../deps/hammerhead';
-import INTER_DRIVER_MESSAGES from './messages';
-import generateId from '../generate-id';
+import { TYPE as MESSAGE_TYPE } from './messages';
 
 
 const MIN_RESPONSE_WAITING_TIMEOUT = 2500;
 const RESEND_MESSAGE_INTERVAL      = 1000;
 
 
-export default function sendMessageWithConfirmation (msg, driverWindow, timeout, NotLoadedErrorCtor) {
+export default function sendMessageToDriver (msg, driverWindow, timeout, NotLoadedErrorCtor) {
     var sendMsgInterval = null;
     var sendMsgTimeout  = null;
     var onResponse      = null;
@@ -20,8 +19,6 @@ export default function sendMessageWithConfirmation (msg, driverWindow, timeout,
 
     timeout = Math.max(timeout || 0, MIN_RESPONSE_WAITING_TIMEOUT);
 
-    msg.requestId = generateId();
-
     return new Promise((resolve, reject) => {
         sendMsgTimeout = nativeMethods.setTimeout.call(window, () => {
             tearDown();
@@ -29,7 +26,7 @@ export default function sendMessageWithConfirmation (msg, driverWindow, timeout,
         }, timeout);
 
         onResponse = e => {
-            if (e.message.cmd === INTER_DRIVER_MESSAGES.confirmation && e.message.requestId === msg.requestId) {
+            if (e.message.type === MESSAGE_TYPE.confirmation && e.message.requestMessageId === msg.id) {
                 tearDown();
                 resolve(e.message);
             }

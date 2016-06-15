@@ -1,7 +1,10 @@
 import { eventSandbox } from '../deps/hammerhead';
-import INTER_DRIVER_MESSAGES from './messages';
-import sendMessageWithConfirmation from './send-message-with-confirmation';
+import { EstablishConnectionMessage, CommandExecutedMessage, ConfirmationMessage } from './messages';
+import { CurrentIframeIsNotLoadedError } from '../../../errors/test-run';
+import sendMessageToDriver from './send-message-to-driver';
 
+
+const WAIT_FOR_PARENT_DRIVER_RESPONSE_TIMEOUT = 5000;
 
 export default class ParentDriverLink {
     constructor (parentDriverWindow) {
@@ -9,23 +12,20 @@ export default class ParentDriverLink {
     }
 
     establishConnection () {
-        var msg = { cmd: INTER_DRIVER_MESSAGES.establishConnection };
+        var msg = new EstablishConnectionMessage();
 
-        return sendMessageWithConfirmation(msg, this.driverWindow)
+        return sendMessageToDriver(msg, this.driverWindow, WAIT_FOR_PARENT_DRIVER_RESPONSE_TIMEOUT, CurrentIframeIsNotLoadedError)
             .then(response => response.result.id);
     }
 
-    confirmMessageReceived (requestMsg) {
-        var msg = {
-            cmd:       INTER_DRIVER_MESSAGES.confirmation,
-            requestId: requestMsg.requestId
-        };
+    confirmMessageReceived (requestMsgId) {
+        var msg = new ConfirmationMessage(requestMsgId);
 
         eventSandbox.message.sendServiceMsg(msg, this.driverWindow);
     }
 
     onCommandExecuted (status) {
-        var msg = { cmd: INTER_DRIVER_MESSAGES.onCommandExecuted, status };
+        var msg = new CommandExecutedMessage(status);
 
         eventSandbox.message.sendServiceMsg(msg, this.driverWindow);
     }

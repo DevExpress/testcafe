@@ -17,7 +17,7 @@ import {
 } from '../../errors/test-run';
 import * as browser from '../browser';
 
-import INTER_DRIVER_MESSAGES from './driver-link/messages';
+import { TYPE as MESSAGE_TYPE } from './driver-link/messages';
 import ContextStorage from './storage';
 import DriverStatus from './status';
 import generateId from './generate-id';
@@ -156,7 +156,7 @@ export default class Driver {
             var msg          = e.message;
             var iframeWindow = e.source;
 
-            if (msg.cmd === INTER_DRIVER_MESSAGES.establishConnection) {
+            if (msg.type === MESSAGE_TYPE.establishConnection) {
                 var childDriverLink = this._getChildDriverLinkByWindow(iframeWindow);
 
                 if (!childDriverLink) {
@@ -166,7 +166,7 @@ export default class Driver {
                     this.childDriverLinks.push(childDriverLink);
                 }
 
-                childDriverLink.confirmConnectionEstablished(msg);
+                childDriverLink.confirmConnectionEstablished(msg.id);
             }
         });
     }

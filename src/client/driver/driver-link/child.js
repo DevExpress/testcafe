@@ -2,8 +2,8 @@ import { Promise, eventSandbox, nativeMethods } from '../deps/hammerhead';
 import { domUtils, delay } from '../deps/testcafe-core';
 import { CurrentIframeIsNotLoadedError, CurrentIframeNotFoundError, CurrentIframeIsInvisibleError } from '../../../errors/test-run';
 import { ensureElementVisible } from '../ensure-element-utils';
-import sendMessageWithConfirmation from './send-message-with-confirmation';
-import INTER_DRIVER_MESSAGES from './messages';
+import sendMessageToDriver from './send-message-to-driver';
+import { ExecuteCommandMessage, ConfirmationMessage, TYPE as MESSAGE_TYPE } from './messages';
 import DriverStatus from '../status';
 
 
@@ -47,12 +47,8 @@ export default class ChildDriverLink {
 
         var waitForResultMessage = () => new Promise(resolve => {
             onMessage = e => {
-                var msg = e.message;
-
-                /*eslint-disable no-use-before-define*/
-                if (msg.cmd === INTER_DRIVER_MESSAGES.onCommandExecuted)
-                    resolve(msg.status);
-                /*eslint-enable no-use-before-define*/
+                if (e.message.type === MESSAGE_TYPE.commandExecuted)
+                    resolve(e.message.driverStatus);
             };
 
             eventSandbox.message.on(eventSandbox.message.SERVICE_MSG_RECEIVED_EVENT, onMessage);
@@ -68,12 +64,8 @@ export default class ChildDriverLink {
             });
     }
 
-    confirmConnectionEstablished (requestMsg) {
-        var msg = {
-            cmd:       INTER_DRIVER_MESSAGES.confirmation,
-            requestId: requestMsg.requestId,
-            result:    { id: this.driverId }
-        };
+    confirmConnectionEstablished (requestMsgId) {
+        var msg = new ConfirmationMessage(requestMsgId, { id: this.driverId });
 
         eventSandbox.message.sendServiceMsg(msg, this.driverWindow);
     }
@@ -84,10 +76,10 @@ export default class ChildDriverLink {
         return this
             ._ensureIframe()
             .then(() => {
-                var msg = { cmd: INTER_DRIVER_MESSAGES.executeCommand, command };
+                var msg = new ExecuteCommandMessage(command);
 
                 return Promise.all([
-                    sendMessageWithConfirmation(msg, this.driverWindow, this.timeout, CurrentIframeIsNotLoadedError),
+                    sendMessageToDriver(msg, this.driverWindow, this.timeout, CurrentIframeIsNotLoadedError),
                     this._waitForCommandResult()
                 ]);
             })

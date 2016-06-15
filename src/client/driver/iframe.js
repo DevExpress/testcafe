@@ -3,7 +3,7 @@ import Driver from './driver';
 import ContextStorage from './storage';
 import DriverStatus from './status';
 import ParentDriverLink from './driver-link/parent';
-import INTER_DRIVER_MESSAGES from './driver-link/messages';
+import { TYPE as MESSAGE_TYPE } from './driver-link/messages';
 
 
 export default class IframeDriver extends Driver {
@@ -27,8 +27,8 @@ export default class IframeDriver extends Driver {
             if (this.beforeUnloadRaised)
                 return;
 
-            if (msg.cmd === INTER_DRIVER_MESSAGES.executeCommand) {
-                this.parentDriverLink.confirmMessageReceived(msg);
+            if (msg.type === MESSAGE_TYPE.executeCommand) {
+                this.parentDriverLink.confirmMessageReceived(msg.id);
                 this._onCommand(msg.command);
             }
         });
