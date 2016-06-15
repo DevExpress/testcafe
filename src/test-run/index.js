@@ -5,7 +5,7 @@ import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import { CouldNotOpenPageError } from '../errors/test-run/';
+import { PageLoadError } from '../errors/test-run/';
 import BrowserManipulationManager from './browser-manipulation-manager';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
@@ -87,7 +87,7 @@ export default class TestRun extends Session {
     }
 
     handlePageError (ctx, err) {
-        this.pendingPageError = new CouldNotOpenPageError(err);
+        this.pendingPageError = new PageLoadError(err);
 
         ctx.redirect(ctx.toProxyUrl('about:error'));
     }

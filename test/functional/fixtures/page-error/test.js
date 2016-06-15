@@ -5,7 +5,7 @@ describe('Handle page error', function () {
         return runTests('./testcafe-fixtures/page-error-test.js', 'Do not handle', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('Failed to find a DNS-record for the resource at "http://some-unreachable.url"');
-                expect(errs[0]).contains(">  8 |    await t.click('#unreachable-page-link');");
+                expect(errs[0]).contains("> 5 |    await t.click('#unreachable-page-link');");
             });
     });
 });

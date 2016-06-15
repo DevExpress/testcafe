@@ -39,8 +39,8 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.couldNotOpenPage]: err => markup(err, `
-        Could not open a webpage because of the following error: <code>${err.errMsg}</code>
+    [TYPE.pageLoadError]: err => markup(err, `
+        ${err.errMsg}
 
         ${err.getCallsiteMarkup()}
     `),

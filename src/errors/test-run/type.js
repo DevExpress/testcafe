@@ -44,5 +44,5 @@ export default {
 
     externalAssertionLibraryError: 'externalAssertionLibraryError',
 
-    couldNotOpenPage: 'couldNotOpenPageError'
+    pageLoadError: 'pageLoadError'
 };

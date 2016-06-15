@@ -1,6 +1,5 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
-Could not open a webpage because of the following error: Failed to find a
-DNS-record for the resource
+Failed to find a DNS-record for the resource
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');
