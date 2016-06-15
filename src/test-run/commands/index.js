@@ -494,13 +494,13 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
     constructor (obj) {
         super(TYPE.executeSelector, obj);
 
-        this.ensureVisible = false;
-        this.timeout       = null;
+        this.visibilityCheck = false;
+        this.timeout         = null;
     }
 
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
-            { name: 'ensureVisible' },
+            { name: 'visibilityCheck' },
             { name: 'timeout' }
         ]);
     }

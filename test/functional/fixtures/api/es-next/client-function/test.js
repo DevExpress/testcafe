@@ -134,7 +134,7 @@ describe('[API] ClientFunction', function () {
                 only:       'chrome'
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
-                    'The `boundTestRun` option value is expected to be a test controller.'
+                    'The "boundTestRun" option value is expected to be a test controller.'
                 )).eql(0);
 
                 expect(errs[0]).contains('> 91 |    ClientFunction(() => 123).with({ boundTestRun: {} });');

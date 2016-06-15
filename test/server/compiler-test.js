@@ -740,6 +740,110 @@ describe('Compiler', function () {
                     });
                 });
         });
+
+        it('Should raise an error if ClientFunction options is not an object', function () {
+            var testfile = resolve('test/server/data/test-suites/client-fn-options-not-object/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"options" argument is expected to be an object, but it was "number"',
+
+                        callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  ' > 5 |ClientFunction(() => {}).with(123);\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});\n'
+                    });
+                });
+        });
+
+        it('Should raise an error if ClientFunction `boundTestRun` option is not TestController', function () {
+            var testfile = resolve('test/server/data/test-suites/client-fn-bound-test-run-not-t/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'The "boundTestRun" option value is expected to be a test controller.',
+
+                        callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  " > 5 |ClientFunction(() => {}).with({ boundTestRun: 'yo' });\n" +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});'
+                    });
+                });
+        });
+
+        it('Should raise an error if Selector `visibilityCheck` option is not a boolean value', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-visibility-check-opt-not-bool/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"visibilityCheck" option is expected to be a boolean, but it was "number"',
+
+                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  ' > 5 |Selector(() => {}).with({ visibilityCheck: 42 });\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});'
+                    });
+                });
+        });
+
+        it('Should raise an error if Selector `timeout` option is not a non-negative number', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-timeout-is-not-non-negative-value/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"timeout" option is expected to be a non-negative number, but it was "-5"',
+
+                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  ' > 5 |Selector(() => {}).with({ timeout: -5 });\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});'
+                    });
+                });
+        });
     });
 
     describe('Raw data compiler', function () {

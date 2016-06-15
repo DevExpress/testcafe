@@ -87,7 +87,11 @@ export default class ClientFunctionFactory {
 
     // Overridable methods
     _validateOptions (options) {
-        // TODO options object and individual option validation
+        var optionsType = typeof options;
+
+        if (optionsType !== 'object')
+            throw new APIError('with', MESSAGE.optionsArgumentIsNotAnObject, optionsType);
+
         if (!isNullOrUndefined(options.boundTestRun)) {
             // NOTE: we can't use strict `t instanceof TestController`
             // check due to module circular reference

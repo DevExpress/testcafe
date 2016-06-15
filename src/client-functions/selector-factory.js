@@ -1,6 +1,7 @@
+import { isFinite } from 'lodash';
 import ClientFunctionFactory from './client-function-factory';
 import { createReplicator, FunctionTransform, SelectorNodeTransform } from './replicator';
-import { ClientFunctionAPIError } from '../errors/runtime';
+import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import { ExecuteSelectorCommand } from '../test-run/commands';
 
@@ -23,8 +24,26 @@ export default class SelectorFactory extends ClientFunctionFactory {
             instantiationCallsiteName: this.callsiteNames.instantiation,
             fnCode:                    this.compiledFnCode,
             args:                      args,
-            options:                   options
+            visibilityCheck:           !!options.visibilityCheck,
+            timeout:                   options.timeout
         });
+    }
+
+    _validateOptions (options) {
+        super._validateOptions(options);
+
+        var visibilityCheckOptionType = typeof options.visibilityCheck;
+
+        if (visibilityCheckOptionType !== 'undefined' && visibilityCheckOptionType !== 'boolean')
+            throw new APIError('with', MESSAGE.optionValueIsNotABoolean, 'visibilityCheck', visibilityCheckOptionType);
+
+
+        if (!isFinite(options.timeout) || options.timeout < 0) {
+            var type   = typeof options.timeout;
+            var actual = type === 'number' ? options.timeout : type;
+
+            throw new APIError('with', MESSAGE.optionValueIsNotANonNegativeNumber, 'timeout', actual);
+        }
     }
 
     _createReplicator () {

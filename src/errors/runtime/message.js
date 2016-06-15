@@ -28,5 +28,8 @@ export default {
     regeneratorInClientFunctionCode:              '{#instantiationCallsiteName} code cannot contain generators or `async/await` syntax (use Promises instead).',
     clientFunctionDependenciesIsNotAnObject:      `{#instantiationCallsiteName} "dependencies" argument is expected to be an object, but it was "{type}".`,
     clientFunctionDependencyIsNotAClientFunction: `{#instantiationCallsiteName} dependency "{fieldName}" is not a client function.`,
-    invalidClientFunctionTestRunBinding:          'The `boundTestRun` option value is expected to be a test controller.'
+    invalidClientFunctionTestRunBinding:          'The "boundTestRun" option value is expected to be a test controller.',
+    optionsArgumentIsNotAnObject:                 '"options" argument is expected to be an object, but it was "{type}"',
+    optionValueIsNotABoolean:                     '"{name}" option is expected to be a boolean, but it was "{type}"',
+    optionValueIsNotANonNegativeNumber:           '"{name}" option is expected to be a non-negative number, but it was "{type}"'
 };
