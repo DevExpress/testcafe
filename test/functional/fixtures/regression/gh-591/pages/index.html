@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-591</title>
+</head>
+<body>
+<script>
+    window.combinationPerformed = false;
+
+    document.addEventListener('keydown', function (e) {
+        if (e.shiftKey && e.ctrlKey && String.fromCharCode(e.keyCode).toLowerCase() === 'g')
+            window.combinationPerformed = true;
+    }, true);
+</script>
+</body>
+</html>
