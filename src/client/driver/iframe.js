@@ -10,7 +10,8 @@ export default class IframeDriver extends Driver {
     constructor (testRunId, elementAvailabilityTimeout) {
         super(testRunId, elementAvailabilityTimeout);
 
-        this.parentDriverLink = new ParentDriverLink(window.parent);
+        this.lastParentDriverMessageId = null;
+        this.parentDriverLink          = new ParentDriverLink(window.parent);
         this._initParentDriverListening();
     }
 
@@ -27,7 +28,15 @@ export default class IframeDriver extends Driver {
             if (this.beforeUnloadRaised)
                 return;
 
+            // NOTE: the parent driver repeats commands sent to a child driver if it doesn't get a confirmation
+            // from the child in time. However, confirmations sent by child drivers may be delayed when the browser
+            // is heavily loaded. That's why the child driver should ignore repeated messages from its parent.
             if (msg.type === MESSAGE_TYPE.executeCommand) {
+                if (this.lastParentDriverMessageId === msg.id)
+                    return;
+
+                this.lastParentDriverMessageId = msg.id;
+
                 this.parentDriverLink.confirmMessageReceived(msg.id);
                 this._onCommand(msg.command);
             }
