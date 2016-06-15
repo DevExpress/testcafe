@@ -1,33 +1,6 @@
 import TestController from '../test-controller';
-import getCallsite from '../../errors/get-callsite';
-import { APIError } from '../../errors/runtime';
 import clientFnTestRunTracker from '../../client-functions/test-run-tracker';
-
-import {
-    UncaughtErrorInTestCode,
-    UncaughtNonErrorObjectInTestCode,
-    ExternalAssertionLibraryError
-} from '../../errors/test-run';
-
-
-function processTestFnError (err) {
-    if (err && err.isTestCafeError)
-        return err;
-
-    if (err && err.constructor === APIError)
-        return new UncaughtErrorInTestCode(err.rawMessage, err.callsite);
-
-    if (err instanceof Error) {
-        var callsite         = getCallsite(err);
-        var isAssertionError = err.name === 'AssertionError' || err.constructor.name === 'AssertionError';
-
-        return isAssertionError ?
-               new ExternalAssertionLibraryError(err, callsite) :
-               new UncaughtErrorInTestCode(err, callsite);
-    }
-
-    return new UncaughtNonErrorObjectInTestCode(err);
-}
+import processTestFnError from '../../errors/process-test-fn-error';
 
 export default function wrapTestFunction (fn) {
     return async testRun => {

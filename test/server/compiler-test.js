@@ -6,6 +6,7 @@ var Promise     = require('pinkie');
 var stackParser = require('error-stack-parser');
 var stripAnsi   = require('strip-ansi');
 var sortBy      = require('lodash').sortBy;
+var ERR_TYPE    = require('../../lib/errors/test-run/type');
 var Compiler    = require('../../lib/compiler');
 var commonAPI   = require('../../lib/api/common');
 var NODE_VER    = require('../../lib/utils/node-version');
@@ -933,7 +934,8 @@ describe('Compiler', function () {
                         throw new Error('Promise rejection is expected');
                     })
                     .catch(function (err) {
-                        expect(err.message).eql(expectedError);
+                        expect(err.type).eql(ERR_TYPE.uncaughtErrorInTestCode);
+                        expect(err.errMsg).contains('test-error');
                         expect(testRun.commands.length).eql(1);
                     });
             });

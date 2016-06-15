@@ -1,5 +1,6 @@
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
+import processTestFnError from '../errors/process-test-fn-error';
 import { createCommandFromObject } from '../test-run/commands';
 
 
@@ -16,13 +17,13 @@ export default class RawFileCompiler {
 
                 try {
                     command = createCommandFromObject(commands[i]);
+                    await testRun.executeCommand(command, callsite);
                 }
                 catch (err) {
                     err.callsite = callsite;
-                    throw err;
+                    throw processTestFnError(err);
                 }
 
-                await testRun.executeCommand(command, callsite);
             }
         };
     }

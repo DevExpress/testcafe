@@ -30,14 +30,7 @@ function selector (name, val) {
         throw new ActionSelectorTypeError(type);
 }
 
-function selectActionSelector (name, val) {
-    var type = typeof val;
-
-    if (type !== 'string')
-        throw new ActionAdditionalSelectorTypeError(name, type);
-}
-
-function dragDestinationSelector (name, val) {
+function additionalSelector (name, val) {
     var type = typeof val;
 
     if (type !== 'string')
@@ -284,7 +277,7 @@ export class DragToElementCommand extends Assignable {
     _getAssignableProperties () {
         return [
             { name: 'selector', type: selector, init: initSelector, required: true },
-            { name: 'destinationSelector', type: dragDestinationSelector, init: initSelector, required: true },
+            { name: 'destinationSelector', type: additionalSelector, init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initMouseOptions, required: true }
         ];
     }
@@ -324,8 +317,8 @@ export class SelectEditableContentCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'startSelector', type: selectActionSelector, init: initSelector, required: true },
-            { name: 'endSelector', type: selectActionSelector, init: initSelector }
+            { name: 'startSelector', type: additionalSelector, init: initSelector, required: true },
+            { name: 'endSelector', type: additionalSelector, init: initSelector }
         ];
     }
 }
