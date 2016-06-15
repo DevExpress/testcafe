@@ -492,10 +492,12 @@ export class ExecuteClientFunctionCommand extends ExecuteClientFunctionCommandBa
 
 export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
     constructor (obj) {
-        super(TYPE.executeSelector, obj);
+        super(TYPE.executeSelector);
 
         this.visibilityCheck = false;
         this.timeout         = null;
+
+        this._assignFrom(obj, false);
     }
 
     _getAssignableProperties () {

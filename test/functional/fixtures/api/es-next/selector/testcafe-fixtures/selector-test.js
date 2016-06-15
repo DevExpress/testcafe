@@ -91,7 +91,7 @@ test('SVGElement snapshot basic properties', async () => {
     expect(el.value).to.be.undefined;
     expect(el.checked).to.be.undefined;
 
-    expect(el.textContent).eql('Hey');
+    expect(el.textContent).eql('\n        Hey\n    ');
     expect(el.classNames).eql(['svg1', 'svg2']);
 });
 
@@ -128,7 +128,7 @@ test('Input-specific element snapshot properties', async t => {
 test('`innerText` element snapshot property', async () => {
     const el = await getElementById('htmlElementWithInnerText');
 
-    expect(el.innerText.trim()).eql('Hey\nyo test');
+    expect(el.innerText.trim()).eql('Hey\nyo test test');
 });
 
 test('Non-element node snapshots', async t => {
@@ -194,21 +194,46 @@ test('String ctor argument', async () => {
 test('Wait for element in DOM', async t => {
     await t.click('#createElement');
 
-    var el = await Selector('#newElement')();
+    const el = await Selector('#newElement')();
 
     expect(el.tagName).eql('div');
 });
 
 test('Element do not appear', async () => {
-    var el = await Selector('#someElement')();
+    const el = await Selector('#someElement')();
 
     expect(el).eql(null);
 });
 
 test('Error in code', async () => {
-    var fn = Selector(() => {
+    const selector = Selector(() => {
         throw new Error('Hey ya!');
     });
 
-    await fn();
+    await selector();
+});
+
+test('Visibility check', async t => {
+    const getInvisibleEl = Selector('#invisibleElement');
+
+    let el = await getInvisibleEl();
+
+    expect(el.tagName).eql('div');
+
+    el = await getInvisibleEl.with({ visibilityCheck: true })();
+
+    expect(el).to.be.a.null;
+
+    await t.click('#makeVisible');
+
+    el = await getInvisibleEl.with({ visibilityCheck: true })();
+
+    expect(el.tagName).eql('div');
+});
+
+test('Timeout', async () => {
+    const getSlowEl = Selector('#slowElement').with({ visibilityCheck: true, timeout: 300 });
+    const el        = await getSlowEl();
+
+    expect(el).to.be.a.null;
 });

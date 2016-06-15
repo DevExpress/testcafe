@@ -37,10 +37,11 @@ export default class SelectorFactory extends ClientFunctionFactory {
         if (visibilityCheckOptionType !== 'undefined' && visibilityCheckOptionType !== 'boolean')
             throw new APIError('with', MESSAGE.optionValueIsNotABoolean, 'visibilityCheck', visibilityCheckOptionType);
 
+        var timeoutType         = typeof options.timeout;
+        var isNonNegativeNumber = isFinite(options.timeout) && options.timeout >= 0;
 
-        if (!isFinite(options.timeout) || options.timeout < 0) {
-            var type   = typeof options.timeout;
-            var actual = type === 'number' ? options.timeout : type;
+        if (timeoutType !== 'undefined' && !isNonNegativeNumber) {
+            var actual = timeoutType === 'number' ? options.timeout : timeoutType;
 
             throw new APIError('with', MESSAGE.optionValueIsNotANonNegativeNumber, 'timeout', actual);
         }
