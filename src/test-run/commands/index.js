@@ -388,25 +388,6 @@ export class WaitCommand extends Assignable {
     }
 }
 
-export class WaitForElementCommand extends Assignable {
-    constructor (obj) {
-        super(obj);
-
-        this.type     = TYPE.waitForElement;
-        this.selector = null;
-        this.timeout  = null;
-
-        this._assignFrom(obj, true);
-    }
-
-    _getAssignableProperties () {
-        return [
-            { name: 'selector', type: selector, init: initSelector, required: true },
-            { name: 'timeout', type: positiveIntegerArgument }
-        ];
-    }
-}
-
 export class NavigateToCommand extends Assignable {
     constructor (obj) {
         super(obj);
@@ -623,9 +604,6 @@ export function createCommandFromObject (obj) {
         case TYPE.wait:
             return new WaitCommand(obj);
 
-        case TYPE.waitForElement:
-            return new WaitForElementCommand(obj);
-
         case TYPE.navigateTo:
             return new NavigateToCommand(obj);
 
@@ -657,8 +635,7 @@ export function isCommandRejectableByPageError (command) {
 function isObservationCommand (command) {
     return command.type === TYPE.executeClientFunction ||
            command.type === TYPE.executeSelector ||
-           command.type === TYPE.wait ||
-           command.type === TYPE.waitForElement;
+           command.type === TYPE.wait;
 }
 
 export function isWindowManipulationCommand (command) {

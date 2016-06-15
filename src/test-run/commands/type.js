@@ -16,7 +16,6 @@ export default {
     selectEditableContent:      'select-editable-content',
     pressKey:                   'press-key',
     wait:                       'wait',
-    waitForElement:             'wait-for-element',
     navigateTo:                 'navigate-to',
     uploadFile:                 'upload-file',
     clearUpload:                'clear-upload',
