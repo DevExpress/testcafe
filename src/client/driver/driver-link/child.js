@@ -27,47 +27,45 @@ export default class ChildDriverLink {
     }
 
     _waitForIframeRemovedOrHidden () {
+        // NOTE: If an iframe was removed or became hidden while a
+        // command was being executed, we consider this command finished.
         return new Promise(resolve => {
             this.checkIframeInterval = nativeMethods.setInterval.call(window,
-                () => this._ensureIframe().catch(resolve), CHECK_IFRAME_EXISTENCE_INTERVAL);
+                () => {
+                    this._ensureIframe()
+                        .catch(() => {
+                            // NOTE: wait for possible delayed iframe message
+                            return delay(WAIT_IFRAME_RESPONSE_DELAY)
+                                .then(() => resolve(new DriverStatus({ isCommandResult: true })));
+                        });
+                }, CHECK_IFRAME_EXISTENCE_INTERVAL);
         });
     }
 
     _waitForCommandResult () {
-        return new Promise(resolve => {
-            var resolved = false;
+        var onMessage = null;
 
-            var onMessage = e => {
+        var waitForResultMessage = () => new Promise(resolve => {
+            onMessage = e => {
                 var msg = e.message;
 
                 /*eslint-disable no-use-before-define*/
                 if (msg.cmd === INTER_DRIVER_MESSAGES.onCommandExecuted)
-                    tearDownAndResolve(msg.status);
+                    resolve(msg.status);
                 /*eslint-enable no-use-before-define*/
             };
 
-            var tearDownAndResolve = status => {
-                if (resolved)
-                    return;
+            eventSandbox.message.on(eventSandbox.message.SERVICE_MSG_RECEIVED_EVENT, onMessage);
+        });
 
-                resolved = true;
+
+        return Promise.race([this._waitForIframeRemovedOrHidden(), waitForResultMessage()])
+            .then(status => {
                 eventSandbox.message.off(eventSandbox.message.SERVICE_MSG_RECEIVED_EVENT, onMessage);
                 nativeMethods.clearInterval.call(window, this.checkIframeInterval);
 
-                resolve(status);
-            };
-
-            eventSandbox.message.on(eventSandbox.message.SERVICE_MSG_RECEIVED_EVENT, onMessage);
-
-            // NOTE: If an iframe was removed or became hidden while a
-            // command was being executed, we consider this command finished.
-            this
-                ._waitForIframeRemovedOrHidden()
-
-                // NOTE: wait for possible delayed iframe message
-                .then(() => delay(WAIT_IFRAME_RESPONSE_DELAY))
-                .then(() => tearDownAndResolve(new DriverStatus({ isCommandResult: true })));
-        });
+                return status;
+            });
     }
 
     confirmConnectionEstablished (requestMsg) {
