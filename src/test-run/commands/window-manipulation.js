@@ -1,13 +1,18 @@
 import TYPE from './type';
 import Assignable from '../../utils/assignable';
+import { ResizeToFitDeviceOptions } from './options';
 
 import {
-    booleanArgument,
     positiveIntegerArgument,
     nonEmptyStringArgument,
-    resizeWindowDeviceArgument
+    resizeWindowDeviceArgument,
+    actionOptions
 } from './prop-validations/argument';
 
+
+function initResizeToFitDeviceOptions (val) {
+    return new ResizeToFitDeviceOptions(val, true);
+}
 
 // Commands
 export class TakeScreenshotCommand extends Assignable {
@@ -56,17 +61,17 @@ export class ResizeWindowToFitDeviceCommand extends Assignable {
     constructor (obj) {
         super(obj);
 
-        this.type     = TYPE.resizeWindowToFitDevice;
-        this.device   = null;
-        this.portrait = false;
+        this.type    = TYPE.resizeWindowToFitDevice;
+        this.device  = null;
+        this.options = null;
+
         this._assignFrom(obj, true);
     }
 
     _getAssignableProperties () {
         return [
             { name: 'device', type: resizeWindowDeviceArgument, required: true },
-            { name: 'portrait', type: booleanArgument }
+            { name: 'options', type: actionOptions, init: initResizeToFitDeviceOptions, required: true }
         ];
     }
 }
-

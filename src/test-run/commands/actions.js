@@ -34,10 +34,6 @@ function initTypeOptions (val) {
     return new TypeOptions(val, true);
 }
 
-function initResizeToFitDeviceOptions (val) {
-    return new ResizeToFitDeviceOptions(val, true);
-}
-
 // Commands
 export class ClickCommand extends Assignable {
     constructor (obj) {

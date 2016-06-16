@@ -122,7 +122,7 @@ export class ResizeToFitDeviceOptions extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'portraitOrientation', type: boolean }
+            { name: 'portraitOrientation', type: booleanOption }
         ];
     }
 }
