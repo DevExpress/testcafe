@@ -1,6 +1,6 @@
 import hammerhead from './deps/hammerhead';
 import Driver from './driver';
-import IframeDriver from './iframe';
+import IframeDriver from './iframe-driver';
 
 
 Object.defineProperty(window, '%testCafeDriver%', {
