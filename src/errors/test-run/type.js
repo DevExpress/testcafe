@@ -41,5 +41,7 @@ export default {
     regeneratorInFunctionArgumentOfClientFunctionError: 'regeneratorInFunctionArgumentOfClientFunctionError',
     domNodeClientFunctionResultError:                   'domNodeClientFunctionResultError',
 
-    externalAssertionLibraryError: 'externalAssertionLibraryError'
+    externalAssertionLibraryError: 'externalAssertionLibraryError',
+
+    pageLoadError: 'pageLoadError'
 };

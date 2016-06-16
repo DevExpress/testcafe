@@ -5,6 +5,7 @@ import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
+import { PageLoadError } from '../errors/test-run/';
 import BrowserManipulationManager from './browser-manipulation-manager';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
@@ -85,8 +86,10 @@ export default class TestRun extends Session {
         // TODO
     }
 
-    handlePageError () {
-        // TODO
+    handlePageError (ctx, err) {
+        this.pendingPageError = new PageLoadError(err);
+
+        ctx.redirect(ctx.toProxyUrl('about:error'));
     }
 
 
@@ -217,6 +220,7 @@ export default class TestRun extends Session {
     _handlePageErrorStatus (pageError) {
         if (this.currentDriverTask && isCommandRejectableByPageError(this.currentDriverTask.command)) {
             this._rejectCurrentDriverTask(pageError);
+            this.pendingPageError = null;
 
             return true;
         }
@@ -230,7 +234,9 @@ export default class TestRun extends Session {
         if (!this.running)
             this._start();
 
-        var currentTaskRejectedByError = driverStatus.pageError && this._handlePageErrorStatus(driverStatus.pageError);
+        var pageError = this.pendingPageError || driverStatus.pageError;
+
+        var currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
 
         if (!currentTaskRejectedByError && driverStatus.isCommandResult) {
             if (this.currentDriverTask.command.type === COMMAND_TYPE.testDone) {

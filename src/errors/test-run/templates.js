@@ -39,6 +39,12 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
+    [TYPE.pageLoadError]: err => markup(err, `
+        ${err.errMsg}
+
+        ${err.getCallsiteMarkup()}
+    `),
+
     [TYPE.uncaughtErrorOnPage]: err => markup(err, `
         Error on page <a href="${err.pageDestUrl}">${err.pageDestUrl}</a>:
 

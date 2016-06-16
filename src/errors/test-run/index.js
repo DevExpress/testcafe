@@ -71,6 +71,17 @@ export class DomNodeClientFunctionResultError extends TestRunErrorBase {
 }
 
 
+// Page errors
+//--------------------------------------------------------------------
+export class PageLoadError extends TestRunErrorBase {
+    constructor (err) {
+        super(TYPE.pageLoadError);
+
+        this.errMsg = err;
+    }
+}
+
+
 // Uncaught errors
 //--------------------------------------------------------------------
 export class UncaughtErrorOnPage extends TestRunErrorBase {
