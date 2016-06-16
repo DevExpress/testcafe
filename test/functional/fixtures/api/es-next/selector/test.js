@@ -29,7 +29,7 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Wait for element in DOM', { elementAvailabilityTimeout: 2500 });
     });
 
-    it('Should return `null` or `undefined` if element does not appear within given time', function () {
+    it('Should return `null` if element does not appear within given time', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Element does not appear', { elementAvailabilityTimeout: 300 });
     });
 
