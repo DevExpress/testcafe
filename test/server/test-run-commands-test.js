@@ -1,7 +1,8 @@
-var expect        = require('chai').expect;
-var TYPE          = require('../../lib/test-run/commands/type');
-var createCommand = require('../../lib/test-run/commands').createCommandFromObject;
-var ERROR_TYPE    = require('../../lib/errors/test-run/type');
+var expect          = require('chai').expect;
+var TYPE            = require('../../lib/test-run/commands/type');
+var createCommand   = require('../../lib/test-run/commands/from-object');
+var ERROR_TYPE      = require('../../lib/errors/test-run/type');
+var SelectorFactory = require('../../lib/client-functions/selector-factory');
 
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects
@@ -16,6 +17,13 @@ function assertThrow (fn, expectedErr) {
     }
 
     expect(actualErr).eql(expectedErr);
+}
+
+function makeSelector (str) {
+    var factory = new SelectorFactory(str, null, { instantiation: 'Selector' });
+    var command = factory.getCommand([], { visibilityCheck: true });
+
+    return JSON.parse(JSON.stringify(command));
 }
 
 describe('Test run commands', function () {
@@ -46,7 +54,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.click,
-                selector: "(function () { return document.querySelector('#yo') })()",
+                selector: makeSelector('#yo'),
 
                 options: {
                     offsetX:  23,
@@ -71,7 +79,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.click,
-                selector: "(function () { return document.querySelector('#yo') })()",
+                selector: makeSelector('#yo'),
 
                 options: {
                     offsetX:  null,
@@ -114,7 +122,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.rightClick,
-                selector: "(function () { return document.querySelector('#yo') })()",
+                selector: makeSelector('#yo'),
 
                 options: {
                     offsetX:  23,
@@ -139,7 +147,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.rightClick,
-                selector: "(function () { return document.querySelector('#yo') })()",
+                selector: makeSelector('#yo'),
 
                 options: {
                     offsetX:  null,
@@ -182,7 +190,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.doubleClick,
-                selector: "(function () { return document.querySelector('#yo') })()",
+                selector: makeSelector('#yo'),
 
                 options: {
                     offsetX:  23,
@@ -207,7 +215,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.doubleClick,
-                selector: "(function () { return document.querySelector('#yo') })()",
+                selector: makeSelector('#yo'),
 
                 options: {
                     offsetX:  null,
@@ -250,7 +258,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.hover,
-                selector: "(function () { return document.querySelector('#yo') })()",
+                selector: makeSelector('#yo'),
 
                 options: {
                     offsetX: 23,
@@ -274,7 +282,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.hover,
-                selector: "(function () { return document.querySelector('#yo') })()",
+                selector: makeSelector('#yo'),
 
                 options: {
                     offsetX: null,
@@ -318,7 +326,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:        TYPE.drag,
-                selector:    "(function () { return document.querySelector('#yo') })()",
+                selector:    makeSelector('#yo'),
                 dragOffsetX: 10,
                 dragOffsetY: -15,
 
@@ -346,7 +354,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:        TYPE.drag,
-                selector:    "(function () { return document.querySelector('#yo') })()",
+                selector:    makeSelector('#yo'),
                 dragOffsetX: 10,
                 dragOffsetY: -15,
 
@@ -391,8 +399,8 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:                TYPE.dragToElement,
-                selector:            "(function () { return document.querySelector('#yo') })()",
-                destinationSelector: "(function () { return document.querySelector('#destination') })()",
+                selector:            makeSelector('#yo'),
+                destinationSelector: makeSelector('#destination'),
 
                 options: {
                     offsetX: 23,
@@ -417,8 +425,8 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:                TYPE.dragToElement,
-                selector:            "(function () { return document.querySelector('#yo') })()",
-                destinationSelector: "(function () { return document.querySelector('#destination') })()",
+                selector:            makeSelector('#yo'),
+                destinationSelector: makeSelector('#destination'),
 
                 options: {
                     offsetX: null,
@@ -462,7 +470,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.typeText,
-                selector: "(function () { return document.querySelector('#yo') })()",
+                selector: makeSelector('#yo'),
                 text:     'testText',
 
                 options: {
@@ -490,7 +498,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.typeText,
-                selector: "(function () { return document.querySelector('#yo') })()",
+                selector: makeSelector('#yo'),
                 text:     'testText',
 
                 options: {
@@ -527,7 +535,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.selectText,
-                selector: "(function () { return document.querySelector('#yo') })()",
+                selector: makeSelector('#yo'),
                 startPos: 1,
                 endPos:   2
             });
@@ -541,7 +549,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.selectText,
-                selector: "(function () { return document.querySelector('#yo') })()",
+                selector: makeSelector('#yo'),
                 startPos: null,
                 endPos:   null
             });
@@ -567,7 +575,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:      TYPE.selectTextAreaContent,
-                selector:  "(function () { return document.querySelector('#yo') })()",
+                selector:  makeSelector('#yo'),
                 startLine: 0,
                 startPos:  1,
                 endLine:   2,
@@ -583,7 +591,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:      TYPE.selectTextAreaContent,
-                selector:  "(function () { return document.querySelector('#yo') })()",
+                selector:  makeSelector('#yo'),
                 startLine: null,
                 startPos:  null,
                 endLine:   null,
@@ -609,8 +617,8 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.selectEditableContent,
-                startSelector: "(function () { return document.querySelector('#node1') })()",
-                endSelector:   "(function () { return document.querySelector('#node2') })()"
+                startSelector: makeSelector('#node1'),
+                endSelector:   makeSelector('#node2')
             });
 
             commandObj = {
@@ -623,7 +631,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.selectEditableContent,
-                startSelector: "(function () { return document.querySelector('#node1') })()",
+                startSelector: makeSelector('#node1'),
                 endSelector:   null
             });
         });
@@ -671,34 +679,6 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should create WaitForElementCommand from object', function () {
-            var commandObj = {
-                type:     TYPE.waitForElement,
-                selector: '#yo',
-                timeout:  1000
-            };
-            var command    = createCommand(commandObj);
-
-            expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.waitForElement,
-                selector: "(function () { return document.querySelector('#yo') })()",
-                timeout:  1000
-            });
-
-            commandObj = {
-                type:     TYPE.waitForElement,
-                selector: '#yo'
-            };
-
-            command = createCommand(commandObj);
-
-            expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.waitForElement,
-                timeout:  null,
-                selector: "(function () { return document.querySelector('#yo') })()"
-            });
-        });
-
         it('Should create NavigateToCommand from object', function () {
             var commandObj = {
                 type: TYPE.navigateTo,
@@ -729,7 +709,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.uploadFile,
-                selector: "(function () { return document.querySelector('#yo') })()",
+                selector: makeSelector('#yo'),
                 filePath: '/test/path'
             });
 
@@ -748,7 +728,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.uploadFile,
-                selector: "(function () { return document.querySelector('#yo') })()",
+                selector: makeSelector('#yo'),
                 filePath: ['/test/path/1', '/test/path/2']
             });
         });
@@ -768,7 +748,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.clearUpload,
-                selector: "(function () { return document.querySelector('#yo') })()"
+                selector: makeSelector('#yo')
             });
         });
 
@@ -864,14 +844,6 @@ describe('Test run commands', function () {
                 device:  'iPhone',
                 options: { portraitOrientation: false }
             });
-        });
-
-        it('Should create TestDone command from object', function () {
-            var commandObj = { type: TYPE.testDone, hey: '42' };
-
-            var command = createCommand(commandObj);
-
-            expect(JSON.parse(JSON.stringify(command))).eql({ type: TYPE.testDone });
         });
     });
 
@@ -1843,54 +1815,6 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
                     argumentName:    'timeout',
                     actualValue:     -5,
-                    callsite:        null
-                }
-            );
-        });
-
-        it('Should validate WaitForElementСommand', function () {
-            assertThrow(
-                function () {
-                    return createCommand({
-                        type: TYPE.waitForElement
-                    });
-                },
-                {
-                    isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'undefined',
-                    callsite:        null
-                }
-            );
-
-            assertThrow(
-                function () {
-                    return createCommand({
-                        type:     TYPE.waitForElement,
-                        selector: 1
-                    });
-                },
-                {
-                    isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'number',
-                    callsite:        null
-                }
-            );
-
-            assertThrow(
-                function () {
-                    return createCommand({
-                        type:     TYPE.waitForElement,
-                        selector: 'element',
-                        timeout:  10.5
-                    });
-                },
-                {
-                    isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
-                    argumentName:    'timeout',
-                    actualValue:     10.5,
                     callsite:        null
                 }
             );

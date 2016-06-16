@@ -16,15 +16,18 @@ import {
     SelectTextAreaContentCommand,
     SelectEditableContentCommand,
     PressKeyCommand,
-    WaitCommand,
-    WaitForElementCommand,
     NavigateToCommand,
     UploadFileCommand,
-    ClearUploadCommand,
+    ClearUploadCommand
+} from '../test-run/commands/actions';
+
+import {
     TakeScreenshotCommand,
     ResizeWindowCommand,
     ResizeWindowToFitDeviceCommand
-} from '../test-run/commands';
+} from '../test-run/commands/window-manipulation';
+
+import { WaitCommand } from '../test-run/commands/observation';
 
 const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$$/;
 
@@ -172,10 +175,6 @@ export default class TestController {
         return this._enqueueAction('wait', WaitCommand, { timeout });
     }
 
-    _waitForElement$ (selector, timeout) {
-        return this._enqueueAction('waitForElement', WaitForElementCommand, { selector, timeout });
-    }
-
     _navigateTo$ (url) {
         return this._enqueueAction('navigateTo', NavigateToCommand, { url });
     }
@@ -202,7 +201,7 @@ export default class TestController {
 
     _eval$ (fn, dependencies) {
         var factory  = new ClientFunctionFactory(fn, dependencies, { instantiation: 'eval', execution: 'eval' });
-        var clientFn = factory.getFunction(this.testRun);
+        var clientFn = factory.getFunction({ boundTestRun: this.testRun });
 
         return clientFn();
     }

@@ -11,15 +11,18 @@ import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
 import COMMAND_TYPE from './commands/type';
 
+import { TakeScreenshotOnFailCommand } from './commands/window-manipulation';
+
 import {
     TestDoneCommand,
-    TakeScreenshotOnFailCommand,
-    PrepareBrowserManipulationCommand,
+    PrepareBrowserManipulationCommand
+} from './commands/service';
+
+import {
     isCommandRejectableByPageError,
     isWindowManipulationCommand,
     isServiceCommand
-} from './commands';
-
+} from './commands/utils';
 
 //Const
 const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache');

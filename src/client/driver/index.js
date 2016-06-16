@@ -9,10 +9,11 @@ import { UncaughtErrorOnPage, ClientFunctionExecutionInterruptionError } from '.
 import * as browser from '../browser';
 
 import executeActionCommand from './command-executors/execute-action';
-import executeWaitForElementCommand from './command-executors/execute-wait-for-element';
 import executeNavigateToCommand from './command-executors/execute-navigate-to';
-import executeClientFunction from './command-executors/execute-client-function';
 import prepareBrowserManipulation from './command-executors/prepare-browser-manipulation';
+import ClientFunctionExecutor from './command-executors/client-functions/client-function-executor';
+import SelectorExecutor from './command-executors/client-functions/selector-executor';
+
 
 import ContextStorage from './storage';
 import DriverStatus from './status';
@@ -164,11 +165,6 @@ export default class ClientDriver {
             });
     }
 
-    _onWaitForElementCommand (command) {
-        executeWaitForElementCommand(command, this.elementAvailabilityTimeout)
-            .then(driverStatus => this._onReady(driverStatus));
-    }
-
     _onNavigateToCommand (command) {
         this.contextStorage.setItem(COMMAND_EXECUTING_FLAG, true);
 
@@ -183,11 +179,21 @@ export default class ClientDriver {
     _onExecuteClientFunctionCommand (command) {
         this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, { instantiationCallsiteName: command.instantiationCallsiteName });
 
-        executeClientFunction(command)
+        var executor = new ClientFunctionExecutor(command);
+
+        executor.getResultDriverStatus()
             .then(driverStatus => {
                 this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, null);
                 this._onReady(driverStatus);
             });
+    }
+
+    _onExecuteSelectorCommand (command) {
+        // TODO cross-page timeout
+        var executor = new SelectorExecutor(command, this.elementAvailabilityTimeout);
+
+        executor.getResultDriverStatus()
+            .then(driverStatus => this._onReady(driverStatus));
     }
 
     _onPrepareBrowserManipulationCommand () {
@@ -207,11 +213,11 @@ export default class ClientDriver {
         else if (command.type === COMMAND_TYPE.executeClientFunction)
             this._onExecuteClientFunctionCommand(command);
 
+        else if (command.type === COMMAND_TYPE.executeSelector)
+            this._onExecuteSelectorCommand(command);
+
         else if (this.contextStorage.getItem(PENDING_PAGE_ERROR))
             this._onReady(new DriverStatus({ isCommandResult: true }));
-
-        else if (command.type === COMMAND_TYPE.waitForElement)
-            this._onWaitForElementCommand(command);
 
         else if (command.type === COMMAND_TYPE.navigateTo)
             this._onNavigateToCommand(command);

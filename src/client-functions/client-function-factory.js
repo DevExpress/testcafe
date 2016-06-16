@@ -1,7 +1,8 @@
+import { isNil as isNullOrUndefined } from 'lodash';
 import testRunTracker from './test-run-tracker';
 import compiledCodeSymbol from './compiled-code-symbol';
 import { createReplicator, FunctionTransform } from './replicator';
-import { ExecuteClientFunctionCommand } from '../test-run/commands';
+import { ExecuteClientFunctionCommand } from '../test-run/commands/observation';
 import TestRun from '../test-run';
 import { compileClientFunction } from '../compiler/es-next/client-functions';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
@@ -22,6 +23,7 @@ export default class ClientFunctionFactory {
         var fnCode = this._getFnCode(fn);
 
         this.compiledFnCode = compileClientFunction(fnCode, dependencies || {}, this.callsiteNames.instantiation);
+        this.replicator     = this._createReplicator();
     }
 
     _validateDependencies (dependencies) {
@@ -44,40 +46,34 @@ export default class ClientFunctionFactory {
     _decorateFunction (clientFn) {
         clientFn[compiledCodeSymbol] = this.compiledFnCode;
 
-        var factory = this;
+        clientFn.with = options => {
+            this._validateOptions(options);
 
-        clientFn.bindTestRun = function bindTestRun (t) {
-            // NOTE: we can't use strict `t instanceof TestController`
-            // check due to module circular reference
-            if (!t || !(t.testRun instanceof TestRun))
-                throw new APIError('bindTestRun', MESSAGE.invalidClientFunctionTestRunBinding);
-
-            return factory.getFunction(t.testRun);
+            return this.getFunction(options);
         };
     }
 
-    getFunction (boundTestRun) {
+    getFunction (options) {
+        options = options || {};
+
         var factory = this;
 
         var clientFn = function __$$clientFunction$$ () {
-            var testRun    = boundTestRun || factory._resolveContextTestRun();
-            var replicator = factory._getReplicator();
-            var args       = [];
+            var testRun = options.boundTestRun || factory._resolveContextTestRun();
+            var args    = [];
 
             // OPTIMIZATION: don't leak `arguments` object.
             for (var i = 0; i < arguments.length; i++)
                 args.push(arguments[i]);
 
-            args = replicator.encode(args);
-
-            var command  = factory._createExecutionTestRunCommand(args);
+            var command  = factory.getCommand(args, options);
             var callsite = getCallsite(factory.callsiteNames.execution);
 
             // NOTE: don't use async/await here to enable
             // sync errors for resolving the context test run
             return testRun
                 .executeCommand(command, callsite)
-                .then(result => replicator.decode(result));
+                .then(result => factory.replicator.decode(result));
         };
 
         this._decorateFunction(clientFn);
@@ -85,7 +81,30 @@ export default class ClientFunctionFactory {
         return clientFn;
     }
 
-    // Descendants override points
+    getCommand (args, options) {
+        args = this.replicator.encode(args);
+
+        return this._createExecutionTestRunCommand(args, options);
+    }
+
+    // Overridable methods
+    _validateOptions (options) {
+        var optionsType = typeof options;
+
+        if (optionsType !== 'object')
+            throw new APIError('with', MESSAGE.optionsArgumentIsNotAnObject, optionsType);
+
+        if (!isNullOrUndefined(options.boundTestRun)) {
+            // NOTE: we can't use strict `t instanceof TestController`
+            // check due to module circular reference
+            if (!(options.boundTestRun.testRun instanceof TestRun))
+                throw new APIError('with', MESSAGE.invalidClientFunctionTestRunBinding);
+
+            // NOTE: boundTestRun is actually a TestController, so we need to unpack it
+            options.boundTestRun = options.boundTestRun.testRun;
+        }
+    }
+
     _getFnCode (fn) {
         var fnType = typeof fn;
 
@@ -96,10 +115,14 @@ export default class ClientFunctionFactory {
     }
 
     _createExecutionTestRunCommand (args) {
-        return new ExecuteClientFunctionCommand(this.callsiteNames.instantiation, this.compiledFnCode, args, false);
+        return new ExecuteClientFunctionCommand({
+            instantiationCallsiteName: this.callsiteNames.instantiation,
+            fnCode:                    this.compiledFnCode,
+            args:                      args
+        });
     }
 
-    _getReplicator () {
+    _createReplicator () {
         return createReplicator([
             new FunctionTransform(this.callsiteNames)
         ]);

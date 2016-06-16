@@ -4,42 +4,11 @@
 // -------------------------------------------------------------
 
 import Assignable from '../../utils/assignable';
+import { createBooleanValidator, createPositiveIntegerValidator } from './validations/factories';
+import { ActionPositiveIntegerOptionError, ActionBooleanOptionError } from '../../errors/test-run';
 
-import {
-    ActionIntegerOptionError,
-    ActionPositiveIntegerOptionError,
-    ActionBooleanOptionError
-} from '../../errors/test-run';
-
-// Validators
-function integer (option, val, positive) {
-    var valType   = typeof val;
-    var ErrorCtor = positive ? ActionPositiveIntegerOptionError : ActionIntegerOptionError;
-
-    if (valType !== 'number')
-        throw new ErrorCtor(option, valType);
-
-    var isInteger = !isNaN(val) &&
-                    isFinite(val) &&
-                    val === Math.floor(val);
-
-    if (!isInteger)
-        throw new ErrorCtor(option, val);
-}
-
-function positiveInteger (option, val) {
-    integer(option, val, true);
-
-    if (val < 0)
-        throw new ActionPositiveIntegerOptionError(option, val);
-}
-
-function boolean (option, val) {
-    var valType = typeof val;
-
-    if (valType !== 'boolean')
-        throw new ActionBooleanOptionError(option, valType);
-}
+export var positiveIntegerOption = createPositiveIntegerValidator(ActionPositiveIntegerOptionError);
+export var booleanOption         = createBooleanValidator(ActionBooleanOptionError);
 
 
 // Offset
@@ -55,8 +24,8 @@ export class OffsetOptions extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'offsetX', type: positiveInteger },
-            { name: 'offsetY', type: positiveInteger }
+            { name: 'offsetX', type: positiveIntegerOption },
+            { name: 'offsetY', type: positiveIntegerOption }
         ];
     }
 }
@@ -79,10 +48,10 @@ export class MouseOptions extends OffsetOptions {
 
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
-            { name: 'modifiers.ctrl', type: boolean },
-            { name: 'modifiers.alt', type: boolean },
-            { name: 'modifiers.shift', type: boolean },
-            { name: 'modifiers.meta', type: boolean }
+            { name: 'modifiers.ctrl', type: booleanOption },
+            { name: 'modifiers.alt', type: booleanOption },
+            { name: 'modifiers.shift', type: booleanOption },
+            { name: 'modifiers.meta', type: booleanOption }
         ]);
     }
 }
@@ -100,7 +69,7 @@ export class ClickOptions extends MouseOptions {
 
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
-            { name: 'caretPos', type: positiveInteger }
+            { name: 'caretPos', type: positiveIntegerOption }
         ]);
     }
 }
@@ -137,7 +106,7 @@ export class TypeOptions extends ClickOptions {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([{ name: 'replace', type: boolean }]);
+        return super._getAssignableProperties().concat([{ name: 'replace', type: booleanOption }]);
     }
 }
 
@@ -153,7 +122,7 @@ export class ResizeToFitDeviceOptions extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'portraitOrientation', type: boolean }
+            { name: 'portraitOrientation', type: booleanOption }
         ];
     }
 }

@@ -1,8 +1,9 @@
+import { isFinite } from 'lodash';
 import ClientFunctionFactory from './client-function-factory';
 import { createReplicator, FunctionTransform, SelectorNodeTransform } from './replicator';
-import { ClientFunctionAPIError } from '../errors/runtime';
+import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
-import { ExecuteClientFunctionCommand } from '../test-run/commands';
+import { ExecuteSelectorCommand } from '../test-run/commands/observation';
 
 export default class SelectorFactory extends ClientFunctionFactory {
     constructor (fn, dependencies, boundTestRun, callsiteNames) {
@@ -18,12 +19,35 @@ export default class SelectorFactory extends ClientFunctionFactory {
         return fnType === 'string' ? `function(){return document.querySelector('${fn}');}` : fn.toString();
     }
 
-    _createExecutionTestRunCommand (args) {
-        // TODO needs its own command
-        return new ExecuteClientFunctionCommand(this.callsiteNames.instantiation, this.compiledFnCode, args, true);
+    _createExecutionTestRunCommand (args, options) {
+        return new ExecuteSelectorCommand({
+            instantiationCallsiteName: this.callsiteNames.instantiation,
+            fnCode:                    this.compiledFnCode,
+            args:                      args,
+            visibilityCheck:           !!options.visibilityCheck,
+            timeout:                   options.timeout
+        });
     }
 
-    _getReplicator () {
+    _validateOptions (options) {
+        super._validateOptions(options);
+
+        var visibilityCheckOptionType = typeof options.visibilityCheck;
+
+        if (visibilityCheckOptionType !== 'undefined' && visibilityCheckOptionType !== 'boolean')
+            throw new APIError('with', MESSAGE.optionValueIsNotABoolean, 'visibilityCheck', visibilityCheckOptionType);
+
+        var timeoutType         = typeof options.timeout;
+        var isNonNegativeNumber = isFinite(options.timeout) && options.timeout >= 0;
+
+        if (timeoutType !== 'undefined' && !isNonNegativeNumber) {
+            var actual = timeoutType === 'number' ? options.timeout : timeoutType;
+
+            throw new APIError('with', MESSAGE.optionValueIsNotANonNegativeNumber, 'timeout', actual);
+        }
+    }
+
+    _createReplicator () {
         return createReplicator([
             new FunctionTransform(this.callsiteNames),
             new SelectorNodeTransform()

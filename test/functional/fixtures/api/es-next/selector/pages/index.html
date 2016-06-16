@@ -19,13 +19,59 @@
     Yo
 </div>
 <svg width="400" height="110">
-    <rect class="svg1 svg2" id="svgElement" width="300px" height="100px" style="fill:rgb(0,0,255); stroke-width:0;">Hey</rect>
+    <rect class="svg1 svg2" id="svgElement" width="300px" height="100px" style="fill:rgb(0,0,255); stroke-width:0;">
+        Hey
+    </rect>
 </svg>
 <form>
     <input id="textInput" type="text">
     <input id="checkInput" type="checkbox">
 </form>
-<div id="htmlElementWithInnerText">Hey<br><script>42</script>yo test<script>'hey hey';</script><style>.someClass {}</style>
+<div id="htmlElementWithInnerText">Hey<br>yo test
+    <script>42</script>
+    test
+    <script>'hey hey';</script>
+    <style>.someClass {
+    }</style>
 </div>
+
+<input type="button" id="createElement">
+<input type="button" id="makeVisible">
+<div id="invisibleElement" style="display: none; width:500px; height: 500px;"></div>
+
+<script>
+    document.querySelector('#createElement').addEventListener('click', function () {
+        var div = document.createElement('div');
+
+        div.id = 'newElement';
+
+        window.setTimeout(function () {
+            document.body.appendChild(div);
+        }, 500);
+    });
+
+    document.querySelector('#makeVisible').addEventListener('click', function () {
+        var div = document.querySelector('#invisibleElement');
+
+        window.setTimeout(function () {
+            div.style.display = 'block';
+        }, 500);
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        window.setTimeout(function () {
+            var div = document.createElement('div');
+
+            div.id            = 'slowElement';
+            div.style.display = 'none';
+            div.style.width   = '500px';
+            div.style.height  = '500px';
+
+            window.setTimeout(function () {
+                div.style.display = 'block';
+            }, 100);
+        }, 2000);
+    });
+</script>
 </body>
 </html>
