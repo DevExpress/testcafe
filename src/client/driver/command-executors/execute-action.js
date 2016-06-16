@@ -78,7 +78,7 @@ function ensureCommandElementsProperties (command, elements) {
         ensureRootContainer(elements);
     }
 
-    else if (command.type === COMMAND_TYPE.uploadFile || command.type === COMMAND_TYPE.clearUpload)
+    else if (command.type === COMMAND_TYPE.setFilesToUpload || command.type === COMMAND_TYPE.clearUpload)
         ensureFileInput(elements[0]);
 }
 
@@ -202,7 +202,7 @@ function createAutomation (elements, command) {
         case COMMAND_TYPE.pressKey:
             return new PressAutomation(parseKeySequence(command.keys).combinations);
 
-        case COMMAND_TYPE.uploadFile :
+        case COMMAND_TYPE.setFilesToUpload :
             return new UploadAutomation(elements[0], command.filePath,
                 filePaths => new ActionCanNotFindFileToUploadError(filePaths)
             );

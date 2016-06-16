@@ -8,7 +8,7 @@
                     "name": "Upload a file",
                     "commands": [
                         {
-                            "type": "upload-file",
+                            "type": "set-files-to-upload",
                             "selector": "#file",
                             "filePath": "../test-data/test.txt"
                         },
@@ -26,7 +26,7 @@
                     "name": "The action element is not a file input",
                     "commands": [
                         {
-                            "type": "upload-file",
+                            "type": "set-files-to-upload",
                             "selector": "body",
                             "filePath": "../test-data/test.txt"
                         }
@@ -36,7 +36,7 @@
                     "name": "The specified file does not exist",
                     "commands": [
                         {
-                            "type": "upload-file",
+                            "type": "set-files-to-upload",
                             "selector": "#file",
                             "filePath": "../test-data/test42.txt"
                         }
@@ -46,7 +46,7 @@
                     "name": "Upload files",
                     "commands": [
                         {
-                            "type": "upload-file",
+                            "type": "set-files-to-upload",
                             "selector": "#file",
                             "filePath": ["../test-data/test2.txt", "../test-data/test3.txt"]
                         },
@@ -68,7 +68,7 @@
                     "name": "The specified file does not exist (multiple files)",
                     "commands": [
                         {
-                            "type": "upload-file",
+                            "type": "set-files-to-upload",
                             "selector": "#file",
                             "filePath": ["../test-data/test42.txt", "../test-data/test3.txt"]
                         }
@@ -78,7 +78,7 @@
                     "name": "Clear the upload",
                     "commands": [
                         {
-                            "type": "upload-file",
+                            "type": "set-files-to-upload",
                             "selector": "#file",
                             "filePath": "../test-data/test.txt"
                         },
