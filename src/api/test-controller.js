@@ -16,14 +16,18 @@ import {
     SelectTextAreaContentCommand,
     SelectEditableContentCommand,
     PressKeyCommand,
-    WaitCommand,
     NavigateToCommand,
     UploadFileCommand,
-    ClearUploadCommand,
+    ClearUploadCommand
+} from '../test-run/commands/actions';
+
+import {
     TakeScreenshotCommand,
     ResizeWindowCommand,
     ResizeWindowToFitDeviceCommand
-} from '../test-run/commands';
+} from '../test-run/commands/window-manipulation';
+
+import { WaitCommand } from '../test-run/commands/observation';
 
 const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$$/;
 

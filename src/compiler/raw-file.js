@@ -1,7 +1,7 @@
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import processTestFnError from '../errors/process-test-fn-error';
-import { createCommandFromObject } from '../test-run/commands';
+import createCommandFromObject from '../test-run/commands/from-object';
 
 
 export default class RawFileCompiler {

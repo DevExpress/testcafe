@@ -3,7 +3,7 @@ import ClientFunctionFactory from './client-function-factory';
 import { createReplicator, FunctionTransform, SelectorNodeTransform } from './replicator';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
-import { ExecuteSelectorCommand } from '../test-run/commands';
+import { ExecuteSelectorCommand } from '../test-run/commands/observation';
 
 export default class SelectorFactory extends ClientFunctionFactory {
     constructor (fn, dependencies, boundTestRun, callsiteNames) {

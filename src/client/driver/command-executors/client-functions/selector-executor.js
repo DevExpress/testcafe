@@ -16,10 +16,13 @@ function visible (el) {
 }
 
 export default class SelectorExecutor extends ClientFunctionExecutor {
-    constructor (command, elementAvailabilityTimeout) {
+    constructor (command, timeout, createNotFoundError, createIsInvisibleError) {
         super(command);
 
-        this.elementAvailabilityTimeout = command.timeout === void 0 ? elementAvailabilityTimeout : command.timeout;
+
+        this.createNotFoundError    = createNotFoundError;
+        this.createIsInvisibleError = createIsInvisibleError;
+        this.timeout                = typeof command.timeout === 'number' ? command.timeout : timeout;
     }
 
     _createReplicator () {
@@ -29,14 +32,18 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         ]);
     }
 
-    _checkElement (el, startTime, condition, reCheck) {
+    _checkElement (el, startTime, condition, createTimeoutError, reCheck) {
         if (condition(el))
             return el;
 
-        var timeout = new Date() - startTime >= this.elementAvailabilityTimeout;
+        var isTimeout = new Date() - startTime >= this.timeout;
 
-        if (timeout)
+        if (isTimeout) {
+            if (createTimeoutError)
+                throw createTimeoutError();
+
             return null;
+        }
 
         return delay(CHECK_ELEMENT_DELAY).then(reCheck);
     }
@@ -46,20 +53,20 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
 
         return Promise.resolve()
             .then(() => fn.apply(window, args))
-            .then(el => this._checkElement(el, startTime, exists, reCheck));
+            .then(el => this._checkElement(el, startTime, exists, this.createNotFoundError, reCheck));
     }
 
     _ensureVisible (el, startTime) {
         var reCheck = () => this._ensureVisible(el, startTime);
 
-        return this._checkElement(el, startTime, visible, reCheck);
+        return this._checkElement(el, startTime, visible, this.createIsInvisibleError, reCheck);
     }
 
     _executeFn (fn, args) {
         var startTime     = new Date();
         var progressPanel = new ProgressPanel();
 
-        progressPanel.show(PROGRESS_PANEL_TEXT, this.elementAvailabilityTimeout);
+        progressPanel.show(PROGRESS_PANEL_TEXT, this.timeout);
 
         return this
             ._ensureExists(fn, args, startTime)

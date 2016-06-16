@@ -2,7 +2,7 @@ import { isNil as isNullOrUndefined } from 'lodash';
 import testRunTracker from './test-run-tracker';
 import compiledCodeSymbol from './compiled-code-symbol';
 import { createReplicator, FunctionTransform } from './replicator';
-import { ExecuteClientFunctionCommand } from '../test-run/commands';
+import { ExecuteClientFunctionCommand } from '../test-run/commands/observation';
 import TestRun from '../test-run';
 import { compileClientFunction } from '../compiler/es-next/client-functions';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
@@ -68,9 +68,7 @@ export default class ClientFunctionFactory {
             for (var i = 0; i < arguments.length; i++)
                 args.push(arguments[i]);
 
-            args = factory.replicator.encode(args);
-
-            var command  = factory._createExecutionTestRunCommand(args, options);
+            var command  = factory.getCommand(args, options);
             var callsite = getCallsite(factory.callsiteNames.execution);
 
             // NOTE: don't use async/await here to enable
@@ -83,6 +81,12 @@ export default class ClientFunctionFactory {
         this._decorateFunction(clientFn);
 
         return clientFn;
+    }
+
+    getCommand (args, options) {
+        args = this.replicator.encode(args);
+
+        return this._createExecutionTestRunCommand(args, options);
     }
 
     // Overridable methods

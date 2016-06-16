@@ -1,6 +1,6 @@
 var expect        = require('chai').expect;
 var TYPE          = require('../../lib/test-run/commands/type');
-var createCommand = require('../../lib/test-run/commands').createCommandFromObject;
+var createCommand = require('../../lib/test-run/commands/from-object');
 var ERROR_TYPE    = require('../../lib/errors/test-run/type');
 
 
@@ -836,14 +836,6 @@ describe('Test run commands', function () {
                 device:  'iPhone',
                 options: { portraitOrientation: false }
             });
-        });
-
-        it('Should create TestDone command from object', function () {
-            var commandObj = { type: TYPE.testDone, hey: '42' };
-
-            var command = createCommand(commandObj);
-
-            expect(JSON.parse(JSON.stringify(command))).eql({ type: TYPE.testDone });
         });
     });
 

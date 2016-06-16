@@ -10,7 +10,7 @@ export default class ClientFunctionExecutor {
         this.replicator = this._createReplicator();
     }
 
-    getResultDriverStatus () {
+    getResult () {
         return Promise.resolve()
             .then(() => evalFunction(this.command.fnCode))
             .then(fn => {
@@ -18,14 +18,22 @@ export default class ClientFunctionExecutor {
 
                 return this._executeFn(fn, args);
             })
+            .catch(err => {
+                if (!err.isTestCafeError)
+                    err = new UncaughtErrorInClientFunctionCode(this.command.instantiationCallsiteName, err);
+
+                throw err;
+            });
+    }
+
+    getResultDriverStatus () {
+        return this
+            .getResult()
             .then(result => new DriverStatus({
                 isCommandResult: true,
                 result:          this.replicator.encode(result)
             }))
             .catch(err => {
-                if (!err.isTestCafeError)
-                    err = new UncaughtErrorInClientFunctionCode(this.command.instantiationCallsiteName, err);
-
                 return new DriverStatus({
                     isCommandResult: true,
                     executionError:  err

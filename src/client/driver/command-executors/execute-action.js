@@ -1,31 +1,25 @@
-import hammerhead from '../deps/hammerhead';
-import testCafeCore from '../deps/testcafe-core';
+import { Promise } from '../deps/hammerhead';
+import { domUtils, contentEditable, RequestBarrier, pageUnloadBarrier } from '../deps/testcafe-core';
 import testCafeRunner from '../deps/testcafe-runner';
-import testCafeUI from '../deps/testcafe-ui';
 import DriverStatus from '../status';
+import SelectorExecutor from './client-functions/selector-executor';
+import COMMAND_TYPE from '../../../test-run/commands/type';
+import { getOffsetOptions } from '../../runner/utils/mouse';
+
 import {
     ActionElementNotFoundError,
     ActionElementIsInvisibleError,
     ActionAdditionalElementNotFoundError,
     ActionAdditionalElementIsInvisibleError,
     ActionIncorrectKeysError,
-    ActionCanNotFindFileToUploadError
+    ActionCanNotFindFileToUploadError,
+    ActionElementNonEditableError,
+    ActionElementNonContentEditableError,
+    ActionRootContainerNotFoundError,
+    ActionElementNotTextAreaError,
+    ActionElementIsNotFileInputError
 } from '../../../errors/test-run';
 
-import COMMAND_TYPE from '../../../test-run/commands/type';
-import {
-    ensureElementEditable,
-    ensureTextAreaElement,
-    ensureContentEditableElement,
-    ensureRootContainer,
-    ensureElement,
-    ensureFileInput
-} from '../ensure-element-utils';
-import { getOffsetOptions } from '../../runner/utils/mouse';
-
-var Promise                         = hammerhead.Promise;
-var RequestBarrier                  = testCafeCore.RequestBarrier;
-var pageUnloadBarrier               = testCafeCore.pageUnloadBarrier;
 var ClickAutomation                 = testCafeRunner.get('./automation/playback/click');
 var RClickAutomation                = testCafeRunner.get('./automation/playback/rclick');
 var DblClickAutomation              = testCafeRunner.get('./automation/playback/dblclick');
@@ -40,81 +34,119 @@ var parseKeySequence                = testCafeRunner.get('./automation/playback/
 var getSelectPositionArguments      = testCafeRunner.get('./automation/playback/select/get-select-position-arguments');
 var UploadAutomation                = testCafeRunner.get('./automation/playback/upload');
 var AUTOMATION_ERROR_TYPES          = testCafeRunner.get('./automation/errors');
-var ProgressPanel                   = testCafeUI.ProgressPanel;
 
 
-const PROGRESS_PANEL_TEXT                = 'Waiting for the target element of the next action to appear';
-const START_SELECTOR_ARGUMENT_NAME       = 'startSelector';
-const END_SELECTOR_ARGUMENT_NAME         = 'endSelector';
-const DESTINATION_SELECTOR_ARGUMENT_NAME = 'destinationSelector';
-const KEYS_ARGUMENT_NAME                 = 'keys';
+// Ensure command element properties
+function ensureElementEditable (element) {
+    if (!domUtils.isEditableElement(element))
+        throw new ActionElementNonEditableError();
+}
+
+function ensureTextAreaElement (element) {
+    if (!domUtils.isTextAreaElement(element))
+        throw new ActionElementNotTextAreaError();
+}
+
+function ensureContentEditableElement (element, argumentTitle) {
+    if (!domUtils.isContentEditableElement(element))
+        throw new ActionElementNonContentEditableError(argumentTitle);
+}
+
+function ensureRootContainer (elements) {
+    // NOTE: We should find a common element for the nodes to perform the select action
+    if (!contentEditable.getNearestCommonAncestor(elements[0], elements[1]))
+        throw new ActionRootContainerNotFoundError();
+
+    return elements;
+}
+
+function ensureFileInput (element) {
+    if (!domUtils.isFileInput(element))
+        throw new ActionElementIsNotFileInputError();
+}
+
+function ensureCommandElementsProperties (command, elements) {
+    if (command.type === COMMAND_TYPE.selectText)
+        ensureElementEditable(elements[0]);
+
+    else if (command.type === COMMAND_TYPE.selectTextAreaContent)
+        ensureTextAreaElement(elements[0]);
+
+    else if (command.type === COMMAND_TYPE.selectEditableContent) {
+        ensureContentEditableElement(elements[0], 'startSelector');
+        ensureContentEditableElement(elements[1], 'endSelector');
+        ensureRootContainer(elements);
+    }
+
+    else if (command.type === COMMAND_TYPE.uploadFile || command.type === COMMAND_TYPE.clearUpload)
+        ensureFileInput(elements[0]);
+}
 
 
+// Ensure command elements
 function ensureCommandElements (command, timeout) {
-    var progressPanel = new ProgressPanel();
+    var elements             = [];
+    var ensureElementPromise = Promise.resolve();
+    var startTime            = new Date();
 
-    progressPanel.show(PROGRESS_PANEL_TEXT, timeout);
+    var ensureElement = (selectorCommand, createNotFoundError, createIsInvisibleError) => {
+        ensureElementPromise = ensureElementPromise
+            .then(() => {
+                var elapsed          = new Date() - startTime;
+                var adjustedTimeout  = Math.max(timeout - elapsed, 0);
+                var selectorExecutor = new SelectorExecutor(selectorCommand, adjustedTimeout, createNotFoundError, createIsInvisibleError);
 
-    var ensureElementPromises = [];
+                return selectorExecutor.getResult();
+            })
+            .then(el => elements.push(el));
+    };
 
     if (command.selector) {
-        ensureElementPromises.push(ensureElement(command.selector, timeout,
-            () => new ActionElementNotFoundError(), () => new ActionElementIsInvisibleError()));
+        ensureElement(
+            command.selector,
+            () => new ActionElementNotFoundError(),
+            () => new ActionElementIsInvisibleError()
+        );
     }
 
     if (command.type === COMMAND_TYPE.dragToElement) {
-        ensureElementPromises.push(ensureElement(command.destinationSelector, timeout,
-            () => new ActionAdditionalElementNotFoundError(DESTINATION_SELECTOR_ARGUMENT_NAME),
-            () => new ActionAdditionalElementIsInvisibleError(DESTINATION_SELECTOR_ARGUMENT_NAME)));
+        ensureElement(
+            command.destinationSelector,
+            () => new ActionAdditionalElementNotFoundError('destinationSelector'),
+            () => new ActionAdditionalElementIsInvisibleError('destinationSelector')
+        );
     }
 
-    if (command.type === COMMAND_TYPE.selectEditableContent) {
-        var endSelector = command.endSelector || command.startSelector;
+    else if (command.type === COMMAND_TYPE.selectEditableContent) {
+        ensureElement(
+            command.startSelector,
+            () => new ActionAdditionalElementNotFoundError('startSelector'),
+            () => new ActionAdditionalElementIsInvisibleError('startSelector')
+        );
 
-        ensureElementPromises.push(ensureElement(command.startSelector, timeout,
-            () => new ActionAdditionalElementNotFoundError(START_SELECTOR_ARGUMENT_NAME),
-            () => new ActionAdditionalElementIsInvisibleError(START_SELECTOR_ARGUMENT_NAME)));
-
-        ensureElementPromises.push(ensureElement(endSelector, timeout,
-            () => new ActionAdditionalElementNotFoundError(END_SELECTOR_ARGUMENT_NAME),
-            () => new ActionAdditionalElementIsInvisibleError(END_SELECTOR_ARGUMENT_NAME)));
+        ensureElement(
+            command.endSelector || command.startSelector,
+            () => new ActionAdditionalElementNotFoundError('endSelector'),
+            () => new ActionAdditionalElementIsInvisibleError('endSelector')
+        );
     }
 
-    return Promise.all(ensureElementPromises)
-        .then(elements => {
-            if (command.type === COMMAND_TYPE.selectText)
-                ensureElementEditable(elements[0]);
+    return ensureElementPromise
+        .then(() => {
+            ensureCommandElementsProperties(command, elements);
 
-            if (command.type === COMMAND_TYPE.selectTextAreaContent)
-                ensureTextAreaElement(elements[0]);
-
-            if (command.type === COMMAND_TYPE.selectEditableContent) {
-                ensureContentEditableElement(elements[0], START_SELECTOR_ARGUMENT_NAME);
-                ensureContentEditableElement(elements[1], END_SELECTOR_ARGUMENT_NAME);
-                ensureRootContainer(elements);
-            }
-
-            if (command.type === COMMAND_TYPE.uploadFile || command.type === COMMAND_TYPE.clearUpload)
-                ensureFileInput(elements[0]);
-
-            return elements;
-        })
-        .catch(err => {
-            progressPanel.close(false);
-            throw err;
-        })
-        .then(elements => {
-            progressPanel.close(true);
             return elements;
         });
 }
 
+
+// Ensure options and arguments
 function ensureCommandArguments (command) {
     if (command.type === COMMAND_TYPE.pressKey) {
         var parsedKeySequence = parseKeySequence(command.keys);
 
         if (parsedKeySequence.error)
-            throw new ActionIncorrectKeysError(KEYS_ARGUMENT_NAME);
+            throw new ActionIncorrectKeysError('keys');
     }
 }
 
@@ -125,6 +157,8 @@ function ensureOffsetOptions (element, options) {
     options.offsetY = offsetY;
 }
 
+
+// Automations
 function createAutomation (elements, command) {
     var selectArgs = null;
 
@@ -179,6 +213,8 @@ function createAutomation (elements, command) {
     /* eslint-enable indent*/
 }
 
+
+// Execute action
 export default function executeAction (command, elementAvailabilityTimeout) {
     var resolveStartPromise = null;
     var startPromise        = new Promise(resolve => resolveStartPromise = resolve);

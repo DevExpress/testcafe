@@ -1,6 +1,6 @@
 import TYPE from './type';
+import SelectorFactory from '../../client-functions/selector-factory';
 import Assignable from '../../utils/assignable';
-import { isValidDeviceName } from 'testcafe-browser-natives';
 
 import {
     ActionSelectorTypeError,
@@ -11,8 +11,7 @@ import {
     ActionAdditionalSelectorTypeError,
     ActionUnsupportedUrlProtocolError,
     ActionStringOrStringArrayArgumentError,
-    ActionStringArrayElementError,
-    ActionUnsupportedDeviceTypeError
+    ActionStringArrayElementError
 } from '../../errors/test-run';
 
 import { ClickOptions, MouseOptions, TypeOptions, ResizeToFitDeviceOptions } from './options';
@@ -88,13 +87,6 @@ function navigateToUrlArgument (name, val) {
         throw new ActionUnsupportedUrlProtocolError(name, protocol[0]);
 }
 
-function resizeWindowDeviceArgument (name, val) {
-    nonEmptyStringArgument(name, val);
-
-    if (!isValidDeviceName(val))
-        throw new ActionUnsupportedDeviceTypeError(name, val);
-}
-
 function stringOrStringArrayArgument (argument, val) {
     var type = typeof val;
 
@@ -121,7 +113,9 @@ function stringOrStringArrayArgument (argument, val) {
 
 // Initializers
 function initSelector (val) {
-    return `(function () { return document.querySelector('${val}') })()`;
+    var factory = new SelectorFactory(val, null, { instantiation: 'Selector' });
+
+    return factory.getCommand([], { visibilityCheck: true });
 }
 
 function initClickOptions (val) {
@@ -365,22 +359,6 @@ export class PressKeyCommand extends Assignable {
     }
 }
 
-export class WaitCommand extends Assignable {
-    constructor (obj) {
-        super(obj);
-
-        this.type    = TYPE.wait;
-        this.timeout = null;
-        this._assignFrom(obj, true);
-    }
-
-    _getAssignableProperties () {
-        return [
-            { name: 'timeout', type: positiveIntegerArgument, required: true }
-        ];
-    }
-}
-
 export class NavigateToCommand extends Assignable {
     constructor (obj) {
         super(obj);
@@ -435,212 +413,3 @@ export class ClearUploadCommand extends Assignable {
         ];
     }
 }
-
-class ExecuteClientFunctionCommandBase extends Assignable {
-    constructor (type, obj) {
-        super();
-
-        this.type = type;
-
-        this.instantiationCallsiteName = '';
-        this.fnCode                    = '';
-        this.args                      = [];
-
-        this._assignFrom(obj, false);
-    }
-
-    _getAssignableProperties () {
-        return [
-            { name: 'instantiationCallsiteName' },
-            { name: 'fnCode' },
-            { name: 'args' }
-        ];
-    }
-}
-
-export class ExecuteClientFunctionCommand extends ExecuteClientFunctionCommandBase {
-    constructor (obj) {
-        super(TYPE.executeClientFunction, obj);
-    }
-}
-
-export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
-    constructor (obj) {
-        super(TYPE.executeSelector);
-
-        this.visibilityCheck = false;
-        this.timeout         = null;
-
-        this._assignFrom(obj, false);
-    }
-
-    _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
-            { name: 'visibilityCheck' },
-            { name: 'timeout' }
-        ]);
-    }
-}
-
-export class TakeScreenshotCommand extends Assignable {
-    constructor (obj) {
-        super(obj);
-
-        this.type = TYPE.takeScreenshot;
-        this.path = '';
-
-        this._assignFrom(obj, true);
-    }
-
-    _getAssignableProperties () {
-        return [
-            { name: 'path', type: nonEmptyStringArgument }
-        ];
-    }
-}
-
-export class TakeScreenshotOnFailCommand {
-    constructor () {
-        this.type = TYPE.takeScreenshotOnFail;
-    }
-}
-
-export class PrepareBrowserManipulationCommand {
-    constructor () {
-        this.type = TYPE.prepareBrowserManipulation;
-    }
-}
-
-export class ResizeWindowCommand extends Assignable {
-    constructor (obj) {
-        super(obj);
-
-        this.type   = TYPE.resizeWindow;
-        this.width  = 0;
-        this.height = 0;
-
-        this._assignFrom(obj, true);
-    }
-
-    _getAssignableProperties () {
-        return [
-            { name: 'width', type: positiveIntegerArgument, required: true },
-            { name: 'height', type: positiveIntegerArgument, required: true }
-        ];
-    }
-}
-
-export class ResizeWindowToFitDeviceCommand extends Assignable {
-    constructor (obj) {
-        super(obj);
-
-        this.type    = TYPE.resizeWindowToFitDevice;
-        this.device  = null;
-        this.options = null;
-
-        this._assignFrom(obj, true);
-    }
-
-    _getAssignableProperties () {
-        return [
-            { name: 'device', type: resizeWindowDeviceArgument, required: true },
-            { name: 'options', type: actionOptions, init: initResizeToFitDeviceOptions, required: true }
-        ];
-    }
-}
-
-export class TestDoneCommand {
-    constructor () {
-        this.type = TYPE.testDone;
-    }
-}
-
-// Factory
-export function createCommandFromObject (obj) {
-    /* eslint-disable indent*/
-    // TODO: eslint raises an 'incorrect indent' error here. We use
-    // an old eslint version (v1.x.x). We should migrate to v2.x.x
-    switch (obj.type) {
-        case TYPE.click:
-            return new ClickCommand(obj);
-
-        case TYPE.rightClick:
-            return new RightClickCommand(obj);
-
-        case TYPE.doubleClick:
-            return new DoubleClickCommand(obj);
-
-        case TYPE.hover:
-            return new HoverCommand(obj);
-
-        case TYPE.drag:
-            return new DragCommand(obj);
-
-        case TYPE.dragToElement:
-            return new DragToElementCommand(obj);
-
-        case TYPE.typeText:
-            return new TypeTextCommand(obj);
-
-        case TYPE.selectText:
-            return new SelectTextCommand(obj);
-
-        case TYPE.selectTextAreaContent:
-            return new SelectTextAreaContentCommand(obj);
-
-        case TYPE.selectEditableContent:
-            return new SelectEditableContentCommand(obj);
-
-        case TYPE.pressKey:
-            return new PressKeyCommand(obj);
-
-        case TYPE.wait:
-            return new WaitCommand(obj);
-
-        case TYPE.navigateTo:
-            return new NavigateToCommand(obj);
-
-        case TYPE.uploadFile:
-            return new UploadFileCommand(obj);
-
-        case TYPE.clearUpload:
-            return new ClearUploadCommand(obj);
-
-        case TYPE.takeScreenshot:
-            return new TakeScreenshotCommand(obj);
-
-        case TYPE.resizeWindow:
-            return new ResizeWindowCommand(obj);
-
-        case TYPE.resizeWindowToFitDevice:
-            return new ResizeWindowToFitDeviceCommand(obj);
-
-        case TYPE.testDone:
-            return new TestDoneCommand();
-    }
-    /* eslint-enable indent*/
-}
-
-export function isCommandRejectableByPageError (command) {
-    return !isObservationCommand(command) && !isWindowManipulationCommand(command) && !isServiceCommand(command);
-}
-
-function isObservationCommand (command) {
-    return command.type === TYPE.executeClientFunction ||
-           command.type === TYPE.executeSelector ||
-           command.type === TYPE.wait;
-}
-
-export function isWindowManipulationCommand (command) {
-    return command.type === TYPE.takeScreenshot ||
-           command.type === TYPE.takeScreenshotOnFail ||
-           command.type === TYPE.resizeWindow ||
-           command.type === TYPE.resizeWindowToFitDevice;
-}
-
-export function isServiceCommand (command) {
-    return command.type === TYPE.testDone ||
-           command.type === TYPE.takeScreenshotOnFail ||
-           command.type === TYPE.prepareBrowserManipulation;
-}
-
