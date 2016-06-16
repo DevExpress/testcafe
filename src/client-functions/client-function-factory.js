@@ -46,12 +46,10 @@ export default class ClientFunctionFactory {
     _decorateFunction (clientFn) {
         clientFn[compiledCodeSymbol] = this.compiledFnCode;
 
-        var factory = this;
+        clientFn.with = options => {
+            this._validateOptions(options);
 
-        clientFn.with = function (options) {
-            factory._validateOptions(options);
-
-            return factory.getFunction(options);
+            return this.getFunction(options);
         };
     }
 
