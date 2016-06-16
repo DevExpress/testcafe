@@ -25,7 +25,7 @@ describe('[API] ClientFunction', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Hammerhead code instrumentation');
     });
 
-    it('Should be able to bind a test run using', function () {
+    it('Should be able to bind a test run using the "boundTestRun" option', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Bind ClientFunction', { only: 'chrome' });
     });
 

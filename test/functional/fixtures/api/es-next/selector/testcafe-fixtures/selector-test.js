@@ -199,7 +199,7 @@ test('Wait for element in DOM', async t => {
     expect(el.tagName).eql('div');
 });
 
-test('Element do not appear', async () => {
+test('Element does not appear', async () => {
     const el = await Selector('#someElement')();
 
     expect(el).eql(null);

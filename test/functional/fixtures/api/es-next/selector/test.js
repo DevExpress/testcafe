@@ -30,7 +30,7 @@ describe('[API] Selector', function () {
     });
 
     it('Should return `null` or `undefined` if element does not appear within given time', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Element do not appear', { elementAvailabilityTimeout: 300 });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Element does not appear', { elementAvailabilityTimeout: 300 });
     });
 
     it('Should check element visibility if option is enabled', function () {
