@@ -1,115 +1,19 @@
 import TYPE from './type';
 import SelectorFactory from '../../client-functions/selector-factory';
 import Assignable from '../../utils/assignable';
+import { ClickOptions, MouseOptions, TypeOptions } from './options';
 
 import {
-    ActionSelectorTypeError,
-    ActionOptionsTypeError,
-    ActionStringArgumentError,
-    ActionIntegerArgumentError,
-    ActionPositiveIntegerArgumentError,
-    ActionAdditionalSelectorTypeError,
-    ActionUnsupportedUrlProtocolError,
-    ActionStringOrStringArrayArgumentError,
-    ActionStringArrayElementError
-} from '../../errors/test-run';
+    selector,
+    additionalSelector,
+    actionOptions,
+    integerArgument,
+    positiveIntegerArgument,
+    nonEmptyStringArgument,
+    urlArgument,
+    stringOrStringArrayArgument
+} from './prop-validations/argument';
 
-import { ClickOptions, MouseOptions, TypeOptions, ResizeToFitDeviceOptions } from './options';
-
-
-const PROTOCOL_RE           = /^([\w-]+?)(?=\:)/;
-const SUPPORTED_PROTOCOL_RE = /^https?/i;
-
-
-// Validators
-function selector (name, val) {
-    var type = typeof val;
-
-    if (type !== 'string')
-        throw new ActionSelectorTypeError(type);
-}
-
-function additionalSelector (name, val) {
-    var type = typeof val;
-
-    if (type !== 'string')
-        throw new ActionAdditionalSelectorTypeError(name, type);
-}
-
-function actionOptions (name, val) {
-    var type = typeof val;
-
-    if (type !== 'object' && val !== null && val !== void 0)
-        throw new ActionOptionsTypeError(type);
-}
-
-function integerArgument (name, val, ErrorCtor = ActionIntegerArgumentError) {
-    var valType = typeof val;
-
-    if (valType !== 'number')
-        throw new ErrorCtor(name, valType);
-
-    var isInteger = !isNaN(val) &&
-                    isFinite(val) &&
-                    val === Math.floor(val);
-
-    if (!isInteger)
-        throw new ErrorCtor(name, val);
-}
-
-function positiveIntegerArgument (name, val) {
-    integerArgument(name, val, ActionPositiveIntegerArgumentError);
-
-    if (val < 0)
-        throw new ActionPositiveIntegerArgumentError(name, val);
-}
-
-function nonEmptyStringArgument (argument, val, createError) {
-    if (!createError)
-        createError = actualValue => new ActionStringArgumentError(argument, actualValue);
-
-    var type = typeof val;
-
-    if (type !== 'string')
-        throw createError(type);
-
-    if (!val.length)
-        throw createError('""');
-}
-
-function navigateToUrlArgument (name, val) {
-    nonEmptyStringArgument(name, val);
-
-    var url      = val.trim();
-    var protocol = url.match(PROTOCOL_RE);
-
-    if (protocol && !SUPPORTED_PROTOCOL_RE.test(protocol[0]))
-        throw new ActionUnsupportedUrlProtocolError(name, protocol[0]);
-}
-
-function stringOrStringArrayArgument (argument, val) {
-    var type = typeof val;
-
-    if (type === 'string') {
-        if (!val.length)
-            throw new ActionStringOrStringArrayArgumentError(argument, '""');
-    }
-    else if (Array.isArray(val)) {
-        if (!val.length)
-            throw new ActionStringOrStringArrayArgumentError(argument, '[]');
-
-        var validateElement = elementIndex => nonEmptyStringArgument(
-            argument,
-            val[elementIndex],
-            actualValue => new ActionStringArrayElementError(argument, actualValue, elementIndex)
-        );
-
-        for (var i = 0; i < val.length; i++)
-            validateElement(i);
-    }
-    else
-        throw new ActionStringOrStringArrayArgumentError(argument, type);
-}
 
 // Initializers
 function initSelector (val) {
@@ -371,7 +275,7 @@ export class NavigateToCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'url', type: navigateToUrlArgument, required: true }
+            { name: 'url', type: urlArgument, required: true }
         ];
     }
 }

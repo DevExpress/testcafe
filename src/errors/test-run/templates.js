@@ -21,12 +21,6 @@ function markup (err, msgMarkup) {
 }
 
 export default {
-    [TYPE.actionIntegerOptionError]: err => markup(err, `
-        The <code>${err.optionName}</code> option is expected to be an integer, but it was <code>${err.actualValue}</code>.
-
-        ${err.getCallsiteMarkup()}
-    `),
-
     [TYPE.actionPositiveIntegerOptionError]: err => markup(err, `
         The <code>${err.optionName}</code> option is expected to be a positive integer, but it was <code>${err.actualValue}</code>.
 

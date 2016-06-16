@@ -125,12 +125,6 @@ export class ExternalAssertionLibraryError extends TestRunErrorBase {
 // Action parameters errors
 //--------------------------------------------------------------------
 // Options errors
-export class ActionIntegerOptionError extends ActionOptionErrorBase {
-    constructor (optionName, actualValue) {
-        super(TYPE.actionIntegerOptionError, optionName, actualValue);
-    }
-}
-
 export class ActionPositiveIntegerOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
         super(TYPE.actionPositiveIntegerOptionError, optionName, actualValue);

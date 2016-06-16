@@ -11,7 +11,6 @@ export default {
 
     missingAwaitError: 'missingAwaitError',
 
-    actionIntegerOptionError:               'actionIntegerOptionError',
     actionPositiveIntegerOptionError:       'actionPositiveIntegerOptionError',
     actionBooleanOptionError:               'actionBooleanOptionError',
     actionOptionsTypeError:                 'actionOptionsTypeError',

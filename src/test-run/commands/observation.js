@@ -1,32 +1,6 @@
 import TYPE from './type';
 import Assignable from '../../utils/assignable';
-
-import {
-    ActionIntegerArgumentError,
-    ActionPositiveIntegerArgumentError
-} from '../../errors/test-run';
-
-function integerArgument (name, val, ErrorCtor = ActionIntegerArgumentError) {
-    var valType = typeof val;
-
-    if (valType !== 'number')
-        throw new ErrorCtor(name, valType);
-
-    var isInteger = !isNaN(val) &&
-                    isFinite(val) &&
-                    val === Math.floor(val);
-
-    if (!isInteger)
-        throw new ErrorCtor(name, val);
-}
-
-function positiveIntegerArgument (name, val) {
-    integerArgument(name, val, ActionPositiveIntegerArgumentError);
-
-    if (val < 0)
-        throw new ActionPositiveIntegerArgumentError(name, val);
-}
-
+import { positiveIntegerArgument } from './prop-validations/argument';
 
 // Commands
 export class WaitCommand extends Assignable {

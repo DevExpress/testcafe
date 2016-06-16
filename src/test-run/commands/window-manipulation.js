@@ -1,64 +1,13 @@
 import TYPE from './type';
 import Assignable from '../../utils/assignable';
-import { isValidDeviceName } from 'testcafe-browser-natives';
 
 import {
-    ActionStringArgumentError,
-    ActionBooleanArgumentError,
-    ActionIntegerArgumentError,
-    ActionPositiveIntegerArgumentError,
-    ActionUnsupportedDeviceTypeError
-} from '../../errors/test-run';
+    booleanArgument,
+    positiveIntegerArgument,
+    nonEmptyStringArgument,
+    resizeWindowDeviceArgument
+} from './prop-validations/argument';
 
-
-// Validators
-function booleanArgument (name, val) {
-    var valType = typeof val;
-
-    if (valType !== 'boolean')
-        throw new ActionBooleanArgumentError(name, valType);
-}
-
-function integerArgument (name, val, ErrorCtor = ActionIntegerArgumentError) {
-    var valType = typeof val;
-
-    if (valType !== 'number')
-        throw new ErrorCtor(name, valType);
-
-    var isInteger = !isNaN(val) &&
-                    isFinite(val) &&
-                    val === Math.floor(val);
-
-    if (!isInteger)
-        throw new ErrorCtor(name, val);
-}
-
-function positiveIntegerArgument (name, val) {
-    integerArgument(name, val, ActionPositiveIntegerArgumentError);
-
-    if (val < 0)
-        throw new ActionPositiveIntegerArgumentError(name, val);
-}
-
-function nonEmptyStringArgument (argument, val, createError) {
-    if (!createError)
-        createError = actualValue => new ActionStringArgumentError(argument, actualValue);
-
-    var type = typeof val;
-
-    if (type !== 'string')
-        throw createError(type);
-
-    if (!val.length)
-        throw createError('""');
-}
-
-function resizeWindowDeviceArgument (name, val) {
-    nonEmptyStringArgument(name, val);
-
-    if (!isValidDeviceName(val))
-        throw new ActionUnsupportedDeviceTypeError(name, val);
-}
 
 // Commands
 export class TakeScreenshotCommand extends Assignable {
