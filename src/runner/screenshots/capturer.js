@@ -7,11 +7,11 @@ var ensureDir = promisify(mkdirp);
 
 
 export default class Capturer {
-    constructor (screenshotPath, testDirPath, testEntry) {
-        this.enabled     = !!screenshotPath;
-        this.path        = screenshotPath;
-        this.testDirPath = testDirPath;
-        this.testEntry   = testEntry;
+    constructor (baseScreenshotsPath, testScreenshotsPath, testEntry) {
+        this.enabled             = !!baseScreenshotsPath;
+        this.baseScreenshotsPath = baseScreenshotsPath;
+        this.testScreenshotsPath = testScreenshotsPath;
+        this.testEntry           = testEntry;
     }
 
     static _getFileName (stepName) {
@@ -22,25 +22,30 @@ export default class Capturer {
         await ensureDir(dirname(filePath));
         await takeScreenshot(windowId, filePath);
 
-        this.testEntry.hasScreenshots = true;
-
         return filePath;
     }
 
     async captureAction (windowId, { stepName, customPath }) {
+        this.testEntry.screenshotCapturingCalled = true;
+
+        if (!this.enabled)
+            return null;
+
         var fileName = Capturer._getFileName(stepName);
-        var filePath = customPath ?
-                       joinPath(this.testDirPath, customPath, fileName) :
-                       joinPath(this.path, fileName);
+        var filePath = customPath ? joinPath(this.baseScreenshotsPath, customPath, fileName) :
+                       joinPath(this.testScreenshotsPath, fileName);
+
+        if (customPath)
+            this.testEntry.path = this.baseScreenshotsPath;
 
         return await this._takeScreenshot(windowId, filePath);
     }
 
     async captureError (windowId, { stepName, screenshotRequired }) {
-        if (!screenshotRequired)
+        if (!screenshotRequired || !this.enabled)
             return null;
 
-        var filePath = joinPath(this.path, 'errors', Capturer._getFileName(stepName));
+        var filePath = joinPath(this.testScreenshotsPath, 'errors', Capturer._getFileName(stepName));
 
         return await this._takeScreenshot(windowId, filePath);
     }

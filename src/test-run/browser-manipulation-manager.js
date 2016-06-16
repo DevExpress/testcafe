@@ -1,10 +1,10 @@
 import uuid from 'uuid';
 import { resize as resizeWindow } from 'testcafe-browser-natives';
+import SCREENSHOTS_WARNING_MESSAGES from '../runner/screenshots/warning-messages';
 
 
-const SCREENSHOT_CAN_NOT_BE_CREATED_MESSAGE = '[was unable to take a screenshot due to some error]';
-const PORTRAIT_ORIENTATION                  = 'portrait';
-const LANDSCAPE_ORIENTATION                 = 'landscape';
+const PORTRAIT_ORIENTATION  = 'portrait';
+const LANDSCAPE_ORIENTATION = 'landscape';
 
 
 export default class BrowserManipulationManager {
@@ -22,11 +22,14 @@ export default class BrowserManipulationManager {
         catch (e) {
             // NOTE: swallow the error silently if we can't take screenshots for some
             // reason (e.g. we don't have permissions to write a screenshot file).
-            return SCREENSHOT_CAN_NOT_BE_CREATED_MESSAGE;
+            return null;
         }
     }
 
     async takeScreenshotOnFail (windowId) {
+        if (!this.screenshotCapturer.enabled)
+            return SCREENSHOTS_WARNING_MESSAGES.screenshotDirNotSet;
+
         try {
             return await this.screenshotCapturer.captureError(
                 windowId,
@@ -34,9 +37,7 @@ export default class BrowserManipulationManager {
             );
         }
         catch (e) {
-            // NOTE: swallow the error silently if we can't take screenshots for some
-            // reason (e.g. we don't have permissions to write a screenshot file).
-            return SCREENSHOT_CAN_NOT_BE_CREATED_MESSAGE;
+            return SCREENSHOTS_WARNING_MESSAGES.cannotCreate;
         }
     }
 
