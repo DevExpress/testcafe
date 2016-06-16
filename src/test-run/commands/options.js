@@ -4,7 +4,7 @@
 // -------------------------------------------------------------
 
 import Assignable from '../../utils/assignable';
-import { createBooleanValidator, createPositiveIntegerValidator } from './prop-validations/factories';
+import { createBooleanValidator, createPositiveIntegerValidator } from './validations/factories';
 import { ActionPositiveIntegerOptionError, ActionBooleanOptionError } from '../../errors/test-run';
 
 export var positiveIntegerOption = createPositiveIntegerValidator(ActionPositiveIntegerOptionError);

@@ -12,7 +12,7 @@ import {
     nonEmptyStringArgument,
     urlArgument,
     stringOrStringArrayArgument
-} from './prop-validations/argument';
+} from './validations/argument';
 
 
 // Initializers

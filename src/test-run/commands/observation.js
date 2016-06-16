@@ -1,6 +1,6 @@
 import TYPE from './type';
 import Assignable from '../../utils/assignable';
-import { positiveIntegerArgument } from './prop-validations/argument';
+import { positiveIntegerArgument } from './validations/argument';
 
 // Commands
 export class WaitCommand extends Assignable {

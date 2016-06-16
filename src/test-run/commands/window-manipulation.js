@@ -7,7 +7,7 @@ import {
     nonEmptyStringArgument,
     resizeWindowDeviceArgument,
     actionOptions
-} from './prop-validations/argument';
+} from './validations/argument';
 
 
 function initResizeToFitDeviceOptions (val) {
