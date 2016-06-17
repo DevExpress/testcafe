@@ -693,9 +693,9 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should create UploadFileCommand from object', function () {
+        it('Should create SetFilesToUploadCommand from object', function () {
             var commandObj = {
-                type:     TYPE.uploadFile,
+                type:     TYPE.setFilesToUpload,
                 selector: '#yo',
                 filePath: '/test/path',
                 dummy:    'test',
@@ -708,13 +708,13 @@ describe('Test run commands', function () {
             var command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.uploadFile,
+                type:     TYPE.setFilesToUpload,
                 selector: makeSelector('#yo'),
                 filePath: '/test/path'
             });
 
             commandObj = {
-                type:     TYPE.uploadFile,
+                type:     TYPE.setFilesToUpload,
                 selector: '#yo',
                 filePath: ['/test/path/1', '/test/path/2'],
                 dummy:    'test',
@@ -727,7 +727,7 @@ describe('Test run commands', function () {
             command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.uploadFile,
+                type:     TYPE.setFilesToUpload,
                 selector: makeSelector('#yo'),
                 filePath: ['/test/path/1', '/test/path/2']
             });
@@ -1909,11 +1909,11 @@ describe('Test run commands', function () {
             );
         });
 
-        it('Should validate UploadFileСommand', function () {
+        it('Should validate SetFilesToUploadCommand', function () {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.uploadFile
+                        type: TYPE.setFilesToUpload
                     });
                 },
                 {
@@ -1927,7 +1927,7 @@ describe('Test run commands', function () {
             assertThrow(
                 function () {
                     return createCommand({
-                        type:     TYPE.uploadFile,
+                        type:     TYPE.setFilesToUpload,
                         selector: 1
                     });
                 },
@@ -1942,7 +1942,7 @@ describe('Test run commands', function () {
             assertThrow(
                 function () {
                     return createCommand({
-                        type:     TYPE.uploadFile,
+                        type:     TYPE.setFilesToUpload,
                         selector: 'element'
                     });
                 },
@@ -1958,7 +1958,7 @@ describe('Test run commands', function () {
             assertThrow(
                 function () {
                     return createCommand({
-                        type:     TYPE.uploadFile,
+                        type:     TYPE.setFilesToUpload,
                         selector: 'element',
                         filePath: 2
                     });
@@ -1975,7 +1975,7 @@ describe('Test run commands', function () {
             assertThrow(
                 function () {
                     return createCommand({
-                        type:     TYPE.uploadFile,
+                        type:     TYPE.setFilesToUpload,
                         selector: 'element',
                         filePath: ''
                     });
@@ -1992,7 +1992,7 @@ describe('Test run commands', function () {
             assertThrow(
                 function () {
                     return createCommand({
-                        type:     TYPE.uploadFile,
+                        type:     TYPE.setFilesToUpload,
                         selector: 'element',
                         filePath: {}
                     });
@@ -2009,7 +2009,7 @@ describe('Test run commands', function () {
             assertThrow(
                 function () {
                     return createCommand({
-                        type:     TYPE.uploadFile,
+                        type:     TYPE.setFilesToUpload,
                         selector: 'element',
                         filePath: []
                     });
@@ -2026,7 +2026,7 @@ describe('Test run commands', function () {
             assertThrow(
                 function () {
                     return createCommand({
-                        type:     TYPE.uploadFile,
+                        type:     TYPE.setFilesToUpload,
                         selector: 'element',
                         filePath: ['123', 42]
                     });
@@ -2044,7 +2044,7 @@ describe('Test run commands', function () {
             assertThrow(
                 function () {
                     return createCommand({
-                        type:     TYPE.uploadFile,
+                        type:     TYPE.setFilesToUpload,
                         selector: 'element',
                         filePath: ['123', '']
                     });

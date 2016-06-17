@@ -13,7 +13,7 @@ import {
     SelectEditableContentCommand,
     PressKeyCommand,
     NavigateToCommand,
-    UploadFileCommand,
+    SetFilesToUploadCommand,
     ClearUploadCommand,
     SwitchToIframeCommand,
     SwitchToMainWindowCommand
@@ -73,8 +73,8 @@ export default function createCommandFromObject (obj) {
         case TYPE.navigateTo:
             return new NavigateToCommand(obj);
 
-        case TYPE.uploadFile:
-            return new UploadFileCommand(obj);
+        case TYPE.setFilesToUpload:
+            return new SetFilesToUploadCommand(obj);
 
         case TYPE.clearUpload:
             return new ClearUploadCommand(obj);

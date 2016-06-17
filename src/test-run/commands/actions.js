@@ -276,11 +276,11 @@ export class NavigateToCommand extends Assignable {
     }
 }
 
-export class UploadFileCommand extends Assignable {
+export class SetFilesToUploadCommand extends Assignable {
     constructor (obj) {
         super(obj);
 
-        this.type = TYPE.uploadFile;
+        this.type = TYPE.setFilesToUpload;
 
         this.selector = null;
         this.filePath = '';

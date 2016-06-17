@@ -17,7 +17,7 @@ import {
     SelectEditableContentCommand,
     PressKeyCommand,
     NavigateToCommand,
-    UploadFileCommand,
+    SetFilesToUploadCommand,
     ClearUploadCommand,
     SwitchToIframeCommand,
     SwitchToMainWindowCommand
@@ -181,8 +181,8 @@ export default class TestController {
         return this._enqueueAction('navigateTo', NavigateToCommand, { url });
     }
 
-    _uploadFile$ (selector, filePath) {
-        return this._enqueueAction('uploadFile', UploadFileCommand, { selector, filePath });
+    _setFilesToUpload$ (selector, filePath) {
+        return this._enqueueAction('setFilesToUpload', SetFilesToUploadCommand, { selector, filePath });
     }
 
     _clearUpload$ (selector) {

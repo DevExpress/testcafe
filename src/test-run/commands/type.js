@@ -17,7 +17,7 @@ export default {
     pressKey:                   'press-key',
     wait:                       'wait',
     navigateTo:                 'navigate-to',
-    uploadFile:                 'upload-file',
+    setFilesToUpload:           'set-files-to-upload',
     clearUpload:                'clear-upload',
     executeClientFunction:      'execute-client-function',
     executeSelector:            'execute-selector',
