@@ -22,7 +22,6 @@ import ContextStorage from './storage';
 import DriverStatus from './status';
 import generateId from './generate-id';
 import ChildDriverLink from './driver-link/child';
-import { ensureElement } from './ensure-element-utils';
 
 import prepareBrowserManipulation from './command-executors/prepare-browser-manipulation';
 import executeActionCommand from './command-executors/execute-action';
@@ -208,8 +207,10 @@ export default class Driver {
     }
 
     _switchToIframe (selector, iframeErrorCtors) {
-        return ensureElement(selector, this.elementAvailabilityTimeout, () => new iframeErrorCtors.NotFound(),
-            () => iframeErrorCtors.Invisible())
+        var selectorExecutor = new SelectorExecutor(selector, this.elementAvailabilityTimeout, () => new iframeErrorCtors.NotFound(),
+            () => iframeErrorCtors.Invisible());
+
+        return selectorExecutor.getResult()
             .then(iframe => {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframe();
