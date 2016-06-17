@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button id="buttonConfirm">Confirm</button>
+
+<button id="withoutDialog">Without dialog</button>
+
+<div id="result"></div>
+<button id="getResult">getResult</button>
+<script>
+    document.getElementById('buttonConfirm').addEventListener('click', function () {
+        document.getElementById('result').textContent = confirm('Confirm?');
+    });
+
+    document.getElementById('getResult').addEventListener('click', function () {
+        throw new Error('Confirm dialog with result: ' + document.getElementById('result').textContent);
+    });
+</script>
+</body>
+</html>

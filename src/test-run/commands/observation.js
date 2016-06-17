@@ -9,6 +9,8 @@ export class WaitCommand extends Assignable {
 
         this.type    = TYPE.wait;
         this.timeout = null;
+        this.execute = () => new Promise(resolve => setTimeout(resolve, this.timeout));
+
         this._assignFrom(obj, true);
     }
 

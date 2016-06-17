@@ -5,6 +5,7 @@ var ClickOptions             = require('../../lib/test-run/commands/options').Cl
 var MoveOptions              = require('../../lib/test-run/commands/options').MoveOptions;
 var TypeOptions              = require('../../lib/test-run/commands/options').TypeOptions;
 var ResizeToFitDeviceOptions = require('../../lib/test-run/commands/options').ResizeToFitDeviceOptions;
+var HandleDialogOptions      = require('../../lib/test-run/commands/options').HandleDialogOptions;
 var ERROR_TYPE               = require('../../lib/errors/test-run/type');
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects
@@ -155,6 +156,17 @@ describe('Test run command options', function () {
 
             expect(JSON.parse(JSON.stringify(options))).eql({
                 portraitOrientation: true
+            });
+        });
+
+        it('Should create HandleDialogOptions from object', function () {
+            var options = new HandleDialogOptions({
+                timeout: 100,
+                dummy:   false
+            }, false);
+
+            expect(JSON.parse(JSON.stringify(options))).eql({
+                timeout: 100
             });
         });
     });
@@ -321,6 +333,21 @@ describe('Test run command options', function () {
                     type:            ERROR_TYPE.actionBooleanOptionError,
                     actualValue:     'number',
                     optionName:      'portraitOrientation',
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate HandleDialogOptions', function () {
+            assertThrow(
+                function () {
+                    return new HandleDialogOptions({ timeout: -3 }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    actualValue:     -3,
+                    optionName:      'timeout',
                     callsite:        null
                 }
             );

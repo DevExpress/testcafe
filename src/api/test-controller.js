@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import { identity, assign } from 'lodash';
 import { MissingAwaitError } from '../errors/test-run';
 import getCallsite from '../errors/get-callsite';
@@ -22,7 +21,11 @@ import {
     SetFilesToUploadCommand,
     ClearUploadCommand,
     SwitchToIframeCommand,
-    SwitchToMainWindowCommand
+    SwitchToMainWindowCommand,
+    HandleAlertDialogCommand,
+    HandleConfirmDialogCommand,
+    HandlePromptDialogCommand,
+    HandleBeforeUnloadDialogCommand
 } from '../test-run/commands/actions';
 
 import {
@@ -38,7 +41,6 @@ const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$$/;
 export default class TestController {
     constructor (testRun) {
         this.testRun              = testRun;
-        this.executionChain       = Promise.resolve();
         this.apiMethods           = this._createAPIMethodsList();
         this.callsiteWithoutAwait = null;
     }
@@ -107,10 +109,9 @@ export default class TestController {
             throw err;
         }
 
-        this.executionChain       = this.executionChain.then(() => this.testRun.executeCommand(command, callsite));
         this.callsiteWithoutAwait = callsite;
 
-        return this._createExtendedPromise(this.executionChain, callsite);
+        return this._createExtendedPromise(this.testRun.executeCommand(command, callsite, true), callsite);
     }
 
     _checkForMissingAwait () {
@@ -225,6 +226,22 @@ export default class TestController {
         var selector = factory.getFunction(options);
 
         return selector();
+    }
+
+    _handleAlertDialog$ (options) {
+        return this._enqueueAction('handleAlertDialog', HandleAlertDialogCommand, { options });
+    }
+
+    _handleConfirmDialog$ (returnValue, options) {
+        return this._enqueueAction('handleConfirmDialog', HandleConfirmDialogCommand, { returnValue, options });
+    }
+
+    _handlePromptDialog$ (returnValue, options) {
+        return this._enqueueAction('handlePromptDialog', HandlePromptDialogCommand, { returnValue, options });
+    }
+
+    _handleBeforeUnloadDialog$ (options) {
+        return this._enqueueAction('handleBeforeUnloadDialog', HandleBeforeUnloadDialogCommand, { options });
     }
 }
 

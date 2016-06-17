@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prompt</title>
+</head>
+<body>
+<div id="result"></div>
+<script>
+    var res = window.prompt('Prompt:');
+    document.getElementById('result').textContent = res === null ? 'null' : res;
+</script>
+</body>
+</html>

@@ -61,8 +61,14 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.clientFunctionExecutionInterruptionError]: err => markup(err, `
+    [TYPE.clientFunctionInterruptedByPageUnloadError]: err => markup(err, `
         ${err.instantiationCallsiteName} execution was interrupted by page unload. This problem may appear if you trigger page navigation from ${err.instantiationCallsiteName} code.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.clientFunctionInterruptedByDialogError]: err => markup(err, `
+        ${err.instantiationCallsiteName} execution was interrupted by a native ${err.dialogType} dialog. Make sure that ${err.instantiationCallsiteName} code does not trigger native dialogs. If this dialog appears as a result of the previous test action, call the ${err.expectedHandler} function after the action.
 
         ${err.getCallsiteMarkup()}
     `),
@@ -85,6 +91,12 @@ export default {
 
     [TYPE.actionStringArgumentError]: err => markup(err, `
         The "${err.argumentName}" argument is expected to be a non-empty string, but it was ${err.actualValue}.
+
+         ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionBooleanArgumentError]: err => markup(err, `
+        The "${err.argumentName}" argument is expected to be a boolean value, but it was ${err.actualValue}.
 
          ${err.getCallsiteMarkup()}
     `),
@@ -188,6 +200,18 @@ export default {
 
     [TYPE.actionUnsupportedDeviceTypeError]: err => markup(err, `
         The "${err.argumentName}" argument specifies an unsupported "${err.actualValue}" device. For a list of supported devices, refer to <a href="http://viewportsizes.com">http://viewportsizes.com</a>.
+
+        ${err.getCallsiteMarkup()}
+`),
+
+    [TYPE.unexpectedDialogError]: err => markup(err, `
+        An unexpected native ${err.dialogType} dialog appeared. If this dialog was invoked as a result of a test action, call the ${err.expectedHandler} function after the action.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.expectedDialogNotAppearedError]: err => markup(err, `
+        The expected native ${err.dialogType} dialog did not appear. Make sure that this dialog is invoked and the ${err.expectedHandler} function's "timeout" setting provides sufficient time for it to appear.
 
         ${err.getCallsiteMarkup()}
     `),

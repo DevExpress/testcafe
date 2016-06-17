@@ -4,6 +4,7 @@ import ContextStorage from './storage';
 import DriverStatus from './status';
 import ParentDriverLink from './driver-link/parent';
 import { TYPE as MESSAGE_TYPE } from './driver-link/messages';
+import NativeDialogTracker from './native-dialog-tracker';
 
 
 export default class IframeDriver extends Driver {
@@ -60,7 +61,8 @@ export default class IframeDriver extends Driver {
         this.parentDriverLink
             .establishConnection()
             .then(id => {
-                this.contextStorage = new ContextStorage(window, id);
+                this.contextStorage       = new ContextStorage(window, id);
+                this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.initiallyExpectedDialogs);
 
                 if (this._failIfClientCodeExecutionIsInterrupted())
                     return;

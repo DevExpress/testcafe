@@ -45,11 +45,21 @@ export class MissingAwaitError extends TestRunErrorBase {
 
 // Client function errors
 //--------------------------------------------------------------------
-export class ClientFunctionExecutionInterruptionError extends TestRunErrorBase {
+export class ClientFunctionInterruptedByPageUnloadError extends TestRunErrorBase {
     constructor (instantiationCallsiteName) {
-        super(TYPE.clientFunctionExecutionInterruptionError);
+        super(TYPE.clientFunctionInterruptedByPageUnloadError);
 
         this.instantiationCallsiteName = instantiationCallsiteName;
+    }
+}
+
+export class ClientFunctionInterruptedByDialogError extends TestRunErrorBase {
+    constructor (instantiationCallsiteName, dialogType, expectedHandler) {
+        super(TYPE.clientFunctionInterruptedByDialogError);
+
+        this.instantiationCallsiteName = instantiationCallsiteName;
+        this.dialogType                = dialogType;
+        this.expectedHandler           = expectedHandler;
     }
 }
 
@@ -162,6 +172,12 @@ export class ActionOptionsTypeError extends TestRunErrorBase {
 export class ActionStringArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
         super(TYPE.actionStringArgumentError, argumentName, actualValue);
+    }
+}
+
+export class ActionBooleanArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TYPE.actionBooleanArgumentError, argumentName, actualValue);
     }
 }
 
@@ -323,5 +339,23 @@ export class CurrentIframeNotFoundError extends TestRunErrorBase {
 export class CurrentIframeIsInvisibleError extends TestRunErrorBase {
     constructor () {
         super(TYPE.currentIframeIsInvisibleError);
+    }
+}
+
+export class UnexpectedDialogError extends TestRunErrorBase {
+    constructor (dialogType, expectedHandler) {
+        super(TYPE.unexpectedDialogError);
+
+        this.dialogType      = dialogType;
+        this.expectedHandler = expectedHandler;
+    }
+}
+
+export class ExpectedDialogNotAppearedError extends TestRunErrorBase {
+    constructor (dialogType, expectedHandler) {
+        super(TYPE.expectedDialogNotAppearedError);
+
+        this.dialogType      = dialogType;
+        this.expectedHandler = expectedHandler;
     }
 }

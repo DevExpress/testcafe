@@ -10,6 +10,7 @@ import BrowserManipulationManager from './browser-manipulation-manager';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
 import COMMAND_TYPE from './commands/type';
+import { ExpectedDialog, getExpectedDialogType } from './browser-dialogs';
 
 import { TakeScreenshotOnFailCommand } from './commands/window-manipulation';
 
@@ -21,7 +22,9 @@ import {
 import {
     isCommandRejectableByPageError,
     isBrowserManipulationCommand,
-    isServiceCommand
+    isServiceCommand,
+    isHandleDialogCommand,
+    isObservationCommand
 } from './commands/utils';
 
 //Const
@@ -45,9 +48,11 @@ export default class TestRun extends Session {
         this.running = false;
         this.state   = STATE.initial;
 
-        this.driverTaskQueue          = [];
-        this.browserManipulationQueue = [];
-        this.testDoneCommandQueued    = false;
+        this.driverTaskQueue            = [];
+        this.browserManipulationQueue   = [];
+        this.inCommandExecutionOnServer = false;
+        this.testDoneCommandQueued      = false;
+        this.initiallyExpectedDialogs   = [];
 
         this.pendingRequest   = null;
         this.pendingPageError = null;
@@ -63,16 +68,23 @@ export default class TestRun extends Session {
         this.errs                     = [];
         this.lastDriverStatusId       = null;
         this.lastDriverStatusResponse = null;
+
+        this._start();
     }
 
 
     // Hammerhead payload
     _getPayloadScript () {
+        var initiallyExpectedDialogs = this.running ? null : this.initiallyExpectedDialogs;
+
+        this.running = true;
+
         return Mustache.render(TEST_RUN_TEMPLATE, {
-            testRunId:           this.id,
-            browserHeartbeatUrl: this.browserConnection.heartbeatUrl,
-            browserStatusUrl:    this.browserConnection.statusUrl,
-            selectorTimeout:     this.opts.selectorTimeout
+            testRunId:                this.id,
+            browserHeartbeatUrl:      this.browserConnection.heartbeatUrl,
+            browserStatusUrl:         this.browserConnection.statusUrl,
+            selectorTimeout:          this.opts.selectorTimeout,
+            initiallyExpectedDialogs: JSON.stringify(initiallyExpectedDialogs)
         });
     }
 
@@ -126,7 +138,6 @@ export default class TestRun extends Session {
 
         TestRun.activeTestRuns[this.id] = this;
 
-        this.running = true;
         this.emit('start');
 
         if (!beforeEachFn || await this._executeTestFn(STATE.inBeforeEach, beforeEachFn)) {
@@ -168,18 +179,76 @@ export default class TestRun extends Session {
 
 
     // Task queue
-    _enqueueCommand (command, callsite) {
-        if (this.pendingRequest)
-            this._resolvePendingRequest(command);
+    _getNextTaskCommand () {
+        if (this.currentDriverTask) {
+            // NOTE: we should not send wait command to client because we should execute this command on server
+            if (this.currentDriverTask.command.type === COMMAND_TYPE.wait) {
+                this._executeOnServer(this.currentDriverTask.command);
+                return null;
+            }
 
-        return new Promise((resolve, reject) => this.driverTaskQueue.push({ command, resolve, reject, callsite }));
+            return this.currentDriverTask.command;
+        }
+
+        return null;
     }
 
-    _removeAllNonServiceTasks () {
-        this.driverTaskQueue          = this.driverTaskQueue.filter(driverTask => isServiceCommand(driverTask.command));
+    _executeOnServer (command) {
+        this.inCommandExecutionOnServer = true;
+
+        command
+            .execute()
+            .then(() => {
+                this._fulfillCurrentDriverTask({});
+                this.inCommandExecutionOnServer = false;
+
+                var nextCommand = this._getNextTaskCommand();
+
+                if (nextCommand)
+                    process.nextTick(() => this._resolvePendingRequest(nextCommand));
+
+                return null;
+            });
+    }
+
+    _enqueueCommand (command, callsite, chained) {
+        if (this.pendingRequest && !this.inCommandExecutionOnServer) {
+            if (command.type === COMMAND_TYPE.wait)
+                this._executeOnServer(command);
+            else
+                process.nextTick(() => this._resolvePendingRequest(command));
+        }
+
+        return new Promise((resolve, reject) => this.driverTaskQueue.push({
+            command,
+            resolve,
+            reject,
+            callsite,
+            chained
+        }));
+    }
+
+    _removeAllChainedNonServiceTasks () {
+        this.driverTaskQueue = this.driverTaskQueue.filter(driverTask => {
+            return isServiceCommand(driverTask.command) || !driverTask.chained;
+        });
+
         this.browserManipulationQueue = this.browserManipulationQueue.filter(manipulationTask => isServiceCommand(manipulationTask.command));
     }
 
+    _resolveAllChainedNonServiceTasks (result) {
+        this.driverTaskQueue.filter(driverTask => {
+            if (!isServiceCommand(driverTask.command))
+                driverTask.resolve(result);
+        });
+    }
+
+    _rejectAllChainedNonServiceTasks (err) {
+        this.driverTaskQueue.filter(driverTask => {
+            if (!isServiceCommand(driverTask.command) && driverTask.chained)
+                driverTask.reject(err);
+        });
+    }
 
     // Current driver task
     get currentDriverTask () {
@@ -190,15 +259,20 @@ export default class TestRun extends Session {
         this.currentDriverTask.resolve(result);
         this.driverTaskQueue.shift();
 
-        if (this.testDoneCommandQueued)
-            this._removeAllNonServiceTasks();
+        if (this.testDoneCommandQueued) {
+            this._resolveAllChainedNonServiceTasks(result);
+            this._removeAllChainedNonServiceTasks(result);
+        }
     }
 
     _rejectCurrentDriverTask (err) {
         err.callsite = err.callsite || this.driverTaskQueue[0].callsite;
 
         this.currentDriverTask.reject(err);
-        this._removeAllNonServiceTasks();
+        this.driverTaskQueue.shift();
+
+        this._rejectAllChainedNonServiceTasks(err);
+        this._removeAllChainedNonServiceTasks(err);
     }
 
 
@@ -211,6 +285,9 @@ export default class TestRun extends Session {
     }
 
     _resolvePendingRequest (command) {
+        if (!this.pendingRequest)
+            return;
+
         this.lastDriverStatusResponse = command;
         this.pendingRequest.resolve(command);
         this._clearPendingRequest();
@@ -239,11 +316,7 @@ export default class TestRun extends Session {
     }
 
     _handleDriverRequest (driverStatus) {
-        if (!this.running)
-            this._start();
-
-        var pageError = this.pendingPageError || driverStatus.pageError;
-
+        var pageError                  = this.pendingPageError || driverStatus.pageError;
         var currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
 
         if (!currentTaskRejectedByError && driverStatus.isCommandResult) {
@@ -256,11 +329,38 @@ export default class TestRun extends Session {
             this._fulfillCurrentDriverTask(driverStatus);
         }
 
-        return this.currentDriverTask ? this.currentDriverTask.command : null;
+        return this._getNextTaskCommand();
     }
 
     // Execute command
-    executeCommand (command, callsite) {
+    _enqueueHandleDialogCommand (command, callsite, chained) {
+        var dialogType     = getExpectedDialogType(command);
+        var dialog         = new ExpectedDialog(dialogType, command.returnValue);
+        var length         = this.driverTaskQueue.length;
+        var relatedCommand = null;
+        var currentCommand = null;
+
+        // NOTE: we should find a command that triggered the native dialog to add information on how to handle
+        // this dialog. If there's no such a command, we assume that the first page load invoked the native
+        // dialog. We save information about the expected initial dialogs only before the first page load.
+        for (var i = length - 1; i >= 0; i--) {
+            currentCommand = this.driverTaskQueue[i].command;
+
+            if (!isHandleDialogCommand(currentCommand) && !isObservationCommand(currentCommand)) {
+                relatedCommand = currentCommand;
+                break;
+            }
+        }
+
+        if (relatedCommand)
+            relatedCommand.expectedDialogs.push(dialog);
+        else if (!this.running)
+            this.initiallyExpectedDialogs.push(dialog);
+
+        return this._enqueueCommand(command, callsite, chained);
+    }
+
+    executeCommand (command, callsite, chained) {
         this.debugLog.command(command);
 
         if (this.pendingPageError && isCommandRejectableByPageError(command))
@@ -269,16 +369,16 @@ export default class TestRun extends Session {
         if (isBrowserManipulationCommand(command)) {
             this.browserManipulationQueue.push(command);
 
-            return this.executeCommand(new PrepareBrowserManipulationCommand(command.type), callsite);
+            return this.executeCommand(new PrepareBrowserManipulationCommand(command.type), callsite, chained);
         }
-
-        if (command.type === COMMAND_TYPE.wait)
-            return new Promise(resolve => setTimeout(resolve, command.timeout));
 
         if (command.type === COMMAND_TYPE.testDone)
             this.testDoneCommandQueued = true;
 
-        return this._enqueueCommand(command, callsite);
+        if (isHandleDialogCommand(command))
+            return this._enqueueHandleDialogCommand(command, callsite, chained);
+
+        return this._enqueueCommand(command, callsite, chained);
     }
 
     _rejectCommandWithPageError (callsite) {

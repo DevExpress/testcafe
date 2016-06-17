@@ -56,7 +56,8 @@ describe('Test run commands', function () {
                 type:     TYPE.click,
                 selector: makeSelector('#yo'),
 
-                options: {
+                expectedDialogs: [],
+                options:         {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
@@ -81,7 +82,8 @@ describe('Test run commands', function () {
                 type:     TYPE.click,
                 selector: makeSelector('#yo'),
 
-                options: {
+                expectedDialogs: [],
+                options:         {
                     offsetX:  null,
                     offsetY:  null,
                     caretPos: null,
@@ -124,7 +126,8 @@ describe('Test run commands', function () {
                 type:     TYPE.rightClick,
                 selector: makeSelector('#yo'),
 
-                options: {
+                expectedDialogs: [],
+                options:         {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
@@ -149,7 +152,8 @@ describe('Test run commands', function () {
                 type:     TYPE.rightClick,
                 selector: makeSelector('#yo'),
 
-                options: {
+                expectedDialogs: [],
+                options:         {
                     offsetX:  null,
                     offsetY:  null,
                     caretPos: null,
@@ -192,7 +196,8 @@ describe('Test run commands', function () {
                 type:     TYPE.doubleClick,
                 selector: makeSelector('#yo'),
 
-                options: {
+                expectedDialogs: [],
+                options:         {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
@@ -217,7 +222,8 @@ describe('Test run commands', function () {
                 type:     TYPE.doubleClick,
                 selector: makeSelector('#yo'),
 
-                options: {
+                expectedDialogs: [],
+                options:         {
                     offsetX:  null,
                     offsetY:  null,
                     caretPos: null,
@@ -260,7 +266,8 @@ describe('Test run commands', function () {
                 type:     TYPE.hover,
                 selector: makeSelector('#yo'),
 
-                options: {
+                expectedDialogs: [],
+                options:         {
                     offsetX: 23,
                     offsetY: 32,
 
@@ -284,7 +291,8 @@ describe('Test run commands', function () {
                 type:     TYPE.hover,
                 selector: makeSelector('#yo'),
 
-                options: {
+                expectedDialogs: [],
+                options:         {
                     offsetX: null,
                     offsetY: null,
 
@@ -330,7 +338,8 @@ describe('Test run commands', function () {
                 dragOffsetX: 10,
                 dragOffsetY: -15,
 
-                options: {
+                expectedDialogs: [],
+                options:         {
                     offsetX: 23,
                     offsetY: 32,
 
@@ -358,7 +367,8 @@ describe('Test run commands', function () {
                 dragOffsetX: 10,
                 dragOffsetY: -15,
 
-                options: {
+                expectedDialogs: [],
+                options:         {
                     offsetX: null,
                     offsetY: null,
 
@@ -402,7 +412,8 @@ describe('Test run commands', function () {
                 selector:            makeSelector('#yo'),
                 destinationSelector: makeSelector('#destination'),
 
-                options: {
+                expectedDialogs: [],
+                options:         {
                     offsetX: 23,
                     offsetY: 32,
 
@@ -428,7 +439,8 @@ describe('Test run commands', function () {
                 selector:            makeSelector('#yo'),
                 destinationSelector: makeSelector('#destination'),
 
-                options: {
+                expectedDialogs: [],
+                options:         {
                     offsetX: null,
                     offsetY: null,
 
@@ -473,7 +485,8 @@ describe('Test run commands', function () {
                 selector: makeSelector('#yo'),
                 text:     'testText',
 
-                options: {
+                expectedDialogs: [],
+                options:         {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
@@ -501,7 +514,8 @@ describe('Test run commands', function () {
                 selector: makeSelector('#yo'),
                 text:     'testText',
 
-                options: {
+                expectedDialogs: [],
+                options:         {
                     offsetX:  null,
                     offsetY:  null,
                     caretPos: null,
@@ -534,10 +548,11 @@ describe('Test run commands', function () {
             var command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.selectText,
-                selector: makeSelector('#yo'),
-                startPos: 1,
-                endPos:   2
+                type:            TYPE.selectText,
+                selector:        makeSelector('#yo'),
+                startPos:        1,
+                endPos:          2,
+                expectedDialogs: []
             });
 
             commandObj = {
@@ -548,10 +563,11 @@ describe('Test run commands', function () {
             command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.selectText,
-                selector: makeSelector('#yo'),
-                startPos: null,
-                endPos:   null
+                type:            TYPE.selectText,
+                selector:        makeSelector('#yo'),
+                startPos:        null,
+                endPos:          null,
+                expectedDialogs: []
             });
         });
 
@@ -574,12 +590,13 @@ describe('Test run commands', function () {
             var command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:      TYPE.selectTextAreaContent,
-                selector:  makeSelector('#yo'),
-                startLine: 0,
-                startPos:  1,
-                endLine:   2,
-                endPos:    3
+                type:            TYPE.selectTextAreaContent,
+                selector:        makeSelector('#yo'),
+                startLine:       0,
+                startPos:        1,
+                endLine:         2,
+                endPos:          3,
+                expectedDialogs: []
             });
 
             commandObj = {
@@ -590,12 +607,13 @@ describe('Test run commands', function () {
             command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:      TYPE.selectTextAreaContent,
-                selector:  makeSelector('#yo'),
-                startLine: null,
-                startPos:  null,
-                endLine:   null,
-                endPos:    null
+                type:            TYPE.selectTextAreaContent,
+                selector:        makeSelector('#yo'),
+                startLine:       null,
+                startPos:        null,
+                endLine:         null,
+                endPos:          null,
+                expectedDialogs: []
             });
         });
 
@@ -616,9 +634,10 @@ describe('Test run commands', function () {
             var command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:          TYPE.selectEditableContent,
-                startSelector: makeSelector('#node1'),
-                endSelector:   makeSelector('#node2')
+                type:            TYPE.selectEditableContent,
+                startSelector:   makeSelector('#node1'),
+                endSelector:     makeSelector('#node2'),
+                expectedDialogs: []
             });
 
             commandObj = {
@@ -630,9 +649,10 @@ describe('Test run commands', function () {
             command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:          TYPE.selectEditableContent,
-                startSelector: makeSelector('#node1'),
-                endSelector:   null
+                type:            TYPE.selectEditableContent,
+                startSelector:   makeSelector('#node1'),
+                endSelector:     null,
+                expectedDialogs: []
             });
         });
 
@@ -661,8 +681,9 @@ describe('Test run commands', function () {
             var command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type: TYPE.pressKey,
-                keys: 'a+b c'
+                type:            TYPE.pressKey,
+                keys:            'a+b c',
+                expectedDialogs: []
             });
         });
 
@@ -688,8 +709,9 @@ describe('Test run commands', function () {
             var command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type: TYPE.navigateTo,
-                url:  'localhost'
+                type:            TYPE.navigateTo,
+                url:             'localhost',
+                expectedDialogs: []
             });
         });
 
@@ -708,9 +730,10 @@ describe('Test run commands', function () {
             var command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.setFilesToUpload,
-                selector: makeSelector('#yo'),
-                filePath: '/test/path'
+                type:            TYPE.setFilesToUpload,
+                selector:        makeSelector('#yo'),
+                filePath:        '/test/path',
+                expectedDialogs: []
             });
 
             commandObj = {
@@ -727,9 +750,10 @@ describe('Test run commands', function () {
             command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.setFilesToUpload,
-                selector: makeSelector('#yo'),
-                filePath: ['/test/path/1', '/test/path/2']
+                type:            TYPE.setFilesToUpload,
+                selector:        makeSelector('#yo'),
+                filePath:        ['/test/path/1', '/test/path/2'],
+                expectedDialogs: []
             });
         });
 
@@ -747,8 +771,9 @@ describe('Test run commands', function () {
             var command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.clearUpload,
-                selector: makeSelector('#yo')
+                type:            TYPE.clearUpload,
+                selector:        makeSelector('#yo'),
+                expectedDialogs: []
             });
         });
 
@@ -854,8 +879,9 @@ describe('Test run commands', function () {
             var command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.switchToIframe,
-                selector: makeSelector('#iframe')
+                type:            TYPE.switchToIframe,
+                selector:        makeSelector('#iframe'),
+                expectedDialogs: []
             });
         });
 
@@ -866,7 +892,168 @@ describe('Test run commands', function () {
             var command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type: TYPE.switchToMainWindow
+                type:            TYPE.switchToMainWindow,
+                expectedDialogs: []
+            });
+        });
+
+        it('Should create HandleAlertDialogCommand from object', function () {
+            var commandObj = {
+                type:     TYPE.handleAlertDialog,
+                selector: '#yo',
+                yo:       'test',
+
+                options: {
+                    offsetX: 23,
+                    dummy:   'yo',
+                    timeout: 100
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type: TYPE.handleAlertDialog,
+
+                options: {
+                    timeout: 100
+                }
+            });
+
+            commandObj = {
+                type:     TYPE.handleAlertDialog,
+                selector: '#yo',
+                yo:       'test'
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type: TYPE.handleAlertDialog,
+
+                options: {
+                    timeout: null
+                }
+            });
+        });
+
+        it('Should create HandleConfirmDialogCommand from object', function () {
+            var commandObj = {
+                type:        TYPE.handleConfirmDialog,
+                returnValue: true,
+                selector:    '#yo',
+                yo:          'test',
+
+                options: {
+                    offsetX: 23,
+                    dummy:   'yo',
+                    timeout: 100
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:        TYPE.handleConfirmDialog,
+                returnValue: true,
+
+                options: {
+                    timeout: 100
+                }
+            });
+
+            commandObj = {
+                type:     TYPE.handleConfirmDialog,
+                selector: '#yo',
+                yo:       'test',
+
+                options: {
+                    offsetX: 23,
+                    dummy:   'yo'
+                }
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:        TYPE.handleConfirmDialog,
+                returnValue: false,
+
+                options: {
+                    timeout: null
+                }
+            });
+        });
+
+        it('Should create HandlePromptDialogCommand from object', function () {
+            var commandObj = {
+                type:        TYPE.handlePromptDialog,
+                returnValue: 'OK',
+                selector:    '#yo',
+                yo:          'test',
+
+                options: {
+                    offsetX: 23,
+                    dummy:   'yo',
+                    timeout: 100
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:        TYPE.handlePromptDialog,
+                returnValue: 'OK',
+
+                options: {
+                    timeout: 100
+                }
+            });
+
+            commandObj = {
+                type:     TYPE.handlePromptDialog,
+                selector: '#yo',
+                yo:       'test',
+
+                options: {
+                    offsetX: 23,
+                    dummy:   'yo'
+                }
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:        TYPE.handlePromptDialog,
+                returnValue: null,
+
+                options: {
+                    timeout: null
+                }
+            });
+        });
+
+        it('Should create HandleBeforeUnloadDialogCommand from object', function () {
+            var commandObj = {
+                type:     TYPE.handleBeforeUnloadDialog,
+                selector: '#yo',
+                yo:       'test',
+
+                options: {
+                    timeout: 100,
+                    offsetX: 23,
+                    dummy:   'yo'
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type: TYPE.handleBeforeUnloadDialog,
+
+                options: {
+                    timeout: 100
+                }
             });
         });
     });
@@ -2311,6 +2498,168 @@ describe('Test run commands', function () {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionBooleanOptionError,
                     optionName:      'portraitOrientation',
+                    actualValue:     'object',
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate HandleAlertDialogCommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.handleAlertDialog,
+                        options: 1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    actualType:      'number',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.handleAlertDialog,
+                        options: {
+                            timeout: 'ms'
+                        }
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    optionName:      'timeout',
+                    actualValue:     'string',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.handleAlertDialog,
+                        options: {
+                            timeout: -10.5
+                        }
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    optionName:      'timeout',
+                    actualValue:     -10.5,
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate HandleConfirmCommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.handleConfirmDialog,
+                        options: 1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    actualType:      'number',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.handleConfirmDialog,
+                        options: {
+                            timeout: -10.5
+                        }
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    optionName:      'timeout',
+                    actualValue:     -10.5,
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:        TYPE.handleConfirmDialog,
+                        returnValue: {}
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionBooleanArgumentError,
+                    actualValue:     'object',
+                    argumentName:    'returnValue',
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate HandlePromptCommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:        TYPE.handlePromptDialog,
+                        returnValue: true
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'returnValue',
+                    actualValue:     'boolean',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:        TYPE.handlePromptDialog,
+                        returnValue: ''
+                    });
+                },
+                null
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:        TYPE.handlePromptDialog,
+                        returnValue: null
+                    });
+                },
+                null
+            );
+        });
+
+        it('Should validate HandleBeforeUnloadCommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.handleBeforeUnloadDialog,
+                        options: {
+                            timeout: null
+                        }
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    optionName:      'timeout',
                     actualValue:     'object',
                     callsite:        null
                 }

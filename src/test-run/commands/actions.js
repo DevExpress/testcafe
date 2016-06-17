@@ -1,7 +1,9 @@
 import TYPE from './type';
 import SelectorFactory from '../../client-functions/selector-factory';
 import Assignable from '../../utils/assignable';
-import { ClickOptions, MouseOptions, TypeOptions } from './options';
+import ExtendedDialogCommand from './extended-dialog-command';
+
+import { ClickOptions, MouseOptions, TypeOptions, HandleDialogOptions } from './options';
 
 import {
     actionOptions,
@@ -9,7 +11,9 @@ import {
     positiveIntegerArgument,
     nonEmptyStringArgument,
     urlArgument,
-    stringOrStringArrayArgument
+    booleanArgument,
+    stringOrStringArrayArgument,
+    stringOrNull
 } from './validations/argument';
 
 import { ActionSelectorError } from '../../errors/test-run';
@@ -42,8 +46,12 @@ function initTypeOptions (name, val) {
     return new TypeOptions(val, true);
 }
 
+function initHandleDialogOption (name, val) {
+    return new HandleDialogOptions(val, true);
+}
+
 // Commands
-export class ClickCommand extends Assignable {
+export class ClickCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -62,7 +70,7 @@ export class ClickCommand extends Assignable {
     }
 }
 
-export class RightClickCommand extends Assignable {
+export class RightClickCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -81,7 +89,7 @@ export class RightClickCommand extends Assignable {
     }
 }
 
-export class DoubleClickCommand extends Assignable {
+export class DoubleClickCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -100,7 +108,7 @@ export class DoubleClickCommand extends Assignable {
     }
 }
 
-export class HoverCommand extends Assignable {
+export class HoverCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -119,7 +127,7 @@ export class HoverCommand extends Assignable {
     }
 }
 
-export class TypeTextCommand extends Assignable {
+export class TypeTextCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -140,7 +148,7 @@ export class TypeTextCommand extends Assignable {
     }
 }
 
-export class DragCommand extends Assignable {
+export class DragCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -163,7 +171,7 @@ export class DragCommand extends Assignable {
     }
 }
 
-export class DragToElementCommand extends Assignable {
+export class DragToElementCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -185,7 +193,7 @@ export class DragToElementCommand extends Assignable {
     }
 }
 
-export class SelectTextCommand extends Assignable {
+export class SelectTextCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -206,7 +214,7 @@ export class SelectTextCommand extends Assignable {
     }
 }
 
-export class SelectEditableContentCommand extends Assignable {
+export class SelectEditableContentCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -225,7 +233,7 @@ export class SelectEditableContentCommand extends Assignable {
     }
 }
 
-export class SelectTextAreaContentCommand extends Assignable {
+export class SelectTextAreaContentCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -250,7 +258,7 @@ export class SelectTextAreaContentCommand extends Assignable {
     }
 }
 
-export class PressKeyCommand extends Assignable {
+export class PressKeyCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -267,7 +275,7 @@ export class PressKeyCommand extends Assignable {
     }
 }
 
-export class NavigateToCommand extends Assignable {
+export class NavigateToCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -284,7 +292,7 @@ export class NavigateToCommand extends Assignable {
     }
 }
 
-export class SetFilesToUploadCommand extends Assignable {
+export class SetFilesToUploadCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -304,7 +312,7 @@ export class SetFilesToUploadCommand extends Assignable {
     }
 }
 
-export class ClearUploadCommand extends Assignable {
+export class ClearUploadCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -322,7 +330,7 @@ export class ClearUploadCommand extends Assignable {
     }
 }
 
-export class SwitchToIframeCommand extends Assignable {
+export class SwitchToIframeCommand extends ExtendedDialogCommand {
     constructor (obj) {
         super(obj);
 
@@ -338,8 +346,76 @@ export class SwitchToIframeCommand extends Assignable {
     }
 }
 
-export class SwitchToMainWindowCommand {
+export class SwitchToMainWindowCommand extends ExtendedDialogCommand {
     constructor () {
+        super();
+
         this.type = TYPE.switchToMainWindow;
+    }
+}
+
+class HandleDialogCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.options = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'options', type: actionOptions, init: initHandleDialogOption, required: true }
+        ];
+    }
+}
+
+export class HandleAlertDialogCommand extends HandleDialogCommand {
+    constructor (obj) {
+        super(obj);
+
+        this.type = TYPE.handleAlertDialog;
+    }
+}
+
+export class HandleConfirmDialogCommand extends HandleDialogCommand {
+    constructor (obj) {
+        super(obj);
+
+        this.type        = TYPE.handleConfirmDialog;
+        this.returnValue = false;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return super._getAssignableProperties().concat([
+            { name: 'returnValue', type: booleanArgument }
+        ]);
+    }
+}
+
+export class HandlePromptDialogCommand extends HandleDialogCommand {
+    constructor (obj) {
+        super(obj);
+
+        this.type        = TYPE.handlePromptDialog;
+        this.returnValue = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return super._getAssignableProperties().concat([
+            { name: 'returnValue', type: stringOrNull }
+        ]);
+    }
+}
+
+export class HandleBeforeUnloadDialogCommand extends HandleDialogCommand {
+    constructor (obj) {
+        super(obj);
+
+        this.type = TYPE.handleBeforeUnloadDialog;
     }
 }
