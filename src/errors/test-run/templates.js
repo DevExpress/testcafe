@@ -224,6 +224,8 @@ export default {
 
     [TYPE.externalAssertionLibraryError]: err => markup(err, `
         ${escapeHtml(err.errMsg)} ${err.getCallsiteMarkup({ stackOnly: true })}
+
+        ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.regeneratorInFunctionArgumentOfClientFunctionError]: err => markup(err, `
