@@ -38,19 +38,19 @@ const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-fla
 const PENDING_STATUS                       = 'testcafe|driver|pending-status';
 const EXECUTING_CLIENT_FUNCTION_DESCRIPTOR = 'testcafe|driver|executing-client-function-descriptor';
 const PENDING_PAGE_ERROR                   = 'testcafe|driver|pending-page-error';
-const ACTUAL_CHILD_DRIVER_IFRAME_SELECTOR  = 'testcafe|driver|actual-child-driver-iframe-selector';
+const ACTIVE_IFRAME_SELECTOR               = 'testcafe|driver|active-iframe-selector';
 const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;
 
 const ACTION_IFRAME_ERROR_CTORS = {
-    NotLoaded: ActionIframeIsNotLoadedError,
-    NotFound:  ActionElementNotFoundError,
-    Invisible: ActionElementIsInvisibleError
+    NotLoadedError:   ActionIframeIsNotLoadedError,
+    NotFoundError:    ActionElementNotFoundError,
+    IsInvisibleError: ActionElementIsInvisibleError
 };
 
 const CURRENT_IFRAME_ERROR_CTORS = {
-    NotLoaded: CurrentIframeIsNotLoadedError,
-    NotFound:  CurrentIframeNotFoundError,
-    Invisible: CurrentIframeIsInvisibleError
+    NotLoadedError:   CurrentIframeIsNotLoadedError,
+    NotFoundError:    CurrentIframeNotFoundError,
+    IsInvisibleError: CurrentIframeIsInvisibleError
 };
 
 
@@ -68,7 +68,7 @@ export default class Driver {
 
         this.contextStorage        = null;
         this.childDriverLinks      = [];
-        this.actualChildDriverLink = null;
+        this.activeChildDriverLink = null;
         this.beforeUnloadRaised    = false;
 
         this.pageInitialRequestBarrier = new RequestBarrier();
@@ -174,19 +174,19 @@ export default class Driver {
         return this.childDriverLinks.filter(link => link.driverWindow === driverWindow)[0];
     }
 
-    _runInActualIframe (command) {
-        var runningChain                    = Promise.resolve();
-        var actualChildDriverIframeSelector = this.contextStorage.getItem(ACTUAL_CHILD_DRIVER_IFRAME_SELECTOR);
+    _runInActiveIframe (command) {
+        var runningChain         = Promise.resolve();
+        var activeIframeSelector = this.contextStorage.getItem(ACTIVE_IFRAME_SELECTOR);
 
-        // NOTE: if the page was reloaded we restore the actual child iframe driver link via the iframe selector
-        if (!this.actualChildDriverLink && actualChildDriverIframeSelector)
-            runningChain = this._switchToIframe(actualChildDriverIframeSelector, CURRENT_IFRAME_ERROR_CTORS);
+        // NOTE: if the page was reloaded we restore the active child driver link via the iframe selector
+        if (!this.activeChildDriverLink && activeIframeSelector)
+            runningChain = this._switchToIframe(activeIframeSelector, CURRENT_IFRAME_ERROR_CTORS);
 
         runningChain
             .then(() => {
                 this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, true);
 
-                return this.actualChildDriverLink.executeCommand(command);
+                return this.activeChildDriverLink.executeCommand(command);
             })
             .then(status => this._onCommandExecutedInIframe(status))
             .catch(err => this._onCommandExecutedInIframe(new DriverStatus({ isCommandResult: true, executionError: err })));
@@ -207,28 +207,28 @@ export default class Driver {
     }
 
     _switchToIframe (selector, iframeErrorCtors) {
-        var selectorExecutor = new SelectorExecutor(selector, this.elementAvailabilityTimeout, () => new iframeErrorCtors.NotFound(),
-            () => iframeErrorCtors.Invisible());
+        var selectorExecutor = new SelectorExecutor(selector, this.elementAvailabilityTimeout, () => new iframeErrorCtors.NotFoundError(),
+            () => iframeErrorCtors.IsInvisibleError());
 
         return selectorExecutor.getResult()
             .then(iframe => {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframe();
 
-                return this._ensureChildDriverLink(iframe.contentWindow, iframeErrorCtors.NotLoaded);
+                return this._ensureChildDriverLink(iframe.contentWindow, iframeErrorCtors.NotLoadedError);
             })
             .then(childDriverLink => {
-                this.actualChildDriverLink = childDriverLink;
-                this.contextStorage.setItem(ACTUAL_CHILD_DRIVER_IFRAME_SELECTOR, selector);
+                this.activeChildDriverLink = childDriverLink;
+                this.contextStorage.setItem(ACTIVE_IFRAME_SELECTOR, selector);
             });
     }
 
     _switchToMainWindow (command) {
-        if (this.actualChildDriverLink)
-            this.actualChildDriverLink.executeCommand(command);
+        if (this.activeChildDriverLink)
+            this.activeChildDriverLink.executeCommand(command);
 
-        this.contextStorage.setItem(ACTUAL_CHILD_DRIVER_IFRAME_SELECTOR, null);
-        this.actualChildDriverLink = null;
+        this.contextStorage.setItem(ACTIVE_IFRAME_SELECTOR, null);
+        this.activeChildDriverLink = null;
     }
 
 
@@ -339,8 +339,8 @@ export default class Driver {
                 else if (command.type === COMMAND_TYPE.switchToMainWindow)
                     this._onSwitchToMainWindowCommand(command);
 
-                else if (this.actualChildDriverLink || this.contextStorage.getItem(ACTUAL_CHILD_DRIVER_IFRAME_SELECTOR))
-                    this._runInActualIframe(command);
+                else if (this.activeChildDriverLink || this.contextStorage.getItem(ACTIVE_IFRAME_SELECTOR))
+                    this._runInActiveIframe(command);
 
                 else if (command.type === COMMAND_TYPE.switchToIframe)
                     this._onSwitchToIframeCommand(command);
