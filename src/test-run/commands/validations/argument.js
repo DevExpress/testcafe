@@ -12,7 +12,6 @@ import {
     ActionStringArgumentError,
     ActionIntegerArgumentError,
     ActionPositiveIntegerArgumentError,
-    ActionAdditionalSelectorTypeError,
     ActionUnsupportedUrlProtocolError,
     ActionStringOrStringArrayArgumentError,
     ActionStringArrayElementError,
@@ -28,12 +27,6 @@ export var integerArgument         = createIntegerValidator(ActionIntegerArgumen
 export var positiveIntegerArgument = createPositiveIntegerValidator(ActionPositiveIntegerArgumentError);
 export var booleanArgument         = createBooleanValidator(ActionBooleanArgumentError);
 
-export function additionalSelector (name, val) {
-    var type = typeof val;
-
-    if (type !== 'string')
-        throw new ActionAdditionalSelectorTypeError(name, type);
-}
 
 export function actionOptions (name, val) {
     var type = typeof val;

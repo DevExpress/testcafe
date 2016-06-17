@@ -215,12 +215,12 @@ export class ActionSelectorError extends TestRunErrorBase {
     }
 }
 
-export class ActionAdditionalSelectorTypeError extends TestRunErrorBase {
-    constructor (argumentName, actualType) {
-        super(TYPE.actionAdditionalSelectorTypeError);
+export class ActionAdditionalSelectorError extends TestRunErrorBase {
+    constructor (selectorName, errMsg) {
+        super(TYPE.actionAdditionalSelectorError);
 
-        this.argumentName = argumentName;
-        this.actualType   = actualType;
+        this.selectorName = selectorName;
+        this.errMsg       = errMsg;
     }
 }
 

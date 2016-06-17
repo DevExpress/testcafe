@@ -64,7 +64,7 @@ describe('[API] Drag actions', function () {
         it('Should validate destinationSelector', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to element with incorrect destinationSelector', { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('The destinationSelector argument is expected to be a string, but it was object.');
+                    expect(errs[0]).to.contain('Action destinationSelector error:  Selector code is expected to be specified as a function or string, but "object" was passed.');
                     expect(errs[0]).to.contain('> 41 |    await t.dragToElement(\'#draggable-div-2\', null);');
                 });
         });

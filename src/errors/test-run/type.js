@@ -19,10 +19,10 @@ export default {
     actionStringArrayElementError:          'actionStringArrayElementError',
     actionIntegerArgumentError:             'actionIntegerArgumentError',
     actionPositiveIntegerArgumentError:     'actionPositiveIntegerArgumentError',
-    actionAdditionalSelectorTypeError:      'actionAdditionalSelectorTypeError',
     actionUnsupportedUrlProtocolError:      'actionUnsupportedUrlProtocolError',
 
-    actionSelectorError: 'actionSelectorError',
+    actionSelectorError:           'actionSelectorError',
+    actionAdditionalSelectorError: 'actionAdditionalSelectorError',
 
     actionElementNotFoundError:              'actionElementNotFoundError',
     actionElementIsInvisibleError:           'actionElementIsInvisibleError',

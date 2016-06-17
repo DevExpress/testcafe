@@ -86,7 +86,7 @@ describe('[API] Select text', function () {
         it('Should validate startSelector argument', function () {
             return runTests('./testcafe-fixtures/select-test.js', 'Incorrect startSelector in selectEditableContent', { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The startSelector argument is expected to be a string, but it was boolean.');
+                    expect(errs[0]).contains('Action startSelector error:  Selector code is expected to be specified as a function or string, but "boolean" was passed.');
                     expect(errs[0]).contains('> 83 |    await t.selectEditableContent(false, \'#p2\');');
                 });
         });
@@ -94,7 +94,7 @@ describe('[API] Select text', function () {
         it('Should validate startSelector argument', function () {
             return runTests('./testcafe-fixtures/select-test.js', 'Incorrect endSelector in selectEditableContent', { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The endSelector argument is expected to be a string, but it was number.');
+                    expect(errs[0]).contains('Action endSelector error:  Selector code is expected to be specified as a function or string, but "number" was passed.');
                     expect(errs[0]).contains('> 87 |    await t.selectEditableContent(\'#p1\', 42);');
                 });
         });

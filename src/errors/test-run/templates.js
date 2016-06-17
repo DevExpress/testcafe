@@ -77,12 +77,6 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.actionAdditionalSelectorTypeError]: err => markup(err, `
-        The <code>${err.argumentName}</code> argument is expected to be a string, but it was <code>${err.actualType}</code>.
-
-        ${err.getCallsiteMarkup()}
-    `),
-
     [TYPE.actionUnsupportedUrlProtocolError]: err => markup(err, `
         The <code>${err.argumentName}</code> argument specifies a URL that uses an unsupported <code>${err.protocol}://</code> protocol. Only HTTP and HTTPS are supported, as well as protocol-relative and relative URLs.
 
@@ -245,10 +239,18 @@ export default {
     `),
 
     [TYPE.actionSelectorError]: err => markup(err, `
-          Action <code>selector</code> error:
+        Action <code>selector</code> error:
 
-          <code>${escapeHtml(err.errMsg)}</code>
+        <code>${escapeHtml(err.errMsg)}</code>
 
-          ${err.getCallsiteMarkup()}
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionAdditionalSelectorError]: err => markup(err, `
+        Action <code>${err.selectorName}</code> error:
+
+        <code>${escapeHtml(err.errMsg)}</code>
+
+        ${err.getCallsiteMarkup()}
     `)
 };

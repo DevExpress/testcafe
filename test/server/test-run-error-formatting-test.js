@@ -16,7 +16,7 @@ var ActionStringArgumentError                          = require('../../lib/erro
 var ActionUnsupportedUrlProtocolError                  = require('../../lib/errors/test-run').ActionUnsupportedUrlProtocolError;
 var ActionStringOrStringArrayArgumentError             = require('../../lib/errors/test-run').ActionStringOrStringArrayArgumentError;
 var ActionStringArrayElementError                      = require('../../lib/errors/test-run').ActionStringArrayElementError;
-var ActionAdditionalSelectorTypeError                  = require('../../lib/errors/test-run').ActionAdditionalSelectorTypeError;
+var ActionAdditionalSelectorError                      = require('../../lib/errors/test-run').ActionAdditionalSelectorError;
 var PageLoadError                                      = require('../../lib/errors/test-run').PageLoadError;
 var UncaughtErrorOnPage                                = require('../../lib/errors/test-run').UncaughtErrorOnPage;
 var UncaughtErrorInTestCode                            = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
@@ -173,8 +173,8 @@ describe('Error formatting', function () {
             assertErrorMessage('action-options-type-error', new ActionOptionsTypeError(typeof 1));
         });
 
-        it('Should format "actionAdditionalSelectorTypeError" message', function () {
-            assertErrorMessage('action-additional-selector-type-error', new ActionAdditionalSelectorTypeError('startSelector', typeof 1));
+        it('Should format "actionAdditionalSelectorError" message', function () {
+            assertErrorMessage('action-additional-selector-error', new ActionAdditionalSelectorError('startSelector', 'Yo!'));
         });
 
         it('Should format "actionAdditionalElementNotFoundError" message', function () {

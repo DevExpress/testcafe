@@ -1,5 +1,7 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
-The startSelector argument is expected to be a string, but it was number.
+Action startSelector error:
+
+Yo!
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');
