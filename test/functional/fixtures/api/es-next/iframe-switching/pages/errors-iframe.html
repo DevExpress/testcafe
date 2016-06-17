@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Iframe switching</title>
+</head>
+<body>
+<button id="error-btn">throw an error</button>
+<button id="error-in-main-window-btn">throw an error in the main window</button>
+<button id="error-in-another-iframe-btn">throw an error in another iframe</button>
+
+<script>
+    document.getElementById('error-btn').addEventListener('click', function () {
+        throw new Error('Iframe error');
+    });
+
+    document.getElementById('error-in-main-window-btn').addEventListener('click', function () {
+        window.top.document.getElementById('error-btn').click();
+    });
+
+    document.getElementById('error-in-another-iframe-btn').addEventListener('click', function () {
+        var anotherIframeDocument = window.top.document.getElementById('iframe2').contentDocument;
+
+        anotherIframeDocument.getElementById('error-btn').click();
+    });
+</script>
+</body>
+</html>

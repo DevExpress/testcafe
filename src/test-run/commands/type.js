@@ -26,5 +26,7 @@ export default {
     prepareBrowserManipulation: 'prepare-browser-manipulation',
     resizeWindow:               'resize-window',
     resizeWindowToFitDevice:    'resize-window-to-fit-device',
+    switchToIframe:             'switch-to-iframe',
+    switchToMainWindow:         'switch-to-main-window',
     testDone:                   'test-done'
 };

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nested iframe</title>
+</head>
+<body>
+<button id="btn">button</button>
+<button id="remove-parent-iframe-btn">Remove parent iframe</button>
+
+<a id="link" href="nested-second.html">second.html</a>
+
+<script>
+    document.getElementById('btn').addEventListener('click', function () {
+        window.top.nestedIframeBtnClickCount = (window.top.nestedIframeBtnClickCount || 0) + 1;
+    });
+
+    document.getElementById('remove-parent-iframe-btn').addEventListener('click', function () {
+        var iframe = window.top.document.getElementById('iframe');
+
+        iframe.parentElement.removeChild(iframe);
+    });
+</script>
+</body>
+</html>

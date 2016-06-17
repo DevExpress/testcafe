@@ -182,7 +182,8 @@ gulp.task('client-scripts', ['client-scripts-bundle'], function () {
     var scripts = [
         { wrapper: 'src/client/core/index.js.wrapper.mustache', src: 'lib/client/core/index.js' },
         { wrapper: 'src/client/ui/index.js.wrapper.mustache', src: 'lib/client/ui/index.js' },
-        { wrapper: 'src/client/runner/index.js.wrapper.mustache', src: 'lib/client/runner/index.js' }
+        { wrapper: 'src/client/runner/index.js.wrapper.mustache', src: 'lib/client/runner/index.js' },
+        { wrapper: 'src/client/driver/index.js.wrapper.mustache', src: 'lib/client/driver/index.js' }
     ];
 
     return Promise

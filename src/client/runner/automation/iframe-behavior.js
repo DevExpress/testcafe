@@ -11,7 +11,7 @@ var messageSandbox = hammerhead.eventSandbox.message;
 
 function onMessage (e) {
     if (e.message.cmd === CROSS_DOMAIN_MESSAGES.GET_IFRAME_POSITION_DATA_REQUEST_CMD) {
-        var iFrame = domUtils.findIframeInTopWindow(e.source);
+        var iFrame = domUtils.findIframeByWindow(e.source, window.top);
 
         var msg = {
             scroll:        styleUtils.getElementScroll(domUtils.findDocument(document)),

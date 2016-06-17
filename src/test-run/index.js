@@ -26,6 +26,7 @@ import {
 
 //Const
 const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache');
+const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.mustache');
 const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
@@ -76,7 +77,10 @@ export default class TestRun extends Session {
     }
 
     _getIframePayloadScript () {
-        // TODO
+        return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
+            testRunId:                  this.id,
+            elementAvailabilityTimeout: this.opts.elementAvailabilityTimeout
+        });
     }
 
 

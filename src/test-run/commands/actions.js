@@ -313,3 +313,25 @@ export class ClearUploadCommand extends Assignable {
         ];
     }
 }
+
+export class SwitchToIframeCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type     = TYPE.switchToIframe;
+        this.selector = null;
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', type: selector, init: initSelector, required: true }
+        ];
+    }
+}
+
+export class SwitchToMainWindowCommand {
+    constructor () {
+        this.type = TYPE.switchToMainWindow;
+    }
+}

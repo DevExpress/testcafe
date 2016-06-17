@@ -186,6 +186,12 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
+    [TYPE.actionElementNotIframeError]: err => markup(err, `
+        The action element is expected to be an iframe.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
     [TYPE.actionIncorrectKeysError]: err => markup(err, `
         The <code>${err.argumentName}</code> argument contains an incorrect key or key combination.
 
@@ -194,6 +200,30 @@ export default {
 
     [TYPE.actionUnsupportedDeviceTypeError]: err => markup(err, `
         The <code>${err.argumentName}</code> argument specifies an unsupported <code>${err.actualValue}</code> device. For a list of supported devices, refer to <a href="http://viewportsizes.com">http://viewportsizes.com</a>
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionIframeIsNotLoadedError]: err => markup(err, `
+        Content of the iframe to which you are switching did not load.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.currentIframeIsNotLoadedError]: err => markup(err, `
+        Content of the iframe in which the test is currently operating did not load.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.currentIframeNotFoundError]: err => markup(err, `
+        The iframe in which the test is currently operating does not exist anymore.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.currentIframeIsInvisibleError]: err => markup(err, `
+        The iframe in which the test is currently operating is not visible anymore.
 
         ${err.getCallsiteMarkup()}
     `),

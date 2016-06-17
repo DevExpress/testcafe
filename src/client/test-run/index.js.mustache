@@ -3,8 +3,8 @@
         return;
 
 
-    var ClientDriver = window['%testCafeClientDriver%'];
-    var driver = new ClientDriver('{{{testRunId}}}', '{{{browserHeartbeatUrl}}}', '{{{browserStatusUrl}}}', {{{elementAvailabilityTimeout}}});
+    var ClientDriver = window['%testCafeDriver%'];
+    var driver = new ClientDriver('{{{testRunId}}}', {{{elementAvailabilityTimeout}}}, '{{{browserHeartbeatUrl}}}', '{{{browserStatusUrl}}}');
 
     driver.start();
 })();

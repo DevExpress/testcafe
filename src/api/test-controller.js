@@ -18,7 +18,9 @@ import {
     PressKeyCommand,
     NavigateToCommand,
     UploadFileCommand,
-    ClearUploadCommand
+    ClearUploadCommand,
+    SwitchToIframeCommand,
+    SwitchToMainWindowCommand
 } from '../test-run/commands/actions';
 
 import {
@@ -197,6 +199,14 @@ export default class TestController {
 
     _resizeWindowToFitDevice$ (device, options) {
         return this._enqueueAction('resizeWindowToFitDevice', ResizeWindowToFitDeviceCommand, { device, options });
+    }
+
+    _switchToIframe$ (selector) {
+        return this._enqueueAction('switchToIframe', SwitchToIframeCommand, { selector });
+    }
+
+    _switchToMainWindow$ () {
+        return this._enqueueAction('switchToMainWindow', SwitchToMainWindowCommand);
     }
 
     _eval$ (fn, dependencies) {

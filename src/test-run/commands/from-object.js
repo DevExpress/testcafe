@@ -14,7 +14,9 @@ import {
     PressKeyCommand,
     NavigateToCommand,
     UploadFileCommand,
-    ClearUploadCommand
+    ClearUploadCommand,
+    SwitchToIframeCommand,
+    SwitchToMainWindowCommand
 } from './actions';
 
 import {
@@ -85,6 +87,12 @@ export default function createCommandFromObject (obj) {
 
         case TYPE.resizeWindowToFitDevice:
             return new ResizeWindowToFitDeviceCommand(obj);
+
+        case TYPE.switchToIframe:
+            return new SwitchToIframeCommand(obj);
+
+        case TYPE.switchToMainWindow:
+            return new SwitchToMainWindowCommand();
     }
     /* eslint-enable indent*/
 }

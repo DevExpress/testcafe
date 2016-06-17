@@ -35,6 +35,11 @@ var ActionCanNotFindFileToUploadError                  = require('../../lib/erro
 var ActionElementIsNotFileInputError                   = require('../../lib/errors/test-run').ActionElementIsNotFileInputError;
 var ActionUnsupportedDeviceTypeError                   = require('../../lib/errors/test-run').ActionUnsupportedDeviceTypeError;
 var ClientFunctionExecutionInterruptionError           = require('../../lib/errors/test-run').ClientFunctionExecutionInterruptionError;
+var ActionElementNotIframe                             = require('../../lib/errors/test-run').ActionElementNotIframe;
+var ActionIframeIsNotLoadedError                       = require('../../lib/errors/test-run').ActionIframeIsNotLoadedError;
+var CurrentIframeIsNotLoadedError                      = require('../../lib/errors/test-run').CurrentIframeIsNotLoadedError;
+var CurrentIframeNotFoundError                         = require('../../lib/errors/test-run').CurrentIframeNotFoundError;
+var CurrentIframeIsInvisibleError                      = require('../../lib/errors/test-run').CurrentIframeIsInvisibleError;
 var MissingAwaitError                                  = require('../../lib/errors/test-run').MissingAwaitError;
 var ExternalAssertionLibraryError                      = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
 var RegeneratorInFunctionArgumentOfClientFunctionError = require('../../lib/errors/test-run').RegeneratorInFunctionArgumentOfClientFunctionError;
@@ -156,6 +161,10 @@ describe('Error formatting', function () {
             assertErrorMessage('action-element-not-text-area-error', new ActionElementNotTextAreaError());
         });
 
+        it('Should format "actionElementNotIframeError" message', function () {
+            assertErrorMessage('action-element-not-iframe-error', new ActionElementNotIframe());
+        });
+
         it('Should format "actionSelectorTypeError" message', function () {
             assertErrorMessage('action-selector-type-error', new ActionSelectorTypeError(typeof 1));
         });
@@ -206,6 +215,22 @@ describe('Error formatting', function () {
 
         it('Should format "actionUnsupportedDeviceTypeError" message', function () {
             assertErrorMessage('action-unsupported-device-type-error', new ActionUnsupportedDeviceTypeError('device', 'iPhone 555'));
+        });
+
+        it('Should format "actionIframeIsNotLoadedError" message', function () {
+            assertErrorMessage('action-iframe-is-not-loaded-error', new ActionIframeIsNotLoadedError());
+        });
+
+        it('Should format "currentIframeIsNotLoadedError" message', function () {
+            assertErrorMessage('current-iframe-is-not-loaded-error', new CurrentIframeIsNotLoadedError());
+        });
+
+        it('Should format "currentIframeNotFoundError" message', function () {
+            assertErrorMessage('current-iframe-not-found-error', new CurrentIframeNotFoundError());
+        });
+
+        it('Should format "currentIframeIsInvisibleError" message', function () {
+            assertErrorMessage('current-iframe-is-invisible-error', new CurrentIframeIsInvisibleError());
         });
 
         it('Should format "missingAwaitError', function () {

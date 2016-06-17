@@ -177,7 +177,7 @@ RunnerBase.prototype._initIFrameBehavior = function () {
 
         switch (message.cmd) {
             case RunnerBase.IFRAME_STEP_COMPLETED_CMD:
-                if (runner.stepIterator.waitedIFrame === domUtils.findIframeInTopWindow(e.source))
+                if (runner.stepIterator.waitedIFrame === domUtils.findIframeByWindow(e.source, window.top))
                     runner.stepIterator.iFrameActionCallback();
                 else if (runner.executingStepInIFrameWindow === e.source)
                     runner._onIFrameStepExecuted();
@@ -232,7 +232,7 @@ RunnerBase.prototype._initIFrameBehavior = function () {
                 break;
 
             case CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_WAITING_STEP_COMPLETION_REQUEST_CMD:
-                if (runner.stepIterator.waitedIFrame === domUtils.findIframeInTopWindow(e.source) ||
+                if (runner.stepIterator.waitedIFrame === domUtils.findIframeByWindow(e.source, window.top) ||
                     runner.executingStepInIFrameWindow === e.source) {
                     msg = {
                         cmd: CROSS_DOMAIN_MESSAGES.IFRAME_TEST_RUNNER_WAITING_STEP_COMPLETION_RESPONSE_CMD
@@ -492,7 +492,7 @@ RunnerBase.prototype._initNativeDialogs = function () {
     });
 };
 //Handlers
-RunnerBase.prototype._onTestComplete    = function (e) {
+RunnerBase.prototype._onTestComplete = function (e) {
     this.stopped = true;
     this.eventEmitter.emit(this.TEST_COMPLETED_EVENT, {});
     e.callback();

@@ -301,3 +301,34 @@ export class ActionElementIsNotFileInputError extends TestRunErrorBase {
         super(TYPE.actionElementIsNotFileInputError);
     }
 }
+
+// Iframe errors
+export class ActionElementNotIframe extends TestRunErrorBase {
+    constructor () {
+        super(TYPE.actionElementNotIframeError);
+    }
+}
+
+export class ActionIframeIsNotLoadedError extends TestRunErrorBase {
+    constructor () {
+        super(TYPE.actionIframeIsNotLoadedError);
+    }
+}
+
+export class CurrentIframeIsNotLoadedError extends TestRunErrorBase {
+    constructor () {
+        super(TYPE.currentIframeIsNotLoadedError);
+    }
+}
+
+export class CurrentIframeNotFoundError extends TestRunErrorBase {
+    constructor () {
+        super(TYPE.currentIframeNotFoundError);
+    }
+}
+
+export class CurrentIframeIsInvisibleError extends TestRunErrorBase {
+    constructor () {
+        super(TYPE.currentIframeIsInvisibleError);
+    }
+}
