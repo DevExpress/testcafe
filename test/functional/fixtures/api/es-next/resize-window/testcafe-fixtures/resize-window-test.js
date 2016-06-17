@@ -3,15 +3,20 @@ import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 import { parse } from 'useragent';
 
-const getWindowWidth  = ClientFunction(() => window.innerWidth);
-const getWindowHeight = ClientFunction(() => window.innerHeight);
-const getUserAgent    = ClientFunction(() => navigator.userAgent.toString());
-const iPhoneSize      = { width: 480, height: 320 };
+const getWindowWidth           = ClientFunction(() => window.innerWidth);
+const getWindowHeight          = ClientFunction(() => window.innerHeight);
+const getUserAgent             = ClientFunction(() => navigator.userAgent.toString());
+const setWindowOnresizeHandler = ClientFunction(() => window.onresize = function () {
+    throw new Error('Resize error');
+});
+const resetWindowOnresizeHandler = ClientFunction(() => window.onresize = function () {
+});
+const iPhoneSize = { width: 480, height: 320 };
 
 var initialWindowSize = {};
 
 
-fixture `Resize window`
+fixture `Resize the window`
     .page `http://localhost:3000/api/es-next/resize-window/pages/index.html`
     .beforeEach(async () => {
         var ua       = await getUserAgent();
@@ -26,6 +31,8 @@ fixture `Resize window`
         var ua       = await getUserAgent();
         var parsedUA = parse(ua);
         var size     = initialWindowSize[parsedUA.family];
+
+        await resetWindowOnresizeHandler();
 
         await t
             .resizeWindow(size.width, size.height);
@@ -59,6 +66,19 @@ test('Resize the window to fit a device with portrait orientation', async t => {
     expect(await getWindowHeight()).equals(iPhoneSize.width);
 });
 
+
 test('Incorrect action device argument', async t => {
     await t.resizeWindowToFitDevice('iPhone555');
+});
+
+test('Resize the window leads to js-error', async t => {
+    await setWindowOnresizeHandler();
+
+    await t.resizeWindow(500, 500);
+});
+
+test('Resize the window to fit a device leads to js-error', async t => {
+    await setWindowOnresizeHandler();
+
+    await t.resizeWindowToFitDevice('iPhone');
 });

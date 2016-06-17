@@ -20,7 +20,7 @@ import {
 
 import {
     isCommandRejectableByPageError,
-    isWindowManipulationCommand,
+    isBrowserManipulationCommand,
     isServiceCommand
 } from './commands/utils';
 
@@ -172,7 +172,8 @@ export default class TestRun extends Session {
     }
 
     _removeAllNonServiceTasks () {
-        this.driverTaskQueue = this.driverTaskQueue.filter(driverTask => isServiceCommand(driverTask.command));
+        this.driverTaskQueue          = this.driverTaskQueue.filter(driverTask => isServiceCommand(driverTask.command));
+        this.browserManipulationQueue = this.browserManipulationQueue.filter(manipulationTask => isServiceCommand(manipulationTask.command));
     }
 
 
@@ -261,10 +262,10 @@ export default class TestRun extends Session {
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
 
-        if (isWindowManipulationCommand(command)) {
+        if (isBrowserManipulationCommand(command)) {
             this.browserManipulationQueue.push(command);
 
-            return this.executeCommand(new PrepareBrowserManipulationCommand());
+            return this.executeCommand(new PrepareBrowserManipulationCommand(command.type), callsite);
         }
 
         if (command.type === COMMAND_TYPE.wait)
