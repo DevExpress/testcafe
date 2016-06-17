@@ -21,5 +21,14 @@
         window.clickOffset = { x: e.pageX - rect.left, y: e.pageY - rect.top };
     });
 </script>
+<div id="status"></div>
+<input id="statusBtn" type="button">
+<script>
+    document.querySelector('#statusBtn').addEventListener('click', function () {
+        var status = document.querySelector('#status');
+
+        status.textContent = 'Clicked!';
+    });
+</script>
 </body>
 </html>
