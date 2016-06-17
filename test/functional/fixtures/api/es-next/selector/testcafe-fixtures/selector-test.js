@@ -237,3 +237,7 @@ test('Timeout', async () => {
 
     expect(el).to.be.a.null;
 });
+
+test('Return non-DOM node', async () => {
+    await Selector(() => 'hey')();
+});

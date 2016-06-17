@@ -44,6 +44,7 @@ var MissingAwaitError                                  = require('../../lib/erro
 var ExternalAssertionLibraryError                      = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
 var RegeneratorInFunctionArgumentOfClientFunctionError = require('../../lib/errors/test-run').RegeneratorInFunctionArgumentOfClientFunctionError;
 var DomNodeClientFunctionResultError                   = require('../../lib/errors/test-run').DomNodeClientFunctionResultError;
+var NonDomNodeSelectorResultError                      = require('../../lib/errors/test-run').NonDomNodeSelectorResultError;
 
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
@@ -255,6 +256,10 @@ describe('Error formatting', function () {
 
         it('Should format "domNodeClientFunctionResultError"', function () {
             assertErrorMessage('dom-node-client-function-result-error', new DomNodeClientFunctionResultError('ClientFunction'));
+        });
+
+        it('Should format "nonDomNodeSelectorResultError"', function () {
+            assertErrorMessage('non-dom-node-selector-result-error', new NonDomNodeSelectorResultError('Selector'));
         });
     });
 

@@ -67,18 +67,15 @@ describe('[API] t.click()', function () {
     });
 
     it('Should click at the center of the target if offset options are not specified', function () {
-        return runTests('./testcafe-fixtures/click-test.js', 'Click without offset options', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/click-test.js', 'Click without offset options');
     });
 
     it('Should accept function as selector', function () {
-        return runTests('./testcafe-fixtures/click-test.js', 'Function as selector', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/click-test.js', 'Function as selector');
     });
 
     it('Should handle error in selector', function () {
-        return runTests('./testcafe-fixtures/click-test.js', 'Error in selector', {
-            shouldFail: true,
-            only:       'chrome'
-        })
+        return runTests('./testcafe-fixtures/click-test.js', 'Error in selector', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('An error occurred in Selector code:  Error: yo');
                 expect(errs[0]).to.contains('> 43 |    await t.click(() => {');

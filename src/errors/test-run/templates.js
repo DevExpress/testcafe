@@ -238,6 +238,12 @@ export default {
        ${err.getCallsiteMarkup()}
     `),
 
+    [TYPE.nonDomNodeSelectorResultError]: err => markup(err, `
+        <code>${err.instantiationCallsiteName}</code> can only return a DOM node, <code>null</code> or <code>undefined</code>. Use ClientFunction to return other values.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
     [TYPE.actionSelectorError]: err => markup(err, `
         Action <code>selector</code> error:
 

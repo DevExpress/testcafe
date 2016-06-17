@@ -51,6 +51,14 @@ describe('[API] Selector', function () {
                 });
         });
 
+        it('Should raise error if non-DOM node returned', function () {
+            return runTests('./testcafe-fixtures/selector-test.js', 'Return non-DOM node', { shouldFail: true })
+                .catch(function (errs) {
+                    expect(errs[0]).contains('Selector can only return a DOM node, null or undefined. Use ClientFunction to return other values.');
+                    expect(errs[0]).contains("> 242 |    await Selector(() => 'hey')();");
+                });
+        });
+
         it('Should raise an error if Selector ctor argument is not a function or string', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Selector fn is not a function or string', {
                 shouldFail: true,

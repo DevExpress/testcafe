@@ -3,9 +3,13 @@ import { delay, positionUtils } from '../../deps/testcafe-core';
 import { ProgressPanel } from '../../deps/testcafe-ui';
 import ClientFunctionExecutor from './client-function-executor';
 import { createReplicator, FunctionTransform, SelectorNodeTransform } from './replicator';
+import { NonDomNodeSelectorResultError } from '../../../../errors/test-run';
 
 const CHECK_ELEMENT_DELAY = 200;
 const PROGRESS_PANEL_TEXT = 'Waiting for an element to appear';
+
+// NOTE: save original ctor because it may be overwritten by page code
+var Node = window.Node;
 
 function exists (el) {
     return !!el;
@@ -53,7 +57,12 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
 
         return Promise.resolve()
             .then(() => fn.apply(window, args))
-            .then(el => this._checkElement(el, startTime, exists, this.createNotFoundError, reCheck));
+            .then(el => {
+                if (!(el instanceof Node) && el !== null && el !== void 0)
+                    throw new NonDomNodeSelectorResultError(this.command.instantiationCallsiteName);
+
+                return this._checkElement(el, startTime, exists, this.createNotFoundError, reCheck);
+            });
     }
 
     _ensureVisible (el, startTime) {
