@@ -10,7 +10,7 @@ var ActionPositiveIntegerOptionError                   = require('../../lib/erro
 var ActionIntegerArgumentError                         = require('../../lib/errors/test-run').ActionIntegerArgumentError;
 var ActionPositiveIntegerArgumentError                 = require('../../lib/errors/test-run').ActionPositiveIntegerArgumentError;
 var ActionBooleanOptionError                           = require('../../lib/errors/test-run').ActionBooleanOptionError;
-var ActionSelectorTypeError                            = require('../../lib/errors/test-run').ActionSelectorTypeError;
+var ActionSelectorError                                = require('../../lib/errors/test-run').ActionSelectorError;
 var ActionOptionsTypeError                             = require('../../lib/errors/test-run').ActionOptionsTypeError;
 var ActionStringArgumentError                          = require('../../lib/errors/test-run').ActionStringArgumentError;
 var ActionUnsupportedUrlProtocolError                  = require('../../lib/errors/test-run').ActionUnsupportedUrlProtocolError;
@@ -105,7 +105,7 @@ function assertErrorMessage (file, err) {
 
 describe('Error formatting', function () {
     describe('Errors', function () {
-        it('Should format "ActionPositiveIntegerOptionError" message', function () {
+        it('Should format "actionPositiveIntegerOptionError" message', function () {
             assertErrorMessage('action-positive-integer-option-error', new ActionPositiveIntegerOptionError('caretPos', '-1'));
         });
 
@@ -165,8 +165,8 @@ describe('Error formatting', function () {
             assertErrorMessage('action-element-not-iframe-error', new ActionElementNotIframe());
         });
 
-        it('Should format "actionSelectorTypeError" message', function () {
-            assertErrorMessage('action-selector-type-error', new ActionSelectorTypeError(typeof 1));
+        it('Should format "actionSelectorError" message', function () {
+            assertErrorMessage('action-selector-error', new ActionSelectorError('Yo!'));
         });
 
         it('Should format "actionOptionsTypeError" message', function () {

@@ -71,12 +71,6 @@ export default {
         Uncaught ${err.objType} "${escapeHtml(err.objStr)}" was thrown. Throw <code>Error</code> instead.
     `),
 
-    [TYPE.actionSelectorTypeError]: err => markup(err, `
-        The selector is expected to be a string, but it was <code>${err.actualType}</code>.
-
-        ${err.getCallsiteMarkup()}
-    `),
-
     [TYPE.actionOptionsTypeError]: err => markup(err, `
         Action options is expected to be an object, null or undefined but it was <code>${err.actualType}</code>.
 
@@ -248,5 +242,13 @@ export default {
        <code>${err.instantiationCallsiteName}</code> cannot return DOM elements. Use <code>Selector</code> functions for this purpose.
 
        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionSelectorError]: err => markup(err, `
+          Action <code>selector</code> error:
+
+          <code>${escapeHtml(err.errMsg)}</code>
+
+          ${err.getCallsiteMarkup()}
     `)
 };

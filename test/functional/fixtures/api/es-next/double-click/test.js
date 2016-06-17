@@ -20,7 +20,7 @@ describe('[API] t.doubleClick()', function () {
     it('Should validate selector', function () {
         return runTests('./testcafe-fixtures/double-click-test.js', 'Incorrect action selector', { shouldFail: true, only: 'chrome' })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('The selector is expected to be a string, but it was object.');
+                expect(errs[0]).to.contains('Action selector error:  Selector code is expected to be specified as a function or string, but "object" was passed.');
                 expect(errs[0]).to.contains(' > 11 |    await t.doubleClick(null);');
             });
     });

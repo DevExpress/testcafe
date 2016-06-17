@@ -74,10 +74,10 @@ export class DomNodeClientFunctionResultError extends TestRunErrorBase {
 // Page errors
 //--------------------------------------------------------------------
 export class PageLoadError extends TestRunErrorBase {
-    constructor (err) {
+    constructor (errMsg) {
         super(TYPE.pageLoadError);
 
-        this.errMsg = err;
+        this.errMsg = errMsg;
     }
 }
 
@@ -207,11 +207,11 @@ export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
 
 
 // Selector errors
-export class ActionSelectorTypeError extends TestRunErrorBase {
-    constructor (actualType) {
-        super(TYPE.actionSelectorTypeError);
+export class ActionSelectorError extends TestRunErrorBase {
+    constructor (errMsg) {
+        super(TYPE.actionSelectorError);
 
-        this.actualType = actualType;
+        this.errMsg = errMsg;
     }
 }
 

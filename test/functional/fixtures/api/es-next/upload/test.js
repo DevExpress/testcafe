@@ -10,7 +10,7 @@ describe('[API] Upload', function () {
         it('Should validate the selector argument', function () {
             return runTests('./testcafe-fixtures/upload-test.js', 'Invalid selector argument (setFilesToUpload)', { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The selector is expected to be a string, but it was undefined.');
+                    expect(errs[0]).contains('Action selector error:  Selector code is expected to be specified as a function or string, but "undefined" was passed.');
                     expect(errs[0]).contains('> 28 |    await t.setFilesToUpload(void 0, \'../test-data/file1.txt\');');
                 });
         });
@@ -32,7 +32,7 @@ describe('[API] Upload', function () {
         it('Should validate the selector argument', function () {
             return runTests('./testcafe-fixtures/upload-test.js', 'Invalid selector argument (clearUpload)', { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The selector is expected to be a string, but it was object.');
+                    expect(errs[0]).contains('Action selector error:  Selector code is expected to be specified as a function or string, but "object" was passed.');
                     expect(errs[0]).contains('> 36 |    await t.clearUpload(null);');
                 });
         });

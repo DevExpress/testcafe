@@ -7,7 +7,6 @@ import {
 } from './factories';
 
 import {
-    ActionSelectorTypeError,
     ActionOptionsTypeError,
     ActionBooleanArgumentError,
     ActionStringArgumentError,
@@ -28,14 +27,6 @@ const SUPPORTED_PROTOCOL_RE = /^https?/i;
 export var integerArgument         = createIntegerValidator(ActionIntegerArgumentError);
 export var positiveIntegerArgument = createPositiveIntegerValidator(ActionPositiveIntegerArgumentError);
 export var booleanArgument         = createBooleanValidator(ActionBooleanArgumentError);
-
-
-export function selector (name, val) {
-    var type = typeof val;
-
-    if (type !== 'string')
-        throw new ActionSelectorTypeError(type);
-}
 
 export function additionalSelector (name, val) {
     var type = typeof val;

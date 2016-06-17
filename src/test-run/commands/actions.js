@@ -4,7 +4,6 @@ import Assignable from '../../utils/assignable';
 import { ClickOptions, MouseOptions, TypeOptions } from './options';
 
 import {
-    selector,
     additionalSelector,
     actionOptions,
     integerArgument,
@@ -14,23 +13,33 @@ import {
     stringOrStringArrayArgument
 } from './validations/argument';
 
+import { ActionSelectorError } from '../../errors/test-run';
+import { APIError } from '../../errors/runtime';
+
 
 // Initializers
-function initSelector (val) {
-    var factory = new SelectorFactory(val, null, { instantiation: 'Selector' });
+function initSelector (name, val) {
+    try {
+        var factory = new SelectorFactory(val, null, { instantiation: 'Selector' });
 
-    return factory.getCommand([], { visibilityCheck: true });
+        return factory.getCommand([], { visibilityCheck: true });
+    }
+    catch (err) {
+        var msg = err.constructor === APIError ? err.rawMessage : err.message;
+
+        throw new ActionSelectorError(msg);
+    }
 }
 
-function initClickOptions (val) {
+function initClickOptions (name, val) {
     return new ClickOptions(val, true);
 }
 
-function initMouseOptions (val) {
+function initMouseOptions (name, val) {
     return new MouseOptions(val, true);
 }
 
-function initTypeOptions (val) {
+function initTypeOptions (name, val) {
     return new TypeOptions(val, true);
 }
 
@@ -48,7 +57,7 @@ export class ClickCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initClickOptions, required: true }
         ];
     }
@@ -67,7 +76,7 @@ export class RightClickCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initClickOptions, required: true }
         ];
     }
@@ -86,7 +95,7 @@ export class DoubleClickCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initClickOptions, required: true }
         ];
     }
@@ -105,7 +114,7 @@ export class HoverCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initMouseOptions, required: true }
         ];
     }
@@ -125,7 +134,7 @@ export class TypeTextCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'selector', init: initSelector, required: true },
             { name: 'text', type: nonEmptyStringArgument, required: true },
             { name: 'options', type: actionOptions, init: initTypeOptions, required: true }
         ];
@@ -147,7 +156,7 @@ export class DragCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'selector', init: initSelector, required: true },
             { name: 'dragOffsetX', type: integerArgument, required: true },
             { name: 'dragOffsetY', type: integerArgument, required: true },
             { name: 'options', type: actionOptions, init: initMouseOptions, required: true }
@@ -170,7 +179,7 @@ export class DragToElementCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'selector', init: initSelector, required: true },
             { name: 'destinationSelector', type: additionalSelector, init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initMouseOptions, required: true }
         ];
@@ -191,7 +200,7 @@ export class SelectTextCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'selector', init: initSelector, required: true },
             { name: 'startPos', type: positiveIntegerArgument },
             { name: 'endPos', type: positiveIntegerArgument }
         ];
@@ -233,7 +242,7 @@ export class SelectTextAreaContentCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'selector', init: initSelector, required: true },
             { name: 'startLine', type: positiveIntegerArgument },
             { name: 'startPos', type: positiveIntegerArgument },
             { name: 'endLine', type: positiveIntegerArgument },
@@ -290,7 +299,7 @@ export class SetFilesToUploadCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', type: selector, init: initSelector, required: true },
+            { name: 'selector', init: initSelector, required: true },
             { name: 'filePath', type: stringOrStringArrayArgument, required: true }
         ];
     }
@@ -309,7 +318,7 @@ export class ClearUploadCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', type: selector, init: initSelector, required: true }
+            { name: 'selector', init: initSelector, required: true }
         ];
     }
 }

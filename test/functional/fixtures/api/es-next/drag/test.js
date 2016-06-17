@@ -14,7 +14,7 @@ describe('[API] Drag actions', function () {
         it('Should validate selector', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to offset with incorrect selector', { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('The selector is expected to be a string, but it was object.');
+                    expect(errs[0]).to.contain('Action selector error:  Selector code is expected to be specified as a function or string, but "object" was passed.');
                     expect(errs[0]).to.contain('> 14 |    await t.drag({}, 10, 20);');
                 });
         });
@@ -56,7 +56,7 @@ describe('[API] Drag actions', function () {
         it('Should validate selector', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to element with incorrect selector', { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('The selector is expected to be a string, but it was undefined.');
+                    expect(errs[0]).to.contain('Action selector error:  Selector code is expected to be specified as a function or string, but "undefined" was passed.');
                     expect(errs[0]).to.contain('> 37 |    await t.dragToElement(void 0, \'#destination-div\');');
                 });
         });

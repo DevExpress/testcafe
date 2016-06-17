@@ -49,7 +49,7 @@ describe('[API] t.click()', function () {
             only:       'chrome'
         })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('The selector is expected to be a string, but it was number.');
+                expect(errs[0]).to.contains('Action selector error:  Selector code is expected to be specified as a function or string, but "number" was passed.');
                 expect(errs[0]).to.contains(
                     '7 |    .page `http://localhost:3000/api/es-next/click/pages/index.html`;' +
                     ' 8 |' +
