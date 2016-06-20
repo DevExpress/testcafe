@@ -43,6 +43,8 @@ export default class ReporterPluginHost {
             'span step-name':  str => `"${str}"`,
             'span user-agent': str => this.chalk.gray(str),
 
+            'span subtitle': str => `- ${this.chalk.bold(str)} -\n`,
+
             'div screenshot-info': identity,
             'a screenshot-path':   str => this.chalk.underline(str),
 

@@ -7,10 +7,10 @@ function markup (err, msgMarkup) {
     var prefix = `<span class="user-agent">${err.userAgent}</span>\n`;
 
     if (err.testRunState === TEST_RUN_STATE.inBeforeEach)
-        prefix += `<strong>- Error in <code>beforeEach</code> hook -</strong>\n`;
+        prefix += `<span class="subtitle">Error in <code>beforeEach</code> hook</span>`;
 
     else if (err.testRunState === TEST_RUN_STATE.inAfterEach)
-        prefix += `<strong>- Error in <code>afterEach</code> hook -</strong>\n`;
+        prefix += `<span class="subtitle">Error in <code>afterEach</code> hook</span>`;
 
     msgMarkup = prefix + dedent(msgMarkup);
 
@@ -72,7 +72,7 @@ export default {
     `),
 
     [TYPE.actionOptionsTypeError]: err => markup(err, `
-        Action options is expected to be an object, null or undefined but it was <code>${err.actualType}</code>.
+        Action options is expected to be an object, <code>null</code> or <code>undefined</code> but it was <code>${err.actualType}</code>.
 
         ${err.getCallsiteMarkup()}
     `),
@@ -96,7 +96,7 @@ export default {
     `),
 
     [TYPE.actionStringArrayElementError]: err => markup(err, `
-        Elements of the <code>${err.argumentName}</code> argument are expected to be non-empty strings, but the element at index ${err.elementIndex} was ${err.actualValue}.
+        Elements of the <code>${err.argumentName}</code> argument are expected to be non-empty strings, but the element at index <code>${err.elementIndex}</code> was ${err.actualValue}.
 
         ${err.getCallsiteMarkup()}
     `),
