@@ -1,13 +1,13 @@
 import { isFinite } from 'lodash';
 import ClientFunctionFactory from './client-function-factory';
-import { createReplicator, FunctionTransform, SelectorNodeTransform } from './replicator';
+import { SelectorNodeTransform } from './replicator';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import { ExecuteSelectorCommand } from '../test-run/commands/observation';
 
 export default class SelectorFactory extends ClientFunctionFactory {
-    constructor (fn, dependencies, callsiteNames) {
-        super(fn, dependencies, callsiteNames);
+    constructor (fn, env, callsiteNames) {
+        super(fn, env, callsiteNames);
     }
 
     _getFnCode (fn) {
@@ -19,11 +19,12 @@ export default class SelectorFactory extends ClientFunctionFactory {
         return fnType === 'string' ? `function(){return document.querySelector('${fn}');}` : fn.toString();
     }
 
-    _createExecutionTestRunCommand (args, options) {
+    _createExecutionTestRunCommand (args, env, options) {
         return new ExecuteSelectorCommand({
             instantiationCallsiteName: this.callsiteNames.instantiation,
             fnCode:                    this.compiledFnCode,
             args:                      args,
+            env:                       env,
             visibilityCheck:           !!options.visibilityCheck,
             timeout:                   options.timeout
         });
@@ -47,10 +48,11 @@ export default class SelectorFactory extends ClientFunctionFactory {
         }
     }
 
-    _createReplicator () {
-        return createReplicator([
-            new FunctionTransform(this.callsiteNames),
-            new SelectorNodeTransform()
-        ]);
+    _getReplicatorTransforms () {
+        var transforms = super._getReplicatorTransforms();
+
+        transforms.push(new SelectorNodeTransform());
+
+        return transforms;
     }
 }

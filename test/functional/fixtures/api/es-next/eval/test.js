@@ -17,8 +17,8 @@ describe('[API] t.eval', function () {
             });
     });
 
-    it('Should execute an anonymous client function with dependencies', function () {
-        return runTests('./testcafe-fixtures/eval-test.js', 'Eval with dependencies');
+    it('Should execute an anonymous client function with envirioment', function () {
+        return runTests('./testcafe-fixtures/eval-test.js', 'Eval with envirioment');
     });
 
     it('Should have the correct callsite if an error occurs on instantiation', function () {

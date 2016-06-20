@@ -12,7 +12,11 @@ export default class ClientFunctionExecutor {
 
     getResult () {
         return Promise.resolve()
-            .then(() => evalFunction(this.command.fnCode))
+            .then(() => {
+                var env = this.replicator.decode(this.command.env);
+
+                return evalFunction(this.command.fnCode, env);
+            })
             .then(fn => {
                 var args = this.replicator.decode(this.command.args);
 

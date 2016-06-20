@@ -1,10 +1,10 @@
 import { isNil as isNullOrUndefined } from 'lodash';
 import testRunTracker from './test-run-tracker';
-import compiledCodeSymbol from './compiled-code-symbol';
+import functionFactorySymbol from './factory-symbol';
 import { createReplicator, FunctionTransform } from './replicator';
 import { ExecuteClientFunctionCommand } from '../test-run/commands/observation';
 import TestRun from '../test-run';
-import { compileClientFunction } from '../compiler/es-next/client-functions';
+import compileClientFunction from '../compiler/es-next/compile-client-function';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import getCallsite from '../errors/get-callsite';
@@ -12,26 +12,29 @@ import getCallsite from '../errors/get-callsite';
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
 export default class ClientFunctionFactory {
-    constructor (fn, dependencies, callsiteNames) {
+    constructor (fn, env, callsiteNames) {
         this.callsiteNames = {
             instantiation: callsiteNames.instantiation,
             execution:     callsiteNames.execution || DEFAULT_EXECUTION_CALLSITE_NAME
         };
 
-        this._validateDependencies(dependencies);
-
         var fnCode = this._getFnCode(fn);
 
-        this.compiledFnCode = compileClientFunction(fnCode, dependencies || {}, this.callsiteNames.instantiation);
-        this.replicator     = this._createReplicator();
+        this._validateEnv(env);
+
+        this.env            = env;
+        this.compiledFnCode = compileClientFunction(fnCode, this.env, this.callsiteNames.instantiation, this.callsiteNames.instantiation);
+        this.replicator     = createReplicator(this._getReplicatorTransforms());
     }
 
-    _validateDependencies (dependencies) {
-        var dependenciesType = typeof dependencies;
 
-        if (dependenciesType !== 'object' && dependenciesType !== 'undefined')
-            throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionDependenciesIsNotAnObject, dependenciesType);
+    _validateEnv (env) {
+        var envType = typeof env;
+
+        if (envType !== 'object' && envType !== 'undefined')
+            throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionEnvIsNotAnObject, envType);
     }
+
 
     _resolveContextTestRun () {
         var testRunId = testRunTracker.getContextTestRunId();
@@ -44,7 +47,7 @@ export default class ClientFunctionFactory {
     }
 
     _decorateFunction (clientFn) {
-        clientFn[compiledCodeSymbol] = this.compiledFnCode;
+        clientFn[functionFactorySymbol] = this;
 
         clientFn.with = options => {
             this._validateOptions(options);
@@ -84,7 +87,9 @@ export default class ClientFunctionFactory {
     getCommand (args, options) {
         args = this.replicator.encode(args);
 
-        return this._createExecutionTestRunCommand(args, options);
+        var env = this.replicator.encode(this.env);
+
+        return this._createExecutionTestRunCommand(args, env, options);
     }
 
     // Overridable methods
@@ -114,17 +119,18 @@ export default class ClientFunctionFactory {
         return fn.toString();
     }
 
-    _createExecutionTestRunCommand (args) {
+    _createExecutionTestRunCommand (args, env) {
         return new ExecuteClientFunctionCommand({
             instantiationCallsiteName: this.callsiteNames.instantiation,
             fnCode:                    this.compiledFnCode,
-            args:                      args
+            args:                      args,
+            env:                       env
         });
     }
 
-    _createReplicator () {
-        return createReplicator([
+    _getReplicatorTransforms () {
+        return [
             new FunctionTransform(this.callsiteNames)
-        ]);
+        ];
     }
 }

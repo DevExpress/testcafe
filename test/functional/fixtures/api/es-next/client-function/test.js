@@ -37,8 +37,8 @@ describe('[API] ClientFunction', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Babel artifacts polyfills');
     });
 
-    it('Should execute ClientFunction with dependencies', function () {
-        return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction dependencies');
+    it('Should execute ClientFunction with envirioment', function () {
+        return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction with envirioment');
     });
 
     it('Should accept complex argument types', function () {
@@ -108,7 +108,7 @@ describe('[API] ClientFunction', function () {
                 only:       'chrome'
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
-                    'ClientFunction code cannot contain generators or `async/await` syntax (use Promises instead).'
+                    'ClientFunction code, arguments or envirioment variables cannot contain generators or `async/await` syntax (use Promises instead).'
                 )).eql(0);
 
                 expect(errs[0]).contains('> 51 |    ClientFunction(async () => Promise.resolve());');
@@ -121,7 +121,7 @@ describe('[API] ClientFunction', function () {
                 only:       'chrome'
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
-                    'ClientFunction code cannot contain generators or `async/await` syntax (use Promises instead).'
+                    'ClientFunction code, arguments or envirioment variables cannot contain generators or `async/await` syntax (use Promises instead).'
                 )).eql(0);
 
                 expect(errs[0]).contains('> 55 |    ClientFunction(function*() { ');
@@ -156,8 +156,7 @@ describe('[API] ClientFunction', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'ClientFunction argument is a function that contains either generators or the async/await syntax. ' +
-                        'These features cannot be used in ClientFunction code. Use Promises instead.'
+                        'ClientFunction code, arguments or envirioment variables cannot contain generators or `async/await` syntax (use Promises instead).'
                     );
                     expect(errs[0]).contains(' > 202 |    await hfn(async () => Promise.resolve());');
                 });

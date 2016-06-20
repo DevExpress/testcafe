@@ -228,12 +228,6 @@ export default {
         ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.regeneratorInFunctionArgumentOfClientFunctionError]: err => markup(err, `
-        <code>${err.instantiationCallsiteName}</code> argument is a function that contains either generators or the <code>async/await</code> syntax. These features cannot be used in <code>${err.instantiationCallsiteName}</code> code. Use Promises instead.
-
-        ${err.getCallsiteMarkup()}
-    `),
-
     [TYPE.domNodeClientFunctionResultError]: err => markup(err, `
        <code>${err.instantiationCallsiteName}</code> cannot return DOM elements. Use <code>Selector</code> functions for this purpose.
 

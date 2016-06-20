@@ -295,8 +295,8 @@ gulp.task('update-greenkeeper', function () {
         });
 });
 
-
-gulp.task('build', ['lint', 'update-greenkeeper', 'server-scripts', 'client-scripts', 'styles', 'images', 'templates']);
+gulp.task('fast-build', ['server-scripts', 'client-scripts', 'styles', 'images', 'templates']);
+gulp.task('build', ['update-greenkeeper', 'lint', 'fast-build']);
 
 // Test
 gulp.task('test-server', ['build'], function () {

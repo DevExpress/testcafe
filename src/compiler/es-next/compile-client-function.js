@@ -2,11 +2,8 @@ import hammerhead from 'testcafe-hammerhead';
 import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
 import { noop, escapeRegExp as escapeRe } from 'lodash';
 import loadBabelLibs from './load-babel-libs';
-import compiledCodeSymbol from '../../client-functions/compiled-code-symbol';
 import NODE_VER from '../../utils/node-version';
 import { ClientFunctionAPIError } from '../../errors/runtime';
-import getCallsite from '../../errors/get-callsite';
-import { RegeneratorInFunctionArgumentOfClientFunctionError } from '../../errors/test-run';
 import MESSAGE from '../../errors/runtime/message';
 
 const ANONYMOUS_FN_RE                = /^function\*?\s*\(/;
@@ -77,7 +74,7 @@ function downgradeES (fnCode) {
         .trim();
 }
 
-function addBabelArtifactsPolyfills (fnCode) {
+function addBabelArtifactsPolyfills (fnCode, envDefinitionsCode) {
     var modifiedFnCode = fnCode;
 
     var polyfills = Object
@@ -95,25 +92,20 @@ function addBabelArtifactsPolyfills (fnCode) {
             return polyfillsCode;
         }, '');
 
-    return { polyfills, modifiedFnCode };
+    return `(function(){${envDefinitionsCode}${polyfills} return ${modifiedFnCode}})();`;
 }
 
-function getDependenciesCode (dependencies, instantiationCallsiteName) {
+function getEnvDefinitionsCode (env) {
     return Object
-        .keys(dependencies)
+        .keys(env)
         .reduce((code, name) => {
-            var dependencyCode = dependencies[name][compiledCodeSymbol];
-
-            if (!dependencyCode)
-                throw new ClientFunctionAPIError(instantiationCallsiteName, instantiationCallsiteName, MESSAGE.clientFunctionDependencyIsNotAClientFunction, name);
-
-            return code + `var ${name}=${dependencyCode}`;
+            return code + `var ${name}=env['${name}'];`;
         }, '');
 }
 
-function compile (fnCode, dependenciesCode, createRegeneratorInClientCodeError) {
+export default function compileClientFunction (fnCode, env, instantiationCallsiteName, compilationCallsiteName) {
     if (fnCode === ASYNC_TO_GENERATOR_OUTPUT_CODE)
-        throw createRegeneratorInClientCodeError();
+        throw new ClientFunctionAPIError(compilationCallsiteName, instantiationCallsiteName, MESSAGE.regeneratorInClientFunctionCode);
 
     if (ANONYMOUS_FN_RE.test(fnCode))
         fnCode = `(${fnCode})`;
@@ -127,28 +119,12 @@ function compile (fnCode, dependenciesCode, createRegeneratorInClientCodeError) 
     // NOTE: check compiled code for regenerator injection: we have either generator
     // recompiled in Node.js 4+ for client or async function declared in function code.
     if (REGENERATOR_FOOTPRINTS_RE.test(fnCode))
-        throw createRegeneratorInClientCodeError();
+        throw new ClientFunctionAPIError(compilationCallsiteName, instantiationCallsiteName, MESSAGE.regeneratorInClientFunctionCode);
 
     if (!TRAILING_SEMICOLON_RE.test(fnCode))
         fnCode += ';';
 
-    var { polyfills, modifiedFnCode } = addBabelArtifactsPolyfills(fnCode);
+    var envDefinitionsCode = env ? getEnvDefinitionsCode(env) : '';
 
-    return `(function(){${dependenciesCode}${polyfills} return ${modifiedFnCode}})();`;
-}
-
-export function compileFunctionArgumentOfClientFunction (argumentFnCode, callsiteNames) {
-    // NOTE: it is safe to use a test run error here, because this code
-    // will be hit only if the context test run has already been validated.
-    var callsite                           = getCallsite(callsiteNames.execution);
-    var createRegeneratorInClientCodeError = () => new RegeneratorInFunctionArgumentOfClientFunctionError(callsiteNames.instantiation, callsite);
-
-    return compile(argumentFnCode, '', createRegeneratorInClientCodeError);
-}
-
-export function compileClientFunction (fnCode, dependencies = {}, instantiationCallsiteName) {
-    var dependenciesCode                   = getDependenciesCode(dependencies, instantiationCallsiteName);
-    var createRegeneratorInClientCodeError = () => new ClientFunctionAPIError(instantiationCallsiteName, instantiationCallsiteName, MESSAGE.regeneratorInClientFunctionCode);
-
-    return compile(fnCode, dependenciesCode, createRegeneratorInClientCodeError);
+    return addBabelArtifactsPolyfills(fnCode, envDefinitionsCode);
 }
