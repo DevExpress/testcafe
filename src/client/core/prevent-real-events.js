@@ -29,13 +29,13 @@ function checkBrowserHotkey (e) {
 function preventRealEventHandler (e, dispatched, preventDefault, cancelHandlers, stopEventPropagation) {
     var target = e.target || e.srcElement;
 
-    // NOTE: this will allow pressing hotkeys to open developer tools.
-    if (/^key/.test(e.type) && checkBrowserHotkey(e)) {
-        stopEventPropagation();
-        return;
-    }
-
     if (!dispatched && !isShadowUIElement(target)) {
+        // NOTE: this will allow pressing hotkeys to open developer tools.
+        if (/^key/.test(e.type) && checkBrowserHotkey(e)) {
+            stopEventPropagation();
+            return;
+        }
+
         // NOTE: if an element loses focus because of becoming invisible, the blur event is
         // raised. We must not prevent this blur event. In IE, an element loses focus only
         // if the CSS 'display' property is set to 'none', other ways of making an element
