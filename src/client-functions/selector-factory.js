@@ -6,8 +6,8 @@ import MESSAGE from '../errors/runtime/message';
 import { ExecuteSelectorCommand } from '../test-run/commands/observation';
 
 export default class SelectorFactory extends ClientFunctionFactory {
-    constructor (fn, dependencies, boundTestRun, callsiteNames) {
-        super(fn, dependencies, boundTestRun, callsiteNames);
+    constructor (fn, dependencies, callsiteNames) {
+        super(fn, dependencies, callsiteNames);
     }
 
     _getFnCode (fn) {
