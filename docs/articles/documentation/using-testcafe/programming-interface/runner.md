@@ -7,7 +7,7 @@ permalink: /documentation/using-testcafe/programming-interface/runner.html
 
 An object that configures and launches test runs.
 
-Created by the [testCafe.createRunner](testcafe.md#createRunner) function.
+Created by the [testCafe.createRunner](testcafe.md#createrunner) function.
 
 **Example**
 

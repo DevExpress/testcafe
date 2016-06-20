@@ -1,5 +1,4 @@
 var babel        = require('babel-core');
-var blc          = require('broken-link-checker');
 var gulp         = require('gulp');
 var gulpBabel    = require('gulp-babel');
 var less         = require('gulp-less');
@@ -169,7 +168,8 @@ gulp.task('lint', ['lint-client'], function () {
             'test/server/**.js',
             'test/functional/**/*.js',
             'test/report-design-viewer/*.js',
-            'Gulpfile.js'
+            'Gulpfile.js',
+            'test/website/**/*.js'
         ])
         .pipe(eslint())
         .pipe(eslint.format())
@@ -361,35 +361,35 @@ gulp.task('lint-docs', function () {
 });
 
 gulp.task('clean-website', function () {
-    return del('website');
+    return del('site');
 });
 
 gulp.task('fetch-assets-repo', ['clean-website'], function (cb) {
-    git.clone('https://github.com/DevExpress/testcafe-gh-page-assets.git', { args: 'website' }, cb);
+    git.clone('https://github.com/DevExpress/testcafe-gh-page-assets.git', { args: 'site' }, cb);
 });
 
 gulp.task('put-in-articles', ['fetch-assets-repo'], function () {
     return gulp
         .src('docs/articles/**/*')
-        .pipe(gulp.dest('website/src'));
+        .pipe(gulp.dest('site/src'));
 });
 
 gulp.task('put-in-navigation', ['fetch-assets-repo'], function () {
     return gulp
         .src('docs/nav/**/*')
-        .pipe(gulp.dest('website/src/_data'));
+        .pipe(gulp.dest('site/src/_data'));
 });
 
 gulp.task('prepare-website', ['put-in-articles', 'put-in-navigation', 'lint-docs']);
 
 gulp.task('build-website', ['prepare-website'], function (cb) {
-    spawn('jekyll', ['build', '--source', 'website/src/', '--destination', 'website/deploy'], { stdio: 'inherit' })
+    spawn('jekyll', ['build', '--source', 'site/src/', '--destination', 'site/deploy'], { stdio: 'inherit' })
         .on('exit', cb);
 });
 
 gulp.task('serve-website', ['build-website'], function (cb) {
     var app = connect()
-        .use('/testcafe', serveStatic('website/deploy'));
+        .use('/testcafe', serveStatic('site/deploy'));
 
     websiteServer = app.listen(8080, cb);
 });
@@ -398,42 +398,27 @@ gulp.task('preview-website', ['serve-website'], function () {
     opn('http://localhost:8080/testcafe');
 });
 
-gulp.task('test-website', ['serve-website'], function (cb) {
-    var fail        = false;
-    var brokenLinks = [];
+gulp.task('test-website', ['serve-website'], function () {
+    var WebsiteTester = require('./test/website/test.js');
+    var websiteTester = new WebsiteTester();
 
-    var siteChecker = new blc.SiteChecker({ excludeLinksToSamePage: false }, {
-        link: function (result) {
-            if (result.broken) {
-                brokenLinks.push(result.url.resolved ? result.url.resolved : result.url.original);
-                fail = true;
-            }
-        },
-        page: function (error, pageUrl) {
-            if (brokenLinks.length) {
-                util.log('URL: ' + pageUrl);
-                util.log(util.colors.red('Broken links:'));
-
-                while (brokenLinks.length)
-                    util.log(util.colors.red(brokenLinks.shift()));
-
-                util.log();
-            }
-        },
-
-        end: function () {
-            websiteServer.close(function () {
-                cb(fail ? 'Broken links found!' : void 0);
+    return websiteTester
+        .checkLinks()
+        .then(function (failed) {
+            return new Promise(function (resolve, reject) {
+                websiteServer.close(function () {
+                    if (failed)
+                        reject('Broken links found!');
+                    else
+                        resolve();
+                });
             });
-        }
-    });
-
-    siteChecker.enqueue('http://localhost:8080/testcafe');
+        });
 });
 
 gulp.task('publish-website', ['build-website'], function () {
     return gulp
-        .src('website/deploy/**/*')
+        .src('site/deploy/**/*')
         .pipe(prompt.confirm({
             message: 'Are you sure you want to publish the website?',
             default: false
