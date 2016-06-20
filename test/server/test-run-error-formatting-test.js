@@ -10,13 +10,13 @@ var ActionPositiveIntegerOptionError                   = require('../../lib/erro
 var ActionIntegerArgumentError                         = require('../../lib/errors/test-run').ActionIntegerArgumentError;
 var ActionPositiveIntegerArgumentError                 = require('../../lib/errors/test-run').ActionPositiveIntegerArgumentError;
 var ActionBooleanOptionError                           = require('../../lib/errors/test-run').ActionBooleanOptionError;
-var ActionSelectorTypeError                            = require('../../lib/errors/test-run').ActionSelectorTypeError;
+var ActionSelectorError                                = require('../../lib/errors/test-run').ActionSelectorError;
 var ActionOptionsTypeError                             = require('../../lib/errors/test-run').ActionOptionsTypeError;
 var ActionStringArgumentError                          = require('../../lib/errors/test-run').ActionStringArgumentError;
 var ActionUnsupportedUrlProtocolError                  = require('../../lib/errors/test-run').ActionUnsupportedUrlProtocolError;
 var ActionStringOrStringArrayArgumentError             = require('../../lib/errors/test-run').ActionStringOrStringArrayArgumentError;
 var ActionStringArrayElementError                      = require('../../lib/errors/test-run').ActionStringArrayElementError;
-var ActionAdditionalSelectorTypeError                  = require('../../lib/errors/test-run').ActionAdditionalSelectorTypeError;
+var ActionAdditionalSelectorError                      = require('../../lib/errors/test-run').ActionAdditionalSelectorError;
 var PageLoadError                                      = require('../../lib/errors/test-run').PageLoadError;
 var UncaughtErrorOnPage                                = require('../../lib/errors/test-run').UncaughtErrorOnPage;
 var UncaughtErrorInTestCode                            = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
@@ -44,6 +44,7 @@ var MissingAwaitError                                  = require('../../lib/erro
 var ExternalAssertionLibraryError                      = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
 var RegeneratorInFunctionArgumentOfClientFunctionError = require('../../lib/errors/test-run').RegeneratorInFunctionArgumentOfClientFunctionError;
 var DomNodeClientFunctionResultError                   = require('../../lib/errors/test-run').DomNodeClientFunctionResultError;
+var NonDomNodeSelectorResultError                      = require('../../lib/errors/test-run').NonDomNodeSelectorResultError;
 
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
@@ -105,7 +106,7 @@ function assertErrorMessage (file, err) {
 
 describe('Error formatting', function () {
     describe('Errors', function () {
-        it('Should format "ActionPositiveIntegerOptionError" message', function () {
+        it('Should format "actionPositiveIntegerOptionError" message', function () {
             assertErrorMessage('action-positive-integer-option-error', new ActionPositiveIntegerOptionError('caretPos', '-1'));
         });
 
@@ -165,16 +166,16 @@ describe('Error formatting', function () {
             assertErrorMessage('action-element-not-iframe-error', new ActionElementNotIframe());
         });
 
-        it('Should format "actionSelectorTypeError" message', function () {
-            assertErrorMessage('action-selector-type-error', new ActionSelectorTypeError(typeof 1));
+        it('Should format "actionSelectorError" message', function () {
+            assertErrorMessage('action-selector-error', new ActionSelectorError('Yo!'));
         });
 
         it('Should format "actionOptionsTypeError" message', function () {
             assertErrorMessage('action-options-type-error', new ActionOptionsTypeError(typeof 1));
         });
 
-        it('Should format "actionAdditionalSelectorTypeError" message', function () {
-            assertErrorMessage('action-additional-selector-type-error', new ActionAdditionalSelectorTypeError('startSelector', typeof 1));
+        it('Should format "actionAdditionalSelectorError" message', function () {
+            assertErrorMessage('action-additional-selector-error', new ActionAdditionalSelectorError('startSelector', 'Yo!'));
         });
 
         it('Should format "actionAdditionalElementNotFoundError" message', function () {
@@ -255,6 +256,10 @@ describe('Error formatting', function () {
 
         it('Should format "domNodeClientFunctionResultError"', function () {
             assertErrorMessage('dom-node-client-function-result-error', new DomNodeClientFunctionResultError('ClientFunction'));
+        });
+
+        it('Should format "nonDomNodeSelectorResultError"', function () {
+            assertErrorMessage('non-dom-node-selector-result-error', new NonDomNodeSelectorResultError('Selector'));
         });
     });
 

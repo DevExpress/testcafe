@@ -10,7 +10,7 @@ import {
 } from './validations/argument';
 
 
-function initResizeToFitDeviceOptions (val) {
+function initResizeToFitDeviceOptions (name, val) {
     return new ResizeToFitDeviceOptions(val, true);
 }
 

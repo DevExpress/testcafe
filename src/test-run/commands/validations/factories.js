@@ -23,7 +23,7 @@ export function createPositiveIntegerValidator (ErrorCtor) {
     var integerValidator = createIntegerValidator(ErrorCtor);
 
     return (name, val) => {
-        integerValidator(name, val, ErrorCtor);
+        integerValidator(name, val);
 
         if (val < 0)
             throw new ErrorCtor(name, val);

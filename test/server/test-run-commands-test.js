@@ -881,8 +881,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'undefined',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "undefined" was passed.',
                     callsite:        null
                 }
             );
@@ -896,8 +896,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'number',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "number" was passed.',
                     callsite:        null
                 }
             );
@@ -966,8 +966,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'undefined',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "undefined" was passed.',
                     callsite:        null
                 }
             );
@@ -981,8 +981,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'boolean',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "boolean" was passed.',
                     callsite:        null
                 }
             );
@@ -1053,8 +1053,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'undefined',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "undefined" was passed.',
                     callsite:        null
                 }
             );
@@ -1068,8 +1068,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'boolean',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "boolean" was passed.',
                     callsite:        null
                 }
             );
@@ -1119,8 +1119,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'undefined',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "undefined" was passed.',
                     callsite:        null
                 }
             );
@@ -1134,8 +1134,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'number',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "number" was passed.',
                     callsite:        null
                 }
             );
@@ -1204,8 +1204,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'undefined',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "undefined" was passed.',
                     callsite:        null
                 }
             );
@@ -1219,8 +1219,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'number',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "number" was passed.',
                     callsite:        null
                 }
             );
@@ -1304,8 +1304,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'undefined',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "undefined" was passed.',
                     callsite:        null
                 }
             );
@@ -1319,8 +1319,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'number',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "number" was passed.',
                     callsite:        null
                 }
             );
@@ -1334,9 +1334,9 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
-                    argumentName:    'destinationSelector',
-                    actualType:      'undefined',
+                    type:            ERROR_TYPE.actionAdditionalSelectorError,
+                    selectorName:    'destinationSelector',
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "undefined" was passed.',
                     callsite:        null
                 }
             );
@@ -1351,9 +1351,9 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
-                    argumentName:    'destinationSelector',
-                    actualType:      'number',
+                    type:            ERROR_TYPE.actionAdditionalSelectorError,
+                    selectorName:    'destinationSelector',
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "number" was passed.',
                     callsite:        null
                 }
             );
@@ -1385,8 +1385,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'undefined',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "undefined" was passed.',
                     callsite:        null
                 }
             );
@@ -1400,8 +1400,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'number',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "number" was passed.',
                     callsite:        null
                 }
             );
@@ -1523,8 +1523,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'undefined',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "undefined" was passed.',
                     callsite:        null
                 }
             );
@@ -1538,8 +1538,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'object',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "object" was passed.',
                     callsite:        null
                 }
             );
@@ -1622,8 +1622,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'undefined',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "undefined" was passed.',
                     callsite:        null
                 }
             );
@@ -1637,8 +1637,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'object',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "object" was passed.',
                     callsite:        null
                 }
             );
@@ -1721,9 +1721,9 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
-                    argumentName:    'startSelector',
-                    actualType:      'undefined',
+                    type:            ERROR_TYPE.actionAdditionalSelectorError,
+                    selectorName:    'startSelector',
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "undefined" was passed.',
                     callsite:        null
                 }
             );
@@ -1737,9 +1737,9 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
-                    argumentName:    'startSelector',
-                    actualType:      'number',
+                    type:            ERROR_TYPE.actionAdditionalSelectorError,
+                    selectorName:    'startSelector',
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "number" was passed.',
                     callsite:        null
                 }
             );
@@ -1754,9 +1754,9 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionAdditionalSelectorTypeError,
-                    argumentName:    'endSelector',
-                    actualType:      'boolean',
+                    type:            ERROR_TYPE.actionAdditionalSelectorError,
+                    selectorName:    'endSelector',
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "boolean" was passed.',
                     callsite:        null
                 }
             );
@@ -1918,8 +1918,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'undefined',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "undefined" was passed.',
                     callsite:        null
                 }
             );
@@ -1933,8 +1933,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'number',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "number" was passed.',
                     callsite:        null
                 }
             );
@@ -2069,8 +2069,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'undefined',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "undefined" was passed.',
                     callsite:        null
                 }
             );
@@ -2084,8 +2084,8 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionSelectorTypeError,
-                    actualType:      'number',
+                    type:            ERROR_TYPE.actionSelectorError,
+                    errMsg:          'Selector code is expected to be specified as a function or string, but "number" was passed.',
                     callsite:        null
                 }
             );

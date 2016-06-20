@@ -7,13 +7,11 @@ import {
 } from './factories';
 
 import {
-    ActionSelectorTypeError,
     ActionOptionsTypeError,
     ActionBooleanArgumentError,
     ActionStringArgumentError,
     ActionIntegerArgumentError,
     ActionPositiveIntegerArgumentError,
-    ActionAdditionalSelectorTypeError,
     ActionUnsupportedUrlProtocolError,
     ActionStringOrStringArrayArgumentError,
     ActionStringArrayElementError,
@@ -29,20 +27,6 @@ export var integerArgument         = createIntegerValidator(ActionIntegerArgumen
 export var positiveIntegerArgument = createPositiveIntegerValidator(ActionPositiveIntegerArgumentError);
 export var booleanArgument         = createBooleanValidator(ActionBooleanArgumentError);
 
-
-export function selector (name, val) {
-    var type = typeof val;
-
-    if (type !== 'string')
-        throw new ActionSelectorTypeError(type);
-}
-
-export function additionalSelector (name, val) {
-    var type = typeof val;
-
-    if (type !== 'string')
-        throw new ActionAdditionalSelectorTypeError(name, type);
-}
 
 export function actionOptions (name, val) {
     var type = typeof val;

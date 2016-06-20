@@ -29,3 +29,18 @@ test('Click without offset options', async t=> {
     expect(actualClickOffset.x).eql(expectedClickOffset.x);
     expect(actualClickOffset.y).eql(expectedClickOffset.y);
 });
+
+test('Function as selector', async t => {
+    const isStatusBtnClicked = ClientFunction(() => document.querySelector('#status').textContent === 'Clicked!');
+
+    await t.click(() => document.querySelector('#statusBtn'));
+
+    expect(await isStatusBtnClicked()).to.be.true;
+});
+
+
+test('Error in selector', async t => {
+    await t.click(() => {
+        throw new Error('yo');
+    });
+});

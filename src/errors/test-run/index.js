@@ -70,14 +70,24 @@ export class DomNodeClientFunctionResultError extends TestRunErrorBase {
     }
 }
 
+// Selector errors
+//--------------------------------------------------------------------
+export class NonDomNodeSelectorResultError extends TestRunErrorBase {
+    constructor (instantiationCallsiteName) {
+        super(TYPE.nonDomNodeSelectorResultError);
+
+        this.instantiationCallsiteName = instantiationCallsiteName;
+    }
+}
+
 
 // Page errors
 //--------------------------------------------------------------------
 export class PageLoadError extends TestRunErrorBase {
-    constructor (err) {
+    constructor (errMsg) {
         super(TYPE.pageLoadError);
 
-        this.errMsg = err;
+        this.errMsg = errMsg;
     }
 }
 
@@ -207,20 +217,20 @@ export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
 
 
 // Selector errors
-export class ActionSelectorTypeError extends TestRunErrorBase {
-    constructor (actualType) {
-        super(TYPE.actionSelectorTypeError);
+export class ActionSelectorError extends TestRunErrorBase {
+    constructor (errMsg) {
+        super(TYPE.actionSelectorError);
 
-        this.actualType = actualType;
+        this.errMsg = errMsg;
     }
 }
 
-export class ActionAdditionalSelectorTypeError extends TestRunErrorBase {
-    constructor (argumentName, actualType) {
-        super(TYPE.actionAdditionalSelectorTypeError);
+export class ActionAdditionalSelectorError extends TestRunErrorBase {
+    constructor (selectorName, errMsg) {
+        super(TYPE.actionAdditionalSelectorError);
 
-        this.argumentName = argumentName;
-        this.actualType   = actualType;
+        this.selectorName = selectorName;
+        this.errMsg       = errMsg;
     }
 }
 

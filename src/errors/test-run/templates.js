@@ -71,20 +71,8 @@ export default {
         Uncaught ${err.objType} "${escapeHtml(err.objStr)}" was thrown. Throw <code>Error</code> instead.
     `),
 
-    [TYPE.actionSelectorTypeError]: err => markup(err, `
-        The selector is expected to be a string, but it was <code>${err.actualType}</code>.
-
-        ${err.getCallsiteMarkup()}
-    `),
-
     [TYPE.actionOptionsTypeError]: err => markup(err, `
         Action options is expected to be an object, null or undefined but it was <code>${err.actualType}</code>.
-
-        ${err.getCallsiteMarkup()}
-    `),
-
-    [TYPE.actionAdditionalSelectorTypeError]: err => markup(err, `
-        The <code>${err.argumentName}</code> argument is expected to be a string, but it was <code>${err.actualType}</code>.
 
         ${err.getCallsiteMarkup()}
     `),
@@ -248,5 +236,27 @@ export default {
        <code>${err.instantiationCallsiteName}</code> cannot return DOM elements. Use <code>Selector</code> functions for this purpose.
 
        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.nonDomNodeSelectorResultError]: err => markup(err, `
+        <code>${err.instantiationCallsiteName}</code> can only return a DOM node, <code>null</code> or <code>undefined</code>. Use ClientFunction to return other values.
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionSelectorError]: err => markup(err, `
+        Action <code>selector</code> error:
+
+        <code>${escapeHtml(err.errMsg)}</code>
+
+        ${err.getCallsiteMarkup()}
+    `),
+
+    [TYPE.actionAdditionalSelectorError]: err => markup(err, `
+        Action <code>${err.selectorName}</code> error:
+
+        <code>${escapeHtml(err.errMsg)}</code>
+
+        ${err.getCallsiteMarkup()}
     `)
 };

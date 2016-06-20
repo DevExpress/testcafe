@@ -26,7 +26,7 @@ describe('[API] t.typeText()', function () {
     it('Should validate selector', function () {
         return runTests('./testcafe-fixtures/type-test.js', 'Incorrect action selector', { shouldFail: true, only: 'chrome' })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('The selector is expected to be a string, but it was number.');
+                expect(errs[0]).to.contains('Action selector error:  Selector code is expected to be specified as a function or string, but "number" was passed.');
                 expect(errs[0]).to.contains('> 19 |    await t.typeText(NaN, \'a\');');
             });
     });
