@@ -12,7 +12,6 @@ hhsettings.serviceMsgUrl = '/ping/10';
 // https://github.com/DevExpress/testcafe/issues/471#issuecomment-220386269.
 if (browserUtils.isAndroid) {
     RunnerBase.prototype._initNativeDialogs = function () {
-
     };
 }
 
