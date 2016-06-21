@@ -14,7 +14,7 @@ const INTERNAL = 'internal/';
 function isAssertionErrorCallsiteFrame (frame) {
     var filename = frame.getFileName();
 
-    // NOTE: filter node and assertion libraries internals
+    // NOTE: filter out the internals of node.js and assertion libraries
     return filename &&
            filename.indexOf(sep) > -1 &&
            filename.indexOf(INTERNAL) !== 0 &&
