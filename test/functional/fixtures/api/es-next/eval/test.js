@@ -17,8 +17,8 @@ describe('[API] t.eval', function () {
             });
     });
 
-    it('Should execute an anonymous client function with envirioment', function () {
-        return runTests('./testcafe-fixtures/eval-test.js', 'Eval with envirioment');
+    it('Should execute an anonymous client function with scope vars', function () {
+        return runTests('./testcafe-fixtures/eval-test.js', 'Eval with scope vars');
     });
 
     it('Should have the correct callsite if an error occurs on instantiation', function () {

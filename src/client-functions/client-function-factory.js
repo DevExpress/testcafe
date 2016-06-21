@@ -12,7 +12,7 @@ import getCallsite from '../errors/get-callsite';
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
 export default class ClientFunctionFactory {
-    constructor (fn, env, callsiteNames) {
+    constructor (fn, scopeVars, callsiteNames) {
         this.callsiteNames = {
             instantiation: callsiteNames.instantiation,
             execution:     callsiteNames.execution || DEFAULT_EXECUTION_CALLSITE_NAME
@@ -20,19 +20,19 @@ export default class ClientFunctionFactory {
 
         var fnCode = this._getFnCode(fn);
 
-        this._validateEnv(env);
+        this._validateScopeVars(scopeVars);
 
-        this.env            = env;
-        this.compiledFnCode = compileClientFunction(fnCode, this.env, this.callsiteNames.instantiation, this.callsiteNames.instantiation);
+        this.scopeVars      = scopeVars;
+        this.compiledFnCode = compileClientFunction(fnCode, this.scopeVars, this.callsiteNames.instantiation, this.callsiteNames.instantiation);
         this.replicator     = createReplicator(this._getReplicatorTransforms());
     }
 
 
-    _validateEnv (env) {
-        var envType = typeof env;
+    _validateScopeVars (scopeVars) {
+        var scopeVarsType = typeof scopeVars;
 
-        if (envType !== 'object' && envType !== 'undefined')
-            throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionEnvIsNotAnObject, envType);
+        if (scopeVarsType !== 'object' && scopeVarsType !== 'undefined')
+            throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionScopeVarsIsNotAnObject, scopeVarsType);
     }
 
 
@@ -57,26 +57,16 @@ export default class ClientFunctionFactory {
     }
 
     getFunction (options) {
-        options = options || {};
-
         var factory = this;
 
         var clientFn = function __$$clientFunction$$ () {
-            var testRun = options.boundTestRun || factory._resolveContextTestRun();
-            var args    = [];
+            var args = [];
 
             // OPTIMIZATION: don't leak `arguments` object.
             for (var i = 0; i < arguments.length; i++)
                 args.push(arguments[i]);
 
-            var command  = factory.getCommand(args, options);
-            var callsite = getCallsite(factory.callsiteNames.execution);
-
-            // NOTE: don't use async/await here to enable
-            // sync errors for resolving the context test run
-            return testRun
-                .executeCommand(command, callsite)
-                .then(result => factory.replicator.decode(result));
+            return factory._executeFunction(args, options || {});
         };
 
         this._decorateFunction(clientFn);
@@ -87,12 +77,24 @@ export default class ClientFunctionFactory {
     getCommand (args, options) {
         args = this.replicator.encode(args);
 
-        var env = this.replicator.encode(this.env);
+        var scopeVars = this.replicator.encode(this.scopeVars);
 
-        return this._createExecutionTestRunCommand(args, env, options);
+        return this._createExecutionTestRunCommand(args, scopeVars, options);
     }
 
     // Overridable methods
+    _executeFunction (args, options) {
+        var testRun  = options.boundTestRun || this._resolveContextTestRun();
+        var command  = this.getCommand(args, options);
+        var callsite = getCallsite(this.callsiteNames.execution);
+
+        // NOTE: don't use async/await here to enable
+        // sync errors for resolving the context test run
+        return testRun
+            .executeCommand(command, callsite)
+            .then(result => this.replicator.decode(result));
+    }
+
     _validateOptions (options) {
         var optionsType = typeof options;
 
@@ -119,12 +121,12 @@ export default class ClientFunctionFactory {
         return fn.toString();
     }
 
-    _createExecutionTestRunCommand (args, env) {
+    _createExecutionTestRunCommand (args, scopeVars) {
         return new ExecuteClientFunctionCommand({
             instantiationCallsiteName: this.callsiteNames.instantiation,
             fnCode:                    this.compiledFnCode,
             args:                      args,
-            env:                       env
+            scopeVars:                 scopeVars
         });
     }
 

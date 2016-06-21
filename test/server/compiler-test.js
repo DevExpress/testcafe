@@ -652,7 +652,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction code, arguments or envirioment variables cannot contain generators or `async/await` syntax (use Promises instead).',
+                                 'ClientFunction code, arguments or scope variables cannot contain generators or `async/await` syntax (use Promises instead).',
 
                         callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
                                   '    2 |\n' +
@@ -679,7 +679,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction code, arguments or envirioment variables cannot contain generators or `async/await` syntax (use Promises instead).',
+                                 'ClientFunction code, arguments or scope variables cannot contain generators or `async/await` syntax (use Promises instead).',
 
                         callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
                                   '    2 |\n' +
@@ -721,8 +721,8 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise an error if ClientFunction env is not an object', function () {
-            var testfile = resolve('test/server/data/test-suites/client-fn-env-not-object/testfile.js');
+        it('Should raise an error if ClientFunction "scopeVars" is not an object', function () {
+            var testfile = resolve('test/server/data/test-suites/client-fn-scope-vars-not-object/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -733,7 +733,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction "env" argument is expected to be an object, but it was "string".',
+                                 'ClientFunction "scopeVars" argument is expected to be an object, but it was "string".',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +

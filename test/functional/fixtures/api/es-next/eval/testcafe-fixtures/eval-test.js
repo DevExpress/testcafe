@@ -11,7 +11,7 @@ test('Get UA', async t => {
     throw await t.eval(() => navigator.userAgent);
 });
 
-test('Eval with envirioment', async t => {
+test('Eval with scope vars', async t => {
     const answer = await t.eval(() => getById('answer').textContent, { getById });
 
     expect(answer).eql('42');

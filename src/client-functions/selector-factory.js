@@ -6,8 +6,8 @@ import MESSAGE from '../errors/runtime/message';
 import { ExecuteSelectorCommand } from '../test-run/commands/observation';
 
 export default class SelectorFactory extends ClientFunctionFactory {
-    constructor (fn, env, callsiteNames) {
-        super(fn, env, callsiteNames);
+    constructor (fn, scopeVars, callsiteNames) {
+        super(fn, scopeVars, callsiteNames);
     }
 
     _getFnCode (fn) {
@@ -19,12 +19,12 @@ export default class SelectorFactory extends ClientFunctionFactory {
         return fnType === 'string' ? `function(){return document.querySelector('${fn}');}` : fn.toString();
     }
 
-    _createExecutionTestRunCommand (args, env, options) {
+    _createExecutionTestRunCommand (args, scopeVars, options) {
         return new ExecuteSelectorCommand({
             instantiationCallsiteName: this.callsiteNames.instantiation,
             fnCode:                    this.compiledFnCode,
             args:                      args,
-            env:                       env,
+            scopeVars:                 scopeVars,
             visibilityCheck:           !!options.visibilityCheck,
             timeout:                   options.timeout
         });

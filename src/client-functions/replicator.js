@@ -32,14 +32,14 @@ export class FunctionTransform {
 
         if (clientFnFactory) {
             return {
-                fnCode: clientFnFactory.compiledFnCode,
-                env:    clientFnFactory.env
+                fnCode:    clientFnFactory.compiledFnCode,
+                scopeVars: clientFnFactory.scopeVars
             };
         }
 
         return {
-            fnCode: compileClientFunction(fn.toString(), null, this.callsiteNames.instantiation, this.callsiteNames.execution),
-            env:    null
+            fnCode:    compileClientFunction(fn.toString(), null, this.callsiteNames.instantiation, this.callsiteNames.execution),
+            scopeVars: null
         };
     }
 

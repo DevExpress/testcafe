@@ -74,7 +74,7 @@ function downgradeES (fnCode) {
         .trim();
 }
 
-function addBabelArtifactsPolyfills (fnCode, envDefinitionsCode) {
+function addBabelArtifactsPolyfills (fnCode, scopeVarsDefinition) {
     var modifiedFnCode = fnCode;
 
     var polyfills = Object
@@ -92,18 +92,18 @@ function addBabelArtifactsPolyfills (fnCode, envDefinitionsCode) {
             return polyfillsCode;
         }, '');
 
-    return `(function(){${envDefinitionsCode}${polyfills} return ${modifiedFnCode}})();`;
+    return `(function(){${scopeVarsDefinition}${polyfills} return ${modifiedFnCode}})();`;
 }
 
-function getEnvDefinitionsCode (env) {
+function getScopeVarsDefinition (scopeVars) {
     return Object
-        .keys(env)
+        .keys(scopeVars)
         .reduce((code, name) => {
-            return code + `var ${name}=env['${name}'];`;
+            return code + `var ${name}=scopeVars['${name}'];`;
         }, '');
 }
 
-export default function compileClientFunction (fnCode, env, instantiationCallsiteName, compilationCallsiteName) {
+export default function compileClientFunction (fnCode, scopeVars, instantiationCallsiteName, compilationCallsiteName) {
     if (fnCode === ASYNC_TO_GENERATOR_OUTPUT_CODE)
         throw new ClientFunctionAPIError(compilationCallsiteName, instantiationCallsiteName, MESSAGE.regeneratorInClientFunctionCode);
 
@@ -124,7 +124,7 @@ export default function compileClientFunction (fnCode, env, instantiationCallsit
     if (!TRAILING_SEMICOLON_RE.test(fnCode))
         fnCode += ';';
 
-    var envDefinitionsCode = env ? getEnvDefinitionsCode(env) : '';
+    var scopeVarsDefinition = scopeVars ? getScopeVarsDefinition(scopeVars) : '';
 
-    return addBabelArtifactsPolyfills(fnCode, envDefinitionsCode);
+    return addBabelArtifactsPolyfills(fnCode, scopeVarsDefinition);
 }
