@@ -16,6 +16,9 @@ export default {
     },
 
     set enabled (val) {
+        if (this.isEnabled === val)
+            return;
+
         this.isEnabled = val;
 
         if (this.isEnabled) {

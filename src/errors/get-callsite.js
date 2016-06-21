@@ -7,8 +7,8 @@ export default function getCallsite (methodName, typeName) {
     var originalStackCleaningEnabled = stackCleaningHook.enabled;
     var originalStackTraceLimit      = Error.stackTraceLimit;
 
-    Error.stackTraceLimit     = STACK_TRACE_LIMIT;
     stackCleaningHook.enabled = false;
+    Error.stackTraceLimit     = STACK_TRACE_LIMIT;
 
     var callsiteRecord = createCallsiteRecord(methodName, typeName);
 
