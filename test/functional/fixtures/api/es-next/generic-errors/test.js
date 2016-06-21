@@ -44,7 +44,7 @@ describe('[API] Generic errors', function () {
             return runTests('./testcafe-fixtures/external-assertion-lib-errors-test.js', 'Built-in assertion lib error',
                 { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contains("> 11 |    assert.strictEqual(\'answer\', \'42\');");
+                    expect(errs[0]).to.contains("> 13 |    assert.strictEqual(\'answer\', \'42\');");
                     expect(errs[0]).to.contains("AssertionError: 'answer' === '42'");
                 });
         });
@@ -53,7 +53,7 @@ describe('[API] Generic errors', function () {
             return runTests('./testcafe-fixtures/external-assertion-lib-errors-test.js', 'Chai assertion error',
                 { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contains("> 15 |    expect(\'answer\').eql(\'42\');");
+                    expect(errs[0]).to.contains("> 17 |    expect(\'answer\').eql(\'42\');");
                     expect(errs[0]).to.contains("AssertionError: expected 'answer' to deeply equal '42'");
                 });
         });

@@ -2,8 +2,8 @@ import assert from 'assert';
 import { expect, config as chaiConfig } from 'chai';
 import { assertionError } from './helpers';
 
-// NOTE: set this flag to check that TestCafe adds a correct callsite to the
-// report when there are chai module files in the top of the error stack.
+// NOTE: set this flag to check that TestCafe adds a correct callsite to
+// the report when there are chai module files on top of the error stack.
 chaiConfig.includeStack = true;
 
 fixture `External assertion library errors`
