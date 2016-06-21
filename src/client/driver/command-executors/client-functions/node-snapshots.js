@@ -94,7 +94,7 @@ export class ElementSnapshot extends NodeSnapshot {
     static _getClassNames (element) {
         var className = getClassName(element);
 
-        className = className.animVal || className;
+        className = typeof className.animVal === 'string' ? className.animVal : className;
 
         return className
             .replace(/^\s+|\s+$/g, '')

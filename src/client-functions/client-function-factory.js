@@ -12,7 +12,7 @@ import getCallsite from '../errors/get-callsite';
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
 export default class ClientFunctionFactory {
-    constructor (fn, scopeVars, callsiteNames) {
+    constructor (fn, scopeVars, callsiteNames = {}) {
         this.callsiteNames = {
             instantiation: callsiteNames.instantiation,
             execution:     callsiteNames.execution || DEFAULT_EXECUTION_CALLSITE_NAME

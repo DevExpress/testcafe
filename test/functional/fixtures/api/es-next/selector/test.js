@@ -41,6 +41,26 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Timeout', { elementAvailabilityTimeout: 4000 });
     });
 
+    it('Should provide "selector" method in node snapshot', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `selector` method');
+    });
+
+    it('Should provide "getParentNode" method in node snapshot', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `getParentNode` method');
+    });
+
+    it('Should provide "getChildNode" method in node snapshot', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `getChildNode` method');
+    });
+
+    it('Should provide "getChildElement" method in node snapshot', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `getChildElement` method');
+    });
+
+    it('Should provide "hasClass" method in node snapshot', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `hasClass` method');
+    });
+
     describe('Errors', function () {
         it('Should handle errors in Selector code', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Error in code', { shouldFail: true })
