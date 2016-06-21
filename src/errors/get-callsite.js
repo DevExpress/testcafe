@@ -1,14 +1,19 @@
 import createCallsiteRecord from 'callsite-record';
 import stackCleaningHook from './stack-cleaning-hook';
 
-export default function getCallsite (methodName, typeName) {
-    var stackCleaningEnabled = stackCleaningHook.enabled;
+const STACK_TRACE_LIMIT = 2000;
 
+export default function getCallsite (methodName, typeName) {
+    var originalStackCleaningEnabled = stackCleaningHook.enabled;
+    var originalStackTraceLimit      = Error.stackTraceLimit;
+
+    Error.stackTraceLimit     = STACK_TRACE_LIMIT;
     stackCleaningHook.enabled = false;
 
     var callsiteRecord = createCallsiteRecord(methodName, typeName);
 
-    stackCleaningHook.enabled = stackCleaningEnabled;
+    Error.stackTraceLimit     = originalStackTraceLimit;
+    stackCleaningHook.enabled = originalStackCleaningEnabled;
 
     return callsiteRecord;
 }

@@ -1,6 +1,6 @@
 import { renderers } from 'callsite-record';
 import MESSAGE from './message';
-import stackFilter from '../stack-filter';
+import createStackFilter from '../create-stack-filter';
 import getCallsite from '../get-callsite';
 
 
@@ -54,7 +54,12 @@ export class APIError extends Error {
     }
 
     static _createStack (message, callsiteRecord, renderer) {
-        return message + '\n\n' + callsiteRecord.renderSync({ renderer, stackFilter });
+        return message +
+               '\n\n' +
+               callsiteRecord.renderSync({
+                   renderer:    renderer,
+                   stackFilter: createStackFilter(Error.stackTraceLimit)
+               });
     }
 }
 
