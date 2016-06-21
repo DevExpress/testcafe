@@ -52,7 +52,7 @@ export default class TestRunErrorFormattableAdapter {
         return this.TEMPLATES[this.type](this, viewportWidth);
     }
 
-    getCallsiteMarkup (opts) {
+    getCallsiteMarkup () {
         if (!this.callsite)
             return '';
 
@@ -60,12 +60,9 @@ export default class TestRunErrorFormattableAdapter {
         if (typeof this.callsite === 'string')
             return this.callsite;
 
-        opts = opts || {};
-
         try {
             return this.callsite.renderSync({
                 renderer:    renderers.html,
-                codeFrame:   !opts.stackOnly,
                 stackFilter: stackFilter
             });
         }
