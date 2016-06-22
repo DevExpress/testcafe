@@ -85,7 +85,8 @@ describe('[API] Selector', function () {
                 only:       'chrome'
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
-                    'Selector code is expected to be specified as a function or string, but "number" was passed.'
+                    'Selector is expected to be initialized with a function, string, another Selector, ' +
+                    'node snapshot or a Promise returned by a Selector, but "number" was passed.'
                 )).eql(0);
 
                 expect(errs[0]).contains('> 183 |    await Selector(123)();');

@@ -554,7 +554,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise an error if Selector argument is not a function or string', function () {
+        it('Should raise an error if Selector initialized with wrong type', function () {
             var testfile = resolve('test/server/data/test-suites/selector-arg-is-not-a-function-or-string/testfile.js');
 
             return compile(testfile)
@@ -566,7 +566,8 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Selector code is expected to be specified as a function or string, but "number" was passed.',
+                                 'Selector is expected to be initialized with a function, string, another Selector, ' +
+                                 'node snapshot or a Promise returned by a Selector, but "number" was passed.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +

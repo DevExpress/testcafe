@@ -14,7 +14,7 @@ export default class SelectorFactory extends ClientFunctionFactory {
         var fnType = typeof fn;
 
         if (fnType !== 'function' && fnType !== 'string')
-            throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.selectorCodeIsNotAFunctionOrString, fnType);
+            throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.selectorInitializedWithWrongType, fnType);
 
         return fnType === 'string' ? `function(){return document.querySelector('${fn}');}` : fn.toString();
     }

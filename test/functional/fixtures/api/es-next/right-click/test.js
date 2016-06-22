@@ -4,7 +4,10 @@ var expect = require('chai').expect;
 // Actions functionality is tested in lower-level raw API.
 describe('[API] t.rightClick()', function () {
     it('Should make right click on a button', function () {
-        return runTests('./testcafe-fixtures/right-click-test.js', 'Right click button', { shouldFail: true, only: 'chrome' })
+        return runTests('./testcafe-fixtures/right-click-test.js', 'Right click button', {
+            shouldFail: true,
+            only:       'chrome'
+        })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('Right click on the button');
                 expect(errs[0]).to.contains(' >  7 |    await t.rightClick(\'#button\');');
@@ -12,7 +15,10 @@ describe('[API] t.rightClick()', function () {
     });
 
     it('Should validate options', function () {
-        return runTests('./testcafe-fixtures/right-click-test.js', 'Incorrect action option', { shouldFail: true, only: 'chrome' })
+        return runTests('./testcafe-fixtures/right-click-test.js', 'Incorrect action option', {
+            shouldFail: true,
+            only:       'chrome'
+        })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('The offsetX option is expected to be a positive integer, but it was -3.');
                 expect(errs[0]).to.contains(' > 15 |    await t.rightClick(\'#button\', { offsetX: -3 });');
@@ -20,9 +26,16 @@ describe('[API] t.rightClick()', function () {
     });
 
     it('Should validate selector', function () {
-        return runTests('./testcafe-fixtures/right-click-test.js', 'Incorrect action selector', { shouldFail: true, only: 'chrome' })
+        return runTests('./testcafe-fixtures/right-click-test.js', 'Incorrect action selector', {
+            shouldFail: true,
+            only:       'chrome'
+        })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('Action selector error:  Selector code is expected to be specified as a function or string, but "number" was passed.');
+                expect(errs[0]).to.contains(
+                    'Action selector error:  Selector is expected to be initialized with a ' +
+                    'function, string, another Selector, node snapshot or a Promise returned ' +
+                    'by a Selector, but "number" was passed.'
+                );
                 expect(errs[0]).to.contains(' > 11 |    await t.rightClick(123);');
             });
     });
