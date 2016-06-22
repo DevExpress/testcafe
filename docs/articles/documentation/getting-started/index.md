@@ -47,7 +47,7 @@ Then create the [test](/test-api/test-code-structure.md#tests) function where yo
 fixture `Getting Started`
     .page('http://testcafe.devexpress.com/example');
 
-test('Test1', async t => {
+test('My first test', async t => {
     // Test code
 });
 ```
@@ -85,7 +85,7 @@ The following fixture contains a simple test that types a developer name into a 
 fixture `Getting Started`
     .page('http://testcafe.devexpress.com/example');
 
-test('Test1', async t => {
+test('My first test', async t => {
     await t
         .typeText('#developer-name', 'John Smith')
         .click('#submit-button');
@@ -116,7 +116,7 @@ const getElementById = Selector(id => document.querySelector(`#${id}`));
 fixture `Getting Started`
     .page('http://testcafe.devexpress.com/example');
 
-test('Test1', async t => {
+test('My first test', async t => {
     await t
         .typeText('#developer-name', 'John Smith')
         .click('#submit-button');
@@ -141,7 +141,7 @@ You can use assertions from Node's built-in [assert](https://nodejs.org/api/asse
 Before calling assertions, make sure an assertion library is installed into your project.
 
 The following test demonstrates how to use an assertion from [Chai Assertion Library](http://chaijs.com/api/bdd/).
-Before running the test, install the assertion library by calling the `npm install -g chai` command.
+Before running the test, install the assertion library by calling the `npm install --save-dev chai` command.
 
 ```js
 import { expect } from 'chai';
@@ -154,7 +154,7 @@ const getElementById = Selector(id => document.querySelector(`#${id}`));
 fixture `Getting Started`
     .page('http://testcafe.devexpress.com/example');
 
-test('Test1', async t => {
+test('My first test', async t => {
     await t
         .typeText('#developer-name', 'John Smith')
         .click('#submit-button');
