@@ -209,8 +209,8 @@ export default class TestController {
         return this._enqueueAction('switchToMainWindow', SwitchToMainWindowCommand);
     }
 
-    _eval$ (fn, dependencies) {
-        var factory  = new ClientFunctionFactory(fn, dependencies, { instantiation: 'eval', execution: 'eval' });
+    _eval$ (fn, scopeVars) {
+        var factory  = new ClientFunctionFactory(fn, scopeVars, { instantiation: 'eval', execution: 'eval' });
         var clientFn = factory.getFunction({ boundTestRun: this.testRun });
 
         return clientFn();

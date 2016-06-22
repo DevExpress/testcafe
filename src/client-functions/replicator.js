@@ -1,7 +1,7 @@
 import { identity } from 'lodash';
 import Replicator from 'replicator';
-import compiledCodeSymbol from './compiled-code-symbol';
-import { compileFunctionArgumentOfClientFunction } from '../compiler/es-next/client-functions';
+import functionFactorySymbol from './factory-symbol';
+import compileClientFunction from '../compiler/es-next/compile-client-function';
 
 export function createReplicator (transforms) {
     // NOTE: we will serialize replicator results
@@ -28,12 +28,19 @@ export class FunctionTransform {
     }
 
     toSerializable (fn) {
-        var isClientFn = !!fn[compiledCodeSymbol];
+        var clientFnFactory = fn[functionFactorySymbol];
 
-        if (isClientFn)
-            return fn[compiledCodeSymbol];
+        if (clientFnFactory) {
+            return {
+                fnCode:    clientFnFactory.compiledFnCode,
+                scopeVars: clientFnFactory.scopeVars
+            };
+        }
 
-        return compileFunctionArgumentOfClientFunction(fn.toString(), this.callsiteNames);
+        return {
+            fnCode:    compileClientFunction(fn.toString(), null, this.callsiteNames.instantiation, this.callsiteNames.execution),
+            scopeVars: null
+        };
     }
 
     fromSerializable () {

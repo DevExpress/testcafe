@@ -241,3 +241,65 @@ test('Timeout', async () => {
 test('Return non-DOM node', async () => {
     await Selector(() => 'hey')();
 });
+
+test('Snapshot `selector` method', async () => {
+    let el = await getElementById('htmlElement');
+
+    el = await el.selector();
+
+    expect(el.id).eql('htmlElement');
+});
+
+test('Snapshot `getParentNode` method', async () => {
+    let el     = await getElementById('textInput');
+    let parent = await el.getParentNode();
+
+    expect(parent.tagName).eql('form');
+
+    el     = await getElementById('htmlElement');
+    parent = await el.getParentNode();
+
+    expect(parent.tagName).eql('body');
+});
+
+test('Snapshot `getChildNode` method', async () => {
+    const body = await Selector(() => document.body)();
+
+    let node = await body.getChildNode(0);
+
+    expect(node.nodeType).eql(3);
+
+    node = await body.getChildNode(1);
+
+    expect(node.id).eql('htmlElement');
+
+    node = await body.getChildNode(3);
+
+    expect(node.tagName).eql('svg');
+});
+
+test('Snapshot `getChildElement` method', async () => {
+    const doc = await Selector(() => document)();
+
+    let el = await doc.getChildElement(0);
+
+    expect(el.tagName).eql('html');
+
+    el = await el.getChildElement(1);
+
+    expect(el.tagName).eql('body');
+});
+
+test('Snapshot `hasClass` method', async () => {
+    let el = await getElementById('htmlElement');
+
+    expect(el.hasClass('yo')).to.be.true;
+    expect(el.hasClass('cool')).to.be.true;
+    expect(el.hasClass('42')).to.be.false;
+
+    el = await getElementById('svgElement');
+
+    expect(el.hasClass('svg1')).to.be.true;
+    expect(el.hasClass('svg2')).to.be.true;
+    expect(el.hasClass('cool')).to.be.false;
+});

@@ -33,8 +33,8 @@ export class FunctionTransform {
         return '';
     }
 
-    fromSerializable (fnCode) {
-        return evalFunction(fnCode);
+    fromSerializable ({ fnCode, scopeVars }) {
+        return evalFunction(fnCode, scopeVars);
     }
 }
 

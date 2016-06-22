@@ -652,7 +652,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction code cannot contain generators or `async/await` syntax (use Promises instead).',
+                                 'ClientFunction code, arguments or scope variables cannot contain generators or `async/await` syntax (use Promises instead).',
 
                         callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
                                   '    2 |\n' +
@@ -679,7 +679,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction code cannot contain generators or `async/await` syntax (use Promises instead).',
+                                 'ClientFunction code, arguments or scope variables cannot contain generators or `async/await` syntax (use Promises instead).',
 
                         callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
                                   '    2 |\n' +
@@ -691,53 +691,6 @@ describe('Compiler', function () {
                                   '    8 |\n' +
                                   "    9 |test('yo', () => {\n" +
                                   '   10 |});'
-                    });
-                });
-        });
-
-        it('Should raise an error if ClientFunction dependencies is not an object', function () {
-            var testfile = resolve('test/server/data/test-suites/client-fn-deps-not-object/testfile.js');
-
-            return compile(testfile)
-                .then(function () {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(function (err) {
-                    assertAPIError(err, {
-                        stackTop: testfile,
-
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction "dependencies" argument is expected to be an object, but it was "string".',
-
-                        callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
-                                  '   2 |\n' +
-                                  '   3 |fixture `Test`;\n' +
-                                  '   4 |\n' +
-                                  " > 5 |var selectYo = ClientFunction(() => document.querySelector('#yo'), '42');\n"
-                    });
-                });
-        });
-
-        it('Should raise an error if ClientFunction dependency is not a ClientFunction', function () {
-            var testfile = resolve('test/server/data/test-suites/client-fn-dep-not-client-fn/testfile.js');
-
-            return compile(testfile)
-                .then(function () {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(function (err) {
-                    assertAPIError(err, {
-                        stackTop: testfile,
-
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction dependency "getText" is not a client function.',
-
-                        callsite: '    3 |fixture `Test`;\n' +
-                                  '    4 |\n' +
-                                  '    5 |const select  = ClientFunction(id => document.querySelector(id));\n' +
-                                  "    6 |const getText = '42';\n" +
-                                  '    7 |\n' +
-                                  " >  8 |var selectYo = ClientFunction(() => select('#yo'), { select, getText });\n"
                     });
                 });
         });
@@ -767,6 +720,30 @@ describe('Compiler', function () {
                     });
                 });
         });
+
+        it('Should raise an error if ClientFunction "scopeVars" is not an object', function () {
+            var testfile = resolve('test/server/data/test-suites/client-fn-scope-vars-not-object/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'ClientFunction "scopeVars" argument is expected to be an object, but it was "string".',
+
+                        callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  " > 5 |var selectYo = ClientFunction(() => document.querySelector('#yo'), '42');\n"
+                    });
+                });
+        });
+
 
         it('Should raise an error if ClientFunction `boundTestRun` option is not TestController', function () {
             var testfile = resolve('test/server/data/test-suites/client-fn-bound-test-run-not-t/testfile.js');

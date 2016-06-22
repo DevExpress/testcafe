@@ -15,7 +15,7 @@ function sandboxed (fn) {
 
     code = processScript(code, false);
 
-    return evalFunction(code);
+    return evalFunction(code, null);
 }
 
 var getAttrs       = sandboxed(element => element.attributes);
@@ -94,7 +94,7 @@ export class ElementSnapshot extends NodeSnapshot {
     static _getClassNames (element) {
         var className = getClassName(element);
 
-        className = className.animVal || className;
+        className = typeof className.animVal === 'string' ? className.animVal : className;
 
         return className
             .replace(/^\s+|\s+$/g, '')
@@ -129,8 +129,8 @@ export class ElementSnapshot extends NodeSnapshot {
 
         // NOTE: IE includes scripts and stylesheets in innerText
         return innerText && innerText
-            .replace(SCRIPT_RE, '')
-            .replace(STYLESHEET_RE, '')
-            .replace(/\r\n/g, '\n');
+                .replace(SCRIPT_RE, '')
+                .replace(STYLESHEET_RE, '')
+                .replace(/\r\n/g, '\n');
     }
 }

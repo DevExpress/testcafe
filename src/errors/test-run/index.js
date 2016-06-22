@@ -53,15 +53,6 @@ export class ClientFunctionExecutionInterruptionError extends TestRunErrorBase {
     }
 }
 
-export class RegeneratorInFunctionArgumentOfClientFunctionError extends TestRunErrorBase {
-    constructor (instantiationCallsiteName, callsite) {
-        super(TYPE.regeneratorInFunctionArgumentOfClientFunctionError);
-
-        this.instantiationCallsiteName = instantiationCallsiteName;
-        this.callsite                  = callsite;
-    }
-}
-
 export class DomNodeClientFunctionResultError extends TestRunErrorBase {
     constructor (instantiationCallsiteName) {
         super(TYPE.domNodeClientFunctionResultError);

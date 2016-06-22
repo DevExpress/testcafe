@@ -2,7 +2,7 @@ import { find, assignIn } from 'lodash';
 import { Parser } from 'parse5';
 import { renderers } from 'callsite-record';
 import TEMPLATES from './templates';
-import stackFilter from '../stack-filter';
+import createStackFilter from '../create-stack-filter';
 
 var parser = new Parser();
 
@@ -63,7 +63,7 @@ export default class TestRunErrorFormattableAdapter {
         try {
             return this.callsite.renderSync({
                 renderer:    renderers.html,
-                stackFilter: stackFilter
+                stackFilter: createStackFilter(Error.stackTraceLimit)
             });
         }
         catch (err) {

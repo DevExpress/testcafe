@@ -1,5 +1,5 @@
 import stackTrace from 'stack-chain';
-import stackFilter from './stack-filter';
+import createStackFilter from './create-stack-filter';
 
 const ORIGINAL_STACK_TRACE_LIMIT = Error.stackTraceLimit;
 const STACK_TRACE_LIMIT          = 200;
@@ -8,9 +8,7 @@ export default {
     isEnabled: false,
 
     _hook (err, frames) {
-        return frames
-            .filter(stackFilter)
-            .slice(0, ORIGINAL_STACK_TRACE_LIMIT);
+        return frames.filter(createStackFilter(ORIGINAL_STACK_TRACE_LIMIT));
     },
 
     get enabled () {
@@ -18,6 +16,9 @@ export default {
     },
 
     set enabled (val) {
+        if (this.isEnabled === val)
+            return;
+
         this.isEnabled = val;
 
         if (this.isEnabled) {

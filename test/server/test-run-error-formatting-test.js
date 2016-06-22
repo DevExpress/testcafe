@@ -42,7 +42,6 @@ var CurrentIframeNotFoundError                         = require('../../lib/erro
 var CurrentIframeIsInvisibleError                      = require('../../lib/errors/test-run').CurrentIframeIsInvisibleError;
 var MissingAwaitError                                  = require('../../lib/errors/test-run').MissingAwaitError;
 var ExternalAssertionLibraryError                      = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
-var RegeneratorInFunctionArgumentOfClientFunctionError = require('../../lib/errors/test-run').RegeneratorInFunctionArgumentOfClientFunctionError;
 var DomNodeClientFunctionResultError                   = require('../../lib/errors/test-run').DomNodeClientFunctionResultError;
 var NonDomNodeSelectorResultError                      = require('../../lib/errors/test-run').NonDomNodeSelectorResultError;
 
@@ -248,10 +247,6 @@ describe('Error formatting', function () {
 
         it('Should format "clientFunctionExecutionInterruptionError"', function () {
             assertErrorMessage('client-function-execution-interruption-error', new ClientFunctionExecutionInterruptionError('eval'));
-        });
-
-        it('Should format "regeneratorInFunctionArgumentOfClientFunctionError"', function () {
-            assertErrorMessage('regenerator-in-function-argument-of-client-function-error', new RegeneratorInFunctionArgumentOfClientFunctionError('ClientFunction', testCallsite));
         });
 
         it('Should format "domNodeClientFunctionResultError"', function () {
