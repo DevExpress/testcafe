@@ -24,7 +24,7 @@ export default function createStackFilter (limit) {
 
         var filename = frame.getFileName();
 
-        // NOTE: filter node, Babel and TestCafe internals
+        // NOTE: filter out the internals of node, Babel and TestCafe
         var pass = filename &&
                    filename.indexOf(sep) > -1 &&
                    filename.indexOf(INTERNAL) !== 0 &&
