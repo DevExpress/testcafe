@@ -42,13 +42,13 @@ export default {
     [TYPE.uncaughtErrorOnPage]: err => markup(err, `
         Error on page <a href="${err.pageDestUrl}">${err.pageDestUrl}</a>:
 
-        <code>${escapeHtml(err.errMsg)}</code>
+        ${escapeHtml(err.errMsg)}
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.uncaughtErrorInTestCode]: err => markup(err, `
-        <code>${escapeHtml(err.errMsg)}</code>
+        ${escapeHtml(err.errMsg)}
 
         ${err.getCallsiteMarkup()}
     `),
@@ -56,7 +56,7 @@ export default {
     [TYPE.uncaughtErrorInClientFunctionCode]: err => markup(err, `
         An error occurred in <code>${err.instantiationCallsiteName}</code> code:
 
-        <code>${escapeHtml(err.errMsg)}</code>
+        ${escapeHtml(err.errMsg)}
 
         ${err.getCallsiteMarkup()}
     `),
@@ -243,7 +243,7 @@ export default {
     [TYPE.actionSelectorError]: err => markup(err, `
         Action <code>selector</code> error:
 
-        <code>${escapeHtml(err.errMsg)}</code>
+        ${escapeHtml(err.errMsg)}
 
         ${err.getCallsiteMarkup()}
     `),
@@ -251,7 +251,7 @@ export default {
     [TYPE.actionAdditionalSelectorError]: err => markup(err, `
         Action <code>${err.selectorName}</code> error:
 
-        <code>${escapeHtml(err.errMsg)}</code>
+        ${escapeHtml(err.errMsg)}
 
         ${err.getCallsiteMarkup()}
     `)
