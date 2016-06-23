@@ -6,7 +6,7 @@ checked: true
 ---
 # Helper Methods
 
-The helper methods are used while [implementing a reporter](index.md#implementing-reporter)
+The helper methods are used while [implementing a reporter](index.md#implementing-the-reporter)
 to format the report output. TestCafe mixins these methods to the reporter.
 
 To access the helper methods, use `this`.

@@ -192,10 +192,10 @@ testcafe ie tests/sample-fixture.js -t "Click a label"
 
 TestCafe will run tests whose names match the specified pattern.
 
-For example, the following command runs tests whose names match `Click*`. These can be the `Click a label`, `Click a button` tests, etc.
+For example, the following command runs tests whose names match `Click.*`. These can be the `Click a label`, `Click a button` tests, etc.
 
 ```sh
-testcafe ie my-tests -T Click*
+testcafe ie my-tests -T "Click.*"
 ```
 
 ### -f \<name\>, --fixture \<name\>
@@ -210,8 +210,10 @@ testcafe ie my-tests -f sample-fixture
 
 TestCafe will run fixtures whose names match the specified pattern.
 
+For example, the following command runs fixtures whose names match `Page.*`. These can be the `Page1`, `Page2` fixtures, etc.
+
 ```sh
-testcafe ie my-tests --fixture-grep *Page*
+testcafe ie my-tests -F "Page.*"
 ```
 
 ### --element-timeout \<ms\>

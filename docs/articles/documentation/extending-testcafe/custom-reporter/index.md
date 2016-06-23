@@ -216,7 +216,7 @@ npm link
 
 After that TestCafe will use the reporter version you are currently developing.
 
-For information on how to specify a reporter in tests, see [Using Reporters](../../using-testcafe/common-concepts/reporters.md#using-reporters).
+For information on how to specify a reporter in tests, see [Using Reporters](../../using-testcafe/common-concepts/reporters.md#using-the-reporters).
 
 ## Publishing the Reporter to NPM
 
@@ -228,7 +228,7 @@ That is why it is recommended to use this Gulp task instead of `npm publish`.
 gulp publish
 ```
 
-After that you can install the reporter and use it in the same manner as you would use [built-in reporters](../../using-testcafe/common-concepts/reporters.md#using-reporters).
+After that you can install the reporter and use it in the same manner as you would use [built-in reporters](../../using-testcafe/common-concepts/reporters.md#using-the-reporters).
 
 ## Reference
 
