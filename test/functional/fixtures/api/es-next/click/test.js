@@ -51,7 +51,7 @@ describe('[API] t.click()', function () {
             .catch(function (errs) {
                 expect(errs[0]).to.contains(
                     'Action selector error:  Selector is expected to be initialized with a ' +
-                    'function, string, another Selector, node snapshot or a Promise returned ' +
+                    'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
                     'by a Selector, but "number" was passed.'
                 );
                 expect(errs[0]).to.contains(

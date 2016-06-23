@@ -31,7 +31,7 @@ describe('[API] t.doubleClick()', function () {
             .catch(function (errs) {
                 expect(errs[0]).to.contains(
                     'Action selector error:  Selector is expected to be initialized with a ' +
-                    'function, string, another Selector, node snapshot or a Promise ' +
+                    'function, CSS selector string, another Selector, node snapshot or a Promise ' +
                     'returned by a Selector, but "object" was passed.'
                 );
                 expect(errs[0]).to.contains(' > 11 |    await t.doubleClick(null);');

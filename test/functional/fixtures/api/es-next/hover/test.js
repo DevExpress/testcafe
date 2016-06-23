@@ -31,7 +31,7 @@ describe('[API] Hover action', function () {
             .catch(function (errs) {
                 expect(errs[0]).to.contains(
                     'Action selector error:  Selector is expected to be initialized with a ' +
-                    'function, string, another Selector, node snapshot or a Promise returned ' +
+                    'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
                     'by a Selector, but "undefined" was passed.'
                 );
                 expect(errs[0]).to.contains(' > 12 |    await t.hover(void 0);');

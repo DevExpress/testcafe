@@ -566,7 +566,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Selector is expected to be initialized with a function, string, another Selector, ' +
+                                 'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
                                  'node snapshot or a Promise returned by a Selector, but "number" was passed.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
