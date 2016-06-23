@@ -78,11 +78,23 @@ describe('[API] t.click()', function () {
         return runTests('./testcafe-fixtures/click-test.js', 'Function as selector');
     });
 
+    it('Should accept Selector function as selector', function () {
+        return runTests('./testcafe-fixtures/click-test.js', 'Selector function as selector');
+    });
+
+    it('Should accept node snapshot as selector', function () {
+        return runTests('./testcafe-fixtures/click-test.js', 'Node snapshot as selector');
+    });
+
+    it('Should accept Promise returned by selector as selector', function () {
+        return runTests('./testcafe-fixtures/click-test.js', 'Promise returned by selector as selector');
+    });
+
     it('Should handle error in selector', function () {
         return runTests('./testcafe-fixtures/click-test.js', 'Error in selector', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('An error occurred in Selector code:  Error: yo');
-                expect(errs[0]).to.contains('> 43 |    await t.click(() => {');
+                expect(errs[0]).to.contains('> 34 |    await t.click(() => {');
             });
     });
 });

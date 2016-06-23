@@ -884,7 +884,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -900,7 +901,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "number" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -971,7 +973,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -987,7 +990,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector,' +
                                      ' node snapshot or a Promise returned by a Selector, but "boolean" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1060,7 +1064,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1076,7 +1081,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "boolean" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1128,7 +1134,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1144,7 +1151,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "number" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1215,7 +1223,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1231,7 +1240,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "number" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1317,7 +1327,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1333,7 +1344,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "number" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1350,7 +1362,8 @@ describe('Test run commands', function () {
                     selectorName:    'destinationSelector',
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1368,7 +1381,8 @@ describe('Test run commands', function () {
                     selectorName:    'destinationSelector',
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "number" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1402,7 +1416,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1418,7 +1433,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "number" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1542,7 +1558,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1558,7 +1575,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "object" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1643,7 +1661,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1659,7 +1678,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "object" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1745,7 +1765,8 @@ describe('Test run commands', function () {
                     selectorName:    'startSelector',
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1762,7 +1783,8 @@ describe('Test run commands', function () {
                     selectorName:    'startSelector',
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "number" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1780,7 +1802,8 @@ describe('Test run commands', function () {
                     selectorName:    'endSelector',
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "boolean" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
         });
@@ -1944,7 +1967,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -1960,7 +1984,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "number" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -2085,7 +2110,7 @@ describe('Test run commands', function () {
             );
         });
 
-        it('Should validate ClearUploadСommand', function () {
+        it('Should validate ClearUploadCommand', function () {
             assertThrow(
                 function () {
                     return createCommand({
@@ -2097,7 +2122,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
 
@@ -2113,7 +2139,8 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionSelectorError,
                     errMsg:          'Selector is expected to be initialized with a function, string, another Selector, ' +
                                      'node snapshot or a Promise returned by a Selector, but "number" was passed.',
-                    callsite:        null
+
+                    callsite: null
                 }
             );
         });
