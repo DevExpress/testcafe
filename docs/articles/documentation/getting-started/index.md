@@ -13,7 +13,7 @@ This guide provides step-by-step instructions on how to create a functional web 
 * [Viewing the Test Results](#viewing-the-test-results)
 * [Writing Test Code](#writing-test-code)
   * [Performing Actions on the Page](#performing-actions-on-the-page)
-  * [Observing the Page State](#observing-the-page-state)
+  * [Observing Page State](#observing-page-state)
   * [Assertions](#assertions)
 
 ## Installing TestCafe
@@ -41,7 +41,7 @@ fixture `Getting Started`
     .page('http://testcafe.devexpress.com/example');
 ```
 
-Then create the [test](/test-api/test-code-structure.md#tests) function where you will further place test code.
+Then create the [test](../test-api/test-code-structure.md#tests) function where you will further place test code.
 
 ```js
 fixture `Getting Started`
@@ -99,7 +99,7 @@ To wait for actions to be complete, use the `await` keyword when calling these a
 
 TestCafe allows you to observe the page state.
 For this purpose, it offers special kinds of functions that will execute your code on the client: [Selector](../test-api/executing-client-code/index.md#selector-functions) used to get direct access to DOM elements
-and [ClientFunction](test-api/executing-client-code/index.md#client-functions) used to obtain arbitrary data from the client side.
+and [ClientFunction](../test-api/executing-client-code/index.md#client-functions) used to obtain arbitrary data from the client side.
 You call these functions as regular async functions, that is you can obtain their results and use parameters to pass data to them.
 
 For example, clicking the Submit button on the sample web page opens a "Thank you" page.
@@ -129,7 +129,7 @@ test('My first test', async t => {
 });
 ```
 
-For more information, see [Executing Client Code](../test-api/executing-client-code.md).
+For more information, see [Executing Client Code](../test-api/executing-client-code/index.md).
 
 ### Assertions
 

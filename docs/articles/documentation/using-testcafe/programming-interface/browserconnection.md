@@ -7,7 +7,7 @@ permalink: /documentation/using-testcafe/programming-interface/browserconnection
 
 Connection to a remote browser.
 
-Created by the [testCafe.createBrowserConnection](testcafe.md#createBrowserConnection) function.
+Created by the [testCafe.createBrowserConnection](testcafe.md#createbrowserconnection) function.
 
 **Example**
 

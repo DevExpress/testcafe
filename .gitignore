@@ -1,6 +1,6 @@
 node_modules
 .idea
 lib
-website
+site
 .sass-cache
 .publish
