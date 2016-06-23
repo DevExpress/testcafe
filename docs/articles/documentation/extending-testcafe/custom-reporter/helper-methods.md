@@ -2,15 +2,16 @@
 layout: docs
 title: Helper Methods
 permalink: /documentation/extending-testcafe/custom-reporter-plugin/helper-methods.html
+checked: true
 ---
 # Helper Methods
 
 The helper methods are used while [implementing a reporter](index.md#implementing-reporter)
-to format a report output. TestCafe mixins these methods to the reporter.
+to format the report output. TestCafe mixins these methods to the reporter.
 
 To access the helper methods, use `this`.
 
-This topic contains information about several groups of helper methods.
+This topic contains information about several groups of the helper methods.
 
 * [Output Helpers](#output-helpers)
 * [Formatting Helpers](#formatting-helpers)
@@ -19,7 +20,7 @@ This topic contains information about several groups of helper methods.
 
 ## Output Helpers
 
-All output helper methods are chainable: each method returns `this` so that the methods can be executed one right after the other.
+All output helper methods are chainable: each method returns `this` so that the methods can be executed one right after another.
 This allows you to write compact code like this:
 
 ```js
@@ -120,7 +121,7 @@ Parameter | Type    | Description
 
 **Example**
 
-The following example demonstrates how to indent a summary information with 4 spaces.
+The following example demonstrates how to indent summary information by four spaces.
 
 ```js
 reportTaskDone (endTime, passed) {
@@ -152,7 +153,7 @@ Parameter   | Type    | Description
 
 **Example**
 
-This example demonstrates how you can indent each line in the string `str` with four spaces.
+This example demonstrates how you can indent each line in the `str` string by four spaces.
 
 ```js
 reportTaskStart (startTime, userAgents, testCount) {
@@ -167,7 +168,7 @@ reportTaskStart (startTime, userAgents, testCount) {
 
 ### wordWrap
 
-Breaks and wraps a string into a new line if its length exceeds the maximum allowed length.
+Breaks and wraps a string to a new line if its length exceeds the maximum allowed length.
 
 ```text
 wordWrap (str, indentVal, width) → String
@@ -181,7 +182,7 @@ Parameter   | Type    | Description
 
 **Example**
 
-The following example demonstrates how to break the `title` string onto the next line if the string length is more than 50 symbols.
+The following example demonstrates how to break the `title` string to the next line if the string length is more than 50 symbols.
 
 ```js
 const LINE_WIDTH = 50;
