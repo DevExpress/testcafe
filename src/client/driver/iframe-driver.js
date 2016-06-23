@@ -7,8 +7,8 @@ import { TYPE as MESSAGE_TYPE } from './driver-link/messages';
 
 
 export default class IframeDriver extends Driver {
-    constructor (testRunId, elementAvailabilityTimeout) {
-        super(testRunId, elementAvailabilityTimeout);
+    constructor (testRunId, selectorTimeout) {
+        super(testRunId, selectorTimeout);
 
         this.lastParentDriverMessageId = null;
         this.parentDriverLink          = new ParentDriverLink(window.parent);

@@ -57,14 +57,14 @@ const CURRENT_IFRAME_ERROR_CTORS = {
 var hangingPromise = new Promise(noop);
 
 export default class Driver {
-    constructor (testRunId, elementAvailabilityTimeout, heartbeatUrl, browserStatusUrl) {
+    constructor (testRunId, selectorTimeout, heartbeatUrl, browserStatusUrl) {
         this.COMMAND_EXECUTING_FLAG   = 'testcafe|driver|command-executing-flag';
         this.EXECUTING_IN_IFRAME_FLAG = 'testcafe|driver|executing-in-iframe-flag';
 
-        this.testRunId                  = testRunId;
-        this.elementAvailabilityTimeout = elementAvailabilityTimeout;
-        this.heartbeatUrl               = heartbeatUrl;
-        this.browserStatusUrl           = browserStatusUrl;
+        this.testRunId        = testRunId;
+        this.selectorTimeout  = selectorTimeout;
+        this.heartbeatUrl     = heartbeatUrl;
+        this.browserStatusUrl = browserStatusUrl;
 
         this.contextStorage        = null;
         this.childDriverLinks      = [];
@@ -200,14 +200,14 @@ export default class Driver {
     _ensureChildDriverLink (iframeWindow, ErrorCtor) {
         // NOTE: a child driver should establish connection with the parent when it's loaded.
         // Here we are waiting while the appropriate child driver do this if it didn't do yet.
-        return waitFor(() => this._getChildDriverLinkByWindow(iframeWindow), CHECK_IFRAME_DRIVER_LINK_DELAY, this.elementAvailabilityTimeout)
+        return waitFor(() => this._getChildDriverLinkByWindow(iframeWindow), CHECK_IFRAME_DRIVER_LINK_DELAY, this.selectorTimeout)
             .catch(() => {
                 throw new ErrorCtor();
             });
     }
 
     _switchToIframe (selector, iframeErrorCtors) {
-        var selectorExecutor = new SelectorExecutor(selector, this.elementAvailabilityTimeout, () => new iframeErrorCtors.NotFoundError(),
+        var selectorExecutor = new SelectorExecutor(selector, this.selectorTimeout, () => new iframeErrorCtors.NotFoundError(),
             () => iframeErrorCtors.IsInvisibleError());
 
         return selectorExecutor.getResult()
@@ -234,7 +234,7 @@ export default class Driver {
 
     // Commands handling
     _onActionCommand (command) {
-        var { startPromise, completionPromise } = executeActionCommand(command, this.elementAvailabilityTimeout);
+        var { startPromise, completionPromise } = executeActionCommand(command, this.selectorTimeout);
 
         startPromise.then(() => this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true));
 
@@ -271,7 +271,7 @@ export default class Driver {
 
     _onExecuteSelectorCommand (command) {
         // TODO cross-page timeout
-        var executor = new SelectorExecutor(command, this.elementAvailabilityTimeout);
+        var executor = new SelectorExecutor(command, this.selectorTimeout);
 
         executor.getResultDriverStatus()
             .then(driverStatus => this._onReady(driverStatus));

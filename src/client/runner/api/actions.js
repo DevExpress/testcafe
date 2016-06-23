@@ -141,7 +141,7 @@ function ensureElementsExist (item, actionName, callback) {
             window.clearInterval(interval);
             failWithError(ERROR_TYPE.emptyFirstArgument, { action: actionName });
         }
-    }, SETTINGS.get().ELEMENT_AVAILABILITY_TIMEOUT);
+    }, SETTINGS.get().SELECTOR_TIMEOUT);
 }
 
 function ensureElementVisibility (element, actionName, callback) {
@@ -192,7 +192,7 @@ function ensureElementVisibility (element, actionName, callback) {
                 action:  actionName
             });
         }
-    }, SETTINGS.get().ELEMENT_AVAILABILITY_TIMEOUT);
+    }, SETTINGS.get().SELECTOR_TIMEOUT);
 }
 
 function actionArgumentsIterator (actionName) {
@@ -878,7 +878,7 @@ export function screenshot (filePath) {
 
 //NOTE: published for tests purposes only
 export function setElementAvailabilityWaitingTimeout (ms) {
-    SETTINGS.get().ELEMENT_AVAILABILITY_TIMEOUT = ms;
+    SETTINGS.get().SELECTOR_TIMEOUT = ms;
 }
 
 //NOTE: add sourceIndex wrapper

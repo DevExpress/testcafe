@@ -43,7 +43,7 @@
             TAKE_SCREENSHOTS:              {{{takeScreenshots}}},
             TAKE_SCREENSHOTS_ON_FAILS:     {{{takeScreenshotsOnFails}}},
             SKIP_JS_ERRORS:                {{{skipJsErrors}}},
-            ELEMENT_AVAILABILITY_TIMEOUT:  {{{elementAvailabilityTimeout}}},
+            SELECTOR_TIMEOUT:              {{{selectorTimeout}}},
             ENABLE_SOURCE_INDEX:           true,
             NATIVE_DIALOGS_INFO:           {{{nativeDialogsInfo}}}
         });
@@ -92,7 +92,7 @@
                 progressPanel = new ProgressPanel();
 
             if (!e.isWaitAction)
-                progressPanel.show(RunnerBase.WAITING_FOR_ACTION_TARGET_MESSAGE, testCafeCore.SETTINGS.get().ELEMENT_AVAILABILITY_TIMEOUT);
+                progressPanel.show(RunnerBase.WAITING_FOR_ACTION_TARGET_MESSAGE, testCafeCore.SETTINGS.get().SELECTOR_TIMEOUT);
         });
 
         runner.on(runner.ACTION_RUN_EVENT, function () {

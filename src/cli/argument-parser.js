@@ -60,11 +60,11 @@ export default class CLIArgumentParser {
         throw new GeneralError(MESSAGE.portNumberIsNotInteger);
     }
 
-    static _parseElementTimeout (value) {
+    static _parseSelectorTimeout (value) {
         if (CLIArgumentParser._isInteger(value))
             return parseInt(value, 10);
 
-        throw new GeneralError(MESSAGE.elementTimeoutIsNotAnInteger);
+        throw new GeneralError(MESSAGE.selectorTimeoutIsNotAnInteger);
     }
 
     static _optionValueToRegExp (name, value) {
@@ -153,7 +153,7 @@ export default class CLIArgumentParser {
             .option('-T, --test-grep <pattern>', 'run only tests matching the specified pattern')
             .option('-f, --fixture <name>', 'run only fixtures with the specified name')
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
-            .option('--element-timeout <ms>', 'set the amount of time allowed for a page element to become available before the test fails')
+            .option('--selector-timeout <ms>', 'set the amount of time allowed for a page element to become available before the test fails')
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
@@ -197,8 +197,8 @@ export default class CLIArgumentParser {
     }
 
     async _parseElementTimeout () {
-        if (this.opts.elementTimeout)
-            this.opts.elementTimeout = CLIArgumentParser._parseElementTimeout(this.opts.elementTimeout);
+        if (this.opts.selectorTimeout)
+            this.opts.selectorTimeout = CLIArgumentParser._parseSelectorTimeout(this.opts.selectorTimeout);
     }
 
     async _parsePorts () {

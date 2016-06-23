@@ -18,7 +18,7 @@ const SAUCE_LABS_REQUESTED_MACHINES_COUNT      = 3;
 const WAIT_FOR_FREE_MACHINES_REQUEST_INTERVAL  = 60000;
 const WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT = 45;
 
-const FUNCTIONAL_TESTS_ELEMENT_AVAILABILITY_TIMEOUT = 200;
+const FUNCTIONAL_TESTS_SELECTOR_TIMEOUT = 200;
 
 
 function initBrowsersInfo (tc) {
@@ -111,14 +111,12 @@ before(function () {
             global.testReport = null;
 
             global.runTests = function (fixture, testName, opts) {
-                var report                     = '';
-                var runner                     = testCafe.createRunner();
-                var fixturePath                = path.join(path.dirname(caller()), fixture);
-                var skipJsErrors               = opts && opts.skipJsErrors;
-                var quarantineMode             = opts && opts.quarantineMode;
-                var elementAvailabilityTimeout = opts && opts.elementAvailabilityTimeout ||
-                                                 FUNCTIONAL_TESTS_ELEMENT_AVAILABILITY_TIMEOUT;
-
+                var report             = '';
+                var runner             = testCafe.createRunner();
+                var fixturePath        = path.join(path.dirname(caller()), fixture);
+                var skipJsErrors       = opts && opts.skipJsErrors;
+                var quarantineMode     = opts && opts.quarantineMode;
+                var selectorTimeout    = opts && opts.selectorTimeout || FUNCTIONAL_TESTS_SELECTOR_TIMEOUT;
                 var onlyOption         = opts && opts.only;
                 var skipOption         = opts && opts.skip;
                 var screenshotPath     = opts && opts.setScreenshotPath ? '___test-screenshots___' : '';
@@ -152,9 +150,9 @@ before(function () {
                     .src(fixturePath)
                     .screenshots(screenshotPath, screenshotsOnFails)
                     .run({
-                        skipJsErrors:               skipJsErrors,
-                        quarantineMode:             quarantineMode,
-                        elementAvailabilityTimeout: elementAvailabilityTimeout
+                        skipJsErrors:    skipJsErrors,
+                        quarantineMode:  quarantineMode,
+                        selectorTimeout: selectorTimeout
                     })
                     .then(function () {
                         var testReport = JSON.parse(report).fixtures[0].tests[0];

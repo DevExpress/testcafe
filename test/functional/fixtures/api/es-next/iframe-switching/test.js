@@ -1,14 +1,14 @@
 var expect                     = require('chai').expect;
 var errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 
-// NOTE: we set elementAvailabilityTimeout to a large value in some tests to wait for
+// NOTE: we set selectorTimeout to a large value in some tests to wait for
 // an iframe to load on the farm (it is fast locally but can take some time on the farm)
 
-var DEFAULT_ELEMENT_AVAILABILITY_TIMEOUT = 5000;
-var DEFAULT_RUN_OPTIONS                  = { elementAvailabilityTimeout: DEFAULT_ELEMENT_AVAILABILITY_TIMEOUT };
-var DEFAULT_FAILED_RUN_OPTIONS           = {
-    shouldFail:                 true,
-    elementAvailabilityTimeout: DEFAULT_ELEMENT_AVAILABILITY_TIMEOUT
+var DEFAULT_SELECTOR_TIMEOUT   = 5000;
+var DEFAULT_RUN_OPTIONS        = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
+var DEFAULT_FAILED_RUN_OPTIONS = {
+    shouldFail:      true,
+    selectorTimeout: DEFAULT_SELECTOR_TIMEOUT
 };
 
 describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
@@ -69,8 +69,8 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
 
         it('Should raise an error if a switchToIframe target is not loaded', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', "Click in a iframe that's loading too slowly", {
-                shouldFail:                 true,
-                elementAvailabilityTimeout: 200
+                shouldFail:      true,
+                selectorTimeout: 200
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Content of the iframe to which you are switching did not load.');
