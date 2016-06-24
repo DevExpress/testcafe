@@ -577,7 +577,7 @@ RunnerBase.prototype._onBeforeUnload = function (fromIFrame, callback) {
                         runner.stepIterator.state.stepDelayTimeout = null;
                     }
 
-                    runner.stepIterator.state.pageUnloading = false;
+                    runner.stepIterator.pageUnloadBarrier.resetUnloadingFlag();
                     runner.stepIterator._runStep();
                 }
             });

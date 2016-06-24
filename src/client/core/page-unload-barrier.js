@@ -84,11 +84,11 @@ export function init () {
     handleBeforeUnload();
 }
 
-export function wait () {
+export function wait (options) {
     return new Promise(resolve => {
         delay(DEFAULT_BARRIER_TIMEOUT)
             .then(() => {
-                if (unloading)
+                if (options && options.isLegacy && unloading)
                     return;
 
                 if (!waitingForUnload)
@@ -97,4 +97,8 @@ export function wait () {
                     waitingPromiseResolvers.push(resolve);
             });
     });
+}
+
+export function resetUnloadingFlag () {
+    unloading = false;
 }

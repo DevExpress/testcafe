@@ -1,5 +1,5 @@
 import hammerhead from './deps/hammerhead';
-import { RequestBarrier, noop, pageUnloadBarrier, eventUtils, domUtils, preventRealEvents, waitFor } from './deps/testcafe-core';
+import { RequestBarrier, pageUnloadBarrier, fileDownloadBarrier, eventUtils, domUtils, preventRealEvents, waitFor } from './deps/testcafe-core';
 import { modalBackground } from './deps/testcafe-ui';
 
 import TEST_RUN_MESSAGES from '../../test-run/client-messages';
@@ -53,8 +53,6 @@ const CURRENT_IFRAME_ERROR_CTORS = {
     IsInvisibleError: CurrentIframeIsInvisibleError
 };
 
-
-var hangingPromise = new Promise(noop);
 
 export default class Driver {
     constructor (testRunId, elementAvailabilityTimeout, heartbeatUrl, browserStatusUrl) {
@@ -132,19 +130,25 @@ export default class Driver {
         this.contextStorage.setItem(PENDING_STATUS, status);
 
         // NOTE: postpone status sending if the page is unloading
-        if (this.beforeUnloadRaised)
-            return hangingPromise;
 
-        return transport
-            .queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.ready, status })
+        var checkForUnloading = () => {
+            if (this.beforeUnloadRaised) {
+                return fileDownloadBarrier
+                    .wait()
+                    .then(() => this.beforeUnloadRaised = false);
+            }
+
+            return Promise.resolve();
+        };
+
+        return checkForUnloading()
+            .then(() => transport.queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.ready, status }))
             .then(res => {
-                //NOTE: do not execute the next command if the page is unloading
-                if (this.beforeUnloadRaised)
-                    return hangingPromise;
+                return checkForUnloading().then(() => {
+                    this.contextStorage.setItem(PENDING_STATUS, null);
 
-                this.contextStorage.setItem(PENDING_STATUS, null);
-
-                return res;
+                    return res;
+                });
             });
     }
 
