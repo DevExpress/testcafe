@@ -153,7 +153,7 @@ export default class CLIArgumentParser {
             .option('-T, --test-grep <pattern>', 'run only tests matching the specified pattern')
             .option('-f, --fixture <name>', 'run only fixtures with the specified name')
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
-            .option('--selector-timeout <ms>', 'set the amount of time allowed for a page element to become available before the test fails')
+            .option('--selector-timeout <ms>', 'set the amount of time within which selectors make attempts to obtain the node to be returned')
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
