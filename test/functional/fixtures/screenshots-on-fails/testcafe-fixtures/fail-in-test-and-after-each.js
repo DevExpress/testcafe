@@ -1,5 +1,5 @@
 fixture `Fail in test and afterEach`
-    .page `http://localhost:3000/screenshots-on-fails/pages/index.html`
+    .page `http://localhost:3000/fixtures/screenshots-on-fails/pages/index.html`
     .afterEach(() => {
         throw new Error('Fail in afterEach');
     });

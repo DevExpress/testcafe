@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>T174562 - index page</title>
+    <style>
+        div.one {
+            height: 100px;
+            width: 100px;
+            border: 1px solid red;
+        }
+
+        div.two {
+            height: 100px;
+            width: 100px;
+            margin-top: 50px;
+            background-color: red;
+        }
+
+        div.divIn {
+            width: 100px;
+            height: 250px;
+            background-color: green;
+            position: absolute;
+            left: 100px;
+            top: 400px;
+        }
+    </style>
+</head>
+<body>
+<div id="one" class="one"></div>
+<div id="two" class="two"></div>
+<div id="divIn" class="divIn" style="display: none;"></div>
+<script>
+    document
+            .getElementById('two')
+            .addEventListener('click', function () {
+                document.getElementById('divIn').style.display = '';
+            });
+
+    document
+            .getElementById('divIn')
+            .addEventListener('click', function () {
+                window.divClicked = true;
+            });
+</script>
+</body>
+</html>

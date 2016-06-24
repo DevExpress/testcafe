@@ -2,7 +2,7 @@
     "fixtures": [
         {
             "name": "Upload",
-            "pageUrl": "http://localhost:3000/api/raw/upload/pages/index.html",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/upload/pages/index.html",
             "tests": [
                 {
                     "name": "Upload a file",

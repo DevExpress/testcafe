@@ -40,7 +40,7 @@ module.exports = {
     },
 
     site: {
-        viewsPath: './test/functional/fixtures/',
+        viewsPath: './test/functional/',
         port1:     3000,
         port2:     3001
     }

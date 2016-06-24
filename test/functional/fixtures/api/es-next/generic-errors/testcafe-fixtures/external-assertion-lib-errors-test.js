@@ -7,7 +7,7 @@ import { assertionError } from './helpers';
 chaiConfig.includeStack = true;
 
 fixture `External assertion library errors`
-    .page(`http://localhost:3000/api/es-next/generic-errors/pages/index.html`);
+    .page(`http://localhost:3000/fixtures/api/es-next/generic-errors/pages/index.html`);
 
 test('Built-in assertion lib error', () => {
     assert.strictEqual('answer', '42');

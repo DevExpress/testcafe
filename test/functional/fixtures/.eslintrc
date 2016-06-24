@@ -3,11 +3,6 @@
     "no-unused-expressions": 0
   },
   "globals": {
-    "handleConfirm": false,
-    "handleBeforeUnload": false,
-    "handleAlert": false,
-    "handlePrompt": false,
-    "getInput": true,
     "fixture": true
   }
 }

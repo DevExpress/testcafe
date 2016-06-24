@@ -27,7 +27,7 @@ if (!config.isTravisTask) {
             it('Should fail when a js-error appears during resizeWindow execution', function () {
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window leads to js-error', { shouldFail: true })
                     .catch(function (errs) {
-                        errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/api/es-next/resize-window/pages/index.html":', 0);
+                        errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/fixtures/api/es-next/resize-window/pages/index.html":', 0);
                         errorInEachBrowserContains(errs, 'Resize error', 0);
                         errorInEachBrowserContains(errs, '> 77 |    await t.resizeWindow(500, 500);', 0);
                     });
@@ -60,7 +60,7 @@ if (!config.isTravisTask) {
             it('Should fail when a js-error appears during resizeWindowToFitDevice execution', function () {
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window to fit a device leads to js-error', { shouldFail: true })
                     .catch(function (errs) {
-                        errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/api/es-next/resize-window/pages/index.html":', 0);
+                        errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/fixtures/api/es-next/resize-window/pages/index.html":', 0);
                         errorInEachBrowserContains(errs, 'Resize error', 0);
                         errorInEachBrowserContains(errs, '> 83 |    await t.resizeWindowToFitDevice(\'iPhone\');', 0);
                     });

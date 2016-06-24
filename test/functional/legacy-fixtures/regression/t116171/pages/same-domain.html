@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>T116171 - same-domain iframe page</title>
+    <style>
+        .body {
+            padding: 100px 0 0 300px
+        }
+
+        div {
+            border: 1px solid black;
+        }
+
+        div.square {
+            width: 100px;
+            height: 100px;
+        }
+
+        div.black {
+            border-color: black;
+        }
+
+        div.red {
+            border-color: red;
+        }
+
+        .iframe {
+            height: 500px;
+            width: 800px;
+        }
+    </style>
+</head>
+<body class="body">
+<div class="black square" onclick="window.blackClick++">black</div>
+<div class="red square" onclick="window.redClick++">red</div>
+<div>
+    iframe
+    <iframe id="iframe" class="iframe" src="index.html"></iframe>
+</div>
+<script>
+    window.blackClick = 0;
+    window.redClick = 0;
+</script>
+</body>
+</html>

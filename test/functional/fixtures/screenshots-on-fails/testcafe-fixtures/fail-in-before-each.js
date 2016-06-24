@@ -1,5 +1,5 @@
 fixture `Fail in beforeEach`
-    .page `http://localhost:3000/screenshots-on-fails/pages/index.html`
+    .page `http://localhost:3000/fixtures/screenshots-on-fails/pages/index.html`
     .beforeEach(() => {
         throw new Error('Fail in beforeEach');
     });

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>T174562 - cross-domain iframe page</title>
+    <style>
+        .body {
+            padding: 100px 0 0 300px;
+        }
+
+        .iframe {
+            position: absolute;
+            left: 100px;
+            top: 100px;
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body class="body">
+<iframe id="iframe" class="iframe" src="http://localhost:3001/legacy-fixtures/regression/t174562/pages/index.html"></iframe>
+</body>
+</html>

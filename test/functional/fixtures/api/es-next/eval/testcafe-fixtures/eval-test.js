@@ -3,7 +3,7 @@ import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
 fixture `t.eval`
-    .page `http://localhost:3000/api/es-next/eval/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/eval/pages/index.html`;
 
 const getById = ClientFunction(id => document.getElementById(id));
 

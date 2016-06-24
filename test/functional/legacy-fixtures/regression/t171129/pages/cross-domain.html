@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>T171129 - cross-domain iframe page</title>
+    <style>
+        .div {
+            height: 200px;
+            width: 200px;
+        }
+
+        .iframe {
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<div id="div1" class="div"></div>
+<div id="div2" class="div"></div>
+<script>
+    var div1 = document.getElementById('div1');
+
+    div1.onclick = function () {
+        div1.innerHTML = '<iframe class="iframe" src="http://localhost:3001/legacy-fixtures/regression/t171129/pages/index.html"></iframe>';
+    };
+</script>
+</body>
+</html>

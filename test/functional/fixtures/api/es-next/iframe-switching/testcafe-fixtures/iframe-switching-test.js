@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 
 fixture `Iframe switching`
-    .page `http://localhost:3000/api/es-next/iframe-switching/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/iframe-switching/pages/index.html`;
 
 
 const getBtnClickCount             = ClientFunction(() => window.btnClickCount);

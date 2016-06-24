@@ -2,7 +2,7 @@
     "fixtures": [
         {
             "name": "Select editable content",
-            "pageUrl": "http://localhost:3000/api/raw/select-editable-content/pages/index.html",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/select-editable-content/pages/index.html",
             "tests": [
                 {
                     "name": "Select editable content div",

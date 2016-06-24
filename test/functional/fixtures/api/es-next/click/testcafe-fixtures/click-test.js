@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { ClientFunction, Selector } from 'testcafe';
 
 fixture `Click`
-    .page `http://localhost:3000/api/es-next/click/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/click/pages/index.html`;
 
 const getClickOffset = ClientFunction(() => window.clickOffset);
 

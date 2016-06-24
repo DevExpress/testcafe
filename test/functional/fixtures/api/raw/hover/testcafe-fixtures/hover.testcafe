@@ -2,7 +2,7 @@
     "fixtures": [
         {
             "name": "Hover",
-            "pageUrl": "http://localhost:3000/api/raw/hover/pages/index.html",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/hover/pages/index.html",
             "tests": [
                 {
                     "name": "Hover on simple buttons",

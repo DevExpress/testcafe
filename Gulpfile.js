@@ -428,12 +428,21 @@ gulp.task('publish-website', ['build-website'], function () {
 
 gulp.task('test-docs', ['test-website', 'lint']);
 
-gulp.task('test-functional', ['build'], function () {
+
+function testFunctional (fixturesDir) {
     return gulp
-        .src(['test/functional/setup.js', 'test/functional/**/test.js'])
+        .src(['test/functional/setup.js', fixturesDir + '/**/test.js'])
         .pipe(mocha({
             ui:       'bdd',
             reporter: 'spec',
             timeout:  typeof v8debug === 'undefined' ? 30000 : Infinity // NOTE: disable timeouts in debug
         }));
+}
+
+gulp.task('test-functional', ['build'], function () {
+    return testFunctional('test/functional/fixtures');
+});
+
+gulp.task('test-functional-legacy', ['build'], function () {
+    return testFunctional('test/functional/legacy-fixtures');
 });

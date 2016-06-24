@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-414 - first page</title>
+</head>
+<body>
+<h1>GH-414 - first page</h1>
+<div id="div1">Click to show the second div with delay</div>
+<div id="div2">The second div</div>
+<a id="link" href="second-page.html">The second page</a>
+<script>
+    var div1 = document.getElementById('div1');
+    var div2 = document.getElementById('div2');
+
+    div2.parentNode.removeChild(div2);
+
+    div1.onclick = function () {
+        window.setTimeout(function () {
+            document.getElementsByTagName('body')[0].appendChild(div2);
+        }, 2000);
+
+        window.setTimeout(function () {
+            document.getElementById('link').click();
+        }, 1000);
+    };
+</script>
+</body>
+</html>

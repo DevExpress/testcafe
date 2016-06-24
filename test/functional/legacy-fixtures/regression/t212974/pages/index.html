@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>T212974 - index page</title>
+</head>
+<body>
+<div id="targetElement">target element</div>
+<div id="elementFromPoint"></div>
+<script>
+    document.getElementById('targetElement').addEventListener('click', function (e) {
+        var el = document.elementFromPoint(e.clientX, e.clientY);
+
+        if (el)
+            document.getElementById('elementFromPoint').innerHTML = el.id;
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-414 - second page</title>
+</head>
+<body>
+<h1>GH-414 - second page</h1>
+<span id="result"></span>
+<script>
+    window.setTimeout(function () {
+        var div = document.createElement('div');
+
+        div.id          = 'div3';
+        div.style       = "width: 150px;";
+        div.textContent = 'The third div';
+
+        div.onclick = function () {
+            document.getElementById('result').textContent = 'div3 click';
+        };
+
+        document.getElementsByTagName('body')[0].appendChild(div);
+    }, 2000);
+</script>
+</body>
+</html>

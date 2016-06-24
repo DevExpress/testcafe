@@ -3,7 +3,7 @@ import { ClientFunction } from 'testcafe';
 
 
 fixture `Upload`
-    .page `http://localhost:3000/api/es-next/upload/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/upload/pages/index.html`;
 
 const getUploadedText = ClientFunction(() => document.getElementById('uploadedContent').textContent.trim());
 

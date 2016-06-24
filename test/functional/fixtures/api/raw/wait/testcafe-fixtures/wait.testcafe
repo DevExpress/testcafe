@@ -2,7 +2,7 @@
     "fixtures": [
         {
             "name": "Wait",
-            "pageUrl": "http://localhost:3000/api/raw/wait/pages/index.html",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/wait/pages/index.html",
             "tests": [
                 {
                     "name": "Wait before click on element",

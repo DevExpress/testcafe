@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Element availability timeout</title>
+</head>
+<body>
+<button id="button1">Start of element appearance</button>
+<button id="button2">Start of element appearance with too long timeout</button>
+
+<button id="button" style="display: none">After 1500 ms</button>
+
+<script>
+    function makeButtonVisible (ms) {
+        window.setTimeout(function () {
+            document.getElementById('button').style.display = "block";
+        }, ms || 1000);
+    }
+
+    document.getElementById('button1').addEventListener('click', makeButtonVisible);
+
+    document.getElementById('button2').addEventListener('click', function () {
+        makeButtonVisible(10000);
+    });
+</script>
+</body>
+</html>
+

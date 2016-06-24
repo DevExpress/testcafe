@@ -152,6 +152,7 @@
       "connect",
       "cross-spawn-async",
       "del",
+      "dom-walk",
       "error-stack-parser",
       "eslint-plugin-hammerhead",
       "express",

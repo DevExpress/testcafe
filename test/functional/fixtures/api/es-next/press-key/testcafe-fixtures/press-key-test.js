@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 
 fixture `PressKey`
-    .page `http://localhost:3000/api/es-next/press-key/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/press-key/pages/index.html`;
 
 const focusInput    = ClientFunction(() => document.getElementById('input').focus());
 const getInputValue = ClientFunction(() => document.getElementById('input').value);

@@ -2,7 +2,7 @@
     "fixtures": [
         {
             "name": "Fail in beforeEach",
-            "pageUrl": "http://localhost:3000/api/raw/before-after-each-hooks/pages/index.html",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html",
             "beforeEachCommands": [
                 {
                     "type": "click",
