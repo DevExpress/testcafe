@@ -8,8 +8,8 @@ import LegacyTestRunErrorFormattableAdapter from '../test-run-error/formattable-
 
 
 // Const
-const TEST_RUN_TEMPLATE                    = read('../../client/legacy/test-run/index.js.mustache');
-const IFRAME_TEST_RUN_TEMPLATE             = read('../../client/legacy/test-run/iframe.js.mustache');
+const TEST_RUN_TEMPLATE        = read('../../client/legacy/test-run/index.js.mustache');
+const IFRAME_TEST_RUN_TEMPLATE = read('../../client/legacy/test-run/iframe.js.mustache');
 
 
 export default class LegacyTestRun extends Session {
@@ -49,28 +49,28 @@ export default class LegacyTestRun extends Session {
         }
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
-            stepNames:                  JSON.stringify(this.test.stepData.names),
-            testSteps:                  this.test.stepData.js,
-            sharedJs:                   sharedJs,
-            testRunId:                  this.id,
-            browserHeartbeatUrl:        this.browserConnection.heartbeatUrl,
-            browserStatusUrl:           this.browserConnection.statusUrl,
-            takeScreenshots:            this.screenshotCapturer.enabled,
-            takeScreenshotsOnFails:     this.opts.takeScreenshotsOnFails,
-            skipJsErrors:               this.opts.skipJsErrors,
-            nativeDialogsInfo:          JSON.stringify(this.nativeDialogsInfo),
-            elementAvailabilityTimeout: this.opts.elementAvailabilityTimeout
+            stepNames:              JSON.stringify(this.test.stepData.names),
+            testSteps:              this.test.stepData.js,
+            sharedJs:               sharedJs,
+            testRunId:              this.id,
+            browserHeartbeatUrl:    this.browserConnection.heartbeatUrl,
+            browserStatusUrl:       this.browserConnection.statusUrl,
+            takeScreenshots:        this.screenshotCapturer.enabled,
+            takeScreenshotsOnFails: this.opts.takeScreenshotsOnFails,
+            skipJsErrors:           this.opts.skipJsErrors,
+            nativeDialogsInfo:      JSON.stringify(this.nativeDialogsInfo),
+            selectorTimeout:        this.opts.selectorTimeout
         });
     }
 
     _getIframePayloadScript (iframeWithoutSrc) {
         var sharedJs      = this.test.fixture.getSharedJs();
         var payloadScript = Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
-            sharedJs:                   sharedJs,
-            takeScreenshotsOnFails:     this.opts.takeScreenshotsOnFails,
-            skipJsErrors:               this.opts.skipJsErrors,
-            nativeDialogsInfo:          JSON.stringify(this.nativeDialogsInfo),
-            elementAvailabilityTimeout: this.opts.elementAvailabilityTimeout
+            sharedJs:               sharedJs,
+            takeScreenshotsOnFails: this.opts.takeScreenshotsOnFails,
+            skipJsErrors:           this.opts.skipJsErrors,
+            nativeDialogsInfo:      JSON.stringify(this.nativeDialogsInfo),
+            selectorTimeout:        this.opts.selectorTimeout
         });
 
         return iframeWithoutSrc ? 'var isIFrameWithoutSrc = true;' + payloadScript : payloadScript;

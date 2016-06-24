@@ -49,7 +49,11 @@ describe('[API] t.click()', function () {
             only:       'chrome'
         })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('Action selector error:  Selector code is expected to be specified as a function or string, but "number" was passed.');
+                expect(errs[0]).to.contains(
+                    'Action selector error:  Selector is expected to be initialized with a ' +
+                    'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
+                    'by a Selector, but "number" was passed.'
+                );
                 expect(errs[0]).to.contains(
                     '7 |    .page `http://localhost:3000/api/es-next/click/pages/index.html`;' +
                     ' 8 |' +
@@ -74,11 +78,23 @@ describe('[API] t.click()', function () {
         return runTests('./testcafe-fixtures/click-test.js', 'Function as selector');
     });
 
+    it('Should accept Selector function as selector', function () {
+        return runTests('./testcafe-fixtures/click-test.js', 'Selector function as selector');
+    });
+
+    it('Should accept node snapshot as selector', function () {
+        return runTests('./testcafe-fixtures/click-test.js', 'Node snapshot as selector');
+    });
+
+    it('Should accept Promise returned by selector as selector', function () {
+        return runTests('./testcafe-fixtures/click-test.js', 'Promise returned by selector as selector');
+    });
+
     it('Should handle error in selector', function () {
         return runTests('./testcafe-fixtures/click-test.js', 'Error in selector', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('An error occurred in Selector code:  Error: yo');
-                expect(errs[0]).to.contains('> 43 |    await t.click(() => {');
+                expect(errs[0]).to.contains('> 34 |    await t.click(() => {');
             });
     });
 });

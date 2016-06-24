@@ -69,17 +69,17 @@ export default class TestRun extends Session {
     // Hammerhead payload
     _getPayloadScript () {
         return Mustache.render(TEST_RUN_TEMPLATE, {
-            testRunId:                  this.id,
-            browserHeartbeatUrl:        this.browserConnection.heartbeatUrl,
-            browserStatusUrl:           this.browserConnection.statusUrl,
-            elementAvailabilityTimeout: this.opts.elementAvailabilityTimeout
+            testRunId:           this.id,
+            browserHeartbeatUrl: this.browserConnection.heartbeatUrl,
+            browserStatusUrl:    this.browserConnection.statusUrl,
+            selectorTimeout:     this.opts.selectorTimeout
         });
     }
 
     _getIframePayloadScript () {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
-            testRunId:                  this.id,
-            elementAvailabilityTimeout: this.opts.elementAvailabilityTimeout
+            testRunId:       this.id,
+            selectorTimeout: this.opts.selectorTimeout
         });
     }
 

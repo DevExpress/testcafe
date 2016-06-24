@@ -4,7 +4,7 @@
 
 
     var ClientDriver = window['%testCafeDriver%'];
-    var driver = new ClientDriver('{{{testRunId}}}', {{{elementAvailabilityTimeout}}}, '{{{browserHeartbeatUrl}}}', '{{{browserStatusUrl}}}');
+    var driver = new ClientDriver('{{{testRunId}}}', {{{selectorTimeout}}}, '{{{browserHeartbeatUrl}}}', '{{{browserStatusUrl}}}');
 
     driver.start();
 })();

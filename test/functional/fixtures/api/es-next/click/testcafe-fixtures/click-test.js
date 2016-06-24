@@ -1,7 +1,7 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 
 import { expect } from 'chai';
-import { ClientFunction } from 'testcafe';
+import { ClientFunction, Selector } from 'testcafe';
 
 fixture `Click`
     .page `http://localhost:3000/api/es-next/click/pages/index.html`;
@@ -30,17 +30,49 @@ test('Click without offset options', async t=> {
     expect(actualClickOffset.y).eql(expectedClickOffset.y);
 });
 
-test('Function as selector', async t => {
-    const isStatusBtnClicked = ClientFunction(() => document.querySelector('#status').textContent === 'Clicked!');
+test('Error in selector', async t => {
+    await t.click(() => {
+        throw new Error('yo');
+    });
+});
 
+const isStatusBtnClicked = ClientFunction(() => document.querySelector('#status').textContent === 'Clicked!');
+const getElementById     = Selector(id => document.querySelector(`#${id}`));
+const getStatusBtn       = Selector(() => getElementById('statusBtn'), { getElementById });
+
+test('Function as selector', async t => {
     await t.click(() => document.querySelector('#statusBtn'));
 
     expect(await isStatusBtnClicked()).to.be.true;
 });
 
+test('Selector function as selector', async t => {
+    await t.click(getStatusBtn);
 
-test('Error in selector', async t => {
-    await t.click(() => {
-        throw new Error('yo');
-    });
+    expect(await isStatusBtnClicked()).to.be.true;
+});
+
+test('Node snapshot as selector', async t => {
+    const statusBtn = await getStatusBtn();
+
+    await t.click(statusBtn);
+
+    expect(await isStatusBtnClicked()).to.be.true;
+});
+
+test('Promise returned by selector as selector', async t => {
+    const getElementByIdAndIncCounter = Selector(id => {
+        window.selectorCallCount++;
+
+        return getElementById(id);
+    }, { getElementById });
+
+    await t.click(getElementByIdAndIncCounter('statusBtn'));
+
+    expect(await isStatusBtnClicked()).to.be.true;
+
+    // NOTE: test selector optimization - it should be executed only once.
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    expect(await t.eval(() => window.selectorCallCount)).eql(1);
 });

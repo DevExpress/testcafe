@@ -8,15 +8,25 @@ describe('[API] Upload', function () {
         });
 
         it('Should validate the selector argument', function () {
-            return runTests('./testcafe-fixtures/upload-test.js', 'Invalid selector argument (setFilesToUpload)', { shouldFail: true, only: 'chrome' })
+            return runTests('./testcafe-fixtures/upload-test.js', 'Invalid selector argument (setFilesToUpload)', {
+                shouldFail: true,
+                only:       'chrome'
+            })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('Action selector error:  Selector code is expected to be specified as a function or string, but "undefined" was passed.');
+                    expect(errs[0]).contains(
+                        'Action selector error:  Selector is expected to be initialized with a ' +
+                        'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
+                        'by a Selector, but "undefined" was passed.'
+                    );
                     expect(errs[0]).contains('> 28 |    await t.setFilesToUpload(void 0, \'../test-data/file1.txt\');');
                 });
         });
 
         it('Should validate the filePath argument', function () {
-            return runTests('./testcafe-fixtures/upload-test.js', 'Invalid filePath argument', { shouldFail: true, only: 'chrome' })
+            return runTests('./testcafe-fixtures/upload-test.js', 'Invalid filePath argument', {
+                shouldFail: true,
+                only:       'chrome'
+            })
                 .catch(function (errs) {
                     expect(errs[0]).contains('The filePath argument is expected to be a non-empty string or a string array, but it was "".');
                     expect(errs[0]).contains('> 32 |    await t.setFilesToUpload(\'#file\', \'\');');
@@ -30,9 +40,16 @@ describe('[API] Upload', function () {
         });
 
         it('Should validate the selector argument', function () {
-            return runTests('./testcafe-fixtures/upload-test.js', 'Invalid selector argument (clearUpload)', { shouldFail: true, only: 'chrome' })
+            return runTests('./testcafe-fixtures/upload-test.js', 'Invalid selector argument (clearUpload)', {
+                shouldFail: true,
+                only:       'chrome'
+            })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('Action selector error:  Selector code is expected to be specified as a function or string, but "object" was passed.');
+                    expect(errs[0]).contains(
+                        'Action selector error:  Selector is expected to be initialized with a ' +
+                        'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
+                        'by a Selector, but "object" was passed.'
+                    );
                     expect(errs[0]).contains('> 36 |    await t.clearUpload(null);');
                 });
         });

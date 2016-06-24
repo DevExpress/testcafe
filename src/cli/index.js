@@ -59,9 +59,9 @@ async function runTests (argParser) {
     runner.once('done-bootstrapping', () => log.hideSpinner());
 
     var failed = await runner.run({
-        skipJsErrors:               opts.skipJsErrors,
-        quarantineMode:             opts.quarantineMode,
-        elementAvailabilityTimeout: opts.elementTimeout
+        skipJsErrors:    opts.skipJsErrors,
+        quarantineMode:  opts.quarantineMode,
+        selectorTimeout: opts.selectorTimeout
     });
 
     exit(failed);

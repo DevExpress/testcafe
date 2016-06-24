@@ -2,36 +2,88 @@ import { isFinite } from 'lodash';
 import ClientFunctionFactory from './client-function-factory';
 import { SelectorNodeTransform } from './replicator';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
+import functionFactorySymbol from './factory-symbol';
 import MESSAGE from '../errors/runtime/message';
 import { ExecuteSelectorCommand } from '../test-run/commands/observation';
+import defineLazyProperty from '../utils/define-lazy-property';
 
 export default class SelectorFactory extends ClientFunctionFactory {
     constructor (fn, scopeVars, callsiteNames) {
         super(fn, scopeVars, callsiteNames);
     }
 
-    _getFnCode (fn) {
-        var fnType = typeof fn;
+    static _defineNodeSnapshotDerivativeSelectorProperty (obj, propName, fn) {
+        defineLazyProperty(obj, propName, () => {
+            var factory = new SelectorFactory(fnArg => {
+                /* eslint-disable no-undef */
+                var selectorResult = selector();
 
-        if (fnType !== 'function' && fnType !== 'string')
-            throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.selectorCodeIsNotAFunctionOrString, fnType);
+                if (selectorResult && typeof selectorResult.then === 'function')
+                    return selectorResult.then(node => fn(node, fnArg));
 
-        return fnType === 'string' ? `function(){return document.querySelector('${fn}');}` : fn.toString();
+                return fn(selectorResult, fnArg);
+                /* eslint-enable no-undef */
+            }, { selector: obj.selector, fn });
+
+            return factory.getFunction();
+        });
     }
 
-    _executeFunction (args, options) {
-        return super
-            ._executeFunction(args, options)
-            .then(result => result ? this._decorateFunctionResult(result, args) : result);
+    _createFunctionDescriptor (fn, scopeVars) {
+        var factoryFromSelector          = fn && fn[functionFactorySymbol];
+        var factoryFromPromiseOrSnapshot = fn && fn.selector && fn.selector[functionFactorySymbol];
+        var factory                      = factoryFromSelector || factoryFromPromiseOrSnapshot;
+
+        if (factory instanceof SelectorFactory)
+            return factory.functionDescriptor;
+
+        if (typeof fn === 'string') {
+            return {
+                scopeVars: {},
+                fnCode:    `(function(){return document.querySelector('${fn.replace(/'/g, "\\'")}');})`
+            };
+        }
+
+        return super._createFunctionDescriptor(fn, scopeVars);
+    }
+
+    _createInvalidFnTypeError (fn) {
+        return new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.selectorInitializedWithWrongType, typeof fn);
+    }
+
+    _executeCommand (args, testRun, callsite, options) {
+        var lazyPromise   = Promise.resolve();
+        var resultPromise = null;
+
+        // OPTIMIZATION: Selectors are executed lazily (once someone subscribes to their result).
+        // It's especially useful for situations when the selector's result is passed to
+        // an action, e.g.: `t.click(someSelector(42));` In that case, we create a new selector
+        // inside this action, but we are not interested in the result of ongoing execution.
+        var execute = () => {
+            if (!resultPromise) {
+                resultPromise = super
+                    ._executeCommand(args, testRun, callsite, options)
+                    .then(result => result ? this._decorateFunctionResult(result, args) : result);
+            }
+
+            return resultPromise;
+        };
+
+        lazyPromise.then  = (onFulfilled, onRejected) => execute().then(onFulfilled, onRejected);
+        lazyPromise.catch = onRejected => execute().catch(onRejected);
+
+        this._defineSelectorPropertyWithBoundArgs(lazyPromise, args);
+
+        return lazyPromise;
     }
 
 
-    _createExecutionTestRunCommand (args, scopeVars, options) {
+    _createExecutionTestRunCommand (encodedArgs, encodedScopeVars, options) {
         return new ExecuteSelectorCommand({
             instantiationCallsiteName: this.callsiteNames.instantiation,
-            fnCode:                    this.compiledFnCode,
-            args:                      args,
-            scopeVars:                 scopeVars,
+            fnCode:                    this.functionDescriptor.fnCode,
+            args:                      encodedArgs,
+            scopeVars:                 encodedScopeVars,
             visibilityCheck:           !!options.visibilityCheck,
             timeout:                   options.timeout
         });
@@ -63,44 +115,29 @@ export default class SelectorFactory extends ClientFunctionFactory {
         return transforms;
     }
 
+    _defineSelectorPropertyWithBoundArgs (obj, selectorArgs) {
+        defineLazyProperty(obj, 'selector', () => {
+            var factory = new SelectorFactory(() => /* eslint-disable no-undef */selector.apply(null, args)/* eslint-enable no-undef */, {
+                selector: this.getFunction(),
+                args:     selectorArgs
+            });
 
-    // Snapshot selectors
-    _createSnapshotSelector (selectorArgs) {
-        var factory = new SelectorFactory(() => /* eslint-disable no-undef */selector.apply(null, args)/* eslint-enable no-undef */, {
-            selector: this.getFunction(),
-            args:     selectorArgs
+            return factory.getFunction();
         });
-
-        return factory.getFunction();
-    }
-
-    _createSnapshotSelectorDerivative (snapshotSelector, fn) {
-        var factory = new SelectorFactory(fnArg => {
-            /* eslint-disable no-undef */
-            var selectorResult = snapshotSelector();
-
-            if (selectorResult && typeof selectorResult.then === 'function')
-                return selectorResult.then(node => fn(node, fnArg));
-
-            return fn(selectorResult, fnArg);
-            /* eslint-enable no-undef */
-        }, { snapshotSelector, fn });
-
-        return factory.getFunction();
     }
 
     _decorateFunctionResult (nodeSnapshot, selectorArgs) {
-        nodeSnapshot.selector = this._createSnapshotSelector(selectorArgs);
+        this._defineSelectorPropertyWithBoundArgs(nodeSnapshot, selectorArgs);
 
-        nodeSnapshot.getParentNode = this._createSnapshotSelectorDerivative(nodeSnapshot.selector, node => {
+        SelectorFactory._defineNodeSnapshotDerivativeSelectorProperty(nodeSnapshot, 'getParentNode', node => {
             return node ? node.parentNode : node;
         });
 
-        nodeSnapshot.getChildNode = this._createSnapshotSelectorDerivative(nodeSnapshot.selector, (node, idx) => {
+        SelectorFactory._defineNodeSnapshotDerivativeSelectorProperty(nodeSnapshot, 'getChildNode', (node, idx) => {
             return node ? node.childNodes[idx] : node;
         });
 
-        nodeSnapshot.getChildElement = this._createSnapshotSelectorDerivative(nodeSnapshot.selector, (node, idx) => {
+        SelectorFactory._defineNodeSnapshotDerivativeSelectorProperty(nodeSnapshot, 'getChildElement', (node, idx) => {
             if (node.children)
                 return node.children[idx];
 

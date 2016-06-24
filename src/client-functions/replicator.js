@@ -30,16 +30,14 @@ export class FunctionTransform {
     toSerializable (fn) {
         var clientFnFactory = fn[functionFactorySymbol];
 
-        if (clientFnFactory) {
-            return {
-                fnCode:    clientFnFactory.compiledFnCode,
-                scopeVars: clientFnFactory.scopeVars
-            };
-        }
-
         return {
-            fnCode:    compileClientFunction(fn.toString(), null, this.callsiteNames.instantiation, this.callsiteNames.execution),
-            scopeVars: null
+            fnCode: clientFnFactory ?
+                    clientFnFactory.functionDescriptor.fnCode :
+                    compileClientFunction(fn.toString(), null, this.callsiteNames.instantiation, this.callsiteNames.execution),
+
+            scopeVars: clientFnFactory ?
+                       clientFnFactory.functionDescriptor.scopeVars :
+                       null
         };
     }
 

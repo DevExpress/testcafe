@@ -15,10 +15,10 @@ if (!config.isTravisTask) {
         it('Should take a screenshot if the ensureElement method fails', function () {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail',
                 {
-                    shouldFail:                 true,
-                    screenshotsOnFails:         true,
-                    elementAvailabilityTimeout: 0,
-                    setScreenshotPath:          true
+                    shouldFail:         true,
+                    screenshotsOnFails: true,
+                    selectorTimeout:    0,
+                    setScreenshotPath:  true
                 })
                 .catch(function (errs) {
                     assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
@@ -81,7 +81,7 @@ if (!config.isTravisTask) {
 
         it('Should not take a screenshot if the ensureElement method fails with no screenshotsOnFails flag set', function () {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail',
-                { shouldFail: true, elementAvailabilityTimeout: 0, setScreenshotPath: true })
+                { shouldFail: true, selectorTimeout: 0, setScreenshotPath: true })
                 .catch(function (errs) {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
                     assertionHelper.errorInEachBrowserNotContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
@@ -90,7 +90,7 @@ if (!config.isTravisTask) {
 
         it('Should not take a screenshot if the ensureElement method fails with no screenshotPath specified', function () {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail',
-                { shouldFail: true, elementAvailabilityTimeout: 0, screenshotsOnFails: true })
+                { shouldFail: true, selectorTimeout: 0, screenshotsOnFails: true })
                 .catch(function (errs) {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
                     assertionHelper.errorInEachBrowserNotContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);

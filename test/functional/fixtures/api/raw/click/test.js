@@ -49,7 +49,7 @@ describe('[Raw API] Click action', function () {
 
     it('Should wait for the next action element to appear', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Wait for the next action target to appear',
-            { shouldFail: true, elementAvailabilityTimeout: 3000 })
+            { shouldFail: true, selectorTimeout: 3000 })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'Click on the new button raised', 0);
             });
@@ -82,8 +82,11 @@ describe('[Raw API] Click action', function () {
     it('Should fail if action has incorrect selector', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Incorrect action selector', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).eql('Action selector error:  Selector code is expected to be specified as a function or string, but "number" was passed.  ' +
-                                    '[[Incorrect action selector callsite]]');
+                expect(errs[0]).eql(
+                    'Action selector error:  Selector is expected to be initialized with a function, ' +
+                    'CSS selector string, another Selector, node snapshot or a Promise returned by a Selector, but "number" was passed.  ' +
+                    '[[Incorrect action selector callsite]]'
+                );
             });
     });
 

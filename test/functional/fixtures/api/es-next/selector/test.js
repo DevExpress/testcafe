@@ -26,19 +26,19 @@ describe('[API] Selector', function () {
     });
 
     it('Should wait for element to appear in DOM', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Wait for element in DOM', { elementAvailabilityTimeout: 2500 });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Wait for element in DOM', { selectorTimeout: 2500 });
     });
 
     it('Should return `null` if element does not appear within given time', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Element does not appear', { elementAvailabilityTimeout: 300 });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Element does not appear', { selectorTimeout: 300 });
     });
 
     it('Should check element visibility if option is enabled', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Visibility check', { elementAvailabilityTimeout: 2500 });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Visibility check', { selectorTimeout: 2500 });
     });
 
     it('Should use timeout specified via property', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Timeout', { elementAvailabilityTimeout: 4000 });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Timeout', { selectorTimeout: 4000 });
     });
 
     it('Should provide "selector" method in node snapshot', function () {
@@ -85,7 +85,8 @@ describe('[API] Selector', function () {
                 only:       'chrome'
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
-                    'Selector code is expected to be specified as a function or string, but "number" was passed.'
+                    'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
+                    'node snapshot or a Promise returned by a Selector, but "number" was passed.'
                 )).eql(0);
 
                 expect(errs[0]).contains('> 183 |    await Selector(123)();');

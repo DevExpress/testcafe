@@ -215,14 +215,14 @@ function createAutomation (elements, command) {
 
 
 // Execute action
-export default function executeAction (command, elementAvailabilityTimeout) {
+export default function executeAction (command, selectorTimeout) {
     var resolveStartPromise = null;
     var startPromise        = new Promise(resolve => resolveStartPromise = resolve);
 
     var completionPromise = new Promise(resolve => {
         var requestBarrier = null;
 
-        ensureCommandElements(command, elementAvailabilityTimeout)
+        ensureCommandElements(command, selectorTimeout)
             .then(elements => {
                 resolveStartPromise();
 
