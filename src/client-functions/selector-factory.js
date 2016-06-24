@@ -55,10 +55,10 @@ export default class SelectorFactory extends ClientFunctionFactory {
         var lazyPromise   = Promise.resolve();
         var resultPromise = null;
 
-        // OPTIMIZATION: Selectors are executed lazily once they have result subscribers.
-        // It's especially useful for situations then selector result is passed to
-        // action, e.g.: `t.click(someSelector(42));` In that case we create new selector
-        // inside action, but we are not interested in already initiated execution result.
+        // OPTIMIZATION: Selectors are executed lazily (once someone subscribes to their result).
+        // It's especially useful for situations when the selector's result is passed to
+        // an action, e.g.: `t.click(someSelector(42));` In that case, we create a new selector
+        // inside this action, but we are not interested in the result of ongoing execution.
         var execute = () => {
             if (!resultPromise) {
                 resultPromise = super
