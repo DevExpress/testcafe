@@ -303,3 +303,13 @@ test('Snapshot `hasClass` method', async () => {
     expect(el.hasClass('svg2')).to.be.true;
     expect(el.hasClass('cool')).to.be.false;
 });
+
+test('Element on new page', async t => {
+    const getNewElement = Selector('#newPageElement').with({ timeout: 5000 });
+
+    await t.click('#newPage');
+
+    const el = await getNewElement();
+
+    expect(el.tagName).eql('div');
+});

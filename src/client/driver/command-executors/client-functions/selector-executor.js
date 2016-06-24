@@ -20,13 +20,19 @@ function visible (el) {
 }
 
 export default class SelectorExecutor extends ClientFunctionExecutor {
-    constructor (command, timeout, createNotFoundError, createIsInvisibleError) {
+    constructor (command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError) {
         super(command);
 
 
         this.createNotFoundError    = createNotFoundError;
         this.createIsInvisibleError = createIsInvisibleError;
-        this.timeout                = typeof command.timeout === 'number' ? command.timeout : timeout;
+        this.timeout                = typeof command.timeout === 'number' ? command.timeout : globalTimeout;
+
+        if (startTime) {
+            var elapsed = new Date() - startTime;
+
+            this.timeout = Math.max(this.timeout - elapsed, 0);
+        }
     }
 
     _createReplicator () {

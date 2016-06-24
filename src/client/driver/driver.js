@@ -37,6 +37,7 @@ var messageSandbox = hammerhead.eventSandbox.message;
 const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
 const PENDING_STATUS                       = 'testcafe|driver|pending-status';
 const EXECUTING_CLIENT_FUNCTION_DESCRIPTOR = 'testcafe|driver|executing-client-function-descriptor';
+const SELECTOR_EXECUTION_START_TIME        = 'testcafe|driver|selector-execution-start-time';
 const PENDING_PAGE_ERROR                   = 'testcafe|driver|pending-page-error';
 const ACTIVE_IFRAME_SELECTOR               = 'testcafe|driver|active-iframe-selector';
 const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;
@@ -189,7 +190,10 @@ export default class Driver {
                 return this.activeChildDriverLink.executeCommand(command);
             })
             .then(status => this._onCommandExecutedInIframe(status))
-            .catch(err => this._onCommandExecutedInIframe(new DriverStatus({ isCommandResult: true, executionError: err })));
+            .catch(err => this._onCommandExecutedInIframe(new DriverStatus({
+                isCommandResult: true,
+                executionError:  err
+            })));
     }
 
     _onCommandExecutedInIframe (status) {
@@ -207,8 +211,10 @@ export default class Driver {
     }
 
     _switchToIframe (selector, iframeErrorCtors) {
-        var selectorExecutor = new SelectorExecutor(selector, this.selectorTimeout, () => new iframeErrorCtors.NotFoundError(),
-            () => iframeErrorCtors.IsInvisibleError());
+        var selectorExecutor = new SelectorExecutor(selector, this.selectorTimeout, null,
+            () => new iframeErrorCtors.NotFoundError(),
+            () => iframeErrorCtors.IsInvisibleError()
+        );
 
         return selectorExecutor.getResult()
             .then(iframe => {
@@ -270,11 +276,14 @@ export default class Driver {
     }
 
     _onExecuteSelectorCommand (command) {
-        // TODO cross-page timeout
-        var executor = new SelectorExecutor(command, this.selectorTimeout);
+        var startTime = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || new Date();
+        var executor  = new SelectorExecutor(command, this.selectorTimeout, startTime);
 
         executor.getResultDriverStatus()
-            .then(driverStatus => this._onReady(driverStatus));
+            .then(driverStatus => {
+                this.contextStorage.setItem(SELECTOR_EXECUTION_START_TIME, null);
+                this._onReady(driverStatus);
+            });
     }
 
     _onSwitchToMainWindowCommand (command) {

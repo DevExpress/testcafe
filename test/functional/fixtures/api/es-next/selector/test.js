@@ -61,6 +61,10 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `hasClass` method');
     });
 
+    it('Should wait for element to appear on new page', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Element on new page');
+    });
+
     describe('Errors', function () {
         it('Should handle errors in Selector code', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Error in code', { shouldFail: true })
