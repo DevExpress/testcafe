@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 fixture `t.select`
-    .page `http://localhost:3000/api/es-next/select/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/select/pages/index.html`;
 
 
 test('Select element', async t => {
