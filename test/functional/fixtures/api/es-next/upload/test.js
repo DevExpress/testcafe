@@ -14,7 +14,7 @@ describe('[API] Upload', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'Action selector error:  Selector is expected to be initialized with a ' +
+                        'Action "selector" argument error:  Selector is expected to be initialized with a ' +
                         'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
                         'by a Selector, but "undefined" was passed.'
                     );
@@ -28,7 +28,7 @@ describe('[API] Upload', function () {
                 only:       'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The filePath argument is expected to be a non-empty string or a string array, but it was "".');
+                    expect(errs[0]).contains('The "filePath" argument is expected to be a non-empty string or a string array, but it was "".');
                     expect(errs[0]).contains('> 32 |    await t.setFilesToUpload(\'#file\', \'\');');
                 });
         });
@@ -46,7 +46,7 @@ describe('[API] Upload', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'Action selector error:  Selector is expected to be initialized with a ' +
+                        'Action "selector" argument error:  Selector is expected to be initialized with a ' +
                         'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
                         'by a Selector, but "object" was passed.'
                     );

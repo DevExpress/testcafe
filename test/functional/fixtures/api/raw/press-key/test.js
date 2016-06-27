@@ -13,7 +13,7 @@ describe('[Raw API] Press action', function () {
     it('Should fail if keys command is incorrect', function () {
         return runTests('./testcafe-fixtures/press-key.testcafe', 'Incorrect keys command', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).eql('The keys argument contains an incorrect key or key combination.  ' +
+                expect(errs[0]).eql('The "keys" argument contains an incorrect key or key combination.  ' +
                                     '[[Incorrect keys command callsite]]');
             });
     });

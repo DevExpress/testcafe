@@ -62,7 +62,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
         it('Should raise an error is the switchContext argument is not an iframe', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Try to switch to an incorrect element', { shouldFail: true })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contains('The action element is expected to be an iframe.');
+                    expect(errs[0]).to.contains('The action element is expected to be an <iframe>.');
                     expect(errs[0]).to.contains("> 70 |    await t.switchToIframe('body');");
                 });
         });

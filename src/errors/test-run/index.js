@@ -209,16 +209,8 @@ export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
 
 // Selector errors
 export class ActionSelectorError extends TestRunErrorBase {
-    constructor (errMsg) {
-        super(TYPE.actionSelectorError);
-
-        this.errMsg = errMsg;
-    }
-}
-
-export class ActionAdditionalSelectorError extends TestRunErrorBase {
     constructor (selectorName, errMsg) {
-        super(TYPE.actionAdditionalSelectorError);
+        super(TYPE.actionSelectorError);
 
         this.selectorName = selectorName;
         this.errMsg       = errMsg;

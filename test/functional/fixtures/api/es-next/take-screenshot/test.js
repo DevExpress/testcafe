@@ -50,7 +50,7 @@ if (!config.isTravisTask) {
                 only:       'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contains('The path argument is expected to be a non-empty string, but it was number.');
+                    expect(errs[0]).to.contains('The "path" argument is expected to be a non-empty string, but it was number.');
                     expect(errs[0]).to.contains(
                         '20 | ' +
                         '21 |    await t.takeScreenshot(\'custom/\' + parsedUA.family); ' +

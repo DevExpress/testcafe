@@ -1,5 +1,5 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
-The specified startSelector does not match any element in the DOM tree.
+The specified "startSelector" does not match any element in the DOM tree.
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');

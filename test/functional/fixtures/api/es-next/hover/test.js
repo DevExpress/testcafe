@@ -18,7 +18,7 @@ describe('[API] Hover action', function () {
             only:       'chrome'
         })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('The offsetX option is expected to be a positive integer, but it was NaN.');
+                expect(errs[0]).to.contains('The "offsetX" option is expected to be a positive integer, but it was NaN.');
                 expect(errs[0]).to.contains(' > 16 |    await t.hover(\'#container1\', { offsetX: NaN });');
             });
     });
@@ -30,7 +30,7 @@ describe('[API] Hover action', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains(
-                    'Action selector error:  Selector is expected to be initialized with a ' +
+                    'Action "selector" argument error:  Selector is expected to be initialized with a ' +
                     'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
                     'by a Selector, but "undefined" was passed.'
                 );

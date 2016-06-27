@@ -22,13 +22,13 @@ function markup (err, msgMarkup) {
 
 export default {
     [TYPE.actionPositiveIntegerOptionError]: err => markup(err, `
-        The <code>${err.optionName}</code> option is expected to be a positive integer, but it was <code>${err.actualValue}</code>.
+        The "${err.optionName}" option is expected to be a positive integer, but it was ${err.actualValue}.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionBooleanOptionError]: err => markup(err, `
-        The <code>${err.optionName}</code> option is expected to be a boolean value, but it was <code>${err.actualValue}</code>.
+        The "${err.optionName}" option is expected to be a boolean value, but it was ${err.actualValue}.
 
         ${err.getCallsiteMarkup()}
     `),
@@ -54,7 +54,7 @@ export default {
     `),
 
     [TYPE.uncaughtErrorInClientFunctionCode]: err => markup(err, `
-        An error occurred in <code>${err.instantiationCallsiteName}</code> code:
+        An error occurred in ${err.instantiationCallsiteName} code:
 
         ${escapeHtml(err.errMsg)}
 
@@ -62,53 +62,53 @@ export default {
     `),
 
     [TYPE.clientFunctionExecutionInterruptionError]: err => markup(err, `
-        <code>${err.instantiationCallsiteName}</code> execution was interrupted by page unload. This problem may appear if you trigger page navigation from <code>${err.instantiationCallsiteName}</code> code.
+        ${err.instantiationCallsiteName} execution was interrupted by page unload. This problem may appear if you trigger page navigation from ${err.instantiationCallsiteName} code.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.uncaughtNonErrorObjectInTestCode]: err => markup(err, `
-        Uncaught ${err.objType} "${escapeHtml(err.objStr)}" was thrown. Throw <code>Error</code> instead.
+        Uncaught ${err.objType} "${escapeHtml(err.objStr)}" was thrown. Throw Error instead.
     `),
 
     [TYPE.actionOptionsTypeError]: err => markup(err, `
-        Action options is expected to be an object, <code>null</code> or <code>undefined</code> but it was <code>${err.actualType}</code>.
+        Action options is expected to be an object, null or undefined but it was ${err.actualType}.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionUnsupportedUrlProtocolError]: err => markup(err, `
-        The <code>${err.argumentName}</code> argument specifies a URL that uses an unsupported <code>${err.protocol}://</code> protocol. Only HTTP and HTTPS are supported, as well as protocol-relative and relative URLs.
+        The "${err.argumentName}" argument specifies a URL that uses an unsupported ${err.protocol}:// protocol. Only HTTP and HTTPS are supported, as well as protocol-relative and relative URLs.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionStringArgumentError]: err => markup(err, `
-        The <code>${err.argumentName}</code> argument is expected to be a non-empty string, but it was <code>${err.actualValue}</code>.
+        The "${err.argumentName}" argument is expected to be a non-empty string, but it was ${err.actualValue}.
 
          ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionStringOrStringArrayArgumentError]: err => markup(err, `
-        The <code>${err.argumentName}</code> argument is expected to be a non-empty string or a string array, but it was ${err.actualValue}.
+        The "${err.argumentName}" argument is expected to be a non-empty string or a string array, but it was ${err.actualValue}.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionStringArrayElementError]: err => markup(err, `
-        Elements of the <code>${err.argumentName}</code> argument are expected to be non-empty strings, but the element at index <code>${err.elementIndex}</code> was ${err.actualValue}.
+        Elements of the "${err.argumentName}" argument are expected to be non-empty strings, but the element at index ${err.elementIndex} was ${err.actualValue}.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionIntegerArgumentError]: err => markup(err, `
-        The <code>${err.argumentName}</code> argument is expected to be an integer, but it was <code>${err.actualValue}</code>.
+        The "${err.argumentName}" argument is expected to be an integer, but it was ${err.actualValue}.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionPositiveIntegerArgumentError]: err => markup(err, `
-        The <code>${err.argumentName}</code> argument is expected to be a positive integer, but it was <code>${err.actualValue}</code>.
+        The "${err.argumentName}" argument is expected to be a positive integer, but it was ${err.actualValue}.
 
         ${err.getCallsiteMarkup()}
     `),
@@ -126,13 +126,13 @@ export default {
     `),
 
     [TYPE.actionAdditionalElementNotFoundError]: err => markup(err, `
-        The specified <code>${err.argumentName}</code> does not match any element in the DOM tree.
+        The specified "${err.argumentName}" does not match any element in the DOM tree.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionAdditionalElementIsInvisibleError]: err => markup(err, `
-        The element that matches the specified <code>${err.argumentName}</code> is not visible.
+        The element that matches the specified "${err.argumentName}" is not visible.
 
         ${err.getCallsiteMarkup()}
     `),
@@ -144,7 +144,7 @@ export default {
     `),
 
     [TYPE.actionElementNonContentEditableError]: err => markup(err, `
-        The element that matches the specified <code>${err.argumentName}</code> is expected to have the contentEditable attribute enabled or the entire document should be in design mode.
+        The element that matches the specified "${err.argumentName}" is expected to have the contentEditable attribute enabled or the entire document should be in design mode.
 
         ${err.getCallsiteMarkup()}
     `),
@@ -169,25 +169,25 @@ export default {
     `),
 
     [TYPE.actionElementNotTextAreaError]: err => markup(err, `
-        The action element is expected to be a textarea.
+        The action element is expected to be a &lt;textarea&gt;.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionElementNotIframeError]: err => markup(err, `
-        The action element is expected to be an iframe.
+        The action element is expected to be an &lt;iframe&gt.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionIncorrectKeysError]: err => markup(err, `
-        The <code>${err.argumentName}</code> argument contains an incorrect key or key combination.
+        The "${err.argumentName}" argument contains an incorrect key or key combination.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionUnsupportedDeviceTypeError]: err => markup(err, `
-        The <code>${err.argumentName}</code> argument specifies an unsupported <code>${err.actualValue}</code> device. For a list of supported devices, refer to <a href="http://viewportsizes.com">http://viewportsizes.com</a>
+        The "${err.argumentName}" argument specifies an unsupported "${err.actualValue}" device. For a list of supported devices, refer to <a href="http://viewportsizes.com">http://viewportsizes.com</a>.
 
         ${err.getCallsiteMarkup()}
     `),
@@ -217,7 +217,7 @@ export default {
     `),
 
     [TYPE.missingAwaitError]: err => markup(err, `
-        A call to an async function is not awaited. Use the <code>await</code> keyword before actions, assertions or chains of them to ensure that they run in the right sequence.
+        A call to an async function is not awaited. Use the "await" keyword before actions, assertions or chains of them to ensure that they run in the right sequence.
 
         ${err.getCallsiteMarkup()}
     `),
@@ -229,27 +229,19 @@ export default {
     `),
 
     [TYPE.domNodeClientFunctionResultError]: err => markup(err, `
-       <code>${err.instantiationCallsiteName}</code> cannot return DOM elements. Use <code>Selector</code> functions for this purpose.
+       ${err.instantiationCallsiteName} cannot return DOM elements. Use Selector functions for this purpose.
 
        ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.nonDomNodeSelectorResultError]: err => markup(err, `
-        <code>${err.instantiationCallsiteName}</code> can only return a DOM node, <code>null</code> or <code>undefined</code>. Use ClientFunction to return other values.
+        ${err.instantiationCallsiteName} can only return a DOM node, null or undefined. Use ClientFunction to return other values.
 
         ${err.getCallsiteMarkup()}
     `),
 
     [TYPE.actionSelectorError]: err => markup(err, `
-        Action <code>selector</code> error:
-
-        ${escapeHtml(err.errMsg)}
-
-        ${err.getCallsiteMarkup()}
-    `),
-
-    [TYPE.actionAdditionalSelectorError]: err => markup(err, `
-        Action <code>${err.selectorName}</code> error:
+        Action "${err.selectorName}" argument error:
 
         ${escapeHtml(err.errMsg)}
 

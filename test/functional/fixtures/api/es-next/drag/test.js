@@ -18,7 +18,7 @@ describe('[API] Drag actions', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain(
-                        'Action selector error:  Selector is expected to be initialized with a ' +
+                        'Action "selector" argument error:  Selector is expected to be initialized with a ' +
                         'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
                         'by a Selector, but "object" was passed.'
                     );
@@ -32,7 +32,7 @@ describe('[API] Drag actions', function () {
                 only:       'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('The dragOffsetX argument is expected to be an integer, but it was NaN.');
+                    expect(errs[0]).to.contain('The "dragOffsetX" argument is expected to be an integer, but it was NaN.');
                     expect(errs[0]).to.contain('> 18 |    await t.drag(\'#draggable-div-1\', NaN, 20);');
                 });
         });
@@ -43,7 +43,7 @@ describe('[API] Drag actions', function () {
                 only:       'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('The dragOffsetY argument is expected to be an integer, but it was 3.14.');
+                    expect(errs[0]).to.contain('The "dragOffsetY" argument is expected to be an integer, but it was 3.14.');
                     expect(errs[0]).to.contain('> 22 |    await t.drag(\'#draggable-div-1\', 10, 3.14);');
                 });
         });
@@ -54,7 +54,7 @@ describe('[API] Drag actions', function () {
                 only:       'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('The offsetX option is expected to be a positive integer, but it was string.');
+                    expect(errs[0]).to.contain('The "offsetX" option is expected to be a positive integer, but it was string.');
                     expect(errs[0]).to.contain('> 26 |    await t.drag(\'#draggable-div-1\', 10, 20, { offsetX: \'test\' });');
                 });
         });
@@ -76,7 +76,7 @@ describe('[API] Drag actions', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain(
-                        'Action selector error:  Selector is expected to be initialized with a ' +
+                        'Action "selector" argument error:  Selector is expected to be initialized with a ' +
                         'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
                         'by a Selector, but "undefined" was passed.'
                     );
@@ -91,7 +91,7 @@ describe('[API] Drag actions', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain(
-                        'Action destinationSelector error:  Selector is expected to be initialized ' +
+                        'Action "destinationSelector" argument error:  Selector is expected to be initialized ' +
                         'with a function, CSS selector string, another Selector, node snapshot or a Promise ' +
                         'returned by a Selector, but "object" was passed.'
                     );
@@ -105,7 +105,7 @@ describe('[API] Drag actions', function () {
                 only:       'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('The modifiers.shift option is expected to be a boolean value, but it was number.');
+                    expect(errs[0]).to.contain('The "modifiers.shift" option is expected to be a boolean value, but it was number.');
                     expect(errs[0]).to.contain('> 45 |    await t.dragToElement(\'#draggable-div-2\', \'#destination-div\'');
                 });
         });
