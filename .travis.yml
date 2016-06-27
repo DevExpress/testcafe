@@ -13,6 +13,8 @@ matrix:
     env: GULP_TASK="test-client-travis-mobile"
   - node_js: "stable"
     env: GULP_TASK="test-functional"
+  - node_js: "stable"
+    env: GULP_TASK="test-functional-legacy"
  fast_finish: true
 
 branches:

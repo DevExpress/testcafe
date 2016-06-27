@@ -1,7 +1,7 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 
 fixture `Hover`
-    .page `http://localhost:3000/api/es-next/hover/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/hover/pages/index.html`;
 
 test('Hover over containers', async t => {
     await t.hover('#container1');

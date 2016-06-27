@@ -1,6 +1,6 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 fixture `Page errors in iframes`
-    .page `http://localhost:3000/api/es-next/iframe-switching/pages/errors.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/iframe-switching/pages/errors.html`;
 
 
 test('Error in a same-domain iframe', async t => {

@@ -2,7 +2,7 @@
     "fixtures": [
         {
             "name": "Select text area content",
-            "pageUrl": "http://localhost:3000/api/raw/select-text-area-content/pages/index.html",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/select-text-area-content/pages/index.html",
             "tests": [
                 {
                     "name": "Select text in textarea",

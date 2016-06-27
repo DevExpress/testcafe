@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index</title>
+</head>
+<body>
+<div id='confirmResult'></div>
+<div id='promptResult'></div>
+<a href="confirm.html">Confirm page</a>
+<a href="index.html">This page</a>
+<a id="fakeLink" href="javascript:window.alert('Alert dialog')">Fake link</a>
+<button id="confirmBtn" onclick="onConfirmBtnClick()">Confirm</button>
+<button id="promptBtn" onclick="window.prompt('Prompt dialog')">Prompt</button>
+<button id="dialogsBtn" onclick="onDialogsButtonClick()">Dialogs</button>
+<button id="simpleBtn">Button</button>
+<button id="alertBtn" onclick="window.alert('Alert dialog')">alert</button>
+</body>
+<script>
+    function onDialogsButtonClick () {
+        var confirmValue1 = window.confirm('Confirm dialog');
+        var confirmValue2 = window.confirm('Confirm dialog');
+        var promptValue   = window.prompt('Prompt dialog', '');
+
+        window.alert('Alert dialog');
+
+        confirmValue1 = confirmValue1 === void 0 ? '' : confirmValue1.toString();
+        confirmValue2 = confirmValue2 === void 0 ? '' : confirmValue2.toString();
+
+        document.getElementById('confirmResult').textContent = confirmValue1 + confirmValue2;
+        document.getElementById('promptResult').textContent  = promptValue !== void 0 ? promptValue : '';
+    }
+
+    function onConfirmBtnClick () {
+        var confirmValue1 = window.confirm('Confirm dialog');
+        var confirmValue2 = window.confirm('Confirm dialog');
+
+        confirmValue1 = confirmValue1 === void 0 ? '' : confirmValue1.toString();
+        confirmValue2 = confirmValue2 === void 0 ? '' : confirmValue2.toString();
+
+        document.getElementById('confirmResult').textContent = confirmValue1 + confirmValue2;
+    }
+</script>
+</html>

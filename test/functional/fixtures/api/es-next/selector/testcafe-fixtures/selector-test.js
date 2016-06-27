@@ -3,7 +3,7 @@ import { Selector } from 'testcafe';
 import { expect } from 'chai';
 
 fixture `Selector`
-    .page `http://localhost:3000/api/es-next/selector/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/selector/pages/index.html`;
 
 const getElementById = Selector(id => document.getElementById(id));
 
@@ -132,7 +132,7 @@ test('`innerText` element snapshot property', async () => {
 });
 
 test('Non-element node snapshots', async t => {
-    await t.navigateTo('http://localhost:3000/api/es-next/selector/pages/non-element-nodes.html');
+    await t.navigateTo('http://localhost:3000/fixtures/api/es-next/selector/pages/non-element-nodes.html');
 
     const doc = await Selector(() => document)();
 

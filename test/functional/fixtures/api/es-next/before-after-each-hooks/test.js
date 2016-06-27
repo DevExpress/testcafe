@@ -15,7 +15,7 @@ describe('[API] beforeEach/afterEach hooks', function () {
 
                 expect(errs[0].indexOf(
                     '- Error in afterEach hook - ' +
-                    'Error on page "http://localhost:3000/api/es-next/before-after-each-hooks/pages/index.html":  ' +
+                    'Error on page "http://localhost:3000/fixtures/api/es-next/before-after-each-hooks/pages/index.html":  ' +
                     'Uncaught Error: [beforeEach][test][afterEach]'
                 )).eql(0);
 
@@ -28,7 +28,7 @@ describe('[API] beforeEach/afterEach hooks', function () {
             .catch(function (errs) {
                 expect(errs[0].indexOf(
                     '- Error in beforeEach hook - ' +
-                    'Error on page "http://localhost:3000/api/es-next/before-after-each-hooks/pages/index.html":  ' +
+                    'Error on page "http://localhost:3000/fixtures/api/es-next/before-after-each-hooks/pages/index.html":  ' +
                     'Uncaught Error: [beforeEach]'
                 )).eql(0);
 
@@ -40,13 +40,13 @@ describe('[API] beforeEach/afterEach hooks', function () {
         return runTests('./testcafe-fixtures/fail-in-test.js', 'Test', { shouldFail: true, only: 'chrome' })
             .catch(function (errs) {
                 expect(errs[0].indexOf(
-                    'Error on page "http://localhost:3000/api/es-next/before-after-each-hooks/pages/index.html":  ' +
+                    'Error on page "http://localhost:3000/fixtures/api/es-next/before-after-each-hooks/pages/index.html":  ' +
                     'Uncaught Error: [beforeEach] '
                 )).eql(0);
 
                 expect(errs[1].indexOf(
                     '- Error in afterEach hook - ' +
-                    'Error on page "http://localhost:3000/api/es-next/before-after-each-hooks/pages/index.html":  ' +
+                    'Error on page "http://localhost:3000/fixtures/api/es-next/before-after-each-hooks/pages/index.html":  ' +
                     'Uncaught Error: [beforeEach][afterEach]'
                 )).eql(0);
 

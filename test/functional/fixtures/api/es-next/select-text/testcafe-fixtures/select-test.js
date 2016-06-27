@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 
 fixture `Select`
-    .page `http://localhost:3000/api/es-next/select-text/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/select-text/pages/index.html`;
 
 const getSelectionByElementId = ClientFunction(id => {
     var element = document.getElementById(id);

@@ -1,7 +1,7 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 
 fixture `Drag`
-    .page `http://localhost:3000/api/es-next/drag/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/drag/pages/index.html`;
 
 test('Drag to offset', async t => {
     await t.drag('#draggable-div-1', 10, 20, {

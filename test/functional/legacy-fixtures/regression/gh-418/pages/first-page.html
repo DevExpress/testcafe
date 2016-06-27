@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-418 index page</title>
+</head>
+<body>
+<h1>GH-418 - first page</h1>
+<div id="div">Click to redirect with delay</div>
+<a id="link" href="second-page.html">The second page</a>
+</body>
+<script>
+    var div = document.getElementById('div');
+
+    div.onclick = function () {
+        window.setTimeout(function () {
+            document.getElementById('link').click();
+        }, 1000);
+    };
+</script>
+</html>

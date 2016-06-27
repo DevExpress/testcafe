@@ -3,7 +3,7 @@ import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
 fixture `Type`
-    .page `http://localhost:3000/api/es-next/type/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/type/pages/index.html`;
 
 const getStatusText = ClientFunction(() => document.getElementById('status').textContent);
 

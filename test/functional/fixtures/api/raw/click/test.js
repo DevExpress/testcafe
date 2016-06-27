@@ -27,7 +27,7 @@ describe('[Raw API] Click action', function () {
     it('Should fail when a js-error appears on page load', function () {
         return runTests('./testcafe-fixtures/page-with-error.testcafe', null, { shouldFail: true })
             .catch(function (errs) {
-                errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/api/raw/click/pages/error.html":', 0);
+                errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/fixtures/api/raw/click/pages/error.html":', 0);
                 errorInEachBrowserContains(errs, 'Custom error  [[Click on simple button callsite]]', 0);
             });
     });
@@ -35,7 +35,7 @@ describe('[Raw API] Click action', function () {
     it('Should fail when a js-error appears during click execution', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click error button', { shouldFail: true })
             .catch(function (errs) {
-                errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/api/raw/click/pages/index.html":', 0);
+                errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/fixtures/api/raw/click/pages/index.html":', 0);
                 errorInEachBrowserContains(errs, 'Custom error  [[Click error button callsite]]', 0);
             });
     });

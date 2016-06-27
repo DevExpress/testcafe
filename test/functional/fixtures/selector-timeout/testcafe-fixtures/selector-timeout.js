@@ -1,6 +1,6 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 fixture `Wait for element appearance before click`
-    .page `http://localhost:3000/selector-timeout/pages/index.html`;
+    .page `http://localhost:3000/fixtures/selector-timeout/pages/index.html`;
 
 test('Wait for element with timeout enough for it to appear', async t => {
     await t

@@ -2,7 +2,7 @@
     "fixtures": [
         {
             "name": "Right click",
-            "pageUrl": "http://localhost:3000/api/raw/right-click/pages/index.html",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/right-click/pages/index.html",
             "tests": [
                 {
                     "name": "Right click simple button",

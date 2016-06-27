@@ -3,7 +3,7 @@ import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
 fixture `Driver`
-    .page `http://localhost:3000/driver/pages/page1.html`;
+    .page `http://localhost:3000/fixtures/driver/pages/page1.html`;
 
 function wait (ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -27,7 +27,7 @@ test('Mixed execution order', async t => {
 
     const [location, hostname] = await clientFnPromise;
 
-    expect(location).eql('http://localhost:3000/driver/pages/page1.html');
+    expect(location).eql('http://localhost:3000/fixtures/driver/pages/page1.html');
     expect(hostname).eql('localhost');
 
     expect(await t.eval(() => document.querySelector('#btn1').textContent)).eql('Hey ya!');

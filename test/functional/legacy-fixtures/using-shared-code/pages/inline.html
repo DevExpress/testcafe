@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Iframe page without source</title>
+</head>
+<body>
+<iframe id="iframe" height="500px" width="800px"></iframe>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var iframe = document.getElementById('iframe');
+        var body   = iframe.contentWindow.document.body;
+
+        body.innerHTML = '\<input id="input">';
+    });
+</script>
+</html>

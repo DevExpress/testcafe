@@ -3,7 +3,7 @@ import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
 fixture `ClientFunction`
-    .page `http://localhost:3000/api/es-next/client-function/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/client-function/pages/index.html`;
 
 const getLocation  = ClientFunction(() => document.location.toString());
 const getUserAgent = ClientFunction(() => navigator.userAgent);
@@ -22,7 +22,7 @@ test('Call with arguments', async () => {
 test('Hammerhead code instrumentation', async () => {
     const location = await getLocation();
 
-    expect(location).eql('http://localhost:3000/api/es-next/client-function/pages/index.html');
+    expect(location).eql('http://localhost:3000/fixtures/api/es-next/client-function/pages/index.html');
 });
 
 test('ClientFunction fn is not a function', async () => {
@@ -84,7 +84,7 @@ test('Bind ClientFunction', async t => {
                 fs.readFile('not/exists', () => resolve(boundGetLocation()));
             });
         })
-        .then(location => expect(location).eql('http://localhost:3000/api/es-next/client-function/pages/index.html'));
+        .then(location => expect(location).eql('http://localhost:3000/fixtures/api/es-next/client-function/pages/index.html'));
 });
 
 test('Invalid ClientFunction test run binding', () => {
@@ -206,7 +206,7 @@ test('ClientFunction with ClientFunction argument', async () => {
     const hfn      = ClientFunction(fn => fn());
     const location = await hfn(getLocation);
 
-    expect(location).eql('http://localhost:3000/api/es-next/client-function/pages/index.html');
+    expect(location).eql('http://localhost:3000/fixtures/api/es-next/client-function/pages/index.html');
 });
 
 test('ClientFunction without `await`', async () => {

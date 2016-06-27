@@ -2,7 +2,7 @@
 import throwError from './helpers';
 
 fixture `Errors in test code`
-    .page `http://localhost:3000/api/es-next/generic-errors/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/generic-errors/pages/index.html`;
 
 test('Test code throws Error', () => {
     throw new Error('Yo!');

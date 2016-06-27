@@ -4,7 +4,7 @@ import { parse } from 'useragent';
 
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 fixture `Take a screenshot`
-    .page `http://localhost:3000/api/es-next/take-screenshot/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/take-screenshot/pages/index.html`;
 
 
 const getUserAgent = ClientFunction(() => navigator.userAgent.toString());

@@ -2,7 +2,7 @@
   "fixtures": [
     {
       "name": "Drag",
-      "pageUrl": "http://localhost:3000/api/raw/drag/pages/index.html",
+      "pageUrl": "http://localhost:3000/fixtures/api/raw/drag/pages/index.html",
       "tests": [
         {
           "name": "Drag to offset",

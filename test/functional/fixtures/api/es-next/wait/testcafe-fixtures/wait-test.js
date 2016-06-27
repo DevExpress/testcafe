@@ -1,5 +1,5 @@
 fixture `Wait`
-    .page `http://localhost:3000/api/es-next/wait/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/wait/pages/index.html`;
 
 test('Wait', async t => {
     await t

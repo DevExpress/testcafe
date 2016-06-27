@@ -17,7 +17,7 @@ var initialWindowSize = {};
 
 
 fixture `Resize the window`
-    .page `http://localhost:3000/api/es-next/resize-window/pages/index.html`
+    .page `http://localhost:3000/fixtures/api/es-next/resize-window/pages/index.html`
     .beforeEach(async () => {
         var ua       = await getUserAgent();
         var parsedUA = parse(ua);

@@ -2,14 +2,14 @@
     "fixtures": [
         {
             "name": "Navigate to",
-            "pageUrl": "http://localhost:3000/api/raw/navigate-to/pages/index.html",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/navigate-to/pages/index.html",
             "tests": [
                 {
                     "name": "Navigate to a page using a url that contains a protocol",
                     "commands": [
                         {
                             "type": "navigate-to",
-                            "url": "http://localhost:3000/api/raw/navigate-to/pages/navigation.html"
+                            "url": "http://localhost:3000/fixtures/api/raw/navigate-to/pages/navigation.html"
                         },
                         {
                             "type": "click",
@@ -22,7 +22,7 @@
                     "commands": [
                         {
                             "type": "navigate-to",
-                            "url": "//localhost:3000/api/raw/navigate-to/pages/navigation.html"
+                            "url": "//localhost:3000/fixtures/api/raw/navigate-to/pages/navigation.html"
                         },
                         {
                             "type": "click",
@@ -48,7 +48,7 @@
                     "commands": [
                         {
                             "type": "navigate-to",
-                            "url": "http://localhost:3000/api/raw/navigate-to/pages/non-existent.html"
+                            "url": "http://localhost:3000/fixtures/api/raw/navigate-to/pages/non-existent.html"
                         }
                     ]
                 },

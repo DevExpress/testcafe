@@ -2,7 +2,7 @@
     "fixtures": [
         {
             "name": "Click",
-            "pageUrl": "http://localhost:3000/api/raw/click/pages/index.html",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/click/pages/index.html",
             "tests": [
                 {
                     "name": "Click simple button",

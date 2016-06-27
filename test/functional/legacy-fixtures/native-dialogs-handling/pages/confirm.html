@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirm page</title>
+</head>
+<body>
+<div id='result'></div>
+</body>
+<script>
+    var confirmValue1 = window.confirm('Confirm dialog');
+    var confirmValue2 = window.confirm('Confirm dialog');
+
+    confirmValue1 = confirmValue1 === void 0 ? '' : confirmValue1.toString();
+    confirmValue2 = confirmValue2 === void 0 ? '' : confirmValue2.toString();
+
+    document.getElementById('result').textContent = confirmValue1 + confirmValue2;
+</script>
+</html>

@@ -14,7 +14,7 @@ describe('[Raw API] beforeEach/afterEach hooks', function () {
                 expect(errs[0]).eql(test1Err);
 
                 expect(errs[0]).eql('- Error in afterEach hook - ' +
-                                'Error on page "http://localhost:3000/api/raw/before-after-each-hooks/pages/index.html":  ' +
+                                'Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
                                 'Uncaught Error: [beforeEach][test][afterEach]'
                 );
 
@@ -26,7 +26,7 @@ describe('[Raw API] beforeEach/afterEach hooks', function () {
             .catch(function (errs) {
 
                 expect(errs[0]).eql('- Error in beforeEach hook - ' +
-                                'Error on page "http://localhost:3000/api/raw/before-after-each-hooks/pages/index.html":  ' +
+                                'Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
                                 'Uncaught Error: [beforeEach]'
                 );
 
@@ -36,10 +36,10 @@ describe('[Raw API] beforeEach/afterEach hooks', function () {
     it('Should run test and afterEach and beforeEach if test fails', function () {
         return runTests('./testcafe-fixtures/fail-in-test.testcafe', 'Test', { shouldFail: true, only: 'chrome' })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('Error on page "http://localhost:3000/api/raw/before-after-each-hooks/pages/index.html":  ' +
+                expect(errs[0]).to.contains('Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
                                         'Uncaught Error: [beforeEach]');
                 expect(errs[1]).to.contains('- Error in afterEach hook - ' +
-                                        'Error on page "http://localhost:3000/api/raw/before-after-each-hooks/pages/index.html":  ' +
+                                        'Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
                                         'Uncaught Error: [beforeEach][afterEach]');
             });
     });

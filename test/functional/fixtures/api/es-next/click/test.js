@@ -55,7 +55,7 @@ describe('[API] t.click()', function () {
                     'by a Selector, but "number" was passed.'
                 );
                 expect(errs[0]).to.contains(
-                    '7 |    .page `http://localhost:3000/api/es-next/click/pages/index.html`;' +
+                    '7 |    .page `http://localhost:3000/fixtures/api/es-next/click/pages/index.html`;' +
                     ' 8 |' +
                     ' 9 |const getClickOffset = ClientFunction(() => window.clickOffset);' +
                     ' 10 |' +

@@ -2,7 +2,7 @@
     "fixtures": [
         {
             "name": "Type",
-            "pageUrl": "http://localhost:3000/api/raw/type/pages/index.html",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/type/pages/index.html",
             "tests": [
                 {
                     "name": "Type in simple input",

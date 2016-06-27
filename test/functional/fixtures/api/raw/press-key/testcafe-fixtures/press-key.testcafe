@@ -2,7 +2,7 @@
   "fixtures": [
     {
       "name": "Press key",
-      "pageUrl": "http://localhost:3000/api/raw/press-key/pages/index.html",
+      "pageUrl": "http://localhost:3000/fixtures/api/raw/press-key/pages/index.html",
       "tests": [
         {
           "name": "Clear input value",
