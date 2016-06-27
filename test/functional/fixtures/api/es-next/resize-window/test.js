@@ -16,7 +16,7 @@ if (!config.isTravisTask) {
                     only:       'chrome'
                 })
                     .catch(function (errs) {
-                        expect(errs[0]).to.contains('The height argument is expected to be a positive integer, but it was -5.');
+                        expect(errs[0]).to.contains('The "height" argument is expected to be a positive integer, but it was -5.');
                         expect(errs[0]).to.contains(
                             '51 |test(\'Incorrect action height argument\', async t => {' +
                             ' > 52 |    await t.resizeWindow(500, -5);'
@@ -49,7 +49,7 @@ if (!config.isTravisTask) {
                     only:       'chrome'
                 })
                     .catch(function (errs) {
-                        expect(errs[0]).to.contains('The device argument specifies an unsupported iPhone555 device. For a list of supported devices, refer to "http://viewportsizes.com"');
+                        expect(errs[0]).to.contains('The "device" argument specifies an unsupported "iPhone555" device. For a list of supported devices, refer to "http://viewportsizes.com"');
                         expect(errs[0]).to.contains(
                             '70 |test(\'Incorrect action device argument\', async t => {' +
                             ' > 71 |    await t.resizeWindowToFitDevice(\'iPhone555\'); '

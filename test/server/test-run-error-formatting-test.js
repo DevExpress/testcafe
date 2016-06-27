@@ -16,7 +16,6 @@ var ActionStringArgumentError                          = require('../../lib/erro
 var ActionUnsupportedUrlProtocolError                  = require('../../lib/errors/test-run').ActionUnsupportedUrlProtocolError;
 var ActionStringOrStringArrayArgumentError             = require('../../lib/errors/test-run').ActionStringOrStringArrayArgumentError;
 var ActionStringArrayElementError                      = require('../../lib/errors/test-run').ActionStringArrayElementError;
-var ActionAdditionalSelectorError                      = require('../../lib/errors/test-run').ActionAdditionalSelectorError;
 var PageLoadError                                      = require('../../lib/errors/test-run').PageLoadError;
 var UncaughtErrorOnPage                                = require('../../lib/errors/test-run').UncaughtErrorOnPage;
 var UncaughtErrorInTestCode                            = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
@@ -113,7 +112,7 @@ describe('Error formatting', function () {
             assertErrorMessage('action-integer-argument-error', new ActionIntegerArgumentError('dragOffsetX', 'NaN'));
         });
 
-        it('Should format "ActionPositiveIntegerArgumentError" message', function () {
+        it('Should format "actionPositiveIntegerArgumentError" message', function () {
             assertErrorMessage('action-positive-integer-argument-error', new ActionPositiveIntegerArgumentError('startPos', '-1'));
         });
 
@@ -166,15 +165,11 @@ describe('Error formatting', function () {
         });
 
         it('Should format "actionSelectorError" message', function () {
-            assertErrorMessage('action-selector-error', new ActionSelectorError('Yo!'));
+            assertErrorMessage('action-selector-error', new ActionSelectorError('selector', 'Yo!'));
         });
 
         it('Should format "actionOptionsTypeError" message', function () {
             assertErrorMessage('action-options-type-error', new ActionOptionsTypeError(typeof 1));
-        });
-
-        it('Should format "actionAdditionalSelectorError" message', function () {
-            assertErrorMessage('action-additional-selector-error', new ActionAdditionalSelectorError('startSelector', 'Yo!'));
         });
 
         it('Should format "actionAdditionalElementNotFoundError" message', function () {
@@ -198,7 +193,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "actionNonEmptyStringArrayArgumentError" message', function () {
-            assertErrorMessage('action-string-or-string-array-argument-error', new ActionStringOrStringArrayArgumentError('array', null));
+            assertErrorMessage('action-non-empty-string-array-argument-error', new ActionStringOrStringArrayArgumentError('array', null));
         });
 
         it('Should format "actionStringArrayElementError" message', function () {

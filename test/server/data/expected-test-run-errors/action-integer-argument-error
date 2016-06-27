@@ -1,5 +1,5 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
-The dragOffsetX argument is expected to be an integer, but it was NaN.
+The "dragOffsetX" argument is expected to be an integer, but it was NaN.
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');

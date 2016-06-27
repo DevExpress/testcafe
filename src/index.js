@@ -44,18 +44,15 @@ async function createTestCafe (hostname, port1, port2) {
     return new TestCafe(hostname, port1, port2);
 }
 
-// Plugin testing utils
-createTestCafe.pluginTestingUtils = {
+// Embedding utils
+createTestCafe.embeddingUtils = {
+    TestRunErrorFormattableAdapter: TestRunErrorFormattableAdapter,
+
     buildReporterPlugin (pluginFactory, outStream) {
         var plugin = pluginFactory();
 
         return new ReporterPluginHost(plugin, outStream);
     }
-};
-
-// Embedding utils
-createTestCafe.embeddingUtils = {
-    TestRunErrorFormattableAdapter: TestRunErrorFormattableAdapter
 };
 
 // Common API

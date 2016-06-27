@@ -13,7 +13,7 @@ describe('[API] t.typeText()', function () {
             only:       'chrome'
         })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('The replace option is expected to be a boolean value, but it was object.');
+                expect(errs[0]).to.contains('The "replace" option is expected to be a boolean value, but it was object.');
                 expect(errs[0]).to.contains('> 27 |    await t.typeText(\'#input\', \'a\', { replace: null });');
             });
     });
@@ -24,7 +24,7 @@ describe('[API] t.typeText()', function () {
             only:       'chrome'
         })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('The text argument is expected to be a non-empty string, but it was number.');
+                expect(errs[0]).to.contains('The "text" argument is expected to be a non-empty string, but it was number.');
                 expect(errs[0]).to.contains('> 23 |    await t.typeText(\'#input\', 123);');
             });
     });
@@ -36,9 +36,9 @@ describe('[API] t.typeText()', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains(
-                    'Action selector error:  Selector is expected to be initialized with a ' +
+                    'Action "selector" argument error:  Selector is expected to be initialized with a ' +
                     'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
-                    'by a Selector, but "number" was passed.'
+                    'by a Selector, but number was passed.'
                 );
                 expect(errs[0]).to.contains('> 19 |    await t.typeText(NaN, \'a\');');
             });

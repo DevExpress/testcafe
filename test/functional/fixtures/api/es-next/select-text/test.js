@@ -14,9 +14,9 @@ describe('[API] Select text', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'Action selector error:  Selector is expected to be initialized with a ' +
+                        'Action "selector" argument error:  Selector is expected to be initialized with a ' +
                         'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
-                        'by a Selector, but "object" was passed.'
+                        'by a Selector, but object was passed.'
                     );
                     expect(errs[0]).contains('> 51 |    await t.selectText(null, 2, 4);');
                 });
@@ -28,7 +28,7 @@ describe('[API] Select text', function () {
                 only:       'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The startPos argument is expected to be a positive integer, but it was -1.');
+                    expect(errs[0]).contains('The "startPos" argument is expected to be a positive integer, but it was -1.');
                     expect(errs[0]).contains('> 55 |    await t.selectText(\'#input\', -1, 4);');
                 });
         });
@@ -39,7 +39,7 @@ describe('[API] Select text', function () {
                 only:       'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The endPos argument is expected to be a positive integer, but it was NaN.');
+                    expect(errs[0]).contains('The "endPos" argument is expected to be a positive integer, but it was NaN.');
                     expect(errs[0]).contains('> 59 |    await t.selectText(\'#input\', 2, NaN);');
                 });
         });
@@ -57,9 +57,9 @@ describe('[API] Select text', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'Action selector error:  Selector is expected to be initialized with a ' +
+                        'Action "selector" argument error:  Selector is expected to be initialized with a ' +
                         'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
-                        'by a Selector, but "object" was passed.'
+                        'by a Selector, but object was passed.'
                     );
                     expect(errs[0]).contains('> 63 |    await t.selectTextAreaContent({}, 0, 2, 1, 3);');
                 });
@@ -71,7 +71,7 @@ describe('[API] Select text', function () {
                 only:       'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The startLine argument is expected to be a positive integer, but it was 3.1.');
+                    expect(errs[0]).contains('The "startLine" argument is expected to be a positive integer, but it was 3.1.');
                     expect(errs[0]).contains('> 67 |    await t.selectTextAreaContent(\'#textarea\', 3.1, 2, 1, 3);');
                 });
         });
@@ -82,7 +82,7 @@ describe('[API] Select text', function () {
                 only:       'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The startPos argument is expected to be a positive integer, but it was string.');
+                    expect(errs[0]).contains('The "startPos" argument is expected to be a positive integer, but it was string.');
                     expect(errs[0]).contains('> 71 |    await t.selectTextAreaContent(\'#textarea\', 0, \'2\', 1, 3);');
                 });
         });
@@ -93,7 +93,7 @@ describe('[API] Select text', function () {
                 only:       'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The endLine argument is expected to be a positive integer, but it was -1.');
+                    expect(errs[0]).contains('The "endLine" argument is expected to be a positive integer, but it was -1.');
                     expect(errs[0]).contains('> 75 |    await t.selectTextAreaContent(\'#textarea\', 0, 2, -1, 3);');
                 });
         });
@@ -104,7 +104,7 @@ describe('[API] Select text', function () {
                 only:       'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The endPos argument is expected to be a positive integer, but it was boolean.');
+                    expect(errs[0]).contains('The "endPos" argument is expected to be a positive integer, but it was boolean.');
                     expect(errs[0]).contains('> 79 |    await t.selectTextAreaContent(\'#textarea\', 0, 2, 1, false);');
                 });
         });
@@ -122,24 +122,24 @@ describe('[API] Select text', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'Action startSelector error:  ' +
+                        'Action "startSelector" argument error:  ' +
                         'Selector is expected to be initialized with a function, CSS selector string, another ' +
-                        'Selector, node snapshot or a Promise returned by a Selector, but "boolean" was passed.' +
+                        'Selector, node snapshot or a Promise returned by a Selector, but boolean was passed.' +
                         '');
                     expect(errs[0]).contains('> 83 |    await t.selectEditableContent(false, \'#p2\');');
                 });
         });
 
-        it('Should validate startSelector argument', function () {
+        it('Should validate endSelector argument', function () {
             return runTests('./testcafe-fixtures/select-test.js', 'Incorrect endSelector in selectEditableContent', {
                 shouldFail: true,
                 only:       'chrome'
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'Action endSelector error:  Selector is expected to be initialized with a ' +
+                        'Action "endSelector" argument error:  Selector is expected to be initialized with a ' +
                         'function, CSS selector string, another Selector, node snapshot or a Promise returned by ' +
-                        'a Selector, but "number" was passed.'
+                        'a Selector, but number was passed.'
                     );
                     expect(errs[0]).contains('> 87 |    await t.selectEditableContent(\'#p1\', 42);');
                 });

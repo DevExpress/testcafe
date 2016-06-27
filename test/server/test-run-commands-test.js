@@ -882,8 +882,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
                     callsite: null
                 }
@@ -899,8 +900,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "number" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but number was passed.',
 
                     callsite: null
                 }
@@ -971,8 +973,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
                     callsite: null
                 }
@@ -988,8 +991,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector,' +
-                                     ' node snapshot or a Promise returned by a Selector, but "boolean" was passed.',
+                                     ' node snapshot or a Promise returned by a Selector, but boolean was passed.',
 
                     callsite: null
                 }
@@ -1062,8 +1066,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
                     callsite: null
                 }
@@ -1079,8 +1084,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "boolean" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but boolean was passed.',
 
                     callsite: null
                 }
@@ -1132,8 +1138,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
                     callsite: null
                 }
@@ -1149,8 +1156,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "number" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but number was passed.',
 
                     callsite: null
                 }
@@ -1221,8 +1229,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
                     callsite: null
                 }
@@ -1238,8 +1247,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "number" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but number was passed.',
 
                     callsite: null
                 }
@@ -1325,8 +1335,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
                     callsite: null
                 }
@@ -1342,8 +1353,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "number" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but number was passed.',
 
                     callsite: null
                 }
@@ -1358,10 +1370,10 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionAdditionalSelectorError,
+                    type:            ERROR_TYPE.actionSelectorError,
                     selectorName:    'destinationSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
                     callsite: null
                 }
@@ -1377,10 +1389,10 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionAdditionalSelectorError,
+                    type:            ERROR_TYPE.actionSelectorError,
                     selectorName:    'destinationSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "number" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but number was passed.',
 
                     callsite: null
                 }
@@ -1414,8 +1426,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
                     callsite: null
                 }
@@ -1431,8 +1444,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "number" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but number was passed.',
 
                     callsite: null
                 }
@@ -1556,8 +1570,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
                     callsite: null
                 }
@@ -1573,8 +1588,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "object" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but object was passed.',
 
                     callsite: null
                 }
@@ -1659,8 +1675,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
                     callsite: null
                 }
@@ -1676,8 +1693,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "object" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but object was passed.',
 
                     callsite: null
                 }
@@ -1761,10 +1779,10 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionAdditionalSelectorError,
+                    type:            ERROR_TYPE.actionSelectorError,
                     selectorName:    'startSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
                     callsite: null
                 }
@@ -1779,10 +1797,10 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionAdditionalSelectorError,
+                    type:            ERROR_TYPE.actionSelectorError,
                     selectorName:    'startSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "number" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but number was passed.',
 
                     callsite: null
                 }
@@ -1798,10 +1816,10 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionAdditionalSelectorError,
+                    type:            ERROR_TYPE.actionSelectorError,
                     selectorName:    'endSelector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "boolean" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but boolean was passed.',
 
                     callsite: null
                 }
@@ -1965,8 +1983,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
                     callsite: null
                 }
@@ -1982,8 +2001,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "number" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but number was passed.',
 
                     callsite: null
                 }
@@ -2120,8 +2140,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "undefined" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but undefined was passed.',
 
                     callsite: null
                 }
@@ -2137,8 +2158,9 @@ describe('Test run commands', function () {
                 {
                     isTestCafeError: true,
                     type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
                     errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                     'node snapshot or a Promise returned by a Selector, but "number" was passed.',
+                                     'node snapshot or a Promise returned by a Selector, but number was passed.',
 
                     callsite: null
                 }

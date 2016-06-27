@@ -41,7 +41,7 @@ export default class ReporterPluginHost {
     createErrorDecorator () {
         return {
             'span step-name':  str => `"${str}"`,
-            'span user-agent': str => this.chalk.gray(str),
+            'span user-agent': str => this.chalk.red(str),
 
             'span subtitle': str => `- ${this.chalk.bold(str)} -\n`,
 

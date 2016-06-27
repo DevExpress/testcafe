@@ -1,6 +1,6 @@
 Chrome 15.0.874 / Mac OS X 10.8.1
-The device argument specifies an unsupported iPhone 555 device. For a list of
-supported devices, refer to "http://viewportsizes.com"
+The "device" argument specifies an unsupported "iPhone 555" device. For a
+list of supported devices, refer to "http://viewportsizes.com".
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');

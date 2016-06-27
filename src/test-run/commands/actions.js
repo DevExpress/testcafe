@@ -12,28 +12,23 @@ import {
     stringOrStringArrayArgument
 } from './validations/argument';
 
-import { ActionSelectorError, ActionAdditionalSelectorError } from '../../errors/test-run';
+import { ActionSelectorError } from '../../errors/test-run';
 import { APIError } from '../../errors/runtime';
 
 
 // Initializers
-function createSelectorInitializer (createError) {
-    return (name, val) => {
-        try {
-            var factory = new SelectorFactory(val, null, { instantiation: 'Selector' });
+function initSelector (name, val) {
+    try {
+        var factory = new SelectorFactory(val, null, { instantiation: 'Selector' });
 
-            return factory.getCommand([], { visibilityCheck: true });
-        }
-        catch (err) {
-            var msg = err.constructor === APIError ? err.rawMessage : err.message;
+        return factory.getCommand([], { visibilityCheck: true });
+    }
+    catch (err) {
+        var msg = err.constructor === APIError ? err.rawMessage : err.message;
 
-            throw createError(name, msg);
-        }
-    };
+        throw new ActionSelectorError(name, msg);
+    }
 }
-
-var initSelector           = createSelectorInitializer((name, msg) => new ActionSelectorError(msg));
-var initAdditionalSelector = createSelectorInitializer((name, msg) => new ActionAdditionalSelectorError(name, msg));
 
 function initClickOptions (name, val) {
     return new ClickOptions(val, true);
@@ -184,7 +179,7 @@ export class DragToElementCommand extends Assignable {
     _getAssignableProperties () {
         return [
             { name: 'selector', init: initSelector, required: true },
-            { name: 'destinationSelector', init: initAdditionalSelector, required: true },
+            { name: 'destinationSelector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initMouseOptions, required: true }
         ];
     }
@@ -224,8 +219,8 @@ export class SelectEditableContentCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'startSelector', init: initAdditionalSelector, required: true },
-            { name: 'endSelector', init: initAdditionalSelector }
+            { name: 'startSelector', init: initSelector, required: true },
+            { name: 'endSelector', init: initSelector }
         ];
     }
 }
