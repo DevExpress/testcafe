@@ -52,7 +52,7 @@ describe('[API] t.click()', function () {
                 expect(errs[0]).to.contains(
                     'Action "selector" argument error:  Selector is expected to be initialized with a ' +
                     'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
-                    'by a Selector, but "number" was passed.'
+                    'by a Selector, but number was passed.'
                 );
                 expect(errs[0]).to.contains(
                     '7 |    .page `http://localhost:3000/fixtures/api/es-next/click/pages/index.html`;' +

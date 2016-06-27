@@ -32,7 +32,7 @@ describe('[API] t.doubleClick()', function () {
                 expect(errs[0]).to.contains(
                     'Action "selector" argument error:  Selector is expected to be initialized with a ' +
                     'function, CSS selector string, another Selector, node snapshot or a Promise ' +
-                    'returned by a Selector, but "object" was passed.'
+                    'returned by a Selector, but object was passed.'
                 );
                 expect(errs[0]).to.contains(' > 11 |    await t.doubleClick(null);');
             });

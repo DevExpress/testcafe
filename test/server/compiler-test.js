@@ -388,7 +388,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'The fixture name is expected to be a string, but it was "object".',
+                                 'The fixture name is expected to be a string, but it was object.',
 
                         callsite: '    2 |// (to treat a file as a test, it requires at least one fixture definition\n' +
                                   '    3 |//  with the string argument).\n' +
@@ -417,7 +417,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'The page URL is expected to be a string, but it was "object".',
+                                 'The page URL is expected to be a string, but it was object.',
 
                         callsite: '   1 |fixture `Yo`\n' +
                                   ' > 2 |    .page({ answer: 42 });\n' +
@@ -442,7 +442,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'The test name is expected to be a string, but it was "number".',
+                                 'The test name is expected to be a string, but it was number.',
 
                         callsite: '    4 |// (to treat a file as a test, it requires at least one fixture definition\n' +
                                   '    5 |//  with the string argument).\n' +
@@ -467,7 +467,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'The test body is expected to be a function, but it was "string".',
+                                 'The test body is expected to be a function, but it was string.',
 
                         callsite: '   1 |fixture `Test body is not a function`;\n' +
                                   '   2 |\n' +
@@ -489,7 +489,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Fixture\'s "beforeEach" method takes a function, but "string" was passed.',
+                                 'Fixture\'s "beforeEach" method takes a function, but string was passed.',
 
                         callsite: '   1 |fixture `beforeEach is not a function`\n' +
                                   " > 2 |    .beforeEach('yo');\n" +
@@ -514,7 +514,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Fixture\'s "afterEach" method takes a function, but "string" was passed.',
+                                 'Fixture\'s "afterEach" method takes a function, but string was passed.',
 
                         callsite: '   1 |fixture `afterEach is not a function`\n' +
                                   " > 2 |    .afterEach('yo');\n" +
@@ -539,7 +539,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction code is expected to be specified as a function, but "number" was passed.',
+                                 'ClientFunction code is expected to be specified as a function, but number was passed.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -567,7 +567,7 @@ describe('Compiler', function () {
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
                                  'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                 'node snapshot or a Promise returned by a Selector, but "number" was passed.',
+                                 'node snapshot or a Promise returned by a Selector, but number was passed.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -595,7 +595,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction code is expected to be specified as a function, but "number" was passed.',
+                                 'ClientFunction code is expected to be specified as a function, but number was passed.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -653,7 +653,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction code, arguments or scope variables cannot contain generators or `async/await` syntax (use Promises instead).',
+                                 'ClientFunction code, arguments or scope variables cannot contain generators or "async/await" syntax (use Promises instead).',
 
                         callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
                                   '    2 |\n' +
@@ -680,7 +680,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction code, arguments or scope variables cannot contain generators or `async/await` syntax (use Promises instead).',
+                                 'ClientFunction code, arguments or scope variables cannot contain generators or "async/await" syntax (use Promises instead).',
 
                         callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
                                   '    2 |\n' +
@@ -708,7 +708,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"options" argument is expected to be an object, but it was "number"',
+                                 '"options" argument is expected to be an object, but it was number',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -734,7 +734,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction "scopeVars" argument is expected to be an object, but it was "string".',
+                                 'ClientFunction "scopeVars" argument is expected to be an object, but it was string.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -784,7 +784,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"visibilityCheck" option is expected to be a boolean, but it was "number"',
+                                 '"visibilityCheck" option is expected to be a boolean, but it was number',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -810,7 +810,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"timeout" option is expected to be a non-negative number, but it was "-5"',
+                                 '"timeout" option is expected to be a non-negative number, but it was -5',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +

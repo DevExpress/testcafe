@@ -18,7 +18,7 @@ describe('[API] t.select', function () {
             .catch(function (errs) {
                 expect(errs[0]).contains(
                     'select is expected to be initialized with a function, CSS selector string, ' +
-                    'another Selector, node snapshot or a Promise returned by a Selector, but "number" was passed.'
+                    'another Selector, node snapshot or a Promise returned by a Selector, but number was passed.'
                 );
 
                 expect(errs[0]).contains('> 23 |    await t.select(42);');

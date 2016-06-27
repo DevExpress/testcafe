@@ -16,7 +16,7 @@ describe('[API] Select text', function () {
                     expect(errs[0]).contains(
                         'Action "selector" argument error:  Selector is expected to be initialized with a ' +
                         'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
-                        'by a Selector, but "object" was passed.'
+                        'by a Selector, but object was passed.'
                     );
                     expect(errs[0]).contains('> 51 |    await t.selectText(null, 2, 4);');
                 });
@@ -59,7 +59,7 @@ describe('[API] Select text', function () {
                     expect(errs[0]).contains(
                         'Action "selector" argument error:  Selector is expected to be initialized with a ' +
                         'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
-                        'by a Selector, but "object" was passed.'
+                        'by a Selector, but object was passed.'
                     );
                     expect(errs[0]).contains('> 63 |    await t.selectTextAreaContent({}, 0, 2, 1, 3);');
                 });
@@ -124,7 +124,7 @@ describe('[API] Select text', function () {
                     expect(errs[0]).contains(
                         'Action "startSelector" argument error:  ' +
                         'Selector is expected to be initialized with a function, CSS selector string, another ' +
-                        'Selector, node snapshot or a Promise returned by a Selector, but "boolean" was passed.' +
+                        'Selector, node snapshot or a Promise returned by a Selector, but boolean was passed.' +
                         '');
                     expect(errs[0]).contains('> 83 |    await t.selectEditableContent(false, \'#p2\');');
                 });
@@ -139,7 +139,7 @@ describe('[API] Select text', function () {
                     expect(errs[0]).contains(
                         'Action "endSelector" argument error:  Selector is expected to be initialized with a ' +
                         'function, CSS selector string, another Selector, node snapshot or a Promise returned by ' +
-                        'a Selector, but "number" was passed.'
+                        'a Selector, but number was passed.'
                     );
                     expect(errs[0]).contains('> 87 |    await t.selectEditableContent(\'#p1\', 42);');
                 });

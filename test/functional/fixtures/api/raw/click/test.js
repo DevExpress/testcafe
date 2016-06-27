@@ -84,7 +84,7 @@ describe('[Raw API] Click action', function () {
             .catch(function (errs) {
                 expect(errs[0]).eql(
                     'Action "selector" argument error:  Selector is expected to be initialized with a function, ' +
-                    'CSS selector string, another Selector, node snapshot or a Promise returned by a Selector, but "number" was passed.  ' +
+                    'CSS selector string, another Selector, node snapshot or a Promise returned by a Selector, but number was passed.  ' +
                     '[[Incorrect action selector callsite]]'
                 );
             });

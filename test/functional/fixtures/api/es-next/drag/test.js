@@ -20,7 +20,7 @@ describe('[API] Drag actions', function () {
                     expect(errs[0]).to.contain(
                         'Action "selector" argument error:  Selector is expected to be initialized with a ' +
                         'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
-                        'by a Selector, but "object" was passed.'
+                        'by a Selector, but object was passed.'
                     );
                     expect(errs[0]).to.contain('> 14 |    await t.drag({}, 10, 20);');
                 });
@@ -78,7 +78,7 @@ describe('[API] Drag actions', function () {
                     expect(errs[0]).to.contain(
                         'Action "selector" argument error:  Selector is expected to be initialized with a ' +
                         'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
-                        'by a Selector, but "undefined" was passed.'
+                        'by a Selector, but undefined was passed.'
                     );
                     expect(errs[0]).to.contain('> 37 |    await t.dragToElement(void 0, \'#destination-div\');');
                 });
@@ -93,7 +93,7 @@ describe('[API] Drag actions', function () {
                     expect(errs[0]).to.contain(
                         'Action "destinationSelector" argument error:  Selector is expected to be initialized ' +
                         'with a function, CSS selector string, another Selector, node snapshot or a Promise ' +
-                        'returned by a Selector, but "object" was passed.'
+                        'returned by a Selector, but object was passed.'
                     );
                     expect(errs[0]).to.contain('> 41 |    await t.dragToElement(\'#draggable-div-2\', null);');
                 });
