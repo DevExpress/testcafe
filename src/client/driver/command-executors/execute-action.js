@@ -92,9 +92,7 @@ function ensureCommandElements (command, timeout) {
     var ensureElement = (selectorCommand, createNotFoundError, createIsInvisibleError) => {
         ensureElementPromise = ensureElementPromise
             .then(() => {
-                var elapsed          = new Date() - startTime;
-                var adjustedTimeout  = Math.max(timeout - elapsed, 0);
-                var selectorExecutor = new SelectorExecutor(selectorCommand, adjustedTimeout, createNotFoundError, createIsInvisibleError);
+                var selectorExecutor = new SelectorExecutor(selectorCommand, timeout, startTime, createNotFoundError, createIsInvisibleError);
 
                 return selectorExecutor.getResult();
             })

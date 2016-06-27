@@ -1,8 +1,10 @@
 import Promise from 'pinkie';
-import { identity } from 'lodash';
+import { identity, assign } from 'lodash';
 import { MissingAwaitError } from '../errors/test-run';
 import getCallsite from '../errors/get-callsite';
 import ClientFunctionFactory from '../client-functions/client-function-factory';
+import SelectorFactory from '../client-functions/selector-factory';
+
 
 import {
     ClickCommand,
@@ -214,6 +216,15 @@ export default class TestController {
         var clientFn = factory.getFunction({ boundTestRun: this.testRun });
 
         return clientFn();
+    }
+
+    _select$ (fn, scopeVars, options) {
+        options = assign({}, options, { boundTestRun: this.testRun });
+
+        var factory  = new SelectorFactory(fn, scopeVars, { instantiation: 'select', execution: 'select' });
+        var selector = factory.getFunction(options);
+
+        return selector();
     }
 }
 
