@@ -216,12 +216,12 @@ For example, the following command runs fixtures whose names match `Page.*`. The
 testcafe ie my-tests -F "Page.*"
 ```
 
-### --element-timeout \<ms\>
+### --selector-timeout \<ms\>
 
-Specifies the amount of time, in milliseconds, allowed for a page element on which an action is being performed to become visible and appear in the DOM before a test fails.
+Specifies the amount of time, in milliseconds, within which [selectors](../test-api/executing-client-code/index.md#selector-functions) make attempts to obtain a node to be returned.
 
 ```sh
-testcafe ie my-tests --element-timeout 500000
+testcafe ie my-tests --selector-timeout 500000
 ```
 
 ### --ports \<port1,port2\>

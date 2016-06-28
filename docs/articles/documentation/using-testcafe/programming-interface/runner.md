@@ -220,11 +220,11 @@ run(options) → Promise<Number>
 
 You can pass the following options to this function.
 
-Parameter                    | Type    | Description                                                                                                                                                                                            | Default
----------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------
-`skipJsErrors`               | Boolean | Defines whether to continue running a test after a JavaScript error occurs on a page (`true`), or consider such a test failed (`false`).                                                               | `false`
-`quarantineMode`             | Boolean | Defines whether to enable the [quarantine mode](#quarantine-mode).                                                                                                                                           | `false`
-`elementAvailabilityTimeout` | Numeric | Specifies the amount of time, in milliseconds, allowed for a page element on which an action is being performed to become visible and appear in the DOM before the test fails.                         | `10000`
+Parameter         | Type    | Description                                                                                                                                                                           | Default
+----------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------
+`skipJsErrors`    | Boolean | Defines whether to continue running a test after a JavaScript error occurs on a page (`true`), or consider such a test failed (`false`).                                              | `false`
+`quarantineMode`  | Boolean | Defines whether to enable the [quarantine mode](#quarantine-mode).                                                                                                                    | `false`
+`selectorTimeout` | Numeric | Specifies the amount of time, in milliseconds, within which [selectors](../../test-api/executing-client-code/index.md#selector-functions) make attempts to obtain a node to be returned. | `10000`
 
 **Example**
 
@@ -232,7 +232,7 @@ Parameter                    | Type    | Description                            
 const failed = await runner.run({
     skipJsErrors: true,
     quarantineMode: true,
-    elementAvailabilityTimeout: 50000
+    selectorTimeout: 50000
 })
 
 console.log('Tests failed: ' + failed);
