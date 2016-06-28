@@ -13,7 +13,7 @@ import promisify from '../utils/promisify';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import getViewPortWidth from '../utils/get-viewport-width';
-import wordWrap from '../utils/word-wrap';
+import { wordWrap } from '../utils/string';
 
 var ensureDir = promisify(mkdirp);
 var stat      = promisify(fs.stat);
