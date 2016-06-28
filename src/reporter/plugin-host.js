@@ -91,15 +91,16 @@ export default class ReporterPluginHost {
     }
 
     formatError (err, prefix = '') {
-        var maxMsgLength = this[viewportWidth] - this[indent] - removeTTYColors(prefix).length;
-        var msg          = err.formatMessage(this[errorDecorator], maxMsgLength);
+        var prefixLengthWithoutColors = removeTTYColors(prefix).length;
+        var maxMsgLength              = this[viewportWidth] - this[indent] - prefixLengthWithoutColors;
+        var msg                       = err.formatMessage(this[errorDecorator], maxMsgLength);
 
         if (this[wordWrapEnabled])
-            msg = this.wordWrap(msg, prefix.length, maxMsgLength);
+            msg = this.wordWrap(msg, prefixLengthWithoutColors, maxMsgLength);
         else
-            msg = this.indentString(msg, prefix.length);
+            msg = this.indentString(msg, prefixLengthWithoutColors);
 
-        return prefix + msg.substr(prefix.length);
+        return prefix + msg.substr(prefixLengthWithoutColors);
     }
 
 

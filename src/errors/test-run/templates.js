@@ -7,10 +7,10 @@ function markup (err, msgMarkup) {
     var prefix = `<span class="user-agent">${err.userAgent}</span>\n`;
 
     if (err.testRunState === TEST_RUN_STATE.inBeforeEach)
-        prefix += `<span class="subtitle">Error in <code>beforeEach</code> hook</span>`;
+        prefix += `<span class="subtitle">Error in beforeEach hook</span>`;
 
     else if (err.testRunState === TEST_RUN_STATE.inAfterEach)
-        prefix += `<span class="subtitle">Error in <code>afterEach</code> hook</span>`;
+        prefix += `<span class="subtitle">Error in afterEach hook</span>`;
 
     msgMarkup = prefix + dedent(msgMarkup);
 
