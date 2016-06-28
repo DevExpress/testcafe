@@ -4,7 +4,7 @@ import { identity, escape as escapeHtml, assignIn } from 'lodash';
 import moment from 'moment';
 import 'moment-duration-format';
 import OS from 'os-family';
-import wordWrap from '../utils/word-wrap';
+import { wordWrap, removeTTYColors } from '../utils/string';
 import getViewportWidth from '../utils/get-viewport-width';
 
 // NOTE: we should not expose internal state to
@@ -91,7 +91,7 @@ export default class ReporterPluginHost {
     }
 
     formatError (err, prefix = '') {
-        var maxMsgLength = this[viewportWidth] - this[indent] - prefix.length;
+        var maxMsgLength = this[viewportWidth] - this[indent] - removeTTYColors(prefix).length;
         var msg          = err.formatMessage(this[errorDecorator], maxMsgLength);
 
         if (this[wordWrapEnabled])

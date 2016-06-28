@@ -1,18 +1,18 @@
 import indentString from 'indent-string';
 
-function cutTtyColors (str) {
-    return str.replace(/\033\[[0-9;]*m/g, '');
-}
-
 function rtrim (str) {
     return str.replace(/\s+$/, '');
 }
 
-export default function (str, indent, width) {
+export function removeTTYColors (str) {
+    return str.replace(/\033\[[0-9;]*m/g, '');
+}
+
+export function wordWrap (str, indent, width) {
     var curStr     = '';
     var wrappedMsg = '';
 
-    if (cutTtyColors(str).length <= width - indent)
+    if (removeTTYColors(str).length <= width - indent)
         return indentString(str, ' ', indent);
 
     str = str.replace(/(\r\n)/gm, '\n')
@@ -23,7 +23,7 @@ export default function (str, indent, width) {
     str.forEach(word => {
         var newStr = curStr + word;
 
-        if (cutTtyColors(newStr).length > width - indent) {
+        if (removeTTYColors(newStr).length > width - indent) {
             wrappedMsg += `${rtrim(curStr)}\n`;
             curStr = word;
         }

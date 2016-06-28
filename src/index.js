@@ -1,9 +1,8 @@
 import TestCafe from './testcafe';
-import ReporterPluginHost from './reporter/plugin-host';
-import TestRunErrorFormattableAdapter from './errors/test-run/formattable-adapter';
 import * as endpointUtils from 'endpoint-utils';
 import { GeneralError } from './errors/runtime';
 import MESSAGE from './errors/runtime/message';
+import embeddingUtils from './embedding-utils';
 import commonAPI from './api/common';
 
 // Validations
@@ -45,15 +44,7 @@ async function createTestCafe (hostname, port1, port2) {
 }
 
 // Embedding utils
-createTestCafe.embeddingUtils = {
-    TestRunErrorFormattableAdapter: TestRunErrorFormattableAdapter,
-
-    buildReporterPlugin (pluginFactory, outStream) {
-        var plugin = pluginFactory();
-
-        return new ReporterPluginHost(plugin, outStream);
-    }
-};
+createTestCafe.embeddingUtils = embeddingUtils;
 
 // Common API
 Object.keys(commonAPI).forEach(key => createTestCafe[key] = commonAPI[key]);
