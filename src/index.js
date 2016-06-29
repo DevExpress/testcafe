@@ -14,7 +14,7 @@ async function getValidHostname (hostname) {
             throw new GeneralError(MESSAGE.invalidHostname, hostname);
     }
     else
-        hostname = await endpointUtils.getMyHostname();
+        hostname = endpointUtils.getIPAddress();
 
     return hostname;
 }
