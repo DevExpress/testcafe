@@ -1,6 +1,6 @@
 import { Promise } from '../../deps/hammerhead';
-import { delay, positionUtils } from '../../deps/testcafe-core';
-import { ProgressPanel } from '../../deps/testcafe-ui';
+import { delay, positionUtils, domUtils } from '../../deps/testcafe-core';
+import { ProgressPanel, selectElement as selectElementUI } from '../../deps/testcafe-ui';
 import ClientFunctionExecutor from './client-function-executor';
 import { createReplicator, FunctionTransform, SelectorNodeTransform } from './replicator';
 import { NonDomNodeSelectorResultError } from '../../../../errors/test-run';
@@ -16,6 +16,9 @@ function exists (el) {
 }
 
 function visible (el) {
+    if (domUtils.isOptionElement(el) || domUtils.getTagName(el) === 'optgroup')
+        return selectElementUI.isOptionElementVisible(el);
+
     return positionUtils.isElementVisible(el);
 }
 
