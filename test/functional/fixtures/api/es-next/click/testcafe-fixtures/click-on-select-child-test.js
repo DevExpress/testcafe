@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 
 fixture `Click`
-    .page `http://localhost:3000/fixtures/regression/gh-628/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/click/pages/select.html`;
 
 test('Click on an "option" element', async t => {
     await t
