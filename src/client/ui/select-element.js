@@ -265,3 +265,15 @@ export function switchOptionsByKeys (element, command) {
         }
     }
 }
+
+export function isOptionElementVisible (el) {
+    var parentSelect = domUtils.getSelectParent(el);
+
+    if (!parentSelect)
+        return true;
+
+    var expanded        = isOptionListExpanded(parentSelect);
+    var selectSizeValue = styleUtils.getSelectElementSize(parentSelect);
+
+    return expanded || selectSizeValue > 1;
+}

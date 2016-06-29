@@ -148,24 +148,14 @@ function ensureElementVisibility (element, actionName, callback) {
     var success = false;
 
     if (domUtils.isOptionElement(element) || domUtils.getTagName(element) === 'optgroup') {
-        var parentSelect = domUtils.getSelectParent(element);
-
-        if (!parentSelect) {
+        if (selectElement.isOptionElementVisible(element))
             callback();
-            return;
-        }
-
-        var isOptionListExpanded = selectElement.isOptionListExpanded(parentSelect);
-        var selectSizeValue      = styleUtils.getSelectElementSize(parentSelect);
-
-        if (!isOptionListExpanded && selectSizeValue <= 1) {
+        else {
             failWithError(ERROR_TYPE.invisibleActionElement, {
                 element: domUtils.getElementDescription(element),
                 action:  actionName
             });
         }
-        else
-            callback();
 
         return;
     }
