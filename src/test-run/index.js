@@ -63,6 +63,7 @@ export default class TestRun extends Session {
         this.errs                     = [];
         this.lastDriverStatusId       = null;
         this.lastDriverStatusResponse = null;
+        this.isFileDownloading        = false;
     }
 
 
@@ -90,7 +91,7 @@ export default class TestRun extends Session {
     }
 
     handleFileDownload () {
-        // TODO
+        this.isFileDownloading = true;
     }
 
     handlePageError (ctx, err) {
@@ -342,4 +343,16 @@ ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (m
         return await BrowserManipulationManager.resizeWindowToFitDevice(this.id, msg.currentWidth, msg.currentHeight,
             command.device, command.options.portraitOrientation);
     }
+};
+
+ServiceMessages[CLIENT_MESSAGES.getAndUncheckFileDownloadingFlag] = function () {
+    var isFileDownloading = this.isFileDownloading;
+
+    this.isFileDownloading = false;
+
+    return isFileDownloading;
+};
+
+ServiceMessages[CLIENT_MESSAGES.uncheckFileDownloadingFlag] = function () {
+    this.isFileDownloading = false;
 };

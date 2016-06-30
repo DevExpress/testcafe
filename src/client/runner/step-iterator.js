@@ -43,7 +43,8 @@ var StepIterator = function (pingIframe) {
     this.globalWaitForEvent   = null;
     this.globalWaitForTimeout = null;
 
-    this.eventEmitter = new serviceUtils.EventEmitter();
+    this.eventEmitter      = new serviceUtils.EventEmitter();
+    this.pageUnloadBarrier = pageUnloadBarrier;
 };
 
 //Events
@@ -233,8 +234,8 @@ StepIterator.prototype._completeAsyncAction = function () {
     if (iterator.state.stopped)
         return;
 
-    pageUnloadBarrier
-        .wait()
+    this.pageUnloadBarrier
+        .wait({isLegacy: true})
         .then(() => iterator._runStep());
 };
 
@@ -350,7 +351,7 @@ StepIterator.prototype._init = function () {
     this.initialized = true;
 
     this._setupUnloadHandlers();
-    pageUnloadBarrier.init();
+    this.pageUnloadBarrier.init();
 };
 
 StepIterator.prototype.start = function (stepNames, testSteps, stepSetup, stepDone, nextStep) {

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download page</title>
+</head>
+<body>
+<div id="div" style="background: red; width: 50px; height: 50px;">Button</div>
+<iframe width="1" height="1" frameborder="0"
+        src="http://go.devexpress.com/DevExpressDownload_TestCafe_Win.aspx"></iframe>
+<script>
+    document.querySelector('#div').addEventListener('click', function () {
+        window.divClicked = true;
+    });
+</script>
+</body>
+</html>

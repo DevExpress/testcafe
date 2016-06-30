@@ -157,7 +157,7 @@ IFrameRunner.prototype._onBeforeUnload = function () {
                     iFrameTestRunner.stepIterator.state.stepDelayTimeout = null;
                 }
 
-                iFrameTestRunner.stepIterator.state.pageUnloading = false;
+                iFrameTestRunner.stepIterator.pageUnloadBarrier.resetUnloadingFlag();
                 iFrameTestRunner.stepIterator._runStep();
             }
         }
