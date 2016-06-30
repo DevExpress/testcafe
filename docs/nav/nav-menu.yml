@@ -30,6 +30,8 @@
 - folder: USING TESTCAFE
   url: /testcafe/documentation/using-testcafe/
   content:
+  - item: Installing TestCafe
+    url: /testcafe/documentation/using-testcafe/installing-testcafe.html
   - item: Command Line Interface
     url: /testcafe/documentation/using-testcafe/command-line-interface.html
   - folder: Programming Interface

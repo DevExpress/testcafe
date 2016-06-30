@@ -1,11 +1,11 @@
 ---
 layout: docs
-title: TestCafe Programming Interface
+title: Programming Interface
 permalink: /documentation/using-testcafe/programming-interface/
 ---
-# TestCafe Programming Interface
+# Programming Interface
 
-This section describes the API that allows you to use TestCafe from your NodeJS applications.
+This section describes the API that allows you to run TestCafe tests from your NodeJS applications.
 
 The thing to start with is creating the [TestCafe server](testcafe.md) instance.
 Use the [createTestCafe](createtestcafe.md) factory function for this.
