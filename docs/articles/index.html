@@ -1,0 +1,140 @@
+---
+layout: landing
+title: TestCafe Landing Page
+permalink: /
+---
+
+<html>
+<head>
+    <title>TestCafe Landing Page</title>
+    <link rel="stylesheet" href="css/landing-page.css">
+
+    <!-- Enable the gallery-->
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="http://cdn3.devexpress.com/jslib/16.1.4/js/dx.all.js"></script>
+    <script src="scripts/gallery.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/16.1.4/css/dx.common.css" />
+    <link rel="stylesheet" type="text/css" href="http://cdn3.devexpress.com/jslib/16.1.4/css/dx.ios7.default.css" />
+    <link href="css/gallery.css" type="text/css" rel="stylesheet">
+
+    <!--GitHub Star button-->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+</head>
+<body>
+    <form id="main-form" action="#">
+    <div class="banner">
+        <div class="header">
+        TestCafe Open Source Edition
+        </div>
+        <div class="slogan">
+        Functional Web Testing Made Easy
+        </div>
+        <div class="white-button-container">
+        <a href="documentation/getting-started/" class="white-button">Get Started</a>
+        </div>
+        <a class="github-button" href="https://github.com/DevExpress/testcafe" data-style="mega" data-count-href="/DevExpress/testcafe/stargazers" data-count-api="/repos/DevExpress/testcafe#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star DevExpress/testcafe on GitHub">Star</a>
+    </div>
+    <div class="main-content">
+        <div class="feature">
+            <span class="name">
+                Easy Install
+            </span>
+            <div class="description">
+                <p>All you need is to have <a href="https://nodejs.org">Node.js</a> with <a href="https://www.npmjs.com">npm</a> installed and call a single command.</p>
+                <div class="command">npm install --save-dev testcafe</div>
+                <p>No browsers plugins to install, no binary compilation post-install steps.</p>
+            </div>
+        </div>
+        <div class="feature">
+            <span class="name">
+                Complete Test Harness
+            </span>
+            <div class="description">
+                <p>TestCafe covers all testing phases: starting browsers, running tests and gathering results. You configure test run and start execution either via the API or from a command shell simply by running a single command</p>
+                <div class="command">testcafe safari,ie tests/</div>
+                <p>TestCafe aggregates test results from different browsers and outputs them into one comprehensive report.</p>
+            </div>
+        </div>
+        <div class="feature">
+            <span class="name">
+                Write Test Code Using ES2016
+            </span>
+            <div class="description">
+                <p>You can write TestCafe tests in ES2016 using all latest JavaScript features like 'async/await'.</p>
+                <p>TestCafe introduces simple, but powerful test API. It offers a couple of dozen methods covering all user actions. Chained syntax produces code that is easy to write and read. Furthermore, you are free to use any assertion library to perform verifications of different kinds.</p>
+                <pre><code>import { expect } from 'chai';
+
+fixture `My Fixture`
+    .page('http://devexpress.github.io/testcafe/example');
+
+test('My Test', async t => {
+    await t
+        .click('#send-button')
+        .handleAlert()
+        .typeText('#input', 'Peter Parker')
+        .wait(1000);
+
+    expect(await t.eval(() => getSomethingOnTheClient())).to.be.true;
+});</code></pre>
+                <p>TestCafe will compile your test code on-flight and run it immediately. It also ships with built-in support for source maps to leverage debugging experience. Source maps are automatically enabled, so all you need to do is start a debugging session in an IDE that supports them.</p>
+            </div>
+        </div>
+        <div class="feature">
+            <span class="name">
+                Write Regular Client JavaScript to Observe Page State
+            </span>
+            <div class="description">
+                <p>TestCafe is capable of executing code on the client side thus giving you direct access to DOM elements on the page and empowering you to obtain required data from the client.
+Simply write JavaScript code within the `ClientFunction` or `Selector` function. These functions are called from a test as regular async functions. So, you can pass parameters to them and return values.</p>
+
+                <pre><code>import { Selector } from 'testcafe';
+
+const getElementById = Selector(id => document.querySelector(`#${id}`));
+
+test('My Test', async t => {
+    await t
+        .typeText('#developer-name', 'John Smith')
+        .click('#submit-button');
+
+    const articleHeader = await getElementById('article-header');
+    const headerText = articleHeader.innerText;
+});</code></pre>
+            </div>
+        </div>
+        <div class="feature">
+            <span class="name">
+                Descriptive Reports
+            </span>
+            <div class="description">
+                <p>TestCafe automatically generates full-detailed reports providing a test run summary and comprehensive information about errors. Fancy call sites, clean stacks and screenshots help you easily detect an error cause.</p>
+                <p>Choose from five <a href="documentation/using-testcafe/common-concepts/reporters.html">built-in reporters</a> to output test results or create <a href="documentation/extending-testcafe/custom-reporter-plugin/">custom reporter plugins</a> to produce your own reports.</p>
+            </div>
+            <div class="gallery-container">
+            <div id="gallery"></div>
+            </div>
+        </div>
+        <div class="feature">
+            <span class="name">
+                Continuous Integration
+            </span>
+            <div class="description">
+                <p>Take advantage of automatic test execution through integration of TestCafe with popular Continuous Integration platforms.
+                TestCafe's browser provider mechanism makes it simple to set up testing in various browsers: local, remote, <a href="https://saucelabs.com/">Sauce Labs</a> or <a href="http://phantomjs.org/">PhantomJS</a>.
+                You can also create your own browser provider plugin that will suit your platform and needs.</p>
+            </div>
+        </div>
+        <div class="feature">
+            <span class="name">
+                More to Come…
+            </span>
+            <div class="description">
+                <p>We plan to introduce other outstanding features to make your testing experience even more effective. Moreover, you can help us improve TestCafe by voting for features on our road map or sharing your own ideas and code in our <a href="https://github.com/DevExpress/testcafe">GitHub repository</a>.</p>
+            </div>
+        </div>
+        <div class="blue-button-container">
+        <a href="documentation/getting-started/" class="blue-button">Get Started</a>
+        </div>
+    </div>
+    </form>
+</body>
+</html>
