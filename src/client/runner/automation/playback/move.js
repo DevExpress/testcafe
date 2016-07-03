@@ -29,7 +29,7 @@ const MOVE_RESPONSE_CMD = 'automation|move|response';
 // Setup cross-iframe interaction
 messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     if (e.message.cmd === MOVE_REQUEST_CMD) {
-        if (e.source.parent === window.self)
+        if (e.source.parent === window)
             MoveAutomation.onMoveToIframeRequest(e);
         else {
             hammerhead.on(hammerhead.EVENTS.beforeUnload, () => messageSandbox.sendServiceMsg({ cmd: MOVE_RESPONSE_CMD }, e.source));
@@ -323,7 +323,7 @@ export default class MoveAutomation {
             modifiers: this.modifiers
         };
 
-        if (activeWindow.parent === window.self) {
+        if (activeWindow.parent === window) {
             iframe            = domUtils.findIframeByWindow(activeWindow);
             iframeRectangle   = positionUtils.getIframeClientCoordinates(iframe);
             iframeUnderCursor = getElementUnderCursor() === iframe;
@@ -339,7 +339,7 @@ export default class MoveAutomation {
             .then(message => {
                 cursor.activeWindow = window;
 
-                if (iframeUnderCursor || window.top !== window.self)
+                if (iframeUnderCursor || window.top !== window)
                     return cursor.move(message.x, message.y);
             });
     }

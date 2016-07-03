@@ -1,5 +1,6 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
+import testCafeUI from '../deps/testcafe-ui';
 import cursor from './cursor';
 
 var browserUtils  = hammerhead.utils.browser;
@@ -8,15 +9,11 @@ var domUtils      = testCafeCore.domUtils;
 
 
 function getElementFromPoint (x, y) {
-    var cursorVisible = cursor.visible;
-
-    if (cursorVisible)
-        cursor.hide();
+    testCafeUI.hide();
 
     var topElement = positionUtils.getElementFromPoint(x, y);
 
-    if (cursorVisible)
-        cursor.show();
+    testCafeUI.show();
 
     return topElement;
 }

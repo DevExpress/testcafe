@@ -14,6 +14,14 @@ exports.ProgressPanel   = ProgressPanel;
 
 exports.get = require;
 
+exports.hide = function () {
+    hammerhead.shadowUI.getRoot().style.visibility = 'hidden';
+};
+
+exports.show = function () {
+    hammerhead.shadowUI.getRoot().style.visibility = '';
+};
+
 Object.defineProperty(window, '%testCafeUI%', {
     enumerable:   false,
     configurable: false,

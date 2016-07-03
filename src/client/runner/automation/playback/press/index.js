@@ -161,7 +161,7 @@ export default class PressAutomation {
         var activeElement         = domUtils.getActiveElement();
         var activeElementIsIframe = domUtils.isIframeElement(activeElement);
 
-        if (window.top === window.self && activeElementIsIframe && activeElement.contentWindow) {
+        if (window.top === window && activeElementIsIframe && activeElement.contentWindow) {
             var msg = {
                 cmd:             PRESS_REQUEST_CMD,
                 keyCombinations: this.keyCombinations

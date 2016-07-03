@@ -98,7 +98,7 @@ var ANIMATIONS_WAIT_DELAY = 200;
 
 var initialized = false;
 
-if (window.top !== window.self) {
+if (window.top !== window) {
     var requestBarrier = null;
 
     eventUtils
