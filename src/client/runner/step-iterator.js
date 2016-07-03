@@ -243,7 +243,7 @@ StepIterator.prototype.callWithSharedDataContext = function (func) {
 };
 
 StepIterator.prototype._checkIFrame = function (element, callback) {
-    if (window.top !== window.self || !domUtils.isElementInIframe(element)) {
+    if (window.top !== window || !domUtils.isElementInIframe(element)) {
         callback(null);
         return;
     }

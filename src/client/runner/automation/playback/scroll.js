@@ -164,7 +164,7 @@ export default class ScrollAutomation {
             currentChild = parents[i];
         }
 
-        if (window.top !== window.self) {
+        if (window.top !== window) {
             return sendRequestToFrame({
                 cmd:     SCROLL_REQUEST_CMD,
                 offsetX: currentOffsetX,

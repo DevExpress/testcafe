@@ -2,7 +2,7 @@ import testCafeCore from '../deps/testcafe-core';
 import testCafeUI from '../deps/testcafe-ui';
 
 var domUtils = testCafeCore.domUtils;
-var cursorUI = window.top === window.self ? testCafeUI.cursorUI : testCafeUI.iframeCursorUI;
+var cursorUI = window.top === window ? testCafeUI.cursorUI : testCafeUI.iframeCursorUI;
 
 
 export default {
@@ -39,7 +39,7 @@ export default {
     },
 
     get visible () {
-        return window.top === window.self && cursorUI.isVisible();
+        return window.top === window && cursorUI.isVisible();
     },
 
     move (newX, newY) {
@@ -55,7 +55,7 @@ export default {
     },
 
     show () {
-        if (window.top === window.self)
+        if (window.top === window)
             cursorUI.show();
     },
 
