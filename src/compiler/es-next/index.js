@@ -8,12 +8,12 @@ import Globals from '../../api/globals';
 import { TestCompilationError, APIError } from '../../errors/runtime';
 import stackCleaningHook from '../../errors/stack-cleaning-hook';
 
-const COMMON_API_PATH   = join(__dirname, '../../api/common');
-const NODE_MODULES_PATH = join(__dirname, '../../../node_modules');
-const CWD               = process.cwd();
+const COMMON_API_PATH = join(__dirname, '../../api/common');
+const CWD             = process.cwd();
 
-const FIXTURE_RE = /(^|;|\s+)fixture\s*(\(\s*('|").+?\3\s*\)|`.+?`)/;
-const TEST_RE    = /(^|;|\s+)test\s*(\(\s*('|").+?\3\s*,)/;
+const FIXTURE_RE       = /(^|;|\s+)fixture\s*(\(.+?\)|`.+?`)/;
+const TEST_RE          = /(^|;|\s+)test\s*\(.+?,/;
+const BABEL_RUNTIME_RE = /^babel-runtime(\\|\/|$)/;
 
 var Module = module.constructor;
 
@@ -26,14 +26,9 @@ export default class ESNextCompiler {
     }
 
     static _getNodeModulesLookupPath (filename) {
-        var dir   = dirname(filename);
-        var paths = Module._nodeModulePaths(dir);
+        var dir = dirname(filename);
 
-        // HACK: for npm v2 installations, we need to expose our node_modules,
-        // so that Module will be able to require babel-runtime.
-        paths.push(NODE_MODULES_PATH);
-
-        return paths;
+        return Module._nodeModulePaths(dir);
     }
 
     static _getBabelOptions (filename) {
@@ -42,15 +37,30 @@ export default class ESNextCompiler {
         var presetES2015 = NODE_VER < 4 ? presetES2015Loose : presetES2015Node4;
 
         return {
-            presets:             [presetStage2, presetES2015],
-            plugins:             [transformRuntime],
-            filename:            filename,
-            sourceMaps:          true,
-            retainLines:         true,
-            ast:                 false,
-            babelrc:             false,
-            highlightCode:       false,
-            resolveModuleSource: source => source === 'testcafe' ? COMMON_API_PATH : source
+            presets:       [presetStage2, presetES2015],
+            plugins:       [transformRuntime],
+            filename:      filename,
+            sourceMaps:    true,
+            retainLines:   true,
+            ast:           false,
+            babelrc:       false,
+            highlightCode: false,
+
+            resolveModuleSource: source => {
+                if (source === 'testcafe')
+                    return COMMON_API_PATH;
+
+                if (BABEL_RUNTIME_RE.test(source)) {
+                    try {
+                        return require.resolve(source);
+                    }
+                    catch (err) {
+                        return source;
+                    }
+                }
+
+                return source;
+            }
         };
     }
 

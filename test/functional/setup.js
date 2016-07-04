@@ -113,7 +113,7 @@ before(function () {
             global.runTests = function (fixture, testName, opts) {
                 var report             = '';
                 var runner             = testCafe.createRunner();
-                var fixturePath        = path.join(path.dirname(caller()), fixture);
+                var fixturePath        = path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
                 var skipJsErrors       = opts && opts.skipJsErrors;
                 var quarantineMode     = opts && opts.quarantineMode;
                 var selectorTimeout    = opts && opts.selectorTimeout || FUNCTIONAL_TESTS_SELECTOR_TIMEOUT;

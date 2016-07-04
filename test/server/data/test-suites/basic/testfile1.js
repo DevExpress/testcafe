@@ -8,7 +8,9 @@ test('Fixture1Test1', async () => {
     return `F1T1: ${res}`;
 });
 
-test('Fixture1Test2', async () => {
+const test2Name = 'Fixture1Test2';
+
+test(test2Name, async () => {
     return 'F1T2';
 });
 
