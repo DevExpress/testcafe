@@ -1,6 +1,6 @@
 {
   "name": "testcafe",
-  "version": "0.0.22-alpha",
+  "version": "0.0.23-alpha",
   "main": "lib/index",
   "bin": {
     "testcafe": "./bin/testcafe"
