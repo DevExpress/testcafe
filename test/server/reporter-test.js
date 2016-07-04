@@ -16,15 +16,15 @@ describe('Reporter', function () {
     var fixtureMocks = [
         {
             name: 'fixture1',
-            path: './fixture1.js'
+            path: './file1.js'
         },
         {
             name: 'fixture2',
-            path: './fixture2.js'
+            path: './file1.js'
         },
         {
             name: 'fixture3',
-            path: './fixture3.js'
+            path: './file2.js'
         }
     ];
 
@@ -241,7 +241,7 @@ describe('Reporter', function () {
                 method: 'reportFixtureStart',
                 args:   [
                     'fixture1',
-                    './fixture1.js'
+                    './file1.js'
                 ]
             },
             {
@@ -291,7 +291,7 @@ describe('Reporter', function () {
                 method: 'reportFixtureStart',
                 args:   [
                     'fixture2',
-                    './fixture2.js'
+                    './file1.js'
                 ]
             },
             {
@@ -318,7 +318,7 @@ describe('Reporter', function () {
                 method: 'reportFixtureStart',
                 args:   [
                     'fixture3',
-                    './fixture3.js'
+                    './file2.js'
                 ]
             },
             {

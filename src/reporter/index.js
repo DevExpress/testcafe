@@ -21,9 +21,8 @@ export default class Reporter {
 
     static _createReportItem (test, runsPerTest) {
         return {
-            fixtureName:    test.fixture.name,
-            fixturePath:    test.fixture.path,
-            testName:       test.name,
+            fixture:        test.fixture,
+            test:           test,
             screenshotPath: null,
             pendingRuns:    runsPerTest,
             errs:           [],
@@ -33,9 +32,7 @@ export default class Reporter {
     }
 
     _getReportItemForTestRun (testRun) {
-        var test = testRun.test;
-
-        return find(this.reportQueue, i => i.fixturePath === test.fixture.path && i.testName === test.name);
+        return find(this.reportQueue, i => i.test === testRun.test);
     }
 
     _shiftReportQueue () {
@@ -51,15 +48,15 @@ export default class Reporter {
 
         reportItem.errs = sortBy(reportItem.errs, ['userAgent', 'type']);
 
-        this.plugin.reportTestDone(reportItem.testName, reportItem.errs, durationMs, reportItem.unstable, reportItem.screenshotPath);
+        this.plugin.reportTestDone(reportItem.test.name, reportItem.errs, durationMs, reportItem.unstable, reportItem.screenshotPath);
 
         // NOTE: here we assume that tests are sorted by fixture.
         // Therefore, if the next report item has a different
         // fixture, we can report this fixture start.
         var nextReportItem = this.reportQueue[0];
 
-        if (nextReportItem && nextReportItem.fixturePath !== reportItem.fixturePath)
-            this.plugin.reportFixtureStart(nextReportItem.fixtureName, nextReportItem.fixturePath);
+        if (nextReportItem && nextReportItem.fixture !== reportItem.fixture)
+            this.plugin.reportFixtureStart(nextReportItem.fixture.name, nextReportItem.fixture.path);
     }
 
     _assignTaskEventHandlers (task) {
@@ -69,7 +66,7 @@ export default class Reporter {
             var first      = this.reportQueue[0];
 
             this.plugin.reportTaskStart(startTime, userAgents, this.testCount);
-            this.plugin.reportFixtureStart(first.fixtureName, first.fixturePath);
+            this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path);
         });
 
         task.on('test-run-start', testRun => {
