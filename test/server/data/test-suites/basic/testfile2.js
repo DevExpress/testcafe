@@ -5,7 +5,9 @@ fixture('Fixture3')
     .afterEach(() => 'yo')
     .beforeEach(() => 'yo');
 
-test('Fixture3Test1', async () => {
+const fixture3Name = 'Fixture3Test1';
+
+test(fixture3Name, async () => {
     var res = await dep2Fn();
 
     return `F3T1: ${res}`;

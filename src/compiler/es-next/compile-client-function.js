@@ -9,7 +9,7 @@ import MESSAGE from '../../errors/runtime/message';
 const ANONYMOUS_FN_RE                = /^function\*?\s*\(/;
 const USE_STRICT_RE                  = /^('|")use strict('|");?/;
 const TRAILING_SEMICOLON_RE          = /;\s*$/;
-const REGENERATOR_FOOTPRINTS_RE      = /(_regenerator(\d+).default|regeneratorRuntime).wrap\(function _callee\$\(_context\)/;
+const REGENERATOR_FOOTPRINTS_RE      = /(_index\d+\.default|_regenerator\d+\.default|regeneratorRuntime)\.wrap\(function _callee\$\(_context\)/;
 const ASYNC_TO_GENERATOR_OUTPUT_CODE = asyncToGenerator(noop).toString();
 
 var babelArtifactPolyfills = {

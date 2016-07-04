@@ -1,6 +1,6 @@
 {
   "name": "testcafe",
-  "version": "0.0.22-alpha",
+  "version": "0.0.23-alpha",
   "main": "lib/index",
   "bin": {
     "testcafe": "./bin/testcafe"
@@ -93,6 +93,7 @@
     "multer": "^1.1.0",
     "opn": "^3.0.3",
     "publish-please": "^2.1.3",
+    "recursive-copy": "^2.0.5",
     "request": "^2.58.0",
     "saucelabs-connector": "^0.1.3",
     "serve-static": "^1.10.0",
@@ -177,6 +178,7 @@
       "multer",
       "opn",
       "publish-please",
+      "recursive-copy",
       "request",
       "saucelabs-connector",
       "serve-static",
