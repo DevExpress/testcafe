@@ -1,12 +1,26 @@
 import hammerhead from './deps/hammerhead';
-import { RequestBarrier, noop, pageUnloadBarrier, eventUtils, domUtils, preventRealEvents, waitFor } from './deps/testcafe-core';
+import {
+    RequestBarrier,
+    noop,
+    pageUnloadBarrier,
+    eventUtils,
+    domUtils,
+    preventRealEvents,
+    waitFor
+} from './deps/testcafe-core';
 import { modalBackground } from './deps/testcafe-ui';
 
 import TEST_RUN_MESSAGES from '../../test-run/client-messages';
 import COMMAND_TYPE from '../../test-run/commands/type';
 import {
+    isCommandRejectableByPageError,
+    isHandleDialogCommand,
+    isExecutableInTopWindowOnly
+} from '../../test-run/commands/utils';
+import { getExpectedDialogType } from '../../test-run/browser-dialogs';
+import {
     UncaughtErrorOnPage,
-    ClientFunctionExecutionInterruptionError,
+    ClientFunctionInterruptedByPageUnloadError,
     ActionElementNotIframe,
     ActionIframeIsNotLoadedError,
     ActionElementNotFoundError,
@@ -15,6 +29,7 @@ import {
     CurrentIframeNotFoundError,
     CurrentIframeIsInvisibleError
 } from '../../errors/test-run';
+import NativeDialogTracker from './native-dialog-tracker';
 import * as browser from '../browser';
 
 import { TYPE as MESSAGE_TYPE } from './driver-link/messages';
@@ -58,16 +73,19 @@ const CURRENT_IFRAME_ERROR_CTORS = {
 var hangingPromise = new Promise(noop);
 
 export default class Driver {
-    constructor (testRunId, selectorTimeout, heartbeatUrl, browserStatusUrl) {
+    constructor (testRunId, selectorTimeout, heartbeatUrl, browserStatusUrl, initiallyExpectedDialogs) {
         this.COMMAND_EXECUTING_FLAG   = 'testcafe|driver|command-executing-flag';
         this.EXECUTING_IN_IFRAME_FLAG = 'testcafe|driver|executing-in-iframe-flag';
 
-        this.testRunId        = testRunId;
-        this.selectorTimeout  = selectorTimeout;
-        this.heartbeatUrl     = heartbeatUrl;
-        this.browserStatusUrl = browserStatusUrl;
+        this.testRunId                = testRunId;
+        this.selectorTimeout          = selectorTimeout;
+        this.initiallyExpectedDialogs = initiallyExpectedDialogs;
+        this.heartbeatUrl             = heartbeatUrl;
+        this.browserStatusUrl         = browserStatusUrl;
 
-        this.contextStorage        = null;
+        this.contextStorage       = null;
+        this.nativeDialogsTracker = null;
+
         this.childDriverLinks      = [];
         this.activeChildDriverLink = null;
         this.beforeUnloadRaised    = false;
@@ -108,7 +126,7 @@ export default class Driver {
         if (executingClientFnDescriptor) {
             this._onReady(new DriverStatus({
                 isCommandResult: true,
-                executionError:  new ClientFunctionExecutionInterruptionError(executingClientFnDescriptor.instantiationCallsiteName)
+                executionError:  new ClientFunctionInterruptedByPageUnloadError(executingClientFnDescriptor.instantiationCallsiteName)
             }));
 
             return true;
@@ -116,7 +134,6 @@ export default class Driver {
 
         return false;
     }
-
 
     // Status
     _addPendingErrorToStatus (status) {
@@ -128,8 +145,26 @@ export default class Driver {
         }
     }
 
+    _addUnexpectedDialogErrorToStatus (status) {
+        var dialogError = this.nativeDialogsTracker.getUnexpectedDialogError();
+
+        status.pageError = status.pageError || dialogError;
+    }
+
+    _addInterruptionByDialogErrorToStatus (status, callsiteName) {
+        var dialogError = this.nativeDialogsTracker.getUnexpectedDialogError(callsiteName);
+
+        status.executionError = status.executionError || dialogError;
+    }
+
     _sendStatus (status) {
-        this._addPendingErrorToStatus(status);
+        // NOTE: We should not modify the status if it is resent after
+        // the page load because the server has cached the reaponse
+        if (!status.resent) {
+            this._addPendingErrorToStatus(status);
+            this._addUnexpectedDialogErrorToStatus(status);
+        }
+
         this.contextStorage.setItem(PENDING_STATUS, status);
 
         // NOTE: postpone status sending if the page is unloading
@@ -264,13 +299,17 @@ export default class Driver {
     }
 
     _onExecuteClientFunctionCommand (command) {
-        this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, { instantiationCallsiteName: command.instantiationCallsiteName });
+        var instantiationCallsiteName = command.instantiationCallsiteName;
+
+        this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, { instantiationCallsiteName });
 
         var executor = new ClientFunctionExecutor(command);
 
         executor.getResultDriverStatus()
             .then(driverStatus => {
                 this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, null);
+
+                this._addInterruptionByDialogErrorToStatus(driverStatus, instantiationCallsiteName);
                 this._onReady(driverStatus);
             });
     }
@@ -282,6 +321,8 @@ export default class Driver {
         executor.getResultDriverStatus()
             .then(driverStatus => {
                 this.contextStorage.setItem(SELECTOR_EXECUTION_START_TIME, null);
+
+                this._addInterruptionByDialogErrorToStatus(driverStatus, command.instantiationCallsiteName);
                 this._onReady(driverStatus);
             });
     }
@@ -308,15 +349,24 @@ export default class Driver {
         prepareBrowserManipulation(this.testRunId)
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
+
                 return this._onReady(driverStatus);
             });
     }
 
-    _onTestDone () {
+    _onHandleDialogCommand (command) {
+        var dialogType = getExpectedDialogType(command);
+
+        this.nativeDialogsTracker
+            .waitForDialog(dialogType, command.options.timeout)
+            .then(err => this._onReady(new DriverStatus({ isCommandResult: true, executionError: err })));
+    }
+
+    _onTestDone (status) {
         this.contextStorage.setItem(TEST_DONE_SENT_FLAG, true);
 
         this
-            ._sendStatus(new DriverStatus({ isCommandResult: true }))
+            ._sendStatus(status)
             .then(() => browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR));
     }
 
@@ -334,61 +384,88 @@ export default class Driver {
             });
     }
 
+    _executeCommand (command) {
+        if (command.type === COMMAND_TYPE.testDone)
+            this._onTestDone(new DriverStatus({ isCommandResult: true }));
+
+        else if (command.type === COMMAND_TYPE.prepareBrowserManipulation)
+            this._onPrepareBrowserManipulationCommand();
+
+        else if (command.type === COMMAND_TYPE.switchToMainWindow)
+            this._onSwitchToMainWindowCommand(command);
+
+        else if (command.type === COMMAND_TYPE.switchToIframe)
+            this._onSwitchToIframeCommand(command);
+
+        else if (command.type === COMMAND_TYPE.executeClientFunction)
+            this._onExecuteClientFunctionCommand(command);
+
+        else if (command.type === COMMAND_TYPE.executeSelector)
+            this._onExecuteSelectorCommand(command);
+
+        else if (isHandleDialogCommand(command))
+            this._onHandleDialogCommand(command);
+
+        else if (command.type === COMMAND_TYPE.navigateTo)
+            this._onNavigateToCommand(command);
+
+        else
+            this._onActionCommand(command);
+    }
+
     _onCommand (command) {
         // NOTE: the driver sends status to the server as soon as it's created,
         // but it should wait until the page is loaded before executing a command.
         this.readyPromise
             .then(() => {
-                if (command.type === COMMAND_TYPE.testDone)
-                    this._onTestDone();
+                if (command.expectedDialogs)
+                    this.nativeDialogsTracker.expectedDialogs = command.expectedDialogs;
 
-                else if (command.type === COMMAND_TYPE.prepareBrowserManipulation)
-                    this._onPrepareBrowserManipulationCommand();
+                // NOTE: we should not execute a command if we already have a pending page error and this command is
+                // rejectable by page errors. In this case, we immediately send status with this error to the server.
+                var isCommandRejectableByError = isCommandRejectableByPageError(command);
+                var pendingPageError           = this.contextStorage.getItem(PENDING_PAGE_ERROR);
 
-                else if (command.type === COMMAND_TYPE.switchToMainWindow)
-                    this._onSwitchToMainWindowCommand(command);
-
-                else if (this.activeChildDriverLink || this.contextStorage.getItem(ACTIVE_IFRAME_SELECTOR))
-                    this._runInActiveIframe(command);
-
-                else if (command.type === COMMAND_TYPE.switchToIframe)
-                    this._onSwitchToIframeCommand(command);
-
-                else if (command.type === COMMAND_TYPE.executeClientFunction)
-                    this._onExecuteClientFunctionCommand(command);
-
-                else if (command.type === COMMAND_TYPE.executeSelector)
-                    this._onExecuteSelectorCommand(command);
-
-                else if (this.contextStorage.getItem(PENDING_PAGE_ERROR))
+                if (pendingPageError && isCommandRejectableByError) {
                     this._onReady(new DriverStatus({ isCommandResult: true }));
+                    return;
+                }
 
-                else if (command.type === COMMAND_TYPE.navigateTo)
-                    this._onNavigateToCommand(command);
+                // NOTE: we should execute a command in an iframe if the current execution context belongs to
+                // this iframe and the command is not one of those that can be executed only in the top window.
+                var isThereActiveIframe = this.activeChildDriverLink ||
+                                          this.contextStorage.getItem(ACTIVE_IFRAME_SELECTOR);
 
-                else
-                    this._onActionCommand(command);
+                if (!isExecutableInTopWindowOnly(command) && isThereActiveIframe) {
+                    this._runInActiveIframe(command);
+                    return;
+                }
+
+                this._executeCommand(command);
             });
-
     }
 
 
     // API
     start () {
-        this.contextStorage = new ContextStorage(window, this.testRunId);
-
         browser.startHeartbeat(this.heartbeatUrl, hammerhead.createNativeXHR);
 
         modalBackground.initAndShowLoadingText();
         this.readyPromise.then(() => modalBackground.hide());
 
+        this.contextStorage       = new ContextStorage(window, this.testRunId);
+        this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.initiallyExpectedDialogs);
+
         var pendingStatus = this.contextStorage.getItem(PENDING_STATUS);
+
+        if (pendingStatus)
+            pendingStatus.resent = true;
 
         // NOTE: we should not send any message to the server if we've
         // sent the 'test-done' message but haven't got the response.
         if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG)) {
             if (pendingStatus)
-                this._onTestDone();
+                this._onTestDone(pendingStatus);
             else
                 browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR);
 

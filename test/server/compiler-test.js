@@ -913,8 +913,8 @@ describe('Compiler', function () {
                     })
                     .catch(function (err) {
                         expect(err.type).eql(ERR_TYPE.uncaughtErrorInTestCode);
-                        expect(err.errMsg).contains('test-error');
-                        expect(testRun.commands.length).eql(1);
+                        expect(err.errMsg).contains(expectedError);
+                        expect(testRun.commands.length).eql(2);
                     });
             });
         });

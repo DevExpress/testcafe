@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button id="buttonAlert">Alert</button>
+
+<button id="buttonAllDialogsSequence">AllDialogsSequence</button>
+<button id="buttonAlertConfirm">AlertConfirmDialogs</button>
+<button id="buttonAlertConfirmPrompt">AlertConfirmPromptDalogs</button>
+
+<button id="buttonDialogAfterTimeoutWithRedirect">DialogAfterTimeoutWithRedirect</button>
+<button id="buttonDialogAfterTimeout">DialogAfterTimeout</button>
+
+<button id="buttonRedirectConfirm">RedirectConfirm</button>
+<button id="buttonRedirectPrompt">RedirectPrompt</button>
+
+<a id="linkToConfirmPage" href="confirm.html">Confirm page</a>
+<a id="linkToPromptPage" href="prompt.html">Prompt page</a>
+<a id="linkToThisPage" href="index.html">This page</a>
+
+<button id="enableBeforeUnload">EnableBeforeUnload</button>
+<button id="withoutDialog">Without dialog</button>
+
+<script>
+    document.getElementById('buttonAlert').addEventListener('click', function () {
+        alert('Alert!');
+    });
+
+    document.getElementById('buttonAllDialogsSequence').addEventListener('click', function () {
+        alert('Alert!');
+        alert('Alert!');
+        window.confirm('Confirm?');
+        confirm('Confirm?');
+        prompt('Prompt:', 'defaultText');
+        prompt('Prompt:', 'defaultText');
+        document.location.reload();
+    });
+
+    document.getElementById('buttonAlertConfirm').addEventListener('click', function () {
+        alert('Alert!');
+        confirm('Confirm?');
+    });
+
+    document.getElementById('buttonAlertConfirmPrompt').addEventListener('click', function () {
+        alert('Alert!');
+        confirm('Confirm?');
+        prompt('Prompt:', 'defaultText');
+    });
+
+    document.getElementById('buttonDialogAfterTimeoutWithRedirect').addEventListener('click', function () {
+        window.setTimeout(function () {
+            document.location.href = 'http://localhost:3000/fixtures/native-dialogs-handling/es-next/pages/dialog-with-timeout.html'
+        }, 1000);
+    });
+
+    document.getElementById('buttonDialogAfterTimeout').addEventListener('click', function () {
+        window.setTimeout(function () {
+            alert('Alert!');
+        }, 1000);
+    });
+
+    document.getElementById('buttonRedirectConfirm').addEventListener('mousedown', function () {
+        alert('Alert!');
+
+        document.location.href = 'http://localhost:3000/fixtures/native-dialogs-handling/es-next/pages/confirm.html'
+    });
+
+    document.getElementById('buttonRedirectPrompt').addEventListener('mousedown', function () {
+        alert('Alert!');
+
+        document.location.href = 'http://localhost:3000/fixtures/native-dialogs-handling/es-next/pages/prompt.html'
+    });
+
+    document.getElementById('enableBeforeUnload').addEventListener('click', function () {
+        window.onbeforeunload = function (e) {
+            e.returnValue = 'Before unload';
+
+            return 'Before unload';
+        };
+    });
+</script>
+</body>
+</html>

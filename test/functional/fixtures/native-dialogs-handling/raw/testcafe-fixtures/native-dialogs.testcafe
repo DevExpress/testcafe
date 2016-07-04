@@ -1,0 +1,61 @@
+{
+    "fixtures": [
+        {
+            "name": "Native-dialogs",
+            "pageUrl": "http://localhost:3000/fixtures/native-dialogs-handling/raw/pages/index.html",
+            "tests": [
+                {
+                    "name": "Expected confirm after an action",
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector": "#buttonConfirm"
+                        },
+                        {
+                            "type": "handle-confirm-dialog",
+                            "returnValue": true
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#getResult"
+                        }
+                    ]
+                },
+                {
+                    "name": "No expected confirm after an action",
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector": "#withoutDialog"
+                        },
+                        {
+                            "type": "handle-confirm-dialog",
+                            "returnValue": true,
+                            "callsite": "[[No expected confirm after an action callsite]]"
+                        }
+                    ]
+                },
+                {
+                    "name": "Unexpected confirm after an action",
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector": "#buttonConfirm",
+                            "callsite": "[[Unexpected confirm after an action callsite]]"
+                        }
+                    ]
+                },
+                {
+                    "name": "No expected confirm after page load",
+                    "commands": [
+                        {
+                            "type": "handle-confirm-dialog",
+                            "returnValue": true,
+                            "callsite": "[[No expected confirm after page load callsite]]"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

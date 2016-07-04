@@ -11,20 +11,26 @@ export default class RawFileCompiler {
 
     static _createTestFn (commands) {
         return async testRun => {
-            for (var i = 0; i < commands.length; i++) {
-                var callsite = commands[i] && commands[i].callsite;
+            var commandPromises = commands.map(commandObject => {
                 var command  = null;
+                var callsite = commandObject.callsite;
 
                 try {
-                    command = createCommandFromObject(commands[i]);
-                    await testRun.executeCommand(command, callsite);
+                    command = createCommandFromObject(commandObject);
                 }
                 catch (err) {
                     err.callsite = callsite;
                     throw processTestFnError(err);
                 }
 
-            }
+                return testRun.executeCommand(command, callsite);
+            });
+
+            return await Promise
+                .all(commandPromises)
+                .catch(err => {
+                    throw processTestFnError(err);
+                });
         };
     }
 

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm</title>
+</head>
+<body>
+<div id="result"></div>
+<button id="getResult">getResult</button>
+<script>
+    document.getElementById('result').textContent = window.confirm('Confirm?');
+
+    document.getElementById('getResult').addEventListener('click', function () {
+        throw new Error('Confirm dialog with result: ' + document.getElementById('result').textContent);
+    });
+</script>
+</body>
+</html>

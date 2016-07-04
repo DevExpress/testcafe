@@ -85,6 +85,11 @@ export function stringOrStringArrayArgument (argument, val) {
         throw new ActionStringOrStringArrayArgumentError(argument, type);
 }
 
+export function stringOrNull (argument, val) {
+    if (val !== null && val !== '')
+        nonEmptyStringArgument(argument, val);
+}
+
 export function resizeWindowDeviceArgument (name, val) {
     nonEmptyStringArgument(name, val);
 

@@ -16,7 +16,11 @@ import {
     SetFilesToUploadCommand,
     ClearUploadCommand,
     SwitchToIframeCommand,
-    SwitchToMainWindowCommand
+    SwitchToMainWindowCommand,
+    HandleAlertDialogCommand,
+    HandleConfirmDialogCommand,
+    HandlePromptDialogCommand,
+    HandleBeforeUnloadDialogCommand
 } from './actions';
 
 import {
@@ -93,6 +97,18 @@ export default function createCommandFromObject (obj) {
 
         case TYPE.switchToMainWindow:
             return new SwitchToMainWindowCommand();
+
+        case TYPE.handleAlertDialog:
+            return new HandleAlertDialogCommand(obj);
+
+        case TYPE.handleConfirmDialog:
+            return new HandleConfirmDialogCommand(obj);
+
+        case TYPE.handlePromptDialog:
+            return new HandlePromptDialogCommand(obj);
+
+        case TYPE.handleBeforeUnloadDialog:
+            return new HandleBeforeUnloadDialogCommand(obj);
     }
     /* eslint-enable indent*/
 }

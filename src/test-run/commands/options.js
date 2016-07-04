@@ -126,3 +126,21 @@ export class ResizeToFitDeviceOptions extends Assignable {
         ];
     }
 }
+
+// HandleDialog
+export class HandleDialogOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this.timeout = null;
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'timeout', type: positiveIntegerOption }
+        ];
+    }
+}
+
