@@ -12,7 +12,7 @@ describe('[API] t.eval', function () {
         return runTests('./testcafe-fixtures/eval-test.js', 'Get UA', { shouldFail: true })
             .catch(function (errs) {
                 assertUA(errs, 'chrome', 'Chrome');
-                assertUA(errs, 'ff', 'Firefox');
+                assertUA(errs, 'firefox', 'Firefox');
                 assertUA(errs, 'ie', 'IE');
             });
     });

@@ -12,7 +12,7 @@ describe('[API] ClientFunction', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Dispatch', { shouldFail: true })
             .catch(function (errs) {
                 assertUA(errs, 'chrome', 'Chrome');
-                assertUA(errs, 'ff', 'Firefox');
+                assertUA(errs, 'firefox', 'Firefox');
                 assertUA(errs, 'ie', 'IE');
             });
     });

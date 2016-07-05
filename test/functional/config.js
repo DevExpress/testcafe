@@ -29,7 +29,7 @@ module.exports = {
         {
             platform:    'Windows 10',
             browserName: 'firefox',
-            alias:       'ff'
+            alias:       'firefox'
         }
     ],
 
