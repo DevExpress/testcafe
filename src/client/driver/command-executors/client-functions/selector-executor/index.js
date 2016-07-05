@@ -130,11 +130,11 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         return delay(CHECK_ELEMENT_DELAY).then(reCheck);
     }
 
-    _ensureExists (fn, args, startTime) {
-        var reCheck = () => this._ensureExists(fn, args, startTime);
+    _ensureExists (args, startTime) {
+        var reCheck = () => this._ensureExists(args, startTime);
 
         return Promise.resolve()
-            .then(() => fn.apply(window, args))
+            .then(() => this.fn.apply(window, args))
             .then(el => this._checkElement(el, startTime, exists, this.createNotFoundError, reCheck));
     }
 
@@ -144,14 +144,14 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         return this._checkElement(el, startTime, visible, this.createIsInvisibleError, reCheck);
     }
 
-    _executeFn (fn, args) {
+    _executeFn (args) {
         var startTime     = new Date();
         var progressPanel = new ProgressPanel();
 
         progressPanel.show(PROGRESS_PANEL_TEXT, this.timeout);
 
         return this
-            ._ensureExists(fn, args, startTime)
+            ._ensureExists(args, startTime)
             .then(el => {
                 if (el && this.command.visibilityCheck)
                     return this._ensureVisible(el, startTime);

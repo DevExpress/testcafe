@@ -1,5 +1,7 @@
 import TYPE from './type';
 import SelectorBuilder from '../../client-functions/selector-builder';
+import ClientFunctionBuilder from '../../client-functions/client-function-builder';
+import functionBuilderSymbol from '../../client-functions/builder-symbol';
 import Assignable from '../../utils/assignable';
 import { ClickOptions, MouseOptions, TypeOptions } from './options';
 
@@ -12,7 +14,7 @@ import {
     stringOrStringArrayArgument
 } from './validations/argument';
 
-import { ActionSelectorError } from '../../errors/test-run';
+import { ActionSelectorError, SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
 import { APIError } from '../../errors/runtime';
 
 
@@ -40,6 +42,37 @@ function initMouseOptions (name, val) {
 
 function initTypeOptions (name, val) {
     return new TypeOptions(val, true);
+}
+
+function initDialogHandler (name, val) {
+    var fn         = val.dialogHandler;
+    var options    = val.options;
+    var methodName = 'setNativeDialogHandler';
+    var builder    = fn && fn[functionBuilderSymbol];
+
+    builder = builder instanceof ClientFunctionBuilder ? builder : null;
+
+    if (builder) {
+        if (builder instanceof SelectorBuilder)
+            throw new SetNativeDialogHandlerCodeWrongTypeError(builder.callsiteNames.instantiation);
+
+        fn = fn.with(options);
+
+        builder = fn[functionBuilderSymbol];
+    }
+    else {
+        var functionType = typeof fn;
+
+        if (functionType !== 'function')
+            throw new SetNativeDialogHandlerCodeWrongTypeError(functionType);
+
+        builder = new ClientFunctionBuilder(fn, options, {
+            instantiation: methodName,
+            execution:     methodName
+        });
+    }
+
+    return builder.getCommand([]);
 }
 
 // Commands
@@ -341,5 +374,28 @@ export class SwitchToIframeCommand extends Assignable {
 export class SwitchToMainWindowCommand {
     constructor () {
         this.type = TYPE.switchToMainWindow;
+    }
+}
+
+export class SetNativeDialogHandlerCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type          = TYPE.setNativeDialogHandler;
+        this.dialogHandler = {};
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'dialogHandler', init: initDialogHandler, required: true }
+        ];
+    }
+}
+
+export class GetNativeDialogHistoryCommand {
+    constructor () {
+        this.type = TYPE.getNativeDialogHistory;
     }
 }

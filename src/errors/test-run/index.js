@@ -340,3 +340,29 @@ export class CurrentIframeIsInvisibleError extends TestRunErrorBase {
         super(TYPE.currentIframeIsInvisibleError);
     }
 }
+
+// Native dialog errors
+export class NativeDialogNotHandledError extends TestRunErrorBase {
+    constructor (dialogType) {
+        super(TYPE.nativeDialogNotHandledError);
+
+        this.dialogType = dialogType;
+    }
+}
+
+export class UncaughtErrorInNativeDialogHandler extends TestRunErrorBase {
+    constructor (dialogType, errMsg) {
+        super(TYPE.uncaughtErrorInNativeDialogHandler);
+
+        this.dialogType = dialogType;
+        this.errMsg     = errMsg;
+    }
+}
+
+export class SetNativeDialogHandlerCodeWrongTypeError extends TestRunErrorBase {
+    constructor (actualType) {
+        super(TYPE.setNativeDialogHandlerCodeWrongTypeError);
+
+        this.actualType = actualType;
+    }
+}

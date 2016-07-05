@@ -1,6 +1,6 @@
 (function () {
 var IframeDriver = window['%testCafeIframeDriver%'];
-var driver = new IframeDriver('{{{testRunId}}}', { selectorTimeout: {{{selectorTimeout}}} });
+var driver = new IframeDriver('{{{testRunId}}}', { selectorTimeout: {{{selectorTimeout}}}, dialogHandler: {{{dialogHandler}}} });
 
 driver.start();
 })();

@@ -22,13 +22,13 @@ export default class Storage {
         }
     }
 
-    _saveToStorage () {
+    save () {
         this.storage.setItem(this.storageKey, JSON.stringify(this.data));
     }
 
     setItem (prop, value) {
         this.data[prop] = value;
-        this._saveToStorage();
+        this.save();
     }
 
     getItem (prop) {

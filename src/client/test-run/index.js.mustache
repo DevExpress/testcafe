@@ -7,11 +7,12 @@
     var browserHeartbeatUrl = '{{{browserHeartbeatUrl}}}';
     var browserStatusUrl    = '{{{browserStatusUrl}}}';
     var skipJsErrors        = {{{skipJsErrors}}};
+    var dialogHandler       = {{{dialogHandler}}};
 
     var ClientDriver = window['%testCafeDriver%'];
     var driver       = new ClientDriver(testRunId,
         { heartbeat: browserHeartbeatUrl, status: browserStatusUrl },
-        { selectorTimeout: selectorTimeout, skipJsErrors: skipJsErrors }
+        { selectorTimeout: selectorTimeout, skipJsErrors: skipJsErrors, dialogHandler: dialogHandler }
     );
 
     driver.start();

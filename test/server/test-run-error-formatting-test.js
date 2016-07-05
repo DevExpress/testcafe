@@ -45,6 +45,9 @@ var MissingAwaitError                                 = require('../../lib/error
 var ExternalAssertionLibraryError                     = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
 var DomNodeClientFunctionResultError                  = require('../../lib/errors/test-run').DomNodeClientFunctionResultError;
 var InvalidSelectorResultError                        = require('../../lib/errors/test-run').InvalidSelectorResultError;
+var NativeDialogNotHandledError                       = require('../../lib/errors/test-run').NativeDialogNotHandledError;
+var UncaughtErrorInNativeDialogHandler                = require('../../lib/errors/test-run').UncaughtErrorInNativeDialogHandler;
+var SetNativeDialogHandlerCodeWrongTypeError          = require('../../lib/errors/test-run').SetNativeDialogHandlerCodeWrongTypeError;
 
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
@@ -260,6 +263,18 @@ describe('Error formatting', function () {
 
         it('Should format "invalidSelectorResultError"', function () {
             assertErrorMessage('invalid-selector-result-error', new InvalidSelectorResultError());
+        });
+
+        it('Should format "nativeDialogNotHandledError"', function () {
+            assertErrorMessage('native-dialog-not-handled-error', new NativeDialogNotHandledError('alert'));
+        });
+
+        it('Should format "uncaughtErrorInNativeDialogHandler"', function () {
+            assertErrorMessage('uncaught-error-in-native-dialog-handler', new UncaughtErrorInNativeDialogHandler('alert', 'error message'));
+        });
+
+        it('Should format "setNativeDialogHandlerCodeWrongTypeError"', function () {
+            assertErrorMessage('set-native-dialog-handler-code-wrong-type-error', new SetNativeDialogHandlerCodeWrongTypeError('number'));
         });
     });
 

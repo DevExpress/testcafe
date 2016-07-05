@@ -54,6 +54,20 @@ export default {
         ${escapeHtml(err.errMsg)}
     `),
 
+    [TYPE.nativeDialogNotHandledError]: err => markup(err, `
+        A native ${err.dialogType} dialog was invoked, but no handler was set for it. Use the "setNativeDialogHandler" function to introduce a handler function for native dialogs.
+    `),
+
+    [TYPE.uncaughtErrorInNativeDialogHandler]: err => markup(err, `
+        An error occurred in the native dialog handler called for a native ${err.dialogType} dialog:
+
+        ${escapeHtml(err.errMsg)}
+    `),
+
+    [TYPE.setNativeDialogHandlerCodeWrongTypeError]: err => markup(err, `
+        The native dialog handler is expected to be specified as a regular function or ClientFunction, but ${err.actualType} was passed.
+    `),
+
     [TYPE.uncaughtErrorInClientFunctionCode]: err => markup(err, `
         An error occurred in ${err.instantiationCallsiteName} code:
 

@@ -1,10 +1,11 @@
 import generateId from '../generate-id';
 
 export var TYPE = {
-    establishConnection: 'driver|establish-connection',
-    commandExecuted:     'driver|command-executed',
-    executeCommand:      'driver|execute-command',
-    confirmation:        'driver|confirmation'
+    establishConnection:    'driver|establish-connection',
+    commandExecuted:        'driver|command-executed',
+    executeCommand:         'driver|execute-command',
+    confirmation:           'driver|confirmation',
+    setNativeDialogHandler: 'driver|set-native-dialog-handler'
 };
 
 
@@ -43,5 +44,13 @@ export class ConfirmationMessage extends InterDriverMessage {
 
         this.requestMessageId = requestMessageId;
         this.result           = result;
+    }
+}
+
+export class SetNativeDialogHandlerMessage extends InterDriverMessage {
+    constructor (dialogHandler) {
+        super(TYPE.setNativeDialogHandler);
+
+        this.dialogHandler = dialogHandler;
     }
 }

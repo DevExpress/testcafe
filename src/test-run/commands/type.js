@@ -28,5 +28,7 @@ export default {
     resizeWindowToFitDevice:    'resize-window-to-fit-device',
     switchToIframe:             'switch-to-iframe',
     switchToMainWindow:         'switch-to-main-window',
+    setNativeDialogHandler:     'set-native-dialog-handler',
+    getNativeDialogHistory:     'get-native-dialog-history',
     testDone:                   'test-done'
 };
