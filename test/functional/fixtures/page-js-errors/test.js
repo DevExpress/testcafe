@@ -37,3 +37,9 @@ describe('Test should fail after js-error on the page', function () {
             });
     });
 });
+
+describe('Should ignore an js-error on the page', function () {
+    it('if the skipJsErrors option is set to true', function () {
+        return runTests('./testcafe-fixtures/error-after-click-test.js', 'Click button', { skipJsErrors: true });
+    });
+});

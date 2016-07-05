@@ -1,5 +1,13 @@
 import hammerhead from './deps/hammerhead';
-import { RequestBarrier, noop, pageUnloadBarrier, eventUtils, domUtils, preventRealEvents, waitFor } from './deps/testcafe-core';
+import {
+    RequestBarrier,
+    noop,
+    pageUnloadBarrier,
+    eventUtils,
+    domUtils,
+    preventRealEvents,
+    waitFor
+} from './deps/testcafe-core';
 import { modalBackground } from './deps/testcafe-ui';
 
 import TEST_RUN_MESSAGES from '../../test-run/client-messages';
@@ -58,14 +66,15 @@ const CURRENT_IFRAME_ERROR_CTORS = {
 var hangingPromise = new Promise(noop);
 
 export default class Driver {
-    constructor (testRunId, selectorTimeout, heartbeatUrl, browserStatusUrl) {
+    constructor (testRunId, communicationUrls, options) {
         this.COMMAND_EXECUTING_FLAG   = 'testcafe|driver|command-executing-flag';
         this.EXECUTING_IN_IFRAME_FLAG = 'testcafe|driver|executing-in-iframe-flag';
 
         this.testRunId        = testRunId;
-        this.selectorTimeout  = selectorTimeout;
-        this.heartbeatUrl     = heartbeatUrl;
-        this.browserStatusUrl = browserStatusUrl;
+        this.heartbeatUrl     = communicationUrls.heartbeat;
+        this.browserStatusUrl = communicationUrls.status;
+        this.selectorTimeout  = options.selectorTimeout;
+        this.skipJsErrors     = options.skipJsErrors;
 
         this.contextStorage        = null;
         this.childDriverLinks      = [];
@@ -91,7 +100,7 @@ export default class Driver {
     _onJsError (err) {
         // NOTE: we should not send any message to the server if we've
         // sent the 'test-done' message but haven't got the response.
-        if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
+        if (this.skipJsErrors || this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
             return Promise.resolve();
 
         var error = new UncaughtErrorOnPage(err.msg || err.message, err.pageUrl);

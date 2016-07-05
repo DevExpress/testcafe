@@ -72,7 +72,8 @@ export default class TestRun extends Session {
             testRunId:           this.id,
             browserHeartbeatUrl: this.browserConnection.heartbeatUrl,
             browserStatusUrl:    this.browserConnection.statusUrl,
-            selectorTimeout:     this.opts.selectorTimeout
+            selectorTimeout:     this.opts.selectorTimeout,
+            skipJsErrors:        this.opts.skipJsErrors
         });
     }
 
