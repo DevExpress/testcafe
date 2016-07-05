@@ -2,10 +2,17 @@
     if (window !== window.top)
         return;
 
+    var testRunId           = '{{{testRunId}}}';
+    var selectorTimeout     = {{{selectorTimeout}}};
+    var browserHeartbeatUrl = '{{{browserHeartbeatUrl}}}';
+    var browserStatusUrl    = '{{{browserStatusUrl}}}';
+    var skipJsErrors        = {{{skipJsErrors}}};
 
     var ClientDriver = window['%testCafeDriver%'];
-    var driver = new ClientDriver('{{{testRunId}}}', {{{selectorTimeout}}}, '{{{browserHeartbeatUrl}}}',
-        '{{{browserStatusUrl}}}', {{{skipJsErrors}}});
+    var driver       = new ClientDriver(testRunId,
+        { heartbeat: browserHeartbeatUrl, status: browserStatusUrl },
+        { selectorTimeout: selectorTimeout, skipJsErrors: skipJsErrors }
+    );
 
     driver.start();
 })();
