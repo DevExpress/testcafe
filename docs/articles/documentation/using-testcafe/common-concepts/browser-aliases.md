@@ -16,7 +16,7 @@ Chromium          | `chromium`
 Google Chrome     | `chrome`
 Internet Explorer | `ie`
 Microsoft Edge    | `edge`
-Mozilla Firefox   | `ff`
+Mozilla Firefox   | `firefox`
 Opera             | `opera`
 Safari            | `safari`
 
