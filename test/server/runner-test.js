@@ -51,7 +51,7 @@ describe('Runner', function () {
             var browserInfo2 = { path: '/Applications/Firefox.app' };
 
             runner.browsers('ie', 'chrome');
-            runner.browsers('ff');
+            runner.browsers('firefox');
 
             runner.browsers('opera', [connection1], [browserInfo1, connection2]);
             runner.browsers([connection3, browserInfo2]);
@@ -59,7 +59,7 @@ describe('Runner', function () {
             expect(runner.bootstrapper.browsers).eql([
                 'ie',
                 'chrome',
-                'ff',
+                'firefox',
                 'opera',
                 connection1,
                 browserInfo1,
