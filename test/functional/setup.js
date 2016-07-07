@@ -14,15 +14,20 @@ var browsersInfo = null;
 var slConnector = null;
 var slBrowsers  = null;
 
-const SAUCE_LABS_REQUESTED_MACHINES_COUNT      = 3;
 const WAIT_FOR_FREE_MACHINES_REQUEST_INTERVAL  = 60000;
-const WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT = 45;
+const WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT = 60;
 
 const FUNCTIONAL_TESTS_SELECTOR_TIMEOUT = 200;
 
+var environment = config.testingEnvironments[process.env.TESTING_ENVIRONMENT];
+
+config.browsers = environment.browsers;
+
+const SAUCE_LABS_REQUESTED_MACHINES_COUNT = environment.browsers.length;
+
 
 function initBrowsersInfo (tc) {
-    browsersInfo = config.browsers
+    browsersInfo = environment.browsers
         .filter(function (browser) {
             return config.isTravisTask || !browser.remoteOnly;
         })
@@ -35,7 +40,7 @@ function initBrowsersInfo (tc) {
 }
 
 function openRemoteBrowsers () {
-    slConnector = new SauceLabsConnector(config.sauceLabs.username, config.sauceLabs.accessKey);
+    slConnector = new SauceLabsConnector(environment.sauceLabs.username, environment.sauceLabs.accessKey);
 
     return slConnector
         .connect()
@@ -46,7 +51,7 @@ function openRemoteBrowsers () {
         .then(function () {
             var openBrowserPromises = browsersInfo.map(function (browserInfo) {
                 return slConnector.startBrowser(browserInfo.settings, browserInfo.connection.url,
-                    config.sauceLabs.jobName);
+                    environment.sauceLabs.jobName);
             });
 
             return Promise.all(openBrowserPromises);
@@ -128,6 +133,11 @@ before(function () {
 
                     return only && !skip;
                 });
+
+                if (!actualBrowsers.length) {
+                    mocha.test.skip();
+                    return Promise.resolve();
+                }
 
                 var connections = actualBrowsers.map(function (browserInfo) {
                     return browserInfo.connection;

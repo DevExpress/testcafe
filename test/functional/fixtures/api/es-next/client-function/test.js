@@ -1,19 +1,29 @@
 var expect         = require('chai').expect;
 var parseUserAgent = require('useragent').parse;
+var config         = require('../../../../config');
 
 describe('[API] ClientFunction', function () {
     it('Should be correctly dispatched to test run', function () {
         function assertUA (errs, alias, expected) {
-            var ua = parseUserAgent(errs[alias][0]).toString();
+            if (!errs[alias])
+                throw new Error('Error for "' + alias + '" haven\'t created');
 
-            expect(ua.indexOf(expected)).eql(0);
+            var ua = parseUserAgent(errs[alias][0]).toString().toLowerCase();
+
+            expect(ua.indexOf(expected)).eql(0, ua + ' doesn\'t start with "' + expected + '"');
         }
 
-        return runTests('./testcafe-fixtures/client-fn-test.js', 'Dispatch', { shouldFail: true })
+        var browsers = 'chrome,firefox,ie';
+
+        return runTests('./testcafe-fixtures/client-fn-test.js', 'Dispatch', { shouldFail: true, only: browsers })
             .catch(function (errs) {
-                assertUA(errs, 'chrome', 'Chrome');
-                assertUA(errs, 'firefox', 'Firefox');
-                assertUA(errs, 'ie', 'IE');
+                config.browsers
+                    .filter(function (browser) {
+                        return browsers.indexOf(browser.alias) > -1;
+                    })
+                    .forEach(function (browser) {
+                        assertUA(errs, browser.alias, browser.alias);
+                    });
             });
     });
 

@@ -1,32 +1,34 @@
-var babel        = require('babel-core');
-var gulp         = require('gulp');
-var gulpBabel    = require('gulp-babel');
-var less         = require('gulp-less');
-var filter       = require('gulp-filter');
-var git          = require('gulp-git');
-var globby       = require('globby');
-var qunitHarness = require('gulp-qunit-harness');
-var merge        = require('merge-stream');
-var mocha        = require('gulp-mocha');
-var mustache     = require('gulp-mustache');
-var rename       = require('gulp-rename');
-var webmake      = require('gulp-webmake');
-var util         = require('gulp-util');
-var gulpif       = require('gulp-if');
-var uglify       = require('gulp-uglify');
-var ll           = require('gulp-ll');
-var del          = require('del');
-var fs           = require('fs');
-var path         = require('path');
-var opn          = require('opn');
-var connect      = require('connect');
-var spawn        = require('cross-spawn-async');
-var serveStatic  = require('serve-static');
-var Promise      = require('pinkie');
-var markdownlint = require('markdownlint');
-var ghpages      = require('gulp-gh-pages');
-var prompt       = require('gulp-prompt');
-var nodeVer      = require('node-version');
+var babel                = require('babel-core');
+var gulp                 = require('gulp');
+var gulpBabel            = require('gulp-babel');
+var less                 = require('gulp-less');
+var filter               = require('gulp-filter');
+var git                  = require('gulp-git');
+var globby               = require('globby');
+var qunitHarness         = require('gulp-qunit-harness');
+var merge                = require('merge-stream');
+var mocha                = require('gulp-mocha');
+var mustache             = require('gulp-mustache');
+var rename               = require('gulp-rename');
+var webmake              = require('gulp-webmake');
+var util                 = require('gulp-util');
+var gulpif               = require('gulp-if');
+var uglify               = require('gulp-uglify');
+var ll                   = require('gulp-ll');
+var del                  = require('del');
+var fs                   = require('fs');
+var path                 = require('path');
+var opn                  = require('opn');
+var connect              = require('connect');
+var spawn                = require('cross-spawn-async');
+var serveStatic          = require('serve-static');
+var Promise              = require('pinkie');
+var markdownlint         = require('markdownlint');
+var ghpages              = require('gulp-gh-pages');
+var prompt               = require('gulp-prompt');
+var nodeVer              = require('node-version');
+var functionalTestConfig = require('./test/functional/config');
+
 
 ll
     .tasks([
@@ -405,7 +407,9 @@ gulp.task('publish-website', ['build-website'], function () {
 gulp.task('test-docs', ['test-website', 'lint']);
 
 
-function testFunctional (fixturesDir) {
+function testFunctional (fixturesDir, testingEnvironmentName) {
+    process.env.TESTING_ENVIRONMENT = testingEnvironmentName;
+
     return gulp
         .src(['test/functional/setup.js', fixturesDir + '/**/test.js'])
         .pipe(mocha({
@@ -415,10 +419,22 @@ function testFunctional (fixturesDir) {
         }));
 }
 
-gulp.task('test-functional', ['build'], function () {
-    return testFunctional('test/functional/fixtures');
+gulp.task('test-functional-travis-desktop', ['build'], function () {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.desktopBrowsers);
 });
 
-gulp.task('test-functional-legacy', ['build'], function () {
-    return testFunctional('test/functional/legacy-fixtures');
+gulp.task('test-functional-travis-ms-desktop', ['build'], function () {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.msDesktopBrowsers);
+});
+
+gulp.task('test-functional-travis-mobile', ['build'], function () {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.mobileBrowsers);
+});
+
+gulp.task('test-functional-local', ['build'], function () {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsers);
+});
+
+gulp.task('test-functional-travis-legacy', ['build'], function () {
+    return testFunctional('test/functional/legacy-fixtures', functionalTestConfig.testingEnvironmentNames.legacy);
 });

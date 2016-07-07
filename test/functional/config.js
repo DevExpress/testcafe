@@ -3,15 +3,148 @@ var os = require('os');
 var isTravisEnvironment = !!process.env.TRAVIS;
 var hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
 
-module.exports = {
-    isTravisTask: isTravisEnvironment,
+var testingEnvironmentNames = {
+    desktopBrowsers:   'desktop-browsers',
+    msDesktopBrowsers: 'ms-desktop-browsers',
+    mobileBrowsers:    'mobile-browsers',
+    localBrowsers:     'local-browsers',
+    legacy:            'legacy'
+};
 
+var testingEnvironments = {};
+
+testingEnvironments[testingEnvironmentNames.desktopBrowsers] = {
     sauceLabs: {
-        username:  process.env.SAUCE_USERNAME_FUNCTIONAL,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL,
-        build:     process.env.TRAVIS_JOB_ID || '',
-        tags:      [process.env.TRAVIS_BRANCH || 'master'],
-        name:      'testcafe functional tests'
+        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_DESKTOP,
+        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP,
+        jobName:   'functional tests - desktop browsers'
+    },
+
+    browsers: [
+        {
+            platform:    'Windows 10',
+            browserName: 'chrome',
+            alias:       'chrome'
+        },
+        {
+            platform:    'Windows 10',
+            browserName: 'firefox',
+            alias:       'firefox'
+        },
+        {
+            platform:    'OS X 10.11',
+            browserName: 'safari',
+            version:     '9.0',
+            alias:       'safari'
+        },
+        {
+            platform:    'OS X 10.11',
+            browserName: 'chrome',
+            alias:       'chrome-osx'
+        },
+        {
+            platform:    'OS X 10.11',
+            browserName: 'firefox',
+            alias:       'firefox-osx'
+        }
+    ]
+};
+
+testingEnvironments[testingEnvironmentNames.msDesktopBrowsers] = {
+    sauceLabs: {
+        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_MS_DESKTOP,
+        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_MS_DESKTOP,
+        jobName:   'functional tests - ms desktop browsers'
+    },
+
+    browsers: [
+        {
+            platform:    'Windows 10',
+            browserName: 'microsoftedge',
+            alias:       'edge'
+        },
+        {
+            platform:    'Windows 10',
+            browserName: 'internet explorer',
+            version:     '11.0',
+            alias:       'ie 11'
+        },
+        {
+            platform:    'Windows 8',
+            browserName: 'internet explorer',
+            version:     '10.0',
+            alias:       'ie 10'
+        },
+        {
+            platform:    'Windows 7',
+            browserName: 'internet explorer',
+            version:     '9.0',
+            alias:       'ie 9'
+        }
+    ]
+};
+
+testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
+    sauceLabs: {
+        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_MOBILE,
+        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_MOBILE,
+        jobName:   'functional tests - mobile browsers'
+    },
+
+    browsers: [
+        {
+            platformName:    'Android',
+            deviceName:      'Android Emulator',
+            platformVersion: '5.1',
+            browserName:     'Browser',
+            alias:           'android'
+        },
+        {
+            // NOTE: we can't run tests on iOS 9.3 because the bug in this version
+            // (see https://github.com/DevExpress/testcafe-hammerhead/issues/672#issuecomment-232043366).
+            // The bug is fixed in iOS 9.3.2 but it's unavailable on the farm.
+            platformName:    'iOS',
+            deviceName:      'iPad Retina',
+            platformVersion: '9.2',
+            browserName:     'Safari',
+            alias:           'ipad'
+        },
+        {
+            platformName:    'iOS',
+            deviceName:      'iPhone 6 Plus',
+            platformVersion: '9.2',
+            browserName:     'Safari',
+            alias:           'iphone'
+        }
+    ]
+};
+
+testingEnvironments[testingEnvironmentNames.localBrowsers] = {
+    browsers: [
+        {
+            platform:    'Windows 10',
+            browserName: 'chrome',
+            alias:       'chrome'
+        },
+        {
+            platform:    'Windows 10',
+            browserName: 'internet explorer',
+            version:     '11.0',
+            alias:       'ie'
+        },
+        {
+            platform:    'Windows 10',
+            browserName: 'firefox',
+            alias:       'firefox'
+        }
+    ]
+};
+
+testingEnvironments[testingEnvironmentNames.legacy] = {
+    sauceLabs: {
+        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_DESKTOP,
+        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP,
+        jobName:   'functional tests - legacy'
     },
 
     browsers: [
@@ -31,7 +164,15 @@ module.exports = {
             browserName: 'firefox',
             alias:       'firefox'
         }
-    ],
+    ]
+};
+
+
+module.exports = {
+    isTravisTask: isTravisEnvironment,
+
+    testingEnvironmentNames: testingEnvironmentNames,
+    testingEnvironments:     testingEnvironments,
 
     testCafe: {
         hostname: hostname,
@@ -43,5 +184,7 @@ module.exports = {
         viewsPath: './test/functional/',
         port1:     3000,
         port2:     3001
-    }
+    },
+
+    browsers: []
 };
