@@ -3,7 +3,7 @@
   "version": "0.0.23-alpha",
   "main": "lib/index",
   "bin": {
-    "testcafe": "./bin/testcafe"
+    "testcafe": "./bin/testcafe.js"
   },
   "dependencies": {
     "babel-core": "^6.4.0",
