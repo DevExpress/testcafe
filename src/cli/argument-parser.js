@@ -237,7 +237,7 @@ export default class CLIArgumentParser {
                 }
 
                 if (fileStat.isDirectory())
-                    return pathJoin(file, './**/*.js');
+                    return pathJoin(file, './**/*@(.js|.testcafe)');
             }
 
             return file;
