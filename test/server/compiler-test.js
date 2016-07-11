@@ -740,7 +740,7 @@ describe('Compiler', function () {
                                   '   2 |\n' +
                                   '   3 |fixture `Test`;\n' +
                                   '   4 |\n' +
-                                  " > 5 |var selectYo = ClientFunction(() => document.querySelector('#yo'), '42');\n"
+                                  " > 5 |var selectYo = ClientFunction(() => document.querySelector('#yo'), { scopeVars: '42' });\n"
                     });
                 });
         });

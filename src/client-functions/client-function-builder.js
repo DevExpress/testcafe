@@ -1,4 +1,4 @@
-import { isNil as isNullOrUndefined } from 'lodash';
+import { isNil as isNullOrUndefined, assign } from 'lodash';
 import testRunTracker from './test-run-tracker';
 import functionBuilderSymbol from './builder-symbol';
 import { createReplicator, FunctionTransform } from './replicator';
@@ -12,27 +12,24 @@ import getCallsite from '../errors/get-callsite';
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
 export default class ClientFunctionBuilder {
-    constructor (fn, scopeVars, callsiteNames = {}) {
+    constructor (fn, options, callsiteNames = {}) {
         this.callsiteNames = {
             instantiation: callsiteNames.instantiation,
             execution:     callsiteNames.execution || DEFAULT_EXECUTION_CALLSITE_NAME
         };
 
-        this.functionDescriptor = this._createFunctionDescriptor(fn, scopeVars);
+        this.fn      = fn;
+        this.options = {};
 
-        if (!this.functionDescriptor)
-            throw this._createInvalidFnTypeError(fn);
+        this._assignOptions(isNullOrUndefined(options) ? {} : options);
+
+        this.compiledFnCode = this._getCompiledFnCode();
+
+        if (!this.compiledFnCode)
+            throw this._createInvalidFnTypeError();
 
         this.replicator = createReplicator(this._getReplicatorTransforms());
     }
-
-    _validateScopeVars (scopeVars) {
-        var scopeVarsType = typeof scopeVars;
-
-        if (scopeVarsType !== 'object' && scopeVarsType !== 'undefined')
-            throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionScopeVarsIsNotAnObject, scopeVarsType);
-    }
-
 
     _resolveContextTestRun () {
         var testRunId = testRunTracker.getContextTestRunId();
@@ -48,19 +45,23 @@ export default class ClientFunctionBuilder {
         clientFn[functionBuilderSymbol] = this;
 
         clientFn.with = options => {
-            this._validateOptions(options);
+            if (typeof options === 'object')
+                options = assign({}, this.options, options);
 
-            return this.getFunction(options);
+            var builder = new this.constructor(this.fn, options, {
+                instantiation: 'with',
+                execution:     this.callsiteNames.execution
+            });
+
+            return builder.getFunction();
         };
     }
 
-    getFunction (options) {
+    getFunction () {
         var builder = this;
 
-        options = options || {};
-
         var clientFn = function __$$clientFunction$$ () {
-            var testRun  = options.boundTestRun || builder._resolveContextTestRun();
+            var testRun  = builder.options.boundTestRun || builder._resolveContextTestRun();
             var callsite = getCallsite(builder.callsiteNames.execution);
             var args     = [];
 
@@ -68,7 +69,7 @@ export default class ClientFunctionBuilder {
             for (var i = 0; i < arguments.length; i++)
                 args.push(arguments[i]);
 
-            return builder._executeCommand(args, testRun, callsite, options);
+            return builder._executeCommand(args, testRun, callsite);
         };
 
         this._decorateFunction(clientFn);
@@ -76,41 +77,33 @@ export default class ClientFunctionBuilder {
         return clientFn;
     }
 
-    getCommand (args, options) {
+    getCommand (args) {
         var encodedArgs      = this.replicator.encode(args);
-        var encodedScopeVars = this.replicator.encode(this.functionDescriptor.scopeVars);
+        var encodedScopeVars = this.replicator.encode(this.options.scopeVars);
 
-        return this._createExecutionTestRunCommand(encodedArgs, encodedScopeVars, options);
+        return this._createExecutionTestRunCommand(encodedArgs, encodedScopeVars);
     }
 
     // Overridable methods
-    _createFunctionDescriptor (fn, scopeVars) {
-        if (typeof fn === 'function') {
-            this._validateScopeVars(scopeVars);
-
-            scopeVars = scopeVars || {};
-
-            return {
-                scopeVars: scopeVars,
-                fnCode:    compileClientFunction(fn.toString(), scopeVars, this.callsiteNames.instantiation, this.callsiteNames.instantiation)
-            };
-        }
+    _getCompiledFnCode () {
+        if (typeof this.fn === 'function')
+            return compileClientFunction(this.fn.toString(), this.options.scopeVars, this.callsiteNames.instantiation, this.callsiteNames.instantiation);
 
         return null;
     }
 
-    _createInvalidFnTypeError (fn) {
-        return new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionCodeIsNotAFunction, typeof fn);
+    _createInvalidFnTypeError () {
+        return new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionCodeIsNotAFunction, typeof this.fn);
     }
 
-    async _executeCommand (args, testRun, callsite, options) {
-        var command = this.getCommand(args, options);
+    async _executeCommand (args, testRun, callsite) {
+        var command = this.getCommand(args);
         var result  = await testRun.executeCommand(command, callsite);
 
         return this.replicator.decode(result);
     }
 
-    _validateOptions (options) {
+    _assignOptions (options) {
         var optionsType = typeof options;
 
         if (optionsType !== 'object')
@@ -123,14 +116,25 @@ export default class ClientFunctionBuilder {
                 throw new APIError('with', MESSAGE.invalidClientFunctionTestRunBinding);
 
             // NOTE: boundTestRun is actually a TestController, so we need to unpack it
-            options.boundTestRun = options.boundTestRun.testRun;
+            this.options.boundTestRun = options.boundTestRun.testRun;
         }
+
+        if (!isNullOrUndefined(options.scopeVars)) {
+            var scopeVarsType = typeof options.scopeVars;
+
+            if (scopeVarsType !== 'object')
+                throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionScopeVarsIsNotAnObject, scopeVarsType);
+
+            this.options.scopeVars = assign({}, options.scopeVars);
+        }
+        else
+            this.options.scopeVars = {};
     }
 
     _createExecutionTestRunCommand (encodedArgs, encodedScopeVars) {
         return new ExecuteClientFunctionCommand({
             instantiationCallsiteName: this.callsiteNames.instantiation,
-            fnCode:                    this.functionDescriptor.fnCode,
+            fnCode:                    this.compiledFnCode,
             args:                      encodedArgs,
             scopeVars:                 encodedScopeVars
         });

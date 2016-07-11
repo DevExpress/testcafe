@@ -1,5 +1,5 @@
 import Promise from 'pinkie';
-import { identity, assign } from 'lodash';
+import { identity, assign, isNil as isNullOrUndefined } from 'lodash';
 import { MissingAwaitError } from '../errors/test-run';
 import getCallsite from '../errors/get-callsite';
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
@@ -211,18 +211,22 @@ export default class TestController {
         return this._enqueueAction('switchToMainWindow', SwitchToMainWindowCommand);
     }
 
-    _eval$ (fn, scopeVars) {
-        var builder  = new ClientFunctionBuilder(fn, scopeVars, { instantiation: 'eval', execution: 'eval' });
-        var clientFn = builder.getFunction({ boundTestRun: this.testRun });
+    _eval$ (fn, options) {
+        if (!isNullOrUndefined(options))
+            options = assign({}, options, { boundTestRun: this });
+
+        var builder  = new ClientFunctionBuilder(fn, options, { instantiation: 'eval', execution: 'eval' });
+        var clientFn = builder.getFunction();
 
         return clientFn();
     }
 
-    _select$ (fn, scopeVars, options) {
-        options = assign({}, options, { boundTestRun: this.testRun });
+    _select$ (fn, options) {
+        if (!isNullOrUndefined(options))
+            options = assign({}, options, { boundTestRun: this });
 
-        var builder  = new SelectorBuilder(fn, scopeVars, { instantiation: 'select', execution: 'select' });
-        var selector = builder.getFunction(options);
+        var builder  = new SelectorBuilder(fn, options, { instantiation: 'select', execution: 'select' });
+        var selector = builder.getFunction();
 
         return selector();
     }

@@ -20,8 +20,8 @@ function assertThrow (fn, expectedErr) {
 }
 
 function makeSelector (str) {
-    var builder = new SelectorBuilder(str, null, { instantiation: 'Selector' });
-    var command = builder.getCommand([], { visibilityCheck: true });
+    var builder = new SelectorBuilder(str, { visibilityCheck: true }, { instantiation: 'Selector' });
+    var command = builder.getCommand([]);
 
     return JSON.parse(JSON.stringify(command));
 }

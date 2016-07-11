@@ -12,7 +12,7 @@ test('Get UA', async t => {
 });
 
 test('Eval with scope vars', async t => {
-    const answer = await t.eval(() => getById('answer').textContent, { getById });
+    const answer = await t.eval(() => getById('answer').textContent, { scopeVars: { getById } });
 
     expect(answer).eql('42');
 });

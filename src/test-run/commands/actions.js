@@ -19,9 +19,9 @@ import { APIError } from '../../errors/runtime';
 // Initializers
 function initSelector (name, val) {
     try {
-        var builder = new SelectorBuilder(val, null, { instantiation: 'Selector' });
+        var builder = new SelectorBuilder(val, { visibilityCheck: true }, { instantiation: 'Selector' });
 
-        return builder.getCommand([], { visibilityCheck: true });
+        return builder.getCommand([]);
     }
     catch (err) {
         var msg = err.constructor === APIError ? err.rawMessage : err.message;

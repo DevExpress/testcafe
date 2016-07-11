@@ -2,14 +2,14 @@ import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import SelectorBuilder from '../client-functions/selector-builder';
 
 export default {
-    ClientFunction (fn, scopeVars) {
-        var builder = new ClientFunctionBuilder(fn, scopeVars, { instantiation: 'ClientFunction' });
+    ClientFunction (fn, options) {
+        var builder = new ClientFunctionBuilder(fn, options, { instantiation: 'ClientFunction' });
 
         return builder.getFunction();
     },
 
-    Selector (fn, scopeVars) {
-        var builder = new SelectorBuilder(fn, scopeVars, { instantiation: 'Selector' });
+    Selector (fn, options) {
+        var builder = new SelectorBuilder(fn, options, { instantiation: 'Selector' });
 
         return builder.getFunction();
     }

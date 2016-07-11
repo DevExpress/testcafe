@@ -1,4 +1,4 @@
-import { isFinite } from 'lodash';
+import { isFinite, assign } from 'lodash';
 import ClientFunctionBuilder from './client-function-builder';
 import { SelectorNodeTransform } from './replicator';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
@@ -8,8 +8,17 @@ import { ExecuteSelectorCommand } from '../test-run/commands/observation';
 import defineLazyProperty from '../utils/define-lazy-property';
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
-    constructor (fn, scopeVars, callsiteNames) {
-        super(fn, scopeVars, callsiteNames);
+    constructor (fn, options, callsiteNames) {
+        var builderFromSelector          = fn && fn[functionBuilderSymbol];
+        var builderFromPromiseOrSnapshot = fn && fn.selector && fn.selector[functionBuilderSymbol];
+        var builder                      = builderFromSelector || builderFromPromiseOrSnapshot;
+
+        if (builder instanceof SelectorBuilder) {
+            fn      = builder.fn;
+            options = assign({}, builder.options, options);
+        }
+
+        super(fn, options, callsiteNames);
     }
 
     static _defineNodeSnapshotDerivativeSelectorProperty (obj, propName, fn) {
@@ -23,35 +32,29 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
                 return fn(selectorResult, fnArg);
                 /* eslint-enable no-undef */
-            }, { selector: obj.selector, fn });
+            }, {
+                scopeVars: {
+                    selector: obj.selector,
+                    fn:       fn
+                }
+            });
 
             return builder.getFunction();
         });
     }
 
-    _createFunctionDescriptor (fn, scopeVars) {
-        var builderFromSelector          = fn && fn[functionBuilderSymbol];
-        var builderFromPromiseOrSnapshot = fn && fn.selector && fn.selector[functionBuilderSymbol];
-        var builder                      = builderFromSelector || builderFromPromiseOrSnapshot;
+    _getCompiledFnCode () {
+        if (typeof this.fn === 'string')
+            return `(function(){return document.querySelector('${this.fn.replace(/'/g, "\\'")}');})`;
 
-        if (builder instanceof SelectorBuilder)
-            return builder.functionDescriptor;
-
-        if (typeof fn === 'string') {
-            return {
-                scopeVars: {},
-                fnCode:    `(function(){return document.querySelector('${fn.replace(/'/g, "\\'")}');})`
-            };
-        }
-
-        return super._createFunctionDescriptor(fn, scopeVars);
+        return super._getCompiledFnCode();
     }
 
-    _createInvalidFnTypeError (fn) {
-        return new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.selectorInitializedWithWrongType, typeof fn);
+    _createInvalidFnTypeError () {
+        return new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.selectorInitializedWithWrongType, typeof this.fn);
     }
 
-    _executeCommand (args, testRun, callsite, options) {
+    _executeCommand (args, testRun, callsite) {
         var lazyPromise   = Promise.resolve();
         var resultPromise = null;
 
@@ -62,7 +65,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         var execute = () => {
             if (!resultPromise) {
                 resultPromise = super
-                    ._executeCommand(args, testRun, callsite, options)
+                    ._executeCommand(args, testRun, callsite)
                     .then(result => result ? this._decorateFunctionResult(result, args) : result);
             }
 
@@ -78,24 +81,26 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     }
 
 
-    _createExecutionTestRunCommand (encodedArgs, encodedScopeVars, options) {
+    _createExecutionTestRunCommand (encodedArgs, encodedScopeVars) {
         return new ExecuteSelectorCommand({
             instantiationCallsiteName: this.callsiteNames.instantiation,
-            fnCode:                    this.functionDescriptor.fnCode,
+            fnCode:                    this.compiledFnCode,
             args:                      encodedArgs,
             scopeVars:                 encodedScopeVars,
-            visibilityCheck:           !!options.visibilityCheck,
-            timeout:                   options.timeout
+            visibilityCheck:           this.options.visibilityCheck,
+            timeout:                   this.options.timeout
         });
     }
 
-    _validateOptions (options) {
-        super._validateOptions(options);
+    _assignOptions (options) {
+        super._assignOptions(options);
 
         var visibilityCheckOptionType = typeof options.visibilityCheck;
 
         if (visibilityCheckOptionType !== 'undefined' && visibilityCheckOptionType !== 'boolean')
             throw new APIError('with', MESSAGE.optionValueIsNotABoolean, 'visibilityCheck', visibilityCheckOptionType);
+
+        this.options.visibilityCheck = !!options.visibilityCheck;
 
         var timeoutType         = typeof options.timeout;
         var isNonNegativeNumber = isFinite(options.timeout) && options.timeout >= 0;
@@ -105,6 +110,8 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
             throw new APIError('with', MESSAGE.optionValueIsNotANonNegativeNumber, 'timeout', actual);
         }
+
+        this.options.timeout = options.timeout;
     }
 
     _getReplicatorTransforms () {
@@ -117,10 +124,13 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
     _defineSelectorPropertyWithBoundArgs (obj, selectorArgs) {
         defineLazyProperty(obj, 'selector', () => {
-            var builder = new SelectorBuilder(() => /* eslint-disable no-undef */selector.apply(null, args)/* eslint-enable no-undef */, {
-                selector: this.getFunction(),
-                args:     selectorArgs
-            });
+            var builder = new SelectorBuilder(() => /* eslint-disable no-undef */selector.apply(null, args)/* eslint-enable no-undef */,
+                {
+                    scopeVars: {
+                        selector: this.getFunction(),
+                        args:     selectorArgs
+                    }
+                });
 
             return builder.getFunction();
         });

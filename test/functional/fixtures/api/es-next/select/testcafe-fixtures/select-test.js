@@ -14,7 +14,7 @@ test('Select element', async t => {
 
 test('Select with scope vars', async t => {
     const getById = Selector(id => document.getElementById(id));
-    const el      = await t.select(() => getById('answer'), { getById });
+    const el      = await t.select(() => getById('answer'), { scopeVars: { getById } });
 
     expect(el.innerText).eql('42');
 });
@@ -30,7 +30,7 @@ test('Error during execution', async t => {
 });
 
 test('Select with options', async t => {
-    const el = await t.select('#invisible', null, { visibilityCheck: true });
+    const el = await t.select('#invisible', { visibilityCheck: true });
 
     expect(el).to.be.null;
 });
