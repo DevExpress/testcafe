@@ -1,6 +1,6 @@
 import { identity } from 'lodash';
 import Replicator from 'replicator';
-import functionFactorySymbol from './factory-symbol';
+import functionFactorySymbol from './builder-symbol';
 import compileClientFunction from '../compiler/es-next/compile-client-function';
 
 export function createReplicator (transforms) {

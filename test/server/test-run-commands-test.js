@@ -2,7 +2,7 @@ var expect          = require('chai').expect;
 var TYPE            = require('../../lib/test-run/commands/type');
 var createCommand   = require('../../lib/test-run/commands/from-object');
 var ERROR_TYPE      = require('../../lib/errors/test-run/type');
-var SelectorFactory = require('../../lib/client-functions/selector-factory');
+var SelectorBuilder = require('../../lib/client-functions/selector-builder');
 
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects
@@ -20,8 +20,8 @@ function assertThrow (fn, expectedErr) {
 }
 
 function makeSelector (str) {
-    var factory = new SelectorFactory(str, null, { instantiation: 'Selector' });
-    var command = factory.getCommand([], { visibilityCheck: true });
+    var builder = new SelectorBuilder(str, null, { instantiation: 'Selector' });
+    var command = builder.getCommand([], { visibilityCheck: true });
 
     return JSON.parse(JSON.stringify(command));
 }

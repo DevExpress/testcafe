@@ -2,8 +2,8 @@ import Promise from 'pinkie';
 import { identity, assign } from 'lodash';
 import { MissingAwaitError } from '../errors/test-run';
 import getCallsite from '../errors/get-callsite';
-import ClientFunctionFactory from '../client-functions/client-function-factory';
-import SelectorFactory from '../client-functions/selector-factory';
+import ClientFunctionBuilder from '../client-functions/client-function-builder';
+import SelectorBuilder from '../client-functions/selector-builder';
 
 
 import {
@@ -212,8 +212,8 @@ export default class TestController {
     }
 
     _eval$ (fn, scopeVars) {
-        var factory  = new ClientFunctionFactory(fn, scopeVars, { instantiation: 'eval', execution: 'eval' });
-        var clientFn = factory.getFunction({ boundTestRun: this.testRun });
+        var builder  = new ClientFunctionBuilder(fn, scopeVars, { instantiation: 'eval', execution: 'eval' });
+        var clientFn = builder.getFunction({ boundTestRun: this.testRun });
 
         return clientFn();
     }
@@ -221,8 +221,8 @@ export default class TestController {
     _select$ (fn, scopeVars, options) {
         options = assign({}, options, { boundTestRun: this.testRun });
 
-        var factory  = new SelectorFactory(fn, scopeVars, { instantiation: 'select', execution: 'select' });
-        var selector = factory.getFunction(options);
+        var builder  = new SelectorBuilder(fn, scopeVars, { instantiation: 'select', execution: 'select' });
+        var selector = builder.getFunction(options);
 
         return selector();
     }

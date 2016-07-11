@@ -1,20 +1,20 @@
 import { isFinite } from 'lodash';
-import ClientFunctionFactory from './client-function-factory';
+import ClientFunctionBuilder from './client-function-builder';
 import { SelectorNodeTransform } from './replicator';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
-import functionFactorySymbol from './factory-symbol';
+import functionBuilderSymbol from './builder-symbol';
 import MESSAGE from '../errors/runtime/message';
 import { ExecuteSelectorCommand } from '../test-run/commands/observation';
 import defineLazyProperty from '../utils/define-lazy-property';
 
-export default class SelectorFactory extends ClientFunctionFactory {
+export default class SelectorBuilder extends ClientFunctionBuilder {
     constructor (fn, scopeVars, callsiteNames) {
         super(fn, scopeVars, callsiteNames);
     }
 
     static _defineNodeSnapshotDerivativeSelectorProperty (obj, propName, fn) {
         defineLazyProperty(obj, propName, () => {
-            var factory = new SelectorFactory(fnArg => {
+            var builder = new SelectorBuilder(fnArg => {
                 /* eslint-disable no-undef */
                 var selectorResult = selector();
 
@@ -25,17 +25,17 @@ export default class SelectorFactory extends ClientFunctionFactory {
                 /* eslint-enable no-undef */
             }, { selector: obj.selector, fn });
 
-            return factory.getFunction();
+            return builder.getFunction();
         });
     }
 
     _createFunctionDescriptor (fn, scopeVars) {
-        var factoryFromSelector          = fn && fn[functionFactorySymbol];
-        var factoryFromPromiseOrSnapshot = fn && fn.selector && fn.selector[functionFactorySymbol];
-        var factory                      = factoryFromSelector || factoryFromPromiseOrSnapshot;
+        var builderFromSelector          = fn && fn[functionBuilderSymbol];
+        var builderFromPromiseOrSnapshot = fn && fn.selector && fn.selector[functionBuilderSymbol];
+        var builder                      = builderFromSelector || builderFromPromiseOrSnapshot;
 
-        if (factory instanceof SelectorFactory)
-            return factory.functionDescriptor;
+        if (builder instanceof SelectorBuilder)
+            return builder.functionDescriptor;
 
         if (typeof fn === 'string') {
             return {
@@ -117,27 +117,27 @@ export default class SelectorFactory extends ClientFunctionFactory {
 
     _defineSelectorPropertyWithBoundArgs (obj, selectorArgs) {
         defineLazyProperty(obj, 'selector', () => {
-            var factory = new SelectorFactory(() => /* eslint-disable no-undef */selector.apply(null, args)/* eslint-enable no-undef */, {
+            var builder = new SelectorBuilder(() => /* eslint-disable no-undef */selector.apply(null, args)/* eslint-enable no-undef */, {
                 selector: this.getFunction(),
                 args:     selectorArgs
             });
 
-            return factory.getFunction();
+            return builder.getFunction();
         });
     }
 
     _decorateFunctionResult (nodeSnapshot, selectorArgs) {
         this._defineSelectorPropertyWithBoundArgs(nodeSnapshot, selectorArgs);
 
-        SelectorFactory._defineNodeSnapshotDerivativeSelectorProperty(nodeSnapshot, 'getParentNode', node => {
+        SelectorBuilder._defineNodeSnapshotDerivativeSelectorProperty(nodeSnapshot, 'getParentNode', node => {
             return node ? node.parentNode : node;
         });
 
-        SelectorFactory._defineNodeSnapshotDerivativeSelectorProperty(nodeSnapshot, 'getChildNode', (node, idx) => {
+        SelectorBuilder._defineNodeSnapshotDerivativeSelectorProperty(nodeSnapshot, 'getChildNode', (node, idx) => {
             return node ? node.childNodes[idx] : node;
         });
 
-        SelectorFactory._defineNodeSnapshotDerivativeSelectorProperty(nodeSnapshot, 'getChildElement', (node, idx) => {
+        SelectorBuilder._defineNodeSnapshotDerivativeSelectorProperty(nodeSnapshot, 'getChildElement', (node, idx) => {
             if (node.children)
                 return node.children[idx];
 

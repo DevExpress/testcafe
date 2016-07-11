@@ -1,6 +1,6 @@
 import { isNil as isNullOrUndefined } from 'lodash';
 import testRunTracker from './test-run-tracker';
-import functionFactorySymbol from './factory-symbol';
+import functionBuilderSymbol from './builder-symbol';
 import { createReplicator, FunctionTransform } from './replicator';
 import { ExecuteClientFunctionCommand } from '../test-run/commands/observation';
 import TestRun from '../test-run';
@@ -11,7 +11,7 @@ import getCallsite from '../errors/get-callsite';
 
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
-export default class ClientFunctionFactory {
+export default class ClientFunctionBuilder {
     constructor (fn, scopeVars, callsiteNames = {}) {
         this.callsiteNames = {
             instantiation: callsiteNames.instantiation,
@@ -45,7 +45,7 @@ export default class ClientFunctionFactory {
     }
 
     _decorateFunction (clientFn) {
-        clientFn[functionFactorySymbol] = this;
+        clientFn[functionBuilderSymbol] = this;
 
         clientFn.with = options => {
             this._validateOptions(options);
@@ -55,20 +55,20 @@ export default class ClientFunctionFactory {
     }
 
     getFunction (options) {
-        var factory = this;
+        var builder = this;
 
         options = options || {};
 
         var clientFn = function __$$clientFunction$$ () {
-            var testRun  = options.boundTestRun || factory._resolveContextTestRun();
-            var callsite = getCallsite(factory.callsiteNames.execution);
+            var testRun  = options.boundTestRun || builder._resolveContextTestRun();
+            var callsite = getCallsite(builder.callsiteNames.execution);
             var args     = [];
 
             // OPTIMIZATION: don't leak `arguments` object.
             for (var i = 0; i < arguments.length; i++)
                 args.push(arguments[i]);
 
-            return factory._executeCommand(args, testRun, callsite, options);
+            return builder._executeCommand(args, testRun, callsite, options);
         };
 
         this._decorateFunction(clientFn);
