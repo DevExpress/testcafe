@@ -19,7 +19,6 @@ matrix:
 
 branches:
   except:
-    - /^greenkeeper-.*$/
     - /^build-bot-temp-.*$/
 
 notifications:

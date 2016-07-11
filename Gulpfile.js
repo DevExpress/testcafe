@@ -23,14 +23,9 @@ var connect      = require('connect');
 var spawn        = require('cross-spawn-async');
 var serveStatic  = require('serve-static');
 var Promise      = require('pinkie');
-var promisify    = require('pify');
 var markdownlint = require('markdownlint');
-var isEqual      = require('lodash').isEqual;
 var ghpages      = require('gulp-gh-pages');
 var prompt       = require('gulp-prompt');
-
-
-var readFile = promisify(fs.readFile, Promise);
 
 
 ll
@@ -272,33 +267,8 @@ gulp.task('images', ['clean'], function () {
         .pipe(gulp.dest('lib'));
 });
 
-gulp.task('update-greenkeeper', function () {
-    var watchDepsRe = /testcafe|babel/;
-
-    return readFile('package.json')
-        .then(function (data) {
-            var config  = JSON.parse(data);
-            var deps    = Object.keys(config.dependencies);
-            var devDeps = Object.keys(config.devDependencies);
-
-            var ignoredDeps = deps
-                .concat(devDeps)
-                .filter(function (dep) {
-                    return !watchDepsRe.test(dep);
-                });
-
-            if (!isEqual(config.greenkeeper.ignore, ignoredDeps)) {
-                config.greenkeeper.ignore = ignoredDeps;
-
-                // NOTE: We should write to the file synchronously to avoid collision
-                // with other tasks that may be reading from it asynchronously (GH-315)
-                fs.writeFileSync('package.json', JSON.stringify(config, null, 2) + '\n');
-            }
-        });
-});
-
 gulp.task('fast-build', ['server-scripts', 'client-scripts', 'styles', 'images', 'templates']);
-gulp.task('build', ['update-greenkeeper', 'lint', 'fast-build']);
+gulp.task('build', ['lint', 'fast-build']);
 
 // Test
 gulp.task('test-server', ['build'], function () {
