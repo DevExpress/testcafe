@@ -13,9 +13,13 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         var builderFromPromiseOrSnapshot = fn && fn.selector && fn.selector[functionBuilderSymbol];
         var builder                      = builderFromSelector || builderFromPromiseOrSnapshot;
 
-        if (builder instanceof SelectorBuilder) {
-            fn      = builder.fn;
-            options = assign({}, builder.options, options);
+        builder = builder instanceof SelectorBuilder ? builder : null;
+
+        if (builder) {
+            fn = builder.fn;
+
+            if (typeof options === 'object')
+                options = assign({}, builder.options, options, { originSelectorBuilder: builder });
         }
 
         super(fn, options, callsiteNames);
@@ -44,6 +48,16 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     }
 
     _getCompiledFnCode () {
+        // OPTIMIZATION: if selector was produced from another selector and
+        // it has same scopeVars as origin selector, then we can
+        // avoid recompilation and just re-use already compiled code.
+        var hasIdenticalScopeVarsWithOriginSelector = this.options.originSelectorBuilder &&
+                                                      this.options.originSelectorBuilder.options.scopeVars ===
+                                                      this.options.scopeVars;
+
+        if (hasIdenticalScopeVarsWithOriginSelector)
+            return this.options.originSelectorBuilder.compiledFnCode;
+
         if (typeof this.fn === 'string')
             return `(function(){return document.querySelector('${this.fn.replace(/'/g, "\\'")}');})`;
 
@@ -87,20 +101,18 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             fnCode:                    this.compiledFnCode,
             args:                      encodedArgs,
             scopeVars:                 encodedScopeVars,
-            visibilityCheck:           this.options.visibilityCheck,
+            visibilityCheck:           !!this.options.visibilityCheck,
             timeout:                   this.options.timeout
         });
     }
 
-    _assignOptions (options) {
-        super._assignOptions(options);
+    _validateOptions (options) {
+        super._validateOptions(options);
 
         var visibilityCheckOptionType = typeof options.visibilityCheck;
 
         if (visibilityCheckOptionType !== 'undefined' && visibilityCheckOptionType !== 'boolean')
             throw new APIError('with', MESSAGE.optionValueIsNotABoolean, 'visibilityCheck', visibilityCheckOptionType);
-
-        this.options.visibilityCheck = !!options.visibilityCheck;
 
         var timeoutType         = typeof options.timeout;
         var isNonNegativeNumber = isFinite(options.timeout) && options.timeout >= 0;
@@ -110,8 +122,6 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
             throw new APIError('with', MESSAGE.optionValueIsNotANonNegativeNumber, 'timeout', actual);
         }
-
-        this.options.timeout = options.timeout;
     }
 
     _getReplicatorTransforms () {

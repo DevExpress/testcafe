@@ -18,11 +18,12 @@ export default class ClientFunctionBuilder {
             execution:     callsiteNames.execution || DEFAULT_EXECUTION_CALLSITE_NAME
         };
 
-        this.fn      = fn;
-        this.options = {};
+        options = isNullOrUndefined(options) ? {} : options;
 
-        this._assignOptions(isNullOrUndefined(options) ? {} : options);
+        this._validateOptions(options);
 
+        this.fn             = fn;
+        this.options        = options;
         this.compiledFnCode = this._getCompiledFnCode();
 
         if (!this.compiledFnCode)
@@ -61,7 +62,10 @@ export default class ClientFunctionBuilder {
         var builder = this;
 
         var clientFn = function __$$clientFunction$$ () {
-            var testRun  = builder.options.boundTestRun || builder._resolveContextTestRun();
+            var testRun = builder.options.boundTestRun ?
+                          builder.options.boundTestRun.testRun :
+                          builder._resolveContextTestRun();
+
             var callsite = getCallsite(builder.callsiteNames.execution);
             var args     = [];
 
@@ -103,7 +107,7 @@ export default class ClientFunctionBuilder {
         return this.replicator.decode(result);
     }
 
-    _assignOptions (options) {
+    _validateOptions (options) {
         var optionsType = typeof options;
 
         if (optionsType !== 'object')
@@ -114,9 +118,6 @@ export default class ClientFunctionBuilder {
             // check due to module circular reference
             if (!(options.boundTestRun.testRun instanceof TestRun))
                 throw new APIError('with', MESSAGE.invalidClientFunctionTestRunBinding);
-
-            // NOTE: boundTestRun is actually a TestController, so we need to unpack it
-            this.options.boundTestRun = options.boundTestRun.testRun;
         }
 
         if (!isNullOrUndefined(options.scopeVars)) {
@@ -124,11 +125,7 @@ export default class ClientFunctionBuilder {
 
             if (scopeVarsType !== 'object')
                 throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionScopeVarsIsNotAnObject, scopeVarsType);
-
-            this.options.scopeVars = assign({}, options.scopeVars);
         }
-        else
-            this.options.scopeVars = {};
     }
 
     _createExecutionTestRunCommand (encodedArgs, encodedScopeVars) {
