@@ -28,7 +28,7 @@ class ExecuteClientFunctionCommandBase extends Assignable {
         this.instantiationCallsiteName = '';
         this.fnCode                    = '';
         this.args                      = [];
-        this.scopeVars                 = [];
+        this.dependencies              = [];
 
         this._assignFrom(obj, false);
     }
@@ -38,7 +38,7 @@ class ExecuteClientFunctionCommandBase extends Assignable {
             { name: 'instantiationCallsiteName' },
             { name: 'fnCode' },
             { name: 'args' },
-            { name: 'scopeVars' }
+            { name: 'dependencies' }
         ];
     }
 }

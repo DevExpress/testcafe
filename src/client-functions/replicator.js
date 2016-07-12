@@ -29,15 +29,13 @@ export class FunctionTransform {
 
     toSerializable (fn) {
         var clientFnBuilder = fn[functionBuilderSymbol];
+        var fnCode          = clientFnBuilder ?
+                              clientFnBuilder.compiledFnCode :
+                              compileClientFunction(fn.toString(), null, this.callsiteNames.instantiation, this.callsiteNames.execution);
 
         return {
-            fnCode: clientFnBuilder ?
-                    clientFnBuilder.compiledFnCode :
-                    compileClientFunction(fn.toString(), null, this.callsiteNames.instantiation, this.callsiteNames.execution),
-
-            scopeVars: clientFnBuilder ?
-                       clientFnBuilder.options.scopeVars :
-                       null
+            fnCode:       fnCode,
+            dependencies: clientFnBuilder ? clientFnBuilder.options.dependencies : null
         };
     }
 

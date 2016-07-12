@@ -653,7 +653,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction code, arguments or scope variables cannot contain generators or "async/await" syntax (use Promises instead).',
+                                 'ClientFunction code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).',
 
                         callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
                                   '    2 |\n' +
@@ -680,7 +680,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction code, arguments or scope variables cannot contain generators or "async/await" syntax (use Promises instead).',
+                                 'ClientFunction code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).',
 
                         callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
                                   '    2 |\n' +
@@ -708,7 +708,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"options" argument is expected to be an object, but it was number',
+                                 '"options" argument is expected to be an object, but it was number.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -722,8 +722,8 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise an error if ClientFunction "scopeVars" is not an object', function () {
-            var testfile = resolve('test/server/data/test-suites/client-fn-scope-vars-not-object/testfile.js');
+        it('Should raise an error if ClientFunction "dependencies" is not an object', function () {
+            var testfile = resolve('test/server/data/test-suites/client-fn-dependencies-not-object/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -734,13 +734,13 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction "scopeVars" argument is expected to be an object, but it was string.',
+                                 '"dependencies" option is expected to be an object, but it was string.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
                                   '   3 |fixture `Test`;\n' +
                                   '   4 |\n' +
-                                  " > 5 |var selectYo = ClientFunction(() => document.querySelector('#yo'), { scopeVars: '42' });\n"
+                                  " > 5 |var selectYo = ClientFunction(() => document.querySelector('#yo'), { dependencies: '42' });\n"
                     });
                 });
         });
@@ -784,7 +784,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"visibilityCheck" option is expected to be a boolean, but it was number',
+                                 '"visibilityCheck" option is expected to be a boolean, but it was number.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -810,7 +810,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"timeout" option is expected to be a non-negative number, but it was -5',
+                                 '"timeout" option is expected to be a non-negative number, but it was -5.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +

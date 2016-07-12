@@ -5,8 +5,8 @@ describe('[API] t.select', function () {
         return runTests('./testcafe-fixtures/select-test.js', 'Select element');
     });
 
-    it('Should execute an anonymous selector with scope vars', function () {
-        return runTests('./testcafe-fixtures/select-test.js', 'Select with scope vars');
+    it('Should execute an anonymous selector with dependencies', function () {
+        return runTests('./testcafe-fixtures/select-test.js', 'Select with dependencies');
     });
 
     it('Should execute an anonymous selector with options', function () {

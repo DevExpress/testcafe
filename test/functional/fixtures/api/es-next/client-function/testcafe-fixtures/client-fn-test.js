@@ -134,15 +134,15 @@ test('Error in Promise', async () => {
 });
 
 const selectByClassName = ClientFunction(className => document.querySelectorAll('.' + className));
-const nthByClass        = ClientFunction((className, n) => selectByClassName(className)[n], { scopeVars: { selectByClassName } });
+const nthByClass        = ClientFunction((className, n) => selectByClassName(className)[n], { dependencies: { selectByClassName } });
 
-test('ClientFunction with scope vars', async () => {
+test('ClientFunction with dependencies', async () => {
     const getAnswer = ClientFunction(() => {
         const el       = nthByClass('item', 3);
         const answerEl = selectByClassName(el.textContent.toLowerCase())[0];
 
         return answerEl.textContent;
-    }, { scopeVars: { selectByClassName, nthByClass } });
+    }, { dependencies: { selectByClassName, nthByClass } });
 
     const answer = await getAnswer();
 

@@ -82,16 +82,16 @@ export default class ClientFunctionBuilder {
     }
 
     getCommand (args) {
-        var encodedArgs      = this.replicator.encode(args);
-        var encodedScopeVars = this.replicator.encode(this.options.scopeVars);
+        var encodedArgs         = this.replicator.encode(args);
+        var encodedDependencies = this.replicator.encode(this.options.dependencies);
 
-        return this._createExecutionTestRunCommand(encodedArgs, encodedScopeVars);
+        return this._createExecutionTestRunCommand(encodedArgs, encodedDependencies);
     }
 
     // Overridable methods
     _getCompiledFnCode () {
         if (typeof this.fn === 'function')
-            return compileClientFunction(this.fn.toString(), this.options.scopeVars, this.callsiteNames.instantiation, this.callsiteNames.instantiation);
+            return compileClientFunction(this.fn.toString(), this.options.dependencies, this.callsiteNames.instantiation, this.callsiteNames.instantiation);
 
         return null;
     }
@@ -111,29 +111,29 @@ export default class ClientFunctionBuilder {
         var optionsType = typeof options;
 
         if (optionsType !== 'object')
-            throw new APIError('with', MESSAGE.optionsArgumentIsNotAnObject, optionsType);
+            throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionsArgumentIsNotAnObject, optionsType);
 
         if (!isNullOrUndefined(options.boundTestRun)) {
             // NOTE: we can't use strict `t instanceof TestController`
             // check due to module circular reference
             if (!(options.boundTestRun.testRun instanceof TestRun))
-                throw new APIError('with', MESSAGE.invalidClientFunctionTestRunBinding);
+                throw new APIError(this.callsiteNames.instantiation, MESSAGE.invalidClientFunctionTestRunBinding);
         }
 
-        if (!isNullOrUndefined(options.scopeVars)) {
-            var scopeVarsType = typeof options.scopeVars;
+        if (!isNullOrUndefined(options.dependencies)) {
+            var dependenciesType = typeof options.dependencies;
 
-            if (scopeVarsType !== 'object')
-                throw new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionScopeVarsIsNotAnObject, scopeVarsType);
+            if (dependenciesType !== 'object')
+                throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotAnObject, 'dependencies', dependenciesType);
         }
     }
 
-    _createExecutionTestRunCommand (encodedArgs, encodedScopeVars) {
+    _createExecutionTestRunCommand (encodedArgs, encodedDependencies) {
         return new ExecuteClientFunctionCommand({
             instantiationCallsiteName: this.callsiteNames.instantiation,
             fnCode:                    this.compiledFnCode,
             args:                      encodedArgs,
-            scopeVars:                 encodedScopeVars
+            dependencies:              encodedDependencies
         });
     }
 

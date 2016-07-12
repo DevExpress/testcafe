@@ -1,4 +1,4 @@
-import { isFinite, assign } from 'lodash';
+import { isFinite, assign, isNil as isNullOrUndefined } from 'lodash';
 import ClientFunctionBuilder from './client-function-builder';
 import { SelectorNodeTransform } from './replicator';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
@@ -37,7 +37,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                 return fn(selectorResult, fnArg);
                 /* eslint-enable no-undef */
             }, {
-                scopeVars: {
+                dependencies: {
                     selector: obj.selector,
                     fn:       fn
                 }
@@ -49,13 +49,13 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
     _getCompiledFnCode () {
         // OPTIMIZATION: if selector was produced from another selector and
-        // it has same scopeVars as origin selector, then we can
+        // it has same dependencies as origin selector, then we can
         // avoid recompilation and just re-use already compiled code.
-        var hasIdenticalScopeVarsWithOriginSelector = this.options.originSelectorBuilder &&
-                                                      this.options.originSelectorBuilder.options.scopeVars ===
-                                                      this.options.scopeVars;
+        var hasIdenticalDependenciesWithOriginSelector = this.options.originSelectorBuilder &&
+                                                         this.options.originSelectorBuilder.options.dependencies ===
+                                                         this.options.dependencies;
 
-        if (hasIdenticalScopeVarsWithOriginSelector)
+        if (hasIdenticalDependenciesWithOriginSelector)
             return this.options.originSelectorBuilder.compiledFnCode;
 
         if (typeof this.fn === 'string')
@@ -95,12 +95,12 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     }
 
 
-    _createExecutionTestRunCommand (encodedArgs, encodedScopeVars) {
+    _createExecutionTestRunCommand (encodedArgs, encodedDependencies) {
         return new ExecuteSelectorCommand({
             instantiationCallsiteName: this.callsiteNames.instantiation,
             fnCode:                    this.compiledFnCode,
             args:                      encodedArgs,
-            scopeVars:                 encodedScopeVars,
+            dependencies:              encodedDependencies,
             visibilityCheck:           !!this.options.visibilityCheck,
             timeout:                   this.options.timeout
         });
@@ -109,18 +109,18 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     _validateOptions (options) {
         super._validateOptions(options);
 
-        var visibilityCheckOptionType = typeof options.visibilityCheck;
+        if (!isNullOrUndefined(options.visibilityCheck)) {
+            var visibilityCheckOptionType = typeof options.visibilityCheck;
 
-        if (visibilityCheckOptionType !== 'undefined' && visibilityCheckOptionType !== 'boolean')
-            throw new APIError('with', MESSAGE.optionValueIsNotABoolean, 'visibilityCheck', visibilityCheckOptionType);
+            if (visibilityCheckOptionType !== 'boolean')
+                throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotABoolean, 'visibilityCheck', visibilityCheckOptionType);
+        }
 
-        var timeoutType         = typeof options.timeout;
-        var isNonNegativeNumber = isFinite(options.timeout) && options.timeout >= 0;
+        if (!isNullOrUndefined(options.timeout) && (!isFinite(options.timeout) || options.timeout < 0)) {
+            var timeoutType = typeof options.timeout;
+            var actual      = timeoutType === 'number' ? options.timeout : timeoutType;
 
-        if (timeoutType !== 'undefined' && !isNonNegativeNumber) {
-            var actual = timeoutType === 'number' ? options.timeout : timeoutType;
-
-            throw new APIError('with', MESSAGE.optionValueIsNotANonNegativeNumber, 'timeout', actual);
+            throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotANonNegativeNumber, 'timeout', actual);
         }
     }
 
@@ -136,7 +136,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         defineLazyProperty(obj, 'selector', () => {
             var builder = new SelectorBuilder(() => /* eslint-disable no-undef */selector.apply(null, args)/* eslint-enable no-undef */,
                 {
-                    scopeVars: {
+                    dependencies: {
                         selector: this.getFunction(),
                         args:     selectorArgs
                     }
