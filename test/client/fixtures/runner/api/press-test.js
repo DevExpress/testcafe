@@ -428,4 +428,18 @@ $(document).ready(function () {
 
         document.body.appendChild(iframe);
     });
+
+    asyncTest('Press action should accept number as argument (GH-658)', function () {
+        $input.focus();
+        
+        runAsyncTest(
+            function () {
+                actionsAPI.press(2);
+            },
+            function () {
+                equal($input[0].value, 'test2');
+            },
+            TEST_TIMEOUT
+        );
+    });
 });
