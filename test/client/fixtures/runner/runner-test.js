@@ -9,6 +9,7 @@ var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 
 var testCafeRunner = window.getTestCafeModule('testCafeRunner');
 var Runner         = testCafeRunner.get('./runner');
+var StepIterator   = testCafeRunner.get('./step-iterator');
 
 
 var testRunner                    = null;
@@ -30,6 +31,7 @@ Runner.checkStatus = function () {
 
 QUnit.testStart(function () {
     testRunner                    = new Runner();
+    savedTakeScreenshots          = SETTINGS.TAKE_SCREENSHOTS;
     savedTakeScreenshotsOnFails   = SETTINGS.TAKE_SCREENSHOTS_ON_FAILS;
     savedAsyncServiceMsg          = transport.asyncServiceMsg;
     savedTransportFatalError      = transport.fatalError;
@@ -42,6 +44,7 @@ QUnit.testStart(function () {
 });
 
 QUnit.testDone(function () {
+    SETTINGS.TAKE_SCREENSHOTS          = savedTakeScreenshots;
     SETTINGS.TAKE_SCREENSHOTS_ON_FAILS = savedTakeScreenshotsOnFails;
     transport.asyncServiceMsg          = savedAsyncServiceMsg;
     transport.fatalError               = savedTransportFatalError;
@@ -110,4 +113,37 @@ asyncTest('Test iterator should not call Transport.fail twice (with screenshots)
 
         start();
     }, 100);
+});
+
+asyncTest("The 'assertion-failed' command should be sent earlier than 'done' if the 'takeScreenshotOnFail' option is enabled (GH-660)", function () {
+    var commandStorage = [];
+
+    SETTINGS.TAKE_SCREENSHOTS_ON_FAILS          = true;
+    SETTINGS.TAKE_SCREENSHOTS                   = true;
+    testRunner.stepIterator.state.curStepErrors = [];
+    testRunner.stepIterator.state.testSteps     = [];
+
+    transport.asyncServiceMsg = function () {
+        commandStorage.push('done');
+    };
+
+    transport.assertionFailed = function (err, callback) {
+        commandStorage.push('assertion-failed');
+        callback();
+    };
+
+    testRunner.stepIterator.on(StepIterator.TEST_COMPLETE_EVENT, function () {
+        testRunner._onTestComplete();
+    });
+
+    testRunner._onAssertionFailed({ err: {} });
+    testRunner.stepIterator._runStep();
+
+    setTimeout(function () {
+        equal(commandStorage.length, 2);
+        equal(commandStorage[0], 'assertion-failed');
+        equal(commandStorage[1], 'done');
+
+        start();
+    }, 600);
 });
