@@ -100,9 +100,9 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
             alias:           'android'
         },
         {
-            // NOTE: we can't run tests on iOS 9.3 because the bug in this version
+            // NOTE: we can't run tests on iOS 9.3 because of a bug in this version
             // (see https://github.com/DevExpress/testcafe-hammerhead/issues/672#issuecomment-232043366).
-            // The bug is fixed in iOS 9.3.2 but it's unavailable on the farm.
+            // This bug is fixed in iOS 9.3.2 but it's not available on the farm.
             platformName:    'iOS',
             deviceName:      'iPad Retina',
             platformVersion: '9.2',
