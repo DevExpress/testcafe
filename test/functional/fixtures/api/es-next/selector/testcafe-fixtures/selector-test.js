@@ -1,5 +1,5 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
-import { Selector } from 'testcafe';
+import { Selector, ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
 fixture `Selector`
@@ -312,4 +312,39 @@ test('Element on new page', async t => {
     const el = await getNewElement();
 
     expect(el.tagName).eql('div');
+});
+
+test('Selector "index" option', async t => {
+    // String selector
+    const getSecondEl = Selector('.idxEl', { index: 1 });
+
+    let el = await getSecondEl();
+
+    expect(el.id).eql('el2');
+
+    // Function selector
+    const getThirdEl = Selector(() => document.querySelectorAll('.idxEl'), { index: 2 });
+
+    el = await getThirdEl();
+
+    expect(el.id).eql('el3');
+
+    // Index should be ignored if functions returns element
+    const getFirstEl = Selector(() => document.querySelectorAll('.idxEl')[0], { index: 2 });
+
+    el = await getFirstEl();
+
+    expect(el.id).eql('el1');
+
+    // Selector should maintain index when used as parameter
+    const getId = ClientFunction(getEl => getEl().id);
+
+    let id = await getId(getSecondEl);
+
+    expect(id).eql('el2');
+
+    // Selector should maintain index when used as dependency
+    id = await t.eval(() => getThirdEl().id, { dependencies: { getThirdEl } });
+
+    expect(id).eql('el3');
 });

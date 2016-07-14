@@ -83,12 +83,26 @@ export default class ClientFunctionBuilder {
 
     getCommand (args) {
         var encodedArgs         = this.replicator.encode(args);
-        var encodedDependencies = this.replicator.encode(this.options.dependencies);
+        var encodedDependencies = this.replicator.encode(this.getFunctionDependencies());
 
-        return this._createExecutionTestRunCommand(encodedArgs, encodedDependencies);
+        return this._createTestRunCommand(encodedArgs, encodedDependencies);
     }
 
+
     // Overridable methods
+    getFunctionDependencies () {
+        return this.options.dependencies || {};
+    }
+
+    _createTestRunCommand (encodedArgs, encodedDependencies) {
+        return new ExecuteClientFunctionCommand({
+            instantiationCallsiteName: this.callsiteNames.instantiation,
+            fnCode:                    this.compiledFnCode,
+            args:                      encodedArgs,
+            dependencies:              encodedDependencies
+        });
+    }
+
     _getCompiledFnCode () {
         if (typeof this.fn === 'function')
             return compileClientFunction(this.fn.toString(), this.options.dependencies, this.callsiteNames.instantiation, this.callsiteNames.instantiation);
@@ -126,15 +140,6 @@ export default class ClientFunctionBuilder {
             if (dependenciesType !== 'object')
                 throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotAnObject, 'dependencies', dependenciesType);
         }
-    }
-
-    _createExecutionTestRunCommand (encodedArgs, encodedDependencies) {
-        return new ExecuteClientFunctionCommand({
-            instantiationCallsiteName: this.callsiteNames.instantiation,
-            fnCode:                    this.compiledFnCode,
-            args:                      encodedArgs,
-            dependencies:              encodedDependencies
-        });
     }
 
     _getReplicatorTransforms () {

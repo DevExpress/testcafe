@@ -1,15 +1,33 @@
-import { Promise } from '../../deps/hammerhead';
-import { delay, positionUtils, domUtils } from '../../deps/testcafe-core';
-import { ProgressPanel, selectElement as selectElementUI } from '../../deps/testcafe-ui';
-import ClientFunctionExecutor from './client-function-executor';
-import { createReplicator, FunctionTransform, SelectorNodeTransform } from './replicator';
-import { NonDomNodeSelectorResultError } from '../../../../errors/test-run';
+import { Promise } from '../../../deps/hammerhead';
+import { delay, positionUtils, domUtils } from '../../../deps/testcafe-core';
+import { ProgressPanel, selectElement as selectElementUI } from '../../../deps/testcafe-ui';
+import ClientFunctionExecutor from '../client-function-executor';
+import { createReplicator, FunctionTransform, SelectorNodeTransform } from '../replicator';
+import { InvalidSelectorResultError } from '../../../../../errors/test-run';
 
 const CHECK_ELEMENT_DELAY = 200;
 const PROGRESS_PANEL_TEXT = 'Waiting for an element to appear';
 
-// NOTE: save original ctor because it may be overwritten by page code
-var Node = window.Node;
+
+// NOTE: save original ctors and methods because they may be overwritten by page code
+var Node           = window.Node;
+var HTMLCollection = window.HTMLCollection;
+var NodeList       = window.NodeList;
+var isArray        = Array.isArray;
+
+
+// Utils
+function isArrayOfNodes (obj) {
+    if (!isArray(obj))
+        return false;
+
+    for (var i = 0; i < obj.length; i++) {
+        if (!(obj[i] instanceof Node))
+            return false;
+    }
+
+    return true;
+}
 
 function exists (el) {
     return !!el;
@@ -22,10 +40,23 @@ function visible (el) {
     return positionUtils.isElementVisible(el);
 }
 
+
+// Selector filter
+Object.defineProperty(window, '%testCafeSelectorFilter%', {
+    value: (node, options) => {
+        if (node === null || node === void 0 || node instanceof Node)
+            return node;
+
+        if (node instanceof HTMLCollection || node instanceof NodeList || isArrayOfNodes(node))
+            return node[options.index];
+
+        throw new InvalidSelectorResultError();
+    }
+});
+
 export default class SelectorExecutor extends ClientFunctionExecutor {
     constructor (command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError) {
         super(command);
-
 
         this.createNotFoundError    = createNotFoundError;
         this.createIsInvisibleError = createIsInvisibleError;
@@ -66,12 +97,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
 
         return Promise.resolve()
             .then(() => fn.apply(window, args))
-            .then(el => {
-                if (!(el instanceof Node) && el !== null && el !== void 0)
-                    throw new NonDomNodeSelectorResultError(this.command.instantiationCallsiteName);
-
-                return this._checkElement(el, startTime, exists, this.createNotFoundError, reCheck);
-            });
+            .then(el => this._checkElement(el, startTime, exists, this.createNotFoundError, reCheck));
     }
 
     _ensureVisible (el, startTime) {

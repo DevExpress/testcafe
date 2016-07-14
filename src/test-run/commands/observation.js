@@ -55,6 +55,7 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
 
         this.visibilityCheck = false;
         this.timeout         = null;
+        this.index           = 0;
 
         this._assignFrom(obj, false);
     }
@@ -62,7 +63,8 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
             { name: 'visibilityCheck' },
-            { name: 'timeout' }
+            { name: 'timeout' },
+            { name: 'index' }
         ]);
     }
 }

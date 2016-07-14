@@ -1,6 +1,6 @@
 import Replicator from 'replicator';
 import evalFunction from './eval-function';
-import { NodeSnapshot, ElementSnapshot } from './node-snapshots';
+import { NodeSnapshot, ElementSnapshot } from './selector-executor/node-snapshots';
 import { DomNodeClientFunctionResultError } from '../../../../errors/test-run';
 
 // NOTE: save original ctors because they may be overwritten by page code

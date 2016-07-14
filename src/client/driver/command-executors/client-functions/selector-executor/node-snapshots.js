@@ -1,29 +1,13 @@
-import { processScript, PROCESSING_COMMENTS } from '../../deps/hammerhead';
-import { positionUtils } from '../../deps/testcafe-core';
-import evalFunction from './eval-function';
+import { positionUtils } from '../../../deps/testcafe-core';
 
-// NOTE: taken from https://github.com/benjamingr/RegExp.escape
-function escapeRe (str) {
-    return str.replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
-}
-
-const SCRIPT_RE     = new RegExp(`${escapeRe(PROCESSING_COMMENTS.scriptStart)}.*?${escapeRe(PROCESSING_COMMENTS.scriptEnd)}`, 'g');
-const STYLESHEET_RE = new RegExp(`${escapeRe(PROCESSING_COMMENTS.stylesheetStart)}.*?${escapeRe(PROCESSING_COMMENTS.stylesheetEnd)}`, 'g');
-
-function sandboxed (fn) {
-    var code = `(${fn.toString()})`;
-
-    code = processScript(code, false);
-
-    return evalFunction(code, null);
-}
-
-var getAttrs       = sandboxed(element => element.attributes);
-var getChildNodes  = sandboxed(node => node.childNodes);
-var getChildren    = sandboxed(node => node.children);
-var getTextContent = sandboxed(node => node.textContent);
-var getClassName   = sandboxed(element => element.className);
-var getInnerText   = sandboxed(element => element.innerText);
+import {
+    getAttrs,
+    getChildNodes,
+    getChildren,
+    getTextContent,
+    getClassName,
+    getInnerText
+} from './sandboxed-node-properties';
 
 export class NodeSnapshot {
     constructor (node) {
@@ -67,7 +51,7 @@ export class ElementSnapshot extends NodeSnapshot {
         this.boundingClientRect = ElementSnapshot._getBoundingClientRect(element);
         this.classNames         = ElementSnapshot._getClassNames(element);
         this.style              = ElementSnapshot._getStyle(element);
-        this.innerText          = ElementSnapshot._getInnerText(element);
+        this.innerText          = getInnerText(element);
 
         [
             'namespaceURI', 'id',
@@ -122,15 +106,5 @@ export class ElementSnapshot extends NodeSnapshot {
         }
 
         return result;
-    }
-
-    static _getInnerText (element) {
-        var innerText = getInnerText(element);
-
-        // NOTE: IE includes scripts and stylesheets in innerText
-        return innerText && innerText
-                .replace(SCRIPT_RE, '')
-                .replace(STYLESHEET_RE, '')
-                .replace(/\r\n/g, '\n');
     }
 }

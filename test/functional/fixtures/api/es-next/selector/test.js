@@ -65,6 +65,10 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Element on new page');
     });
 
+    it('Should return element in collection specified by "index" options', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "index" option');
+    });
+
     describe('Errors', function () {
         it('Should handle errors in Selector code', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Error in code', { shouldFail: true })
@@ -78,7 +82,10 @@ describe('[API] Selector', function () {
         it('Should raise error if non-DOM node returned', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Return non-DOM node', { shouldFail: true })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('Selector can only return a DOM node, null or undefined. Use ClientFunction to return other values.');
+                    expect(errs[0]).contains(
+                        'Function that specifies a selector can only return a DOM node, an array of nodes, ' +
+                        'NodeList or HTMLCollection, null or undefined. Use ClientFunction to return other values.'
+                    );
                     expect(errs[0]).contains("> 242 |    await Selector(() => 'hey')();");
                 });
         });

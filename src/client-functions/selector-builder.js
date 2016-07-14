@@ -1,4 +1,5 @@
 import { isFinite, assign, isNil as isNullOrUndefined } from 'lodash';
+import dedent from 'dedent';
 import ClientFunctionBuilder from './client-function-builder';
 import { SelectorNodeTransform } from './replicator';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
@@ -51,17 +52,30 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         // OPTIMIZATION: if selector was produced from another selector and
         // it has same dependencies as origin selector, then we can
         // avoid recompilation and just re-use already compiled code.
-        var hasIdenticalDependenciesWithOriginSelector = this.options.originSelectorBuilder &&
-                                                         this.options.originSelectorBuilder.options.dependencies ===
-                                                         this.options.dependencies;
+        var hasSameDependenciesAsOriginSelector = this.options.originSelectorBuilder &&
+                                                  this.options.originSelectorBuilder.options.dependencies ===
+                                                  this.options.dependencies;
 
-        if (hasIdenticalDependenciesWithOriginSelector)
+        if (hasSameDependenciesAsOriginSelector)
             return this.options.originSelectorBuilder.compiledFnCode;
 
-        if (typeof this.fn === 'string')
-            return `(function(){return document.querySelector('${this.fn.replace(/'/g, "\\'")}');})`;
+        var code = typeof this.fn === 'string' ?
+                   `(function(){return document.querySelectorAll('${this.fn.replace(/'/g, "\\'")}');});` :
+                   super._getCompiledFnCode();
 
-        return super._getCompiledFnCode();
+
+        if (code) {
+            return dedent(
+                `(function(){
+                    var __f$=${code}
+                    return function(){
+                        return window['%testCafeSelectorFilter%'](__f$.apply(this, arguments), __dependencies$.__filterOptions$);
+                    };
+                 })();`
+            );
+        }
+
+        return null;
     }
 
     _createInvalidFnTypeError () {
@@ -94,8 +108,17 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         return lazyPromise;
     }
 
+    getFunctionDependencies () {
+        var dependencies = super.getFunctionDependencies();
 
-    _createExecutionTestRunCommand (encodedArgs, encodedDependencies) {
+        return assign({}, dependencies, {
+            __filterOptions$: {
+                index: this.options.index || 0
+            }
+        });
+    }
+
+    _createTestRunCommand (encodedArgs, encodedDependencies) {
         return new ExecuteSelectorCommand({
             instantiationCallsiteName: this.callsiteNames.instantiation,
             fnCode:                    this.compiledFnCode,
@@ -104,6 +127,15 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             visibilityCheck:           !!this.options.visibilityCheck,
             timeout:                   this.options.timeout
         });
+    }
+
+    _validateNonNegativeNumberOption (name, value) {
+        if (!isNullOrUndefined(value) && (!isFinite(value) || value < 0)) {
+            var valueType = typeof value;
+            var actual    = valueType === 'number' ? value : valueType;
+
+            throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotANonNegativeNumber, name, actual);
+        }
     }
 
     _validateOptions (options) {
@@ -116,12 +148,8 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                 throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotABoolean, 'visibilityCheck', visibilityCheckOptionType);
         }
 
-        if (!isNullOrUndefined(options.timeout) && (!isFinite(options.timeout) || options.timeout < 0)) {
-            var timeoutType = typeof options.timeout;
-            var actual      = timeoutType === 'number' ? options.timeout : timeoutType;
-
-            throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotANonNegativeNumber, 'timeout', actual);
-        }
+        this._validateNonNegativeNumberOption('timeout', options.timeout);
+        this._validateNonNegativeNumberOption('index', options.index);
     }
 
     _getReplicatorTransforms () {

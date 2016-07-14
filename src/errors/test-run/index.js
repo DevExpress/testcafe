@@ -63,11 +63,9 @@ export class DomNodeClientFunctionResultError extends TestRunErrorBase {
 
 // Selector errors
 //--------------------------------------------------------------------
-export class NonDomNodeSelectorResultError extends TestRunErrorBase {
-    constructor (instantiationCallsiteName) {
-        super(TYPE.nonDomNodeSelectorResultError);
-
-        this.instantiationCallsiteName = instantiationCallsiteName;
+export class InvalidSelectorResultError extends TestRunErrorBase {
+    constructor () {
+        super(TYPE.invalidSelectorResultError);
     }
 }
 
