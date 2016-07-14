@@ -4,6 +4,7 @@ import { ProgressPanel, selectElement as selectElementUI } from '../../../deps/t
 import ClientFunctionExecutor from '../client-function-executor';
 import { createReplicator, FunctionTransform, SelectorNodeTransform } from '../replicator';
 import { InvalidSelectorResultError } from '../../../../../errors/test-run';
+import { getInnerText, getTextContent } from './sandboxed-node-properties';
 
 const CHECK_ELEMENT_DELAY = 200;
 const PROGRESS_PANEL_TEXT = 'Waiting for an element to appear';
@@ -40,15 +41,49 @@ function visible (el) {
     return positionUtils.isElementVisible(el);
 }
 
+function hasText (node, textRe) {
+    // Element
+    if (node.nodeType === 1)
+        return textRe.test(getInnerText(node));
+
+    // Document and DocumentFragment
+    if (node.nodeType === 9 || node.nodeType === 11)
+        return !!filterNodeCollectionByText(node.childNodes, textRe).length;
+
+    return textRe.test(getTextContent(node));
+}
+
+function filterNodeCollectionByText (collection, textRe) {
+    var filtered = [];
+
+    for (var i = 0; i < collection.length; i++) {
+        if (hasText(collection[i], textRe))
+            filtered.push(collection[i]);
+    }
+
+    return filtered;
+}
+
 
 // Selector filter
 Object.defineProperty(window, '%testCafeSelectorFilter%', {
     value: (node, options) => {
-        if (node === null || node === void 0 || node instanceof Node)
+        if (node === null || node === void 0)
             return node;
 
-        if (node instanceof HTMLCollection || node instanceof NodeList || isArrayOfNodes(node))
+        if (node instanceof Node) {
+            if (options.textFilter)
+                return hasText(node, options.textFilter) ? node : null;
+
+            return node;
+        }
+
+        if (node instanceof HTMLCollection || node instanceof NodeList || isArrayOfNodes(node)) {
+            if (options.textFilter)
+                node = filterNodeCollectionByText(node, options.textFilter);
+
             return node[options.index];
+        }
 
         throw new InvalidSelectorResultError();
     }

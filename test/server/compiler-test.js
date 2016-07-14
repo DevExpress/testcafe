@@ -849,6 +849,32 @@ describe('Compiler', function () {
                     });
                 });
         });
+
+        it('Should raise an error if Selector `textFitler` option is not a RegExp or string', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-text-filter-is-not-regexp-or-string/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"textFilter" option is expected to be a string or regular expression, but it was object.',
+
+                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  ' > 5 |Selector(() => {}, { textFilter: {} });\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});'
+                    });
+                });
+        });
     });
 
     describe('Raw data compiler', function () {

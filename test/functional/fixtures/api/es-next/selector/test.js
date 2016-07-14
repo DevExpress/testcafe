@@ -65,8 +65,16 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Element on new page');
     });
 
-    it('Should return element in collection specified by "index" options', function () {
+    it('Should filter results with "index" options', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "index" option');
+    });
+
+    it('Should filter results with "textFilter" options', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "textFilter" option');
+    });
+
+    it('Should filter results using compound filter', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Compound filter');
     });
 
     describe('Errors', function () {

@@ -1,4 +1,4 @@
-import { isFinite, assign, isNil as isNullOrUndefined } from 'lodash';
+import { isFinite, isRegExp, isNil as isNullOrUndefined, assign, escapeRegExp as escapeRe } from 'lodash';
 import dedent from 'dedent';
 import ClientFunctionBuilder from './client-function-builder';
 import { SelectorNodeTransform } from './replicator';
@@ -110,10 +110,15 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
     getFunctionDependencies () {
         var dependencies = super.getFunctionDependencies();
+        var textFilter   = this.options.textFilter;
+
+        if (typeof textFilter === 'string')
+            textFilter = new RegExp(escapeRe(textFilter));
 
         return assign({}, dependencies, {
             __filterOptions$: {
-                index: this.options.index || 0
+                index:      this.options.index || 0,
+                textFilter: textFilter
             }
         });
     }
@@ -146,6 +151,13 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
             if (visibilityCheckOptionType !== 'boolean')
                 throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotABoolean, 'visibilityCheck', visibilityCheckOptionType);
+        }
+
+        if (!isNullOrUndefined(options.textFilter)) {
+            var textFilterType = typeof options.textFilter;
+
+            if (textFilterType !== 'string' && !isRegExp(options.textFilter))
+                throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotAStringOrRegExp, 'textFilter', textFilterType);
         }
 
         this._validateNonNegativeNumberOption('timeout', options.timeout);

@@ -30,5 +30,6 @@ export default {
     optionsArgumentIsNotAnObject:        '"options" argument is expected to be an object, but it was {type}.',
     optionValueIsNotABoolean:            '"{name}" option is expected to be a boolean, but it was {type}.',
     optionValueIsNotANonNegativeNumber:  '"{name}" option is expected to be a non-negative number, but it was {type}.',
-    optionValueIsNotAnObject:            '"{name}" option is expected to be an object, but it was {type}.'
+    optionValueIsNotAnObject:            '"{name}" option is expected to be an object, but it was {type}.',
+    optionValueIsNotAStringOrRegExp:     '"{name}" option is expected to be a string or regular expression, but it was {type}.'
 };
