@@ -314,7 +314,7 @@ test('Element on new page', async t => {
     expect(el.tagName).eql('div');
 });
 
-test('Selector "index" option', async t => {
+test('Selector "index" option', async () => {
     // String selector
     const getSecondEl = Selector('.idxEl', { index: 1 });
 
@@ -337,7 +337,7 @@ test('Selector "index" option', async t => {
     expect(el.id).eql('el1');
 });
 
-test('Selector "textFilter" option', async t => {
+test('Selector "textFilter" option', async () => {
     // String selector and string filter
     let selector = Selector('div', { textFilter: 'element 4.' });
 
@@ -401,7 +401,7 @@ test('Selector "textFilter" option', async t => {
 });
 
 test('Compound filter', async t => {
-    let selector = Selector('div', {
+    const selector = Selector('div', {
         textFilter: 'Hey?! (yo)',
         index:      1
     });
@@ -415,7 +415,7 @@ test('Compound filter', async t => {
     expect(el.id).eql('el4');
 
     // Selector should maintain filter when used as parameter
-    const getId = ClientFunction(selector => selector().id);
+    const getId = ClientFunction(getEl => getEl().id);
 
     let id = await getId(selector);
 
