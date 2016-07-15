@@ -235,7 +235,7 @@ export default {
     `),
 
     [TYPE.invalidSelectorResultError]: err => markup(err, `
-        Function that specifies a selector can only return a DOM node, an array of nodes, NodeList or HTMLCollection, null or undefined. Use ClientFunction to return other values.
+        Function that specifies a selector can only return a DOM node, an array of nodes, NodeList, HTMLCollection, null or undefined. Use ClientFunction to return other values.
 
         ${err.getCallsiteMarkup()}
     `),

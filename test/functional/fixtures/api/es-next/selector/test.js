@@ -92,7 +92,7 @@ describe('[API] Selector', function () {
                 .catch(function (errs) {
                     expect(errs[0]).contains(
                         'Function that specifies a selector can only return a DOM node, an array of nodes, ' +
-                        'NodeList or HTMLCollection, null or undefined. Use ClientFunction to return other values.'
+                        'NodeList, HTMLCollection, null or undefined. Use ClientFunction to return other values.'
                     );
                     expect(errs[0]).contains("> 242 |    await Selector(() => 'hey')();");
                 });
