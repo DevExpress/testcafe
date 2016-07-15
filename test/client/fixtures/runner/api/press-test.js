@@ -180,6 +180,16 @@ $(document).ready(function () {
         }, 300);
     });
 
+    asyncTest('Press action should only accept a string as an argument', function () {
+        actionsAPI.press(100);
+
+        setTimeout(function () {
+            equal(currentErrorType, ERROR_TYPE.incorrectPressActionArgument);
+
+            start();
+        }, 300);
+    });
+
     module('different scenarios');
 
     asyncTest('press a', function () {

@@ -8,6 +8,9 @@ var arrayUtils = testCafeCore.arrayUtils;
 
 
 export default function (keyString) {
+    if (typeof keyString !== 'string')
+        return { error: true };
+
     keyString = trim(keyString).replace(/\s+/g, ' ');
 
     var keyStringLength = keyString.length;
