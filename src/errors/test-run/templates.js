@@ -234,8 +234,8 @@ export default {
        ${err.getCallsiteMarkup()}
     `),
 
-    [TYPE.nonDomNodeSelectorResultError]: err => markup(err, `
-        ${err.instantiationCallsiteName} can only return a DOM node, null or undefined. Use ClientFunction to return other values.
+    [TYPE.invalidSelectorResultError]: err => markup(err, `
+        Function that specifies a selector can only return a DOM node, an array of nodes, NodeList, HTMLCollection, null or undefined. Use ClientFunction to return other values.
 
         ${err.getCallsiteMarkup()}
     `),

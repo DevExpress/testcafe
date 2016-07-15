@@ -82,6 +82,7 @@ export default class ESNextCompiler {
     _setupSourceMapsSupport () {
         sourceMapSupport.install({
             handleUncaughtExceptions: false,
+            environment:              'node',
 
             retrieveSourceMap: filename => {
                 var map = this.sourceMaps[filename];

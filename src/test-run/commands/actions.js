@@ -1,5 +1,5 @@
 import TYPE from './type';
-import SelectorFactory from '../../client-functions/selector-factory';
+import SelectorBuilder from '../../client-functions/selector-builder';
 import Assignable from '../../utils/assignable';
 import { ClickOptions, MouseOptions, TypeOptions } from './options';
 
@@ -19,9 +19,9 @@ import { APIError } from '../../errors/runtime';
 // Initializers
 function initSelector (name, val) {
     try {
-        var factory = new SelectorFactory(val, null, { instantiation: 'Selector' });
+        var builder = new SelectorBuilder(val, { visibilityCheck: true }, { instantiation: 'Selector' });
 
-        return factory.getCommand([], { visibilityCheck: true });
+        return builder.getCommand([]);
     }
     catch (err) {
         var msg = err.constructor === APIError ? err.rawMessage : err.message;

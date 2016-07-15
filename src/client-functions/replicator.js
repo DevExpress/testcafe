@@ -1,6 +1,6 @@
 import { identity } from 'lodash';
 import Replicator from 'replicator';
-import functionFactorySymbol from './factory-symbol';
+import functionBuilderSymbol from './builder-symbol';
 import compileClientFunction from '../compiler/es-next/compile-client-function';
 
 export function createReplicator (transforms) {
@@ -28,16 +28,18 @@ export class FunctionTransform {
     }
 
     toSerializable (fn) {
-        var clientFnFactory = fn[functionFactorySymbol];
+        var clientFnBuilder = fn[functionBuilderSymbol];
+
+        if (clientFnBuilder) {
+            return {
+                fnCode:       clientFnBuilder.compiledFnCode,
+                dependencies: clientFnBuilder.getFunctionDependencies()
+            };
+        }
 
         return {
-            fnCode: clientFnFactory ?
-                    clientFnFactory.functionDescriptor.fnCode :
-                    compileClientFunction(fn.toString(), null, this.callsiteNames.instantiation, this.callsiteNames.execution),
-
-            scopeVars: clientFnFactory ?
-                       clientFnFactory.functionDescriptor.scopeVars :
-                       null
+            fnCode:       compileClientFunction(fn.toString(), null, this.callsiteNames.instantiation, this.callsiteNames.execution),
+            dependencies: {}
         };
     }
 

@@ -1,17 +1,17 @@
-import ClientFunctionFactory from '../client-functions/client-function-factory';
-import SelectorFactory from '../client-functions/selector-factory';
+import ClientFunctionBuilder from '../client-functions/client-function-builder';
+import SelectorBuilder from '../client-functions/selector-builder';
 
 export default {
-    ClientFunction (fn, scopeVars) {
-        var factory = new ClientFunctionFactory(fn, scopeVars, { instantiation: 'ClientFunction' });
+    ClientFunction (fn, options) {
+        var builder = new ClientFunctionBuilder(fn, options, { instantiation: 'ClientFunction' });
 
-        return factory.getFunction();
+        return builder.getFunction();
     },
 
-    Selector (fn, scopeVars) {
-        var factory = new SelectorFactory(fn, scopeVars, { instantiation: 'Selector' });
+    Selector (fn, options) {
+        var builder = new SelectorBuilder(fn, options, { instantiation: 'Selector' });
 
-        return factory.getFunction();
+        return builder.getFunction();
     }
 };
 

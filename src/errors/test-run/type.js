@@ -37,7 +37,7 @@ export default {
     currentIframeIsInvisibleError:            'currentIframeIsInvisibleError',
     clientFunctionExecutionInterruptionError: 'clientFunctionExecutionInterruptionError',
     domNodeClientFunctionResultError:         'domNodeClientFunctionResultError',
-    nonDomNodeSelectorResultError:            'nonDomNodeSelectorResultError',
+    invalidSelectorResultError:               'invalidSelectorResultError',
     externalAssertionLibraryError:            'externalAssertionLibraryError',
     pageLoadError:                            'pageLoadError'
 };
