@@ -11,7 +11,6 @@ import getViewportWidth from '../utils/get-viewport-width';
 // the plugin, to avoid accidental rewrites.
 // Therefore we use symbols to store them.
 var stream          = Symbol();
-var viewportWidth   = Symbol();
 var wordWrapEnabled = Symbol();
 var indent          = Symbol();
 var errorDecorator  = Symbol();
@@ -19,14 +18,14 @@ var errorDecorator  = Symbol();
 export default class ReporterPluginHost {
     constructor (plugin, outStream) {
         this[stream]          = outStream || process.stdout;
-        this[viewportWidth]   = getViewportWidth(this[stream]);
         this[wordWrapEnabled] = false;
         this[indent]          = 0;
 
         var useColors = this[stream] === process.stdout && chalk.enabled && !plugin.noColors;
 
-        this.chalk  = new chalk.constructor({ enabled: useColors });
-        this.moment = moment;
+        this.chalk         = new chalk.constructor({ enabled: useColors });
+        this.moment        = moment;
+        this.viewportWidth = getViewportWidth(this[stream]);
 
         this.symbols = OS.win ?
                        { ok: '√', err: '×' } :
@@ -92,7 +91,7 @@ export default class ReporterPluginHost {
 
     formatError (err, prefix = '') {
         var prefixLengthWithoutColors = removeTTYColors(prefix).length;
-        var maxMsgLength              = this[viewportWidth] - this[indent] - prefixLengthWithoutColors;
+        var maxMsgLength              = this.viewportWidth - this[indent] - prefixLengthWithoutColors;
         var msg                       = err.formatMessage(this[errorDecorator], maxMsgLength);
 
         if (this[wordWrapEnabled])
@@ -113,7 +112,7 @@ export default class ReporterPluginHost {
 
     write (text) {
         if (this[wordWrapEnabled])
-            text = this.wordWrap(text, this[indent], this[viewportWidth]);
+            text = this.wordWrap(text, this[indent], this.viewportWidth);
         else
             text = this.indentString(text, this[indent]);
 
