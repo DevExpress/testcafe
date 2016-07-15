@@ -1,5 +1,6 @@
 {
   "name": "testcafe",
+  "license": "MIT",
   "version": "0.0.24-alpha",
   "main": "lib/index",
   "bin": {
