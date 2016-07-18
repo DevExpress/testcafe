@@ -1,3 +1,4 @@
+import Promise from 'pinkie';
 import TestCafe from './testcafe';
 import * as endpointUtils from 'endpoint-utils';
 import { GeneralError } from './errors/runtime';
@@ -47,6 +48,8 @@ async function createTestCafe (hostname, port1, port2) {
 createTestCafe.embeddingUtils = embeddingUtils;
 
 // Common API
-Object.keys(commonAPI).forEach(key => createTestCafe[key] = commonAPI[key]);
+Object.keys(commonAPI).forEach(key => {
+    createTestCafe[key] = commonAPI[key];
+});
 
 export default createTestCafe;

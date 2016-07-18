@@ -1,7 +1,7 @@
 import dedent from 'dedent';
 import { escape as escapeHtml } from 'lodash';
 import TYPE from './type';
-import buildDiff from '../../errors/test-run/assertion-diffs';
+import buildDiff from './assertion-diffs';
 
 function escapeNewLines (str) {
     return escapeHtml(str).replace(/(\r\n|\n|\r)/gm, '\\n');

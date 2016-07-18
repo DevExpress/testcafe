@@ -163,9 +163,6 @@ function createAutomation (elements, command) {
     if (command.options && 'offsetX' in command.options && 'offsetY' in command.options)
         ensureOffsetOptions(elements[0], command.options);
 
-    /* eslint-disable indent*/
-    // TODO: eslint raises an 'incorrect indent' error here. We use
-    // the old eslint version (v1.x.x). We should migrate to v2.x.x
     switch (command.type) {
         case COMMAND_TYPE.click :
             return new ClickAutomation(elements[0], command.options);
@@ -208,14 +205,18 @@ function createAutomation (elements, command) {
         case COMMAND_TYPE.clearUpload :
             return new UploadAutomation(elements[0]);
     }
-    /* eslint-enable indent*/
+
+    return null;
 }
 
 
 // Execute action
 export default function executeAction (command, selectorTimeout) {
     var resolveStartPromise = null;
-    var startPromise        = new Promise(resolve => resolveStartPromise = resolve);
+
+    var startPromise = new Promise(resolve => {
+        resolveStartPromise = resolve;
+    });
 
     var completionPromise = new Promise(resolve => {
         var requestBarrier = null;

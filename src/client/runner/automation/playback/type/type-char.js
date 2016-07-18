@@ -88,7 +88,10 @@ function _typeCharToContentEditable (element, text) {
     // NOTE: some browsers raise the 'input' event after the element
     // content is changed, but in others we should do it manually.
     var inputEventRaised = false;
-    var onInput          = () => inputEventRaised = true;
+
+    var onInput = () => {
+        inputEventRaised = true;
+    };
 
     var afterContentChanged = () => {
         nextTick()

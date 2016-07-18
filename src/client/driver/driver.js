@@ -93,7 +93,10 @@ export default class Driver {
         preventRealEvents();
 
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
-        hammerhead.on(hammerhead.EVENTS.beforeUnload, () => this.beforeUnloadRaised = true);
+
+        hammerhead.on(hammerhead.EVENTS.beforeUnload, () => {
+            this.beforeUnloadRaised = true;
+        });
     }
 
     // Error handling
@@ -107,6 +110,8 @@ export default class Driver {
 
         if (!this.contextStorage.getItem(PENDING_PAGE_ERROR))
             this.contextStorage.setItem(PENDING_PAGE_ERROR, error);
+
+        return null;
     }
 
     _failIfClientCodeExecutionIsInterrupted () {

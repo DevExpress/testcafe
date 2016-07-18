@@ -594,7 +594,7 @@
         }
     };
 
-    async.queue = function (worker, concurrency) {
+    async.commands = function (worker, concurrency) {
         var workers = 0;
         var q = {
             tasks: [],

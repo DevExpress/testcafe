@@ -124,7 +124,9 @@ function createFakeDiv (element) {
         elementTop -= bodyMargin.top + (parseInt(bodyTop.replace('px', ''), 10) || 0);
     }
 
-    arrayUtils.forEach(MODIFIERS_LIST, modifier => fakeDivCssStyles += `${modifier}:${styleUtils.get(element, modifier)};`);
+    arrayUtils.forEach(MODIFIERS_LIST, modifier => {
+        fakeDivCssStyles += `${modifier}:${styleUtils.get(element, modifier)};`;
+    });
 
     styleUtils.set(fakeDiv, {
         cssText:  fakeDivCssStyles,

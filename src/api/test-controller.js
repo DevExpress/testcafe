@@ -29,7 +29,7 @@ import {
     TakeScreenshotCommand,
     ResizeWindowCommand,
     ResizeWindowToFitDeviceCommand
-} from '../test-run/commands/window-manipulation';
+} from '../test-run/commands/browser-manipulation';
 
 import { WaitCommand } from '../test-run/commands/observation';
 

@@ -6,12 +6,12 @@ import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import { PageLoadError } from '../errors/test-run/';
-import BrowserManipulationManager from './browser-manipulation-manager';
+import BrowserManipulationQueue from './browser-manipulation-queue';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
 import COMMAND_TYPE from './commands/type';
 
-import { TakeScreenshotOnFailCommand } from './commands/window-manipulation';
+import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
 
 import {
     TestDoneCommand,
@@ -37,17 +37,16 @@ export default class TestRun extends Session {
 
         super(uploadsRoot);
 
-        this.opts                       = opts;
-        this.test                       = test;
-        this.browserConnection          = browserConnection;
-        this.browserManipulationManager = new BrowserManipulationManager(screenshotCapturer);
+        this.opts                     = opts;
+        this.test                     = test;
+        this.browserConnection        = browserConnection;
+        this.browserManipulationQueue = new BrowserManipulationQueue(this.id, screenshotCapturer);
 
         this.running = false;
         this.state   = STATE.initial;
 
-        this.driverTaskQueue          = [];
-        this.browserManipulationQueue = [];
-        this.testDoneCommandQueued    = false;
+        this.driverTaskQueue       = [];
+        this.testDoneCommandQueued = false;
 
         this.pendingRequest   = null;
         this.pendingPageError = null;
@@ -177,8 +176,9 @@ export default class TestRun extends Session {
     }
 
     _removeAllNonServiceTasks () {
-        this.driverTaskQueue          = this.driverTaskQueue.filter(driverTask => isServiceCommand(driverTask.command));
-        this.browserManipulationQueue = this.browserManipulationQueue.filter(manipulationTask => isServiceCommand(manipulationTask.command));
+        this.driverTaskQueue = this.driverTaskQueue.filter(driverTask => isServiceCommand(driverTask.command));
+
+        this.browserManipulationQueue.removeAllNonServiceManipulations();
     }
 
 
@@ -320,27 +320,13 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     // To avoid this, we send an empty response after 2 minutes if we didn't get any command.
     var responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
 
-    return new Promise((resolve, reject) => this.pendingRequest = { resolve, reject, responseTimeout });
+    return new Promise((resolve, reject) => {
+        this.pendingRequest = { resolve, reject, responseTimeout };
+    });
 };
 
 ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (msg) {
     this.debugLog.driverMessage(msg);
 
-    var command = this.browserManipulationQueue.shift();
-
-    if (command.type === COMMAND_TYPE.takeScreenshot)
-        return await this.browserManipulationManager.takeScreenshot(this.id, command.path);
-
-    if (command.type === COMMAND_TYPE.takeScreenshotOnFail)
-        return await this.browserManipulationManager.takeScreenshotOnFail(this.id);
-
-    if (command.type === COMMAND_TYPE.resizeWindow) {
-        return await BrowserManipulationManager.resizeWindow(this.id, msg.currentWidth, msg.currentHeight,
-            command.width, command.height);
-    }
-
-    if (command.type === COMMAND_TYPE.resizeWindowToFitDevice) {
-        return await BrowserManipulationManager.resizeWindowToFitDevice(this.id, msg.currentWidth, msg.currentHeight,
-            command.device, command.options.portraitOrientation);
-    }
+    return await this.browserManipulationQueue.executePendingManipulation(msg);
 };

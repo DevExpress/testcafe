@@ -1,5 +1,5 @@
 import { join as joinPath } from 'path';
-import uuid from 'uuid';
+import shortId from 'shortid';
 import { find } from 'lodash';
 import Capturer from './capturer';
 import SCREENSHOTS_WARNING_MESSAGES from './warning-messages';
@@ -22,7 +22,7 @@ export default class Screenshots {
     _addTestEntry (test) {
         var testEntry = {
             test:                      test,
-            path:                      this.screenshotsPath ? joinPath(this.screenshotsPath, uuid.v4().substr(0, 8)) : '',
+            path:                      this.screenshotsPath ? joinPath(this.screenshotsPath, shortId.generate()) : '',
             screenshotCapturingCalled: false
         };
 

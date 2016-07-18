@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import Promise from 'pinkie';
 import { flattenDeep as flatten, find } from 'lodash';
 import stripBom from 'strip-bom';
 import { Compiler as LegacyCompiler } from 'testcafe-legacy-api';

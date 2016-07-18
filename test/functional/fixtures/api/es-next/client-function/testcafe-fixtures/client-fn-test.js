@@ -13,7 +13,8 @@ test('Dispatch', async () => {
 });
 
 test('Call with arguments', async () => {
-    const getElementText = ClientFunction((className, idx) => document.querySelectorAll('.' + className)[idx].textContent);
+    const getElementText = ClientFunction((className, idx) => document.querySelectorAll('.' +
+                                                                                        className)[idx].textContent);
     const answer         = await getElementText('answer', 1);
 
     expect(answer.trim()).eql('42');
@@ -150,7 +151,9 @@ test('ClientFunction with dependencies', async () => {
 });
 
 test('Redirect during execution', async () => {
-    await ClientFunction(() => new Promise(() => window.location = 'index.html'))();
+    await ClientFunction(() => new Promise(() => {
+        window.location = 'index.html';
+    }))();
 });
 
 test('ClientFunction call with complex argument types', async () => {

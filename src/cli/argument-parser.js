@@ -103,28 +103,28 @@ export default class CLIArgumentParser {
             var currentChar = browserArg[i];
 
             switch (currentChar) {
-            case ',':
-                if (quoteChar)
-                    currentBrowser += currentChar;
-                else {
-                    browsers.push(currentBrowser);
-                    currentBrowser = '';
-                }
-                break;
+                case ',':
+                    if (quoteChar)
+                        currentBrowser += currentChar;
+                    else {
+                        browsers.push(currentBrowser);
+                        currentBrowser = '';
+                    }
+                    break;
 
-            case '"':
-            case '\'':
-                if (quoteChar === currentChar)
-                    quoteChar = null;
-                else if (!quoteChar)
-                    quoteChar = currentChar;
-                else
-                    currentBrowser += currentChar;
-                break;
+                case '"':
+                case '\'':
+                    if (quoteChar === currentChar)
+                        quoteChar = null;
+                    else if (!quoteChar)
+                        quoteChar = currentChar;
+                    else
+                        currentBrowser += currentChar;
+                    break;
 
-            default:
-                currentBrowser += currentChar;
-                break;
+                default:
+                    currentBrowser += currentChar;
+                    break;
             }
         }
 

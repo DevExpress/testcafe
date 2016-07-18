@@ -61,7 +61,10 @@ function onBeforeUnload (e) {
 
 function handleBeforeUnload () {
     hammerhead.on(hammerhead.EVENTS.beforeUnload, onBeforeUnload);
-    eventUtils.bind(window, 'unload', () => unloading = true);
+
+    eventUtils.bind(window, 'unload', () => {
+        unloading = true;
+    });
 }
 
 function prolongUnloadWaiting (timeout) {

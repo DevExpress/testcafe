@@ -59,7 +59,9 @@ export class ElementSnapshot extends NodeSnapshot {
             'scrollWidth', 'scrollHeight', 'scrollLeft', 'scrollTop',
             'offsetWidth', 'offsetHeight', 'offsetLeft', 'offsetTop',
             'clientWidth', 'clientHeight', 'clientLeft', 'clientTop'
-        ].forEach(prop => this[prop] = element[prop]);
+        ].forEach(prop => {
+            this[prop] = element[prop];
+        });
     }
 
     static _getBoundingClientRect (element) {

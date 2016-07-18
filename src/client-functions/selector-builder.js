@@ -1,3 +1,4 @@
+import Promise from 'pinkie';
 import { isFinite, isRegExp, isNil as isNullOrUndefined, assign, escapeRegExp as escapeRe } from 'lodash';
 import dedent from 'dedent';
 import ClientFunctionBuilder from './client-function-builder';

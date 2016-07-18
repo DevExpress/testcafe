@@ -17,10 +17,7 @@ if (!config.isTravisTask) {
                 })
                     .catch(function (errs) {
                         expect(errs[0]).to.contains('The "height" argument is expected to be a positive integer, but it was -5.');
-                        expect(errs[0]).to.contains(
-                            '51 |test(\'Incorrect action height argument\', async t => {' +
-                            ' > 52 |    await t.resizeWindow(500, -5);'
-                        );
+                        expect(errs[0]).to.contains(' > 59 |    await t.resizeWindow(500, -5);');
                     });
             });
 
@@ -29,7 +26,7 @@ if (!config.isTravisTask) {
                     .catch(function (errs) {
                         errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/fixtures/api/es-next/resize-window/pages/index.html":', 0);
                         errorInEachBrowserContains(errs, 'Resize error', 0);
-                        errorInEachBrowserContains(errs, '> 77 |    await t.resizeWindow(500, 500);', 0);
+                        errorInEachBrowserContains(errs, '> 84 |    await t.resizeWindow(500, 500);', 0);
                     });
             });
         });
@@ -50,10 +47,7 @@ if (!config.isTravisTask) {
                 })
                     .catch(function (errs) {
                         expect(errs[0]).to.contains('The "device" argument specifies an unsupported "iPhone555" device. For a list of supported devices, refer to "http://viewportsizes.com"');
-                        expect(errs[0]).to.contains(
-                            '70 |test(\'Incorrect action device argument\', async t => {' +
-                            ' > 71 |    await t.resizeWindowToFitDevice(\'iPhone555\'); '
-                        );
+                        expect(errs[0]).to.contains(' > 78 |    await t.resizeWindowToFitDevice(\'iPhone555\');');
                     });
             });
 
@@ -62,7 +56,7 @@ if (!config.isTravisTask) {
                     .catch(function (errs) {
                         errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/fixtures/api/es-next/resize-window/pages/index.html":', 0);
                         errorInEachBrowserContains(errs, 'Resize error', 0);
-                        errorInEachBrowserContains(errs, '> 83 |    await t.resizeWindowToFitDevice(\'iPhone\');', 0);
+                        errorInEachBrowserContains(errs, '> 90 |    await t.resizeWindowToFitDevice(\'iPhone\');', 0);
                     });
             });
         });

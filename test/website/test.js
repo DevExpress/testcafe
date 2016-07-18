@@ -30,21 +30,24 @@ class WebsiteTester {
 
             protocol.get(pageUrl, resolve);
         })
-        .then(response => {
-            return new Promise(resolve => {
-                let data = '';
+            .then(response => {
+                return new Promise(resolve => {
+                    let data = '';
 
-                response.on('data', chunk => data += chunk);
-                response.on('end', () => resolve(data));
+                    response.on('data', chunk => {
+                        data += chunk;
+                    });
+
+                    response.on('end', () => resolve(data));
+                });
+            })
+            .then(body => {
+                const parser   = new parse5.Parser();
+                const document = parser.parse(body);
+
+                this.parsedDocs[pageUrl] = document;
+                return document;
             });
-        })
-        .then(body => {
-            const parser   = new parse5.Parser();
-            const document = parser.parse(body);
-
-            this.parsedDocs[pageUrl] = document;
-            return document;
-        });
     }
 
     _isHashValid (link) {
@@ -107,6 +110,7 @@ class WebsiteTester {
 
             const siteChecker = new blc.SiteChecker({ excludeLinksToSamePage: false }, {
                 link: result => linkTests.push(this._getBrokenLink(result)),
+
                 page: (error, pageUrl) => {
                     pageTests.push(Promise
                         .all(linkTests)
@@ -117,10 +121,12 @@ class WebsiteTester {
                             return brokenLinks.length;
                         }));
                 },
+
                 html: (tree, robots, response, pageUrl) => {
-                    linkTests = [];
+                    linkTests                = [];
                     this.parsedDocs[pageUrl] = tree;
                 },
+
                 end: () => {
                     Promise
                         .all(pageTests)
