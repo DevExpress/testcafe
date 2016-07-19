@@ -141,8 +141,8 @@ gulp.task('clean', function () {
 
 // Lint
 gulp.task('lint', function () {
-    // TODO: eslint supports only node with version 4 or higher.
-    // Remove condition once we get rid of node 0.10 support.
+    // TODO: eslint supports node version 4 or higher.
+    // Remove this condition once we get rid of node 0.10 support.
     if (nodeVer.major === '0')
         return null;
 
