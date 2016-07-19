@@ -13,9 +13,11 @@ test('Dispatch', async () => {
 });
 
 test('Call with arguments', async () => {
-    const getElementText = ClientFunction((className, idx) => document.querySelectorAll('.' +
-                                                                                        className)[idx].textContent);
-    const answer         = await getElementText('answer', 1);
+    const getElementText = ClientFunction((className, idx) => {
+        return document.querySelectorAll('.' + className)[idx].textContent;
+    });
+
+    const answer = await getElementText('answer', 1);
 
     expect(answer.trim()).eql('42');
 });
