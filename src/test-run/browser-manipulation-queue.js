@@ -1,4 +1,4 @@
-import shortId from 'shortId';
+import shortId from 'shortid';
 import { resize as resizeWindow, getViewportSize } from 'testcafe-browser-natives';
 import SCREENSHOTS_WARNING_MESSAGES from '../runner/screenshots/warning-messages';
 import { isServiceCommand } from './commands/utils';

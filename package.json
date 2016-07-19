@@ -90,6 +90,7 @@
     "gulp-util": "^3.0.7",
     "gulp-webmake": "0.0.4",
     "markdownlint": ">=0.0.8",
+    "merge-stream": "^1.0.0",
     "multer": "^1.1.0",
     "opn": "^3.0.3",
     "publish-please": "^2.1.3",
