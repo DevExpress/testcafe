@@ -151,9 +151,11 @@ test('ClientFunction with dependencies', async () => {
 });
 
 test('Redirect during execution', async () => {
-    await ClientFunction(() => new Promise(() => {
+    const fn = ClientFunction(() => new Promise(() => {
         window.location = 'index.html';
-    }))();
+    }));
+
+    await fn();
 });
 
 test('ClientFunction call with complex argument types', async () => {

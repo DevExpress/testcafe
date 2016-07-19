@@ -145,7 +145,7 @@ describe('[API] ClientFunction', function () {
             return runTests('./testcafe-fixtures/client-fn-test.js', 'Redirect during execution', { shouldFail: true })
                 .catch(function (errs) {
                     expect(errs[0]).contains('ClientFunction execution was interrupted by page unload.');
-                    expect(errs[0]).contains("> 155 |        window.location = 'index.html';");
+                    expect(errs[0]).contains('> 158 |    await fn();');
                 });
         });
 
@@ -158,7 +158,7 @@ describe('[API] ClientFunction', function () {
                     expect(errs[0]).contains(
                         'ClientFunction code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).'
                     );
-                    expect(errs[0]).contains(' > 205 |    await hfn(async () => Promise.resolve());');
+                    expect(errs[0]).contains(' > 207 |    await hfn(async () => Promise.resolve());');
                 });
         });
 
@@ -166,7 +166,7 @@ describe('[API] ClientFunction', function () {
             return runTests('./testcafe-fixtures/client-fn-test.js', 'DOM node return value', { shouldFail: true })
                 .catch(function (errs) {
                     expect(errs[0]).contains('ClientFunction cannot return DOM elements. Use Selector functions for this purpose.');
-                    expect(errs[0]).contains(' > 226 |    await getSomeNodes();');
+                    expect(errs[0]).contains(' > 228 |    await getSomeNodes();');
                 });
         });
     });
