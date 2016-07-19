@@ -341,6 +341,8 @@ export default class MoveAutomation {
 
                 if (iframeUnderCursor || window.top !== window)
                     return cursor.move(message.x, message.y);
+
+                return null;
             });
     }
 
@@ -359,6 +361,8 @@ export default class MoveAutomation {
                         ._moveToCurrentFrame()
                         .then(() => this._move());
                 }
+
+                return null;
             });
     }
 }

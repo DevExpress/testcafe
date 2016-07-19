@@ -3,6 +3,7 @@
     "no-unused-expressions": 0
   },
   "globals": {
-    "fixture": true
+    "fixture": true,
+    "Promise": true
   }
 }

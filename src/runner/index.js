@@ -79,7 +79,9 @@ export default class Runner extends EventEmitter {
         var reporter          = new Reporter(reporterPlugin, task, this.opts.reportOutStream);
         var completionPromise = this._getTaskResult(task, browserSet, reporter);
 
-        onceDone(completionPromise, () => completed = true);
+        onceDone(completionPromise, () => {
+            completed = true;
+        });
 
         var cancelTask = async () => {
             if (!completed)

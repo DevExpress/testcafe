@@ -3,14 +3,21 @@ import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 import { parse } from 'useragent';
 
-const getWindowWidth           = ClientFunction(() => window.innerWidth);
-const getWindowHeight          = ClientFunction(() => window.innerHeight);
-const getUserAgent             = ClientFunction(() => navigator.userAgent.toString());
-const setWindowOnresizeHandler = ClientFunction(() => window.onresize = function () {
-    throw new Error('Resize error');
+const getWindowWidth  = ClientFunction(() => window.innerWidth);
+const getWindowHeight = ClientFunction(() => window.innerHeight);
+const getUserAgent    = ClientFunction(() => navigator.userAgent.toString());
+
+const setWindowOnresizeHandler = ClientFunction(() => {
+    window.onresize = function () {
+        throw new Error('Resize error');
+    };
 });
-const resetWindowOnresizeHandler = ClientFunction(() => window.onresize = function () {
+
+const resetWindowOnresizeHandler = ClientFunction(() => {
+    window.onresize = function () {
+    };
 });
+
 const iPhoneSize = { width: 480, height: 320 };
 
 var initialWindowSize = {};

@@ -87,8 +87,7 @@ export default class ESNextCompiler {
             retrieveSourceMap: filename => {
                 var map = this.sourceMaps[filename];
 
-                if (map)
-                    return { url: filename, map };
+                return map ? { url: filename, map } : null;
             }
         });
     }

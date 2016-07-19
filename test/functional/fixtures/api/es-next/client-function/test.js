@@ -63,7 +63,7 @@ describe('[API] ClientFunction', function () {
                 .catch(function (errs) {
                     expect(errs[0]).contains('An error occurred in ClientFunction code:');
                     expect(errs[0]).contains('Error: Hey ya!');
-                    expect(errs[0]).contains('> 123 |    await fn();');
+                    expect(errs[0]).contains('> 126 |    await fn();');
                 });
         });
 
@@ -72,7 +72,7 @@ describe('[API] ClientFunction', function () {
                 .catch(function (errs) {
                     expect(errs[0]).contains('An error occurred in ClientFunction code:');
                     expect(errs[0]).contains('Error: 42');
-                    expect(errs[0]).contains('> 133 |    await fn();');
+                    expect(errs[0]).contains('> 136 |    await fn();');
                 });
         });
 
@@ -85,7 +85,7 @@ describe('[API] ClientFunction', function () {
                     'ClientFunction code is expected to be specified as a function, but number was passed.'
                 )).eql(0);
 
-                expect(errs[0]).contains('> 29 |    await ClientFunction(123)();');
+                expect(errs[0]).contains('> 32 |    await ClientFunction(123)();');
             });
         });
 
@@ -98,7 +98,7 @@ describe('[API] ClientFunction', function () {
                     'ClientFunction cannot implicitly resolve the test run in context of which it should be executed.'
                 )).eql(0);
 
-                expect(errs[0]).contains(' > 40 |                fn();');
+                expect(errs[0]).contains(' > 43 |                fn();');
             });
         });
 
@@ -111,7 +111,7 @@ describe('[API] ClientFunction', function () {
                     'ClientFunction code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).'
                 )).eql(0);
 
-                expect(errs[0]).contains('> 51 |    ClientFunction(async () => Promise.resolve());');
+                expect(errs[0]).contains('> 54 |    ClientFunction(async () => Promise.resolve());');
             });
         });
 
@@ -124,7 +124,7 @@ describe('[API] ClientFunction', function () {
                     'ClientFunction code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).'
                 )).eql(0);
 
-                expect(errs[0]).contains('> 55 |    ClientFunction(function*() { ');
+                expect(errs[0]).contains('> 58 |    ClientFunction(function*() { ');
             });
         });
 
@@ -137,7 +137,7 @@ describe('[API] ClientFunction', function () {
                     'The "boundTestRun" option value is expected to be a test controller.'
                 )).eql(0);
 
-                expect(errs[0]).contains('> 91 |    ClientFunction(() => 123).with({ boundTestRun: {} });');
+                expect(errs[0]).contains('> 94 |    ClientFunction(() => 123).with({ boundTestRun: {} });');
             });
         });
 
@@ -145,7 +145,7 @@ describe('[API] ClientFunction', function () {
             return runTests('./testcafe-fixtures/client-fn-test.js', 'Redirect during execution', { shouldFail: true })
                 .catch(function (errs) {
                     expect(errs[0]).contains('ClientFunction execution was interrupted by page unload.');
-                    expect(errs[0]).contains("> 153 |    await ClientFunction(() => new Promise(() => window.location = 'index.html'))();");
+                    expect(errs[0]).contains('> 160 |    await fn();');
                 });
         });
 
@@ -158,7 +158,7 @@ describe('[API] ClientFunction', function () {
                     expect(errs[0]).contains(
                         'ClientFunction code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).'
                     );
-                    expect(errs[0]).contains(' > 202 |    await hfn(async () => Promise.resolve());');
+                    expect(errs[0]).contains(' > 209 |    await hfn(async () => Promise.resolve());');
                 });
         });
 
@@ -166,7 +166,7 @@ describe('[API] ClientFunction', function () {
             return runTests('./testcafe-fixtures/client-fn-test.js', 'DOM node return value', { shouldFail: true })
                 .catch(function (errs) {
                     expect(errs[0]).contains('ClientFunction cannot return DOM elements. Use Selector functions for this purpose.');
-                    expect(errs[0]).contains(' > 223 |    await getSomeNodes();');
+                    expect(errs[0]).contains(' > 230 |    await getSomeNodes();');
                 });
         });
     });

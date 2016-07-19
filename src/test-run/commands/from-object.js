@@ -23,16 +23,13 @@ import {
     TakeScreenshotCommand,
     ResizeWindowCommand,
     ResizeWindowToFitDeviceCommand
-} from './window-manipulation';
+} from './browser-manipulation';
 
 import { WaitCommand } from './observation';
 
 
 // Create command from object
 export default function createCommandFromObject (obj) {
-    /* eslint-disable indent*/
-    // TODO: eslint raises an 'incorrect indent' error here. We use
-    // an old eslint version (v1.x.x). We should migrate to v2.x.x
     switch (obj.type) {
         case TYPE.click:
             return new ClickCommand(obj);
@@ -94,5 +91,6 @@ export default function createCommandFromObject (obj) {
         case TYPE.switchToMainWindow:
             return new SwitchToMainWindowCommand();
     }
-    /* eslint-enable indent*/
+
+    return null;
 }

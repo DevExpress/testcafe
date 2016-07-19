@@ -54,7 +54,8 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
             if (simulateFocus)
                 focusByRelatedElement(labelWithForAttr);
 
-            return resolve();
+            resolve();
+            return;
         }
 
         var focusWithSilentMode = !simulateFocus;
@@ -62,17 +63,19 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
 
         focusBlurSandbox.focus(elementForFocus, () => {
             // NOTE: if a different element was focused in the focus event handler, we should not set selection
-            if (simulateFocus && !isContentEditable && element !== domUtils.getActiveElement())
-                return resolve();
+            if (simulateFocus && !isContentEditable && element !== domUtils.getActiveElement()) {
+                resolve();
+                return;
+            }
 
             setCaretPosition(element, caretPos);
 
             // NOTE: we can't avoid the element being focused because the setSelection method leads to focusing.
             // So, we just focus the previous active element without handlers if we don't need focus here
             if (!simulateFocus && domUtils.getActiveElement() !== activeElement)
-                return focusBlurSandbox.focus(activeElement, resolve, true, true);
-
-            resolve();
+                focusBlurSandbox.focus(activeElement, resolve, true, true);
+            else
+                resolve();
         }, focusWithSilentMode, focusForMouseEvent);
     });
 }

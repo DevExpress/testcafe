@@ -3,10 +3,10 @@ var gulp         = require('gulp');
 var gulpBabel    = require('gulp-babel');
 var less         = require('gulp-less');
 var filter       = require('gulp-filter');
-var eslint       = require('gulp-eslint');
 var git          = require('gulp-git');
 var globby       = require('globby');
 var qunitHarness = require('gulp-qunit-harness');
+var merge        = require('merge-stream');
 var mocha        = require('gulp-mocha');
 var mustache     = require('gulp-mustache');
 var rename       = require('gulp-rename');
@@ -26,7 +26,7 @@ var Promise      = require('pinkie');
 var markdownlint = require('markdownlint');
 var ghpages      = require('gulp-gh-pages');
 var prompt       = require('gulp-prompt');
-
+var nodeVer      = require('node-version');
 
 ll
     .tasks([
@@ -140,34 +140,38 @@ gulp.task('clean', function () {
 
 
 // Lint
-gulp.task('lint-client', function () {
-    return gulp
-        .src([
-            'src/client/core/prevent-real-events.js',
-            'src/client/core/page-unload-barrier.js',
-            'src/client/core/xhr-barrier.js',
-            'src/client/runner/automation/**/*.js',
-            'src/client/runner/utils/**/*.js',
-            'src/client/ui/cursor',
-            'src/client/driver/**/*.js'
-        ])
-        .pipe(eslint())
-        .pipe(eslint.format())
-        .pipe(eslint.failAfterError());
-});
+gulp.task('lint', function () {
+    // TODO: eslint supports node version 4 or higher.
+    // Remove this condition once we get rid of node 0.10 support.
+    if (nodeVer.major === '0')
+        return null;
 
-gulp.task('lint', ['lint-client'], function () {
-    return gulp
-        .src([
-            'src/**/*.js',
-            '!src/client/**/*.js',  //TODO: fix it
-            //'test/**/*.js',       //TODO: fix it
-            'test/server/**.js',
-            'test/functional/**/*.js',
-            'test/report-design-viewer/*.js',
-            'Gulpfile.js',
-            'test/website/**/*.js'
-        ])
+    var eslint = require('gulp-eslint');
+
+    var src = gulp.src([
+        'src/**/*.js',
+        '!src/client/**/*.js',  //TODO: fix it
+        //'test/**/*.js',       //TODO: fix it
+        'test/server/**.js',
+        'test/functional/**/*.js',
+        'test/report-design-viewer/*.js',
+        'Gulpfile.js',
+        'test/website/**/*.js'
+    ]);
+
+    // TODO join linting sources once we move
+    // legacy code to separate package
+    var clientSrc = gulp.src([
+        'src/client/core/prevent-real-events.js',
+        'src/client/core/page-unload-barrier.js',
+        'src/client/core/xhr-barrier.js',
+        'src/client/runner/automation/**/*.js',
+        'src/client/runner/utils/**/*.js',
+        'src/client/ui/cursor',
+        'src/client/driver/**/*.js'
+    ]);
+
+    return merge(src, clientSrc)
         .pipe(eslint())
         .pipe(eslint.format())
         .pipe(eslint.failAfterError());

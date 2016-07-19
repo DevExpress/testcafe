@@ -1,7 +1,7 @@
 fixture `Error on page load`
     .page `http://localhost:3000/fixtures/page-js-errors/pages/error-on-load.html`;
 
-async function wait (ms) {
+function wait (ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 

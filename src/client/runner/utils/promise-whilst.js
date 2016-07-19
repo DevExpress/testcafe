@@ -9,7 +9,7 @@ export default function (condition, iterator) {
             if (condition())
                 return iterator().then(iterate);
 
-            resolve();
+            return resolve();
         }
 
         return iterate();

@@ -10,6 +10,8 @@ import getViewportWidth from '../utils/get-viewport-width';
 // NOTE: we should not expose internal state to
 // the plugin, to avoid accidental rewrites.
 // Therefore we use symbols to store them.
+
+/*global Symbol*/
 var stream          = Symbol();
 var wordWrapEnabled = Symbol();
 var indent          = Symbol();

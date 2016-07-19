@@ -29,7 +29,9 @@ export default class Globals {
     }
 
     setup () {
-        Object.keys(this.functions).forEach(name => global[name] = this.functions[name]);
+        Object.keys(this.functions).forEach(name => {
+            global[name] = this.functions[name];
+        });
     }
 
     remove () {
