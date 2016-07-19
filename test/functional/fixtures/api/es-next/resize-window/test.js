@@ -3,7 +3,7 @@ var config                     = require('../../../../config.js');
 var errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 
 
-if (!config.isTravisTask) {
+if (config.useLocalBrowsers) {
     describe('[API] Resize window actions', function () {
         describe('t.resizeWindow', function () {
             it('Should resize the window', function () {

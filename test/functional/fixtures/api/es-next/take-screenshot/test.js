@@ -6,7 +6,7 @@ var assertionHelper = require('../../../../assertion-helper.js');
 var SCREENSHOT_PATH_MESSAGE_TEXT   = '___test-screenshots___';
 var SCREENSHOT_DIR_NOT_SET_MESSAGE = '[cannot take screenshots because the screenshot directory is not specified]';
 
-if (!config.isTravisTask) {
+if (config.useLocalBrowsers) {
     describe('[API] t.takeScreenshot()', function () {
 
         afterEach(assertionHelper.removeScreenshotDir);

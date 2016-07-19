@@ -169,7 +169,7 @@ testingEnvironments[testingEnvironmentNames.legacy] = {
 
 
 module.exports = {
-    isTravisTask: isTravisEnvironment,
+    useLocalBrowsers: process.env.TESTING_ENVIRONMENT === testingEnvironmentNames.localBrowsers,
 
     testingEnvironmentNames: testingEnvironmentNames,
     testingEnvironments:     testingEnvironments,

@@ -28,9 +28,6 @@ const SAUCE_LABS_REQUESTED_MACHINES_COUNT = environment.browsers.length;
 
 function initBrowsersInfo (tc) {
     browsersInfo = environment.browsers
-        .filter(function (browser) {
-            return config.isTravisTask || !browser.remoteOnly;
-        })
         .map(function (settings) {
             return {
                 settings:   settings,
@@ -101,7 +98,7 @@ before(function () {
             initBrowsersInfo(tc);
             site.create(config.site.port1, config.site.port2, config.site.viewsPath);
 
-            if (config.isTravisTask) {
+            if (!config.useLocalBrowsers) {
                 // NOTE: we need to disable this particular timeout for preventing mocha timeout
                 // error while establishing connection to Sauce Labs. If connection wouldn't be
                 // established after a specified number of attempts, an error will be thrown.
@@ -188,7 +185,7 @@ after(function () {
     delete global.runTests;
     delete global.testReport;
 
-    if (config.isTravisTask)
+    if (!config.useLocalBrowsers)
         return closeRemoteBrowsers();
 
     return closeLocalBrowsers();
