@@ -89,6 +89,62 @@ function closeLocalBrowsers () {
     return Promise.all(closeBrowserPromises);
 }
 
+// TODO remove once we've update reporters for #671
+var TempJSONReporter = function () {
+    return {
+        noColors:       true,
+        currentFixture: null,
+
+        report: {
+            startTime:  null,
+            endTime:    null,
+            userAgents: null,
+            passed:     0,
+            total:      0,
+            fixtures:   []
+        },
+
+        reportTaskStart: function reportTaskStart (startTime, userAgents, testCount) {
+            this.report.startTime  = startTime;
+            this.report.userAgents = userAgents;
+            this.report.total      = testCount;
+        },
+
+        reportFixtureStart: function reportFixtureStart (name, fixturePath) {
+            this.currentFixture = { name: name, path: fixturePath, tests: [] };
+            this.report.fixtures.push(this.currentFixture);
+        },
+
+        reportTestDone: function reportTestDone (name, testRunInfo) {
+            var _this = this;
+
+            var errs = testRunInfo.errs.map(function (err) {
+                return _this.formatError(err);
+            });
+
+            var warnings = testRunInfo.warnings.map(function (warning) {
+                return warning.message;
+            });
+
+            this.currentFixture.tests.push({
+                name:           name,
+                errs:           errs,
+                warnings:       warnings,
+                durationMs:     testRunInfo.durationMs,
+                unstable:       testRunInfo.unstable,
+                screenshotPath: testRunInfo.screenshotPath
+            });
+        },
+
+        reportTaskDone: function reportTaskDone (endTime, passed) {
+            this.report.passed  = passed;
+            this.report.endTime = endTime;
+
+            this.write(JSON.stringify(this.report, null, 2));
+        }
+    };
+};
+
 before(function () {
     var mocha = this;
 
@@ -146,7 +202,7 @@ before(function () {
                     .filter(function (test) {
                         return testName ? test === testName : true;
                     })
-                    .reporter('json', {
+                    .reporter(TempJSONReporter, {
                         write: function (data) {
                             report += data;
                         },

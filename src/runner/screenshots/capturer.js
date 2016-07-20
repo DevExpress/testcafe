@@ -21,13 +21,9 @@ export default class Capturer {
     async _takeScreenshot (windowId, filePath) {
         await ensureDir(dirname(filePath));
         await takeScreenshot(windowId, filePath);
-
-        return filePath;
     }
 
     async captureAction (windowId, { stepName, customPath }) {
-        this.testEntry.screenshotCapturingCalled = true;
-
         if (!this.enabled)
             return null;
 
@@ -38,7 +34,11 @@ export default class Capturer {
         if (customPath)
             this.testEntry.path = this.baseScreenshotsPath;
 
-        return await this._takeScreenshot(windowId, filePath);
+        await this._takeScreenshot(windowId, filePath);
+
+        this.testEntry.hasScreenshots = true;
+
+        return filePath;
     }
 
     async captureError (windowId, { stepName, screenshotRequired }) {
@@ -47,7 +47,9 @@ export default class Capturer {
 
         var filePath = joinPath(this.testScreenshotsPath, 'errors', Capturer._getFileName(stepName));
 
-        return await this._takeScreenshot(windowId, filePath);
+        await this._takeScreenshot(windowId, filePath);
+
+        return filePath;
     }
 }
 

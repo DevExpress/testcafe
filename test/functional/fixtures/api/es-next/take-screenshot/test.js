@@ -4,7 +4,6 @@ var assertionHelper = require('../../../../assertion-helper.js');
 
 
 var SCREENSHOT_PATH_MESSAGE_TEXT   = '___test-screenshots___';
-var SCREENSHOT_DIR_NOT_SET_MESSAGE = '[cannot take screenshots because the screenshot directory is not specified]';
 
 if (config.useLocalBrowsers) {
     describe('[API] t.takeScreenshot()', function () {
@@ -32,7 +31,11 @@ if (config.useLocalBrowsers) {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path')
                 .then(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
-                    expect(testReport.screenshotPath).contains(SCREENSHOT_DIR_NOT_SET_MESSAGE);
+                    expect(testReport.warnings).eql([
+                        'Cannot take screenshots because the screenshot directory is not specified. To specify it, ' +
+                        'use the "-s" or "--screenshots" command line option or the "screenshots" method of the ' +
+                        'test runner in case you are using API.'
+                    ]);
                 });
         });
 
@@ -40,7 +43,11 @@ if (config.useLocalBrowsers) {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path')
                 .then(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
-                    expect(testReport.screenshotPath).contains(SCREENSHOT_DIR_NOT_SET_MESSAGE);
+                    expect(testReport.warnings).eql([
+                        'Cannot take screenshots because the screenshot directory is not specified. To specify it, ' +
+                        'use the "-s" or "--screenshots" command line option or the "screenshots" method of the ' +
+                        'test runner in case you are using API.'
+                    ]);
                 });
         });
 

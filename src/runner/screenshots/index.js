@@ -2,7 +2,6 @@ import { join as joinPath } from 'path';
 import shortId from 'shortid';
 import { find } from 'lodash';
 import Capturer from './capturer';
-import SCREENSHOTS_WARNING_MESSAGES from './warning-messages';
 
 export default class Screenshots {
     constructor (path) {
@@ -21,9 +20,9 @@ export default class Screenshots {
 
     _addTestEntry (test) {
         var testEntry = {
-            test:                      test,
-            path:                      this.screenshotsPath ? joinPath(this.screenshotsPath, shortId.generate()) : '',
-            screenshotCapturingCalled: false
+            test:           test,
+            path:           this.screenshotsPath ? joinPath(this.screenshotsPath, shortId.generate()) : '',
+            hasScreenshots: false
         };
 
         this.testEntries.push(testEntry);
@@ -36,13 +35,10 @@ export default class Screenshots {
     }
 
     hasCapturedFor (test) {
-        return this._getTestEntry(test).screenshotCapturingCalled;
+        return this._getTestEntry(test).hasScreenshots;
     }
 
     getPathFor (test) {
-        if (this._getTestEntry(test).screenshotCapturingCalled && !this.enabled)
-            return SCREENSHOTS_WARNING_MESSAGES.screenshotDirNotSet;
-
         return this._getTestEntry(test).path;
     }
 

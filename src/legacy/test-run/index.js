@@ -27,8 +27,8 @@ export default class LegacyTestRun extends Session {
 
         this.isFileDownloading = false;
 
-        // TODO remove it then we move shared data to session storage
         this.errs                       = [];
+        this.warnings                   = [];
         this.nativeDialogsInfo          = null;
         this.nativeDialogsInfoTimeStamp = 0;
         this.stepsSharedData            = {};

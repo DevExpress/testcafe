@@ -1,4 +1,4 @@
-import { find, sortBy } from 'lodash';
+import { find, sortBy, uniqBy } from 'lodash';
 import ReporterPluginHost from './plugin-host';
 
 export default class Reporter {
@@ -26,8 +26,19 @@ export default class Reporter {
             screenshotPath: null,
             pendingRuns:    runsPerTest,
             errs:           [],
+            warnings:       [],
             unstable:       false,
             startTime:      null
+        };
+    }
+
+    static _createTestRunInfo (reportItem) {
+        return {
+            errs:           sortBy(reportItem.errs, ['userAgent', 'type']),
+            warnings:       reportItem.warnings,
+            durationMs:     new Date() - reportItem.startTime,
+            unstable:       reportItem.unstable,
+            screenshotPath: reportItem.screenshotPath
         };
     }
 
@@ -41,14 +52,11 @@ export default class Reporter {
         // previous one frees all browser connections.
         // Therefore, tests always get completed sequentially.
         var reportItem = this.reportQueue.shift();
-        var durationMs = new Date() - reportItem.startTime;
 
         if (!reportItem.errs.length)
             this.passed++;
 
-        reportItem.errs = sortBy(reportItem.errs, ['userAgent', 'type']);
-
-        this.plugin.reportTestDone(reportItem.test.name, reportItem.errs, durationMs, reportItem.unstable, reportItem.screenshotPath);
+        this.plugin.reportTestDone(reportItem.test.name, Reporter._createTestRunInfo(reportItem));
 
         // NOTE: here we assume that tests are sorted by fixture.
         // Therefore, if the next report item has a different
@@ -80,8 +88,12 @@ export default class Reporter {
             var reportItem = this._getReportItemForTestRun(testRun);
 
             reportItem.pendingRuns--;
-            reportItem.errs     = reportItem.errs.concat(testRun.errs);
             reportItem.unstable = reportItem.unstable || testRun.unstable;
+            reportItem.errs     = reportItem.errs.concat(testRun.errs);
+
+            // NOTE: avoid duplicate warnings
+            reportItem.warnings = reportItem.warnings.concat(testRun.warnings);
+            reportItem.warnings = uniqBy(reportItem.warnings, 'message');
 
             if (!reportItem.pendingRuns) {
                 if (task.screenshots.hasCapturedFor(testRun.test))
