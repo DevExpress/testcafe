@@ -1,6 +1,7 @@
 var os = require('os');
 
 var isTravisEnvironment = !!process.env.TRAVIS;
+var isCCNetEnvironment  = !!process.env.CCNET;
 var hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
 
 var testingEnvironmentNames = {
@@ -169,7 +170,7 @@ testingEnvironments[testingEnvironmentNames.legacy] = {
 
 
 module.exports = {
-    useLocalBrowsers: process.env.TESTING_ENVIRONMENT === testingEnvironmentNames.localBrowsers,
+    useLocalBrowsers: !isTravisEnvironment && !isCCNetEnvironment,
 
     testingEnvironmentNames: testingEnvironmentNames,
     testingEnvironments:     testingEnvironments,
