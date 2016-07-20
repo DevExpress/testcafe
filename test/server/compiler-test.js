@@ -6,6 +6,7 @@ var Promise     = require('pinkie');
 var stackParser = require('error-stack-parser');
 var stripAnsi   = require('strip-ansi');
 var sortBy      = require('lodash').sortBy;
+var renderers   = require('callsite-record').renderers;
 var ERR_TYPE    = require('../../lib/errors/test-run/type');
 var Compiler    = require('../../lib/compiler');
 var commonAPI   = require('../../lib/api/common');
@@ -969,6 +970,31 @@ describe('Compiler', function () {
                         expect(testRun.commands.length).eql(1);
                     });
             });
+        });
+    });
+
+    describe('Regression', function () {
+        it('Incorrect callsite line in error report on node v0.10.41 (GH-599)', function () {
+            this.timeout(5000);
+
+            var src      = 'test/server/data/test-suites/regression-gh-599/testfile.js';
+            var compiler = new Compiler([src]);
+
+            return compiler
+                .getTests()
+                .then(function (tests) {
+                    var test = tests[0];
+
+                    return test.fn(testRunMock);
+                })
+                .then(function () {
+                    throw 'Promise rejection expected';
+                })
+                .catch(function (err) {
+                    var callsite = err.callsite.renderSync({ renderer: renderers.noColor });
+
+                    expect(callsite).contains(' > 19 |        .method1()\n');
+                });
         });
     });
 });
