@@ -36,9 +36,8 @@ export default class BrowserManipulationQueue extends EventEmitter {
         try {
             return await capture();
         }
-        catch (e) {
-            // NOTE: swallow the error silently if we can't take screenshots for some
-            // reason (e.g. we don't have permissions to write a screenshot file).
+        catch (err) {
+            this.emit('warning', new Warning(WARNING_MESSAGE.screenshotError, err.message));
             return null;
         }
     }

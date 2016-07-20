@@ -3,7 +3,7 @@ var config          = require('../../../../config.js');
 var assertionHelper = require('../../../../assertion-helper.js');
 
 
-var SCREENSHOT_PATH_MESSAGE_TEXT   = '___test-screenshots___';
+var SCREENSHOT_PATH_MESSAGE_TEXT = '___test-screenshots___';
 
 if (config.useLocalBrowsers) {
     describe('[API] t.takeScreenshot()', function () {
@@ -27,8 +27,8 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        it('Should not take a screenshot without setting screenshotPath', function () {
-            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path')
+        it('Should create warning if screenshotPath is not specified', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot')
                 .then(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
                     expect(testReport.warnings).eql([
@@ -39,7 +39,7 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        it('Should not take a screenshot if screenshotPath is not set even if a custom path is specified', function () {
+        it('Should create warning if screenshotPath is not specified even if a custom path is specified', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path')
                 .then(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
