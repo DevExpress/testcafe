@@ -19,7 +19,8 @@ const WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT = 60;
 
 const FUNCTIONAL_TESTS_SELECTOR_TIMEOUT = 200;
 
-var environment = config.testingEnvironments[process.env.TESTING_ENVIRONMENT];
+var envName     = process.env.TESTING_ENVIRONMENT || config.testingEnvironmentNames.localBrowsers;
+var environment = config.testingEnvironments[envName];
 
 config.browsers = environment.browsers;
 
