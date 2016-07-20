@@ -4,7 +4,12 @@ var errorInEachBrowserContains = require('../../../../assertion-helper.js').erro
 
 describe('[Raw API] Upload', function () {
     it('Should upload a file', function () {
-        return runTests('./testcafe-fixtures/upload.testcafe', 'Upload a file', { shouldFail: true })
+        return runTests('./testcafe-fixtures/upload.testcafe', 'Upload a file', {
+            shouldFail: true,
+
+            // NOTE: https://github.com/DevExpress/testcafe/issues/663
+            skip: 'iphone,ipad'
+        })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'File uploaded', 0);
             });
@@ -26,7 +31,12 @@ describe('[Raw API] Upload', function () {
     });
 
     it('Should upload files', function () {
-        return runTests('./testcafe-fixtures/upload.testcafe', 'Upload files', { shouldFail: true })
+        return runTests('./testcafe-fixtures/upload.testcafe', 'Upload files', {
+            shouldFail: true,
+
+            // NOTE: https://github.com/DevExpress/testcafe/issues/663
+            skip: 'iphone,ipad'
+        })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'Files uploaded', 0);
             });

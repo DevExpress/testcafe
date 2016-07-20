@@ -8,7 +8,9 @@
 <div id="div3"><p id="p5">5</p>div<p id="p6">6</p></div>
 <div id="div4" contenteditable="true"><p id="p7">7</p></div>
 <script>
-    document.getElementById('div1').addEventListener('mouseup', function () {
+    var hasTouchEvents = "ontouchstart" in window;
+
+    document.getElementById('div1').addEventListener(hasTouchEvents ? 'touchend' : 'mouseup', function () {
         var selection = window.getSelection();
         var startNode = this.childNodes[1].childNodes[0];
         var endNode   = this.childNodes[3].childNodes[0];

@@ -15,17 +15,19 @@
 
 <button id="button">Button</button>
 <script>
-    document.getElementById('input').addEventListener('mouseup', function () {
+    var hasTouchEvents = "ontouchstart" in window;
+
+    document.getElementById('input').addEventListener(hasTouchEvents ? 'touchend' : 'mouseup', function () {
         if (this.selectionStart === 2 && this.selectionEnd === 4)
             throw new Error('Selected text in input');
     });
 
-    document.getElementById('textarea').addEventListener('mouseup', function () {
+    document.getElementById('textarea').addEventListener(hasTouchEvents ? 'touchend' : 'mouseup', function () {
         if (this.selectionStart === 1 && this.selectionEnd === 5)
             throw new Error('Selected text in textarea');
     });
 
-    document.getElementById('div').addEventListener('mouseup', function () {
+    document.getElementById('div').addEventListener(hasTouchEvents ? 'touchend' : 'mouseup', function () {
         var selection   = window.getSelection();
         var divTextNode = this.childNodes[0];
 

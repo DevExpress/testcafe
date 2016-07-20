@@ -10,7 +10,9 @@
 
 <input id="input" value="input"/>
 <script>
-    document.getElementById('textarea').addEventListener('mouseup', function () {
+    var hasTouchEvents = "ontouchstart" in window;
+
+    document.getElementById('textarea').addEventListener(hasTouchEvents ? 'touchend' : 'mouseup', function () {
         if (this.selectionStart === 2 && this.selectionEnd === 7)
             throw new Error('Selected text in textarea');
     });

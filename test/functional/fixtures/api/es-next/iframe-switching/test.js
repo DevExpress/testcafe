@@ -95,7 +95,13 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
         });
 
         it('Should raise an error when trying to execute an action in an iframe that is not loaded', function () {
-            return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an iframe that is not loaded', DEFAULT_FAILED_RUN_OPTIONS)
+            return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an iframe that is not loaded', {
+                shouldFail:      true,
+                selectorTimeout: DEFAULT_SELECTOR_TIMEOUT,
+
+                // NOTE: https://github.com/DevExpress/testcafe/issues/663
+                skip: 'iphone,ipad'
+            })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Content of the iframe in which the test is currently operating did not load.');
                     expect(errs[0]).to.contains("> 199 |        .click('#btn');");

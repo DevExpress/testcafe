@@ -7,7 +7,7 @@ var ERROR_SCREENSHOT_PATH          = '\\errors\\';
 var SCREENSHOT_DIR_NOT_SET_MESSAGE = '[cannot take screenshots because the screenshot directory is not specified]';
 
 
-if (!config.isTravisTask) {
+if (config.useLocalBrowsers) {
     describe('Screenshots on fails', function () {
 
         afterEach(assertionHelper.removeScreenshotDir);
