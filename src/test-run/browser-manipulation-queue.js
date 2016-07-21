@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import shortId from 'shortid';
+import OS from 'os-family';
 import { resize as resizeWindow, getViewportSize } from 'testcafe-browser-natives';
 import { isServiceCommand } from './commands/utils';
 import COMMAND_TYPE from './commands/type';
@@ -43,6 +44,12 @@ export default class BrowserManipulationQueue extends EventEmitter {
     }
 
     async executePendingManipulation (driverMsg) {
+        // TODO: remove once https://github.com/DevExpress/testcafe-browser-natives/issues/12 implemented
+        if (OS.linux) {
+            this.emit('warning', new Warning(WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux));
+            return null;
+        }
+
         var command = this.commands.shift();
 
         switch (command.type) {
