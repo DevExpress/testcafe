@@ -1,7 +1,7 @@
 {
   "name": "testcafe",
   "license": "MIT",
-  "version": "0.0.25-alpha",
+  "version": "0.1.0-alpha",
   "main": "lib/index",
   "bin": {
     "testcafe": "./bin/testcafe.js"

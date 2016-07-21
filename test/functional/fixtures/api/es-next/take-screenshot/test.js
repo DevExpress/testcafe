@@ -1,14 +1,14 @@
 var expect          = require('chai').expect;
+var OS              = require('os-family');
 var config          = require('../../../../config.js');
 var assertionHelper = require('../../../../assertion-helper.js');
 
 
-var SCREENSHOT_PATH_MESSAGE_TEXT   = '___test-screenshots___';
-var SCREENSHOT_DIR_NOT_SET_MESSAGE = '[cannot take screenshots because the screenshot directory is not specified]';
+var SCREENSHOT_PATH_MESSAGE_TEXT = '___test-screenshots___';
 
-if (config.useLocalBrowsers) {
-    describe('[API] t.takeScreenshot()', function () {
 
+describe('[API] t.takeScreenshot()', function () {
+    if (config.useLocalBrowsers) {
         afterEach(assertionHelper.removeScreenshotDir);
 
         it('Should take a screenshot', function () {
@@ -28,19 +28,27 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        it('Should not take a screenshot without setting screenshotPath', function () {
-            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path')
+        it('Should create warning if screenshotPath is not specified', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot')
                 .then(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
-                    expect(testReport.screenshotPath).contains(SCREENSHOT_DIR_NOT_SET_MESSAGE);
+                    expect(testReport.warnings).eql([
+                        'Cannot take screenshots because the screenshot directory is not specified. To specify it, ' +
+                        'use the "-s" or "--screenshots" command line option or the "screenshots" method of the ' +
+                        'test runner in case you are using API.'
+                    ]);
                 });
         });
 
-        it('Should not take a screenshot if screenshotPath is not set even if a custom path is specified', function () {
+        it('Should create warning if screenshotPath is not specified even if a custom path is specified', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path')
                 .then(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
-                    expect(testReport.screenshotPath).contains(SCREENSHOT_DIR_NOT_SET_MESSAGE);
+                    expect(testReport.warnings).eql([
+                        'Cannot take screenshots because the screenshot directory is not specified. To specify it, ' +
+                        'use the "-s" or "--screenshots" command line option or the "screenshots" method of the ' +
+                        'test runner in case you are using API.'
+                    ]);
                 });
         });
 
@@ -62,5 +70,19 @@ if (config.useLocalBrowsers) {
                     );
                 });
         });
-    });
-}
+    }
+
+    if (OS.linux) {
+        it('Should create warning on attempt to take screenshot on Linux', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot', { setScreenshotPath: true })
+                .catch(function () {
+                    expect(assertionHelper.isScreenshotDirExists()).eql(false);
+                    expect(testReport.warnings).eql([
+                        'The screenshot and window resize functionality are not yet supported on Linux. ' +
+                        'Subscribe to the following issue to keep track: https://github.com/DevExpress/testcafe-browser-natives/issues/12'
+                    ]);
+                });
+        });
+    }
+});
+

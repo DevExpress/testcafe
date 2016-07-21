@@ -1,12 +1,16 @@
+import { EventEmitter } from 'events';
 import shortId from 'shortid';
+import OS from 'os-family';
 import { resize as resizeWindow, getViewportSize } from 'testcafe-browser-natives';
-import SCREENSHOTS_WARNING_MESSAGES from '../runner/screenshots/warning-messages';
 import { isServiceCommand } from './commands/utils';
 import COMMAND_TYPE from './commands/type';
+import Warning from '../warnings';
+import WARNING_MESSAGE from '../warnings/message';
 
-
-export default class BrowserManipulationQueue {
+export default class BrowserManipulationQueue extends EventEmitter {
     constructor (windowId, screenshotCapturer) {
+        super();
+
         this.commands           = [];
         this.windowId           = windowId;
         this.screenshotCapturer = screenshotCapturer;
@@ -24,52 +28,42 @@ export default class BrowserManipulationQueue {
         return await resizeWindow(this.windowId, currentWidth, currentHeight, width, height);
     }
 
-    async _takeScreenshot (customPath) {
-        try {
-            return await this.screenshotCapturer.captureAction(this.windowId, {
-                stepName:   shortId.generate(),
-                customPath: customPath
-            });
+    async _takeScreenshot (capture) {
+        if (!this.screenshotCapturer.enabled) {
+            this.emit('warning', new Warning(WARNING_MESSAGE.screenshotsPathNotSpecified));
+            return null;
         }
-        catch (e) {
-            // NOTE: swallow the error silently if we can't take screenshots for some
-            // reason (e.g. we don't have permissions to write a screenshot file).
+
+        try {
+            return await capture();
+        }
+        catch (err) {
+            this.emit('warning', new Warning(WARNING_MESSAGE.screenshotError, err.message));
             return null;
         }
     }
 
-    async _takeScreenshotOnFail () {
-        if (!this.screenshotCapturer.enabled)
-            return SCREENSHOTS_WARNING_MESSAGES.screenshotDirNotSet;
-
-        try {
-            return await this.screenshotCapturer.captureError(this.windowId, {
-                stepName:           shortId.generate(),
-                screenshotRequired: true
-            });
-        }
-        catch (e) {
-            return SCREENSHOTS_WARNING_MESSAGES.cannotCreate;
-        }
-    }
-
-    push (command) {
-        this.commands.push(command);
-    }
-
-    removeAllNonServiceManipulations () {
-        this.commands = this.commands.filter(command => isServiceCommand(command));
-    }
-
     async executePendingManipulation (driverMsg) {
+        // TODO: remove once https://github.com/DevExpress/testcafe-browser-natives/issues/12 implemented
+        if (OS.linux) {
+            this.emit('warning', new Warning(WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux));
+            return null;
+        }
+
         var command = this.commands.shift();
 
         switch (command.type) {
             case COMMAND_TYPE.takeScreenshot:
-                return await this._takeScreenshot(command.path);
+                return await this._takeScreenshot(() => this.screenshotCapturer.captureAction(this.windowId, {
+                    stepName:   shortId.generate(),
+                    customPath: command.path
+                }));
 
             case COMMAND_TYPE.takeScreenshotOnFail:
-                return await this._takeScreenshotOnFail();
+                return await this._takeScreenshot(() => this.screenshotCapturer.captureError(this.windowId, {
+                    stepName:           shortId.generate(),
+                    screenshotRequired: true
+                }));
 
             case COMMAND_TYPE.resizeWindow:
                 return await this._resizeWindow(driverMsg.currentWidth, driverMsg.currentHeight, command.width, command.height);
@@ -79,5 +73,13 @@ export default class BrowserManipulationQueue {
         }
 
         return null;
+    }
+
+    push (command) {
+        this.commands.push(command);
+    }
+
+    removeAllNonServiceManipulations () {
+        this.commands = this.commands.filter(command => isServiceCommand(command));
     }
 }

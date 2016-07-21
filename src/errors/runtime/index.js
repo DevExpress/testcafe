@@ -2,17 +2,12 @@ import { renderers } from 'callsite-record';
 import MESSAGE from './message';
 import createStackFilter from '../create-stack-filter';
 import getCallsite from '../get-callsite';
-
-
-// Utils
-function getText (template, ...args) {
-    return args.reduce((msg, arg) => msg.replace(/{.+?}/, arg), template);
-}
+import renderTemplate from '../../utils/render-template';
 
 // Errors
 export class GeneralError extends Error {
     constructor () {
-        super(getText.apply(null, arguments));
+        super(renderTemplate.apply(null, arguments));
         Error.captureStackTrace(this, GeneralError);
 
         // HACK: workaround for the `instanceof` problem
@@ -23,19 +18,19 @@ export class GeneralError extends Error {
 
 export class TestCompilationError extends Error {
     constructor (originalError) {
-        super(getText(MESSAGE.cannotPrepareTestsDueToError, originalError.toString()));
+        super(renderTemplate(MESSAGE.cannotPrepareTestsDueToError, originalError.toString()));
 
         // NOTE: stack includes message as well.
-        this.stack       = getText(MESSAGE.cannotPrepareTestsDueToError, originalError.stack);
+        this.stack       = renderTemplate(MESSAGE.cannotPrepareTestsDueToError, originalError.stack);
         this.constructor = TestCompilationError;
     }
 }
 
 export class APIError extends Error {
     constructor (methodName, template, ...args) {
-        var rawMessage = getText(template, ...args);
+        var rawMessage = renderTemplate(template, ...args);
 
-        super(getText(MESSAGE.cannotPrepareTestsDueToError, rawMessage));
+        super(renderTemplate(MESSAGE.cannotPrepareTestsDueToError, rawMessage));
 
         // NOTE: `rawMessage` is used in error substitution if it occurs in test run.
         this.rawMessage  = rawMessage;

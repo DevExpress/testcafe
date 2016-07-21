@@ -1,4 +1,5 @@
 import path from 'path';
+import { some } from 'lodash';
 import { readSync as read } from 'read-file-relative';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
@@ -37,10 +38,9 @@ export default class TestRun extends Session {
 
         super(uploadsRoot);
 
-        this.opts                     = opts;
-        this.test                     = test;
-        this.browserConnection        = browserConnection;
-        this.browserManipulationQueue = new BrowserManipulationQueue(this.id, screenshotCapturer);
+        this.opts              = opts;
+        this.test              = test;
+        this.browserConnection = browserConnection;
 
         this.running = false;
         this.state   = STATE.initial;
@@ -51,6 +51,16 @@ export default class TestRun extends Session {
         this.pendingRequest   = null;
         this.pendingPageError = null;
 
+        this.errs     = [];
+        this.warnings = [];
+
+        this.lastDriverStatusId       = null;
+        this.lastDriverStatusResponse = null;
+
+        this.browserManipulationQueue = new BrowserManipulationQueue(this.id, screenshotCapturer);
+
+        this.browserManipulationQueue.on('warning', warning => this._addWarning(warning));
+
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
         this.injectable.scripts.push('/testcafe-core.js');
@@ -58,10 +68,6 @@ export default class TestRun extends Session {
         this.injectable.scripts.push('/testcafe-runner.js');
         this.injectable.scripts.push('/testcafe-driver.js');
         this.injectable.styles.push('/testcafe-ui-styles.css');
-
-        this.errs                     = [];
-        this.lastDriverStatusId       = null;
-        this.lastDriverStatusResponse = null;
     }
 
 
@@ -166,6 +172,11 @@ export default class TestRun extends Session {
         this.errs.push(adapter);
     }
 
+    _addWarning (warning) {
+        // NOTE: avoid duplicates
+        if (!some(this.warnings, { message: warning.message }))
+            this.warnings.push(warning);
+    }
 
     // Task queue
     _enqueueCommand (command, callsite) {

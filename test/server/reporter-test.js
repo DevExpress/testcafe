@@ -65,7 +65,13 @@ describe('Reporter', function () {
             test:              testMocks[0],
             unstable:          true,
             browserConnection: browserConnectionMocks[0],
-            errs:              []
+
+            warnings: [
+                { message: 'warning1' },
+                { message: 'warning2' }
+            ],
+
+            errs: []
         },
 
         //fixture1test2
@@ -73,6 +79,7 @@ describe('Reporter', function () {
             test:              testMocks[1],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
+            warnings:          [],
 
             errs: [
                 { text: 'err1' },
@@ -85,6 +92,7 @@ describe('Reporter', function () {
             test:              testMocks[2],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
+            warnings:          [],
             errs:              []
 
         },
@@ -94,6 +102,7 @@ describe('Reporter', function () {
             test:              testMocks[3],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
+            warnings:          [],
             errs:              []
         },
 
@@ -102,6 +111,7 @@ describe('Reporter', function () {
             test:              testMocks[4],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
+            warnings:          [],
             errs:              []
         },
 
@@ -110,6 +120,7 @@ describe('Reporter', function () {
             test:              testMocks[5],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
+            warnings:          [],
             errs:              []
         }
     ];
@@ -121,6 +132,7 @@ describe('Reporter', function () {
             test:              testMocks[0],
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
+            warnings:          [{ message: 'warning1' }],
             errs:              []
         },
 
@@ -129,6 +141,7 @@ describe('Reporter', function () {
             test:              testMocks[1],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
+            warnings:          [],
             errs:              [{
                 text: 'err1'
             }]
@@ -139,6 +152,7 @@ describe('Reporter', function () {
             test:              testMocks[2],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
+            warnings:          [],
             errs:              []
         },
 
@@ -147,6 +161,7 @@ describe('Reporter', function () {
             test:              testMocks[3],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
+            warnings:          [],
             errs:              []
         },
 
@@ -155,6 +170,7 @@ describe('Reporter', function () {
             test:              testMocks[4],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
+            warnings:          [],
             errs:              []
         },
 
@@ -163,6 +179,7 @@ describe('Reporter', function () {
             test:              testMocks[5],
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
+            warnings:          [],
             errs:              [{
                 text: 'err1'
             }]
@@ -248,43 +265,58 @@ describe('Reporter', function () {
                 method: 'reportTestDone',
                 args:   [
                     'fixture1test1',
-                    [],
-                    74000,
-                    true,
-                    '/screenshots/1445437598847'
+                    {
+                        errs: [],
+
+                        warnings: [
+                            { message: 'warning1' },
+                            { message: 'warning2' }
+                        ],
+
+                        durationMs:     74000,
+                        unstable:       true,
+                        screenshotPath: '/screenshots/1445437598847'
+                    }
                 ]
             },
             {
                 method: 'reportTestDone',
                 args:   [
                     'fixture1test2',
-                    [
-                        {
-                            text:      'err1',
-                            userAgent: 'Chrome'
-                        },
-                        {
-                            text:      'err2',
-                            userAgent: 'Chrome'
-                        },
-                        {
-                            text:      'err1',
-                            userAgent: 'Firefox'
-                        }
-                    ],
-                    74000,
-                    false,
-                    '/screenshots/1445437598847'
+                    {
+                        errs: [
+                            {
+                                text:      'err1',
+                                userAgent: 'Chrome'
+                            },
+                            {
+                                text:      'err2',
+                                userAgent: 'Chrome'
+                            },
+                            {
+                                text:      'err1',
+                                userAgent: 'Firefox'
+                            }
+                        ],
+
+                        warnings:       [],
+                        durationMs:     74000,
+                        unstable:       false,
+                        screenshotPath: '/screenshots/1445437598847'
+                    }
                 ]
             },
             {
                 method: 'reportTestDone',
                 args:   [
                     'fixture1test3',
-                    [],
-                    74000,
-                    false,
-                    null
+                    {
+                        errs:           [],
+                        warnings:       [],
+                        durationMs:     74000,
+                        unstable:       false,
+                        screenshotPath: null
+                    }
                 ]
             },
             {
@@ -298,20 +330,26 @@ describe('Reporter', function () {
                 method: 'reportTestDone',
                 args:   [
                     'fixture2test1',
-                    [],
-                    74000,
-                    false,
-                    null
+                    {
+                        errs:           [],
+                        warnings:       [],
+                        durationMs:     74000,
+                        unstable:       false,
+                        screenshotPath: null
+                    }
                 ]
             },
             {
                 method: 'reportTestDone',
                 args:   [
                     'fixture2test2',
-                    [],
-                    74000,
-                    false,
-                    null
+                    {
+                        errs:           [],
+                        warnings:       [],
+                        durationMs:     74000,
+                        unstable:       false,
+                        screenshotPath: null
+                    }
                 ]
             },
             {
@@ -325,15 +363,19 @@ describe('Reporter', function () {
                 method: 'reportTestDone',
                 args:   [
                     'fixture3test1',
-                    [
-                        {
-                            text:      'err1',
-                            userAgent: 'Firefox'
-                        }
-                    ],
-                    74000,
-                    true,
-                    null
+                    {
+                        errs: [
+                            {
+                                text:      'err1',
+                                userAgent: 'Firefox'
+                            }
+                        ],
+
+                        warnings:       [],
+                        durationMs:     74000,
+                        unstable:       true,
+                        screenshotPath: null
+                    }
                 ]
             },
             {
@@ -366,10 +408,10 @@ describe('Reporter', function () {
             reportTestDone: function () {
                 var args = Array.prototype.slice.call(arguments);
 
-                expect(args[2]).to.be.a('number');
+                expect(args[1].durationMs).to.be.an('number');
 
                 // NOTE: replace durationMs
-                args[2] = 74000;
+                args[1].durationMs = 74000;
 
                 this.calls.push({ method: 'reportTestDone', args: args });
             },
