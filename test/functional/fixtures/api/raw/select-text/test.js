@@ -26,8 +26,8 @@ describe('[Raw API] Select text', function () {
     it("Should fail if an action's target isn't editable", function () {
         return runTests('./testcafe-fixtures/select-text.testcafe', 'Select in non-editable element', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).eql('The action element is expected to be editable (an input, textarea or element with the contentEditable attribute).  ' +
-                                    '[[Select in non-editable element callsite]]');
+                expect(errs[0]).contains('The action element is expected to be editable (an input, textarea or element with the contentEditable attribute).');
+                expect(errs[0]).contains('[[Select in non-editable element callsite]]');
             });
     });
 });

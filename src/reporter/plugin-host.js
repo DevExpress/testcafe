@@ -42,12 +42,13 @@ export default class ReporterPluginHost {
     createErrorDecorator () {
         return {
             'span step-name':  str => `"${str}"`,
-            'span user-agent': str => this.chalk.red(str),
+            'span user-agent': str => this.chalk.grey(str),
 
-            'span subtitle': str => `- ${this.chalk.bold(str)} -\n`,
+            'span subtitle': str => `- ${this.chalk.bold(str)} -`,
+            'div message':   str => this.chalk.bold.red(str),
 
             'div screenshot-info': identity,
-            'a screenshot-path':   str => this.chalk.underline(str),
+            'a screenshot-path':   str => this.chalk.grey.underline(str),
 
             'code':     str => this.chalk.yellow(str),
             'code api': str => this.chalk.yellow(str),

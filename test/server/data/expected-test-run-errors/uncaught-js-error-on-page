@@ -1,7 +1,9 @@
-Chrome 15.0.874 / Mac OS X 10.8.1
 Error on page "http://example.org":
 
 Custom script error
+
+Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Screenshot: /unix/path/with/<tag>
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');
@@ -17,5 +19,3 @@ Custom script error
 
    at func2 (testfile.js:23:5)
    at Object.<anonymous> (testfile.js:24:3)
-
-Screenshot: /unix/path/with/<tag>

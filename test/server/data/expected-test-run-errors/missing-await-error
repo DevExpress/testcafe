@@ -1,7 +1,9 @@
-Chrome 15.0.874 / Mac OS X 10.8.1
 A call to an async function is not awaited. Use the "await" keyword before
 actions, assertions or chains of them to ensure that they run in the right
 sequence.
+
+Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Screenshot: /unix/path/with/<tag>
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');
@@ -17,5 +19,3 @@ sequence.
 
    at func2 (testfile.js:23:5)
    at Object.<anonymous> (testfile.js:24:3)
-
-Screenshot: /unix/path/with/<tag>

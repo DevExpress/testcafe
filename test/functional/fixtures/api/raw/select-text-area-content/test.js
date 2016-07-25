@@ -12,7 +12,8 @@ describe('[Raw API] Select textarea content', function () {
     it("Should fail if an action target isn't textarea", function () {
         return runTests('./testcafe-fixtures/select-text-area-content.testcafe', 'Select in non-textarea element', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).eql('The action element is expected to be a <textarea>.  [[Select in non-textarea element callsite]]');
+                expect(errs[0]).contains('The action element is expected to be a <textarea>.');
+                expect(errs[0]).contains('[[Select in non-textarea element callsite]]');
             });
     });
 });

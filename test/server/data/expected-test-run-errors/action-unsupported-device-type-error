@@ -1,6 +1,8 @@
-Chrome 15.0.874 / Mac OS X 10.8.1
 The "device" argument specifies an unsupported "iPhone 555" device. For a
 list of supported devices, refer to "http://viewportsizes.com".
+
+Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Screenshot: /unix/path/with/<tag>
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');
@@ -16,5 +18,3 @@ list of supported devices, refer to "http://viewportsizes.com".
 
    at func2 (testfile.js:23:5)
    at Object.<anonymous> (testfile.js:24:3)
-
-Screenshot: /unix/path/with/<tag>

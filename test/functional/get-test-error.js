@@ -9,12 +9,17 @@ function areErrorsSame (errors) {
     return true;
 }
 
-function sanitizeError (err) {
+function normalizeError (err, userAgents) {
     return err
         .split('\n')
-        .slice(1)
         .map(function (str) {
-            return str.trim();
+            str = str.trim();
+
+            return str.replace(/^Browser\:.+$/, '[[user-agent]]');
+        })
+        .filter(function (str, idx) {
+            // NOTE: remove user agent from legacy API errors
+            return !(idx === 0 && userAgents.indexOf(str) >= 0);
         })
         .join(' ');
 }
@@ -29,10 +34,16 @@ module.exports = function getTestError (testReport, browsers) {
     if (!testReport.errs.length)
         return null;
 
-    var croppedErrors = testReport.errs.map(sanitizeError);
+    var userAgents = browsers.map(function (browserInfo) {
+        return browserInfo.connection.userAgent;
+    });
 
-    if (areErrorsSame(croppedErrors) && croppedErrors.length === browsers.length)
-        return [croppedErrors[0]];
+    var normalizedErrors = testReport.errs.map(function (err) {
+        return normalizeError(err, userAgents)
+    });
+
+    if (areErrorsSame(normalizedErrors) && normalizedErrors.length === browsers.length)
+        return [normalizedErrors[0]];
 
     if (browsers.length > 1) {
         var testError = {};
@@ -42,7 +53,9 @@ module.exports = function getTestError (testReport, browsers) {
                 .filter(function (error) {
                     return error.indexOf(browserInfo.connection.userAgent) > -1;
                 })
-                .map(sanitizeError);
+                .map(function (err) {
+                    return normalizeError(err, userAgents)
+                });
 
             if (errorsArray.length)
                 testError[browserInfo.settings.alias] = errorsArray;
@@ -51,5 +64,5 @@ module.exports = function getTestError (testReport, browsers) {
         return testError;
     }
 
-    return croppedErrors;
+    return normalizedErrors;
 };

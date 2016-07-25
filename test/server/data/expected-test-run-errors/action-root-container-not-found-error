@@ -1,7 +1,9 @@
-Chrome 15.0.874 / Mac OS X 10.8.1
 Content between the action elements cannot be selected because the root
 container for the selection range cannot be found, i.e. these elements do not
 have a common ancestor with the contentEditable attribute.
+
+Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Screenshot: /unix/path/with/<tag>
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');
@@ -17,5 +19,3 @@ have a common ancestor with the contentEditable attribute.
 
    at func2 (testfile.js:23:5)
    at Object.<anonymous> (testfile.js:24:3)
-
-Screenshot: /unix/path/with/<tag>
