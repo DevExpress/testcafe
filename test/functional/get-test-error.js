@@ -39,7 +39,7 @@ module.exports = function getTestError (testReport, browsers) {
     });
 
     var normalizedErrors = testReport.errs.map(function (err) {
-        return normalizeError(err, userAgents)
+        return normalizeError(err, userAgents);
     });
 
     if (areErrorsSame(normalizedErrors) && normalizedErrors.length === browsers.length)
@@ -54,7 +54,7 @@ module.exports = function getTestError (testReport, browsers) {
                     return error.indexOf(browserInfo.connection.userAgent) > -1;
                 })
                 .map(function (err) {
-                    return normalizeError(err, userAgents)
+                    return normalizeError(err, userAgents);
                 });
 
             if (errorsArray.length)
