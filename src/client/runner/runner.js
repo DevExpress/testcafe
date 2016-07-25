@@ -94,7 +94,6 @@ Runner.prototype._onActionRun = function () {
 };
 
 Runner.prototype._beforeScreenshot = function () {
-    this.stepIterator.suspend();
     this.eventEmitter.emit(RunnerBase.SCREENSHOT_CREATING_STARTED_EVENT, {});
     this.savedDocumentTitle = document.title;
 
@@ -147,8 +146,10 @@ Runner.prototype._onTestError = function (err, isAssertion) {
 
     var errorProcessingChain = Promise.resolve();
 
-    if (err.screenshotRequired)
+    if (err.screenshotRequired) {
+        this.stepIterator.suspend();
         errorProcessingChain = errorProcessingChain.then(() => this._beforeScreenshot());
+    }
 
     errorProcessingChain = errorProcessingChain.then(() => this._reportErrorToServer(err, isAssertion));
 
@@ -205,6 +206,8 @@ Runner.prototype._onGetStepsSharedData = function (e) {
 Runner.prototype._onTakeScreenshot = function (e) {
     if (!SETTINGS.get().TAKE_SCREENSHOTS)
         return typeof e.callback === 'function' ? e.callback() : null;
+
+    this.stepIterator.suspend();
 
     this
         ._beforeScreenshot()
