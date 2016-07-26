@@ -1,6 +1,6 @@
-import hammerhead from './../deps/hammerhead';
+import hammerhead from '../deps/hammerhead';
+import { sendRequestToFrame } from '../deps/testcafe-core';
 import CURSOR_UI_MESSAGES from './messages';
-import { sendRequestToFrame } from '../../runner/utils/iframe';
 
 var browserUtils = hammerhead.utils.browser;
 

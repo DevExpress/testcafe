@@ -31,13 +31,12 @@
     //Internals
     (function () {
         var hammerhead     = window['%hammerhead%'];
-        var testCafeCore   = window['%testCafeCore%'];
-        var testCafeRunner = window['%testCafeRunner%'];
+        var testCafeLegacyRunner = window['%testCafeLegacyRunner%'];
         var testCafeUI     = window['%testCafeUI%'];
 
         var stepNames = {{{stepNames}}};
 
-        testCafeCore.SETTINGS.set({
+        testCafeLegacyRunner.SETTINGS.set({
             CURRENT_TEST_STEP_NAME:        'Page Load',
             BROWSER_STATUS_URL:            '{{{browserStatusUrl}}}',
             TAKE_SCREENSHOTS:              {{{takeScreenshots}}},
@@ -48,13 +47,13 @@
             NATIVE_DIALOGS_INFO:           {{{nativeDialogsInfo}}}
         });
 
-        var transport                = testCafeCore.transport;
-        var sandboxedJQuery          = testCafeCore.sandboxedJQuery;
-        var extendJQuerySelectors    = testCafeCore.extendJQuerySelectors;
-        var jQueryDataMethodProxy    = testCafeCore.jQueryDataMethodProxy;
+        var transport                = testCafeLegacyRunner.transport;
+        var sandboxedJQuery          = testCafeLegacyRunner.sandboxedJQuery;
+        var extendJQuerySelectors    = testCafeLegacyRunner.extendJQuerySelectors;
+        var jQueryDataMethodProxy    = testCafeLegacyRunner.jQueryDataMethodProxy;
 
-        var Runner     = testCafeRunner.Runner;
-        var RunnerBase = testCafeRunner.RunnerBase;
+        var Runner     = testCafeLegacyRunner.Runner;
+        var RunnerBase = testCafeLegacyRunner.RunnerBase;
 
         var ProgressPanel   = testCafeUI.ProgressPanel;
         var modalBackground = testCafeUI.modalBackground;
@@ -75,7 +74,7 @@
             return;
 
         if (runner.nextStep)
-            testCafeCore.SETTINGS.get().CURRENT_TEST_STEP_NAME = stepNames[runner.nextStep - 1];
+            testCafeLegacyRunner.SETTINGS.get().CURRENT_TEST_STEP_NAME = stepNames[runner.nextStep - 1];
 
         var progressPanel = null;
 
@@ -92,7 +91,7 @@
                 progressPanel = new ProgressPanel();
 
             if (!e.isWaitAction)
-                progressPanel.show(RunnerBase.WAITING_FOR_ACTION_TARGET_MESSAGE, testCafeCore.SETTINGS.get().SELECTOR_TIMEOUT);
+                progressPanel.show(RunnerBase.WAITING_FOR_ACTION_TARGET_MESSAGE, testCafeLegacyRunner.SETTINGS.get().SELECTOR_TIMEOUT);
         });
 
         runner.on(runner.ACTION_RUN_EVENT, function () {

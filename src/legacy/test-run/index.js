@@ -35,7 +35,8 @@ export default class LegacyTestRun extends Session {
 
         this.injectable.scripts.push('/testcafe-core.js');
         this.injectable.scripts.push('/testcafe-ui.js');
-        this.injectable.scripts.push('/testcafe-runner.js');
+        this.injectable.scripts.push('/testcafe-automation.js');
+        this.injectable.scripts.push('/testcafe-legacy-runner.js');
         this.injectable.styles.push('/testcafe-ui-styles.css');
     }
 

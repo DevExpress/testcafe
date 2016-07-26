@@ -1,10 +1,26 @@
 import { Promise } from '../deps/hammerhead';
-import { domUtils, contentEditable, RequestBarrier, pageUnloadBarrier } from '../deps/testcafe-core';
-import testCafeRunner from '../deps/testcafe-runner';
+import { domUtils, contentEditable, RequestBarrier, pageUnloadBarrier, parseKeySequence } from '../deps/testcafe-core';
+import {
+    ERROR_TYPES as AUTOMATION_ERROR_TYPES,
+    calculateSelectTextArguments,
+    getOffsetOptions
+} from '../deps/testcafe-automation';
+import {
+    Click as ClickAutomation,
+    RClick as RClickAutomation,
+    DblClick as DblClickAutomation,
+    DragToOffset as DragToOffsetAutomation,
+    DragToElement as DragToElementAutomation,
+    Hover as HoverAutomation,
+    Type as TypeAutomation,
+    SelectText as SelectTextAutomation,
+    SelectEditableContent as SelectEditableContentAutomation,
+    Press as PressAutomation,
+    Upload as UploadAutomation
+} from '../deps/testcafe-automation';
 import DriverStatus from '../status';
 import SelectorExecutor from './client-functions/selector-executor';
 import COMMAND_TYPE from '../../../test-run/commands/type';
-import { getOffsetOptions } from '../../runner/utils/mouse';
 
 import {
     ActionElementNotFoundError,
@@ -19,21 +35,6 @@ import {
     ActionElementNotTextAreaError,
     ActionElementIsNotFileInputError
 } from '../../../errors/test-run';
-
-var ClickAutomation                 = testCafeRunner.get('./automation/playback/click');
-var RClickAutomation                = testCafeRunner.get('./automation/playback/rclick');
-var DblClickAutomation              = testCafeRunner.get('./automation/playback/dblclick');
-var DragToOffsetAutomation          = testCafeRunner.get('./automation/playback/drag/to-offset');
-var DragToElementAutomation         = testCafeRunner.get('./automation/playback/drag/to-element');
-var HoverAutomation                 = testCafeRunner.get('./automation/playback/hover');
-var TypeAutomation                  = testCafeRunner.get('./automation/playback/type');
-var SelectTextAutomation            = testCafeRunner.get('./automation/playback/select/select-text');
-var SelectEditableContentAutomation = testCafeRunner.get('./automation/playback/select/select-editable-content');
-var PressAutomation                 = testCafeRunner.get('./automation/playback/press');
-var parseKeySequence                = testCafeRunner.get('./automation/playback/press/parse-key-sequence');
-var getSelectPositionArguments      = testCafeRunner.get('./automation/playback/select/get-select-position-arguments');
-var UploadAutomation                = testCafeRunner.get('./automation/playback/upload');
-var AUTOMATION_ERROR_TYPES          = testCafeRunner.get('./automation/errors');
 
 
 // Ensure command element properties
@@ -187,7 +188,7 @@ function createAutomation (elements, command) {
 
         case COMMAND_TYPE.selectText:
         case COMMAND_TYPE.selectTextAreaContent:
-            selectArgs = getSelectPositionArguments(elements[0], command);
+            selectArgs = calculateSelectTextArguments(elements[0], command);
 
             return new SelectTextAutomation(elements[0], selectArgs.startPos, selectArgs.endPos);
 
@@ -250,4 +251,3 @@ export default function executeAction (command, selectorTimeout) {
 
     return { startPromise, completionPromise };
 }
-

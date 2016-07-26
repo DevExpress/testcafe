@@ -60,16 +60,15 @@
     }
 
     (function () {
-        var testCafeCore   = window['%testCafeCore%'];
-        var testCafeRunner = window['%testCafeRunner%'];
+        var testCafeLegacyRunner = window['%testCafeLegacyRunner%'];
 
-        var sandboxedJQuery          = testCafeCore.sandboxedJQuery;
-        var extendJQuerySelectors    = testCafeCore.extendJQuerySelectors;
-        var jQueryDataMethodProxy    = testCafeCore.jQueryDataMethodProxy;
-        var iframeDispatcher         = testCafeRunner.iframeDispatcher;
+        var sandboxedJQuery          = testCafeLegacyRunner.sandboxedJQuery;
+        var extendJQuerySelectors    = testCafeLegacyRunner.extendJQuerySelectors;
+        var jQueryDataMethodProxy    = testCafeLegacyRunner.jQueryDataMethodProxy;
+        var iframeDispatcher         = testCafeLegacyRunner.iframeDispatcher;
 
 
-        testCafeCore.SETTINGS.set({
+        testCafeLegacyRunner.SETTINGS.set({
             TAKE_SCREENSHOTS_ON_FAILS:     {{{takeScreenshotsOnFails}}},
             SKIP_JS_ERRORS:                {{{skipJsErrors}}},
             SELECTOR_TIMEOUT:              {{{selectorTimeout}}},
