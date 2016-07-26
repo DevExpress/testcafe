@@ -122,7 +122,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
             return runTests('./testcafe-fixtures/page-errors-test.js', 'Error in an iframe during executing in the main window', DEFAULT_FAILED_RUN_OPTIONS)
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, 'Iframe error', 0);
-                    errorInEachBrowserContains(errs, "> 19 |    await t.click('#error-in-iframe-btn');", 0);
+                    errorInEachBrowserContains(errs, "> 23 |        .click('#error-in-iframe-btn');", 0);
                 });
         });
 
@@ -130,7 +130,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
             return runTests('./testcafe-fixtures/page-errors-test.js', 'Error in the main window during executing in an iframe', DEFAULT_FAILED_RUN_OPTIONS)
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, 'Main window error', 0);
-                    errorInEachBrowserContains(errs, "> 25 |        .click('#error-in-main-window-btn');", 0);
+                    errorInEachBrowserContains(errs, "> 29 |        .click('#error-in-main-window-btn');", 0);
                 });
         });
 
@@ -138,7 +138,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
             return runTests('./testcafe-fixtures/page-errors-test.js', 'Error in an iframe during execution in another iframe', DEFAULT_FAILED_RUN_OPTIONS)
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, 'Iframe error', 0);
-                    errorInEachBrowserContains(errs, "> 31 |        .click('#error-in-another-iframe-btn');", 0);
+                    errorInEachBrowserContains(errs, "> 35 |        .click('#error-in-another-iframe-btn');", 0);
                 });
         });
     });

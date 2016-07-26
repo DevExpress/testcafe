@@ -1,6 +1,8 @@
-Chrome 15.0.874 / Mac OS X 10.8.1
 Elements of the "array" argument are expected to be non-empty strings, but
 the element at index 1 was number.
+
+Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Screenshot: /unix/path/with/<tag>
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');
@@ -16,5 +18,3 @@ the element at index 1 was number.
 
    at func2 (testfile.js:23:5)
    at Object.<anonymous> (testfile.js:24:3)
-
-Screenshot: /unix/path/with/<tag>

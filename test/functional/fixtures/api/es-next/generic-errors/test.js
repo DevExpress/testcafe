@@ -17,7 +17,7 @@ describe('[API] Generic errors', function () {
             return runTests('./testcafe-fixtures/error-in-test-code-test.js', 'Test code throws non-Error object',
                 { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).eql('Uncaught number "42" was thrown. Throw Error instead.');
+                    expect(errs[0]).contains('Uncaught number "42" was thrown. Throw Error instead.');
                 });
         });
 
@@ -25,7 +25,7 @@ describe('[API] Generic errors', function () {
             return runTests('./testcafe-fixtures/error-in-test-code-test.js', 'Test code throws null',
                 { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
-                    expect(errs[0]).eql('Uncaught object "null" was thrown. Throw Error instead.');
+                    expect(errs[0]).contains('Uncaught object "null" was thrown. Throw Error instead.');
                 });
         });
 

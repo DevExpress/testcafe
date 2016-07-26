@@ -13,21 +13,26 @@ describe('[Raw API] beforeEach/afterEach hooks', function () {
             .catch(function (errs) {
                 expect(errs[0]).eql(test1Err);
 
-                expect(errs[0]).eql('- Error in afterEach hook - ' +
-                                'Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
-                                'Uncaught Error: [beforeEach][test][afterEach]'
+                expect(errs[0]).contains(
+                    '- Error in afterEach hook - ' +
+                    'Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
+                    'Uncaught Error: [beforeEach][test][afterEach]'
                 );
 
             });
     });
 
     it('Should not run test and afterEach if fails in beforeEach', function () {
-        return runTests('./testcafe-fixtures/fail-in-before-each.testcafe', 'Test', { shouldFail: true, only: 'chrome' })
+        return runTests('./testcafe-fixtures/fail-in-before-each.testcafe', 'Test', {
+            shouldFail: true,
+            only:       'chrome'
+        })
             .catch(function (errs) {
 
-                expect(errs[0]).eql('- Error in beforeEach hook - ' +
-                                'Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
-                                'Uncaught Error: [beforeEach]'
+                expect(errs[0]).contains(
+                    '- Error in beforeEach hook - ' +
+                    'Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
+                    'Uncaught Error: [beforeEach]'
                 );
 
             });
@@ -37,10 +42,10 @@ describe('[Raw API] beforeEach/afterEach hooks', function () {
         return runTests('./testcafe-fixtures/fail-in-test.testcafe', 'Test', { shouldFail: true, only: 'chrome' })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
-                                        'Uncaught Error: [beforeEach]');
+                                            'Uncaught Error: [beforeEach]');
                 expect(errs[1]).to.contains('- Error in afterEach hook - ' +
-                                        'Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
-                                        'Uncaught Error: [beforeEach][afterEach]');
+                                            'Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
+                                            'Uncaught Error: [beforeEach][afterEach]');
             });
     });
 });

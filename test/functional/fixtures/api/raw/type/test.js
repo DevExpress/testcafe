@@ -12,16 +12,16 @@ describe('[Raw API] Type action', function () {
     it("Should fail if a 'text' argument does not have string type", function () {
         return runTests('./testcafe-fixtures/type.testcafe', 'Type with numeric text argument', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).eql('The "text" argument is expected to be a non-empty string, but it was number.  ' +
-                                    '[[Type with numeric text argument callsite]]');
+                expect(errs[0]).contains('The "text" argument is expected to be a non-empty string, but it was number.');
+                expect(errs[0]).contains('[[Type with numeric text argument callsite]]');
             });
     });
 
     it("Should fail if a 'text' argument is empty", function () {
         return runTests('./testcafe-fixtures/type.testcafe', 'Type with empty text argument', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).eql('The "text" argument is expected to be a non-empty string, but it was "".  ' +
-                                    '[[Type with empty text argument callsite]]');
+                expect(errs[0]).contains('The "text" argument is expected to be a non-empty string, but it was "".');
+                expect(errs[0]).contains('[[Type with empty text argument callsite]]');
             });
     });
 });

@@ -1,7 +1,9 @@
-Chrome 15.0.874 / Mac OS X 10.8.1
 Function that specifies a selector can only return a DOM node, an array of
 nodes, NodeList, HTMLCollection, null or undefined. Use ClientFunction to
 return other values.
+
+Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Screenshot: /unix/path/with/<tag>
 
    18 |function func1 () {
    19 |    record = createCallsiteRecord('func1');
@@ -17,5 +19,3 @@ return other values.
 
    at func2 (testfile.js:23:5)
    at Object.<anonymous> (testfile.js:24:3)
-
-Screenshot: /unix/path/with/<tag>

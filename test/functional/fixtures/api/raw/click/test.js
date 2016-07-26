@@ -28,7 +28,8 @@ describe('[Raw API] Click action', function () {
         return runTests('./testcafe-fixtures/page-with-error.testcafe', null, { shouldFail: true })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/fixtures/api/raw/click/pages/error.html":', 0);
-                errorInEachBrowserContains(errs, 'Custom error  [[Click on simple button callsite]]', 0);
+                errorInEachBrowserContains(errs, 'Custom error ', 0);
+                errorInEachBrowserContains(errs, '[[Click on simple button callsite]]', 0);
             });
     });
 
@@ -36,7 +37,8 @@ describe('[Raw API] Click action', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click error button', { shouldFail: true })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'Error on page "http://localhost:3000/fixtures/api/raw/click/pages/index.html":', 0);
-                errorInEachBrowserContains(errs, 'Custom error  [[Click error button callsite]]', 0);
+                errorInEachBrowserContains(errs, 'Custom error', 0);
+                errorInEachBrowserContains(errs, '[[Click error button callsite]]', 0);
             });
     });
 
@@ -58,43 +60,44 @@ describe('[Raw API] Click action', function () {
     it("Should fail if an action target doesn't exist", function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click non-existent button', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).eql('The specified selector does not match any element in the DOM tree.  ' +
-                                    '[[Click non-existent button callsite]]');
+                expect(errs[0]).contains('The specified selector does not match any element in the DOM tree.');
+                expect(errs[0]).contains('[[Click non-existent button callsite]]');
             });
     });
 
     it('Should fail if an action target is invisible', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click invisible button', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).eql('The element that matches the specified selector is not visible.  ' +
-                                    '[[Click invisible button callsite]]');
+                expect(errs[0]).contains('The element that matches the specified selector is not visible.');
+                expect(errs[0]).contains('[[Click invisible button callsite]]');
             });
     });
 
     it('Should fail if an action target is out of the visible area', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click a button that is out of the visible area', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).eql('The element that matches the specified selector is not visible.  ' +
-                                    '[[Click a button that is out of the visible area callsite]]');
+                expect(errs[0]).contains('The element that matches the specified selector is not visible.');
+                expect(errs[0]).contains('[[Click a button that is out of the visible area callsite]]');
             });
     });
 
     it('Should fail if action has incorrect selector', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Incorrect action selector', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).eql(
+                expect(errs[0]).contains(
                     'Action "selector" argument error:  Selector is expected to be initialized with a function, ' +
-                    'CSS selector string, another Selector, node snapshot or a Promise returned by a Selector, but number was passed.  ' +
-                    '[[Incorrect action selector callsite]]'
+                    'CSS selector string, another Selector, node snapshot or a Promise returned by a Selector, but number was passed.'
                 );
+
+                expect(errs[0]).contains('[[Incorrect action selector callsite]]');
             });
     });
 
     it('Should fail if action has an incorrect option', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Incorrect action option', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).eql('The "offsetX" option is expected to be a positive integer, but it was string.  ' +
-                                    '[[Incorrect action option callsite]]');
+                expect(errs[0]).contains('The "offsetX" option is expected to be a positive integer, but it was string.');
+                expect(errs[0]).contains('[[Incorrect action option callsite]]');
             });
     });
 });
