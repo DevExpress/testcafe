@@ -65,13 +65,7 @@ describe('Reporter', function () {
             test:              testMocks[0],
             unstable:          true,
             browserConnection: browserConnectionMocks[0],
-
-            warnings: [
-                { message: 'warning1' },
-                { message: 'warning2' }
-            ],
-
-            errs: []
+            errs:              []
         },
 
         //fixture1test2
@@ -79,7 +73,6 @@ describe('Reporter', function () {
             test:              testMocks[1],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            warnings:          [],
 
             errs: [
                 { text: 'err1' },
@@ -92,7 +85,6 @@ describe('Reporter', function () {
             test:              testMocks[2],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            warnings:          [],
             errs:              []
 
         },
@@ -102,7 +94,6 @@ describe('Reporter', function () {
             test:              testMocks[3],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            warnings:          [],
             errs:              []
         },
 
@@ -111,7 +102,6 @@ describe('Reporter', function () {
             test:              testMocks[4],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            warnings:          [],
             errs:              []
         },
 
@@ -120,7 +110,6 @@ describe('Reporter', function () {
             test:              testMocks[5],
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
-            warnings:          [],
             errs:              []
         }
     ];
@@ -132,7 +121,6 @@ describe('Reporter', function () {
             test:              testMocks[0],
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
-            warnings:          [{ message: 'warning1' }],
             errs:              []
         },
 
@@ -141,10 +129,8 @@ describe('Reporter', function () {
             test:              testMocks[1],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-            warnings:          [],
-            errs:              [{
-                text: 'err1'
-            }]
+
+            errs: [{ text: 'err1' }]
         },
 
         //fixture1test3
@@ -152,7 +138,6 @@ describe('Reporter', function () {
             test:              testMocks[2],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-            warnings:          [],
             errs:              []
         },
 
@@ -161,7 +146,6 @@ describe('Reporter', function () {
             test:              testMocks[3],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-            warnings:          [],
             errs:              []
         },
 
@@ -170,7 +154,6 @@ describe('Reporter', function () {
             test:              testMocks[4],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
-            warnings:          [],
             errs:              []
         },
 
@@ -179,10 +162,7 @@ describe('Reporter', function () {
             test:              testMocks[5],
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
-            warnings:          [],
-            errs:              [{
-                text: 'err1'
-            }]
+            errs:              [{ text: 'err1' }]
         }
     ];
 
@@ -210,6 +190,13 @@ describe('Reporter', function () {
         this.tests              = testMocks;
         this.browserConnections = browserConnectionMocks;
         this.screenshots        = new ScreenshotsMock();
+
+        this.warningLog = {
+            messages: [
+                'warning1',
+                'warning2'
+            ]
+        };
     };
 
     util.inherits(TaskMock, EventEmitter);
@@ -266,13 +253,7 @@ describe('Reporter', function () {
                 args:   [
                     'fixture1test1',
                     {
-                        errs: [],
-
-                        warnings: [
-                            { message: 'warning1' },
-                            { message: 'warning2' }
-                        ],
-
+                        errs:           [],
                         durationMs:     74000,
                         unstable:       true,
                         screenshotPath: '/screenshots/1445437598847'
@@ -299,7 +280,6 @@ describe('Reporter', function () {
                             }
                         ],
 
-                        warnings:       [],
                         durationMs:     74000,
                         unstable:       false,
                         screenshotPath: '/screenshots/1445437598847'
@@ -312,7 +292,6 @@ describe('Reporter', function () {
                     'fixture1test3',
                     {
                         errs:           [],
-                        warnings:       [],
                         durationMs:     74000,
                         unstable:       false,
                         screenshotPath: null
@@ -332,7 +311,6 @@ describe('Reporter', function () {
                     'fixture2test1',
                     {
                         errs:           [],
-                        warnings:       [],
                         durationMs:     74000,
                         unstable:       false,
                         screenshotPath: null
@@ -345,7 +323,6 @@ describe('Reporter', function () {
                     'fixture2test2',
                     {
                         errs:           [],
-                        warnings:       [],
                         durationMs:     74000,
                         unstable:       false,
                         screenshotPath: null
@@ -371,7 +348,6 @@ describe('Reporter', function () {
                             }
                         ],
 
-                        warnings:       [],
                         durationMs:     74000,
                         unstable:       true,
                         screenshotPath: null
@@ -382,7 +358,8 @@ describe('Reporter', function () {
                 method: 'reportTaskDone',
                 args:   [
                     new Date('1970-01-01T00:15:25.000Z'),
-                    4
+                    4,
+                    ['warning1', 'warning2']
                 ]
             }
         ];
