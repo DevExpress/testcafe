@@ -6,10 +6,9 @@ import COMMAND from './command';
 import ERROR_TYPE from '../test-run-error/type';
 import LegacyTestRunErrorFormattableAdapter from '../test-run-error/formattable-adapter';
 
-
 // Const
-const TEST_RUN_TEMPLATE        = read('../../client/legacy/test-run/index.js.mustache');
-const IFRAME_TEST_RUN_TEMPLATE = read('../../client/legacy/test-run/iframe.js.mustache');
+const TEST_RUN_TEMPLATE        = read('../client/test-run/index.js.mustache');
+const IFRAME_TEST_RUN_TEMPLATE = read('../client/test-run/iframe.js.mustache');
 
 
 export default class LegacyTestRun extends Session {

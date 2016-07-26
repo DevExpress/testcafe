@@ -11,6 +11,7 @@ var parseKeySequence   = testCafeCore.get('./utils/parse-key-sequence');
 
 preventRealEvents();
 
+QUnit.config.testTimeout = 15000;
 
 $(document).ready(function () {
     //consts

@@ -8,7 +8,7 @@ import Runner from './runner';
 // Const
 const CORE_SCRIPT          = read('./client/core/index.js');
 const DRIVER_SCRIPT        = read('./client/driver/index.js');
-const LEGACY_RUNNER_SCRIPT = read('./client/legacy/index.js');
+const LEGACY_RUNNER_SCRIPT = read('./legacy/client/index.js');
 const UI_SCRIPT            = read('./client/ui/index.js');
 const AUTOMATION_SCRIPT    = read('./client/automation/index.js');
 const UI_STYLE             = read('./client/ui/styles.css');

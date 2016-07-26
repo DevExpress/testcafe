@@ -916,131 +916,130 @@ $(document).ready(function () {
                     startNext();
                 });
         });
+
+        asyncTest('B254340 - type letters in input with type="number" (symbol in the middle)', function () {
+            var input = createInput('number')[0];
+
+            runTypeAutomation(input, '1+2', {})
+                .then(function () {
+                    equal(input.value, '12');
+                    input.value = '';
+
+                    return runTypeAutomation(input, '1-2', {});
+                })
+                .then(function () {
+                    equal(input.value, '12');
+                    input.value = '';
+
+                    return runTypeAutomation(input, '1.2', {});
+                })
+                .then(function () {
+                    equal(input.value, '1.2');
+                    input.value = '';
+
+                    return runTypeAutomation(input, '1+-2', {});
+                })
+                .then(function () {
+                    equal(input.value, '12');
+                    input.value = '';
+
+                    return runTypeAutomation(input, '1a2', {});
+                })
+                .then(function () {
+                    equal(input.value, '12');
+                    input.value = '';
+
+                    return runTypeAutomation(input, '1$2', {});
+                })
+                .then(function () {
+                    equal(input.value, '12');
+                    document.body.removeChild(input);
+                    startNext();
+                });
+        });
+
+        asyncTest('B254340 - type letters in input with type="number" (symbol in the end)', function () {
+            var input = createInput('number')[0];
+
+            runTypeAutomation(input, '12+', {})
+                .then(function () {
+                    equal(input.value, '12');
+                    input.value = '';
+
+                    return runTypeAutomation(input, '12-', {});
+                })
+                .then(function () {
+                    equal(input.value, '12');
+                    input.value = '';
+
+                    return runTypeAutomation(input, '12.', {});
+                })
+                .then(function () {
+                    equal(input.value, '12');
+                    input.value = '';
+
+                    return runTypeAutomation(input, '12+-', {});
+                })
+                .then(function () {
+                    equal(input.value, '12');
+                    input.value = '';
+
+                    return runTypeAutomation(input, '12a', {});
+                })
+                .then(function () {
+                    equal(input.value, '12');
+                    input.value = '';
+
+                    return runTypeAutomation(input, '12$', {});
+                })
+                .then(function () {
+                    equal(input.value, '12');
+                    document.body.removeChild(input);
+
+                    startNext();
+                });
+        });
+
+        asyncTest('B254340 - type letters in input with type="number" (one symbol)', function () {
+            var input = createInput('number').val('12')[0];
+
+            runTypeAutomation(input, '+', { caretPos: 0 })
+                .then(function () {
+                    equal(input.value, '12');
+                    input.value = '12';
+
+                    return runTypeAutomation(input, '-', { caretPos: 0 });
+                })
+                .then(function () {
+                    equal(input.value, '-12');
+                    input.value = '12';
+
+                    return runTypeAutomation(input, '.', { caretPos: 0 });
+                })
+                .then(function () {
+                    equal(input.value, '.12');
+                    input.value = '12';
+
+                    return runTypeAutomation(input, '+-', { caretPos: 0 });
+                })
+                .then(function () {
+                    equal(input.value, '-12');
+                    input.value = '12';
+
+                    return runTypeAutomation(input, '$', { caretPos: 0 });
+                })
+                .then(function () {
+                    equal(input.value, '12');
+                    input.value = '12';
+
+                    return runTypeAutomation(input, '-12', { caretPos: 0 });
+                })
+                .then(function () {
+                    equal(input.value, '-1212');
+                    document.body.removeChild(input);
+
+                    startNext();
+                });
+        });
     }
-
-
-    asyncTest('B254340 - type letters in input with type="number" (symbol in the middle)', function () {
-        var input = createInput('number')[0];
-
-        runTypeAutomation(input, '1+2', {})
-            .then(function () {
-                equal(input.value, '12');
-                input.value = '';
-
-                return runTypeAutomation(input, '1-2', {});
-            })
-            .then(function () {
-                equal(input.value, '12');
-                input.value = '';
-
-                return runTypeAutomation(input, '1.2', {});
-            })
-            .then(function () {
-                equal(input.value, '1.2');
-                input.value = '';
-
-                return runTypeAutomation(input, '1+-2', {});
-            })
-            .then(function () {
-                equal(input.value, '12');
-                input.value = '';
-
-                return runTypeAutomation(input, '1a2', {});
-            })
-            .then(function () {
-                equal(input.value, '12');
-                input.value = '';
-
-                return runTypeAutomation(input, '1$2', {});
-            })
-            .then(function () {
-                equal(input.value, '12');
-                document.body.removeChild(input);
-                startNext();
-            });
-    });
-
-    asyncTest('B254340 - type letters in input with type="number" (symbol in the end)', function () {
-        var input = createInput('number')[0];
-
-        runTypeAutomation(input, '12+', {})
-            .then(function () {
-                equal(input.value, '12');
-                input.value = '';
-
-                return runTypeAutomation(input, '12-', {});
-            })
-            .then(function () {
-                equal(input.value, '12');
-                input.value = '';
-
-                return runTypeAutomation(input, '12.', {});
-            })
-            .then(function () {
-                equal(input.value, '12');
-                input.value = '';
-
-                return runTypeAutomation(input, '12+-', {});
-            })
-            .then(function () {
-                equal(input.value, '12');
-                input.value = '';
-
-                return runTypeAutomation(input, '12a', {});
-            })
-            .then(function () {
-                equal(input.value, '12');
-                input.value = '';
-
-                return runTypeAutomation(input, '12$', {});
-            })
-            .then(function () {
-                equal(input.value, '12');
-                document.body.removeChild(input);
-
-                startNext();
-            });
-    });
-
-    asyncTest('B254340 - type letters in input with type="number" (one symbol)', function () {
-        var input = createInput('number').val('12')[0];
-
-        runTypeAutomation(input, '+', { caretPos: 0 })
-            .then(function () {
-                equal(input.value, '12');
-                input.value = '12';
-
-                return runTypeAutomation(input, '-', { caretPos: 0 });
-            })
-            .then(function () {
-                equal(input.value, '-12');
-                input.value = '12';
-
-                return runTypeAutomation(input, '.', { caretPos: 0 });
-            })
-            .then(function () {
-                equal(input.value, '.12');
-                input.value = '12';
-
-                return runTypeAutomation(input, '+-', { caretPos: 0 });
-            })
-            .then(function () {
-                equal(input.value, '-12');
-                input.value = '12';
-
-                return runTypeAutomation(input, '$', { caretPos: 0 });
-            })
-            .then(function () {
-                equal(input.value, '12');
-                input.value = '12';
-
-                return runTypeAutomation(input, '-12', { caretPos: 0 });
-            })
-            .then(function () {
-                equal(input.value, '-1212');
-                document.body.removeChild(input);
-
-                startNext();
-            });
-    });
 });

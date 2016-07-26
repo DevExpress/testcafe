@@ -3,7 +3,7 @@ import testCafeCore from './deps/testcafe-core';
 import SETTINGS from './settings';
 import RunnerBase from './runner-base';
 import TestContextStorage from './test-context-storage';
-import * as browser from '../browser';
+import * as browser from '../../client/browser';
 import * as transport from './transport';
 
 
