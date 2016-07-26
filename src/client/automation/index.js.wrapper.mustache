@@ -1,0 +1,12 @@
+// NOTE: We should have the capability to initialize scripts with different contexts.
+// This is required for iframes without the src attribute because Hammerhead does not
+// inject scripts into such iframes. So, we wrap all scripts in initialization functions.
+(function () {
+    function initTestCafeAutomation(window, isIFrameWithoutSrc) {
+        var document = window.document;
+
+        {{{source}}}
+    }
+
+    initTestCafeAutomation(window);
+})();
