@@ -7,7 +7,8 @@
     <script src="/hammerhead.js" class="script-hammerhead-shadow-ui"></script>
     <script src="/core.js" class="script-hammerhead-shadow-ui"></script>
     <script src="/ui.js" class="script-hammerhead-shadow-ui"></script>
-    <script src="/runner.js" class="script-hammerhead-shadow-ui"></script>
+    <script src="/automation.js" class="script-hammerhead-shadow-ui"></script>
+    <script src="/legacy-runner.js" class="script-hammerhead-shadow-ui"></script>
     <script src="/jquery.js" class="script-hammerhead-shadow-ui"></script>
 
     <link type="text/css" rel=stylesheet href="/ui.css" class="ui-stylesheet-hammerhead-shadow-ui">
@@ -26,18 +27,17 @@
 
     hammerhead.start({ sessionId: 'sessionId' });
 
-    var sandboxedJQuery = getTestCafeModule('testCafeCore').get('./sandboxed-jquery');
+    var testCafeLegacyRunner = getTestCafeModule('testCafeLegacyRunner');
+    var sandboxedJQuery      = testCafeLegacyRunner.get('./sandboxed-jquery');
+    var iframeDispatcher     = testCafeLegacyRunner.get('./iframe-dispatcher');
 
     sandboxedJQuery.init(window);
 
-    var testCafeRunner = getTestCafeModule('testCafeRunner');
-    var iframeDispatcher = testCafeRunner.get('./iframe-dispatcher');
-
-    var act = null,
-        ok = null,
-        notOk = null,
-        eq = null,
-        notEq = null,
+    var act          = null,
+        ok           = null,
+        notOk        = null,
+        eq           = null,
+        notEq        = null,
         runInContext = null;
 
     function onTestRunnerInitialized (testRunner, callback) {

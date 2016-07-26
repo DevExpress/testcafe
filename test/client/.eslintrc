@@ -1,9 +1,9 @@
 {
   "env": {
     "browser": true,
-    /* "qunit": true, Not implemented */
+    "qunit": true,
     "jquery": true,
-    "node": false
+    "node": true
   },
   "rules": {
     "no-eval": 0,
@@ -11,21 +11,6 @@
     "no-script-url": 0
   },
   "globals": {
-    /* QUnit variables */
-    "QUnit": true,
-    "ok": true,
-    "notOk": true,
-    "strictEqual": true,
-    "notEqual": true,
-    "deepEqual": true,
-    "test": true,
-    "asyncTest": true,
-    "throws": true,
-    "eval": true,
-    "expect": true,
-    "start": true,
-    "module": true,
-
     /* Utils */
     "async": true,
 

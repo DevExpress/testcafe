@@ -1,5 +1,4 @@
 var hammerhead    = window.getTestCafeModule('hammerhead');
-var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var Promise       = hammerhead.Promise;
 var iframeSandbox = hammerhead.sandbox.iframe;
 

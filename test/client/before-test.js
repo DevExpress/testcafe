@@ -28,11 +28,11 @@
         '});'
     ].join('');
 
-    window.getIframeTaskScript = function (referer, serviceMsgUrl, location, cookie) {
+    window.getIframeTaskScript = function (referer, serviceMsgUrl, loc, cookie) {
         return iframeTaskScriptTempate
             .replace('{{{referer}}}', referer || '')
             .replace('{{{serviceMsgUrl}}}', serviceMsgUrl || '')
-            .replace('{{{location}}}', location || '')
+            .replace('{{{location}}}', loc || '')
             .replace('{{{cookie}}}', cookie || '');
     };
 
@@ -58,11 +58,11 @@
 
 
     //TestCafe setup
-    var testCafeCore    = getTestCafeModule('testCafeCore');
-    var tcSettings      = testCafeCore.get('./settings');
-    var sandboxedJQuery = testCafeCore.get('./sandboxed-jquery');
+    var testCafeLegacyRunner = getTestCafeModule('testCafeLegacyRunner');
+    var tcSettings           = testCafeLegacyRunner.get('./settings');
+    var sandboxedJQuery      = testCafeLegacyRunner.get('./sandboxed-jquery');
 
-    tcSettings.get().REFERER                      = 'https://example.com';
+    tcSettings.get().REFERER          = 'https://example.com';
     tcSettings.get().SELECTOR_TIMEOUT = 10000;
 
     sandboxedJQuery.init(window);
@@ -107,4 +107,6 @@
             }
         });
     };
+
+    QUnit.config.testTimeout = 10000;
 })();
