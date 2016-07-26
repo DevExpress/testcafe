@@ -76,35 +76,37 @@ exports.isScreenshotDirExists = function () {
 };
 
 exports.checkScreenshotsCreated = function checkScreenshotsCreated (count, customPath) {
-    var expectedBrowserDirCount = config.browsers.length;
+    var browserCount            = config.browsers.length;
+    var expectedSubDirCount     = customPath ? 1 : browserCount;
     var expectedScreenshotCount = count || 2;
 
     if (!isDirExists(SCREENSHOTS_PATH))
         return false;
 
-    var fixtureDirs    = fs.readdirSync(SCREENSHOTS_PATH);
-    var fixtureDirPath = null;
-    var browserDirs    = null;
-    var hasScreenshots = true;
+    var fixtureDirs = fs.readdirSync(SCREENSHOTS_PATH);
 
-    if (fixtureDirs && fixtureDirs[0]) {
-        fixtureDirPath = path.join(SCREENSHOTS_PATH, fixtureDirs[0]);
+    if (!fixtureDirs || !fixtureDirs[0])
+        return false;
 
-        browserDirs = fs
-            .readdirSync(fixtureDirPath)
-            .filter(function (file) {
-                return isDirExists(path.join(fixtureDirPath, file));
-            });
+    var fixtureDirPath = path.join(SCREENSHOTS_PATH, fixtureDirs[0]);
+    var subDirs        = fs
+        .readdirSync(fixtureDirPath)
+        .filter(function (file) {
+            return isDirExists(path.join(fixtureDirPath, file));
+        });
 
-        hasScreenshots = browserDirs.every(function (dir) {
+    var customDirExists = customPath ? fixtureDirPath.indexOf(customPath) !== -1 : true;
+    var hasScreenshots  = true;
+
+    if (customPath)
+        hasScreenshots = getScreenshotFilesCount(fixtureDirPath) === expectedScreenshotCount * browserCount;
+    else {
+        hasScreenshots = subDirs.every(function (dir) {
             return getScreenshotFilesCount(path.join(fixtureDirPath, dir)) === expectedScreenshotCount;
         });
     }
 
-    var customDirExists = customPath ? fixtureDirPath.indexOf(customPath) !== -1 : true;
-
-    return customDirExists && fixtureDirs.length === 1 && browserDirs.length === expectedBrowserDirCount &&
-           hasScreenshots;
+    return customDirExists && fixtureDirs.length === 1 && subDirs.length === expectedSubDirCount && hasScreenshots;
 };
 
 exports.removeScreenshotDir = function () {
