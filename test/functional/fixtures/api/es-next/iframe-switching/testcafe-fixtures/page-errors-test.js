@@ -16,7 +16,11 @@ test('Error in a cross-domain iframe', async t => {
 });
 
 test('Error in an iframe during executing in the main window', async t => {
-    await t.click('#error-in-iframe-btn');
+    // NOTE: wait for iframe to load first
+    await t
+        .switchToIframe('#iframe')
+        .switchToMainWindow()
+        .click('#error-in-iframe-btn');
 });
 
 test('Error in the main window during executing in an iframe', async t => {
