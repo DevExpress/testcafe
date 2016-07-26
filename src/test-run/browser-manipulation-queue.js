@@ -1,19 +1,16 @@
-import { EventEmitter } from 'events';
 import shortId from 'shortid';
 import OS from 'os-family';
 import { resize as resizeWindow, getViewportSize } from 'testcafe-browser-natives';
 import { isServiceCommand } from './commands/utils';
 import COMMAND_TYPE from './commands/type';
-import Warning from '../warnings';
 import WARNING_MESSAGE from '../warnings/message';
 
-export default class BrowserManipulationQueue extends EventEmitter {
-    constructor (windowId, screenshotCapturer) {
-        super();
-
+export default class BrowserManipulationQueue {
+    constructor (windowId, screenshotCapturer, warningLog) {
         this.commands           = [];
         this.windowId           = windowId;
         this.screenshotCapturer = screenshotCapturer;
+        this.warningLog         = warningLog;
     }
 
     async _resizeWindow (currentWidth, currentHeight, width, height) {
@@ -30,7 +27,7 @@ export default class BrowserManipulationQueue extends EventEmitter {
 
     async _takeScreenshot (capture) {
         if (!this.screenshotCapturer.enabled) {
-            this.emit('warning', new Warning(WARNING_MESSAGE.screenshotsPathNotSpecified));
+            this.warningLog.addWarning(WARNING_MESSAGE.screenshotsPathNotSpecified);
             return null;
         }
 
@@ -38,7 +35,7 @@ export default class BrowserManipulationQueue extends EventEmitter {
             return await capture();
         }
         catch (err) {
-            this.emit('warning', new Warning(WARNING_MESSAGE.screenshotError, err.message));
+            this.warningLog.addWarning(WARNING_MESSAGE.screenshotError, err.message);
             return null;
         }
     }
@@ -46,7 +43,7 @@ export default class BrowserManipulationQueue extends EventEmitter {
     async executePendingManipulation (driverMsg) {
         // TODO: remove once https://github.com/DevExpress/testcafe-browser-natives/issues/12 implemented
         if (OS.linux) {
-            this.emit('warning', new Warning(WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux));
+            this.warningLog.addWarning(WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
             return null;
         }
 

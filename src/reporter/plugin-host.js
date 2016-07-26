@@ -138,23 +138,19 @@ export default class ReporterPluginHost {
 
 
     // Abstract methods implemented in plugin
-    /* eslint-disable no-unused-vars */
-
-    reportTaskStart (startTime, userAgents, testCount) {
+    reportTaskStart (/* startTime, userAgents, testCount */) {
         throw new Error('Not implemented');
     }
 
-    reportFixtureStart (name, path) {
+    reportFixtureStart (/* name, path */) {
         throw new Error('Not implemented');
     }
 
-    reportTestDone (name, errs, durationMs, unstable, screenshotPath) {
+    reportTestDone (/* name, testRunInfo */) {
         throw new Error('Not implemented');
     }
 
-    reportTaskDone (endTime, passed) {
+    reportTaskDone (/* endTime, passed, warnings */) {
         throw new Error('Not implemented');
     }
-
-    /* eslint-enable no-unused-vars */
 }

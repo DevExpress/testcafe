@@ -13,7 +13,7 @@ const IFRAME_TEST_RUN_TEMPLATE = read('../../client/legacy/test-run/iframe.js.mu
 
 
 export default class LegacyTestRun extends Session {
-    constructor (test, browserConnection, screenshotCapturer, opts) {
+    constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
         var uploadsRoot = path.dirname(test.fixture.path);
 
         super(uploadsRoot);
@@ -28,7 +28,6 @@ export default class LegacyTestRun extends Session {
         this.isFileDownloading = false;
 
         this.errs                       = [];
-        this.warnings                   = [];
         this.nativeDialogsInfo          = null;
         this.nativeDialogsInfoTimeStamp = 0;
         this.stepsSharedData            = {};

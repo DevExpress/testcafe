@@ -122,23 +122,19 @@ var TempJSONReporter = function () {
                 return _this.formatError(err);
             });
 
-            var warnings = testRunInfo.warnings.map(function (warning) {
-                return warning.message;
-            });
-
             this.currentFixture.tests.push({
                 name:           name,
                 errs:           errs,
-                warnings:       warnings,
                 durationMs:     testRunInfo.durationMs,
                 unstable:       testRunInfo.unstable,
                 screenshotPath: testRunInfo.screenshotPath
             });
         },
 
-        reportTaskDone: function reportTaskDone (endTime, passed) {
-            this.report.passed  = passed;
-            this.report.endTime = endTime;
+        reportTaskDone: function reportTaskDone (endTime, passed, warnings) {
+            this.report.passed   = passed;
+            this.report.endTime  = endTime;
+            this.report.warnings = warnings;
 
             this.write(JSON.stringify(this.report, null, 2));
         }
@@ -219,9 +215,12 @@ before(function () {
                         selectorTimeout: selectorTimeout
                     })
                     .then(function () {
-                        var testReport = JSON.parse(report).fixtures[0].tests[0];
+                        var taskReport = JSON.parse(report);
+                        var testReport = taskReport.fixtures[0].tests[0];
                         var testError  = getTestError(testReport, actualBrowsers);
                         var shouldFail = opts && opts.shouldFail;
+
+                        testReport.warnings = taskReport.warnings;
 
                         global.testReport = testReport;
 

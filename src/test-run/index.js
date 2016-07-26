@@ -1,5 +1,4 @@
 import path from 'path';
-import { some } from 'lodash';
 import { readSync as read } from 'read-file-relative';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
@@ -33,7 +32,7 @@ const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
 
 export default class TestRun extends Session {
-    constructor (test, browserConnection, screenshotCapturer, opts) {
+    constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
         var uploadsRoot = path.dirname(test.fixture.path);
 
         super(uploadsRoot);
@@ -51,15 +50,12 @@ export default class TestRun extends Session {
         this.pendingRequest   = null;
         this.pendingPageError = null;
 
-        this.errs     = [];
-        this.warnings = [];
+        this.errs = [];
 
         this.lastDriverStatusId       = null;
         this.lastDriverStatusResponse = null;
 
-        this.browserManipulationQueue = new BrowserManipulationQueue(this.id, screenshotCapturer);
-
-        this.browserManipulationQueue.on('warning', warning => this._addWarning(warning));
+        this.browserManipulationQueue = new BrowserManipulationQueue(this.id, screenshotCapturer, warningLog);
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
@@ -170,12 +166,6 @@ export default class TestRun extends Session {
         });
 
         this.errs.push(adapter);
-    }
-
-    _addWarning (warning) {
-        // NOTE: avoid duplicates
-        if (!some(this.warnings, { message: warning.message }))
-            this.warnings.push(warning);
     }
 
     // Task queue
