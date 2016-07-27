@@ -1,5 +1,3 @@
-var testCafeCore = window.getTestCafeModule('testCafeCore');
-
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var TypeAutomation     = testCafeAutomation.Type;
 var TypeOptions        = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
@@ -7,9 +5,8 @@ var TypeOptions        = testCafeAutomation.get('../../test-run/commands/options
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
 
-var ERROR_TYPE = testCafeCore.ERROR_TYPE;
-
 var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
 var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
 var actionsAPI           = testCafeLegacyRunner.get('./api/actions');
 var StepIterator         = testCafeLegacyRunner.get('./step-iterator');

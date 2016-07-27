@@ -1,19 +1,19 @@
 import Promise from 'pinkie';
 import { readSync as read } from 'read-file-relative';
 import { Proxy } from 'testcafe-hammerhead';
+import { CLIENT_RUNNER_SCRIPT as LEGACY_RUNNER_SCRIPT } from 'testcafe-legacy-api';
 import BrowserConnectionGateway from './browser-connection/gateway';
 import BrowserConnection from './browser-connection';
 import Runner from './runner';
 
 // Const
-const CORE_SCRIPT          = read('./client/core/index.js');
-const DRIVER_SCRIPT        = read('./client/driver/index.js');
-const LEGACY_RUNNER_SCRIPT = read('./legacy/client/index.js');
-const UI_SCRIPT            = read('./client/ui/index.js');
-const AUTOMATION_SCRIPT    = read('./client/automation/index.js');
-const UI_STYLE             = read('./client/ui/styles.css');
-const UI_SPRITE            = read('./client/ui/sprite.png', true);
-const FAVICON              = read('./client/ui/favicon.ico', true);
+const CORE_SCRIPT       = read('./client/core/index.js');
+const DRIVER_SCRIPT     = read('./client/driver/index.js');
+const UI_SCRIPT         = read('./client/ui/index.js');
+const AUTOMATION_SCRIPT = read('./client/automation/index.js');
+const UI_STYLE          = read('./client/ui/styles.css');
+const UI_SPRITE         = read('./client/ui/sprite.png', true);
+const FAVICON           = read('./client/ui/favicon.ico', true);
 
 
 export default class TestCafe {

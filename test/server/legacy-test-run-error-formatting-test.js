@@ -1,13 +1,15 @@
-var expect                               = require('chai').expect;
-var read                                 = require('read-file-relative').readSync;
-var remove                               = require('lodash').pull;
-var ReporterPluginHost                   = require('../../lib/reporter/plugin-host');
-var TYPE                                 = require('../../lib/legacy/test-run-error/type');
-var LegacyTestRunErrorFormattableAdapter = require('../../lib/legacy/test-run-error/formattable-adapter');
+var expect             = require('chai').expect;
+var read               = require('read-file-relative').readSync;
+var remove             = require('lodash').pull;
+var ReporterPluginHost = require('../../lib/reporter/plugin-host');
+var testCafeLegacyApi  = require('testcafe-legacy-api');
+
+var TEST_RUN_ERROR_TYPE                  = testCafeLegacyApi.TEST_RUN_ERROR_TYPE;
+var LegacyTestRunErrorFormattableAdapter = testCafeLegacyApi.TestRunErrorFormattableAdapter;
 
 
-var untestedErrorTypes = Object.keys(TYPE).map(function (key) {
-    return TYPE[key];
+var untestedErrorTypes = Object.keys(TEST_RUN_ERROR_TYPE).map(function (key) {
+    return TEST_RUN_ERROR_TYPE[key];
 });
 
 var userAgentMock = 'Chrome 15.0.874 / Mac OS X 10.8.1';
@@ -57,7 +59,7 @@ describe('Legacy error formatting', function () {
                 actual:    '"<some-tag>"',
                 key:       '<tag>',
                 isObjects: true,
-                type:      TYPE.eqAssertion,
+                type:      TEST_RUN_ERROR_TYPE.eqAssertion,
                 message:   '<tagged> message',
                 diffType:  {
                     isStrings: true,
@@ -73,7 +75,7 @@ describe('Legacy error formatting', function () {
                 stepName: 'Step with <tag>',
                 actual:   '"<test>"',
                 expected: '"<test>"',
-                type:     TYPE.notEqAssertion,
+                type:     TEST_RUN_ERROR_TYPE.notEqAssertion,
                 message:  '<tagged> message'
             };
 
@@ -84,7 +86,7 @@ describe('Legacy error formatting', function () {
             var err = {
                 stepName: 'Step with <tag>',
                 actual:   'false',
-                type:     TYPE.okAssertion,
+                type:     TEST_RUN_ERROR_TYPE.okAssertion,
                 message:  '<tagged> message'
             };
 
@@ -95,7 +97,7 @@ describe('Legacy error formatting', function () {
             var err = {
                 stepName: 'Step with <tag>',
                 actual:   '"<test>"',
-                type:     TYPE.notOkAssertion,
+                type:     TEST_RUN_ERROR_TYPE.notOkAssertion,
                 message:  '<tagged> message'
             };
 
@@ -106,7 +108,7 @@ describe('Legacy error formatting', function () {
     describe('Errors', function () {
         it('Should format "iframeLoadingTimeout" error message', function () {
             var err = {
-                type: TYPE.iframeLoadingTimeout
+                type: TEST_RUN_ERROR_TYPE.iframeLoadingTimeout
             };
 
             assertErrorMessage('iframe-loading-timeout', err);
@@ -114,7 +116,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "inIFrameTargetLoadingTimeout" error message', function () {
             var err = {
-                type:     TYPE.inIFrameTargetLoadingTimeout,
+                type:     TEST_RUN_ERROR_TYPE.inIFrameTargetLoadingTimeout,
                 stepName: 'Step with <tag>'
             };
 
@@ -123,7 +125,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "uncaughtJSError" error message', function () {
             var err = {
-                type:        TYPE.uncaughtJSError,
+                type:        TEST_RUN_ERROR_TYPE.uncaughtJSError,
                 scriptErr:   'test-error-with-<tag>',
                 pageDestUrl: 'http://page'
             };
@@ -133,7 +135,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "uncaughtJSErrorInTestCodeStep" error message', function () {
             var err = {
-                type:      TYPE.uncaughtJSErrorInTestCodeStep,
+                type:      TEST_RUN_ERROR_TYPE.uncaughtJSErrorInTestCodeStep,
                 stepName:  'Step with <tag>',
                 scriptErr: 'error with <tag>'
             };
@@ -143,7 +145,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "storeDomNodeOrJqueryObject" error message', function () {
             var err = {
-                type:     TYPE.storeDomNodeOrJqueryObject,
+                type:     TEST_RUN_ERROR_TYPE.storeDomNodeOrJqueryObject,
                 stepName: 'Step with <tag>'
             };
 
@@ -152,7 +154,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "emptyFirstArgument" error message', function () {
             var err = {
-                type:     TYPE.emptyFirstArgument,
+                type:     TEST_RUN_ERROR_TYPE.emptyFirstArgument,
                 stepName: 'Step with <tag>',
                 action:   'testAction'
             };
@@ -162,7 +164,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "invisibleActionElement" error message', function () {
             var err = {
-                type:     TYPE.invisibleActionElement,
+                type:     TEST_RUN_ERROR_TYPE.invisibleActionElement,
                 stepName: 'Step with <tag>',
                 action:   'test-action',
                 element:  '<element>'
@@ -173,7 +175,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "incorrectDraggingSecondArgument" error message', function () {
             var err = {
-                type:     TYPE.incorrectDraggingSecondArgument,
+                type:     TEST_RUN_ERROR_TYPE.incorrectDraggingSecondArgument,
                 stepName: 'Step with <tag>'
             };
 
@@ -182,7 +184,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "incorrectPressActionArgument" error message', function () {
             var err = {
-                type:     TYPE.incorrectPressActionArgument,
+                type:     TEST_RUN_ERROR_TYPE.incorrectPressActionArgument,
                 stepName: 'Step with <tag>'
             };
 
@@ -191,7 +193,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "emptyTypeActionArgument" error message', function () {
             var err = {
-                type:     TYPE.emptyTypeActionArgument,
+                type:     TEST_RUN_ERROR_TYPE.emptyTypeActionArgument,
                 stepName: 'Step with <tag>'
             };
 
@@ -200,7 +202,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "unexpectedDialog" error message', function () {
             var err = {
-                type:     TYPE.unexpectedDialog,
+                type:     TEST_RUN_ERROR_TYPE.unexpectedDialog,
                 stepName: 'Step with <tag>',
                 dialog:   'test-dialog',
                 message:  'message with <tag>'
@@ -211,7 +213,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "expectedDialogDoesntAppear" error message', function () {
             var err = {
-                type:     TYPE.expectedDialogDoesntAppear,
+                type:     TEST_RUN_ERROR_TYPE.expectedDialogDoesntAppear,
                 stepName: 'Step with <tag>',
                 dialog:   'test-dialog'
             };
@@ -221,7 +223,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "incorrectSelectActionArguments" error message', function () {
             var err = {
-                type:     TYPE.incorrectSelectActionArguments,
+                type:     TEST_RUN_ERROR_TYPE.incorrectSelectActionArguments,
                 stepName: 'Step with <tag>'
             };
 
@@ -230,7 +232,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "incorrectWaitActionMillisecondsArgument" error message', function () {
             var err = {
-                type:     TYPE.incorrectWaitActionMillisecondsArgument,
+                type:     TEST_RUN_ERROR_TYPE.incorrectWaitActionMillisecondsArgument,
                 stepName: 'Step with <tag>'
             };
 
@@ -239,7 +241,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "incorrectWaitForActionEventArgument" error message', function () {
             var err = {
-                type:     TYPE.incorrectWaitForActionEventArgument,
+                type:     TEST_RUN_ERROR_TYPE.incorrectWaitForActionEventArgument,
                 stepName: 'Step with <tag>'
             };
 
@@ -248,7 +250,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "incorrectWaitForActionTimeoutArgument" error message', function () {
             var err = {
-                type:     TYPE.incorrectWaitForActionTimeoutArgument,
+                type:     TEST_RUN_ERROR_TYPE.incorrectWaitForActionTimeoutArgument,
                 stepName: 'Step with <tag>'
             };
 
@@ -257,7 +259,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "waitForActionTimeoutExceeded" error message', function () {
             var err = {
-                type:     TYPE.waitForActionTimeoutExceeded,
+                type:     TEST_RUN_ERROR_TYPE.waitForActionTimeoutExceeded,
                 stepName: 'Step with <tag>'
             };
 
@@ -266,7 +268,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "emptyIFrameArgument" error message', function () {
             var err = {
-                type:     TYPE.emptyIFrameArgument,
+                type:     TEST_RUN_ERROR_TYPE.emptyIFrameArgument,
                 stepName: 'Step with <tag>'
             };
 
@@ -275,7 +277,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "iframeArgumentIsNotIFrame" error message', function () {
             var err = {
-                type:     TYPE.iframeArgumentIsNotIFrame,
+                type:     TEST_RUN_ERROR_TYPE.iframeArgumentIsNotIFrame,
                 stepName: 'Step with <tag>'
             };
 
@@ -284,7 +286,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "multipleIFrameArgument" error message', function () {
             var err = {
-                type:     TYPE.multipleIFrameArgument,
+                type:     TEST_RUN_ERROR_TYPE.multipleIFrameArgument,
                 stepName: 'Step with <tag>'
             };
 
@@ -293,7 +295,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "incorrectIFrameArgument" error message', function () {
             var err = {
-                type:     TYPE.incorrectIFrameArgument,
+                type:     TEST_RUN_ERROR_TYPE.incorrectIFrameArgument,
                 stepName: 'Step with <tag>'
             };
 
@@ -302,7 +304,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "uploadCanNotFindFileToUpload" error message', function () {
             var err = {
-                type:      TYPE.uploadCanNotFindFileToUpload,
+                type:      TEST_RUN_ERROR_TYPE.uploadCanNotFindFileToUpload,
                 stepName:  'Step with <tag>',
                 filePaths: ['/unix/path/with/<tag>', 'path2']
             };
@@ -312,7 +314,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "uploadElementIsNotFileInput" error message', function () {
             var err = {
-                type:     TYPE.uploadElementIsNotFileInput,
+                type:     TEST_RUN_ERROR_TYPE.uploadElementIsNotFileInput,
                 stepName: 'Step with <tag>'
             };
 
@@ -321,7 +323,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "uploadInvalidFilePathArgument" error message', function () {
             var err = {
-                type:     TYPE.uploadInvalidFilePathArgument,
+                type:     TEST_RUN_ERROR_TYPE.uploadInvalidFilePathArgument,
                 stepName: 'Step with <tag>'
             };
 
@@ -330,7 +332,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "pageNotLoaded" error message', function () {
             var err = {
-                type:    TYPE.pageNotLoaded,
+                type:    TEST_RUN_ERROR_TYPE.pageNotLoaded,
                 message: 'Failed to find a DNS-record for the resource at <a href="example.org">example.org</a>.'
             };
 
@@ -339,7 +341,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "incorrectGlobalWaitForActionEventArgument" error message', function () {
             var err = {
-                type:     TYPE.incorrectGlobalWaitForActionEventArgument,
+                type:     TEST_RUN_ERROR_TYPE.incorrectGlobalWaitForActionEventArgument,
                 stepName: 'Step with <tag>'
             };
 
@@ -348,7 +350,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "incorrectGlobalWaitForActionTimeoutArgument" error message', function () {
             var err = {
-                type:     TYPE.incorrectGlobalWaitForActionTimeoutArgument,
+                type:     TEST_RUN_ERROR_TYPE.incorrectGlobalWaitForActionTimeoutArgument,
                 stepName: 'Step with <tag>'
             };
 
@@ -357,7 +359,7 @@ describe('Legacy error formatting', function () {
 
         it('Should format "globalWaitForActionTimeoutExceeded" error message', function () {
             var err = {
-                type:     TYPE.globalWaitForActionTimeoutExceeded,
+                type:     TEST_RUN_ERROR_TYPE.globalWaitForActionTimeoutExceeded,
                 stepName: 'Step with <tag>'
             };
 

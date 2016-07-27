@@ -1,7 +1,5 @@
-var testCafeCore = window.getTestCafeModule('testCafeCore');
-var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
-
 var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
 var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
 var actionsAPI           = testCafeLegacyRunner.get('./api/actions');
 var StepIterator         = testCafeLegacyRunner.get('./step-iterator');

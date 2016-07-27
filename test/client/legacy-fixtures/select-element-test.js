@@ -2,10 +2,10 @@ var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore     = window.getTestCafeModule('testCafeCore');
-var ERROR_TYPE       = testCafeCore.ERROR_TYPE;
 var parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
 
 var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
 var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
 var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
 var actionsAPI           = testCafeLegacyRunner.get('./api/actions');

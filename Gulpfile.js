@@ -55,7 +55,7 @@ var CLIENT_TESTS_SETTINGS_BASE = {
         { src: '/core.js', path: 'lib/client/core/index.js' },
         { src: '/ui.js', path: 'lib/client/ui/index.js' },
         { src: '/automation.js', path: 'lib/client/automation/index.js' },
-        { src: '/legacy-runner.js', path: 'lib/legacy/client/index.js' },
+        { src: '/legacy-runner.js', path: 'node_modules/testcafe-legacy-api/lib/client/index.js' },
         { src: '/before-test.js', path: 'test/client/before-test.js' }
     ],
 
@@ -156,7 +156,6 @@ gulp.task('lint', function () {
 
     var src = gulp.src([
         'src/**/*.js',
-        '!src/legacy/client/**/*.js',
         '!src/client/**/*.js',  //TODO: fix it
         //'test/**/*.js',       //TODO: fix it
         'test/server/**.js',
@@ -193,7 +192,6 @@ gulp.task('client-scripts', ['client-scripts-bundle'], function () {
     var scripts = [
         { wrapper: 'src/client/core/index.js.wrapper.mustache', src: 'lib/client/core/index.js' },
         { wrapper: 'src/client/ui/index.js.wrapper.mustache', src: 'lib/client/ui/index.js' },
-        { wrapper: 'src/legacy/client/index.js.wrapper.mustache', src: 'lib/legacy/client/index.js' },
         { wrapper: 'src/client/automation/index.js.wrapper.mustache', src: 'lib/client/automation/index.js' },
         { wrapper: 'src/client/driver/index.js.wrapper.mustache', src: 'lib/client/driver/index.js' }
     ];
@@ -218,7 +216,6 @@ gulp.task('client-scripts-bundle', ['clean'], function () {
             'src/client/driver/index.js',
             'src/client/ui/index.js',
             'src/client/automation/index.js',
-            'src/legacy/client/index.js',
             'src/client/browser/idle-page/index.js'
         ], { base: 'src' })
         .pipe(webmake({
@@ -251,7 +248,6 @@ gulp.task('server-scripts', ['clean'], function () {
     return gulp
         .src([
             'src/**/*.js',
-            '!src/legacy/client/**/*.js',
             '!src/client/**/*.js'
         ])
         .pipe(gulpBabel())

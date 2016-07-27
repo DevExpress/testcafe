@@ -10,6 +10,11 @@ import SelectTextAutomation from './playback/select/select-text';
 import SelectEditableContentAutomation from './playback/select/select-editable-content';
 import TypeAutomation from './playback/type';
 import UploadAutomation from './playback/upload';
+import {
+    MouseOptions,
+    ClickOptions,
+    TypeOptions
+} from '../../test-run/commands/options';
 import { getOffsetOptions } from './utils/offsets';
 import calculateSelectTextArguments from './playback/select/calculate-select-text-arguments';
 import ERROR_TYPES from './errors';
@@ -26,6 +31,9 @@ exports.SelectText            = SelectTextAutomation;
 exports.SelectEditableContent = SelectEditableContentAutomation;
 exports.Type                  = TypeAutomation;
 exports.Upload                = UploadAutomation;
+exports.MouseOptions          = MouseOptions;
+exports.ClickOptions          = ClickOptions;
+exports.TypeOptions           = TypeOptions;
 
 exports.ERROR_TYPES                  = ERROR_TYPES;
 exports.getOffsetOptions             = getOffsetOptions;
