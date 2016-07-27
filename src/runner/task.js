@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import { pull as remove } from 'lodash';
 import BrowserJob from './browser-job';
-import Screenshots from './screenshots';
+import Screenshots from '../screenshots';
 import WarningLog from '../warnings/log';
 
 export default class Task extends EventEmitter {

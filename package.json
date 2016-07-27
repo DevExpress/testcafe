@@ -1,7 +1,7 @@
 {
   "name": "testcafe",
   "license": "MIT",
-  "version": "0.2.0-alpha",
+  "version": "0.2.1-alpha",
   "main": "lib/index",
   "bin": {
     "testcafe": "./bin/testcafe.js"
@@ -50,11 +50,11 @@
     "testcafe-browser-natives": "^0.14.1",
     "testcafe-hammerhead": "^9.2.1",
     "testcafe-legacy-api": "^0.4.0",
-    "testcafe-reporter-json": "^1.0.0",
-    "testcafe-reporter-list": "^1.0.0",
-    "testcafe-reporter-minimal": "^1.0.0",
-    "testcafe-reporter-spec": "^1.0.0",
-    "testcafe-reporter-xunit": "^1.0.0",
+    "testcafe-reporter-json": "^2.0.0",
+    "testcafe-reporter-list": "^2.0.0",
+    "testcafe-reporter-minimal": "^2.0.0",
+    "testcafe-reporter-spec": "^2.0.0",
+    "testcafe-reporter-xunit": "^2.0.0",
     "time-limit-promise": "^1.0.2",
     "useragent": "^2.1.7"
   },
