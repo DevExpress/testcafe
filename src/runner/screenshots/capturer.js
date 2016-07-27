@@ -5,6 +5,8 @@ import { screenshot as takeScreenshot } from 'testcafe-browser-natives';
 
 var ensureDir = promisify(mkdirp);
 
+const PNG_EXTENSION_RE = /(\.png)$/;
+
 
 export default class Capturer {
     constructor (baseScreenshotsPath, testScreenshotsPath, testEntry) {
@@ -18,6 +20,10 @@ export default class Capturer {
         return `${stepName && stepName.replace(/\s|\\|\/|"|\*|\?|<|>|\|/g, '_') || 'page-load'}.png`;
     }
 
+    static _correctFilePath (customPath) {
+        return PNG_EXTENSION_RE.test(customPath) ? customPath : `${customPath}.png`;
+    }
+
     async _takeScreenshot (windowId, filePath) {
         await ensureDir(dirname(filePath));
         await takeScreenshot(windowId, filePath);
@@ -28,11 +34,15 @@ export default class Capturer {
             return null;
 
         var fileName = Capturer._getFileName(stepName);
-        var filePath = customPath ? joinPath(this.baseScreenshotsPath, customPath, fileName) :
-                       joinPath(this.testScreenshotsPath, fileName);
+        var filePath = null;
 
-        if (customPath)
+        if (customPath) {
+            filePath = joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(customPath));
+
             this.testEntry.path = this.baseScreenshotsPath;
+        }
+        else
+            filePath = joinPath(this.testScreenshotsPath, fileName);
 
         await this._takeScreenshot(windowId, filePath);
 
