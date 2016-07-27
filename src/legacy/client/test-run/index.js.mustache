@@ -1,0 +1,149 @@
+(function () {
+    if (window !== window.top)
+        return;
+
+    //API - should be defined here in local scope
+    var act                = null;
+    var ok                 = null;
+    var notOk              = null;
+    var eq                 = null;
+    var notEq              = null;
+    var handleAlert        = null;
+    var handleConfirm      = null;
+    var handlePrompt       = null;
+    var handleBeforeUnload = null;
+    var inIFrame           = null;
+    var __set$             = null;
+    var __get$             = null;
+    var __get$Loc          = null;
+    var __set$Loc          = null;
+    var __call$            = null;
+    var __proc$Script      = null;
+
+    var $      = null;
+    var jQuery = null;
+
+    // NOTE: The global __waitFor is used to ensure that the page is ready for the next step to be executed.
+    // Usage: call the global __waitFor wherever required (test file, wrappers, modules, etc).
+    // The arguments are identical to the act.waitFor function arguments.
+    var __waitFor = null;
+
+    //Internals
+    (function () {
+        var hammerhead     = window['%hammerhead%'];
+        var testCafeLegacyRunner = window['%testCafeLegacyRunner%'];
+        var testCafeUI     = window['%testCafeUI%'];
+
+        var stepNames = {{{stepNames}}};
+
+        testCafeLegacyRunner.SETTINGS.set({
+            CURRENT_TEST_STEP_NAME:        'Page Load',
+            BROWSER_STATUS_URL:            '{{{browserStatusUrl}}}',
+            TAKE_SCREENSHOTS:              {{{takeScreenshots}}},
+            TAKE_SCREENSHOTS_ON_FAILS:     {{{takeScreenshotsOnFails}}},
+            SKIP_JS_ERRORS:                {{{skipJsErrors}}},
+            SELECTOR_TIMEOUT:              {{{selectorTimeout}}},
+            ENABLE_SOURCE_INDEX:           true,
+            NATIVE_DIALOGS_INFO:           {{{nativeDialogsInfo}}}
+        });
+
+        var transport                = testCafeLegacyRunner.transport;
+        var sandboxedJQuery          = testCafeLegacyRunner.sandboxedJQuery;
+        var extendJQuerySelectors    = testCafeLegacyRunner.extendJQuerySelectors;
+        var jQueryDataMethodProxy    = testCafeLegacyRunner.jQueryDataMethodProxy;
+
+        var Runner     = testCafeLegacyRunner.Runner;
+        var RunnerBase = testCafeLegacyRunner.RunnerBase;
+
+        var ProgressPanel   = testCafeUI.ProgressPanel;
+        var modalBackground = testCafeUI.modalBackground;
+        var shadowUI        = hammerhead.shadowUI;
+
+        Runner.startHeartbeat('{{{browserHeartbeatUrl}}}');
+
+        sandboxedJQuery.init(window, undefined);
+        extendJQuerySelectors(sandboxedJQuery.jQuery);
+
+        $ = jQuery = sandboxedJQuery.jQuery;
+        jQueryDataMethodProxy.setup($);
+
+        //NOTE: initialize API
+        var runner = new Runner(null, '{{{testRunId}}}');
+
+        if (runner.stopped)
+            return;
+
+        if (runner.nextStep)
+            testCafeLegacyRunner.SETTINGS.get().CURRENT_TEST_STEP_NAME = stepNames[runner.nextStep - 1];
+
+        var progressPanel = null;
+
+        runner.on(RunnerBase.SCREENSHOT_CREATING_STARTED_EVENT, function () {
+            shadowUI.setBlind(true);
+        });
+
+        runner.on(RunnerBase.SCREENSHOT_CREATING_FINISHED_EVENT, function () {
+            shadowUI.setBlind(false);
+        });
+
+        runner.on(runner.ACTION_TARGET_WAITING_STARTED_EVENT, function (e) {
+            if (!progressPanel)
+                progressPanel = new ProgressPanel();
+
+            if (!e.isWaitAction)
+                progressPanel.show(RunnerBase.WAITING_FOR_ACTION_TARGET_MESSAGE, testCafeLegacyRunner.SETTINGS.get().SELECTOR_TIMEOUT);
+        });
+
+        runner.on(runner.ACTION_RUN_EVENT, function () {
+            if (progressPanel)
+                progressPanel.close(true);
+        });
+
+        runner.on(runner.TEST_FAILED_EVENT, function () {
+            if (progressPanel)
+                progressPanel.close(false);
+        });
+
+        act                = runner.act;
+        ok                 = runner.ok;
+        notOk              = runner.notOk;
+        eq                 = runner.eq;
+        notEq              = runner.notEq;
+        handleAlert        = runner.handleAlert;
+        handleConfirm      = runner.handleConfirm;
+        handlePrompt       = runner.handlePrompt;
+        handleBeforeUnload = runner.handleBeforeUnload;
+        inIFrame           = runner.inIFrame;
+        __set$             = window.__set$;
+        __get$             = window.__get$;
+        __set$Loc          = window.__set$Loc;
+        __get$Loc          = window.__get$Loc;
+        __call$            = window.__call$;
+        __proc$Script      = window.__proc$Script;
+        __waitFor          = function () {
+            runner.setGlobalWaitFor.apply(runner, arguments);
+        };
+
+        modalBackground.initAndShowLoadingText();
+    })();
+
+    try {
+        //!----------------------------------BEGIN HELPERS AND REQUIRES CODE----------------------------------
+        {{{sharedJs}}};
+        //!------------------------------------END HELPERS AND REQUIRES CODE----------------------------------
+    } catch (err) {
+        act._onJSError(err);
+        return;
+    }
+
+    try {
+        act._start(
+            {{{stepNames}}},
+            //!-----------------------------------------BEGIN TEST CODE-------------------------------------------
+            {{{testSteps}}}
+            //!------------------------------------------END TEST CODE--------------------------------------------
+        );
+    } catch (err) {
+        act._onJSError(err);
+    }
+})();

@@ -1,0 +1,90 @@
+(function () {
+    var act                = null,
+        ok                 = null,
+        notOk              = null,
+        eq                 = null,
+        notEq              = null,
+        handleAlert        = null,
+        handleConfirm      = null,
+        handlePrompt       = null,
+        handleBeforeUnload = null,
+        __set$             = null,
+        __get$             = null,
+        __get$Loc          = null,
+        __set$Loc          = null,
+        __call$            = null,
+        __proc$Script      = null,
+
+        $                  = null,
+        jQuery             = null,
+        __waitFor          = null;
+
+    function onTestRunnerInitialized (testRunner, callback) {
+        delete onTestRunnerInitialized;
+
+        act                = testRunner.act;
+        ok                 = testRunner.ok;
+        notOk              = testRunner.notOk;
+        eq                 = testRunner.eq;
+        notEq              = testRunner.notEq;
+        handleAlert        = testRunner.handleAlert;
+        handleConfirm      = testRunner.handleConfirm;
+        handlePrompt       = testRunner.handlePrompt;
+        handleBeforeUnload = testRunner.handleBeforeUnload;
+        __set$             = window.__set$;
+        __get$             = window.__get$;
+        __set$Loc          = window.__set$Loc;
+        __get$Loc          = window.__get$Loc;
+        __call$            = window.__call$;
+        __proc$Script      = window.__proc$Script;
+        __waitFor          = function () {
+            testRunner.setGlobalWaitFor.apply(testRunner, arguments);
+        };
+
+        try {
+            //!----------------------------------BEGIN HELPERS AND REQUIRES CODE----------------------------------
+            {{{sharedJs}}};
+            //!------------------------------------END HELPERS AND REQUIRES CODE----------------------------------
+        } catch (err) {
+            act._onJSError(err);
+            return;
+        }
+
+        function runInContext (stepName, step, runner) {
+            runner([stepName], [function () {
+                eval('(' + step + ').call(this)');
+            }]);
+        }
+
+        callback(runInContext);
+    }
+
+    (function () {
+        var testCafeLegacyRunner = window['%testCafeLegacyRunner%'];
+
+        var sandboxedJQuery          = testCafeLegacyRunner.sandboxedJQuery;
+        var extendJQuerySelectors    = testCafeLegacyRunner.extendJQuerySelectors;
+        var jQueryDataMethodProxy    = testCafeLegacyRunner.jQueryDataMethodProxy;
+        var iframeDispatcher         = testCafeLegacyRunner.iframeDispatcher;
+
+
+        testCafeLegacyRunner.SETTINGS.set({
+            TAKE_SCREENSHOTS_ON_FAILS:     {{{takeScreenshotsOnFails}}},
+            SKIP_JS_ERRORS:                {{{skipJsErrors}}},
+            SELECTOR_TIMEOUT:              {{{selectorTimeout}}},
+            ENABLE_SOURCE_INDEX:           true,
+            NATIVE_DIALOGS_INFO:           {{{nativeDialogsInfo}}}
+        });
+
+        sandboxedJQuery.init(window, undefined);
+        extendJQuerySelectors(sandboxedJQuery.jQuery);
+
+        $ = jQuery = sandboxedJQuery.jQuery;
+        jQueryDataMethodProxy.setup($);
+
+        //NOTE: Override these methods to suppress native dialogs until the test runner in the iFrame gets initialized. (T188994)
+        window.alert = window.confirm = window.prompt = new Function();
+
+        iframeDispatcher.init(onTestRunnerInitialized);
+    })();
+})();

@@ -4,7 +4,6 @@ var hhsettings    = hammerhead.get('./settings').get();
 var iframeSandbox = hammerhead.sandbox.iframe;
 
 var testCafeCore   = window.getTestCafeModule('testCafeCore');
-var ERROR_TYPE     = testCafeCore.ERROR_TYPE;
 var RequestBarrier = testCafeCore.RequestBarrier;
 
 
@@ -35,12 +34,12 @@ $(document).ready(function () {
             expect(1);
 
             var requestBarrier = new RequestBarrier();
+            var onReqCompleted = function () {
+                completeReqCount++;
+            };
 
-            for (var i = 0; i < reqCount; i++) {
-                $.get('/xhr-test/200', function () {
-                    completeReqCount++;
-                });
-            }
+            for (var i = 0; i < reqCount; i++)
+                $.get('/xhr-test/200', onReqCompleted);
 
             // NOTE: ignore slow connection on the testing
             // farm that leads to unstable tests appearing
@@ -65,12 +64,12 @@ $(document).ready(function () {
             expect(1);
 
             var requestBarrier = new RequestBarrier();
+            var onReqCompleted = function () {
+                completeReqCount++;
+            };
 
-            for (var i = 0; i < reqCount; i++) {
-                $.get('/xhr-test/1000', function () {
-                    completeReqCount++;
-                });
-            }
+            for (var i = 0; i < reqCount; i++)
+                $.get('/xhr-test/1000', onReqCompleted);
 
             // NOTE: ignore slow connection on the testing
             // farm that leads to unstable tests appearing
@@ -88,8 +87,8 @@ $(document).ready(function () {
         });
 
         asyncTest('barrier - Skip TestCafeClient requests', function () {
-            var jqxhr                     = null,
-                TestCafeClientReqComplete = false;
+            var jqxhr                     = null;
+            var TestCafeClientReqComplete = false;
 
             expect(1);
 
@@ -142,8 +141,8 @@ $(document).ready(function () {
         });
 
         asyncTest('T135542 - act.wait method works too-o-o-o long', function () {
-            var firstRequestCompleted  = false,
-                secondRequestCompleted = false;
+            var firstRequestCompleted  = false;
+            var secondRequestCompleted = false;
 
             $.get('/xhr-test/3000', function () {
                 firstRequestCompleted = true;
@@ -170,7 +169,7 @@ $(document).ready(function () {
         });
 
         asyncTest('T233907 - TestRunning waits cancelled xhrs', function () {
-            var timeout = 300;  //NOTE: equals to REQUESTS_COLLECTION_DELAY
+            var timeout          = 300;  //NOTE: equals to REQUESTS_COLLECTION_DELAY
             var barrierCompleted = false;
 
             expect(1);
@@ -206,9 +205,8 @@ $(document).ready(function () {
             };
 
             var action = function (callback) {
-                if ($iframe) {
+                if ($iframe)
                     $iframe.remove();
-                }
 
                 window.setTimeout(function () {
                     $iframe = $('<iframe id="test1">').attr('src', 'about:blank').appendTo('body');
@@ -232,7 +230,7 @@ $(document).ready(function () {
                 $iframe.remove();
 
                 start();
-            }, 1000)
+            }, 1000);
         });
 
         asyncTest('B237815 - Test runner - can\'t execute simple test', function () {
@@ -275,16 +273,19 @@ $(document).ready(function () {
 
                 expect(1);
 
-                var requestBarrier = new RequestBarrier();
+                var requestBarrier     = new RequestBarrier();
+                var returnResponseText = function (response) {
+                    return response.text();
+                };
+
+                var onReqCompleted = function () {
+                    completeReqCount++;
+                };
 
                 for (var i = 0; i < reqCount; i++) {
-                    fetch('/xhr-test/' + 1000 * (i +1))
-                        .then(function (response) {
-                            return response.text();
-                        })
-                        .then(function () {
-                            completeReqCount++;
-                        });
+                    fetch('/xhr-test/' + 1000 * (i + 1))
+                        .then(returnResponseText)
+                        .then(onReqCompleted);
                 }
 
                 // NOTE: ignore slow connection on the testing

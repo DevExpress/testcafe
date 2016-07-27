@@ -13,7 +13,7 @@ asyncTest('isIFrameWindowInDOM', function () {
 
     function onMessage (event) {
         if (messageCounter === 0) {
-            equal(event.data, "true");
+            equal(event.data, 'true');
 
             var iFramePostMessage = iframe.contentWindow.postMessage.bind(iframe.contentWindow);
 
@@ -26,7 +26,7 @@ asyncTest('isIFrameWindowInDOM', function () {
                 finishTest();
         }
         else {
-            equal(event.data, "false");
+            equal(event.data, 'false');
             finishTest();
         }
 

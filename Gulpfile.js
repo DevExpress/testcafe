@@ -28,6 +28,7 @@ var ghpages              = require('gulp-gh-pages');
 var prompt               = require('gulp-prompt');
 var nodeVer              = require('node-version');
 var functionalTestConfig = require('./test/functional/config');
+var assignIn             = require('lodash').assignIn;
 
 
 ll
@@ -41,9 +42,10 @@ ll
         'client-scripts-bundle'
     ]);
 
+var CLIENT_TESTS_PATH        = 'test/client/fixtures';
+var CLIENT_TESTS_LEGACY_PATH = 'test/client/legacy-fixtures';
 
-var CLIENT_TESTS_SETTINGS = {
-    basePath:        'test/client/fixtures',
+var CLIENT_TESTS_SETTINGS_BASE = {
     port:            2000,
     crossDomainPort: 2001,
 
@@ -52,12 +54,16 @@ var CLIENT_TESTS_SETTINGS = {
         { src: '/hammerhead.js', path: 'node_modules/testcafe-hammerhead/lib/client/hammerhead.js' },
         { src: '/core.js', path: 'lib/client/core/index.js' },
         { src: '/ui.js', path: 'lib/client/ui/index.js' },
-        { src: '/runner.js', path: 'lib/client/runner/index.js' },
+        { src: '/automation.js', path: 'lib/client/automation/index.js' },
+        { src: '/legacy-runner.js', path: 'lib/legacy/client/index.js' },
         { src: '/before-test.js', path: 'test/client/before-test.js' }
     ],
 
     configApp: require('./test/client/config-qunit-server-app')
 };
+
+var CLIENT_TESTS_SETTINGS        = assignIn({}, CLIENT_TESTS_SETTINGS_BASE, { basePath: CLIENT_TESTS_PATH });
+var CLIENT_TESTS_LEGACY_SETTINGS = assignIn({}, CLIENT_TESTS_SETTINGS_BASE, { basePath: CLIENT_TESTS_LEGACY_PATH });
 
 var CLIENT_TESTS_DESKTOP_BROWSERS = [
     {
@@ -88,9 +94,9 @@ var CLIENT_TESTS_DESKTOP_BROWSERS = [
         version:     '9.0'
     },
     {
-        platform:    'OS X 10.10',
+        platform:    'OS X 10.11',
         browserName: 'safari',
-        version:     '8.0'
+        version:     '9.0'
     },
     {
         platform:    'OS X 10.11',
@@ -150,6 +156,7 @@ gulp.task('lint', function () {
 
     var src = gulp.src([
         'src/**/*.js',
+        '!src/legacy/client/**/*.js',
         '!src/client/**/*.js',  //TODO: fix it
         //'test/**/*.js',       //TODO: fix it
         'test/server/**.js',
@@ -165,10 +172,13 @@ gulp.task('lint', function () {
         'src/client/core/prevent-real-events.js',
         'src/client/core/page-unload-barrier.js',
         'src/client/core/xhr-barrier.js',
-        'src/client/runner/automation/**/*.js',
-        'src/client/runner/utils/**/*.js',
+        'src/client/automation/**/*.js',
         'src/client/ui/cursor',
-        'src/client/driver/**/*.js'
+        'src/client/driver/**/*.js',
+
+        'test/client/**/*.js',
+        '!test/client/vendor/**/*.*',
+        '!test/client/legacy-fixtures/**/*.js'
     ]);
 
     return merge(src, clientSrc)
@@ -183,7 +193,8 @@ gulp.task('client-scripts', ['client-scripts-bundle'], function () {
     var scripts = [
         { wrapper: 'src/client/core/index.js.wrapper.mustache', src: 'lib/client/core/index.js' },
         { wrapper: 'src/client/ui/index.js.wrapper.mustache', src: 'lib/client/ui/index.js' },
-        { wrapper: 'src/client/runner/index.js.wrapper.mustache', src: 'lib/client/runner/index.js' },
+        { wrapper: 'src/legacy/client/index.js.wrapper.mustache', src: 'lib/legacy/client/index.js' },
+        { wrapper: 'src/client/automation/index.js.wrapper.mustache', src: 'lib/client/automation/index.js' },
         { wrapper: 'src/client/driver/index.js.wrapper.mustache', src: 'lib/client/driver/index.js' }
     ];
 
@@ -206,9 +217,10 @@ gulp.task('client-scripts-bundle', ['clean'], function () {
             'src/client/core/index.js',
             'src/client/driver/index.js',
             'src/client/ui/index.js',
-            'src/client/runner/index.js',
+            'src/client/automation/index.js',
+            'src/legacy/client/index.js',
             'src/client/browser/idle-page/index.js'
-        ], { base: 'src/client' })
+        ], { base: 'src' })
         .pipe(webmake({
             sourceMap: false,
             transform: function (filename, code) {
@@ -232,13 +244,14 @@ gulp.task('client-scripts-bundle', ['clean'], function () {
         .pipe(filterBrowserIdlePage)
         .pipe(gulpif(!util.env.dev, uglify()))
         .pipe(filterBrowserIdlePage.restore)
-        .pipe(gulp.dest('lib/client'));
+        .pipe(gulp.dest('lib'));
 });
 
 gulp.task('server-scripts', ['clean'], function () {
     return gulp
         .src([
             'src/**/*.js',
+            '!src/legacy/client/**/*.js',
             '!src/client/**/*.js'
         ])
         .pipe(gulpBabel())
@@ -285,10 +298,18 @@ gulp.task('test-server', ['build'], function () {
         }));
 });
 
-gulp.task('test-client', ['build'], function () {
+function testClient (tests, settings, sauselabsSettings) {
     return gulp
-        .src('test/client/fixtures/**/*-test.js')
-        .pipe(qunitHarness(CLIENT_TESTS_SETTINGS));
+        .src(tests)
+        .pipe(qunitHarness(settings, sauselabsSettings));
+}
+
+gulp.task('test-client', ['build'], function () {
+    return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS);
+});
+
+gulp.task('test-client-legacy', ['build'], function () {
+    return testClient('test/client/legacy-fixtures/**/*-test.js', CLIENT_TESTS_LEGACY_SETTINGS);
 });
 
 gulp.task('test-client-travis', ['build'], function () {
@@ -296,9 +317,7 @@ gulp.task('test-client-travis', ['build'], function () {
 
     saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS;
 
-    return gulp
-        .src('test/client/fixtures/**/*-test.js')
-        .pipe(qunitHarness(CLIENT_TESTS_SETTINGS, saucelabsSettings));
+    return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
 });
 
 gulp.task('test-client-travis-mobile', ['build'], function () {
@@ -306,9 +325,23 @@ gulp.task('test-client-travis-mobile', ['build'], function () {
 
     saucelabsSettings.browsers = CLIENT_TESTS_MOBILE_BROWSERS;
 
-    return gulp
-        .src('test/client/fixtures/**/*-test.js')
-        .pipe(qunitHarness(CLIENT_TESTS_SETTINGS, saucelabsSettings));
+    return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
+});
+
+gulp.task('test-client-legacy-travis', ['build'], function () {
+    var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
+
+    saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS;
+
+    return testClient('test/client/legacy-fixtures/**/*-test.js', CLIENT_TESTS_LEGACY_SETTINGS, saucelabsSettings);
+});
+
+gulp.task('test-client-legacy-travis-mobile', ['build'], function () {
+    var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
+
+    saucelabsSettings.browsers = CLIENT_TESTS_MOBILE_BROWSERS;
+
+    return testClient('test/client/legacy-fixtures/**/*-test.js', CLIENT_TESTS_LEGACY_SETTINGS, saucelabsSettings);
 });
 
 gulp.task('travis', [process.env.GULP_TASK || '']);
