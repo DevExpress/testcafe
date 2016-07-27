@@ -11,7 +11,13 @@ preventRealEvents();
 
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
+var Promise      = hammerhead.Promise;
 
+var wait = function (ms) {
+    return new Promise(function (resolve) {
+        window.setTimeout(resolve, ms);
+    });
+};
 
 $(document).ready(function () {
     // NOTE: remove this after fix IE tests in iFrame
@@ -156,10 +162,14 @@ $(document).ready(function () {
 
         createTarget(100, 300).css('zIndex', '100');
 
-        var drag = new DragToElementAutomation(draggable, target, new MouseOptions());
+        var drag = new DragToElementAutomation(draggable, target, new MouseOptions({ offsetX: 5, offsetY: 5 }));
 
         drag
             .run()
+            .then(function () {
+                // NOTE: wait while dragging scripts finished
+                return wait(200);
+            })
             .then(function () {
                 ok(isInTarget(draggable, target), 'element is in the target');
                 start();

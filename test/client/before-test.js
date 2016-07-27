@@ -108,5 +108,5 @@
         });
     };
 
-    QUnit.config.testTimeout = 10000;
+    QUnit.config.testTimeout = 15000;
 })();

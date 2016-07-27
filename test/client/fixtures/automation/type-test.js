@@ -49,7 +49,7 @@ $(document).ready(function () {
                 mouseclickCount++;
             });
 
-        var type = new TypeAutomation($commonInput[0], 'HI', new TypeOptions());
+        var type = new TypeAutomation($commonInput[0], 'HI', new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
         type
             .run()
@@ -69,12 +69,12 @@ $(document).ready(function () {
         var $inputs = $('.' + TEST_ELEMENT_CLASS);
         var text    = 'Hello, world!';
 
-        var firstType = new TypeAutomation($inputs[0], text, new TypeOptions());
+        var firstType = new TypeAutomation($inputs[0], text, new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
         firstType
             .run()
             .then(function () {
-                var secondType = new TypeAutomation($inputs[1], text, new TypeOptions());
+                var secondType = new TypeAutomation($inputs[1], text, new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
                 return secondType.run();
             })
@@ -93,7 +93,7 @@ $(document).ready(function () {
             equal((e || window.event).keyCode, key.charCodeAt(0), 'keypress event argument is correct');
         };
 
-        var type = new TypeAutomation($commonInput[0], key, new TypeOptions());
+        var type = new TypeAutomation($commonInput[0], key, new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
         type
             .run()
@@ -151,7 +151,7 @@ $(document).ready(function () {
 
         $commonInput[0].value = 'old text';
 
-        var type = new TypeAutomation($commonInput[0], text, new TypeOptions({ replace: true }));
+        var type = new TypeAutomation($commonInput[0], text, new TypeOptions({ replace: true, offsetX: 5, offsetY: 5 }));
 
         type
             .run()
@@ -194,7 +194,7 @@ $(document).ready(function () {
             $input.val('');
         });
 
-        var type = new TypeAutomation($input[0], 'test', new TypeOptions());
+        var type = new TypeAutomation($input[0], 'test', new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
         type
             .run()
@@ -213,7 +213,7 @@ $(document).ready(function () {
             changed = true;
         });
 
-        var firstType = new TypeAutomation($input[0], 'test', new TypeOptions());
+        var firstType = new TypeAutomation($input[0], 'test', new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
         firstType
             .run()
@@ -229,7 +229,7 @@ $(document).ready(function () {
                     return false;
                 });
 
-                var secondType = new TypeAutomation($input[0], 'new', new TypeOptions());
+                var secondType = new TypeAutomation($input[0], 'new', new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
                 return secondType.run();
             })
@@ -256,7 +256,7 @@ $(document).ready(function () {
             equal(e.keyCode, keyCode, 'keyCode on keydown checked');
         });
 
-        var type = new TypeAutomation($input[0], symbol, new TypeOptions());
+        var type = new TypeAutomation($input[0], symbol, new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
         type
             .run()
@@ -274,7 +274,7 @@ $(document).ready(function () {
             inputEventCount++;
         });
 
-        var type = new TypeAutomation($input[0], 'test', new TypeOptions());
+        var type = new TypeAutomation($input[0], 'test', new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
         type
             .run()
@@ -320,7 +320,7 @@ $(document).ready(function () {
             equal(e.keyCode, keyCode, 'keyCode on keydown checked');
         });
 
-        var type = new TypeAutomation($input[0], '-', new TypeOptions());
+        var type = new TypeAutomation($input[0], '-', new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
         type
             .run()

@@ -114,7 +114,7 @@ $(document).ready(function () {
             ok(mousedownRaised && mouseupRaised, 'click event was raised third ');
         });
 
-        var click = new ClickAutomation($el[0], new ClickOptions());
+        var click = new ClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
         click
             .run()
@@ -162,6 +162,8 @@ $(document).ready(function () {
     asyncTest('scroll down and click with offset', function () {
         var clicked = false;
 
+        removeTestElements();
+
         var $div1            = addContainer(500, 200, 'body');
         var $div2            = addContainer(450, 510, $div1);
         var $div3            = addContainer(400, 620, $div2);
@@ -205,6 +207,8 @@ $(document).ready(function () {
 
     asyncTest('scroll up and click with offset', function () {
         var clicked = false;
+
+        removeTestElements();
 
         var $div1            = addContainer(500, 200, 'body');
         var $div2            = addContainer(450, 510, $div1);
@@ -272,7 +276,7 @@ $(document).ready(function () {
             })
             .appendTo($div);
 
-        var click = new ClickAutomation($button[0], new ClickOptions());
+        var click = new ClickAutomation($button[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
         click
             .run()
@@ -290,7 +294,7 @@ $(document).ready(function () {
                 clicked = true;
             });
 
-        var click = new ClickAutomation($el[0], new ClickOptions());
+        var click = new ClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
         click
             .run()
@@ -298,7 +302,10 @@ $(document).ready(function () {
                 ok(clicked, 'click after scrolling was raised');
 
                 //moving scroll to start position for a next test
-                var restoreScrollClick = new ClickAutomation(addDiv(200, 500)[0], new ClickOptions());
+                var restoreScrollClick = new ClickAutomation(addDiv(200, 500)[0], new ClickOptions({
+                    offsetX: 5,
+                    offsetY: 5
+                }));
 
                 return restoreScrollClick.run();
             })
@@ -317,7 +324,7 @@ $(document).ready(function () {
         });
 
 
-        var click = new ClickAutomation($input[0], new ClickOptions());
+        var click = new ClickAutomation($input[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
         click
             .run()
@@ -379,7 +386,10 @@ $(document).ready(function () {
                 ctrl:  true,
                 shift: true,
                 meta:  true
-            }
+            },
+
+            offsetX: 5,
+            offsetY: 5
         }));
 
         click
@@ -416,7 +426,7 @@ $(document).ready(function () {
 
         $el.appendTo($div);
 
-        var click = new ClickAutomation($el[0], new ClickOptions());
+        var click = new ClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
         click
             .run()
@@ -527,7 +537,7 @@ $(document).ready(function () {
 
         $input[0].focus();
 
-        var click = new ClickAutomation($button[0], new ClickOptions());
+        var click = new ClickAutomation($button[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
         click
             .run()
@@ -552,7 +562,7 @@ $(document).ready(function () {
             ok(timeoutCalled, 'check timeout setted in mousedown handler was called before mouseup');
         });
 
-        var click = new ClickAutomation($el[0], new ClickOptions());
+        var click = new ClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
         click
             .run()
@@ -572,7 +582,7 @@ $(document).ready(function () {
             clicked = true;
         });
 
-        var click = new ClickAutomation($link[0], new ClickOptions());
+        var click = new ClickAutomation($link[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
         click
             .run()
@@ -689,7 +699,7 @@ $(document).ready(function () {
         else
             expect(7);
 
-        var click = new ClickAutomation($el[0], new ClickOptions());
+        var click = new ClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
         click
             .run()
@@ -715,7 +725,7 @@ $(document).ready(function () {
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo($label);
 
-        var click = new ClickAutomation($input[0], new ClickOptions());
+        var click = new ClickAutomation($input[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
         click
             .run()
@@ -786,7 +796,7 @@ $(document).ready(function () {
             for (event in events)
                 bind(event);
 
-            var click = new ClickAutomation($el[0], new ClickOptions());
+            var click = new ClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
             click
                 .run()
@@ -810,7 +820,7 @@ $(document).ready(function () {
 
             $el[0].ontouchstart = $el[0].ontouchmove = $el[0].ontouchend = touchEventHandler;
 
-            var click = new ClickAutomation($el[0], new ClickOptions());
+            var click = new ClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
             click
                 .run()

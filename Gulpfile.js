@@ -94,9 +94,9 @@ var CLIENT_TESTS_DESKTOP_BROWSERS = [
         version:     '9.0'
     },
     {
-        platform:    'OS X 10.10',
+        platform:    'OS X 10.11',
         browserName: 'safari',
-        version:     '8.0'
+        version:     '9.0'
     },
     {
         platform:    'OS X 10.11',

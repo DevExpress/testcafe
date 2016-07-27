@@ -82,7 +82,7 @@ $(document).ready(function () {
                 ok(mousedownRaised && mouseupRaised && !clickRaised, 'contextmenu event was raised third ');
             });
 
-            var rclick = new RClickAutomation($input[0], new ClickOptions());
+            var rclick = new RClickAutomation($input[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
             rclick
                 .run()
@@ -149,7 +149,7 @@ $(document).ready(function () {
             $el[0].onmspointerup   = pointerHandler;
         }
 
-        var rclick = new RClickAutomation($el[0], new ClickOptions());
+        var rclick = new RClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
         rclick
             .run()

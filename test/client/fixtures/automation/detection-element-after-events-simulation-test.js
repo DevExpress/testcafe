@@ -778,7 +778,7 @@ $(document).ready(function () {
 
         bindKeyHandlersToSwappingElements($input1, $input2, 'keydown', eventMonitorObject);
 
-        var type = new TypeAutomation($input1[0], 'a', new TypeOptions());
+        var type = new TypeAutomation($input1[0], 'a', new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
         type
             .run()
@@ -806,7 +806,7 @@ $(document).ready(function () {
 
         bindKeyHandlersToSwappingElements($input1, $input2, 'keypress', eventMonitorObject);
 
-        var type = new TypeAutomation($input1[0], 'a', new TypeOptions());
+        var type = new TypeAutomation($input1[0], 'a', new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
         type
             .run()
@@ -834,7 +834,7 @@ $(document).ready(function () {
 
         bindKeyHandlersToSwappingElements($input1, $input2, 'keyup', eventMonitorObject);
 
-        var type = new TypeAutomation($input1[0], 'a', new TypeOptions());
+        var type = new TypeAutomation($input1[0], 'a', new TypeOptions({ offsetX: 5, offsetY: 5 }));
 
         type
             .run()

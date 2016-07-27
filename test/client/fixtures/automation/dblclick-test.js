@@ -53,7 +53,7 @@ $(document).ready(function () {
                 dblclickCount++;
             });
 
-        var dblClick = new DblClickAutomation($el[0], new ClickOptions());
+        var dblClick = new DblClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
         dblClick
             .run()

@@ -193,7 +193,7 @@ $(document).ready(function () {
         ok(!clicked);
         selectByNodesAndOffsets($parent[0].childNodes[0], 3, $parent[0].childNodes[4], 7);
 
-        var click = new ClickAutomation($el[0], new ClickOptions({ caretPos: 6 }));
+        var click = new ClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5, caretPos: 6 }));
 
         click
             .run()
