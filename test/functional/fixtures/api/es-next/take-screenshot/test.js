@@ -33,7 +33,7 @@ describe('[API] t.takeScreenshot()', function () {
                 .then(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
                     expect(testReport.warnings).eql([
-                        'Cannot take screenshots because the screenshot directory is not specified. To specify it, ' +
+                        'Was unable to take screenshots because the screenshot directory is not specified. To specify it, ' +
                         'use the "-s" or "--screenshots" command line option or the "screenshots" method of the ' +
                         'test runner in case you are using API.'
                     ]);
@@ -45,7 +45,7 @@ describe('[API] t.takeScreenshot()', function () {
                 .then(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
                     expect(testReport.warnings).eql([
-                        'Cannot take screenshots because the screenshot directory is not specified. To specify it, ' +
+                        'Was unable to take screenshots because the screenshot directory is not specified. To specify it, ' +
                         'use the "-s" or "--screenshots" command line option or the "screenshots" method of the ' +
                         'test runner in case you are using API.'
                     ]);

@@ -1,5 +1,5 @@
 import { join as joinPath, dirname } from 'path';
-import promisify from '../../utils/promisify';
+import promisify from '../utils/promisify';
 import mkdirp from 'mkdirp';
 import { screenshot as takeScreenshot } from 'testcafe-browser-natives';
 
