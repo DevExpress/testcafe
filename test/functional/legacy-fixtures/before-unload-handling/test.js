@@ -14,7 +14,7 @@ describe('Before unload handling', function () {
                     ' The expected system beforeUnload dialog did not appear.'
                 ].join('');
 
-                expect(errs[0]).eql(expectedError);
+                expect(errs[0]).contains(expectedError);
             });
     });
 
@@ -26,7 +26,7 @@ describe('Before unload handling', function () {
                     ' Unexpected system beforeUnload dialog message appeared.'
                 ].join('');
 
-                expect(errs[0]).eql(expectedError);
+                expect(errs[0]).contains(expectedError);
             });
     });
 
@@ -42,7 +42,7 @@ describe('Before unload handling', function () {
                     ' The expected system beforeUnload dialog did not appear.'
                 ].join('');
 
-                expect(errs[0]).eql(expectedError);
+                expect(errs[0]).contains(expectedError);
             });
     });
 
@@ -54,7 +54,7 @@ describe('Before unload handling', function () {
                     ' Unexpected system beforeUnload dialog message appeared.'
                 ].join('');
 
-                expect(errs[0]).eql(expectedError);
+                expect(errs[0]).contains(expectedError);
             });
     });
 });

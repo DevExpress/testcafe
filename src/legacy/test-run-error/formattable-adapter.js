@@ -19,6 +19,9 @@ export default class LegacyTestRunErrorFormattableAdapter extends TestRunErrorFo
     }
 
     getCallsiteMarkup () {
+        if (!this.callsite)
+            return null;
+
         var code     = highlight(this.callsite, renderer);
         var lines    = code.split(NEWLINE);
         var lastLine = lines.pop();
