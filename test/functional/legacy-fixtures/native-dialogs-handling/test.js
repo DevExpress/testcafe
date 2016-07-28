@@ -18,7 +18,7 @@ describe('Native dialogs handling', function () {
                     'Unexpected system alert dialog Alert dialog appeared.'
                 ].join(' ');
 
-                expect(errs[0]).eql(expectedError);
+                expect(errs[0]).contains(expectedError);
             });
     });
 
@@ -30,7 +30,7 @@ describe('Native dialogs handling', function () {
                     'Unexpected system confirm dialog Confirm dialog appeared.'
                 ].join(' ');
 
-                expect(errs[0]).eql(expectedError);
+                expect(errs[0]).contains(expectedError);
             });
     });
 
@@ -42,7 +42,7 @@ describe('Native dialogs handling', function () {
                     'Unexpected system confirm dialog Confirm dialog appeared.'
                 ].join(' ');
 
-                expect(errs[0]).eql(expectedError);
+                expect(errs[0]).contains(expectedError);
             });
     });
 
@@ -54,7 +54,7 @@ describe('Native dialogs handling', function () {
                     'Unexpected system prompt dialog Prompt dialog appeared.'
                 ].join(' ');
 
-                expect(errs[0]).eql(expectedError);
+                expect(errs[0]).contains(expectedError);
             });
     });
 
@@ -66,7 +66,7 @@ describe('Native dialogs handling', function () {
                     'Unexpected system alert dialog Alert dialog appeared.'
                 ].join(' ');
 
-                expect(errs[0]).eql(expectedError);
+                expect(errs[0]).contains(expectedError);
             });
     });
 
@@ -78,7 +78,7 @@ describe('Native dialogs handling', function () {
                     'The expected system confirm dialog did not appear.'
                 ].join(' ');
 
-                expect(errs[0]).eql(expectedError);
+                expect(errs[0]).contains(expectedError);
             });
     });
 
@@ -90,7 +90,7 @@ describe('Native dialogs handling', function () {
                     'The expected system prompt dialog did not appear.'
                 ].join(' ');
 
-                expect(errs[0]).eql(expectedError);
+                expect(errs[0]).contains(expectedError);
             });
     });
 
@@ -102,7 +102,7 @@ describe('Native dialogs handling', function () {
                     'The expected system alert dialog did not appear.'
                 ].join(' ');
 
-                expect(errs[0]).eql(expectedError);
+                expect(errs[0]).contains(expectedError);
             });
     });
 
@@ -119,7 +119,7 @@ describe('Native dialogs handling', function () {
                         'Unexpected system confirm dialog Confirm dialog appeared.'
                     ].join(' ');
 
-                    expect(errs[0]).eql(expectedError);
+                    expect(errs[0]).contains(expectedError);
                 });
         });
 
@@ -131,7 +131,7 @@ describe('Native dialogs handling', function () {
                         'The expected system confirm dialog did not appear.'
                     ].join(' ');
 
-                    expect(errs[0]).eql(expectedError);
+                    expect(errs[0]).contains(expectedError);
                 });
         });
     });
@@ -149,7 +149,7 @@ describe('Native dialogs handling', function () {
                         'Unexpected system confirm dialog Confirm dialog appeared.'
                     ].join(' ');
 
-                    expect(errs[0]).eql(expectedError);
+                    expect(errs[0]).contains(expectedError);
                 });
         });
 
@@ -161,7 +161,7 @@ describe('Native dialogs handling', function () {
                         'The expected system confirm dialog did not appear.'
                     ].join(' ');
 
-                    expect(errs[0]).eql(expectedError);
+                    expect(errs[0]).contains(expectedError);
                 });
         });
 
@@ -177,7 +177,7 @@ describe('Native dialogs handling', function () {
                         'Unexpected system confirm dialog Confirm dialog appeared.'
                     ].join(' ');
 
-                    expect(errs[0]).eql(expectedError);
+                    expect(errs[0]).contains(expectedError);
                 });
         });
 
@@ -189,7 +189,7 @@ describe('Native dialogs handling', function () {
                         'The expected system confirm dialog did not appear.'
                     ].join(' ');
 
-                    expect(errs[0]).eql(expectedError);
+                    expect(errs[0]).contains(expectedError);
                 });
         });
     });

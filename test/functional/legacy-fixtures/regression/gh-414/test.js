@@ -12,13 +12,14 @@ describe("[Regression](GH-414) Should restart a test step if redirect occurs whi
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "2.Click div "The second div"":',
-                    " act.click('#div2'); ",
                     'A target element of the click action has not been found in the DOM tree.',
                     'If this element should be created after animation or a time-consuming',
                     'operation is finished, use the waitFor action (available for use in code)',
-                    'to pause test execution until this element appears.'].join(' ');
+                    'to pause test execution until this element appears.'
+                ].join(' ');
 
-                expect(errs[0]).eql(expectedError);
+                expect(errs[0]).contains(expectedError);
+                expect(errs[0]).contains("act.click('#div2');");
             });
     });
 
