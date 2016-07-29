@@ -167,7 +167,7 @@ $(document).ready(function () {
         drag
             .run()
             .then(function () {
-                // NOTE: wait while dragging scripts finished (it can take some additional time on a slow vm
+                // NOTE: wait for dragging scripts to finish (it can take some additional time on a slow vm)
                 return wait(1000);
             })
             .then(function () {
