@@ -154,33 +154,21 @@ gulp.task('lint', function () {
 
     var eslint = require('gulp-eslint');
 
-    var src = gulp.src([
-        'src/**/*.js',
-        '!src/client/**/*.js',  //TODO: fix it
-        //'test/**/*.js',       //TODO: fix it
-        'test/server/**.js',
-        'test/functional/**/*.js',
-        'test/report-design-viewer/*.js',
-        'Gulpfile.js',
-        'test/website/**/*.js'
-    ]);
+    gulp
+        .src([
+            'src/**/*.js',
 
-    // TODO join linting sources once we move
-    // legacy code to separate package
-    var clientSrc = gulp.src([
-        'src/client/core/prevent-real-events.js',
-        'src/client/core/page-unload-barrier.js',
-        'src/client/core/xhr-barrier.js',
-        'src/client/automation/**/*.js',
-        'src/client/ui/cursor',
-        'src/client/driver/**/*.js',
+            // TODO: fix linting in client scripts completely
+            '!src/client/core/utils/**/*.js',
+            '!src/client/browser/**/*.js',
+            '!src/client/ui/**/*.js',
 
-        'test/client/**/*.js',
-        '!test/client/vendor/**/*.*',
-        '!test/client/legacy-fixtures/**/*.js'
-    ]);
+            'test/**/*.js',
+            '!test/client/vendor/**/*.*',
+            '!test/client/legacy-fixtures/**/*.js',
 
-    return merge(src, clientSrc)
+            'Gulpfile.js'
+        ])
         .pipe(eslint())
         .pipe(eslint.format())
         .pipe(eslint.failAfterError());
