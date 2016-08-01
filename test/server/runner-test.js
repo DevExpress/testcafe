@@ -585,15 +585,15 @@ describe('Runner', function () {
             }, IDLE_DELAY);
 
             return runner
-                    .browsers('browser-alias1', remoteConnection)
-                    .run()
-                    .cancel()
-                    .then(function () {
-                        expect(closeCalled).eql(1);
-                        expect(abortCalled).to.be.true;
-                        expect(remoteConnection.idle).to.be.true;
-                        remoteConnection.close();
-                    });
+                .browsers('browser-alias1', remoteConnection)
+                .run()
+                .cancel()
+                .then(function () {
+                    expect(closeCalled).eql(1);
+                    expect(abortCalled).to.be.true;
+                    expect(remoteConnection.idle).to.be.true;
+                    remoteConnection.close();
+                });
         });
     });
 });

@@ -66,8 +66,8 @@ export default class ESNextCompiler {
 
     static _isNodeModulesDep (filename) {
         return relative(CWD, filename)
-                   .split(pathSep)
-                   .indexOf('node_modules') >= 0;
+            .split(pathSep)
+            .indexOf('node_modules') >= 0;
     }
 
     static _execAsModule (code, filename) {

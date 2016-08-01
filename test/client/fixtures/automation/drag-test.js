@@ -11,13 +11,7 @@ preventRealEvents();
 
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
-var Promise      = hammerhead.Promise;
 
-var wait = function (ms) {
-    return new Promise(function (resolve) {
-        window.setTimeout(resolve, ms);
-    });
-};
 
 $(document).ready(function () {
     // NOTE: remove this after fix IE tests in iFrame
@@ -113,10 +107,13 @@ $(document).ready(function () {
 
     //tests
     QUnit.testDone(function () {
-        $('.' + TEST_ELEMENT_CLASS).remove();
-        $('body').height('').width('');
-    });
+        var $body = $('body');
 
+        $('.' + TEST_ELEMENT_CLASS).remove();
+        $body.height('').width('');
+        $body.scrollLeft = 0;
+        $body.scrollTop  = 0;
+    });
     module('scrolling functional test');
     asyncTest('scroll down right', function () {
         $('body').height(1500).width(1500);
@@ -157,23 +154,22 @@ $(document).ready(function () {
     module('other functional tests');
 
     asyncTest('overlapped during dragging', function () {
-        var draggable = createDraggable(100, 100)[0];
-        var target    = createTarget(100, 500)[0];
+        window.setTimeout(function () {
+            var draggable = createDraggable(100, 100)[0];
+            var target    = createTarget(100, 350)[0];
 
-        createTarget(100, 300).css('zIndex', '100');
+            createTarget(100, 200).css('zIndex', '100');
 
-        var drag = new DragToElementAutomation(draggable, target, new MouseOptions({ offsetX: 5, offsetY: 5 }));
+            var drag = new DragToElementAutomation(draggable, target, new MouseOptions({ offsetX: 5, offsetY: 5 }));
 
-        drag
-            .run()
-            .then(function () {
-                // NOTE: wait while dragging scripts finished
-                return wait(200);
-            })
-            .then(function () {
-                ok(isInTarget(draggable, target), 'element is in the target');
-                start();
-            });
+            drag
+                .run()
+                .then(function () {
+                    ok(isInTarget(draggable, target), 'element is in the target');
+                    start();
+                });
+        }, 500);
+
     });
 
     module('regression');

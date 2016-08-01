@@ -30,7 +30,7 @@ export function getInnerText (element) {
 
     // NOTE: IE includes scripts and stylesheets in innerText
     return innerText && innerText
-            .replace(SCRIPT_RE, '')
-            .replace(STYLESHEET_RE, '')
-            .replace(/\r\n/g, '\n');
+        .replace(SCRIPT_RE, '')
+        .replace(STYLESHEET_RE, '')
+        .replace(/\r\n/g, '\n');
 }
