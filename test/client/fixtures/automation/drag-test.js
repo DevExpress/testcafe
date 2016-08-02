@@ -167,8 +167,8 @@ $(document).ready(function () {
         drag
             .run()
             .then(function () {
-                // NOTE: wait while dragging scripts finished
-                return wait(200);
+                // NOTE: wait for dragging scripts to finish (it can take some additional time on a slow vm)
+                return wait(1000);
             })
             .then(function () {
                 ok(isInTarget(draggable, target), 'element is in the target');
