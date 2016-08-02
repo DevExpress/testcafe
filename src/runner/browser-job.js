@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import LegacyTestRun from '../legacy/test-run';
+import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import TestRun from '../test-run';
 
 // Const

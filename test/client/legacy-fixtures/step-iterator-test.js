@@ -1,9 +1,9 @@
 var testCafeCore = window.getTestCafeModule('testCafeCore');
-var COMMAND      = testCafeCore.COMMAND;
-var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
 var eventUtils   = testCafeCore.get('./utils/event');
 
 var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+var COMMAND              = testCafeLegacyRunner.get('../test-run/command');
+var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
 var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
 var transport            = testCafeLegacyRunner.get('./transport');
 var SETTINGS             = testCafeLegacyRunner.get('./settings').get();

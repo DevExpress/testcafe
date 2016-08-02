@@ -1,7 +1,5 @@
 import hammerhead from './deps/hammerhead';
 
-import ERROR_TYPE from '../../legacy/test-run-error/type';
-import COMMAND from '../../legacy/test-run/command';
 import KEY_MAPS from './utils/key-maps';
 import RequestBarrier from './request-barrier';
 import * as pageUnloadBarrier from './page-unload-barrier';
@@ -23,11 +21,11 @@ import getSanitizedKey from './utils/get-sanitized-key';
 import parseKeySequence from './utils/parse-key-sequence';
 import sendRequestToFrame from './utils/send-request-to-frame';
 
-exports.COMMAND               = COMMAND;
-exports.ERROR_TYPE            = ERROR_TYPE;
-exports.RequestBarrier        = RequestBarrier;
-exports.pageUnloadBarrier     = pageUnloadBarrier;
-exports.preventRealEvents     = preventRealEvents;
+import * as browser from '../browser';
+
+exports.RequestBarrier    = RequestBarrier;
+exports.pageUnloadBarrier = pageUnloadBarrier;
+exports.preventRealEvents = preventRealEvents;
 
 exports.serviceUtils       = serviceUtils;
 exports.domUtils           = domUtils;
@@ -45,6 +43,7 @@ exports.getSanitizedKey    = getSanitizedKey;
 exports.parseKeySequence   = parseKeySequence;
 exports.sendRequestToFrame = sendRequestToFrame;
 exports.KEY_MAPS           = KEY_MAPS;
+exports.browser            = browser;
 
 exports.get = require;
 

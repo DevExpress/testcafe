@@ -2,10 +2,8 @@ var hammerhead    = window.getTestCafeModule('hammerhead');
 var hhsettings    = hammerhead.get('./settings').get();
 var iframeSandbox = hammerhead.sandbox.iframe;
 
-var testCafeCore = window.getTestCafeModule('testCafeCore');
-var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
-
 var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
 var Runner               = testCafeLegacyRunner.get('./runner');
 var RunnerBase           = testCafeLegacyRunner.get('./runner-base');
 var transport            = testCafeLegacyRunner.get('./transport');

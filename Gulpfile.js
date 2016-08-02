@@ -55,7 +55,7 @@ var CLIENT_TESTS_SETTINGS_BASE = {
         { src: '/core.js', path: 'lib/client/core/index.js' },
         { src: '/ui.js', path: 'lib/client/ui/index.js' },
         { src: '/automation.js', path: 'lib/client/automation/index.js' },
-        { src: '/legacy-runner.js', path: 'lib/legacy/client/index.js' },
+        { src: '/legacy-runner.js', path: 'node_modules/testcafe-legacy-api/lib/client/index.js' },
         { src: '/before-test.js', path: 'test/client/before-test.js' }
     ],
 
@@ -154,34 +154,21 @@ gulp.task('lint', function () {
 
     var eslint = require('gulp-eslint');
 
-    var src = gulp.src([
-        'src/**/*.js',
-        '!src/legacy/client/**/*.js',
-        '!src/client/**/*.js',  //TODO: fix it
-        //'test/**/*.js',       //TODO: fix it
-        'test/server/**.js',
-        'test/functional/**/*.js',
-        'test/report-design-viewer/*.js',
-        'Gulpfile.js',
-        'test/website/**/*.js'
-    ]);
+    gulp
+        .src([
+            'src/**/*.js',
 
-    // TODO join linting sources once we move
-    // legacy code to separate package
-    var clientSrc = gulp.src([
-        'src/client/core/prevent-real-events.js',
-        'src/client/core/page-unload-barrier.js',
-        'src/client/core/xhr-barrier.js',
-        'src/client/automation/**/*.js',
-        'src/client/ui/cursor',
-        'src/client/driver/**/*.js',
+            // TODO: fix linting in client scripts completely
+            '!src/client/core/utils/**/*.js',
+            '!src/client/browser/**/*.js',
+            '!src/client/ui/**/*.js',
 
-        'test/client/**/*.js',
-        '!test/client/vendor/**/*.*',
-        '!test/client/legacy-fixtures/**/*.js'
-    ]);
+            'test/**/*.js',
+            '!test/client/vendor/**/*.*',
+            '!test/client/legacy-fixtures/**/*.js',
 
-    return merge(src, clientSrc)
+            'Gulpfile.js'
+        ])
         .pipe(eslint())
         .pipe(eslint.format())
         .pipe(eslint.failAfterError());
@@ -193,7 +180,6 @@ gulp.task('client-scripts', ['client-scripts-bundle'], function () {
     var scripts = [
         { wrapper: 'src/client/core/index.js.wrapper.mustache', src: 'lib/client/core/index.js' },
         { wrapper: 'src/client/ui/index.js.wrapper.mustache', src: 'lib/client/ui/index.js' },
-        { wrapper: 'src/legacy/client/index.js.wrapper.mustache', src: 'lib/legacy/client/index.js' },
         { wrapper: 'src/client/automation/index.js.wrapper.mustache', src: 'lib/client/automation/index.js' },
         { wrapper: 'src/client/driver/index.js.wrapper.mustache', src: 'lib/client/driver/index.js' }
     ];
@@ -218,7 +204,6 @@ gulp.task('client-scripts-bundle', ['clean'], function () {
             'src/client/driver/index.js',
             'src/client/ui/index.js',
             'src/client/automation/index.js',
-            'src/legacy/client/index.js',
             'src/client/browser/idle-page/index.js'
         ], { base: 'src' })
         .pipe(webmake({
@@ -251,7 +236,6 @@ gulp.task('server-scripts', ['clean'], function () {
     return gulp
         .src([
             'src/**/*.js',
-            '!src/legacy/client/**/*.js',
             '!src/client/**/*.js'
         ])
         .pipe(gulpBabel())

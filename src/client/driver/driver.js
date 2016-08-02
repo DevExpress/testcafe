@@ -6,7 +6,8 @@ import {
     eventUtils,
     domUtils,
     preventRealEvents,
-    waitFor
+    waitFor,
+    browser
 } from './deps/testcafe-core';
 import { modalBackground } from './deps/testcafe-ui';
 
@@ -23,7 +24,6 @@ import {
     CurrentIframeNotFoundError,
     CurrentIframeIsInvisibleError
 } from '../../errors/test-run';
-import * as browser from '../browser';
 
 import { TYPE as MESSAGE_TYPE } from './driver-link/messages';
 import ContextStorage from './storage';

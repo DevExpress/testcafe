@@ -1,2 +1,1 @@
-src/compiler/legacy/**/*.js
 test/server/data/test-suites/**/*.js

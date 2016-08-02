@@ -1,11 +1,8 @@
 var hammerhead = window.getTestCafeModule('hammerhead');
 var hhsettings = hammerhead.get('./settings').get();
 
-var testCafeCore = window.getTestCafeModule('testCafeCore');
-var COMMAND      = testCafeCore.COMMAND;
-var ERROR_TYPE   = testCafeCore.ERROR_TYPE;
-
 var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
+var COMMAND              = testCafeLegacyRunner.get('../test-run/command');
 var Runner               = testCafeLegacyRunner.get('./runner');
 var transport            = testCafeLegacyRunner.get('./transport');
 var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
