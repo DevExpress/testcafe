@@ -122,9 +122,12 @@ var CLIENT_TESTS_MOBILE_BROWSERS = [
         deviceName:  'iPad Simulator'
     },
     {
-        platform:    'OS X 10.10',
-        browserName: 'iphone',
-        version:     '9.1',
+        platform:    'iOS',
+        browserName: 'Safari',
+        // NOTE: https://github.com/DevExpress/testcafe/issues/471
+        // problem with extra scroll reproduced only on saucelabs
+        // virtual machines with ios device emulators
+        version:     '9.2',
         deviceName:  'iPhone 6 Plus'
     }
 ];
