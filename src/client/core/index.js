@@ -1,6 +1,7 @@
 import hammerhead from './deps/hammerhead';
 
 import KEY_MAPS from './utils/key-maps';
+import NODE_TYPE_DESCRIPTIONS from './utils/node-type-descriptions';
 import RequestBarrier from './request-barrier';
 import * as pageUnloadBarrier from './page-unload-barrier';
 import preventRealEvents from './prevent-real-events';
@@ -27,23 +28,24 @@ exports.RequestBarrier    = RequestBarrier;
 exports.pageUnloadBarrier = pageUnloadBarrier;
 exports.preventRealEvents = preventRealEvents;
 
-exports.serviceUtils       = serviceUtils;
-exports.domUtils           = domUtils;
-exports.contentEditable    = contentEditable;
-exports.positionUtils      = positionUtils;
-exports.styleUtils         = styleUtils;
-exports.eventUtils         = eventUtils;
-exports.arrayUtils         = arrayUtils;
-exports.textSelection      = textSelection;
-exports.waitFor            = waitFor;
-exports.delay              = delay;
-exports.noop               = noop;
-exports.getKeyArray        = getKeyArray;
-exports.getSanitizedKey    = getSanitizedKey;
-exports.parseKeySequence   = parseKeySequence;
-exports.sendRequestToFrame = sendRequestToFrame;
-exports.KEY_MAPS           = KEY_MAPS;
-exports.browser            = browser;
+exports.serviceUtils           = serviceUtils;
+exports.domUtils               = domUtils;
+exports.contentEditable        = contentEditable;
+exports.positionUtils          = positionUtils;
+exports.styleUtils             = styleUtils;
+exports.eventUtils             = eventUtils;
+exports.arrayUtils             = arrayUtils;
+exports.textSelection          = textSelection;
+exports.waitFor                = waitFor;
+exports.delay                  = delay;
+exports.noop                   = noop;
+exports.getKeyArray            = getKeyArray;
+exports.getSanitizedKey        = getSanitizedKey;
+exports.parseKeySequence       = parseKeySequence;
+exports.sendRequestToFrame     = sendRequestToFrame;
+exports.KEY_MAPS               = KEY_MAPS;
+exports.NODE_TYPE_DESCRIPTIONS = NODE_TYPE_DESCRIPTIONS;
+exports.browser                = browser;
 
 exports.get = require;
 

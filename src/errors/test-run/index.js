@@ -229,6 +229,14 @@ export class ActionElementIsInvisibleError extends TestRunErrorBase {
     }
 }
 
+export class ActionSelectorMatchesWrongNodeTypeError extends TestRunErrorBase {
+    constructor (nodeDescription) {
+        super(TYPE.actionSelectorMatchesWrongNodeTypeError);
+
+        this.nodeDescription = nodeDescription;
+    }
+}
+
 export class ActionAdditionalElementNotFoundError extends TestRunErrorBase {
     constructor (argumentName) {
         super(TYPE.actionAdditionalElementNotFoundError);
@@ -242,6 +250,15 @@ export class ActionAdditionalElementIsInvisibleError extends TestRunErrorBase {
         super(TYPE.actionAdditionalElementIsInvisibleError);
 
         this.argumentName = argumentName;
+    }
+}
+
+export class ActionAdditionalSelectorMatchesWrongNodeTypeError extends TestRunErrorBase {
+    constructor (argumentName, nodeDescription) {
+        super(TYPE.actionAdditionalSelectorMatchesWrongNodeTypeError);
+
+        this.argumentName    = argumentName;
+        this.nodeDescription = nodeDescription;
     }
 }
 

@@ -104,12 +104,20 @@ export default {
         The element that matches the specified selector is not visible.
     `),
 
+    [TYPE.actionSelectorMatchesWrongNodeTypeError]: err => markup(err, `
+        The specified selector is expected to match a DOM element, but it matches a ${err.nodeDescription} node.
+    `),
+
     [TYPE.actionAdditionalElementNotFoundError]: err => markup(err, `
         The specified "${err.argumentName}" does not match any element in the DOM tree.
     `),
 
     [TYPE.actionAdditionalElementIsInvisibleError]: err => markup(err, `
         The element that matches the specified "${err.argumentName}" is not visible.
+    `),
+
+    [TYPE.actionAdditionalSelectorMatchesWrongNodeTypeError]: err => markup(err, `
+        The specified "${err.argumentName}" is expected to match a DOM element, but it matches a ${err.nodeDescription} node.
     `),
 
     [TYPE.actionElementNonEditableError]: err => markup(err, `

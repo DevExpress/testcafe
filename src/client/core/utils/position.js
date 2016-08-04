@@ -36,7 +36,7 @@ export function isElementVisible (el) {
 
         return mapContainer ? isElementVisible(mapContainer) : false;
     }
-    else if (styleUtils.isVisibleChild(el)) {
+    else if (styleUtils.isSelectVisibleChild(el)) {
         var select              = domUtils.getSelectParent(el);
         var childRealIndex      = domUtils.getChildVisibleIndex(select, el);
         var realSelectSizeValue = styleUtils.getSelectElementSize(select);

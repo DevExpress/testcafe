@@ -1,48 +1,50 @@
-var expect                                   = require('chai').expect;
-var read                                     = require('read-file-relative').readSync;
-var remove                                   = require('lodash').pull;
-var escapeRe                                 = require('lodash').escapeRegExp;
-var ReporterPluginHost                       = require('../../lib/reporter/plugin-host');
-var TYPE                                     = require('../../lib/errors/test-run/type');
-var TestRunErrorFormattableAdapter           = require('../../lib/errors/test-run/formattable-adapter');
-var testCallsite                             = require('./data/test-callsite');
-var ActionPositiveIntegerOptionError         = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
-var ActionIntegerArgumentError               = require('../../lib/errors/test-run').ActionIntegerArgumentError;
-var ActionPositiveIntegerArgumentError       = require('../../lib/errors/test-run').ActionPositiveIntegerArgumentError;
-var ActionBooleanOptionError                 = require('../../lib/errors/test-run').ActionBooleanOptionError;
-var ActionSelectorError                      = require('../../lib/errors/test-run').ActionSelectorError;
-var ActionOptionsTypeError                   = require('../../lib/errors/test-run').ActionOptionsTypeError;
-var ActionStringArgumentError                = require('../../lib/errors/test-run').ActionStringArgumentError;
-var ActionUnsupportedUrlProtocolError        = require('../../lib/errors/test-run').ActionUnsupportedUrlProtocolError;
-var ActionStringOrStringArrayArgumentError   = require('../../lib/errors/test-run').ActionStringOrStringArrayArgumentError;
-var ActionStringArrayElementError            = require('../../lib/errors/test-run').ActionStringArrayElementError;
-var PageLoadError                            = require('../../lib/errors/test-run').PageLoadError;
-var UncaughtErrorOnPage                      = require('../../lib/errors/test-run').UncaughtErrorOnPage;
-var UncaughtErrorInTestCode                  = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
-var UncaughtErrorInClientFunctionCode        = require('../../lib/errors/test-run').UncaughtErrorInClientFunctionCode;
-var UncaughtNonErrorObjectInTestCode         = require('../../lib/errors/test-run').UncaughtNonErrorObjectInTestCode;
-var ActionElementNotFoundError               = require('../../lib/errors/test-run').ActionElementNotFoundError;
-var ActionElementIsInvisibleError            = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
-var ActionAdditionalElementNotFoundError     = require('../../lib/errors/test-run').ActionAdditionalElementNotFoundError;
-var ActionAdditionalElementIsInvisibleError  = require('../../lib/errors/test-run').ActionAdditionalElementIsInvisibleError;
-var ActionElementNonEditableError            = require('../../lib/errors/test-run').ActionElementNonEditableError;
-var ActionElementNonContentEditableError     = require('../../lib/errors/test-run').ActionElementNonContentEditableError;
-var ActionRootContainerNotFoundError         = require('../../lib/errors/test-run').ActionRootContainerNotFoundError;
-var ActionElementNotTextAreaError            = require('../../lib/errors/test-run').ActionElementNotTextAreaError;
-var ActionIncorrectKeysError                 = require('../../lib/errors/test-run').ActionIncorrectKeysError;
-var ActionCanNotFindFileToUploadError        = require('../../lib/errors/test-run').ActionCanNotFindFileToUploadError;
-var ActionElementIsNotFileInputError         = require('../../lib/errors/test-run').ActionElementIsNotFileInputError;
-var ActionUnsupportedDeviceTypeError         = require('../../lib/errors/test-run').ActionUnsupportedDeviceTypeError;
-var ClientFunctionExecutionInterruptionError = require('../../lib/errors/test-run').ClientFunctionExecutionInterruptionError;
-var ActionElementNotIframe                   = require('../../lib/errors/test-run').ActionElementNotIframe;
-var ActionIframeIsNotLoadedError             = require('../../lib/errors/test-run').ActionIframeIsNotLoadedError;
-var CurrentIframeIsNotLoadedError            = require('../../lib/errors/test-run').CurrentIframeIsNotLoadedError;
-var CurrentIframeNotFoundError               = require('../../lib/errors/test-run').CurrentIframeNotFoundError;
-var CurrentIframeIsInvisibleError            = require('../../lib/errors/test-run').CurrentIframeIsInvisibleError;
-var MissingAwaitError                        = require('../../lib/errors/test-run').MissingAwaitError;
-var ExternalAssertionLibraryError            = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
-var DomNodeClientFunctionResultError         = require('../../lib/errors/test-run').DomNodeClientFunctionResultError;
-var InvalidSelectorResultError               = require('../../lib/errors/test-run').InvalidSelectorResultError;
+var expect                                            = require('chai').expect;
+var read                                              = require('read-file-relative').readSync;
+var remove                                            = require('lodash').pull;
+var escapeRe                                          = require('lodash').escapeRegExp;
+var ReporterPluginHost                                = require('../../lib/reporter/plugin-host');
+var TYPE                                              = require('../../lib/errors/test-run/type');
+var TestRunErrorFormattableAdapter                    = require('../../lib/errors/test-run/formattable-adapter');
+var testCallsite                                      = require('./data/test-callsite');
+var ActionPositiveIntegerOptionError                  = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
+var ActionIntegerArgumentError                        = require('../../lib/errors/test-run').ActionIntegerArgumentError;
+var ActionPositiveIntegerArgumentError                = require('../../lib/errors/test-run').ActionPositiveIntegerArgumentError;
+var ActionBooleanOptionError                          = require('../../lib/errors/test-run').ActionBooleanOptionError;
+var ActionSelectorError                               = require('../../lib/errors/test-run').ActionSelectorError;
+var ActionOptionsTypeError                            = require('../../lib/errors/test-run').ActionOptionsTypeError;
+var ActionStringArgumentError                         = require('../../lib/errors/test-run').ActionStringArgumentError;
+var ActionUnsupportedUrlProtocolError                 = require('../../lib/errors/test-run').ActionUnsupportedUrlProtocolError;
+var ActionStringOrStringArrayArgumentError            = require('../../lib/errors/test-run').ActionStringOrStringArrayArgumentError;
+var ActionStringArrayElementError                     = require('../../lib/errors/test-run').ActionStringArrayElementError;
+var PageLoadError                                     = require('../../lib/errors/test-run').PageLoadError;
+var UncaughtErrorOnPage                               = require('../../lib/errors/test-run').UncaughtErrorOnPage;
+var UncaughtErrorInTestCode                           = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
+var UncaughtErrorInClientFunctionCode                 = require('../../lib/errors/test-run').UncaughtErrorInClientFunctionCode;
+var UncaughtNonErrorObjectInTestCode                  = require('../../lib/errors/test-run').UncaughtNonErrorObjectInTestCode;
+var ActionElementNotFoundError                        = require('../../lib/errors/test-run').ActionElementNotFoundError;
+var ActionElementIsInvisibleError                     = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
+var ActionSelectorMatchesWrongNodeTypeError           = require('../../lib/errors/test-run').ActionSelectorMatchesWrongNodeTypeError;
+var ActionAdditionalElementNotFoundError              = require('../../lib/errors/test-run').ActionAdditionalElementNotFoundError;
+var ActionAdditionalElementIsInvisibleError           = require('../../lib/errors/test-run').ActionAdditionalElementIsInvisibleError;
+var ActionAdditionalSelectorMatchesWrongNodeTypeError = require('../../lib/errors/test-run').ActionAdditionalSelectorMatchesWrongNodeTypeError;
+var ActionElementNonEditableError                     = require('../../lib/errors/test-run').ActionElementNonEditableError;
+var ActionElementNonContentEditableError              = require('../../lib/errors/test-run').ActionElementNonContentEditableError;
+var ActionRootContainerNotFoundError                  = require('../../lib/errors/test-run').ActionRootContainerNotFoundError;
+var ActionElementNotTextAreaError                     = require('../../lib/errors/test-run').ActionElementNotTextAreaError;
+var ActionIncorrectKeysError                          = require('../../lib/errors/test-run').ActionIncorrectKeysError;
+var ActionCanNotFindFileToUploadError                 = require('../../lib/errors/test-run').ActionCanNotFindFileToUploadError;
+var ActionElementIsNotFileInputError                  = require('../../lib/errors/test-run').ActionElementIsNotFileInputError;
+var ActionUnsupportedDeviceTypeError                  = require('../../lib/errors/test-run').ActionUnsupportedDeviceTypeError;
+var ClientFunctionExecutionInterruptionError          = require('../../lib/errors/test-run').ClientFunctionExecutionInterruptionError;
+var ActionElementNotIframe                            = require('../../lib/errors/test-run').ActionElementNotIframe;
+var ActionIframeIsNotLoadedError                      = require('../../lib/errors/test-run').ActionIframeIsNotLoadedError;
+var CurrentIframeIsNotLoadedError                     = require('../../lib/errors/test-run').CurrentIframeIsNotLoadedError;
+var CurrentIframeNotFoundError                        = require('../../lib/errors/test-run').CurrentIframeNotFoundError;
+var CurrentIframeIsInvisibleError                     = require('../../lib/errors/test-run').CurrentIframeIsInvisibleError;
+var MissingAwaitError                                 = require('../../lib/errors/test-run').MissingAwaitError;
+var ExternalAssertionLibraryError                     = require('../../lib/errors/test-run').ExternalAssertionLibraryError;
+var DomNodeClientFunctionResultError                  = require('../../lib/errors/test-run').DomNodeClientFunctionResultError;
+var InvalidSelectorResultError                        = require('../../lib/errors/test-run').InvalidSelectorResultError;
 
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
@@ -144,6 +146,10 @@ describe('Error formatting', function () {
             assertErrorMessage('action-element-is-invisible-error', new ActionElementIsInvisibleError());
         });
 
+        it('Should format "actionSelectorMatchesWrongNodeTypeError" message', function () {
+            assertErrorMessage('action-selector-matches-wrong-node-type-error', new ActionSelectorMatchesWrongNodeTypeError('text'));
+        });
+
         it('Should format "actionElementNonEditableError" message', function () {
             assertErrorMessage('action-element-non-editable-error', new ActionElementNonEditableError());
         });
@@ -178,6 +184,10 @@ describe('Error formatting', function () {
 
         it('Should format "actionAdditionalElementIsInvisibleError" message', function () {
             assertErrorMessage('action-additional-element-is-invisible-error', new ActionAdditionalElementIsInvisibleError('startSelector'));
+        });
+
+        it('Should format "actionAdditionalSelectorMatchesWrongNodeTypeError" message', function () {
+            assertErrorMessage('action-additional-selector-matches-wrong-node-type-error', new ActionAdditionalSelectorMatchesWrongNodeTypeError('startSelector', 'text'));
         });
 
         it('Should format "actionStringArgumentError" message', function () {

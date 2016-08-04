@@ -1,5 +1,7 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 
+import { Selector } from 'testcafe';
+
 fixture `Drag`
     .page `http://localhost:3000/fixtures/api/es-next/drag/pages/index.html`;
 
@@ -45,4 +47,10 @@ test('Drag to element with incorrect action option', async t => {
     await t.dragToElement('#draggable-div-2', '#destination-div', {
         modifiers: { shift: NaN }
     });
+});
+
+test('Destination element selector returns text node', async t => {
+    const getDocument = Selector(() => document);
+
+    await t.dragToElement('#draggable-div-2', getDocument);
 });
