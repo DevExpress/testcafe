@@ -98,6 +98,13 @@ describe('[API] t.click()', function () {
             });
     });
 
+    it('Should validate node type of element that selector returns', function () {
+        return runTests('./testcafe-fixtures/click-test.js', 'Selector returns text node', { shouldFail: true })
+            .catch(function (errs) {
+                expect(errs[0]).to.contains('The specified selector is expected to match a DOM element, but it matches a text node.');
+                expect(errs[0]).to.contains('> 85 |    await t.click(getNode);');
+            });
+    });
 
     describe('[Regression](GH-628)', function () {
         it('Should click on an "option" element', function () {

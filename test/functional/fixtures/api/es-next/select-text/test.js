@@ -110,7 +110,7 @@ describe('[API] Select text', function () {
         });
     });
 
-    describe('t.selectTextAreaContent', function () {
+    describe('t.selectEditableContent', function () {
         it('Should select editable content', function () {
             return runTests('./testcafe-fixtures/select-test.js', 'Select editable content', { only: 'chrome' });
         });
@@ -142,6 +142,22 @@ describe('[API] Select text', function () {
                         'a Selector, but number was passed.'
                     );
                     expect(errs[0]).contains('> 87 |    await t.selectEditableContent(\'#p1\', 42);');
+                });
+        });
+
+        it("Should validate node type of element that startElement's selector returns", function () {
+            return runTests('./testcafe-fixtures/select-test.js', 'Start element selector returns text node', { shouldFail: true })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains('The specified "startSelector" is expected to match a DOM element, but it matches a text node.');
+                    expect(errs[0]).to.contains('> 93 |    await t.selectEditableContent(getNode, \'#p1\');');
+                });
+        });
+
+        it("Should validate node type of element that endElement's selector returns", function () {
+            return runTests('./testcafe-fixtures/select-test.js', 'End element selector returns text node', { shouldFail: true })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains('The specified "endSelector" is expected to match a DOM element, but it matches a text node.');
+                    expect(errs[0]).to.contains('>  99 |    await t.selectEditableContent(\'#p1\', getNode);');
                 });
         });
     });

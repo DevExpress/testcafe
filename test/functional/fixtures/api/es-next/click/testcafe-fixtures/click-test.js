@@ -78,3 +78,9 @@ test('Promise returned by selector as selector', async t => {
 
     expect(await t.eval(() => window.selectorCallCount)).eql(1);
 });
+
+test('Selector returns text node', async t => {
+    const getNode = Selector(() => document.getElementById('btn').childNodes[0]);
+
+    await t.click(getNode);
+});

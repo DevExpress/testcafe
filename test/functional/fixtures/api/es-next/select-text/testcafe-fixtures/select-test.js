@@ -1,5 +1,5 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
-import { ClientFunction } from 'testcafe';
+import { Selector, ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
 
@@ -19,7 +19,7 @@ const checkEditableContentSelection = ClientFunction(() => {
     var endNode   = div.childNodes[3].childNodes[0];
 
     return selection.anchorNode === startNode && selection.anchorOffset === 0 && selection.focusNode === endNode &&
-            selection.focusOffset === endNode.nodeValue.length;
+           selection.focusOffset === endNode.nodeValue.length;
 });
 
 
@@ -85,4 +85,16 @@ test('Incorrect startSelector in selectEditableContent', async t => {
 
 test('Incorrect endSelector in selectEditableContent', async t => {
     await t.selectEditableContent('#p1', 42);
+});
+
+test('Start element selector returns text node', async t => {
+    const getNode = Selector(() => document.getElementById('p2').childNodes[0]);
+
+    await t.selectEditableContent(getNode, '#p1');
+});
+
+test('End element selector returns text node', async t => {
+    const getNode = Selector(() => document.getElementById('p2').childNodes[0]);
+
+    await t.selectEditableContent('#p1', getNode);
 });

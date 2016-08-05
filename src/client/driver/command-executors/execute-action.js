@@ -1,5 +1,5 @@
 import { Promise } from '../deps/hammerhead';
-import { domUtils, contentEditable, RequestBarrier, pageUnloadBarrier, parseKeySequence } from '../deps/testcafe-core';
+import { domUtils, contentEditable, RequestBarrier, pageUnloadBarrier, parseKeySequence, NODE_TYPE_DESCRIPTIONS } from '../deps/testcafe-core';
 import {
     ERROR_TYPES as AUTOMATION_ERROR_TYPES,
     calculateSelectTextArguments,
@@ -25,8 +25,10 @@ import COMMAND_TYPE from '../../../test-run/commands/type';
 import {
     ActionElementNotFoundError,
     ActionElementIsInvisibleError,
+    ActionSelectorMatchesWrongNodeTypeError,
     ActionAdditionalElementNotFoundError,
     ActionAdditionalElementIsInvisibleError,
+    ActionAdditionalSelectorMatchesWrongNodeTypeError,
     ActionIncorrectKeysError,
     ActionCanNotFindFileToUploadError,
     ActionElementNonEditableError,
@@ -83,28 +85,33 @@ function ensureCommandElementsProperties (command, elements) {
         ensureFileInput(elements[0]);
 }
 
-
 // Ensure command elements
 function ensureCommandElements (command, timeout) {
     var elements             = [];
     var ensureElementPromise = Promise.resolve();
     var startTime            = new Date();
 
-    var ensureElement = (selectorCommand, createNotFoundError, createIsInvisibleError) => {
+    var ensureElement = (selectorCommand, createNotFoundError, createIsInvisibleError, createHasWrongNodeTypeError) => {
         ensureElementPromise = ensureElementPromise
             .then(() => {
                 var selectorExecutor = new SelectorExecutor(selectorCommand, timeout, startTime, createNotFoundError, createIsInvisibleError);
 
                 return selectorExecutor.getResult();
             })
-            .then(el => elements.push(el));
+            .then(el => {
+                if (!domUtils.isDomElement(el))
+                    throw createHasWrongNodeTypeError(NODE_TYPE_DESCRIPTIONS[el.nodeType]);
+
+                elements.push(el);
+            });
     };
 
     if (command.selector) {
         ensureElement(
             command.selector,
             () => new ActionElementNotFoundError(),
-            () => new ActionElementIsInvisibleError()
+            () => new ActionElementIsInvisibleError(),
+            nodeDescription => new ActionSelectorMatchesWrongNodeTypeError(nodeDescription)
         );
     }
 
@@ -112,7 +119,8 @@ function ensureCommandElements (command, timeout) {
         ensureElement(
             command.destinationSelector,
             () => new ActionAdditionalElementNotFoundError('destinationSelector'),
-            () => new ActionAdditionalElementIsInvisibleError('destinationSelector')
+            () => new ActionAdditionalElementIsInvisibleError('destinationSelector'),
+            nodeDescription => new ActionAdditionalSelectorMatchesWrongNodeTypeError('destinationSelector', nodeDescription)
         );
     }
 
@@ -120,13 +128,15 @@ function ensureCommandElements (command, timeout) {
         ensureElement(
             command.startSelector,
             () => new ActionAdditionalElementNotFoundError('startSelector'),
-            () => new ActionAdditionalElementIsInvisibleError('startSelector')
+            () => new ActionAdditionalElementIsInvisibleError('startSelector'),
+            nodeDescription => new ActionAdditionalSelectorMatchesWrongNodeTypeError('startSelector', nodeDescription)
         );
 
         ensureElement(
             command.endSelector || command.startSelector,
             () => new ActionAdditionalElementNotFoundError('endSelector'),
-            () => new ActionAdditionalElementIsInvisibleError('endSelector')
+            () => new ActionAdditionalElementIsInvisibleError('endSelector'),
+            nodeDescription => new ActionAdditionalSelectorMatchesWrongNodeTypeError('endSelector', nodeDescription)
         );
     }
 

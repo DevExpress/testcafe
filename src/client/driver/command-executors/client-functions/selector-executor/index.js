@@ -35,6 +35,9 @@ function exists (el) {
 }
 
 function visible (el) {
+    if (!domUtils.isDomElement(el) && !domUtils.isTextNode(el))
+        return false;
+    
     if (domUtils.isOptionElement(el) || domUtils.getTagName(el) === 'optgroup')
         return selectElementUI.isOptionElementVisible(el);
 
