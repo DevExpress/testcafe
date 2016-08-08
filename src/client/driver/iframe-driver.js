@@ -1,4 +1,5 @@
 import { eventSandbox } from './deps/hammerhead';
+import { delay } from './deps/testcafe-core';
 import Driver from './driver';
 import ContextStorage from './storage';
 import DriverStatus from './status';
@@ -70,6 +71,9 @@ export default class IframeDriver extends Driver {
 
                 if (inCommandExecution)
                     this._onReady(new DriverStatus({ isCommandResult: true }));
+            })
+            .then(() => {
+                // HACK: For IE9, if the iframe has readyState: 'loading'.
             });
     }
 }

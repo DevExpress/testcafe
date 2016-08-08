@@ -12,6 +12,8 @@ var DEFAULT_FAILED_RUN_OPTIONS = {
 };
 
 describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
+    this.timeout(60000);
+
     it('Should switch context between an iframe and the main window', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click on an element in an iframe and return to the main window',
             DEFAULT_RUN_OPTIONS);
