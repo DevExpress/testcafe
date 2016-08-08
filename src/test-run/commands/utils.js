@@ -1,14 +1,22 @@
+// -------------------------------------------------------------
+// WARNING: this file is used by both the client and the server.
+// Do not use any browser or node-specific API!
+// -------------------------------------------------------------
 import TYPE from './type';
 
 export function isCommandRejectableByPageError (command) {
     return !isObservationCommand(command) && !isBrowserManipulationCommand(command) && !isServiceCommand(command) ||
-           isRejectablePrepareBrowserManipulationCommand(command);
+           isRejectablePrepareBrowserManipulationCommand(command) && !isWindowSwitchingCommand(command);
 }
 
 function isObservationCommand (command) {
     return command.type === TYPE.executeClientFunction ||
            command.type === TYPE.executeSelector ||
            command.type === TYPE.wait;
+}
+
+function isWindowSwitchingCommand (command) {
+    return command.type === TYPE.switchToIframe || command.type === TYPE.switchToMainWindow;
 }
 
 export function isBrowserManipulationCommand (command) {
@@ -35,3 +43,10 @@ export function isServiceCommand (command) {
            isServicePrepareBrowserManipulationCommand(command);
 }
 
+export function isExecutableInTopWindowOnly (command) {
+    return command.type === TYPE.testDone ||
+           command.type === TYPE.prepareBrowserManipulation ||
+           command.type === TYPE.switchToMainWindow ||
+           command.type === TYPE.setNativeDialogHandler ||
+           command.type === TYPE.getNativeDialogHistory;
+}

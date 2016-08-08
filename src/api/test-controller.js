@@ -22,7 +22,9 @@ import {
     SetFilesToUploadCommand,
     ClearUploadCommand,
     SwitchToIframeCommand,
-    SwitchToMainWindowCommand
+    SwitchToMainWindowCommand,
+    SetNativeDialogHandlerCommand,
+    GetNativeDialogHistoryCommand
 } from '../test-run/commands/actions';
 
 import {
@@ -229,6 +231,21 @@ export default class TestController {
         var selector = builder.getFunction();
 
         return selector();
+    }
+
+    _setNativeDialogHandler$ (dialogHandler, options) {
+        return this._enqueueAction('setNativeDialogHandler', SetNativeDialogHandlerCommand, {
+            dialogHandler: {
+                dialogHandler,
+                options
+            }
+        });
+    }
+
+    _getNativeDialogHistory$ () {
+        var callsite = getCallsite('getNativeDialogHistory');
+
+        return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite);
     }
 }
 

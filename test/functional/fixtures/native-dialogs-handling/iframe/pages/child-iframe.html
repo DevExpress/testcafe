@@ -1,0 +1,18 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Iframe child</title>
+</head>
+<body>
+<button id="buttonParentIframeAlert">Parent iframe alert</button>
+<button id="withoutDialog">Without dialog</button>
+
+<script>
+    document.getElementById('buttonParentIframeAlert').addEventListener('click', function () {
+        window.parent.alert('Alert!');
+    });
+</script>
+</body>
+</html>

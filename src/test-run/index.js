@@ -41,11 +41,12 @@ export default class TestRun extends Session {
         this.test              = test;
         this.browserConnection = browserConnection;
 
-        this.running = false;
-        this.state   = STATE.initial;
+        this.state = STATE.initial;
 
         this.driverTaskQueue       = [];
         this.testDoneCommandQueued = false;
+
+        this.dialogHandler = null;
 
         this.pendingRequest   = null;
         this.pendingPageError = null;
@@ -64,6 +65,8 @@ export default class TestRun extends Session {
         this.injectable.scripts.push('/testcafe-automation.js');
         this.injectable.scripts.push('/testcafe-driver.js');
         this.injectable.styles.push('/testcafe-ui-styles.css');
+
+        this._start();
     }
 
 
@@ -74,14 +77,16 @@ export default class TestRun extends Session {
             browserHeartbeatUrl: this.browserConnection.heartbeatUrl,
             browserStatusUrl:    this.browserConnection.statusUrl,
             selectorTimeout:     this.opts.selectorTimeout,
-            skipJsErrors:        this.opts.skipJsErrors
+            skipJsErrors:        this.opts.skipJsErrors,
+            dialogHandler:       JSON.stringify(this.dialogHandler)
         });
     }
 
     _getIframePayloadScript () {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             testRunId:       this.id,
-            selectorTimeout: this.opts.selectorTimeout
+            selectorTimeout: this.opts.selectorTimeout,
+            dialogHandler:   JSON.stringify(this.dialogHandler)
         });
     }
 
@@ -128,7 +133,6 @@ export default class TestRun extends Session {
 
         TestRun.activeTestRuns[this.id] = this;
 
-        this.running = true;
         this.emit('start');
 
         if (!beforeEachFn || await this._executeTestFn(STATE.inBeforeEach, beforeEachFn)) {
@@ -174,6 +178,12 @@ export default class TestRun extends Session {
             this._resolvePendingRequest(command);
 
         return new Promise((resolve, reject) => this.driverTaskQueue.push({ command, resolve, reject, callsite }));
+    }
+
+    _enqueueSetDialogHandlerCommand (command, callsite) {
+        this.dialogHandler = command.dialogHandler;
+
+        return this._enqueueCommand(command, callsite);
     }
 
     _removeAllNonServiceTasks () {
@@ -241,9 +251,6 @@ export default class TestRun extends Session {
     }
 
     _handleDriverRequest (driverStatus) {
-        if (!this.running)
-            this._start();
-
         var pageError = this.pendingPageError || driverStatus.pageError;
 
         var currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
@@ -279,6 +286,9 @@ export default class TestRun extends Session {
 
         if (command.type === COMMAND_TYPE.testDone)
             this.testDoneCommandQueued = true;
+
+        if (command.type === COMMAND_TYPE.setNativeDialogHandler)
+            return this._enqueueSetDialogHandlerCommand(command, callsite);
 
         return this._enqueueCommand(command, callsite);
     }

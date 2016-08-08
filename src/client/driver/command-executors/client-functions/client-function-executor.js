@@ -8,19 +8,18 @@ export default class ClientFunctionExecutor {
     constructor (command) {
         this.command    = command;
         this.replicator = this._createReplicator();
+
+        var dependencies = this.replicator.decode(this.command.dependencies);
+
+        this.fn = evalFunction(this.command.fnCode, dependencies);
     }
 
     getResult () {
         return Promise.resolve()
             .then(() => {
-                var dependencies = this.replicator.decode(this.command.dependencies);
-
-                return evalFunction(this.command.fnCode, dependencies);
-            })
-            .then(fn => {
                 var args = this.replicator.decode(this.command.args);
 
-                return this._executeFn(fn, args);
+                return this._executeFn(args);
             })
             .catch(err => {
                 if (!err.isTestCafeError)
@@ -53,7 +52,7 @@ export default class ClientFunctionExecutor {
         ]);
     }
 
-    _executeFn (fn, args) {
-        return fn.apply(window, args);
+    _executeFn (args) {
+        return this.fn.apply(window, args);
     }
 }

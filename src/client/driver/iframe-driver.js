@@ -5,6 +5,7 @@ import ContextStorage from './storage';
 import DriverStatus from './status';
 import ParentDriverLink from './driver-link/parent';
 import { TYPE as MESSAGE_TYPE } from './driver-link/messages';
+import IframeNativeDialogTracker from './native-dialog-tracker/iframe';
 
 
 export default class IframeDriver extends Driver {
@@ -41,6 +42,11 @@ export default class IframeDriver extends Driver {
                 this.parentDriverLink.confirmMessageReceived(msg.id);
                 this._onCommand(msg.command);
             }
+
+            if (msg.type === MESSAGE_TYPE.setNativeDialogHandler) {
+                this.nativeDialogsTracker.setHandler(msg.dialogHandler);
+                this._setNativeDialogHandlerInIframes(msg.dialogHandler);
+            }
         });
     }
 
@@ -58,6 +64,8 @@ export default class IframeDriver extends Driver {
 
     // API
     start () {
+        this.nativeDialogsTracker = new IframeNativeDialogTracker(this.dialogHandler);
+
         this.parentDriverLink
             .establishConnection()
             .then(id => {

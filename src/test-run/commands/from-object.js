@@ -16,7 +16,8 @@ import {
     SetFilesToUploadCommand,
     ClearUploadCommand,
     SwitchToIframeCommand,
-    SwitchToMainWindowCommand
+    SwitchToMainWindowCommand,
+    SetNativeDialogHandlerCommand
 } from './actions';
 
 import {
@@ -90,6 +91,9 @@ export default function createCommandFromObject (obj) {
 
         case TYPE.switchToMainWindow:
             return new SwitchToMainWindowCommand();
+
+        case TYPE.setNativeDialogHandler:
+            return new SetNativeDialogHandlerCommand(obj);
     }
 
     return null;
