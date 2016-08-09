@@ -863,7 +863,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"textFilter" option is expected to be a string or regular expression, but it was object.',
+                                 '"textFilter" option is expected to be a string or a regular expression, but it was object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +

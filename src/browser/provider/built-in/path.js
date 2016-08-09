@@ -7,7 +7,7 @@ export default class PathBrowserProvider extends BrowserProviderBase {
     constructor () {
         super();
 
-        this.hasOptionalBrowserNames = true;
+        this.isMultiBrowser = true;
     }
 
     _handleJSON (str) {
@@ -50,7 +50,7 @@ export default class PathBrowserProvider extends BrowserProviderBase {
         await browserNatives.close(pageInfo.title);
     }
 
-    async listAvailableOptionalBrowserNames () {
+    async getBrowserList () {
         return [
             '${PATH_TO_BROWSER_EXECUTABLE}'
         ];

@@ -70,18 +70,18 @@ async function runTests (argParser) {
     exit(failed);
 }
 
-async function listBrowsers (providerName = 'local') {
+async function listBrowsers (providerName = 'locally-installed') {
     var provider = await browserProviderPool.getProvider(providerName);
 
     if (!provider)
         throw new GeneralError(MESSAGE.browserProviderNotFound, providerName);
 
-    if (provider.hasOptionalBrowserNames) {
-        var browserNames = await provider.listAvailableOptionalBrowserNames();
+    if (provider.isMultiBrowser) {
+        var browserNames = await provider.getBrowserList();
 
         await browserProviderPool.dispose();
 
-        if (providerName === 'local')
+        if (providerName === 'locally-installed')
             console.log(browserNames.join('\n'));
         else
             console.log(browserNames.map(browserName => `"${providerName}:${browserName}"`).join('\n'));

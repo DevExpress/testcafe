@@ -3,7 +3,7 @@ export default {
     cantRunAgainstDisconnectedBrowsers:  'The following browsers disconnected: {userAgents}. Tests will not be run.',
     cantEstablishBrowserConnection:      'Unable to establish one or more of the specified browser connections. This can be caused by network issues or remote device failure.',
     cantFindBrowser:                     'Unable to find the browser. "{browser}" is not a browser alias or path to an executable file.',
-    browserProviderNotFound:             'The specified browser provider "{providerName}" is not found',
+    browserProviderNotFound:             'The specified "{providerName}" browser provider was not found.',
     browserNotSet:                       'No browser selected to test against.',
     testSourcesNotSet:                   'No test file specified.',
     noTestsToRun:                        'No tests to run. Either the test files contain no tests or the filter function is too restrictive.',
@@ -32,6 +32,6 @@ export default {
     optionValueIsNotABoolean:            '"{name}" option is expected to be a boolean, but it was {type}.',
     optionValueIsNotANonNegativeNumber:  '"{name}" option is expected to be a non-negative number, but it was {type}.',
     optionValueIsNotAnObject:            '"{name}" option is expected to be an object, but it was {type}.',
-    optionValueIsNotAStringOrRegExp:     '"{name}" option is expected to be a string or regular expression, but it was {type}.',
-    unableToOpenBrowser:                'Was unable to open the browser "{alias}" due to error.\n\n{errMessage}'
+    optionValueIsNotAStringOrRegExp:     '"{name}" option is expected to be a string or a regular expression, but it was {type}.',
+    unableToOpenBrowser:                 'Was unable to open the browser "{alias}" due to error.\n\n{errMessage}'
 };

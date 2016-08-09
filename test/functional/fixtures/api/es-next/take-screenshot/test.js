@@ -84,7 +84,7 @@ describe('[API] t.takeScreenshot()', function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
 
                     expect(testReport.warnings).includes(
-                        'The screenshot and window resize functionality are not yet supported on Linux. ' +
+                        'The screenshot and window resize functionalities are not yet supported on Linux. ' +
                         'Subscribe to the following issue to keep track: https://github.com/DevExpress/testcafe-browser-natives/issues/12'
                     );
                 });

@@ -36,7 +36,7 @@ export default {
             browserName  = providerRegExpMatch[2] || '';
         }
         else {
-            providerName = 'local';
+            providerName = 'locally-installed';
             provider     = await this.getProvider(providerName);
             browserName  = providerRegExpMatch[1] || '';
         }
@@ -55,8 +55,8 @@ export default {
     },
 
     async _getInfoForAllBrowserNames (provider, providerName) {
-        var allBrowserNames = provider.hasOptionalBrowserNames ?
-                              await provider.listAvailableOptionalBrowserNames() :
+        var allBrowserNames = provider.isMultiBrowser ?
+                              await provider.getBrowserList() :
                               [];
 
         if (!allBrowserNames.length)

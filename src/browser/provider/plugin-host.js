@@ -68,7 +68,7 @@ export default class BrowserProviderPluginHost {
 
 
     // Browser names handling
-    async listAvailableOptionalBrowserNames () {
+    async getBrowserList () {
         throw new Error('Not implemented!');
     }
 

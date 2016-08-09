@@ -25,8 +25,8 @@ const DESCRIPTION = dedent(`
 
     To run tests against all installed browsers, use the "all" alias.
 
-    To use a remote browser connection (e.g. to connect a mobile device), specify "remote" as a browser alias. If you
-    need to connect multiple devices, append the colon and the number of browsers you want to connect (e.g., "remote:3").
+    To use a remote browser connection (e.g., to connect a mobile device), specify "remote" as the browser alias. 
+    If you need to connect multiple devices, add a colon and the number of browsers you want to connect (e.g., "remote:3").
 
     You can use one or more file paths or glob patterns to specify which tests to run.
 
