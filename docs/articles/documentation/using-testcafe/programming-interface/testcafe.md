@@ -49,7 +49,7 @@ remoteConnection.once('ready', async () => {
 
 ### createRunner
 
-Creates the [test runner](runner.md) that is used to configure and launch test runs.
+Creates the [test runner](runner.md) that is used to configure and launch test tasks.
 
 ```text
 createRunner() → Runner

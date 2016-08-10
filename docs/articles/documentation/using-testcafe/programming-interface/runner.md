@@ -5,7 +5,7 @@ permalink: /documentation/using-testcafe/programming-interface/runner.html
 ---
 # Runner Class
 
-An object that configures and launches test runs.
+An object that configures and launches test tasks.
 
 Created by the [testCafe.createRunner](testcafe.md#createrunner) function.
 

@@ -1,17 +1,16 @@
 ---
 layout: docs
-title: Helper Methods
-permalink: /documentation/extending-testcafe/custom-reporter-plugin/helper-methods.html
+title: Helpers
+permalink: /documentation/extending-testcafe/custom-reporter-plugin/helpers.html
 checked: true
 ---
-# Helper Methods
+# Helpers
 
-The helper methods are used while [implementing a reporter](index.md#implementing-the-reporter)
-to format the report output. TestCafe mixins these methods to the reporter.
+Helpers are methods and libraries used to format report output when [implementing a reporter](index.md#implementing-the-reporter). TestCafe mixins these methods to the reporter.
 
-To access the helper methods, use `this`.
+To access helpers, use `this`.
 
-This topic contains information about several groups of the helper methods.
+This topic contains information about several groups of helpers.
 
 * [Output Helpers](#output-helpers)
 * [Formatting Helpers](#formatting-helpers)
@@ -146,10 +145,10 @@ Indents each line in a string by a number of spaces.
 indentString (str, indentVal) → String
 ```
 
-Parameter   | Type    | Description
------------ | ------- | ------------------------------------------
-`str`       | String  | The string to indent.
-`indentVal` | Integer | The number of spaces to indent a new line.
+Parameter   | Type   | Description
+----------- | ------ | ------------------------------------------
+`str`       | String | The string to indent.
+`indentVal` | Number | The number of spaces to indent a new line.
 
 **Example**
 
@@ -174,11 +173,11 @@ Breaks and wraps a string to a new line if its length exceeds the maximum allowe
 wordWrap (str, indentVal, width) → String
 ```
 
-Parameter   | Type    | Description
------------ | ------- | -------------------------------------------------------
-`str`       | String  | The string you want to break.
-`indentVal` | Integer | The number of spaces to indent a new line.
-`width`     | Integer | The maximum number of characters each line can contain.
+Parameter   | Type   | Description
+----------- | ------ | -------------------------------------------------------
+`str`       | String | The string you want to break.
+`indentVal` | Number | The number of spaces to indent a new line.
+`width`     | Number | The maximum number of characters each line can contain.
 
 **Example**
 

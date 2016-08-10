@@ -59,7 +59,7 @@ Then Yeoman will automatically scaffold out your reporter, install the required 
 
 Once the reporter has been scaffolded out, go to the reporter directory and open the `src/index.js` file.
 
-You would need to implement four reporter methods.
+You would need to implement four [reporter methods](reporter-methods.md).
 
 ```js
 reportTaskStart (/* startTime, userAgents, testCount */) {
@@ -80,22 +80,13 @@ reportTaskDone (/* endTime, passed */) {
 ```
 
 These methods should output the desired information at certain moments during the test run.
-
-* **reportTaskStart** - fires when a test task starts, which happens at the beginning of testing.
-
-* **reportFixtureStart** - fires each time a fixture starts.
-
-* **reportTestDone** - fires each time a test ends.
-
-* **reportTaskDone** - fires when the entire task ends, which happens at the end of testing.
-
 All the required data is provided for these methods through their parameters.
 
-To output this information, use [helper methods](helper-methods.md) and libraries.
+To output this information, use [helper methods and libraries](helpers.md).
 TestCafe will mixin the helper methods to the reporter, so that you can access the helper methods by using `this`.
 
 In the `src/index.js` file, you can also enable or disable coloring of the reporter output by using the `noColors` property.
-To color the output, use the [chalk](helper-methods.md#chalk) helper method.
+To color the output, use the [chalk](helpers.md#chalk) methods.
 
 **Example**
 
@@ -241,4 +232,5 @@ as you would use [built-in reporters](../../using-testcafe/common-concepts/repor
 
 ## Reference
 
-* [Helper Methods](helper-methods.md)
+* [Reporter Methods](reporter-methods.md)
+* [Helpers](helpers.md)
