@@ -279,6 +279,31 @@ export function isInRectangle ({ x, y }, rectangle) {
     return x >= rectangle.left && x <= rectangle.right && y >= rectangle.top && y <= rectangle.bottom;
 }
 
+export function getLineYByXCoord (startLinePoint, endLinePoint, x) {
+    if (endLinePoint.x - startLinePoint.x === 0)
+        return null;
+
+    var equationSlope = (endLinePoint.y - startLinePoint.y) / (endLinePoint.x - startLinePoint.x);
+
+    var equationYIntercept = startLinePoint.x * (startLinePoint.y - endLinePoint.y) /
+                             (endLinePoint.x - startLinePoint.x) + startLinePoint.y;
+
+    return Math.round(equationSlope * x + equationYIntercept);
+}
+
+export function getLineXByYCoord (startLinePoint, endLinePoint, y) {
+    if (endLinePoint.y - startLinePoint.y === 0)
+        return null;
+
+    var equationSlope = (endLinePoint.x - startLinePoint.x) / (endLinePoint.y - startLinePoint.y);
+
+    var equationXIntercept = startLinePoint.y * (startLinePoint.x - endLinePoint.x) /
+                             (endLinePoint.y - startLinePoint.y) + startLinePoint.x;
+
+    return Math.round(equationSlope * y + equationXIntercept);
+
+}
+
 export var getElementRectangle  = hammerhead.utils.position.getElementRectangle;
 export var getOffsetPosition    = hammerhead.utils.position.getOffsetPosition;
 export var offsetToClientCoords = hammerhead.utils.position.offsetToClientCoords;

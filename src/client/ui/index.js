@@ -3,6 +3,8 @@ import hammerhead from './deps/hammerhead';
 import * as selectElement from './select-element';
 import * as modalBackground from './modal-background';
 import ProgressPanel from './progress-panel';
+import StatusBar from './status-bar';
+import IframeStatusBar from './status-bar/iframe-status-bar';
 import cursorUI from './cursor';
 import * as iframeCursorUI from './cursor/iframe-cursor';
 
@@ -11,6 +13,8 @@ exports.iframeCursorUI  = iframeCursorUI;
 exports.selectElement   = selectElement;
 exports.modalBackground = modalBackground;
 exports.ProgressPanel   = ProgressPanel;
+exports.StatusBar       = StatusBar;
+exports.IframeStatusBar = IframeStatusBar;
 
 exports.get = require;
 

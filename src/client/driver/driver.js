@@ -9,7 +9,7 @@ import {
     waitFor,
     browser
 } from './deps/testcafe-core';
-import { modalBackground } from './deps/testcafe-ui';
+import { StatusBar } from './deps/testcafe-ui';
 
 import TEST_RUN_MESSAGES from '../../test-run/client-messages';
 import COMMAND_TYPE from '../../test-run/commands/type';
@@ -71,7 +71,7 @@ const CURRENT_IFRAME_ERROR_CTORS = {
 var hangingPromise = new Promise(noop);
 
 export default class Driver {
-    constructor (ids, communicationUrls, options) {
+    constructor (ids, communicationUrls, runInfo, options) {
         this.COMMAND_EXECUTING_FLAG   = 'testcafe|driver|command-executing-flag';
         this.EXECUTING_IN_IFRAME_FLAG = 'testcafe|driver|executing-in-iframe-flag';
 
@@ -79,6 +79,9 @@ export default class Driver {
         this.windowId         = ids.window;
         this.heartbeatUrl     = communicationUrls.heartbeat;
         this.browserStatusUrl = communicationUrls.status;
+        this.userAgent        = runInfo.userAgent;
+        this.fixtureName      = runInfo.fixtureName;
+        this.testName         = runInfo.testName;
         this.selectorTimeout  = options.selectorTimeout;
         this.skipJsErrors     = options.skipJsErrors;
         this.dialogHandler    = options.dialogHandler;
@@ -89,6 +92,8 @@ export default class Driver {
         this.childDriverLinks      = [];
         this.activeChildDriverLink = null;
         this.beforeUnloadRaised    = false;
+
+        this.statusBar = null;
 
         this.pageInitialRequestBarrier = new RequestBarrier();
 
@@ -246,10 +251,9 @@ export default class Driver {
     }
 
     _switchToIframe (selector, iframeErrorCtors) {
-        var selectorExecutor = new SelectorExecutor(selector, this.selectorTimeout, null,
+        var selectorExecutor = new SelectorExecutor(selector, this.selectorTimeout, null, this.statusBar,
             () => new iframeErrorCtors.NotFoundError(),
-            () => iframeErrorCtors.IsInvisibleError()
-        );
+            () => iframeErrorCtors.IsInvisibleError());
 
         return selectorExecutor.getResult()
             .then(iframe => {
@@ -282,7 +286,7 @@ export default class Driver {
 
     // Commands handling
     _onActionCommand (command) {
-        var { startPromise, completionPromise } = executeActionCommand(command, this.selectorTimeout);
+        var { startPromise, completionPromise } = executeActionCommand(command, this.selectorTimeout, this.statusBar);
 
         startPromise.then(() => this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true));
 
@@ -330,7 +334,7 @@ export default class Driver {
 
     _onExecuteSelectorCommand (command) {
         var startTime = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || new Date();
-        var executor  = new SelectorExecutor(command, this.selectorTimeout, startTime);
+        var executor  = new SelectorExecutor(command, this.selectorTimeout, startTime, this.statusBar, null, null);
 
         executor.getResultDriverStatus()
             .then(driverStatus => {
@@ -457,8 +461,9 @@ export default class Driver {
 
         browser.startHeartbeat(this.heartbeatUrl, hammerhead.createNativeXHR);
 
-        modalBackground.initAndShowLoadingText();
-        this.readyPromise.then(() => modalBackground.hide());
+        this.statusBar = new StatusBar(this.userAgent, this.fixtureName, this.testName);
+
+        this.readyPromise.then(() => this.statusBar.resetStatus());
 
         var pendingStatus = this.contextStorage.getItem(PENDING_STATUS);
 

@@ -77,6 +77,9 @@ export default class TestRun extends Session {
             windowId:            this.browserConnection.id,
             browserHeartbeatUrl: this.browserConnection.heartbeatUrl,
             browserStatusUrl:    this.browserConnection.statusUrl,
+            userAgent:           this.browserConnection.userAgent,
+            testName:            this.test.name.replace("'", "\\'"),
+            fixtureName:         this.test.fixture.name.replace("'", "\\'"),
             selectorTimeout:     this.opts.selectorTimeout,
             skipJsErrors:        this.opts.skipJsErrors,
             dialogHandler:       JSON.stringify(this.dialogHandler)
