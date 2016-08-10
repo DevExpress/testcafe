@@ -68,7 +68,7 @@ export default {
 
     _getProviderModule (providerName) {
         try {
-            var providerObject = require(`testcafe-provider-${providerName}`);
+            var providerObject = require(`testcafe-browser-provider-${providerName}`);
 
             this.addProvider(providerName, providerObject);
             return this._getProviderFromCache(providerName);

@@ -132,7 +132,7 @@ export default class CLIArgumentParser {
             .usage('[options] <comma-separated-browser-list> <file-or-glob ...>')
             .description(CLIArgumentParser._getDescription())
 
-            .option('-b, --list-browsers [provider]', 'output available local browser aliases or the aliases for the specified browser provider')
+            .option('-b, --list-browsers [provider]', 'output the aliases for local browsers or browsers available through the specified browser provider')
             .option('-r, --reporter <name>', 'specify the reporter type to use')
             .option('-s, --screenshots <path>', 'enable screenshot capturing and specify the path to save the screenshots to')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
