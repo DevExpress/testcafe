@@ -3,6 +3,7 @@
         return;
 
     var testRunId           = '{{{testRunId}}}';
+    var windowId            = '{{{windowId}}}';
     var selectorTimeout     = {{{selectorTimeout}}};
     var browserHeartbeatUrl = '{{{browserHeartbeatUrl}}}';
     var browserStatusUrl    = '{{{browserStatusUrl}}}';
@@ -10,7 +11,8 @@
     var dialogHandler       = {{{dialogHandler}}};
 
     var ClientDriver = window['%testCafeDriver%'];
-    var driver       = new ClientDriver(testRunId,
+    var driver       = new ClientDriver(
+        { testRun: testRunId, window: windowId },
         { heartbeat: browserHeartbeatUrl, status: browserStatusUrl },
         { selectorTimeout: selectorTimeout, skipJsErrors: skipJsErrors, dialogHandler: dialogHandler }
     );

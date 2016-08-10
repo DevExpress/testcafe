@@ -4,7 +4,6 @@ import timeLimit from 'time-limit-promise';
 import promisifyEvent from 'promisify-event';
 import { noop, pull as remove } from 'lodash';
 import mapReverse from 'map-reverse';
-import LocalBrowserConnection from '../browser-connection/local';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 
@@ -13,7 +12,7 @@ export default class BrowserSet extends EventEmitter {
     constructor (connections) {
         super();
 
-        this.READY_TIMEOUT   = 30000;
+        this.READY_TIMEOUT   = 2 * 60 * 1000;
         this.RELEASE_TIMEOUT = 10000;
 
         this.pendingReleases = [];
@@ -30,21 +29,10 @@ export default class BrowserSet extends EventEmitter {
     }
 
     static async _waitIdle (bc) {
-        if (bc.idle || bc.closed || !bc.ready)
+        if (bc.idle || !bc.ready)
             return;
 
-        var idlePromise  = promisifyEvent(bc, 'idle');
-        var closePromise = promisifyEvent(bc, 'closed');
-
-        await Promise.race([
-            idlePromise,
-            closePromise
-        ]);
-
-        // NOTE: We must delete both listeners from the browser connection after
-        // one of them is executed to avoid exceeding the subscribers limit.
-        idlePromise.cancel();
-        closePromise.cancel();
+        await promisifyEvent(bc, 'idle');
     }
 
     static async _closeConnection (bc) {
@@ -56,11 +44,11 @@ export default class BrowserSet extends EventEmitter {
         await promisifyEvent(bc, 'closed');
     }
 
-    _waitConnectionsReady () {
+    _waitConnectionsOpened () {
         var connectionsReadyPromise = Promise.all(
             this.connections
-                .filter(bc => !bc.ready)
-                .map(bc => promisifyEvent(bc, 'ready'))
+                .filter(bc => !bc.opened)
+                .map(bc => promisifyEvent(bc, 'opened'))
         );
 
         var timeoutError = new GeneralError(MESSAGE.cantEstablishBrowserConnection);
@@ -85,7 +73,7 @@ export default class BrowserSet extends EventEmitter {
         var prepareConnection = Promise.resolve()
             .then(() => {
                 browserSet._checkForDisconnections();
-                return browserSet._waitConnectionsReady();
+                return browserSet._waitConnectionsOpened();
             })
             .then(() => browserSet);
 
@@ -109,7 +97,7 @@ export default class BrowserSet extends EventEmitter {
 
         bc.removeListener('error', this.browserErrorHandler);
 
-        var appropriateStateSwitch = bc instanceof LocalBrowserConnection ?
+        var appropriateStateSwitch = !bc.permanent ?
                                      BrowserSet._closeConnection(bc) :
                                      BrowserSet._waitIdle(bc);
 

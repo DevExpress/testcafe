@@ -56,7 +56,7 @@ export default class TestRun extends Session {
         this.lastDriverStatusId       = null;
         this.lastDriverStatusResponse = null;
 
-        this.browserManipulationQueue = new BrowserManipulationQueue(this.id, screenshotCapturer, warningLog);
+        this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, warningLog);
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
@@ -74,6 +74,7 @@ export default class TestRun extends Session {
     _getPayloadScript () {
         return Mustache.render(TEST_RUN_TEMPLATE, {
             testRunId:           this.id,
+            windowId:            this.browserConnection.id,
             browserHeartbeatUrl: this.browserConnection.heartbeatUrl,
             browserStatusUrl:    this.browserConnection.statusUrl,
             selectorTimeout:     this.opts.selectorTimeout,

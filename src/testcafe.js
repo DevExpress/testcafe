@@ -2,8 +2,9 @@ import Promise from 'pinkie';
 import { readSync as read } from 'read-file-relative';
 import { Proxy } from 'testcafe-hammerhead';
 import { CLIENT_RUNNER_SCRIPT as LEGACY_RUNNER_SCRIPT } from 'testcafe-legacy-api';
-import BrowserConnectionGateway from './browser-connection/gateway';
-import BrowserConnection from './browser-connection';
+import BrowserConnectionGateway from './browser/connection/gateway';
+import BrowserConnection from './browser/connection';
+import browserProviderPool from './browser/provider/pool';
 import Runner from './runner';
 
 // Const
@@ -46,8 +47,10 @@ export default class TestCafe {
 
 
     // API
-    createBrowserConnection () {
-        return new BrowserConnection(this.browserConnectionGateway);
+    async createBrowserConnection () {
+        var browserInfo = await browserProviderPool.getBrowserInfo('remote');
+
+        return new BrowserConnection(this.browserConnectionGateway, browserInfo, true);
     }
 
     createRunner () {
@@ -60,6 +63,8 @@ export default class TestCafe {
 
     async close () {
         await Promise.all(this.runners.map(runner => runner.stop()));
+
+        await browserProviderPool.dispose();
 
         this.browserConnectionGateway.close();
         this.proxy.close();

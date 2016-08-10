@@ -1,7 +1,8 @@
 import chalk from 'chalk';
 import resolveCwd from 'resolve-cwd';
-import { getInstallations as getBrowserInstallations } from 'testcafe-browser-natives';
+import browserProviderPool from '../browser/provider/pool';
 import { GeneralError, APIError } from '../errors/runtime';
+import MESSAGE from '../errors/runtime/message';
 import CliArgumentParser from './argument-parser';
 import log from './log';
 import remotesWizard from './remotes-wizard';
@@ -64,14 +65,30 @@ async function runTests (argParser) {
         selectorTimeout: opts.selectorTimeout
     });
 
+    await testCafe.close();
+
     exit(failed);
 }
 
-async function listBrowsers () {
-    var installations = await getBrowserInstallations();
-    var aliases       = Object.keys(installations);
+async function listBrowsers (providerName = 'locally-installed') {
+    var provider = await browserProviderPool.getProvider(providerName);
 
-    console.log(aliases.join('\n'));
+    if (!provider)
+        throw new GeneralError(MESSAGE.browserProviderNotFound, providerName);
+
+    if (provider.isMultiBrowser) {
+        var browserNames = await provider.getBrowserList();
+
+        await browserProviderPool.dispose();
+
+        if (providerName === 'locally-installed')
+            console.log(browserNames.join('\n'));
+        else
+            console.log(browserNames.map(browserName => `"${providerName}:${browserName}"`).join('\n'));
+    }
+    else
+        console.log(`"${providerName}"`);
+
     exit(0);
 }
 
@@ -97,7 +114,7 @@ function useLocalInstallation () {
         await argParser.parse(process.argv);
 
         if (argParser.opts.listBrowsers)
-            listBrowsers();
+            await listBrowsers(argParser.opts.providerName);
         else
             await runTests(argParser);
     }

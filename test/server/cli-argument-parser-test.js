@@ -2,8 +2,6 @@ var expect                  = require('chai').expect;
 var path                    = require('path');
 var fs                      = require('fs');
 var tmp                     = require('tmp');
-var Promise                 = require('pinkie');
-var getBrowserInstallations = require('testcafe-browser-natives').getInstallations;
 var CliArgumentParser       = require('../../lib/cli/argument-parser');
 
 describe('CLI argument parser', function () {
@@ -41,7 +39,7 @@ describe('CLI argument parser', function () {
         });
 
         it('Should accept "remote" alias', function () {
-            return parse('12remote,ie,remote,chrome,3remote')
+            return parse('remote:12,ie,remote,chrome,remote:3')
                 .then(function (parser) {
                     expect(parser.browsers).eql(['ie', 'chrome']);
                     expect(parser.remoteCount).eql(16);
@@ -49,16 +47,9 @@ describe('CLI argument parser', function () {
         });
 
         it('Should accept "all" alias', function () {
-            return Promise
-                .all([
-                    getBrowserInstallations(),
-                    parse('ie,chrome,all')
-                ])
-                .then(function (results) {
-                    var allAliasses = Object.keys(results[0]);
-                    var parser      = results[1];
-
-                    expect(parser.browsers).eql(['ie', 'chrome'].concat(allAliasses));
+            return parse('ie,chrome,all')
+                .then(function (parser) {
+                    expect(parser.browsers).eql(['ie', 'chrome', 'all']);
                 });
         });
 

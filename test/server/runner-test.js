@@ -1,15 +1,15 @@
-var path                   = require('path');
-var expect                 = require('chai').expect;
-var request                = require('request');
-var Promise                = require('pinkie');
-var noop                   = require('lodash').noop;
-var createTestCafe         = require('../../lib/');
-var COMMAND                = require('../../lib/browser-connection/command');
-var Task                   = require('../../lib/runner/task');
-var LocalBrowserConnection = require('../../lib/browser-connection/local');
-var BrowserConnection      = require('../../lib/browser-connection');
-var Bootstrapper           = require('../../lib/runner/bootstrapper');
-var BrowserSet             = require('../../lib/runner/browser-set');
+var path                = require('path');
+var expect              = require('chai').expect;
+var request             = require('request');
+var Promise             = require('pinkie');
+var noop                = require('lodash').noop;
+var times               = require('lodash').times;
+var createTestCafe      = require('../../lib/');
+var COMMAND             = require('../../lib/browser/connection/command');
+var Task                = require('../../lib/runner/task');
+var BrowserConnection   = require('../../lib/browser/connection');
+var BrowserSet          = require('../../lib/runner/browser-set');
+var browserProviderPool = require('../../lib/browser/provider/pool');
 
 
 describe('Runner', function () {
@@ -22,17 +22,32 @@ describe('Runner', function () {
     before(function () {
         return createTestCafe('127.0.0.1', 1335, 1336)
             .then(function (tc) {
-                testCafe   = tc;
-                connection = testCafe.createBrowserConnection();
+                testCafe = tc;
+
+                return testCafe.createBrowserConnection();
+            })
+            .then(function (bc) {
+                connection = bc;
 
                 connection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
                                      '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+
+                return browserProviderPool.getProvider('remote');
+            })
+            .then(function (remoteBrowserProvider) {
+                remoteBrowserProvider.disableResizeHack = true;
             });
     });
 
     after(function () {
-        connection.close();
-        return testCafe.close();
+        return browserProviderPool
+            .getProvider('remote')
+            .then(function (remoteBrowserProvider) {
+                remoteBrowserProvider.disableResizeHack = false;
+
+                connection.close();
+                return testCafe.close();
+            });
     });
 
 
@@ -44,29 +59,33 @@ describe('Runner', function () {
 
     describe('.browsers()', function () {
         it('Should accept target browsers in different forms', function () {
-            var connection1  = testCafe.createBrowserConnection();
-            var connection2  = testCafe.createBrowserConnection();
-            var connection3  = testCafe.createBrowserConnection();
-            var browserInfo1 = { path: '/Applications/Google Chrome.app' };
-            var browserInfo2 = { path: '/Applications/Firefox.app' };
+            return Promise
+                .all(times(3, function () {
+                    return testCafe.createBrowserConnection();
+                }))
+                .then(function (connections) {
+                    var browserInfo1 = { path: '/Applications/Google Chrome.app' };
+                    var browserInfo2 = { path: '/Applications/Firefox.app' };
 
-            runner.browsers('ie', 'chrome');
-            runner.browsers('firefox');
+                    runner.browsers('ie', 'chrome');
+                    runner.browsers('firefox');
 
-            runner.browsers('opera', [connection1], [browserInfo1, connection2]);
-            runner.browsers([connection3, browserInfo2]);
+                    runner.browsers('opera', [connections[0]], [browserInfo1, connections[1]]);
+                    runner.browsers([connections[2], browserInfo2]);
 
-            expect(runner.bootstrapper.browsers).eql([
-                'ie',
-                'chrome',
-                'firefox',
-                'opera',
-                connection1,
-                browserInfo1,
-                connection2,
-                connection3,
-                browserInfo2
-            ]);
+                    expect(runner.bootstrapper.browsers).eql([
+                        'ie',
+                        'chrome',
+                        'firefox',
+                        'opera',
+                        connections[0],
+                        browserInfo1,
+                        connections[1],
+                        connections[2],
+                        browserInfo2
+                    ]);
+                });
+
         });
 
         it('Should raise an error if browser was not found for the alias', function () {
@@ -275,7 +294,13 @@ describe('Runner', function () {
 
     describe('.run()', function () {
         it('Should not create a new local browser connection if sources are empty', function () {
-            var firstConnectionId = testCafe.createBrowserConnection().id;
+            var origGenerateId   = BrowserConnection._generateId;
+            var connectionsCount = 0;
+
+            BrowserConnection._generateId = function () {
+                connectionsCount++;
+                return origGenerateId();
+            };
 
             return runner
                 .browsers({ path: '/non/exist' })
@@ -283,87 +308,112 @@ describe('Runner', function () {
                 .src([])
                 .run()
                 .then(function () {
+                    BrowserConnection._generateId = origGenerateId;
+
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    var secondConnectionId = testCafe.createBrowserConnection().id;
+                    BrowserConnection._generateId = origGenerateId;
 
                     expect(err.message).eql('No test file specified.');
 
-                    expect(secondConnectionId).eql(firstConnectionId + 1);
+                    expect(connectionsCount).eql(0);
                 });
         });
 
         it('Should raise an error if the browser connections are not ready', function () {
-            var origWaitConnReady = BrowserSet.prototype._waitConnectionsReady;
+            var origWaitConnOpened = BrowserSet.prototype._waitConnectionsOpened;
 
-            BrowserSet.prototype._waitConnectionsReady = function () {
+            BrowserSet.prototype._waitConnectionsOpened = function () {
                 this.READY_TIMEOUT = 0;
-                return origWaitConnReady.call(this);
+                return origWaitConnOpened.call(this);
             };
 
             //NOTE: Restore original in prototype in test timeout callback
             var testCallback = this.test.callback;
 
             this.test.callback = function (err) {
-                BrowserSet.prototype._waitConnectionsReady = origWaitConnReady;
+                BrowserSet.prototype._waitConnectionsOpened = origWaitConnOpened;
                 testCallback(err);
             };
 
-            var brokenConnection = testCafe.createBrowserConnection();
-
-            return runner
-                .browsers(brokenConnection)
-                .reporter('list')
-                .src('test/server/data/test-suites/basic/testfile2.js')
-                .run()
+            return testCafe
+                .createBrowserConnection()
+                .then(function (brokenConnection) {
+                    return runner
+                        .browsers(brokenConnection)
+                        .reporter('list')
+                        .src('test/server/data/test-suites/basic/testfile2.js')
+                        .run();
+                })
                 .then(function () {
-                    BrowserSet.prototype._waitConnectionsReady = origWaitConnReady;
+                    BrowserSet.prototype._waitConnectionsOpened = origWaitConnOpened;
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    BrowserSet.prototype._waitConnectionsReady = origWaitConnReady;
+                    BrowserSet.prototype._waitConnectionsOpened = origWaitConnOpened;
                     expect(err.message).eql('Unable to establish one or more of the specified browser connections. ' +
                                             'This can be caused by network issues or remote device failure.');
                 });
         });
 
         it('Should raise an error if browser gets disconnected before bootstrapping', function (done) {
-            var brokenConnection = testCafe.createBrowserConnection();
+            testCafe
+                .createBrowserConnection()
+                .then(function (brokenConnection) {
+                    brokenConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                               '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
 
-            brokenConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                                       '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+                    brokenConnection.on('error', function () {
+                        runner
+                            .run()
+                            .then(function () {
+                                throw new Error('Promise rejection expected');
+                            })
+                            .catch(function (err) {
+                                expect(err.message).eql('The following browsers disconnected: ' +
+                                                        'Chrome 41.0.2227 / Mac OS X 10.10.1. Tests will not be run.');
+                            })
+                            .then(done)
+                            .catch(done);
+                    });
 
-            brokenConnection.on('error', function () {
-                runner
-                    .run()
-                    .then(function () {
-                        throw new Error('Promise rejection expected');
-                    })
-                    .catch(function (err) {
-                        expect(err.message).eql('The following browsers disconnected: ' +
-                                                'Chrome 41.0.2227 / Mac OS X 10.10.1. Tests will not be run.');
-                    })
-                    .then(done)
-                    .catch(done);
-            });
+                    runner.browsers(brokenConnection)
+                        .reporter('list')
+                        .src('test/server/data/test-suites/basic/testfile2.js');
 
-            runner.browsers(brokenConnection)
-                .reporter('list')
-                .src('test/server/data/test-suites/basic/testfile2.js');
-
-            brokenConnection.emit('error', new Error('It happened'));
+                    brokenConnection.emit('error', new Error('It happened'));
+                });
         });
 
         it('Should raise an error if browser disconnected during bootstrapping', function () {
-            var connection1 = testCafe.createBrowserConnection();
-            var connection2 = testCafe.createBrowserConnection();
+            return Promise
+                .all(times(2, function () {
+                    return testCafe.createBrowserConnection();
+                }))
+                .then(function (connections) {
+                    var run = runner
+                        .browsers(connections[0], connections[1])
+                        .reporter('list')
+                        .src('test/server/data/test-suites/basic/testfile2.js')
+                        .run();
 
-            var run = runner
-                .browsers(connection1, connection2)
-                .reporter('list')
-                .src('test/server/data/test-suites/basic/testfile2.js')
-                .run()
+                    connections[0].HEARTBEAT_TIMEOUT = 200;
+                    connections[1].HEARTBEAT_TIMEOUT = 200;
+
+                    var options = {
+                        url:            connections[0].url,
+                        followRedirect: false,
+                        headers:        {
+                            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                          '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36'
+                        }
+                    };
+
+                    request(options);
+
+                    return run;
+                })
                 .then(function () {
                     throw new Error('Promise rejection expected');
                 })
@@ -372,54 +422,42 @@ describe('Runner', function () {
                                             'This problem may appear when a browser hangs or is closed, ' +
                                             'or due to network issues.');
                 });
-
-            connection1.HEARTBEAT_TIMEOUT = 200;
-            connection2.HEARTBEAT_TIMEOUT = 200;
-
-            var options = {
-                url:            connection1.url,
-                followRedirect: false,
-                headers:        {
-                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                                  '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36'
-                }
-            };
-
-            request(options);
-
-            return run;
         });
 
         it('Should raise an error if connection breaks while tests are running', function () {
-            var test             = this.test;
-            var brokenConnection = testCafe.createBrowserConnection();
+            var test = this.test;
 
-            brokenConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                                       '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+            return testCafe
+                .createBrowserConnection()
+                .then(function (brokenConnection) {
+                    brokenConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                               '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
 
-            var run = runner
-                .browsers(brokenConnection)
-                .reporter('json')
-                .src('test/server/data/test-suites/basic/testfile2.js')
-                .run()
+                    var run = runner
+                        .browsers(brokenConnection)
+                        .reporter('json')
+                        .src('test/server/data/test-suites/basic/testfile2.js')
+                        .run();
+
+
+                    var interval = setInterval(function () {
+                        var status = brokenConnection.getStatus();
+
+                        if (test.timedOut || status.cmd === COMMAND.run) {
+                            clearInterval(interval);
+
+                            brokenConnection.emit('error', new Error('I have failed :('));
+                        }
+                    }, 200);
+
+                    return run;
+                })
                 .then(function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
                     expect(err.message).eql('I have failed :(');
                 });
-
-            var interval = setInterval(function () {
-                var status = brokenConnection.getStatus();
-
-                if (test.timedOut || status.cmd === COMMAND.run) {
-                    clearInterval(interval);
-
-                    brokenConnection.emit('error', new Error('I have failed :('));
-                }
-            }, 200);
-
-            return run;
         });
     });
 
@@ -428,15 +466,38 @@ describe('Runner', function () {
         const BROWSER_CLOSING_DELAY = 50;
         const TASK_ACTION_DELAY     = 50;
 
-        var origCreateBrowserJobs               = Task.prototype._createBrowserJobs;
-        var origClose                           = LocalBrowserConnection.prototype.close;
-        var origRunBrowser                      = LocalBrowserConnection.prototype._runBrowser;
-        var origAbort                           = Task.prototype.abort;
-        var origConvertAliasOrPathToBrowserInfo = Bootstrapper._convertBrowserAliasToBrowserInfo;
+        var origCreateBrowserJobs = Task.prototype._createBrowserJobs;
+        var origAbort             = Task.prototype.abort;
 
         var closeCalled        = 0;
         var abortCalled        = false;
         var taskActionCallback = null;
+
+        var MockBrowserProvider = {
+            openBrowser: function (id, browserInfo, startPage) {
+                var options = {
+                    url:            startPage,
+                    followRedirect: false,
+                    headers:        {
+                        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                      '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36'
+                    }
+                };
+
+                request(options);
+
+                return Promise.resolve();
+            },
+
+            closeBrowser: function () {
+                return new Promise(function (resolve) {
+                    setTimeout(function () {
+                        closeCalled++;
+                        resolve();
+                    }, BROWSER_CLOSING_DELAY);
+                });
+            }
+        };
 
         function taskDone () {
             var task = this;
@@ -466,24 +527,7 @@ describe('Runner', function () {
         });
 
         before(function () {
-            Bootstrapper._convertAliasOrPathToBrowserInfo = function (alias) {
-                return typeof alias === 'string' ? {} : alias;
-            };
-
-            LocalBrowserConnection.prototype.close = function () {
-                var bc = this;
-
-                setTimeout(function () {
-                    BrowserConnection.prototype.close.call(bc);
-                    closeCalled++;
-                    bc.emit('closed');
-                }, BROWSER_CLOSING_DELAY);
-            };
-
-            LocalBrowserConnection.prototype._runBrowser = function () {
-                this.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                               '(KHTML, like Gecko) Chrome/42.0.2227.1 Safari/537.36');
-            };
+            browserProviderPool.addProvider('mock', MockBrowserProvider);
 
             Task.prototype._createBrowserJobs = function () {
                 setTimeout(taskActionCallback.bind(this), TASK_ACTION_DELAY);
@@ -499,16 +543,15 @@ describe('Runner', function () {
         });
 
         after(function () {
-            LocalBrowserConnection.prototype.close        = origClose;
-            LocalBrowserConnection.prototype._runBrowser  = origRunBrowser;
-            Task.prototype._createBrowserJobs             = origCreateBrowserJobs;
-            Task.prototype.abort                          = origAbort;
-            Bootstrapper._convertAliasOrPathToBrowserInfo = origConvertAliasOrPathToBrowserInfo;
+            browserProviderPool.removeProvider('mock');
+
+            Task.prototype._createBrowserJobs = origCreateBrowserJobs;
+            Task.prototype.abort              = origAbort;
         });
 
         it('Should not stop the task until local connection browsers are not closed when task done', function () {
             return runner
-                .browsers('browser-alias1', 'browser-alias2')
+                .browsers('mock:browser-alias1', 'mock:browser-alias2')
                 .run()
                 .then(function () {
                     expect(closeCalled).eql(2);
@@ -516,18 +559,20 @@ describe('Runner', function () {
         });
 
         it('Should not stop the task until local connection browsers are not closed when connection failed', function () {
-            var brokenConnection = testCafe.createBrowserConnection();
+            return testCafe
+                .createBrowserConnection()
+                .then(function (brokenConnection) {
+                    brokenConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                               '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
 
-            brokenConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                                       '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+                    taskActionCallback = function () {
+                        brokenConnection.emit('error', new Error('I have failed :('));
+                    };
 
-            taskActionCallback = function () {
-                brokenConnection.emit('error', new Error('I have failed :('));
-            };
-
-            return runner
-                .browsers(brokenConnection, 'browser-alias')
-                .run()
+                    return runner
+                        .browsers(brokenConnection, 'mock:browser-alias')
+                        .run();
+                })
                 .then(function () {
                     throw new Error('Promise rejection expected');
                 })
@@ -538,27 +583,32 @@ describe('Runner', function () {
         });
 
         it('Should not stop the task while connected browser is not in idle state', function () {
-            var IDLE_DELAY = 50;
+            var IDLE_DELAY       = 50;
+            var remoteConnection = null;
 
-            var remoteConnection = testCafe.createBrowserConnection();
+            return testCafe
+                .createBrowserConnection()
+                .then(function (bc) {
+                    remoteConnection = bc;
 
-            remoteConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                                       '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+                    remoteConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                               '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
 
-            remoteConnection.idle = false;
+                    remoteConnection.idle = false;
 
-            taskActionCallback = function () {
-                taskDone.call(this);
+                    taskActionCallback = function () {
+                        taskDone.call(this);
 
-                setTimeout(function () {
-                    remoteConnection.idle = true;
-                    remoteConnection.emit('idle');
-                }, IDLE_DELAY);
-            };
+                        setTimeout(function () {
+                            remoteConnection.idle = true;
+                            remoteConnection.emit('idle');
+                        }, IDLE_DELAY);
+                    };
 
-            return runner
-                .browsers(remoteConnection)
-                .run()
+                    return runner
+                        .browsers(remoteConnection)
+                        .run();
+                })
                 .then(function () {
                     expect(remoteConnection.idle).to.be.true;
                     remoteConnection.close();
@@ -566,28 +616,33 @@ describe('Runner', function () {
         });
 
         it('Should be able to cancel test', function () {
-            var IDLE_DELAY = 100;
+            var IDLE_DELAY       = 100;
+            var remoteConnection = null;
 
-            var remoteConnection = testCafe.createBrowserConnection();
+            return testCafe
+                .createBrowserConnection()
+                .then(function (bc) {
+                    remoteConnection = bc;
 
-            remoteConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                                                   '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
+                    remoteConnection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                                               '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
 
-            remoteConnection.idle = false;
+                    remoteConnection.idle = false;
 
-            // Don't let the test finish by emitting the task's 'done' event
-            taskActionCallback = function () {
-            };
+                    // Don't let the test finish by emitting the task's 'done' event
+                    taskActionCallback = function () {
+                    };
 
-            setTimeout(function () {
-                remoteConnection.idle = true;
-                remoteConnection.emit('idle');
-            }, IDLE_DELAY);
+                    setTimeout(function () {
+                        remoteConnection.idle = true;
+                        remoteConnection.emit('idle');
+                    }, IDLE_DELAY);
 
-            return runner
-                .browsers('browser-alias1', remoteConnection)
-                .run()
-                .cancel()
+                    return runner
+                        .browsers('mock:browser-alias1', remoteConnection)
+                        .run()
+                        .cancel();
+                })
                 .then(function () {
                     expect(closeCalled).eql(1);
                     expect(abortCalled).to.be.true;

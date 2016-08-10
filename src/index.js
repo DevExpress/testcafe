@@ -6,6 +6,7 @@ import MESSAGE from './errors/runtime/message';
 import embeddingUtils from './embedding-utils';
 import commonAPI from './api/common';
 
+
 // Validations
 async function getValidHostname (hostname) {
     if (hostname) {

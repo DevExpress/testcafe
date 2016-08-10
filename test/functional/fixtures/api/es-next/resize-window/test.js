@@ -1,10 +1,11 @@
 var expect                     = require('chai').expect;
+var OS                         = require('os-family');
 var config                     = require('../../../../config.js');
 var errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 
 
-if (config.useLocalBrowsers) {
-    describe('[API] Resize window actions', function () {
+describe('[API] Resize window actions', function () {
+    if (config.useLocalBrowsers) {
         describe('t.resizeWindow', function () {
             it('Should resize the window', function () {
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window');
@@ -60,5 +61,17 @@ if (config.useLocalBrowsers) {
                     });
             });
         });
-    });
-}
+    }
+
+    if (OS.linux) {
+        it('Should create a warning on attempt to resize the window on Linux', function () {
+            return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window')
+                .catch(function () {
+                    expect(testReport.warnings).includes(
+                        'The screenshot and window resize functionalities are not yet supported on Linux. ' +
+                        'Subscribe to the following issue to keep track: https://github.com/DevExpress/testcafe-browser-natives/issues/12'
+                    );
+                });
+        });
+    }
+});

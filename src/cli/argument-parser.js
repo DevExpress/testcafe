@@ -7,7 +7,6 @@ import isGlob from 'is-glob';
 import globby from 'globby';
 import mkdirp from 'mkdirp';
 import OS from 'os-family';
-import { getInstallations as getBrowserInstallations } from 'testcafe-browser-natives';
 import { readSync as read } from 'read-file-relative';
 import promisify from '../utils/promisify';
 import { GeneralError } from '../errors/runtime';
@@ -18,7 +17,7 @@ import { wordWrap } from '../utils/string';
 var ensureDir = promisify(mkdirp);
 var stat      = promisify(fs.stat);
 
-const REMOTE_ALIAS_RE          = /^(\d*)remote$/;
+const REMOTE_ALIAS_RE          = /^remote(?::(\d*))?$/;
 const DEFAULT_TEST_LOOKUP_DIRS = OS.win ? ['test/', 'tests/'] : ['test/', 'tests/', 'Test/', 'Tests/'];
 
 const DESCRIPTION = dedent(`
@@ -26,8 +25,8 @@ const DESCRIPTION = dedent(`
 
     To run tests against all installed browsers, use the "all" alias.
 
-    To use a remote browser connection (e.g. to connect a mobile device), specify "remote" as a browser alias. If you
-    need to connect multiple devices, prefix the alias with the number of browsers you want to connect (e.g., "3remote").
+    To use a remote browser connection (e.g., to connect a mobile device), specify "remote" as the browser alias. 
+    If you need to connect multiple devices, add a colon and the number of browsers you want to connect (e.g., "remote:3").
 
     You can use one or more file paths or glob patterns to specify which tests to run.
 
@@ -77,16 +76,6 @@ export default class CLIArgumentParser {
         catch (err) {
             throw new GeneralError(MESSAGE.optionValueIsNotValidRegExp, name);
         }
-    }
-
-    static _replaceAllBrowsersAlias (browserList, browser, allAliases) {
-        if (browser === 'all')
-            browserList = browserList.concat(allAliases);
-
-        else
-            browserList.push(browser);
-
-        return browserList;
     }
 
     static _getDescription () {
@@ -143,7 +132,7 @@ export default class CLIArgumentParser {
             .usage('[options] <comma-separated-browser-list> <file-or-glob ...>')
             .description(CLIArgumentParser._getDescription())
 
-            .option('-b, --list-browsers', 'output the available browser aliases')
+            .option('-b, --list-browsers [provider]', 'output available local browser aliases or the aliases for the specified browser provider')
             .option('-r, --reporter <name>', 'specify the reporter type to use')
             .option('-s, --screenshots <path>', 'enable screenshot capturing and specify the path to save the screenshots to')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
@@ -214,13 +203,10 @@ export default class CLIArgumentParser {
 
     async _parseBrowserList () {
         var browsersArg   = this.program.args[0] || '';
-        var installations = await getBrowserInstallations();
-        var allAliases    = Object.keys(installations);
 
         this.browsers = CLIArgumentParser
             ._parseBrowserArg(browsersArg)
-            .filter(browser => browser && this._filterAndCountRemotes(browser))
-            .reduce((browserList, browser) => CLIArgumentParser._replaceAllBrowsersAlias(browserList, browser, allAliases), []);
+            .filter(browser => browser && this._filterAndCountRemotes(browser));
     }
 
     async _convertDirsToGlobs (fileList) {
@@ -271,6 +257,10 @@ export default class CLIArgumentParser {
         }
     }
 
+    _getProviderName () {
+        this.opts.providerName = this.opts.listBrowsers === true ? void 0 : this.opts.listBrowsers;
+    }
+
     async parse (argv) {
         this.program.parse(argv);
 
@@ -278,17 +268,20 @@ export default class CLIArgumentParser {
 
         // NOTE: the '-list-browsers' option only lists browsers and immediately exits the app.
         // Therefore, we don't need to process other arguments.
-        if (!this.opts.listBrowsers) {
-            this._parseFilteringOptions();
-
-            await Promise.all([
-                this._parseElementTimeout(),
-                this._parsePorts(),
-                this._parseScreenshotsPath(),
-                this._parseBrowserList(),
-                this._parseFileList()
-            ]);
+        if (this.opts.listBrowsers) {
+            this._getProviderName();
+            return;
         }
+
+        this._parseFilteringOptions();
+
+        await Promise.all([
+            this._parseElementTimeout(),
+            this._parsePorts(),
+            this._parseScreenshotsPath(),
+            this._parseBrowserList(),
+            this._parseFileList()
+        ]);
     }
 }
 

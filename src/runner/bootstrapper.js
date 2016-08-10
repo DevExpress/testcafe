@@ -1,14 +1,11 @@
+import { flatten } from 'lodash';
 import Promise from 'pinkie';
-import { getBrowserInfo, getInstallations as getBrowserInstallations } from 'testcafe-browser-natives';
 import Compiler from '../compiler';
-import BrowserConnection from '../browser-connection';
-import LocalBrowserConnection from '../browser-connection/local';
+import BrowserConnection from '../browser/connection';
 import { GeneralError } from '../errors/runtime';
+import browserProviderPool from '../browser/provider/pool';
 import MESSAGE from '../errors/runtime/message';
 import BrowserSet from './browser-set';
-
-
-const BROWSER_PATH_DESCRIPTOR_RE = /^path:(.*)$/;
 
 
 export default class Bootstrapper {
@@ -21,44 +18,20 @@ export default class Bootstrapper {
         this.reporter = null;
     }
 
-    static async _convertAliasOrPathToBrowserInfo (browser, installations) {
-        if (typeof browser === 'string') {
-            if (browser in installations)
-                return installations[browser];
+    async _getBrowserInfo () {
+        if (!this.browsers.length)
+            throw new GeneralError(MESSAGE.browserNotSet);
 
-            var pathDescriptorMatch = BROWSER_PATH_DESCRIPTOR_RE.exec(browser);
+        var browserInfo = await Promise.all(this.browsers.map(browser => browserProviderPool.getBrowserInfo(browser)));
 
-            if (!pathDescriptorMatch)
-                throw new GeneralError(MESSAGE.cantFindBrowser, browser);
-
-            var path        = pathDescriptorMatch[1];
-            var browserInfo = await getBrowserInfo(path);
-
-            if (!browserInfo)
-                throw new GeneralError(MESSAGE.cantFindBrowser, browser);
-
-            return browserInfo;
-        }
-
-        return browser;
+        return flatten(browserInfo);
     }
 
     _createConnectionFromBrowserInfo (browserInfo) {
         if (browserInfo instanceof BrowserConnection)
             return browserInfo;
 
-        return new LocalBrowserConnection(this.browserConnectionGateway, browserInfo);
-    }
-
-    async _getBrowserInfo () {
-        if (!this.browsers.length)
-            throw new GeneralError(MESSAGE.browserNotSet);
-
-        var installations = await getBrowserInstallations();
-
-        return await Promise.all(
-            this.browsers.map(browser => Bootstrapper._convertAliasOrPathToBrowserInfo(browser, installations))
-        );
+        return new BrowserConnection(this.browserConnectionGateway, browserInfo);
     }
 
     async _getBrowserConnections (browserInfo) {

@@ -1,9 +1,11 @@
-var expect         = require('chai').expect;
-var Promise        = require('pinkie');
-var promisify      = require('../../lib/utils/promisify');
-var request        = require('request');
-var createTestCafe = require('../../lib/');
-var COMMAND        = require('../../lib/browser-connection/command');
+var expect              = require('chai').expect;
+var Promise             = require('pinkie');
+var promisify           = require('../../lib/utils/promisify');
+var request             = require('request');
+var createTestCafe      = require('../../lib/');
+var COMMAND             = require('../../lib/browser/connection/command');
+var browserProviderPool = require('../../lib/browser/provider/pool');
+
 
 var promisedRequest = promisify(request);
 
@@ -14,20 +16,37 @@ describe('Browser connection', function () {
 
     // Fixture setup/teardown
     before(function () {
+        this.timeout(20000);
+
         return createTestCafe('127.0.0.1', 1335, 1336)
             .then(function (tc) {
                 testCafe = tc;
+
+                return browserProviderPool.getProvider('remote');
+            })
+            .then(function (remoteBrowserProvider) {
+                remoteBrowserProvider.disableResizeHack = true;
             });
     });
 
     after(function () {
-        return testCafe.close();
+        return browserProviderPool
+            .getProvider('remote')
+            .then(function (remoteBrowserProvider) {
+                remoteBrowserProvider.disableResizeHack = false;
+
+                return testCafe.close();
+            });
     });
 
 
     // Test setup/teardown
     beforeEach(function () {
-        connection = testCafe.createBrowserConnection();
+        return testCafe
+            .createBrowserConnection()
+            .then(function (bc) {
+                connection = bc;
+            });
     });
 
     afterEach(function () {
