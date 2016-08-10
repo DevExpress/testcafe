@@ -8,13 +8,7 @@ describe('[API] Resize window actions', function () {
     if (config.useLocalBrowsers) {
         describe('t.resizeWindow', function () {
             it('Should resize the window', function () {
-                return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window')
-                    .then(function () {
-                        expect(testReport.warnings).includes(
-                            'The screenshot and window resize functionality are not supported on a remote browser. ' +
-                            'They might be performed only if the browser is running on the same machine and environment as the testcafe server.'
-                        );
-                    });
+                return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window');
             });
 
             it('Should validate height argument', function () {

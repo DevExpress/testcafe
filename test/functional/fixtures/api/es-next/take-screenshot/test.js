@@ -16,11 +16,6 @@ describe('[API] t.takeScreenshot()', function () {
                 .then(function () {
                     expect(testReport.screenshotPath).contains(SCREENSHOT_PATH_MESSAGE_TEXT);
                     expect(assertionHelper.checkScreenshotsCreated()).eql(true);
-
-                    expect(testReport.warnings).includes(
-                        'The screenshot and window resize functionality are not supported on a remote browser. ' +
-                        'They might be performed only if the browser is running on the same machine and environment as the testcafe server.'
-                    );
                 });
         });
 
