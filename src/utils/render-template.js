@@ -1,3 +1,5 @@
 export default function renderTemplate (template, ...args) {
-    return args.reduce((msg, arg) => msg.replace(/{.+?}/, arg), template);
+    var counter = 0;
+
+    return template.replace(/{.+?}/g, () => args[counter++]);
 }
