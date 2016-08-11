@@ -1,27 +1,5 @@
-function getLineYByXCoord (startLinePoint, endLinePoint, x) {
-    if (endLinePoint.x - startLinePoint.x === 0)
-        return null;
+import { positionUtils } from '../deps/testcafe-core';
 
-    var equationSlope = (endLinePoint.y - startLinePoint.y) / (endLinePoint.x - startLinePoint.x);
-
-    var equationYIntercept = startLinePoint.x * (startLinePoint.y - endLinePoint.y) /
-                             (endLinePoint.x - startLinePoint.x) + startLinePoint.y;
-
-    return Math.round(equationSlope * x + equationYIntercept);
-}
-
-function getLineXByYCoord (startLinePoint, endLinePoint, y) {
-    if (endLinePoint.y - startLinePoint.y === 0)
-        return null;
-
-    var equationSlope = (endLinePoint.x - startLinePoint.x) / (endLinePoint.y - startLinePoint.y);
-
-    var equationXIntercept = startLinePoint.y * (startLinePoint.x - endLinePoint.x) /
-                             (endLinePoint.y - startLinePoint.y) + startLinePoint.x;
-
-    return Math.round(equationSlope * y + equationXIntercept);
-
-}
 
 function getPointsDistance (start, end) {
     return Math.sqrt(Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2));
@@ -32,13 +10,13 @@ function findLineAndRectSideIntersection (startLinePoint, endLinePoint, rectSide
     var haveIntersectionInBounds = null;
 
     if (rectSide.isHorizontal) {
-        intersectionX            = getLineXByYCoord(startLinePoint, endLinePoint, rectSide.y1);
+        intersectionX            = positionUtils.getLineXByYCoord(startLinePoint, endLinePoint, rectSide.y1);
         haveIntersectionInBounds = intersectionX && intersectionX >= rectSide.x1 && intersectionX <= rectSide.x2;
 
         return haveIntersectionInBounds ? { x: intersectionX, y: rectSide.y1 } : null;
     }
 
-    var intersectionY = getLineYByXCoord(startLinePoint, endLinePoint, rectSide.x1);
+    var intersectionY = positionUtils.getLineYByXCoord(startLinePoint, endLinePoint, rectSide.x1);
 
     haveIntersectionInBounds = intersectionY && intersectionY >= rectSide.y1 && intersectionY <= rectSide.y2;
 

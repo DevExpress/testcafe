@@ -86,7 +86,7 @@ function ensureCommandElementsProperties (command, elements) {
 }
 
 // Ensure command elements
-function ensureCommandElements (command, timeout) {
+function ensureCommandElements (command, timeout, statusBar) {
     var elements             = [];
     var ensureElementPromise = Promise.resolve();
     var startTime            = new Date();
@@ -94,7 +94,8 @@ function ensureCommandElements (command, timeout) {
     var ensureElement = (selectorCommand, createNotFoundError, createIsInvisibleError, createHasWrongNodeTypeError) => {
         ensureElementPromise = ensureElementPromise
             .then(() => {
-                var selectorExecutor = new SelectorExecutor(selectorCommand, timeout, startTime, createNotFoundError, createIsInvisibleError);
+                var selectorExecutor = new SelectorExecutor(selectorCommand, timeout, startTime, statusBar,
+                    createNotFoundError, createIsInvisibleError);
 
                 return selectorExecutor.getResult();
             })
@@ -222,7 +223,7 @@ function createAutomation (elements, command) {
 
 
 // Execute action
-export default function executeAction (command, selectorTimeout) {
+export default function executeAction (command, selectorTimeout, statusBar) {
     var resolveStartPromise = null;
 
     var startPromise = new Promise(resolve => {
@@ -232,7 +233,7 @@ export default function executeAction (command, selectorTimeout) {
     var completionPromise = new Promise(resolve => {
         var requestBarrier = null;
 
-        ensureCommandElements(command, selectorTimeout)
+        ensureCommandElements(command, selectorTimeout, statusBar)
             .then(elements => {
                 resolveStartPromise();
 

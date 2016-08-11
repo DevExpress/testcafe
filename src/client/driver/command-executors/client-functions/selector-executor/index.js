@@ -1,13 +1,12 @@
 import { Promise } from '../../../deps/hammerhead';
 import { delay, positionUtils, domUtils } from '../../../deps/testcafe-core';
-import { ProgressPanel, selectElement as selectElementUI } from '../../../deps/testcafe-ui';
+import { selectElement as selectElementUI } from '../../../deps/testcafe-ui';
 import ClientFunctionExecutor from '../client-function-executor';
 import { createReplicator, FunctionTransform, SelectorNodeTransform } from '../replicator';
 import { InvalidSelectorResultError } from '../../../../../errors/test-run';
 import { getInnerText, getTextContent } from './sandboxed-node-properties';
 
 const CHECK_ELEMENT_DELAY = 200;
-const PROGRESS_PANEL_TEXT = 'Waiting for an element to appear';
 
 
 // NOTE: save original ctors and methods because they may be overwritten by page code
@@ -37,7 +36,7 @@ function exists (el) {
 function visible (el) {
     if (!domUtils.isDomElement(el) && !domUtils.isTextNode(el))
         return false;
-    
+
     if (domUtils.isOptionElement(el) || domUtils.getTagName(el) === 'optgroup')
         return selectElementUI.isOptionElementVisible(el);
 
@@ -93,12 +92,13 @@ Object.defineProperty(window, '%testCafeSelectorFilter%', {
 });
 
 export default class SelectorExecutor extends ClientFunctionExecutor {
-    constructor (command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError) {
+    constructor (command, globalTimeout, startTime, statusBar, createNotFoundError, createIsInvisibleError) {
         super(command);
 
         this.createNotFoundError    = createNotFoundError;
         this.createIsInvisibleError = createIsInvisibleError;
         this.timeout                = typeof command.timeout === 'number' ? command.timeout : globalTimeout;
+        this.statusBar              = statusBar;
 
         if (startTime) {
             var elapsed = new Date() - startTime;
@@ -145,10 +145,9 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
     }
 
     _executeFn (args) {
-        var startTime     = new Date();
-        var progressPanel = new ProgressPanel();
+        var startTime = new Date();
 
-        progressPanel.show(PROGRESS_PANEL_TEXT, this.timeout);
+        this.statusBar.setWaitingStatus(this.timeout);
 
         return this
             ._ensureExists(args, startTime)
@@ -159,11 +158,11 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
                 return el;
             })
             .catch(err => {
-                progressPanel.close(false);
+                this.statusBar.resetStatus();
                 throw err;
             })
             .then(el => {
-                progressPanel.close(!!el);
+                this.statusBar.resetStatus();
                 return el;
             });
     }

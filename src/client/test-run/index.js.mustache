@@ -9,11 +9,15 @@
     var browserStatusUrl    = '{{{browserStatusUrl}}}';
     var skipJsErrors        = {{{skipJsErrors}}};
     var dialogHandler       = {{{dialogHandler}}};
+    var userAgent           = '{{{userAgent}}}';
+    var fixtureName         = '{{{fixtureName}}}';
+    var testName            = '{{{testName}}}';
 
     var ClientDriver = window['%testCafeDriver%'];
     var driver       = new ClientDriver(
         { testRun: testRunId, window: windowId },
         { heartbeat: browserHeartbeatUrl, status: browserStatusUrl },
+        { userAgent: userAgent, fixtureName: fixtureName, testName: testName },
         { selectorTimeout: selectorTimeout, skipJsErrors: skipJsErrors, dialogHandler: dialogHandler }
     );
 

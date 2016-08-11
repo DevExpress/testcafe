@@ -1,5 +1,6 @@
 import { eventSandbox } from './deps/hammerhead';
 import { delay } from './deps/testcafe-core';
+import { IframeStatusBar } from './deps/testcafe-ui';
 import Driver from './driver';
 import ContextStorage from './storage';
 import DriverStatus from './status';
@@ -10,7 +11,7 @@ import IframeNativeDialogTracker from './native-dialog-tracker/iframe';
 
 export default class IframeDriver extends Driver {
     constructor (ids, options) {
-        super(ids, {}, options);
+        super(ids, {}, {}, options);
 
         this.lastParentDriverMessageId = null;
         this.parentDriverLink          = new ParentDriverLink(window.parent);
@@ -65,6 +66,7 @@ export default class IframeDriver extends Driver {
     // API
     start () {
         this.nativeDialogsTracker = new IframeNativeDialogTracker(this.dialogHandler);
+        this.statusBar            = new IframeStatusBar();
 
         this.parentDriverLink
             .establishConnection()
