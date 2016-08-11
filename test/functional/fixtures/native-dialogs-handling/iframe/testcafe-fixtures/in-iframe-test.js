@@ -4,6 +4,11 @@ fixture `Native dialogs in iframe`
     .page `http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/page-with-iframe.html`;
 
 
+const pageUrl        = 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/page-with-iframe.html';
+const iframeUrl      = 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/iframe.html';
+const childIframeUrl = 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/child-iframe.html';
+
+
 //Actions in iframe, dialogs in iframe
 test('Without handler', async t => {
     var info = await t.getNativeDialogHistory();
@@ -23,7 +28,7 @@ test('Expected alert in iframe after an action in iframe', async t => {
 
     var info = await t.getNativeDialogHistory();
 
-    expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!' }]);
+    expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!', url: iframeUrl }]);
 });
 
 test('Alert dialog with wrong text', async t => {
@@ -62,7 +67,7 @@ test('Expected alert in iframe after an action in top window', async t => {
 
     var info = await t.getNativeDialogHistory();
 
-    expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!' }]);
+    expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!', url: iframeUrl }]);
 });
 
 test('Unexpected alert in iframe after an action in top window', async t => {
@@ -81,7 +86,7 @@ test('Expected alert in top window after an action in iframe', async t => {
 
     var info = await t.getNativeDialogHistory();
 
-    expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!' }]);
+    expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!', url: pageUrl }]);
 });
 
 test('Unexpected alert in top window after an action in iframe', async t => {
@@ -95,12 +100,15 @@ test('Expected alert in parent iframe after an action in child iframe', async t 
     await t
         .switchToIframe('#iframe')
         .switchToIframe('#childIframe')
-        .setNativeDialogHandler(() => null)
+        .setNativeDialogHandler(() => function (type, text, url) {
+            if (url !== 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/iframe.html')
+                throw new Error('Wrong dialog url');
+        })
         .click('#buttonParentIframeAlert');
 
     var info = await t.getNativeDialogHistory();
 
-    expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!' }]);
+    expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!', url: iframeUrl }]);
 });
 
 test('Expected alert in child iframe after an action in parent iframe', async t => {
@@ -109,10 +117,13 @@ test('Expected alert in child iframe after an action in parent iframe', async t 
         .switchToIframe('#childIframe')
         .switchToMainWindow() // NOTE: waiting for all iframes loading
         .switchToIframe('#iframe')
-        .setNativeDialogHandler(() => null)
+        .setNativeDialogHandler(() => () => function (type, text, url) {
+            if (url !== 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/child-iframe.html')
+                throw new Error('Wrong dialog url');
+        })
         .click('#buttonChildIframeAlert');
 
     var info = await t.getNativeDialogHistory();
 
-    expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!' }]);
+    expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!', url: childIframeUrl }]);
 });

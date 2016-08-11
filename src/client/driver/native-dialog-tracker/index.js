@@ -5,10 +5,13 @@ import MESSAGE_TYPE from './messages';
 
 
 var messageSandbox = hammerhead.eventSandbox.message;
+var processScript  = hammerhead.processScript;
+var nativeMethods  = hammerhead.nativeMethods;
 
-const APPEARED_DIALOGS  = 'testcafe|native-dialog-tracker|appeared-dialogs';
-const UNEXPECTED_DIALOG = 'testcafe|native-dialog-tracker|unexpected-dialog';
-const ERROR_IN_HANDLER  = 'testcafe|native-dialog-tracker|error-in-handler';
+const APPEARED_DIALOGS                  = 'testcafe|native-dialog-tracker|appeared-dialogs';
+const UNEXPECTED_DIALOG                 = 'testcafe|native-dialog-tracker|unexpected-dialog';
+const ERROR_IN_HANDLER                  = 'testcafe|native-dialog-tracker|error-in-handler';
+const GETTING_PAGE_URL_PROCESSED_SCRIPT = processScript('window.location.href');
 
 
 export default class NativeDialogTracker {
@@ -54,18 +57,22 @@ export default class NativeDialogTracker {
         this.contextStorage.setItem(ERROR_IN_HANDLER, dialog);
     }
 
+    static _getPageUrl () {
+        return nativeMethods.eval(GETTING_PAGE_URL_PROCESSED_SCRIPT);
+    }
+
     _initListening () {
         messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
             var msg = e.message;
 
             if (msg.type === MESSAGE_TYPE.appearedDialog)
-                this._addAppearedDialogs(msg.dialogType, msg.text);
+                this._addAppearedDialogs(msg.dialogType, msg.text, msg.url);
 
             else if (msg.type === MESSAGE_TYPE.unexpectedDialog && !this.unexpectedDialog)
-                this.unexpectedDialog = msg.dialogType;
+                this.unexpectedDialog = { type: msg.dialogType, url: msg.url };
 
             else if (msg.type === MESSAGE_TYPE.handlerError && !this.handlerError)
-                this.handlerError = { type: msg.dialogType, message: msg.message };
+                this._onHandlerError(msg.dialogType, msg.message, msg.url);
         });
     }
 
@@ -93,16 +100,18 @@ export default class NativeDialogTracker {
 
     _createDialogHandler (type) {
         return text => {
-            this._addAppearedDialogs(type, text);
+            var url = NativeDialogTracker._getPageUrl();
+
+            this._addAppearedDialogs(type, text, url);
 
             var executor = new ClientFunctionExecutor(this.dialogHandler);
             var result   = null;
 
             try {
-                result = executor.fn.apply(window, [type, text]);
+                result = executor.fn.apply(window, [type, text, url]);
             }
             catch (err) {
-                this._onHandlerError(type, err.message || String(err));
+                this._onHandlerError(type, err.message || String(err), url);
             }
 
             return result;
@@ -111,15 +120,17 @@ export default class NativeDialogTracker {
 
     // Overridable methods
     _defaultDialogHandler (type) {
-        this.unexpectedDialog = this.unexpectedDialog || type;
+        var url = NativeDialogTracker._getPageUrl();
+
+        this.unexpectedDialog = this.unexpectedDialog || { type, url };
     }
 
-    _addAppearedDialogs (type, text) {
-        this.appearedDialogs.splice(0, 0, { type, text });
+    _addAppearedDialogs (type, text, url) {
+        this.appearedDialogs.splice(0, 0, { type, text, url });
     }
 
-    _onHandlerError (type, message) {
-        this.handlerError = this.handlerError || { type, message };
+    _onHandlerError (type, message, url) {
+        this.handlerError = this.handlerError || { type, message, url };
     }
 
     // API
@@ -139,10 +150,10 @@ export default class NativeDialogTracker {
         this.handlerError     = null;
 
         if (unexpectedDialog)
-            return new NativeDialogNotHandledError(unexpectedDialog);
+            return new NativeDialogNotHandledError(unexpectedDialog.type, unexpectedDialog.url);
 
         if (handlerError)
-            return new UncaughtErrorInNativeDialogHandler(handlerError.type, handlerError.message);
+            return new UncaughtErrorInNativeDialogHandler(handlerError.type, handlerError.message, handlerError.url);
 
         return null;
     }

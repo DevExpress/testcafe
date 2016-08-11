@@ -4,7 +4,11 @@ import { expect } from 'chai';
 fixture `Native dialogs`
     .page `http://localhost:3000/fixtures/native-dialogs-handling/pages/index.html`;
 
-const getResult = ClientFunction(() => document.getElementById('result').textContent);
+
+const getResult     = ClientFunction(() => document.getElementById('result').textContent);
+const pageUrl       = 'http://localhost:3000/fixtures/native-dialogs-handling/pages/index.html';
+const promptPageUrl = 'http://localhost:3000/fixtures/native-dialogs-handling/pages/prompt.html';
+
 
 test('Without handler', async t => {
     var info = await t.getNativeDialogHistory();
@@ -100,13 +104,14 @@ test('Expected beforeUnload after an action', async t => {
 
     var info = await t.getNativeDialogHistory();
 
-    expect(info).to.deep.equal([{ type: 'beforeunload', text: 'Before unload' }]);
+    expect(info).to.deep.equal([{ type: 'beforeunload', text: 'Before unload', url: pageUrl }]);
 });
 
 test('Expected alert and prompt after redirect', async t => {
     await t
-        .setNativeDialogHandler((type, text) => {
-            if (type === 'prompt' && text === 'Prompt:')
+        .setNativeDialogHandler((type, text, url) => {
+            if (type === 'prompt' && text === 'Prompt:' &&
+                url === 'http://localhost:3000/fixtures/native-dialogs-handling/pages/prompt.html')
                 return 'prompt result';
 
             return null;
@@ -117,7 +122,18 @@ test('Expected alert and prompt after redirect', async t => {
 
     var info = await t.getNativeDialogHistory();
 
-    expect(info).to.deep.equal([{ type: 'prompt', text: 'Prompt:' }, { type: 'alert', text: 'Alert!' }]);
+    expect(info).to.deep.equal([
+        {
+            type: 'prompt',
+            text: 'Prompt:',
+            url:  promptPageUrl
+        },
+        {
+            type: 'alert',
+            text: 'Alert!',
+            url:  pageUrl
+        }
+    ]);
 });
 
 test('Unexpected prompt after redirect', async t => {
@@ -133,7 +149,7 @@ test('Expected alert during a wait action', async t => {
 
     var info = await t.getNativeDialogHistory();
 
-    expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!' }]);
+    expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!', url: pageUrl }]);
 });
 
 test('No expected alert during a wait action', async t => {
