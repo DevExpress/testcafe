@@ -78,5 +78,34 @@
         return window.QUnitGlobals.crossDomainHostname + window.QUnitGlobals.getResourceUrl(filePath);
     };
 
+    // With this hack, we only allow setting the scroll by a script and prevent native browser scrolling.
+    if (hammerhead.utils.browser.isIOS) {
+        var originWindowScrollTo = window.scrollTo;
+        var lastScrollTop        = window.scrollY;
+        var lastScrollLeft       = window.scrollX;
+
+        window.scrollTo = function () {
+            lastScrollLeft = arguments[0];
+            lastScrollTop  = arguments[1];
+
+            originWindowScrollTo.apply(window, arguments);
+        };
+
+        window.addEventListener('scroll', function () {
+            if (window.scrollX !== lastScrollLeft || window.scrollY !== lastScrollTop)
+                window.scrollTo(lastScrollLeft, lastScrollTop);
+        });
+
+        Object.defineProperty(document.body, 'scrollTop', {
+            get: function () {
+                return window.scrollY;
+            },
+
+            set: function (y) {
+                window.scrollTo(window.scrollX, y);
+            }
+        });
+    }
+
     QUnit.config.testTimeout = 15000;
 })();
