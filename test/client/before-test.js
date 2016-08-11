@@ -78,6 +78,7 @@
         return window.QUnitGlobals.crossDomainHostname + window.QUnitGlobals.getResourceUrl(filePath);
     };
 
+    // HACK: The iOS browser performs unexpected scrolling in some cases (see https://github.com/DevExpress/testcafe/issues/471)
     // With this hack, we only allow setting the scroll by a script and prevent native browser scrolling.
     if (hammerhead.utils.browser.isIOS) {
         var originWindowScrollTo = window.scrollTo;
