@@ -6,6 +6,7 @@ fixture `Page load`
 
 
 const getResult = ClientFunction(() => document.getElementById('result').textContent);
+const pageUrl   = 'http://localhost:3000/fixtures/native-dialogs-handling/pages/page-load.html';
 
 
 test('Expected dialogs after page load', async t => {
@@ -21,7 +22,18 @@ test('Expected dialogs after page load', async t => {
 
     var info = await t.getNativeDialogHistory();
 
-    expect(info).to.deep.equal([{ type: 'confirm', text: 'Confirm?' }, { type: 'alert', text: 'Alert!' }]);
+    expect(info).to.deep.equal([
+        {
+            type: 'confirm',
+            text: 'Confirm?',
+            url:  pageUrl
+        },
+        {
+            type: 'alert',
+            text: 'Alert!',
+            url:  pageUrl
+        }
+    ]);
 });
 
 test('Unexpected alert after page load', async t => {

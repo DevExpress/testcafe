@@ -55,11 +55,11 @@ export default {
     `),
 
     [TYPE.nativeDialogNotHandledError]: err => markup(err, `
-        A native ${err.dialogType} dialog was invoked, but no handler was set for it. Use the "setNativeDialogHandler" function to introduce a handler function for native dialogs.
+        A native ${err.dialogType} dialog was invoked on page <a href="${err.pageUrl}">${err.pageUrl}</a>, but no handler was set for it. Use the "setNativeDialogHandler" function to introduce a handler function for native dialogs.
     `),
 
     [TYPE.uncaughtErrorInNativeDialogHandler]: err => markup(err, `
-        An error occurred in the native dialog handler called for a native ${err.dialogType} dialog:
+        An error occurred in the native dialog handler called for a native ${err.dialogType} dialog on page <a href="${err.pageUrl}">${err.pageUrl}</a>:
 
         ${escapeHtml(err.errMsg)}
     `),

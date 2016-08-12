@@ -266,11 +266,11 @@ describe('Error formatting', function () {
         });
 
         it('Should format "nativeDialogNotHandledError"', function () {
-            assertErrorMessage('native-dialog-not-handled-error', new NativeDialogNotHandledError('alert'));
+            assertErrorMessage('native-dialog-not-handled-error', new NativeDialogNotHandledError('alert', 'http://example.org'));
         });
 
         it('Should format "uncaughtErrorInNativeDialogHandler"', function () {
-            assertErrorMessage('uncaught-error-in-native-dialog-handler', new UncaughtErrorInNativeDialogHandler('alert', 'error message'));
+            assertErrorMessage('uncaught-error-in-native-dialog-handler', new UncaughtErrorInNativeDialogHandler('alert', 'error message', 'http://example.org'));
         });
 
         it('Should format "setNativeDialogHandlerCodeWrongTypeError"', function () {

@@ -343,19 +343,21 @@ export class CurrentIframeIsInvisibleError extends TestRunErrorBase {
 
 // Native dialog errors
 export class NativeDialogNotHandledError extends TestRunErrorBase {
-    constructor (dialogType) {
+    constructor (dialogType, url) {
         super(TYPE.nativeDialogNotHandledError);
 
         this.dialogType = dialogType;
+        this.pageUrl    = url;
     }
 }
 
 export class UncaughtErrorInNativeDialogHandler extends TestRunErrorBase {
-    constructor (dialogType, errMsg) {
+    constructor (dialogType, errMsg, url) {
         super(TYPE.uncaughtErrorInNativeDialogHandler);
 
         this.dialogType = dialogType;
         this.errMsg     = errMsg;
+        this.pageUrl    = url;
     }
 }
 

@@ -11,6 +11,9 @@ var DEFAULT_FAILED_RUN_IN_IFRAME_OPTIONS = {
     shouldFail:      true,
     selectorTimeout: DEFAULT_SELECTOR_TIMEOUT
 };
+var pageUrl                              = 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/page-with-iframe.html';
+var iframeUrl                            = 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/iframe.html';
+var pageLoadingUrl                       = 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/page-load.html';
 
 
 describe('Native dialogs handling in iframe', function () {
@@ -19,8 +22,8 @@ describe('Native dialogs handling in iframe', function () {
             return runTests('./testcafe-fixtures/in-iframe-test.js', 'Without handler',
                 { shouldFail: true, selectorTimeout: DEFAULT_SELECTOR_TIMEOUT, skipJsErrors: true })
                 .catch(function (errs) {
-                    errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert'), 0);
-                    errorInEachBrowserContains(errs, '> 15 |        .click(\'#buttonAlert\'); ', 0);
+                    errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert', iframeUrl), 0);
+                    errorInEachBrowserContains(errs, '> 20 |        .click(\'#buttonAlert\'); ', 0);
                 });
         });
 
@@ -32,8 +35,8 @@ describe('Native dialogs handling in iframe', function () {
         it('Should fail if confirm dialog appears with wrong text', function () {
             return runTests('./testcafe-fixtures/in-iframe-test.js', 'Alert dialog with wrong text', DEFAULT_FAILED_RUN_IN_IFRAME_OPTIONS)
                 .catch(function (errs) {
-                    errorInEachBrowserContains(errs, getUncaughtErrorInNativeDialogHandlerText('alert', 'Wrong dialog text'), 0);
-                    errorInEachBrowserContains(errs, '> 35 |        .click(\'#buttonAlert\'); ', 0);
+                    errorInEachBrowserContains(errs, getUncaughtErrorInNativeDialogHandlerText('alert', 'Wrong dialog text', iframeUrl), 0);
+                    errorInEachBrowserContains(errs, '> 40 |        .click(\'#buttonAlert\'); ', 0);
                 });
         });
 
@@ -42,7 +45,7 @@ describe('Native dialogs handling in iframe', function () {
                 DEFAULT_FAILED_RUN_IN_IFRAME_OPTIONS)
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, 'AssertionError: expected 0 to equal', 0);
-                    errorInEachBrowserContains(errs, '> 46 |    expect(info.length).equals(1); ', 0);
+                    errorInEachBrowserContains(errs, '> 51 |    expect(info.length).equals(1); ', 0);
                 });
         });
     });
@@ -56,8 +59,8 @@ describe('Native dialogs handling in iframe', function () {
             return runTests('./testcafe-fixtures/in-iframe-test.js', 'Unexpected alert in iframe after an action in top window',
                 DEFAULT_FAILED_RUN_IN_IFRAME_OPTIONS)
                 .catch(function (errs) {
-                    errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert'), 0);
-                    errorInEachBrowserContains(errs, ' > 72 |        .click(\'#buttonIframeAlert\');', 0);
+                    errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert', iframeUrl), 0);
+                    errorInEachBrowserContains(errs, ' > 77 |        .click(\'#buttonIframeAlert\');', 0);
                 });
         });
     });
@@ -72,8 +75,8 @@ describe('Native dialogs handling in iframe', function () {
             return runTests('./testcafe-fixtures/in-iframe-test.js', 'Unexpected alert in top window after an action in iframe',
                 DEFAULT_FAILED_RUN_IN_IFRAME_OPTIONS)
                 .catch(function (errs) {
-                    errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert'), 0);
-                    errorInEachBrowserContains(errs, '> 90 |        .click(\'#buttonTopWindowAlert\'); ', 0);
+                    errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert', pageUrl), 0);
+                    errorInEachBrowserContains(errs, ' >  95 |        .click(\'#buttonTopWindowAlert\');', 0);
                 });
         });
     });
@@ -99,8 +102,8 @@ describe('Native dialogs handling in iframe', function () {
             return runTests('./testcafe-fixtures/page-load-test.js', 'Unexpected alert after page load',
                 DEFAULT_FAILED_RUN_IN_IFRAME_OPTIONS)
                 .catch(function (errs) {
-                    errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert'), 0);
-                    errorInEachBrowserContains(errs, '> 23 |    await t.click(\'body\'); ', 0);
+                    errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert', pageLoadingUrl), 0);
+                    errorInEachBrowserContains(errs, '> 28 |    await t.click(\'body\'); ', 0);
                 });
         });
     });
