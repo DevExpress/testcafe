@@ -24,6 +24,11 @@ describe('Runner', function () {
             .then(function (tc) {
                 testCafe = tc;
 
+                return browserProviderPool.getProvider('remote');
+            })
+            .then(function (remoteBrowserProvider) {
+                remoteBrowserProvider.disableResizeHack = true;
+
                 return testCafe.createBrowserConnection();
             })
             .then(function (bc) {
@@ -31,11 +36,6 @@ describe('Runner', function () {
 
                 connection.establish('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
                                      '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36');
-
-                return browserProviderPool.getProvider('remote');
-            })
-            .then(function (remoteBrowserProvider) {
-                remoteBrowserProvider.disableResizeHack = true;
             });
     });
 
