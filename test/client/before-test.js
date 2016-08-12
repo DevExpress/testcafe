@@ -81,30 +81,32 @@
     // HACK: The iOS browser performs unexpected scrolling in some cases (see https://github.com/DevExpress/testcafe/issues/471)
     // With this hack, we only allow setting the scroll by a script and prevent native browser scrolling.
     if (hammerhead.utils.browser.isIOS) {
-        var originWindowScrollTo = window.scrollTo;
-        var lastScrollTop        = window.scrollY;
-        var lastScrollLeft       = window.scrollX;
+        document.addEventListener('DOMContentLoaded', function () {
+            var originWindowScrollTo = window.scrollTo;
+            var lastScrollTop        = window.scrollY;
+            var lastScrollLeft       = window.scrollX;
 
-        window.scrollTo = function () {
-            lastScrollLeft = arguments[0];
-            lastScrollTop  = arguments[1];
+            window.scrollTo = function () {
+                lastScrollLeft = arguments[0];
+                lastScrollTop  = arguments[1];
 
-            originWindowScrollTo.apply(window, arguments);
-        };
+                originWindowScrollTo.apply(window, arguments);
+            };
 
-        window.addEventListener('scroll', function () {
-            if (window.scrollX !== lastScrollLeft || window.scrollY !== lastScrollTop)
-                window.scrollTo(lastScrollLeft, lastScrollTop);
-        });
+            window.addEventListener('scroll', function () {
+                if (window.scrollX !== lastScrollLeft || window.scrollY !== lastScrollTop)
+                    window.scrollTo(lastScrollLeft, lastScrollTop);
+            });
 
-        Object.defineProperty(document.body, 'scrollTop', {
-            get: function () {
-                return window.scrollY;
-            },
+            Object.defineProperty(document.body, 'scrollTop', {
+                get: function () {
+                    return window.scrollY;
+                },
 
-            set: function (y) {
-                window.scrollTo(window.scrollX, y);
-            }
+                set: function (y) {
+                    window.scrollTo(window.scrollX, y);
+                }
+            });
         });
     }
 
