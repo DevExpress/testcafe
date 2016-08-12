@@ -27,7 +27,7 @@ const runner           = testcafe.createRunner();
 [Remote browser connections](browserconnection.md), as the name implies,
 are used when you need to run tests on a remote device.
 
-The [test runner](runner.md) is used to configure and launch test runs.
+The [test runner](runner.md) is used to configure and launch test tasks.
 Here is how you can have it run tests from a `myFixture.js` fixture in the local Chrome and another remote browser
 with the report provided in the JSON format.
 

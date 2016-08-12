@@ -58,8 +58,10 @@
   - folder: Custom Reporter Plugin
     url: /testcafe/documentation/extending-testcafe/custom-reporter-plugin/
     content:
-    - item: Helper Methods
-      url: /testcafe/documentation/extending-testcafe/custom-reporter-plugin/helper-methods.html
+    - item: Reporter Methods
+      url: /testcafe/documentation/extending-testcafe/custom-reporter-plugin/reporter-methods.html
+    - item: Helpers
+      url: /testcafe/documentation/extending-testcafe/custom-reporter-plugin/helpers.html
   - item: Browser Provider Plugins
     url: .
   - item: Selector Extensions
