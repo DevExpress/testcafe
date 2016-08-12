@@ -175,6 +175,8 @@ $(document).ready(function () {
     module('regression');
 
     asyncTest('B253930 - Wrong playback of drag action on http://jqueryui.com/droppable/ in IE9', function () {
+        window.scrollTo(0, 0);
+        
         var $draggable  = createDraggable(10, 10, true);
         var center      = getCenter($draggable[0]);
         var dragOffsetX = 100;
