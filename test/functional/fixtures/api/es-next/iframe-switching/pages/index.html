@@ -17,10 +17,10 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // NOTE: if we add an iframe that is loading slowly via markup sometimes the DOMContentLoaded
-        // event is raised after this iframe is loading completely in IE9 (in other browsers this
-        // event never waits for the iframe loading). To avoid this collision we create the iframe on
-        // the DOMContentLoaded event. It helps us to get rid of an unstable functional test in IE9.
+        // NOTE: if we add a slowly loading iframe via markup, IE9 sometimes raises the DOMContentLoaded
+        // event after this iframe is completely loaded (in other browsers, this event never waits for
+        // an iframe to load). To avoid this collision, we create the iframe on the DOMContentLoaded event.
+        // It helps us get rid of an unstable functional test in IE9.
         var tooSlowlyLoadingIframe = document.createElement('iframe');
 
         tooSlowlyLoadingIframe.id  = 'too-slowly-loading-iframe';
