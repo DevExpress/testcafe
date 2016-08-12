@@ -20,8 +20,8 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         if (builder) {
             fn = builder.fn;
 
-            if (typeof options === 'object')
-                options = assign({}, builder.options, options, { originSelectorBuilder: builder });
+            if (options === void 0 || typeof options === 'object')
+                options = assign({}, builder.options, options, { sourceSelectorBuilder: builder });
         }
 
         super(fn, options, callsiteNames);
@@ -51,14 +51,14 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
     _getCompiledFnCode () {
         // OPTIMIZATION: if selector was produced from another selector and
-        // it has same dependencies as origin selector, then we can
+        // it has same dependencies as source selector, then we can
         // avoid recompilation and just re-use already compiled code.
-        var hasSameDependenciesAsOriginSelector = this.options.originSelectorBuilder &&
-                                                  this.options.originSelectorBuilder.options.dependencies ===
+        var hasSameDependenciesAsSourceSelector = this.options.sourceSelectorBuilder &&
+                                                  this.options.sourceSelectorBuilder.options.dependencies ===
                                                   this.options.dependencies;
 
-        if (hasSameDependenciesAsOriginSelector)
-            return this.options.originSelectorBuilder.compiledFnCode;
+        if (hasSameDependenciesAsSourceSelector)
+            return this.options.sourceSelectorBuilder.compiledFnCode;
 
         var code = typeof this.fn === 'string' ?
                    `(function(){return document.querySelectorAll('${this.fn.replace(/'/g, "\\'")}');});` :

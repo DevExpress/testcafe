@@ -112,4 +112,10 @@ describe('[API] Selector', function () {
             });
         });
     });
+
+    describe('Regression', function () {
+        it("Should execute successfully if derivative selector doesn't have options (GH-716)", function () {
+            return runTests('./testcafe-fixtures/selector-test.js', 'Derivative selector without options', { only: 'chrome' });
+        });
+    });
 });

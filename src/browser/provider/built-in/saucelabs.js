@@ -52,7 +52,7 @@ function unfoldTreeNode (node, level = Infinity) {
                            flatten(node.list.map(child => unfoldTreeNode(child, level - 1))) :
                            [node.list ? node.list : []];
 
-    return unfoldedChildren.map(child =>[node.name].concat(child));
+    return unfoldedChildren.map(child => [node.name].concat(child));
 }
 
 async function getAssetData (assetNameParts, unfoldingLevel = Infinity) {
@@ -87,7 +87,7 @@ function formatAutomationApiData (automationApi, automationApiData) {
         formattedData.browserName    = automationApiData[6];
         formattedData.browserVersion = automationApiData[7];
 
-        if (formattedData.browserName == 'MS Edge')
+        if (formattedData.browserName === 'MS Edge')
             formattedData.browserName = 'MicrosoftEdge';
 
         if (MAC_OS_MAP[formattedData.os])
@@ -97,9 +97,7 @@ function formatAutomationApiData (automationApi, automationApiData) {
         formattedData.os  = automationApiData[5];
         formattedData.api = find(automationApiData, item => item && item.api).api;
 
-        var isAndroidJellyBean = formattedData.platformGroup === 'Android' &&
-                                 (parseFloat(formattedData.os) >= 4.4);
-
+        var isAndroidJellyBean   = formattedData.platformGroup === 'Android' && parseFloat(formattedData.os) >= 4.4;
         var isUnsupportedAndroid = isAndroidJellyBean ? isSelendroid(formattedData) : isAppium(formattedData);
 
         if (isUnsupportedAndroid)
