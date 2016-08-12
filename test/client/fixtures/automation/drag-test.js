@@ -106,6 +106,10 @@ $(document).ready(function () {
     };
 
     //tests
+    QUnit.testStart(function () {
+        window.scrollTo(0, 0);
+    });
+
     QUnit.testDone(function () {
         var $body = $('body');
 
@@ -154,8 +158,6 @@ $(document).ready(function () {
     module('other functional tests');
 
     asyncTest('overlapped during dragging', function () {
-        window.scrollTo(0, 0);
-
         window.setTimeout(function () {
             var draggable = createDraggable(100, 100)[0];
             var target    = createTarget(100, 350)[0];
@@ -177,8 +179,6 @@ $(document).ready(function () {
     module('regression');
 
     asyncTest('B253930 - Wrong playback of drag action on http://jqueryui.com/droppable/ in IE9', function () {
-        window.scrollTo(0, 0);
-
         var $draggable  = createDraggable(10, 10, true);
         var center      = getCenter($draggable[0]);
         var dragOffsetX = 100;
