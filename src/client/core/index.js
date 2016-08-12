@@ -56,4 +56,6 @@ Object.defineProperty(window, '%testCafeCore%', {
     value:        exports
 });
 
+// NOTE: initTestCafeCore defined in wrapper template
+/* global initTestCafeCore */
 hammerhead.on(hammerhead.EVENTS.evalIframeScript, e => initTestCafeCore(e.iframe.contentWindow, true));

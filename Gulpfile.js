@@ -6,7 +6,6 @@ var filter               = require('gulp-filter');
 var git                  = require('gulp-git');
 var globby               = require('globby');
 var qunitHarness         = require('gulp-qunit-harness');
-var merge                = require('merge-stream');
 var mocha                = require('gulp-mocha');
 var mustache             = require('gulp-mustache');
 var rename               = require('gulp-rename');
@@ -157,7 +156,7 @@ gulp.task('lint', function () {
 
     var eslint = require('gulp-eslint');
 
-    gulp
+    return gulp
         .src([
             'src/**/*.js',
 

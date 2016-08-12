@@ -1,5 +1,4 @@
 import { eventSandbox } from './deps/hammerhead';
-import { delay } from './deps/testcafe-core';
 import { IframeStatusBar } from './deps/testcafe-ui';
 import Driver from './driver';
 import ContextStorage from './storage';

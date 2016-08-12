@@ -1,1 +1,1 @@
-test/server/data/test-suites/**/*.js
+test/server/data/**/*.js

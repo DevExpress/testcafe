@@ -18,7 +18,8 @@ export default class ClientFunctionBuilder {
             execution:     callsiteNames.execution || DEFAULT_EXECUTION_CALLSITE_NAME
         };
 
-        options = isNullOrUndefined(options) ? {} : options;
+        if (isNullOrUndefined(options))
+            options = {};
 
         this._validateOptions(options);
 
@@ -124,8 +125,11 @@ export default class ClientFunctionBuilder {
     _validateOptions (options) {
         var optionsType = typeof options;
 
-        if (optionsType !== 'object')
-            throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionsArgumentIsNotAnObject, optionsType);
+        if (isNullOrUndefined(options) || optionsType !== 'object') {
+            var actualVal = options === null ? 'null' : optionsType;
+
+            throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionsArgumentIsNotAnObject, actualVal);
+        }
 
         if (!isNullOrUndefined(options.boundTestRun)) {
             // NOTE: we can't use strict `t instanceof TestController`

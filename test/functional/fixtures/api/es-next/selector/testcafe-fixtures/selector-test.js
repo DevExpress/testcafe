@@ -428,3 +428,9 @@ test('Compound filter', async t => {
 
     expect(id).eql('el2');
 });
+
+test('Derivative selector without options', async () => {
+    var derivative = Selector(getElementById('textInput'));
+
+    await derivative();
+});
