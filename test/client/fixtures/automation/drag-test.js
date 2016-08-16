@@ -106,6 +106,10 @@ $(document).ready(function () {
     };
 
     //tests
+    QUnit.testStart(function () {
+        window.scrollTo(0, 0);
+    });
+
     QUnit.testDone(function () {
         var $body = $('body');
 
