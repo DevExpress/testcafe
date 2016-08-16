@@ -14,7 +14,9 @@ var getBodyPlainText = ClientFunction(() => {
 
 
 test('Typing in contentEditable body', async t => {
-    await (ClientFunction(() => document.body.innerHTML = ''))();
+    await ClientFunction(() => {
+        document.body.innerHTML = '';
+    })();
 
     await t
         .click('body')
