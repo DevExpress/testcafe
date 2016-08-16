@@ -146,6 +146,8 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
 
     _executeFn (args) {
         var startTime = new Date();
+        var error     = null;
+        var element   = null;
 
         this.statusBar.setWaitingStatus(this.timeout);
 
@@ -158,12 +160,17 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
                 return el;
             })
             .catch(err => {
-                this.statusBar.resetStatus();
-                throw err;
+                error = err;
+
+                return this.statusBar.resetWaitingStatus(false);
             })
             .then(el => {
-                this.statusBar.resetStatus();
-                return el;
-            });
+                if (error)
+                    throw error;
+
+                element = el;
+                return this.statusBar.resetWaitingStatus(!!el);
+            })
+            .then(() => element);
     }
 }

@@ -320,6 +320,7 @@
     .status-bar {
         .position-fixed();
 
+        bottom: 0 !important;
         background-color: rgba(0, 0, 0, 0.8);
         z-index: @rootZIndex - 3;
         left: 0;
@@ -381,6 +382,26 @@
                     color: #36B6E5;
                     line-height: 27px;
                 }
+            }
+        }
+
+        &.waiting-element-success {
+            .container .status-container .status {
+                color: #6ab779;
+            }
+
+            .progress-bar.determinate .value {
+                background-color: #6ab779;
+            }
+        }
+
+        &.waiting-element-failed {
+            .container .status-container .status {
+                color: #df5679;
+            }
+
+            .progress-bar.determinate .value {
+                background-color: #df5679;
             }
         }
 

@@ -43,23 +43,11 @@ export default class ProgressBar {
         container.appendChild(this.secondValueElement);
     }
 
-    _show () {
+    show () {
         styleUtils.set(this.progressBar, 'visibility', 'visible');
     }
 
     hide () {
-        this.determinateIndicator.stop();
-        this.indeterminateIndicator.stop();
         styleUtils.set(this.progressBar, 'visibility', 'hidden');
-    }
-
-    startDeterminate (maxTimeout) {
-        this.determinateIndicator.start(maxTimeout);
-        this._show();
-    }
-
-    startIndeterminate () {
-        this.indeterminateIndicator.start();
-        this._show();
     }
 }

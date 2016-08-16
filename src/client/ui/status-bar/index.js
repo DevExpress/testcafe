@@ -4,6 +4,7 @@ import ProgressBar from './progress-bar';
 import MESSAGES from './messages';
 
 
+var Promise        = hammerhead.Promise;
 var shadowUI       = hammerhead.shadowUI;
 var nativeMethods  = hammerhead.nativeMethods;
 var messageSandbox = hammerhead.eventSandbox.message;
@@ -13,23 +14,26 @@ var eventUtils = testCafeCore.eventUtils;
 var domUtils   = testCafeCore.domUtils;
 
 
-const STATUS_BAR_CLASS          = 'status-bar';
-const CONTAINER_CLASS           = 'container';
-const ICON_CLASS                = 'icon';
-const INFO_CONTAINER_CLASS      = 'info-container';
-const FIXTURE_CONTAINER_CLASS   = 'fixture-container';
-const FIXTURE_DIV_CLASS         = 'fixture';
-const USER_AGENT_DIV_CLASS      = 'user-agent';
-const STATUS_CONTAINER_CLASS    = 'status-container';
-const STATUS_DIV_CLASS          = 'status';
-const ONLY_ICON_CLASS           = 'only-icon';
-const ICON_AND_STATUS_CLASS     = 'icon-status';
-const LOADING_PAGE_TEXT         = 'Loading Web Page...';
-const WAITING_FOR_ELEMENT_TEXT  = 'Waiting for an element to appear...';
-const MIDDLE_WINDOW_WIDTH       = 670;
-const SMALL_WINDOW_WIDTH        = 380;
-const ANIMATION_DELAY           = 500;
-const ANIMATION_UPDATE_INTERVAL = 10;
+const STATUS_BAR_CLASS              = 'status-bar';
+const CONTAINER_CLASS               = 'container';
+const ICON_CLASS                    = 'icon';
+const INFO_CONTAINER_CLASS          = 'info-container';
+const FIXTURE_CONTAINER_CLASS       = 'fixture-container';
+const FIXTURE_DIV_CLASS             = 'fixture';
+const USER_AGENT_DIV_CLASS          = 'user-agent';
+const STATUS_CONTAINER_CLASS        = 'status-container';
+const STATUS_DIV_CLASS              = 'status';
+const ONLY_ICON_CLASS               = 'only-icon';
+const ICON_AND_STATUS_CLASS         = 'icon-status';
+const WAITING_ELEMENT_FAILED_CLASS  = 'waiting-element-failed';
+const WAITING_ELEMENT_SUCCESS_CLASS = 'waiting-element-success';
+const LOADING_PAGE_TEXT             = 'Loading Web Page...';
+const WAITING_FOR_ELEMENT_TEXT      = 'Waiting for an element to appear...';
+const MIDDLE_WINDOW_WIDTH           = 670;
+const SMALL_WINDOW_WIDTH            = 380;
+const SHOWING_DELAY                 = 300;
+const ANIMATION_DELAY               = 500;
+const ANIMATION_UPDATE_INTERVAL     = 10;
 
 
 export default class StatusBar {
@@ -47,6 +51,7 @@ export default class StatusBar {
 
         this.progressBar       = null;
         this.animationInterval = null;
+        this.showingTimeout    = null;
         this.created           = false;
         this.showing           = false;
         this.hidding           = false;
@@ -107,11 +112,12 @@ export default class StatusBar {
         this._createStatusArea();
 
         this.progressBar = new ProgressBar(this.statusBar);
-        this.progressBar.startIndeterminate();
+
+        this.progressBar.indeterminateIndicator.start();
+        this.progressBar.show();
 
         shadowUI.getRoot().appendChild(this.statusBar);
 
-        this._disposeStatusBar();
         this._recalculateSizes();
         this._bindHandlers();
 
@@ -126,13 +132,6 @@ export default class StatusBar {
             this._create();
         else
             nativeMethods.setTimeout.call(window, () => this._createBeforeReady(), 0);
-    }
-
-    _disposeStatusBar () {
-        var statusBarHeight = styleUtils.getHeight(this.statusBar);
-        var top             = styleUtils.getHeight(window) - statusBarHeight;
-
-        styleUtils.set(this.statusBar, 'top', top + 'px');
     }
 
     _setSizeStyle (windowWidth) {
@@ -213,10 +212,7 @@ export default class StatusBar {
     }
 
     _bindHandlers () {
-        eventUtils.bind(window, 'resize', () => {
-            this._disposeStatusBar();
-            this._recalculateSizes();
-        });
+        eventUtils.bind(window, 'resize', () => this._recalculateSizes());
 
         eventUtils.bind(this.statusBar, 'mouseover', () => {
             if (this.hidding)
@@ -238,26 +234,80 @@ export default class StatusBar {
 
     _initChildListening () {
         messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
-            if (e.message.cmd === MESSAGES.startWaitingForElement)
-                this.setWaitingStatus(e.message.timeout);
-            else if (e.message.cmd === MESSAGES.stopWaitingForElement)
-                this.resetStatus();
+            var msg = e.message;
+
+            if (msg.cmd === MESSAGES.startWaitingForElement)
+                this.setWaitingStatus(msg.timeout);
+            else if (msg.cmd === MESSAGES.stopWaitingForElementRequest) {
+                this
+                    .resetWaitingStatus(msg.waitingSuccess)
+                    .then(() => messageSandbox.sendServiceMsg({ cmd: MESSAGES.stopWaitingForElementResponse }, e.source));
+            }
+        });
+    }
+
+    _resetState () {
+        this.statusDiv.textContent = '';
+        this.progressBar.hide();
+    }
+
+    _showWaitingStatus () {
+        this.statusDiv.textContent = WAITING_FOR_ELEMENT_TEXT;
+        this._setStatusDivLeftMargin();
+        this.progressBar.show();
+    }
+
+    _hideWaitingStatus (forceReset) {
+        return new Promise(resolve => {
+            nativeMethods.setTimeout.call(window, () => {
+                shadowUI.removeClass(this.statusBar, WAITING_ELEMENT_SUCCESS_CLASS);
+                shadowUI.removeClass(this.statusBar, WAITING_ELEMENT_FAILED_CLASS);
+
+                this.progressBar.determinateIndicator.reset();
+
+                this._resetState();
+                resolve();
+            }, forceReset ? 0 : ANIMATION_DELAY);
         });
     }
 
     //API
-    setWaitingStatus (timeout) {
-        this.statusDiv.textContent = WAITING_FOR_ELEMENT_TEXT;
-        this._setStatusDivLeftMargin();
-
-        this.progressBar.startDeterminate(timeout);
-    }
-
-    resetStatus () {
+    resetPageLoadingStatus () {
         if (!this.created)
             this._create();
 
-        this.statusDiv.textContent = '';
-        this.progressBar.hide();
+        this.progressBar.indeterminateIndicator.stop();
+        this._resetState();
+    }
+
+    setWaitingStatus (timeout) {
+        this.progressBar.determinateIndicator.start(timeout);
+
+        this.showingTimeout = nativeMethods.setTimeout.call(window, () => {
+            this.showingTimeout = null;
+
+            this._showWaitingStatus();
+        }, SHOWING_DELAY);
+    }
+
+    resetWaitingStatus (waitingSuccess) {
+        this.progressBar.determinateIndicator.stop();
+
+        if (waitingSuccess)
+            shadowUI.addClass(this.statusBar, WAITING_ELEMENT_SUCCESS_CLASS);
+        else
+            shadowUI.addClass(this.statusBar, WAITING_ELEMENT_FAILED_CLASS);
+
+        var forceReset = this.showingTimeout && waitingSuccess;
+
+        if (this.showingTimeout) {
+            nativeMethods.clearTimeout.call(window, this.showingTimeout);
+            this.showingTimeout = null;
+
+            if (!waitingSuccess)
+                this._showWaitingStatus();
+        }
+
+        return this._hideWaitingStatus(forceReset);
     }
 }

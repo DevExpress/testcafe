@@ -463,7 +463,7 @@ export default class Driver {
 
         this.statusBar = new StatusBar(this.userAgent, this.fixtureName, this.testName);
 
-        this.readyPromise.then(() => this.statusBar.resetStatus());
+        this.readyPromise.then(() => this.statusBar.resetPageLoadingStatus());
 
         var pendingStatus = this.contextStorage.getItem(PENDING_STATUS);
 
