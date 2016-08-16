@@ -45,7 +45,9 @@ export default class DeterminateIndicator {
             nativeMethods.clearInterval.call(window, this.animationInterval);
             this.animationInterval = null;
         }
+    }
 
+    reset () {
         styleUtils.set(this.firstValueElement, 'width', 0);
         shadowUI.removeClass(this.progressBar, DETERMINATE_STYLE_CLASS);
     }
