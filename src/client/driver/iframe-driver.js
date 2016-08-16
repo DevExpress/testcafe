@@ -1,4 +1,4 @@
-import { eventSandbox } from './deps/hammerhead';
+import { Promise, eventSandbox } from './deps/hammerhead';
 import { IframeStatusBar } from './deps/testcafe-ui';
 import Driver from './driver';
 import ContextStorage from './storage';
@@ -67,7 +67,7 @@ export default class IframeDriver extends Driver {
         this.nativeDialogsTracker = new IframeNativeDialogTracker(this.dialogHandler);
         this.statusBar            = new IframeStatusBar();
 
-        this.parentDriverLink
+        var initializePromise = this.parentDriverLink
             .establishConnection()
             .then(id => {
                 this.contextStorage = new ContextStorage(window, id);
@@ -80,9 +80,8 @@ export default class IframeDriver extends Driver {
 
                 if (inCommandExecution)
                     this._onReady(new DriverStatus({ isCommandResult: true }));
-            })
-            .then(() => {
-                // HACK: For IE9, if the iframe has readyState: 'loading'.
             });
+
+        this.readyPromise = Promise.all([this.readyPromise, initializePromise]);
     }
 }
