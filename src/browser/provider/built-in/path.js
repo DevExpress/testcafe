@@ -10,7 +10,7 @@ export default class PathBrowserProvider extends BrowserProviderBase {
         this.isMultiBrowser = true;
     }
 
-    _handleJSON (str) {
+    async _handleJSON (str) {
         var params = null;
 
         try {
@@ -23,7 +23,7 @@ export default class PathBrowserProvider extends BrowserProviderBase {
         if (!params.path)
             return null;
 
-        var openParameters = browserNatives.getBrowserInfo(params.path);
+        var openParameters = await browserNatives.getBrowserInfo(params.path);
 
         if (!openParameters)
             return null;
@@ -35,7 +35,7 @@ export default class PathBrowserProvider extends BrowserProviderBase {
     }
 
     async openBrowser (id, alias, startPage) {
-        var openParameters = await browserNatives.getBrowserInfo(alias) || this._handleJSON(alias);
+        var openParameters = await browserNatives.getBrowserInfo(alias) || await this._handleJSON(alias);
 
         if (!openParameters)
             throw new Error('The specified browser name is not valid!');
