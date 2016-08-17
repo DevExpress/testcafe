@@ -261,7 +261,7 @@ function getSelectedPositionInParentByOffset (node, offset) {
         childCount           = node.childNodes.length,
         isSearchForLastChild = offset >= childCount;
 
-    // NOTE: we get child element in parent by offset index
+    // NOTE: we get a child element by its offset index in the parent
     if (domUtils.isShadowUIElement(node))
         return { node, offset };
 
