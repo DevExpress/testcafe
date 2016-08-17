@@ -38,7 +38,7 @@ mkdir my-reporter
 cd my-reporter
 ```
 
-**Note:** It is recommended to name the directory the same as you would like to name your reporter project. When you run the generator,
+It is recommended to name the directory the same as you would like to name your reporter project. When you run the generator,
 it will automatically suggest the reporter name that matches the reporter directory name. As for the reporter package name,
 it will consist of two parts - the `{testcafe-reporter-}` prefix and the name of the reporter itself:
 

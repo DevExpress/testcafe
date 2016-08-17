@@ -1,32 +1,5 @@
 - item: GETTING STARTED
   url: /testcafe/documentation/getting-started/
-- folder: TEST API
-  url: .
-  content:
-  - item: Fixtures and Tests
-    url: .
-  - item: Actions
-    url: .
-  - item: Assertions
-    url: .
-  - item: Client Functions
-    url: .
-  - item: Roles
-    url: .
-  - item: Wait Functions
-    url: .
-  - item: Conditional Functions
-    url: .
-  - item: Handling Native Dialogs
-    url: .
-  - item: HTTP Authentication
-    url: .
-  - item: Switching Frames
-    url: .
-  - item: Injecting Scripts
-    url: .
-  - item: Identifying Webpage Elements
-    url: .
 - folder: USING TESTCAFE
   url: /testcafe/documentation/using-testcafe/
   content:
@@ -52,6 +25,59 @@
       url: /testcafe/documentation/using-testcafe/common-concepts/browser-aliases.html
     - item: Reporters
       url: /testcafe/documentation/using-testcafe/common-concepts/reporters.html
+- folder: TEST API
+  url: /testcafe/documentation/test-api/
+  content:
+  - item: Test Code Structure
+    url: /testcafe/documentation/test-api/test-code-structure.html
+  - folder: Actions
+    url: /testcafe/documentation/test-api/actions/
+    content:
+    - item: Click
+      url: /testcafe/documentation/test-api/actions/click.html
+    - item: Double Click
+      url: /testcafe/documentation/test-api/actions/double-click.html
+    - item: Right Click
+      url: /testcafe/documentation/test-api/actions/right-click.html
+    - item: Drag Element
+      url: /testcafe/documentation/test-api/actions/drag-element.html
+    - item: Hover
+      url: /testcafe/documentation/test-api/actions/hover.html
+    - item: Select Text
+      url: /testcafe/documentation/test-api/actions/select-text.html
+    - item: Type Text
+      url: /testcafe/documentation/test-api/actions/type-text.html
+    - item: Press Key
+      url: /testcafe/documentation/test-api/actions/press-key.html
+    - item: Navigate
+      url: /testcafe/documentation/test-api/actions/navigate.html
+    - item: Take Screenshot
+      url: /testcafe/documentation/test-api/actions/take-screenshot.html
+    - item: Upload
+      url: /testcafe/documentation/test-api/actions/upload.html
+    - item: Resize Window
+      url: /testcafe/documentation/test-api/actions/resize-window.html
+    - item: Action Options
+      url: /testcafe/documentation/test-api/actions/action-options.html
+  - folder: Selecting Page Elements
+    url: /testcafe/documentation/test-api/selecting-page-elements/
+    content:
+    - item: Selectors
+      url: /testcafe/documentation/test-api/selecting-page-elements/selectors.html
+    - item: Selector Options
+      url: /testcafe/documentation/test-api/selecting-page-elements/selector-options.html
+    - item: DOM Node Snapshots
+      url: /testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html
+  - item: Assertions
+    url: /testcafe/documentation/test-api/assertions.html
+  - item: Obtaining Data From the Client
+    url: /testcafe/documentation/test-api/obtaining-data-from-the-client.html
+  - item: Pausing the Test
+    url: /testcafe/documentation/test-api/pausing-the-test.html
+  - item: Handling Native Dialogs
+    url: /testcafe/documentation/test-api/handling-native-dialogs.html
+  - item: Working with &lt;iframes&gt;
+    url: /testcafe/documentation/test-api/working-with-iframes.html
 - folder: EXTENDING TESTCAFE
   url: /testcafe/documentation/extending-testcafe/
   content:
@@ -62,14 +88,14 @@
       url: /testcafe/documentation/extending-testcafe/custom-reporter-plugin/reporter-methods.html
     - item: Helpers
       url: /testcafe/documentation/extending-testcafe/custom-reporter-plugin/helpers.html
-  - item: Browser Provider Plugins
-    url: .
-  - item: Selector Extensions
-    url: .
-- folder: RECIPES
-  url: .
-  content:
-  - item: Recipe No. 1
-    url: .
-  - item: Recipe No. 2
-    url: .
+# - item: Browser Provider Plugins
+#   url: .
+# - item: Selector Extensions
+#   url: .
+# - folder: RECIPES
+#   url: .
+#   content:
+#   - item: Recipe No. 1
+#     url: .
+#   - item: Recipe No. 2
+#     url: .
