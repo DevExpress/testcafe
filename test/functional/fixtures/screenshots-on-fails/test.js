@@ -3,6 +3,7 @@ var config          = require('../../config.js');
 var assertionHelper = require('../../assertion-helper.js');
 
 var SCREENSHOT_PATH_MESSAGE_TEXT = 'Screenshot: ___test-screenshots___';
+var SCREENSHOT_PATH_MESSAGE_RE   = /Screenshot: ___test-screenshots___\\\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}\\test-1/;
 var ERROR_SCREENSHOT_PATH        = '\\errors\\';
 
 if (config.useLocalBrowsers) {
@@ -19,9 +20,9 @@ if (config.useLocalBrowsers) {
                     setScreenshotPath:  true
                 })
                 .catch(function (errs) {
-                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
+                    assertionHelper.errorInEachBrowserContainsRegExp(errs, SCREENSHOT_PATH_MESSAGE_RE, 0);
                     assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 0);
-                    expect(assertionHelper.checkScreenshotsCreated()).eql(true);
+                    expect(assertionHelper.checkScreenshotsCreated(true)).eql(true);
                 });
         });
 
@@ -29,9 +30,9 @@ if (config.useLocalBrowsers) {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on page error',
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
-                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
+                    assertionHelper.errorInEachBrowserContainsRegExp(errs, SCREENSHOT_PATH_MESSAGE_RE, 0);
                     assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 0);
-                    expect(assertionHelper.checkScreenshotsCreated()).eql(true);
+                    expect(assertionHelper.checkScreenshotsCreated(true)).eql(true);
                 });
         });
 
@@ -39,9 +40,9 @@ if (config.useLocalBrowsers) {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on test code error',
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
-                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
+                    assertionHelper.errorInEachBrowserContainsRegExp(errs, SCREENSHOT_PATH_MESSAGE_RE, 0);
                     assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 0);
-                    expect(assertionHelper.checkScreenshotsCreated()).eql(true);
+                    expect(assertionHelper.checkScreenshotsCreated(true)).eql(true);
                 });
         });
 
@@ -49,9 +50,9 @@ if (config.useLocalBrowsers) {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the assertion fail',
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
-                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
+                    assertionHelper.errorInEachBrowserContainsRegExp(errs, SCREENSHOT_PATH_MESSAGE_RE, 0);
                     assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 0);
-                    expect(assertionHelper.checkScreenshotsCreated()).eql(true);
+                    expect(assertionHelper.checkScreenshotsCreated(true)).eql(true);
                 });
         });
 
@@ -59,9 +60,9 @@ if (config.useLocalBrowsers) {
             return runTests('./testcafe-fixtures/fail-in-before-each.js', 'Screenshot on a beforeEach error',
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
-                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
+                    assertionHelper.errorInEachBrowserContainsRegExp(errs, SCREENSHOT_PATH_MESSAGE_RE, 0);
                     assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 0);
-                    expect(assertionHelper.checkScreenshotsCreated()).eql(true);
+                    expect(assertionHelper.checkScreenshotsCreated(true)).eql(true);
                 });
         });
 
@@ -69,11 +70,27 @@ if (config.useLocalBrowsers) {
             return runTests('./testcafe-fixtures/fail-in-test-and-after-each.js', 'Screenshots on afterEach and test errors',
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
-                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
+                    assertionHelper.errorInEachBrowserContainsRegExp(errs, SCREENSHOT_PATH_MESSAGE_RE, 0);
                     assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 0);
-                    assertionHelper.errorInEachBrowserContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 1);
+                    assertionHelper.errorInEachBrowserContainsRegExp(errs, SCREENSHOT_PATH_MESSAGE_RE, 1);
                     assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 1);
-                    expect(assertionHelper.checkScreenshotsCreated(4)).eql(true);
+                    expect(assertionHelper.checkScreenshotsCreated(true, 4)).eql(true);
+                });
+        });
+
+        it('Should take a screenshot several times if test runs in quarantine mode', function () {
+            return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Test for quarantine mode',
+                {
+                    shouldFail:         true,
+                    screenshotsOnFails: true,
+                    selectorTimeout:    0,
+                    setScreenshotPath:  true,
+                    quarantineMode:     true
+                })
+                .catch(function (errs) {
+                    assertionHelper.errorInEachBrowserContainsRegExp(errs, SCREENSHOT_PATH_MESSAGE_RE, 0);
+                    assertionHelper.errorInEachBrowserContains(errs, ERROR_SCREENSHOT_PATH, 0);
+                    expect(assertionHelper.checkScreenshotsCreated(true, 2, null, 3)).eql(true);
                 });
         });
 

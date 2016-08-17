@@ -4,7 +4,8 @@ var config          = require('../../../../config.js');
 var assertionHelper = require('../../../../assertion-helper.js');
 
 
-var SCREENSHOT_PATH_MESSAGE_TEXT = '___test-screenshots___';
+var SCREENSHOT_PATH_MESSAGE_RE     = /___test-screenshots___\\\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}\\test-1/;
+var CUSTOM_SCREENSHOT_PATH_MESSAGE = '___test-screenshots___';
 
 
 describe('[API] t.takeScreenshot()', function () {
@@ -14,8 +15,8 @@ describe('[API] t.takeScreenshot()', function () {
         it('Should take a screenshot', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot', { setScreenshotPath: true })
                 .then(function () {
-                    expect(testReport.screenshotPath).contains(SCREENSHOT_PATH_MESSAGE_TEXT);
-                    expect(assertionHelper.checkScreenshotsCreated()).eql(true);
+                    expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
+                    expect(assertionHelper.checkScreenshotsCreated(false, 4)).eql(true);
                 });
         });
 
@@ -23,8 +24,8 @@ describe('[API] t.takeScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path',
                 { setScreenshotPath: true })
                 .then(function () {
-                    expect(testReport.screenshotPath).contains(SCREENSHOT_PATH_MESSAGE_TEXT);
-                    expect(assertionHelper.checkScreenshotsCreated(2, 'custom')).eql(true);
+                    expect(testReport.screenshotPath).contains(CUSTOM_SCREENSHOT_PATH_MESSAGE);
+                    expect(assertionHelper.checkScreenshotsCreated(false, 2, 'custom')).eql(true);
                 });
         });
 
@@ -60,13 +61,13 @@ describe('[API] t.takeScreenshot()', function () {
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The "path" argument is expected to be a non-empty string, but it was number.');
                     expect(errs[0]).to.contains(
-                        '20 | ' +
-                        '21 |    await t.takeScreenshot(\'custom/\' + parsedUA.family + \'.png\'); ' +
-                        '22 |}); ' +
-                        '23 | ' +
-                        '24 |test(\'Incorrect action path argument\', async t => {' +
-                        ' > 25 |    await t.takeScreenshot(1); ' +
-                        '26 |});'
+                        '22 | ' +
+                        '23 |    await t.takeScreenshot(\'custom/\' + parsedUA.family + \'.png\'); ' +
+                        '24 |}); ' +
+                        '25 | ' +
+                        '26 |test(\'Incorrect action path argument\', async t => {' +
+                        ' > 27 |    await t.takeScreenshot(1); ' +
+                        '28 |});'
                     );
                 });
         });

@@ -1,7 +1,6 @@
-import { join as joinPath } from 'path';
-import shortId from 'shortid';
 import { find } from 'lodash';
 import sanitize from 'sanitize-filename';
+import dateFormat from 'dateformat';
 import Capturer from './capturer';
 
 export default class Screenshots {
@@ -9,22 +8,51 @@ export default class Screenshots {
         this.enabled         = !!path;
         this.screenshotsPath = path;
         this.testEntries     = [];
+        this.startDate       = Screenshots._getStartTestDate();
+        this.userAgentNames  = [];
+    }
+
+    static _getStartTestDate () {
+        var now = Date.now();
+
+        return dateFormat(now, 'yyyy-mm-dd_hh-MM-ss');
     }
 
     static _escapeUserAgent (userAgent) {
-        return sanitize(
-            userAgent
-                .toString()
-                .split('/')
-                .map(str => str.trim().replace(/\s/g, '_'))
-                .join('_')
-        );
+        return sanitize(userAgent.toString()).replace(/\s+/g, '_');
+    }
+
+    _getUsedUserAgent (name, testIndex, quarantineAttempt) {
+        var userAgent = null;
+
+        for (var i = 0; i < this.userAgentNames.length; i++) {
+            userAgent = this.userAgentNames[i];
+
+            if (userAgent.name === name && userAgent.testIndex === testIndex &&
+                userAgent.quarantineAttempt === quarantineAttempt)
+                return userAgent;
+        }
+
+        return null;
+    }
+
+    _getUserAgentName (userAgent, testIndex, quarantineAttempt) {
+        var userAgentName = Screenshots._escapeUserAgent(userAgent);
+        var usedUserAgent = this._getUsedUserAgent(userAgentName, testIndex, quarantineAttempt);
+
+        if (usedUserAgent) {
+            usedUserAgent.index++;
+            return `${userAgentName}_${usedUserAgent.index}`;
+        }
+
+        this.userAgentNames.push({ name: userAgentName, index: 0, testIndex, quarantineAttempt });
+        return userAgentName;
     }
 
     _addTestEntry (test) {
         var testEntry = {
             test:           test,
-            path:           this.screenshotsPath ? joinPath(this.screenshotsPath, shortId.generate()) : '',
+            path:           this.screenshotsPath || '',
             hasScreenshots: false
         };
 
@@ -45,14 +73,19 @@ export default class Screenshots {
         return this._getTestEntry(test).path;
     }
 
-    createCapturerFor (test, connection) {
+    createCapturerFor (test, testIndex, quarantineAttempt, connection) {
         var testEntry = this._getTestEntry(test);
 
         if (!testEntry)
             testEntry = this._addTestEntry(test);
 
-        var testScreenshotsPath = joinPath(testEntry.path, Screenshots._escapeUserAgent(connection.userAgent));
+        var namingOptions = {
+            testIndex,
+            quarantineAttempt,
+            startDate:     this.startDate,
+            userAgentName: this._getUserAgentName(connection.userAgent, testIndex, quarantineAttempt)
+        };
 
-        return new Capturer(this.screenshotsPath, testScreenshotsPath, testEntry, connection);
+        return new Capturer(this.screenshotsPath, testEntry, connection, namingOptions);
     }
 }

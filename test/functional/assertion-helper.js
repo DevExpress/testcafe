@@ -5,22 +5,29 @@ var del    = require('del');
 var config = require('./config.js');
 
 
-const SCREENSHOTS_PATH = '___test-screenshots___';
+const SCREENSHOTS_PATH               = '___test-screenshots___';
+const THUMBNAILS_DIR_NAME            = 'thumbnails';
+const ERRORS_DIR_NAME                = 'errors';
+const TASK_DIR_RE                    = /\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}/;
+const SCREENSHOT_FILE_NAME_RE        = /\\\d+.png$/;
+const CUSTOM_SCREENSHOT_FILE_NAME_RE = /\.png$/;
+const TEST_DIR_NAME_RE               = /test-\d+/;
 
 
-function getScreenshotFilesCount (dir) {
+function getScreenshotFilesCount (dir, customPath) {
     var results          = 0;
     var list             = fs.readdirSync(dir);
-    var screenshotRegExp = new RegExp('\\.png$');
+    var screenshotRegExp = customPath ? CUSTOM_SCREENSHOT_FILE_NAME_RE : SCREENSHOT_FILE_NAME_RE;
     var stat             = null;
+    var filePath         = null;
 
     list.forEach(function (file) {
-        file = dir + '/' + file;
-        stat = fs.statSync(file);
+        filePath = dir + '\\' + file;
+        stat     = fs.statSync(filePath);
 
-        if (stat && stat.isDirectory())
-            results += getScreenshotFilesCount(file);
-        else if (screenshotRegExp.test(file))
+        if (stat && stat.isDirectory() && file === THUMBNAILS_DIR_NAME)
+            results += getScreenshotFilesCount(filePath, customPath);
+        else if (screenshotRegExp.test(filePath))
             results++;
     });
     return results;
@@ -39,6 +46,25 @@ function isDirExists (folderPath) {
     return exists;
 }
 
+function checkTestDir (testDirPath, forError, expectedSubDirCount, expectedScreenshotCount) {
+    var subDirs = fs
+        .readdirSync(testDirPath)
+        .filter(function (file) {
+            return isDirExists(path.join(testDirPath, file));
+        });
+
+    if (subDirs.length !== expectedSubDirCount)
+        return false;
+
+    var dirPath = null;
+
+    return subDirs.every(function (dir) {
+        dirPath = forError ? path.join(testDirPath, dir, ERRORS_DIR_NAME) : path.join(testDirPath, dir);
+
+        return getScreenshotFilesCount(dirPath) === expectedScreenshotCount;
+    });
+}
+
 exports.errorInEachBrowserContains = function errorInEachBrowserContains (testErrors, message, errorIndex) {
     if (testErrors instanceof Error)
         throw testErrors;
@@ -51,6 +77,22 @@ exports.errorInEachBrowserContains = function errorInEachBrowserContains (testEr
     else {
         Object.keys(testErrors).forEach(function (key) {
             expect(testErrors[key][errorIndex]).contains(message);
+        });
+    }
+};
+
+exports.errorInEachBrowserContainsRegExp = function errorInEachBrowserContains (testErrors, messageRE, errorIndex) {
+    if (testErrors instanceof Error)
+        throw testErrors;
+
+    // NOTE: if errors are the same in different browsers
+    if (Array.isArray(testErrors))
+        expect(messageRE.test(testErrors[errorIndex])).equals(true);
+
+    //NOTE: if they are different
+    else {
+        Object.keys(testErrors).forEach(function (key) {
+            expect(messageRE.test(testErrors[key][errorIndex])).equals(true);
         });
     }
 };
@@ -75,38 +117,47 @@ exports.isScreenshotDirExists = function () {
     return isDirExists(SCREENSHOTS_PATH);
 };
 
-exports.checkScreenshotsCreated = function checkScreenshotsCreated (count, customPath) {
-    var browserCount            = config.browsers.length;
-    var expectedSubDirCount     = customPath ? 1 : browserCount;
+exports.checkScreenshotsCreated = function checkScreenshotsCreated (forError, count, customPath, testDirCount) {
+    var expectedSubDirCount     = config.browsers.length;
     var expectedScreenshotCount = count || 2;
 
     if (!isDirExists(SCREENSHOTS_PATH))
         return false;
 
-    var fixtureDirs = fs.readdirSync(SCREENSHOTS_PATH);
+    var taskDirs = fs.readdirSync(SCREENSHOTS_PATH);
 
-    if (!fixtureDirs || !fixtureDirs[0])
+    if (!taskDirs || !taskDirs[0] || taskDirs.length !== 1)
         return false;
 
-    var fixtureDirPath = path.join(SCREENSHOTS_PATH, fixtureDirs[0]);
-    var subDirs        = fs
-        .readdirSync(fixtureDirPath)
-        .filter(function (file) {
-            return isDirExists(path.join(fixtureDirPath, file));
-        });
+    var taskDirPath = path.join(SCREENSHOTS_PATH, taskDirs[0]);
 
-    var customDirExists = customPath ? fixtureDirPath.indexOf(customPath) !== -1 : true;
-    var hasScreenshots  = true;
+    if (customPath) {
+        var customDirExists = taskDirPath.indexOf(customPath) !== -1;
+        var hasScreenshots  = getScreenshotFilesCount(taskDirPath, customPath) ===
+                              expectedScreenshotCount * expectedSubDirCount;
 
-    if (customPath)
-        hasScreenshots = getScreenshotFilesCount(fixtureDirPath) === expectedScreenshotCount * browserCount;
-    else {
-        hasScreenshots = subDirs.every(function (dir) {
-            return getScreenshotFilesCount(path.join(fixtureDirPath, dir)) === expectedScreenshotCount;
-        });
+        return customDirExists && hasScreenshots;
     }
 
-    return customDirExists && fixtureDirs.length === 1 && subDirs.length === expectedSubDirCount && hasScreenshots;
+    if (!TASK_DIR_RE.test(taskDirs[0]))
+        return false;
+
+    var testDirs = fs.readdirSync(taskDirPath);
+
+    testDirCount = testDirCount || 1;
+
+    if (!testDirs || !testDirs.length || testDirs.length !== testDirCount)
+        return false;
+
+    var testDirPath = null;
+
+    return testDirs.every(function (testDir) {
+        if (!TEST_DIR_NAME_RE.test(testDir))
+            return false;
+
+        testDirPath = path.join(taskDirPath, testDir);
+        return checkTestDir(testDirPath, forError, expectedSubDirCount, expectedScreenshotCount);
+    });
 };
 
 exports.removeScreenshotDir = function () {
