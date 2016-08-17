@@ -21,8 +21,8 @@
   - folder: Common Concepts
     url: /testcafe/documentation/using-testcafe/common-concepts/
     content:
-    - item: Browser Aliases
-      url: /testcafe/documentation/using-testcafe/common-concepts/browser-aliases.html
+    - item: Browser Support
+      url: /testcafe/documentation/using-testcafe/common-concepts/browser-support.html
     - item: Reporters
       url: /testcafe/documentation/using-testcafe/common-concepts/reporters.html
 - folder: TEST API
@@ -88,14 +88,17 @@
       url: /testcafe/documentation/extending-testcafe/custom-reporter-plugin/reporter-methods.html
     - item: Helpers
       url: /testcafe/documentation/extending-testcafe/custom-reporter-plugin/helpers.html
-# - item: Browser Provider Plugins
-#   url: .
-# - item: Selector Extensions
-#   url: .
-# - folder: RECIPES
-#   url: .
-#   content:
-#   - item: Recipe No. 1
-#     url: .
-#   - item: Recipe No. 2
-#     url: .
+  - folder: Custom Browser Provider Plugin
+    url: /testcafe/documentation/extending-testcafe/custom-browser-provider-plugin/
+    content:
+    - item: Browser Provider Methods
+      url: /testcafe/documentation/extending-testcafe/custom-browser-provider-plugin/browser-provider-methods.html
+#  - item: Selector Extensions
+#    url: .
+#- folder: RECIPES
+#  url: .
+#  content:
+#  - item: Recipe No. 1
+#    url: .
+#  - item: Recipe No. 2
+#    url: .

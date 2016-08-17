@@ -6,7 +6,7 @@ checked: false
 ---
 # Reporter Methods
 
-To create your [custom reporter](index.md#implementing-the-reporter), you need to implement the following reporter methods.
+To create a [custom reporter](index.md#implementing-the-reporter), you need to implement the following methods.
 
 > You can use [helper methods and libraries](helpers.md) within the reporter methods to output required data.
 

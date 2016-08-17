@@ -13,6 +13,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
 * [Browser List](#browser-list)
   * [Local Browsers](#local-browsers)
   * [Remote Browsers](#remote-browsers)
+  * [Browser Providers](#browser-providers)
 * [File Path/Glob Pattern](#file-pathglob-pattern)
 * [Options](#options)
   * [-h, --help](#-h---help)
@@ -44,14 +45,14 @@ The `browser-list-comma-separated` argument specifies the list of browsers (sepa
 
 ### Local Browsers
 
-You can specify local browsers by using paths or [aliases](common-concepts/browser-aliases.md).
-The list of all the available aliases can be obtained by calling the [--list-browsers](#-b---list-browsers) command.
+You can specify local browsers by using paths (with the `path:` prefix) or browser names (see [Directly Supported Browsers](common-concepts/browser-support.md#directly-supported-browsers)).
+The list of all the available browsers can be obtained by calling the [--list-browsers](#-b---list-browsers) command.
 
 The following example demonstrates how to run a test in several browsers.
-The browsers are specified differently: one by using an alias, the other by using a path.
+The browsers are specified differently: one by using a name, the other by using a path.
 
 ```sh
-testcafe chrome,/applications/safari.app tests/sample-fixture.js
+testcafe chrome,path:/applications/safari.app tests/sample-fixture.js
 ```
 
 To run tests against **all installed browsers**, use the `all` alias.
@@ -68,11 +69,10 @@ To run tests in a remote browser, specify `remote` as a browser alias.
 testcafe remote tests/sample-fixture.js
 ```
 
-If you want to connect multiple browsers,
-prefix the alias with the number of browsers you want to connect. For example, if you need to use three remote browsers, specify *3remote*.
+If you want to connect multiple browsers, specify `remote:` and the number of browsers. For example, if you need to use three remote browsers, specify `remote:3`.
 
 ```sh
-testcafe 3remote tests/sample-fixture.js
+testcafe remote:3 tests/sample-fixture.js
 ```
 
 TestCafe will provide URLs to open in required browsers on your remote device.
@@ -80,6 +80,15 @@ TestCafe will provide URLs to open in required browsers on your remote device.
 You can also use the [--qr-code](#--qr-code) option to display QR-codes that represent the same URLs.
 Scan the QR-codes by using the device on which you are going to test your application.
 As a result, the browsers will be connected to TestCafe and tests will start.
+
+### Browser Providers
+
+To run tests in a browser accessed through a [browser provider plugin](../using-testcafe/common-concepts/browser-support.md#browser-provider-plugins),
+specify a browser alias that consists of two parts - the `{browser-provider-name}` prefix and the name of a browser itself; for example, `saucelabs:chrome@51`.
+
+```sh
+testcafe saucelabs:chrome@51 tests/sample-fixture.js
+```
 
 ## File Path/Glob Pattern
 
@@ -91,7 +100,7 @@ For example, this command runs all tests located in the `my-tests` directory.
 testcafe ie my-tests
 ```
 
-The following command runs tests from specified fixture files.
+The following command runs tests from the specified fixture files.
 
 ```sh
 testcafe ie my-tests/fixture1.js my-tests/fixture2.js
@@ -126,7 +135,7 @@ testcafe --version
 
 ### -b, --list-browsers
 
-Lists [aliases](common-concepts/browser-aliases.md) of the browsers available on your computer.
+Lists short names of the browsers available on your computer. See [Directly Supported Browsers](common-concepts/browser-support.md#directly-supported-browsers).
 
 ```sh
 testcafe --list-browsers
@@ -142,7 +151,7 @@ The following command runs tests in all available browsers and generates a repor
 testcafe all tests/sample-fixture.js -r xunit
 ```
 
-The following command runs tests and generates a test report by using the custom plugin reporter.
+The following command runs tests and generates a test report by using the custom reporter plugin.
 
 ```sh
 testcafe all tests/sample-fixture.js -r my-reporter

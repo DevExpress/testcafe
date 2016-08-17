@@ -26,32 +26,13 @@ For more information about the reporters, see the following sections.
 
 ## Searching for Reporter Plugins
 
-Reporter plugins are npm packages. The reporter package name consists of two parts - the `{testcafe-reporter-}` prefix and the name of a reporter itself; for example, `{testcafe-reporter-list}`.
+Reporter plugins are npm packages. The reporter package name consists of two parts - the `testcafe-reporter-` prefix and the name of a reporter itself; for example, `testcafe-reporter-list`.
 
 You can search for available reporter packages on npm: [https://www.npmjs.com/search?q=testcafe-reporter](https://www.npmjs.com/search?q=testcafe-reporter).
 
 ## Installing the Reporters
 
-You can install reporter packages from npm in two ways:
-
-* **locally** - if you are going to use reporters within TestCafe installed locally.
-
-    Navigate to your project directory and run `npm install --save-dev testcafe-reporter-{reporterName}`.
-    Note that the reporter package name must follow the `testcafe-reporter-{reporterName}` pattern.
-
-    The following example demonstrates how you can install the list reporter package.
-
-    ```bash
-    npm install --save-dev testcafe-reporter-list
-    ```
-
-* **globally** - if the TestCafe module is installed globally or you are going to use reporters within other projects as well.
-
-    Run the `npm install` command with the `-g` flag.
-
-    ```bash
-    npm install -g testcafe-reporter-list
-    ```
+You can install reporter packages from npm as you would install any other plugin. See [Installing Plugins](../../extending-testcafe/index.md#installing-plugins).
 
 ## Using the Reporters
 

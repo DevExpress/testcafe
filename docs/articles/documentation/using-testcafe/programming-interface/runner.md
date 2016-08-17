@@ -29,6 +29,7 @@ console.log('Tests failed: ' + failed);
 * [src](#src)
 * [filter](#filter)
 * [browsers](#browsers)
+    * [Using browser names](#using-browser-names)
     * [Using browser aliases](#using-browser-aliases)
     * [Specifying the path to the browser executable](#specifying-the-path-to-the-browser-executable)
     * [Specifying the path with command line parameters](#specifying-the-path-with-command-line-parameters)
@@ -105,19 +106,25 @@ browsers(browser) → this
 
 The `browser` parameter can be any of the following, or an `Array` of those.
 
-Type                                      | Description                                                                                                                                                           | Local/Remote
------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------
-String                                    | The browser's short name - *alias*. Find the list of aliases in the [Browser Aliases](../common-concepts/browser-aliases.md) topic.                                   | Local browser
-String                                    | The path to the browser executable.                                                                                                                                   | Local browser
-`{path: String, cmd: String}`             | The path to the browser executable (`path`) with command line parameters (`cmd`).                                                                                     | Local browser
-[BrowserConnection](browserconnection.md) | The remote browser connection.                                                                                                                                        | Remote browser
+Type                                                                                                 | Description                                                                                                                                                           | Browser Type
+---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------
+String                                                                                               | The browser name. For the full list of names, see [Directly Supported Browsers](../common-concepts/browser-support.md#directly-supported-browsers).             | Local browser
+String                                                                                               | The browser alias that consists of the browser provider name and the name of a browser itself.                                                                        | Browser accessed through a [browser provider plugin](../common-concepts/browser-support.md#browser-provider-plugins).                                                                 |
+`{path: String, cmd: String}`                                                                        | The path to the browser executable (`path`) with command line parameters (`cmd`). The `cmd` property is optional.                                                     | Local browser
+[BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | Remote browser
 
 You are free to mix different types of objects in one function call. The `browsers` function concatenates the settings when called several times.
+
+#### Using browser names
+
+```js
+runner.browsers(['safari', 'chrome']);
+```
 
 #### Using browser aliases
 
 ```js
-runner.browsers(['safari', 'chrome']);
+runner.browsers('saucelabs:chrome');
 ```
 
 #### Specifying the path to the browser executable

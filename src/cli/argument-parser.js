@@ -21,12 +21,14 @@ const REMOTE_ALIAS_RE          = /^remote(?::(\d*))?$/;
 const DEFAULT_TEST_LOOKUP_DIRS = OS.win ? ['test/', 'tests/'] : ['test/', 'tests/', 'Test/', 'Tests/'];
 
 const DESCRIPTION = dedent(`
-    In the browser list, you can use aliases (e.g. "ie9", "chrome", etc.) as well as paths to executables.
+    In the browser list, you can use browser names (e.g. "ie9", "chrome", etc.) as well as paths to executables.
 
     To run tests against all installed browsers, use the "all" alias.
 
-    To use a remote browser connection (e.g., to connect a mobile device), specify "remote" as the browser alias. 
+    To use a remote browser connection (e.g., to connect a mobile device), specify "remote" as the browser alias.
     If you need to connect multiple devices, add a colon and the number of browsers you want to connect (e.g., "remote:3").
+
+    To run tests in a browser accessed through a browser provider plugin, specify a browser alias that consists of two parts - the browser provider name prefix and the name of the browser itself; for example, "saucelabs:chrome@51".
 
     You can use one or more file paths or glob patterns to specify which tests to run.
 
