@@ -34,20 +34,20 @@ export default class PathBrowserProvider extends BrowserProviderBase {
         return openParameters;
     }
 
-    async openBrowser (id, alias, startPage) {
-        var openParameters = await browserNatives.getBrowserInfo(alias) || await this._handleJSON(alias);
+    async openBrowser (id, pageUrl, browserName) {
+        var openParameters = await browserNatives.getBrowserInfo(browserName) || await this._handleJSON(browserName);
 
         if (!openParameters)
             throw new Error('The specified browser name is not valid!');
 
-        await browserNatives.open(openParameters, startPage);
+        await browserNatives.open(openParameters, pageUrl);
 
         if (OS.win)
             await super.calculateResizeCorrections(id);
     }
 
-    async closeBrowser (id, pageInfo) {
-        await browserNatives.close(pageInfo.title);
+    async closeBrowser (id) {
+        await browserNatives.close(id);
     }
 
     async getBrowserList () {

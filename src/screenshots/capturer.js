@@ -72,12 +72,12 @@ export default class Capturer {
         return { pathForReport, screenshotPath };
     }
 
-    async _takeScreenshot (pageInfo, filePath) {
+    async _takeScreenshot (filePath, pageSize) {
         await ensureDir(dirname(filePath));
-        await this.provider.takeScreenshot(this.id, pageInfo, filePath);
+        await this.provider.takeScreenshot(this.id, filePath, pageSize);
     }
 
-    async captureAction ({ pageInfo, customPath }) {
+    async captureAction ({ pageSize, customPath }) {
         if (!this.enabled)
             return null;
 
@@ -86,7 +86,7 @@ export default class Capturer {
 
         this.testEntry.path = pathForReport;
 
-        await this._takeScreenshot(pageInfo, screenshotPath);
+        await this._takeScreenshot(screenshotPath, pageSize);
 
         this.testEntry.hasScreenshots = true;
 
@@ -95,14 +95,14 @@ export default class Capturer {
         return screenshotPath;
     }
 
-    async captureError ({ pageInfo, screenshotRequired }) {
+    async captureError ({ pageSize, screenshotRequired }) {
         if (!screenshotRequired || !this.enabled)
             return null;
 
         var fileName = this._getFileName(true);
         var { screenshotPath } = this._getSreenshotPath(joinPath('errors', fileName));
 
-        await this._takeScreenshot(pageInfo, screenshotPath);
+        await this._takeScreenshot(screenshotPath, pageSize);
 
         await generateThumbnail(screenshotPath);
 

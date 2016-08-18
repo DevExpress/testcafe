@@ -47,11 +47,11 @@ export default class BrowserProviderPluginHost {
     // API
     // Required
     // Browser control
-    async openBrowser (/* id, browserInfo, startPage */) {
+    async openBrowser (/* id, pageUrl, browserName */) {
         throw new Error('Not implemented!');
     }
 
-    async closeBrowser (/* id, pageInfo */) {
+    async closeBrowser (/* id */) {
         throw new Error('Not implemented!');
     }
 
@@ -77,11 +77,11 @@ export default class BrowserProviderPluginHost {
     }
 
     // Extra functions
-    async resizeWindow (/* id, pageInfo, width, height */) {
+    async resizeWindow (/* id, width, height, pageSize */) {
         this.reportWarning(WARNING_MESSAGE.resizeNotSupportedByBrowserProvider, this[name]);
     }
 
-    async takeScreenshot (/* id, pageInfo, screenshotPath */) {
+    async takeScreenshot (/* id, screenshotPath, pageSize */) {
         this.reportWarning(WARNING_MESSAGE.screenshotNotSupportedByBrowserProvider, this[name]);
     }
 }

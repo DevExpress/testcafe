@@ -33,9 +33,7 @@ export default function prepareBrowserManipulation (windowId) {
         .then(() => {
             var message = {
                 cmd:      MESSAGE.readyForBrowserManipulation,
-                pageInfo: {
-                    url:    window.location.toString(),
-                    title:  assignedTitle,
+                pageSize: {
                     width:  window.innerWidth,
                     height: window.innerHeight
                 }

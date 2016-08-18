@@ -12,9 +12,9 @@ export default class BrowserManipulationQueue {
         this.warningLog         = warningLog;
     }
 
-    async _resizeWindow (pageInfo, width, height) {
+    async _resizeWindow (width, height, pageSize) {
         try {
-            return await this.browserProvider.resizeWindow(this.windowId, pageInfo, width, height);
+            return await this.browserProvider.resizeWindow(this.windowId, width, height, pageSize);
         }
         catch (err) {
             this.warningLog.addWarning(WARNING_MESSAGE.resizeError, err.message);
@@ -22,12 +22,12 @@ export default class BrowserManipulationQueue {
         }
     }
 
-    async _resizeWindowToFitDevice (pageInfo, device, portrait) {
+    async _resizeWindowToFitDevice (device, portrait, pageSize) {
         var { landscapeWidth, portraitWidth } = getViewportSize(device);
         var width  = portrait ? portraitWidth : landscapeWidth;
         var height = portrait ? landscapeWidth : portraitWidth;
 
-        return await this._resizeWindow(pageInfo, width, height);
+        return await this._resizeWindow(width, height, pageSize);
     }
 
     async _takeScreenshot (capture) {
@@ -51,21 +51,21 @@ export default class BrowserManipulationQueue {
         switch (command.type) {
             case COMMAND_TYPE.takeScreenshot:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureAction({
-                    pageInfo:   driverMsg.pageInfo,
+                    pageSize:   driverMsg.pageSize,
                     customPath: command.path
                 }));
 
             case COMMAND_TYPE.takeScreenshotOnFail:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureError({
-                    pageInfo:           driverMsg.pageInfo,
+                    pageSize:           driverMsg.pageSize,
                     screenshotRequired: true
                 }));
 
             case COMMAND_TYPE.resizeWindow:
-                return await this._resizeWindow(driverMsg.pageInfo, command.width, command.height);
+                return await this._resizeWindow(command.width, command.height, driverMsg.pageSize);
 
             case COMMAND_TYPE.resizeWindowToFitDevice:
-                return await this._resizeWindowToFitDevice(driverMsg.pageInfo, command.device, command.options.portraitOrientation);
+                return await this._resizeWindowToFitDevice(command.device, command.options.portraitOrientation, driverMsg.pageSize);
         }
 
         return null;

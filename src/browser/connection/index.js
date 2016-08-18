@@ -69,7 +69,7 @@ export default class BrowserConnection extends EventEmitter {
         // NOTE: Give caller time to assign event listeners
         process.nextTick(async () => {
             try {
-                await this.provider.openBrowser(this.id, this.browserInfo.browserName, this.url);
+                await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName);
 
                 if (!this.ready)
                     await promisifyEvent(this, 'ready');
@@ -92,7 +92,7 @@ export default class BrowserConnection extends EventEmitter {
             await promisifyEvent(this, 'idle');
 
         try {
-            await this.provider.closeBrowser(this.id, { title: this.idleUrl, url: this.idleUrl });
+            await this.provider.closeBrowser(this.id);
         }
         catch (err) {
             // NOTE: A warning would be really nice here, but it can't be done while log is stored in a task.

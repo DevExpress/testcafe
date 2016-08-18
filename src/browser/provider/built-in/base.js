@@ -41,7 +41,7 @@ export default class BrowserProviderBase {
         this.resizeCorrections[id] = { width: newWidth - width, height: newHeight - height };
     }
 
-    async resizeWindow (id, pageInfo, width, height) {
+    async resizeWindow (id, width, height, pageSize) {
         // TODO: remove once https://github.com/DevExpress/testcafe-browser-natives/issues/12 implemented
         if (OS.linux) {
             this.reportWarning(id, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
@@ -55,16 +55,16 @@ export default class BrowserProviderBase {
             delete this.resizeCorrections[id];
         }
 
-        await browserNatives.resize(pageInfo.title, pageInfo.width, pageInfo.height, width, height);
+        await browserNatives.resize(id, pageSize.width, pageSize.height, width, height);
     }
 
-    async takeScreenshot (id, pageInfo, screenshotPath) {
+    async takeScreenshot (id, screenshotPath) {
         // TODO: remove once https://github.com/DevExpress/testcafe-browser-natives/issues/12 implemented
         if (OS.linux) {
             this.reportWarning(id, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
             return;
         }
 
-        await browserNatives.screenshot(pageInfo.title, screenshotPath);
+        await browserNatives.screenshot(id, screenshotPath);
     }
 }
