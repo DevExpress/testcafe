@@ -474,9 +474,9 @@ describe('Runner', function () {
         var taskActionCallback = null;
 
         var MockBrowserProvider = {
-            openBrowser: function (id, browserInfo, startPage) {
+            openBrowser: function (id, pageUrl) {
                 var options = {
-                    url:            startPage,
+                    url:            pageUrl,
                     followRedirect: false,
                     headers:        {
                         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
