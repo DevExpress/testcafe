@@ -27,7 +27,7 @@ const testCafe       = await createTestCafe('localhost', 1337, 1338);
 Creates a [remote browser connection](browserconnection.md).
 
 ```text
-createBrowserConnection() → BrowserConnection
+async createBrowserConnection() → Promise<BrowserConnection>
 ```
 
 To connect a remote browser, navigate it to [BrowserConnection.url](browserconnection.md#url).
@@ -38,7 +38,7 @@ To connect a remote browser, navigate it to [BrowserConnection.url](browserconne
 const createTestCafe   = require('testcafe');
 const testCafe         = await createTestCafe('localhost', 1337, 1338);
 
-const remoteConnection = testcafe.createBrowserConnection();
+const remoteConnection = await testcafe.createBrowserConnection();
 
 // Outputs remoteConnection.url to navigate the remote browser to it.
 console.log(remoteConnection.url);
@@ -79,5 +79,5 @@ console.log('Tests failed: ' + failed);
 Stops the TestCafe server. Forcibly closes all connections and pending test runs immediately.
 
 ```text
-close()
+async close()
 ```

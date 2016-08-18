@@ -8,7 +8,7 @@ permalink: /documentation/using-testcafe/programming-interface/createtestcafe.ht
 Creates a [TestCafe](testcafe.md) server instance.
 
 ```text
-createTestCafe([hostname], [port1], [port2]) → Promise<TestCafe>
+async createTestCafe([hostname], [port1], [port2]) → Promise<TestCafe>
 ```
 
 Parameter                     | Type   | Description                                                                                                                                                                                                  | Default

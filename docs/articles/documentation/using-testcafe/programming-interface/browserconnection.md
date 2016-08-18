@@ -15,7 +15,7 @@ Created by the [testCafe.createBrowserConnection](testcafe.md#createbrowserconne
 const createTestCafe   = require('testcafe');
 const testCafe         = await createTestCafe('localhost', 1337, 1338);
 
-const remoteConnection = testcafe.createBrowserConnection();
+const remoteConnection = await testcafe.createBrowserConnection();
 
 // Outputs remoteConnection.url to visit it from the remote browser.
 console.log(remoteConnection.url);

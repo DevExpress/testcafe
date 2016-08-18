@@ -20,7 +20,7 @@ the [remote browser connections](browserconnection.md)
 and the [test runner](runner.md).
 
 ```js
-const remoteConnection = testcafe.createBrowserConnection();
+const remoteConnection = await testcafe.createBrowserConnection();
 const runner           = testcafe.createRunner();
 ```
 
