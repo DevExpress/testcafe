@@ -43,28 +43,28 @@ export default class BrowserProviderBase {
 
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {
         // TODO: remove once https://github.com/DevExpress/testcafe-browser-natives/issues/12 implemented
-        if (OS.linux) {
-            this.reportWarning(id, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
+        if (OS.win) {
+            this.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
             return;
         }
 
-        if (this.resizeCorrections[id]) {
-            width -= this.resizeCorrections[id].width;
-            height -= this.resizeCorrections[id].height;
+        if (this.resizeCorrections[browserId]) {
+            width -= this.resizeCorrections[browserId].width;
+            height -= this.resizeCorrections[browserId].height;
 
-            delete this.resizeCorrections[id];
+            delete this.resizeCorrections[browserId];
         }
 
-        await browserNatives.resize(id, currentWidth, currentHeight, width, height);
+        await browserNatives.resize(browserId, currentWidth, currentHeight, width, height);
     }
 
     async takeScreenshot (browserId, screenshotPath) {
         // TODO: remove once https://github.com/DevExpress/testcafe-browser-natives/issues/12 implemented
         if (OS.linux) {
-            this.reportWarning(id, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
+            this.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
             return;
         }
 
-        await browserNatives.screenshot(id, screenshotPath);
+        await browserNatives.screenshot(browserId, screenshotPath);
     }
 }
