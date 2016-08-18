@@ -1,0 +1,53 @@
+{
+    "fixtures": [
+        {
+            "name": "Iframe switching",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/iframe-switching/pages/index.html",
+            "tests": [
+                {
+                    "name": "Click on element in a nested iframe",
+                    "commands": [
+                        {
+                            "type": "switch-to-iframe",
+                            "selector": "#iframe"
+                        },
+                        {
+                            "type": "switch-to-iframe",
+                            "selector": "#iframe"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#btn"
+                        },
+                        {
+                            "type": "switch-to-main-window"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#btn"
+                        },
+                        {
+                            "type": "switch-to-iframe",
+                            "selector": "#iframe"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#btn"
+                        },
+                        {
+                            "type": "switch-to-main-window"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#btn"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#result"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
