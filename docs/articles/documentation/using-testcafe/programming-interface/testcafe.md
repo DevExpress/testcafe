@@ -79,5 +79,5 @@ console.log('Tests failed: ' + failed);
 Stops the TestCafe server. Forcibly closes all connections and pending test runs immediately.
 
 ```text
-close()
+async close()
 ```
