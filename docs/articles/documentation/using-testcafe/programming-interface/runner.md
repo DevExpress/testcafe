@@ -233,7 +233,7 @@ You can also build your own reporter. Use a [dedicated Yeoman generator](https:/
 Runs tests according to the current configuration. Returns the number of failed tests.
 
 ```text
-async run(options) → Number
+async run(options) → Promise<Number>
 ```
 
 > Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.

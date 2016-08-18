@@ -27,7 +27,7 @@ const testCafe       = await createTestCafe('localhost', 1337, 1338);
 Creates a [remote browser connection](browserconnection.md).
 
 ```text
-async createBrowserConnection() → BrowserConnection
+async createBrowserConnection() → Promise<BrowserConnection>
 ```
 
 To connect a remote browser, navigate it to [BrowserConnection.url](browserconnection.md#url).
