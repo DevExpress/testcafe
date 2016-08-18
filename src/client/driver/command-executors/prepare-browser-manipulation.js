@@ -12,9 +12,9 @@ const APPLY_DOCUMENT_TITLE_TIMEOUT   = 500;
 const RESTORE_DOCUMENT_TITLE_TIMEOUT = 100;
 
 
-export default function prepareBrowserManipulation (windowId) {
+export default function prepareBrowserManipulation (browserId) {
     var savedDocumentTitle   = document.title;
-    var assignedTitle        = `[ ${windowId} ]`;
+    var assignedTitle        = `[ ${browserId} ]`;
     var checkTitleIntervalId = null;
     var result               = null;
 

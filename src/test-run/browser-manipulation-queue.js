@@ -6,7 +6,7 @@ import WARNING_MESSAGE from '../warnings/message';
 export default class BrowserManipulationQueue {
     constructor (browserConnection, screenshotCapturer, warningLog) {
         this.commands           = [];
-        this.windowId           = browserConnection.id;
+        this.browserId          = browserConnection.id;
         this.browserProvider    = browserConnection.provider;
         this.screenshotCapturer = screenshotCapturer;
         this.warningLog         = warningLog;
@@ -14,7 +14,7 @@ export default class BrowserManipulationQueue {
 
     async _resizeWindow (width, height, currentWidth, currentHeight) {
         try {
-            return await this.browserProvider.resizeWindow(this.windowId, width, height, currentWidth, currentHeight);
+            return await this.browserProvider.resizeWindow(this.browserId, width, height, currentWidth, currentHeight);
         }
         catch (err) {
             this.warningLog.addWarning(WARNING_MESSAGE.resizeError, err.message);

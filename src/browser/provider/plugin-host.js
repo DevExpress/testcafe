@@ -77,11 +77,11 @@ export default class BrowserProviderPluginHost {
     }
 
     // Extra functions
-    async resizeWindow (/* id, width, height, currentWidth, currentHeight */) {
+    async resizeWindow (/* browserId, width, height, currentWidth, currentHeight */) {
         this.reportWarning(WARNING_MESSAGE.resizeNotSupportedByBrowserProvider, this[name]);
     }
 
-    async takeScreenshot (/* id, screenshotPath, pageWidth, pageHeight */) {
+    async takeScreenshot (/* browserId, screenshotPath, pageWidth, pageHeight */) {
         this.reportWarning(WARNING_MESSAGE.screenshotNotSupportedByBrowserProvider, this[name]);
     }
 }

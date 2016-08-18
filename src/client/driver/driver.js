@@ -76,7 +76,7 @@ export default class Driver {
         this.EXECUTING_IN_IFRAME_FLAG = 'testcafe|driver|executing-in-iframe-flag';
 
         this.testRunId        = ids.testRun;
-        this.windowId         = ids.window;
+        this.browserId        = ids.browser;
         this.heartbeatUrl     = communicationUrls.heartbeat;
         this.browserStatusUrl = communicationUrls.status;
         this.userAgent        = runInfo.userAgent;
@@ -362,7 +362,7 @@ export default class Driver {
     _onPrepareBrowserManipulationCommand () {
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true);
 
-        prepareBrowserManipulation(this.windowId)
+        prepareBrowserManipulation(this.browserId)
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
                 return this._onReady(driverStatus);

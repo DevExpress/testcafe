@@ -26,21 +26,21 @@ export default class RemoteBrowserProvider extends BrowserProviderBase {
     }
 
     // NOTE: we must try to do a local screenshot or resize, if browser is accessible, but emit warning
-    async takeScreenshot (id, ...args) {
+    async takeScreenshot (browserId, ...args) {
         try {
-            await super.takeScreenshot(id, ...args);
+            await super.takeScreenshot(browserId, ...args);
         }
         catch (e) {
-            this.reportWarning(id, WARNING_MESSAGE.browserManipulationsOnRemoteBrowser);
+            this.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsOnRemoteBrowser);
         }
     }
 
-    async resizeWindow (id, ...args) {
+    async resizeWindow (browserId, ...args) {
         try {
-            await super.resizeWindow(id, ...args);
+            await super.resizeWindow(browserId, ...args);
         }
         catch (e) {
-            this.reportWarning(id, WARNING_MESSAGE.browserManipulationsOnRemoteBrowser);
+            this.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsOnRemoteBrowser);
         }
     }
 }

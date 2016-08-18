@@ -15,7 +15,7 @@ export default class Capturer {
         this.baseScreenshotsPath  = baseScreenshotsPath;
         this.testEntry            = testEntry;
         this.provider             = connection.provider;
-        this.id                   = connection.id;
+        this.browserId            = connection.id;
         this.baseDirName          = namingOptions.baseDirName;
         this.userAgentName        = namingOptions.userAgentName;
         this.testDirName          = Capturer._getTestDirName(namingOptions.testIndex, namingOptions.quarantineAttemptNum);
@@ -74,7 +74,7 @@ export default class Capturer {
 
     async _takeScreenshot (filePath, pageWidth, pageHeight) {
         await ensureDir(dirname(filePath));
-        await this.provider.takeScreenshot(this.id, filePath, pageWidth, pageHeight);
+        await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight);
     }
 
     async captureAction ({ customPath, pageWidth, pageHeight }) {
