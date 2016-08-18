@@ -1,6 +1,6 @@
 import { join as joinPath, dirname } from 'path';
 import promisify from '../utils/promisify';
-import sanitize from 'sanitize-filename';
+import sanitizeFilename from 'sanitize-filename';
 import mkdirp from 'mkdirp';
 import { generateThumbnail } from 'testcafe-browser-natives';
 
@@ -16,9 +16,9 @@ export default class Capturer {
         this.testEntry            = testEntry;
         this.provider             = connection.provider;
         this.id                   = connection.id;
-        this.startDate            = namingOptions.startDate;
+        this.baseDirName          = namingOptions.baseDirName;
         this.userAgentName        = namingOptions.userAgentName;
-        this.testDirName          = Capturer._getTestDirName(namingOptions.testIndex, namingOptions.quarantineAttempt);
+        this.testDirName          = Capturer._getTestDirName(namingOptions.testIndex, namingOptions.quarantineAttemptNum);
         this.screenshotIndex      = 1;
         this.errorScreenshotIndex = 1;
         this.pathCustomized       = false;
@@ -27,14 +27,14 @@ export default class Capturer {
     static _correctFilePath (path) {
         var correctedPath = path
             .split('/')
-            .map(str => sanitize(str))
+            .map(str => sanitizeFilename(str))
             .join('/');
 
         return PNG_EXTENSION_RE.test(correctedPath) ? correctedPath : `${correctedPath}.png`;
     }
 
-    static _getTestDirName (testIndex, quarantineAttempt) {
-        var quarantineAttemptPostfix = quarantineAttempt > 0 ? `-${quarantineAttempt}` : ``;
+    static _getTestDirName (testIndex, quarantineAttemptNum) {
+        var quarantineAttemptPostfix = quarantineAttemptNum > 0 ? `-${quarantineAttemptNum}` : ``;
 
         return `test-${testIndex}${quarantineAttemptPostfix}`;
     }
@@ -59,7 +59,7 @@ export default class Capturer {
             screenshotPath      = joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(customPath));
         }
         else {
-            var path = joinPath(this.baseScreenshotsPath, this.startDate, this.testDirName);
+            var path = joinPath(this.baseScreenshotsPath, this.baseDirName, this.testDirName);
 
             // NOTE: if test contains takeScreenshot action with custom path
             // we should specify the most common screenshot folder in report
