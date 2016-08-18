@@ -11,10 +11,10 @@ export default class RemoteBrowserProvider extends BrowserProviderBase {
         this.disableResizeHack = false;
     }
 
-    async openBrowser (id) {
+    async openBrowser (browserId) {
         try {
             if (OS.win && !this.disableResizeHack)
-                await super.calculateResizeCorrections(id);
+                await super.calculateResizeCorrections(browserId);
         }
         catch (e) {
             return;

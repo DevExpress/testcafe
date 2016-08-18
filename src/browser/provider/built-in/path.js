@@ -34,7 +34,7 @@ export default class PathBrowserProvider extends BrowserProviderBase {
         return openParameters;
     }
 
-    async openBrowser (id, pageUrl, browserName) {
+    async openBrowser (browserId, pageUrl, browserName) {
         var openParameters = await browserNatives.getBrowserInfo(browserName) || await this._handleJSON(browserName);
 
         if (!openParameters)
@@ -43,11 +43,11 @@ export default class PathBrowserProvider extends BrowserProviderBase {
         await browserNatives.open(openParameters, pageUrl);
 
         if (OS.win)
-            await super.calculateResizeCorrections(id);
+            await super.calculateResizeCorrections(browserId);
     }
 
-    async closeBrowser (id) {
-        await browserNatives.close(id);
+    async closeBrowser (browserId) {
+        await browserNatives.close(browserId);
     }
 
     async getBrowserList () {

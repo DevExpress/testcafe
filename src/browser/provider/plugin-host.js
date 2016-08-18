@@ -47,11 +47,11 @@ export default class BrowserProviderPluginHost {
     // API
     // Required
     // Browser control
-    async openBrowser (/* id, pageUrl, browserName */) {
+    async openBrowser (/* browserId, pageUrl, browserName */) {
         throw new Error('Not implemented!');
     }
 
-    async closeBrowser (/* id */) {
+    async closeBrowser (/* browserId */) {
         throw new Error('Not implemented!');
     }
 

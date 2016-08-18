@@ -474,7 +474,7 @@ describe('Runner', function () {
         var taskActionCallback = null;
 
         var MockBrowserProvider = {
-            openBrowser: function (id, pageUrl) {
+            openBrowser: function (browserId, pageUrl) {
                 var options = {
                     url:            pageUrl,
                     followRedirect: false,
