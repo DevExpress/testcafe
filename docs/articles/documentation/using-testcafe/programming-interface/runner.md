@@ -141,7 +141,7 @@ runner.browsers({
 const createTestCafe   = require('testcafe');
 const testCafe         = await createTestCafe('localhost', 1337, 1338);
 
-const remoteConnection = testcafe.createBrowserConnection();
+const remoteConnection = await testcafe.createBrowserConnection();
 
 // Outputs remoteConnection.url to visit it from the remote browser.
 console.log(remoteConnection.url);
@@ -233,7 +233,7 @@ You can also build your own reporter. Use a [dedicated Yeoman generator](https:/
 Runs tests according to the current configuration. Returns the number of failed tests.
 
 ```text
-run(options) → Promise<Number>
+async run(options) → Number
 ```
 
 > Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
