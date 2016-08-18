@@ -12,9 +12,9 @@ export default class BrowserManipulationQueue {
         this.warningLog         = warningLog;
     }
 
-    async _resizeWindow (width, height, pageSize) {
+    async _resizeWindow (width, height, currentWidth, currentHeight) {
         try {
-            return await this.browserProvider.resizeWindow(this.windowId, width, height, pageSize);
+            return await this.browserProvider.resizeWindow(this.windowId, width, height, currentWidth, currentHeight);
         }
         catch (err) {
             this.warningLog.addWarning(WARNING_MESSAGE.resizeError, err.message);
@@ -22,12 +22,12 @@ export default class BrowserManipulationQueue {
         }
     }
 
-    async _resizeWindowToFitDevice (device, portrait, pageSize) {
+    async _resizeWindowToFitDevice (device, portrait, currentWidth, currentHeight) {
         var { landscapeWidth, portraitWidth } = getViewportSize(device);
         var width  = portrait ? portraitWidth : landscapeWidth;
         var height = portrait ? landscapeWidth : portraitWidth;
 
-        return await this._resizeWindow(width, height, pageSize);
+        return await this._resizeWindow(width, height, currentWidth, currentHeight);
     }
 
     async _takeScreenshot (capture) {
@@ -51,21 +51,23 @@ export default class BrowserManipulationQueue {
         switch (command.type) {
             case COMMAND_TYPE.takeScreenshot:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureAction({
-                    pageSize:   driverMsg.pageSize,
-                    customPath: command.path
+                    customPath: command.path,
+                    pageWidth:  driverMsg.innerWidth,
+                    pageHeight: driverMsg.innerHeight
                 }));
 
             case COMMAND_TYPE.takeScreenshotOnFail:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureError({
-                    pageSize:           driverMsg.pageSize,
-                    screenshotRequired: true
+                    screenshotRequired: true,
+                    pageWidth:          driverMsg.innerWidth,
+                    pageHeight:         driverMsg.innerHeight
                 }));
 
             case COMMAND_TYPE.resizeWindow:
-                return await this._resizeWindow(command.width, command.height, driverMsg.pageSize);
+                return await this._resizeWindow(command.width, command.height, driverMsg.innerWidth, driverMsg.innerHeight);
 
             case COMMAND_TYPE.resizeWindowToFitDevice:
-                return await this._resizeWindowToFitDevice(command.device, command.options.portraitOrientation, driverMsg.pageSize);
+                return await this._resizeWindowToFitDevice(command.device, command.options.portraitOrientation, driverMsg.innerWidth, driverMsg.innerHeight);
         }
 
         return null;

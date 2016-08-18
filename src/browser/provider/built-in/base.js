@@ -41,7 +41,7 @@ export default class BrowserProviderBase {
         this.resizeCorrections[id] = { width: newWidth - width, height: newHeight - height };
     }
 
-    async resizeWindow (id, width, height, pageSize) {
+    async resizeWindow (id, width, height, currentWidth, currentHeight) {
         // TODO: remove once https://github.com/DevExpress/testcafe-browser-natives/issues/12 implemented
         if (OS.linux) {
             this.reportWarning(id, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
@@ -55,7 +55,7 @@ export default class BrowserProviderBase {
             delete this.resizeCorrections[id];
         }
 
-        await browserNatives.resize(id, pageSize.width, pageSize.height, width, height);
+        await browserNatives.resize(id, currentWidth, currentHeight, width, height);
     }
 
     async takeScreenshot (id, screenshotPath) {

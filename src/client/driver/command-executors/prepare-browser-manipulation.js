@@ -32,11 +32,9 @@ export default function prepareBrowserManipulation (windowId) {
     return delay(APPLY_DOCUMENT_TITLE_TIMEOUT)
         .then(() => {
             var message = {
-                cmd:      MESSAGE.readyForBrowserManipulation,
-                pageSize: {
-                    width:  window.innerWidth,
-                    height: window.innerHeight
-                }
+                cmd:         MESSAGE.readyForBrowserManipulation,
+                innerWidth:  window.innerWidth,
+                innerHeight: window.innerHeight
             };
 
             return transport.queuedAsyncServiceMsg(message);
