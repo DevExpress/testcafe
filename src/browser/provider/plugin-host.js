@@ -17,14 +17,14 @@ export default class BrowserProviderPluginHost {
 
 
     // Helpers
-    runInitScript (id, code) {
-        var connection = BrowserConnection.getById(id);
+    runInitScript (browserId, code) {
+        var connection = BrowserConnection.getById(browserId);
 
         return connection.runInitScript(`(${code})()`);
     }
 
-    waitForConnectionReady (id) {
-        var connection = BrowserConnection.getById(id);
+    waitForConnectionReady (browserId) {
+        var connection = BrowserConnection.getById(browserId);
 
         if (connection.ready)
             return Promise.resolve();
@@ -32,14 +32,14 @@ export default class BrowserProviderPluginHost {
         return promisifyEvent(connection, 'ready');
     }
 
-    reportWarning (id, ...args) {
-        var connection = BrowserConnection.getById(id);
+    reportWarning (browserId, ...args) {
+        var connection = BrowserConnection.getById(browserId);
 
         connection.addWarning(...args);
     }
 
-    setUserAgentMetaInfo (id, message) {
-        var connection = BrowserConnection.getById(id);
+    setUserAgentMetaInfo (browserId, message) {
+        var connection = BrowserConnection.getById(browserId);
 
         connection.setProviderMetaInfo(message);
     }

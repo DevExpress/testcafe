@@ -21,24 +21,24 @@ export default class BrowserProviderBase {
         this.resizeCorrections = {};
     }
 
-    async calculateResizeCorrections (id) {
-        await this.waitForConnectionReady(id);
+    async calculateResizeCorrections (browserId) {
+        await this.waitForConnectionReady(browserId);
 
-        var { width, height, title } = await this.runInitScript(id, INIT_SCRIPT);
+        var { width, height, title } = await this.runInitScript(browserId, INIT_SCRIPT);
 
         if (!await browserTools.isMaximized(title))
             return;
 
         await browserTools.resize(title, width, height, width, height);
 
-        var { width: newWidth, height: newHeight } = await this.runInitScript(id, INIT_SCRIPT);
+        var { width: newWidth, height: newHeight } = await this.runInitScript(browserId, INIT_SCRIPT);
 
         await browserTools.maximize(title);
 
         if (newWidth === width && newHeight === height)
             return;
 
-        this.resizeCorrections[id] = { width: newWidth - width, height: newHeight - height };
+        this.resizeCorrections[browserId] = { width: newWidth - width, height: newHeight - height };
     }
 
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {

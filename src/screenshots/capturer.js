@@ -86,7 +86,7 @@ export default class Capturer {
 
         this.testEntry.path = pathForReport;
 
-        await this._takeScreenshot(screenshotPath,  pageWidth, pageHeight);
+        await this._takeScreenshot(screenshotPath, pageWidth, pageHeight);
 
         this.testEntry.hasScreenshots = true;
 
