@@ -20,3 +20,7 @@ test('Screenshot on test code error', async () => {
 test('Screenshot on the assertion fail', async () => {
     expect(true).equals(false);
 });
+
+test('Test for quarantine mode', async t => {
+    await t.click('#notExist');
+});

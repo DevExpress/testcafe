@@ -11,7 +11,9 @@ const getUserAgent = ClientFunction(() => navigator.userAgent.toString());
 
 
 test('Take a screenshot', async t => {
-    await t.takeScreenshot();
+    await t
+        .takeScreenshot()
+        .takeScreenshot();
 });
 
 test('Take a screenshot with a custom path', async t => {
