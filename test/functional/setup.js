@@ -1,4 +1,4 @@
-var browserNatives     = require('testcafe-browser-natives');
+var browserTools       = require('testcafe-browser-tools');
 var SauceLabsConnector = require('saucelabs-connector');
 var Promise            = require('pinkie');
 var caller             = require('caller');
@@ -70,9 +70,9 @@ function openRemoteBrowsers () {
 
 function openLocalBrowsers () {
     var openBrowserPromises = browsersInfo.map(function (browserInfo) {
-        return browserNatives.getBrowserInfo(browserInfo.settings.alias)
+        return browserTools.getBrowserInfo(browserInfo.settings.alias)
             .then(function (browser) {
-                return browserNatives.open(browser, browserInfo.connection.url);
+                return browserTools.open(browser, browserInfo.connection.url);
             });
     });
 
@@ -92,7 +92,7 @@ function closeRemoteBrowsers () {
 
 function closeLocalBrowsers () {
     var closeBrowserPromises = browsersInfo.map(function (browserInfo) {
-        return browserNatives.close(browserInfo.connection.getStatus().url);
+        return browserTools.close(browserInfo.connection.getStatus().url);
     });
 
     return Promise.all(closeBrowserPromises);

@@ -1,4 +1,4 @@
-import browserNatives from 'testcafe-browser-natives';
+import browserTools from 'testcafe-browser-tools';
 import OS from 'os-family';
 import WARNING_MESSAGE from '../../../warnings/message';
 
@@ -26,14 +26,14 @@ export default class BrowserProviderBase {
 
         var { width, height, title } = await this.runInitScript(id, INIT_SCRIPT);
 
-        if (!await browserNatives.isMaximized(title))
+        if (!await browserTools.isMaximized(title))
             return;
 
-        await browserNatives.resize(title, width, height, width, height);
+        await browserTools.resize(title, width, height, width, height);
 
         var { width: newWidth, height: newHeight } = await this.runInitScript(id, INIT_SCRIPT);
 
-        await browserNatives.maximize(title);
+        await browserTools.maximize(title);
 
         if (newWidth === width && newHeight === height)
             return;
@@ -42,8 +42,8 @@ export default class BrowserProviderBase {
     }
 
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {
-        // TODO: remove once https://github.com/DevExpress/testcafe-browser-natives/issues/12 implemented
-        if (OS.win) {
+        // TODO: remove once https://github.com/DevExpress/testcafe-browser-tools/issues/12 implemented
+        if (OS.linux) {
             this.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
             return;
         }
@@ -55,16 +55,16 @@ export default class BrowserProviderBase {
             delete this.resizeCorrections[browserId];
         }
 
-        await browserNatives.resize(browserId, currentWidth, currentHeight, width, height);
+        await browserTools.resize(browserId, currentWidth, currentHeight, width, height);
     }
 
     async takeScreenshot (browserId, screenshotPath) {
-        // TODO: remove once https://github.com/DevExpress/testcafe-browser-natives/issues/12 implemented
+        // TODO: remove once https://github.com/DevExpress/testcafe-browser-tools/issues/12 implemented
         if (OS.linux) {
             this.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
             return;
         }
 
-        await browserNatives.screenshot(browserId, screenshotPath);
+        await browserTools.screenshot(browserId, screenshotPath);
     }
 }

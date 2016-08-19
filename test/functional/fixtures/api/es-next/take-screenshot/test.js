@@ -81,7 +81,7 @@ describe('[API] t.takeScreenshot()', function () {
 
                     expect(testReport.warnings).includes(
                         'The screenshot and window resize functionalities are not yet supported on Linux. ' +
-                        'Subscribe to the following issue to keep track: https://github.com/DevExpress/testcafe-browser-natives/issues/12'
+                        'Subscribe to the following issue to keep track: https://github.com/DevExpress/testcafe-browser-tools/issues/12'
                     );
                 });
         });
