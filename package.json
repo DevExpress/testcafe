@@ -59,8 +59,7 @@
     "testcafe-reporter-spec": "^2.0.0",
     "testcafe-reporter-xunit": "^2.0.0",
     "time-limit-promise": "^1.0.2",
-    "useragent": "^2.1.7",
-    "dateformat": "^1.0.12"
+    "useragent": "^2.1.7"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.0",
