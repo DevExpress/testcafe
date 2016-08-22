@@ -6,13 +6,13 @@ import chalk from 'chalk';
 // NOTE: To support piping, we use stderr as the log output
 // stream, while stdout is used for the report output.
 export default {
-    animation: null,
-    isTTY:     tty.isatty(1),
+    animation:  null,
+    isAnimated: tty.isatty(1) && !process.env.CI,
 
     showSpinner () {
-        // NOTE: we can use the spinner only if stderr is a TTY,
-        // otherwise we can't repaint animation frames
-        if (this.isTTY) {
+        // NOTE: we can use the spinner only if stderr is a TTY and we are not in CI environment (e.g. TravisCI),
+        // otherwise we can't repaint animation frames. Thanks https://github.com/sindresorhus/ora for insight.
+        if (this.isAnimated) {
             var spinnerFrame = elegantSpinner();
 
             this.animation = setInterval(() => {
