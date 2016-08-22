@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Iframe switching</title>
+</head>
+<body>
+<button id="btn">button</button>
+<button id="result">raise error</button>
+<iframe id="iframe" src="iframe.html" width="500px"></iframe>
+
+<script>
+    document.getElementById('btn').addEventListener('click', function () {
+        window.btnClickCount = (window.btnClickCount || 0) + 1;
+    });
+
+    document.getElementById('result').addEventListener('click', function () {
+        var resultText = 'top window button clicked: ' + window.btnClickCount + '; ' +
+                         'iframe button clicked: ' + window.iframeBtnClickCount + '; ' +
+                         'nested iframe button clicked: ' + window.nestedIframeBtnClickCount + ';';
+
+        throw new Error(resultText);
+    });
+</script>
+</body>
+</html>
