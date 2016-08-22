@@ -311,7 +311,7 @@ export class ActionElementIsNotFileInputError extends TestRunErrorBase {
 }
 
 // Iframe errors
-export class ActionElementNotIframe extends TestRunErrorBase {
+export class ActionElementNotIframeError extends TestRunErrorBase {
     constructor () {
         super(TYPE.actionElementNotIframeError);
     }
