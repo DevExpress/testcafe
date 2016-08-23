@@ -165,7 +165,7 @@ export default class ProgressPanel {
         if (success) {
             if (this.startTime && Date.now() - this.startTime < MIN_SHOWING_TIME) {
                 nativeMethods.setTimeout.call(window, () => {
-                    window.setTimeout(() => this._hidePanel(false), SHOWING_DELAY);
+                    nativeMethods.setTimeout.call(window, () => this._hidePanel(false), SHOWING_DELAY);
                 }, UPDATE_INTERVAL);
             }
             else
