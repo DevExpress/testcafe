@@ -91,7 +91,7 @@ export default class RequestBarrier extends EventEmitter {
 
                     var onRequestsFinished = () => {
                         if (this.watchdog)
-                            window.clearTimeout(this.watchdog);
+                            nativeMethods.clearTimeout.call(window, this.watchdog);
 
                         this._unbindHandlers();
                         resolve();

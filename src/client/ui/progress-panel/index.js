@@ -2,7 +2,8 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import ProgressBar from './progress-bar';
 
-var shadowUI = hammerhead.shadowUI;
+var shadowUI      = hammerhead.shadowUI;
+var nativeMethods = hammerhead.nativeMethods;
 
 var eventUtils = testCafeCore.eventUtils;
 var styleUtils = testCafeCore.styleUtils;
@@ -84,7 +85,7 @@ export default class ProgressPanel {
     }
 
     _stopAnimation () {
-        window.clearInterval(this.animationInterval);
+        nativeMethods.clearInterval.call(window, this.animationInterval);
     }
 
     _animate (el, duration, show, complete) {
@@ -101,7 +102,7 @@ export default class ProgressPanel {
 
         this._stopAnimation();
 
-        this.animationInterval = window.setInterval(() => {
+        this.animationInterval = nativeMethods.setInterval.call(window, () => {
             passedTime = Date.now() - startTime;
             progress   = Math.min(passedTime / duration, 1);
             delta      = 0.5 - Math.cos(progress * Math.PI) / 2;
@@ -137,13 +138,13 @@ export default class ProgressPanel {
         this.titleDiv.textContent = text;
         this._setSuccess(false);
 
-        this.openingTimeout = window.setTimeout(() => {
+        this.openingTimeout = nativeMethods.setTimeout.call(window, () => {
             this.openingTimeout = null;
 
             this._setCurrentProgress();
             this._showPanel();
 
-            this.updateInterval = window.setInterval(() => this._setCurrentProgress(), UPDATE_INTERVAL);
+            this.updateInterval = nativeMethods.setInterval.call(window, () => this._setCurrentProgress(), UPDATE_INTERVAL);
         }, OPENING_DELAY);
     }
 
@@ -152,23 +153,23 @@ export default class ProgressPanel {
             this._setSuccess(true);
 
         if (this.openingTimeout) {
-            window.clearTimeout(this.openingTimeout);
+            nativeMethods.clearTimeout.call(window, this.openingTimeout);
             this.openingTimeout = null;
         }
 
         if (this.updateInterval) {
-            window.clearInterval(this.updateInterval);
+            nativeMethods.clearInterval.call(window, this.updateInterval);
             this.updateInterval = null;
         }
 
         if (success) {
             if (this.startTime && Date.now() - this.startTime < MIN_SHOWING_TIME) {
-                window.setTimeout(() => {
+                nativeMethods.setTimeout.call(window, () => {
                     window.setTimeout(() => this._hidePanel(false), SHOWING_DELAY);
                 }, UPDATE_INTERVAL);
             }
             else
-                window.setTimeout(() => this._hidePanel(false), SHOWING_DELAY);
+                nativeMethods.setTimeout.call(window, () => this._hidePanel(false), SHOWING_DELAY);
         }
         else
             this._hidePanel(true);

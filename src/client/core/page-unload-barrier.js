@@ -69,7 +69,7 @@ function handleBeforeUnload () {
 
 function prolongUnloadWaiting (timeout) {
     if (waitingForUnloadTimeoutId)
-        window.clearTimeout(waitingForUnloadTimeoutId);
+        nativeMethods.clearTimeout.call(window, waitingForUnloadTimeoutId);
 
     waitingForUnloadTimeoutId = nativeMethods.setTimeout.call(window, () => {
         waitingForUnloadTimeoutId = null;
