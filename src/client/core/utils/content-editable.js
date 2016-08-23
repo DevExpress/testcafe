@@ -18,8 +18,8 @@ function getOwnFirstVisibleNode (el) {
 }
 
 function getOwnPreviousVisibleSibling (el) {
-    var sibling = null,
-        current = el;
+    var sibling = null;
+    var current = el;
 
     while (!sibling) {
         current = current.previousSibling;
@@ -46,8 +46,8 @@ function isElementWithChildren (node) {
 // this line breaks is not contained in node values
 //so we should take it into account manually
 function isNodeBlockWithBreakLine (parent, node) {
-    var parentFirstVisibleChild = null,
-        firstVisibleChild       = null;
+    var parentFirstVisibleChild = null;
+    var firstVisibleChild       = null;
 
     if (domUtils.isShadowUIElement(parent) || domUtils.isShadowUIElement(node))
         return false;
@@ -68,18 +68,18 @@ function isNodeBlockWithBreakLine (parent, node) {
 }
 
 function isNodeAfterNodeBlockWithBreakLine (parent, node) {
-    var isRenderedNode          = domUtils.isRenderedNode(node),
-        parentFirstVisibleChild = null,
-        firstVisibleChild       = null,
-        previousSibling         = null;
+    var isRenderedNode          = domUtils.isRenderedNode(node);
+    var parentFirstVisibleChild = null;
+    var firstVisibleChild       = null;
+    var previousSibling         = null;
 
     if (domUtils.isShadowUIElement(parent) || domUtils.isShadowUIElement(node))
         return false;
 
     if (!domUtils.isTheSameNode(node, parent) &&
-        ((isRenderedNode && domUtils.isElementNode(node) && node.childNodes.length &&
-          !/div|p/.test(domUtils.getTagName(node))) ||
-         (isVisibleTextNode(node) && !domUtils.isTheSameNode(node, parent) && node.nodeValue.length))) {
+        (isRenderedNode && domUtils.isElementNode(node) && node.childNodes.length &&
+         !/div|p/.test(domUtils.getTagName(node)) ||
+         isVisibleTextNode(node) && !domUtils.isTheSameNode(node, parent) && node.nodeValue.length)) {
 
         if (isRenderedNode && domUtils.isElementNode(node)) {
             parentFirstVisibleChild = getOwnFirstVisibleNode(parent);
@@ -94,8 +94,8 @@ function isNodeAfterNodeBlockWithBreakLine (parent, node) {
 
         previousSibling = getOwnPreviousVisibleSibling(node);
 
-        return (previousSibling && domUtils.isElementNode(previousSibling) &&
-                /div|p/.test(domUtils.getTagName(previousSibling)) && getOwnFirstVisibleTextNode(previousSibling));
+        return previousSibling && domUtils.isElementNode(previousSibling) &&
+               /div|p/.test(domUtils.getTagName(previousSibling)) && getOwnFirstVisibleTextNode(previousSibling);
     }
     return false;
 }
@@ -161,8 +161,8 @@ export function getFirstNonWhitespaceSymbolIndex (nodeValue, startFrom) {
     if (!nodeValue || !nodeValue.length)
         return 0;
 
-    var valueLength = nodeValue.length,
-        index       = startFrom || 0;
+    var valueLength = nodeValue.length;
+    var index       = startFrom || 0;
 
     for (var i = index; i < valueLength; i++) {
         if (nodeValue.charCodeAt(i) === 10 || nodeValue.charCodeAt(i) === 32)
@@ -177,8 +177,8 @@ export function getLastNonWhitespaceSymbolIndex (nodeValue) {
     if (!nodeValue || !nodeValue.length)
         return 0;
 
-    var valueLength = nodeValue.length,
-        index       = valueLength;
+    var valueLength = nodeValue.length;
+    var index       = valueLength;
 
     for (var i = valueLength - 1; i >= 0; i--) {
         if (nodeValue.charCodeAt(i) === 10 || nodeValue.charCodeAt(i) === 32)
@@ -193,9 +193,9 @@ export function isInvisibleTextNode (node) {
     if (!domUtils.isTextNode(node))
         return false;
 
-    var nodeValue         = node.nodeValue,
-        firstVisibleIndex = getFirstNonWhitespaceSymbolIndex(nodeValue),
-        lastVisibleIndex  = getLastNonWhitespaceSymbolIndex(nodeValue);
+    var nodeValue         = node.nodeValue;
+    var firstVisibleIndex = getFirstNonWhitespaceSymbolIndex(nodeValue);
+    var lastVisibleIndex  = getLastNonWhitespaceSymbolIndex(nodeValue);
 
     return firstVisibleIndex === nodeValue.length && lastVisibleIndex === 0;
 }
@@ -209,19 +209,20 @@ function isSkippableNode (node) {
 }
 
 //dom utils
-export function findContentEditableParent (el) {
-    var elParents = domUtils.getParents(el);
+function hasContentEditableAttr (el) {
+    var attrValue = el.getAttribute ? el.getAttribute('contenteditable') : null;
 
-    function hasContentEditableAttr (el) {
-        var attrValue = el.getAttribute ? el.getAttribute('contenteditable') : null;
+    return attrValue === '' || attrValue === 'true';
+}
 
-        return attrValue === '' || attrValue === 'true';
-    }
+export function findContentEditableParent (element) {
+    var elParents = domUtils.getParents(element);
 
-    if (hasContentEditableAttr(el) && domUtils.isContentEditableElement(el))
-        return el;
+    if (hasContentEditableAttr(element) && domUtils.isContentEditableElement(element))
+        return element;
 
-    var currentDocument = domUtils.findDocument(el);
+    var currentDocument = domUtils.findDocument(element);
+
     if (currentDocument.designMode === 'on')
         return currentDocument.body;
 
@@ -236,9 +237,9 @@ export function getNearestCommonAncestor (node1, node2) {
         return node1.parentNode;
     }
 
-    var ancestors             = [],
-        contentEditableParent = findContentEditableParent(node1),
-        curNode               = null;
+    var ancestors             = [];
+    var contentEditableParent = findContentEditableParent(node1);
+    var curNode               = null;
 
     if (!domUtils.isElementContainsNode(contentEditableParent, node2))
         return null;
@@ -256,10 +257,10 @@ export function getNearestCommonAncestor (node1, node2) {
 
 //selection utils
 function getSelectedPositionInParentByOffset (node, offset) {
-    var currentNode          = null,
-        currentOffset        = null,
-        childCount           = node.childNodes.length,
-        isSearchForLastChild = offset >= childCount;
+    var currentNode          = null;
+    var currentOffset        = null;
+    var childCount           = node.childNodes.length;
+    var isSearchForLastChild = offset >= childCount;
 
     // NOTE: we get a child element by its offset index in the parent
     if (domUtils.isShadowUIElement(node))
@@ -309,13 +310,13 @@ function getSelectedPositionInParentByOffset (node, offset) {
 }
 
 function getSelectionStart (el, selection, inverseSelection) {
-    var startNode              = inverseSelection ? selection.focusNode : selection.anchorNode,
-        startOffset            = inverseSelection ? selection.focusOffset : selection.anchorOffset,
+    var startNode   = inverseSelection ? selection.focusNode : selection.anchorNode;
+    var startOffset = inverseSelection ? selection.focusOffset : selection.anchorOffset;
 
-        correctedStartPosition = {
-            node:   startNode,
-            offset: startOffset
-        };
+    var correctedStartPosition = {
+        node:   startNode,
+        offset: startOffset
+    };
 
     //NOTE: window.getSelection() can't returns not rendered node like selected node, so we shouldn't check it
     if ((domUtils.isTheSameNode(el, startNode) || domUtils.isElementNode(startNode)) && hasChildren(startNode))
@@ -328,13 +329,13 @@ function getSelectionStart (el, selection, inverseSelection) {
 }
 
 function getSelectionEnd (el, selection, inverseSelection) {
-    var endNode              = inverseSelection ? selection.anchorNode : selection.focusNode,
-        endOffset            = inverseSelection ? selection.anchorOffset : selection.focusOffset,
+    var endNode   = inverseSelection ? selection.anchorNode : selection.focusNode;
+    var endOffset = inverseSelection ? selection.anchorOffset : selection.focusOffset;
 
-        correctedEndPosition = {
-            node:   endNode,
-            offset: endOffset
-        };
+    var correctedEndPosition = {
+        node:   endNode,
+        offset: endOffset
+    };
 
     //NOTE: window.getSelection() can't returns not rendered node like selected node, so we shouldn't check it
     if ((domUtils.isTheSameNode(el, endNode) || domUtils.isElementNode(endNode)) && hasChildren(endNode))
@@ -403,7 +404,9 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
                 point.offset--;
         }
 
-        arrayUtils.forEach(childNodes, node => point = checkChildNodes(node));
+        arrayUtils.forEach(childNodes, node => {
+            point = checkChildNodes(node);
+        });
 
         return point;
     }
@@ -412,8 +415,8 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
 }
 
 export function calculatePositionByNodeAndOffset (el, { node, offset }) {
-    var currentOffset = 0,
-        find          = false;
+    var currentOffset = 0;
+    var find          = false;
 
     function checkChildNodes (target) {
         var childNodes = target.childNodes;
@@ -445,7 +448,9 @@ export function calculatePositionByNodeAndOffset (el, { node, offset }) {
         else if (!find && (isNodeBlockWithBreakLine(el, target) || isNodeAfterNodeBlockWithBreakLine(el, target)))
             currentOffset++;
 
-        arrayUtils.forEach(childNodes, node => currentOffset = checkChildNodes(node));
+        arrayUtils.forEach(childNodes, currentNode => {
+            currentOffset = checkChildNodes(currentNode);
+        });
 
         return currentOffset;
     }
@@ -463,9 +468,9 @@ export function getElementBySelection (selection) {
 // so we should create a range and select all text contents of the node.
 // Then range object will contain information about node's the first and last visible symbol.
 export function getFirstVisiblePosition (el) {
-    var firstVisibleTextChild = domUtils.isTextNode(el) ? el : getFirstVisibleTextNode(el),
-        curDocument           = domUtils.findDocument(el),
-        range                 = curDocument.createRange();
+    var firstVisibleTextChild = domUtils.isTextNode(el) ? el : getFirstVisibleTextNode(el);
+    var curDocument           = domUtils.findDocument(el);
+    var range                 = curDocument.createRange();
 
     if (firstVisibleTextChild) {
         range.selectNodeContents(firstVisibleTextChild);
@@ -477,9 +482,9 @@ export function getFirstVisiblePosition (el) {
 }
 
 export function getLastVisiblePosition (el) {
-    var lastVisibleTextChild = domUtils.isTextNode(el) ? el : getLastTextNode(el, true),
-        curDocument          = domUtils.findDocument(el),
-        range                = curDocument.createRange();
+    var lastVisibleTextChild = domUtils.isTextNode(el) ? el : getLastTextNode(el, true);
+    var curDocument          = domUtils.findDocument(el);
+    var range                = curDocument.createRange();
 
     if (lastVisibleTextChild) {
         range.selectNodeContents(lastVisibleTextChild);
@@ -503,7 +508,9 @@ export function getContentEditableValue (target) {
     else if (childNodes.length === 1 && domUtils.isTextNode(childNodes[0]))
         return childNodes[0].nodeValue;
 
-    arrayUtils.forEach(childNodes, node => elementValue += getContentEditableValue(node));
+    arrayUtils.forEach(childNodes, node => {
+        elementValue += getContentEditableValue(node);
+    });
 
     return elementValue;
 }

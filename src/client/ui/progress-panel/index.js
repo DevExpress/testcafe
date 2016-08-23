@@ -65,7 +65,7 @@ export default class ProgressPanel {
         var elementHeight = ProgressPanel._getInvisibleElementProperty(element, 'offsetHeight');
         var elementWidth  = ProgressPanel._getInvisibleElementProperty(element, 'offsetWidth');
         var top           = Math.round(styleUtils.getHeight(window) / 2 - elementHeight / 2);
-        var left          = Math.round(styleUtils.getWidth(window) / 2 - (elementWidth / 2));
+        var left          = Math.round(styleUtils.getWidth(window) / 2 - elementWidth / 2);
 
         styleUtils.set(element, {
             left: left + 'px',

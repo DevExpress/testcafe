@@ -64,9 +64,10 @@ export function documentReady () {
 
 
         if (document.readyState === 'complete')
-            return nativeMethods.setTimeout.call(window, onContentLoaded, 1);
-
-        bind(document, 'DOMContentLoaded', onContentLoaded);
-        bind(window, 'load', ready);
+            nativeMethods.setTimeout.call(window, onContentLoaded, 1);
+        else {
+            bind(document, 'DOMContentLoaded', onContentLoaded);
+            bind(window, 'load', ready);
+        }
     });
 }

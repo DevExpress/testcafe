@@ -15,14 +15,13 @@ const FORWARD_SELECTION_DIRECTION  = 'forward';
 const NONE_SELECTION_DIRECTION     = 'none';
 
 
-var selectionDirection  = NONE_SELECTION_DIRECTION,
-
-    initialLeft         = 0,
-    initialTop          = 0,
-    lastSelectionHeight = 0,
-    lastSelectionLeft   = 0,
-    lastSelectionLength = 0,
-    lastSelectionTop    = 0;
+var selectionDirection  = NONE_SELECTION_DIRECTION;
+var initialLeft         = 0;
+var initialTop          = 0;
+var lastSelectionHeight = 0;
+var lastSelectionLeft   = 0;
+var lastSelectionLength = 0;
+var lastSelectionTop    = 0;
 
 function stateChanged (left, top, height, width, selectionLength) {
     if (!selectionLength) {
@@ -42,13 +41,11 @@ function stateChanged (left, top, height, width, selectionLength) {
 
             case FORWARD_SELECTION_DIRECTION:
                 if (left === lastSelectionLeft && top === lastSelectionTop ||
-                    (left < lastSelectionLeft && height > lastSelectionHeight) ||
-                    (top === lastSelectionTop && height === lastSelectionHeight &&
-                    selectionLength > lastSelectionLength) &&
-                    (left + width) !== initialLeft) {
-
+                    left < lastSelectionLeft && height > lastSelectionHeight ||
+                    top === lastSelectionTop && height === lastSelectionHeight &&
+                    selectionLength > lastSelectionLength &&
+                    left + width !== initialLeft)
                     break;
-                }
                 else if (left < lastSelectionLeft || top < lastSelectionTop)
                     selectionDirection = BACKWARD_SELECTION_DIRECTION;
 
@@ -71,11 +68,11 @@ function stateChanged (left, top, height, width, selectionLength) {
 }
 
 function onSelectionChange () {
-    var activeElement  = null,
-        endSelection   = null,
-        range          = null,
-        rect           = null,
-        startSelection = null;
+    var activeElement  = null;
+    var endSelection   = null;
+    var range          = null;
+    var rect           = null;
+    var startSelection = null;
 
     try {
         if (this.selection)
@@ -101,26 +98,29 @@ function onSelectionChange () {
             }
             else if (document.createRange) {
                 //NOTE: for MSEdge
-                range        = document.createRange();
+                range = document.createRange();
+
                 var textNode = activeElement.firstChild;
+
                 range.setStart(textNode, startSelection);
                 range.setEnd(textNode, endSelection);
-                rect         = range.getBoundingClientRect();
+                rect = range.getBoundingClientRect();
             }
         }
-    } catch (e) {
+    }
+    catch (e) {
         //NOTE: in ie it raises error when there are not a real selection
         selectionDirection = NONE_SELECTION_DIRECTION;
 
         return;
     }
 
-    var rangeLeft           = rect ? Math.ceil(rect.left) : range.offsetLeft,
-        rangeTop            = rect ? Math.ceil(rect.top) : range.offsetTop,
-        rangeHeight         = rect ? Math.ceil(rect.height) : range.boundingHeight,
-        rangeWidth          = rect ? Math.ceil(rect.width) : range.boundingWidth,
-        rangeHTMLTextLength = range.htmlText ? range.htmlText.length : 0,
-        rangeTextLength     = rect ? range.toString().length : rangeHTMLTextLength;
+    var rangeLeft           = rect ? Math.ceil(rect.left) : range.offsetLeft;
+    var rangeTop            = rect ? Math.ceil(rect.top) : range.offsetTop;
+    var rangeHeight         = rect ? Math.ceil(rect.height) : range.boundingHeight;
+    var rangeWidth          = rect ? Math.ceil(rect.width) : range.boundingWidth;
+    var rangeHTMLTextLength = range.htmlText ? range.htmlText.length : 0;
+    var rangeTextLength     = rect ? range.toString().length : rangeHTMLTextLength;
 
     stateChanged(rangeLeft, rangeTop, rangeHeight, rangeWidth, rangeTextLength);
 }
@@ -176,29 +176,29 @@ function selectContentEditable (el, from, to, needFocus) {
 }
 
 function correctContentEditableSelectionBeforeDelete (el) {
-    var selection                         = getSelectionByElement(el),
+    var selection = getSelectionByElement(el);
 
-        startNode                         = selection.anchorNode,
-        endNode                           = selection.focusNode,
+    var startNode = selection.anchorNode;
+    var endNode   = selection.focusNode;
 
-        startOffset                       = selection.anchorOffset,
-        endOffset                         = selection.focusOffset,
+    var startOffset = selection.anchorOffset;
+    var endOffset   = selection.focusOffset;
 
-        startNodeFirstNonWhitespaceSymbol = contentEditable.getFirstNonWhitespaceSymbolIndex(startNode.nodeValue),
-        startNodeLastNonWhitespaceSymbol  = contentEditable.getLastNonWhitespaceSymbolIndex(startNode.nodeValue),
+    var startNodeFirstNonWhitespaceSymbol = contentEditable.getFirstNonWhitespaceSymbolIndex(startNode.nodeValue);
+    var startNodeLastNonWhitespaceSymbol  = contentEditable.getLastNonWhitespaceSymbolIndex(startNode.nodeValue);
 
-        endNodeFirstNonWhitespaceSymbol   = contentEditable.getFirstNonWhitespaceSymbolIndex(endNode.nodeValue),
-        endNodeLastNonWhitespaceSymbol    = contentEditable.getLastNonWhitespaceSymbolIndex(endNode.nodeValue),
+    var endNodeFirstNonWhitespaceSymbol = contentEditable.getFirstNonWhitespaceSymbolIndex(endNode.nodeValue);
+    var endNodeLastNonWhitespaceSymbol  = contentEditable.getLastNonWhitespaceSymbolIndex(endNode.nodeValue);
 
-        newStartOffset                    = null,
-        newEndOffset                      = null;
+    var newStartOffset = null;
+    var newEndOffset   = null;
 
     if (domUtils.isTextNode(startNode)) {
         if (startOffset < startNodeFirstNonWhitespaceSymbol && startOffset !== 0)
             newStartOffset = 0;
         else if (startOffset !== startNode.nodeValue.length &&
-                 ((contentEditable.isInvisibleTextNode(startNode) && startOffset !== 0) ||
-                  (startOffset > startNodeLastNonWhitespaceSymbol)))
+                 (contentEditable.isInvisibleTextNode(startNode) && startOffset !== 0 ||
+                  startOffset > startNodeLastNonWhitespaceSymbol))
             newStartOffset = startNode.nodeValue.length;
     }
 
@@ -206,12 +206,12 @@ function correctContentEditableSelectionBeforeDelete (el) {
         if (endOffset < endNodeFirstNonWhitespaceSymbol && endOffset !== 0)
             newEndOffset = 0;
         else if (endOffset !== endNode.nodeValue.length &&
-                 ((contentEditable.isInvisibleTextNode(endNode) && endOffset !== 0) ||
-                  (endOffset > endNodeLastNonWhitespaceSymbol)))
+                 (contentEditable.isInvisibleTextNode(endNode) && endOffset !== 0 ||
+                  endOffset > endNodeLastNonWhitespaceSymbol))
             newEndOffset = endNode.nodeValue.length;
     }
 
-    if (browserUtils.isWebKit || (browserUtils.isIE && browserUtils.version > 11)) {
+    if (browserUtils.isWebKit || browserUtils.isIE && browserUtils.version > 11) {
         if (newStartOffset !== null) {
             if (newStartOffset === 0)
                 startNode.nodeValue = startNode.nodeValue.substring(startNodeFirstNonWhitespaceSymbol);
@@ -228,10 +228,15 @@ function correctContentEditableSelectionBeforeDelete (el) {
     }
 
     if (newStartOffset !== null || newEndOffset !== null) {
-        newStartOffset = newStartOffset !== null ? (newStartOffset ===
-                                                    0 ? newStartOffset : startNode.nodeValue.length) : startOffset;
-        newEndOffset   = newEndOffset !== null ? (newEndOffset ===
-                                                  0 ? newEndOffset : endNode.nodeValue.length) : endOffset;
+        if (newStartOffset !== null)
+            newStartOffset = newStartOffset === 0 ? newStartOffset : startNode.nodeValue.length;
+        else
+            newStartOffset = startOffset;
+
+        if (newEndOffset !== null)
+            newEndOffset = newEndOffset === 0 ? newEndOffset : endNode.nodeValue.length;
+        else
+            newEndOffset = endOffset;
 
         var startPos = { node: startNode, offset: newStartOffset };
         var endPos   = { node: endNode, offset: newEndOffset };
@@ -242,14 +247,14 @@ function correctContentEditableSelectionBeforeDelete (el) {
 
 //API
 export function hasInverseSelectionContentEditable (el) {
-    var curDocument = el ? domUtils.findDocument(el) : document,
-        selection   = curDocument.getSelection(),
-        range       = null,
-        backward    = false;
+    var curDocument = el ? domUtils.findDocument(el) : document;
+    var selection   = curDocument.getSelection();
+    var range       = null;
+    var backward    = false;
 
     if (selection) {
         if (!selection.isCollapsed) {
-            range    = curDocument.createRange();
+            range = curDocument.createRange();
             range.setStart(selection.anchorNode, selection.anchorOffset);
             range.setEnd(selection.focusNode, selection.focusOffset);
             backward = range.collapsed;
@@ -331,9 +336,10 @@ export function select (el, from, to) {
 
     selectionSandbox.setSelection(el, start, end, inverse ? BACKWARD_SELECTION_DIRECTION : FORWARD_SELECTION_DIRECTION);
 
-    selectionDirection = from === to ?
-                         NONE_SELECTION_DIRECTION :
-                         inverse ? BACKWARD_SELECTION_DIRECTION : FORWARD_SELECTION_DIRECTION;
+    if (from === to)
+        selectionDirection = NONE_SELECTION_DIRECTION;
+    else
+        selectionDirection = inverse ? BACKWARD_SELECTION_DIRECTION : FORWARD_SELECTION_DIRECTION;
 }
 
 export function selectByNodesAndOffsets (startPos, endPos, needFocus) {
@@ -375,7 +381,8 @@ export function selectByNodesAndOffsets (startPos, endPos, needFocus) {
             if (browserUtils.isWebKit && contentEditable.isInvisibleTextNode(endNode)) {
                 try {
                     selection.extend(endNode, Math.min(endOffset, 1));
-                } catch (err) {
+                }
+                catch (err) {
                     selection.extend(endNode, 0);
                 }
             }
@@ -387,20 +394,21 @@ export function selectByNodesAndOffsets (startPos, endPos, needFocus) {
     selectionSandbox.wrapSetterSelection(parentElement, selectionSetter, needFocus, true);
 }
 
+function deleteSelectionRanges (el) {
+    var selection  = getSelectionByElement(el);
+    var rangeCount = selection.rangeCount;
+
+    if (!rangeCount)
+        return;
+
+    for (var i = 0; i < rangeCount; i++)
+        selection.getRangeAt(i).deleteContents();
+}
+
 export function deleteSelectionContents (el, selectAll) {
-    var startSelection = getSelectionStart(el),
-        endSelection   = getSelectionEnd(el);
+    var startSelection = getSelectionStart(el);
+    var endSelection   = getSelectionEnd(el);
 
-    function deleteSelectionRanges (el) {
-        var selection  = getSelectionByElement(el),
-            rangeCount = selection.rangeCount;
-
-        if (!rangeCount)
-            return;
-
-        for (var i = 0; i < rangeCount; i++)
-            selection.getRangeAt(i).deleteContents();
-    }
 
     if (selectAll)
         selectContentEditable(el);
@@ -414,8 +422,8 @@ export function deleteSelectionContents (el, selectAll) {
 
     deleteSelectionRanges(el);
 
-    var selection = getSelectionByElement(el),
-        range     = null;
+    var selection = getSelectionByElement(el);
+    var range     = null;
 
     //NOTE: We should try to do selection collapsed
     if (selection.rangeCount && !selection.getRangeAt(0).collapsed) {

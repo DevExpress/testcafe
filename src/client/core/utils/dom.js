@@ -5,6 +5,47 @@ import * as arrayUtils from './array';
 
 var browserUtils = hammerhead.utils.browser;
 
+export var getActiveElement                       = hammerhead.utils.dom.getActiveElement;
+export var findDocument                           = hammerhead.utils.dom.findDocument;
+export var isElementInDocument                    = hammerhead.utils.dom.isElementInDocument;
+export var isElementInIframe                      = hammerhead.utils.dom.isElementInIframe;
+export var getIframeByElement                     = hammerhead.utils.dom.getIframeByElement;
+export var isCrossDomainWindows                   = hammerhead.utils.dom.isCrossDomainWindows;
+export var getSelectParent                        = hammerhead.utils.dom.getSelectParent;
+export var getChildVisibleIndex                   = hammerhead.utils.dom.getChildVisibleIndex;
+export var getSelectVisibleChildren               = hammerhead.utils.dom.getSelectVisibleChildren;
+export var isElementNode                          = hammerhead.utils.dom.isElementNode;
+export var isTextNode                             = hammerhead.utils.dom.isTextNode;
+export var isRenderedNode                         = hammerhead.utils.dom.isRenderedNode;
+export var isIframeElement                        = hammerhead.utils.dom.isIframeElement;
+export var isInputElement                         = hammerhead.utils.dom.isInputElement;
+export var isFileInput                            = hammerhead.utils.dom.isFileInput;
+export var isTextAreaElement                      = hammerhead.utils.dom.isTextAreaElement;
+export var isAnchorElement                        = hammerhead.utils.dom.isAnchorElement;
+export var isImgElement                           = hammerhead.utils.dom.isImgElement;
+export var isFormElement                          = hammerhead.utils.dom.isFormElement;
+export var isSelectElement                        = hammerhead.utils.dom.isSelectElement;
+export var isOptionElement                        = hammerhead.utils.dom.isOptionElement;
+export var isSVGElement                           = hammerhead.utils.dom.isSVGElement;
+export var isMapElement                           = hammerhead.utils.dom.isMapElement;
+export var isBodyElement                          = hammerhead.utils.dom.isBodyElement;
+export var isHtmlElement                          = hammerhead.utils.dom.isHtmlElement;
+export var isDocument                             = hammerhead.utils.dom.isDocument;
+export var isWindow                               = hammerhead.utils.dom.isWindow;
+export var isTextEditableInput                    = hammerhead.utils.dom.isTextEditableInput;
+export var isTextEditableElement                  = hammerhead.utils.dom.isTextEditableElement;
+export var isTextEditableElementAndEditingAllowed = hammerhead.utils.dom.isTextEditableElementAndEditingAllowed;
+export var isContentEditableElement               = hammerhead.utils.dom.isContentEditableElement;
+export var isDomElement                           = hammerhead.utils.dom.isDomElement;
+export var isShadowUIElement                      = hammerhead.utils.dom.isShadowUIElement;
+export var isElementFocusable                     = hammerhead.utils.dom.isElementFocusable;
+export var isHammerheadAttr                       = hammerhead.utils.dom.isHammerheadAttr;
+export var getScrollbarSize                       = hammerhead.utils.dom.getScrollbarSize;
+export var getMapContainer                        = hammerhead.utils.dom.getMapContainer;
+export var getTagName                             = hammerhead.utils.dom.getTagName;
+export var closest                                = hammerhead.utils.dom.closest;
+export var getParents                             = hammerhead.utils.dom.getParents;
+
 function getElementsWithTabIndex (elements) {
     return arrayUtils.filter(elements, el => el.tabIndex > 0);
 }
@@ -43,8 +84,9 @@ function insertIFramesContentElements (elements, iFrames) {
     var results               = [];
     var iFramesElements       = [];
     var iframeFocusedElements = [];
+    var i                     = 0;
 
-    for (var i = 0; i < sortedIFrames.length; i++) {
+    for (i = 0; i < sortedIFrames.length; i++) {
         //NOTE: We can get elements of the same domain iframe only
         try {
             iframeFocusedElements = getFocusableElements(sortedIFrames[i].contentDocument);
@@ -56,7 +98,7 @@ function insertIFramesContentElements (elements, iFrames) {
         iFramesElements.push(sortElementsByFocusingIndex(iframeFocusedElements));
     }
 
-    for (var i = 0; i < elements.length; i++) {
+    for (i = 0; i < elements.length; i++) {
         results.push(elements[i]);
 
         if (isIframeElement(elements[i])) {
@@ -111,25 +153,25 @@ function getFocusableElements (doc) {
     var invisibleElements   = getInvisibleElements(allElements);
     var inputElementsRegExp = /^(input|button|select|textarea)$/;
     var focusableElements   = [];
-    var el                  = null;
+    var element             = null;
     var tagName             = null;
     var tabIndex            = null;
 
     var needPush = false;
 
     for (var i = 0; i < allElements.length; i++) {
-        el       = allElements[i];
-        tagName  = getTagName(el);
-        tabIndex = getTabIndexAttributeIntValue(el);
+        element  = allElements[i];
+        tagName  = getTagName(element);
+        tabIndex = getTabIndexAttributeIntValue(element);
         needPush = false;
 
-        if (el.disabled)
+        if (element.disabled)
             continue;
 
-        if (styleUtils.get(el, 'display') === 'none' || styleUtils.get(el, 'visibility') === 'hidden')
+        if (styleUtils.get(element, 'display') === 'none' || styleUtils.get(element, 'visibility') === 'hidden')
             continue;
 
-        if (browserUtils.isIE && isOptionElement(el))
+        if (browserUtils.isIE && isOptionElement(element))
             continue;
 
         if (tabIndex !== null && tabIndex < 0)
@@ -137,21 +179,21 @@ function getFocusableElements (doc) {
 
         if (inputElementsRegExp.test(tagName))
             needPush = true;
-        else if (browserUtils.isIE && isIframeElement(el))
-            focusableElements.push(el);
-        else if (isAnchorElement(el) && el.hasAttribute('href'))
-            needPush = el.getAttribute('href') !== '' || !browserUtils.isIE || tabIndex !== null;
+        else if (browserUtils.isIE && isIframeElement(element))
+            focusableElements.push(element);
+        else if (isAnchorElement(element) && element.hasAttribute('href'))
+            needPush = element.getAttribute('href') !== '' || !browserUtils.isIE || tabIndex !== null;
 
-        var contentEditableAttr = el.getAttribute('contenteditable');
+        var contentEditableAttr = element.getAttribute('contenteditable');
 
-        if (contentEditableAttr === '' || contentEditableAttr === "true")
+        if (contentEditableAttr === '' || contentEditableAttr === 'true')
             needPush = true;
 
         if (tabIndex !== null)
             needPush = true;
 
         if (needPush)
-            focusableElements.push(el);
+            focusableElements.push(element);
     }
 
     //NOTE: remove children of invisible elements
@@ -173,7 +215,7 @@ function getTabIndexAttributeIntValue (el) {
     var tabIndex = el.getAttribute('tabIndex');
 
     if (tabIndex !== null) {
-        tabIndex = parseInt(tabIndex);
+        tabIndex = parseInt(tabIndex, 10);
         tabIndex = isNaN(tabIndex) ? null : tabIndex;
     }
 
@@ -191,16 +233,16 @@ export function getTextareaIndentInLine (textarea, position) {
     if (!textarea.value)
         return 0;
 
-    var topPart      = textarea.value.substring(0, position),
-        linePosition = topPart.lastIndexOf('\n') === -1 ? 0 : (topPart.lastIndexOf('\n') + 1);
+    var topPart      = textarea.value.substring(0, position);
+    var linePosition = topPart.lastIndexOf('\n') === -1 ? 0 : topPart.lastIndexOf('\n') + 1;
 
     return position - linePosition;
 }
 
 export function getTextareaLineNumberByPosition (textarea, position) {
-    var lines         = textarea.value.split('\n'),
-        topPartLength = 0,
-        line          = 0;
+    var lines         = textarea.value.split('\n');
+    var topPartLength = 0;
+    var line          = 0;
 
     for (var i = 0; topPartLength <= position; i++) {
         if (position <= topPartLength + lines[i].length) {
@@ -216,8 +258,8 @@ export function getTextareaLineNumberByPosition (textarea, position) {
 }
 
 export function getTextareaPositionByLineAndOffset (textarea, line, offset) {
-    var lines     = textarea.value.split('\n'),
-        lineIndex = 0;
+    var lines     = textarea.value.split('\n');
+    var lineIndex = 0;
 
     for (var i = 0; i < line; i++)
         lineIndex += lines[i].length + 1;
@@ -249,7 +291,7 @@ export function isEditableElement (el, checkEditingAllowed) {
            isTextEditableElement(el) || isContentEditableElement(el);
 }
 
-export function isElementContainsNode (el, node) {
+export function isElementContainsNode (parentElement, childNode) {
     var contains = false;
 
     function checkChildNodes (el, node) {
@@ -266,7 +308,7 @@ export function isElementContainsNode (el, node) {
         return contains;
     }
 
-    return checkChildNodes(el, node);
+    return checkChildNodes(parentElement, childNode);
 }
 
 export function getOptionIndex (select, option) {
@@ -283,7 +325,7 @@ export function getOptionGroupIndex (select, optgroutp) {
 
 export function setUnselectableAttributeRecursive (el) {
     if (isElementNode(el))
-        el.setAttribute("unselectable", "on");
+        el.setAttribute('unselectable', 'on');
 
     var child = el.firstChild;
 
@@ -298,17 +340,18 @@ export function isTheSameNode (node1, node2) {
     //NOTE: Mozilla has not isSameNode method
     if (node1 && node2 && node1.isSameNode)
         return node1.isSameNode(node2);
-    else
-        return node1 === node2;
+
+    return node1 === node2;
 }
 
 export function getElementDescription (el) {
     var attributes = {
-            id:      'id',
-            name:    'name',
-            'class': 'className'
-        },
-        res        = [];
+        id:      'id',
+        name:    'name',
+        'class': 'className'
+    };
+
+    var res = [];
 
     res.push('<');
     res.push(getTagName(el));
@@ -328,15 +371,16 @@ export function getElementDescription (el) {
 }
 
 export function getNextFocusableElement (element, reverse) {
-    var offset       = reverse ? -1 : 1,
-        allFocusable = sortElementsByFocusingIndex(getFocusableElements(findDocument(element)));
+    var offset       = reverse ? -1 : 1;
+    var allFocusable = sortElementsByFocusingIndex(getFocusableElements(findDocument(element)));
 
     //NOTE: in all browsers except Mozilla and Opera focus sets on one radio set from group only.
     // in Mozilla and Opera focus sets on any radio set.
-    if (isInputElement(element) && element.type === "radio" && element.name !== "" && !browserUtils.isFirefox)
+    if (isInputElement(element) && element.type === 'radio' && element.name !== '' && !browserUtils.isFirefox) {
         allFocusable = arrayUtils.filter(allFocusable, item => {
             return !item.name || item === element || item.name !== element.name;
         });
+    }
 
     var currentIndex         = arrayUtils.indexOf(allFocusable, element);
     var isLastElementFocused = reverse ? currentIndex === 0 : currentIndex === allFocusable.length - 1;
@@ -399,44 +443,3 @@ export function findIframeByWindow (iframeWindow, iframeDestinationWindow) {
 
     return null;
 }
-
-export var getActiveElement                       = hammerhead.utils.dom.getActiveElement;
-export var findDocument                           = hammerhead.utils.dom.findDocument;
-export var isElementInDocument                    = hammerhead.utils.dom.isElementInDocument;
-export var isElementInIframe                      = hammerhead.utils.dom.isElementInIframe;
-export var getIframeByElement                     = hammerhead.utils.dom.getIframeByElement;
-export var isCrossDomainWindows                   = hammerhead.utils.dom.isCrossDomainWindows;
-export var getSelectParent                        = hammerhead.utils.dom.getSelectParent;
-export var getChildVisibleIndex                   = hammerhead.utils.dom.getChildVisibleIndex;
-export var getSelectVisibleChildren               = hammerhead.utils.dom.getSelectVisibleChildren;
-export var isElementNode                          = hammerhead.utils.dom.isElementNode;
-export var isTextNode                             = hammerhead.utils.dom.isTextNode;
-export var isRenderedNode                         = hammerhead.utils.dom.isRenderedNode;
-export var isIframeElement                        = hammerhead.utils.dom.isIframeElement;
-export var isInputElement                         = hammerhead.utils.dom.isInputElement;
-export var isFileInput                            = hammerhead.utils.dom.isFileInput;
-export var isTextAreaElement                      = hammerhead.utils.dom.isTextAreaElement;
-export var isAnchorElement                        = hammerhead.utils.dom.isAnchorElement;
-export var isImgElement                           = hammerhead.utils.dom.isImgElement;
-export var isFormElement                          = hammerhead.utils.dom.isFormElement;
-export var isSelectElement                        = hammerhead.utils.dom.isSelectElement;
-export var isOptionElement                        = hammerhead.utils.dom.isOptionElement;
-export var isSVGElement                           = hammerhead.utils.dom.isSVGElement;
-export var isMapElement                           = hammerhead.utils.dom.isMapElement;
-export var isBodyElement                          = hammerhead.utils.dom.isBodyElement;
-export var isHtmlElement                          = hammerhead.utils.dom.isHtmlElement;
-export var isDocument                             = hammerhead.utils.dom.isDocument;
-export var isWindow                               = hammerhead.utils.dom.isWindow;
-export var isTextEditableInput                    = hammerhead.utils.dom.isTextEditableInput;
-export var isTextEditableElement                  = hammerhead.utils.dom.isTextEditableElement;
-export var isTextEditableElementAndEditingAllowed = hammerhead.utils.dom.isTextEditableElementAndEditingAllowed;
-export var isContentEditableElement               = hammerhead.utils.dom.isContentEditableElement;
-export var isDomElement                           = hammerhead.utils.dom.isDomElement;
-export var isShadowUIElement                      = hammerhead.utils.dom.isShadowUIElement;
-export var isElementFocusable                     = hammerhead.utils.dom.isElementFocusable;
-export var isHammerheadAttr                       = hammerhead.utils.dom.isHammerheadAttr;
-export var getScrollbarSize                       = hammerhead.utils.dom.getScrollbarSize;
-export var getMapContainer                        = hammerhead.utils.dom.getMapContainer;
-export var getTagName                             = hammerhead.utils.dom.getTagName;
-export var closest                                = hammerhead.utils.dom.closest;
-export var getParents                             = hammerhead.utils.dom.getParents;

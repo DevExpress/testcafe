@@ -158,17 +158,7 @@ gulp.task('lint', function () {
 
     return gulp
         .src([
-            'src/**/*.js',
-
-            // TODO: fix linting in client scripts completely
-            '!src/client/core/utils/**/*.js',
-            '!src/client/ui/**/*.js',
-
-            'test/**/*.js',
-            '!test/client/vendor/**/*.*',
-            '!test/client/legacy-fixtures/**/*.js',
-
-            'Gulpfile.js'
+            'src/**/*.js'
         ])
         .pipe(eslint())
         .pipe(eslint.format())
@@ -289,7 +279,7 @@ function testClient (tests, settings, sauselabsSettings) {
         .pipe(qunitHarness(settings, sauselabsSettings));
 }
 
-gulp.task('test-client', ['build'], function () {
+gulp.task('test-client', [/*'build'*/], function () {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS);
 });
 

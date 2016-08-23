@@ -5,43 +5,59 @@ import { filter, some } from './array';
 
 var styleUtils = hammerhead.utils.style;
 
+export var getBordersWidth      = hammerhead.utils.style.getBordersWidth;
+export var getElementMargin     = hammerhead.utils.style.getElementMargin;
+export var getElementPadding    = hammerhead.utils.style.getElementPadding;
+export var getElementScroll     = hammerhead.utils.style.getElementScroll;
+export var getOptionHeight      = hammerhead.utils.style.getOptionHeight;
+export var getSelectElementSize = hammerhead.utils.style.getSelectElementSize;
+export var isSelectVisibleChild = hammerhead.utils.style.isVisibleChild;
+export var getWidth             = hammerhead.utils.style.getWidth;
+export var getHeight            = hammerhead.utils.style.getHeight;
+export var getInnerWidth        = hammerhead.utils.style.getInnerWidth;
+export var getInnerHeight       = hammerhead.utils.style.getInnerHeight;
+export var getScrollLeft        = hammerhead.utils.style.getScrollLeft;
+export var getScrollTop         = hammerhead.utils.style.getScrollTop;
+export var setScrollLeft        = hammerhead.utils.style.setScrollLeft;
+export var setScrollTop         = hammerhead.utils.style.setScrollTop;
+export var get                  = hammerhead.utils.style.get;
+
+var getAncestors = function (node) {
+    var ancestors = [];
+
+    while (node.parentNode) {
+        ancestors.unshift(node.parentNode);
+        node = node.parentNode;
+    }
+
+    return ancestors;
+};
+
+var getAncestorsAndSelf = function (node) {
+    return getAncestors(node).concat([node]);
+};
+
+var isVisibilityHiddenTextNode = function (textNode) {
+    var el = domUtils.isTextNode(textNode) ? textNode.parentNode : null;
+
+    return el && get(el, 'visibility') === 'hidden';
+};
+
+var isHiddenNode = function (node) {
+    var ancestors = getAncestorsAndSelf(node);
+
+    return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'display') === 'none');
+};
 
 export function isNotVisibleNode (node) {
-    var isHiddenNode = function (node) {
-        var getAncestors = function (node) {
-            var ancestors = [];
-
-            while (node.parentNode) {
-                ancestors.unshift(node.parentNode);
-                node = node.parentNode;
-            }
-
-            return ancestors;
-        };
-
-        var getAncestorsAndSelf = function (node) {
-            return getAncestors(node).concat([node]);
-        };
-
-        var ancestors = getAncestorsAndSelf(node);
-
-        return some(ancestors, ancestor => domUtils.isElementNode(ancestor) && get(ancestor, 'display') === "none");
-    };
-
-    var isVisibilityHiddenTextNode = function (textNode) {
-        var el = domUtils.isTextNode(textNode) ? textNode.parentNode : null;
-
-        return el && get(el, "visibility") === "hidden";
-    };
-
     return !domUtils.isRenderedNode(node) || isHiddenNode(node) || isVisibilityHiddenTextNode(node);
 }
 
-export function getScrollableParents (el) {
-    var parentsArray = domUtils.getParents(el);
+export function getScrollableParents (element) {
+    var parentsArray = domUtils.getParents(element);
 
-    if (domUtils.isElementInIframe(el)) {
-        var iFrameParents = domUtils.getParents(domUtils.getIframeByElement(el));
+    if (domUtils.isElementInIframe(element)) {
+        var iFrameParents = domUtils.getParents(domUtils.getIframeByElement(element));
 
         parentsArray.concat(iFrameParents);
     }
@@ -65,25 +81,27 @@ export function hasScroll (el) {
     if (!isHtmlElement && !scrollableHorizontally && !scrollableVertically)
         return false;
 
-    var hasScroll = ((scrollableVertically || isHtmlElement) && el.scrollHeight > el.clientHeight) ||
-                    ((scrollableHorizontally || isHtmlElement) && el.scrollWidth > el.clientWidth);
+    var hasHorizontalScroll = (scrollableVertically || isHtmlElement) && el.scrollHeight > el.clientHeight;
+    var hasVerticalScroll = (scrollableHorizontally || isHtmlElement) && el.scrollWidth > el.clientWidth;
 
-    if (hasScroll)
-        return hasScroll;
+    if (hasHorizontalScroll || hasVerticalScroll)
+        return true;
 
     //T174562 - wrong scrolling in iframes without src and others iframes
     if (isHtmlElement && body)
         return body.scrollHeight > body.clientHeight || body.scrollWidth > body.clientWidth;
+
+    return false;
 }
 
 export function hasDimensions (el) {
     //NOTE: it's like jquery ':visible' selector (http://blog.jquery.com/2009/02/20/jquery-1-3-2-released/)
-    return el && !(el.offsetHeight <= 0 && el.offsetWidth <= 0)
+    return el && !(el.offsetHeight <= 0 && el.offsetWidth <= 0);
 }
 
 export function isElementHidden (el) {
     //NOTE: it's like jquery ':hidden' selector
-    if (get(el, 'display') === 'none' || !hasDimensions(el) || (el.type && el.type === 'hidden'))
+    if (get(el, 'display') === 'none' || !hasDimensions(el) || el.type && el.type === 'hidden')
         return true;
 
     var elements       = domUtils.findDocument(el).querySelectorAll('*');
@@ -107,19 +125,3 @@ export function set (el, style, value) {
     }
 }
 
-export var getBordersWidth      = hammerhead.utils.style.getBordersWidth;
-export var getElementMargin     = hammerhead.utils.style.getElementMargin;
-export var getElementPadding    = hammerhead.utils.style.getElementPadding;
-export var getElementScroll     = hammerhead.utils.style.getElementScroll;
-export var getOptionHeight      = hammerhead.utils.style.getOptionHeight;
-export var getSelectElementSize = hammerhead.utils.style.getSelectElementSize;
-export var isSelectVisibleChild = hammerhead.utils.style.isVisibleChild;
-export var getWidth             = hammerhead.utils.style.getWidth;
-export var getHeight            = hammerhead.utils.style.getHeight;
-export var getInnerWidth        = hammerhead.utils.style.getInnerWidth;
-export var getInnerHeight       = hammerhead.utils.style.getInnerHeight;
-export var getScrollLeft        = hammerhead.utils.style.getScrollLeft;
-export var getScrollTop         = hammerhead.utils.style.getScrollTop;
-export var setScrollLeft        = hammerhead.utils.style.setScrollLeft;
-export var setScrollTop         = hammerhead.utils.style.setScrollTop;
-export var get                  = hammerhead.utils.style.get;
