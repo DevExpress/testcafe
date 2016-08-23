@@ -158,7 +158,10 @@ gulp.task('lint', function () {
 
     return gulp
         .src([
-            'src/**/*.js'
+            'src/**/*.js',
+            'test/**/*.js',
+            '!test/client/vendor/**/*.*',
+            'Gulpfile.js'
         ])
         .pipe(eslint())
         .pipe(eslint.format())
@@ -279,7 +282,7 @@ function testClient (tests, settings, sauselabsSettings) {
         .pipe(qunitHarness(settings, sauselabsSettings));
 }
 
-gulp.task('test-client', [/*'build'*/], function () {
+gulp.task('test-client', ['build'], function () {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS);
 });
 

@@ -4,7 +4,6 @@ var browserUtils = hammerhead.utils.browser;
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var domUtils      = testCafeCore.get('./utils/dom');
 var textSelection = testCafeCore.get('./utils/text-selection');
-var position      = testCafeCore.get('./utils/position');
 
 var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
 var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
@@ -32,6 +31,98 @@ var correctTestWaitingTime = function (time) {
 
 
 $(document).ready(function () {
+    var $el     = null;
+    var $parent = null;
+
+    var firstElementInnerHTML   = null;
+    var secondElementInnerHTML  = null;
+    var thirdElementInnerHTML   = null;
+    var fourthElementInnerHTML  = null;
+    var fifthElementInnerHTML   = null;
+    var sixthElementInnerHTML   = null;
+    var seventhElementInnerHTML = null;
+
+    var currentErrorType = null;
+
+    //utils
+    var asyncActionCallback;
+
+    var startNext = function () {
+        window.setTimeout(start, 30);
+    };
+
+    var runAsyncTest = function (actions, assertions, timeout) {
+        var timeoutId        = null;
+        var callbackFunction = function () {
+            clearTimeout(timeoutId);
+            assertions();
+            startNext();
+        };
+
+        asyncActionCallback = function () {
+            callbackFunction();
+        };
+        actions();
+
+        timeoutId = setTimeout(function () {
+            callbackFunction = function () {
+            };
+            ok(false, 'Timeout is exceeded');
+            startNext();
+        }, timeout);
+    };
+
+    var checkSelection = function ($element, startNode, startOffset, endNode, endOffset) {
+        var curDocument = domUtils.findDocument($element[0]);
+        var selection   = curDocument.getSelection();
+
+        equal(domUtils.getActiveElement(), $element[0]);
+        ok(domUtils.isTheSameNode(startNode, selection.anchorNode), 'startNode correct');
+        equal(selection.anchorOffset, startOffset, 'startOffset correct');
+        ok(domUtils.isTheSameNode(endNode, selection.focusNode), 'endNode correct');
+        equal(selection.focusOffset, endOffset, 'endOffset correct');
+    };
+
+    var setInnerHTML = function ($element, innerHTML) {
+        window.setProperty($element[0], 'innerHTML', innerHTML);
+    };
+
+    var stateHelper = {
+        isStateSaved: function () {
+            return firstElementInnerHTML;
+        },
+
+        saveState: function () {
+            firstElementInnerHTML   = $('#1')[0].innerHTML;
+            secondElementInnerHTML  = $('#2')[0].innerHTML;
+            thirdElementInnerHTML   = $('#3')[0].innerHTML;
+            fourthElementInnerHTML  = $('#4')[0].innerHTML;
+            fifthElementInnerHTML   = $('#5')[0].innerHTML;
+            sixthElementInnerHTML   = $('#6')[0].innerHTML;
+            seventhElementInnerHTML = $('#7')[0].innerHTML;
+        },
+
+        restoreState: function () {
+            var curActiveElement = domUtils.getActiveElement();
+            var selection        = document.getSelection();
+
+            if (firstElementInnerHTML) {
+                setInnerHTML($('#1'), firstElementInnerHTML);
+                setInnerHTML($('#2'), secondElementInnerHTML);
+                setInnerHTML($('#3'), thirdElementInnerHTML);
+                setInnerHTML($('#4'), fourthElementInnerHTML);
+                setInnerHTML($('#5'), fifthElementInnerHTML);
+                setInnerHTML($('#6'), sixthElementInnerHTML);
+                setInnerHTML($('#7'), seventhElementInnerHTML);
+            }
+            if (curActiveElement !== document.body) {
+                $(curActiveElement).blur();
+                selection.removeAllRanges();
+                document.body.focus();
+            }
+        }
+    };
+
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
         var seriesActionsRun = function (elements, callback) {
             async.forEachSeries(
@@ -50,97 +141,8 @@ $(document).ready(function () {
     stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
         stepIterator.state.stoppedOnFail = false;
         currentErrorType                 = err.type;
-
-        if (err.element)
-            currentErrorElement = err.element;
     });
 
-    var $el                     = null,
-        $parent                 = null,
-
-        firstElementInnerHTML   = null,
-        secondElementInnerHTML  = null,
-        thirdElementInnerHTML   = null,
-        fourthElementInnerHTML  = null,
-        fifthElementInnerHTML   = null,
-        sixthElementInnerHTML   = null,
-        seventhElementInnerHTML = null,
-
-        currentErrorType        = null,
-        currentErrorElement     = null,
-
-        //utils
-        asyncActionCallback,
-
-        runAsyncTest            = function (actions, assertions, timeout) {
-            var callbackFunction = function () {
-                clearTimeout(timeoutId);
-                assertions();
-                startNext();
-            };
-            asyncActionCallback  = function () {
-                callbackFunction();
-            };
-            actions();
-            var timeoutId = setTimeout(function () {
-                callbackFunction = function () {
-                };
-                ok(false, 'Timeout is exceeded');
-                startNext();
-            }, timeout);
-        },
-
-        startNext               = function () {
-            window.setTimeout(start, 30);
-        },
-
-        checkSelection          = function ($el, startNode, startOffset, endNode, endOffset) {
-            var curDocument = domUtils.findDocument($el[0]),
-                selection   = curDocument.getSelection();
-            equal(domUtils.getActiveElement(), $el[0]);
-            ok(domUtils.isTheSameNode(startNode, selection.anchorNode), 'startNode correct');
-            equal(selection.anchorOffset, startOffset, 'startOffset correct');
-            ok(domUtils.isTheSameNode(endNode, selection.focusNode), 'endNode correct');
-            equal(selection.focusOffset, endOffset, 'endOffset correct');
-        },
-
-        setInnerHTML            = function ($el, innerHTML) {
-            window.setProperty($el[0], 'innerHTML', innerHTML);
-        },
-
-        stateHelper             = {
-            isStateSaved: function () {
-                return firstElementInnerHTML;
-            },
-            saveState:    function () {
-                firstElementInnerHTML   = $('#1')[0].innerHTML;
-                secondElementInnerHTML  = $('#2')[0].innerHTML;
-                thirdElementInnerHTML   = $('#3')[0].innerHTML;
-                fourthElementInnerHTML  = $('#4')[0].innerHTML;
-                fifthElementInnerHTML   = $('#5')[0].innerHTML;
-                sixthElementInnerHTML   = $('#6')[0].innerHTML;
-                seventhElementInnerHTML = $('#7')[0].innerHTML;
-            },
-            restoreState: function () {
-                var curActiveElement = domUtils.getActiveElement();
-                var selection        = document.getSelection();
-
-                if (firstElementInnerHTML) {
-                    setInnerHTML($('#1'), firstElementInnerHTML);
-                    setInnerHTML($('#2'), secondElementInnerHTML);
-                    setInnerHTML($('#3'), thirdElementInnerHTML);
-                    setInnerHTML($('#4'), fourthElementInnerHTML);
-                    setInnerHTML($('#5'), fifthElementInnerHTML);
-                    setInnerHTML($('#6'), sixthElementInnerHTML);
-                    setInnerHTML($('#7'), seventhElementInnerHTML);
-                }
-                if (curActiveElement !== document.body) {
-                    $(curActiveElement).blur();
-                    selection.removeAllRanges();
-                    document.body.focus();
-                }
-            }
-        };
 
     $('<div></div>').css({ width: 1, height: 1500, position: 'absolute' }).appendTo('body');
     $('body').css('height', '1500px');
@@ -164,14 +166,13 @@ $(document).ready(function () {
         $el     = null;
         $parent = null;
         stateHelper.restoreState();
-        currentErrorType    = null;
-        currentErrorElement = null;
+        currentErrorType = null;
     });
 
     module('act.select api');
 
     asyncTest('without args', function () {
-        $el = $("#2");
+        $el = $('#2');
 
         runAsyncTest(
             function () {
@@ -186,7 +187,7 @@ $(document).ready(function () {
     });
 
     asyncTest('positive offset', function () {
-        $el = $("#2");
+        $el = $('#2');
 
         runAsyncTest(
             function () {
@@ -200,7 +201,7 @@ $(document).ready(function () {
     });
 
     asyncTest('negative offset', function () {
-        $el = $("#2");
+        $el = $('#2');
 
         runAsyncTest(
             function () {
@@ -219,7 +220,7 @@ $(document).ready(function () {
     });
 
     asyncTest('zero offset', function () {
-        $el = $("#3");
+        $el = $('#3');
 
         runAsyncTest(
             function () {
@@ -236,7 +237,7 @@ $(document).ready(function () {
     //startPos more than endPos as a parameters === simple inverse select
 
     asyncTest('startPos, endPos, startLine and endLine', function () {
-        $el = $("#4");
+        $el = $('#4');
 
         runAsyncTest(
             function () {
@@ -250,8 +251,8 @@ $(document).ready(function () {
     });
 
     asyncTest('selection from first to last symbol in element', function () {
-        $parent = $("#6");
-        $el     = $parent.find("div:first");
+        $parent = $('#6');
+        $el     = $parent.find('div:first');
 
         runAsyncTest(
             function () {
@@ -265,9 +266,9 @@ $(document).ready(function () {
     });
 
     asyncTest('startNode and endNode', function () {
-        $parent   = $("#2");
-        var node1 = $parent[0].childNodes[0],
-            node2 = $parent[0].childNodes[2];
+        $parent   = $('#2');
+        var node1 = $parent[0].childNodes[0];
+        var node2 = $parent[0].childNodes[2];
 
         runAsyncTest(
             function () {
@@ -281,7 +282,7 @@ $(document).ready(function () {
     });
 
     asyncTest('startNode equal endNode', function () {
-        $parent  = $("#2");
+        $parent  = $('#2');
         var node = $parent[0].childNodes[0];
 
         runAsyncTest(
@@ -296,9 +297,9 @@ $(document).ready(function () {
     });
 
     asyncTest('startElement and endElement', function () {
-        $parent = $("#4");
-        var el1 = $parent[0].childNodes[3],
-            el2 = $parent[0].childNodes[5];
+        $parent = $('#4');
+        var el1 = $parent[0].childNodes[3];
+        var el2 = $parent[0].childNodes[5];
 
         runAsyncTest(
             function () {
@@ -312,9 +313,9 @@ $(document).ready(function () {
     });
 
     asyncTest('startNode and endElement', function () {
-        $parent  = $("#4");
-        var node = $parent[0].childNodes[5].childNodes[0],
-            el   = $parent[0].childNodes[5].childNodes[4];
+        $parent  = $('#4');
+        var node = $parent[0].childNodes[5].childNodes[0];
+        var el   = $parent[0].childNodes[5].childNodes[4];
 
         runAsyncTest(
             function () {
@@ -328,9 +329,9 @@ $(document).ready(function () {
     });
 
     asyncTest('startElement and endNode', function () {
-        $parent  = $("#6");
-        var el   = $parent[0].childNodes[1],
-            node = $parent[0].childNodes[8];
+        $parent  = $('#6');
+        var el   = $parent[0].childNodes[1];
+        var node = $parent[0].childNodes[8];
 
         runAsyncTest(
             function () {
@@ -345,18 +346,19 @@ $(document).ready(function () {
     });
 
     asyncTest('inverse startNode and endElement', function () {
-        $parent  = $("#6");
-        var el   = $parent[0].childNodes[1],
-            node = $parent[0].childNodes[8];
+        $parent  = $('#6');
+        var el   = $parent[0].childNodes[1];
+        var node = $parent[0].childNodes[8];
 
         runAsyncTest(
             function () {
                 actionsAPI.select(node, el);
             },
             function () {
-                if (browserUtils.isIE)
+                if (browserUtils.isIE) {
                     checkSelection($parent, $parent[0].childNodes[1].childNodes[0], 0, $parent[0].childNodes[8], browserUtils.isIE ||
                                                                                                                  browserUtils.isFirefox ? 13 : 9);
+                }
                 else {
                     checkSelection($parent, $parent[0].childNodes[8], browserUtils.isIE ||
                                                                       browserUtils.isFirefox ? 13 : 9, $parent[0].childNodes[1].childNodes[0], 0);
@@ -368,13 +370,12 @@ $(document).ready(function () {
     });
 
     asyncTest('startNode and $endElement', function () {
-        $parent  = $("#5");
-        var node = $parent[0].childNodes[2],
-            $el  = $parent.find('i');
+        $parent  = $('#5');
+        var node = $parent[0].childNodes[2];
 
         runAsyncTest(
             function () {
-                actionsAPI.select(node, $el);
+                actionsAPI.select(node, $parent.find('i'));
             },
             function () {
                 checkSelection($parent, $parent[0].childNodes[2], 0, $parent[0].childNodes[3].childNodes[1].childNodes[0], 9);
@@ -384,13 +385,13 @@ $(document).ready(function () {
     });
 
     asyncTest('startElement and $endElement', function () {
-        $parent = $("#7");
-        var el1 = $parent.find('div')[3],
-            $el = $parent.find('div').eq(4);
+        $parent  = $('#7');
+        var el1  = $parent.find('div')[3];
+        var $el2 = $parent.find('div').eq(4);
 
         runAsyncTest(
             function () {
-                actionsAPI.select(el1, $el);
+                actionsAPI.select(el1, $el2);
             },
             function () {
                 checkSelection($parent, $parent.find('div')[3].childNodes[0], 0, $parent.find('div')[4].childNodes[0], 3);
@@ -400,9 +401,9 @@ $(document).ready(function () {
     });
 
     asyncTest('$startElement and $endElement', function () {
-        $parent  = $("#7");
-        var $el1 = $parent.find('del:first'),
-            $el2 = $parent.find('a:last');
+        $parent  = $('#7');
+        var $el1 = $parent.find('del:first');
+        var $el2 = $parent.find('a:last');
 
         runAsyncTest(
             function () {
@@ -417,18 +418,19 @@ $(document).ready(function () {
     });
 
     asyncTest('inverse $startElement and $endElement', function () {
-        $parent  = $("#7");
-        var $el1 = $parent.find('a:last'),
-            $el2 = $parent.find('del:first');
+        $parent  = $('#7');
+        var $el1 = $parent.find('a:last');
+        var $el2 = $parent.find('del:first');
 
         runAsyncTest(
             function () {
                 actionsAPI.select($el1, $el2);
             },
             function () {
-                if (browserUtils.isIE)
+                if (browserUtils.isIE) {
                     checkSelection($parent, $parent.find('del')[0].childNodes[0], browserUtils.isIE ||
                                                                                   browserUtils.isFirefox ? 0 : 9, $parent.find('a')[1].childNodes[0], 4);
+                }
                 else {
                     checkSelection($parent, $parent.find('a')[1].childNodes[0], 4, $parent.find('del')[0].childNodes[0], browserUtils.isIE ||
                                                                                                                          browserUtils.isFirefox ? 0 : 9);
@@ -445,8 +447,8 @@ $(document).ready(function () {
         asyncActionCallback = function () {
         };
 
-        var $el1 = $('#4>p').first(),
-            $el2 = $('#4>p').last();
+        var $el1 = $('#4>p').first();
+        var $el2 = $('#4>p').last();
 
         $el2.css('display', 'none');
 
@@ -460,9 +462,9 @@ $(document).ready(function () {
     asyncTest('element isn\'t content editable raise error', function () {
         asyncActionCallback = function () {
         };
-        var $parent         = $('#4'),
-            $el1            = $('#4>p').first(),
-            $el2            = $('#4>p').last();
+        $parent             = $('#4');
+        var $el1            = $('#4>p').first();
+        var $el2            = $('#4>p').last();
 
         $parent[0].removeAttribute('contenteditable');
 
@@ -476,8 +478,8 @@ $(document).ready(function () {
     asyncTest('elements, which don\'t have common ancestor raise error', function () {
         asyncActionCallback = function () {
         };
-        var $el1            = $('#1>p'),
-            $el2            = $('#4>p').last();
+        var $el1            = $('#1>p');
+        var $el2            = $('#4>p').last();
 
         actionsAPI.select($el1[0], $el2[0]);
         window.setTimeout(function () {
@@ -490,8 +492,8 @@ $(document).ready(function () {
         asyncActionCallback = function () {
         };
 
-        var node = $("#2")[0].childNodes[0],
-            text = 'test';
+        var node = $('#2')[0].childNodes[0];
+        var text = 'test';
 
         actionsAPI.type(node, text, {
             caretPos: 1

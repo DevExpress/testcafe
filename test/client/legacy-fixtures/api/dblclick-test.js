@@ -11,6 +11,7 @@ var initAutomation       = testCafeLegacyRunner.get('./init-automation');
 initAutomation();
 
 var stepIterator = new StepIterator();
+
 actionsAPI.init(stepIterator);
 
 var correctTestWaitingTime = function (time) {
@@ -25,8 +26,52 @@ var ELEMENT_WAITING_TIMEOUT = 400;
 actionsAPI.setElementAvailabilityWaitingTimeout(ELEMENT_WAITING_TIMEOUT);
 
 $(document).ready(function () {
-    var actionTargetWaitingCounter = 0,
-        actionRunCounter           = 0;
+    var actionTargetWaitingCounter = 0;
+    var actionRunCounter           = 0;
+
+    var $el;
+    var currentErrorType   = null;
+    var currentSourceIndex = null;
+
+    //constants
+    var TEST_ELEMENT_CLASS = 'testElement';
+
+    //utils
+    var asyncActionCallback;
+
+    var addInputElement = function (type, id, x, y) {
+        var elementString = ['<input type="', type, '" id="', id, '" value="', id, '" />'].join('');
+
+        return $(elementString)
+            .css({
+                position:   'absolute',
+                marginLeft: x + 'px',
+                marginTop:  y + 'px'
+            })
+            .addClass(type)
+            .addClass(TEST_ELEMENT_CLASS)
+            .appendTo('body');
+    };
+
+    var runAsyncTest = function (actions, assertions, timeout) {
+        var timeoutId        = null;
+        var callbackFunction = function () {
+            clearTimeout(timeoutId);
+            assertions();
+            start();
+        };
+
+        asyncActionCallback = function () {
+            callbackFunction();
+        };
+        actions();
+        timeoutId = setTimeout(function () {
+            callbackFunction = function () {
+            };
+            ok(false, 'Timeout is exceeded');
+            start();
+        }, timeout);
+    };
 
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
         var seriesActionsRun = function (elements, callback) {
@@ -57,47 +102,6 @@ $(document).ready(function () {
         currentSourceIndex               = err.__sourceIndex;
     });
 
-    var $el,
-        currentErrorType   = null,
-        currentSourceIndex = null,
-
-        //constants
-        TEST_ELEMENT_CLASS = 'testElement',
-
-        //utils
-        asyncActionCallback,
-
-        addInputElement    = function (type, id, x, y) {
-            var elementString = ['<input type="', type, '" id="', id, '" value="', id, '" />'].join('');
-            return $(elementString)
-                .css({
-                    position:   'absolute',
-                    marginLeft: x + 'px',
-                    marginTop:  y + 'px'
-                })
-                .addClass(type)
-                .addClass(TEST_ELEMENT_CLASS)
-                .appendTo('body');
-        },
-
-        runAsyncTest       = function (actions, assertions, timeout) {
-            var callbackFunction = function () {
-                clearTimeout(timeoutId);
-                assertions();
-                start();
-            };
-            asyncActionCallback  = function () {
-                callbackFunction();
-            };
-            actions();
-            var timeoutId = setTimeout(function () {
-                callbackFunction = function () {
-                };
-                ok(false, 'Timeout is exceeded');
-                start();
-            }, timeout);
-        };
-
     //tests
     QUnit.testStart(function () {
         $el                 = addInputElement('button', 'button1', Math.floor(Math.random() * 100),
@@ -120,6 +124,7 @@ $(document).ready(function () {
 
     asyncTest('dom element as a parameter', function () {
         var dblclicked = false;
+
         runAsyncTest(
             function () {
                 $el.dblclick(function () {
@@ -138,12 +143,14 @@ $(document).ready(function () {
 
     asyncTest('jQuery object with two elements as a parameter', function () {
         var dblclicksCount = 0;
+
         runAsyncTest(
             function () {
                 addInputElement('button', 'button2', 150, 150);
                 var $elements = $('.button').dblclick(function () {
                     dblclicksCount++;
                 });
+
                 actionsAPI.dblclick($elements);
             },
             function () {
@@ -166,16 +173,17 @@ $(document).ready(function () {
     });
 
     asyncTest('dblclick with options keys', function () {
-        var focused = false,
-            alt     = false,
-            shift   = false,
-            ctrl    = false,
-            meta    = false;
+        var focused = false;
+        var alt     = false;
+        var shift   = false;
+        var ctrl    = false;
+        var meta    = false;
 
         runAsyncTest(
             function () {
                 $el.css({ display: 'none' });
                 var $input = addInputElement('text', 'input', 150, 150);
+
                 $input.focus(function () {
                     focused = true;
                 });

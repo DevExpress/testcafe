@@ -1,8 +1,6 @@
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
 
-var testCafeCore = window.getTestCafeModule('testCafeCore');
-
 var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
 var getAutomations       = testCafeLegacyRunner.get('./automation-storage').getAutomations;
 var initAutomation       = testCafeLegacyRunner.get('./init-automation');
@@ -10,7 +8,6 @@ var initAutomation       = testCafeLegacyRunner.get('./init-automation');
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 
 var ClickOptions    = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
-var ClickAutomation = testCafeAutomation.Click;
 
 var getOffsetOptions = testCafeAutomation.getOffsetOptions;
 
@@ -81,8 +78,6 @@ $(document).ready(function () {
             .attr('src', window.QUnitGlobals.getResourceUrl('../data/runner/iframe.html'))
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo('body');
-
-        var iframe = $iFrame[0];
 
         $iFrame.load(function () {
             var $iFrameBody = $($iFrame[0].contentWindow.document.body);

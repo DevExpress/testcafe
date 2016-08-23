@@ -21,32 +21,37 @@ asyncTest('run steps in iframe', function () {
     $iframe[0].src = window.getCrossDomainPageUrl('../../data/runner/iframe.html');
     $iframe.appendTo('body');
 
-    var testRunner      = new RunnerBase(),
-        count           = 0,
-        errorRaised     = false,
-        assertionFailed = false,
-        clickRaised     = false,
-        steps           = [
-            {
-                stepName: '1.Click',
-                step:     function () {
-                    act.click("#button");
-                },
-                stepNum:  0
+    var testRunner      = new RunnerBase();
+    var count           = 0;
+    var errorRaised     = false;
+    var assertionFailed = false;
+    var clickRaised     = false;
+    var steps           = [
+        {
+            stepName: '1.Click',
+            step:     function () {
+                /*eslint-disable no-undef*/
+                act.click('#button');
+                /*eslint-enable no-undef*/
             },
-            {
-                stepName: '2.Assert',
-                step:     function () {
-                    ok(true);
-                },
-                stepNum:  1
-            }
-        ];
+
+            stepNum: 0
+        },
+        {
+            stepName: '2.Assert',
+            step:     function () {
+                ok(true);
+            },
+
+            stepNum: 1
+        }
+    ];
 
     testRunner.stepIterator.runNext = function () {
     };
 
-    var storedIFrameStepExecuted     = testRunner._onIFrameStepExecuted;
+    var storedIFrameStepExecuted = testRunner._onIFrameStepExecuted;
+
     testRunner._onIFrameStepExecuted = function () {
         storedIFrameStepExecuted.call(testRunner);
         count++;
@@ -95,18 +100,22 @@ asyncTest('element error', function () {
     $iframe[0].src = window.getCrossDomainPageUrl('../../data/runner/iframe.html');
     $iframe.appendTo('body');
 
-    var testRunner  = new RunnerBase(),
-        errorRaised = false,
-        steps       = [
-            {
-                stepName: '1.Failed element',
-                step:     function () {
-                    var el = $('#failed');
-                    act.click(el);
-                },
-                stepNum:  0
-            }
-        ];
+    var testRunner  = new RunnerBase();
+    var errorRaised = false;
+    var steps       = [
+        {
+            stepName: '1.Failed element',
+            step:     function () {
+                var el = $('#failed');
+
+                /*eslint-disable no-undef*/
+                act.click(el);
+                /*eslint-enable no-undef*/
+            },
+
+            stepNum: 0
+        }
+    ];
 
     testRunner._onFatalError = function () {
         errorRaised = true;
@@ -132,17 +141,20 @@ asyncTest('failed assertion', function () {
     $iframe[0].src = window.getCrossDomainPageUrl('../../data/runner/iframe.html');
     $iframe.appendTo('body');
 
-    var testRunner      = new RunnerBase(),
-        assertionFailed = false,
-        steps           = [
-            {
-                stepName: '1.Failed assertion',
-                step:     function () {
-                    eq(true, false);
-                },
-                stepNum:  0
-            }
-        ];
+    var testRunner      = new RunnerBase();
+    var assertionFailed = false;
+    var steps           = [
+        {
+            stepName: '1.Failed assertion',
+            step:     function () {
+                /*eslint-disable no-undef*/
+                eq(true, false);
+                /*eslint-enable no-undef*/
+            },
+
+            stepNum: 0
+        }
+    ];
 
     testRunner._onAssertionFailed = function (e) {
         assertionFailed = true;
@@ -176,35 +188,38 @@ asyncTest('shared data', function () {
     $iframe[0].src = window.getCrossDomainPageUrl('../../data/runner/iframe.html');
     $iframe.appendTo('body');
 
-    var testRunner      = new RunnerBase(),
-        count           = 0,
-        assertionFailed = false,
-        errorRaised     = false,
-        sharedData      = {},
-        steps           = [
-            {
-                stepName: '1.Set data',
-                step:     function () {
-                    this.testValue = true;
-                },
-                stepNum:  0
+    var testRunner      = new RunnerBase();
+    var count           = 0;
+    var assertionFailed = false;
+    var errorRaised     = false;
+    var sharedData      = {};
+    var steps           = [
+        {
+            stepName: '1.Set data',
+            step:     function () {
+                this.testValue = true;
             },
-            {
-                stepName: '2.Check and change data',
-                step:     function () {
-                    ok(this.testValue);
-                    this.testValue = false;
-                },
-                stepNum:  1
+
+            stepNum: 0
+        },
+        {
+            stepName: '2.Check and change data',
+            step:     function () {
+                ok(this.testValue);
+                this.testValue = false;
             },
-            {
-                stepName: '3.Check data',
-                step:     function () {
-                    ok(!this.testValue);
-                },
-                stepNum:  2
-            }
-        ];
+
+            stepNum: 1
+        },
+        {
+            stepName: '3.Check data',
+            step:     function () {
+                ok(!this.testValue);
+            },
+
+            stepNum: 2
+        }
+    ];
 
     testRunner._onAssertionFailed = function () {
         assertionFailed = true;
@@ -234,7 +249,8 @@ asyncTest('shared data', function () {
     testRunner.stepIterator.runNext = function () {
     };
 
-    var storedIFrameStepExecuted     = testRunner._onIFrameStepExecuted;
+    var storedIFrameStepExecuted = testRunner._onIFrameStepExecuted;
+
     testRunner._onIFrameStepExecuted = function () {
         storedIFrameStepExecuted.call(testRunner);
         stepDone();
@@ -274,26 +290,30 @@ asyncTest('xhrBarrier', function () {
     $iframe[0].src = window.getCrossDomainPageUrl('../../data/runner/iframe.html');
     $iframe.appendTo('body');
 
-    var testRunner      = new RunnerBase(),
-        assertionFailed = false,
-        count           = 0,
-        steps           = [
-            {
-                stepName: '1.Click button',
-                step:     function () {
-                    ok(!window.xhrCompleted);
-                    act.click('#xhrButton');
-                },
-                stepNum:  0
+    var testRunner      = new RunnerBase();
+    var assertionFailed = false;
+    var count           = 0;
+    var steps           = [
+        {
+            stepName: '1.Click button',
+            step:     function () {
+                ok(!window.xhrCompleted);
+                /*eslint-disable no-undef*/
+                act.click('#xhrButton');
+                /*eslint-enable no-undef*/
             },
-            {
-                stepName: '2.Check xhr is completed',
-                step:     function () {
-                    ok(window.xhrCompleted);
-                },
-                stepNum:  1
-            }
-        ];
+
+            stepNum: 0
+        },
+        {
+            stepName: '2.Check xhr is completed',
+            step:     function () {
+                ok(window.xhrCompleted);
+            },
+
+            stepNum: 1
+        }
+    ];
 
     testRunner._onAssertionFailed = function () {
         assertionFailed = true;
@@ -302,7 +322,8 @@ asyncTest('xhrBarrier', function () {
     testRunner.stepIterator.runNext = function () {
     };
 
-    var storedIFrameStepExecuted     = testRunner._onIFrameStepExecuted;
+    var storedIFrameStepExecuted = testRunner._onIFrameStepExecuted;
+
     testRunner._onIFrameStepExecuted = function () {
         storedIFrameStepExecuted.call(testRunner);
         count++;
@@ -330,29 +351,35 @@ asyncTest('waiting for postback', function () {
     $iframe[0].src = window.getCrossDomainPageUrl('../../data/runner/iframe.html');
     $iframe.appendTo('body');
 
-    var testRunner      = new RunnerBase(),
-        assertionFailed = false,
-        errorRaised     = false,
-        count           = 0,
-        steps           = [
-            {
-                stepName: '1.Click link',
-                step:     function () {
-                    ok(window.loadedTime);
-                    this.firstLoadingTime = window.loadedTime;
-                    act.click('#link');
-                },
-                stepNum:  0
+    var testRunner      = new RunnerBase();
+    var assertionFailed = false;
+    var errorRaised     = false;
+    var count           = 0;
+    var steps           = [
+        {
+            stepName: '1.Click link',
+            step:     function () {
+                ok(window.loadedTime);
+                this.firstLoadingTime = window.loadedTime;
+                /*eslint-disable no-undef*/
+                act.click('#link');
+                /*eslint-enable no-undef*/
             },
-            {
-                stepName: '2.Check the page is loaded for the second time',
-                step:     function () {
-                    ok(window.loadedTime);
-                    notEq(this.firstLoadingTime, window.loadedTime);
-                },
-                stepNum:  1
-            }
-        ];
+
+            stepNum: 0
+        },
+        {
+            stepName: '2.Check the page is loaded for the second time',
+            step:     function () {
+                ok(window.loadedTime);
+                /*eslint-disable no-undef*/
+                notEq(this.firstLoadingTime, window.loadedTime);
+                /*eslint-enable no-undef*/
+            },
+
+            stepNum: 1
+        }
+    ];
 
     testRunner._onAssertionFailed = function () {
         assertionFailed = true;

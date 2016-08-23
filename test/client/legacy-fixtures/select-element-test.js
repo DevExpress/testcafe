@@ -1,9 +1,6 @@
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
 
-var testCafeCore     = window.getTestCafeModule('testCafeCore');
-var parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
-
 var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
 var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
 var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
@@ -14,6 +11,7 @@ var initAutomation       = testCafeLegacyRunner.get('./init-automation');
 initAutomation();
 
 var stepIterator = new StepIterator();
+
 actionsAPI.init(stepIterator);
 
 $(document).ready(function () {
@@ -21,10 +19,9 @@ $(document).ready(function () {
     var TEST_ELEMENT_CLASS = 'testElement';
 
     //utils
-    var currentErrorType         = null,
-        currentErrorElement      = null,
-        currentActionSourceIndex = null,
-        handlersLog              = [];
+    var currentErrorType         = null;
+    var currentErrorElement      = null;
+    var currentActionSourceIndex = null;
 
     var isMobileBrowser = browserUtils.isSafari && browserUtils.hasTouchEvents || browserUtils.isAndroid;
 
@@ -95,7 +92,6 @@ $(document).ready(function () {
         if (!browserUtils.isIE)
             removeTestElements();
 
-        handlersLog                  = [];
         SETTINGS.ENABLE_SOURCE_INDEX = false;
     });
 

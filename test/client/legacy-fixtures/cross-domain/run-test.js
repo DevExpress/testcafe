@@ -21,37 +21,38 @@ asyncTest('run test', function () {
     $iframe[0].src = window.getCrossDomainPageUrl('../../data/runner/iframe.html');
     $iframe.appendTo('body');
 
-    var runner          = new RunnerBase(),
-        inIFrame        = runner.inIFrame,
-        eq              = runner.eq,
-        stepCount       = 0,
-        iframeStepCount = 0,
-        errorRaised     = false,
-        assertionFailed = false,
-        sharedData      = {},
-        stepNames       = ['1', '2', '3', '4'],
-        steps           = [
-            function () {
-                this.testValue = 1;
-            },
-            inIFrame(function () {
-                return $iframe[0];
-            }, function () {
-                eq(this.testValue, 1);
-                this.testValue = 2;
-            }),
-            function () {
-                eq(this.testValue, 2);
-                this.testValue = 3;
-            },
-            inIFrame(function () {
-                return $iframe[0];
-            }, function () {
-                eq(this.testValue, 3);
-            })
-        ];
+    var runner          = new RunnerBase();
+    var inIFrame        = runner.inIFrame;
+    var eq              = runner.eq;
+    var stepCount       = 0;
+    var iframeStepCount = 0;
+    var errorRaised     = false;
+    var assertionFailed = false;
+    var sharedData      = {};
+    var stepNames       = ['1', '2', '3', '4'];
+    var steps           = [
+        function () {
+            this.testValue = 1;
+        },
+        inIFrame(function () {
+            return $iframe[0];
+        }, function () {
+            eq(this.testValue, 1);
+            this.testValue = 2;
+        }),
+        function () {
+            eq(this.testValue, 2);
+            this.testValue = 3;
+        },
+        inIFrame(function () {
+            return $iframe[0];
+        }, function () {
+            eq(this.testValue, 3);
+        })
+    ];
 
     var storedIFrameStepExecuted = runner._onIFrameStepExecuted;
+
     runner._onIFrameStepExecuted = function () {
         iframeStepCount++;
         storedIFrameStepExecuted.call(runner);

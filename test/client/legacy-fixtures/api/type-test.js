@@ -1,10 +1,3 @@
-var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
-var TypeAutomation     = testCafeAutomation.Type;
-var TypeOptions        = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
-
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
-
 var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
 var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
 var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
@@ -23,8 +16,34 @@ var ELEMENT_WAITING_TIMEOUT = 400;
 actionsAPI.setElementAvailabilityWaitingTimeout(ELEMENT_WAITING_TIMEOUT);
 
 $(document).ready(function () {
-    var actionTargetWaitingCounter = 0,
-        actionRunCounter           = 0;
+    var asyncActionCallback;
+    var currentErrorType   = null;
+    var currentSourceIndex = null;
+    var $input;
+
+    //constants
+    var TEST_ELEMENT_CLASS = 'testElement';
+
+    //utils
+    var runAsyncTest = function (actions, assertions, timeout) {
+        var timeoutId        = null;
+        var callbackFunction = function () {
+            clearTimeout(timeoutId);
+            assertions();
+            start();
+        };
+
+        asyncActionCallback = function () {
+            callbackFunction();
+        };
+        actions();
+        timeoutId = setTimeout(function () {
+            callbackFunction = function () {
+            };
+            ok(false, 'Timeout is exceeded');
+            start();
+        }, timeout);
+    };
 
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
         var seriesActionsRun = function (elements, callback) {
@@ -42,11 +61,9 @@ $(document).ready(function () {
     };
 
     StepIterator.prototype.onActionTargetWaitingStarted = function () {
-        actionTargetWaitingCounter++;
     };
 
     StepIterator.prototype.onActionRun = function () {
-        actionRunCounter++;
     };
 
     stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
@@ -55,39 +72,9 @@ $(document).ready(function () {
         currentSourceIndex               = err.__sourceIndex;
     });
 
-    var asyncActionCallback,
-        currentErrorType   = null,
-        currentSourceIndex = null,
-        $input,
-
-        //constants
-        TEST_ELEMENT_CLASS = 'testElement',
-
-        //utils
-        runAsyncTest       = function (actions, assertions, timeout) {
-            var callbackFunction = function () {
-                clearTimeout(timeoutId);
-                assertions();
-                start();
-            };
-            asyncActionCallback  = function () {
-                callbackFunction();
-            };
-            actions();
-            var timeoutId = setTimeout(function () {
-                callbackFunction = function () {
-                };
-                ok(false, 'Timeout is exceeded');
-                start();
-            }, timeout);
-        };
-
-
     //tests
     QUnit.testStart(function () {
-        $input                     = $('<input type="text" id="input" class="input"/>').addClass(TEST_ELEMENT_CLASS).appendTo($('body'));
-        actionTargetWaitingCounter = 0;
-        actionRunCounter           = 0;
+        $input = $('<input type="text" id="input" class="input"/>').addClass(TEST_ELEMENT_CLASS).appendTo($('body'));
     });
 
     QUnit.testDone(function () {
@@ -100,8 +87,9 @@ $(document).ready(function () {
     });
 
     asyncTest('by default type command concats new text with the old one', function () {
-        var newText     = 'new text',
-            oldText     = 'old text';
+        var newText     = 'new text';
+        var oldText     = 'old text';
+
         $input[0].value = oldText;
         runAsyncTest(
             function () {
