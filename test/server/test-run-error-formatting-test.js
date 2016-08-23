@@ -103,8 +103,8 @@ function assertErrorMessage (file, err) {
 
     expect(actual).eql(expectedMsg);
 
-    //NOTE: check that list of error types contains error
-    // with this type and remove tested messages from list
+    // NOTE: check that the list of error types contains an
+    // error of this type and remove tested messages from the list
     expect(untestedErrorTypes.indexOf(err.type) !== -1).to.be.ok;
     remove(untestedErrorTypes, err.type);
 }
