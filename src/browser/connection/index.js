@@ -167,11 +167,10 @@ export default class BrowserConnection extends EventEmitter {
         if (this.closed)
             return;
 
-        clearTimeout(this.heartbeatTimeout);
-
         this._closeBrowser()
             .then(() => {
                 this.browserConnectionGateway.stopServingConnection(this);
+                clearTimeout(this.heartbeatTimeout);
 
                 delete connections[this.id];
 

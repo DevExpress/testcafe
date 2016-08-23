@@ -50,6 +50,7 @@ describe('Browser connection', function () {
     });
 
     afterEach(function () {
+        connection._forceIdle();
         connection.close();
     });
 
