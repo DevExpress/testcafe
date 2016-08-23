@@ -3,6 +3,7 @@ import promisify from '../utils/promisify';
 import sanitizeFilename from 'sanitize-filename';
 import mkdirp from 'mkdirp';
 import { generateThumbnail } from 'testcafe-browser-tools';
+import { linux } from 'os-family';
 
 var ensureDir = promisify(mkdirp);
 
@@ -90,7 +91,9 @@ export default class Capturer {
 
         this.testEntry.hasScreenshots = true;
 
-        await generateThumbnail(screenshotPath);
+        // NOTE: generateThumbnail is not available on Linux yet. Keep tracking the https://github.com/DevExpress/testcafe-browser-tools/issues/12
+        if (!linux)
+            await generateThumbnail(screenshotPath);
 
         return screenshotPath;
     }
@@ -104,7 +107,9 @@ export default class Capturer {
 
         await this._takeScreenshot(screenshotPath, pageWidth, pageHeight);
 
-        await generateThumbnail(screenshotPath);
+        // NOTE: generateThumbnail is not available on Linux yet. Keep tracking the https://github.com/DevExpress/testcafe-browser-tools/issues/12
+        if (!linux)
+            await generateThumbnail(screenshotPath);
 
         return screenshotPath;
     }
