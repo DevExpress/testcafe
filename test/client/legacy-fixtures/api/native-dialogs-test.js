@@ -2,9 +2,9 @@ var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
 var dialogsAPI           = testCafeLegacyRunner.get('./api/native-dialogs');
 
 
-var unexpectedDialogErrors     = [],
-    wasNotExpectedDialogErrors = [],
-    dialogsInfoChangedEvents   = [];
+var unexpectedDialogErrors     = [];
+var wasNotExpectedDialogErrors = [];
+var dialogsInfoChangedEvents   = [];
 
 QUnit.testStart(function () {
     unexpectedDialogErrors     = [];
@@ -39,6 +39,7 @@ dialogsAPI.on(dialogsAPI.DIALOGS_INFO_CHANGED_EVENT, function (e) {
     dialogsInfoChangedEvents.push(e.info);
 });
 
+/*eslint-disable no-alert*/
 test('Dialogs info changed event (init without info)', function () {
     dialogsAPI.init();
 
@@ -50,7 +51,8 @@ test('Dialogs info changed event (init without info)', function () {
 });
 
 test('Dialogs info changed event (init with info)', function () {
-    var info              = createDefaultDialogsInfo();
+    var info = createDefaultDialogsInfo();
+
     info.expectAlertCount = 1;
 
     dialogsAPI.init(info);
@@ -73,7 +75,8 @@ test('Unexpected dialog errors', function () {
 });
 
 test('Init with expected dialogs', function () {
-    var info                      = createDefaultDialogsInfo();
+    var info = createDefaultDialogsInfo();
+
     info.expectAlertCount         = 1;
     info.expectConfirmCount       = 2;
     info.expectPromptCount        = 2;
@@ -137,7 +140,8 @@ test('Handle dialogs', function () {
 });
 
 test('Unexpected dialog error when there are several dialogs', function () {
-    var info              = createDefaultDialogsInfo();
+    var info = createDefaultDialogsInfo();
+
     info.expectAlertCount = 1;
 
     dialogsAPI.init(info);
@@ -154,7 +158,8 @@ test('Unexpected dialog error when there are several dialogs', function () {
 });
 
 test('Was not expected dialog error', function () {
-    var info                = createDefaultDialogsInfo();
+    var info = createDefaultDialogsInfo();
+
     info.expectAlertCount   = 1;
     info.expectConfirmCount = 1;
     info.expectPromptCount  = 1;
@@ -170,7 +175,8 @@ test('Was not expected dialog error', function () {
 });
 
 test('Reset handlers', function () {
-    var info              = createDefaultDialogsInfo();
+    var info = createDefaultDialogsInfo();
+
     info.expectAlertCount = 1;
 
     dialogsAPI.init(info);
@@ -203,3 +209,4 @@ test('Check unexpected dialogs', function () {
     equal(unexpectedDialogErrors[1].message, 'Confirm message');
     equal(unexpectedDialogErrors[2].message, 'Prompt message');
 });
+/*eslint-enable no-alert*/

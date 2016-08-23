@@ -5,15 +5,14 @@ var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
 var COMMAND              = testCafeLegacyRunner.get('../test-run/command');
 var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
 var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
-var transport            = testCafeLegacyRunner.get('./transport');
 var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
 
-var stepIterator            = null,
-    nextStep                = 0,
-    stepsSharedData         = null,
-    states                  = [],
-    onError                 = null,
-    onStepIteratorCompleted = null;
+var stepIterator            = null;
+var nextStep                = 0;
+var stepsSharedData         = null;
+var states                  = [];
+var onError                 = null;
+var onStepIteratorCompleted = null;
 
 QUnit.testStart(function () {
     stepIterator            = new StepIterator();
@@ -285,7 +284,7 @@ $(document).ready(function () {
             states.push('step' + SETTINGS.CURRENT_TEST_STEP_NAME + '_done');
         };
 
-        stepIterator.setGlobalWaitFor(function (callback) {
+        stepIterator.setGlobalWaitFor(function () {
             states.push('step' + SETTINGS.CURRENT_TEST_STEP_NAME + '_pre_setup');
         }, 1000);
 
@@ -311,8 +310,8 @@ $(document).ready(function () {
 
     module('Regression');
     test('T162970 - Delays between steps are very long on the github.com page', function () {
-        var $a          = $('<a href="http://test.org">Link</a>').appendTo('body'),
-            clickRaised = false;
+        var $a          = $('<a href="http://test.org">Link</a>').appendTo('body');
+        var clickRaised = false;
 
         stepIterator._setupUnloadHandlers();
 

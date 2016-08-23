@@ -18,57 +18,39 @@ initAutomation();
 
 var Promise      = hammerhead.Promise;
 var stepIterator = new StepIterator();
+
 actionsAPI.init(stepIterator);
 
 $(document).ready(function () {
-    StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
-        var seriesActionsRun = function (elements, callback) {
-            window.async.forEachSeries(
-                elements,
-                function (element, seriaCallback) {
-                    action(element, seriaCallback);
-                },
-                function () {
-                    callback();
-                });
+    var asyncActionCallback;
+    var currentErrorType   = null;
+    var currentSourceIndex = null;
+    var $input;
+
+    //constants
+    var TEST_ELEMENT_CLASS = 'testElement';
+    var TEST_TIMEOUT       = 2000;
+
+    //utils
+    var runAsyncTest = function (actions, assertions, timeout, delayBeforeAssertions) {
+        var timeoutId        = null;
+        var callbackFunction = function () {
+            clearTimeout(timeoutId);
+            assertions();
+            start();
         };
 
-        runArgumentsIterator(items, seriesActionsRun, asyncActionCallback);
+        asyncActionCallback = function () {
+            window.setTimeout(callbackFunction, delayBeforeAssertions || 0);
+        };
+        actions();
+        timeoutId = setTimeout(function () {
+            callbackFunction = function () {
+            };
+            ok(false, 'Timeout is exceeded');
+            start();
+        }, timeout);
     };
-
-    stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
-        stepIterator.state.stoppedOnFail = false;
-        currentErrorType                 = err.type;
-        currentSourceIndex               = err.__sourceIndex;
-    });
-
-    var asyncActionCallback,
-        currentErrorType   = null,
-        currentSourceIndex = null,
-        $input,
-
-        //constants
-        TEST_ELEMENT_CLASS = 'testElement',
-        TEST_TIMEOUT       = 2000,
-
-        //utils
-        runAsyncTest       = function (actions, assertions, timeout, delayBeforeAssertions) {
-            var callbackFunction = function () {
-                clearTimeout(timeoutId);
-                assertions();
-                start();
-            };
-            asyncActionCallback  = function () {
-                window.setTimeout(callbackFunction, delayBeforeAssertions || 0);
-            };
-            actions();
-            var timeoutId = setTimeout(function () {
-                callbackFunction = function () {
-                };
-                ok(false, 'Timeout is exceeded');
-                start();
-            }, timeout);
-        };
 
     var createIFrame = function (src) {
         var $iframe = $('<iframe/>')
@@ -98,6 +80,27 @@ $(document).ready(function () {
             window.setTimeout(resolve, ms);
         });
     };
+
+    StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
+        var seriesActionsRun = function (elements, callback) {
+            window.async.forEachSeries(
+                elements,
+                function (element, seriaCallback) {
+                    action(element, seriaCallback);
+                },
+                function () {
+                    callback();
+                });
+        };
+
+        runArgumentsIterator(items, seriesActionsRun, asyncActionCallback);
+    };
+
+    stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
+        stepIterator.state.stoppedOnFail = false;
+        currentErrorType                 = err.type;
+        currentSourceIndex               = err.__sourceIndex;
+    });
 
     //tests
     QUnit.testStart(function () {

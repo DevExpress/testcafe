@@ -33,6 +33,38 @@ function onDocumentMouseDown (e) {
         collapseOptionList();
 }
 
+function clickOnOption (optionIndex, isOptionDisabled) {
+    var curSelectIndex   = curSelectEl.selectedIndex;
+    var realOption       = curSelectEl.getElementsByTagName('option')[optionIndex];
+    var clickLeadChanges = !isOptionDisabled && optionIndex !== curSelectIndex;
+    var isMobileBrowser  = browserUtils.isSafari && browserUtils.hasTouchEvents || browserUtils.isAndroid;
+
+    if (clickLeadChanges && !browserUtils.isIE)
+        curSelectEl.selectedIndex = optionIndex;
+
+    if (!browserUtils.isFirefox && !browserUtils.isIE && clickLeadChanges)
+        eventSimulator.change(curSelectEl);
+
+    if (browserUtils.isFirefox || browserUtils.isIE)
+        eventSimulator.mousedown(browserUtils.isFirefox ? realOption : curSelectEl);
+
+    if (!isMobileBrowser)
+        eventSimulator.mouseup(browserUtils.isFirefox ? realOption : curSelectEl);
+
+    if ((browserUtils.isFirefox || browserUtils.isIE) && clickLeadChanges) {
+        if (browserUtils.isIE)
+            curSelectEl.selectedIndex = optionIndex;
+
+        eventSimulator.change(curSelectEl);
+    }
+
+    if (!isMobileBrowser)
+        eventSimulator.click(browserUtils.isFirefox || browserUtils.isIE ? realOption : curSelectEl);
+
+    if (!isOptionDisabled)
+        collapseOptionList();
+}
+
 function createOption (realOption, parent) {
     var option           = document.createElement('div');
     var isOptionDisabled = realOption.disabled || domUtils.getTagName(realOption.parentElement) === 'optgroup' &&
@@ -47,43 +79,13 @@ function createOption (realOption, parent) {
         styleUtils.set(option, 'color', styleUtils.get(realOption, 'color'));
     }
 
-    if (isOptionDisabled && browserUtils.isWebKit) {
-        eventUtils.bind(option, 'click', function () {
-            return false;
-        });
-    }
+    if (isOptionDisabled && browserUtils.isWebKit)
+        eventUtils.bind(option, 'click', () => false);
     else {
         eventUtils.bind(option, 'click', function () {
-            var curSelectIndex   = curSelectEl.selectedIndex;
-            var optionIndex      = arrayUtils.indexOf(options, this);
-            var option           = curSelectEl.getElementsByTagName('option')[optionIndex];
-            var clickLeadChanges = !isOptionDisabled && optionIndex !== curSelectIndex;
-            var isMobileBrowser  = browserUtils.isSafari && browserUtils.hasTouchEvents || browserUtils.isAndroid;
+            var optionIndex = arrayUtils.indexOf(options, this);
 
-            if (clickLeadChanges && !browserUtils.isIE)
-                curSelectEl.selectedIndex = optionIndex;
-
-            if (!browserUtils.isFirefox && !browserUtils.isIE && clickLeadChanges)
-                eventSimulator.change(curSelectEl);
-
-            if (browserUtils.isFirefox || browserUtils.isIE)
-                eventSimulator.mousedown(browserUtils.isFirefox ? option : curSelectEl);
-
-            if (!isMobileBrowser)
-                eventSimulator.mouseup(browserUtils.isFirefox ? option : curSelectEl);
-
-            if ((browserUtils.isFirefox || browserUtils.isIE) && clickLeadChanges) {
-                if (browserUtils.isIE)
-                    curSelectEl.selectedIndex = optionIndex;
-
-                eventSimulator.change(curSelectEl);
-            }
-
-            if (!isMobileBrowser)
-                eventSimulator.click(browserUtils.isFirefox || browserUtils.isIE ? option : curSelectEl);
-
-            if (!isOptionDisabled)
-                collapseOptionList();
+            clickOnOption(optionIndex, isOptionDisabled);
         });
     }
 
@@ -142,7 +144,7 @@ export function expandOptionList (select) {
 
     createChildren(selectChildren, optionList);
 
-    window.setTimeout(function () {
+    window.setTimeout(() => {
         eventUtils.bind(document, 'mousedown', onDocumentMouseDown);
     }, 0);
 
@@ -230,8 +232,8 @@ export function getSelectChildCenter (child) {
         };
     }
 
-    var optionHeight   = styleUtils.getOptionHeight(select),
-        childRectangle = positionUtils.getElementRectangle(child);
+    var optionHeight   = styleUtils.getOptionHeight(select);
+    var childRectangle = positionUtils.getElementRectangle(child);
 
     return {
         x: Math.round(childRectangle.left + childRectangle.width / 2),
@@ -244,23 +246,23 @@ export function switchOptionsByKeys (element, command) {
     var optionListHidden = !styleUtils.hasDimensions(shadowUI.select('.' + OPTION_LIST_CLASS)[0]);
 
     if (/down|up/.test(command) ||
-        (!browserUtils.isIE && (selectSize <= 1 || browserUtils.isFirefox) &&
-         (optionListHidden || browserUtils.isFirefox) && /left|right/.test(command))) {
-        var options        = element.querySelectorAll('option');
+        !browserUtils.isIE && (selectSize <= 1 || browserUtils.isFirefox) &&
+        (optionListHidden || browserUtils.isFirefox) && /left|right/.test(command)) {
+        var realOptions    = element.querySelectorAll('option');
         var enabledOptions = [];
 
-        for (var i = 0; i < options.length; i++) {
-            var parent = options[i].parentElement;
+        for (var i = 0; i < realOptions.length; i++) {
+            var parent = realOptions[i].parentElement;
 
-            if (!options[i].disabled && !(domUtils.getTagName(parent) === 'optgroup' && parent.disabled))
-                enabledOptions.push(options[i]);
+            if (!realOptions[i].disabled && !(domUtils.getTagName(parent) === 'optgroup' && parent.disabled))
+                enabledOptions.push(realOptions[i]);
         }
 
-        var curSelectedOptionIndex = arrayUtils.indexOf(enabledOptions, options[element.selectedIndex]);
+        var curSelectedOptionIndex = arrayUtils.indexOf(enabledOptions, realOptions[element.selectedIndex]);
         var nextIndex              = curSelectedOptionIndex + (/down|right/.test(command) ? 1 : -1);
 
         if (nextIndex >= 0 && nextIndex < enabledOptions.length) {
-            element.selectedIndex = arrayUtils.indexOf(options, enabledOptions[nextIndex]);
+            element.selectedIndex = arrayUtils.indexOf(realOptions, enabledOptions[nextIndex]);
             eventSimulator.change(element);
         }
     }

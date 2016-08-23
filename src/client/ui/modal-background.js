@@ -43,9 +43,8 @@ function createBackground () {
 
 //Behavior
 function adjustLoadingTextPos () {
-    var wHeight = styleUtils.getHeight(window),
-        wWidth  = styleUtils.getWidth(window);
-
+    var wHeight           = styleUtils.getHeight(window);
+    var wWidth            = styleUtils.getWidth(window);
     var loadingTextHidden = !styleUtils.hasDimensions(loadingTextDiv);
 
     if (loadingTextHidden) {
@@ -66,8 +65,8 @@ function adjustLoadingTextPos () {
 
 function initSizeAdjustments () {
     var adjust = function () {
-        var wHeight = styleUtils.getHeight(window),
-            wWidth  = styleUtils.getWidth(window);
+        var wHeight = styleUtils.getHeight(window);
+        var wWidth  = styleUtils.getWidth(window);
 
         styleUtils.set(backgroundDiv, 'width', wWidth + 'px');
         styleUtils.set(backgroundDiv, 'height', wHeight + 'px');

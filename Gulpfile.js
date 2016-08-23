@@ -159,15 +159,8 @@ gulp.task('lint', function () {
     return gulp
         .src([
             'src/**/*.js',
-
-            // TODO: fix linting in client scripts completely
-            '!src/client/core/utils/**/*.js',
-            '!src/client/ui/**/*.js',
-
             'test/**/*.js',
             '!test/client/vendor/**/*.*',
-            '!test/client/legacy-fixtures/**/*.js',
-
             'Gulpfile.js'
         ])
         .pipe(eslint())

@@ -15,4 +15,4 @@ export default function sendRequestToFrame (msg, responseCmd, receiverWindow) {
         messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, onMessage);
         messageSandbox.sendServiceMsg(msg, receiverWindow);
     });
-};
+}

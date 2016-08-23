@@ -41,9 +41,8 @@ EventEmitter.prototype.emit = function (evt) {
 EventEmitter.prototype.off = function (evt, listener) {
     var listeners = this.eventsListeners[evt];
 
-    if (listeners) {
+    if (listeners)
         this.eventsListeners[evt] = filter(listeners, item => item !== listener);
-    }
 };
 
 EventEmitter.prototype.on = function (evt, listener) {

@@ -8,197 +8,200 @@ var initAutomation       = testCafeLegacyRunner.get('./init-automation');
 initAutomation();
 
 var stepIterator = new StepIterator();
+
 actionsAPI.init(stepIterator);
 
 $(document).ready(function () {
-        StepIterator.prototype.asyncAction = function (action) {
-            action(asyncActionCallback);
+    var asyncActionCallback;
+    var pageShortTimeoutDelay   = 500;
+    var pageShortTimeoutExpired = false;
+    var pageShortTimeoutId      = null;
+
+    var pageLongTimeoutDelay   = 1000;
+    var pageLongTimeoutExpired = false;
+    var pageLongTimeoutId      = null;
+
+    var currentErrorType   = null;
+    var currentSourceIndex = null;
+    //constants
+    var SHORT_DELAY        = 10;
+    var LONG_DELAY         = 1050;
+
+    //utils
+    var runAsyncTest = function (actions, assertions, timeout) {
+        var timeoutId        = null;
+        var callbackFunction = function () {
+            clearTimeout(timeoutId);
+            assertions();
+            start();
         };
 
-        stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
-            stepIterator.state.stoppedOnFail = false;
-            currentErrorType                 = err.type;
-            currentSourceIndex               = err.__sourceIndex;
-        });
+        asyncActionCallback = function () {
+            callbackFunction();
+        };
 
-        var pageShortTimeoutDelay   = 500,
-            pageShortTimeoutExpired = false,
-            pageShortTimeoutId      = null,
-
-            pageLongTimeoutDelay    = 1000,
-            pageLongTimeoutExpired  = false,
-            pageLongTimeoutId       = null,
-
-            currentErrorType        = null,
-            currentSourceIndex      = null,
-            //constants
-            SHORT_DELAY             = 10,
-            LONG_DELAY              = 1050,
-
-            //utils
-            asyncActionCallback,
-
-            runAsyncTest            = function (actions, assertions, timeout) {
-                var callbackFunction = function () {
-                    clearTimeout(timeoutId);
-                    assertions();
-                    start();
-                };
-                asyncActionCallback  = function () {
-                    callbackFunction();
-                };
-                stepIterator.callWithSharedDataContext(actions);
-                var timeoutId = setTimeout(function () {
-                    callbackFunction = function () {
-                    };
-                    ok(false, 'Timeout is exceeded');
-                    start();
-                }, timeout);
+        stepIterator.callWithSharedDataContext(actions);
+        timeoutId = setTimeout(function () {
+            callbackFunction = function () {
             };
 
-        //tests
-        QUnit.testStart(function () {
-            asyncActionCallback = function () {
-            };
-            //set page timeouts
-            pageShortTimeoutId  = window.setTimeout(function () {
-                pageShortTimeoutExpired = true;
-            }, pageShortTimeoutDelay);
+            ok(false, 'Timeout is exceeded');
+            start();
+        }, timeout);
+    };
 
-            pageLongTimeoutId = window.setTimeout(function () {
-                pageLongTimeoutExpired = true;
-            }, pageLongTimeoutDelay);
-        });
+    StepIterator.prototype.asyncAction = function (action) {
+        action(asyncActionCallback);
+    };
 
-        QUnit.testDone(function () {
-            currentErrorType   = null;
-            currentSourceIndex = null;
+    stepIterator.on(StepIterator.ERROR_EVENT, function (err) {
+        stepIterator.state.stoppedOnFail = false;
+        currentErrorType                 = err.type;
+        currentSourceIndex               = err.__sourceIndex;
+    });
 
-            SETTINGS.ENABLE_SOURCE_INDEX = false;
+    //tests
+    QUnit.testStart(function () {
+        asyncActionCallback = function () {
+        };
+        //set page timeouts
+        pageShortTimeoutId  = window.setTimeout(function () {
+            pageShortTimeoutExpired = true;
+        }, pageShortTimeoutDelay);
 
-            pageShortTimeoutExpired = false;
-            window.clearTimeout(pageShortTimeoutId);
-            pageShortTimeoutId = null;
+        pageLongTimeoutId = window.setTimeout(function () {
+            pageLongTimeoutExpired = true;
+        }, pageLongTimeoutDelay);
+    });
 
-            pageLongTimeoutExpired = false;
-            window.clearTimeout(pageLongTimeoutId);
-            pageLongTimeoutId = null;
-        });
+    QUnit.testDone(function () {
+        currentErrorType   = null;
+        currentSourceIndex = null;
 
-        asyncTest('wait with short ms parameter', function () {
-            runAsyncTest(
-                function () {
-                    actionsAPI.wait(SHORT_DELAY);
-                },
-                function () {
-                    ok(!pageShortTimeoutExpired, 'page short timeout doesn\'t over during wait action');
-                    ok(!pageLongTimeoutExpired, 'page short timeout doesn\'t over during wait action');
-                },
-                2000
-            );
-        });
+        SETTINGS.ENABLE_SOURCE_INDEX = false;
 
-        asyncTest('wait with long ms parameter', function () {
-            runAsyncTest(
-                function () {
-                    actionsAPI.wait(LONG_DELAY);
-                },
-                function () {
-                    ok(pageLongTimeoutExpired, 'page short timeout was over during wait action');
-                    ok(pageLongTimeoutExpired, 'page long timeout was over during wait action');
-                },
-                2000
-            );
-        });
+        pageShortTimeoutExpired = false;
+        window.clearTimeout(pageShortTimeoutId);
+        pageShortTimeoutId = null;
 
-        asyncTest('wait with feasible condition and long ms parameter', function () {
-            runAsyncTest(
-                function () {
-                    var i         = 0;
-                    var condition = function () {
-                        ok(this.contextCheck, 'condition context is wrong');
-                        if (i !== 10) {
-                            i++;
-                            return false;
-                        }
-                        return true;
-                    };
+        pageLongTimeoutExpired = false;
+        window.clearTimeout(pageLongTimeoutId);
+        pageLongTimeoutId = null;
+    });
 
-                    this.contextCheck = true;
+    asyncTest('wait with short ms parameter', function () {
+        runAsyncTest(
+            function () {
+                actionsAPI.wait(SHORT_DELAY);
+            },
+            function () {
+                ok(!pageShortTimeoutExpired, 'page short timeout doesn\'t over during wait action');
+                ok(!pageLongTimeoutExpired, 'page short timeout doesn\'t over during wait action');
+            },
+            2000
+        );
+    });
 
-                    actionsAPI.wait(LONG_DELAY, condition);
-                },
-                function () {
-                    ok(pageShortTimeoutExpired, 'page short timeout was over during wait action');
-                    ok(!pageLongTimeoutExpired, 'page timeout doesn\'t over during wait action');
-                },
-                2000
-            );
-        });
+    asyncTest('wait with long ms parameter', function () {
+        runAsyncTest(
+            function () {
+                actionsAPI.wait(LONG_DELAY);
+            },
+            function () {
+                ok(pageLongTimeoutExpired, 'page short timeout was over during wait action');
+                ok(pageLongTimeoutExpired, 'page long timeout was over during wait action');
+            },
+            2000
+        );
+    });
 
-        asyncTest('wait with not feasible condition and long ms parameter', function () {
-            runAsyncTest(
-                function () {
-                    var i         = 0;
-                    var condition = function () {
+    asyncTest('wait with feasible condition and long ms parameter', function () {
+        runAsyncTest(
+            function () {
+                var i         = 0;
+                var condition = function () {
+                    ok(this.contextCheck, 'condition context is wrong');
+                    if (i !== 10) {
+                        i++;
                         return false;
-                    };
+                    }
+                    return true;
+                };
 
-                    actionsAPI.wait(LONG_DELAY, condition);
-                },
-                function () {
-                    ok(pageShortTimeoutExpired, 'page short timeout was over during wait action');
-                    ok(pageLongTimeoutExpired, 'page timeout over over during wait action');
-                },
-                2000
-            );
-        });
+                this.contextCheck = true;
 
-        module('regression tests');
+                actionsAPI.wait(LONG_DELAY, condition);
+            },
+            function () {
+                ok(pageShortTimeoutExpired, 'page short timeout was over during wait action');
+                ok(!pageLongTimeoutExpired, 'page timeout doesn\'t over during wait action');
+            },
+            2000
+        );
+    });
 
-        asyncTest('not a number ms parameter raise error', function () {
-            SETTINGS.ENABLE_SOURCE_INDEX = true;
-            asyncActionCallback          = function () {
-            };
-            actionsAPI.wait('abc', '#567');
-            window.setTimeout(function () {
-                equal(currentErrorType, ERROR_TYPE.incorrectWaitActionMillisecondsArgument, 'correct error type sent');
-                equal(currentSourceIndex, 567);
-                start();
-            }, 500);
-        });
-
-        asyncTest('not a function second parameter not raise error', function () {
-            runAsyncTest(
-                function () {
-                    actionsAPI.wait(SHORT_DELAY, 'abc');
-                },
-                function () {
-                    ok(!pageShortTimeoutExpired, 'page short timeout doesn\'t over during wait action');
-                    ok(!pageLongTimeoutExpired, 'page short timeout doesn\'t over during wait action');
-                },
-                2000
-            );
-        });
-
-        asyncTest('mixed up settings raise error', function () {
-            SETTINGS.ENABLE_SOURCE_INDEX = true;
-            asyncActionCallback          = function () {
-            };
-            var i                        = 0;
-            var condition                = function () {
-                if (i !== 10) {
-                    i++;
+    asyncTest('wait with not feasible condition and long ms parameter', function () {
+        runAsyncTest(
+            function () {
+                var condition = function () {
                     return false;
-                }
-                return true;
-            };
-            actionsAPI.wait(condition, SHORT_DELAY, '#90');
-            window.setTimeout(function () {
-                equal(currentErrorType, ERROR_TYPE.incorrectWaitActionMillisecondsArgument, 'correct error type sent');
-                equal(currentSourceIndex, 90);
-                start();
-            }, 500);
-        });
-    }
-);
+                };
+
+                actionsAPI.wait(LONG_DELAY, condition);
+            },
+            function () {
+                ok(pageShortTimeoutExpired, 'page short timeout was over during wait action');
+                ok(pageLongTimeoutExpired, 'page timeout over over during wait action');
+            },
+            2000
+        );
+    });
+
+    module('regression tests');
+
+    asyncTest('not a number ms parameter raise error', function () {
+        SETTINGS.ENABLE_SOURCE_INDEX = true;
+        asyncActionCallback          = function () {
+        };
+        actionsAPI.wait('abc', '#567');
+        window.setTimeout(function () {
+            equal(currentErrorType, ERROR_TYPE.incorrectWaitActionMillisecondsArgument, 'correct error type sent');
+            equal(currentSourceIndex, 567);
+            start();
+        }, 500);
+    });
+
+    asyncTest('not a function second parameter not raise error', function () {
+        runAsyncTest(
+            function () {
+                actionsAPI.wait(SHORT_DELAY, 'abc');
+            },
+            function () {
+                ok(!pageShortTimeoutExpired, 'page short timeout doesn\'t over during wait action');
+                ok(!pageLongTimeoutExpired, 'page short timeout doesn\'t over during wait action');
+            },
+            2000
+        );
+    });
+
+    asyncTest('mixed up settings raise error', function () {
+        SETTINGS.ENABLE_SOURCE_INDEX = true;
+        asyncActionCallback          = function () {
+        };
+        var i                        = 0;
+        var condition                = function () {
+            if (i !== 10) {
+                i++;
+                return false;
+            }
+            return true;
+        };
+
+        actionsAPI.wait(condition, SHORT_DELAY, '#90');
+        window.setTimeout(function () {
+            equal(currentErrorType, ERROR_TYPE.incorrectWaitActionMillisecondsArgument, 'correct error type sent');
+            equal(currentSourceIndex, 90);
+            start();
+        }, 500);
+    });
+});

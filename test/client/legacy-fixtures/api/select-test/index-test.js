@@ -3,7 +3,6 @@ var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var domUtils      = testCafeCore.get('./utils/dom');
-var style         = testCafeCore.get('./utils/style');
 var textSelection = testCafeCore.get('./utils/text-selection');
 
 var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
@@ -13,6 +12,7 @@ var actionsAPI           = testCafeLegacyRunner.get('./api/actions');
 var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
 
 var stepIterator = new StepIterator();
+
 actionsAPI.init(stepIterator);
 
 var initAutomation = testCafeLegacyRunner.get('./init-automation');
@@ -27,8 +27,11 @@ var correctTestWaitingTime = function (time) {
 };
 
 $(document).ready(function () {
-    var actionTargetWaitingCounter = 0,
-        actionRunCounter           = 0;
+    var asyncActionCallback;
+    var actionTargetWaitingCounter = 0;
+    var actionRunCounter           = 0;
+    var currentErrorType           = null;
+    var currentSourceIndex         = null;
 
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
         var seriesActionsRun = function (elements, callback) {
@@ -57,9 +60,6 @@ $(document).ready(function () {
         stepIterator.state.stoppedOnFail = false;
         currentErrorType                 = err.type;
         currentSourceIndex               = err.__sourceIndex;
-
-        if (err.element)
-            currentErrorElement = err.element;
     });
 
     //constants
@@ -72,18 +72,12 @@ $(document).ready(function () {
     var startSelectEvent = browserUtils.hasTouchEvents ? 'ontouchstart' : 'onmousedown';
     var endSelectEvent   = browserUtils.hasTouchEvents ? 'ontouchend' : 'onmouseup';
 
-    var currentErrorType    = null;
-    var currentSourceIndex  = null;
-    var currentErrorElement = null;
-
     var mousedownOnInput    = false;
     var mouseupOnInput      = false;
     var mousedownOnTextarea = false;
     var mouseupOnTextarea   = false;
 
     //utils
-    var asyncActionCallback;
-
     function setValueToTextarea (value) {
         var textarea = $(TEXTAREA_SELECTOR)[0];
 
@@ -110,18 +104,16 @@ $(document).ready(function () {
         var el            = $el[0];
         var startPosition = inverse ? end : start;
 
-        if (el.setSelectionRange) {
+        if (el.setSelectionRange)
             el.setSelectionRange(startPosition, startPosition);
-        }
         else {
             el.selectionStart = startPosition;
             el.selectionEnd   = startPosition;
         }
 
         //NOTE: select
-        if (el.setSelectionRange) {
+        if (el.setSelectionRange)
             el.setSelectionRange(start, end, inverse ? 'backward' : 'forward');
-        }
         else {
             el.selectionStart = start;
             el.selectionEnd   = end;
@@ -197,17 +189,21 @@ $(document).ready(function () {
     }
 
     function runAsyncTest (actions, assertions, timeout) {
+        var timeoutId = null;
+
         var callbackFunction = function () {
             clearTimeout(timeoutId);
             assertions();
 
             start();
         };
-        asyncActionCallback  = function () {
+
+        asyncActionCallback = function () {
             callbackFunction();
         };
         actions();
-        var timeoutId = setTimeout(function () {
+
+        timeoutId = setTimeout(function () {
             callbackFunction = function () {
             };
             ok(false, 'Timeout is exceeded');
@@ -236,7 +232,6 @@ $(document).ready(function () {
 
     QUnit.testDone(function () {
         currentErrorType    = null;
-        currentErrorElement = null;
         currentSourceIndex  = null;
 
         SETTINGS.ENABLE_SOURCE_INDEX = false;
@@ -316,8 +311,8 @@ $(document).ready(function () {
     });
 
     asyncTest('and negative offset as a parameters', function () {
-        var $input      = $(INPUT_SELECTOR),
-            valueLength = $input[0].value.length;
+        var $input      = $(INPUT_SELECTOR);
+        var valueLength = $input[0].value.length;
 
         runAsyncTest(
             function () {
@@ -442,8 +437,8 @@ $(document).ready(function () {
     });
 
     asyncTest('negative offset as a parameters', function () {
-        var $textarea   = $(TEXTAREA_SELECTOR),
-            valueLength = null;
+        var $textarea   = $(TEXTAREA_SELECTOR);
+        var valueLength = null;
 
         runAsyncTest(
             function () {
@@ -502,9 +497,9 @@ $(document).ready(function () {
     });
 
     asyncTest('startLine, startPos less than endLine, endPos as a parameters', function () {
-        var $textarea     = $(TEXTAREA_SELECTOR),
-            startPosition = null,
-            endPosition   = null;
+        var $textarea     = $(TEXTAREA_SELECTOR);
+        var startPosition = null;
+        var endPosition   = null;
 
         runAsyncTest(
             function () {
@@ -526,9 +521,9 @@ $(document).ready(function () {
     });
 
     asyncTest('startLine, startPos more than endLine, endPos as a parameters', function () {
-        var $textarea     = $(TEXTAREA_SELECTOR),
-            startPosition = null,
-            endPosition   = null;
+        var $textarea     = $(TEXTAREA_SELECTOR);
+        var startPosition = null;
+        var endPosition   = null;
 
         runAsyncTest(
             function () {
@@ -550,8 +545,8 @@ $(document).ready(function () {
     });
 
     asyncTest('startLine, startPos equal endLine, endPos as a parameters', function () {
-        var $textarea      = $(TEXTAREA_SELECTOR),
-            selectPosition = null;
+        var $textarea      = $(TEXTAREA_SELECTOR);
+        var selectPosition = null;
 
         runAsyncTest(
             function () {
@@ -572,9 +567,9 @@ $(document).ready(function () {
     });
 
     asyncTest('startLine, startPos and endLine as a parameters', function () {
-        var $textarea     = $(TEXTAREA_SELECTOR),
-            textareaValue = '123456789abcd\nefj\nqwerty test cafe',
-            startPosition = null;
+        var $textarea     = $(TEXTAREA_SELECTOR);
+        var textareaValue = '123456789abcd\nefj\nqwerty test cafe';
+        var startPosition = null;
 
         runAsyncTest(
             function () {

@@ -8,6 +8,7 @@ var actionsAPI     = testCafeLegacyRunner.get('./api/actions');
 initAutomation();
 
 var stepIterator = new StepIterator();
+
 actionsAPI.init(stepIterator);
 
 var errorRaised = false;
@@ -79,11 +80,10 @@ $(document).ready(function () {
 
         setupTestIterator(actionCallback);
 
-        var id       = 'element',
-            $element = null;
+        var id = 'element';
 
         window.setTimeout(function () {
-            $element = $('<input />').attr('id', id)
+            $('<input />').attr('id', id)
                 .addClass(TEST_ELEMENT_CLASS)
                 .click(function () {
                     clickRaised = true;
@@ -106,8 +106,8 @@ $(document).ready(function () {
 
         setupTestIterator(actionCallback);
 
-        var id       = 'element',
-            $element = null;
+        var id       = 'element';
+        var $element = null;
 
         window.setTimeout(function () {
             $element = $('<input />').attr('id', id)
@@ -135,12 +135,11 @@ $(document).ready(function () {
 
         setupTestIterator(actionCallback);
 
-        var id        = 'element',
-            $element1 = $('<input />').addClass(TEST_ELEMENT_CLASS).appendTo('body'),
-            $element2 = null;
+        var id        = 'element';
+        var $element1 = $('<input />').addClass(TEST_ELEMENT_CLASS).appendTo('body');
 
         window.setTimeout(function () {
-            $element2 = $('<input />').attr('id', id)
+            $('<input />').attr('id', id)
                 .addClass(TEST_ELEMENT_CLASS)
                 .click(function () {
                     clickRaised = true;
@@ -162,11 +161,10 @@ $(document).ready(function () {
 
         setupTestIterator(actionCallback);
 
-        var id        = 'element',
-            $element1 = null;
+        var id = 'element';
 
         window.setTimeout(function () {
-            $element1 = $('<input />').attr('id', id)
+            $('<input />').attr('id', id)
                 .addClass(TEST_ELEMENT_CLASS)
                 .click(function () {
                     clickRaised = true;

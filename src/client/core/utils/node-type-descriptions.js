@@ -12,4 +12,4 @@ export default {
     10: 'document type',
     11: 'document fragment',
     12: 'notation'
-}
+};

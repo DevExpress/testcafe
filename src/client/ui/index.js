@@ -33,4 +33,6 @@ Object.defineProperty(window, '%testCafeUI%', {
     value:        exports
 });
 
+/* eslint-disable no-undef */
 hammerhead.on(hammerhead.EVENTS.evalIframeScript, e => initTestCafeUI(e.iframe.contentWindow, true));
+/* eslint-enable no-undef */

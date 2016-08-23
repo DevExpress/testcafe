@@ -26,6 +26,7 @@ test('failed ok assertion', function () {
     SETTINGS.ENABLE_SOURCE_INDEX = true;
 
     var message = 'ok assertion';
+
     assertionsAPI.ok(false, message, '#213');
     equal(currentError.type, ERROR_TYPE.okAssertion, 'correct error type sent');
     equal(currentError.message, message, 'correct error message sent');
@@ -41,6 +42,7 @@ test('failed not ok assertion', function () {
     SETTINGS.ENABLE_SOURCE_INDEX = true;
 
     var message = 'notOk assertion';
+
     assertionsAPI.notOk(true, message, '#805');
     equal(currentError.type, ERROR_TYPE.notOkAssertion, 'correct error type sent');
     equal(currentError.message, message, 'correct error message sent');
@@ -56,6 +58,7 @@ test('failed equal assertion', function () {
     SETTINGS.ENABLE_SOURCE_INDEX = true;
 
     var message = 'equal assertion';
+
     assertionsAPI.eq(1, 2, message, '#289');
     equal(currentError.type, ERROR_TYPE.eqAssertion, 'correct error type sent');
     equal(currentError.message, message, 'correct error message sent');
@@ -71,6 +74,7 @@ test('failed equal assertion', function () {
     SETTINGS.ENABLE_SOURCE_INDEX = true;
 
     var message = 'not equal assertion';
+
     assertionsAPI.notEq(1, 1, message, '#514');
     equal(currentError.type, ERROR_TYPE.notEqAssertion, 'correct error type sent');
     equal(currentError.message, message, 'correct error message sent');
@@ -80,17 +84,17 @@ test('failed equal assertion', function () {
 module('deepEq tests');
 
 test('objects', function () {
-    var obj1 = { f1: 1 },
-        obj2 = obj1,
-        obj3 = { f2: 2 },
-        obj4 = { f1: 2 },
-        obj5 = { f1: { f2: 1 } },
-        obj6 = { f1: { f2: 2 } },
-        obj7 = { f1: { f3: 3 } };
+    var obj1 = { f1: 1 };
+    var obj2 = obj1;
+    var obj3 = { f2: 2 };
+    var obj4 = { f1: 2 };
+    var obj5 = { f1: { f2: 1 } };
+    var obj6 = { f1: { f2: 2 } };
+    var obj7 = { f1: { f3: 3 } };
 
-    var circularDep1 = {},
-        circularDep2 = {},
-        circularDep3 = {};
+    var circularDep1 = {};
+    var circularDep2 = {};
+    var circularDep3 = {};
 
     circularDep1.test = circularDep1;
     circularDep2.test = circularDep2;
@@ -147,8 +151,8 @@ test('objects', function () {
 });
 
 test('arrays', function () {
-    var arr1 = [1, 2, 3],
-        arr2 = [1, 2, 3];
+    var arr1 = [1, 2, 3];
+    var arr2 = [1, 2, 3];
 
     assertionsAPI.eq(arr1, arr2);
     equal(currentError, null, 'error not sent');
@@ -174,11 +178,11 @@ test('arrays', function () {
 });
 
 test('dates', function () {
-    var d1 = new Date(1, 2, 3),
-        d2 = new Date(1, 2, 3),
-        d3 = new Date(),
-        d4 = new Date(1),
-        d5 = new Date(2);
+    var d1 = new Date(1, 2, 3);
+    var d2 = new Date(1, 2, 3);
+    var d3 = new Date();
+    var d4 = new Date(1);
+    var d5 = new Date(2);
 
     assertionsAPI.eq(d1, d2);
     equal(currentError, null, 'error not sent');
@@ -197,11 +201,11 @@ test('dates', function () {
 });
 
 test('dom elements', function () {
-    var divString = '<div></div>',
-        $body     = $('body');
+    var divString = '<div></div>';
+    var $body     = $('body');
 
-    var div1 = $(divString).appendTo($body)[0],
-        div2 = $(divString).addClass('testClass').appendTo($body)[0];
+    var div1 = $(divString).appendTo($body)[0];
+    var div2 = $(divString).addClass('testClass').appendTo($body)[0];
 
     assertionsAPI.eq(div1, div1);
     equal(currentError, null, 'error not sent');
@@ -216,10 +220,10 @@ test('dom elements', function () {
 });
 
 test('jQuery objects', function () {
-    var commonClass   = 'common',
-        specificClass = 'specific',
-        divString     = '<div></div>',
-        $body         = $('body');
+    var commonClass   = 'common';
+    var specificClass = 'specific';
+    var divString     = '<div></div>';
+    var $body         = $('body');
 
     $(divString).addClass(commonClass).addClass(specificClass).appendTo($body);
     $(divString).addClass(commonClass).addClass(specificClass).appendTo($body);
@@ -256,10 +260,10 @@ test('jQuery objects', function () {
 });
 
 test('NodeLists', function () {
-    var commonClass   = 'common',
-        specificClass = 'specific',
-        divString     = '<div></div>',
-        $body         = $('body');
+    var commonClass   = 'common';
+    var specificClass = 'specific';
+    var divString     = '<div></div>';
+    var $body         = $('body');
 
     $(divString).addClass(commonClass).addClass(specificClass).appendTo($body);
     $(divString).addClass(commonClass).addClass(specificClass).appendTo($body);
@@ -302,8 +306,8 @@ test('null, undefined, false, true', function () {
     equal(currentError.expected, 'false');
     currentError = null;
 
-    var arr = [1, 2],
-        obj = { f1: 1 };
+    var arr = [1, 2];
+    var obj = { f1: 1 };
 
     assertionsAPI.eq(arr, obj);
     equal(currentError.type, ERROR_TYPE.eqAssertion);
@@ -324,9 +328,9 @@ test('functions', function () {
 });
 
 test('notDeepEq', function () {
-    var obj1 = { f1: 1 },
-        obj2 = { f1: 1 },
-        obj3 = { f2: 2 };
+    var obj1 = { f1: 1 };
+    var obj2 = { f1: 1 };
+    var obj3 = { f2: 2 };
 
     assertionsAPI.notEq(obj1, obj3);
     equal(currentError, null, 'error not sent');

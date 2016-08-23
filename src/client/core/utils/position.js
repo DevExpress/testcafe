@@ -4,6 +4,10 @@ import * as styleUtils from './style';
 import * as domUtils from './dom';
 
 
+export var getElementRectangle  = hammerhead.utils.position.getElementRectangle;
+export var getOffsetPosition    = hammerhead.utils.position.getOffsetPosition;
+export var offsetToClientCoords = hammerhead.utils.position.offsetToClientCoords;
+
 export function getIframeClientCoordinates (iframe) {
     var { left, top }       = getOffsetPosition(iframe);
     var clientPosition      = offsetToClientCoords({ x: left, y: top });
@@ -36,7 +40,8 @@ export function isElementVisible (el) {
 
         return mapContainer ? isElementVisible(mapContainer) : false;
     }
-    else if (styleUtils.isSelectVisibleChild(el)) {
+
+    if (styleUtils.isSelectVisibleChild(el)) {
         var select              = domUtils.getSelectParent(el);
         var childRealIndex      = domUtils.getChildVisibleIndex(select, el);
         var realSelectSizeValue = styleUtils.getSelectElementSize(select);
@@ -46,10 +51,11 @@ export function isElementVisible (el) {
 
         return optionVisibleIndex >= topVisibleIndex && optionVisibleIndex <= bottomVisibleIndex;
     }
-    else if (domUtils.isSVGElement(el))
+
+    if (domUtils.isSVGElement(el))
         return styleUtils.get(el, 'visibility') !== 'hidden' && styleUtils.get(el, 'display') !== 'none';
-    else
-        return styleUtils.hasDimensions(el) && styleUtils.get(el, 'visibility') !== 'hidden';
+
+    return styleUtils.hasDimensions(el) && styleUtils.get(el, 'visibility') !== 'hidden';
 }
 
 export function getClientDimensions (target) {
@@ -57,22 +63,24 @@ export function getClientDimensions (target) {
         var clientPoint = offsetToClientCoords(target);
 
         return {
+            width:  0,
+            height: 0,
+
             border: {
                 bottom: 0,
                 left:   0,
                 right:  0,
                 top:    0
             },
-            bottom: clientPoint.y,
-            height: 0,
-            left:   clientPoint.x,
-            right:  clientPoint.x,
             scroll: {
                 left: 0,
                 top:  0
             },
+
+            left:   clientPoint.x,
+            right:  clientPoint.x,
             top:    clientPoint.y,
-            width:  0
+            bottom: clientPoint.y
         };
     }
 
@@ -107,32 +115,38 @@ export function getClientDimensions (target) {
             elementTopPosition += clientOffset.y + iframeBorders.top;
 
             if (isHtmlElement) {
-                elementBorders.bottom = elementBorders.bottom + iframeBorders.bottom;
-                elementBorders.left   = elementBorders.left + iframeBorders.left;
-                elementBorders.right  = elementBorders.right + iframeBorders.right;
-                elementBorders.top    = elementBorders.top + iframeBorders.top;
+                elementBorders.bottom += iframeBorders.bottom;
+                elementBorders.left += iframeBorders.left;
+                elementBorders.right += iframeBorders.right;
+                elementBorders.top += iframeBorders.top;
             }
         }
     }
 
+    var rightScrollbarWidth = isHtmlElement || styleUtils.getInnerWidth(target) === target.clientWidth ?
+                              0 : domUtils.getScrollbarSize();
+
+    var bottomScrollbarHeight = isHtmlElement || styleUtils.getInnerHeight(target) === target.clientHeight ?
+                                0 : domUtils.getScrollbarSize();
+
     return {
-        border:    elementBorders,
-        bottom:    elementTopPosition + elementHeight,
-        height:    elementHeight,
-        left:      elementLeftPosition,
-        right:     elementLeftPosition + elementWidth,
-        scroll:    {
+        width:  elementWidth,
+        height: elementHeight,
+        left:   elementLeftPosition,
+        top:    elementTopPosition,
+        border: elementBorders,
+        bottom: elementTopPosition + elementHeight,
+        right:  elementLeftPosition + elementWidth,
+
+        scroll: {
             left: elementScroll.left,
             top:  elementScroll.top
         },
+
         scrollbar: {
-            right:  isHtmlElement ||
-                    styleUtils.getInnerWidth(target) === target.clientWidth ? 0 : domUtils.getScrollbarSize(),
-            bottom: isHtmlElement ||
-                    styleUtils.getInnerHeight(target) === target.clientHeight ? 0 : domUtils.getScrollbarSize()
-        },
-        top:       elementTopPosition,
-        width:     elementWidth
+            right:  rightScrollbarWidth,
+            bottom: bottomScrollbarHeight
+        }
     };
 }
 
@@ -143,8 +157,8 @@ export function containsOffset (el, offsetX, offsetY) {
     var maxX       = dimensions.scrollbar.right + dimensions.border.left + dimensions.border.right + width;
     var maxY       = dimensions.scrollbar.bottom + dimensions.border.top + dimensions.border.bottom + height;
 
-    return (typeof offsetX === 'undefined' || (offsetX >= 0 && maxX >= offsetX)) &&
-           (typeof offsetY === 'undefined' || ( offsetY >= 0 && maxY >= offsetY));
+    return (typeof offsetX === 'undefined' || offsetX >= 0 && maxX >= offsetX) &&
+           (typeof offsetY === 'undefined' || offsetY >= 0 && maxY >= offsetY);
 }
 
 export function getEventAbsoluteCoordinates (ev) {
@@ -173,13 +187,14 @@ export function getEventAbsoluteCoordinates (ev) {
 }
 
 export function getEventPageCoordinates (ev) {
-    var curCoordObject = /^touch/.test(ev.type) && ev.targetTouches ? (ev.targetTouches[0] ||
-                                                                       ev.changedTouches[0]) : ev;
+    var curCoordObject = /^touch/.test(ev.type) && ev.targetTouches ?
+                         ev.targetTouches[0] || ev.changedTouches[0] : ev;
 
-    if ((curCoordObject.pageX === null || (curCoordObject.pageX === 0 && curCoordObject.pageY === 0 &&
-                                           (curCoordObject.clientX !== 0 || curCoordObject.clientY !== 0))) &&
+    var bothPageCoordinatesAreZero      = curCoordObject.pageX === 0 && curCoordObject.pageY === 0;
+    var notBothClientCoordinatesAreZero = curCoordObject.clientX !== 0 || curCoordObject.clientY !== 0;
+
+    if ((curCoordObject.pageX === null || bothPageCoordinatesAreZero && notBothClientCoordinatesAreZero) &&
         curCoordObject.clientX !== null) {
-
         var currentDocument = domUtils.findDocument(ev.target || ev.srcElement);
         var html            = currentDocument.documentElement;
         var body            = currentDocument.body;
@@ -204,7 +219,8 @@ export function getElementFromPoint (x, y) {
     try {
         // Permission denied to access property 'getElementFromPoint' error in iframe
         el = func.call(document, x, y);
-    } catch (ex) {
+    }
+    catch (ex) {
         return null;
     }
 
@@ -303,7 +319,3 @@ export function getLineXByYCoord (startLinePoint, endLinePoint, y) {
     return Math.round(equationSlope * y + equationXIntercept);
 
 }
-
-export var getElementRectangle  = hammerhead.utils.position.getElementRectangle;
-export var getOffsetPosition    = hammerhead.utils.position.getOffsetPosition;
-export var offsetToClientCoords = hammerhead.utils.position.offsetToClientCoords;

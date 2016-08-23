@@ -1,10 +1,6 @@
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
 
-var testCafeCore  = window.getTestCafeModule('testCafeCore');
-var styleUtils    = testCafeCore.get('./utils/style');
-var positionUtils = testCafeCore.get('./utils/position');
-
 var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
 var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
 var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
@@ -15,6 +11,7 @@ var initAutomation       = testCafeLegacyRunner.get('./init-automation');
 initAutomation();
 
 var stepIterator = new StepIterator();
+
 actionsAPI.init(stepIterator);
 
 var correctTestWaitingTime = function (time) {
@@ -31,8 +28,65 @@ var TEST_COMPLETE_WAITING_TIMEOUT = 2000;
 actionsAPI.setElementAvailabilityWaitingTimeout(ELEMENT_WAITING_TIMEOUT);
 
 $(document).ready(function () {
-    var actionTargetWaitingCounter = 0,
-        actionRunCounter           = 0;
+    var actionTargetWaitingCounter = 0;
+    var actionRunCounter           = 0;
+
+    var $el                      = null;
+    var currentErrorType         = null;
+    var currentErrorElement      = null;
+    var currentActionSourceIndex = null;
+    //constants
+    var TEST_ELEMENT_CLASS       = 'testElement';
+
+    //utils
+    var asyncActionCallback;
+
+    var addInputElement = function (type, id, x, y) {
+        var elementString = ['<input type="', type, '" id="', id, '" value="', id, '" />'].join('');
+
+        return $(elementString)
+            .css({
+                position:   'absolute',
+                marginLeft: x + 'px',
+                marginTop:  y + 'px'
+            })
+            .addClass(type)
+            .addClass(TEST_ELEMENT_CLASS)
+            .appendTo('body');
+    };
+
+    var startNext = function () {
+        if (browserUtils.isIE) {
+            removeTestElements();
+            window.setTimeout(start, 30);
+        }
+        else
+            start();
+    };
+
+    var runAsyncTest = function (actions, assertions, timeout) {
+        var timeoutId        = null;
+        var callbackFunction = function () {
+            clearTimeout(timeoutId);
+            assertions();
+            startNext();
+        };
+
+        asyncActionCallback = function () {
+            callbackFunction();
+        };
+        actions();
+        timeoutId = setTimeout(function () {
+            callbackFunction = function () {
+            };
+            ok(false, 'Timeout is exceeded');
+            startNext();
+        }, timeout);
+    };
+
+    var removeTestElements = function () {
+        $('.' + TEST_ELEMENT_CLASS).remove();
+    };
 
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
         var seriesActionsRun = function (elements, callback) {
@@ -66,60 +120,6 @@ $(document).ready(function () {
             currentErrorElement = err.element;
     });
 
-    var $el                      = null,
-        currentErrorType         = null,
-        currentErrorElement      = null,
-        currentActionSourceIndex = null,
-        //constants
-        TEST_ELEMENT_CLASS       = 'testElement',
-
-        //utils
-        asyncActionCallback,
-
-        addInputElement          = function (type, id, x, y) {
-            var elementString = ['<input type="', type, '" id="', id, '" value="', id, '" />'].join('');
-            return $(elementString)
-                .css({
-                    position:   'absolute',
-                    marginLeft: x + 'px',
-                    marginTop:  y + 'px'
-                })
-                .addClass(type)
-                .addClass(TEST_ELEMENT_CLASS)
-                .appendTo('body');
-        },
-
-        runAsyncTest             = function (actions, assertions, timeout) {
-            var callbackFunction = function () {
-                clearTimeout(timeoutId);
-                assertions();
-                startNext();
-            };
-            asyncActionCallback  = function () {
-                callbackFunction();
-            };
-            actions();
-            var timeoutId = setTimeout(function () {
-                callbackFunction = function () {
-                };
-                ok(false, 'Timeout is exceeded');
-                startNext();
-            }, timeout);
-        },
-
-        startNext                = function () {
-            if (browserUtils.isIE) {
-                removeTestElements();
-                window.setTimeout(start, 30);
-            }
-            else
-                start();
-        },
-
-        removeTestElements       = function () {
-            $('.' + TEST_ELEMENT_CLASS).remove();
-        };
-
     $('<div></div>').css({ width: 1, height: 1500, position: 'absolute' }).appendTo('body');
     $('body').css('height', '1500px');
 
@@ -148,6 +148,7 @@ $(document).ready(function () {
 
     asyncTest('dom element as a parameter', function () {
         var clicked = false;
+
         runAsyncTest(
             function () {
                 $el.click(function () {
@@ -166,6 +167,7 @@ $(document).ready(function () {
 
     asyncTest('jQuery object as a parameter', function () {
         var clicked = false;
+
         runAsyncTest(
             function () {
                 $el.click(function () {
@@ -182,6 +184,7 @@ $(document).ready(function () {
 
     asyncTest('jQuery object with two elements as a parameter', function () {
         var clicksCount = 0;
+
         runAsyncTest(
             function () {
                 addInputElement('button', 'button2', 150, 150);
@@ -189,6 +192,7 @@ $(document).ready(function () {
                     .click(function () {
                         clicksCount++;
                     });
+
                 actionsAPI.click($elements);
             },
             function () {
@@ -201,8 +205,9 @@ $(document).ready(function () {
     });
 
     asyncTest('dom elements array as a parameter', function () {
-        var firstElementClickRaised  = false,
-            secondElementClickRaised = false;
+        var firstElementClickRaised  = false;
+        var secondElementClickRaised = false;
+
         runAsyncTest(
             function () {
                 $el.css({
@@ -210,6 +215,7 @@ $(document).ready(function () {
                     marginTop:  '120px'
                 });
                 var $el2 = addInputElement('button', 'button2', 150, 150);
+
                 $el.click(function () {
                     firstElementClickRaised = true;
                 });
@@ -229,6 +235,7 @@ $(document).ready(function () {
 
     asyncTest('jQuery objects array as a parameter', function () {
         var clicksCount = 0;
+
         runAsyncTest(
             function () {
                 $el.css({
@@ -237,6 +244,7 @@ $(document).ready(function () {
                 });
                 addInputElement('button', 'button2', 150, 150);
                 var $el3 = addInputElement('input', 'input1', 170, 170);
+
                 $('.' + TEST_ELEMENT_CLASS)
                     .click(function () {
                         clicksCount++;
@@ -251,9 +259,9 @@ $(document).ready(function () {
     });
 
     asyncTest('some elements created after click on the first one', function () {
-        var secondElementClicked = false,
-            thirdElementClicked  = false,
-            newTestClass         = 'newTestClass';
+        var secondElementClicked = false;
+        var thirdElementClicked  = false;
+        var newTestClass         = 'newTestClass';
 
         $el.click(function () {
             addInputElement('button', 'button2', 150, 150)
@@ -269,20 +277,22 @@ $(document).ready(function () {
                 });
         });
 
-        runAsyncTest(function () {
+        runAsyncTest(
+            function () {
                 actionsAPI.click(['.' + TEST_ELEMENT_CLASS, '.' + newTestClass]);
             },
             function () {
                 ok(secondElementClicked, 'second element clicked');
                 ok(thirdElementClicked, 'third element clicked');
             },
-            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT * 2));
+            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT * 2)
+        );
     });
 
     asyncTest('function as a first argument', function () {
-        var secondElementClicked = false,
-            thirdElementClicked  = false,
-            newTestClass         = 'newTestClass';
+        var secondElementClicked = false;
+        var thirdElementClicked  = false;
+        var newTestClass         = 'newTestClass';
 
         $el.click(function () {
             addInputElement('button', 'button2', 150, 150).addClass(newTestClass).click(function () {
@@ -292,17 +302,20 @@ $(document).ready(function () {
                 thirdElementClicked = true;
             });
         });
-        runAsyncTest(function () {
+        runAsyncTest(
+            function () {
                 var getArguments = function () {
                     return ['.' + TEST_ELEMENT_CLASS, '.' + newTestClass];
                 };
+
                 actionsAPI.click(getArguments);
             },
             function () {
                 ok(secondElementClicked, 'second element clicked');
                 ok(thirdElementClicked, 'third element clicked');
             },
-            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT));
+            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
+        );
     });
 
 

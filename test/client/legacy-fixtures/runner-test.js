@@ -9,6 +9,7 @@ var StepIterator         = testCafeLegacyRunner.get('./step-iterator');
 var SETTINGS             = testCafeLegacyRunner.get('./settings').get();
 
 var testRunner                    = null;
+var savedTakeScreenshots          = null;
 var savedTakeScreenshotsOnFails   = null;
 var savedAsyncServiceMsg          = null;
 var savedTransportFatalError      = null;
@@ -54,7 +55,7 @@ asyncTest('T204773 - TestCafe - The assertion in last step with inIFrame wrapper
 
     var assertionFailedMessageTime = null;
 
-    transport.asyncServiceMsg = function (msg, callback) {
+    transport.asyncServiceMsg = function (msg) {
         if (msg.cmd === COMMAND.assertionFailed)
             assertionFailedMessageTime = Date.now();
 

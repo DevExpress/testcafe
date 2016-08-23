@@ -33,7 +33,9 @@
 
         ok(!documentReadyCalled);
     });
+    /*eslint-disable no-undef*/
 }(_jQuery, _jQuery));
+/*eslint-enable no-undef*/
 
 
 /*NOTE: The function "noConflict" in our jQuery clears the variable window.jQuery, binding undefined for it,
