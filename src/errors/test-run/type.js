@@ -34,6 +34,7 @@ export default {
     actionCanNotFindFileToUploadError:                 'actionCanNotFindFileToUploadError',
     actionUnsupportedDeviceTypeError:                  'actionUnsupportedDeviceTypeError',
     actionIframeIsNotLoadedError:                      'actionIframeIsNotLoadedError',
+    actionElementNotIframeError:                       'actionElementNotIframeError',
     currentIframeIsNotLoadedError:                     'currentIframeIsNotLoadedError',
     currentIframeNotFoundError:                        'currentIframeNotFoundError',
     currentIframeIsInvisibleError:                     'currentIframeIsInvisibleError',

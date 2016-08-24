@@ -36,7 +36,7 @@ var ActionCanNotFindFileToUploadError                 = require('../../lib/error
 var ActionElementIsNotFileInputError                  = require('../../lib/errors/test-run').ActionElementIsNotFileInputError;
 var ActionUnsupportedDeviceTypeError                  = require('../../lib/errors/test-run').ActionUnsupportedDeviceTypeError;
 var ClientFunctionExecutionInterruptionError          = require('../../lib/errors/test-run').ClientFunctionExecutionInterruptionError;
-var ActionElementNotIframe                            = require('../../lib/errors/test-run').ActionElementNotIframe;
+var ActionElementNotIframeError                       = require('../../lib/errors/test-run').ActionElementNotIframeError;
 var ActionIframeIsNotLoadedError                      = require('../../lib/errors/test-run').ActionIframeIsNotLoadedError;
 var CurrentIframeIsNotLoadedError                     = require('../../lib/errors/test-run').CurrentIframeIsNotLoadedError;
 var CurrentIframeNotFoundError                        = require('../../lib/errors/test-run').CurrentIframeNotFoundError;
@@ -103,7 +103,9 @@ function assertErrorMessage (file, err) {
 
     expect(actual).eql(expectedMsg);
 
-    //NOTE: remove tested messages from list
+    // NOTE: check that the list of error types contains an
+    // error of this type and remove tested messages from the list
+    expect(untestedErrorTypes.indexOf(err.type) !== -1).to.be.ok;
     remove(untestedErrorTypes, err.type);
 }
 
@@ -170,7 +172,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "actionElementNotIframeError" message', function () {
-            assertErrorMessage('action-element-not-iframe-error', new ActionElementNotIframe());
+            assertErrorMessage('action-element-not-iframe-error', new ActionElementNotIframeError());
         });
 
         it('Should format "actionSelectorError" message', function () {

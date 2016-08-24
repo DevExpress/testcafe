@@ -20,7 +20,7 @@ import {
 import {
     UncaughtErrorOnPage,
     ClientFunctionExecutionInterruptionError,
-    ActionElementNotIframe,
+    ActionElementNotIframeError,
     ActionIframeIsNotLoadedError,
     ActionElementNotFoundError,
     ActionElementIsInvisibleError,
@@ -258,7 +258,7 @@ export default class Driver {
         return selectorExecutor.getResult()
             .then(iframe => {
                 if (!domUtils.isIframeElement(iframe))
-                    throw new ActionElementNotIframe();
+                    throw new ActionElementNotIframeError();
 
                 return this._ensureChildDriverLink(iframe.contentWindow, iframeErrorCtors.NotLoadedError);
             })
