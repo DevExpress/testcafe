@@ -91,7 +91,7 @@ export default class Capturer {
 
         this.testEntry.hasScreenshots = true;
 
-        // NOTE: generateThumbnail is not available on Linux yet. Keep tracking the https://github.com/DevExpress/testcafe-browser-tools/issues/12
+        // NOTE: generateThumbnail is not available on Linux yet. Subscribe to https://github.com/DevExpress/testcafe-browser-tools/issues/12 to keep track.
         if (!linux)
             await generateThumbnail(screenshotPath);
 
@@ -107,7 +107,7 @@ export default class Capturer {
 
         await this._takeScreenshot(screenshotPath, pageWidth, pageHeight);
 
-        // NOTE: generateThumbnail is not available on Linux yet. Keep tracking the https://github.com/DevExpress/testcafe-browser-tools/issues/12
+        // NOTE: generateThumbnail is not available on Linux yet. Subscribe to https://github.com/DevExpress/testcafe-browser-tools/issues/12 to keep track.
         if (!linux)
             await generateThumbnail(screenshotPath);
 
