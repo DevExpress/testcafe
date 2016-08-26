@@ -2,6 +2,7 @@
 layout: docs
 title: Navigate
 permalink: /documentation/test-api/actions/navigate.html
+checked: true
 ---
 # Navigate
 

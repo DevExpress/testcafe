@@ -2,14 +2,15 @@
 layout: docs
 title: Assertions
 permalink: /documentation/test-api/assertions.html
+checked: true
 ---
 # Assertions
 
-To check that the state of the tested webpage matches the one you expect, use *assertions*.
+To check if the state of the tested webpage matches the one you expect to see, use *assertions*.
 
-We ship no assertion library with TestCafe. You can choose whatever 3rd-party library you like.
+No assertion library is shipped with TestCafe, so you can choose whatever 3rd-party library you like.
 
-In this documentation, we use [Chai assertions, BDD-style](http://chaijs.com/api/bdd/) for demonstration.
+Examples in this documentation use [BDD-style Chai assertions](http://chaijs.com/api/bdd/) for demonstration purposes.
 
 > In order to make an assertion, you need to know the recent state of the webpage and its elements.
 > This means that you need to access the webpage on the client side. To learn how to do this,

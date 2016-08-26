@@ -2,6 +2,7 @@
 layout: docs
 title: Action Options
 permalink: /documentation/test-api/actions/action-options.html
+checked: true
 ---
 # Action Options
 
@@ -89,6 +90,6 @@ Parameter                      | Type    | Description                          
 `ctrl`, `alt`, `shift`, `meta` | Boolean | Indicate which modifier keys are to be pressed while typing.                                                                                          | `false`
 `offsetX`, `offsetY`           | Number  | Mouse pointer coordinates relative to the top-left corner of the target element. Define a point that is clicked to set input focus. Must be integers. | The center of the target element.
 `caretPos`                     | Number  | The initial caret position. Must be a positive integer or `0`.                                                                                        | The length of the input field content.
-`replace`                      | Boolean | `true` to remove the current text in the target element, and `false` to leave the text as is.                                                         | `false`
+`replace`                      | Boolean | `true` to remove the current text in the target element, and `false` to leave the text as it is.                                                         | `false`
 
 Typing action options are used in the [t.typeText](type-text.md) action.

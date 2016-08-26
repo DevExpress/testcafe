@@ -2,12 +2,13 @@
 layout: docs
 title: Test API
 permalink: /documentation/test-api/
+checked: true
 ---
 # Test API
 
-This section describes how test code is organized and the API used to manipulate the webpage and check its state.
+This section demonstrates how to organize test code and describes the API used to manipulate the webpage and check its state.
 
-This section contains the following topics:
+It contains the following subsections
 
 * [Test Code Structure](test-code-structure.md)
 * [Actions](actions/index.md)

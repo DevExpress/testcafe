@@ -2,6 +2,7 @@
 layout: docs
 title: Drag Element
 permalink: /documentation/test-api/actions/drag-element.html
+checked: true
 ---
 # Drag Element
 
@@ -25,7 +26,7 @@ Parameter              | Type                                              | Des
 `selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being dragged. See [Selecting Target Elements](index.md#selecting-target-elements).
 `dragOffsetX`          | Number                                            | An X-offset of the drop coordinates from the mouse pointer's initial position.  
 `dragOffsetY`          | Number                                            | An Y-offset of the drop coordinates from the mouse pointer's initial position.
-`options` *(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Mouse Action Options](action-options.md#mouse-action-options).
+`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Mouse Action Options](action-options.md#mouse-action-options).
 
 The following example demonstrates how to use the `t.drag` action with a slider.
 
@@ -63,9 +64,9 @@ Parameter              | Type                                              | Des
 ---------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------
 `selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being dragged. See [Selecting Target Elements](index.md#selecting-target-elements).
 `destinationSelector`  | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element that serves as the drop location. See [Selecting Target Elements](index.md#selecting-target-elements).  
-`options` *(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Mouse Action Options](action-options.md#mouse-action-options).
+`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Mouse Action Options](action-options.md#mouse-action-options).
 
-This sample shows how to drop an element into an area using the `t.dragToElement` action.
+This sample shows how to drop an element into a specific area using the `t.dragToElement` action.
 
 ```js
 import { expect } from 'chai';

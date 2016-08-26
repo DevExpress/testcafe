@@ -2,10 +2,11 @@
 layout: docs
 title: Pausing the Test
 permalink: /documentation/test-api/pausing-the-test.html
+checked: true
 ---
 # Pausing the Test
 
-Use the [test controller's](test-code-structure.md#test-controller) `wait` function to pause a test for the specified period of time.
+Use the [test controller's](test-code-structure.md#test-controller) `wait` function to pause a test for a specified period of time.
 
 ```text
 t.wait( timeout )

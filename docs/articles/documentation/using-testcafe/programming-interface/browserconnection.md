@@ -2,10 +2,11 @@
 layout: docs
 title: BrowserConnection Class
 permalink: /documentation/using-testcafe/programming-interface/browserconnection.html
+checked: true
 ---
 # BrowserConnection Class
 
-Connection to a remote browser.
+A connection to a remote browser.
 
 Created by the [testCafe.createBrowserConnection](testcafe.md#createbrowserconnection) function.
 
@@ -17,7 +18,7 @@ const testCafe         = await createTestCafe('localhost', 1337, 1338);
 
 const remoteConnection = await testcafe.createBrowserConnection();
 
-// Outputs remoteConnection.url to visit it from the remote browser.
+// Outputs remoteConnection.url so that it can be visited from the remote browser.
 console.log(remoteConnection.url);
 
 remoteConnection.once('ready', async () => {
@@ -32,19 +33,20 @@ remoteConnection.once('ready', async () => {
 
 ### url
 
-String. A URL that should be visited from a remote browser to connect.
+String. A URL that should be visited from a remote browser in order to connect it to the TestCafe server.
 
 ## Events
 
 ### ready
 
-Fires when a remote browser has been connected.
+Fires when a remote browser connects to the TestCafe server.
 
 ```js
 browserConnection.once('ready', callback)
 ```
 
-Typically, you do not need to wait for the `ready` event to fire.
+Typically, you can run tests without waiting for the `ready` event to fire.
 The [runner.run](runner.md#run) method automatically waits for all browser connections to be established.
-If this does not happen within **30** seconds, an error is thrown.
-Thus, you need to wait for the `ready` event only if there is a chance that any of your remote connections can take a significant amount of time (more than 30 sec) to establish.
+If remote browsers do not connect within **30** seconds, an error is thrown.
+Thus, you need to wait for the `ready` event only if there is a chance that any of your remote connections
+take more than 30 seconds to establish.
