@@ -2,7 +2,8 @@ import { join as joinPath, dirname } from 'path';
 import promisify from '../utils/promisify';
 import sanitizeFilename from 'sanitize-filename';
 import mkdirp from 'mkdirp';
-import { generateThumbnail } from 'testcafe-browser-natives';
+import { generateThumbnail } from 'testcafe-browser-tools';
+import { linux } from 'os-family';
 
 var ensureDir = promisify(mkdirp);
 
@@ -15,7 +16,7 @@ export default class Capturer {
         this.baseScreenshotsPath  = baseScreenshotsPath;
         this.testEntry            = testEntry;
         this.provider             = connection.provider;
-        this.id                   = connection.id;
+        this.browserId            = connection.id;
         this.baseDirName          = namingOptions.baseDirName;
         this.userAgentName        = namingOptions.userAgentName;
         this.testDirName          = Capturer._getTestDirName(namingOptions.testIndex, namingOptions.quarantineAttemptNum);
@@ -72,12 +73,12 @@ export default class Capturer {
         return { pathForReport, screenshotPath };
     }
 
-    async _takeScreenshot (pageInfo, filePath) {
+    async _takeScreenshot (filePath, pageWidth, pageHeight) {
         await ensureDir(dirname(filePath));
-        await this.provider.takeScreenshot(this.id, pageInfo, filePath);
+        await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight);
     }
 
-    async captureAction ({ pageInfo, customPath }) {
+    async captureAction ({ customPath, pageWidth, pageHeight }) {
         if (!this.enabled)
             return null;
 
@@ -86,25 +87,29 @@ export default class Capturer {
 
         this.testEntry.path = pathForReport;
 
-        await this._takeScreenshot(pageInfo, screenshotPath);
+        await this._takeScreenshot(screenshotPath, pageWidth, pageHeight);
 
         this.testEntry.hasScreenshots = true;
 
-        await generateThumbnail(screenshotPath);
+        // NOTE: generateThumbnail is not available on Linux yet. Subscribe to https://github.com/DevExpress/testcafe-browser-tools/issues/12 to keep track.
+        if (!linux)
+            await generateThumbnail(screenshotPath);
 
         return screenshotPath;
     }
 
-    async captureError ({ pageInfo, screenshotRequired }) {
+    async captureError ({ screenshotRequired, pageWidth, pageHeight }) {
         if (!screenshotRequired || !this.enabled)
             return null;
 
         var fileName = this._getFileName(true);
         var { screenshotPath } = this._getSreenshotPath(joinPath('errors', fileName));
 
-        await this._takeScreenshot(pageInfo, screenshotPath);
+        await this._takeScreenshot(screenshotPath, pageWidth, pageHeight);
 
-        await generateThumbnail(screenshotPath);
+        // NOTE: generateThumbnail is not available on Linux yet. Subscribe to https://github.com/DevExpress/testcafe-browser-tools/issues/12 to keep track.
+        if (!linux)
+            await generateThumbnail(screenshotPath);
 
         return screenshotPath;
     }

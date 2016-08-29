@@ -1,4 +1,4 @@
-import browserNatives from 'testcafe-browser-natives';
+import browserTools from 'testcafe-browser-tools';
 import OS from 'os-family';
 import WARNING_MESSAGE from '../../../warnings/message';
 
@@ -21,50 +21,50 @@ export default class BrowserProviderBase {
         this.resizeCorrections = {};
     }
 
-    async calculateResizeCorrections (id) {
-        await this.waitForConnectionReady(id);
+    async calculateResizeCorrections (browserId) {
+        await this.waitForConnectionReady(browserId);
 
-        var { width, height, title } = await this.runInitScript(id, INIT_SCRIPT);
+        var { width, height, title } = await this.runInitScript(browserId, INIT_SCRIPT);
 
-        if (!await browserNatives.isMaximized(title))
+        if (!await browserTools.isMaximized(title))
             return;
 
-        await browserNatives.resize(title, width, height, width, height);
+        await browserTools.resize(title, width, height, width, height);
 
-        var { width: newWidth, height: newHeight } = await this.runInitScript(id, INIT_SCRIPT);
+        var { width: newWidth, height: newHeight } = await this.runInitScript(browserId, INIT_SCRIPT);
 
-        await browserNatives.maximize(title);
+        await browserTools.maximize(title);
 
         if (newWidth === width && newHeight === height)
             return;
 
-        this.resizeCorrections[id] = { width: newWidth - width, height: newHeight - height };
+        this.resizeCorrections[browserId] = { width: newWidth - width, height: newHeight - height };
     }
 
-    async resizeWindow (id, pageInfo, width, height) {
-        // TODO: remove once https://github.com/DevExpress/testcafe-browser-natives/issues/12 implemented
+    async resizeWindow (browserId, width, height, currentWidth, currentHeight) {
+        // TODO: remove once https://github.com/DevExpress/testcafe-browser-tools/issues/12 implemented
         if (OS.linux) {
-            this.reportWarning(id, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
+            this.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
             return;
         }
 
-        if (this.resizeCorrections[id]) {
-            width -= this.resizeCorrections[id].width;
-            height -= this.resizeCorrections[id].height;
+        if (this.resizeCorrections[browserId]) {
+            width -= this.resizeCorrections[browserId].width;
+            height -= this.resizeCorrections[browserId].height;
 
-            delete this.resizeCorrections[id];
+            delete this.resizeCorrections[browserId];
         }
 
-        await browserNatives.resize(pageInfo.title, pageInfo.width, pageInfo.height, width, height);
+        await browserTools.resize(browserId, currentWidth, currentHeight, width, height);
     }
 
-    async takeScreenshot (id, pageInfo, screenshotPath) {
-        // TODO: remove once https://github.com/DevExpress/testcafe-browser-natives/issues/12 implemented
+    async takeScreenshot (browserId, screenshotPath) {
+        // TODO: remove once https://github.com/DevExpress/testcafe-browser-tools/issues/12 implemented
         if (OS.linux) {
-            this.reportWarning(id, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
+            this.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
             return;
         }
 
-        await browserNatives.screenshot(pageInfo.title, screenshotPath);
+        await browserTools.screenshot(browserId, screenshotPath);
     }
 }

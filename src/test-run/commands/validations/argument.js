@@ -1,4 +1,4 @@
-import { isValidDeviceName } from 'testcafe-browser-natives';
+import { isValidDeviceName } from 'testcafe-browser-tools';
 
 import {
     createBooleanValidator,

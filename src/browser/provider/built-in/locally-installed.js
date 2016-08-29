@@ -1,4 +1,4 @@
-import browserNatives from 'testcafe-browser-natives';
+import browserTools from 'testcafe-browser-tools';
 import PathBrowserProvider from './path';
 
 
@@ -10,7 +10,7 @@ export default class LocallyInstalledBrowserProvider extends PathBrowserProvider
     }
 
     async getBrowserList () {
-        var installations = await browserNatives.getInstallations();
+        var installations = await browserTools.getInstallations();
 
         return Object.keys(installations);
     }

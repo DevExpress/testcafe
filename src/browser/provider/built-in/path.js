@@ -1,4 +1,4 @@
-import browserNatives from 'testcafe-browser-natives';
+import browserTools from 'testcafe-browser-tools';
 import OS from 'os-family';
 import BrowserProviderBase from './base';
 
@@ -23,7 +23,7 @@ export default class PathBrowserProvider extends BrowserProviderBase {
         if (!params.path)
             return null;
 
-        var openParameters = await browserNatives.getBrowserInfo(params.path);
+        var openParameters = await browserTools.getBrowserInfo(params.path);
 
         if (!openParameters)
             return null;
@@ -34,20 +34,20 @@ export default class PathBrowserProvider extends BrowserProviderBase {
         return openParameters;
     }
 
-    async openBrowser (id, alias, startPage) {
-        var openParameters = await browserNatives.getBrowserInfo(alias) || await this._handleJSON(alias);
+    async openBrowser (browserId, pageUrl, browserName) {
+        var openParameters = await browserTools.getBrowserInfo(browserName) || await this._handleJSON(browserName);
 
         if (!openParameters)
             throw new Error('The specified browser name is not valid!');
 
-        await browserNatives.open(openParameters, startPage);
+        await browserTools.open(openParameters, pageUrl);
 
         if (OS.win)
-            await super.calculateResizeCorrections(id);
+            await super.calculateResizeCorrections(browserId);
     }
 
-    async closeBrowser (id, pageInfo) {
-        await browserNatives.close(pageInfo.title);
+    async closeBrowser (browserId) {
+        await browserTools.close(browserId);
     }
 
     async getBrowserList () {

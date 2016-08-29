@@ -74,7 +74,7 @@ export default class TestRun extends Session {
     _getPayloadScript () {
         return Mustache.render(TEST_RUN_TEMPLATE, {
             testRunId:           this.id,
-            windowId:            this.browserConnection.id,
+            browserId:           this.browserConnection.id,
             browserHeartbeatUrl: this.browserConnection.heartbeatUrl,
             browserStatusUrl:    this.browserConnection.statusUrl,
             userAgent:           this.browserConnection.userAgent,
