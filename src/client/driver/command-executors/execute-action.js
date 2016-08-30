@@ -1,11 +1,17 @@
 import { Promise } from '../deps/hammerhead';
-import { domUtils, contentEditable, RequestBarrier, pageUnloadBarrier, parseKeySequence, NODE_TYPE_DESCRIPTIONS } from '../deps/testcafe-core';
+import {
+    domUtils,
+    contentEditable,
+    RequestBarrier,
+    pageUnloadBarrier,
+    parseKeySequence,
+    NODE_TYPE_DESCRIPTIONS
+} from '../deps/testcafe-core';
+
 import {
     ERROR_TYPES as AUTOMATION_ERROR_TYPES,
     calculateSelectTextArguments,
-    getOffsetOptions
-} from '../deps/testcafe-automation';
-import {
+    getOffsetOptions,
     Click as ClickAutomation,
     RClick as RClickAutomation,
     DblClick as DblClickAutomation,
@@ -18,6 +24,7 @@ import {
     Press as PressAutomation,
     Upload as UploadAutomation
 } from '../deps/testcafe-automation';
+
 import DriverStatus from '../status';
 import SelectorExecutor from './client-functions/selector-executor';
 import COMMAND_TYPE from '../../../test-run/commands/type';
