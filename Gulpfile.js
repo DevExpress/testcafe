@@ -406,8 +406,14 @@ gulp.task('fetch-assets-repo', ['clean-website'], function (cb) {
 
 gulp.task('put-in-articles', ['fetch-assets-repo'], function () {
     return gulp
-        .src('docs/articles/**/*')
+        .src(['docs/articles/**/*', '!docs/articles/blog/**/*'])
         .pipe(gulp.dest('site/src'));
+});
+
+gulp.task('put-in-posts', ['fetch-assets-repo'], function () {
+    return gulp
+        .src('docs/articles/blog/**/*')
+        .pipe(gulp.dest('site/src/_posts'));
 });
 
 gulp.task('put-in-navigation', ['fetch-assets-repo'], function () {
@@ -416,7 +422,7 @@ gulp.task('put-in-navigation', ['fetch-assets-repo'], function () {
         .pipe(gulp.dest('site/src/_data'));
 });
 
-gulp.task('prepare-website', ['put-in-articles', 'put-in-navigation', 'lint-docs']);
+gulp.task('prepare-website', ['put-in-articles', 'put-in-navigation', 'put-in-posts', 'lint-docs']);
 
 function buildWebsite (mode, cb) {
     var options = mode ? { stdio: 'inherit', env: { JEKYLL_ENV: mode } } : { stdio: 'inherit' };
