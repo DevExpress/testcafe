@@ -2,17 +2,16 @@ import { expect } from 'chai';
 
 fixture `GH-743`;
 
-var secondTestInProgress = false;
+var secondStarted = false;
 
 var wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 test('First test', async () => {
     await wait(100);
-    expect(secondTestInProgress).to.be.false;
+    expect(secondStarted).to.be.false;
 });
 
 test('Second test', async () => {
-    secondTestInProgress = true;
+    secondStarted = true;
     await wait(500);
-    secondTestInProgress = false;
 });
