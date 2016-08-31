@@ -25,10 +25,8 @@ class IdlePage {
         browser
             .checkStatus(this.statusUrl, createXHR)
             .then(cmd => {
-                /* eslint-disable hammerhead/use-native-methods */
                 if (cmd === COMMAND.idle)
                     window.setTimeout(() => this._checkStatus(), CHECK_STATUS_DELAY);
-                /* eslint-enable hammerhead/use-native-methods */
             })
             .catch(() => this.statusIndicator.showDisconnection());
     }
