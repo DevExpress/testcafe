@@ -17,14 +17,14 @@ export default function (fn, delay, timeout) {
             result = fn();
 
             if (result) {
-                window.clearInterval(intervalId);
-                window.clearTimeout(timeoutId);
+                nativeMethods.clearInterval.call(window, intervalId);
+                nativeMethods.clearTimeout.call(window, timeoutId);
                 resolve(result);
             }
         }, delay);
 
         var timeoutId = nativeMethods.setTimeout.call(window, () => {
-            window.clearInterval(intervalId);
+            nativeMethods.clearInterval.call(window, intervalId);
             reject();
         }, timeout);
     });

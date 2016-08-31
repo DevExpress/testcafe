@@ -5,6 +5,7 @@ import testCafeCore from './deps/testcafe-core';
 
 var shadowUI       = hammerhead.shadowUI;
 var browserUtils   = hammerhead.utils.browser;
+var nativeMethods  = hammerhead.nativeMethods;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
 var positionUtils = testCafeCore.positionUtils;
@@ -144,7 +145,7 @@ export function expandOptionList (select) {
 
     createChildren(selectChildren, optionList);
 
-    window.setTimeout(() => {
+    nativeMethods.setTimeout.call(window, () => {
         eventUtils.bind(document, 'mousedown', onDocumentMouseDown);
     }, 0);
 

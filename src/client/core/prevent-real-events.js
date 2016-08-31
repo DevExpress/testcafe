@@ -1,4 +1,4 @@
-import { utils, eventSandbox } from './deps/hammerhead';
+import { utils, eventSandbox, nativeMethods } from './deps/hammerhead';
 
 import { get, hasDimensions } from './utils/style';
 import { filter } from './utils/array';
@@ -53,7 +53,7 @@ function preventRealEventHandler (e, dispatched, preventDefault, cancelHandlers,
 
                 if (isElementInvisible || invisibleParents.length) {
                     // NOTE: B254768 - reason of setTimeout method using.
-                    window.setTimeout(() => {
+                    nativeMethods.setTimeout.call(window, () => {
                         eventSimulator.blur(target);
                     }, 0);
                 }

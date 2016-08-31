@@ -1,5 +1,6 @@
 {
   "rules": {
-    "hammerhead/use-hh-promise": 0
+    "hammerhead/use-hh-promise": 0,
+    "hammerhead/use-native-methods": 0
   }
 }

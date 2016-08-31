@@ -1,7 +1,8 @@
 import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 
-var shadowUI = hammerhead.shadowUI;
+var shadowUI      = hammerhead.shadowUI;
+var nativeMethods = hammerhead.nativeMethods;
 
 var eventUtils = testCafeCore.eventUtils;
 var styleUtils = testCafeCore.styleUtils;
@@ -109,7 +110,7 @@ export function initAndShowLoadingText () {
             if (document.body)
                 initAndShow();
             else
-                window.setTimeout(tryShowBeforeReady, 0);
+                nativeMethods.setTimeout.call(window, tryShowBeforeReady, 0);
         }
     };
 
