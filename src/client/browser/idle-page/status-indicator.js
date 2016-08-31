@@ -163,14 +163,18 @@ export default class StatusIndicator {
     //Spinner
     _drawSpinner (connected, startAngle) {
         this._clearCanvas();
+        /* eslint-disable hammerhead/use-native-methods */
         clearInterval(this.spinnerAnimationInterval);
+        /* eslint-enable hammerhead/use-native-methods */
 
         if (connected) {
+            /* eslint-disable hammerhead/use-native-methods */
             this.spinnerAnimationInterval = window.setInterval(() => {
                 this._clearCanvas();
                 this._rotateSpinner();
                 this._drawCircle(this.gradient, 240, startAngle);
             }, ANIMATION_DELAY);
+            /* eslint-enable hammerhead/use-native-methods */
 
             this._drawCircle(this.gradient, 240, startAngle);
         }

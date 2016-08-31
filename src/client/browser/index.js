@@ -38,7 +38,9 @@ function isCurrentLocation (url) {
 export function startHeartbeat (heartbeatUrl, createXHR) {
     sendXHR(heartbeatUrl, createXHR);
 
+    /* eslint-disable hammerhead/use-native-methods */
     window.setInterval(() => sendXHR(heartbeatUrl, createXHR), HEARTBEAT_INTERVAL);
+    /* eslint-enable hammerhead/use-native-methods */
 }
 
 function executeInitScript (initScriptUrl, createXHR) {
@@ -55,7 +57,9 @@ function executeInitScript (initScriptUrl, createXHR) {
             /* eslint-enable no-eval */
         })
         .then(() => {
+            /* eslint-disable hammerhead/use-native-methods */
             setTimeout(executeInitScript(initScriptUrl, createXHR), 1000);
+            /* eslint-enable hammerhead/use-native-methods */
         });
 }
 
