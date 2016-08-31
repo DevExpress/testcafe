@@ -65,8 +65,6 @@ export default class TestRun extends Session {
         this.injectable.scripts.push('/testcafe-automation.js');
         this.injectable.scripts.push('/testcafe-driver.js');
         this.injectable.styles.push('/testcafe-ui-styles.css');
-
-        this._start();
     }
 
 
@@ -131,7 +129,7 @@ export default class TestRun extends Session {
         return !this._addPendingPageErrorIfAny();
     }
 
-    async _start () {
+    async start () {
         var beforeEachFn = this.test.fixture.beforeEachFn;
         var afterEachFn  = this.test.fixture.afterEachFn;
 
