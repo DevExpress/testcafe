@@ -11,7 +11,7 @@ You can also create a **custom reporter** that will output information in your o
 For this purpose, you can use the [TestCafe reporter generator](https://github.com/DevExpress/generator-testcafe-reporter).
 The generator will scaffold out a reporter plugin, so that you only need to write a few lines of code.
 
-For more information on how to implement the plugin, see the following sections.
+To create a reporter plugin, go through the following steps.
 
 * [Generating a Reporter Project](#generating-a-reporter-project)
 * [Implementing the Reporter](#implementing-the-reporter)
@@ -19,8 +19,7 @@ For more information on how to implement the plugin, see the following sections.
 * [Testing the Reporter](#testing-the-reporter)
 * [Previewing the Report](#previewing-the-report)
 * [Using the Reporter Development Version](#using-the-reporter-development-version)
-* [Publishing the Reporter to NPM](#publishing-the-reporter-to-npm)
-* [Reference](#reference)
+* [Publishing the Reporter to npm](#publishing-the-reporter-to-npm)
 
 ## Generating a Reporter Project
 
@@ -38,13 +37,12 @@ mkdir my-reporter
 cd my-reporter
 ```
 
-It is recommended to name the directory the same as you would like to name your reporter project. When you run the generator,
-it will automatically suggest the reporter name that matches the reporter directory name. As for the reporter package name,
-it will consist of two parts - the `{testcafe-reporter-}` prefix and the name of the reporter itself:
-
-```text
-{testcafe-reporter-my-reporter}
-```
+> It is recommended to name the directory the same as you would like to name your reporter project. When you run the generator,
+it will automatically suggest the reporter name that matches the reporter directory name.
+>
+> The generator will also automatically create the reporter package name that consists of two parts - the `testcafe-reporter-` prefix and the name of the reporter itself, for example,`testcafe-reporter-my-reporter`.
+>
+> **Important:** If you name the reporter package manually, it is required that its name starts with the `testcafe-reporter-` prefix. Otherwise, TestCafe will be unable to recognize the plugin.
 
 Then run the reporter generator to create a new project:
 
@@ -52,7 +50,7 @@ Then run the reporter generator to create a new project:
 yo testcafe-reporter
 ```
 
-The generator will provide additional settings to customize your reporter.
+The generator will ask you a few questions about the reporter.
 Then Yeoman will automatically scaffold out your reporter, install the required dependencies, and pull in several useful Gulp tasks for your workflow.
 
 ## Implementing the Reporter
@@ -217,7 +215,7 @@ After that TestCafe will use the reporter version you are currently developing.
 
 For information on how to specify a reporter in tests, see [Using Reporters](../../using-testcafe/common-concepts/reporters.md#using-the-reporters).
 
-## Publishing the Reporter to NPM
+## Publishing the Reporter to npm
 
 When you finish developing the reporter, you can publish it to npm by running the `publish-please` npm script.
 This script builds the package, tests the reporter and then uses [publish-please](https://github.com/inikulin/publish-please) to publish it to npm.
@@ -227,10 +225,5 @@ That is why it is recommended to use the `publish-please` script instead of `npm
 npm run publish-please
 ```
 
-After that you can install the reporter and use it in the same manner
+After that you can install the reporter plugin as you would [install any other plugin](../index.md#installing-plugins) and use it in the same manner
 as you would use [built-in reporters](../../using-testcafe/common-concepts/reporters.md#using-the-reporters).
-
-## Reference
-
-* [Reporter Methods](reporter-methods.md)
-* [Helpers](helpers.md)
