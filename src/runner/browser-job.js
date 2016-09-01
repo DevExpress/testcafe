@@ -85,9 +85,10 @@ export default class BrowserJob extends EventEmitter {
     }
 
     _createTestRun (test, testIndex, quarantineAttemptNum) {
+        quarantineAttemptNum = this.opts.quarantineMode ? quarantineAttemptNum : null;
+
         var TestRunCtor        = test.isLegacy ? LegacyTestRun : TestRun;
-        var screenshotCapturer = this.screenshots.createCapturerFor(test, testIndex,
-            this.opts.quarantineMode ? quarantineAttemptNum : null, this.browserConnection);
+        var screenshotCapturer = this.screenshots.createCapturerFor(test, testIndex, quarantineAttemptNum, this.browserConnection);
         var testRun            = new TestRunCtor(test, this.browserConnection, screenshotCapturer, this.warningLog, this.opts);
         var done               = this.opts.quarantineMode ?
                                  () => this._testRunDoneInQuarantineMode(testRun, testIndex) :
