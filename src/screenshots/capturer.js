@@ -56,18 +56,18 @@ export default class Capturer {
             screenshotPath      = joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(customPath));
         }
         else {
-            var testDirName       = `test-${this.testIndex}`;
-            var path              = joinPath(this.baseScreenshotsPath, this.baseDirName, testDirName);
-            var pathForScreenshot = this.quarantineAttemptNum !== null ?
-                                    joinPath(path, `run-${this.quarantineAttemptNum}`) :
-                                    path;
+            var testDirName = `test-${this.testIndex}`;
+            var path        = joinPath(this.baseScreenshotsPath, this.baseDirName, testDirName);
 
             // NOTE: if test contains takeScreenshot action with custom path
             // we should specify the most common screenshot folder in report
             if (!this.pathCustomized)
                 pathForReport = path;
 
-            screenshotPath = joinPath(pathForScreenshot, this.userAgentName, fileName);
+            if (this.quarantineAttemptNum !== null)
+                path = joinPath(path, `run-${this.quarantineAttemptNum}`);
+
+            screenshotPath = joinPath(path, this.userAgentName, fileName);
         }
 
         return { pathForReport, screenshotPath };
