@@ -12,6 +12,7 @@ const TASK_DIR_RE                    = /\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-
 const SCREENSHOT_FILE_NAME_RE        = /\\\d+.png$/;
 const CUSTOM_SCREENSHOT_FILE_NAME_RE = /\.png$/;
 const TEST_DIR_NAME_RE               = /test-\d+/;
+const RUN_DIR_NAME_RE                = /run-\d+/;
 
 
 function getScreenshotFilesCount (dir, customPath) {
@@ -117,7 +118,7 @@ exports.isScreenshotDirExists = function () {
     return isDirExists(SCREENSHOTS_PATH);
 };
 
-exports.checkScreenshotsCreated = function checkScreenshotsCreated (forError, count, customPath, testDirCount) {
+exports.checkScreenshotsCreated = function checkScreenshotsCreated (forError, count, customPath, runDirCount) {
     var expectedSubDirCount     = config.browsers.length;
     var expectedScreenshotCount = count || 2;
 
@@ -144,19 +145,34 @@ exports.checkScreenshotsCreated = function checkScreenshotsCreated (forError, co
 
     var testDirs = fs.readdirSync(taskDirPath);
 
-    testDirCount = testDirCount || 1;
-
-    if (!testDirs || !testDirs.length || testDirs.length !== testDirCount)
+    if (!testDirs || !testDirs.length || testDirs.length !== 1)
         return false;
 
-    var testDirPath = null;
+    var basePath  = null;
+    var dirs      = null;
+    var dirNameRE = null;
+    var dirPath   = null;
 
-    return testDirs.every(function (testDir) {
-        if (!TEST_DIR_NAME_RE.test(testDir))
+    if (runDirCount) {
+        basePath  = path.join(taskDirPath, testDirs[0]);
+        dirs      = fs.readdirSync(basePath);
+        dirNameRE = RUN_DIR_NAME_RE;
+
+        if (!dirs || !dirs.length || dirs.length !== runDirCount)
+            return false;
+    }
+    else {
+        basePath  = taskDirPath;
+        dirs      = testDirs;
+        dirNameRE = TEST_DIR_NAME_RE;
+    }
+
+    return dirs.every(function (dir) {
+        if (!dirNameRE.test(dir))
             return false;
 
-        testDirPath = path.join(taskDirPath, testDir);
-        return checkTestDir(testDirPath, forError, expectedSubDirCount, expectedScreenshotCount);
+        dirPath = path.join(basePath, dir);
+        return checkTestDir(dirPath, forError, expectedSubDirCount, expectedScreenshotCount);
     });
 };
 

@@ -16,13 +16,26 @@ test('Take a screenshot', async t => {
         .takeScreenshot();
 });
 
-test('Take a screenshot with a custom path', async t => {
+test('Take a screenshot with a custom path (OS separator)', async t => {
     const ua       = await getUserAgent();
     const parsedUA = parse(ua);
 
     await t.takeScreenshot('custom/' + parsedUA.family + '.png');
 });
 
+test('Take a screenshot with a custom path (DOS separator)', async t => {
+    const ua       = await getUserAgent();
+    const parsedUA = parse(ua);
+
+    await t.takeScreenshot('custom\\' + parsedUA.family + '.png');
+});
+
 test('Incorrect action path argument', async t => {
     await t.takeScreenshot(1);
+});
+
+test('Take a screenshot in quarantine mode', async t => {
+    await t
+        .takeScreenshot()
+        .click('.notExist');
 });

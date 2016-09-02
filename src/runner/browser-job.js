@@ -20,7 +20,7 @@ export default class BrowserJob extends EventEmitter {
         this.screenshots       = screenshots;
         this.warningLog        = warningLog;
 
-        this.testRunQueue = tests.map((test, index) => this._createTestRun(test, index + 1, 0));
+        this.testRunQueue = tests.map((test, index) => this._createTestRun(test, index + 1, 1));
     }
 
     _shouldStartQuarantine (testRun) {
@@ -49,7 +49,8 @@ export default class BrowserJob extends EventEmitter {
     }
 
     _keepInQuarantine (testRun, testIndex) {
-        var nextAttempt = this._createTestRun(testRun.test, testIndex, this.quarantine.failed + this.quarantine.passed);
+        var quarantineAttemptNum = this.quarantine.failed + this.quarantine.passed + 1;
+        var nextAttempt          = this._createTestRun(testRun.test, testIndex, quarantineAttemptNum);
 
         this.testRunQueue.splice(0, 0, nextAttempt);
     }
@@ -84,6 +85,8 @@ export default class BrowserJob extends EventEmitter {
     }
 
     _createTestRun (test, testIndex, quarantineAttemptNum) {
+        quarantineAttemptNum = this.opts.quarantineMode ? quarantineAttemptNum : null;
+
         var TestRunCtor        = test.isLegacy ? LegacyTestRun : TestRun;
         var screenshotCapturer = this.screenshots.createCapturerFor(test, testIndex, quarantineAttemptNum, this.browserConnection);
         var testRun            = new TestRunCtor(test, this.browserConnection, screenshotCapturer, this.warningLog, this.opts);

@@ -19,7 +19,8 @@ export default class Capturer {
         this.browserId            = connection.id;
         this.baseDirName          = namingOptions.baseDirName;
         this.userAgentName        = namingOptions.userAgentName;
-        this.testDirName          = Capturer._getTestDirName(namingOptions.testIndex, namingOptions.quarantineAttemptNum);
+        this.quarantineAttemptNum = namingOptions.quarantineAttemptNum;
+        this.testIndex            = namingOptions.testIndex;
         this.screenshotIndex      = 1;
         this.errorScreenshotIndex = 1;
         this.pathCustomized       = false;
@@ -27,17 +28,12 @@ export default class Capturer {
 
     static _correctFilePath (path) {
         var correctedPath = path
+            .replace(/\\/g, '/')
             .split('/')
             .map(str => sanitizeFilename(str))
             .join('/');
 
         return PNG_EXTENSION_RE.test(correctedPath) ? correctedPath : `${correctedPath}.png`;
-    }
-
-    static _getTestDirName (testIndex, quarantineAttemptNum) {
-        var quarantineAttemptPostfix = quarantineAttemptNum > 0 ? `-${quarantineAttemptNum}` : ``;
-
-        return `test-${testIndex}${quarantineAttemptPostfix}`;
     }
 
     _getFileName (forError) {
@@ -60,12 +56,16 @@ export default class Capturer {
             screenshotPath      = joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(customPath));
         }
         else {
-            var path = joinPath(this.baseScreenshotsPath, this.baseDirName, this.testDirName);
+            var testDirName = `test-${this.testIndex}`;
+            var path        = joinPath(this.baseScreenshotsPath, this.baseDirName, testDirName);
 
             // NOTE: if test contains takeScreenshot action with custom path
             // we should specify the most common screenshot folder in report
             if (!this.pathCustomized)
                 pathForReport = path;
+
+            if (this.quarantineAttemptNum !== null)
+                path = joinPath(path, `run-${this.quarantineAttemptNum}`);
 
             screenshotPath = joinPath(path, this.userAgentName, fileName);
         }
