@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GH-423</title>
+</head>
+<body>
+<div id="target1" style="background: green;position: absolute; width:100px; height:100px;">
+</div>
+<div id="element" style="top:200px;background: red;position: absolute; width:100px; height:100px;">
+</div>
+<div id="target2" style="left: 150px;background: silver;position: absolute; width:100px; height:100px;">
+</div>
+<div id="child" style="left: 150px;top:200px;background: blue;position: absolute; width:100px; height:100px;">
+</div>
+<div id="target3" style="left: 300px;background: violet;position: absolute; width:50px; height:50px;">
+</div>
+<div id="newParent" style="left: 300px;top:200px;background: yellow;position: absolute; width:100px; height:100px;">
+</div>
+<div id="target4" style="left:450px; background:orange;position: absolute; width:100px; height:100px;">
+</div>
+<input id="input" style="left:450px; top: 200px; position: absolute;">
+<script>
+    function saveEventToStorage (e) {
+        window.eventStorage.push(e.currentTarget.id + ' ' + e.type);
+    }
+
+    window.eventStorage = [];
+
+    // Overlapping target test
+
+    var target1 = document.querySelector('#target1');
+    var element = document.querySelector('#element');
+
+    target1.addEventListener('mousedown', function (e) {
+        element.style.top = '0px';
+
+        saveEventToStorage(e);
+    });
+
+    target1.addEventListener('mouseup', saveEventToStorage);
+    target1.addEventListener('click', saveEventToStorage);
+    element.addEventListener('mousedown', saveEventToStorage);
+    element.addEventListener('mouseup', saveEventToStorage);
+    element.addEventListener('click', saveEventToStorage);
+
+    // Appending child to target test
+
+    var target2 = document.querySelector('#target2');
+    var child   = document.querySelector('#child');
+
+    target2.addEventListener('mousedown', function (e) {
+        target2.appendChild(child);
+        child.style.top  = '0px';
+        child.style.left = '0px';
+
+        saveEventToStorage(e);
+    });
+
+    target2.addEventListener('mouseup', saveEventToStorage);
+    target2.addEventListener('click', saveEventToStorage);
+    child.addEventListener('mousedown', saveEventToStorage);
+    child.addEventListener('mouseup', saveEventToStorage);
+    child.addEventListener('click', saveEventToStorage);
+
+    // Changing target's parent test
+
+    var target3 = document.querySelector('#target3');
+    var newParent = document.querySelector('#newParent');
+
+    target3.addEventListener('mousedown', function (e) {
+        newParent.appendChild(target3);
+        newParent.style.top   = '0px';
+        target3.style.left = '0px';
+
+        saveEventToStorage(e);
+    });
+
+    target3.addEventListener('mouseup', saveEventToStorage);
+    target3.addEventListener('click',saveEventToStorage);
+    newParent.addEventListener('mousedown',saveEventToStorage);
+    newParent.addEventListener('mouseup', saveEventToStorage);
+    newParent.addEventListener('click', saveEventToStorage);
+
+    // Appending input to target element
+
+    var target4 = document.getElementById('target4');
+    var input = document.getElementById('input');
+
+    target4.addEventListener('mousedown', function (e) {
+        target4.appendChild(input);
+        input.style.top  = '0px';
+        input.style.left = '0px';
+
+        saveEventToStorage(e);
+    });
+
+    target4.addEventListener('mouseup', saveEventToStorage);
+    target4.addEventListener('click', saveEventToStorage);
+    input.addEventListener('mousedown', saveEventToStorage);
+    input.addEventListener('mouseup', saveEventToStorage);
+    input.addEventListener('click', saveEventToStorage);
+</script>
+</body>
+</html>

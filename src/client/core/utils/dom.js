@@ -443,3 +443,7 @@ export function findIframeByWindow (iframeWindow, iframeDestinationWindow) {
 
     return null;
 }
+
+export function isEditableFormElement (element) {
+    return isTextEditableElement(element) || isSelectElement(element);
+}

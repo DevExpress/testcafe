@@ -66,3 +66,15 @@ export function remove (arr, item) {
     if (index > -1)
         nativeSplice.call(arr, index, 1);
 }
+
+export function equals (arr1, arr2) {
+    if (arr1.length !== arr2.length)
+        return false;
+
+    for (var i = 0, l = arr1.length; i < l; i++) {
+        if (arr1[i] !== arr2[i])
+            return false;
+    }
+
+    return true;
+}
