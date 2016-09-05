@@ -2,21 +2,22 @@
 layout: docs
 title: Programming Interface
 permalink: /documentation/using-testcafe/programming-interface/
+checked: true
 ---
 # Programming Interface
 
-This section describes the API that allows you to run TestCafe tests from your NodeJS applications.
+This section describes the API that allows you to run TestCafe tests from your Node.js modules.
 
-The thing to start with is creating the [TestCafe server](testcafe.md) instance.
-Use the [createTestCafe](createtestcafe.md) factory function for this.
+Begin with creating the [TestCafe server](testcafe.md) instance using
+the [createTestCafe](createtestcafe.md) factory function.
 
 ```js
 const createTestCafe = require('testcafe');
 const testCafe       = await createTestCafe('localhost', 1337, 1338);
 ```
 
-This is the main point of access to TestCafe. You can now use it to create other entities required to execute tests:
-the [remote browser connections](browserconnection.md)
+Use this instance to create other entities required to execute tests:
+[remote browser connections](browserconnection.md)
 and the [test runner](runner.md).
 
 ```js
@@ -24,12 +25,13 @@ const remoteConnection = await testcafe.createBrowserConnection();
 const runner           = testcafe.createRunner();
 ```
 
-[Remote browser connections](browserconnection.md), as the name implies,
-are used when you need to run tests on a remote device.
+[Remote browser connections](browserconnection.md) allow you to run tests on remote devices.
 
-The [test runner](runner.md) is used to configure and launch test tasks.
-Here is how you can have it run tests from a `myFixture.js` fixture in the local Chrome and another remote browser
-with the report provided in the JSON format.
+The [test runner](runner.md) configures and launches test tasks.
+
+The following example shows how to run tests from the `myFixture.js` fixture in two browsers:
+Google Chrome installed locally and another browser (that can be any of the supported browsers) on a remote device.
+The test run report will be output in the JSON format.
 
 ```js
 const failedCount = await runner

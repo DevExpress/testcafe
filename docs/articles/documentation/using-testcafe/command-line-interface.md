@@ -261,7 +261,8 @@ testcafe ie my-tests -F "Page.*"
 
 ### --selector-timeout \<ms\>
 
-Specifies the amount of time, in milliseconds, within which [selectors](../test-api/selecting-page-elements/selectors.md) make attempts to obtain a node to be returned.
+Specifies the amount of time, in milliseconds, within which [selectors](../test-api/selecting-page-elements/selectors.md) make
+attempts to obtain a node to be returned. See [Selector Timeout](../test-api/selecting-page-elements/selectors.md#selector-timeout).
 
 ```sh
 testcafe ie my-tests --selector-timeout 500000

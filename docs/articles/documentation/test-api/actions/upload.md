@@ -2,6 +2,7 @@
 layout: docs
 title: Upload
 permalink: /documentation/test-api/actions/upload.html
+checked: true
 ---
 # Upload
 

@@ -2,12 +2,13 @@
 layout: docs
 title: TestCafe Class
 permalink: /documentation/using-testcafe/programming-interface/testcafe.html
+checked: true
 ---
 # TestCafe Class
 
 A TestCafe server.
 
-To create an instance, use the [createTestCafe](createtestcafe.md) factory function.
+To create a server instance, use the [createTestCafe](createtestcafe.md) factory function.
 
 **Example**
 

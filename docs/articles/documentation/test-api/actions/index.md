@@ -2,12 +2,13 @@
 layout: docs
 title: Actions
 permalink: /documentation/test-api/actions/
+checked: true
 ---
 # Actions
 
 Test API provides a set of *actions* that enable you to interact with the webpage.
 
-Test actions are implemented as methods in the [test controller](../test-code-structure.md#test-controller) object. You can call them in a chained fashion.
+Actions are implemented as methods in the [test controller](../test-code-structure.md#test-controller) object. You can call them in a chained fashion.
 
 The following sample types text into an input and clicks a button by using the `t.typeText` and `t.click` actions.
 
@@ -39,22 +40,22 @@ For details about a specific action, see the corresponding topic.
 
 ## Selecting Target Elements
 
-For test actions that target a specific DOM element, use the `selector` parameter to identify the desired element.
+For actions that target DOM elements, use the `selector` parameter to identify the desired element.
 
-You can pass one of the following as a `selector`.
+You can pass any of the following objects as a `selector`.
 
-* Function that returns a DOM element.
+* A client-side function that returns a DOM element.
 
     ```js
     test('My Test', async t => {
 
-        // Click will be performed on an element returned by the function,
-        // that is the sixth element of the 'active' class.
+        // Click will be performed on the element returned by the function,
+        // which is the sixth element of the 'active' class.
         await t.click(() => document.getElementsByClassName('active')[5]));
     });
     ```
 
-* CSS selector string.
+* A CSS selector string.
 
     ```js
     test('My Test', async t => {
@@ -65,7 +66,7 @@ You can pass one of the following as a `selector`.
     });
     ```
 
-* [Selector](../selecting-page-elements/selectors.md).
+* A [selector](../selecting-page-elements/selectors.md).
 
     ```js
     import { Selector } from 'testcafe';
@@ -77,13 +78,13 @@ You can pass one of the following as a `selector`.
 
     test('My Test', async t => {
 
-        // Click will be performed on an element selected by
+        // Click will be performed on the element selected by
         // the 'getLastItem' selector.
         await t.click(getLastItem);
     });
     ```
 
-* [DOM node snapshot](../selecting-page-elements/selectors.md#return-values-dom-node-snapshots).
+* A [DOM node snapshot](../selecting-page-elements/selectors.md#return-values-dom-node-snapshots).
 
     ```js
     import { Selector } from 'testcafe';
@@ -102,7 +103,7 @@ You can pass one of the following as a `selector`.
     });
     ```
 
-* Promise returned by a [selector](../selecting-page-elements/selectors.md).
+* A Promise returned by a [selector](../selecting-page-elements/selectors.md).
 
     ```js
     import { Selector } from 'testcafe';
@@ -114,9 +115,13 @@ You can pass one of the following as a `selector`.
 
     test('My Test', async t => {
 
-        // Click will be performed on an element selected by
+        // Click will be performed on the element selected by
         // the 'getElementById' selector as soon as the promise
         // is resolved.
         await t.click(getElementById('submit-button'));
     });
     ```
+
+Before executing an action, TestCafe waits for the target element to appear
+in the DOM and become visible. If this does not happen
+within the [selector timeout](../selecting-page-elements/selectors.md#selector-timeout), the test fails.

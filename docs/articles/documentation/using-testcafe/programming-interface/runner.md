@@ -2,6 +2,7 @@
 layout: docs
 title: Runner Class
 permalink: /documentation/using-testcafe/programming-interface/runner.html
+checked: true
 ---
 # Runner Class
 
@@ -29,19 +30,19 @@ console.log('Tests failed: ' + failed);
 * [src](#src)
 * [filter](#filter)
 * [browsers](#browsers)
-    * [Using browser names](#using-browser-names)
-    * [Using browser aliases](#using-browser-aliases)
-    * [Specifying the path to the browser executable](#specifying-the-path-to-the-browser-executable)
-    * [Specifying the path with command line parameters](#specifying-the-path-with-command-line-parameters)
-    * [Passing the remote browser connection](#passing-the-remote-browser-connection)
+    * [Using Browser Names](#using-browser-names)
+    * [Using Browser Aliases](#using-browser-aliases)
+    * [Specifying the Path to the Browser Executable](#specifying-the-path-to-the-browser-executable)
+    * [Specifying the Path with Command Line Parameters](#specifying-the-path-with-command-line-parameters)
+    * [Passing a Remote Browser Connection](#passing-a-remote-browser-connection)
 * [screenshots](#screenshots)
 * [reporter](#reporter)
-    * [Specifying the reporter](#specifying-the-reporter)
-    * [Saving the report to a file](#saving-the-report-to-a-file)
-    * [Implementing a custom stream](#implementing-a-custom-stream)
+    * [Specifying the Reporter](#specifying-the-reporter)
+    * [Saving the Report to a File](#saving-the-report-to-a-file)
+    * [Implementing a Custom Stream](#implementing-a-custom-stream)
 * [run](#run)
-    * [Cancelling test tasks](#cancelling-test-tasks)
-    * [Quarantine mode](#quarantine-mode)
+    * [Cancelling Test Tasks](#cancelling-test-tasks)
+    * [Quarantine Mode](#quarantine-mode)
 * [stop](#stop)
 
 ### src
@@ -66,7 +67,7 @@ runner.src(['/home/user/tests/fixture1.js', 'fixture5.js']);
 
 ### filter
 
-Allows you to manualy select which tests should be run.
+Allows you to manually select which tests should be run.
 
 ```text
 filter(callback) → this
@@ -74,11 +75,13 @@ filter(callback) → this
 
 Parameter  | Type                                           | Description
 ---------- | ---------------------------------------------- | ----------------------------------------------------------------
-`callback` | `function(testName, fixtureName, fixturePath)` | The callback that determines if a particular test should be run.
+`callback` | `function(testName, fixtureName, fixturePath)` | The callback that determines if a particular test should be run.
 
-The callback function is called for each test in the files selected by the [src](#src) method.
+The callback function is called for each test in files that are specified using the [src](#src) method.
 
-Return `true` to include the current test, or `false` otherwise.
+Return `true` from the callback to include the current test, or `false` to exclude it.
+
+The callback function takes the following arguments.
 
 Parameter     | Type   | Description
 ------------- | ------ | ----------------------------------
@@ -104,36 +107,36 @@ Configures the test runner to run tests in the specified browsers.
 browsers(browser) → this
 ```
 
-The `browser` parameter can be any of the following, or an `Array` of those.
+The `browser` parameter can be any of the following objects, or an `Array` of them.
 
 Type                                                                                                 | Description                                                                                                                                                           | Browser Type
----------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------
-String                                                                                               | The browser name. For the full list of names, see [Directly Supported Browsers](../common-concepts/browser-support.md#directly-supported-browsers).             | Local browser
-String                                                                                               | The browser alias that consists of the browser provider name and the name of a browser itself.                                                                        | Browser accessed through a [browser provider plugin](../common-concepts/browser-support.md#browser-provider-plugins).                                                                 |
-`{path: String, cmd: String}`                                                                        | The path to the browser executable (`path`) with command line parameters (`cmd`). The `cmd` property is optional.                                                     | Local browser
-[BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | Remote browser
+ ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------
+ String                                                                                               | The browser name. For the list of names, see [Directly Supported Browsers](../common-concepts/browser-support.md#directly-supported-browsers).             | Local browser
+ String                                                                                               | The browser alias that consists of the browser provider name and the name of the browser itself.                                                                        | Browser accessed through a [browser provider plugin](../common-concepts/browser-support.md#browser-provider-plugins).                                                                 |
+ `{path: String, cmd: String}`                                                                        | The path to the browser executable (`path`) and command line parameters (`cmd`). The `cmd` property is optional.                                                     | Local browser
+ [BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | Remote browser
 
 You are free to mix different types of objects in one function call. The `browsers` function concatenates the settings when called several times.
 
-#### Using browser names
+#### Using Browser Names
 
 ```js
 runner.browsers(['safari', 'chrome']);
 ```
 
-#### Using browser aliases
+#### Using Browser Aliases
 
 ```js
 runner.browsers('saucelabs:chrome');
 ```
 
-#### Specifying the path to the browser executable
+#### Specifying the Path to the Browser Executable
 
 ```js
 runner.browsers('C:\\Program Files\\Internet Explorer\\iexplore.exe');
 ```
 
-#### Specifying the path with command line parameters
+#### Specifying the Path with Command Line Parameters
 
 ```js
 runner.browsers({
@@ -142,7 +145,7 @@ runner.browsers({
 });
 ```
 
-#### Passing the remote browser connection
+#### Passing a Remote Browser Connection
 
 ```js
 const createTestCafe   = require('testcafe');
@@ -163,7 +166,7 @@ remoteConnection.once('ready', async () => {
 
 ### screenshots
 
-Enables the test runner to take screenshots of the tested webpages.
+Enables TestCafe to take screenshots of the tested webpages.
 
 ```text
 screenshots(path [, takeOnFails]) → this
@@ -172,15 +175,16 @@ screenshots(path [, takeOnFails]) → this
 Parameter                  | Type    | Description                                                                   | Default
 -------------------------- | ------- | ----------------------------------------------------------------------------- | -------
 `path`                     | String  | The path to which the screenshots will be saved.
-`takeOnFails` *(optional)* | Boolean | Specifies if screenshots should be taken automatically whenever a test fails. | `false`
+`takeOnFails`&#160;*(optional)* | Boolean | Specifies if screenshots should be taken automatically whenever a test fails. | `false`
 
-The `screenshots` function must be called in order to enable TestCafe to take screenshots whenever the `screenshot` action is called from test code.
+The `screenshots` function must be called to enable TestCafe to take screenshots
+when the [t.takeScreenshot](../../test-api/actions/take-screenshot.md) action is called from test code.
 
-The `takeOnFails` parameter handles a separate scenario of capturing the webpage. Set it to `true` to make TestCafe take a screenshot whenever a test fails.
+Set the `takeOnFails` parameter to `true` to additionally take a screenshot whenever a test fails.
 
 > Important! If the `screenshots` function is not called, TestCafe does not take screenshots.
 
-The screenshot functionality is not yet available on Linux. See the corresponding [issue on Github](https://github.com/DevExpress/testcafe-browser-natives/issues/12).
+The screenshot functionality is not yet available on Linux. See the corresponding [issue on GitHub](https://github.com/DevExpress/testcafe-browser-natives/issues/12).
 
 **Example**
 
@@ -190,7 +194,7 @@ runner.screenshots('reports/screenshots/', true);
 
 ### reporter
 
-Configures the test runner's reporting feature.
+Configures the TestCafe reporting feature.
 
 ```text
 reporter(name [, outStream]) → this
@@ -199,15 +203,15 @@ reporter(name [, outStream]) → this
 Parameter                | Type                        | Description                                     | Default
 ------------------------ | --------------------------- | ----------------------------------------------- | --------
 `name`                   | String                      | The name of the [reporter](../common-concepts/reporters.md) to use.
-`outStream` *(optional)* | Writable Stream implementer | The stream to which the report will be written. | `stdout`
+`outStream`&#160;*(optional)* | Writable Stream implementer | The stream to which the report will be written. | `stdout`
 
-#### Specifying the reporter
+#### Specifying the Reporter
 
 ```js
 runner.reporter('minimal');
 ```
 
-#### Saving the report to a file
+#### Saving the Report to a File
 
 ```js
 const stream = fs.createWriteStream('report.xml');
@@ -219,7 +223,7 @@ await runner
 stream.end();
 ```
 
-#### Implementing a custom stream
+#### Implementing a Custom Stream
 
 ```js
 class MyStream extends stream.Writable {
@@ -253,7 +257,7 @@ Parameter         | Type    | Description                                       
 ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------
 `skipJsErrors`    | Boolean | Defines whether to continue running a test after a JavaScript error occurs on a page (`true`), or consider such a test failed (`false`).                                              | `false`
 `quarantineMode`  | Boolean | Defines whether to enable the [quarantine mode](#quarantine-mode).                                                                                                                    | `false`
-`selectorTimeout` | Number  | Specifies the amount of time, in milliseconds, within which [selectors](../../test-api/selecting-page-elements/selectors.md) make attempts to obtain a node to be returned. | `10000`
+`selectorTimeout` | Number  | Specifies the amount of time, in milliseconds, within which [selectors](../../test-api/selecting-page-elements/selectors.md) make attempts to obtain a node to be returned. See [Selector Timeout](../../test-api/selecting-page-elements/selectors.md#selector-timeout). | `10000`
 
 **Example**
 
@@ -267,7 +271,7 @@ const failed = await runner.run({
 console.log('Tests failed: ' + failed);
 ```
 
-#### Cancelling test tasks
+#### Cancelling Test Tasks
 
 You can stop an individual test task at any moment by cancelling the corresponding promise.
 
@@ -283,12 +287,12 @@ await taskPromise.cancel();
 
 You can also cancel all pending tasks at once by using the [runner.stop](#stop) function.
 
-#### Quarantine mode
+#### Quarantine Mode
 
-The quarantine mode is designed to isolate non-deterministic tests (i.e., tests that sometimes pass and sometimes fail without a clear reason)
-from the rest of the test base (healthy tests).
+The quarantine mode is designed to isolate *non-deterministic* tests (i.e., tests that sometimes pass and sometimes fail without a clear reason)
+from the rest of the test base (*healthy* tests).
 
-When the quarantine mode is enabled, tests are not marked as *failed* after the first unsuccessful run but rather sent to the quarantine.
+When the quarantine mode is enabled, tests are not marked as *failed* after the first unsuccessful run but rather sent to quarantine.
 After that, these tests are run several more times. The outcome of the most runs (*passed* or *failed*) is recorded as the test result.
 A test is separately marked *unstable* if the outcome varies between runs. The run that led to quarantining the test counts.
 

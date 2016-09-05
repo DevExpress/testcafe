@@ -2,21 +2,25 @@
 layout: docs
 title: Selectors
 permalink: /documentation/test-api/selecting-page-elements/selectors.html
+checked: true
 ---
 # Selectors
 
-A selector is a function that is executed in the browser and returns a DOM node whose identification and state are passed to the server.
-It can then be used to define an action's target or provide information for an assertion.
+A selector is a function that is executed in the browser and returns a DOM node.
+The identification and state of this node are passed to the server where
+they can be used to define an [action's](../actions/index.md) target or
+provide information for an [assertion](../assertions.md).
 
 > Important! Do not modify the tested webpage within selectors.
 > To interact with the page, use [test actions](../actions/index.md).
 
-This topic contains the following sections:
+This topic contains the following sections.
 
 * [Creating Selectors](#creating-selectors)
 * [Selector Initializers](#selector-initializers)
   * [Initializers that Return Multiple Nodes](#initializers-that-return-multiple-nodes)
 * [Executing Selectors](#executing-selectors)
+  * [Selector Timeout](#selector-timeout)
 * [One-Time Selection](#one-time-selection)
 * [Return Values. DOM Node Snapshots](#return-values-dom-node-snapshots)
 * [Using Selectors to Define Action Targets](#using-selectors-to-define-action-targets)
@@ -34,7 +38,7 @@ Selector( init [, options] )
 Parameter              | Type     | Description
 ---------------------- | -------- | -------------------------------------------------------------------------------
 `init`                 | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a DOM node to be selected. See [Selector Initializers](#selector-initializers).
-`options` *(optional)* | Object   | See [Options](selector-options.md).
+`options`&#160;*(optional)* | Object   | See [Options](selector-options.md).
 
 > Important! Selectors cannot return anything but a single DOM node or `null`.
 > Use [client functions](../obtaining-data-from-the-client.md) to return arbitrary data.
@@ -51,7 +55,7 @@ const getElement = Selector(id => document.getElementById(id));
 
 You can initialize a selector with any of these objects.
 
-* Function. Executed on the client side. Must return a DOM node, array of DOM nodes,
+* A regular function. Executed on the client side. Must return a DOM node, array of DOM nodes,
   NodeList, HTMLCollection, `null` or `undefined`. Cannot use outer-scope variables from test code.
 
     ```js
@@ -59,21 +63,21 @@ You can initialize a selector with any of these objects.
 
     // A selector is created from a regular function.
     // This selector will take the 'id' parameter and return
-    // a DOM element with this ID.
+    // a DOM element that has this ID.
     const getElementById = Selector(id => document.getElementById(id));
     ```
 
-* CSS selector string that matches one or several nodes.
+* A CSS selector string that matches one or several nodes.
 
     ```js
     import { Selector } from 'testcafe';
 
-    // A selector is created from CSS selector string.
+    // A selector is created from a CSS selector string.
     // This selector will return the first matching DOM node.
     const getSubmitButton = Selector('#submit-button');
     ```
 
-* Selector.
+* A selector.
 
     ```js
     import { Selector } from 'testcafe';
@@ -89,7 +93,7 @@ You can initialize a selector with any of these objects.
     const getFourthElemOfClass = Selector(getThirdElemByClass, { index: 3 });
     ```
 
-* [DOM node snapshot](#return-values-dom-node-snapshots).
+* A [DOM node snapshot](#return-values-dom-node-snapshots).
 
     ```js
     import { Selector } from 'testcafe';
@@ -102,17 +106,18 @@ You can initialize a selector with any of these objects.
     test('My Test', async t => {
         const topMenuSnapshot = await getElementById('top-menu');
 
-        // This selector is created from a DOM element snapshot returned
-        // by a different selector. Effectively, this is equal to the previous example:
-        // the new selector uses the same initializer as 'getElementById' while
-        // overwriting its options.
+        // This selector is created from a DOM node snapshot returned
+        // by a different selector. The new selector will use the same initializer
+        // as 'getElementById' and will always be executed with the same parameter
+        // values that were used to obtain 'topMenuSnapshot'. You can still
+        // overwrite the selector options.
         const getVisibleTopMenu = Selector(topMenuSnapshot, {
             visibilityCheck: true
         });
     });
     ```
 
-* Promise returned by a selector.
+* A promise returned by a selector.
 
     ```js
     import { Selector } from 'testcafe';
@@ -126,20 +131,24 @@ You can initialize a selector with any of these objects.
 
         // This selector is created from a promise returned by a call to a
         // different selector. The new selector will be initialized with the
-        // same function as the old one but with hard-coded parameter values.
+        // same function as the old one and with hard-coded parameter values
+        // as in the previous example.
         const getSubmitButton = Selector(getElementById('submit-button'));
     });
     ```
 
 ### Initializers that Return Multiple Nodes
 
-TestCafe allows the selector's initializing function or CSS selector to return multiple DOM nodes.
-In this instance, you must filter these nodes to select a single node that will be returned by the selector (or none of them to return `null`).
+Functions and CSS selector stings that initialize a selector can return multiple DOM nodes.
+In this instance, you must filter these nodes to select a single node that will eventually be returned by the selector.
 Use the [textFilter](selector-options.md#optionstextfilter) and [index](selector-options.md#optionsindex) options for this.
 
-The [textFilter](selector-options.md#optionstextfilter) option specifies text or a regular expression that matches text content of the node to be selected.
+The [textFilter](selector-options.md#optionstextfilter) option specifies text content of the node that should be returned
+or a regular expression that matches this content.
 
-The [index](selector-options.md#optionsindex) option specifies the index of the node to be selected.
+The [index](selector-options.md#optionsindex) option specifies the index of the node that should be returned.
+
+The following example demonstrates how to use the `textFilter` and `index` options.
 
 ```js
 import { expect } from 'chai';
@@ -168,6 +177,8 @@ test('The second disabled button is visible', async t => {
 If both options are specified, nodes are first filtered by the `textFilter`,
 then a node at the `index` position is selected from the remaining nodes.
 
+If all nodes are filtered out, the selector returns `null`.
+
 > The [textFilter](selector-options.md#optionstextfilter) and [index](selector-options.md#optionsindex) options
 > are also applied when the selector is called from another selector or a [client function](../obtaining-data-from-the-client.md).
 
@@ -188,11 +199,17 @@ test('My test', async t => {
 });
 ```
 
+### Selector Timeout
+
 When a selector is called in test code, TestCafe waits for the target node to appear
-in the DOM within the *selector timeout*, which is specified in test code by using the [timeout](selector-options.md#optionstimeout) option
-or when launching tests via [API](../../using-testcafe/programming-interface/runner.md#run)
-or [CLI](../../using-testcafe/command-line-interface.md#--selector-timeout-ms).
-Within this time, the selector is executed over and over again, until it returns a
+in the DOM within the *selector timeout*.
+
+You can specify the selector timeout in test code by using the [timeout](selector-options.md#optionstimeout) option.
+To set this timeout when launching tests, pass it to the [runner.run](../../using-testcafe/programming-interface/runner.md#run)
+method if you use API or specify the [selector-timeout](../../using-testcafe/command-line-interface.md#--selector-timeout-ms) option
+if you run TestCafe from the command line.
+
+Within the selector timeout, the selector is executed over and over again, until it returns a
 DOM node or the timeout exceeds.
 
 Note that you can additionally require that the node returned by the selector is visible.
@@ -200,8 +217,8 @@ To do this, use the [visibilityCheck](selector-options.md#optionsvisibilitycheck
 
 ## One-Time Selection
 
-To create a selector and immediately execute it without saving,
-use the `select` method of the [test controller](../test-code-structure.md#test-controller) to do this.
+To create a selector and immediately execute it without saving it,
+use the `select` method of the [test controller](../test-code-structure.md#test-controller).
 
 ```text
 t.select( init [, options] )
@@ -210,7 +227,7 @@ t.select( init [, options] )
 Parameter              | Type     | Description
 ---------------------- | -------- | ------------------------------------------------------------------
 `init`                 | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a DOM node to be selected. See [Selector Initializers](#selector-initializers).
-`options` *(optional)* | Object   | See [Options](selector-options.md).
+`options`&#160;*(optional)* | Object   | See [Options](selector-options.md).
 
 The following example shows how to get a DOM element by ID with `t.select`.
 
@@ -240,7 +257,7 @@ fixture `My fixture`
 test('Login field height', async t => {
     const loginInput = await getElementById('login');
 
-    expect(loginInput.width).to.equal(35);
+    expect(loginInput.offsetWidth).to.equal(35);
 });
 ```
 
@@ -299,11 +316,9 @@ test('My Test', async t => {
 
 In this instance, the selector that was used to fetch this snapshot will be called once again.
 
-When a selector, its promise or DOM element snapshot is passed to an action, TestCafe waits for the target element to appear
-in the DOM and become visible before this action is executed. If this does not happen
-within the selector timeout, which is specified in test code by using the [timeout](selector-options.md#optionstimeout) option
-or when launching tests via [API](../../using-testcafe/programming-interface/runner.md#run)
-or [CLI](../../using-testcafe/command-line-interface.md#--selector-timeout-ms), the test fails.
+Before executing an action, TestCafe waits for the target element to appear
+in the DOM and become visible. If this does not happen
+within the [selector timeout](#selector-timeout), the test fails.
 
 ## Calling Selectors from Node.js Callbacks
 
@@ -311,7 +326,7 @@ Selectors need access to the [test controller](../test-code-structure.md#test-co
 When called right from the test function, they implicitly obtain the test controller.
 
 However, if you need to call a selector from a Node.js callback that fires during the test run,
-you will have to manually bind it to the test controller.
+you have to manually bind it to the test controller.
 
 Use the [boundTestRun](selector-options.md#optionsboundtestrun) option for this.
 

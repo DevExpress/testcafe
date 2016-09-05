@@ -2,16 +2,17 @@
 layout: docs
 title: Resize Window
 permalink: /documentation/test-api/actions/resize-window.html
+checked: true
 ---
 # Resize Window
 
-There are two ways to resize the browser window.
+There are two ways of resizing a browser window.
 
 * [Setting the Window Size](#setting-the-window-size)
 * [Fitting the Window into a Particular Device](#fitting-the-window-into-a-particular-device)
 
 > Important! These actions are not yet available on Linux.
-> See the corresponding [issue on Github](https://github.com/DevExpress/testcafe-browser-natives/issues/12).
+> See the corresponding [issue on GitHub](https://github.com/DevExpress/testcafe-browser-natives/issues/12).
 
 ## Setting the Window Size
 
@@ -47,12 +48,12 @@ test('Side menu disappears on small screens', async t => {
 t.resizeWindowToFitDevice( deviceName [, options] )
 ```
 
-Resizes the window so that it fits into the screen of a certain mobile device.
+Resizes the window so that it fits on the screen of the specified mobile device.
 
 Parameter              | Type   | Description
 ---------------------- | ------ | -------------------------------------------------------------------------------------------
 `deviceName`           | String | The name of the device as listed at [http://viewportsizes.com/](http://viewportsizes.com/).
-`options` *(optional)* | Object | Provide additional information about the device.
+`options`&#160;*(optional)* | Object | Provide additional information about the device.
 
 The `options` object can contain the following properties.
 

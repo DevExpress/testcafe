@@ -37,6 +37,6 @@ You can install reporter packages from npm as you would install any other plugin
 ## Using the Reporters
 
 When running tests, you can select a reporter to generate test reports.
-You can do this when working both through the
-[command line](../command-line-interface.md#-r-name---reporter-name)
-and [programmatically](../programming-interface/runner.md#reporter).
+You can do this by using the
+[reporter](../command-line-interface.md#-r-name---reporter-name) command line option or the
+[runner.reporter](../programming-interface/runner.md#reporter) API method.

@@ -2,10 +2,11 @@
 layout: docs
 title: Test Code Structure
 permalink: /documentation/test-api/test-code-structure.html
+checked: true
 ---
 # Test Code Structure
 
-This topic contains the following sections:
+This topic contains the following sections.
 
 * [Fixtures](#fixtures)
   * [Specifying the Start Webpage](#specifying-the-start-webpage)
@@ -87,15 +88,18 @@ test('Test2', async t => {
 });
 ```
 
-You are free to structure code within a test in any manner, as well as you can
+You are free to structure test code in any manner, and you can
 reference any modules or libraries you need.
 
-TestCafe provides a set of [actions](actions/index.md) used to manipulate the tested webpage.
-To check that the page state matches the expected one, use [assertions](assertions.md).
+TestCafe tests are executed server side. To manipulate the tested webpage, use [test actions](actions/index.md).
+To determine the state of page elements or obtain any other data from the client side, use [selectors](selecting-page-elements/selectors.md) and
+[client functions](obtaining-data-from-the-client.md).
+
+To check if the page state matches the expected one, use [assertions](assertions.md).
 
 ### Test Controller
 
-A *test controller* is an object that actually holds methods of test API. That is why it is
+A *test controller* is an object that exposes methods of test API. That is why it is
 passed to each function that is expected to contain server-side test code (like [test](#tests),
 [beforeEach](#initialization-and-clean-up) or [afterEach](#initialization-and-clean-up)).
 
@@ -120,14 +124,14 @@ test('My Test', async t => {
 ```
 
 Another job of the test controller is providing access to the internal context required for test API to operate.
-This is why the test controller is required by [selectors](selecting-page-elements/selectors.md) and
-[client functions](obtaining-data-from-the-client.md) when they are
-called from a Node.js callback.
+This is why [selectors](selecting-page-elements/selectors.md) and
+[client functions](obtaining-data-from-the-client.md) need the test controller object when they are
+called from Node.js callbacks.
 
 ## Initialization and Clean-Up
 
 You can provide initialization code that will be executed before each test starts and clean-up code that will run after a test finishes.
-To do this, add `beforeEach` and `afterEach` functions to the [fixture declaration](#fixtures).
+To do this, add the `beforeEach` and `afterEach` functions to the [fixture declaration](#fixtures).
 
 ```text
 beforeEach( fn(t) )

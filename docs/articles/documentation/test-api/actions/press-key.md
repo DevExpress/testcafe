@@ -2,6 +2,7 @@
 layout: docs
 title: Press Key
 permalink: /documentation/test-api/actions/press-key.html
+checked: true
 ---
 # Press Key
 
@@ -15,27 +16,26 @@ Parameter | Type   | Description
 --------- | ------ | --------------------------------------------------------
 `keys`    | String | The sequence of keys and key combinations to be pressed.
 
-* Alphanumeric keys  
-  `'a', 'A', '1', ...`
-* Modifier keys  
-  `'shift', 'alt', 'ctrl', 'meta'`
-* Navigation and action keys  
-  `'backspace', 'tab', 'enter', 'capslock', 'esc', 'space', 'pageup', 'pagedown', 'end', 'home', 'left', 'right', 'down', 'ins', 'delete'`
-* Key combinations  
-  `'shift+a', 'ctrl+d', ...`
-* Sequential key presses (any of the above in a space-separated string)  
-  `'a ctrl+b'`
+The following table shows how to specify keys of different types, key sequences and combinations.
 
-In addition to key presses handled by webpage elements, TestCafe also allows you to execute certain key presses processed by the browser.
+Key Type                   | Example
+-------------------------- | ------
+Alphanumeric keys          | `'a'`, `'A'`, `'1'`
+Modifier keys              | `'shift'`, `'alt'`, `'ctrl'`, `'meta'`
+Navigation and action keys | `'backspace'`, `'tab'`, `'enter'`, `'capslock'`, `'esc'`, `'space'`, `'pageup'`, `'pagedown'`, `'end'`, `'home'`, `'left'`, `'right'`, `'down'`, `'ins'`, `'delete'`
+Key combinations           | `'shift+a'`, `'ctrl+d'`
+Sequential key presses     | Any of the above in a space-separated string, e.g. `'a ctrl+b'`
 
-* `'ctrl+a', 'backspace', 'delete', 'left', 'right', 'up', 'down', 'home', 'end', 'enter', 'tab', 'shift+tab', 'shift+left', 'shift+right', 'shift+up', 'shift+down', 'shift+home', 'shift+end'`
+In addition to key presses handled by webpage elements, the `t.pressKey` action also allows you to execute certain key presses processed by the browser.
+
+* `'ctrl+a'`, `'backspace'`, `'delete'`, `'left'`, `'right'`, `'up'`, `'down'`, `'home'`, `'end'`, `'enter'`, `'tab'`, `'shift+tab'`, `'shift+left'`, `'shift+right'`, `'shift+up'`, `'shift+down'`, `'shift+home'`, `'shift+end'`
 
 With the exception of the keys and combinations listed above, the `t.pressKey` action will not invoke integrated browser keystrokes.
 
-For web elements that have the `contentEditable` attribute, TestCafe supports the following key-presses:
+For elements with the `contentEditable` attribute, the following key presses are supported.
 
-* `'ctrl+a',`
-* `'backspace', 'delete', 'left'` and `'right'` (only if there is selection within the element).
+* `'ctrl+a'`,
+* `'backspace'`, `'delete'`, `'left'` and `'right'` (only if text within the element is selected).
 
 The following example shows how to use the `t.pressKey` action.
 

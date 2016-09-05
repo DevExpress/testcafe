@@ -70,7 +70,7 @@
       url: /testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html
   - item: Assertions
     url: /testcafe/documentation/test-api/assertions.html
-  - item: Obtaining Data From the Client
+  - item: Obtaining Data from the Client
     url: /testcafe/documentation/test-api/obtaining-data-from-the-client.html
   - item: Pausing the Test
     url: /testcafe/documentation/test-api/pausing-the-test.html
