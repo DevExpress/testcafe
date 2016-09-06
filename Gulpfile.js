@@ -19,7 +19,7 @@ var fs                   = require('fs');
 var path                 = require('path');
 var opn                  = require('opn');
 var connect              = require('connect');
-var spawn                = require('cross-spawn-async');
+var spawn                = require('cross-spawn');
 var serveStatic          = require('serve-static');
 var Promise              = require('pinkie');
 var markdownlint         = require('markdownlint');
@@ -28,6 +28,7 @@ var prompt               = require('gulp-prompt');
 var nodeVer              = require('node-version');
 var functionalTestConfig = require('./test/functional/config');
 var assignIn             = require('lodash').assignIn;
+var runSequence          = require('run-sequence');
 
 
 ll
@@ -369,41 +370,78 @@ gulp.task('put-in-navigation', ['fetch-assets-repo'], function () {
 
 gulp.task('prepare-website', ['put-in-articles', 'put-in-navigation', 'lint-docs']);
 
-gulp.task('build-website', ['prepare-website'], function (cb) {
-    spawn('jekyll', ['build', '--source', 'site/src/', '--destination', 'site/deploy'], { stdio: 'inherit' })
+function buildWebsite (mode, cb) {
+    var options = mode ? { stdio: 'inherit', env: { JEKYLL_ENV: mode } } : { stdio: 'inherit' };
+
+    spawn('jekyll', ['build', '--source', 'site/src/', '--destination', 'site/deploy'], options )
         .on('exit', cb);
+}
+
+gulp.task('build-website-production', ['prepare-website'], function (cb) {
+    buildWebsite('production', cb);
 });
 
-gulp.task('serve-website', ['build-website'], function (cb) {
+gulp.task('build-website-development', ['prepare-website'], function (cb) {
+    buildWebsite('development', cb);
+});
+
+gulp.task('build-website-testing', ['prepare-website'], function (cb) {
+    buildWebsite('testing', cb);
+});
+
+gulp.task('build-website', ['prepare-website'], function (cb) {
+    buildWebsite('', cb);
+});
+
+gulp.task('serve-website', function (cb) {
     var app = connect()
         .use('/testcafe', serveStatic('site/deploy'));
 
     websiteServer = app.listen(8080, cb);
 });
 
-gulp.task('preview-website', ['serve-website'], function () {
-    opn('http://localhost:8080/testcafe');
+gulp.task('preview-website', function () {
+    return new Promise(function (resolve) {
+        runSequence('build-website-development', 'serve-website', resolve);
+    })
+    .then(function () {
+        return opn('http://localhost:8080/testcafe');
+    });
 });
 
-gulp.task('test-website', ['serve-website'], function () {
-    var WebsiteTester = require('./test/website/test.js');
-    var websiteTester = new WebsiteTester();
+function testWebsite (isTravis) {
+    return new Promise(function (resolve) {
+        var buildTask = isTravis ? 'build-website' : 'build-website-testing';
 
-    return websiteTester
-        .checkLinks()
-        .then(function (failed) {
-            return new Promise(function (resolve, reject) {
-                websiteServer.close(function () {
-                    if (failed)
-                        reject('Broken links found!');
-                    else
-                        resolve();
-                });
+        runSequence(buildTask, 'serve-website', resolve);
+    })
+    .then(function () {
+        var WebsiteTester = require('./test/website/test.js');
+        var websiteTester = new WebsiteTester();
+
+        return websiteTester.checkLinks();
+    })
+    .then(function (failed) {
+        return new Promise(function (resolve, reject) {
+            websiteServer.close(function () {
+                if (failed)
+                    reject('Broken links found!');
+                else
+                    resolve();
             });
         });
+    });
+}
+
+gulp.task('test-website', function () {
+    return testWebsite(false);
 });
 
-gulp.task('publish-website', ['build-website'], function () {
+gulp.task('test-website-travis', function () {
+    return testWebsite(true);
+});
+
+gulp.task('publish-website', ['build-website-production'], function () {
     return gulp
         .src('site/deploy/**/*')
         .pipe(prompt.confirm({
@@ -413,7 +451,7 @@ gulp.task('publish-website', ['build-website'], function () {
         .pipe(ghpages());
 });
 
-gulp.task('test-docs', ['test-website', 'lint']);
+gulp.task('test-docs-travis', ['test-website-travis', 'lint']);
 
 
 function testFunctional (fixturesDir, testingEnvironmentName) {
