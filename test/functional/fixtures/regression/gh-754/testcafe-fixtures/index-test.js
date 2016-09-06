@@ -1,5 +1,5 @@
-fixture `fixture'with'serveral'singlequotes`;
+fixture `fixture'with'several'singlequotes`;
 
-test(`fixture'with'serveral'singlequotes`, async t => {
+test(`test'name'with'several'singlequotes`, async t => {
     await t.wait(100);
 });
