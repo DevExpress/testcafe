@@ -103,7 +103,7 @@ export function wait (timeout) {
     });
 
     // NOTE: sometimes the page is not really unloading after the beforeunload event
-    // appeared (see testcafe issues #664, #437). To avoid test hanging we resolve unload
+    // appeared (see issues #664, #437). To avoid test hanging we resolve unload
     // barrier waiting promise in MAX_UNLOADING_TIMEOUT. We can improve this logic when
     // the https://github.com/DevExpress/testcafe-hammerhead/issues/667 issue is fixed.
     var watchdog = delay(MAX_UNLOADING_TIMEOUT)
