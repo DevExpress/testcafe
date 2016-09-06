@@ -177,7 +177,7 @@ export default class Driver {
             return hangingPromise;
 
         return transport
-            .queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.ready, status })
+            .queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.ready, status, disableResending: true })
             .then(res => {
                 //NOTE: do not execute the next command if the page is unloading
                 if (this.beforeUnloadRaised)
