@@ -1,4 +1,3 @@
-var expect                                    = require('chai').expect;
 var errorInEachBrowserContains                = require('../../assertion-helper.js').errorInEachBrowserContains;
 var getNativeDialogNotHandledErrorText        = require('./errors.js').getNativeDialogNotHandledErrorText;
 var getUncaughtErrorInNativeDialogHandlerText = require('./errors.js').getUncaughtErrorInNativeDialogHandlerText;
@@ -70,27 +69,7 @@ describe('Native dialogs handling', function () {
             return runTests('./testcafe-fixtures/page-load-test.js', 'Unexpected alert after page load',
                 { shouldFail: true })
                 .catch(function (errs) {
-                    // NOTE: due to https://github.com/DevExpress/testcafe/issues/663
-                    // we don't check dialog type for iphone,ipad
-                    if (errs instanceof Error)
-                        throw errs;
-
-                    // NOTE: if errors are the same in different browsers
-                    if (Array.isArray(errs))
-                        expect(errs[0]).contains(getNativeDialogNotHandledErrorText('alert', pageLoadingUrl));
-                    else {
-                        Object.keys(errs).forEach(function (err) {
-                            if (!/iphone|ipad/.test(err))
-                                expect(errs[err][0]).contains(getNativeDialogNotHandledErrorText('alert', pageLoadingUrl));
-                            else {
-                                expect(errs[err][0]).contains('dialog was invoked on page "' + pageLoadingUrl +
-                                                              '", but no handler was set for it. Use the ' +
-                                                              '"setNativeDialogHandler" function to introduce' +
-                                                              ' a handler function for native dialogs.');
-                            }
-                        });
-                    }
-
+                    errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert', pageLoadingUrl), 0);
                     errorInEachBrowserContains(errs, '> 40 |    await t.click(\'body\');', 0);
                 });
         });

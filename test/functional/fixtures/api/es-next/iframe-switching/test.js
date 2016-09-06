@@ -101,7 +101,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
                 shouldFail:      true,
                 selectorTimeout: DEFAULT_SELECTOR_TIMEOUT,
 
-                // NOTE: https://github.com/DevExpress/testcafe/issues/663
+                // NOTE: https://github.com/DevExpress/testcafe-hammerhead/issues/667
                 skip: 'iphone,ipad'
             })
                 .catch(function (errs) {
