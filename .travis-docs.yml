@@ -9,7 +9,7 @@ before_install:
    - rvm install 2.1.5
    - npm install
 
-install: gem install jekyll htmlentities sanitize redcarpet   
+install: gem install jekyll htmlentities sanitize redcarpet jekyll-sitemap
 
 branches:
   except:
