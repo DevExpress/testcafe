@@ -91,6 +91,7 @@
     "gulp-uglify": "^1.5.1",
     "gulp-util": "^3.0.7",
     "gulp-webmake": "0.0.4",
+    "js-yaml": "^3.6.1",
     "markdownlint": ">=0.0.8",
     "merge-stream": "^1.0.0",
     "multer": "^1.1.0",
