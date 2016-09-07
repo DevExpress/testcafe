@@ -339,37 +339,37 @@ test('Selector "index" option', async () => {
     expect(el.id).eql('el1');
 });
 
-test('Selector "textFilter" option', async () => {
+test('Selector "text" option', async () => {
     // String selector and string filter
-    let selector = Selector('div', { textFilter: 'element 4.' });
+    let selector = Selector('div', { text: 'element 4.' });
 
     let el = await selector();
 
     expect(el.id).eql('el4');
 
     // String selector and regexp filter
-    selector = Selector('div', { textFilter: /This is element \d+/ });
+    selector = Selector('div', { text: /This is element \d+/ });
 
     el = await selector();
 
     expect(el.id).eql('el1');
 
     // Function selector and string filter
-    selector = Selector(() => document.querySelectorAll('.idxEl'), { textFilter: 'element 4.' });
+    selector = Selector(() => document.querySelectorAll('.idxEl'), { text: 'element 4.' });
 
     el = await selector();
 
     expect(el.id).eql('el4');
 
     // Function selector and regexp filter
-    selector = Selector(() => document.querySelectorAll('.idxEl'), { textFilter: /This is element \d+/ });
+    selector = Selector(() => document.querySelectorAll('.idxEl'), { text: /This is element \d+/ });
 
     el = await selector();
 
     expect(el.id).eql('el1');
 
     // Should filter element if text filter specified
-    selector = Selector(id => document.getElementById(id), { textFilter: 'element 4.' });
+    selector = Selector(id => document.getElementById(id), { text: 'element 4.' });
 
     el = await selector('el1');
 
@@ -380,39 +380,39 @@ test('Selector "textFilter" option', async () => {
     expect(el.id).eql('el4');
 
     // Should filter document if text filter specified
-    selector = Selector(() => document, { textFilter: 'Lorem ipsum dolor sit amet, consectetur' });
+    selector = Selector(() => document, { text: 'Lorem ipsum dolor sit amet, consectetur' });
 
     el = await selector();
 
     expect(el).to.be.null;
 
-    el = await selector.with({ textFilter: 'Hey?! (yo)' })();
+    el = await selector.with({ text: 'Hey?! (yo)' })();
 
     expect(el.nodeType).eql(9);
 
     // Should text node if text filter specified
-    selector = Selector(() => document.getElementById('el2').childNodes[0], { textFilter: 'Lorem ipsum dolor sit amet, consectetur' });
+    selector = Selector(() => document.getElementById('el2').childNodes[0], { text: 'Lorem ipsum dolor sit amet, consectetur' });
 
     el = await selector();
 
     expect(el).to.be.null;
 
-    el = await selector.with({ textFilter: 'Hey?! (yo)' })();
+    el = await selector.with({ text: 'Hey?! (yo)' })();
 
     expect(el.nodeType).eql(3);
 });
 
 test('Compound filter', async t => {
     const selector = Selector('div', {
-        textFilter: 'Hey?! (yo)',
-        index:      1
+        text:  'Hey?! (yo)',
+        index: 1
     });
 
     let el = await selector();
 
     expect(el.id).eql('el3');
 
-    el = await selector.with({ textFilter: /This is element \d+/ })();
+    el = await selector.with({ text: /This is element \d+/ })();
 
     expect(el.id).eql('el4');
 
