@@ -338,30 +338,33 @@ gulp.task('test-client-legacy-travis-mobile', ['build'], function () {
 gulp.task('travis', [process.env.GULP_TASK || '']);
 
 //Documentation
-function generateItem (name, url, level) {
-    return ' '.repeat(level * 2) + '* [' + name + '](articles' + url + ')\n';
-}
-
-function generateFolder (tocItems, level) {
-    var res = '';
-
-    for (var item of tocItems) {
-        res += generateItem(item.name ? item.name : item.url, item.url, level);
-
-        if (item.content)
-            res += generateFolder(item.content, level + 1);
+gulp.task('generate-docs-readme', function () {
+    function generateItem (name, url, level) {
+        return ' '.repeat(level * 2) + '* [' + name + '](articles' + url + ')\n';
     }
 
-    return res;
-}
+    function generateDirectory (tocItems, level) {
+        var res = '';
 
-function generateReadme (toc) {
-    var tocList = generateFolder(toc, 0);
+        for (var item of tocItems) {
+            res += generateItem(item.name ? item.name : item.url, item.url, level);
 
-    return '# Documentation\n\n> This documentation looks much better on the [TestCafe website](https://devexpress.github.io/testcafe/getting-started/).\n\n' + tocList;
-}
+            if (item.content)
+                res += generateDirectory(item.content, level + 1);
+        }
 
-gulp.task('generate-docs-readme', function () {
+        return res;
+    }
+
+    function generateReadme (toc) {
+        var tocList = generateDirectory(toc, 0);
+
+        return '# Documentation\n\n> This is a development version of the documentation. ' +
+            'The functionality described here may not be included in the current release version. ' +
+            'Unreleased functionality may change or be dropped before the next release. ' +
+            'Documentation for the release version is available at the [TestCafe website](https://devexpress.github.io/testcafe/getting-started/).\n\n' + tocList;
+    }
+
     var toc    = yaml.safeLoad(fs.readFileSync('docs/nav/nav-menu.yml', 'utf8'));
     var readme = generateReadme(toc);
 
