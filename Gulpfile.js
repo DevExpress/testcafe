@@ -163,6 +163,7 @@ gulp.task('lint', function () {
 
     return gulp
         .src([
+            'examples/**/*.js',
             'src/**/*.js',
             'test/**/*.js',
             '!test/client/vendor/**/*.*',
