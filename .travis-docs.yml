@@ -2,7 +2,7 @@ language: node_js
 matrix:
  include:
   - node_js: "stable"
-    env: GULP_TASK="test-docs"
+    env: GULP_TASK="test-docs-travis" JEKYLL_ENV="testing"
  fast_finish: true
 
 before_install:
