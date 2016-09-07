@@ -512,5 +512,5 @@ gulp.task('test-functional-travis-legacy', ['build'], function () {
 });
 
 gulp.task('test-functional-travis-old-browsers', ['build'], function () {
-    return testFunctional('test/functional/legacy-fixtures', functionalTestConfig.testingEnvironmentNames.oldBrowsers);
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.oldBrowsers);
 });
