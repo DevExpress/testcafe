@@ -145,20 +145,20 @@ test('Filling a form', async t => {
     await t
         .typeText(page.nameInput, 'Bruce Wayne')
         .click(page.macOSRadioButton)
-        .click(page.triedTestCafeCheckbox)
+        .click(page.triedTestCafeCheckbox);
 
     // Let's leave a comment...
     await t
         .typeText(page.commentsTextArea, "It's...")
         .wait(500)
-        .typeText(page.commentsTextArea, '\ngood')
+        .typeText(page.commentsTextArea, '\ngood');
 
     // I guess, I've changed my mind
     await t
         .wait(500)
         .selectTextAreaContent(page.commentsTextArea, 1, 0)
         .pressKey('delete')
-        .typeText(page.commentsTextArea, 'awesome!!!')
+        .typeText(page.commentsTextArea, 'awesome!!!');
 
     // Let's submit our form
     await t
