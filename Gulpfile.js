@@ -84,16 +84,6 @@ var CLIENT_TESTS_DESKTOP_BROWSERS = [
         version:     '11.0'
     },
     {
-        platform:    'Windows 8',
-        browserName: 'internet explorer',
-        version:     '10.0'
-    },
-    {
-        platform:    'Windows 7',
-        browserName: 'internet explorer',
-        version:     '9.0'
-    },
-    {
         platform:    'OS X 10.11',
         browserName: 'safari',
         version:     '9.0'
@@ -105,6 +95,19 @@ var CLIENT_TESTS_DESKTOP_BROWSERS = [
     {
         platform:    'OS X 10.11',
         browserName: 'firefox'
+    }
+];
+
+var CLIENT_TESTS_OLD_BROWSERS = [
+    {
+        platform:    'Windows 8',
+        browserName: 'internet explorer',
+        version:     '10.0'
+    },
+    {
+        platform:    'Windows 7',
+        browserName: 'internet explorer',
+        version:     '9.0'
     }
 ];
 
@@ -295,6 +298,14 @@ gulp.task('test-client-travis', ['build'], function () {
     var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS;
+
+    return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
+});
+
+gulp.task('test-client-old-browsers-travis', ['build'], function () {
+    var saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
+
+    saucelabsSettings.browsers = CLIENT_TESTS_OLD_BROWSERS;
 
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
 });
@@ -498,4 +509,8 @@ gulp.task('test-functional-local', ['build'], function () {
 
 gulp.task('test-functional-travis-legacy', ['build'], function () {
     return testFunctional('test/functional/legacy-fixtures', functionalTestConfig.testingEnvironmentNames.legacy);
+});
+
+gulp.task('test-functional-travis-old-browsers', ['build'], function () {
+    return testFunctional('test/functional/legacy-fixtures', functionalTestConfig.testingEnvironmentNames.oldBrowsers);
 });

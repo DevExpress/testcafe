@@ -9,6 +9,7 @@ var testingEnvironmentNames = {
     msDesktopBrowsers: 'ms-desktop-browsers',
     mobileBrowsers:    'mobile-browsers',
     localBrowsers:     'local-browsers',
+    oldBrowsers:       'old-browsers',
     legacy:            'legacy'
 };
 
@@ -69,18 +70,6 @@ testingEnvironments[testingEnvironmentNames.msDesktopBrowsers] = {
             browserName: 'internet explorer',
             version:     '11.0',
             alias:       'ie 11'
-        },
-        {
-            platform:    'Windows 8',
-            browserName: 'internet explorer',
-            version:     '10.0',
-            alias:       'ie 10'
-        },
-        {
-            platform:    'Windows 7',
-            browserName: 'internet explorer',
-            version:     '9.0',
-            alias:       'ie 9'
         }
     ]
 };
@@ -137,6 +126,29 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
             platform:    'Windows 10',
             browserName: 'firefox',
             alias:       'firefox'
+        }
+    ]
+};
+
+testingEnvironments[testingEnvironmentNames.oldBrowsers] = {
+    sauceLabs: {
+        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_DESKTOP,
+        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP,
+        jobName:   'functional tests - ms desktop browsers'
+    },
+
+    browsers: [
+        {
+            platform:    'Windows 8',
+            browserName: 'internet explorer',
+            version:     '10.0',
+            alias:       'ie 10'
+        },
+        {
+            platform:    'Windows 7',
+            browserName: 'internet explorer',
+            version:     '9.0',
+            alias:       'ie 9'
         }
     ]
 };
