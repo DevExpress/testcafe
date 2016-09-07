@@ -377,6 +377,20 @@ function buildWebsite (mode, cb) {
         .on('exit', cb);
 }
 
+// NOTE: we have three website build configurations.  
+//
+// * production - used when the website is built for publishing. Gulp task 'build-website-production'.
+// * development - used when the website is built for local deployment. Gulp task 'build-website-development'.
+// * testing - used when the website is built for testing. Gulp task 'build-website-testing'.
+//
+// This is how they affect the website.
+//
+// * Blog comments.
+//   - Do not appear in testing mode.
+//   - In development mode, comments from an internal 'staging' thread are displayed.
+//   - In production mode, public comment threads are displayed.
+// * Google Analytics is enabled in production mode only.
+
 gulp.task('build-website-production', ['prepare-website'], function (cb) {
     buildWebsite('production', cb);
 });
