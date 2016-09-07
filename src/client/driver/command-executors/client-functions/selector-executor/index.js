@@ -74,15 +74,15 @@ Object.defineProperty(window, '%testCafeSelectorFilter%', {
             return node;
 
         if (node instanceof Node) {
-            if (options.textFilter)
-                return hasText(node, options.textFilter) ? node : null;
+            if (options.text)
+                return hasText(node, options.text) ? node : null;
 
             return node;
         }
 
         if (node instanceof HTMLCollection || node instanceof NodeList || isArrayOfNodes(node)) {
-            if (options.textFilter)
-                node = filterNodeCollectionByText(node, options.textFilter);
+            if (options.text)
+                node = filterNodeCollectionByText(node, options.text);
 
             return node[options.index];
         }

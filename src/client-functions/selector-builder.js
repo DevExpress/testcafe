@@ -111,15 +111,15 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
     getFunctionDependencies () {
         var dependencies = super.getFunctionDependencies();
-        var textFilter   = this.options.textFilter;
+        var text         = this.options.text;
 
-        if (typeof textFilter === 'string')
-            textFilter = new RegExp(escapeRe(textFilter));
+        if (typeof text === 'string')
+            text = new RegExp(escapeRe(text));
 
         return assign({}, dependencies, {
             __filterOptions$: {
-                index:      this.options.index || 0,
-                textFilter: textFilter
+                index: this.options.index || 0,
+                text:  text
             }
         });
     }
@@ -154,11 +154,11 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                 throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotABoolean, 'visibilityCheck', visibilityCheckOptionType);
         }
 
-        if (!isNullOrUndefined(options.textFilter)) {
-            var textFilterType = typeof options.textFilter;
+        if (!isNullOrUndefined(options.text)) {
+            var textType = typeof options.text;
 
-            if (textFilterType !== 'string' && !isRegExp(options.textFilter))
-                throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotAStringOrRegExp, 'textFilter', textFilterType);
+            if (textType !== 'string' && !isRegExp(options.text))
+                throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotAStringOrRegExp, 'text', textType);
         }
 
         this._validateNonNegativeNumberOption('timeout', options.timeout);

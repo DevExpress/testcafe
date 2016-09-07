@@ -2,7 +2,7 @@ import { Selector } from 'testcafe';
 
 fixture `Test`;
 
-Selector(() => {}, { textFilter: {} });
+Selector(() => {}, { text: {} });
 
 test('yo', () => {
 });

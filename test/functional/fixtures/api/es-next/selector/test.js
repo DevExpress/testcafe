@@ -69,8 +69,8 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "index" option');
     });
 
-    it('Should filter results with "textFilter" options', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "textFilter" option');
+    it('Should filter results with "text" options', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "text" option');
     });
 
     it('Should filter results using compound filter', function () {
