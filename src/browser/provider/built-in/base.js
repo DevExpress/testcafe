@@ -1,16 +1,46 @@
 import browserTools from 'testcafe-browser-tools';
 import OS from 'os-family';
 import WARNING_MESSAGE from '../../../warnings/message';
+import delay from '../../../utils/delay';
 
 
 /*eslint-disable no-undef*/
-function getDataFromBrowser () {
-    return { width: window.innerWidth, height: window.innerHeight, title: document.title };
+function getTitle () {
+    return document.title;
+}
+
+function getCurrentSize () {
+    return {
+        width:  window.innerWidth,
+        height: window.innerHeight,
+    };
 }
 /*eslint-disable no-undef*/
 
-const INIT_SCRIPT = getDataFromBrowser.toString();
+const GET_TITLE_SCRIPT        = getTitle.toString();
+const GET_CURRENT_SIZE_SCRIPT = getCurrentSize.toString();
 
+const BROWSER_OPENING_DELAY = 2000;
+
+const RESIZE_DIFF_SIZE = {
+    width:  100,
+    height: 100
+};
+
+
+function sumSizes (sizeA, sizeB) {
+    return {
+        width:  sizeA.width + sizeB.width,
+        height: sizeA.height + sizeB.height
+    };
+}
+
+function subtractSizes (sizeA, sizeB) {
+    return {
+        width:  sizeA.width - sizeB.width,
+        height: sizeA.height - sizeB.height
+    };
+}
 
 export default class BrowserProviderBase {
     constructor () {
@@ -22,23 +52,32 @@ export default class BrowserProviderBase {
     }
 
     async calculateResizeCorrections (browserId) {
+        // NOTE: delay to ensure the window finished the opening
         await this.waitForConnectionReady(browserId);
+        await delay(BROWSER_OPENING_DELAY);
 
-        var { width, height, title } = await this.runInitScript(browserId, INIT_SCRIPT);
+        var title = await this.runInitScript(browserId, GET_TITLE_SCRIPT);
 
         if (!await browserTools.isMaximized(title))
             return;
 
-        await browserTools.resize(title, width, height, width, height);
+        var currentSize = await this.runInitScript(browserId, GET_CURRENT_SIZE_SCRIPT);
+        var etalonSize  = subtractSizes(currentSize, RESIZE_DIFF_SIZE);
 
-        var { width: newWidth, height: newHeight } = await this.runInitScript(browserId, INIT_SCRIPT);
+        await browserTools.resize(title, currentSize.width, currentSize.height, etalonSize.width, etalonSize.height);
+
+        var resizedSize     = await this.runInitScript(browserId, GET_CURRENT_SIZE_SCRIPT);
+        var correctionSize  = subtractSizes(resizedSize, etalonSize);
+
+        await browserTools.resize(title, resizedSize.width, resizedSize.height, etalonSize.width, etalonSize.height);
+
+        resizedSize = await this.runInitScript(browserId, GET_CURRENT_SIZE_SCRIPT);
+
+        correctionSize = sumSizes(correctionSize, subtractSizes(resizedSize, etalonSize));
+
+        this.resizeCorrections[browserId] = correctionSize;
 
         await browserTools.maximize(title);
-
-        if (newWidth === width && newHeight === height)
-            return;
-
-        this.resizeCorrections[browserId] = { width: newWidth - width, height: newHeight - height };
     }
 
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {
