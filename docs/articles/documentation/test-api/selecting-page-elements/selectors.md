@@ -141,14 +141,14 @@ You can initialize a selector with any of these objects.
 
 Functions and CSS selector stings that initialize a selector can return multiple DOM nodes.
 In this instance, you must filter these nodes to select a single node that will eventually be returned by the selector.
-Use the [textFilter](selector-options.md#optionstextfilter) and [index](selector-options.md#optionsindex) options for this.
+Use the [text](selector-options.md#optionstext) and [index](selector-options.md#optionsindex) options for this.
 
-The [textFilter](selector-options.md#optionstextfilter) option specifies text content of the node that should be returned
+The [text](selector-options.md#optionstext) option specifies text content of the node that should be returned
 or a regular expression that matches this content.
 
 The [index](selector-options.md#optionsindex) option specifies the index of the node that should be returned.
 
-The following example demonstrates how to use the `textFilter` and `index` options.
+The following example demonstrates how to use the `text` and `index` options.
 
 ```js
 import { expect } from 'chai';
@@ -157,29 +157,24 @@ import { Selector } from 'testcafe';
 fixture `My fixture`
     .page('http://www.example.com/');
 
-const getRemoveButtonOfClass = Selector(cl => document.getElementsByClassName(cl), {
-    textFilter: 'Remove'
-});
-
-const getSecondButtonOfClass = Selector(cl => document.getElementsByClassName(cl), {
-    index: 1
-});
+const getRemoveButton = Selector(cl => document.getElementsByClassName(cl), { text: 'Remove' });
+const getSecondButton = Selector(cl => document.getElementsByClassName(cl), { index: 1 });
 
 test('A shadowed remove button is focused', async t => {
-    expect((await getRemoveButtonOfClass('shadowed')).focused).to.be.true;
+    expect((await getRemoveButton('shadowed')).focused).to.be.true;
 });
 
 test('The second disabled button is visible', async t => {
-    expect((await getSecondButtonOfClass('disabled')).visible).to.be.true;
+    expect((await getSecondButton('disabled')).visible).to.be.true;
 });
 ```
 
-If both options are specified, nodes are first filtered by the `textFilter`,
+If both options are specified, nodes are first filtered by the `text` filter,
 then a node at the `index` position is selected from the remaining nodes.
 
 If all nodes are filtered out, the selector returns `null`.
 
-> The [textFilter](selector-options.md#optionstextfilter) and [index](selector-options.md#optionsindex) options
+> The [text](selector-options.md#optionstext) and [index](selector-options.md#optionsindex) options
 > are also applied when the selector is called from another selector or a [client function](../obtaining-data-from-the-client.md).
 
 ## Executing Selectors
@@ -373,5 +368,5 @@ by introducing a promise and synchronously waiting for it to complete as shown i
 * Selectors cannot access variables defined in the outer scope in test code.
   However, you can use arguments to pass data inside the selectors, except for those that are self-invoked.
   They cannot take any parameters from the outside.
-  
+
     Likewise, the return value is the only way to obtain data from selectors.
