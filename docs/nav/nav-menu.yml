@@ -1,104 +1,104 @@
-- item: GETTING STARTED
-  url: /testcafe/documentation/getting-started/
-- folder: USING TESTCAFE
-  url: /testcafe/documentation/using-testcafe/
+- name: GETTING STARTED
+  url: /documentation/getting-started/index.md
+- name: USING TESTCAFE
+  url: /documentation/using-testcafe/index.md
   content:
-  - item: Installing TestCafe
-    url: /testcafe/documentation/using-testcafe/installing-testcafe.html
-  - item: Command Line Interface
-    url: /testcafe/documentation/using-testcafe/command-line-interface.html
-  - folder: Programming Interface
-    url: /testcafe/documentation/using-testcafe/programming-interface/
+  - name: Installing TestCafe
+    url: /documentation/using-testcafe/installing-testcafe.md
+  - name: Command Line Interface
+    url: /documentation/using-testcafe/command-line-interface.md
+  - name: Programming Interface
+    url: /documentation/using-testcafe/programming-interface/index.md
     content:
-    - item: TestCafe Class
-      url: /testcafe/documentation/using-testcafe/programming-interface/testcafe.html
-    - item: BrowserConnection Class
-      url: /testcafe/documentation/using-testcafe/programming-interface/browserconnection.html
-    - item: Runner Class
-      url: /testcafe/documentation/using-testcafe/programming-interface/runner.html
-    - item: createTestCafe Factory
-      url: /testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html
-  - folder: Common Concepts
-    url: /testcafe/documentation/using-testcafe/common-concepts/
+    - name: TestCafe Class
+      url: /documentation/using-testcafe/programming-interface/testcafe.md
+    - name: BrowserConnection Class
+      url: /documentation/using-testcafe/programming-interface/browserconnection.md
+    - name: Runner Class
+      url: /documentation/using-testcafe/programming-interface/runner.md
+    - name: createTestCafe Factory
+      url: /documentation/using-testcafe/programming-interface/createtestcafe.md
+  - name: Common Concepts
+    url: /documentation/using-testcafe/common-concepts/index.md
     content:
-    - item: Browser Support
-      url: /testcafe/documentation/using-testcafe/common-concepts/browser-support.html
-    - item: Reporters
-      url: /testcafe/documentation/using-testcafe/common-concepts/reporters.html
-- folder: TEST API
-  url: /testcafe/documentation/test-api/
+    - name: Browser Support
+      url: /documentation/using-testcafe/common-concepts/browser-support.md
+    - name: Reporters
+      url: /documentation/using-testcafe/common-concepts/reporters.md
+- name: TEST API
+  url: /documentation/test-api/index.md
   content:
-  - item: Test Code Structure
-    url: /testcafe/documentation/test-api/test-code-structure.html
-  - folder: Actions
-    url: /testcafe/documentation/test-api/actions/
+  - name: Test Code Structure
+    url: /documentation/test-api/test-code-structure.md
+  - name: Actions
+    url: /documentation/test-api/actions/index.md
     content:
-    - item: Click
-      url: /testcafe/documentation/test-api/actions/click.html
-    - item: Double Click
-      url: /testcafe/documentation/test-api/actions/double-click.html
-    - item: Right Click
-      url: /testcafe/documentation/test-api/actions/right-click.html
-    - item: Drag Element
-      url: /testcafe/documentation/test-api/actions/drag-element.html
-    - item: Hover
-      url: /testcafe/documentation/test-api/actions/hover.html
-    - item: Select Text
-      url: /testcafe/documentation/test-api/actions/select-text.html
-    - item: Type Text
-      url: /testcafe/documentation/test-api/actions/type-text.html
-    - item: Press Key
-      url: /testcafe/documentation/test-api/actions/press-key.html
-    - item: Navigate
-      url: /testcafe/documentation/test-api/actions/navigate.html
-    - item: Take Screenshot
-      url: /testcafe/documentation/test-api/actions/take-screenshot.html
-    - item: Upload
-      url: /testcafe/documentation/test-api/actions/upload.html
-    - item: Resize Window
-      url: /testcafe/documentation/test-api/actions/resize-window.html
-    - item: Action Options
-      url: /testcafe/documentation/test-api/actions/action-options.html
-  - folder: Selecting Page Elements
-    url: /testcafe/documentation/test-api/selecting-page-elements/
+    - name: Click
+      url: /documentation/test-api/actions/click.md
+    - name: Double Click
+      url: /documentation/test-api/actions/double-click.md
+    - name: Right Click
+      url: /documentation/test-api/actions/right-click.md
+    - name: Drag Element
+      url: /documentation/test-api/actions/drag-element.md
+    - name: Hover
+      url: /documentation/test-api/actions/hover.md
+    - name: Select Text
+      url: /documentation/test-api/actions/select-text.md
+    - name: Type Text
+      url: /documentation/test-api/actions/type-text.md
+    - name: Press Key
+      url: /documentation/test-api/actions/press-key.md
+    - name: Navigate
+      url: /documentation/test-api/actions/navigate.md
+    - name: Take Screenshot
+      url: /documentation/test-api/actions/take-screenshot.md
+    - name: Upload
+      url: /documentation/test-api/actions/upload.md
+    - name: Resize Window
+      url: /documentation/test-api/actions/resize-window.md
+    - name: Action Options
+      url: /documentation/test-api/actions/action-options.md
+  - name: Selecting Page Elements
+    url: /documentation/test-api/selecting-page-elements/index.md
     content:
-    - item: Selectors
-      url: /testcafe/documentation/test-api/selecting-page-elements/selectors.html
-    - item: Selector Options
-      url: /testcafe/documentation/test-api/selecting-page-elements/selector-options.html
-    - item: DOM Node Snapshots
-      url: /testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html
-  - item: Assertions
-    url: /testcafe/documentation/test-api/assertions.html
-  - item: Obtaining Data from the Client
-    url: /testcafe/documentation/test-api/obtaining-data-from-the-client.html
-  - item: Pausing the Test
-    url: /testcafe/documentation/test-api/pausing-the-test.html
-  - item: Handling Native Dialogs
-    url: /testcafe/documentation/test-api/handling-native-dialogs.html
-  - item: Working with &lt;iframes&gt;
-    url: /testcafe/documentation/test-api/working-with-iframes.html
-- folder: EXTENDING TESTCAFE
-  url: /testcafe/documentation/extending-testcafe/
+    - name: Selectors
+      url: /documentation/test-api/selecting-page-elements/selectors.md
+    - name: Selector Options
+      url: /documentation/test-api/selecting-page-elements/selector-options.md
+    - name: DOM Node Snapshots
+      url: /documentation/test-api/selecting-page-elements/dom-node-snapshots.md
+  - name: Assertions
+    url: /documentation/test-api/assertions.md
+  - name: Obtaining Data from the Client
+    url: /documentation/test-api/obtaining-data-from-the-client.md
+  - name: Pausing the Test
+    url: /documentation/test-api/pausing-the-test.md
+  - name: Handling Native Dialogs
+    url: /documentation/test-api/handling-native-dialogs.md
+  - name: Working with &lt;iframes&gt;
+    url: /documentation/test-api/working-with-iframes.md
+- name: EXTENDING TESTCAFE
+  url: /documentation/extending-testcafe/index.md
   content:
-  - folder: Custom Reporter Plugin
-    url: /testcafe/documentation/extending-testcafe/custom-reporter-plugin/
+  - name: Custom Reporter Plugin
+    url: /documentation/extending-testcafe/custom-reporter-plugin/index.md
     content:
-    - item: Reporter Methods
-      url: /testcafe/documentation/extending-testcafe/custom-reporter-plugin/reporter-methods.html
-    - item: Helpers
-      url: /testcafe/documentation/extending-testcafe/custom-reporter-plugin/helpers.html
-  - folder: Custom Browser Provider Plugin
-    url: /testcafe/documentation/extending-testcafe/custom-browser-provider-plugin/
+    - name: Reporter Methods
+      url: /documentation/extending-testcafe/custom-reporter-plugin/reporter-methods.md
+    - name: Helpers
+      url: /documentation/extending-testcafe/custom-reporter-plugin/helpers.md
+  - name: Custom Browser Provider Plugin
+    url: /documentation/extending-testcafe/custom-browser-provider-plugin/index.md
     content:
-    - item: Browser Provider Methods
-      url: /testcafe/documentation/extending-testcafe/custom-browser-provider-plugin/browser-provider-methods.html
-#  - item: Selector Extensions
+    - name: Browser Provider Methods
+      url: /documentation/extending-testcafe/custom-browser-provider-plugin/browser-provider-methods.md
+#  - name: Selector Extensions
 #    url: .
-#- folder: RECIPES
+#- name: RECIPES
 #  url: .
 #  content:
-#  - item: Recipe No. 1
+#  - name: Recipe No. 1
 #    url: .
-#  - item: Recipe No. 2
+#  - name: Recipe No. 2
 #    url: .

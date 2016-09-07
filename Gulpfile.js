@@ -29,6 +29,7 @@ var nodeVer              = require('node-version');
 var functionalTestConfig = require('./test/functional/config');
 var assignIn             = require('lodash').assignIn;
 var runSequence          = require('run-sequence');
+var yaml                 = require('js-yaml');
 
 
 ll
@@ -337,6 +338,36 @@ gulp.task('test-client-legacy-travis-mobile', ['build'], function () {
 gulp.task('travis', [process.env.GULP_TASK || '']);
 
 //Documentation
+function generateItem (name, url, level) {
+    return ' '.repeat(level * 2) + '* [' + name + '](articles' + url + ')\n';
+}
+
+function generateFolder (tocItems, level) {
+    var res = '';
+
+    for (var item of tocItems) {
+        res += generateItem(item.name ? item.name : item.url, item.url, level);
+
+        if (item.content)
+            res += generateFolder(item.content, level + 1);
+    }
+
+    return res;
+}
+
+function generateReadme (toc) {
+    var tocList = generateFolder(toc, 0);
+
+    return '# Documentation\n\n> This documentation looks much better on the [TestCafe website](https://devexpress.github.io/testcafe/getting-started/).\n\n' + tocList;
+}
+
+gulp.task('generate-docs-readme', function () {
+    var toc    = yaml.safeLoad(fs.readFileSync('docs/nav/nav-menu.yml', 'utf8'));
+    var readme = generateReadme(toc);
+
+    fs.writeFileSync('docs/README.md', readme);
+});
+
 gulp.task('lint-docs', function () {
     function lintFiles (files) {
         return new Promise(function (resolve, reject) {
