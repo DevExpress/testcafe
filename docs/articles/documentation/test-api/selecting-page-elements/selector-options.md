@@ -11,7 +11,7 @@ You can pass the following options to the [Selector constructor](selectors.md#cr
 
 * [options.dependencies](#optionsdependencies)
 * [options.boundTestRun](#optionsboundtestrun)
-* [options.textFilter](#optionstextfilter)
+* [options.text](#optionstext)
 * [options.index](#optionsindex)
 * [options.timeout](#optionstimeout)
 * [options.visibilityCheck](#optionsvisibilitycheck)
@@ -48,15 +48,15 @@ If you need to call a selector from a Node.js callback, assign the current
 
 For details, see [Calling Selectors from Node.js Callbacks](selectors.md#calling-selectors-from-nodejs-callbacks).
 
-## options.textFilter
+## options.text
 
 **Type**: String &#124; RegExp
 
 Text content of the node that should be selected or a regular expression that matches this content.
 Use this option to filter nodes returned by the selector's [initializing](selectors.md#selector-initializers) function or CSS selector.
 
-The `textFilter` is applied whenever a function or CSS selector string that was used to initialize the selector
-returns one or several nodes. If none of these nodes match the `textFilter`, the selector will return `null`.
+The `text` filter is applied whenever a function or CSS selector string that was used to initialize the selector
+returns one or several nodes. If none of these nodes match the `text` filter, the selector will return `null`.
 
 You can also use the [index](#optionsindex) option to identify a node by its index.
 
@@ -72,7 +72,7 @@ by the selector's [initializing](selectors.md#selector-initializers) function or
 Use the `index` option when a function or CSS selector string that was used to initialize the selector returns more than one DOM node.
 Otherwise, this option will be ignored.
 
-You can also use the [textFilter](#optionstextfilter) option to select a node by its text content.
+You can also use the [text](#optionstext) option to select a node by its text content.
 
 For details, see [Initializers that Return Multiple Nodes](selectors.md#initializers-that-return-multiple-nodes).
 
