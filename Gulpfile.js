@@ -377,7 +377,7 @@ function buildWebsite (mode, cb) {
         .on('exit', cb);
 }
 
-// NOTE: we have three website build configurations.  
+// NOTE: we have three website build configurations.
 //
 // * production - used when the website is built for publishing. Gulp task 'build-website-production'.
 // * development - used when the website is built for local deployment. Gulp task 'build-website-development'.
