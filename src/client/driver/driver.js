@@ -1,7 +1,6 @@
 import hammerhead from './deps/hammerhead';
 import {
     RequestBarrier,
-    noop,
     pageUnloadBarrier,
     eventUtils,
     domUtils,
@@ -68,8 +67,6 @@ const CURRENT_IFRAME_ERROR_CTORS = {
 };
 
 
-var hangingPromise = new Promise(noop);
-
 export default class Driver {
     constructor (ids, communicationUrls, runInfo, options) {
         this.COMMAND_EXECUTING_FLAG   = 'testcafe|driver|command-executing-flag';
@@ -91,7 +88,6 @@ export default class Driver {
 
         this.childDriverLinks      = [];
         this.activeChildDriverLink = null;
-        this.beforeUnloadRaised    = false;
 
         this.statusBar = null;
 
@@ -107,10 +103,6 @@ export default class Driver {
         preventRealEvents();
 
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
-
-        hammerhead.on(hammerhead.EVENTS.beforeUnload, () => {
-            this.beforeUnloadRaised = true;
-        });
     }
 
     // Error handling
@@ -172,20 +164,23 @@ export default class Driver {
 
         this.contextStorage.setItem(PENDING_STATUS, status);
 
+        var readyCommandResponse = null;
+
         // NOTE: postpone status sending if the page is unloading
-        if (this.beforeUnloadRaised)
-            return hangingPromise;
+        return pageUnloadBarrier
+            .wait(0)
+            .then(() => transport.queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.ready, status, disableResending: true }))
 
-        return transport
-            .queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.ready, status, disableResending: true })
+            //NOTE: do not execute the next command if the page is unloading
             .then(res => {
-                //NOTE: do not execute the next command if the page is unloading
-                if (this.beforeUnloadRaised)
-                    return hangingPromise;
+                readyCommandResponse = res;
 
+                return pageUnloadBarrier.wait(0);
+            })
+            .then(() => {
                 this.contextStorage.setItem(PENDING_STATUS, null);
 
-                return res;
+                return readyCommandResponse;
             });
     }
 

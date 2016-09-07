@@ -1,4 +1,5 @@
 import { Promise, eventSandbox } from './deps/hammerhead';
+import { pageUnloadBarrier } from './deps/testcafe-core';
 import { IframeStatusBar } from './deps/testcafe-ui';
 import Driver from './driver';
 import ContextStorage from './storage';
@@ -27,26 +28,27 @@ export default class IframeDriver extends Driver {
         eventSandbox.message.on(eventSandbox.message.SERVICE_MSG_RECEIVED_EVENT, e => {
             var msg = e.message;
 
-            if (this.beforeUnloadRaised)
-                return;
+            pageUnloadBarrier
+                .wait(0)
+                .then(() => {
+                    // NOTE: the parent driver repeats commands sent to a child driver if it doesn't get a confirmation
+                    // from the child in time. However, confirmations sent by child drivers may be delayed when the browser
+                    // is heavily loaded. That's why the child driver should ignore repeated messages from its parent.
+                    if (msg.type === MESSAGE_TYPE.executeCommand) {
+                        if (this.lastParentDriverMessageId === msg.id)
+                            return;
 
-            // NOTE: the parent driver repeats commands sent to a child driver if it doesn't get a confirmation
-            // from the child in time. However, confirmations sent by child drivers may be delayed when the browser
-            // is heavily loaded. That's why the child driver should ignore repeated messages from its parent.
-            if (msg.type === MESSAGE_TYPE.executeCommand) {
-                if (this.lastParentDriverMessageId === msg.id)
-                    return;
+                        this.lastParentDriverMessageId = msg.id;
 
-                this.lastParentDriverMessageId = msg.id;
+                        this.parentDriverLink.confirmMessageReceived(msg.id);
+                        this._onCommand(msg.command);
+                    }
 
-                this.parentDriverLink.confirmMessageReceived(msg.id);
-                this._onCommand(msg.command);
-            }
-
-            if (msg.type === MESSAGE_TYPE.setNativeDialogHandler) {
-                this.nativeDialogsTracker.setHandler(msg.dialogHandler);
-                this._setNativeDialogHandlerInIframes(msg.dialogHandler);
-            }
+                    if (msg.type === MESSAGE_TYPE.setNativeDialogHandler) {
+                        this.nativeDialogsTracker.setHandler(msg.dialogHandler);
+                        this._setNativeDialogHandlerInIframes(msg.dialogHandler);
+                    }
+                });
         });
     }
 

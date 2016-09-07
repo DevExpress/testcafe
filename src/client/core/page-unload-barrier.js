@@ -10,6 +10,7 @@ var nativeMethods = hammerhead.nativeMethods;
 const DEFAULT_BARRIER_TIMEOUT       = 500;
 const WAIT_FOR_UNLOAD_TIMEOUT       = 3000;
 const SHORT_WAIT_FOR_UNLOAD_TIMEOUT = 30;
+const MAX_UNLOADING_TIMEOUT         = 15 * 1000;
 
 
 var waitingForUnload          = null;
@@ -87,9 +88,9 @@ export function init () {
     handleBeforeUnload();
 }
 
-export function wait () {
-    return new Promise(resolve => {
-        delay(DEFAULT_BARRIER_TIMEOUT)
+export function wait (timeout) {
+    var waitForUnloadingPromise = new Promise(resolve => {
+        delay(timeout === void 0 ? DEFAULT_BARRIER_TIMEOUT : timeout)
             .then(() => {
                 if (unloading)
                     return;
@@ -100,4 +101,15 @@ export function wait () {
                     waitingPromiseResolvers.push(resolve);
             });
     });
+
+    // NOTE: sometimes the page isn't actually unloaded after the beforeunload event
+    // fires (see issues #664, #437). To avoid test hanging, we resolve the unload
+    // barrier waiting promise in MAX_UNLOADING_TIMEOUT. We can improve this logic when
+    // the https://github.com/DevExpress/testcafe-hammerhead/issues/667 issue is fixed.
+    var watchdog = delay(MAX_UNLOADING_TIMEOUT)
+        .then(() => {
+            unloading = false;
+        });
+
+    return Promise.race([waitForUnloadingPromise, watchdog]);
 }
