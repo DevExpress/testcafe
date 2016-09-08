@@ -32,7 +32,7 @@ const DESCRIPTION = dedent(`
 
     You can use one or more file paths or glob patterns to specify which tests to run.
 
-    More info: http://testcafe.devexpress.com/Documentation/CLI
+    More info: https://devexpress.github.io/testcafe/documentation
 `);
 
 export default class CLIArgumentParser {
