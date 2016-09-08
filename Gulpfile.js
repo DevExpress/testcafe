@@ -346,12 +346,12 @@ gulp.task('generate-docs-readme', function () {
     function generateDirectory (tocItems, level) {
         var res = '';
 
-        for (var item of tocItems) {
+        tocItems.forEach(function (item) {
             res += generateItem(item.name ? item.name : item.url, item.url, level);
 
             if (item.content)
                 res += generateDirectory(item.content, level + 1);
-        }
+        });
 
         return res;
     }
@@ -360,9 +360,10 @@ gulp.task('generate-docs-readme', function () {
         var tocList = generateDirectory(toc, 0);
 
         return '# Documentation\n\n> This is a development version of the documentation. ' +
-            'The functionality described here may not be included in the current release version. ' +
-            'Unreleased functionality may change or be dropped before the next release. ' +
-            'Documentation for the release version is available at the [TestCafe website](https://devexpress.github.io/testcafe/getting-started/).\n\n' + tocList;
+               'The functionality described here may not be included in the current release version. ' +
+               'Unreleased functionality may change or be dropped before the next release. ' +
+               'Documentation for the release version is available at the [TestCafe website](https://devexpress.github.io/testcafe/getting-started/).\n\n' +
+               tocList;
     }
 
     var toc    = yaml.safeLoad(fs.readFileSync('docs/nav/nav-menu.yml', 'utf8'));
@@ -418,7 +419,7 @@ gulp.task('prepare-website', ['put-in-articles', 'put-in-navigation', 'lint-docs
 function buildWebsite (mode, cb) {
     var options = mode ? { stdio: 'inherit', env: { JEKYLL_ENV: mode } } : { stdio: 'inherit' };
 
-    spawn('jekyll', ['build', '--source', 'site/src/', '--destination', 'site/deploy'], options )
+    spawn('jekyll', ['build', '--source', 'site/src/', '--destination', 'site/deploy'], options)
         .on('exit', cb);
 }
 
