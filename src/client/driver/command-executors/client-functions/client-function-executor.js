@@ -28,6 +28,7 @@ export default class ClientFunctionExecutor {
             });
     }
 
+    //Overridable methods
     getResultDriverStatus () {
         return this
             .getResult()
@@ -43,7 +44,6 @@ export default class ClientFunctionExecutor {
             });
     }
 
-    // Overridable methods
     _createReplicator () {
         return createReplicator([
             new ClientFunctionNodeTransform(this.command.instantiationCallsiteName),

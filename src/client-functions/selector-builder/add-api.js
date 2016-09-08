@@ -1,4 +1,4 @@
-import { assign } from 'lodash';
+import { isNil as isNullOrUndefined, assign } from 'lodash';
 import clientFunctionBuilderSymbol from '../builder-symbol';
 import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapshot-properties';
 import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
@@ -6,11 +6,13 @@ import getCallsite from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../client-function-builder';
 import ClientFunctionResultPromise from '../result-promise';
 import {
-    assertStringOrRegExp,
     assertNumber,
+    assertFunction,
     assertFunctionOrString,
-    assertFunctionOrStringOrNumber
-} from '../../errors/runtime/type-assertions';
+    assertFunctionOrStringOrNumber,
+    assertStringOrRegExp
+    assertObject
+    } from '../../errors/runtime/type-assertions';
 
 const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PROPERTIES);
 
@@ -88,8 +90,20 @@ async function getSnapshot (getSelector, callsite) {
     return node;
 }
 
-function addSnapshotPropertyShorthands (obj, getSelector) {
-    SNAPSHOT_PROPERTIES.forEach(prop => {
+function assertSnapshotExtensionOptions (extensions) {
+    if (!isNullOrUndefined(extensions)) {
+        assertObject('extendSnapshot', '"extendSnapshot" option', extensions);
+
+        Object.keys(extensions).forEach(prop => {
+            assertFunction('extendSnapshot', `extendSnapshot '${prop.replace(/'/g, "\\'")}'`, extensions[prop]);
+        });
+    }
+}
+
+function addSnapshotPropertyShorthands (obj, getSelector, snapshotExtensions) {
+    var properties = SNAPSHOT_PROPERTIES.concat(snapshotExtensions ? Object.keys(snapshotExtensions) : []);
+
+    properties.forEach(prop => {
         Object.defineProperty(obj, prop, {
             get: () => {
                 var callsite = getCallsite('get');
@@ -244,7 +258,17 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
     };
 }
 
-function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
+function addSnapshotExtensionMethods (obj, getSelector, SelectorBuilder) {
+    obj.extendSnapshot = extensions => {
+        assertSnapshotExtensionOptions(extensions);
+
+        var builder = new SelectorBuilder(getSelector(), { snapshotExtensions: extensions }, { instantiation: 'Selector' });
+
+        return builder.getFunction();
+    };
+}
+
+function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
     // Find
     obj.find = (filter, dependencies) => {
         assertFunctionOrString('find', '"filter" argument', filter);
@@ -369,9 +393,10 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
     };
 }
 
-export default function addAPI (obj, getSelector, SelectorBuilder) {
-    addSnapshotPropertyShorthands(obj, getSelector);
+export default function addAPI (obj, getSelector, SelectorBuilder, snapshotExtensions) {
+    addSnapshotPropertyShorthands(obj, getSelector, snapshotExtensions);
+    addSnapshotExtensionMethods(obj, getSelector, SelectorBuilder);
     addFilterMethods(obj, getSelector, SelectorBuilder);
-    addHierachicalSelectors(obj, getSelector, SelectorBuilder);
+    addHierarchicalSelectors(obj, getSelector, SelectorBuilder);
     addCounterProperties(obj, getSelector, SelectorBuilder);
 }

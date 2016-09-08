@@ -61,6 +61,10 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `hasClass` method');
     });
 
+    it('Should provide "extendSnapshot" method in node snapshot', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `extendSnapshot` method');
+    });
+
     it('Should wait for element to appear on new page', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Element on new page');
     });
@@ -185,6 +189,36 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains("> 524 |    await Selector('#someUnknownElement').getStyleProperty('width');");
                 });
         });
+
+        it('Should raise error if snapshot extension argument is not object',
+            function () {
+                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extendSnapshot method - argument is not object', {
+                    shouldFail: true,
+                    only:       'chrome'
+                })
+                    .catch(function (errs) {
+                        expect(errs[0]).contains(
+                            '"extendSnapshot" option is expected to be an object, but it was number.'
+                        );
+                        expect(errs[0]).contains("> 904 |    await Selector('rect').extendSnapshot(42);");
+                    });
+            }
+        );
+
+        it('Should raise error if at least one of snapshot extensions is not function',
+            function () {
+                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extendSnapshot method - extension is not function', {
+                    shouldFail: true,
+                    only:       'chrome'
+                })
+                    .catch(function (errs) {
+                        expect(errs[0]).contains(
+                            "extendSnapshot 'field1' is expected to be a function, but it was number"
+                        );
+                        expect(errs[0]).contains("> 908 |    await Selector('rect').extendSnapshot({ field1: 1, field2: () => 42 });");
+                    });
+            }
+        );
 
         it('Should raise error if error occurs in selector during shorthand property evaluation', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot property shorthand - selector error', {

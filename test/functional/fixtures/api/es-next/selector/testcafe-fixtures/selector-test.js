@@ -883,5 +883,62 @@ test('Selector filter origin node argument', async t => {
         .expect(Selector('#el2').sibling((el, idx, refSibling) => {
             return refSibling.id === 'el2' && el.id === 'el3';
         }).id).eql('el3');
+});
 
+test('Selector `extendSnapshot` method', async () => {
+    let el = Selector('rect')
+        .extendSnapshot({
+            prop1: () => 42,
+            prop2: node => 'tagName: ' + node.tagName
+        });
+
+    expect(await el.prop1).eql(42);
+    expect(await el.prop2).eql('tagName: rect');
+
+    el = el.extendSnapshot({
+        prop2: () => 'other value',
+        prop3: () => 'test'
+    });
+
+    expect(await el.prop1).eql(42);
+    expect(await el.prop2).eql('other value');
+    expect(await el.prop3).eql('test');
+
+    const elProp = Selector('rect')
+        .extendSnapshot({
+            customProp: () => 'custom'
+        }).customProp;
+
+    expect(await elProp).eql('custom');
+
+    const elSnapshot = await Selector('rect')
+        .extendSnapshot({
+            prop1: () => 1,
+            prop2: () => 2
+        })();
+
+    expect(elSnapshot.prop1).eql(1);
+    expect(elSnapshot.prop2).eql(2);
+
+    const nonExistingElement = await Selector('nonExistingElement').with({
+        snapshotExtensions: {
+            prop: () => 'value'
+        }
+    })();
+
+    expect(nonExistingElement).eql(null);
+
+    const getSecondEl = Selector('div').extendSnapshot({
+        prop: () => 'second'
+    }).nth(1);
+
+    expect(await getSecondEl.prop).eql('second');
+});
+
+test('Snapshot extendSnapshot method - argument is not object', async () => {
+    await Selector('rect').extendSnapshot(42);
+});
+
+test('Snapshot extendSnapshot method - extension is not function', async () => {
+    await Selector('rect').extendSnapshot({ field1: 1, field2: () => 42 });
 });
