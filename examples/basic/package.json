@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/DevExpress/testcafe#readme",
   "devDependencies": {
+    "chai": "^3.0.0",
     "testcafe": "*"
   }
 }
