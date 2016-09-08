@@ -39,7 +39,7 @@ Property | Type | Description
 `boundingClientRect` | Object | The size of the element and its position relative to the viewport. Contains the `left`, `right`, `bottom`, `top`, `width` and `height` properties.
 `classNames` | Array of String | The list of element's classes.
 `style` | Object | The [computed](https://developer.mozilla.org/en-US/docs/Web/API/Window/getComputedStyle) values of element's CSS properties as `{ property: value, ... }`.
-`displayText` | String | The element's text content that is actually displayed in the browser. Compared to `textContent`, excludes non-visual nodes and nodes that aren't currently visible.
+`innerText` | String | The element's text content "as rendered". See [The innerText IDL attribute](https://html.spec.whatwg.org/multipage/dom.html#the-innertext-idl-attribute).
 `namespaceURI` | String | The namespace URI of the element. If the element does not have a namespace, this property is set to `null`. See [Element.namespaceURI](https://developer.mozilla.org/en-US/docs/Web/API/Element/namespaceURI).
 `id`   | String | The element's identifier. See [Element.id](https://developer.mozilla.org/en-US/docs/Web/API/Element/id).
 `value` | String | For input elements, the current value in the control. For other elements, `undefined`.

@@ -20,9 +20,9 @@ This topic contains the following sections.
 * [Selector Initializers](#selector-initializers)
   * [Initializers that Return Multiple Nodes](#initializers-that-return-multiple-nodes)
 * [Executing Selectors](#executing-selectors)
+  * [Return Values. DOM Node Snapshots](#return-values-dom-node-snapshots)
   * [Selector Timeout](#selector-timeout)
 * [One-Time Selection](#one-time-selection)
-* [Return Values. DOM Node Snapshots](#return-values-dom-node-snapshots)
 * [Using Selectors to Define Action Targets](#using-selectors-to-define-action-targets)
 * [Calling Selectors from Node.js Callbacks](#calling-selectors-from-nodejs-callbacks)
 * [Limitations](#limitations)
@@ -194,6 +194,29 @@ test('My test', async t => {
 });
 ```
 
+### Return Values. DOM Node Snapshots
+
+When you return a DOM node from the selector, what actually returns from the client
+is a *DOM node snapshot* - an object that reflects the state of the DOM node.
+
+```js
+import { expect } from 'chai';
+import { Selector } from 'testcafe';
+
+const getElementById = Selector(id => document.getElementById(id));
+
+fixture `My fixture`
+    .page('http://www.example.com/');
+
+test('Login field height', async t => {
+    const loginInput = await getElementById('login');
+
+    expect(loginInput.offsetWidth).to.equal(35);
+});
+```
+
+For a list of members exposed by DOM node snapshots, see [DOM Node Snapshots](dom-node-snapshots.md).
+
 ### Selector Timeout
 
 When a selector is called in test code, TestCafe waits for the target node to appear
@@ -234,29 +257,6 @@ test('My Test', async t => {
     const header = await t.select(() => document.getElementById('header'));
 });
 ```
-
-## Return Values. DOM Node Snapshots
-
-When you return a DOM node from the selector, what actually returns from the client
-is a *DOM node snapshot* - an object that reflects the state of the DOM node.
-
-```js
-import { expect } from 'chai';
-import { Selector } from 'testcafe';
-
-const getElementById = Selector(id => document.getElementById(id));
-
-fixture `My fixture`
-    .page('http://www.example.com/');
-
-test('Login field height', async t => {
-    const loginInput = await getElementById('login');
-
-    expect(loginInput.offsetWidth).to.equal(35);
-});
-```
-
-For a list of members exposed by DOM node snapshots, see [DOM Node Snapshots](dom-node-snapshots.md).
 
 ## Using Selectors to Define Action Targets
 
