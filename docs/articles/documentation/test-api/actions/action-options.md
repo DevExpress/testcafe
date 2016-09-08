@@ -61,7 +61,7 @@ Parameter                      | Type    | Description                          
 ------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------
 `ctrl`, `alt`, `shift`, `meta` | Boolean | Indicate which modifier keys are to be pressed during the mouse action.                                                                                     | `false`
 `offsetX`, `offsetY`           | Number  | Mouse pointer coordinates relative to the top-left corner of the target element. Define a point where the action is performed or started. Must be integers. | The center of the target element.
-`caretPos`                     | Number  | The initial caret position if the action is performed on a text input field. Must be a positive integer or `0`.                                             | The length of the input field content.
+`caretPos`                     | Number  | The initial caret position if the action is performed on a text input field. A zero-based integer.                                                          | The length of the input field content.
 
 Click action options are used in the [t.click](click.md), [t.doubleClick](double-click.md) and [t.rightClick](right-click.md) actions.
 
@@ -89,7 +89,7 @@ Parameter                      | Type    | Description                          
 ------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------
 `ctrl`, `alt`, `shift`, `meta` | Boolean | Indicate which modifier keys are to be pressed while typing.                                                                                          | `false`
 `offsetX`, `offsetY`           | Number  | Mouse pointer coordinates relative to the top-left corner of the target element. Define a point that is clicked to set input focus. Must be integers. | The center of the target element.
-`caretPos`                     | Number  | The initial caret position. Must be a positive integer or `0`.                                                                                        | The length of the input field content.
+`caretPos`                     | Number  | The initial caret position. A zero-based integer.                                                                                        | The length of the input field content.
 `replace`                      | Boolean | `true` to remove the current text in the target element, and `false` to leave the text as it is.                                                         | `false`
 
 Typing action options are used in the [t.typeText](type-text.md) action.

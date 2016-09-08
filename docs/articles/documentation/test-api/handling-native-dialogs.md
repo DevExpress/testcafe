@@ -114,7 +114,7 @@ You can get the history of the invoked native dialogs to check if a certain dial
 Use the [test controller's](test-code-structure.md#test-controller) `getNativeDialogHistory` method for this.
 
 ```text
-t.getNativeDialogHistory() → [{type, text, url}]
+t.getNativeDialogHistory() → Promise<[{type, text, url}]>
 ```
 
 `t.getNativeDialogHistory` returns a stack of history entries (i.e., an array in which the latest dialog has an index of `0`).

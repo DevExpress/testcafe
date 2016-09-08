@@ -23,8 +23,8 @@ t.selectText( selector [, startPos] [, endPos] )
 Parameter               | Type                                              | Description                                                                                                                                          | Default
 ----------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------
 `selector`              | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element whose text will be selected. See [Selecting Target Elements](index.md#selecting-target-elements).
-`startPos`&#160;*(optional)* | Number                                            | The start position of the selection. Must be a positive integer or `0`.                                                                              | `0`
-`endPos`&#160;*(optional)*   | Number                                            | The end position of the selection. Must be a positive integer or `0`.                                                                                | Length of the visible text content.
+`startPos`&#160;*(optional)* | Number                                            | The start position of the selection. A zero-based integer.                                                                              | `0`
+`endPos`&#160;*(optional)*   | Number                                            | The end position of the selection. A zero-based integer.                                                                                | Length of the visible text content.
 
 > You can use `t.selectText` for `<textarea>` and `contentEditable` elements as well. However, the [t.selectTextAreaContent](#select-textarea-content)
 > and [t.selectEditableContent](#perform-selection-within-editable-content) actions allow you to specify the selection range
@@ -63,10 +63,10 @@ t.selectTextAreaContent( selector [, startLine] [, startPos] [, endLine] [, endP
 Parameter  | Type                                              | Description                                                                                                                                   | Default
 ---------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------
 `selector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the `<textarea>` whose text will be selected. See [Selecting Target Elements](index.md#selecting-target-elements).
-`startLine`&#160;*(optional)* | Number                                            | The line number at which selection starts. Must be a positive integer or `0`.                                               | `0`
-`startPos`&#160;*(optional)*  | Number                                            | The start position of selection within the line defined by the `startLine`. Must be a positive integer or `0`.                  | `0`
-`endLine`&#160;*(optional)*   | Number                                            | The line number at which selection ends. Must be a positive integer or `0`.                                                 | The index of the last line.
-`endPos`&#160;*(optional)*    | Number                                            | The end position of selection within the line defined by `endLine`. Must be a positive integer or `0`.                          | The last position in `endLine`.
+`startLine`&#160;*(optional)* | Number                                            | The line number at which selection starts. A zero-based integer.                                                           | `0`
+`startPos`&#160;*(optional)*  | Number                                            | The start position of selection within the line defined by the `startLine`. A zero-based integer.                          | `0`
+`endLine`&#160;*(optional)*   | Number                                            | The line number at which selection ends. A zero-based integer.                                                             | The index of the last line.
+`endPos`&#160;*(optional)*    | Number                                            | The end position of selection within the line defined by `endLine`. A zero-based integer.                                  | The last position in `endLine`.
 
 The following example shows how to select text within a `<textarea>` element.
 
