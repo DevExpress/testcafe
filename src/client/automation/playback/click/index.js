@@ -24,6 +24,7 @@ var domUtils      = testCafeCore.domUtils;
 var positionUtils = testCafeCore.positionUtils;
 var styleUtils    = testCafeCore.styleUtils;
 var eventUtils    = testCafeCore.eventUtils;
+var arrayUtils    = testCafeCore.arrayUtils;
 var delay         = testCafeCore.delay;
 
 var selectElementUI = testCafeUI.selectElement;
@@ -38,6 +39,9 @@ export default class ClickAutomation {
 
         this.offsetX = clickOptions.offsetX;
         this.offsetY = clickOptions.offsetY;
+
+        this.targetElementParentNodes = [];
+        this.clickEventElement        = null;
 
         this.eventArgs = {
             point:   null,
@@ -139,7 +143,9 @@ export default class ClickAutomation {
     }
 
     _mousedown () {
-        this.eventArgs = this._calculateEventArguments();
+        this.eventArgs                = this._calculateEventArguments();
+        this.targetElementParentNodes = domUtils.getParents(this.eventArgs.element);
+        this.clickEventElement        = this.eventArgs.element;
 
         this._raiseTouchEvents();
 
@@ -225,10 +231,17 @@ export default class ClickAutomation {
         return cursor
             .buttonUp()
             .then(() => {
-                var prevElementForEvent = this.eventArgs.element;
+                this.eventArgs = this._calculateEventArguments();
 
-                this.eventArgs            = this._calculateEventArguments();
-                this.eventState.skipClick = prevElementForEvent !== this.eventArgs.element;
+                if (this.eventArgs.element !== this.clickEventElement) {
+                    this.eventState.skipClick = browserUtils.isFirefox ||
+                                                !this.clickEventElement.contains(this.eventArgs.element) ||
+                                                domUtils.isEditableFormElement(this.eventArgs.element);
+                }
+                else {
+                    this.eventState.skipClick = !browserUtils.isFirefox &&
+                                                !arrayUtils.equals(this.targetElementParentNodes, domUtils.getParents(this.eventArgs.element));
+                }
 
                 eventSimulator.mouseup(this.eventArgs.element, this.eventArgs.options);
 
@@ -243,7 +256,7 @@ export default class ClickAutomation {
         // NOTE: If the element under the cursor has changed after the
         // 'mousedown' event, we should not raise the 'click' event
         if (!this.eventState.skipClick)
-            eventSimulator.click(this.eventArgs.element, this.eventArgs.options);
+            eventSimulator.click(this.clickEventElement, this.eventArgs.options);
 
         if (!domUtils.isElementFocusable(this.eventArgs.element))
             focusByRelatedElement(this.eventArgs.element);
