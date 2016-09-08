@@ -163,6 +163,7 @@ gulp.task('lint', function () {
 
     return gulp
         .src([
+            'examples/**/*.js',
             'src/**/*.js',
             'test/**/*.js',
             '!test/client/vendor/**/*.*',
@@ -373,14 +374,9 @@ gulp.task('generate-docs-readme', function () {
 });
 
 gulp.task('lint-docs', function () {
-    function lintFiles (files) {
+    function lintFiles (files, config) {
         return new Promise(function (resolve, reject) {
-            var config = {
-                'files':  files,
-                'config': require('./.markdownlint.json')
-            };
-
-            markdownlint(config, function (err, result) {
+            markdownlint({ files: files, config: config }, function (err, result) {
                 var lintErr = err || result && result.toString();
 
                 if (lintErr)
@@ -391,7 +387,13 @@ gulp.task('lint-docs', function () {
         });
     }
 
-    return globby('docs/articles/**/*.md').then(lintFiles);
+    var lintDocsAndExamples = globby(['docs/articles/**/*.md', 'examples/**/*.md']).then(function (files) {
+        return lintFiles(files, require('./.markdownlint.json'));
+    });
+
+    var lintReadme = lintFiles('README.md', require('./.markdownlint-readme.json'));
+
+    return Promise.all([lintDocsAndExamples, lintReadme]);
 });
 
 gulp.task('clean-website', function () {

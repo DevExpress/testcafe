@@ -1,0 +1,23 @@
+{
+  "name": "basic-testcafe-example",
+  "version": "1.0.0",
+  "description": "Basic TestCafe API example",
+  "main": "test.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevExpress/testcafe.git"
+  },
+  "author": "Developer Express Inc. (https://devexpress.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DevExpress/testcafe/issues"
+  },
+  "homepage": "https://github.com/DevExpress/testcafe#readme",
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "testcafe": "*"
+  }
+}

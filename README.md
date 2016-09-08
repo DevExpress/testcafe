@@ -1,8 +1,8 @@
-<p align="center">
+<h1 align="center">
     <a href="http://devexpress.github.io/testcafe">
         <img src="https://raw.github.com/DevExpress/testcafe/master/media/logo.png" alt="testcafe" />
     </a>
-</p>
+</h1>
 <p align="center">
 <a href="http://devexpress.github.io/testcafe">http://devexpress.github.io/testcafe</a>
 </p>
@@ -193,11 +193,11 @@ For more information, see [Reporters](http://devexpress.github.io/testcafe/docum
 
 # Documentation
 
-- [Getting Started](http://devexpress.github.io/testcafe/documentation/getting-started/)
-- [Test API](http://devexpress.github.io/testcafe/documentation/test-api/)
-- [Using TestCafe](http://devexpress.github.io/testcafe/documentation/using-testcafe/)
-- [Extending TestCafe](http://devexpress.github.io/testcafe/documentation/extending-testcafe/)
-- [Recipes](http://devexpress.github.io/testcafe/documentation/recipes/)
+* [Getting Started](http://devexpress.github.io/testcafe/documentation/getting-started/)
+* [Test API](http://devexpress.github.io/testcafe/documentation/test-api/)
+* [Using TestCafe](http://devexpress.github.io/testcafe/documentation/using-testcafe/)
+* [Extending TestCafe](http://devexpress.github.io/testcafe/documentation/extending-testcafe/)
+* [Recipes](http://devexpress.github.io/testcafe/documentation/recipes/)
 
 # Contributing
 
@@ -212,4 +212,5 @@ For more information on how to help us improve TestCafe, please see the [CONTRIB
 [MIT](LICENSE)
 
 # Author
-Developer Express Inc. (https://devexpress.com)
+
+Developer Express Inc. ([https://devexpress.com](https://devexpress.com))
