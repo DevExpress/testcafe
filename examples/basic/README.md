@@ -1,10 +1,10 @@
 # Basic TestCafe API example
 
-*A set of examples that illustrate how to use TestCafe API.*
+*A set of sample tests that illustrate how to use TestCafe API*
 
 ## Running the example
 
-Clone repository to your machine and install dependencies:
+Clone the repository to your machine and install the dependencies:
 
 ```sh
 git clone https://github.com/DevExpress/testcafe.git
@@ -12,7 +12,7 @@ cd examples/basic
 npm install
 ```
 
-Then just run `test` command:
+Then, run the `test` command:
 
 ```sh
 npm test

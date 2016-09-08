@@ -77,7 +77,7 @@ test('Dealing with text using keyboard', async t => {
     // Check result
     expect(nameInput.value).eql('Pete Parker');
 
-    await t.pressKey('home right . delete delete delete'); // Peek even shorter form for name
+    await t.pressKey('home right . delete delete delete'); // Pick even shorter form for name
 
     nameInput = await page.nameInput();
 
@@ -129,7 +129,7 @@ test('Handle native confirmation dialog', async t => {
 });
 
 
-test('Peek option from select', async t => {
+test('Pick option from select', async t => {
     await t
         .click(page.interfaceSelect)
         .click(page.interfaceSelectOption.with({ text: 'Both' }));
