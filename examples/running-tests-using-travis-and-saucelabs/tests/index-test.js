@@ -1,8 +1,14 @@
-fixture `Getting Started`
+/* eslint-env node, browser */
+import { expect } from 'chai';
+
+fixture `Check if the button text changes`
     .page('http://localhost:9090/index.html');
 
 test('My test', async t => {
     await t
-		.setNativeDialogHandler(() => true)
-        .click('#clickHere');
+		.click('#click-here');
+
+    const button = await t.select(() => document.getElementById('click-here'));
+
+    expect(button.value).to.equal('Hello!');
 });

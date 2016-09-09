@@ -95,8 +95,8 @@
       url: /documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.md
 #  - name: Selector Extensions
 #    url: .
-- folder: RECIPES
-  url: /testcafe/documentation/recipes/
+- name: RECIPES
+  url: /documentation/recipes/index.md
   content:
-    - item: Running Tests Using Travis CI and Sauce Labs
-      url: /testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs/
+    - name: Running Tests Using Travis CI and Sauce Labs
+      url: /documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.md

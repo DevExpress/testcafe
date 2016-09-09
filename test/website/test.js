@@ -59,8 +59,16 @@ class WebsiteTester {
 
         return this._parsePage(hashlessLink)
             .then(tree => {
-                const hash = parsedLink.hash.substr(1);
-                let res    = this._hasHash(tree, hash);
+                let hash = parsedLink.hash.substr(1);
+
+                // NOTE: The Travis Documentation website contains lower case
+                // anchors in the markup but uppercases them using scripts
+                // before displaying the page.
+                // So, we expect a lower case anchor to appear in the markup.
+                if (parsedLink.host === 'docs.travis-ci.com')
+                    hash = hash.toLowerCase();
+
+                let res = this._hasHash(tree, hash);
 
                 // NOTE: GitHub renders headers in md documents with ids that
                 // start with 'user-content-'.
