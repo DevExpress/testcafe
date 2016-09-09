@@ -1,10 +1,52 @@
 {
   "name": "testcafe",
+  "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
-  "version": "0.3.1-alpha",
+  "version": "0.9.0-rc1",
+  "author": {
+    "name": "Developer Express Inc.",
+    "url": "https://www.devexpress.com/"
+  },
+  "bugs": {
+    "url": "https://github.com/DevExpress/testcafe/issues"
+  },
+  "homepage": "https://devexpress.github.io/testcafe/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevExpress/testcafe.git"
+  },
   "main": "lib/index",
   "bin": {
     "testcafe": "./bin/testcafe.js"
+  },
+  "files": [
+    "lib",
+    "bin"
+  ],
+  "keywords": [
+    "automated",
+    "functional",
+    "browser",
+    "browsers",
+    "website",
+    "webapp",
+    "testing",
+    "automation",
+    "test",
+    "runner",
+    "tdd",
+    "assert",
+    "assertion",
+    "QA",
+    "ES6",
+    "ES2015",
+    "async",
+    "await"
+  ],
+  "scripts": {
+    "test": "gulp travis",
+    "publish-please": "publish-please",
+    "prepublish": "publish-please guard"
   },
   "dependencies": {
     "babel-core": "^6.4.0",
@@ -104,14 +146,5 @@
     "serve-static": "^1.10.0",
     "strip-ansi": "^3.0.0",
     "tmp": "0.0.28"
-  },
-  "files": [
-    "lib",
-    "bin"
-  ],
-  "scripts": {
-    "test": "gulp travis",
-    "publish-please": "publish-please",
-    "prepublish": "publish-please guard"
   }
 }
