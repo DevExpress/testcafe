@@ -9,7 +9,7 @@ TestCafe allows you to test against different web browsers.
 The most popular browsers are [supported directly](#directly-supported-browsers),
 while others require a [browser provider plugin](#browser-provider-plugins).
 
-The topic contains the following sections.
+This topic contains the following sections.
 
 * [Directly Supported Browsers](#directly-supported-browsers)
 * [Browser Provider Plugins](#browser-provider-plugins)
@@ -31,9 +31,9 @@ Safari            | 6+     | `safari`
 
 ## Browser Provider Plugins
 
-If you need to use a browser that is not [supported directly](#directly-supported-browsers), create a [browser provider plugin](../../extending-testcafe/custom-browser-provider-plugin/).
+If you need to use a browser that is not [supported directly](#directly-supported-browsers), create a [browser provider plugin](../../extending-testcafe/browser-provider-plugin/).
 
-Created provider packages can be published to npm. The provider package name consists of two parts - the `testcafe-browser-provider-` prefix and the name of a provider itself; for example, `testcafe-browser-provider-saucelabs`.
+Created provider packages can be published to npm. The provider package name consists of two parts - the `testcafe-browser-provider-` prefix and the name of a provider itself; e.g., `testcafe-browser-provider-saucelabs`.
 So, you can search for available browser provider packages on npm by the `testcafe-browser-provider-` prefix: [https://www.npmjs.com/search?q=testcafe-browser-provider](https://www.npmjs.com/search?q=testcafe-browser-provider).
 
 For example, there are provider packages for testing in [Sauce Labs](https://saucelabs.com/) and [PhantomJS](http://phantomjs.org/) browsers:
@@ -41,7 +41,7 @@ For example, there are provider packages for testing in [Sauce Labs](https://sau
 * [testcafe-browser-provider-saucelabs](https://www.npmjs.com/package/testcafe-browser-provider-saucelabs)
 * [testcafe-browser-provider-phantomjs](https://www.npmjs.com/package/testcafe-browser-provider-phantomjs)
 
-You can install browser providers packages from npm as you would install any other plugin. See [Installing Plugins](../../extending-testcafe/index.md#installing-plugins).
+You can install browser provider packages from npm as you would install any other plugin. See [Installing Plugins](../../extending-testcafe/index.md#installing-plugins).
 
 ## Specifying Browsers for Test Task
 
@@ -52,7 +52,7 @@ within the `testcafe` command.
 In case you are using the API, specify the browsers
 with the [runner.browsers](../programming-interface/runner.md#browsers) method.
 
-To identify browsers, different approaches are used:
+To identify browsers, different approaches are used.
 
 Browser&#160;Type  | Specified by
 ------------------ | ----------------------------------

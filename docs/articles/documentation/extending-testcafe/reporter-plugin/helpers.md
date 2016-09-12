@@ -1,12 +1,12 @@
 ---
 layout: docs
 title: Helpers
-permalink: /documentation/extending-testcafe/custom-reporter-plugin/helpers.html
+permalink: /documentation/extending-testcafe/reporter-plugin/helpers.html
 checked: true
 ---
 # Helpers
 
-Helpers are methods and libraries used to format report output when [implementing a reporter](index.md#implementing-the-reporter). TestCafe mixins these methods to the reporter.
+Helpers are methods and libraries used to format report output when [implementing a reporter](index.md#implementing-the-reporter). TestCafe mixes in these methods to the reporter.
 
 To access helpers, use `this`.
 
@@ -20,7 +20,7 @@ This topic contains information about several groups of helpers.
 ## Output Helpers
 
 All output helper methods are chainable: each method returns `this` so that the methods can be executed one right after another.
-This allows you to write compact code like this:
+This allows you to write compact code like this.
 
 ```js
 this.setIndent(4)
@@ -209,7 +209,7 @@ reportTestDone (name, errs) {
 
 ### escapeHtml
 
-Escapes string for use in HTML.
+Encodes a string for use in HTML.
 
 ```text
 escapeHtml (str) → String
@@ -217,7 +217,7 @@ escapeHtml (str) → String
 
 Parameter   | Type   | Description
 ----------- | ------ | ------------------------------
-`str`       | String | The string you want to escape.
+`str`       | String | The string to be encoded.
 
 **Example**
 
@@ -296,7 +296,7 @@ reportTestDone (name, errs) {
 ```
 
 To force disabling coloring in reports, set the reporter's `noColors` property in the `src/index.js` file to `false`.
-For example, you may need to disable coloring for machine-readable formats (JSON or xUnit) since there is no need in the colored output.
+For example, you may need to disable coloring for machine-readable formats (JSON or xUnit) since the colored output is not required.
 
 ```js
 export default function () {

@@ -237,7 +237,7 @@ const stream = new MyStream();
 runner.reporter('json', stream);
 ```
 
-You can also build your own reporter. Use a [dedicated Yeoman generator](https://github.com/DevExpress/generator-testcafe-reporter) to scaffold out a [custom reporter plugin](../../extending-testcafe/custom-reporter-plugin/index.md).
+You can also build your own reporter. Use a [dedicated Yeoman generator](https://github.com/DevExpress/generator-testcafe-reporter) to scaffold out a [reporter plugin](../../extending-testcafe/reporter-plugin/index.md).
 
 ### run
 

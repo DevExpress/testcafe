@@ -1,9 +1,9 @@
 ---
 layout: docs
-title: Custom Browser Provider Plugin
-permalink: /documentation/extending-testcafe/custom-browser-provider-plugin/
+title: Browser Provider Plugin
+permalink: /documentation/extending-testcafe/browser-provider-plugin/
 ---
-# Custom Browser Provider Plugin
+# Browser Provider Plugin
 
 TestCafe has built-in support for testing in a number of popular browsers (see [Directly Supported Browsers](../../using-testcafe/common-concepts/browser-support.md#directly-supported-browsers)).
 If you need to use a different browser (for example, a browser from a cloud service), you can create a **custom browser provider plugin**.
@@ -38,19 +38,19 @@ mkdir my-provider
 cd my-provider
 ```
 
-> It is recommended to name the directory as you would like to name the browser provider project. When you run the generator, it will automatically suggest the browser provider name that matches the browser provider directory name.
+> It is recommended that you name the directory as you would name the browser provider project. When you run the generator, it will automatically suggest the browser provider name that matches the browser provider directory name.
 >
-> The generator will also automatically create the provider package name that consists of two parts - the `testcafe-browser-provider-` prefix and the name of the provider itself, for example, `testcafe-browser-provider-my-provider`.
+> The generator will also automatically create the provider package name that consists of two parts - the `testcafe-browser-provider-` prefix and the name of the provider itself; for example, `testcafe-browser-provider-my-provider`.
 >
-> **Important:** If you name the provider package manually, it is required that its name starts with the `testcafe-browser-provider-` prefix. Otherwise, TestCafe will be unable to recognize the plugin.
+> **Important:** If you name the provider package manually, its name must start with the `testcafe-browser-provider-` prefix. Otherwise, TestCafe will be unable to recognize the plugin.
 
-Then run the browser provider generator to create a new project:
+Then, run the browser provider generator to create a new project.
 
 ```bash
 yo testcafe-browser-provider
 ```
 
-The generator will ask you a few questions about the browser provider. Then Yeoman will automatically scaffold out the provider, install the required dependencies, and pull in several useful Gulp tasks for your workflow.
+The generator will ask you a few questions about the browser provider. Then, Yeoman will automatically scaffold out the provider, install the required dependencies, and pull in several useful Gulp tasks for your workflow.
 
 ## Implementing the Browser Provider
 
@@ -175,7 +175,7 @@ cd my-provider
 npm link
 ```
 
-After that TestCafe will use the provider version you are currently developing.
+After that, TestCafe will use the provider version you are currently developing.
 
 For information on how to specify a browser in tests, see [Specifying Browsers for Test Task](../../using-testcafe/common-concepts/browser-support.md#specifying-browsers-for-test-task).
 
@@ -183,10 +183,10 @@ For information on how to specify a browser in tests, see [Specifying Browsers f
 
 When you finish developing the provider, you can publish it to npm by running the `publish-please` npm script.
 This script builds the package, tests the provider and then uses [publish-please](https://github.com/inikulin/publish-please) to publish it to npm.
-That is why it is recommended to use the `publish-please` script instead of `npm publish`.
+That is why using the `publish-please` script instead of `npm publish` is what is recommended.
 
 ```bash
 npm run publish-please
 ```
 
-After that you can install the provider plugin as you would [install any other plugin](../index.md#installing-plugins).
+After that, you can install the provider plugin as you would [install any other plugin](../index.md#installing-plugins).

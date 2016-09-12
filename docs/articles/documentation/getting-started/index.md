@@ -20,7 +20,7 @@ This guide provides step-by-step instructions on how to create a functional web 
 
 ## Installing TestCafe
 
-Make sure that [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) are installed on your computer, then run a single command:
+Ensure that [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) are installed on your computer, then run a single command:
 
 ```bash
 npm install -g testcafe
@@ -31,7 +31,7 @@ For more information, see [Installing TestCafe](../using-testcafe/installing-tes
 ## Creating a Test
 
 To create a test, create a new .js file anywhere on your computer.
-This file must have the special structure: tests must be organized into fixtures. So, first you need to declare a fixture by using the [fixture](../test-api/test-code-structure.md#fixtures) function.
+This file must have a special structure: tests must be organized into fixtures. Thus, begin by declaring a fixture using the [fixture](../test-api/test-code-structure.md#fixtures) function.
 
 ```js
 fixture `Getting Started`
@@ -45,7 +45,7 @@ fixture `Getting Started`
     .page('http://devexpress.github.io/testcafe/example');
 ```
 
-Then create the [test](../test-api/test-code-structure.md#tests) function where you will further place test code.
+Then, create the [test](../test-api/test-code-structure.md#tests) function where you will place test code.
 
 ```js
 fixture `Getting Started`
@@ -58,13 +58,13 @@ test('My first test', async t => {
 
 ## Running the Test
 
-You can simply run the test from a command shell, by calling a single command where you specify the [target browser](../using-testcafe/command-line-interface.md#browser-list) and [file path](../using-testcafe/command-line-interface.md#file-pathglob-pattern).
+You can simply run the test from a command shell by calling a single command where you specify the [target browser](../using-testcafe/command-line-interface.md#browser-list) and [file path](../using-testcafe/command-line-interface.md#file-pathglob-pattern).
 
 ```bash
 testcafe safari test1.js
 ```
 
-TestCafe will automatically open the chosen browser and start the test execution within it.
+TestCafe will automatically open the chosen browser and start test execution within it.
 
 > Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
@@ -84,7 +84,7 @@ For more information, see [Reporters](../using-testcafe/common-concepts/reporter
 
 ### Performing Actions on the Page
 
-Every test should be capable of interacting with a page content. To perform user actions, TestCafe provides
+Every test should be capable of interacting with page content. To perform user actions, TestCafe provides
 a number of [actions](../test-api/actions/index.md): `click`, `hover`, `typeText`, `setFilesToUpload`, etc.
 They can be called in a chain.
 
@@ -103,7 +103,7 @@ test('My first test', async t => {
 
 All test actions are implemented as async functions of the [test controller object](../test-api/test-code-structure.md#test-controller) `t`.
 This object is used to access test run API.
-To wait for actions to be complete, use the `await` keyword when calling these actions or action chains.
+To wait for actions to complete, use the `await` keyword when calling these actions or action chains.
 
 ### Observing Page State
 

@@ -5,7 +5,7 @@ permalink: /documentation/using-testcafe/
 ---
 # Using TestCafe
 
-This section provides general information on TestCafe and the ways you can use it.
+This section provides general information on TestCafe and describes the ways you can use it.
 
 * [Installing TestCafe](installing-testcafe.md)
 * [Command Line Interface](command-line-interface.md)

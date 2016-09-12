@@ -92,7 +92,7 @@ testcafe saucelabs:chrome@51 tests/sample-fixture.js
 
 ## File Path/Glob Pattern
 
-The `file-or-glob ...` argument specifies files or directories (separated by a space) to run tests from.
+The `file-or-glob ...` argument specifies the files or directories (separated by a space) from which to run these tests.
 
 For example, this command runs all tests located in the `my-tests` directory.
 
@@ -143,7 +143,7 @@ testcafe --list-browsers
 
 ### -r \<name\>, --reporter \<name\>
 
-Specifies the name of a [built-in](common-concepts/reporters.md) or [custom reporter](../extending-testcafe/custom-reporter-plugin/index.md) that will be used to generate test reports.
+Specifies the name of a [built-in](common-concepts/reporters.md) or [custom reporter](../extending-testcafe/reporter-plugin/index.md) that will be used to generate test reports.
 
 The following command runs tests in all available browsers and generates a report in the xunit format.
 
@@ -198,7 +198,7 @@ testcafe all tests/sample-fixture.js -S -s screenshots
 
 Enables the quarantine mode for tests that fail.
 In this mode, a failed test is executed several more times.
-The test result depends on the outcome (*passed* or *failed*) that will be at most.
+The test result depends on the outcome (*passed* or *failed*) that occurs most often.
 That is, if the test fails on most attempts, the result is *failed*.
 And vice versa, if the test is executed successfully on most of the attempts, the result is *passed*.
 

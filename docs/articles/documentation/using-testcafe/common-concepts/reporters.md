@@ -16,7 +16,7 @@ TestCafe ships with the following reporters:
 * [xUnit](https://github.com/DevExpress/testcafe-reporter-xunit)
 * [JSON](https://github.com/DevExpress/testcafe-reporter-json)
 
-You can also create a [custom reporter](/testcafe/documentation/extending-testcafe/custom-reporter-plugin/) that will fulfill your needs.
+You can also create a [custom reporter](/testcafe/documentation/extending-testcafe/reporter-plugin/) that will fulfill your needs.
 
 For more information about the reporters, see the following sections.
 
