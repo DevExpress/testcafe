@@ -19,7 +19,15 @@ var delay      = testCafeCore.delay;
 var selectElementUI = testCafeUI.selectElement;
 
 
-const FOCUS_DELAY = browserUtils.hasTouchEvents ? 0 : 160;
+const FOCUS_DELAY          = browserUtils.hasTouchEvents ? 0 : 160;
+const CHROME_VERSION_RE = /chrom(e|ium)\/([0-9]+)\./;
+
+function getChromeVersion () {
+    var match = navigator.userAgent.toLowerCase().match(CHROME_VERSION_RE);
+
+    return match ? parseInt(match[2], 10) : 0;
+}
+
 
 export default class SelectChildClickAutomation {
     constructor (element, clickOptions) {
@@ -157,8 +165,9 @@ export default class SelectChildClickAutomation {
         else {
             eventSimulator.mouseup(this.eventsArgs.element, this.eventsArgs.options);
 
-
-            if ((browserUtils.isSafari || browserUtils.isWebKit && browserUtils.version >= 537)
+            // TODO: remove detection of Chrome version after fix
+            // https://github.com/DevExpress/testcafe-hammerhead/issues/777
+            if ((browserUtils.isSafari || browserUtils.isWebKit && getChromeVersion() >= 53)
                 && this.clickCausesChange)
                 eventSimulator.change(this.parentSelect);
         }
