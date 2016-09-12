@@ -157,7 +157,7 @@ export default class SelectChildClickAutomation {
         else {
             eventSimulator.mouseup(this.eventsArgs.element, this.eventsArgs.options);
 
-            if (browserUtils.isSafari && this.clickCausesChange)
+            if (browserUtils.isWebKit && this.clickCausesChange)
                 eventSimulator.change(this.parentSelect);
         }
 
