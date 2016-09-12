@@ -1,12 +1,12 @@
 ---
 layout: docs
 title: Reporter Methods
-permalink: /documentation/extending-testcafe/custom-reporter-plugin/reporter-methods.html
+permalink: /documentation/extending-testcafe/reporter-plugin/reporter-methods.html
 checked: false
 ---
 # Reporter Methods
 
-To create a [custom reporter](index.md#implementing-the-reporter), you need to implement the following methods.
+To create a [reporter](index.md#implementing-the-reporter), you need to implement the following methods.
 
 > You can use [helper methods and libraries](helpers.md) within the reporter methods to output required data.
 
@@ -81,11 +81,11 @@ Parameter     | Type   | Description
 `name`        | String | The test name.
 `testRunInfo` | Object | The object providing detailed information about the test run.
 
-The `testRunInfo` object has the following properties:
+The `testRunInfo` object has the following properties.
 
 Property         | Type             | Description
 ---------------- | ---------------- | --------------------------------------------------------
-`errs`           | Array or Strings | An array of errors occurred during test run.
+`errs`           | Array or Strings | An array of errors that occurred during a test run.
 `durationMs`     | Number           | The time spent on test execution (in milliseconds).
 `unstable`       | Boolean          | Specifies if the test has been marked as unstable.
 `screenshotPath` | String           | The directory path where screenshots have been saved to.
@@ -128,7 +128,7 @@ Parameter  | Type             | Description
 ---------- | ---------------- | ----------------------------------------------
 `endTime`  | Date             | The date and time when testing completed.
 `passed`   | Number           | The number of passed tests.
-`warnings` | Array of Strings | An array of warnings occurred during task run.
+`warnings` | Array of Strings | An array of warnings that occurred during a task run.
 
 **Example**
 

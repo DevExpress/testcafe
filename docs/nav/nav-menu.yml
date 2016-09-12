@@ -81,18 +81,18 @@
 - name: EXTENDING TESTCAFE
   url: /documentation/extending-testcafe/index.md
   content:
-  - name: Custom Reporter Plugin
-    url: /documentation/extending-testcafe/custom-reporter-plugin/index.md
+  - name: Reporter Plugin
+    url: /documentation/extending-testcafe/reporter-plugin/index.md
     content:
     - name: Reporter Methods
-      url: /documentation/extending-testcafe/custom-reporter-plugin/reporter-methods.md
+      url: /documentation/extending-testcafe/reporter-plugin/reporter-methods.md
     - name: Helpers
-      url: /documentation/extending-testcafe/custom-reporter-plugin/helpers.md
-  - name: Custom Browser Provider Plugin
-    url: /documentation/extending-testcafe/custom-browser-provider-plugin/index.md
+      url: /documentation/extending-testcafe/reporter-plugin/helpers.md
+  - name: Browser Provider Plugin
+    url: /documentation/extending-testcafe/browser-provider-plugin/index.md
     content:
     - name: Browser Provider Methods
-      url: /documentation/extending-testcafe/custom-browser-provider-plugin/browser-provider-methods.md
+      url: /documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.md
 #  - name: Selector Extensions
 #    url: .
 #- name: RECIPES
