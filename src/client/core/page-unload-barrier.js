@@ -72,6 +72,8 @@ function prolongUnloadWaiting (timeout) {
     if (waitingForUnloadTimeoutId)
         nativeMethods.clearTimeout.call(window, waitingForUnloadTimeoutId);
 
+    waitingForUnload = true;
+
     waitingForUnloadTimeoutId = nativeMethods.setTimeout.call(window, () => {
         waitingForUnloadTimeoutId = null;
         waitingForUnload          = false;
