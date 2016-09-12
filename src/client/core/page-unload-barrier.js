@@ -13,7 +13,7 @@ const SHORT_WAIT_FOR_UNLOAD_TIMEOUT = 30;
 const MAX_UNLOADING_TIMEOUT         = 15 * 1000;
 
 
-var waitingForUnload          = null;
+var waitingForUnload          = false;
 var waitingForUnloadTimeoutId = null;
 var waitingPromiseResolvers   = [];
 var unloading                 = false;
