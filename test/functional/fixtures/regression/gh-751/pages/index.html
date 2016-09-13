@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-751</title>
+</head>
+<body>
+<button id="dblclick">DblClick</button>
+<button id="dblclickHardWork">DblClick with hard work</button>
+<button id="hardWorkMousedown">Hadr work on mousedown</button>
+
+<script>
+    // Dblclick events
+    window.dblclickEvents = [];
+
+    function logDblclickPerformance () {
+        window.dblclickEvents.push(Date.now());
+    }
+
+    var dblclickBtn = document.getElementById('dblclick');
+
+    dblclickBtn.addEventListener('mouseup', logDblclickPerformance);
+    dblclickBtn.addEventListener('click', logDblclickPerformance);
+    dblclickBtn.addEventListener('dblclick', logDblclickPerformance);
+
+
+    // Hadrwork after mousedown events
+    window.clickEvents    = [];
+    window.HARD_WORK_TIME = 60;
+
+    function logClickPerformance () {
+        window.clickEvents.push(Date.now());
+    }
+
+    function doHardWork (ms) {
+        var startTime = Date.now();
+
+        while (Date.now() < startTime + ms) {
+        }
+    }
+
+    var hardWorkMousedownBtn = document.getElementById('hardWorkMousedown');
+
+    hardWorkMousedownBtn.addEventListener('mousedown', logClickPerformance);
+    hardWorkMousedownBtn.addEventListener('mouseup', logClickPerformance);
+
+    hardWorkMousedownBtn.addEventListener('mousedown', function () {
+        doHardWork(window.HARD_WORK_TIME);
+    });
+</script>
+</body>
+</html>
