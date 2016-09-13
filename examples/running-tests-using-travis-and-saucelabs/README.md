@@ -2,7 +2,7 @@
 
 A set of sample files that help you to learn how to run TestCafe tests in the cloud using Travis CI and Sauce Labs (see [Running Tests Using Travis CI and Sauce Labs](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html)).
 
-There are the following files:
+The following files are included:
 
 * *server.js* - runs an HTTP server for the application.
 * *index.html* - the application's main page.
@@ -13,8 +13,8 @@ There are the following files:
 ## Running the example
 
 1. Create a GitHub repository and copy the sample files to it.
-2. Go through [Step 1](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html/#step-1---enable-travis-for-your-project) and [Step 2](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html/#step-2---configure-travis-to-use-sauce-labs) described in the [Running Tests Using Travis CI and Sauce Labs](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html/) topic.
+2. Go through [Step 2](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html/#step-2---enable-travis-for-your-project) and [Step 3](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html/#step-3---configure-travis-to-use-sauce-labs) described in the [Running Tests Using Travis CI and Sauce Labs](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html/) topic.
 
-     There is no need to go through [Step3](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html/#step-3---install-the-sauce-labs-browser-provider-plugin) and [Step4](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html/#step-4---add-the-test-script-to-packagejson) because the sample files already have the corresponding settings.
+     There is no need to complete [Step 1](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html#step-1---install-testcafe-and-create-tests), [Step 4](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html/#step-4---install-the-sauce-labs-browser-provider-plugin) and [Step 5](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html/#step-5---add-the-test-script-to-packagejson) because the sample files already have the corresponding settings.
 
-3. Trigger a Travis CI build ([Step 5](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html/#step-5---trigger-a-travis-ci-build)), for example, by modifying the *index.html* file and pushing it into your repository. Then check the [build status page](https://travis-ci.org/repositories).
+3. Trigger a Travis CI build ([Step 6](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html/#step-6---trigger-a-travis-ci-build)), for example, by modifying the *index.html* file and pushing it into your repository. Then check the [build status page](https://travis-ci.org/repositories).

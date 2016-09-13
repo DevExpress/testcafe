@@ -8,7 +8,7 @@ test('My test', async t => {
     await t
 		.click('#click-here');
 
-    const button = await t.select(() => document.getElementById('click-here'));
+    const button = await t.select('#click-here');
 
     expect(button.value).to.equal('Hello!');
 });
