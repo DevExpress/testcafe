@@ -5,9 +5,10 @@ var domUtils = testCafeCore.domUtils;
 var cursorUI = window.top === window ? testCafeUI.cursorUI : testCafeUI.iframeCursorUI;
 
 
+// NOTE: default x,y should be a point outside of the page (GH-794)
 export default {
-    x:                   50,
-    y:                   50,
+    x:                   -1,
+    y:                   -1,
     currentActiveWindow: window.top,
 
     _ensureActiveWindow () {
