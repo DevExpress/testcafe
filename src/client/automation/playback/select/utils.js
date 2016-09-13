@@ -32,7 +32,7 @@ function ensureRectangleInsideElement (element, rect) {
         var minLeft     = clientOffset.x + elementBorders.left + 1;
         var minTop      = clientOffset.y + elementBorders.top + 1;
         var bottomBound = clientOffset.y + elementBorders.top + elementBorders.bottom + elementHeight;
-        var maxBottom   = rect.top + elementHeight - 1;
+        var maxBottom   = clientOffset.y + elementBorders.top + elementHeight - 1;
 
         left   = Math.ceil(left <= clientOffset.x ? minLeft : rect.left);
         top    = Math.ceil(top <= clientOffset.y ? minTop : rect.top);
