@@ -64,12 +64,6 @@ testingEnvironments[testingEnvironmentNames.msDesktopBrowsers] = {
             platform:    'Windows 10',
             browserName: 'microsoftedge',
             alias:       'edge'
-        },
-        {
-            platform:    'Windows 10',
-            browserName: 'internet explorer',
-            version:     '11.0',
-            alias:       'ie 11'
         }
     ]
 };
