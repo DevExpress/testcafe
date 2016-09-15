@@ -1,0 +1,28 @@
+{
+  "name": "running-tests-using-travis-and-saucelabs",
+  "version": "1.0.0",
+  "description": "An example of how to run TestCafe tests in the cloud using Travis CI and Sauce Labs.",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js & testcafe 'saucelabs:Chrome@beta:Windows 10' tests/index-test.js; EXIT_CODE=$?; kill $!; exit $EXIT_CODE"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevExpress/testcafe.git"
+  },
+  "author": "Developer Express Inc. (https://devexpress.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DevExpress/testcafe/issues"
+  },
+  "homepage": "https://github.com/DevExpress/testcafe#readme",
+  "dependencies": {
+    "connect": "^3.4.1",
+    "serve-static": "^1.11.1"
+  },
+  "devDependencies": {
+    "testcafe": "*",
+    "chai": "^3.5.0",
+    "testcafe-browser-provider-saucelabs": "^1.0.0"
+  }
+}
