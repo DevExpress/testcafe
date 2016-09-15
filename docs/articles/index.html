@@ -54,10 +54,10 @@ permalink: /
                 <p>TestCafe introduces simple, but powerful test API. It offers a couple of dozen methods covering all user actions. Chained syntax produces code that is easy to write and read. Furthermore, you are free to use any assertion library to perform verifications of different kinds.</p>
                 <pre><code>import { expect } from 'chai';
 
-fixture `My Fixture`
+fixture `Example page`
     .page('http://devexpress.github.io/testcafe/example');
 
-test('My Test', async t => {
+test('Emulate user actions and perform a verification', async t => {
     await t
         .click('#send-button')
         .handleAlert()
@@ -81,13 +81,18 @@ Simply write JavaScript code within the `ClientFunction` or `Selector` function.
 
 const getElementById = Selector(id => document.querySelector(`#${id}`));
 
-test('My Test', async t => {
+fixture `Example page`
+    .page('http://devexpress.github.io/testcafe/example');
+
+test('Type the developer name, obtain the header text and check it', async t => {
     await t
         .typeText('#developer-name', 'John Smith')
         .click('#submit-button');
 
     const articleHeader = await getElementById('article-header');
     const headerText = articleHeader.innerText;
+
+    expect(headerText).to.equal('Thank you, John!');
 });</code></pre>
             </div>
         </div>
