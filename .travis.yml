@@ -12,9 +12,7 @@ matrix:
   - node_js: "stable"
     env: GULP_TASK="test-client-travis-mobile"
   - node_js: "stable"
-    env: GULP_TASK="test-functional-travis-desktop"
-  - node_js: "stable"
-    env: GULP_TASK="test-functional-travis-ms-desktop"
+    env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge"
   - node_js: "stable"
     env: GULP_TASK="test-functional-travis-mobile"
  fast_finish: true

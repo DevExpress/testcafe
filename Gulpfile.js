@@ -528,16 +528,12 @@ function testFunctional (fixturesDir, testingEnvironmentName) {
         }));
 }
 
-gulp.task('test-functional-travis-desktop', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.desktopBrowsers);
-});
-
-gulp.task('test-functional-travis-ms-desktop', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.msDesktopBrowsers);
+gulp.task('test-functional-travis-desktop-osx-and-ms-edge', ['build'], function () {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers);
 });
 
 gulp.task('test-functional-travis-mobile', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.mobileBrowsers);
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.saucelabsMobileBrowsers);
 });
 
 gulp.task('test-functional-local', ['build'], function () {

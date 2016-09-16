@@ -109,6 +109,12 @@ before(function () {
             return initBrowsersInfo();
         })
         .then(function () {
+            var aliases = browsersInfo.map(function (browser) {
+                return browser.settings.alias;
+            });
+
+            process.stdout.write('Running tests in browsers: ' + aliases.join(', ') + '\n');
+
             site.create(config.site.port1, config.site.port2, config.site.viewsPath);
 
             if (!config.useLocalBrowsers) {

@@ -5,34 +5,23 @@ var isCCNetEnvironment  = !!process.env.CCNET;
 var hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
 
 var testingEnvironmentNames = {
-    desktopBrowsers:   'desktop-browsers',
-    msDesktopBrowsers: 'ms-desktop-browsers',
-    mobileBrowsers:    'mobile-browsers',
-    localBrowsers:     'local-browsers',
-    oldBrowsers:       'old-browsers',
-    legacy:            'legacy'
+    saucelabsOSXDesktopAndMSEdgeBrowsers: 'saucelabs-osx-desktop-and-ms-edge-browsers',
+    saucelabsMobileBrowsers:              'saucelabs-mobile-browsers',
+    localBrowsers:                        'local-browsers',
+    oldBrowsers:                          'old-browsers',
+    legacy:                               'legacy'
 };
 
 var testingEnvironments = {};
 
-testingEnvironments[testingEnvironmentNames.desktopBrowsers] = {
+testingEnvironments[testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers] = {
     sauceLabs: {
         username:  process.env.SAUCE_USERNAME_FUNCTIONAL_DESKTOP,
         accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP,
-        jobName:   'functional tests - desktop browsers'
+        jobName:   'functional tests - OS X desktop and MS edge browsers'
     },
 
     browsers: [
-        {
-            platform:    'Windows 10',
-            browserName: 'chrome',
-            alias:       'chrome'
-        },
-        {
-            platform:    'Windows 10',
-            browserName: 'firefox',
-            alias:       'firefox'
-        },
         {
             platform:    'OS X 10.11',
             browserName: 'safari',
@@ -48,33 +37,16 @@ testingEnvironments[testingEnvironmentNames.desktopBrowsers] = {
             platform:    'OS X 10.11',
             browserName: 'firefox',
             alias:       'firefox-osx'
-        }
-    ]
-};
-
-testingEnvironments[testingEnvironmentNames.msDesktopBrowsers] = {
-    sauceLabs: {
-        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_MS_DESKTOP,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_MS_DESKTOP,
-        jobName:   'functional tests - ms desktop browsers'
-    },
-
-    browsers: [
+        },
         {
             platform:    'Windows 10',
             browserName: 'microsoftedge',
             alias:       'edge'
-        },
-        {
-            platform:    'Windows 10',
-            browserName: 'internet explorer',
-            version:     '11.0',
-            alias:       'ie 11'
         }
     ]
 };
 
-testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
+testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
     sauceLabs: {
         username:  process.env.SAUCE_USERNAME_FUNCTIONAL_MOBILE,
         accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_MOBILE,
