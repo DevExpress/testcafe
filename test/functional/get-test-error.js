@@ -59,6 +59,8 @@ module.exports = function getTestError (testReport, browsers) {
 
             if (errorsArray.length)
                 testError[browserInfo.settings.alias] = errorsArray;
+            else
+                testError[browserInfo.settings.alias] = null;
         });
 
         return testError;
