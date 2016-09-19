@@ -8,7 +8,7 @@ checked: true
 
 To check if the state of the tested webpage matches the one you expect to see, use *assertions*.
 
-No assertion library is shipped with TestCafe, so you can choose whatever 3rd-party library you like.
+You can use assertions from Node's built-in [assert](https://nodejs.org/api/assert.html) module or choose whatever 3rd-party library you like.
 
 Examples in this documentation use [BDD-style Chai assertions](http://chaijs.com/api/bdd/) for demonstration purposes.
 
