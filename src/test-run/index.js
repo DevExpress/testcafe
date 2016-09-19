@@ -71,13 +71,13 @@ export default class TestRun extends Session {
     // Hammerhead payload
     _getPayloadScript () {
         return Mustache.render(TEST_RUN_TEMPLATE, {
-            testRunId:           this.id,
-            browserId:           this.browserConnection.id,
-            browserHeartbeatUrl: this.browserConnection.heartbeatUrl,
-            browserStatusUrl:    this.browserConnection.statusUrl,
-            userAgent:           this.browserConnection.userAgent,
-            testName:            this.test.name.replace(/'/g, "\\'"),
-            fixtureName:         this.test.fixture.name.replace(/'/g, "\\'"),
+            testRunId:           JSON.stringify(this.id),
+            browserId:           JSON.stringify(this.browserConnection.id),
+            browserHeartbeatUrl: JSON.stringify(this.browserConnection.heartbeatUrl),
+            browserStatusUrl:    JSON.stringify(this.browserConnection.statusUrl),
+            userAgent:           JSON.stringify(this.browserConnection.userAgent),
+            testName:            JSON.stringify(this.test.name),
+            fixtureName:         JSON.stringify(this.test.fixture.name),
             selectorTimeout:     this.opts.selectorTimeout,
             skipJsErrors:        this.opts.skipJsErrors,
             dialogHandler:       JSON.stringify(this.dialogHandler)
@@ -86,7 +86,7 @@ export default class TestRun extends Session {
 
     _getIframePayloadScript () {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
-            testRunId:       this.id,
+            testRunId:       JSON.stringify(this.id),
             selectorTimeout: this.opts.selectorTimeout,
             dialogHandler:   JSON.stringify(this.dialogHandler)
         });

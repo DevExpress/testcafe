@@ -2,16 +2,16 @@
     if (window !== window.top)
         return;
 
-    var testRunId           = '{{{testRunId}}}';
-    var browserId           = '{{{browserId}}}';
+    var testRunId           = {{{testRunId}}};
+    var browserId           = {{{browserId}}};
     var selectorTimeout     = {{{selectorTimeout}}};
-    var browserHeartbeatUrl = '{{{browserHeartbeatUrl}}}';
-    var browserStatusUrl    = '{{{browserStatusUrl}}}';
+    var browserHeartbeatUrl = {{{browserHeartbeatUrl}}};
+    var browserStatusUrl    = {{{browserStatusUrl}}};
     var skipJsErrors        = {{{skipJsErrors}}};
     var dialogHandler       = {{{dialogHandler}}};
-    var userAgent           = '{{{userAgent}}}';
-    var fixtureName         = '{{{fixtureName}}}';
-    var testName            = '{{{testName}}}';
+    var userAgent           = {{{userAgent}}};
+    var fixtureName         = {{{fixtureName}}};
+    var testName            = {{{testName}}};
 
     var ClientDriver = window['%testCafeDriver%'];
     var driver       = new ClientDriver(
