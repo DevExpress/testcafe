@@ -45,3 +45,5 @@
     * [Helpers](articles/documentation/extending-testcafe/reporter-plugin/helpers.md)
   * [Browser Provider Plugin](articles/documentation/extending-testcafe/browser-provider-plugin/index.md)
     * [Browser Provider Methods](articles/documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.md)
+* [RECIPES](articles/documentation/recipes/index.md)
+  * [Running Tests Using Travis CI and Sauce Labs](articles/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.md)
