@@ -113,7 +113,7 @@ test('Type the developer name, obtain the header text and check it', async t => 
 
 TestCafe keeps your tests clear of boilerplate code.
 
-* It automatically waits for page loads, XHRs and animations. Thus, there is no need to write custom code to process these tasks.
+* It automatically waits for page loads, XHRs and DOM elements to be visible. Thus, there is no need to write custom code to process these tasks.
 * Test runs are isolated, they don't share cookies and local/session storage values, that means nothing to clean up before each test run.
 
 ### Descriptive Reports
