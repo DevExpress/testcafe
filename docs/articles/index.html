@@ -60,7 +60,6 @@ fixture `Example page`
 test('Emulate user actions and perform a verification', async t => {
     await t
         .click('#send-button')
-        .handleAlert()
         .typeText('#input', 'Peter Parker')
         .wait(1000);
 
@@ -69,7 +68,7 @@ test('Emulate user actions and perform a verification', async t => {
                 <p>TestCafe will compile your test code on-flight and run it immediately. It also ships with built-in support for source maps to leverage debugging experience. Source maps are automatically enabled, so all you need to do is start a debugging session in an IDE that supports them.</p>
             </div>
         </div>
-        <div class="feature">
+       <div class="feature">
             <span class="name">
                 Write Regular Client JavaScript to Observe Page State
             </span>
@@ -96,6 +95,18 @@ test('Type the developer name, obtain the header text and check it', async t => 
 });</code></pre>
             </div>
         </div>
+        <div class="feature">
+            <span class="name">
+                No Extra Coding
+            </span>
+            <div class="description">
+                <p>TestCafe keeps your tests clear of boilerplate code.</p>
+                <ul>
+                    <li>It automatically waits for page loads, XHRs and DOM elements to be visible. Thus, there is no need to write custom code to process these tasks.</li>
+                    <li>Test runs are isolated, they don't share cookies and local/session storage values, that means nothing to clean up before each test run.</li>
+                </ul>
+            </div>
+       </div>
         <div class="feature">
             <span class="name">
                 Descriptive Reports

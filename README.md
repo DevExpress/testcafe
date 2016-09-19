@@ -27,7 +27,7 @@ It allows you to easily create, maintain and execute automated web tests across 
 * [License](#license)
 * [Author](#author)
 
-# Build status
+## Build status
 
 Tests             | Status
 ----------------- | ----------
@@ -35,9 +35,9 @@ All Travis tasks (server, client, functional: mobile, macOS, Edge)  | [![Travis 
 Functional Windows desktop | [![AppVeyor status](https://ci.appveyor.com/api/projects/status/ftelkyuiji8lyadf?svg=true)](https://ci.appveyor.com/project/DevExpress/testcafe)
 Client            | [![Sauce Test Status](https://saucelabs.com/browser-matrix/testcafe-master.svg)](https://saucelabs.com/u/testcafe-master)
 
-# Features
+## Features
 
-## Easy Install
+### Easy Install
 
 All you need is to have [Node.js](https://nodejs.org) with [npm](https://www.npmjs.com) installed and call a single command.
 
@@ -47,7 +47,7 @@ npm install -g testcafe
 
 No browsers plugins to install, no binary compilation post-install steps.
 
-## Complete Test Harness
+### Complete Test Harness
 
 TestCafe covers all testing phases: starting browsers, running tests and gathering results.
 You configure test run and start execution either via the API or from a command shell simply by running a single command
@@ -58,7 +58,7 @@ testcafe safari tests/
 
 TestCafe aggregates test results from different browsers and outputs them into one comprehensive report.
 
-## Write Test Code Using ES2016
+### Write Test Code Using ES2016
 
 You can write TestCafe tests in ES2016 using all latest JavaScript features like `async/await`.
 
@@ -73,7 +73,6 @@ fixture `Example page`
 test('Emulate user actions and perform a verification', async t => {
     await t
         .click('#send-button')
-        .handleAlert()
         .typeText('#input', 'Peter Parker')
         .wait(1000);
 
@@ -85,7 +84,7 @@ TestCafe will compile your test code on-flight and run it immediately.
 It also ships with built-in support for source maps to leverage debugging experience.
 Source maps are automatically enabled, so all you need to do is start a debugging session in an IDE that supports them.
 
-## Write Regular Client JavaScript to Observe Page State
+### Write Regular Client JavaScript to Observe Page State
 
 TestCafe is capable of executing code on the client side thus giving you direct access to DOM elements on the page and empowering you to obtain required data from the client.
 Simply write JavaScript code within the `ClientFunction` or `Selector` function.
@@ -111,7 +110,14 @@ test('Type the developer name, obtain the header text and check it', async t => 
 });
 ```
 
-## Descriptive Reports
+### No Extra Coding
+
+TestCafe keeps your tests clear of boilerplate code.
+
+* It automatically waits for page loads, XHRs and DOM elements to be visible. Thus, there is no need to write custom code to process these tasks.
+* Test runs are isolated, they don't share cookies and local/session storage values, that means nothing to clean up before each test run.
+
+### Descriptive Reports
 
 TestCafe automatically generates full-detailed reports providing a test run summary and comprehensive information about errors.
 Fancy call sites, clean stacks and screenshots help you easily detect an error cause.
@@ -120,15 +126,15 @@ Choose from five [built-in reporters](http://devexpress.github.io/testcafe/docum
 
 ![Spec Report](docs/articles/images/spec-report.png)
 
-## Continuous Integration
+### Continuous Integration
 
 Take advantage of automatic test execution through integration of TestCafe with popular Continuous Integration platforms.
 TestCafe's browser provider mechanism makes it simple to set up testing in various browsers: local, remote, [Sauce Labs](https://saucelabs.com/) or [PhantomJS](http://phantomjs.org/).
 You can also create your own browser provider plugin that will suit your platform and needs.
 
-# Getting Started
+## Getting Started
 
-## Installing TestCafe
+### Installing TestCafe
 
 Ensure that [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) are installed on your computer, then run a single command:
 
@@ -138,7 +144,7 @@ npm install -g testcafe
 
 For more information, see [Installing TestCafe](http://devexpress.github.io/testcafe/documentation/using-testcafe/installing-testcafe.html).
 
-## Creating a Test
+### Creating a Test
 
 To create a test, create a new .js file anywhere on your computer.
 This file must have a special structure: tests must be organized into fixtures. Thus, begin by declaring a fixture using the [fixture](http://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.md#fixtures) function.
@@ -166,7 +172,7 @@ test('My first test', async t => {
 });
 ```
 
-## Running the Test
+### Running the Test
 
 You can simply run the test from a command shell by calling a single command where you specify the [target browser](http://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.md#browser-list) and [file path](http://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.md#file-pathglob-pattern).
 
@@ -182,7 +188,7 @@ TestCafe will automatically open the chosen browser and start test execution wit
 
 For more information on how to configure the test run, see [Command Line Interface](http://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.md).
 
-## Viewing the Test Results
+### Viewing the Test Results
 
 While the test is running, TestCafe is gathering information about the test run and outputing the report right into a command shell.
 
@@ -190,9 +196,9 @@ While the test is running, TestCafe is gathering information about the test run 
 
 For more information, see [Reporters](http://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.md).
 
-## Writing Test Code
+### Writing Test Code
 
-### Performing Actions on the Page
+#### Performing Actions on the Page
 
 Every test should be capable of interacting with page content. To perform user actions, TestCafe provides
 a number of [actions](http://devexpress.github.io/testcafe/documentation/test-api/actions/index.md): `click`, `hover`, `typeText`, `setFilesToUpload`, etc.
@@ -215,7 +221,7 @@ All test actions are implemented as async functions of the [test controller obje
 This object is used to access test run API.
 To wait for actions to complete, use the `await` keyword when calling these actions or action chains.
 
-### Observing Page State
+#### Observing Page State
 
 TestCafe allows you to observe the page state.
 For this purpose, it offers special kinds of functions that will execute your code on the client:
@@ -252,7 +258,7 @@ test('My first test', async t => {
 
 For more information, see [Selecting Page Elements](http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/index.md).
 
-### Assertions
+#### Assertions
 
 A functional test also should check the result of actions performed.
 For example, the article header on the "Thank you" page should address a user by the entered name.
@@ -288,14 +294,14 @@ test('My first test', async t => {
 });
 ```
 
-# Documentation
+## Documentation
 
 * [Test API](http://devexpress.github.io/testcafe/documentation/test-api/)
 * [Using TestCafe](http://devexpress.github.io/testcafe/documentation/using-testcafe/)
 * [Extending TestCafe](http://devexpress.github.io/testcafe/documentation/extending-testcafe/)
 * [Recipes](http://devexpress.github.io/testcafe/documentation/recipes/)
 
-# Contributing
+## Contributing
 
 Please use our [issues page](https://github.com/DevExpress/testcafe/issues) to report a bug or request a feature.
 
@@ -303,10 +309,10 @@ For general purpose questions and discussions, use the [discussion board](https:
 
 For more information on how to help us improve TestCafe, please see the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
-# License
+## License
 
 [MIT](LICENSE)
 
-# Author
+## Author
 
 Developer Express Inc. ([https://devexpress.com](https://devexpress.com))
