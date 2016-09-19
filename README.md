@@ -31,7 +31,7 @@ It allows you to easily create, maintain and execute automated web tests across 
 
 Tests             | Status
 ----------------- | ----------
-All Travis tasks (server, client, functional: mobile, macOS, Edge)  | [![Travis CI Status](https://travis-ci.org/DevExpress/testcafe.svg)](https://travis-ci.org/DevExpress/testcafe) 
+All Travis tasks (server, client, functional: mobile, macOS, Edge)  | [![Travis CI Status](https://travis-ci.org/DevExpress/testcafe.svg)](https://travis-ci.org/DevExpress/testcafe)
 Functional Windows desktop | [![AppVeyor status](https://ci.appveyor.com/api/projects/status/ftelkyuiji8lyadf?svg=true)](https://ci.appveyor.com/project/DevExpress/testcafe)
 Client            | [![Sauce Test Status](https://saucelabs.com/browser-matrix/testcafe-master.svg)](https://saucelabs.com/u/testcafe-master)
 
