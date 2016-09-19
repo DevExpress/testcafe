@@ -6,7 +6,7 @@ permalink: /documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.h
 # Running Tests Using Travis CI and Sauce Labs
 
 You can automatically run tests as a part of your build process using TestCafe and [Travis CI](https://travis-ci.org/).
-Furthermore, Travis CI integrates with [Sauce Labs](https://saucelabs.com/) that provides access to multiple cloud browsers.
+Furthermore, TestCafe allows you to use [Sauce Labs](https://saucelabs.com/) browsers for testing.
 Thus, you can run your tests completely in the cloud.
 
 Suppose you have a GitHub project for which you need to automatically run tests in the cloud when it is modified. To do this, go through the following steps:
