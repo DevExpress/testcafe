@@ -42,7 +42,7 @@ Client            | [![Sauce Test Status](https://saucelabs.com/browser-matrix/t
 All you need is to have [Node.js](https://nodejs.org) with [npm](https://www.npmjs.com) installed and call a single command.
 
 ```bash
-npm install --save-dev testcafe
+npm install -g testcafe
 ```
 
 No browsers plugins to install, no binary compilation post-install steps.
