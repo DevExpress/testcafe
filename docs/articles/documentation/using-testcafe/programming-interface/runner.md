@@ -30,7 +30,6 @@ console.log('Tests failed: ' + failed);
 * [src](#src)
 * [filter](#filter)
 * [browsers](#browsers)
-    * [Using Browser Names](#using-browser-names)
     * [Using Browser Aliases](#using-browser-aliases)
     * [Specifying the Path to the Browser Executable](#specifying-the-path-to-the-browser-executable)
     * [Specifying the Path with Command Line Parameters](#specifying-the-path-with-command-line-parameters)
@@ -109,25 +108,26 @@ browsers(browser) → this
 
 The `browser` parameter can be any of the following objects, or an `Array` of them.
 
-Type                                                                                                 | Description                                                                                                                                                           | Browser Type
- ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------
- String                                                                                               | The browser name. For the list of names, see [Directly Supported Browsers](../common-concepts/browser-support.md#directly-supported-browsers).             | Local browser
- String                                                                                               | The browser alias that consists of the browser provider name and the name of the browser itself.                                                                        | Browser accessed through a [browser provider plugin](../common-concepts/browser-support.md#browser-provider-plugins).                                                                 |
- `{path: String, cmd: String}`                                                                        | The path to the browser executable (`path`) and command line parameters (`cmd`). The `cmd` property is optional.                                                     | Local browser
- [BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | Remote browser
+Parameter Type                                                                                        | Description                            | Browser Type
+---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------
+String                                                                                                | The browser alias that differs for different browser types. For details, see [Browser Support](../common-concepts/browser-support.md).                            | [Local browsers](../common-concepts/browser-support.md#local-browsers), [cloud browsers](../common-concepts/browser-support.md#cloud-browsers) accessed through *browser provider plugins*.                                                                 |
+ `{path: String, cmd: String}`                                                                        | The path to the browser executable (`path`) and command line parameters (`cmd`). The `cmd` property is optional.                                                     | [Local](../common-concepts/browser-support.md#local-browsers) and [portable](../common-concepts/browser-support.md#portable-browsers) browsers
+[BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | [Remote browsers](../common-concepts/browser-support.md#remote-browsers)
 
 You are free to mix different types of objects in one function call. The `browsers` function concatenates the settings when called several times.
 
-#### Using Browser Names
+#### Using Browser Aliases
+
+* running local browsers
 
 ```js
 runner.browsers(['safari', 'chrome']);
 ```
 
-#### Using Browser Aliases
+* running cloud browsers
 
 ```js
-runner.browsers('saucelabs:chrome');
+runner.browsers('saucelabs:Chrome@52.0:Windows 8.1');
 ```
 
 #### Specifying the Path to the Browser Executable

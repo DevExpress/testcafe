@@ -5,7 +5,7 @@ permalink: /documentation/extending-testcafe/browser-provider-plugin/
 ---
 # Browser Provider Plugin
 
-TestCafe has built-in support for testing in a number of popular browsers (see [Directly Supported Browsers](../../using-testcafe/common-concepts/browser-support.md#directly-supported-browsers)).
+TestCafe supports testing in a number of popular browsers (see [Browser Support](../../using-testcafe/common-concepts/browser-support.md)).
 If you need to use a different browser (for example, a browser from a cloud service), you can create a **custom browser provider plugin**.
 The provider should expose methods for performing common actions on the browser windows during testing: opening and closing it, taking screenshot, etc.
 
@@ -177,7 +177,7 @@ npm link
 
 After that, TestCafe will use the provider version you are currently developing.
 
-For information on how to specify a browser in tests, see [Specifying Browsers for Test Task](../../using-testcafe/common-concepts/browser-support.md#specifying-browsers-for-test-task).
+For information on how to specify a browser in tests, see [Browser Support](../../using-testcafe/common-concepts/browser-support.md).
 
 ## Publishing the Provider to npm
 

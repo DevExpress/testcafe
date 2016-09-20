@@ -62,7 +62,7 @@ To do this, run the following command.
 npm install --save-dev testcafe-browser-provider-saucelabs
 ```
 
-For more information, see [Browser Provider Plugins](../using-testcafe/common-concepts/browser-support.md#browser-provider-plugins).
+For more information on testing in cloud browsers, see [Cloud Browsers](../using-testcafe/common-concepts/browser-support.md#cloud-browsers).
 
 ## Step 5 - Add the `test` script to package.json
 
