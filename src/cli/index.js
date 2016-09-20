@@ -49,6 +49,7 @@ async function runTests (argParser) {
     var remoteBrowsers = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
     var browsers       = argParser.browsers.concat(remoteBrowsers);
     var runner         = testCafe.createRunner();
+    var failed         = 0;
 
     runner
         .src(argParser.src)
@@ -59,13 +60,17 @@ async function runTests (argParser) {
 
     runner.once('done-bootstrapping', () => log.hideSpinner());
 
-    var failed = await runner.run({
-        skipJsErrors:    opts.skipJsErrors,
-        quarantineMode:  opts.quarantineMode,
-        selectorTimeout: opts.selectorTimeout
-    });
+    try {
+        failed = await runner.run({
+            skipJsErrors:    opts.skipJsErrors,
+            quarantineMode:  opts.quarantineMode,
+            selectorTimeout: opts.selectorTimeout
+        });
+    }
 
-    await testCafe.close();
+    finally {
+        await testCafe.close();
+    }
 
     exit(failed);
 }

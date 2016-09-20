@@ -1,6 +1,5 @@
 import Promise from 'pinkie';
 import promisifyEvent from 'promisify-event';
-import onceDone from 'once-done';
 import mapReverse from 'map-reverse';
 import { resolve as resolvePath } from 'path';
 import { EventEmitter } from 'events';
@@ -42,7 +41,9 @@ export default class Runner extends EventEmitter {
         var promise           = taskPromise.then(({ completionPromise }) => completionPromise);
         var removeFromPending = () => remove(this.pendingTaskPromises, promise);
 
-        onceDone(promise, removeFromPending);
+        promise
+            .then(removeFromPending)
+            .catch(removeFromPending);
 
         promise.cancel = () => taskPromise
             .then(({ cancelTask }) => cancelTask())
@@ -79,9 +80,13 @@ export default class Runner extends EventEmitter {
         var reporter          = new Reporter(reporterPlugin, task, this.opts.reportOutStream);
         var completionPromise = this._getTaskResult(task, browserSet, reporter);
 
-        onceDone(completionPromise, () => {
+        var setCompleted = () => {
             completed = true;
-        });
+        };
+
+        completionPromise
+            .then(setCompleted)
+            .catch(setCompleted);
 
         var cancelTask = async () => {
             if (!completed)
