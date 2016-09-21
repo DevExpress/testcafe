@@ -61,7 +61,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             return this.options.sourceSelectorBuilder.compiledFnCode;
 
         var code = typeof this.fn === 'string' ?
-                   `(function(){return document.querySelectorAll('${this.fn.replace(/'/g, "\\'")}');});` :
+                   `(function(){return document.querySelectorAll(${JSON.stringify(this.fn)});});` :
                    super._getCompiledFnCode();
 
 
