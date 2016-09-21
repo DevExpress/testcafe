@@ -27,6 +27,7 @@ Method | Type | Description
 `getParentNode` | Selector | A selector that returns the parent node snapshot. See [Node.parentNode](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentNode).
 `getChildNode(idx)` | Selector | A selector that returns the snapshot of the child node at index `idx`. See [Node.childNodes](https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes).
 `getChildElement(idx)` | Selector | A selector that returns the snapshot of the child element at index `idx`. See [ParentNode.children](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/children).
+`hasClass(className)` | Boolean | `true` if the element has the specified class name.
 
 ## Members Specific to Element Nodes
 
