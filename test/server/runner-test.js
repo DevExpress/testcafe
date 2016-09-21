@@ -10,6 +10,7 @@ var Task                = require('../../lib/runner/task');
 var BrowserConnection   = require('../../lib/browser/connection');
 var BrowserSet          = require('../../lib/runner/browser-set');
 var browserProviderPool = require('../../lib/browser/provider/pool');
+var delay               = require('../../lib/utils/delay');
 
 
 describe('Runner', function () {
@@ -457,6 +458,32 @@ describe('Runner', function () {
                 })
                 .catch(function (err) {
                     expect(err.message).eql('I have failed :(');
+                });
+        });
+    });
+
+    describe('Regression', function () {
+        it('Should not have unhandled rejections in runner (GH-825)', function () {
+            var rejectionReason = null;
+
+            process.on('unhandledRejection', function (reason) {
+                rejectionReason = reason;
+            });
+
+            return runner
+                .browsers({ path: '/non/exist' })
+                .src([])
+                .run()
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    expect(err).not.eql('Promise rejection expected');
+
+                    return delay(100);
+                })
+                .then(function () {
+                    expect(rejectionReason).to.be.null;
                 });
         });
     });
