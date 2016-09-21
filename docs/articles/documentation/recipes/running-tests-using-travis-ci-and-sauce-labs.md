@@ -6,10 +6,10 @@ permalink: /documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.h
 # Running Tests Using Travis CI and Sauce Labs
 
 You can automatically run tests as a part of your build process using TestCafe and [Travis CI](https://travis-ci.org/).
-Furthermore, TestCafe allows you to use [Sauce Labs](https://saucelabs.com/) browsers for testing.
+TestCafe also allows you to use [Sauce Labs](https://saucelabs.com/) browsers for testing.
 Thus, you can run your tests completely in the cloud.
 
-Suppose you have a GitHub project for which you need to automatically run tests in the cloud when it is modified. To do this, go through the following steps:
+Suppose you have a GitHub project for which you need to automatically run tests in the cloud when the project is modified. To do this, go through the following steps.
 
 * [Step 1 - Install TestCafe and create tests](#step-1---install-testcafe-and-create-tests)
 * [Step 2 - Enable Travis for your project](#step-2---enable-travis-for-your-project)
@@ -18,7 +18,7 @@ Suppose you have a GitHub project for which you need to automatically run tests 
 * [Step 5 - Add the `test` script to package.json](#step-5---add-the-test-script-to-packagejson)
 * [Step 6 - Trigger a Travis CI build](#step-6---trigger-a-travis-ci-build)
 
-> TestCafe provides the [example](https://github.com/DevExpress/testcafe/tree/master/examples/running-tests-using-travis-and-saucelabs/) that help you learn how to run tests with Travis CI and Sauce Labs.
+> TestCafe provides an [example](https://github.com/DevExpress/testcafe/tree/master/examples/running-tests-using-travis-and-saucelabs/) that can show you how to run tests with Travis CI and Sauce Labs.
 
 ## Step 1 - Install TestCafe and create tests
 
@@ -27,7 +27,7 @@ Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in 
 ## Step 2 - Enable Travis for your project
 
 1. [Sign in to Travis CI](https://travis-ci.org/auth) with your GitHub account. Travis CI will synchronize your repositories from GitHub. You can see them on your [profile page](https://travis-ci.org/profile).
-2. Еnable Travis CI for a repository you want to build by flicking the switch on.
+2. Enable Travis CI for a repository you want to build by flicking the switch on.
 
      ![Enable Travis for a repository](../../images/travis-step-2-2.png)
 
@@ -37,14 +37,14 @@ Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in 
 
 3. Add a `.travis.yml` configuration file to the root of your project. This file should contain parameters and commands that instruct Travis CI how to execute your builds. For more information, see [Customizing the Build](https://docs.travis-ci.com/user/customizing-the-build).
 
-     For Node.js projects, the file can have the following content.
+     For Node.js projects, the `.travis.yml` file can have the following content.
 
      ```yaml
      language: node_js
      node_js: "stable"
      ```
 
-     Commit and push the `.travis.yml` file to your repository.
+     Commit and push this file to your repository.
 
 ## Step 3 - Configure Travis to use Sauce Labs
 
@@ -77,7 +77,7 @@ To tell npm how to run your tests, you need to add the `test` script to the proj
 
 For more information on how to configure a test run using a `testcafe` command, see [Command Line Interface](../using-testcafe/command-line-interface.md).
 
-**Important:** If you are going to run tests for a website that is not deployed, the `test` script should also include commands to run and stop the site, for example:
+**Important:** If you are going to run tests for a website that is not deployed, the `test` script should also include commands to run and stop the site; for example:
 
 ```text
 "scripts": {
@@ -85,13 +85,13 @@ For more information on how to configure a test run using a `testcafe` command, 
 }
 ```
 
-This script contains the following commands:
+This script contains the following commands.
 
-1. `node server.js` - starts a website.
-2. `testcafe 'saucelabs:Chrome@beta:Windows 10' tests/index-test.js` - starts tests.
+1. `node server.js` - starts a website
+2. `testcafe 'saucelabs:Chrome@beta:Windows 10' tests/index-test.js` - starts tests
 3. `EXIT_CODE=$?` - saves an exit code returned by TestCafe. If tests passed, the exit code is 0.
-4. `kill $!` - stops the server.
-5. `exit $EXIT_CODE` - exits the `test` script with the code returned by TestCafe. Thus, if tests passed, the `npm test` will exit with a zero exit code (success).
+4. `kill $!` - stops the server
+5. `exit $EXIT_CODE` - exits the `test` script with the code returned by TestCafe; thus, if the tests passed, the `npm test` will exit with a zero exit code (success)
 
 ## Step 6 - Trigger a Travis CI build
 
