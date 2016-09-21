@@ -110,7 +110,7 @@ The `browser` parameter can be any of the following objects, or an `Array` of th
 
 Parameter Type                                                                                        | Description                            | Browser Type
 ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------
-String                                                                                                | The browser alias that differs for different browser types. For details, see [Browser Support](../common-concepts/browser-support.md).                            | [Local browsers](../common-concepts/browser-support.md#local-browsers), [cloud browsers](../common-concepts/browser-support.md#cloud-browsers) accessed through *browser provider plugins*.                                                                 |
+String                                                                                                | The browser alias that differs for different browser types. For details, see [Browser Support](../common-concepts/browser-support.md).                            | [Local browsers](../common-concepts/browser-support.md#local-browsers), [cloud browsers](../common-concepts/browser-support.md#cloud-browsers) and [browsers accessed through *browser provider plugins*](../common-concepts/browser-support.md#other-browsers).                                                                 |
  `{path: String, cmd: String}`                                                                        | The path to the browser executable (`path`) and command line parameters (`cmd`). The `cmd` property is optional.                                                     | [Local](../common-concepts/browser-support.md#local-browsers) and [portable](../common-concepts/browser-support.md#portable-browsers) browsers
 [BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | [Remote browsers](../common-concepts/browser-support.md#remote-browsers)
 
@@ -124,7 +124,7 @@ You are free to mix different types of objects in one function call. The `browse
 runner.browsers(['safari', 'chrome']);
 ```
 
-* running cloud browsers
+* running browsers accessed through browser provider plugins
 
 ```js
 runner.browsers('saucelabs:Chrome@52.0:Windows 8.1');

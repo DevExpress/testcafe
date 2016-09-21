@@ -177,7 +177,7 @@ npm link
 
 After that, TestCafe will use the provider version you are currently developing.
 
-For information on how to specify a browser in tests, see [Browser Support](../../using-testcafe/common-concepts/browser-support.md).
+For information on how to specify a browser in tests, see [Other Browsers](../../using-testcafe/common-concepts/browser-support.html#other-browsers).
 
 ## Publishing the Provider to npm
 

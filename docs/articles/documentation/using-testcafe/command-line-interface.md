@@ -14,7 +14,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [Local Browsers](#local-browsers)
   * [Portable Browsers](#portable-browsers)
   * [Remote Browsers](#remote-browsers)
-  * [Cloud Browsers](#cloud-browsers)
+  * [Browsers Accessed Through Browser Provider Plugins](#browsers-accessed-through-browser-provider-plugins)
 * [File Path/Glob Pattern](#file-pathglob-pattern)
 * [Options](#options)
   * [-h, --help](#-h---help)
@@ -92,10 +92,10 @@ You can also use the [--qr-code](#--qr-code) option to display QR-codes that rep
 Scan the QR-codes by using the device on which you are going to test your application.
 As a result, the browsers will be connected to TestCafe and tests will start.
 
-### Cloud Browsers
+### Browsers Accessed Through Browser Provider Plugins
 
-To run tests in a [cloud browser](../using-testcafe/common-concepts/browser-support.md#cloud-browsers) accessed through a *browser provider plugin*,
-specify a browser alias that consists of two parts - the `{browser-provider-name}` prefix and the name of a browser itself; for example, `saucelabs:Chrome@52.0:Windows 8.1`.
+To run tests in [cloud browsers](../using-testcafe/common-concepts/browser-support.md#cloud-browsers) or [other browsers](../using-testcafe/common-concepts/browser-support.md#other-browsers) accessed through a *browser provider plugin*,
+specify a browser alias that consists of the `{browser-provider-name}` prefix and the name of a browser itself (the latter can be omitted); for example, `saucelabs:Chrome@52.0:Windows 8.1`.
 
 ```sh
 testcafe "saucelabs:Chrome@52.0:Windows 8.1" tests/sample-fixture.js
