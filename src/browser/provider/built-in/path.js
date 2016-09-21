@@ -1,14 +1,8 @@
 import browserTools from 'testcafe-browser-tools';
-import OS from 'os-family';
-import BrowserProviderBase from './base';
 
 
-export default class PathBrowserProvider extends BrowserProviderBase {
-    constructor () {
-        super();
-
-        this.isMultiBrowser = true;
-    }
+export default {
+    isMultiBrowser: true,
 
     async _handleJSON (str) {
         var params = null;
@@ -32,7 +26,7 @@ export default class PathBrowserProvider extends BrowserProviderBase {
             openParameters.cmd = params.cmd;
 
         return openParameters;
-    }
+    },
 
     async openBrowser (browserId, pageUrl, browserName) {
         var openParameters = await browserTools.getBrowserInfo(browserName) || await this._handleJSON(browserName);
@@ -41,18 +35,13 @@ export default class PathBrowserProvider extends BrowserProviderBase {
             throw new Error('The specified browser name is not valid!');
 
         await browserTools.open(openParameters, pageUrl);
-
-        if (OS.win)
-            await super.calculateResizeCorrections(browserId);
-    }
+    },
 
     async closeBrowser (browserId) {
         await browserTools.close(browserId);
-    }
+    },
 
-    async getBrowserList () {
-        return [
-            '${PATH_TO_BROWSER_EXECUTABLE}'
-        ];
+    async isLocalBrowser () {
+        return true;
     }
-}
+};

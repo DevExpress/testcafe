@@ -1,19 +1,28 @@
 import browserTools from 'testcafe-browser-tools';
-import PathBrowserProvider from './path';
 
 
-export default class LocallyInstalledBrowserProvider extends PathBrowserProvider {
-    constructor () {
-        super();
+export default {
+    isMultiBrowser: true,
 
-        this.isMultiBrowser = true;
-    }
+    async openBrowser (browserId, pageUrl, browserName) {
+        var openParameters = await browserTools.getBrowserInfo(browserName);
+
+        await browserTools.open(openParameters, pageUrl);
+    },
+
+    async closeBrowser (browserId) {
+        await browserTools.close(browserId);
+    },
+
+    async isLocalBrowser () {
+        return true;
+    },
 
     async getBrowserList () {
         var installations = await browserTools.getInstallations();
 
         return Object.keys(installations);
-    }
+    },
 
     async isValidBrowserName (browserName) {
         var browserNames = await this.getBrowserList();
@@ -22,4 +31,4 @@ export default class LocallyInstalledBrowserProvider extends PathBrowserProvider
 
         return browserNames.indexOf(browserName) > -1;
     }
-}
+};

@@ -1,4 +1,3 @@
-import { getViewportSize } from 'testcafe-browser-tools';
 import { isServiceCommand } from './commands/utils';
 import COMMAND_TYPE from './commands/type';
 import WARNING_MESSAGE from '../warnings/message';
@@ -20,14 +19,6 @@ export default class BrowserManipulationQueue {
             this.warningLog.addWarning(WARNING_MESSAGE.resizeError, err.message);
             return null;
         }
-    }
-
-    async _resizeWindowToFitDevice (device, portrait, currentWidth, currentHeight) {
-        var { landscapeWidth, portraitWidth } = getViewportSize(device);
-        var width  = portrait ? portraitWidth : landscapeWidth;
-        var height = portrait ? landscapeWidth : portraitWidth;
-
-        return await this._resizeWindow(width, height, currentWidth, currentHeight);
     }
 
     async _takeScreenshot (capture) {
@@ -65,9 +56,6 @@ export default class BrowserManipulationQueue {
 
             case COMMAND_TYPE.resizeWindow:
                 return await this._resizeWindow(command.width, command.height, driverMsg.innerWidth, driverMsg.innerHeight);
-
-            case COMMAND_TYPE.resizeWindowToFitDevice:
-                return await this._resizeWindowToFitDevice(command.device, command.options.portraitOrientation, driverMsg.innerWidth, driverMsg.innerHeight);
         }
 
         return null;

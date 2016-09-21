@@ -46,5 +46,6 @@ export default {
     invalidSelectorResultError:                        'invalidSelectorResultError',
     cantObtainInfoForElementSpecifiedBySelectorError:  'cantObtainInfoForElementSpecifiedBySelectorError',
     externalAssertionLibraryError:                     'externalAssertionLibraryError',
-    pageLoadError:                                     'pageLoadError'
+    pageLoadError:                                     'pageLoadError',
+    windowDimensionsOverflowError:                     'windowDimensionsOverflowError'
 };

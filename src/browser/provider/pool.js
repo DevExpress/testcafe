@@ -1,7 +1,7 @@
 import Promise from 'pinkie';
 import BUILT_IN_PROVIDERS from './built-in';
 import BrowserProviderPluginHost from './plugin-host';
-import BrowserProviderCacheItem from './cache-item';
+import BrowserProvider from './';
 import BrowserConnection from '../connection';
 import { GeneralError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
@@ -79,7 +79,7 @@ export default {
     },
 
     _getProviderFromCache (providerName) {
-        return this.providersCache[providerName] && this.providersCache[providerName].provider || null;
+        return this.providersCache[providerName] || null;
     },
 
     _getBuiltinProvider (providerName) {
@@ -111,7 +111,7 @@ export default {
     },
 
     addProvider (providerName, providerObject) {
-        this.providersCache[providerName] = new BrowserProviderCacheItem(
+        this.providersCache[providerName] = new BrowserProvider(
             new BrowserProviderPluginHost(providerObject, providerName)
         );
     },

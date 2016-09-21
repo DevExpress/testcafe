@@ -3,6 +3,7 @@ import testCafeCore from '../deps/testcafe-core';
 import MESSAGE from '../../../test-run/client-messages';
 import DriverStatus from '../status';
 
+
 var nativeMethods = hammerhead.nativeMethods;
 var transport     = hammerhead.transport;
 var delay         = testCafeCore.delay;
