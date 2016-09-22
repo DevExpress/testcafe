@@ -83,7 +83,7 @@ describe('[API] Selector', function () {
                 .catch(function (errs) {
                     expect(errs[0]).contains('An error occurred in Selector code:');
                     expect(errs[0]).contains('Error: Hey ya!');
-                    expect(errs[0]).contains('> 215 |    await selector();');
+                    expect(errs[0]).contains('> 230 |    await selector();');
                 });
         });
 
@@ -94,7 +94,7 @@ describe('[API] Selector', function () {
                         'Function that specifies a selector can only return a DOM node, an array of nodes, ' +
                         'NodeList, HTMLCollection, null or undefined. Use ClientFunction to return other values.'
                     );
-                    expect(errs[0]).contains("> 244 |    await Selector(() => 'hey')();");
+                    expect(errs[0]).contains("> 259 |    await Selector(() => 'hey')();");
                 });
         });
 
@@ -108,7 +108,7 @@ describe('[API] Selector', function () {
                     'node snapshot or a Promise returned by a Selector, but number was passed.'
                 )).eql(0);
 
-                expect(errs[0]).contains('> 185 |    await Selector(123)();');
+                expect(errs[0]).contains('> 200 |    await Selector(123)();');
             });
         });
     });
