@@ -108,6 +108,7 @@ describe('Test run command options', function () {
                 speed:         20,
                 minMovingTime: null,
                 dragMode:      true,
+                skipScrolling: false,
 
                 modifiers: {
                     ctrl:  true,

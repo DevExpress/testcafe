@@ -82,6 +82,7 @@ export class MoveOptions extends MouseOptions {
         this.speed         = null;
         this.minMovingTime = null;
         this.dragMode      = false;
+        this.skipScrolling = false;
 
         this._assignFrom(obj, validate);
     }
@@ -90,7 +91,8 @@ export class MoveOptions extends MouseOptions {
         return super._getAssignableProperties().concat([
             { name: 'speed' },
             { name: 'minMovingTime' },
-            { name: 'dragMode' }
+            { name: 'dragMode' },
+            { name: 'skipScrolling', type: booleanOption }
         ]);
     }
 }

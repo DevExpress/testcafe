@@ -59,6 +59,7 @@ export default class MoveAutomation {
         this.speed         = moveOptions.speed || this.DEFAULT_SPEED;
         this.minMovingTime = moveOptions.minMovingTime || null;
         this.modifiers     = moveOptions.modifiers || {};
+        this.skipScrolling = moveOptions.skipScrolling;
 
         this.endPoint = null;
 
@@ -154,9 +155,10 @@ export default class MoveAutomation {
         var intersectionPoint = getLineRectIntersection(startPoint, endPoint, iframeRectangle);
 
         var moveOptions = new MoveOptions({
-            modifiers: e.message.modifiers,
-            offsetX:   intersectionPoint.x - iframeRectangle.left,
-            offsetY:   intersectionPoint.y - iframeRectangle.top
+            modifiers:     e.message.modifiers,
+            offsetX:       intersectionPoint.x - iframeRectangle.left,
+            offsetY:       intersectionPoint.y - iframeRectangle.top,
+            skipScrolling: true
         }, false);
 
         var moveAutomation = new MoveAutomation(document.documentElement, moveOptions);
@@ -298,6 +300,9 @@ export default class MoveAutomation {
     }
 
     _scroll () {
+        if (this.skipScrolling)
+            return Promise.resolve();
+
         var scrollOptions    = new OffsetOptions({ offsetX: this.offsetX, offsetY: this.offsetY }, false);
         var scrollAutomation = new ScrollAutomation(this.element, scrollOptions);
 
