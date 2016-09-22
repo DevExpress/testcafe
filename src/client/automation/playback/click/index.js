@@ -280,6 +280,8 @@ export default class ClickAutomation {
         var moveArguments = this._getMoveArguments();
 
         return this._move(moveArguments)
+        // NOTE: we should raise mouseup event with ACTION_STEP_DELAY after we trigger
+        // mousedown event regardless of how long mousedown event handlers were executing
             .then(() => Promise.all([delay(ACTION_STEP_DELAY), this._mousedown()]))
             .then(() => this._mouseup())
             .then(() => this._click());
