@@ -49,6 +49,7 @@ test('HTMLElement snapshot basic properties', async () => {
     expect(el.focused).to.be.false;
     expect(el.value).to.be.undefined;
     expect(el.checked).to.be.undefined;
+    expect(el.selected).to.be.undefined;
 
     expect(el.textContent).eql('\n    \n        42\n    \n    Yo\n');
     expect(el.classNames).eql(['yo', 'hey', 'cool']);
@@ -90,6 +91,7 @@ test('SVGElement snapshot basic properties', async () => {
     expect(el.focused).to.be.false;
     expect(el.value).to.be.undefined;
     expect(el.checked).to.be.undefined;
+    expect(el.selected).to.be.undefined;
 
     expect(el.textContent).eql('\n        Hey\n    ');
     expect(el.classNames).eql(['svg1', 'svg2']);
@@ -109,6 +111,7 @@ test('Input-specific element snapshot properties', async t => {
     expect(el.focused).to.be.true;
     expect(el.value).eql('Hey!');
     expect(el.checked).to.be.false;
+    expect(el.selected).to.be.undefined;
 
     el = await getElementById('checkInput');
 
@@ -123,6 +126,18 @@ test('Input-specific element snapshot properties', async t => {
     expect(el.focused).to.be.true;
     expect(el.value).eql('on');
     expect(el.checked).to.be.true;
+
+    el = await getElementById('option2');
+
+    expect(el.selected).to.be.false;
+
+    await t
+        .click('#selectInput')
+        .click('#option2');
+
+    el = await getElementById('option2');
+
+    expect(el.selected).to.be.true;
 });
 
 test('`innerText` element snapshot property', async () => {
