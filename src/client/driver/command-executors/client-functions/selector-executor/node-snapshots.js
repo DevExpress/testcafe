@@ -55,7 +55,7 @@ export class ElementSnapshot extends NodeSnapshot {
 
         [
             'namespaceURI', 'id',
-            'value', 'checked',
+            'value', 'checked', 'selected',
             'scrollWidth', 'scrollHeight', 'scrollLeft', 'scrollTop',
             'offsetWidth', 'offsetHeight', 'offsetLeft', 'offsetTop',
             'clientWidth', 'clientHeight', 'clientLeft', 'clientTop'
