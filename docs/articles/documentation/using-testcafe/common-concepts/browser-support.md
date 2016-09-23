@@ -13,16 +13,11 @@ TestCafe allows you to test against different web browsers:
 * [Cloud Browsers](#cloud-browsers)
 * [Other Browsers](#other-browsers)
 
-If you are working with TestCafe through the command line interface (CLI),
-[list the desired browsers](../command-line-interface.md#browser-list)
-within the `testcafe` command.
-
-In case you are using the application programming intefrace (API), specify the browsers
-with the [runner.browsers](../programming-interface/runner.md#browsers) method.
+You can specify browsers for testing either using the [command line interface](../command-line-interface.md) (CLI) or [application programming intefrace](../programming-interface/index.md) (API).
 
 ## Local Browsers
 
-The following local browsers are supported out-of-the-box.
+TestCafe includes out-of-the-box support for the following browsers installed locally on your computer.
 
 Browser           |Version | Browser Alias
 ----------------- | ------ | -------------------
@@ -34,29 +29,40 @@ Mozilla Firefox   | latest | `firefox`
 Opera             | latest | `opera`
 Safari            | latest | `safari`
 
-TestCafe also supports the two latest versions of Android and iOS browsers.
+It also supports the two latest versions of Android and iOS browsers.
 
-You can specify local browsers by using *browser aliases* (see the table above) or paths to their executable files.
+You can specify local browsers by using *browser aliases* (see the table above) or paths to their executable files. For more information and examples, see:
+
+* using CLI: [Local Browsers](../command-line-interface.md#local-browsers)
+* using API: [runner.browsers](../programming-interface/runner.md#browsers)
+
 The list of all the available browsers can be obtained by calling the [--list-browsers](../command-line-interface.md#-b---list-browsers) command.
 
 ## Portable Browsers
 
-To use portable browsers, specify them by paths to browser executable files.
+You can also test against browsers run on portable storage devices.
+
+You specify these browsers by paths to browser executable files. For more information and examples, see:
+
+* using CLI: [Portable Browsers](../command-line-interface.md#portable-browsers)
+* using API: [runner.browsers](../programming-interface/runner.md#browsers)
 
 ## Remote Browsers
 
 TestCafe can run tests in browsers on remote devices. The only requirement is a device should have network access to the TestCafe server.
 
-At first, you need to create a remote browser connection. You can do this from CLI by specifying the `remote` *alias* or from API by using the [createBrowserConnection](../programming-interface/testcafe.html#createbrowserconnection) method.
+At first, you need to create a remote browser connection. There are two ways to do this:
+
+* using CLI: by specifying the `remote` *alias* (see [Remote Browsers](../command-line-interface.html#remote-browsers))
+* using API: by running the [createBrowserConnection](../programming-interface/testcafe.html#createbrowserconnection) method
 
 After that, TestCafe will provide URLs that you need to open in required browsers on your remote device to start testing.
 
 ## Cloud Browsers
 
-TestCafe allows you to use cloud browsers. These browsers can be accessed through *browser provider plugins*. For example, there is the [testcafe-browser-provider-saucelabs](https://www.npmjs.com/package/testcafe-browser-provider-saucelabs) plugin for testing in [Sauce Labs](https://saucelabs.com/).
+TestCafe allows you to use cloud browsers. These browsers can be accessed through [browser provider plugins](../../extending-testcafe/browser-provider-plugin/).
 
-To specify a Sauce Labs browser, use a browser alias that consists of the `saucelabs` prefix and the name of the browser itself, for example, `saucelabs:Chrome@52.0:Windows 8.1`.
-To obtain all the available aliases for the Sauce Labs browser provider, run the `testcafe --list-browsers saucelabs` command.
+For example, there is the [testcafe-browser-provider-saucelabs](https://www.npmjs.com/package/testcafe-browser-provider-saucelabs) plugin for testing in [Sauce Labs](https://saucelabs.com/).
 
 If you need to use another cloud browser, see [Other Browsers](#other-browsers).
 
@@ -69,7 +75,4 @@ So, you can search for available browser provider packages on npm by the `testca
 
 For example, there is the [testcafe-browser-provider-phantomjs](https://www.npmjs.com/package/testcafe-browser-provider-phantomjs) plugin for tesing in the [PhantomJS](http://phantomjs.org/) headless browser.
 
-When running tests, you can specify a browser accessed through a provider plugin by using a *browser alias*.
-The alias consists of the browser provider name and the name of the browser itself (the latter can be omitted); for example, `saucelabs:Chrome@52.0:Windows 8.1` or `phantomjs`.
-
-To obtain all the available aliases for your provider, run the `testcafe --list-browsers {shortProviderName}` command, where `{shortProviderName}` is the provider name (without the `testcafe-browser-provider-` prefix); for example, `testcafe --list-browsers my-provider`.
+To learn how to specify these browsers, see [Specifying a Browser for a Test Task](../../extending-testcafe/browser-provider-plugin/index.md#specifying-a-browser-for-a-test-task).
