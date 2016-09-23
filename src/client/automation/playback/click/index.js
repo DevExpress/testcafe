@@ -40,8 +40,9 @@ export default class ClickAutomation {
         this.offsetX = clickOptions.offsetX;
         this.offsetY = clickOptions.offsetY;
 
-        this.targetElementParentNodes = [];
-        this.clickEventElement        = null;
+        this.targetElementParentNodes     = [];
+        this.clickEventElement            = null;
+        this.activeElementBeforeMouseDown = null;
 
         this.eventArgs = {
             point:   null,
@@ -50,7 +51,6 @@ export default class ClickAutomation {
         };
 
         this.eventState = {
-            simulateFocus:           true,
             mousedownPrevented:      false,
             blurRaised:              false,
             simulateDefaultBehavior: true,
@@ -151,15 +151,9 @@ export default class ClickAutomation {
             .then(() => {
                 this._raiseTouchEvents();
 
-                var isBodyElement         = domUtils.isBodyElement(this.eventArgs.element);
-                var isContentEditable     = domUtils.isContentEditableElement(this.eventArgs.element);
-                var isContentEditableBody = isBodyElement && isContentEditable;
                 var activeElement         = domUtils.getActiveElement();
 
-                // NOTE: in IE focus is not raised if element was focused
-                // before click, even if focus is lost during mousedown
-                this.eventState.simulateFocus = !browserUtils.isIE || activeElement !== this.eventArgs.element ||
-                                                isContentEditableBody;
+                this.activeElementBeforeMouseDown = activeElement;
 
                 // NOTE: In WebKit and IE, the mousedown event opens the select element's dropdown;
                 // therefore, we should prevent mousedown and hide the dropdown (B236416).
@@ -222,7 +216,10 @@ export default class ClickAutomation {
         var elementForFocus = domUtils.isContentEditableElement(this.element) ?
                               this.element : this.eventArgs.element;
 
-        return focusAndSetSelection(elementForFocus, this.eventState.simulateFocus, this.caretPos);
+        // NOTE: IE doesn't perform focus if active element has been changed while executing mousedown
+        var simulateFocus = !browserUtils.isIE || this.activeElementBeforeMouseDown === domUtils.getActiveElement();
+
+        return focusAndSetSelection(elementForFocus, simulateFocus, this.caretPos);
     }
 
     _mouseup () {

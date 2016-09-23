@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-770</title>
+</head>
+<body>
+<div>
+    <input id="input" value="Test">
+</div>
+<div id="forceInputFocusDiv" style="width:20px;height:20px; left:15px; top:15px; background: red"></div>
+</div>
+<div id="simpleDiv" style="width:20px;height:20px; left:15px; top:15px; background: green"></div>
+<script>
+    var input              = document.getElementById('input');
+    var forceInputFocusDiv = document.getElementById('forceInputFocusDiv');
+
+    forceInputFocusDiv.addEventListener('mousedown', function () {
+        input.focus();
+    });
+</script>
+</body>
+</html>
