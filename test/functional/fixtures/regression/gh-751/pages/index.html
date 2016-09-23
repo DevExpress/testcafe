@@ -30,10 +30,10 @@
         window.clickEvents.push(Date.now());
     }
 
-    function doHardWork (ms) {
+    function doHardWork () {
         var startTime = Date.now();
 
-        while (Date.now() < startTime + ms) {
+        while (Date.now() < startTime + window.HARD_WORK_TIME) {
         }
     }
 
@@ -42,9 +42,7 @@
     hardWorkMousedownBtn.addEventListener('mousedown', logClickPerformance);
     hardWorkMousedownBtn.addEventListener('mouseup', logClickPerformance);
 
-    hardWorkMousedownBtn.addEventListener('mousedown', function () {
-        doHardWork(window.HARD_WORK_TIME);
-    });
+    hardWorkMousedownBtn.addEventListener('mousedown', doHardWork);
 </script>
 </body>
 </html>
