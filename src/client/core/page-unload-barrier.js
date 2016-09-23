@@ -39,10 +39,7 @@ function handleSubmit () {
         overrideFormSubmit(forms[i]);
 }
 
-function onBeforeUnload (e) {
-    if (e.isFakeIEBeforeUnloadEvent)
-        return;
-
+function onBeforeUnload () {
     if (!browserUtils.isIE) {
         unloading = true;
         return;
