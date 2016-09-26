@@ -147,11 +147,10 @@ export default class ClickAutomation {
         this.targetElementParentNodes = domUtils.getParents(this.eventArgs.element);
         this.clickEventElement        = this.eventArgs.element;
 
-        this._raiseTouchEvents();
-
-        return cursor
-            .leftButtonDown()
+        return cursor.leftButtonDown()
             .then(() => {
+                this._raiseTouchEvents();
+
                 var isBodyElement         = domUtils.isBodyElement(this.eventArgs.element);
                 var isContentEditable     = domUtils.isContentEditableElement(this.eventArgs.element);
                 var isContentEditableBody = isBodyElement && isContentEditable;
@@ -180,8 +179,7 @@ export default class ClickAutomation {
 
                 return this._ensureActiveElementBlur(activeElement);
             })
-            .then(() => this._focus())
-            .then(() => delay(ACTION_STEP_DELAY));
+            .then(() => this._focus());
     }
 
     _ensureActiveElementBlur (element) {
@@ -244,8 +242,6 @@ export default class ClickAutomation {
                 }
 
                 eventSimulator.mouseup(this.eventArgs.element, this.eventArgs.options);
-
-                return delay(ACTION_STEP_DELAY);
             });
     }
 
@@ -283,8 +279,10 @@ export default class ClickAutomation {
 
         var moveArguments = this._getMoveArguments();
 
+        // NOTE: we should raise mouseup event with ACTION_STEP_DELAY after we trigger
+        // mousedown event regardless of how long mousedown event handlers were executing
         return this._move(moveArguments)
-            .then(() => this._mousedown())
+            .then(() => Promise.all([delay(ACTION_STEP_DELAY), this._mousedown()]))
             .then(() => this._mouseup())
             .then(() => this._click());
     }

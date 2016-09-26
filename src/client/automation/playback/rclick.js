@@ -146,8 +146,6 @@ export default class RClickAutomation {
                 this.eventArgs = this._calculateEventArguments();
 
                 eventSimulator.mouseup(this.eventArgs.element, this.eventArgs.options);
-
-                return delay(ACTION_STEP_DELAY);
             });
     }
 
