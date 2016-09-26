@@ -30,9 +30,9 @@ permalink: /
                 Easy Install
             </span>
             <div class="description">
-                <p>All you need is to have <a href="https://nodejs.org">Node.js</a> with <a href="https://www.npmjs.com">npm</a> installed and call a single command.</p>
+                <p>All you need is to have <a href="https://nodejs.org">Node.js</a> with <a href="https://www.npmjs.com">npm</a> installed and then run a single command.</p>
                 <div class="command">npm install -g testcafe</div>
-                <p>No browsers plugins to install, no binary compilation post-install steps.</p>
+                <p>No native parts to compile, no browsers plugins to install.</p>
             </div>
         </div>
         <div class="feature">
@@ -40,7 +40,7 @@ permalink: /
                 Complete Test Harness
             </span>
             <div class="description">
-                <p>TestCafe covers all testing phases: starting browsers, running tests and gathering results. You configure test run and start execution either via the API or from a command shell simply by running a single command</p>
+                <p>TestCafe covers all testing phases: starting browsers, running tests and gathering results. You configure a test run and then start its execution either using the API or from a terminal by running a single command.</p>
                 <div class="command">testcafe safari,ie tests/</div>
                 <p>TestCafe aggregates test results from different browsers and outputs them into one comprehensive report.</p>
             </div>
@@ -50,8 +50,8 @@ permalink: /
                 Write Test Code Using ES2016
             </span>
             <div class="description">
-                <p>You can write TestCafe tests in ES2016 using all latest JavaScript features like 'async/await'.</p>
-                <p>TestCafe introduces simple, but powerful test API. It offers a couple of dozen methods covering all user actions. Chained syntax produces code that is easy to write and read. Furthermore, you are free to use any assertion library to perform verifications of different kinds.</p>
+                <p>You can write TestCafe tests in ES2016 using all the latest JavaScript features like 'async/await'.</p>
+                <p>TestCafe introduces simple, but powerful, <a href="/documentation/test-api/">test API</a>. It offers a couple of dozen methods covering all user actions. Chained syntax allows for code that is easy to write and read. Furthermore, you are free to use any assertion library to perform verifications of different kinds.</p>
                 <pre><code>import { expect } from 'chai';
 
 fixture `Example page`
@@ -65,16 +65,15 @@ test('Emulate user actions and perform a verification', async t => {
 
     expect(await t.eval(() => getSomethingOnTheClient())).to.be.true;
 });</code></pre>
-                <p>TestCafe will compile your test code on-flight and run it immediately. It also ships with built-in support for source maps to leverage debugging experience. Source maps are automatically enabled, so all you need to do is start a debugging session in an IDE that supports them.</p>
+                <p>Additionally, TestCafe ships with built-in support for source maps that allow easy debugging. To debug your test code, start a debugging session in an IDE that supports source maps.</p>
             </div>
         </div>
        <div class="feature">
             <span class="name">
-                Write Regular Client JavaScript to Observe Page State
+                Direct Access to Page Elements
             </span>
             <div class="description">
-                <p>TestCafe is capable of executing code on the client side thus giving you direct access to DOM elements on the page and empowering you to obtain required data from the client.
-Simply write JavaScript code within the `ClientFunction` or `Selector` function. These functions are called from a test as regular async functions. So, you can pass parameters to them and return values.</p>
+                <p>To access DOM elements in tests, you can use CSS selectors. If they do not suit your needs, you can write custom <a href="documentation/test-api/selecting-page-elements/selectors.html">selector</a> code. TestCafe will execute this code on the client side as a regular async function. The returned value (<a href="documentation/test-api/selecting-page-elements/dom-node-snapshots.html">DOM node snapshot</a>) will be sent to the server, so you can perform some actions on the snapshot or verify its state.</p>
 
                 <pre><code>import { Selector } from 'testcafe';
 
@@ -112,7 +111,7 @@ test('Type the developer name, obtain the header text and check it', async t => 
                 Descriptive Reports
             </span>
             <div class="description">
-                <p>TestCafe automatically generates full-detailed reports providing a test run summary and comprehensive information about errors. Fancy call sites, clean stacks and screenshots help you easily detect an error cause.</p>
+                <p>TestCafe automatically generates full-detailed reports providing a test run summary and comprehensive information about errors. Fancy call sites, clean stacks and screenshots allow you to easily detect error causes.</p>
                 <p>Choose from five <a href="documentation/using-testcafe/common-concepts/reporters.html">built-in reporters</a> to output test results or create <a href="documentation/extending-testcafe/reporter-plugin/">reporter plugins</a> to produce your own reports.</p>
             </div>
             <div class="gallery-container">
@@ -121,11 +120,10 @@ test('Type the developer name, obtain the header text and check it', async t => 
         </div>
         <div class="feature">
             <span class="name">
-                Continuous Integration
+                Straightforward Continuous Integration
             </span>
             <div class="description">
-                <p>Take advantage of automatic test execution through integration of TestCafe with popular Continuous Integration platforms.
-                TestCafe makes it simple to set up testing in various browsers: local, remote, <a href="https://saucelabs.com/">Sauce Labs</a> or <a href="http://phantomjs.org/">PhantomJS</a>.
+                <p>TestCafe works with popular Continuous Integration platforms and its browser provider mechanism makes it simple to set up testing in various browsers: local, remote, cloud (e.g. <a href="https://saucelabs.com/">Sauce Labs</a>) or headless (e.g. <a href="http://phantomjs.org/">PhantomJS</a>).
                 You can also create a <a href="documentation/extending-testcafe/browser-provider-plugin">browser provider plugin</a> that will suit your platform and needs.</p>
             </div>
         </div>
