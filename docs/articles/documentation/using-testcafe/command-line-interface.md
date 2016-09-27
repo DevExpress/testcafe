@@ -48,7 +48,7 @@ The `browser-list-comma-separated` argument specifies the list of browsers (sepa
 
 ### Local Browsers
 
-You can specify [local browsers](../using-testcafe/common-concepts/browser-support.md#local-browsers) by using paths (with the `path:` prefix) or browser aliases.
+You can specify [locally installed browsers](common-concepts/browser-support.md#locally-installed-browsers) by using browser aliases or paths (with the `path:` prefix).
 The list of all the available browsers can be obtained by calling the [--list-browsers](#-b---list-browsers) command.
 
 The following example demonstrates how to run a test in several browsers.
@@ -66,7 +66,7 @@ testcafe all tests/sample-fixture.js
 
 ### Portable Browsers
 
-You can specify [portable browsers](../using-testcafe/common-concepts/browser-support.md#portable-browsers) by using paths to the browser's executable file (with the `path:` prefix), for example:
+You can specify [portable browsers](common-concepts/browser-support.md#portable-browsers) by using paths to the browser's executable file (with the `path:` prefix), for example:
 
 ```sh
 testcafe path:d:\firefoxportable\firefoxportable.exe tests/sample-fixture.js
@@ -74,7 +74,7 @@ testcafe path:d:\firefoxportable\firefoxportable.exe tests/sample-fixture.js
 
 ### Remote Browsers
 
-To run tests in a [remote browser](../using-testcafe/common-concepts/browser-support.md#remote-browsers), specify `remote` as a browser alias.
+To run tests in a [browser on a remote device](common-concepts/browser-support.md#browsers-on-remote-devices), specify `remote` as a browser alias.
 
 ```sh
 testcafe remote tests/sample-fixture.js
@@ -94,7 +94,7 @@ As a result, the browsers will be connected to TestCafe and tests will start.
 
 ### Browsers Accessed Through Browser Provider Plugins
 
-To run tests in [cloud browsers](../using-testcafe/common-concepts/browser-support.md#cloud-browsers) or [other browsers](../using-testcafe/common-concepts/browser-support.md#other-browsers) accessed through a *browser provider plugin*,
+To run tests in [cloud browsers](common-concepts/browser-support.md#browsers-in-cloud-testing-services) or [other browsers](common-concepts/browser-support.md#nonconventional-browsers) accessed through a [browser provider plugin](../extending-testcafe/browser-provider-plugin/),
 specify a browser alias that consists of the `{browser-provider-name}` prefix and the name of a browser itself (the latter can be omitted); for example, `saucelabs:Chrome@52.0:Windows 8.1`.
 
 ```sh
@@ -146,7 +146,7 @@ testcafe --version
 
 ### -b, --list-browsers
 
-Lists aliases of the [local browsers](common-concepts/browser-support.md#local-browsers) available on your computer.
+Lists aliases of the [local browsers](common-concepts/browser-support.md#locally-installed-browsers) available on your computer.
 
 ```sh
 testcafe --list-browsers

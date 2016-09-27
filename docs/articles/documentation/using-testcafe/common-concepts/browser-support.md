@@ -5,74 +5,96 @@ permalink: /documentation/using-testcafe/common-concepts/browser-support.html
 ---
 # Browser Support
 
-TestCafe allows you to test against different web browsers:
-
-* [Local Browsers](#local-browsers)
+* [Officially Supported Browsers](#officially-supported-browsers)
+* [Locally Installed Browsers](#locally-installed-browsers)
 * [Portable Browsers](#portable-browsers)
-* [Remote Browsers](#remote-browsers)
-* [Cloud Browsers](#cloud-browsers)
-* [Other Browsers](#other-browsers)
+* [Browsers on Remote Devices](#browsers-on-remote-devices)
+* [Browsers in Cloud Testing Services](#browsers-in-cloud-testing-services)
+* [Nonconventional Browsers](#nonconventional-browsers)
 
-You can specify browsers for testing either using the [command line interface](../command-line-interface.md) (CLI) or [application programming intefrace](../programming-interface/index.md) (API).
+## Officially Supported Browsers
 
-## Local Browsers
+While TestCafe is designed to support most of the modern browsers *de facto*, there is a limited number of *officially supported* browsers in which TestCafe is guaranteed to work.
 
-TestCafe includes out-of-the-box support for the following browsers installed locally on your computer.
+* Chromium
+* Google Chrome
+* Internet Explorer (9+)
+* Microsoft Edge
+* Mozilla Firefox
+* Safari
+* Android browser (the latest available on SauceLabs)
+* Safari mobile
 
-Browser           |Version | Browser Alias
------------------ | ------ | -------------------
-Chromium          | latest | `chromium`
-Google Chrome     | latest | `chrome`
-Internet Explorer | 9+     | `ie`
-Microsoft Edge    |        | `edge`
-Mozilla Firefox   | latest | `firefox`
-Opera             | latest | `opera`
-Safari            | latest | `safari`
+> TestCafe supports the latest version of each browser unless specified explicitly.
 
-It also supports the two latest versions of Android and iOS browsers.
+## Locally Installed Browsers
 
-You can specify local browsers by using *browser aliases* (see the table above) or paths to their executable files. For more information and examples, see:
+TestCafe can automatically detect popular browsers installed on the local computer.
+You can use a short name, *browser alias*, to identify these browsers when launching tests.
 
-* using CLI: [Local Browsers](../command-line-interface.md#local-browsers)
-* using API: [runner.browsers](../programming-interface/runner.md#browsers)
+The following table lists browsers that can be detected automatically.
+
+Browser           | Browser Alias
+----------------- | -------------------
+Chromium          | `chromium`
+Google Chrome     | `chrome`
+Internet Explorer | `ie`
+Microsoft Edge    | `edge`
+Mozilla Firefox   | `firefox`
+Opera             | `opera`
+Safari            | `safari`
 
 The list of all the available browsers can be obtained by calling the [--list-browsers](../command-line-interface.md#-b---list-browsers) command.
 
+To run tests in a different local browser, specify the path to the browser executable file.
+
+For more information and examples, see:
+
+* Command line: [Local Browsers](../command-line-interface.md#local-browsers)
+* API: [runner.browsers](../programming-interface/runner.md#browsers)
+
 ## Portable Browsers
 
-You can also test against browsers run on portable storage devices.
+To use a portable browser, specify the path to the browser executable file. For more information and examples, see:
 
-You specify these browsers by paths to browser executable files. For more information and examples, see:
+* Command line: [Portable Browsers](../command-line-interface.md#portable-browsers)
+* API: [runner.browsers](../programming-interface/runner.md#browsers)
 
-* using CLI: [Portable Browsers](../command-line-interface.md#portable-browsers)
-* using API: [runner.browsers](../programming-interface/runner.md#browsers)
+## Browsers on Remote Devices
 
-## Remote Browsers
+To run tests on a remote mobile and desktop device, this device must have network access to the TestCafe server.
 
-TestCafe can run tests in browsers on remote devices. The only requirement is a device should have network access to the TestCafe server.
+First, you will need to create a remote browser connection.
 
-At first, you need to create a remote browser connection. There are two ways to do this:
+* Command line: specify the `remote` *alias* (see [Remote Browsers](../command-line-interface.html#remote-browsers))
+* API: use the [createBrowserConnection](../programming-interface/testcafe.html#createbrowserconnection) method
 
-* using CLI: by specifying the `remote` *alias* (see [Remote Browsers](../command-line-interface.html#remote-browsers))
-* using API: by running the [createBrowserConnection](../programming-interface/testcafe.html#createbrowserconnection) method
+After that, TestCafe will provide a URL to open on the remote device in the browser against which you want to test. As you open this URL, the browser connects to the TestCafe server and starts testing.
 
-After that, TestCafe will provide URLs that you need to open in required browsers on your remote device to start testing.
+## Browsers in Cloud Testing Services
 
-## Cloud Browsers
+TestCafe allows you to use browsers from cloud testing services. You can access them through [browser provider plugins](../../extending-testcafe/browser-provider-plugin/).
 
-TestCafe allows you to use cloud browsers. These browsers can be accessed through [browser provider plugins](../../extending-testcafe/browser-provider-plugin/).
+The following plugins for cloud services are currently provided by the TestCafe team.
 
-For example, there is the [testcafe-browser-provider-saucelabs](https://www.npmjs.com/package/testcafe-browser-provider-saucelabs) plugin for testing in [Sauce Labs](https://saucelabs.com/).
+Service                              | Plugin
+------------------------------------ | -------------------
+[Sauce Labs](https://saucelabs.com/) | [testcafe-browser-provider-saucelabs](https://www.npmjs.com/package/testcafe-browser-provider-saucelabs)
 
-If you need to use another cloud browser, see [Other Browsers](#other-browsers).
+You can search npm for plugins developed by the community. Their names start with the `testcafe-browser-provider-` prefix: [https://www.npmjs.com/search?q=testcafe-browser-provider](https://www.npmjs.com/search?q=testcafe-browser-provider).
 
-## Other Browsers
+You can also create your own plugin. See [Browser Provider Plugin](../../extending-testcafe/browser-provider-plugin/) for instructions.
 
-To use a different browser, create a custom [browser provider plugin](../../extending-testcafe/browser-provider-plugin/).
+## Nonconventional Browsers
 
-Created browser provider packages can be published to npm. The provider package name consists of two parts - the `testcafe-browser-provider-` prefix and the name of a provider itself; e.g., `testcafe-browser-provider-saucelabs`.
-So, you can search for available browser provider packages on npm by the `testcafe-browser-provider-` prefix: [https://www.npmjs.com/search?q=testcafe-browser-provider](https://www.npmjs.com/search?q=testcafe-browser-provider).
+To use a web browser of a different type, you will need a [browser provider plugin](../../extending-testcafe/browser-provider-plugin/).
 
-For example, there is the [testcafe-browser-provider-phantomjs](https://www.npmjs.com/package/testcafe-browser-provider-phantomjs) plugin for tesing in the [PhantomJS](http://phantomjs.org/) headless browser.
+The following plugins for nonconventional browsers are currently provided by the TestCafe team.
 
-To learn how to specify these browsers, see [Specifying a Browser for a Test Task](../../extending-testcafe/browser-provider-plugin/index.md#specifying-a-browser-for-a-test-task).
+Service                            | Plugin
+---------------------------------- | -------------------
+[PhantomJS](http://phantomjs.org/) | [testcafe-browser-provider-phantomjs](https://www.npmjs.com/package/testcafe-browser-provider-phantomjs)
+
+You can search npm for plugins developed by the community. Their names start with the `testcafe-browser-provider-` prefix: [https://www.npmjs.com/search?q=testcafe-browser-provider](https://www.npmjs.com/search?q=testcafe-browser-provider).
+
+You can also create your own plugin. See [Browser Provider Plugin](../../extending-testcafe/browser-provider-plugin/) for instructions.
