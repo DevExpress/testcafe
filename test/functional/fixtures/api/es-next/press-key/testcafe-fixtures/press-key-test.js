@@ -18,3 +18,15 @@ test('Press keys', async t => {
 test('Incorrect keys argument', async t => {
     await t.pressKey(false);
 });
+
+test('Press key in iframe', async t => {
+    await ClientFunction(() => document.getElementById('input').addEventListener('keyup', () => {
+        document.getElementById('input').value = 'OK';
+    }))();
+
+    await t
+        .click('#iframe')
+        .pressKey('a');
+
+    expect(await getInputValue()).equals('OK');
+});

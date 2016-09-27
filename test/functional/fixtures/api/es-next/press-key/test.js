@@ -7,10 +7,17 @@ describe('[API] t.pressKey', function () {
     });
 
     it('Should validate keys argument', function () {
-        return runTests('./testcafe-fixtures/press-key-test.js', 'Incorrect keys argument', { shouldFail: true, only: 'chrome' })
+        return runTests('./testcafe-fixtures/press-key-test.js', 'Incorrect keys argument', {
+            shouldFail: true,
+            only:       'chrome'
+        })
             .catch(function (errs) {
                 expect(errs[0]).to.contain('The "keys" argument is expected to be a non-empty string, but it was boolean.');
                 expect(errs[0]).to.contain('> 19 |    await t.pressKey(false);');
             });
+    });
+
+    it('Should press key in iframe', function () {
+        return runTests('./testcafe-fixtures/press-key-test.js', 'Press key in iframe', { only: 'chrome' });
     });
 });
