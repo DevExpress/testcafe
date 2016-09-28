@@ -99,7 +99,7 @@ To check if the page state matches the expected one, use [assertions](assertions
 
 ### Test Controller
 
-A *test controller* is an object that exposes methods of test API. That is why it is
+A *test controller* object `t` exposes methods of test API. That is why it is
 passed to each function that is expected to contain server-side test code (like [test](#tests),
 [beforeEach](#initialization-and-clean-up) or [afterEach](#initialization-and-clean-up)).
 
