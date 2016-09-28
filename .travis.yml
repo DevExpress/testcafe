@@ -13,3 +13,9 @@ branches:
 
 notifications:
  email: false
+
+before_install: >-
+  brew update;
+  brew tap caskroom/cask;
+  brew cask install google-chrome;
+  brew cask install firefox;

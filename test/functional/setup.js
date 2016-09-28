@@ -7,12 +7,16 @@ var createTestCafe     = require('../../lib');
 var config             = require('./config.js');
 var site               = require('./site');
 var getTestError       = require('./get-test-error.js');
+var execa              = require('execa');
+var ffmpeg             = require('@ffmpeg-installer/ffmpeg');
+var scpClient          = require('scp2');
 
 var testCafe     = null;
 var browsersInfo = null;
 
-var slConnector = null;
-var slBrowsers  = null;
+var slConnector   = null;
+var slBrowsers    = null;
+var ffmpegPromise = null;
 
 const WAIT_FOR_FREE_MACHINES_REQUEST_INTERVAL  = 60000;
 const WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT = 60;
@@ -72,6 +76,9 @@ function openLocalBrowsers () {
     var openBrowserPromises = browsersInfo.map(function (browserInfo) {
         return browserTools.getBrowserInfo(browserInfo.settings.alias)
             .then(function (browser) {
+                if (browserInfo.settings.cmd)
+                    browser.cmd += ' ' + browserInfo.settings.cmd;
+
                 return browserTools.open(browser, browserInfo.connection.url);
             });
     });
@@ -102,11 +109,19 @@ function closeLocalBrowsers () {
 before(function () {
     var mocha = this;
 
+    mocha.timeout(10000000);
+
     return createTestCafe(config.testCafe.hostname, config.testCafe.port1, config.testCafe.port2)
         .then(function (tc) {
             testCafe = tc;
 
             return initBrowsersInfo();
+        })
+        .then(function () {
+            ffmpegPromise = execa(ffmpeg.path, ['-f', 'avfoundation', '-i', 'Capture screen 0', '-framerate', '20', 'out.mp4']);
+
+            ffmpegPromise.stdout.pipe(process.stdout);
+            ffmpegPromise.stderr.pipe(process.stderr);
         })
         .then(function () {
             var aliases = browsersInfo.map(function (browser) {
@@ -201,6 +216,8 @@ before(function () {
 });
 
 after(function () {
+    this.timeout(10000000);
+
     testCafe.close();
     site.destroy();
 
@@ -210,5 +227,15 @@ after(function () {
     if (!config.useLocalBrowsers)
         return closeRemoteBrowsers();
 
-    return closeLocalBrowsers();
+    ffmpegPromise.stdin.write('q');
+
+    return ffmpegPromise
+        .then(function () {
+            return new Promise(function (resolve) {
+                scpClient.scp('out.mp4', 'temp:1234@163.172.168.2:/home/temp', resolve);
+            });
+        })
+        .then(function () {
+            return closeLocalBrowsers();
+        });
 });

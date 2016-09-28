@@ -101,6 +101,7 @@
     "useragent": "^2.1.7"
   },
   "devDependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.0.7",
     "babel-eslint": "^6.0.0",
     "babel-plugin-add-module-exports": "^0.2.0",
     "broken-link-checker": "^0.7.0",
@@ -114,6 +115,7 @@
     "eslint-plugin-babel": "^3.1.0",
     "eslint-plugin-hammerhead": "0.0.6",
     "eslint-plugin-import": "^1.14.0",
+    "execa": "^0.4.0",
     "express": "^4.13.3",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",
@@ -143,6 +145,7 @@
     "request": "^2.58.0",
     "run-sequence": "^1.2.2",
     "saucelabs-connector": "^0.2.0",
+    "scp2": "^0.5.0",
     "serve-static": "^1.10.0",
     "strip-ansi": "^3.0.0",
     "tmp": "0.0.28"

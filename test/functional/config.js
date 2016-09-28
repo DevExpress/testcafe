@@ -1,4 +1,5 @@
-var os = require('os');
+var os   = require('os');
+var path = require('path');
 
 var isTravisEnvironment = !!process.env.TRAVIS;
 var isTravisMacOS       = process.env.TRAVIS_OS_NAME === 'osx';
@@ -85,10 +86,18 @@ testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
 testingEnvironments[testingEnvironmentNames.localBrowsers] = {
     browsers: [
         {
-            platform:    'OS X 10.11',
-            browserName: 'safari',
-            version:     '9.0',
-            alias:       'safari'
+            platform: 'OS X 10.11',
+            alias:    'firefox',
+            cmd:      '-override ' + path.join(__dirname, 'override.ini')
+        },
+        {
+            platform: 'OS X 10.11',
+            alias:    'chrome',
+            cmd:      '--no-first-run'
+        },
+        {
+            platform: 'OS X 10.11',
+            alias:    'safari'
         }
     ]
 };
