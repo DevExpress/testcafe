@@ -17,7 +17,7 @@ describe('[API] t.pressKey', function () {
             });
     });
 
-    it('Should press key in iframe', function () {
+    it('Should raise event in different windows if focus was changed during action execution', function () {
         return runTests('./testcafe-fixtures/press-key-test.js', 'Press key in iframe', { only: 'chrome' });
     });
 });
