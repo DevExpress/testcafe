@@ -89,15 +89,6 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
             platform: 'OS X 10.11',
             alias:    'firefox',
             cmd:      '-override ' + path.join(__dirname, 'override.ini')
-        },
-        {
-            platform: 'OS X 10.11',
-            alias:    'chrome',
-            cmd:      '--no-first-run'
-        },
-        {
-            platform: 'OS X 10.11',
-            alias:    'safari'
         }
     ]
 };
