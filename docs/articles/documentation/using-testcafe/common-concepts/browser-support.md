@@ -16,7 +16,6 @@ permalink: /documentation/using-testcafe/common-concepts/browser-support.html
 
 While TestCafe is designed to support most of the modern browsers *de facto*, there is a limited number of *officially supported* browsers in which TestCafe is guaranteed to work.
 
-* Chromium
 * Google Chrome
 * Internet Explorer (9+)
 * Microsoft Edge
