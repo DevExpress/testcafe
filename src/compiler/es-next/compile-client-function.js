@@ -40,9 +40,10 @@ var babelArtifactPolyfills = {
     'typeof': {
         re: new RegExp(escapeRe(
             'var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? ' +
-            'function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" ' +
-            '&& obj.constructor === Symbol ? "symbol" : typeof obj;};'
-        )),
+            'function (obj) {return typeof obj;} : ' +
+            'function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol ' +
+            '&& obj !== Symbol.prototype ? "symbol" : typeof obj;};'
+        ), 'g'),
 
         getCode:            () => 'var _typeof = function(obj) { return typeof obj; };',
         removeMatchingCode: true

@@ -19,7 +19,7 @@ describe('[API] beforeEach/afterEach hooks', function () {
                     'Uncaught Error: [beforeEach][test][afterEach]'
                 )).eql(0);
 
-                expect(errs[0]).contains(">  7 |            .click('#failAndReport');");
+                expect(errs[0]).contains(">  9 |            .click('#failAndReport');");
             });
     });
 
@@ -50,8 +50,8 @@ describe('[API] beforeEach/afterEach hooks', function () {
                     'Uncaught Error: [beforeEach][afterEach]'
                 )).eql(0);
 
-                expect(errs[0]).contains("> 10 |test('Test', async t => await t.click('#failAndReport'));");
-                expect(errs[1]).contains(">  7 |            .click('#failAndReport');");
+                expect(errs[0]).contains("> 13 |    await t.click('#failAndReport');");
+                expect(errs[1]).contains(">  9 |            .click('#failAndReport');");
             });
     });
 });
