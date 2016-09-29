@@ -48,6 +48,7 @@ var InvalidSelectorResultError                        = require('../../lib/error
 var NativeDialogNotHandledError                       = require('../../lib/errors/test-run').NativeDialogNotHandledError;
 var UncaughtErrorInNativeDialogHandler                = require('../../lib/errors/test-run').UncaughtErrorInNativeDialogHandler;
 var SetNativeDialogHandlerCodeWrongTypeError          = require('../../lib/errors/test-run').SetNativeDialogHandlerCodeWrongTypeError;
+var CantObtainInfoForElementSpecifiedBySelectorError  = require('../../lib/errors/test-run').CantObtainInfoForElementSpecifiedBySelectorError;
 
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
@@ -277,6 +278,10 @@ describe('Error formatting', function () {
 
         it('Should format "setNativeDialogHandlerCodeWrongTypeError"', function () {
             assertErrorMessage('set-native-dialog-handler-code-wrong-type-error', new SetNativeDialogHandlerCodeWrongTypeError('number'));
+        });
+
+        it('Should format "cantObtainInfoForElementSpecifiedBySelectorError"', function () {
+            assertErrorMessage('cant-obtain-info-for-element-specified-by-selector-error', new CantObtainInfoForElementSpecifiedBySelectorError(testCallsite));
         });
     });
 

@@ -1,5 +1,5 @@
 import { sep } from 'path';
-import getCallsite from './get-callsite';
+import { getCallsite } from './callsite';
 import { APIError } from './runtime';
 
 import {

@@ -1,6 +1,11 @@
 import { positionUtils } from '../../../deps/testcafe-core';
 
 import {
+    NODE_SNAPSHOT_PROPERTIES,
+    ELEMENT_SNAPSHOT_PROPERTIES
+} from '../../../../../client-functions/selector-builder/node-snapshot-properties';
+
+import {
     getAttrs,
     getChildNodes,
     getChildren,
@@ -9,19 +14,14 @@ import {
     getInnerText
 } from './sandboxed-node-properties';
 
-export class NodeSnapshot {
-    constructor (node) {
-        this.nodeType    = node.nodeType;
-        this.textContent = getTextContent(node);
 
-        this.childNodeCount = getChildNodes(node).length;
-        this.hasChildNodes  = !!this.childNodeCount;
+// Node
+var nodeSnapshotPropertyInitializers = {
+    textContent:    getTextContent,
+    childNodeCount: node => getChildNodes(node).length,
+    hasChildNodes:  node => !!nodeSnapshotPropertyInitializers.childNodeCount(node),
 
-        this.childElementCount = NodeSnapshot._getChildElementCount(node);
-        this.hasChildElements  = !!this.childElementCount;
-    }
-
-    static _getChildElementCount (node) {
+    childElementCount: node => {
         var children = getChildren(node);
 
         if (children)
@@ -37,34 +37,44 @@ export class NodeSnapshot {
         }
 
         return childElementCount;
+    },
+
+    hasChildElements: node => !!nodeSnapshotPropertyInitializers.childElementCount(node)
+};
+
+export class NodeSnapshot {
+    constructor (node) {
+        this._initializeProperties(node, NODE_SNAPSHOT_PROPERTIES, nodeSnapshotPropertyInitializers);
+    }
+
+    _initializeProperties (node, properties, initializers) {
+        for (var i = 0; i < properties.length; i++) {
+            var property    = properties[i];
+            var initializer = initializers[property];
+
+            this[property] = initializer ? initializer(node) : node[property];
+        }
     }
 }
 
-export class ElementSnapshot extends NodeSnapshot {
-    constructor (element) {
-        super(element);
 
-        this.tagName            = element.tagName.toLowerCase();
-        this.visible            = positionUtils.isElementVisible(element);
-        this.focused            = document.activeElement === element;
-        this.attributes         = ElementSnapshot._getAttrsDictionary(element);
-        this.boundingClientRect = ElementSnapshot._getBoundingClientRect(element);
-        this.classNames         = ElementSnapshot._getClassNames(element);
-        this.style              = ElementSnapshot._getStyle(element);
-        this.innerText          = getInnerText(element);
+// Element
+var elementSnapshotPropertyInitializers = {
+    tagName: element => element.tagName.toLowerCase(),
+    visible: positionUtils.isElementVisible,
+    focused: element => document.activeElement === element,
 
-        [
-            'namespaceURI', 'id',
-            'value', 'checked', 'selected',
-            'scrollWidth', 'scrollHeight', 'scrollLeft', 'scrollTop',
-            'offsetWidth', 'offsetHeight', 'offsetLeft', 'offsetTop',
-            'clientWidth', 'clientHeight', 'clientLeft', 'clientTop'
-        ].forEach(prop => {
-            this[prop] = element[prop];
-        });
-    }
+    attributes: element => {
+        var attrs  = getAttrs(element);
+        var result = {};
 
-    static _getBoundingClientRect (element) {
+        for (var i = attrs.length - 1; i >= 0; i--)
+            result[attrs[i].name] = attrs[i].value;
+
+        return result;
+    },
+
+    boundingClientRect: element => {
         var rect = element.getBoundingClientRect();
 
         return {
@@ -75,9 +85,9 @@ export class ElementSnapshot extends NodeSnapshot {
             width:  rect.width,
             height: rect.height
         };
-    }
+    },
 
-    static _getClassNames (element) {
+    classNames: element => {
         var className = getClassName(element);
 
         className = typeof className.animVal === 'string' ? className.animVal : className;
@@ -85,19 +95,9 @@ export class ElementSnapshot extends NodeSnapshot {
         return className
             .replace(/^\s+|\s+$/g, '')
             .split(/\s+/g);
-    }
+    },
 
-    static _getAttrsDictionary (element) {
-        var attrs  = getAttrs(element);
-        var result = {};
-
-        for (var i = attrs.length - 1; i >= 0; i--)
-            result[attrs[i].name] = attrs[i].value;
-
-        return result;
-    }
-
-    static _getStyle (element) {
+    style: element => {
         var result   = {};
         var computed = window.getComputedStyle(element);
 
@@ -108,5 +108,15 @@ export class ElementSnapshot extends NodeSnapshot {
         }
 
         return result;
+    },
+
+    innerText: getInnerText
+};
+
+export class ElementSnapshot extends NodeSnapshot {
+    constructor (element) {
+        super(element);
+
+        this._initializeProperties(element, ELEMENT_SNAPSHOT_PROPERTIES, elementSnapshotPropertyInitializers);
     }
 }

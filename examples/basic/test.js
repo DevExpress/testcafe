@@ -48,10 +48,8 @@ test('Text typing basics', async t => {
         .typeText(page.nameInput, 'Paker', { replace: true })   // Replace with last name
         .typeText(page.nameInput, 'r', { caretPos: 2 });        // Correct last name
 
-    const nameInput = await page.nameInput();
-
     // Check result
-    expect(nameInput.value).eql('Parker');
+    expect(await page.nameInput.value).eql('Parker');
 });
 
 
@@ -59,9 +57,7 @@ test('Click an array of labels and then check their states', async t => {
     for (const feature of page.featureList) {
         await t.click(feature.label);
 
-        const checkbox = await feature.checkbox();
-
-        expect(checkbox.checked).to.be.true;
+        expect(await feature.checkbox.checked).to.be.true;
     }
 });
 
@@ -72,30 +68,24 @@ test('Dealing with text using keyboard', async t => {
         .click(page.nameInput, { caretPos: 5 })     // Move caret position
         .pressKey('backspace');                     // Erase a character
 
-    let nameInput = await page.nameInput();
-
     // Check result
-    expect(nameInput.value).eql('Pete Parker');
+    expect(await page.nameInput.value).eql('Pete Parker');
 
     await t.pressKey('home right . delete delete delete'); // Pick even shorter form for name
 
-    nameInput = await page.nameInput();
-
     // Check result
-    expect(nameInput.value).eql('P. Parker');
+    expect(await page.nameInput.value).eql('P. Parker');
 });
 
 
 test('Moving the slider', async t => {
-    const initialOffset = (await page.slider.handle()).offsetLeft;
+    const initialOffset = await page.slider.handle.offsetLeft;
 
     await t
         .click(page.triedTestCafeCheckbox)
         .dragToElement(page.slider.handle, page.slider.tick.with({ text: '9' }));
 
-    const newOffset = (await page.slider.handle()).offsetLeft;
-
-    expect(newOffset).gt(initialOffset);
+    expect(await page.slider.handle.offsetLeft).gt(initialOffset);
 });
 
 
@@ -105,10 +95,8 @@ test('Dealing with text using selection', async t => {
         .selectText(page.nameInput, 7, 1)
         .pressKey('delete');
 
-    const nameInput = await page.nameInput();
-
     // Check result
-    expect(nameInput.value).eql('Tfe');
+    expect(await page.nameInput.value).eql('Tfe');
 });
 
 
@@ -123,9 +111,7 @@ test('Handle native confirmation dialog', async t => {
 
     await t.click(page.submitButton);
 
-    const results = await page.results();
-
-    expect(results.innerText).contains('Peter Parker');
+    expect(await page.results.innerText).contains('Peter Parker');
 });
 
 
@@ -134,9 +120,7 @@ test('Pick option from select', async t => {
         .click(page.interfaceSelect)
         .click(page.interfaceSelectOption.with({ text: 'Both' }));
 
-    const select = await page.interfaceSelect();
-
-    expect(select.value).eql('Both');
+    expect(await page.interfaceSelect.value).eql('Both');
 });
 
 
@@ -165,7 +149,5 @@ test('Filling a form', async t => {
         .wait(500)
         .click(page.submitButton);
 
-    const results = await page.results();
-
-    expect(results.innerText).contains('Bruce Wayne');
+    expect(await page.results.innerText).contains('Bruce Wayne');
 });

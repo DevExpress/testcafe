@@ -51,6 +51,9 @@ test('HTMLElement snapshot basic properties', async () => {
     expect(el.checked).to.be.undefined;
     expect(el.selected).to.be.undefined;
 
+    expect(el.boundingClientRect.width).eql(43);
+    expect(el.boundingClientRect.left).eql(0);
+
     expect(el.textContent).eql('\n    \n        42\n    \n    Yo\n');
     expect(el.classNames).eql(['yo', 'hey', 'cool']);
 });
@@ -455,4 +458,64 @@ test('<option> text selector', async () => {
     const el       = await selector();
 
     expect(el.id).eql('option2');
+});
+
+test('Snapshot properties shorthands on selector', async () => {
+    let el = Selector('#htmlElement');
+
+    expect(await el.nodeType).eql(1);
+    expect(await el.id).eql('htmlElement');
+    expect(await el.tagName).eql('div');
+    expect(await el.namespaceURI).eql('http://www.w3.org/1999/xhtml');
+    expect(await el.childNodeCount).eql(3);
+    expect(await el.childElementCount).eql(1);
+    expect(await el.visible).to.be.true;
+    expect(await el.clientWidth).eql(42);
+    expect(await el.offsetWidth).eql(43);
+    expect(await el.focused).to.be.false;
+    expect(await el.value).to.be.undefined;
+    expect(await el.textContent).eql('\n    \n        42\n    \n    Yo\n');
+    expect(await el.classNames).eql(['yo', 'hey', 'cool']);
+    expect(await el.getStyleProperty('width')).eql('40px');
+    expect(await el.getStyleProperty('display')).eql('block');
+    expect(await el.getAttribute('id')).eql('htmlElement');
+    expect(await el.getAttribute('class')).eql('yo hey cool');
+    expect(await el.getBoundingClientRectProperty('width')).eql(43);
+    expect(await el.getBoundingClientRectProperty('left')).eql(0);
+    expect(await el.hasClass('yo')).to.be.true;
+    expect(await el.hasClass('cool')).to.be.true;
+    expect(await el.hasClass('some-class')).to.be.false;
+
+    el = Selector('#checkInput');
+
+    expect(await el.focused).to.be.false;
+    expect(await el.value).eql('on');
+    expect(await el.checked).to.be.false;
+
+    el = Selector(() => document);
+
+    expect(await el.hasClass('some-class')).to.be.false;
+
+    const selector = Selector(id => document.getElementById(id));
+
+    expect(await selector('htmlElement').tagName).eql('div');
+    expect(await selector('htmlElement').classNames).eql(['yo', 'hey', 'cool']);
+    expect(await selector('checkInput').checked).to.be.false;
+    expect(await selector('checkInput').value).eql('on');
+});
+
+test("Snapshot property shorthand - selector doesn't match any element", async () => {
+    await Selector('#someUnknownElement').tagName;
+});
+
+test("Snapshot shorthand method - selector doesn't match any element", async () => {
+    await Selector('#someUnknownElement').getStyleProperty('width');
+});
+
+test('Snapshot property shorthand - selector error', async () => {
+    await Selector(() => [].someUndefMethod()).nodeType;
+});
+
+test('Snapshot shorthand method - selector error', async () => {
+    await Selector(() => [].someUndefMethod()).hasClass('yo');
 });
