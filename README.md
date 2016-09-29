@@ -16,8 +16,7 @@
 
 ----
 
-TestCafe is a simple and powerful framework for testing websites and web apps.
-It allows you to easily create, maintain and execute automated web tests across browsers, operating systems and devices.
+TestCafe is a pure node.js solution for testing web apps. It takes care of all the stages: starting browsers, running tests, gathering test results and generating reports. TestCafe doesn’t need browser plugins - it works in all popular modern browsers out-of-the-box.
 
 * [Build status](#build-status)
 * [Features](#features)
@@ -39,30 +38,30 @@ Client            | [![Sauce Test Status](https://saucelabs.com/browser-matrix/t
 
 ### Easy Install
 
-All you need is to have [Node.js](https://nodejs.org) with [npm](https://www.npmjs.com) installed and call a single command.
+Everything is included in a single module installed with one command.
 
 ```bash
 npm install -g testcafe
 ```
 
-No browsers plugins to install, no binary compilation post-install steps.
+No native parts to compile, no browsers plugins to install.
 
 ### Complete Test Harness
 
-TestCafe covers all testing phases: starting browsers, running tests and gathering results.
-You configure test run and start execution either via the API or from a command shell simply by running a single command
+TestCafe automatically starts browsers, runs tests and gathers results. You only type a single command to begin testing.
 
 ```bash
 testcafe safari tests/
 ```
 
-TestCafe aggregates test results from different browsers and outputs them into one comprehensive report.
+When testing is finished, TestCafe aggregates test results from different browsers and outputs them into one comprehensive report.
 
 ### Write Test Code Using ES2016
 
-You can write TestCafe tests in ES2016 using all latest JavaScript features like `async/await`.
+You can write TestCafe tests in ES2016 using the latest JavaScript features like `async/await`.
 
-TestCafe introduces simple, but powerful test API. It offers a couple of dozen methods covering user actions. Chained syntax produces code that is easy to write and read. Furthermore, you are free to use any assertion library to perform verifications of different kinds.
+[Test API](http://devexpress.github.io/testcafe/documentation/test-api/index.html) consists of dozens of methods that can emulate all actions one could possibly do with a webpage.
+Chained syntax allows for code that is easy to write and read.
 
 ```js
 import { expect } from 'chai';
@@ -80,15 +79,15 @@ test('Emulate user actions and perform a verification', async t => {
 });
 ```
 
-TestCafe will compile your test code on-flight and run it immediately.
-It also ships with built-in support for source maps to leverage debugging experience.
-Source maps are automatically enabled, so all you need to do is start a debugging session in an IDE that supports them.
+Additionally, TestCafe automatically generates source maps for easy debugging.
+To debug your test code, start a debugging session in an IDE that supports source maps.
 
-### Write Regular Client JavaScript to Observe Page State
+### Direct Access to Page Elements
 
-TestCafe is capable of executing code on the client side thus giving you direct access to DOM elements on the page and empowering you to obtain required data from the client.
-Simply write JavaScript code within the `ClientFunction` or `Selector` function.
-These functions are called from a test as regular async functions. So, you can pass parameters to them and return values.
+TestCafe allows you to access webpage elements using standard CSS selectors or [custom selectors](http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html) that run client JavaScript code.
+You can call a custom selector as a regular function within your test.
+It will execute your code on the client and pass the returned value back to the test.
+This allows you to determine the state of each element on the tested page or select a proper element to perform an action on.
 
 ```js
 import { Selector } from 'testcafe';
@@ -112,25 +111,24 @@ test('Type the developer name, obtain the header text and check it', async t => 
 
 ### No Extra Coding
 
-TestCafe keeps your tests clear of boilerplate code.
+Write tests without boilerplate code.
 
-* It automatically waits for page loads, XHRs and DOM elements to be visible. Thus, there is no need to write custom code to process these tasks.
-* Test runs are isolated, they don't share cookies and local/session storage values, that means nothing to clean up before each test run.
+* TestCafe automatically waits for page loads and XHRs to complete, as well as for DOM elements to become visible. You do not need to write custom code for that.
+* Test runs are isolated, which means that they do not share cookies, local or session storages. There is nothing to clean up between test runs.
 
 ### Descriptive Reports
 
-TestCafe automatically generates full-detailed reports providing a test run summary and comprehensive information about errors.
-Fancy call sites, clean stacks and screenshots help you easily detect an error cause.
+TestCafe automatically generates full-detailed reports that provide a test run summary and comprehensive information about errors.
+Automatic page screenshots, fancy call sites and call stacks free of TestCafe internals allow you to easily detect error causes.
 
-Choose from five [built-in reporters](http://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html) to output test results or create [custom reporter plugins](http://devexpress.github.io/testcafe/documentation/extending-testcafe/custom-reporter-plugin/) to produce your own reports.
+Use one of [built-in reporters](http://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html) to output test results or [create your own one](http://devexpress.github.io/testcafe/documentation/extending-testcafe/custom-reporter-plugin/) to produce custom reports.
 
 ![Spec Report](docs/articles/images/spec-report.png)
 
-### Continuous Integration
+### Straightforward Continuous Integration
 
-Take advantage of automatic test execution through integration of TestCafe with popular Continuous Integration platforms.
-TestCafe's browser provider mechanism makes it simple to set up testing in various browsers: local, remote, [Sauce Labs](https://saucelabs.com/) or [PhantomJS](http://phantomjs.org/).
-You can also create your own browser provider plugin that will suit your platform and needs.
+TestCafe is easy to set up on popular Continuous Integration platforms as it allows you to test against various browsers: local, remote, cloud (e.g., [Sauce Labs](https://saucelabs.com/)) or headless (e.g., [PhantomJS](http://phantomjs.org/)).
+You can also create a custom [browser provider](http://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/index.html) to add support for a browser or a cloud platform of your choice.
 
 ## Getting Started
 
