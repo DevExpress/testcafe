@@ -33,7 +33,9 @@ Parameter     | Type   | Description
 ------------- | ------ | ------------------------
 `fixtureName` | String | The name of the fixture.
 
-[Tests](#tests) that constitute a fixture go after this declaration.
+This function returns the `fixture` object that allows you to configure the fixture - specify the [start webpage](#specifying-the-start-webpage) and [initialization and clean-up code](#initialization-and-clean-up) for tests included to the fixture.
+
+> [Tests](#tests) that constitute a fixture go after this declaration.
 
 ### Specifying the Start Webpage
 

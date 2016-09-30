@@ -1,27 +1,23 @@
 ---
 layout: docs
-title: A-Z
+title: A-Z Index
 permalink: /documentation/test-api/a-z.html
 ---
-# A-Z
+# A-Z Index
 
-This topic contains an alphabetical list of all the test API functions and objects with members.
-
-## Functions
-
-* [afterEach](test-code-structure.html#initialization-and-clean-up)
-* [beforeEach](test-code-structure.html#initialization-and-clean-up)
-* [fixture](test-code-structure.html#fixtures)
-* [page](test-code-structure.html#specifying-the-start-webpage)
-* [test](test-code-structure.html#tests)
-
-## Objects with Members
+This topic lists test API members in alphabetical order.
 
 * [ClientFunction](obtaining-data-from-the-client.html#creating-client-functions)
     * [with](obtaining-data-from-the-client.html#overwriting-options)
-* [DOM Node Snapshot (with members)](selecting-page-elements/dom-node-snapshots.html)
+* [DOM Node Snapshot](selecting-page-elements/dom-node-snapshots.html)
+   * *[members](selecting-page-elements/dom-node-snapshots.html#members-common-across-all-nodes)*
+* [fixture](test-code-structure.html#fixtures)
+    * [afterEach](test-code-structure.html#initialization-and-clean-up)
+    * [beforeEach](test-code-structure.html#initialization-and-clean-up)
+    * [page](test-code-structure.html#specifying-the-start-webpage)
 * [Selector](selecting-page-elements/selectors.html#creating-selectors)
     * [with](selecting-page-elements/selector-options.html#overwriting-options)
+* [test](test-code-structure.html#tests)
 * [Test Controller](test-code-structure.html#test-controller)
     * [clearUpload](actions/upload.html#clear-file-upload-input)
     * [click](actions/click.html)

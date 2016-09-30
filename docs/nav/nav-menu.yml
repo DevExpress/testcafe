@@ -78,7 +78,7 @@
     url: /documentation/test-api/handling-native-dialogs.md
   - name: Working with &lt;iframes&gt;
     url: /documentation/test-api/working-with-iframes.md
-  - name: A-Z
+  - name: A-Z Index
     url: /documentation/test-api/a-z.md
 - name: EXTENDING TESTCAFE
   url: /documentation/extending-testcafe/index.md
