@@ -5,17 +5,18 @@ permalink: /documentation/extending-testcafe/browser-provider-plugin/
 ---
 # Browser Provider Plugin
 
-TestCafe has built-in support for testing in a number of popular browsers (see [Directly Supported Browsers](../../using-testcafe/common-concepts/browser-support.md#directly-supported-browsers)).
+TestCafe supports testing in a number of popular browsers (see [Browser Support](../../using-testcafe/common-concepts/browser-support.md)).
 If you need to use a different browser (for example, a browser from a cloud service), you can create a **custom browser provider plugin**.
 The provider should expose methods for performing common actions on the browser windows during testing: opening and closing it, taking screenshot, etc.
 
-To create a browser provider plugin, go through the following steps.
+This topic contains the following sections.
 
 * [Generating Browser Provider Project](#generating-browser-provider-project)
 * [Implementing the Browser Provider](#implementing-the-browser-provider)
 * [Building the Provider](#building-the-provider)
 * [Using the Provider Development Version](#using-the-provider-development-version)
 * [Publishing the Provider to npm](#publishing-the-provider-to-npm)
+* [Specifying a Browser for a Test Task](#specifying-a-browser-for-a-test-task)
 
 > To run tests in [Sause Labs](https://saucelabs.com) or [PhantomJS](http://phantomjs.org/) browsers, you can use the existing [testcafe-browser-provider-saucelabs](https://github.com/DevExpress/testcafe-browser-provider-saucelabs/) or [testcafe-browser-provider-phantomjs](https://github.com/DevExpress/testcafe-browser-provider-phantomjs) plugin.
 
@@ -177,7 +178,7 @@ npm link
 
 After that, TestCafe will use the provider version you are currently developing.
 
-For information on how to specify a browser in tests, see [Specifying Browsers for Test Task](../../using-testcafe/common-concepts/browser-support.md#specifying-browsers-for-test-task).
+For information on how to specify a browser in tests, see [Specifying a Browser for a Test Task](#specifying-a-browser-for-a-test-task).
 
 ## Publishing the Provider to npm
 
@@ -190,3 +191,10 @@ npm run publish-please
 ```
 
 After that, you can install the provider plugin as you would [install any other plugin](../index.md#installing-plugins).
+
+## Specifying a Browser for a Test Task
+
+When running tests, you can specify a browser accessed through the provider plugin by using a *browser alias*.
+The alias consists of the browser provider name and the name of the browser itself (the latter may be omitted in some providers); for example, `saucelabs:Chrome@52.0:Windows 8.1` or `phantomjs`.
+
+To obtain all the available aliases for your provider, run the `testcafe --list-browsers {shortProviderName}` command, where `{shortProviderName}` is the provider name (without the `testcafe-browser-provider-` prefix); for example, `testcafe --list-browsers my-provider`.
