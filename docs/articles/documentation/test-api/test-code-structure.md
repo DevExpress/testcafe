@@ -33,7 +33,9 @@ Parameter     | Type   | Description
 ------------- | ------ | ------------------------
 `fixtureName` | String | The name of the fixture.
 
-[Tests](#tests) that constitute a fixture go after this declaration.
+This function returns the `fixture` object that allows you to configure the fixture - specify the [start webpage](#specifying-the-start-webpage) and [initialization and clean-up code](#initialization-and-clean-up) for tests included to the fixture.
+
+> [Tests](#tests) that constitute a fixture go after this declaration.
 
 ### Specifying the Start Webpage
 
@@ -99,7 +101,7 @@ To check if the page state matches the expected one, use [assertions](assertions
 
 ### Test Controller
 
-A *test controller* is an object that exposes methods of test API. That is why it is
+A *test controller* object `t` exposes methods of test API. That is why it is
 passed to each function that is expected to contain server-side test code (like [test](#tests),
 [beforeEach](#initialization-and-clean-up) or [afterEach](#initialization-and-clean-up)).
 

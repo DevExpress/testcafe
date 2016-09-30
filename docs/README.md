@@ -39,6 +39,7 @@
   * [Pausing the Test](articles/documentation/test-api/pausing-the-test.md)
   * [Handling Native Dialogs](articles/documentation/test-api/handling-native-dialogs.md)
   * [Working with &lt;iframes&gt;](articles/documentation/test-api/working-with-iframes.md)
+  * [A-Z Index](articles/documentation/test-api/a-z-index.md)
 * [EXTENDING TESTCAFE](articles/documentation/extending-testcafe/index.md)
   * [Reporter Plugin](articles/documentation/extending-testcafe/reporter-plugin/index.md)
     * [Reporter Methods](articles/documentation/extending-testcafe/reporter-plugin/reporter-methods.md)
