@@ -195,6 +195,6 @@ After that, you can install the provider plugin as you would [install any other 
 ## Specifying a Browser for a Test Task
 
 When running tests, you can specify a browser accessed through the provider plugin by using a *browser alias*.
-The alias consists of the browser provider name and the name of the browser itself (the latter can be omitted); for example, `saucelabs:Chrome@52.0:Windows 8.1` or `phantomjs`.
+The alias consists of the browser provider name and the name of the browser itself (the latter may be omitted in some providers); for example, `saucelabs:Chrome@52.0:Windows 8.1` or `phantomjs`.
 
 To obtain all the available aliases for your provider, run the `testcafe --list-browsers {shortProviderName}` command, where `{shortProviderName}` is the provider name (without the `testcafe-browser-provider-` prefix); for example, `testcafe --list-browsers my-provider`.
