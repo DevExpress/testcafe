@@ -56,6 +56,10 @@ export default class TestRun extends Session {
         this.lastDriverStatusId       = null;
         this.lastDriverStatusResponse = null;
 
+        this.isFileDownload = false;
+
+        this.waitForFileDownloadingPromiseResolve = null;
+
         this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, warningLog);
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
@@ -70,6 +74,9 @@ export default class TestRun extends Session {
 
     // Hammerhead payload
     _getPayloadScript () {
+        this.isFileDownload                       = false;
+        this.waitForFileDownloadingPromiseResolve = null;
+
         return Mustache.render(TEST_RUN_TEMPLATE, {
             testRunId:           JSON.stringify(this.id),
             browserId:           JSON.stringify(this.browserConnection.id),
@@ -99,7 +106,12 @@ export default class TestRun extends Session {
     }
 
     handleFileDownload () {
-        // TODO
+        if (this.waitForFileDownloadingPromiseResolve) {
+            this.waitForFileDownloadingPromiseResolve();
+            this.waitForFileDownloadingPromiseResolve = null;
+        }
+        else
+            this.isFileDownload = true;
     }
 
     handlePageError (ctx, err) {
@@ -342,4 +354,17 @@ ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (m
     this.debugLog.driverMessage(msg);
 
     return await this.browserManipulationQueue.executePendingManipulation(msg);
+};
+
+ServiceMessages[CLIENT_MESSAGES.waitForFileDownload] = function (msg) {
+    this.debugLog.driverMessage(msg);
+
+    return new Promise(resolve => {
+        if (this.isFileDownload) {
+            this.isFileDownload = false;
+            resolve();
+        }
+        else
+            this.waitForFileDownloadingPromiseResolve = resolve;
+    });
 };

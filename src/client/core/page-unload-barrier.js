@@ -1,15 +1,18 @@
 import hammerhead from './deps/hammerhead';
 import * as eventUtils from './utils/event';
 import delay from './utils/delay';
+import MESSAGE from '../../test-run/client-messages';
 
 var Promise       = hammerhead.Promise;
 var browserUtils  = hammerhead.utils.browser;
 var nativeMethods = hammerhead.nativeMethods;
+var transport     = hammerhead.transport;
 
 
 const DEFAULT_BARRIER_TIMEOUT       = 500;
 const WAIT_FOR_UNLOAD_TIMEOUT       = 3000;
 const SHORT_WAIT_FOR_UNLOAD_TIMEOUT = 30;
+const FILE_DOWNLOAD_CHECK_DELAY     = 500;
 const MAX_UNLOADING_TIMEOUT         = 15 * 1000;
 
 
@@ -17,6 +20,7 @@ var waitingForUnload          = false;
 var waitingForUnloadTimeoutId = null;
 var waitingPromiseResolvers   = [];
 var unloading                 = false;
+var skipFileDownloadingCheck  = false;
 
 function overrideFormSubmit (form) {
     var submit = form.submit;
@@ -80,9 +84,25 @@ function prolongUnloadWaiting (timeout) {
     }, timeout);
 }
 
+function setCheckFileDownloadingTimeout (resolve) {
+    nativeMethods.setTimeout.call(window, () => {
+        if (!unloading)
+            return;
+
+        transport
+            .queuedAsyncServiceMsg({ cmd: MESSAGE.waitForFileDownload })
+            .then(() => {
+                unloading = false;
+                resolve();
+            });
+
+    }, FILE_DOWNLOAD_CHECK_DELAY);
+}
 
 // API
-export function init () {
+export function init (shouldSkip) {
+    skipFileDownloadingCheck = shouldSkip;
+
     handleSubmit();
     handleBeforeUnload();
 }
@@ -91,8 +111,11 @@ export function wait (timeout) {
     var waitForUnloadingPromise = new Promise(resolve => {
         delay(timeout === void 0 ? DEFAULT_BARRIER_TIMEOUT : timeout)
             .then(() => {
-                if (unloading)
+                if (unloading) {
+                    if (!skipFileDownloadingCheck)
+                        setCheckFileDownloadingTimeout(resolve);
                     return;
+                }
 
                 if (!waitingForUnload)
                     resolve();

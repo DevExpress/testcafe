@@ -45,6 +45,12 @@ var Server = module.exports = function (port, basePath) {
 Server.prototype._setupRoutes = function () {
     var server = this;
 
+    this.app.get('/download', function (req, res) {
+        var file = path.join(server.basePath, '../../package.json');
+
+        res.download(file);
+    });
+
     this.app.get('*', function (req, res) {
         var reqPath      = req.params[0] || '';
         var resourcePath = path.join(server.basePath, reqPath);
