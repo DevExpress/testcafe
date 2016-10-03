@@ -98,7 +98,11 @@ export default class MoveAutomation {
         var moveOptions = new MoveOptions({
             modifiers: e.message.modifiers,
             offsetX:   intersectionRelatedToIframe.x + iframeBorders.left + iframePadding.left,
-            offsetY:   intersectionRelatedToIframe.y + iframeBorders.top + iframePadding.top
+            offsetY:   intersectionRelatedToIframe.y + iframeBorders.top + iframePadding.top,
+
+            // NOTE: we should not run scrolling because it was scrolled to the
+            // target element in the active window before the request (GH-847)
+            skipScrolling: true
         }, false);
 
         var moveAutomation = new MoveAutomation(iframe, moveOptions);
@@ -155,9 +159,12 @@ export default class MoveAutomation {
         var intersectionPoint = getLineRectIntersection(startPoint, endPoint, iframeRectangle);
 
         var moveOptions = new MoveOptions({
-            modifiers:     e.message.modifiers,
-            offsetX:       intersectionPoint.x - iframeRectangle.left,
-            offsetY:       intersectionPoint.y - iframeRectangle.top,
+            modifiers: e.message.modifiers,
+            offsetX:   intersectionPoint.x - iframeRectangle.left,
+            offsetY:   intersectionPoint.y - iframeRectangle.top,
+
+            // NOTE: we should not run scrolling because it was scrolled to the
+            // target element in the active window before the request (GH-847)
             skipScrolling: true
         }, false);
 
