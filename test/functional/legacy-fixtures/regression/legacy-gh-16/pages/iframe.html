@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Legacy GH-16 iframe</title>
+</head>
+<body>
+<button id="replaceSrc">Replace iframe source via top window</button>
+<script>
+    document
+        .getElementById('replaceSrc')
+        .addEventListener('click', function () {
+            window.top.document.getElementById('iframe').src = 'iframe.html';
+        });
+</script>
+</body>
+</html>
