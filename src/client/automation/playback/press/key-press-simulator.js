@@ -16,6 +16,7 @@ export default class KeyPressSimulator {
         this.modifierKeyCode = KEY_MAPS.modifiers[this.sanitizedKey];
         this.specialKeyCode  = KEY_MAPS.specialKeys[this.sanitizedKey];
         this.keyCode         = null;
+        this.topSameDomainDocument = domUtils.getTopSameDomainWindow(window).document;
 
         if (this.isChar && key !== 'space')
             this.keyCode = getKeyCode(this.sanitizedKey);
@@ -66,7 +67,7 @@ export default class KeyPressSimulator {
     }
 
     down (modifiersState) {
-        this.storedActiveElement = getDeepActiveElement();
+        this.storedActiveElement = getDeepActiveElement(this.topSameDomainDocument);
 
         if (this.modifierKeyCode)
             modifiersState[this.sanitizedKey] = true;
@@ -78,7 +79,7 @@ export default class KeyPressSimulator {
         if (!(this.isChar || this.specialKeyCode))
             return true;
 
-        var activeElement = getDeepActiveElement();
+        var activeElement = getDeepActiveElement(this.topSameDomainDocument);
 
         var character      = this.isChar ? getChar(this.sanitizedKey, modifiersState.shift) : null;
         var charCode       = this.specialKeyCode || character.charCodeAt(0);
@@ -102,7 +103,7 @@ export default class KeyPressSimulator {
         if (!raiseDefault)
             return raiseDefault;
 
-        activeElement = getDeepActiveElement();
+        activeElement = getDeepActiveElement(this.topSameDomainDocument);
 
         if (character && !(modifiersState.ctrl || modifiersState.alt))
             this._type(activeElement, character);
@@ -117,8 +118,8 @@ export default class KeyPressSimulator {
         if (this.modifierKeyCode)
             modifiersState[this.sanitizedKey] = false;
 
-        var raiseDefault  = eventSimulator.keyup(getDeepActiveElement(), extend({ keyCode: this.keyCode }, modifiersState));
-        var activeElement = getDeepActiveElement();
+        var raiseDefault  = eventSimulator.keyup(getDeepActiveElement(this.topSameDomainDocument), extend({ keyCode: this.keyCode }, modifiersState));
+        var activeElement = getDeepActiveElement(this.topSameDomainDocument);
 
         if (raiseDefault && this.sanitizedKey === 'space' &&
             KeyPressSimulator._isKeyActivatedInputElement(activeElement))

@@ -36,6 +36,7 @@ export default class PressAutomation {
         this.pressedKeyString = '';
         this.modifiersState   = null;
         this.shortcutHandlers = null;
+        this.topSameDomainDocument = domUtils.getTopSameDomainWindow(window).document;
     }
 
     static _getKeyPressSimulators (keyCombination) {
@@ -119,7 +120,7 @@ export default class PressAutomation {
             keyPressPrevented = !keyPressSimulator.press(this.modifiersState);
 
         if ((!keyPressPrevented || this.isSelectElement) && currentShortcutHandler) {
-            return currentShortcutHandler(getDeepActiveElement())
+            return currentShortcutHandler(getDeepActiveElement(this.topSameDomainDocument))
                 .then(() => delay(KEY_PRESS_DELAY));
         }
 
@@ -134,7 +135,7 @@ export default class PressAutomation {
 
     _runCombination (keyCombination) {
         this.modifiersState   = { ctrl: false, alt: false, shift: false, meta: false };
-        this.isSelectElement  = domUtils.isSelectElement(getDeepActiveElement());
+        this.isSelectElement  = domUtils.isSelectElement(getDeepActiveElement(this.topSameDomainDocument));
         this.pressedKeyString = '';
         this.shortcutHandlers = PressAutomation._getShortcutHandlers(keyCombination);
 

@@ -45,6 +45,7 @@ export var getMapContainer                        = hammerhead.utils.dom.getMapC
 export var getTagName                             = hammerhead.utils.dom.getTagName;
 export var closest                                = hammerhead.utils.dom.closest;
 export var getParents                             = hammerhead.utils.dom.getParents;
+export var getTopSameDomainWindow                 = hammerhead.utils.dom.getTopSameDomainWindow;
 
 function getElementsWithTabIndex (elements) {
     return arrayUtils.filter(elements, el => el.tabIndex > 0);
