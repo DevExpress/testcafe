@@ -60,7 +60,7 @@ When testing is finished, TestCafe aggregates test results from different browse
 
 You can write TestCafe tests in ES2016 using the latest JavaScript features like `async/await`.
 
-[Test API](http://devexpress.github.io/testcafe/documentation/test-api/index.html) consists of dozens of methods that can emulate all actions one could possibly do with a webpage.
+[Test API](http://devexpress.github.io/testcafe/documentation/test-api/index.html) consists of over two dozen methods that can emulate all actions one could possibly do with a webpage.
 Chained syntax allows for code that is easy to write and read.
 
 ```js
