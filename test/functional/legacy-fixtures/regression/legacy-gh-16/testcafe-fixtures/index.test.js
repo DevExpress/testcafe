@@ -10,6 +10,6 @@
     }),
 
     '2.Check data': function () {
-        ok(this.data.toString(), '200');
+        eq(this.data, 200);
     }
 };
