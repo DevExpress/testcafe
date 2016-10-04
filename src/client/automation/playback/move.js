@@ -100,8 +100,8 @@ export default class MoveAutomation {
             offsetX:   intersectionRelatedToIframe.x + iframeBorders.left + iframePadding.left,
             offsetY:   intersectionRelatedToIframe.y + iframeBorders.top + iframePadding.top,
 
-            // NOTE: we should not run scrolling because it was scrolled to the
-            // target element in the active window before the request (GH-847)
+            // NOTE: we should not perform scrolling because the active window was
+            // already scrolled to the target element before the request (GH-847)
             skipScrolling: true
         }, false);
 
@@ -163,8 +163,8 @@ export default class MoveAutomation {
             offsetX:   intersectionPoint.x - iframeRectangle.left,
             offsetY:   intersectionPoint.y - iframeRectangle.top,
 
-            // NOTE: we should not run scrolling because it was scrolled to the
-            // target element in the active window before the request (GH-847)
+            // NOTE: we should not perform scrolling because the active window was
+            // already scrolled to the target element before the request (GH-847)
             skipScrolling: true
         }, false);
 
