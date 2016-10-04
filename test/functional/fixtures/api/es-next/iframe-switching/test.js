@@ -76,7 +76,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Content of the iframe to which you are switching did not load.');
-                    expect(errs[0]).to.contains("> 179 |        .switchToIframe('#too-slowly-loading-iframe')");
+                    expect(errs[0]).to.contains("> 180 |        .switchToIframe('#too-slowly-loading-iframe')");
                 });
         });
 
@@ -92,7 +92,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an invisible iframe', DEFAULT_FAILED_RUN_OPTIONS)
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The iframe in which the test is currently operating is not visible anymore.');
-                    expect(errs[0]).to.contains("> 191 |        .click('#btn');");
+                    expect(errs[0]).to.contains("> 192 |        .click('#btn');");
                 });
         });
 
@@ -106,7 +106,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Content of the iframe in which the test is currently operating did not load.');
-                    expect(errs[0]).to.contains("> 199 |        .click('#btn');");
+                    expect(errs[0]).to.contains("> 200 |        .click('#btn');");
                 });
         });
     });

@@ -59,6 +59,7 @@ export default class MoveAutomation {
         this.speed         = moveOptions.speed || this.DEFAULT_SPEED;
         this.minMovingTime = moveOptions.minMovingTime || null;
         this.modifiers     = moveOptions.modifiers || {};
+        this.skipScrolling = moveOptions.skipScrolling;
 
         this.endPoint = null;
 
@@ -97,7 +98,11 @@ export default class MoveAutomation {
         var moveOptions = new MoveOptions({
             modifiers: e.message.modifiers,
             offsetX:   intersectionRelatedToIframe.x + iframeBorders.left + iframePadding.left,
-            offsetY:   intersectionRelatedToIframe.y + iframeBorders.top + iframePadding.top
+            offsetY:   intersectionRelatedToIframe.y + iframeBorders.top + iframePadding.top,
+
+            // NOTE: we should not perform scrolling because the active window was
+            // already scrolled to the target element before the request (GH-847)
+            skipScrolling: true
         }, false);
 
         var moveAutomation = new MoveAutomation(iframe, moveOptions);
@@ -156,7 +161,11 @@ export default class MoveAutomation {
         var moveOptions = new MoveOptions({
             modifiers: e.message.modifiers,
             offsetX:   intersectionPoint.x - iframeRectangle.left,
-            offsetY:   intersectionPoint.y - iframeRectangle.top
+            offsetY:   intersectionPoint.y - iframeRectangle.top,
+
+            // NOTE: we should not perform scrolling because the active window was
+            // already scrolled to the target element before the request (GH-847)
+            skipScrolling: true
         }, false);
 
         var moveAutomation = new MoveAutomation(document.documentElement, moveOptions);
@@ -298,6 +307,9 @@ export default class MoveAutomation {
     }
 
     _scroll () {
+        if (this.skipScrolling)
+            return Promise.resolve();
+
         var scrollOptions    = new OffsetOptions({ offsetX: this.offsetX, offsetY: this.offsetY }, false);
         var scrollAutomation = new ScrollAutomation(this.element, scrollOptions);
 

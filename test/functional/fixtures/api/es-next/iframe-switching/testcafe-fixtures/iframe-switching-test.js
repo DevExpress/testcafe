@@ -142,6 +142,7 @@ test('Click in an iframe without src', async t => {
     const getIframeWithoutSrcBtnClickCount = ClientFunction(() => window.top.iframeWithoutSrcBtnClickCount);
 
     await t
+        .click('#fill-iframe-without-src')
         .switchToIframe('#iframe-without-src')
         .click('#btn')
         .switchToMainWindow()
