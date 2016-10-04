@@ -23,8 +23,10 @@
         // It helps us get rid of an unstable functional test in IE9.
         var tooSlowlyLoadingIframe = document.createElement('iframe');
 
-        tooSlowlyLoadingIframe.id  = 'too-slowly-loading-iframe';
-        tooSlowlyLoadingIframe.src = "iframe.html?delay=10000";
+        tooSlowlyLoadingIframe.id           = 'too-slowly-loading-iframe';
+        tooSlowlyLoadingIframe.src          = "iframe.html?delay=10000";
+        tooSlowlyLoadingIframe.style.width  = "500px";
+        tooSlowlyLoadingIframe.style.height = "200px";
 
         document.body.insertBefore(tooSlowlyLoadingIframe, document.getElementById('slowly-loading-iframe'));
     });
