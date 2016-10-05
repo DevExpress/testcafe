@@ -52,8 +52,6 @@ Performs initialization actions the provider may require. This method is called 
 async init ()
 ```
 
-For example, the [PhantomJS browser provider](https://github.com/DevExpress/testcafe-browser-provider-phantomjs) uses this method to create a PhantomJS instance.
-
 ### dispose
 
 Performs cleanup actions for the provider data. This method is called before the `testcafe` process is finished.
@@ -61,8 +59,6 @@ Performs cleanup actions for the provider data. This method is called before the
 ```text
 async dispose ()
 ```
-
-For example, the [PhantomJS browser provider](https://github.com/DevExpress/testcafe-browser-provider-phantomjs) uses this method to destroy a PhantomJS instance.
 
 ### getBrowserList
 

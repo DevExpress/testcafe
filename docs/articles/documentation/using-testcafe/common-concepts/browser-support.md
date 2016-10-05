@@ -88,12 +88,6 @@ You can also create your own plugin. See [Browser Provider Plugin](../../extendi
 
 To use a web browser of a different type, you will need a [browser provider plugin](../../extending-testcafe/browser-provider-plugin/).
 
-The following plugins for nonconventional browsers are currently provided by the TestCafe team.
-
-Service                            | Plugin
----------------------------------- | -------------------
-[PhantomJS](http://phantomjs.org/) | [testcafe-browser-provider-phantomjs](https://www.npmjs.com/package/testcafe-browser-provider-phantomjs)
-
 You can search npm for plugins developed by the community. Their names start with the `testcafe-browser-provider-` prefix: [https://www.npmjs.com/search?q=testcafe-browser-provider](https://www.npmjs.com/search?q=testcafe-browser-provider).
 
 You can also create your own plugin. See [Browser Provider Plugin](../../extending-testcafe/browser-provider-plugin/) for instructions.
