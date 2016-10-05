@@ -40,6 +40,7 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
         var activeElement               = domUtils.getActiveElement();
         var isTextEditable              = domUtils.isTextEditableElement(element);
         var labelWithForAttr            = domUtils.closest(element, 'label[for]');
+        var isElementFocusable          = domUtils.isElementFocusable(element);
         var shouldFocusByRelatedElement = !domUtils.isElementFocusable(element) && labelWithForAttr;
         var isContentEditable           = domUtils.isContentEditableElement(element);
         var elementForFocus             = isContentEditable ? contentEditable.findContentEditableParent(element) : element;
@@ -56,6 +57,17 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
 
             resolve();
             return;
+        }
+
+        if (!isElementFocusable && !isContentEditable) {
+            var curDocument = domUtils.findDocument(elementForFocus);
+
+            if (domUtils.isBodyElement(curDocument.activeElement)) {
+                resolve();
+                return;
+            }
+
+            elementForFocus = curDocument.body;
         }
 
         var focusWithSilentMode = !simulateFocus;

@@ -37,10 +37,9 @@ export default class RClickAutomation {
             element: null
         };
 
-        this.eventState = {
-            simulateFocus:           true,
-            simulateDefaultBehavior: true
-        };
+        this.eventState = { simulateDefaultBehavior: true };
+
+        this.activeElementBeforeMouseDown = null;
     }
 
     _getMoveArguments () {
@@ -110,15 +109,7 @@ export default class RClickAutomation {
             .then(() => {
                 this.eventArgs = this._calculateEventArguments();
 
-                var isBodyElement         = domUtils.isBodyElement(this.eventArgs.element);
-                var isContentEditable     = domUtils.isContentEditableElement(this.eventArgs.element);
-                var isContentEditableBody = isBodyElement && isContentEditable;
-                var activeElement         = domUtils.getActiveElement();
-
-                // NOTE: in IE, focus is not raised if the element was focused
-                // before the click, even if focus is lost during the mousedown
-                this.eventState.simulateFocus = !browserUtils.isIE || activeElement !== this.eventArgs.element ||
-                                                isContentEditableBody;
+                this.activeElementBeforeMouseDown = domUtils.getActiveElement();
 
                 this.eventState.simulateDefaultBehavior = eventSimulator.mousedown(this.eventArgs.element,
                     this.eventArgs.options);
@@ -135,7 +126,10 @@ export default class RClickAutomation {
         // element, a selection position may be calculated incorrectly (by using the caretPos option).
         var elementForFocus = domUtils.isContentEditableElement(this.element) ? this.element : this.eventArgs.element;
 
-        return focusAndSetSelection(elementForFocus, this.eventState.simulateFocus, this.caretPos)
+        // NOTE: IE doesn't perform focus if active element has been changed while executing mousedown
+        var simulateFocus = !browserUtils.isIE || this.activeElementBeforeMouseDown === domUtils.getActiveElement();
+
+        return focusAndSetSelection(elementForFocus, simulateFocus, this.caretPos)
             .then(() => nextTick());
     }
 
