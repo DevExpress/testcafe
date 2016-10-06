@@ -20,7 +20,6 @@ TestCafe is pure node.js and it does not require browser plugins
 to run tests. Being an all-in-one solution, it covers all testing stages:
 starting browsers, running tests, gathering test results and generating reports.
 
-Learn about TestCafe key features and how to get started on the [GitHub page](https://github.com/DevExpress/testcafe/)
-or [TestCafe website](http://devexpress.github.io/testcafe/#features).
+Learn about TestCafe key features and how to get started on its [GitHub page](https://github.com/DevExpress/testcafe/).
 
 Try TestCafe now and tell us what you think on our [discussion board](https://testcafe-discuss.devexpress.com/).
