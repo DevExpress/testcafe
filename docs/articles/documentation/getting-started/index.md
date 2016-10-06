@@ -2,8 +2,6 @@
 layout: docs
 title: Getting Started
 permalink: /documentation/getting-started/
-siteNavItemName: Documentation
-siteNavItemHighlightUrl: /documentation
 ---
 # Getting Started
 

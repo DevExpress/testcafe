@@ -1,4 +1,17 @@
-- text: Discuss
-  url: https://testcafe-discuss.devexpress.com/
+- text: Documentation
+  url: /documentation/getting-started/
+  highlightUrl: /documentation
 - text: GitHub
   url: https://github.com/DevExpress/testcafe
+  external: true
+- text: Blog
+  url: /blog/
+- text: Issues
+  url: https://github.com/DevExpress/testcafe/issues
+  external: true
+- text: Discuss
+  url: https://testcafe-discuss.devexpress.com/
+  external: true
+- text: Twitter
+  url: https://twitter.com/dxtestcafe
+  external: true
