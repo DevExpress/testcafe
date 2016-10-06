@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body style="width: 600px; height: 600px;">
+<div id="div1" style="width: 100px; height: 100px; left: 50px; top:50px; background: red;  position: absolute"></div>
+<div id="div2" style="width: 100px; height: 100px; left: 50px; top:200px; background: blue; position: absolute"></div>
+<div id="div3" style="width: 100px; height: 100px; left: 200px; top:50px; background: red;  position: absolute"></div>
+<div id="div4" style="width: 100px; height: 100px; left: 200px; top:200px; background: blue; position: absolute"></div>
+<script>
+    window.eventStorage = [];
+
+    var div1 = document.getElementById('div1');
+    var div2 = document.getElementById('div2');
+    var div3 = document.getElementById('div3');
+    var div4 = document.getElementById('div4');
+
+    var isSecondEvent = false;
+
+    var swapElements = function (el1, el2) {
+        var top1  = el1.style.top;
+        var left1 = el1.style.left;
+        var top2  = el2.style.top;
+        var left2 = el2.style.left;
+
+        el1.style.top  = top2;
+        el1.style.left = left2;
+        el2.style.top  = top1;
+        el2.style.left = left1;
+    };
+
+    var shiftElement = function (el) {
+        var top = parseInt(el.style.top, 10);
+
+        el.style.top = top + 100 + 'px';
+    };
+
+    var saveEventToStorage = function (e) {
+        window.eventStorage.push(e.target.tagName.toLowerCase() + ' ' + e.type);
+    };
+
+    document.addEventListener('click', saveEventToStorage);
+    document.addEventListener('dblclick', saveEventToStorage);
+
+    // raising click for common parent
+
+    div1.addEventListener('mousedown', function () {
+        swapElements(div1, div2);
+    });
+
+    // raising click for top element
+
+    div2.addEventListener('mousedown', function () {
+        shiftElement(div2);
+    });
+
+    // raising dblclick for common element
+
+    div3.addEventListener('mousedown', function () {
+        if (!isSecondEvent)
+            isSecondEvent = true;
+        else
+            swapElements(div3, div4);
+    });
+
+    // raising dblclick for a top element
+
+    div4.addEventListener('mousedown', function () {
+        if (!isSecondEvent)
+            isSecondEvent = true;
+        else
+            shiftElement(div4);
+    });
+</script>
+</body>
+</html>

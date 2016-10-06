@@ -78,3 +78,14 @@ export function equals (arr1, arr2) {
 
     return true;
 }
+
+export function getCommonElement (arr1, arr2) {
+    for (var i = 0; i < arr1.length; i++) {
+        for (var t = 0; t < arr2.length; t++) {
+            if (arr1[i] === arr2[t])
+                return arr1[i];
+        }
+    }
+
+    return null;
+}
