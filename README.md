@@ -18,15 +18,16 @@
 
 TestCafe is a pure node.js solution for testing web apps. It takes care of all the stages: starting browsers, running tests, gathering test results and generating reports. TestCafe doesn’t need browser plugins - it works in all popular modern browsers out-of-the-box.
 
-* [Build status](#build-status)
+* [Build Status](#build-status)
 * [Features](#features)
 * [Getting Started](#getting-started)
 * [Documentation](#documentation)
 * [Contributing](#contributing)
+* [Stay in Touch](#stay-in-touch)
 * [License](#license)
 * [Author](#author)
 
-## Build status
+## Build Status
 
 Tests             | Status
 ----------------- | ----------
@@ -306,6 +307,11 @@ Please use our [issues page](https://github.com/DevExpress/testcafe/issues) to r
 For general purpose questions and discussions, use the [discussion board](https://testcafe-discuss.devexpress.com/).
 
 For more information on how to help us improve TestCafe, please see the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
+## Stay in Touch
+
+* [Blog](https://devexpress.github.io/testcafe/blog/)
+* [Twitter](https://twitter.com/dxtestcafe)
 
 ## License
 
