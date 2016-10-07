@@ -46,9 +46,9 @@ Server.prototype._setupRoutes = function () {
     var server = this;
 
     this.app.get('/download', function (req, res) {
-        var file = path.join(server.basePath, '../../package.json');
+        var filePath = path.join(server.basePath, '../../package.json');
 
-        res.download(file);
+        res.download(filePath);
     });
 
     this.app.get('*', function (req, res) {
