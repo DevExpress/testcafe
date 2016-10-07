@@ -484,6 +484,9 @@ export default class Driver {
 
         var status = pendingStatus || new DriverStatus({ isCommandResult: inCommandExecution });
 
+        this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
+        this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, false);
+
         this._onReady(status);
     }
 }
