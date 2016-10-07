@@ -80,8 +80,11 @@ export default class IframeDriver extends Driver {
                 var inCommandExecution = this.contextStorage.getItem(this.COMMAND_EXECUTING_FLAG) ||
                                          this.contextStorage.getItem(this.EXECUTING_IN_IFRAME_FLAG);
 
-                if (inCommandExecution)
+                if (inCommandExecution) {
+                    this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
+                    this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, false);
                     this._onReady(new DriverStatus({ isCommandResult: true }));
+                }
             });
 
         this.readyPromise = Promise.all([this.readyPromise, initializePromise]);
