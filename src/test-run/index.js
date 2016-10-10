@@ -106,7 +106,7 @@ export default class TestRun extends Session {
 
     handleFileDownload () {
         if (this.resolveWaitForFileDownloadingPromise) {
-            this.resolveWaitForFileDownloadingPromise();
+            this.resolveWaitForFileDownloadingPromise(true);
             this.resolveWaitForFileDownloadingPromise = null;
         }
         else
@@ -361,7 +361,7 @@ ServiceMessages[CLIENT_MESSAGES.waitForFileDownload] = function (msg) {
     return new Promise(resolve => {
         if (this.fileDownloadingHandled) {
             this.fileDownloadingHandled = false;
-            resolve();
+            resolve(true);
         }
         else
             this.resolveWaitForFileDownloadingPromise = resolve;
