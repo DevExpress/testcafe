@@ -106,7 +106,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Content of the iframe in which the test is currently operating did not load.');
-                    expect(errs[0]).to.contains("> 200 |        .click('#btn');");
+                    expect(errs[0]).to.contains("> 200 |        .click('#second-page-btn');");
                 });
         });
     });

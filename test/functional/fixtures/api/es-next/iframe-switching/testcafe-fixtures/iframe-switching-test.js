@@ -196,6 +196,6 @@ test('Click in an iframe that is not loaded', async t => {
     await t
         .switchToIframe('#iframe')
         .click('#too-long-loading-page-link')
-        .wait(1500)
-        .click('#btn');
+        .wait(3000)
+        .click('#second-page-btn');
 });
