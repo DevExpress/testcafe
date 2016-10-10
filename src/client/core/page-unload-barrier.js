@@ -20,7 +20,6 @@ var waitingForUnload          = false;
 var waitingForUnloadTimeoutId = null;
 var waitingPromiseResolvers   = [];
 var unloading                 = false;
-var skipFileDownloadingCheck  = false;
 
 function overrideFormSubmit (form) {
     var submit = form.submit;
@@ -84,25 +83,19 @@ function prolongUnloadWaiting (timeout) {
     }, timeout);
 }
 
-function setCheckFileDownloadingTimeout (resolve) {
-    nativeMethods.setTimeout.call(window, () => {
-        if (!unloading)
-            return;
+function waitForFailDownload () {
+    return new Promise(resolve => {
+        nativeMethods.setTimeout.call(window, () => {
+            transport
+                .queuedAsyncServiceMsg({ cmd: MESSAGE.waitForFileDownload })
+                .then(() => resolve());
 
-        transport
-            .queuedAsyncServiceMsg({ cmd: MESSAGE.waitForFileDownload })
-            .then(() => {
-                unloading = false;
-                resolve();
-            });
-
-    }, FILE_DOWNLOAD_CHECK_DELAY);
+        }, FILE_DOWNLOAD_CHECK_DELAY);
+    });
 }
 
 // API
-export function init (shouldSkip) {
-    skipFileDownloadingCheck = shouldSkip;
-
+export function init () {
     handleSubmit();
     handleBeforeUnload();
 }
@@ -112,8 +105,12 @@ export function wait (timeout) {
         delay(timeout === void 0 ? DEFAULT_BARRIER_TIMEOUT : timeout)
             .then(() => {
                 if (unloading) {
-                    if (!skipFileDownloadingCheck)
-                        setCheckFileDownloadingTimeout(resolve);
+                    waitForFailDownload()
+                        .then(() => {
+                            unloading = false;
+                            resolve();
+                        });
+
                     return;
                 }
 

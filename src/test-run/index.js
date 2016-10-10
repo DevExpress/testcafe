@@ -56,9 +56,8 @@ export default class TestRun extends Session {
         this.lastDriverStatusId       = null;
         this.lastDriverStatusResponse = null;
 
-        this.isFileDownload = false;
-
-        this.waitForFileDownloadingPromiseResolve = null;
+        this.fileDownloadingHandled               = false;
+        this.resolveWaitForFileDownloadingPromise = null;
 
         this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, warningLog);
 
@@ -74,8 +73,8 @@ export default class TestRun extends Session {
 
     // Hammerhead payload
     _getPayloadScript () {
-        this.isFileDownload                       = false;
-        this.waitForFileDownloadingPromiseResolve = null;
+        this.fileDownloadingHandled               = false;
+        this.resolveWaitForFileDownloadingPromise = null;
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
             testRunId:           JSON.stringify(this.id),
@@ -106,12 +105,12 @@ export default class TestRun extends Session {
     }
 
     handleFileDownload () {
-        if (this.waitForFileDownloadingPromiseResolve) {
-            this.waitForFileDownloadingPromiseResolve();
-            this.waitForFileDownloadingPromiseResolve = null;
+        if (this.resolveWaitForFileDownloadingPromise) {
+            this.resolveWaitForFileDownloadingPromise();
+            this.resolveWaitForFileDownloadingPromise = null;
         }
         else
-            this.isFileDownload = true;
+            this.fileDownloadingHandled = true;
     }
 
     handlePageError (ctx, err) {
@@ -360,11 +359,11 @@ ServiceMessages[CLIENT_MESSAGES.waitForFileDownload] = function (msg) {
     this.debugLog.driverMessage(msg);
 
     return new Promise(resolve => {
-        if (this.isFileDownload) {
-            this.isFileDownload = false;
+        if (this.fileDownloadingHandled) {
+            this.fileDownloadingHandled = false;
             resolve();
         }
         else
-            this.waitForFileDownloadingPromiseResolve = resolve;
+            this.resolveWaitForFileDownloadingPromise = resolve;
     });
 };

@@ -20,7 +20,7 @@ QUnit.testStart(function () {
         var iframeHammerhead = iframe.contentWindow.eval("window['%hammerhead%']");
 
         iframePageUnloadBarrier = iframe.contentWindow.eval("window['%testCafeCore%'].pageUnloadBarrier");
-        iframePageUnloadBarrier.init(true);
+        iframePageUnloadBarrier.init();
 
         waitIframeLoad = function () {
             return new Promise(function (resolve) {
