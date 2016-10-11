@@ -86,11 +86,12 @@ function prolongUnloadWaiting (timeout) {
 function waitForFailDownload () {
     return new Promise(resolve => {
         nativeMethods.setTimeout.call(window, () => {
-            // NOTE: we use flag to confirm file downloading because if unload raised browser can respond empty string
             transport
                 .queuedAsyncServiceMsg({ cmd: MESSAGE.waitForFileDownload })
-                .then(isFileDownloaded => {
-                    if (isFileDownloaded)
+                .then(fileDownloadingHandled => {
+                    // NOTE: we use a flag to confirm file download because if unload
+                    // is raised the browser can respond with an empty string
+                    if (fileDownloadingHandled)
                         resolve();
                 });
 
