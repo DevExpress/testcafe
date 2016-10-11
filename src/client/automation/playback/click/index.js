@@ -237,13 +237,14 @@ export default class ClickAutomation {
             if (topElement.contains(mouseDownElement))
                 return topElement;
 
-            // NOTE: If elements are not in parent relationship, non-ff browsers
-            // are raising`click` event for their common parent.
+            // NOTE: If elements are not in the parent-child relationships,
+            // non-ff browsers raise the `click` event for their common parent.
             return arrayUtils.getCommonElement(topElementParentNodes, mouseDownElementParentNodes);
         }
 
-        // NOTE: If target element and top element are same, non-FF browsers are dispatching `click`
-        // event on condition, that target element hasn't changed it position in DOM after mousedown.
+        // NOTE: In case the target element and the top element are the same,
+        // non-FF browsers are dispatching the `click` event if the target
+        // element hasn't changed its position in the DOM after mousedown.
         return arrayUtils.equals(mouseDownElementParentNodes, topElementParentNodes) ? mouseDownElement : null;
     }
 

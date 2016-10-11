@@ -102,8 +102,8 @@ export default class DblClickAutomation {
         return clickAutomation
             .run()
             .then(() => {
-                // NOTE: We should raise `dblclick` event on element, which
-                // actually has been clicked in second click automation.
+                // NOTE: We should raise the `dblclick` event on an element that
+                // has been actually clicked during the second click automation.
                 this.eventState.dblClickElement = clickAutomation.eventState.clickElement;
                 this.eventArgs                  = clickAutomation.eventArgs;
 
