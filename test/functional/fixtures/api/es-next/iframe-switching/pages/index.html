@@ -12,8 +12,8 @@
 
 <h2>Same-domain iframes</h2>
 
-<iframe id="iframe" src="iframe.html" width="500px" height="200px"></iframe>
-<iframe name="long" id="slowly-loading-iframe" src="iframe.html?delay=1000" height="200px"></iframe>
+<iframe id="iframe" src="iframe.html" width="500px" height="300px"></iframe>
+<iframe name="long" id="slowly-loading-iframe" src="iframe.html?delay=1000" height="300px"></iframe>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -26,7 +26,7 @@
         tooSlowlyLoadingIframe.id           = 'too-slowly-loading-iframe';
         tooSlowlyLoadingIframe.src          = "iframe.html?delay=10000";
         tooSlowlyLoadingIframe.style.width  = "500px";
-        tooSlowlyLoadingIframe.style.height = "200px";
+        tooSlowlyLoadingIframe.style.height = "300px";
 
         document.body.insertBefore(tooSlowlyLoadingIframe, document.getElementById('slowly-loading-iframe'));
     });
