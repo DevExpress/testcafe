@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-850 iframe</title>
+</head>
+<body>
+<button id="replace-src">Replace iframe source</button>
+<script>
+    document
+        .getElementById('replace-src')
+        .addEventListener('click', function () {
+            window.top.document.getElementById('iframe').src = 'iframe.html';
+        });
+</script>
+</body>
+</html>

@@ -41,6 +41,9 @@ export default function (startLinePoint, endLinePoint, rect) {
             res.push(intersection);
     }
 
+    if (!res.length)
+        return null;
+
     if (res.length === 1)
         return res[0];
 

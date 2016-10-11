@@ -158,6 +158,18 @@ export default class MoveAutomation {
         var endPoint          = { x: e.message.endX, y: e.message.endY };
         var intersectionPoint = getLineRectIntersection(startPoint, endPoint, iframeRectangle);
 
+        // NOTE: We should not move the cursor out of the iframe if
+        // the cursor path does not intersect with the iframe borders.
+        if (!intersectionPoint) {
+            messageSandbox.sendServiceMsg({
+                cmd: MOVE_RESPONSE_CMD,
+                x:   iframeRectangle.left,
+                y:   iframeRectangle.top
+            }, parentWin);
+
+            return;
+        }
+
         var moveOptions = new MoveOptions({
             modifiers: e.message.modifiers,
             offsetX:   intersectionPoint.x - iframeRectangle.left,

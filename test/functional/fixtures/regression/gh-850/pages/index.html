@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-850 index</title>
+</head>
+<body>
+<button id="simple-btn">
+    Simple button
+</button>
+<iframe id="iframe" src="iframe.html" height="200px" width="200px"
+        style="left:20px; top:100px; position:absolute"></iframe>
+<script>
+    window.btnClickCount = 0;
+
+    var simpleBtn = document.getElementById('simple-btn');
+
+    simpleBtn.addEventListener('click', function () {
+        window.btnClickCount++;
+    });
+</script>
+</body>
+</html>
