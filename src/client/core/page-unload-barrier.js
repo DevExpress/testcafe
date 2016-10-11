@@ -1,15 +1,18 @@
 import hammerhead from './deps/hammerhead';
 import * as eventUtils from './utils/event';
 import delay from './utils/delay';
+import MESSAGE from '../../test-run/client-messages';
 
 var Promise       = hammerhead.Promise;
 var browserUtils  = hammerhead.utils.browser;
 var nativeMethods = hammerhead.nativeMethods;
+var transport     = hammerhead.transport;
 
 
 const DEFAULT_BARRIER_TIMEOUT       = 500;
 const WAIT_FOR_UNLOAD_TIMEOUT       = 3000;
 const SHORT_WAIT_FOR_UNLOAD_TIMEOUT = 30;
+const FILE_DOWNLOAD_CHECK_DELAY     = 500;
 const MAX_UNLOADING_TIMEOUT         = 15 * 1000;
 
 
@@ -80,6 +83,21 @@ function prolongUnloadWaiting (timeout) {
     }, timeout);
 }
 
+function waitForFailDownload () {
+    return new Promise(resolve => {
+        nativeMethods.setTimeout.call(window, () => {
+            transport
+                .queuedAsyncServiceMsg({ cmd: MESSAGE.waitForFileDownload })
+                .then(fileDownloadingHandled => {
+                    // NOTE: we use a flag to confirm file download because if unload
+                    // is raised the browser can respond with an empty string
+                    if (fileDownloadingHandled)
+                        resolve();
+                });
+
+        }, FILE_DOWNLOAD_CHECK_DELAY);
+    });
+}
 
 // API
 export function init () {
@@ -91,8 +109,15 @@ export function wait (timeout) {
     var waitForUnloadingPromise = new Promise(resolve => {
         delay(timeout === void 0 ? DEFAULT_BARRIER_TIMEOUT : timeout)
             .then(() => {
-                if (unloading)
+                if (unloading) {
+                    waitForFailDownload()
+                        .then(() => {
+                            unloading = false;
+                            resolve();
+                        });
+
                     return;
+                }
 
                 if (!waitingForUnload)
                     resolve();
