@@ -6,15 +6,15 @@
 
 
 
-### How would you reproduce this behavior (if this is a bug)?
-
-
-
 ### What is the expected behavior?
 
 
 
-### Provide the test code and the tested page URL (if applicable)
+### How would you reproduce the current behavior (if this is a bug)?
+
+
+
+#### Provide the test code and the tested page URL (if applicable)
 
 Tested page URL:
 
