@@ -48,8 +48,8 @@ function hasText (node, textRe) {
     if (node.nodeType === 1) {
         var text = getInnerText(node);
 
-        // NOTE: In Firefox <option> elements doesn't have `innerText`.
-        // So we fallback to `textContent` in that case (see GH-861).
+        // NOTE: In Firefox, <option> elements don't have `innerText`.
+        // So, we fallback to `textContent` in that case (see GH-861).
         if (domUtils.isOptionElement(node)) {
             var textContent = getTextContent(node);
 
