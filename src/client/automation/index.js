@@ -15,7 +15,7 @@ import {
     ClickOptions,
     TypeOptions
 } from '../../test-run/commands/options';
-import SETTINGS from './settings';
+import * as SETTINGS from './settings';
 import { getOffsetOptions } from './utils/offsets';
 import calculateSelectTextArguments from './playback/select/calculate-select-text-arguments';
 import ERROR_TYPES from './errors';
