@@ -449,3 +449,10 @@ test('Derivative selector without options', async () => {
 
     await derivative();
 });
+
+test('<option> text selector', async t => {
+    const selector = Selector('#selectInput > option').with({ text: 'O2' });
+    const el       = await selector();
+
+    expect(el.id).eql('option2');
+});
