@@ -9,7 +9,7 @@ var nativeMethods = hammerhead.nativeMethods;
 var transport     = hammerhead.transport;
 
 
-const DEFAULT_BARRIER_TIMEOUT       = 500;
+const DEFAULT_BARRIER_TIMEOUT       = 400;
 const WAIT_FOR_UNLOAD_TIMEOUT       = 3000;
 const SHORT_WAIT_FOR_UNLOAD_TIMEOUT = 30;
 const FILE_DOWNLOAD_CHECK_DELAY     = 500;
