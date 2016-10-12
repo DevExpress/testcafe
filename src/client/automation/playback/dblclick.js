@@ -36,7 +36,7 @@ export default class DblClickAutomation {
         };
 
         this.eventState = {
-            skipClick: false
+            dblClickElement: null
         };
     }
 
@@ -102,8 +102,10 @@ export default class DblClickAutomation {
         return clickAutomation
             .run()
             .then(() => {
-                this.eventState.skipClick = clickAutomation.eventState.skipClick;
-                this.eventArgs            = clickAutomation.eventArgs;
+                // NOTE: We should raise the `dblclick` event on an element that
+                // has been actually clicked during the second click automation.
+                this.eventState.dblClickElement = clickAutomation.eventState.clickElement;
+                this.eventArgs                  = clickAutomation.eventArgs;
 
                 if (browserUtils.isIE)
                     eventUtils.unbind(document, 'focus', eventUtils.preventDefault, true);
@@ -111,10 +113,8 @@ export default class DblClickAutomation {
     }
 
     _dblClick () {
-        // NOTE: If an element under the cursor has changed after the second
-        // 'mousedown' event, we should not raise the 'dblclick' event
-        if (!this.eventState.skipClick)
-            eventSimulator.dblclick(this.eventArgs.element, this.eventArgs.options);
+        if (this.eventState.dblClickElement)
+            eventSimulator.dblclick(this.eventState.dblClickElement, this.eventArgs.options);
     }
 
     run () {

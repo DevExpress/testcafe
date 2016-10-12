@@ -41,8 +41,8 @@ export default class ClickAutomation {
         this.offsetY = clickOptions.offsetY;
 
         this.targetElementParentNodes     = [];
-        this.clickEventElement            = null;
         this.activeElementBeforeMouseDown = null;
+        this.mouseDownElement             = null;
 
         this.eventArgs = {
             point:   null,
@@ -54,7 +54,7 @@ export default class ClickAutomation {
             mousedownPrevented:      false,
             blurRaised:              false,
             simulateDefaultBehavior: true,
-            skipClick:               false
+            clickElement:            null
         };
     }
 
@@ -145,13 +145,13 @@ export default class ClickAutomation {
     _mousedown () {
         this.eventArgs                = this._calculateEventArguments();
         this.targetElementParentNodes = domUtils.getParents(this.eventArgs.element);
-        this.clickEventElement        = this.eventArgs.element;
+        this.mouseDownElement         = this.eventArgs.element;
 
         return cursor.leftButtonDown()
             .then(() => {
                 this._raiseTouchEvents();
 
-                var activeElement         = domUtils.getActiveElement();
+                var activeElement = domUtils.getActiveElement();
 
                 this.activeElementBeforeMouseDown = activeElement;
 
@@ -222,21 +222,40 @@ export default class ClickAutomation {
         return focusAndSetSelection(elementForFocus, simulateFocus, this.caretPos);
     }
 
+    static _getElementForClick (mouseDownElement, topElement, mouseDownElementParentNodes) {
+        var topElementParentNodes = domUtils.getParents(topElement);
+        var areElementsSame       = domUtils.isTheSameNode(topElement, mouseDownElement);
+
+        // NOTE: Mozilla Firefox always skips click, if an element under cursor has been changed after mousedown.
+        if (browserUtils.isFirefox)
+            return areElementsSame ? mouseDownElement : null;
+
+        if (!areElementsSame) {
+            if (mouseDownElement.contains(topElement) && !domUtils.isEditableFormElement(topElement))
+                return mouseDownElement;
+
+            if (topElement.contains(mouseDownElement))
+                return topElement;
+
+            // NOTE: If elements are not in the parent-child relationships,
+            // non-ff browsers raise the `click` event for their common parent.
+            return arrayUtils.getCommonElement(topElementParentNodes, mouseDownElementParentNodes);
+        }
+
+        // NOTE: In case the target element and the top element are the same,
+        // non-FF browsers are dispatching the `click` event if the target
+        // element hasn't changed its position in the DOM after mousedown.
+        return arrayUtils.equals(mouseDownElementParentNodes, topElementParentNodes) ? mouseDownElement : null;
+    }
+
     _mouseup () {
         return cursor
             .buttonUp()
             .then(() => {
                 this.eventArgs = this._calculateEventArguments();
 
-                if (this.eventArgs.element !== this.clickEventElement) {
-                    this.eventState.skipClick = browserUtils.isFirefox ||
-                                                !this.clickEventElement.contains(this.eventArgs.element) ||
-                                                domUtils.isEditableFormElement(this.eventArgs.element);
-                }
-                else {
-                    this.eventState.skipClick = !browserUtils.isFirefox &&
-                                                !arrayUtils.equals(this.targetElementParentNodes, domUtils.getParents(this.eventArgs.element));
-                }
+                this.eventState.clickElement = ClickAutomation._getElementForClick(this.mouseDownElement, this.eventArgs.element,
+                    this.targetElementParentNodes);
 
                 eventSimulator.mouseup(this.eventArgs.element, this.eventArgs.options);
             });
@@ -246,10 +265,8 @@ export default class ClickAutomation {
         if (domUtils.isOptionElement(this.eventArgs.element))
             return;
 
-        // NOTE: If the element under the cursor has changed after the
-        // 'mousedown' event, we should not raise the 'click' event
-        if (!this.eventState.skipClick)
-            eventSimulator.click(this.clickEventElement, this.eventArgs.options);
+        if (this.eventState.clickElement)
+            eventSimulator.click(this.eventState.clickElement, this.eventArgs.options);
 
         if (!domUtils.isElementFocusable(this.eventArgs.element))
             focusByRelatedElement(this.eventArgs.element);
