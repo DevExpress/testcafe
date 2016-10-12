@@ -117,5 +117,9 @@ describe('[API] Selector', function () {
         it("Should execute successfully if derivative selector doesn't have options (GH-716)", function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Derivative selector without options', { only: 'chrome' });
         });
+
+        it('Should select <option> element by text in Firefox (GH-861)', function () {
+            return runTests('./testcafe-fixtures/selector-test.js', '<option> text selector', { only: 'firefox' });
+        });
     });
 });

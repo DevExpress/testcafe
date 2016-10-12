@@ -23,7 +23,6 @@ var spawn                = require('cross-spawn');
 var serveStatic          = require('serve-static');
 var Promise              = require('pinkie');
 var markdownlint         = require('markdownlint');
-var ghpages              = require('gulp-gh-pages');
 var prompt               = require('gulp-prompt');
 var nodeVer              = require('node-version');
 var functionalTestConfig = require('./test/functional/config');
@@ -472,9 +471,9 @@ gulp.task('preview-website', function () {
     return new Promise(function (resolve) {
         runSequence('build-website-development', 'serve-website', resolve);
     })
-    .then(function () {
-        return opn('http://localhost:8080/testcafe');
-    });
+        .then(function () {
+            return opn('http://localhost:8080/testcafe');
+        });
 });
 
 function testWebsite (isTravis) {
@@ -483,22 +482,22 @@ function testWebsite (isTravis) {
 
         runSequence(buildTask, 'serve-website', resolve);
     })
-    .then(function () {
-        var WebsiteTester = require('./test/website/test.js');
-        var websiteTester = new WebsiteTester();
+        .then(function () {
+            var WebsiteTester = require('./test/website/test.js');
+            var websiteTester = new WebsiteTester();
 
-        return websiteTester.checkLinks();
-    })
-    .then(function (failed) {
-        return new Promise(function (resolve, reject) {
-            websiteServer.close(function () {
-                if (failed)
-                    reject('Broken links found!');
-                else
-                    resolve();
+            return websiteTester.checkLinks();
+        })
+        .then(function (failed) {
+            return new Promise(function (resolve, reject) {
+                websiteServer.close(function () {
+                    if (failed)
+                        reject('Broken links found!');
+                    else
+                        resolve();
+                });
             });
         });
-    });
 }
 
 gulp.task('test-website', function () {
@@ -510,6 +509,11 @@ gulp.task('test-website-travis', function () {
 });
 
 gulp.task('publish-website', ['build-website-production'], function () {
+    // NOTE: it's accidentally stopped being compatible with node 0.10 without
+    // major version bump due to https://github.com/floridoo/gulp-sourcemaps/issues/236,
+    // so we require it here.
+    var ghpages = require('gulp-gh-pages');
+
     return gulp
         .src('site/deploy/**/*')
         .pipe(prompt.confirm({

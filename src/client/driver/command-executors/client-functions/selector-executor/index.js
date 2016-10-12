@@ -45,8 +45,20 @@ function visible (el) {
 
 function hasText (node, textRe) {
     // Element
-    if (node.nodeType === 1)
-        return textRe.test(getInnerText(node));
+    if (node.nodeType === 1) {
+        var text = getInnerText(node);
+
+        // NOTE: In Firefox, <option> elements don't have `innerText`.
+        // So, we fallback to `textContent` in that case (see GH-861).
+        if (domUtils.isOptionElement(node)) {
+            var textContent = getTextContent(node);
+
+            if (!text && textContent)
+                text = textContent;
+        }
+
+        return textRe.test(text);
+    }
 
     // Document and DocumentFragment
     if (node.nodeType === 9 || node.nodeType === 11)
