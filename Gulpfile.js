@@ -386,7 +386,11 @@ gulp.task('lint-docs', function () {
         });
     }
 
-    var lintDocsAndExamples = globby(['docs/articles/**/*.md', 'examples/**/*.md']).then(function (files) {
+    var lintDocsAndExamples = globby([
+        'docs/articles/**/*.md',
+        'examples/**/*.md',
+        'CHANGELOG.md'
+    ]).then(function (files) {
         return lintFiles(files, require('./.markdownlint.json'));
     });
 
