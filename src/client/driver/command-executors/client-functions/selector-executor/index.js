@@ -46,12 +46,11 @@ function visible (el) {
 function hasText (node, textRe) {
     // Element
     if (node.nodeType === 1) {
-        var text            = getInnerText(node);
-        var isOptionElement = typeof node.tagName === 'string' && node.tagName.toLowerCase() === 'option';
+        var text = getInnerText(node);
 
         // NOTE: In Firefox <option> elements doesn't have `innerText`.
         // So we fallback to `textContent` in that case (see GH-861).
-        if (isOptionElement) {
+        if (domUtils.isOptionElement(node)) {
             var textContent = getTextContent(node);
 
             if (!text && textContent)
