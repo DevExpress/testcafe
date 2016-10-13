@@ -1,7 +1,7 @@
 '@fixture gh-845';
 '@page ./index.html';
 
-var MAX_UNLOADING_TIMEOUT = 15 * 1000;
+var MAX_UNLOADING_TIMEOUT_WITH_INDENT = 15 * 1000 + 5000;
 
 '@test'['Click on a download link'] = {
     '1.Click': function () {
@@ -12,7 +12,7 @@ var MAX_UNLOADING_TIMEOUT = 15 * 1000;
     '2.Check delay': function () {
         var delay = Date.now() - this.startTime;
 
-        ok(delay < MAX_UNLOADING_TIMEOUT);
+        ok(delay < MAX_UNLOADING_TIMEOUT_WITH_INDENT);
     }
 };
 
@@ -25,7 +25,7 @@ var MAX_UNLOADING_TIMEOUT = 15 * 1000;
     '2.Check delay': function () {
         var delay = Date.now() - this.startTime;
 
-        ok(delay < MAX_UNLOADING_TIMEOUT);
+        ok(delay < MAX_UNLOADING_TIMEOUT_WITH_INDENT);
     }
 };
 
