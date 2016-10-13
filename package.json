@@ -90,7 +90,7 @@
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "^1.0.0",
     "testcafe-hammerhead": "^9.2.1",
-    "testcafe-legacy-api": "^1.2.0",
+    "testcafe-legacy-api": "^2.0.0",
     "testcafe-reporter-json": "^2.0.0",
     "testcafe-reporter-list": "^2.0.0",
     "testcafe-reporter-minimal": "^2.0.0",
