@@ -8,7 +8,9 @@ describe('[Raw API] Navigate to action', function () {
                 errorInEachBrowserContains(errs, 'Click raised on page after navigation', 0);
             });
     });
+});
 
+describe.skip('[Raw API] Excluded', function () {
     it('Should navigate to a page using a protocol-relative url', function () {
         return runTests('./testcafe-fixtures/navigate-to.testcafe', 'Navigate to a page using a protocol-relative url', { shouldFail: true })
             .catch(function (errs) {

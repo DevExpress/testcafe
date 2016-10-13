@@ -1,8 +1,17 @@
 var expect                     = require('chai').expect;
 var errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 
-
 describe('[Raw API] Upload', function () {
+
+    it('Should upload files', function () {
+        return runTests('./testcafe-fixtures/upload.testcafe', 'Upload files', { shouldFail: true })
+            .catch(function (errs) {
+                errorInEachBrowserContains(errs, 'Files uploaded', 0);
+            });
+    });
+});
+
+describe.skip('Excluded', function () {
     it('Should upload a file', function () {
         return runTests('./testcafe-fixtures/upload.testcafe', 'Upload a file', { shouldFail: true })
             .catch(function (errs) {
@@ -22,13 +31,6 @@ describe('[Raw API] Upload', function () {
             .catch(function (errs) {
                 expect(errs[0]).contains('Cannot find the following file(s) to upload: ');
                 expect(errs[0]).contains('test42.txt');
-            });
-    });
-
-    it('Should upload files', function () {
-        return runTests('./testcafe-fixtures/upload.testcafe', 'Upload files', { shouldFail: true })
-            .catch(function (errs) {
-                errorInEachBrowserContains(errs, 'Files uploaded', 0);
             });
     });
 

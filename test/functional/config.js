@@ -23,22 +23,6 @@ testingEnvironments[testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers
 
     browsers: [
         {
-            platform:    'OS X 10.11',
-            browserName: 'safari',
-            version:     '9.0',
-            alias:       'safari'
-        },
-        {
-            platform:    'OS X 10.11',
-            browserName: 'chrome',
-            alias:       'chrome-osx'
-        },
-        {
-            platform:    'OS X 10.11',
-            browserName: 'firefox',
-            alias:       'firefox-osx'
-        },
-        {
             platform:    'Windows 10',
             browserName: 'microsoftedge',
             alias:       'edge',
