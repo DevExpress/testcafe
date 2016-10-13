@@ -7,18 +7,27 @@ var Promise       = hammerhead.Promise;
 var nativeMethods = hammerhead.nativeMethods;
 
 
-const REQUESTS_COLLECTION_DELAY              = 300;
-const ADDITIONAL_REQUESTS_COLLECTION_DELAY   = 100;
-const PAGE_INITIAL_REQUESTS_COLLECTION_DELAY = 50;
-const REQUESTS_FINISHED_EVENT                = 'requests-finished';
+const REQUESTS_COLLECTION_DELAY_DEFAULT = 50;
+const REQUESTS_FINISHED_EVENT           = 'requests-finished';
 
 const GLOBAL_REQUEST_BARRIER_FIELD = 'testcafe|request-barrier';
 
 export default class RequestBarrier extends EventEmitter {
-    constructor () {
+    constructor (delays = {}) {
         super();
 
         this.BARRIER_TIMEOUT = 3000;
+
+        this.delays = {
+            requestsCollection: delays.requestsCollection === void 0 ?
+                                REQUESTS_COLLECTION_DELAY_DEFAULT : delays.requestsCollection,
+
+            additionalRequestsCollection: delays.additionalRequestsCollection === void 0 ?
+                                          REQUESTS_COLLECTION_DELAY_DEFAULT : delays.additionalRequestsCollection,
+
+            pageInitialRequestsCollection: delays.pageInitialRequestsCollection === void 0 ?
+                                           REQUESTS_COLLECTION_DELAY_DEFAULT : delays.pageInitialRequestsCollection
+        };
 
         this.collectingReqs = true;
         this.requests       = [];
@@ -56,7 +65,7 @@ export default class RequestBarrier extends EventEmitter {
     _onRequestCompleted (request) {
         // NOTE: let the last real XHR handler finish its job and try to obtain
         // any additional requests if they were initiated by this handler
-        delay(ADDITIONAL_REQUESTS_COLLECTION_DELAY)
+        delay(this.delays.additionalRequestsCollection)
             .then(() => this._onRequestFinished(request));
     }
 
@@ -85,7 +94,7 @@ export default class RequestBarrier extends EventEmitter {
 
     wait (isPageLoad) {
         return new Promise(resolve => {
-            delay(isPageLoad ? PAGE_INITIAL_REQUESTS_COLLECTION_DELAY : REQUESTS_COLLECTION_DELAY)
+            delay(isPageLoad ? this.delays.pageInitialRequestsCollection : this.delays.requestsCollection)
                 .then(() => {
                     this.collectingReqs = false;
 
