@@ -21,5 +21,9 @@ branches:
   except:
     - /^build-bot-temp-.*$/
 
+install:
+  - npm install -g yarn
+  - yarn install
+
 notifications:
  email: false
