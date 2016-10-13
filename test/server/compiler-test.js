@@ -279,7 +279,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'SyntaxError: ' + dep + ': Unexpected token (1:7)'
+                                 'SyntaxError: ' + dep + ': Unexpected token, expected { (1:7)'
                     });
                 });
         });
@@ -338,7 +338,7 @@ describe('Compiler', function () {
                         stackTop: null,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'SyntaxError: ' + testfile + ': Unexpected token (1:7)'
+                                 'SyntaxError: ' + testfile + ': Unexpected token, expected { (1:7)'
                     });
                 });
         });
