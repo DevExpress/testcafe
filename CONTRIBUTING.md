@@ -18,22 +18,22 @@ By participating in the project you agree to abide by its terms.
 ## General Discussion
 
 If you have a question about TestCafe or want to share your opinion,
-welcome to our [discussion board](https://testcafe-discuss.devexpress.com/).
+please visit our [discussion board](https://testcafe-discuss.devexpress.com/).
 
 ## Reporting a Problem
 
 If anything goes wrong with TestCafe, file an issue in our [GitHub repository](https://github.com/DevExpress/testcafe/issues).
 But first please search through the existing issues to see if the problem has already been reported or addressed.
 
-When you create a new issue, a template text is automatically added to its body. To help us understand your
+When you create a new issue, template text is automatically added to its body. To help us understand your
 problem, be sure to fill in all sections in this template.
 
 ## Code Contribution
 
-Please follow these steps when submitting your code.
+Please follow the steps below when submitting your code.
 
 1. Search the [list of issues](https://github.com/DevExpress/testcafe/issues) to see if there
-  is an issue for the bug or feature you are going to work on. If you do not find any, please create one.
+  is an issue for the bug or feature you are going to work on. If you do not find one, please create your own.
 
 2. If you are going to address an existing issue, check the comment thread to make sure that nobody is working on it at the moment.
 
