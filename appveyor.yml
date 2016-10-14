@@ -7,6 +7,10 @@ skip_commits:
 environment:
   GULP_TASK: "test-functional-travis-desktop-osx-and-ms-edge"
   NODEJS_VERSION: "stable"
+  SAUCE_USERNAME_FUNCTIONAL_DESKTOP:
+    secure: 04DMASOQeWMF+eUwJNBqPg==
+  SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP:
+    secure: mB9LKcK7EruRCA1wHKToO8b4yrfDvJHczthYVl/FILGVDgHTP2WWQKva+a3eKgtO
 
 install:
 - ps: >-
