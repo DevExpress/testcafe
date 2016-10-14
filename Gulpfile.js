@@ -520,10 +520,10 @@ gulp.task('publish-website', ['build-website-production'], function () {
 
     return gulp
         .src('site/deploy/**/*')
-        .pipe(rename(function (path) {
-            path.dirname = path.dirname.toLowerCase();
-        
-            return path;
+        .pipe(rename(function (filePath) {
+            filePath.dirname = filePath.dirname.toLowerCase();
+
+            return filePath;
         }))
         .pipe(prompt.confirm({
             message: 'Are you sure you want to publish the website?',
