@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Browser Provider Plugin | TestCafe</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+
+  <link rel="shortcut icon" href="/testcafe/favicon.ico">
+  <link rel="stylesheet" href="/testcafe/css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/">
+  <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function (e) {
+          hljs.initHighlightingOnLoad();
+      });
+  </script>
+
+  
+  <script>
+    // Google Analytics
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83678642-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
+    <script>
+        function initNav(nav) {
+            var MIN_BODY_WIDTH = 900;
+            var FOOTER_HEIGHT  = 63;
+            var HEADER_HEIGHT  = 52;
+
+            function updatePosition() {
+                var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset + document.body.clientHeight;
+
+                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+            
+                if (footerVisibleHeight > 0) {
+                    if(nav.style.bottom !== footerVisibleHeight + 'px') {
+                        nav.style.bottom = footerVisibleHeight + 'px';
+                        Ps.update(nav);
+                    }
+                }
+                else if(nav.style.bottom !== '0') {
+                    nav.style.bottom = '0';
+                    Ps.update(nav);
+                }
+
+                if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                    if (nav.style.top !== HEADER_HEIGHT + 'px') {
+                        nav.style.top = HEADER_HEIGHT + 'px';
+                        Ps.update(nav);
+                    }
+                }
+                else {
+                    var top = window.pageYOffset <= HEADER_HEIGHT ? (HEADER_HEIGHT - window.pageYOffset) + 'px' : '0';
+
+                    if(nav.style.top !== top) {
+                        nav.style.top = top;
+                        Ps.update(nav);
+                    }
+                }
+            }
+            function initScrollBar() {
+                Ps.initialize(nav);
+                
+                window.addEventListener('resize', function () {
+                    Ps.update(nav);
+                });
+            }
+
+            initScrollBar();
+            updatePosition();
+            window.addEventListener('scroll', updatePosition);
+            window.addEventListener('resize', updatePosition);
+        }
+        document.addEventListener('DOMContentLoaded', function (e) {
+            var nav = document.querySelector('.doc-nav');
+
+            if(nav)
+                initNav(nav);
+        });
+    </script>
+  
+    <script>
+        function initHeader(siteHeader, contentWrapper) {
+            var MIN_BODY_WIDTH = 900;
+
+            function updateHeader() {
+                var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
+                
+                
+
+                siteHeader.style.position = bodyMinimized ? 'static' : '';
+
+                if(contentWrapper)
+                    contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
+            }
+
+            updateHeader();
+            window.addEventListener('scroll', updateHeader);
+            window.addEventListener('resize', updateHeader);
+        }
+        document.addEventListener('DOMContentLoaded', function (e) {
+            var contentWrapper = document.querySelector('.container');
+            var siteHeader     = document.querySelector('.site-header');
+
+            if(siteHeader) 
+                initHeader(siteHeader, contentWrapper);
+        });
+    </script>
+</head>
+
+
+  <body>
+    <div class="page-content-wrapper">
+
+      <header class="site-header minimized">
+  <div class="site-header-content">
+    <a class="site-logo" href="/testcafe/"></a>
+
+    <nav class="site-nav">
+      <div class="trigger">
+        
+          
+          <a class="page-link active" href="/testcafe/documentation/getting-started/">Documentation</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://github.com/DevExpress/testcafe">GitHub</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="/testcafe/blog/">Blog</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://github.com/DevExpress/testcafe/issues">Issues</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://testcafe-discuss.devexpress.com/">Discuss</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
+          <span class="page-link-separator">|</span>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+      <div class="container">
+    	<nav class="doc-nav">	
+		<div class="doc-nav-content">
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/getting-started/"  >GETTING STARTED</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/"  >USING TESTCAFE</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/installing-testcafe.html"  >Installing TestCafe</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/command-line-interface.html"  >Command Line Interface</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/"  >Programming Interface</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/testcafe.html"  >TestCafe Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/browserconnection.html"  >BrowserConnection Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/runner.html"  >Runner Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html"  >createTestCafe Factory</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/"  >Common Concepts</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browser-support.html"  >Browser Support</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/"  >TEST API</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/"  >Actions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/click.html"  >Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/double-click.html"  >Double Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/right-click.html"  >Right Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/drag-element.html"  >Drag Element</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/hover.html"  >Hover</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/select-text.html"  >Select Text</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/type-text.html"  >Type Text</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/press-key.html"  >Press Key</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/take-screenshot.html"  >Take Screenshot</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/upload.html"  >Upload</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/resize-window.html"  >Resize Window</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/action-options.html"  >Action Options</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/"  >Selecting Page Elements</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors.html"  >Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selector-options.html"  >Selector Options</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html"  >DOM Node Snapshots</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions.html"  >Assertions</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/pausing-the-test.html"  >Pausing the Test</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/handling-native-dialogs.html"  >Handling Native Dialogs</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/working-with-iframes.html"  >Working with &lt;iframes&gt;</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/a-z.html"  >A-Z Index</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/"  >EXTENDING TESTCAFE</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/"  >Reporter Plugin</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html"  >Reporter Methods</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/helpers.html"  >Helpers</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/" class="active" >Browser Provider Plugin</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.html"  >Browser Provider Methods</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/"  >RECIPES</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		</div>
+	</nav>
+
+
+<main>
+	<article class="doc">
+		<div class="post-content">
+
+			<h1>Browser Provider Plugin</h1>
+<p>TestCafe supports testing in a number of popular browsers (see <a href="../../using-testcafe/common-concepts/browser-support.html">Browser Support</a>).
+If you need to use a different browser (for example, a browser from a cloud service), you can create a <strong>custom browser provider plugin</strong>.
+The provider should expose methods for performing common actions on the browser windows during testing: opening and closing it, taking screenshot, etc.</p>
+
+<p>This topic contains the following sections.</p>
+
+<ul>
+<li><a href="#generating-browser-provider-project">Generating Browser Provider Project</a></li>
+<li><a href="#implementing-the-browser-provider">Implementing the Browser Provider</a></li>
+<li><a href="#building-the-provider">Building the Provider</a></li>
+<li><a href="#using-the-provider-development-version">Using the Provider Development Version</a></li>
+<li><a href="#publishing-the-provider-to-npm">Publishing the Provider to npm</a></li>
+<li><a href="#specifying-a-browser-for-a-test-task">Specifying a Browser for a Test Task</a></li>
+</ul>
+<blockquote><div class="blockquote-content"><p>To run tests on <a href="https://saucelabs.com">Sause Labs</a>, you can use the existing <a href="https://github.com/DevExpress/testcafe-browser-provider-saucelabs/">testcafe-browser-provider-saucelabs</a> plugin.</p>
+</div></blockquote><h2><a class="anchor" name="generating-browser-provider-project"></a>Generating Browser Provider Project <a class="permalink" href="#generating-browser-provider-project">#</a></h2>
+<p>To create a browser provider project, use the <a href="https://github.com/DevExpress/generator-testcafe-browser-provider">TestCafe browser provider generator</a>.
+The generator will scaffold out the plugin, so that you only need to write a few lines of code.</p>
+
+<p>First, install <a href="http://yeoman.io">Yeoman</a> and <code>generator-testcafe-browser-provider</code> using <a href="https://www.npmjs.com/">npm</a>.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install -g yo
+npm install -g generator-testcafe-browser-provider
+</code></pre></div>
+<p>Create a new directory where the generator should place your scaffolded project files and go into it.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir my-provider
+<span class="nb">cd </span>my-provider
+</code></pre></div><blockquote><div class="blockquote-content"><p>It is recommended that you name the directory as you would name the browser provider project. When you run the generator, it will automatically suggest the browser provider name that matches the browser provider directory name.</p>
+
+<p>The generator will also automatically create the provider package name that consists of two parts - the <code>testcafe-browser-provider-</code> prefix and the name of the provider itself; for example, <code>testcafe-browser-provider-my-provider</code>.</p>
+
+<p><strong>Important:</strong> If you name the provider package manually, its name must start with the <code>testcafe-browser-provider-</code> prefix. Otherwise, TestCafe will be unable to recognize the plugin.</p>
+</div></blockquote>
+<p>Then, run the browser provider generator to create a new project.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">yo testcafe-browser-provider
+</code></pre></div>
+<p>The generator will ask you a few questions about the browser provider. Then, Yeoman will automatically scaffold out the provider, install the required dependencies, and pull in several useful Gulp tasks for your workflow.</p>
+<h2><a class="anchor" name="implementing-the-browser-provider"></a>Implementing the Browser Provider <a class="permalink" href="#implementing-the-browser-provider">#</a></h2>
+<p>Once the browser provider has been scaffolded out, go to the provider directory and open the <code>src/index.js</code> file.</p>
+
+<p>There are several required and optional <a href="browser-provider-methods.html">provider methods</a> you can implement.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Required methods</span>
+<span class="nx">async</span> <span class="nx">openBrowser</span> <span class="p">(</span><span class="cm">/* id, pageUrl, browserName */</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented!'</span><span class="p">);</span>
+<span class="p">},</span>
+
+<span class="nx">async</span> <span class="nx">closeBrowser</span> <span class="p">(</span><span class="cm">/* id */</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented!'</span><span class="p">);</span>
+<span class="p">},</span>
+
+<span class="c1">// Optional initialization and cleanup methods</span>
+<span class="nx">async</span> <span class="nx">init</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">},</span>
+
+<span class="nx">async</span> <span class="nx">dispose</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">},</span>
+
+<span class="c1">// Optional methods for multi-browser support</span>
+<span class="nx">async</span> <span class="nx">getBrowserList</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Not implemented!'</span><span class="p">);</span>
+<span class="p">},</span>
+
+<span class="nx">async</span> <span class="nx">isValidBrowserName</span> <span class="p">(</span><span class="cm">/* browserName */</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">},</span>
+
+<span class="c1">// Optional extra methods</span>
+<span class="nx">async</span> <span class="nx">resizeWindow</span> <span class="p">(</span><span class="cm">/* id, width, height, currentWidth, currentHeight */</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">reportWarning</span><span class="p">(</span><span class="s1">'The window resize functionality is not supported by the "my-provider" browser provider.'</span><span class="p">);</span>
+<span class="p">},</span>
+
+<span class="nx">async</span> <span class="nx">takeScreenshot</span> <span class="p">(</span><span class="cm">/* id, screenshotPath, pageWidth, pageHeight */</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">reportWarning</span><span class="p">(</span><span class="s1">'The screenshot functionality is not supported by the "my-provider" browser provider.'</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>To implement these methods, you can use the <a href="https://github.com/DevExpress/testcafe-browser-tools">testcafe-browser-tools</a> library that contains methods for performing platform-dependent actions on browser windows.</p>
+<h3><a class="anchor" name="example"></a>Example <a class="permalink" href="#example">#</a></h3>
+<p>The following example code demonstrates how you can implement the simple browser provider for portable browsers.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">path</span> <span class="nx">from</span> <span class="s1">'path'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">browserTools</span> <span class="nx">from</span> <span class="s1">'testcafe-browser-tools'</span><span class="p">;</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+    <span class="na">isMultiBrowser</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+
+    <span class="nx">async</span> <span class="nx">openBrowser</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">pageUrl</span><span class="p">,</span> <span class="nx">browserName</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">browserInfo</span> <span class="o">=</span> <span class="p">{};</span>
+
+        <span class="k">switch</span> <span class="p">(</span><span class="nx">browserName</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="s1">'firefox'</span><span class="p">:</span>
+                <span class="nx">browserInfo</span><span class="p">.</span><span class="nx">path</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORTABLE_BROWSERS_PATH</span><span class="p">,</span> <span class="s1">'FirefoxPortable/FirefoxPortable.exe'</span><span class="p">);</span>
+                <span class="nx">browserInfo</span><span class="p">.</span><span class="nx">cmd</span>  <span class="o">=</span> <span class="s1">'-new-window'</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="s1">'chrome'</span><span class="p">:</span>
+                <span class="nx">browserInfo</span><span class="p">.</span><span class="nx">path</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORTABLE_BROWSERS_PATH</span><span class="p">,</span> <span class="s1">'GoogleChromePortable/GoogleChromePortable.exe'</span><span class="p">);</span>
+                <span class="nx">browserInfo</span><span class="p">.</span><span class="nx">cmd</span>  <span class="o">=</span> <span class="s1">'--new-window'</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="nl">default</span><span class="p">:</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'Unsupported browser!'</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">browserInfo</span><span class="p">,</span> <span class="nx">pageUrl</span><span class="p">);</span>
+    <span class="p">},</span>
+
+    <span class="nx">async</span> <span class="nx">closeBrowser</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">close</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+    <span class="p">},</span>
+
+    <span class="nx">async</span> <span class="nx">getBrowserList</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">'firefox'</span><span class="p">,</span> <span class="s1">'chrome'</span><span class="p">];</span>
+    <span class="p">},</span>
+
+    <span class="nx">async</span> <span class="nx">isValidBrowserName</span> <span class="p">(</span><span class="nx">browserName</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">browserList</span> <span class="o">=</span> <span class="nx">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">getBrowserList</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="nx">browserList</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">browserName</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">},</span>
+
+    <span class="nx">async</span> <span class="nx">resizeWindow</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">,</span> <span class="nx">currentWidth</span><span class="p">,</span> <span class="nx">currentHeight</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">currentWidth</span><span class="p">,</span> <span class="nx">currentHeight</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+    <span class="p">},</span>
+
+    <span class="nx">async</span> <span class="nx">takeScreenshot</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">screenshotPath</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">screenshot</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">screenshotPath</span><span class="p">);</span>
+    <span class="p">},</span>
+<span class="p">};</span>
+</code></pre></div><blockquote><div class="blockquote-content"><p>To learn how to implement provider methods, you can also explore the existing browser provider plugins,
+for example, <a href="https://github.com/DevExpress/testcafe-browser-provider-saucelabs/">testcafe-browser-provider-saucelabs</a>.</p>
+</div></blockquote><h2><a class="anchor" name="building-the-provider"></a>Building the Provider <a class="permalink" href="#building-the-provider">#</a></h2>
+<p>You can build a browser provider project by using the <code>build</code> Gulp task.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">gulp build
+</code></pre></div><h2><a class="anchor" name="using-the-provider-development-version"></a>Using the Provider Development Version <a class="permalink" href="#using-the-provider-development-version">#</a></h2>
+<p>If you are still developing the browser provider, but need to test it within TestCafe, there is no need to publish the browser provider package to npm.
+You can link the browser provider to TestCafe by using the <a href="https://docs.npmjs.com/cli/link">npm link</a> command.
+This allows you to work on the browser provider project and test it iteratively without having to re-publish everytime you make a change.</p>
+
+<p>To link the browser provider package, navigate to the provider directory and run <code>npm link</code>:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd </span>my-provider
+npm link
+</code></pre></div>
+<p>After that, TestCafe will use the provider version you are currently developing.</p>
+
+<p>For information on how to specify a browser in tests, see <a href="#specifying-a-browser-for-a-test-task">Specifying a Browser for a Test Task</a>.</p>
+<h2><a class="anchor" name="publishing-the-provider-to-npm"></a>Publishing the Provider to npm <a class="permalink" href="#publishing-the-provider-to-npm">#</a></h2>
+<p>When you finish developing the provider, you can publish it to npm by running the <code>publish-please</code> npm script.
+This script builds the package, tests the provider and then uses <a href="https://github.com/inikulin/publish-please">publish-please</a> to publish it to npm.
+That is why using the <code>publish-please</code> script instead of <code>npm publish</code> is what is recommended.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm run publish-please
+</code></pre></div>
+<p>After that, you can install the provider plugin as you would <a href="../#installing-plugins">install any other plugin</a>.</p>
+<h2><a class="anchor" name="specifying-a-browser-for-a-test-task"></a>Specifying a Browser for a Test Task <a class="permalink" href="#specifying-a-browser-for-a-test-task">#</a></h2>
+<p>When running tests, you can specify a browser accessed through the provider plugin by using a <em>browser alias</em>.
+The alias consists of the browser provider name and the name of the browser itself (the latter may be omitted in some providers); for example, <code>saucelabs:Chrome@52.0:Windows 8.1</code>.</p>
+
+<p>To obtain all the available aliases for your provider, run the <code>testcafe --list-browsers {shortProviderName}</code> command, where <code>{shortProviderName}</code> is the provider name (without the <code>testcafe-browser-provider-</code> prefix); for example, <code>testcafe --list-browsers my-provider</code>.</p>
+
+
+		</div>
+	</article>
+</main>
+</div>
+
+      <div class="push"></div>
+    </div>
+
+    <footer class="site-footer">
+    <div class="site-footer-content">
+        <div class="footer-col-1">
+            <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
+            Copyright © 1998-2016 Developer Express Inc.</p>
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

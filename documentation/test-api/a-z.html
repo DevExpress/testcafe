@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>A-Z Index | TestCafe</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+
+  <link rel="shortcut icon" href="/testcafe/favicon.ico">
+  <link rel="stylesheet" href="/testcafe/css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/a-z.html">
+  <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function (e) {
+          hljs.initHighlightingOnLoad();
+      });
+  </script>
+
+  
+  <script>
+    // Google Analytics
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83678642-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
+    <script>
+        function initNav(nav) {
+            var MIN_BODY_WIDTH = 900;
+            var FOOTER_HEIGHT  = 63;
+            var HEADER_HEIGHT  = 52;
+
+            function updatePosition() {
+                var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset + document.body.clientHeight;
+
+                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+            
+                if (footerVisibleHeight > 0) {
+                    if(nav.style.bottom !== footerVisibleHeight + 'px') {
+                        nav.style.bottom = footerVisibleHeight + 'px';
+                        Ps.update(nav);
+                    }
+                }
+                else if(nav.style.bottom !== '0') {
+                    nav.style.bottom = '0';
+                    Ps.update(nav);
+                }
+
+                if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                    if (nav.style.top !== HEADER_HEIGHT + 'px') {
+                        nav.style.top = HEADER_HEIGHT + 'px';
+                        Ps.update(nav);
+                    }
+                }
+                else {
+                    var top = window.pageYOffset <= HEADER_HEIGHT ? (HEADER_HEIGHT - window.pageYOffset) + 'px' : '0';
+
+                    if(nav.style.top !== top) {
+                        nav.style.top = top;
+                        Ps.update(nav);
+                    }
+                }
+            }
+            function initScrollBar() {
+                Ps.initialize(nav);
+                
+                window.addEventListener('resize', function () {
+                    Ps.update(nav);
+                });
+            }
+
+            initScrollBar();
+            updatePosition();
+            window.addEventListener('scroll', updatePosition);
+            window.addEventListener('resize', updatePosition);
+        }
+        document.addEventListener('DOMContentLoaded', function (e) {
+            var nav = document.querySelector('.doc-nav');
+
+            if(nav)
+                initNav(nav);
+        });
+    </script>
+  
+    <script>
+        function initHeader(siteHeader, contentWrapper) {
+            var MIN_BODY_WIDTH = 900;
+
+            function updateHeader() {
+                var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
+                
+                
+
+                siteHeader.style.position = bodyMinimized ? 'static' : '';
+
+                if(contentWrapper)
+                    contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
+            }
+
+            updateHeader();
+            window.addEventListener('scroll', updateHeader);
+            window.addEventListener('resize', updateHeader);
+        }
+        document.addEventListener('DOMContentLoaded', function (e) {
+            var contentWrapper = document.querySelector('.container');
+            var siteHeader     = document.querySelector('.site-header');
+
+            if(siteHeader) 
+                initHeader(siteHeader, contentWrapper);
+        });
+    </script>
+</head>
+
+
+  <body>
+    <div class="page-content-wrapper">
+
+      <header class="site-header minimized">
+  <div class="site-header-content">
+    <a class="site-logo" href="/testcafe/"></a>
+
+    <nav class="site-nav">
+      <div class="trigger">
+        
+          
+          <a class="page-link active" href="/testcafe/documentation/getting-started/">Documentation</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://github.com/DevExpress/testcafe">GitHub</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="/testcafe/blog/">Blog</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://github.com/DevExpress/testcafe/issues">Issues</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://testcafe-discuss.devexpress.com/">Discuss</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
+          <span class="page-link-separator">|</span>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+      <div class="container">
+    	<nav class="doc-nav">	
+		<div class="doc-nav-content">
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/getting-started/"  >GETTING STARTED</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/"  >USING TESTCAFE</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/installing-testcafe.html"  >Installing TestCafe</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/command-line-interface.html"  >Command Line Interface</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/"  >Programming Interface</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/testcafe.html"  >TestCafe Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/browserconnection.html"  >BrowserConnection Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/runner.html"  >Runner Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html"  >createTestCafe Factory</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/"  >Common Concepts</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browser-support.html"  >Browser Support</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/"  >TEST API</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/"  >Actions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/click.html"  >Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/double-click.html"  >Double Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/right-click.html"  >Right Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/drag-element.html"  >Drag Element</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/hover.html"  >Hover</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/select-text.html"  >Select Text</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/type-text.html"  >Type Text</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/press-key.html"  >Press Key</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/take-screenshot.html"  >Take Screenshot</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/upload.html"  >Upload</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/resize-window.html"  >Resize Window</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/action-options.html"  >Action Options</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/"  >Selecting Page Elements</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors.html"  >Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selector-options.html"  >Selector Options</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html"  >DOM Node Snapshots</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions.html"  >Assertions</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/pausing-the-test.html"  >Pausing the Test</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/handling-native-dialogs.html"  >Handling Native Dialogs</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/working-with-iframes.html"  >Working with &lt;iframes&gt;</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/a-z.html" class="active" >A-Z Index</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/"  >EXTENDING TESTCAFE</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/"  >Reporter Plugin</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html"  >Reporter Methods</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/helpers.html"  >Helpers</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/"  >Browser Provider Plugin</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.html"  >Browser Provider Methods</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/"  >RECIPES</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		</div>
+	</nav>
+
+
+<main>
+	<article class="doc">
+		<div class="post-content">
+
+			<h1>A-Z Index</h1>
+<p>This topic lists test API members in alphabetical order.</p>
+
+<ul>
+<li><a href="obtaining-data-from-the-client.html#creating-client-functions">ClientFunction</a>
+
+<ul>
+<li><a href="obtaining-data-from-the-client.html#overwriting-options">with</a></li>
+</ul></li>
+<li><a href="selecting-page-elements/dom-node-snapshots.html">DOM Node Snapshot</a>
+
+<ul>
+<li><em><a href="selecting-page-elements/dom-node-snapshots.html#members-common-across-all-nodes">members</a></em></li>
+</ul></li>
+<li><a href="test-code-structure.html#fixtures">fixture</a>
+
+<ul>
+<li><a href="test-code-structure.html#initialization-and-clean-up">afterEach</a></li>
+<li><a href="test-code-structure.html#initialization-and-clean-up">beforeEach</a></li>
+<li><a href="test-code-structure.html#specifying-the-start-webpage">page</a></li>
+</ul></li>
+<li><a href="selecting-page-elements/selectors.html#creating-selectors">Selector</a>
+
+<ul>
+<li><a href="selecting-page-elements/selector-options.html#overwriting-options">with</a></li>
+</ul></li>
+<li><a href="test-code-structure.html#tests">test</a></li>
+<li><a href="test-code-structure.html#test-controller">Test Controller</a>
+
+<ul>
+<li><a href="actions/upload.html#clear-file-upload-input">clearUpload</a></li>
+<li><a href="actions/click.html">click</a></li>
+<li><a href="actions/double-click.html">doubleClick</a></li>
+<li><a href="actions/drag-element.html#drag-an-element-by-an-offset">drag</a></li>
+<li><a href="actions/drag-element.html#drag-an-element-onto-another-one">dragtoElement</a></li>
+<li><a href="obtaining-data-from-the-client.html#one-time-client-code-execution">eval</a></li>
+<li><a href="handling-native-dialogs.html#dialog-history">getNativeDialogHistory</a></li>
+<li><a href="actions/hover.html">hover</a></li>
+<li><a href="actions/navigate.html">navigate</a></li>
+<li><a href="actions/press-key.html">pressKey</a></li>
+<li><a href="actions/resize-window.html#setting-the-window-size">resizeWindow</a></li>
+<li><a href="actions/resize-window.html#fitting-the-window-into-a-particular-device">resizeWindowToFitDevice</a></li>
+<li><a href="actions/right-click.html">rightClick</a></li>
+<li><a href="selecting-page-elements/selectors.html#one-time-selection">select</a></li>
+<li><a href="actions/select-text.html#perform-selection-within-editable-content">selectEditableContent</a></li>
+<li><a href="actions/select-text.html#select-text-in-input-elements">selectText</a></li>
+<li><a href="actions/select-text.html#select-textarea-content">selectTextAreaContent</a></li>
+<li><a href="actions/upload.html#populate-file-upload-input">setFilesToUpload</a></li>
+<li><a href="handling-native-dialogs.html#dialog-handler">setNativeDialogHandler</a></li>
+<li><a href="working-with-iframes.html#switching-to-an-iframe">switchToIframe</a></li>
+<li><a href="working-with-iframes.html#switching-back-to-the-main-window">switchToMainWindow</a></li>
+<li><a href="actions/take-screenshot.html">takeScreenshot</a></li>
+<li><a href="actions/type-text.html">typeText</a></li>
+<li><a href="pausing-the-test.html">wait</a></li>
+</ul></li>
+</ul>
+
+
+		</div>
+	</article>
+</main>
+</div>
+
+      <div class="push"></div>
+    </div>
+
+    <footer class="site-footer">
+    <div class="site-footer-content">
+        <div class="footer-col-1">
+            <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
+            Copyright © 1998-2016 Developer Express Inc.</p>
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

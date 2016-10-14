@@ -1,0 +1,105 @@
+.main-content {
+  display: block;
+  width: 770px;
+  padding: 60px 0 0;
+  margin: 0 auto; }
+
+.banner {
+  background-image: url(../images/background.png);
+  padding: 150px 150px 15px;
+  text-align: center; }
+
+.header {
+  font-weight: lighter;
+  font-size: 50px;
+  line-height: 60px;
+  color: #ffffff; }
+
+.slogan {
+  font-size: 21px;
+  color: #13303c;
+  padding-top: 30px;
+  line-height: 33px;
+  max-width: 1100px;
+  margin: auto; }
+
+.feature {
+  display: inline-block;
+  padding: 0 0 60px;
+  max-width: 770px;
+  width: 770px; }
+
+.name {
+  font-size: 35px;
+  padding: 12px 0 0; }
+
+.description {
+  font-size: 14px;
+  padding: 12px 0 0; }
+
+.command {
+  margin: 0 0 15px 0;
+  padding: 15px 15px 15px 25px;
+  background: #2d2d2d;
+  border: 5px #2d2d2d solid;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border-radius: 5px;
+  color: #ffffff;
+  letter-spacing: 1.1px; }
+
+.code-block {
+  margin: 0 0 auto 0; }
+
+pre {
+  padding: 4px 10px 4px;
+  margin: 0 0 15px 0; }
+
+.center {
+  text-align: center; }
+
+.blue-button-container {
+  display: block; }
+  .blue-button-container a:hover {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #36b6e5; }
+
+.blue-button {
+  display: block;
+  width: 310px;
+  margin: 0px auto 50px;
+  padding: 15px;
+  border: 2px #36b6e5 solid;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border-radius: 5px;
+  font-size: 24px;
+  color: #36b6e5;
+  text-align: center; }
+
+.white-button-container {
+  display: block; }
+  .white-button-container a:hover {
+    text-decoration: none;
+    color: #7ba5b5;
+    background-color: #ffffff; }
+
+.white-button {
+  display: block;
+  width: 310px;
+  margin: 50px auto 50px;
+  padding: 15px;
+  border: 2px #ffffff solid;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border-radius: 5px;
+  font-size: 24px;
+  color: #ffffff;
+  text-align: center; }
+
+.star-button {
+  height: 28px; }

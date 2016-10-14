@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>TestCafe Example Page</title>
+    <link rel="shortcut icon" href="/testcafe/favicon.ico">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="../css/example-page.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            function refreshFeedbackFormState() {
+                if (document.querySelector("#tried-test-cafe").checked) {
+                    $("#slider").slider("enable");
+                    $(".slider-values").addClass("active");
+                    $("#comments").attr("disabled", false);
+                }
+                else {
+                    $("#slider").slider("disable");
+                    $(".slider-values").removeClass("active");
+                    $("#comments").attr("disabled", true);
+                }
+            }
+
+            function refreshSubmitButtonState() {
+                $("#submit-button").attr("disabled", !$("#developer-name").val());
+            }
+
+            $("#slider").slider({ min: 1, max: 10, disabled: true, value: $("#testcafe-rank").val() });
+
+            refreshFeedbackFormState();
+            refreshSubmitButtonState();
+
+            $("#populate").on("click", function () {
+                if (confirm("Reset information before proceeding?")) {
+                    $("#developer-name").val("Peter Parker");
+                    refreshSubmitButtonState();
+                }
+            });
+
+            $("#developer-name")
+                .on("keyup", function () {
+                    refreshSubmitButtonState();
+                });
+
+            $("#tried-test-cafe")
+              .on("change", function () {
+                  refreshFeedbackFormState();
+              });
+
+
+            $("#main-form").on("submit", function (event) {
+                $('#testcafe-rank').val($("#slider").slider("value"));
+                sessionStorage.setItem('developer-name', $("#developer-name").val());
+                window.location.href = window.location.href + "thank-you.html";
+                event.preventDefault();
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+    <form id="main-form" action="#">
+<div class="main-content">
+    <header>
+        <h1>Example</h1>
+        <p>This webpage is used as a sample in TestCafe tutorials.</p>
+    </header>
+    <div class="row">
+<div class="column col-1">
+        <fieldset>
+            <legend>Your name:</legend>
+            <input id="developer-name" name="name" type="text" />
+            <input type="button" id="populate" value="Populate">
+        </fieldset>
+        <fieldset>
+            <legend>Which features are important to you:</legend>
+            <p><label for="remote-testing"><input type="checkbox" name="remote" id="remote-testing"> Support for testing on remote devices</label></p>
+            <p><label for="reusing-js-code"><input type="checkbox" name="re-using" id="reusing-js-code"> Re-using existing JavaScript code for testing</label></p>
+            <p><label for="background-parallel-testing"><input type="checkbox" name="background" id="background-parallel-testing"> Running tests in background and/or in parallel in multiple browsers</label></p>
+            <p><label for="continuous-integration-embedding"><input type="checkbox" name="CI" id="continuous-integration-embedding"> Easy embedding into a Continuous integration system</label></p>
+            <p><label for="traffic-markup-analysis"><input type="checkbox" name="analysis" id="traffic-markup-analysis"> Advanced traffic and markup analysis</label></p>
+        </fieldset>
+</div>
+
+<div class="column col-2">
+        <fieldset>
+            <legend>What is your primary Operating System:</legend>
+            <p><label for="windows"><input type="radio" name="os" id="windows" value="Windows"> Windows</label></p>
+            <p><label for="macos"><input type="radio" name="os" id="macos" value="MacOS"> MacOS</label></p>
+            <p><label for="linux"><input type="radio" name="os" id="linux" value="Linux"> Linux</label></p>
+        </fieldset>
+
+        <fieldset>
+            <legend>Which TestCafe interface do you use:</legend>
+            <select id="preferred-interface" name="preferred-interface">
+                <option>Command Line</option>
+                <option>JavaScript API</option>
+                <option>Both</option>
+            </select>
+        </fieldset>
+</div>
+</div>
+<div class="form-bottom">
+        <fieldset id="tried-section">
+            <label for="tried-test-cafe"><input type="checkbox" name="tried-test-cafe" id="tried-test-cafe"> I have tried TestCafe</label>
+        </fieldset>
+
+        <fieldset>
+            <legend>How would you rate TestCafe on a scale from 1 to 10</legend>
+            <div class="slider-container">
+            <div id="slider"></div>
+            <div class="slider-values">
+                <div class="slider-value">1</div>
+                <div class="slider-value">2</div>
+                <div class="slider-value">3</div>
+                <div class="slider-value">4</div>
+                <div class="slider-value">5</div>
+                <div class="slider-value">6</div>
+                <div class="slider-value">7</div>
+                <div class="slider-value">8</div>
+                <div class="slider-value">9</div>
+                <div class="slider-value">10</div>
+            </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Please let us know what you think:</legend>
+            <textarea id="comments" name="comments" disabled></textarea>
+        </fieldset>
+
+        <button type="submit" id="submit-button" disabled>Submit</button>
+</div>
+        <input type="hidden" id="testcafe-rank" name="testcafe-rank" value="1">
+        </div>
+    </form>
+</body>
+</html>
