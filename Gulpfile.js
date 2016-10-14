@@ -534,13 +534,7 @@ function testFunctional (fixturesDir, testingEnvironmentName) {
     process.env.TESTING_ENVIRONMENT = testingEnvironmentName;
 
     return gulp
-        .src([
-            'test/functional/setup.js',
-            'test/functional/fixtures/api/raw/hover/**/test.js',
-            'test/functional/fixtures/api/raw/iframe-switching/**/test.js',
-            'test/functional/fixtures/api/raw/navigate-to/**/test.js',
-            'test/functional/fixtures/api/raw/upload/**/test.js'
-        ])
+        .src(['test/functional/setup.js', fixturesDir + '/**/test.js'])
         .pipe(mocha({
             ui:       'bdd',
             reporter: 'spec',
