@@ -25,8 +25,7 @@ testingEnvironments[testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers
         {
             platform:    'Windows 10',
             browserName: 'microsoftedge',
-            alias:       'edge',
-            version:     '13.10586'
+            alias:       'edge'
         }
     ]
 };
