@@ -534,7 +534,16 @@ function testFunctional (fixturesDir, testingEnvironmentName) {
     process.env.TESTING_ENVIRONMENT = testingEnvironmentName;
 
     return gulp
-        .src(['test/functional/setup.js', fixturesDir + '/**/test.js'])
+        .src([
+            'test/functional/setup.js',
+            'test/functional/fixtures/native-dialogs-handling/**/test.js',
+            'test/functional/fixtures/selector-timeout/**/test.js',
+            'test/functional/fixtures/page-js-errors/**/test.js',
+            'test/functional/fixtures/page-error/**/test.js',
+            'test/functional/fixtures/driver/**/test.js',
+            'test/functional/fixtures/regression/**/test.js',
+            'test/functional/fixtures/api/**/test.js'
+        ])
         .pipe(mocha({
             ui:       'bdd',
             reporter: 'spec',
@@ -543,7 +552,7 @@ function testFunctional (fixturesDir, testingEnvironmentName) {
 }
 
 gulp.task('test-functional-travis-desktop-osx-and-ms-edge', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers);
+    return testFunctional('test/functional/fixtures/api', functionalTestConfig.testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers);
 });
 
 gulp.task('test-functional-travis-mobile', ['build'], function () {
