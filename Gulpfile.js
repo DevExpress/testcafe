@@ -539,8 +539,6 @@ function testFunctional (fixturesDir, testingEnvironmentName) {
             'test/functional/fixtures/native-dialogs-handling/**/test.js',
             'test/functional/fixtures/selector-timeout/**/test.js',
             'test/functional/fixtures/page-js-errors/**/test.js',
-            'test/functional/fixtures/page-error/**/test.js',
-            'test/functional/fixtures/driver/**/test.js',
             'test/functional/fixtures/regression/**/test.js',
             'test/functional/fixtures/api/**/test.js'
         ])
