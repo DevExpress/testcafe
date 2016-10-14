@@ -542,7 +542,7 @@ function testFunctional (fixturesDir, testingEnvironmentName) {
         }));
 }
 
-gulp.task('test-functional-travis-desktop-osx-and-ms-edge', ['build'], function () {
+gulp.task('test-functional-travis-desktop-osx-and-ms-edge', ['fast-build'], function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers);
 });
 
