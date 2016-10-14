@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Command Line Interface | TestCafe</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+
+  <link rel="shortcut icon" href="/testcafe/favicon.ico">
+  <link rel="stylesheet" href="/testcafe/css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html">
+  <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function (e) {
+          hljs.initHighlightingOnLoad();
+      });
+  </script>
+
+  
+  <script>
+    // Google Analytics
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83678642-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
+    <script>
+        function initNav(nav) {
+            var MIN_BODY_WIDTH = 900;
+            var FOOTER_HEIGHT  = 63;
+            var HEADER_HEIGHT  = 52;
+
+            function updatePosition() {
+                var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset + document.body.clientHeight;
+
+                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+            
+                if (footerVisibleHeight > 0) {
+                    if(nav.style.bottom !== footerVisibleHeight + 'px') {
+                        nav.style.bottom = footerVisibleHeight + 'px';
+                        Ps.update(nav);
+                    }
+                }
+                else if(nav.style.bottom !== '0') {
+                    nav.style.bottom = '0';
+                    Ps.update(nav);
+                }
+
+                if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                    if (nav.style.top !== HEADER_HEIGHT + 'px') {
+                        nav.style.top = HEADER_HEIGHT + 'px';
+                        Ps.update(nav);
+                    }
+                }
+                else {
+                    var top = window.pageYOffset <= HEADER_HEIGHT ? (HEADER_HEIGHT - window.pageYOffset) + 'px' : '0';
+
+                    if(nav.style.top !== top) {
+                        nav.style.top = top;
+                        Ps.update(nav);
+                    }
+                }
+            }
+            function initScrollBar() {
+                Ps.initialize(nav);
+                
+                window.addEventListener('resize', function () {
+                    Ps.update(nav);
+                });
+            }
+
+            initScrollBar();
+            updatePosition();
+            window.addEventListener('scroll', updatePosition);
+            window.addEventListener('resize', updatePosition);
+        }
+        document.addEventListener('DOMContentLoaded', function (e) {
+            var nav = document.querySelector('.doc-nav');
+
+            if(nav)
+                initNav(nav);
+        });
+    </script>
+  
+    <script>
+        function initHeader(siteHeader, contentWrapper) {
+            var MIN_BODY_WIDTH = 900;
+
+            function updateHeader() {
+                var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
+                
+                
+
+                siteHeader.style.position = bodyMinimized ? 'static' : '';
+
+                if(contentWrapper)
+                    contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
+            }
+
+            updateHeader();
+            window.addEventListener('scroll', updateHeader);
+            window.addEventListener('resize', updateHeader);
+        }
+        document.addEventListener('DOMContentLoaded', function (e) {
+            var contentWrapper = document.querySelector('.container');
+            var siteHeader     = document.querySelector('.site-header');
+
+            if(siteHeader) 
+                initHeader(siteHeader, contentWrapper);
+        });
+    </script>
+</head>
+
+
+  <body>
+    <div class="page-content-wrapper">
+
+      <header class="site-header minimized">
+  <div class="site-header-content">
+    <a class="site-logo" href="/testcafe/"></a>
+
+    <nav class="site-nav">
+      <div class="trigger">
+        
+          
+          <a class="page-link active" href="/testcafe/documentation/getting-started/">Documentation</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://github.com/DevExpress/testcafe">GitHub</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="/testcafe/blog/">Blog</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://github.com/DevExpress/testcafe/issues">Issues</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://testcafe-discuss.devexpress.com/">Discuss</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
+          <span class="page-link-separator">|</span>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+      <div class="container">
+    	<nav class="doc-nav">	
+		<div class="doc-nav-content">
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/getting-started/"  >GETTING STARTED</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/"  >USING TESTCAFE</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/installing-testcafe.html"  >Installing TestCafe</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/command-line-interface.html" class="active" >Command Line Interface</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/"  >Programming Interface</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/testcafe.html"  >TestCafe Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/browserconnection.html"  >BrowserConnection Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/runner.html"  >Runner Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html"  >createTestCafe Factory</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/"  >Common Concepts</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browser-support.html"  >Browser Support</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/"  >TEST API</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/"  >Actions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/click.html"  >Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/double-click.html"  >Double Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/right-click.html"  >Right Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/drag-element.html"  >Drag Element</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/hover.html"  >Hover</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/select-text.html"  >Select Text</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/type-text.html"  >Type Text</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/press-key.html"  >Press Key</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/take-screenshot.html"  >Take Screenshot</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/upload.html"  >Upload</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/resize-window.html"  >Resize Window</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/action-options.html"  >Action Options</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/"  >Selecting Page Elements</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors.html"  >Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selector-options.html"  >Selector Options</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html"  >DOM Node Snapshots</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions.html"  >Assertions</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/pausing-the-test.html"  >Pausing the Test</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/handling-native-dialogs.html"  >Handling Native Dialogs</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/working-with-iframes.html"  >Working with &lt;iframes&gt;</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/a-z.html"  >A-Z Index</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/"  >EXTENDING TESTCAFE</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/"  >Reporter Plugin</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html"  >Reporter Methods</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/helpers.html"  >Helpers</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/"  >Browser Provider Plugin</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.html"  >Browser Provider Methods</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/"  >RECIPES</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		</div>
+	</nav>
+
+
+<main>
+	<article class="doc">
+		<div class="post-content">
+
+			<h1>Command Line Interface</h1><div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="o">[</span>options] &lt;browser-list-comma-separated&gt; &lt;file-or-glob ...&gt;
+</code></pre></div>
+<ul>
+<li><a href="#browser-list">Browser List</a>
+
+<ul>
+<li><a href="#local-browsers">Local Browsers</a></li>
+<li><a href="#portable-browsers">Portable Browsers</a></li>
+<li><a href="#remote-browsers">Remote Browsers</a></li>
+<li><a href="#browsers-accessed-through-browser-provider-plugins">Browsers Accessed Through Browser Provider Plugins</a></li>
+</ul></li>
+<li><a href="#file-pathglob-pattern">File Path/Glob Pattern</a></li>
+<li><a href="#options">Options</a>
+
+<ul>
+<li><a href="#-h---help">-h, --help</a></li>
+<li><a href="#-v---version">-v, --version</a></li>
+<li><a href="#-b---list-browsers">-b, --list-browsers</a></li>
+<li><a href="#-r-name---reporter-name">-r &lt;name&gt;, --reporter &lt;name&gt;</a></li>
+<li><a href="#-s-path---screenshots-path">-s &lt;path&gt;, --screenshots &lt;path&gt;</a></li>
+<li><a href="#-s---screenshots-on-fails">-S, --screenshots-on-fails</a></li>
+<li><a href="#-q---quarantine-mode">-q, --quarantine-mode</a></li>
+<li><a href="#-e---skip-js-errors">-e, --skip-js-errors</a></li>
+<li><a href="#-t-name---test-name">-t &lt;name&gt;, --test &lt;name&gt;</a></li>
+<li><a href="#-t-pattern---test-grep-pattern">-T &lt;pattern&gt;, --test-grep &lt;pattern&gt;</a></li>
+<li><a href="#-f-name---fixture-name">-f &lt;name&gt;, --fixture &lt;name&gt;</a></li>
+<li><a href="#-f-pattern---fixture-grep-pattern">-F &lt;pattern&gt;, --fixture-grep &lt;pattern&gt;</a></li>
+<li><a href="#--selector-timeout-ms">--selector-timeout &lt;ms&gt;</a></li>
+<li><a href="#--ports-port1port2">--ports &lt;port1,port2&gt;</a></li>
+<li><a href="#--hostname-name">--hostname &lt;name&gt;</a></li>
+<li><a href="#--qr-code">--qr-code</a></li>
+<li><a href="#--color">--color</a></li>
+<li><a href="#--no-color">--no-color</a></li>
+</ul></li>
+</ul>
+<blockquote class="important"><div class="blockquote-content"><p>Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
+Inactive tabs and minimized browser windows switch to a lower resource consumption mode
+where tests are not guaranteed to execute correctly.</p>
+</div></blockquote><h2><a class="anchor" name="browser-list"></a>Browser List <a class="permalink" href="#browser-list">#</a></h2>
+<p>The <code>browser-list-comma-separated</code> argument specifies the list of browsers (separated by commas) where tests will be run.</p>
+<blockquote><div class="blockquote-content"><p>You are free to specify different types of browsers in one command call.</p>
+</div></blockquote><h3><a class="anchor" name="local-browsers"></a>Local Browsers <a class="permalink" href="#local-browsers">#</a></h3>
+<p>You can specify <a href="common-concepts/browser-support.html#locally-installed-browsers">locally installed browsers</a> by using browser aliases or paths (with the <code>path:</code> prefix).
+The list of all the available browsers can be obtained by calling the <a href="#-b---list-browsers">--list-browsers</a> command.</p>
+
+<p>The following example demonstrates how to run a test in several browsers.
+The browsers are specified differently: one by using an alias, the other by using a path.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome,path:/applications/safari.app tests/sample-fixture.js
+</code></pre></div>
+<p>To run tests against <strong>all installed browsers</strong>, use the <code>all</code> alias.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js
+</code></pre></div><h3><a class="anchor" name="portable-browsers"></a>Portable Browsers <a class="permalink" href="#portable-browsers">#</a></h3>
+<p>You can specify <a href="common-concepts/browser-support.html#portable-browsers">portable browsers</a> by using paths to the browser&#39;s executable file (with the <code>path:</code> prefix), for example:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe path:d:<span class="se">\f</span>irefoxportable<span class="se">\f</span>irefoxportable.exe tests/sample-fixture.js
+</code></pre></div><h3><a class="anchor" name="remote-browsers"></a>Remote Browsers <a class="permalink" href="#remote-browsers">#</a></h3>
+<p>To run tests in a <a href="common-concepts/browser-support.html#browsers-on-remote-devices">browser on a remote device</a>, specify <code>remote</code> as a browser alias.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe remote tests/sample-fixture.js
+</code></pre></div>
+<p>If you want to connect multiple browsers, specify <code>remote:</code> and the number of browsers. For example, if you need to use three remote browsers, specify <code>remote:3</code>.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe remote:3 tests/sample-fixture.js
+</code></pre></div>
+<p>TestCafe will provide URLs to open in required browsers on your remote device.</p>
+
+<p>You can also use the <a href="#--qr-code">--qr-code</a> option to display QR-codes that represent the same URLs.
+Scan the QR-codes by using the device on which you are going to test your application.
+As a result, the browsers will be connected to TestCafe and tests will start.</p>
+<h3><a class="anchor" name="browsers-accessed-through-browser-provider-plugins"></a>Browsers Accessed Through Browser Provider Plugins <a class="permalink" href="#browsers-accessed-through-browser-provider-plugins">#</a></h3>
+<p>To run tests in <a href="common-concepts/browser-support.html#browsers-in-cloud-testing-services">cloud browsers</a> or <a href="common-concepts/browser-support.html#nonconventional-browsers">other browsers</a> accessed through a <a href="../extending-testcafe/browser-provider-plugin/">browser provider plugin</a>,
+specify a browser alias that consists of the <code>{browser-provider-name}</code> prefix and the name of a browser itself (the latter can be omitted); for example, <code>saucelabs:Chrome@52.0:Windows 8.1</code>.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"saucelabs:Chrome@52.0:Windows 8.1"</span> tests/sample-fixture.js
+</code></pre></div><h2><a class="anchor" name="file-pathglob-pattern"></a>File Path/Glob Pattern <a class="permalink" href="#file-pathglob-pattern">#</a></h2>
+<p>The <code>file-or-glob ...</code> argument specifies the files or directories (separated by a space) from which to run these tests.</p>
+
+<p>For example, this command runs all tests located in the <code>my-tests</code> directory.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests
+</code></pre></div>
+<p>The following command runs tests from the specified fixture files.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests/fixture1.js my-tests/fixture2.js
+</code></pre></div>
+<p>You can also use <a href="https://github.com/isaacs/node-glob#glob-primer">globbing patterns</a> to specify a set of files.
+For example, this command runs tests from files that match <code>tests/*page*</code>, namely <code>tests/example-page.js</code> and <code>tests/main-page.js</code>.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie tests/<span class="k">*</span>page<span class="k">*</span>
+</code></pre></div>
+<p>If you do not specify any file or directory, TestCafe will run tests from the <code>test</code> or <code>tests</code> directories.</p>
+<h2><a class="anchor" name="options"></a>Options <a class="permalink" href="#options">#</a></h2><h3><a class="anchor" name="-h---help"></a>-h, --help <a class="permalink" href="#-h---help">#</a></h3>
+<p>Displays usage information for commands.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --help
+</code></pre></div><h3><a class="anchor" name="-v---version"></a>-v, --version <a class="permalink" href="#-v---version">#</a></h3>
+<p>Displays the TestCafe version.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --version
+</code></pre></div><h3><a class="anchor" name="-b---list-browsers"></a>-b, --list-browsers <a class="permalink" href="#-b---list-browsers">#</a></h3>
+<p>Lists aliases of the <a href="common-concepts/browser-support.html#locally-installed-browsers">local browsers</a> available on your computer.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --list-browsers
+</code></pre></div><h3><a class="anchor" name="-r-name---reporter-name"></a>-r &lt;name&gt;, --reporter &lt;name&gt; <a class="permalink" href="#-r-name---reporter-name">#</a></h3>
+<p>Specifies the name of a <a href="common-concepts/reporters.html">built-in</a> or <a href="../extending-testcafe/reporter-plugin/">custom reporter</a> that will be used to generate test reports.</p>
+
+<p>The following command runs tests in all available browsers and generates a report in the xunit format.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js -r xunit
+</code></pre></div>
+<p>The following command runs tests and generates a test report by using the custom reporter plugin.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js -r my-reporter
+</code></pre></div>
+<p>The generated test report will be displayed in the command prompt window.</p>
+
+<p>If you need to save the report to an external file, you can redirect the command output stream to the file
+by using the &gt; redirection operator and specifying the report file path.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js &gt; tests/test-results.txt
+</code></pre></div><h3><a class="anchor" name="-s-path---screenshots-path"></a>-s &lt;path&gt;, --screenshots &lt;path&gt; <a class="permalink" href="#-s-path---screenshots-path">#</a></h3>
+<p>Enables screenshot capturing and specifies the directory path
+to save screenshots to.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js -s screenshots
+</code></pre></div><blockquote><div class="blockquote-content"><p>The screenshot functionality is not yet available on Linux.
+See the corresponding <a href="https://github.com/DevExpress/testcafe-browser-natives/issues/12">issue on Github</a>.</p>
+</div></blockquote><h3><a class="anchor" name="-s---screenshots-on-fails"></a>-S, --screenshots-on-fails <a class="permalink" href="#-s---screenshots-on-fails">#</a></h3>
+<p>Takes a screenshot whenever a test fails. Screenshots are saved to the directory
+specified by using the <strong>-screenshots &lt;path&gt;</strong> option.</p>
+
+<p>For example, the following command runs tests from the
+  <code>sample-fixture.js</code> file in all browsers, takes screenshots if tests fail,
+  and saves the screenshots to the <code>screenshots</code> directory.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js -S -s screenshots
+</code></pre></div><blockquote><div class="blockquote-content"><p>The screenshot functionality is not yet available on Linux.
+See the corresponding <a href="https://github.com/DevExpress/testcafe-browser-natives/issues/12">issue on Github</a>.</p>
+</div></blockquote><h3><a class="anchor" name="-q---quarantine-mode"></a>-q, --quarantine-mode <a class="permalink" href="#-q---quarantine-mode">#</a></h3>
+<p>Enables the quarantine mode for tests that fail.
+In this mode, a failed test is executed several more times.
+The test result depends on the outcome (<em>passed</em> or <em>failed</em>) that occurs most often.
+That is, if the test fails on most attempts, the result is <em>failed</em>.
+And vice versa, if the test is executed successfully on most of the attempts, the result is <em>passed</em>.</p>
+
+<p>If the test result differs between test runs, the test is marked as unstable.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js -q
+</code></pre></div><h3><a class="anchor" name="-e---skip-js-errors"></a>-e, --skip-js-errors <a class="permalink" href="#-e---skip-js-errors">#</a></h3>
+<p>Prevents tests from failure when a JavaScript error occurs on a tested web page.
+By default, in case of such errors, TestCafe stops test execution and posts
+an error message to a report. If you want TestCafe to ignore JavaScript errors,
+specify this argument.</p>
+
+<p>For example, the following command runs tests from the specified file and forces TestCafe to ignore JavaScript errors.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie tests/sample-fixture.js -e
+</code></pre></div><h3><a class="anchor" name="-t-name---test-name"></a>-t &lt;name&gt;,  --test &lt;name&gt; <a class="permalink" href="#-t-name---test-name">#</a></h3>
+<p>TestCafe will run a test with the specified name.</p>
+
+<p>For example, the following command runs only the <code>&quot;Click a label&quot;</code> test from the <code>sample-fixture.js</code> file.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie tests/sample-fixture.js -t <span class="s2">"Click a label"</span>
+</code></pre></div><h3><a class="anchor" name="-t-pattern---test-grep-pattern"></a>-T &lt;pattern&gt;, --test-grep &lt;pattern&gt; <a class="permalink" href="#-t-pattern---test-grep-pattern">#</a></h3>
+<p>TestCafe will run tests whose names match the specified pattern.</p>
+
+<p>For example, the following command runs tests whose names match <code>Click.*</code>. These can be the <code>Click a label</code>, <code>Click a button</code> tests, etc.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests -T <span class="s2">"Click.*"</span>
+</code></pre></div><h3><a class="anchor" name="-f-name---fixture-name"></a>-f &lt;name&gt;, --fixture &lt;name&gt; <a class="permalink" href="#-f-name---fixture-name">#</a></h3>
+<p>TestCafe will run a fixture with the specified name.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests -f sample-fixture
+</code></pre></div><h3><a class="anchor" name="-f-pattern---fixture-grep-pattern"></a>-F &lt;pattern&gt;, --fixture-grep &lt;pattern&gt; <a class="permalink" href="#-f-pattern---fixture-grep-pattern">#</a></h3>
+<p>TestCafe will run fixtures whose names match the specified pattern.</p>
+
+<p>For example, the following command runs fixtures whose names match <code>Page.*</code>. These can be the <code>Page1</code>, <code>Page2</code> fixtures, etc.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests -F <span class="s2">"Page.*"</span>
+</code></pre></div><h3><a class="anchor" name="--selector-timeout-ms"></a>--selector-timeout &lt;ms&gt; <a class="permalink" href="#--selector-timeout-ms">#</a></h3>
+<p>Specifies the amount of time, in milliseconds, within which <a href="../test-api/selecting-page-elements/selectors.html">selectors</a> make
+attempts to obtain a node to be returned. See <a href="../test-api/selecting-page-elements/selectors.html#selector-timeout">Selector Timeout</a>.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests --selector-timeout 500000
+</code></pre></div><h3><a class="anchor" name="--ports-port1port2"></a>--ports &lt;port1,port2&gt; <a class="permalink" href="#--ports-port1port2">#</a></h3>
+<p>Specifies custom port numbers used by TestCafe to perform testing. The number range is [0-65535].</p>
+
+<p>If ports are not specified, TestCafe selects ports.</p>
+<h3><a class="anchor" name="--hostname-name"></a>--hostname &lt;name&gt; <a class="permalink" href="#--hostname-name">#</a></h3>
+<p>Specifies the hostname of your computer. It is used when running tests in <a href="#remote-browsers">remote browsers</a>.</p>
+
+<p>If the hostname is not specified, TestCafe will use the operating system hostname or network IP address of the current machine.</p>
+<h3><a class="anchor" name="--qr-code"></a>--qr-code <a class="permalink" href="#--qr-code">#</a></h3>
+<p>Outputs QR-code that represents URLs used to connect the <a href="#remote-browsers">remote browsers</a>.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe remote my-tests --qr-code
+</code></pre></div><h3><a class="anchor" name="--color"></a>--color <a class="permalink" href="#--color">#</a></h3>
+<p>Enables colors on the command line.</p>
+<h3><a class="anchor" name="--no-color"></a>--no-color <a class="permalink" href="#--no-color">#</a></h3>
+<p>Disables colors on the command line.</p>
+
+
+		</div>
+	</article>
+</main>
+</div>
+
+      <div class="push"></div>
+    </div>
+
+    <footer class="site-footer">
+    <div class="site-footer-content">
+        <div class="footer-col-1">
+            <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
+            Copyright © 1998-2016 Developer Express Inc.</p>
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

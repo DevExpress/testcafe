@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="shortcut icon" href="/testcafe/favicon.ico">
+    <link rel="stylesheet" href="../css/example-page.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <title>Thank you!</title>
+    <script>
+        $(function () {
+            var name = sessionStorage.getItem('developer-name');
+            var text = name ? "Thank you, " + name + "!" : "Thank you!";
+            $("<h1 id=\"article-header\">" + text + "</h1>").prependTo('.result-content');
+        });
+    </script>
+</head>
+<body>
+    <div class="result-content">
+        <p>To learn more about TestCafe, please visit:<br/>
+        <a href="/testcafe">devexpress.github.io/testcafe</a></p>
+    </div>
+   
+</body>
+</html>

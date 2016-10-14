@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Helpers | TestCafe</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+
+  <link rel="shortcut icon" href="/testcafe/favicon.ico">
+  <link rel="stylesheet" href="/testcafe/css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/helpers.html">
+  <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function (e) {
+          hljs.initHighlightingOnLoad();
+      });
+  </script>
+
+  
+  <script>
+    // Google Analytics
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83678642-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
+    <script>
+        function initNav(nav) {
+            var MIN_BODY_WIDTH = 900;
+            var FOOTER_HEIGHT  = 63;
+            var HEADER_HEIGHT  = 52;
+
+            function updatePosition() {
+                var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset + document.body.clientHeight;
+
+                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+            
+                if (footerVisibleHeight > 0) {
+                    if(nav.style.bottom !== footerVisibleHeight + 'px') {
+                        nav.style.bottom = footerVisibleHeight + 'px';
+                        Ps.update(nav);
+                    }
+                }
+                else if(nav.style.bottom !== '0') {
+                    nav.style.bottom = '0';
+                    Ps.update(nav);
+                }
+
+                if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                    if (nav.style.top !== HEADER_HEIGHT + 'px') {
+                        nav.style.top = HEADER_HEIGHT + 'px';
+                        Ps.update(nav);
+                    }
+                }
+                else {
+                    var top = window.pageYOffset <= HEADER_HEIGHT ? (HEADER_HEIGHT - window.pageYOffset) + 'px' : '0';
+
+                    if(nav.style.top !== top) {
+                        nav.style.top = top;
+                        Ps.update(nav);
+                    }
+                }
+            }
+            function initScrollBar() {
+                Ps.initialize(nav);
+                
+                window.addEventListener('resize', function () {
+                    Ps.update(nav);
+                });
+            }
+
+            initScrollBar();
+            updatePosition();
+            window.addEventListener('scroll', updatePosition);
+            window.addEventListener('resize', updatePosition);
+        }
+        document.addEventListener('DOMContentLoaded', function (e) {
+            var nav = document.querySelector('.doc-nav');
+
+            if(nav)
+                initNav(nav);
+        });
+    </script>
+  
+    <script>
+        function initHeader(siteHeader, contentWrapper) {
+            var MIN_BODY_WIDTH = 900;
+
+            function updateHeader() {
+                var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
+                
+                
+
+                siteHeader.style.position = bodyMinimized ? 'static' : '';
+
+                if(contentWrapper)
+                    contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
+            }
+
+            updateHeader();
+            window.addEventListener('scroll', updateHeader);
+            window.addEventListener('resize', updateHeader);
+        }
+        document.addEventListener('DOMContentLoaded', function (e) {
+            var contentWrapper = document.querySelector('.container');
+            var siteHeader     = document.querySelector('.site-header');
+
+            if(siteHeader) 
+                initHeader(siteHeader, contentWrapper);
+        });
+    </script>
+</head>
+
+
+  <body>
+    <div class="page-content-wrapper">
+
+      <header class="site-header minimized">
+  <div class="site-header-content">
+    <a class="site-logo" href="/testcafe/"></a>
+
+    <nav class="site-nav">
+      <div class="trigger">
+        
+          
+          <a class="page-link active" href="/testcafe/documentation/getting-started/">Documentation</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://github.com/DevExpress/testcafe">GitHub</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="/testcafe/blog/">Blog</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://github.com/DevExpress/testcafe/issues">Issues</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://testcafe-discuss.devexpress.com/">Discuss</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
+          <span class="page-link-separator">|</span>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+      <div class="container">
+    	<nav class="doc-nav">	
+		<div class="doc-nav-content">
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/getting-started/"  >GETTING STARTED</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/"  >USING TESTCAFE</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/installing-testcafe.html"  >Installing TestCafe</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/command-line-interface.html"  >Command Line Interface</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/"  >Programming Interface</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/testcafe.html"  >TestCafe Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/browserconnection.html"  >BrowserConnection Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/runner.html"  >Runner Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html"  >createTestCafe Factory</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/"  >Common Concepts</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browser-support.html"  >Browser Support</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/"  >TEST API</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/"  >Actions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/click.html"  >Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/double-click.html"  >Double Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/right-click.html"  >Right Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/drag-element.html"  >Drag Element</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/hover.html"  >Hover</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/select-text.html"  >Select Text</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/type-text.html"  >Type Text</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/press-key.html"  >Press Key</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/take-screenshot.html"  >Take Screenshot</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/upload.html"  >Upload</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/resize-window.html"  >Resize Window</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/action-options.html"  >Action Options</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/"  >Selecting Page Elements</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors.html"  >Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selector-options.html"  >Selector Options</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html"  >DOM Node Snapshots</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions.html"  >Assertions</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/pausing-the-test.html"  >Pausing the Test</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/handling-native-dialogs.html"  >Handling Native Dialogs</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/working-with-iframes.html"  >Working with &lt;iframes&gt;</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/a-z.html"  >A-Z Index</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/"  >EXTENDING TESTCAFE</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/"  >Reporter Plugin</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html"  >Reporter Methods</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/helpers.html" class="active" >Helpers</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/"  >Browser Provider Plugin</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.html"  >Browser Provider Methods</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/"  >RECIPES</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		</div>
+	</nav>
+
+
+<main>
+	<article class="doc">
+		<div class="post-content">
+
+			<h1>Helpers</h1>
+<p>Helpers are methods and libraries used to format report output when <a href=".#implementing-the-reporter">implementing a reporter</a>. TestCafe mixes in these methods to the reporter.</p>
+
+<p>To access helpers, use <code>this</code>.</p>
+
+<p>This topic contains information about several groups of helpers.</p>
+
+<ul>
+<li><a href="#output-helpers">Output Helpers</a></li>
+<li><a href="#formatting-helpers">Formatting Helpers</a></li>
+<li><a href="#coloring-helper">Coloring Helper</a></li>
+<li><a href="#datetime-helper">Date-Time Helper</a></li>
+</ul>
+<h2><a class="anchor" name="output-helpers"></a>Output Helpers <a class="permalink" href="#output-helpers">#</a></h2>
+<p>All output helper methods are chainable: each method returns <code>this</code> so that the methods can be executed one right after another.
+This allows you to write compact code like this.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">this</span><span class="p">.</span><span class="nx">setIndent</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">testname</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+</code></pre></div><h3><a class="anchor" name="newline"></a>newline <a class="permalink" href="#newline">#</a></h3>
+<p>Adds a new line to the report.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">newline () → this
+</code></pre></div>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="kr">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
+                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span> <span class="nx">passed</span><span class="err">`</span> <span class="p">:</span>
+                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="sr">/${this.testCount} failed`</span><span class="err">;
+</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">summary</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><h3><a class="anchor" name="write"></a>write <a class="permalink" href="#write">#</a></h3>
+<p>Writes the specified text to the report.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">write (text) → this
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>text</code></td>
+<td>String</td>
+<td>The text to output in the report.</td>
+</tr>
+</tbody></table>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="kr">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
+                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span> <span class="nx">passed</span><span class="err">`</span> <span class="p">:</span>
+                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="sr">/${this.testCount} failed`</span><span class="err">;
+</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">summary</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><h3><a class="anchor" name="usewordwrap"></a>useWordWrap <a class="permalink" href="#usewordwrap">#</a></h3>
+<p>Toggles word wrapping for subsequent output.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">useWordWrap (use) → this
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>use</code></td>
+<td>Boolean</td>
+<td>Specify <em>true</em> to enable word wrapping.</td>
+</tr>
+</tbody></table>
+
+<p><strong>Example</strong></p>
+
+<p>The following example demonstrates how to enable word wrapping in case the <code>title</code> string is long.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span> <span class="o">-</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+
+    <span class="kr">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">useWordWrap</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><h3><a class="anchor" name="setindent"></a>setIndent <a class="permalink" href="#setindent">#</a></h3>
+<p>Specifies indentation for subsequent output.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">setIndent (val) → this
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>val</code></td>
+<td>Integer</td>
+<td>Specifies the number of spaces to indent a new line. To disable indentation, set the parameter to 0.</td>
+</tr>
+</tbody></table>
+
+<p><strong>Example</strong></p>
+
+<p>The following example demonstrates how to indent summary information by four spaces.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="kr">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">passed</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="p">?</span>
+                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span><span class="p">}</span> <span class="nx">passed</span><span class="err">`</span> <span class="p">:</span>
+                  <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">testCount</span> <span class="o">-</span> <span class="nx">passed</span><span class="p">}</span><span class="sr">/${this.testCount} failed`</span><span class="err">;
+</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">setIndent</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">summary</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">//=&gt;    2/6 failed</span>
+</code></pre></div><h2><a class="anchor" name="formatting-helpers"></a>Formatting Helpers <a class="permalink" href="#formatting-helpers">#</a></h2><h3><a class="anchor" name="indentstring"></a>indentString <a class="permalink" href="#indentstring">#</a></h3>
+<p>Indents each line in a string by a number of spaces.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">indentString (str, indentVal) → String
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>str</code></td>
+<td>String</td>
+<td>The string to indent.</td>
+</tr>
+<tr>
+<td><code>indentVal</code></td>
+<td>Number</td>
+<td>The number of spaces to indent a new line.</td>
+</tr>
+</tbody></table>
+
+<p><strong>Example</strong></p>
+
+<p>This example demonstrates how you can indent each line in the <code>str</code> string by four spaces.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskStart</span> <span class="p">(</span><span class="nx">startTime</span><span class="p">,</span> <span class="nx">userAgents</span><span class="p">,</span> <span class="nx">testCount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">str</span> <span class="o">=</span> <span class="err">`</span><span class="nx">Start</span> <span class="nx">running</span> <span class="nx">tests</span><span class="err">\</span><span class="nx">nBrowsers</span> <span class="nx">used</span> <span class="k">for</span> <span class="nx">testing</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">userAgents</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+    <span class="nx">str</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">indentString</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">str</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="c1">//=&gt;    Start running tests</span>
+<span class="c1">//=&gt;    Browsers used for testing: Chrome,Firefox</span>
+</code></pre></div><h3><a class="anchor" name="wordwrap"></a>wordWrap <a class="permalink" href="#wordwrap">#</a></h3>
+<p>Breaks and wraps a string to a new line if its length exceeds the maximum allowed length.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">wordWrap (str, indentVal, width) → String
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>str</code></td>
+<td>String</td>
+<td>The string you want to break.</td>
+</tr>
+<tr>
+<td><code>indentVal</code></td>
+<td>Number</td>
+<td>The number of spaces to indent a new line.</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>Number</td>
+<td>The maximum number of characters each line can contain.</td>
+</tr>
+</tbody></table>
+
+<p><strong>Example</strong></p>
+
+<p>The following example demonstrates how to break the <code>title</code> string to the next line if the string length is more than 50 symbols.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">LINE_WIDTH</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+
+<span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">hasErr</span>    <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">result</span>    <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="err">`</span><span class="nx">passed</span><span class="err">`</span> <span class="p">:</span> <span class="err">`</span><span class="nx">failed</span><span class="err">`</span><span class="p">;</span>
+
+    <span class="nx">name</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span> <span class="o">-</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+
+    <span class="kd">let</span> <span class="nx">title</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+
+    <span class="nx">title</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">wordWrap</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">LINE_WIDTH</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">newline</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="c1">//=&gt;  failed Sample fixture - Comparing the input</span>
+<span class="c1">//=&gt;  value with the specified one</span>
+<span class="c1">//=&gt;</span>
+<span class="c1">//=&gt;  passed Sample fixture - Clicking an array of</span>
+<span class="c1">//=&gt;  labels and checking their states</span>
+</code></pre></div><h3><a class="anchor" name="escapehtml"></a>escapeHtml <a class="permalink" href="#escapehtml">#</a></h3>
+<p>Encodes a string for use in HTML.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">escapeHtml (str) → String
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>str</code></td>
+<td>String</td>
+<td>The string to be encoded.</td>
+</tr>
+</tbody></table>
+
+<p><strong>Example</strong></p>
+
+<p>The following example demonstrates how to escape the fixture name <em>Tests for the &quot;Example&quot; page</em> for HTML.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportFixtureStart</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">escapeHtml</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">//=&gt;Tests for the &amp;quot;Example&amp;quot; page</span>
+</code></pre></div><h3><a class="anchor" name="formaterror"></a>formatError <a class="permalink" href="#formaterror">#</a></h3>
+<p>Returns the formatted error message string for the specified error.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">formatError (err, prefix = '') → String
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>err</code></td>
+<td>String</td>
+<td>The error message you need to format.</td>
+</tr>
+<tr>
+<td><code>prefix = &#39;&#39;</code></td>
+<td>String</td>
+<td>The string that is prepended to the error. By default, it is empty.</td>
+</tr>
+</tbody></table>
+
+<p><strong>Example</strong></p>
+
+<p>The following example demonstrates how to add numbering to the errors.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">){</span>
+    <span class="p">...</span>
+    <span class="kr">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">hasErr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">errs</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">err</span><span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">newline</span><span class="p">()</span>
+                <span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">formatError</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">})</span> <span class="err">`</span><span class="p">));</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">//=&gt; 1) Chrome</span>
+<span class="c1">//=&gt;    Assertion failed at step "Step1"</span>
+<span class="c1">//=&gt;    ...</span>
+<span class="c1">//=&gt; 2) Firefox</span>
+<span class="c1">//=&gt;    Assertion failed at step "Step1"</span>
+<span class="c1">//=&gt;    ...</span>
+</code></pre></div><h2><a class="anchor" name="coloring-helper"></a>Coloring Helper <a class="permalink" href="#coloring-helper">#</a></h2><h3><a class="anchor" name="chalk"></a>chalk <a class="permalink" href="#chalk">#</a></h3>
+<p><a href="https://github.com/chalk/chalk">chalk</a> is used for ANSI-coloring of the text.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">chalk.&lt;style&gt;[.&lt;style&gt;...](string, [string...]) → this
+</code></pre></div>
+<p><strong>Example</strong></p>
+
+<p>The following example demonstrates how to color test results.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">errs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">hasErr</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">errs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">hasErr</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">chalk</span><span class="p">.</span><span class="nx">green</span><span class="p">(</span><span class="err">`</span><span class="nx">passed</span><span class="err">`</span><span class="p">)</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">chalk</span><span class="p">.</span><span class="nx">red</span><span class="p">(</span><span class="err">`</span><span class="nx">failed</span><span class="err">`</span><span class="p">);</span>
+
+    <span class="nx">name</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">currentFixtureName</span><span class="p">}</span> <span class="o">-</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+
+    <span class="kr">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">result</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="err">`</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>To force disabling coloring in reports, set the reporter&#39;s <code>noColors</code> property in the <code>src/index.js</code> file to <code>false</code>.
+For example, you may need to disable coloring for machine-readable formats (JSON or xUnit) since the colored output is not required.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">noColors</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+
+        <span class="nx">reportTaskStart</span> <span class="p">(</span><span class="nx">startTime</span><span class="p">,</span> <span class="nx">userAgents</span><span class="p">,</span> <span class="nx">testCount</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">...</span>
+        <span class="p">},</span>
+
+        <span class="p">...</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div><h2><a class="anchor" name="datetime-helper"></a>Date/Time Helper <a class="permalink" href="#datetime-helper">#</a></h2><h3><a class="anchor" name="moment"></a>moment <a class="permalink" href="#moment">#</a></h3>
+<p><a href="http://momentjs.com/">moment</a> is used to deal with dates and time.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">moment().format() → this
+</code></pre></div>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">durationMs</span>  <span class="o">=</span> <span class="nx">endTime</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">durationStr</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">moment</span>
+                            <span class="p">.</span><span class="nx">duration</span><span class="p">(</span><span class="nx">durationMs</span><span class="p">)</span>
+                            <span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="s1">'h[h] mm[m] ss[s]'</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="err">`</span><span class="nx">Duration</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">durationStr</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div>
+
+		</div>
+	</article>
+</main>
+</div>
+
+      <div class="push"></div>
+    </div>
+
+    <footer class="site-footer">
+    <div class="site-footer-content">
+        <div class="footer-col-1">
+            <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
+            Copyright © 1998-2016 Developer Express Inc.</p>
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

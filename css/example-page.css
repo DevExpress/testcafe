@@ -1,0 +1,119 @@
+.slider-values {
+  position: relative;
+  margin: 5px 0 30px;
+  color: #D5D5D5;
+  width: 99.6%; }
+  .slider-values.active {
+    color: black; }
+
+.slider-value {
+  position: absolute;
+  top: 0;
+  font-size: 12px; }
+  .slider-value:nth-child(1) {
+    left: 0; }
+  .slider-value:nth-child(2) {
+    left: 11.111%; }
+  .slider-value:nth-child(3) {
+    left: 22.222%; }
+  .slider-value:nth-child(4) {
+    left: 33.333%; }
+  .slider-value:nth-child(5) {
+    left: 44.444%; }
+  .slider-value:nth-child(6) {
+    left: 55.555%; }
+  .slider-value:nth-child(7) {
+    left: 66.666%; }
+  .slider-value:nth-child(8) {
+    left: 77.777%; }
+  .slider-value:nth-child(9) {
+    left: 88.888%; }
+  .slider-value:nth-child(10) {
+    left: 99.7%; }
+
+fieldset {
+  border: 0;
+  padding-left: 0px;
+  margin-left: 0px; }
+  fieldset#tried-section {
+    padding-bottom: 30px; }
+
+legend {
+  font-weight: bold;
+  padding-bottom: 10px; }
+
+label[for="tried-test-cafe"] {
+  font-weight: bold; }
+
+.main-content {
+  width: 850px;
+  margin: 0 auto 30px;
+  padding: 39px 30px 0; }
+
+.column {
+  display: inline-block;
+  font-size: 14px;
+  vertical-align: top; }
+
+.col-1 {
+  width: 550px; }
+  .col-1 fieldset {
+    padding-bottom: 30px; }
+    .col-1 fieldset:last-child {
+      padding-bottom: 20px; }
+
+.col-2 {
+  width: 300px; }
+  .col-2 fieldset {
+    padding-bottom: 30px; }
+
+.row {
+  font-size: 0; }
+
+#preferred-interface {
+  width: 99.5% !important; }
+
+.form-bottom {
+  font-size: 14px; }
+
+.slider-container {
+  padding: 10px 12px; }
+
+#comments {
+  width: 100%;
+  height: 120px; }
+
+.ui-widget {
+  font-size: inherit;
+  font-family: inherit; }
+
+#submit-button {
+  margin-right: auto;
+  display: block;
+  width: 100px;
+  height: 30px;
+  font-size: 14px;
+  margin-top: 30px; }
+
+input[type='checkbox'] {
+  vertical-align: bottom; }
+
+input[type='radio'] {
+  vertical-align: text-top; }
+
+.result-content {
+  margin: 0 auto;
+  position: relative;
+  top: 40%;
+  text-align: center; }
+
+h1 {
+  font-size: 56px;
+  color: #2fa4cf; }
+
+header {
+  font-size: 25px;
+  color: #878787;
+  padding-bottom: 24px; }
+  header p {
+    margin-top: -26px; }

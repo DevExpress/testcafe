@@ -1,0 +1,22 @@
+.gallery-container {
+    display: inline-block;
+    width: 882px;
+    height: 668px;
+    margin: 0 0 0 -55px;
+}
+
+#gallery {
+    margin: auto;
+}
+
+.dx-widget {
+  color: #36b6e5;
+}
+
+.dx-gallery-nav-button-prev, .dx-gallery-nav-button-next {
+    margin: -26px -3px 0;
+}
+
+.dx-gallery-indicator {
+    margin: 0 0 -5px;
+}
