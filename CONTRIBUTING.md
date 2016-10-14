@@ -18,22 +18,22 @@ By participating in the project you agree to abide by its terms.
 ## General Discussion
 
 If you have a question about TestCafe or want to share your opinion,
-welcome to our [discussion board](https://testcafe-discuss.devexpress.com/).
+please visit our [discussion board](https://testcafe-discuss.devexpress.com/).
 
 ## Reporting a Problem
 
-Something went wrong with TestCafe? File an issue in our [GitHub repository](https://github.com/DevExpress/testcafe/issues).
+If anything goes wrong with TestCafe, file an issue in our [GitHub repository](https://github.com/DevExpress/testcafe/issues).
 But first please search through the existing issues to see if the problem has already been reported or addressed.
 
-When you create a new issue, a template text is automatically added to its body. To help us understand your
+When you create a new issue, template text is automatically added to its body. To help us understand your
 problem, be sure to fill in all sections in this template.
 
 ## Code Contribution
 
-Please follow these steps when submitting your code.
+Please follow the steps below when submitting your code.
 
-1. Search the [list of issues](https://github.com/DevExpress/testcafe/issues) to see if
-  there is an issue for the bug you are going to fix or the feature you are going to implement. If you don't find any, please create one.
+1. Search the [list of issues](https://github.com/DevExpress/testcafe/issues) to see if there
+  is an issue for the bug or feature you are going to work on. If you do not find one, please create your own.
 
 2. If you are going to address an existing issue, check the comment thread to make sure that nobody is working on it at the moment.
 
@@ -44,11 +44,11 @@ Please follow these steps when submitting your code.
 
 5. Fork TestCafe and create a branch in your fork. Name this branch with an issue number, e.g. `gh852`, `gh853`.
   
-    > If you are going to update documentation, do this in a separate branch, e.g. `gh852-docs`.
+    > If you are going to update the documentation, do this in a separate branch, e.g. `gh852-docs`.
 
 6. Commit your changes into the branch.
 
-7. Add regression tests to the appropriate sections if you are fixing a bug. You can find these sections by searching for `Regression` in code.
+7. Add regression tests to the appropriate sections if you are fixing a bug. You can find these sections by searching for `Regression` in the code.
 
     Add unit and/or functional tests if you are developing new functionality.
 
@@ -64,7 +64,7 @@ Please follow these steps when submitting your code.
 
 10. Push changes to your fork.
 
-11. Submit a pull request. If you are also updating documentation, submit a separate pull request for these changes.
+11. Submit a pull request. If you are also updating the documentation, submit a separate pull request for these changes.
 
     The pull request name should describe what has been done and contain
     the [closes](https://github.com/blog/1506-closing-issues-via-pull-requests) directive
