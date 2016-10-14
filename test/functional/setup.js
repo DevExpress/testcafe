@@ -1,3 +1,4 @@
+var os                 = require('os');
 var browserTools       = require('testcafe-browser-tools');
 var SauceLabsConnector = require('saucelabs-connector');
 var Promise            = require('pinkie');
@@ -132,6 +133,8 @@ before(function () {
             global.testReport = null;
 
             global.runTests = function (fixture, testName, opts) {
+                console.log(`=== MEMORY === TOTAL: ${os.totalmem()} === FREE: ${os.freemem()}`);
+
                 var report             = '';
                 var runner             = testCafe.createRunner();
                 var fixturePath        = path.isAbsolute(fixture) ? fixture : path.join(path.dirname(caller()), fixture);
