@@ -1,6 +1,6 @@
 # Documentation
 
-> This is a development version of the documentation. The functionality described here may not be included in the current release version. Unreleased functionality may change or be dropped before the next release. Documentation for the release version is available at the [TestCafe website](https://devexpress.github.io/testcafe/getting-started/).
+> This is a development version of the documentation. The functionality described here may not be included in the current release version. Unreleased functionality may change or be dropped before the next release. Documentation for the release version is available at the [TestCafe website](https://devexpress.github.io/testcafe/documentation/getting-started/).
 
 * [GETTING STARTED](articles/documentation/getting-started/index.md)
 * [USING TESTCAFE](articles/documentation/using-testcafe/index.md)
