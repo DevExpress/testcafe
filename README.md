@@ -52,7 +52,7 @@ No native parts to compile, no browsers plugins to install.
 TestCafe automatically starts browsers, runs tests and gathers results. You only type a single command to begin testing.
 
 ```bash
-testcafe safari tests/
+testcafe chrome tests/
 ```
 
 When testing is finished, TestCafe aggregates test results from different browsers and outputs them into one comprehensive report.
@@ -176,7 +176,7 @@ test('My first test', async t => {
 You can simply run the test from a command shell by calling a single command where you specify the [target browser](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.md#browser-list) and [file path](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.md#file-pathglob-pattern).
 
 ```bash
-testcafe safari test1.js
+testcafe chrome test1.js
 ```
 
 TestCafe will automatically open the chosen browser and start test execution within it.

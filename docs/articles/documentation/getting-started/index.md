@@ -59,7 +59,7 @@ test('My first test', async t => {
 You can simply run the test from a command shell by calling a single command where you specify the [target browser](../using-testcafe/command-line-interface.md#browser-list) and [file path](../using-testcafe/command-line-interface.md#file-pathglob-pattern).
 
 ```bash
-testcafe safari test1.js
+testcafe chrome test1.js
 ```
 
 TestCafe will automatically open the chosen browser and start test execution within it.

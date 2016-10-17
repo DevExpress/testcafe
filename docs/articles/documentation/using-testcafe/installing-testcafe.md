@@ -17,7 +17,7 @@ npm install -g testcafe
 After that, you can run TestCafe from a [command line](command-line-interface.html) by using the `testcafe` command.
 
 ```bash
-testcafe safari tests/
+testcafe chrome tests/
 ```
 
 ## Locally
@@ -40,7 +40,7 @@ You can use the local version of TestCafe from a [command line](command-line-int
     For example, you can add the `testcafe` command to the `scripts` section of the package.json file in the following way.
 
     ```js
-    "scripts": { "test": "testcafe safari tests/" }
+    "scripts": { "test": "testcafe chrome tests/" }
     ```
 
     After that, you can run TestCafe by using the `npm test` command.
@@ -48,5 +48,5 @@ You can use the local version of TestCafe from a [command line](command-line-int
 * If TestCafe is installed locally as well as globally, you can simply use the `testcafe` command. The local version will run automatically.
 
     ```bash
-    testcafe safari tests/
+    testcafe chrome tests/
     ```
