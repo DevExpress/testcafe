@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://devexpress.github.io/testcafe/blog/introducing-testcafe-open-source-testing-framework.html</loc>
+<lastmod>2016-10-17T00:00:00+03:00</lastmod>
+</url>
+<url>
 <loc>http://devexpress.github.io/testcafe/documentation/test-api/a-z.html</loc>
 </url>
 <url>
@@ -149,10 +153,10 @@
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/example/index.html</loc>
-<lastmod>2016-10-17T16:49:14+03:00</lastmod>
+<lastmod>2016-10-17T18:56:30+03:00</lastmod>
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/example/thank-you.html</loc>
-<lastmod>2016-10-17T16:49:14+03:00</lastmod>
+<lastmod>2016-10-17T18:56:30+03:00</lastmod>
 </url>
 </urlset>
