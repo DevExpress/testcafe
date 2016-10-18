@@ -60,14 +60,22 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
         }
 
         if (!isElementFocusable && !isContentEditable) {
-            var curDocument = domUtils.findDocument(elementForFocus);
+            var curActiveElement    = domUtils.findDocument(elementForFocus).activeElement;
+            var isActiveElementBody = domUtils.isBodyElement(curActiveElement);
+            var focusableParent     = domUtils.isBodyElement(elementForFocus) ?
+                                      elementForFocus : domUtils.getFocusableParent(elementForFocus);
 
-            if (domUtils.isBodyElement(curDocument.activeElement)) {
+            // NOTE: we should not call focus or blur if action element is
+            // not focusable and is child of active element (gh-889)
+            var elementChildOfActiveElement = curActiveElement && !isActiveElementBody &&
+                                              domUtils.containsElement(curActiveElement, elementForFocus);
+
+            if (elementChildOfActiveElement || isActiveElementBody && domUtils.isBodyElement(focusableParent)) {
                 resolve();
                 return;
             }
 
-            elementForFocus = curDocument.body;
+            elementForFocus = focusableParent;
         }
 
         var focusWithSilentMode = !simulateFocus;

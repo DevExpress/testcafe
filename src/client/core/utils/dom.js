@@ -395,6 +395,17 @@ export function getNextFocusableElement (element, reverse) {
     return allFocusable[currentIndex + offset];
 }
 
+export function getFocusableParent (el) {
+    var parents = getParents(el);
+
+    for (var i = 0; i < parents.length; i++) {
+        if (isElementFocusable(parents[i]))
+            return parents[i];
+    }
+
+    return null;
+}
+
 export function remove (el) {
     if (el && el.parentElement)
         el.parentElement.removeChild(el);
