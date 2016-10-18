@@ -122,7 +122,7 @@ Write tests without boilerplate code.
 TestCafe automatically generates full-detailed reports that provide a test run summary and comprehensive information about errors.
 Automatic page screenshots, fancy call sites and call stacks free of TestCafe internals allow you to easily detect error causes.
 
-Use one of [built-in reporters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html) to output test results or [create your own one](https://devexpress.github.io/testcafe/documentation/extending-testcafe/custom-reporter-plugin/) to produce custom reports.
+Use one of [built-in reporters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html) to output test results or [create your own one](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/) to produce custom reports.
 
 ![Spec Report](docs/articles/images/spec-report.png)
 
@@ -146,21 +146,21 @@ For more information, see [Installing TestCafe](https://devexpress.github.io/tes
 ### Creating a Test
 
 To create a test, create a new .js file anywhere on your computer.
-This file must have a special structure: tests must be organized into fixtures. Thus, begin by declaring a fixture using the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.md#fixtures) function.
+This file must have a special structure: tests must be organized into fixtures. Thus, begin by declaring a fixture using the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures) function.
 
 ```js
 fixture `Getting Started`
 ```
 
 In this tutorial, you will create a test for the [https://devexpress.github.io/testcafe/example](https://devexpress.github.io/testcafe/example) sample page.
-Specify this page as a start page for the fixture by using the [page](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.md#specifying-the-start-webpage) function.
+Specify this page as a start page for the fixture by using the [page](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage) function.
 
 ```js
 fixture `Getting Started`
     .page('https://devexpress.github.io/testcafe/example');
 ```
 
-Then, create the [test](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.md#tests) function where you will place test code.
+Then, create the [test](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests) function where you will place test code.
 
 ```js
 fixture `Getting Started`
@@ -173,7 +173,7 @@ test('My first test', async t => {
 
 ### Running the Test
 
-You can simply run the test from a command shell by calling a single command where you specify the [target browser](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.md#browser-list) and [file path](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.md#file-pathglob-pattern).
+You can simply run the test from a command shell by calling a single command where you specify the [target browser](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#browser-list) and [file path](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#file-pathglob-pattern).
 
 ```bash
 testcafe chrome test1.js
@@ -185,7 +185,7 @@ TestCafe will automatically open the chosen browser and start test execution wit
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 > where tests are not guaranteed to execute correctly.
 
-For more information on how to configure the test run, see [Command Line Interface](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.md).
+For more information on how to configure the test run, see [Command Line Interface](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html).
 
 ### Viewing the Test Results
 
@@ -193,14 +193,14 @@ While the test is running, TestCafe is gathering information about the test run 
 
 ![Test Report](docs/articles/images/report.png)
 
-For more information, see [Reporters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.md).
+For more information, see [Reporters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html).
 
 ### Writing Test Code
 
 #### Performing Actions on the Page
 
 Every test should be capable of interacting with page content. To perform user actions, TestCafe provides
-a number of [actions](https://devexpress.github.io/testcafe/documentation/test-api/actions/index.md): `click`, `hover`, `typeText`, `setFilesToUpload`, etc.
+a number of [actions](https://devexpress.github.io/testcafe/documentation/test-api/actions/): `click`, `hover`, `typeText`, `setFilesToUpload`, etc.
 They can be called in a chain.
 
 The following fixture contains a simple test that types a developer name into a text editor and then clicks the Submit button.
@@ -216,7 +216,7 @@ test('My first test', async t => {
 });
 ```
 
-All test actions are implemented as async functions of the [test controller object](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.md#test-controller) `t`.
+All test actions are implemented as async functions of the [test controller object](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#test-controller) `t`.
 This object is used to access test run API.
 To wait for actions to complete, use the `await` keyword when calling these actions or action chains.
 
@@ -224,8 +224,8 @@ To wait for actions to complete, use the `await` keyword when calling these acti
 
 TestCafe allows you to observe the page state.
 For this purpose, it offers special kinds of functions that will execute your code on the client:
-[Selector](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.md) used to get direct access to DOM elements
-and [ClientFunction](https://devexpress.github.io/testcafe/documentation/test-api/obtaining-data-from-the-client.md) used to obtain arbitrary data from the client side.
+[Selector](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html) used to get direct access to DOM elements
+and [ClientFunction](https://devexpress.github.io/testcafe/documentation/test-api/obtaining-data-from-the-client.html) used to obtain arbitrary data from the client side.
 You call these functions as regular async functions, that is you can obtain their results and use parameters to pass data to them.
 
 For example, clicking the Submit button on the sample web page opens a "Thank you" page.
@@ -255,7 +255,7 @@ test('My first test', async t => {
 });
 ```
 
-For more information, see [Selecting Page Elements](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/index.md).
+For more information, see [Selecting Page Elements](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/).
 
 #### Assertions
 
