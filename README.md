@@ -11,6 +11,8 @@
 </p>
 
 <p align="center">
+<a href="https://ci.appveyor.com/project/DevExpress/testcafe"><img alt="Functional Windows desktop" src="https://ci.appveyor.com/api/projects/status/ftelkyuiji8lyadf?svg=true"></a>
+<a href="https://travis-ci.org/DevExpress/testcafe"><img alt="All Travis tasks (server, client, functional: mobile, macOS, Edge)" src="https://travis-ci.org/DevExpress/testcafe.svg"></a>
 <a href="https://www.npmjs.com/package/testcafe"><img alt="NPM Version" src="https://img.shields.io/npm/v/testcafe.svg" data-canonical-src="https://img.shields.io/npm/v/testcafe.svg" style="max-width:100%;"></a>
 </p>
 
@@ -18,7 +20,6 @@
 
 TestCafe is a pure node.js solution for testing web apps. It takes care of all the stages: starting browsers, running tests, gathering test results and generating reports. TestCafe doesn’t need browser plugins - it works in all popular modern browsers out-of-the-box.
 
-* [Build Status](#build-status)
 * [Features](#features)
 * [Getting Started](#getting-started)
 * [Documentation](#documentation)
@@ -26,14 +27,6 @@ TestCafe is a pure node.js solution for testing web apps. It takes care of all t
 * [Stay in Touch](#stay-in-touch)
 * [License](#license)
 * [Author](#author)
-
-## Build Status
-
-Tests             | Status
------------------ | ----------
-All Travis tasks (server, client, functional: mobile, macOS, Edge)  | [![Travis CI Status](https://travis-ci.org/DevExpress/testcafe.svg)](https://travis-ci.org/DevExpress/testcafe)
-Functional Windows desktop | [![AppVeyor status](https://ci.appveyor.com/api/projects/status/ftelkyuiji8lyadf?svg=true)](https://ci.appveyor.com/project/DevExpress/testcafe)
-Client            | [![Sauce Test Status](https://saucelabs.com/browser-matrix/testcafe-master.svg)](https://saucelabs.com/u/testcafe-master)
 
 ## Features
 
