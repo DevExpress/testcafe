@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-889</title>
+</head>
+<body>
+<table id="table" tabindex="0">
+    <tr>
+        <td id="cell">table cell</td>
+        <td>
+            <div id="div" style="width: 50px; height: 50px; background-color: green;"></div>
+        </td>
+    </tr>
+</table>
+<script>
+    window.tableFocusEventCount = 0;
+    window.tableBlurEventCount = 0;
+
+    document.getElementById('table').addEventListener('focus', function () {
+        window.tableFocusEventCount++;
+    });
+
+    document.getElementById('table').addEventListener('blur', function () {
+        window.tableBlurEventCount++;
+    });
+</script>
+</body>
+</html>
