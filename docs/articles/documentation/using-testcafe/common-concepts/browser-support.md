@@ -14,7 +14,8 @@ permalink: /documentation/using-testcafe/common-concepts/browser-support.html
 
 ## Officially Supported Browsers
 
-While TestCafe is designed to support most of the modern browsers *de facto*, there is a limited number of *officially supported* browsers for which TestCafe is being tested.
+While TestCafe is designed to support most modern browsers, there are a limited number
+of *officially supported* browsers against which TestCafe is actively tested.
 
 * Google Chrome
 * Internet Explorer (9+)
@@ -29,7 +30,7 @@ While TestCafe is designed to support most of the modern browsers *de facto*, th
 ## Locally Installed Browsers
 
 TestCafe can automatically detect popular browsers installed on the local computer.
-You can use a short name, *browser alias*, to identify these browsers when launching tests.
+You can use a short name - *browser alias* - to identify these browsers when launching tests.
 
 The following table lists browsers that can be detected automatically.
 
@@ -43,7 +44,8 @@ Mozilla Firefox   | `firefox`
 Opera             | `opera`
 Safari            | `safari`
 
-The list of all the available browsers can be obtained by calling the [--list-browsers](../command-line-interface.md#-b---list-browsers) command.
+The list of all the available browsers can be obtained by calling the `testcafe` command
+with the [--list-browsers](../command-line-interface.md#-b---list-browsers) flag.
 
 To run tests in a different local browser, specify the path to the browser executable file.
 
@@ -68,7 +70,8 @@ First, you will need to create a remote browser connection.
 * Command line: specify the `remote` *alias* (see [Remote Browsers](../command-line-interface.html#remote-browsers))
 * API: use the [createBrowserConnection](../programming-interface/testcafe.html#createbrowserconnection) method
 
-After that, TestCafe will provide a URL to open on the remote device in the browser against which you want to test. As you open this URL, the browser connects to the TestCafe server and starts testing.
+After that, TestCafe will provide a URL to open on the remote device in the browser against which you want to test.
+As you open this URL, the browser connects to the TestCafe server and starts testing.
 
 ## Browsers in Cloud Testing Services
 
@@ -80,7 +83,7 @@ Service                              | Plugin
 ------------------------------------ | -------------------
 [Sauce Labs](https://saucelabs.com/) | [testcafe-browser-provider-saucelabs](https://www.npmjs.com/package/testcafe-browser-provider-saucelabs)
 
-You can search npm for plugins developed by the community. Their names start with the `testcafe-browser-provider-` prefix: [https://www.npmjs.com/search?q=testcafe-browser-provider](https://www.npmjs.com/search?q=testcafe-browser-provider).
+You can search npm for plugins developed by the community. Their names begin with the `testcafe-browser-provider-` prefix: [https://www.npmjs.com/search?q=testcafe-browser-provider](https://www.npmjs.com/search?q=testcafe-browser-provider).
 
 You can also create your own plugin. See [Browser Provider Plugin](../../extending-testcafe/browser-provider-plugin/) for instructions.
 
@@ -88,6 +91,6 @@ You can also create your own plugin. See [Browser Provider Plugin](../../extendi
 
 To use a web browser of a different type, you will need a [browser provider plugin](../../extending-testcafe/browser-provider-plugin/).
 
-You can search npm for plugins developed by the community. Their names start with the `testcafe-browser-provider-` prefix: [https://www.npmjs.com/search?q=testcafe-browser-provider](https://www.npmjs.com/search?q=testcafe-browser-provider).
+You can search npm for plugins developed by the community. Their names begin with the `testcafe-browser-provider-` prefix: [https://www.npmjs.com/search?q=testcafe-browser-provider](https://www.npmjs.com/search?q=testcafe-browser-provider).
 
 You can also create your own plugin. See [Browser Provider Plugin](../../extending-testcafe/browser-provider-plugin/) for instructions.
