@@ -18,6 +18,8 @@ export default class LocallyInstalledBrowserProvider extends PathBrowserProvider
     async isValidBrowserName (browserName) {
         var browserNames = await this.getBrowserList();
 
+        browserName = browserName.toLowerCase();
+
         return browserNames.indexOf(browserName) > -1;
     }
 }
