@@ -60,7 +60,8 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
         }
 
         if (!isElementFocusable && !isContentEditable) {
-            var curActiveElement    = domUtils.findDocument(elementForFocus).activeElement;
+            var curDocument         = domUtils.findDocument(elementForFocus);
+            var curActiveElement    = curDocument.activeElement;
             var isActiveElementBody = domUtils.isBodyElement(curActiveElement);
             var focusableParent     = domUtils.isBodyElement(elementForFocus) ?
                                       elementForFocus : domUtils.getFocusableParent(elementForFocus);
@@ -75,7 +76,7 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
                 return;
             }
 
-            elementForFocus = focusableParent;
+            elementForFocus = focusableParent || curDocument.body;
         }
 
         var focusWithSilentMode = !simulateFocus;
