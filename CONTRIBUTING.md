@@ -1,9 +1,9 @@
 # Contributing to TestCafe
 
-Everyone is welcome to contribute to our project and we truly appreciate your help.
-TestCafe would not be possible without active support from the community.
+TestCafe would not be possible without active support from the community. We certainly appreciate and would
+encourage your contributions, no matter how large or small.
 
-These guidelines help you contribute easily and painlessly.
+To that end, please review our contribution guidelines first.
 
 * [Code of Conduct](#code-of-conduct)
 * [General Discussion](#general-discussion)
@@ -12,8 +12,7 @@ These guidelines help you contribute easily and painlessly.
 
 ## Code of Conduct
 
-TestCafe has adopted a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
-By participating in the project you agree to abide by its terms.
+TestCafe has adopted a [Contributor Code of Conduct](CODE_OF_CONDUCT.md), abide by its terms.
 
 ## General Discussion
 
@@ -22,11 +21,11 @@ please visit our [discussion board](https://testcafe-discuss.devexpress.com/).
 
 ## Reporting a Problem
 
-If anything goes wrong with TestCafe, file an issue in our [GitHub repository](https://github.com/DevExpress/testcafe/issues).
-But first please search through the existing issues to see if the problem has already been reported or addressed.
+If you find a problem when using TestCafe, please file an issue in our [GitHub repository](https://github.com/DevExpress/testcafe/issues).
+However, to save some time, please search through the existing issues to see if the problem has already been reported or addressed.
 
-When you create a new issue, template text is automatically added to its body. To help us understand your
-problem, be sure to fill in all sections in this template.
+When you create a new issue, template text is automatically added to its body.
+To help us understand the issue you're describing, be sure to fill in all sections in this template.
 
 ## Code Contribution
 
@@ -37,7 +36,7 @@ Please follow the steps below when submitting your code.
 
 2. If you are going to address an existing issue, check the comment thread to make sure that nobody is working on it at the moment.
 
-3. Leave a comment saying that you are willing to fix this issue and if possible provide details on how you are going to do this.
+3. Leave a comment saying that you are willing to fix this issue, and if possible, provide details on how you are going to do this.
 
 4. Core team members may need to discuss the details of the proposed fix with you. As soon as you get the green light from them,
   leave a comment saying that you are currently working on this issue.
@@ -50,7 +49,7 @@ Please follow the steps below when submitting your code.
 
 7. Add regression tests to the appropriate sections if you are fixing a bug. You can find these sections by searching for `Regression` in the code.
 
-    Add unit and/or functional tests if you are developing new functionality.
+    Add unit and/or functional tests if you are developing a new functionality.
 
 8. Fetch upstream changes and rebase your branch onto `master`.
 
