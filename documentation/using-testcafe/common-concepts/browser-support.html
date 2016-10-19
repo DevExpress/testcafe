@@ -557,7 +557,8 @@
 <li><a href="#nonconventional-browsers">Nonconventional Browsers</a></li>
 </ul>
 <h2><a class="anchor" name="officially-supported-browsers"></a>Officially Supported Browsers <a class="permalink" href="#officially-supported-browsers">#</a></h2>
-<p>While TestCafe is designed to support most of the modern browsers <em>de facto</em>, there is a limited number of <em>officially supported</em> browsers for which TestCafe is being tested.</p>
+<p>While TestCafe is designed to support most modern browsers, there are a limited number
+of <em>officially supported</em> browsers against which TestCafe is actively tested.</p>
 
 <ul>
 <li>Google Chrome</li>
@@ -571,7 +572,7 @@
 <blockquote><div class="blockquote-content"><p>TestCafe supports the latest version of each browser unless specified explicitly.</p>
 </div></blockquote><h2><a class="anchor" name="locally-installed-browsers"></a>Locally Installed Browsers <a class="permalink" href="#locally-installed-browsers">#</a></h2>
 <p>TestCafe can automatically detect popular browsers installed on the local computer.
-You can use a short name, <em>browser alias</em>, to identify these browsers when launching tests.</p>
+You can use a short name - <em>browser alias</em> - to identify these browsers when launching tests.</p>
 
 <p>The following table lists browsers that can be detected automatically.</p>
 
@@ -611,7 +612,8 @@ You can use a short name, <em>browser alias</em>, to identify these browsers whe
 </tr>
 </tbody></table>
 
-<p>The list of all the available browsers can be obtained by calling the <a href="../command-line-interface.html#-b---list-browsers">--list-browsers</a> command.</p>
+<p>The list of all the available browsers can be obtained by calling the <code>testcafe</code> command
+with the <a href="../command-line-interface.html#-b---list-browsers">--list-browsers</a> flag.</p>
 
 <p>To run tests in a different local browser, specify the path to the browser executable file.</p>
 
@@ -638,7 +640,8 @@ You can use a short name, <em>browser alias</em>, to identify these browsers whe
 <li>API: use the <a href="../programming-interface/testcafe.html#createbrowserconnection">createBrowserConnection</a> method</li>
 </ul>
 
-<p>After that, TestCafe will provide a URL to open on the remote device in the browser against which you want to test. As you open this URL, the browser connects to the TestCafe server and starts testing.</p>
+<p>After that, TestCafe will provide a URL to open on the remote device in the browser against which you want to test.
+As you open this URL, the browser connects to the TestCafe server and starts testing.</p>
 <h2><a class="anchor" name="browsers-in-cloud-testing-services"></a>Browsers in Cloud Testing Services <a class="permalink" href="#browsers-in-cloud-testing-services">#</a></h2>
 <p>TestCafe allows you to use browsers from cloud testing services. You can access them through <a href="../../extending-testcafe/browser-provider-plugin/">browser provider plugins</a>.</p>
 
@@ -656,13 +659,13 @@ You can use a short name, <em>browser alias</em>, to identify these browsers whe
 </tr>
 </tbody></table>
 
-<p>You can search npm for plugins developed by the community. Their names start with the <code>testcafe-browser-provider-</code> prefix: <a href="https://www.npmjs.com/search?q=testcafe-browser-provider">https://www.npmjs.com/search?q=testcafe-browser-provider</a>.</p>
+<p>You can search npm for plugins developed by the community. Their names begin with the <code>testcafe-browser-provider-</code> prefix: <a href="https://www.npmjs.com/search?q=testcafe-browser-provider">https://www.npmjs.com/search?q=testcafe-browser-provider</a>.</p>
 
 <p>You can also create your own plugin. See <a href="../../extending-testcafe/browser-provider-plugin/">Browser Provider Plugin</a> for instructions.</p>
 <h2><a class="anchor" name="nonconventional-browsers"></a>Nonconventional Browsers <a class="permalink" href="#nonconventional-browsers">#</a></h2>
 <p>To use a web browser of a different type, you will need a <a href="../../extending-testcafe/browser-provider-plugin/">browser provider plugin</a>.</p>
 
-<p>You can search npm for plugins developed by the community. Their names start with the <code>testcafe-browser-provider-</code> prefix: <a href="https://www.npmjs.com/search?q=testcafe-browser-provider">https://www.npmjs.com/search?q=testcafe-browser-provider</a>.</p>
+<p>You can search npm for plugins developed by the community. Their names begin with the <code>testcafe-browser-provider-</code> prefix: <a href="https://www.npmjs.com/search?q=testcafe-browser-provider">https://www.npmjs.com/search?q=testcafe-browser-provider</a>.</p>
 
 <p>You can also create your own plugin. See <a href="../../extending-testcafe/browser-provider-plugin/">Browser Provider Plugin</a> for instructions.</p>
 
