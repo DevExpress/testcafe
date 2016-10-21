@@ -1,4 +1,4 @@
-import { positionUtils } from '../../../deps/testcafe-core';
+import { positionUtils, domUtils } from '../../../deps/testcafe-core';
 
 import {
     NODE_SNAPSHOT_PROPERTIES,
@@ -62,7 +62,7 @@ export class NodeSnapshot {
 var elementSnapshotPropertyInitializers = {
     tagName: element => element.tagName.toLowerCase(),
     visible: positionUtils.isElementVisible,
-    focused: element => document.activeElement === element,
+    focused: element => domUtils.getActiveElement() === element,
 
     attributes: element => {
         var attrs  = getAttrs(element);

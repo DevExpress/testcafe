@@ -77,7 +77,7 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Compound filter');
     });
 
-    it('Should provide snapshot properties shorthands on selector', function () {
+    it('Should provide snapshot property shorthands on selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot properties shorthands on selector', { only: 'chrome' });
     });
 

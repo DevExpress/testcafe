@@ -107,7 +107,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
         this._defineSelectorPropertyWithBoundArgs(lazyPromise, args);
 
-        // OPTIMIZATION: use buffer function as selector to not trigger lazy property ahead of time
+        // OPTIMIZATION: use buffer function as selector not to trigger lazy property ahead of time
         createSnapshotPropertyShorthands(lazyPromise, () => lazyPromise.selector);
 
         return lazyPromise;

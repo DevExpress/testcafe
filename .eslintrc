@@ -2,6 +2,7 @@
   "parser": "babel-eslint",
   "extends": "eslint:recommended",
   "rules": {
+    "no-var" : 2,
     "no-alert": 2,
     "no-array-constructor": 2,
     "no-caller": 2,
