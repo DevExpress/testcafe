@@ -1,5 +1,5 @@
-Can't obtain information for node because specified selector does not match
-any node in the DOM tree.
+Cannot obtain information about the node because the specified selector does
+not match any node in the DOM tree.
 
 Browser: Chrome 15.0.874 / Mac OS X 10.8.1
 Screenshot: /unix/path/with/<tag>

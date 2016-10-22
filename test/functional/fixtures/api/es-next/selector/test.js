@@ -120,7 +120,7 @@ describe('[API] Selector', function () {
             return runTests('./testcafe-fixtures/selector-test.js', "Snapshot property shorthand - selector doesn't match any element", { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        "Can't obtain information for node because specified selector does not match any node in the DOM tree."
+                        'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.'
                     );
                     expect(errs[0]).contains("> 508 |    await Selector('#someUnknownElement').tagName;");
                 });
@@ -130,7 +130,7 @@ describe('[API] Selector', function () {
             return runTests('./testcafe-fixtures/selector-test.js', "Snapshot shorthand method - selector doesn't match any element", { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        "Can't obtain information for node because specified selector does not match any node in the DOM tree."
+                        'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.'
                     );
                     expect(errs[0]).contains("> 512 |    await Selector('#someUnknownElement').getStyleProperty('width');");
                 });
