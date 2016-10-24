@@ -184,7 +184,7 @@ For more information on how to configure the test run, see [Command Line Interfa
 
 ### Viewing the Test Results
 
-While the test is running, TestCafe is gathering information about the test run and outputing the report right into a command shell.
+While the test is running, TestCafe is gathering information about the test run and outputting the report right into a command shell.
 
 ![Test Report](docs/articles/images/report.png)
 
