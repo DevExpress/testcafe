@@ -94,8 +94,9 @@ export function getClientDimensions (target) {
     var elementTopPosition  = isHtmlElement ? 0 : elementRect.top;
     var elementHeight       = isHtmlElement ? target.clientHeight : elementRect.height;
     var elementWidth        = isHtmlElement ? target.clientWidth : elementRect.width;
+    var isCompatMode        = target.ownerDocument.compatMode === 'BackCompat';
 
-    if (isHtmlElement && (typeof isIFrameWithoutSrc === 'boolean' && isIFrameWithoutSrc) && body) {
+    if (isHtmlElement && body && (typeof isIFrameWithoutSrc === 'boolean' && isIFrameWithoutSrc || isCompatMode) ) {
         elementHeight = body.clientHeight;
         elementWidth  = body.clientWidth;
     }
