@@ -20,7 +20,7 @@ The following example shows how to use the `t.navigateTo` action.
 
 ```js
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('Navigate to the main page', async t => {
     await t

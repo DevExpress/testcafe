@@ -52,15 +52,17 @@ permalink: /
                 <pre><code>import { expect } from 'chai';
 
 fixture `Example page`
-    .page('http://devexpress.github.io/testcafe/example');
+    .page `https://devexpress.github.io/testcafe/example`;
 
 test('Emulate user actions and perform a verification', async t => {
     await t
-        .click('#send-button')
-        .typeText('#input', 'Peter Parker')
-        .wait(1000);
+        .setNativeDialogHandler(() => true)
+        .click('#populate')
+        .click('#submit-button');
 
-    expect(await t.eval(() => getSomethingOnTheClient())).to.be.true;
+    const location = await t.eval(() => window.location);
+
+    expect(location.pathname).eql('/testcafe/example/thank-you.html');
 });</code></pre>
                 <p>Additionally, TestCafe automatically generates source maps for easy debugging. To debug your test code, start a debugging session in an IDE that supports source maps.</p>
             </div>
@@ -74,18 +76,17 @@ test('Emulate user actions and perform a verification', async t => {
 
                 <pre><code>import { Selector } from 'testcafe';
 
-const getElementById = Selector(id => document.querySelector(`#${id}`));
+const elementWithId = Selector(id => document.querySelector(`#${id}`));
 
 fixture `Example page`
-    .page('http://devexpress.github.io/testcafe/example');
+    .page `https://devexpress.github.io/testcafe/example`;
 
 test('Type the developer name, obtain the header text and check it', async t => {
     await t
         .typeText('#developer-name', 'John Smith')
         .click('#submit-button');
 
-    const articleHeader = await getElementById('article-header');
-    const headerText = articleHeader.innerText;
+    const headerText = await elementWithId('article-header').innerText;
 
     expect(headerText).to.equal('Thank you, John!');
 });</code></pre>

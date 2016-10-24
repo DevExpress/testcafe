@@ -23,7 +23,7 @@ The following example shows how to use the `t.rightClick` action to invoke a gri
 import { expect } from 'chai';
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('Popup Menu', async t => {
     await t.rightClick('#cell-1-1');

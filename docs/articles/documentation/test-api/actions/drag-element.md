@@ -24,7 +24,7 @@ t.drag( selector, dragOffsetX, dragOffsetY [, options] )
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
 `selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being dragged. See [Selecting Target Elements](index.md#selecting-target-elements).
-`dragOffsetX`          | Number                                            | An X-offset of the drop coordinates from the mouse pointer's initial position.  
+`dragOffsetX`          | Number                                            | An X-offset of the drop coordinates from the mouse pointer's initial position.
 `dragOffsetY`          | Number                                            | An Y-offset of the drop coordinates from the mouse pointer's initial position.
 `options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Mouse Action Options](action-options.md#mouse-action-options).
 
@@ -34,23 +34,19 @@ The following example demonstrates how to use the `t.drag` action with a slider.
 import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
-fixture `My fixture`
-    .page('http://www.example.com/');
+const slider = Selector('#developer-rating');
 
-const getSlider = Selector(id => document.getElementById('developer-rating'));
+fixture `My fixture`
+    .page `http://www.example.com/`;
 
 test('Drag slider', async t => {
     await t.click('#i-tried-testcafe');
 
-    const slider = await getSlider();
-
-    expect(slider.value).to.equal(1);
+    expect(await slider.value).to.equal(1);
 
     await t.drag('.ui-slider-handle', 360, 0, { offsetX: 10, offsetY: 10 });
 
-    slider = await getSlider();
-
-    expect(slider.value).to.equal(7);
+    expect(await slider.value).to.equal(7);
 });
 ```
 
@@ -63,7 +59,7 @@ t.dragToElement( selector, destinationSelector [, options] )
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------
 `selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being dragged. See [Selecting Target Elements](index.md#selecting-target-elements).
-`destinationSelector`  | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element that serves as the drop location. See [Selecting Target Elements](index.md#selecting-target-elements).  
+`destinationSelector`  | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element that serves as the drop location. See [Selecting Target Elements](index.md#selecting-target-elements).
 `options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Mouse Action Options](action-options.md#mouse-action-options).
 
 This sample shows how to drop an element into a specific area using the `t.dragToElement` action.
@@ -73,7 +69,7 @@ import { expect } from 'chai';
 import { ClientFunction } from 'testcafe';
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 const isDesignSurfaceEmpty = ClientFunction(() => !getDesignSurfaceElements().length);
 

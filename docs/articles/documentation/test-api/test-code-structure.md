@@ -56,7 +56,7 @@ Parameter | Type   | Description
 
 ```js
 fixture `My fixture`
-    .page('http://example.com');
+    .page `http://example.com`;
 ```
 
 If the start page is not specified, it defaults to `about:blank`.
@@ -112,16 +112,17 @@ use the [wait function](pausing-the-test.md) or [invoke selectors](selecting-pag
 import { expect } from 'chai';
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('My Test', async t => {
     await t
-        .click('#send-button')
         .setNativeDialogHandler(() => true)
-        .typeText('#input', 'Peter Parker')
-        .wait(1000);
+        .click('#populate')
+        .click('#submit-button');
 
-    expect(await t.eval(() => getSomethingOnTheClient())).to.be.true;
+    const location = await t.eval(() => window.location);
+
+    expect(location.pathname).eql('/testcafe/example/thank-you.html');
 });
 ```
 
@@ -153,7 +154,7 @@ you can use [test actions](actions/index.md) and other test run API inside `befo
 
 ```js
 fixture `My fixture`
-    .page('http://example.com')
+    .page `http://example.com`
     .beforeEach( async t => {
         /* initialization code */
     })

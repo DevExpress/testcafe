@@ -1,8 +1,7 @@
-/* eslint-env node, browser */
 import { expect } from 'chai';
 
 fixture `Check if the button text changes`
-    .page('http://localhost:9090/index.html');
+    .page `http://localhost:9090/index.html`;
 
 test('My test', async t => {
     await t

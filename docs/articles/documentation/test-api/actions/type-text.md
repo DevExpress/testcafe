@@ -14,7 +14,7 @@ t.typeText( selector, text [, options] )
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------
-`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element that will receive input focus. See [Selecting Target Elements](index.md#selecting-target-elements).  
+`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element that will receive input focus. See [Selecting Target Elements](index.md#selecting-target-elements).
 `text`                 | String                                            | The text to be typed into the specified webpage element.
 `options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Typing Action Options](action-options.md#typing-action-options). If this parameter is omitted, TestCafe sets the cursor to the end of the text before typing, thus preserving the text that is already in the input box.
 
@@ -24,18 +24,19 @@ The following example shows how to use `t.typeText` with and without options.
 
 ```js
 import { expect } from 'chai';
+import { Selector } from 'testcafe';
+
+const nameInput = Selector('#developer-name');
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('Type and Replace', async t => {
     await t
-        .typeText('#developer-name', 'Peter')
-        .typeText('#developer-name', 'Paker', { replace: true })
-        .typeText('#developer-name', 'r', { caretPos: 2 });
+        .typeText(nameInput, 'Peter')
+        .typeText(nameInput, 'Paker', { replace: true })
+        .typeText(nameInput, 'r', { caretPos: 2 });
 
-    const input = await t.select('#developer-name');
-
-    expect(input.value).to.equal('Parker');
+    expect(await nameInput.value).to.equal('Parker');
 });
 ```

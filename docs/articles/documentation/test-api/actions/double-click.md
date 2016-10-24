@@ -21,16 +21,17 @@ The following example shows how to use the `t.doubleClick` action to invoke a di
 
 ```js
 import { expect } from 'chai';
+import { Selector } from 'testcafe';
+
+const dialog = Selector('#dialog');
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('Invoke Image Options Dialog', async t => {
     await t.doubleClick('#thumbnail');
 
-    const dialog = await t.select('#dialog');
-
-    expect(dialog.visible).to.be.true;
+    expect(await dialog.visible).to.be.true;
 });
 ```
 

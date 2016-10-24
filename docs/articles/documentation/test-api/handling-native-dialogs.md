@@ -67,7 +67,7 @@ The following example demonstrates how to handle an alert dialog.
 
 ```js
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('My test', async t => {
     await t
@@ -80,7 +80,7 @@ The next example is a test that handles two confirm dialogs and a prompt dialog.
 
 ```js
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('My test', async t => {
     await t
@@ -132,7 +132,7 @@ Property | Type   | Description
 import { expect } from 'chai';
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('My test', async t => {
     await t

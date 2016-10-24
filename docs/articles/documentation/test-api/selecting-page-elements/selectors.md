@@ -48,7 +48,7 @@ The following example creates a selector from a function that returns a DOM elem
 ```js
 import { Selector } from 'testcafe';
 
-const getElement = Selector(id => document.getElementById(id));
+const elementWithId = Selector(id => document.getElementById(id));
 ```
 
 ## Selector Initializers
@@ -64,7 +64,7 @@ You can initialize a selector with any of these objects.
     // A selector is created from a regular function.
     // This selector will take the 'id' parameter and return
     // a DOM element that has this ID.
-    const getElementById = Selector(id => document.getElementById(id));
+    const elementWithId = Selector(id => document.getElementById(id));
     ```
 
 * A CSS selector string that matches one or several nodes.
@@ -74,7 +74,7 @@ You can initialize a selector with any of these objects.
 
     // A selector is created from a CSS selector string.
     // This selector will return the first matching DOM node.
-    const getSubmitButton = Selector('#submit-button');
+    const submitButton = Selector('#submit-button');
     ```
 
 * A selector.
@@ -84,13 +84,13 @@ You can initialize a selector with any of these objects.
 
     // This selector is created from a function that returs all elements of a specified class.
     // The selector returns the third such element since its `index` option is set to 2.
-    const getThirdElemByClass = Selector(cl => document.getElementsByClassName(cl), {
+    const thirdElemWithClass = Selector(cl => document.getElementsByClassName(cl), {
         index: 2
     });
 
     // This selector is created based on the previous selector and inherits its initializer,
     // but overwrites the `index` parameter to return the fourth element.
-    const getFourthElemOfClass = Selector(getThirdElemByClass, { index: 3 });
+    const fourthElemWithClass = Selector(thirdElemWithClass, { index: 3 });
     ```
 
 * A [DOM node snapshot](#return-values-dom-node-snapshots).
@@ -98,20 +98,20 @@ You can initialize a selector with any of these objects.
     ```js
     import { Selector } from 'testcafe';
 
-    const getElementById = Selector(id => document.getElementById(id));
+    const elementWithId = Selector(id => document.getElementById(id));
 
     fixture `My fixture`
-        .page('http://www.example.com/');
+        .page `http://www.example.com/`;
 
     test('My Test', async t => {
-        const topMenuSnapshot = await getElementById('top-menu');
+        const topMenuSnapshot = await elementWithId('top-menu');
 
         // This selector is created from a DOM node snapshot returned
         // by a different selector. The new selector will use the same initializer
-        // as 'getElementById' and will always be executed with the same parameter
+        // as 'elementWithId' and will always be executed with the same parameter
         // values that were used to obtain 'topMenuSnapshot'. You can still
         // overwrite the selector options.
-        const getVisibleTopMenu = Selector(topMenuSnapshot, {
+        const visibleTopMenu = Selector(topMenuSnapshot, {
             visibilityCheck: true
         });
     });
@@ -122,10 +122,10 @@ You can initialize a selector with any of these objects.
     ```js
     import { Selector } from 'testcafe';
 
-    const getElementById = Selector(id => document.getElementById(id));
+    const elementWithId = Selector(id => document.getElementById(id));
 
     fixture `My fixture`
-        .page('http://www.example.com/');
+        .page `http://www.example.com/`;
 
     test('My Test', async t => {
 
@@ -133,7 +133,7 @@ You can initialize a selector with any of these objects.
         // different selector. The new selector will be initialized with the
         // same function as the old one and with hard-coded parameter values
         // as in the previous example.
-        const getSubmitButton = Selector(getElementById('submit-button'));
+        const submitButton = Selector(elementWithId('submit-button'));
     });
     ```
 
@@ -155,17 +155,17 @@ import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
-const getRemoveButton = Selector(cl => document.getElementsByClassName(cl), { text: 'Remove' });
-const getSecondButton = Selector(cl => document.getElementsByClassName(cl), { index: 1 });
+const removeButton = Selector(cl => document.getElementsByClassName(cl), { text: 'Remove' });
+const secondButton = Selector(cl => document.getElementsByClassName(cl), { index: 1 });
 
 test('A shadowed remove button is focused', async t => {
-    expect((await getRemoveButton('shadowed')).focused).to.be.true;
+    expect(await removeButton('shadowed').focused).to.be.true;
 });
 
 test('The second disabled button is visible', async t => {
-    expect((await getSecondButton('disabled')).visible).to.be.true;
+    expect(await secondButton('disabled').visible).to.be.true;
 });
 ```
 
@@ -184,13 +184,13 @@ To execute a selector, call it with the `await` keyword like you would do with r
 ```js
 import { Selector } from 'testcafe';
 
-const getElementById = Selector(id => document.getElementById(id));
+const elementWithId = Selector(id => document.getElementById(id));
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('My test', async t => {
-    const button = await getElementById('my-button');
+    const button = await elementWithId('my-button');
 });
 ```
 
@@ -203,13 +203,13 @@ is a *DOM node snapshot* - an object that reflects the state of the DOM node.
 import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
-const getElementById = Selector(id => document.getElementById(id));
+const elementWithId = Selector(id => document.getElementById(id));
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('Login field height', async t => {
-    const loginInput = await getElementById('login');
+    const loginInput = await elementWithId('login');
 
     expect(loginInput.offsetWidth).to.equal(35);
 });
@@ -251,7 +251,7 @@ The following example shows how to get a DOM element by ID with `t.select`.
 
 ```js
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('My Test', async t => {
     const header = await t.select(() => document.getElementById('header'));
@@ -266,12 +266,12 @@ You can pass selectors to [test actions](../actions/index.md) to use the returne
 import { Selector } from 'testcafe';
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
-const getLastItem = Selector(() => document.querySelector('.toc-item:last-child'));
+const lastItem = Selector(() => document.querySelector('.toc-item:last-child'));
 
 test('My Test', async t => {
-    await t.click(getLastItem);
+    await t.click(lastItem);
 });
 ```
 
@@ -282,13 +282,13 @@ You can also pass a promise returned by a selector if you need to call it with a
 ```js
 import { Selector } from 'testcafe';
 
-const getElementById = Selector(id => document.getElementById(id));
+const elementWithId = Selector(id => document.getElementById(id));
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('My Test', async t => {
-    await t.click(getElementById('submit-button'));
+    await t.click(elementWithId('submit-button'));
 });
 ```
 
@@ -297,13 +297,13 @@ DOM element snapshots can also be passed to test actions.
 ```js
 import { Selector } from 'testcafe';
 
-const getElementById = Selector(id => document.getElementById(id));
+const elementWithId = Selector(id => document.getElementById(id));
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('My Test', async t => {
-    const topMenuSnapshot = await getElementById('top-menu');
+    const topMenuSnapshot = await elementWithId('top-menu');
 
     await t.click(topMenuSnapshot);
 });
@@ -331,12 +331,12 @@ import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
-const getElementById = Selector(id => document.getElementById(id));
+const elementWithId = Selector(id => document.getElementById(id));
 
 test('Title changed', async t => {
-    const boundSelector = getElementById.with({ boundTestRun: t });
+    const boundSelector = elementWithId.with({ boundTestRun: t });
 
     // Performs an HTTP request that changes the article title on the page.
     // Resolves to a value indicating whether the title has been changed.

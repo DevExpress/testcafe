@@ -37,7 +37,7 @@ import { expect } from 'chai';
 import { ClientFunction } from 'testcafe';
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 const getElementSelectionStart = ClientFunction(id => document.getElementById(id).selectionStart);
 const getElementSelectionEnd   = ClientFunction(id => document.getElementById(id).selectionEnd);
@@ -75,7 +75,7 @@ import { expect } from 'chai';
 import { ClientFunction } from 'testcafe';
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 const getElementSelectionStart = ClientFunction(id => document.getElementById(id).selectionStart);
 const getElementSelectionEnd   = ClientFunction(id => document.getElementById(id).selectionEnd);
@@ -99,7 +99,7 @@ t.selectEditableContent( startSelector, endSelector )
 
 Parameter       | Type                                              | Description
 --------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-`startSelector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element from which selection starts. The start position of selection is the first character of the element's text. See [Selecting Target Elements](index.md#selecting-target-elements).  
+`startSelector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element from which selection starts. The start position of selection is the first character of the element's text. See [Selecting Target Elements](index.md#selecting-target-elements).
 `endSelector`   | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element at which selection ends. The end position of selection is the last character of the element's text. See [Selecting Target Elements](index.md#selecting-target-elements).
 
 This function works for HTML elements that have the `contentEditable` attribute enabled.
@@ -113,7 +113,7 @@ The example below shows how to select several sections within a `contentEditable
 import { expect } from 'chai';
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('Delete text within a contentEditable element', async t => {
     await t

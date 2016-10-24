@@ -40,14 +40,14 @@ Specify this page as a start page for the fixture by using the [page](../test-ap
 
 ```js
 fixture `Getting Started`
-    .page('http://devexpress.github.io/testcafe/example');
+    .page `http://devexpress.github.io/testcafe/example`;
 ```
 
 Then, create the [test](../test-api/test-code-structure.md#tests) function where you will place test code.
 
 ```js
 fixture `Getting Started`
-    .page('http://devexpress.github.io/testcafe/example');
+    .page `http://devexpress.github.io/testcafe/example`;
 
 test('My first test', async t => {
     // Test code
@@ -90,7 +90,7 @@ The following fixture contains a simple test that types a developer name into a 
 
 ```js
 fixture `Getting Started`
-    .page('http://devexpress.github.io/testcafe/example');
+    .page `http://devexpress.github.io/testcafe/example`;
 
 test('My first test', async t => {
     await t
@@ -120,10 +120,10 @@ import { Selector } from 'testcafe';
 
 // Declare the parameterized Selector function
 // to get access to a DOM element identified by the `id` attribute
-const getElementById = Selector(id => document.getElementById(id));
+const elementWithId = Selector(id => document.getElementById(id));
 
 fixture `Getting Started`
-    .page('http://devexpress.github.io/testcafe/example');
+    .page `http://devexpress.github.io/testcafe/example`;
 
 test('My first test', async t => {
     await t
@@ -131,10 +131,13 @@ test('My first test', async t => {
         .click('#submit-button');
 
     // Use the Selector function to get access to the article header
-    const articleHeader = await getElementById('article-header');
+    const articleHeader = await elementWithId('article-header');
 
     // Obtain the text of the article header
-    const headerText = articleHeader.innerText;
+    let headerText = articleHeader.innerText;
+
+    // Or use a shorthand form to obtain article header text directly
+    headerText = await elementWithId('article-header').innerText;
 });
 ```
 
@@ -158,10 +161,10 @@ import { Selector } from 'testcafe';
 
 // Declare the parameterized selector function
 // to obtain text content of an element identified by the `id` attribute
-const getElementById = Selector(id => document.getElementById(id));
+const elementWithId = Selector(id => document.getElementById(id));
 
 fixture `Getting Started`
-    .page('http://devexpress.github.io/testcafe/example');
+    .page `http://devexpress.github.io/testcafe/example`;
 
 test('My first test', async t => {
     await t
@@ -169,9 +172,9 @@ test('My first test', async t => {
         .click('#submit-button');
 
     // Use the Selector function to get access to the article header
-    const articleHeader = await getElementById('article-header');
+    const headerText = await elementWithId('article-header').innerText;
 
     // Use the assertion to check if the actual header text is equal to the expected one
-    expect(articleHeader.innerText).to.equal('Thank you, John Smith!');
+    expect(headerText).to.equal('Thank you, John Smith!');
 });
 ```
