@@ -44,6 +44,7 @@ export default {
     clientFunctionExecutionInterruptionError:          'clientFunctionExecutionInterruptionError',
     domNodeClientFunctionResultError:                  'domNodeClientFunctionResultError',
     invalidSelectorResultError:                        'invalidSelectorResultError',
+    cantObtainInfoForElementSpecifiedBySelectorError:  'cantObtainInfoForElementSpecifiedBySelectorError',
     externalAssertionLibraryError:                     'externalAssertionLibraryError',
     pageLoadError:                                     'pageLoadError'
 };

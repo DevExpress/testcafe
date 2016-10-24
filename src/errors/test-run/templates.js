@@ -207,5 +207,9 @@ export default {
         Action "${err.selectorName}" argument error:
 
         ${escapeHtml(err.errMsg)}
+    `),
+
+    [TYPE.cantObtainInfoForElementSpecifiedBySelectorError]: err => markup(err, `
+        Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.
     `)
 };

@@ -77,13 +77,17 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Compound filter');
     });
 
+    it('Should provide snapshot property shorthands on selector', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot properties shorthands on selector', { only: 'chrome' });
+    });
+
     describe('Errors', function () {
         it('Should handle errors in Selector code', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Error in code', { shouldFail: true })
                 .catch(function (errs) {
                     expect(errs[0]).contains('An error occurred in Selector code:');
                     expect(errs[0]).contains('Error: Hey ya!');
-                    expect(errs[0]).contains('> 230 |    await selector();');
+                    expect(errs[0]).contains('> 233 |    await selector();');
                 });
         });
 
@@ -94,7 +98,7 @@ describe('[API] Selector', function () {
                         'Function that specifies a selector can only return a DOM node, an array of nodes, ' +
                         'NodeList, HTMLCollection, null or undefined. Use ClientFunction to return other values.'
                     );
-                    expect(errs[0]).contains("> 259 |    await Selector(() => 'hey')();");
+                    expect(errs[0]).contains("> 262 |    await Selector(() => 'hey')();");
                 });
         });
 
@@ -108,8 +112,48 @@ describe('[API] Selector', function () {
                     'node snapshot or a Promise returned by a Selector, but number was passed.'
                 )).eql(0);
 
-                expect(errs[0]).contains('> 200 |    await Selector(123)();');
+                expect(errs[0]).contains('> 203 |    await Selector(123)();');
             });
+        });
+
+        it("Should raise error if snapshot property shorthand can't find element in DOM tree", function () {
+            return runTests('./testcafe-fixtures/selector-test.js', "Snapshot property shorthand - selector doesn't match any element", { shouldFail: true, only: 'chrome' })
+                .catch(function (errs) {
+                    expect(errs[0]).contains(
+                        'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.'
+                    );
+                    expect(errs[0]).contains("> 508 |    await Selector('#someUnknownElement').tagName;");
+                });
+        });
+
+        it("Should raise error if snapshot shorthand method can't find element in DOM tree", function () {
+            return runTests('./testcafe-fixtures/selector-test.js', "Snapshot shorthand method - selector doesn't match any element", { shouldFail: true, only: 'chrome' })
+                .catch(function (errs) {
+                    expect(errs[0]).contains(
+                        'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.'
+                    );
+                    expect(errs[0]).contains("> 512 |    await Selector('#someUnknownElement').getStyleProperty('width');");
+                });
+        });
+
+        it('Should raise error if error occurs in selector during shorthand property evaluation', function () {
+            return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot property shorthand - selector error', { shouldFail: true, only: 'chrome' })
+                .catch(function (errs) {
+                    expect(errs[0]).contains(
+                        'An error occurred in Selector code:'
+                    );
+                    expect(errs[0]).contains('> 516 |    await Selector(() => [].someUndefMethod()).nodeType;');
+                });
+        });
+
+        it('Should raise error if error occurs in selector during shorthand method evaluation', function () {
+            return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot shorthand method - selector error', { shouldFail: true, only: 'chrome' })
+                .catch(function (errs) {
+                    expect(errs[0]).contains(
+                        'An error occurred in Selector code:'
+                    );
+                    expect(errs[0]).contains("> 520 |    await Selector(() => [].someUndefMethod()).hasClass('yo');");
+                });
         });
     });
 

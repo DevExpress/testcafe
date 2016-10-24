@@ -69,6 +69,14 @@ export class InvalidSelectorResultError extends TestRunErrorBase {
     }
 }
 
+export class CantObtainInfoForElementSpecifiedBySelectorError extends TestRunErrorBase {
+    constructor (callsite) {
+        super(TYPE.cantObtainInfoForElementSpecifiedBySelectorError);
+
+        this.callsite = callsite;
+    }
+}
+
 
 // Page errors
 //--------------------------------------------------------------------

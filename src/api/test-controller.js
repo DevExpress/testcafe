@@ -1,7 +1,7 @@
 import Promise from 'pinkie';
 import { identity, assign, isNil as isNullOrUndefined } from 'lodash';
 import { MissingAwaitError } from '../errors/test-run';
-import getCallsite from '../errors/get-callsite';
+import { getCallsite } from '../errors/callsite';
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import SelectorBuilder from '../client-functions/selector-builder';
 

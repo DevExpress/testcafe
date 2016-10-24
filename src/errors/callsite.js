@@ -3,7 +3,7 @@ import stackCleaningHook from './stack-cleaning-hook';
 
 const STACK_TRACE_LIMIT = 2000;
 
-export default function getCallsite (methodName, typeName) {
+export function getCallsite (methodName, typeName) {
     var originalStackCleaningEnabled = stackCleaningHook.enabled;
     var originalStackTraceLimit      = Error.stackTraceLimit;
 
@@ -16,4 +16,8 @@ export default function getCallsite (methodName, typeName) {
     stackCleaningHook.enabled = originalStackCleaningEnabled;
 
     return callsiteRecord;
+}
+
+export function getCallsiteForGetter () {
+    return getCallsite('get', 'Function');
 }

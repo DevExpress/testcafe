@@ -5,3 +5,4 @@ site
 .sass-cache
 .publish
 ___test-screenshots___
+yarn.lock
