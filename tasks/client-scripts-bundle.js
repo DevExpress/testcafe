@@ -31,7 +31,7 @@ function clientScriptsBundleTask () {
                     // NOTE: force usage of client .babelrc for all
                     // files, regardless of their location
                     babelrc: false,
-                    extends: path.join(__dirname, './src/client/.babelrc')
+                    extends: path.join(__dirname, '../src/client/.babelrc')
                 });
 
                 // HACK: babel-plugin-transform-es2015-modules-commonjs forces
