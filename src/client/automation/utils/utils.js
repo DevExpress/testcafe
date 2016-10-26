@@ -59,6 +59,10 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
             return;
         }
 
+        var focusWithSilentMode = !simulateFocus;
+        var focusForMouseEvent  = true;
+        var preventScrolling    = false;
+
         if (!isElementFocusable && !isContentEditable) {
             var curDocument         = domUtils.findDocument(elementForFocus);
             var curActiveElement    = curDocument.activeElement;
@@ -76,11 +80,9 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
                 return;
             }
 
-            elementForFocus = focusableParent || curDocument.body;
+            elementForFocus  = focusableParent || curDocument.body;
+            preventScrolling = true;
         }
-
-        var focusWithSilentMode = !simulateFocus;
-        var focusForMouseEvent  = true;
 
         focusBlurSandbox.focus(elementForFocus, () => {
             // NOTE: if a different element was focused in the focus event handler, we should not set selection
@@ -97,7 +99,7 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
                 focusBlurSandbox.focus(activeElement, resolve, true, true);
             else
                 resolve();
-        }, focusWithSilentMode, focusForMouseEvent);
+        }, focusWithSilentMode, focusForMouseEvent, false, preventScrolling);
     });
 }
 
