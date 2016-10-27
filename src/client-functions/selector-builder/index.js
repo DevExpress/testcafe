@@ -8,7 +8,8 @@ import functionBuilderSymbol from '../builder-symbol';
 import MESSAGE from '../../errors/runtime/message';
 import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import defineLazyProperty from '../../utils/define-lazy-property';
-import createSnapshotPropertyShorthands from './create-snapshot-property-shorthands';
+import createSnapshotShorthands from './create-snapshot-shorthands';
+import createSnapshotMethods from './create-snapshot-methods';
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
     constructor (fn, options, callsiteNames) {
@@ -108,7 +109,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         this._defineSelectorPropertyWithBoundArgs(lazyPromise, args);
 
         // OPTIMIZATION: use buffer function as selector not to trigger lazy property ahead of time
-        createSnapshotPropertyShorthands(lazyPromise, () => lazyPromise.selector);
+        createSnapshotShorthands(lazyPromise, () => lazyPromise.selector);
 
         return lazyPromise;
     }
@@ -194,7 +195,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     _decorateFunction (selectorFn) {
         super._decorateFunction(selectorFn);
 
-        createSnapshotPropertyShorthands(selectorFn, selectorFn);
+        createSnapshotShorthands(selectorFn, selectorFn);
     }
 
     _decorateFunctionResult (nodeSnapshot, selectorArgs) {
@@ -228,8 +229,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             return null;
         });
 
-        if (nodeSnapshot.classNames)
-            nodeSnapshot.hasClass = name => nodeSnapshot.classNames.indexOf(name) > -1;
+        createSnapshotMethods(nodeSnapshot);
 
         return nodeSnapshot;
     }

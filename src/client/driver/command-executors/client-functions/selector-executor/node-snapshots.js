@@ -3,7 +3,7 @@ import { positionUtils, domUtils } from '../../../deps/testcafe-core';
 import {
     NODE_SNAPSHOT_PROPERTIES,
     ELEMENT_SNAPSHOT_PROPERTIES
-} from '../../../../../client-functions/selector-builder/node-snapshot-properties';
+} from '../../../../../client-functions/selector-builder/snapshot-properties';
 
 import {
     getAttrs,

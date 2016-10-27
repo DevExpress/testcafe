@@ -15,10 +15,12 @@ test('HTMLElement snapshot basic properties', async () => {
     expect(el.tagName).eql('div');
 
     expect(el.attributes['id']).eql('htmlElement');
+    expect(el.getAttribute(['id'])).eql('htmlElement');
     expect(el.attributes['class']).eql('yo hey cool');
     expect(el.attributes['style']).contains('width: 40px; height: 30px; padding-top: 2px; padding-left: 2px;');
 
     expect(el.style['width']).eql('40px');
+    expect(el.getStyleProperty(['width'])).eql('40px');
     expect(el.style['height']).eql('30px');
     expect(el.style['padding-top']).eql('2px');
     expect(el.style['padding-left']).eql('2px');
@@ -53,6 +55,7 @@ test('HTMLElement snapshot basic properties', async () => {
 
     expect(el.boundingClientRect.width).eql(43);
     expect(el.boundingClientRect.left).eql(0);
+    expect(el.getBoundingClientRectProperty('left')).eql(0);
 
     expect(el.textContent).eql('\n    \n        42\n    \n    Yo\n');
     expect(el.classNames).eql(['yo', 'hey', 'cool']);
@@ -495,6 +498,9 @@ test('Snapshot properties shorthands on selector', async () => {
     el = Selector(() => document);
 
     expect(await el.hasClass('some-class')).to.be.false;
+    expect(await el.getStyleProperty('width')).to.be.undefined;
+    expect(await el.getAttribute('id')).to.be.undefined;
+    expect(await el.getBoundingClientRectProperty('left')).to.be.undefined;
 
     const selector = Selector(id => document.getElementById(id));
 
