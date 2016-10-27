@@ -21,16 +21,17 @@ The following example shows how to use the `t.click` action to check a checkbox 
 
 ```js
 import { expect } from 'chai';
+import { Selector } from 'testcafe';
+
+const checkbox = Selector('#testing-on-remote-devices');
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('Click a check box and check its state', async t => {
-    await t.click('#testing-on-remote-devices');
+    await t.click(checkbox);
 
-    const checkBox = await t.select('#testing-on-remote-devices');
-
-    expect(checkBox.checked).to.be.true;
+    expect(await checkbox.checked).to.be.true;
 });
 ```
 
@@ -38,18 +39,19 @@ The next example uses the `options` parameter to set the caret position in an in
 
 ```js
 import { expect } from 'chai';
+import { Selector } from 'testcafe';
+
+const nameInput = Selector('#developer-name');
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('Click Input', async t => {
     await t
-        .typeText('#developer-name', 'Peter Parker')
-        .click('#developer-name', { caretPos: 5 })
+        .typeText(nameInput, 'Peter Parker')
+        .click(nameInput, { caretPos: 5 })
         .keyPress('backspace');
 
-    const input = await t.select('#developer-name');
-
-    expect(input.value).to.equal('Pete Parker');
+    expect(await nameInput.value).to.equal('Pete Parker');
 });
 ```

@@ -29,16 +29,17 @@ The following example demonstrates how to use the `t.resizeWindow` action.
 
 ```js
 import { expect } from 'chai';
+import { Selector } from 'testcafe';
+
+const menu = Selector('#side-menu');
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('Side menu disappears on small screens', async t => {
     await t.resizeWindow(200, 100);
 
-    const menu = await t.select('#side-menu');
-
-    expect(menu.style.display).to.equal('none');
+    expect(await menu.getStyleProperty('display')).to.equal('none');
 });
 ```
 
@@ -65,17 +66,18 @@ The example below shows how to use the `t.resizeWindowToFitDevice` action.
 
 ```js
 import { expect } from 'chai';
+import { Selector } from 'testcafe';
+
+const header = Selector('#header');
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('Header is displayed on Xperia Z in portrait', async t => {
     await t.resizeWindowToFitDevice('Sony Xperia Z', {
         portraitOrientation: true
     });
 
-    const header = await t.select('#header');
-
-    expect(header.style.display).to.not.equal('none');
+    expect(await header.getStyleProperty('display')).to.not.equal('none');
 });
 ```

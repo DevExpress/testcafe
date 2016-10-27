@@ -23,7 +23,7 @@ The following example shows how to use the `t.takeScreenshot` action.
 
 ```js
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('Take a screenshot of my new avatar', async t => {
     await t

@@ -27,7 +27,7 @@ Parameter  | Type                                              | Description
 
 ```js
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('switching to an iframe', async t => {
     await t
@@ -47,7 +47,7 @@ Switches the test's browsing context from an `<iframe>` back to the main window.
 
 ```js
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('switching back to main window', async t => {
     await t

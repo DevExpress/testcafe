@@ -55,7 +55,7 @@ import { ClientFunction } from 'testcafe';
 const getWindowLocation = ClientFunction(() => window.location);
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('My Test', async t => {
     const location = await getWindowLocation();
@@ -67,7 +67,7 @@ test('My Test', async t => {
 You can pass the following options to the
 [ClientFunction constructor](#creating-client-functions) and the
 [t.eval](#one-time-client-code-execution) function.
-  
+
 ### options.dependencies
 
 **Type**: Object
@@ -82,9 +82,10 @@ This selector is passed to `getElemWidth` as a dependency.
 ```js
 import { Selector, ClientFunction } from 'testcafe';
 
-const getElemById  = Selector(id => document.getElementById(id));
-const getElemWidth = ClientFunction(id => getElemById(id).offsetWidth, {
-     dependencies: { getElemById }
+const elementWithId  = Selector(id => document.getElementById(id));
+
+const getElemWidth = ClientFunction(id => elementWithId(id).offsetWidth, {
+     dependencies: { elementWithId }
 });
 ```
 
@@ -118,14 +119,16 @@ The sample below shows how to overwrite the client function options.
 ```js
 import { Selector, ClientFunction } from 'testcafe';
 
-const getThirdElemByClass = Selector(cl => document.getElementsByClassName(cl), { index: 2 });
+const thirdElemWithClass = Selector(cl => document.getElementsByClassName(cl), { index: 2 });
+
 const getThirdElemWidth   = ClientFunction(cl => getElement(cl).offsetWidth, {
-     dependencies: { getElement: getThirdElemByClass }
+     dependencies: { getElement: thirdElemWithClass }
 });
 
-const getFourthElemByClass = getThirdElemByClass.with({ index: 3 });
-const getFourthElemWidth   = getThirdElemWidth.with({
-    dependencies: { getElement: getFourthElemByClass }
+const fourthElemWithClass = thirdElemWithClass.with({ index: 3 });
+
+const getFourthElemWidth = getThirdElemWidth.with({
+    dependencies: { getElement: fourthElemWithClass }
 });
 ```
 
@@ -147,7 +150,7 @@ The following example shows how to get the document's URI with `t.eval`.
 
 ```js
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('My Test', async t => {
     const docURI = await t.eval(() => document.documentURI);
@@ -170,7 +173,7 @@ import { expect } from 'chai';
 import { ClientFunction } from 'testcafe';
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 const getDataFromClient = ClientFunction(() => getSomeData());
 
@@ -200,5 +203,5 @@ by introducing a promise and synchronously waiting for it to complete as shown i
 * Client functions cannot access variables defined in the outer scope in test code.
   However, you can use arguments to pass data inside these functions, except for self-invoking functions
   that cannot take any parameters from the outside.
-  
+
     Likewise, the return value is the only way to obtain data from client functions.

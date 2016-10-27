@@ -41,17 +41,18 @@ The following example shows how to use the `t.pressKey` action.
 
 ```js
 import { expect } from 'chai';
+import { Selector } from 'testcafe';
+
+const nameInput = Selector('#developer-name');
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('Key Presses', async t => {
     await t
-        .typeText('#developer-name', 'Peter Parker')
+        .typeText(nameInput, 'Peter Parker')
         .pressKey('home right . delete delete delete delete');
 
-    const input = await t.select('#developer-name');
-
-    expect(input.value).to.equal('P. Parker');
+    expect(await nameInput.value).to.equal('P. Parker');
 });
 ```

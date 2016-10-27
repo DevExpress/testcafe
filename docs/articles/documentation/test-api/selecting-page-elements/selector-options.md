@@ -27,15 +27,16 @@ You can also overwrite the options you have specified before.
 Contains functions, variables or objects used by the selector internally.
 Properties of the `dependencies` object will be added to the selector's scope as variables.
 
-The following sample demonstrates a selector (`getGridCell`) that calls another selector (`getGridRow`) internally.
-The `getGridRow` selector is passed to `getGridCell` as a dependency.
+The following sample demonstrates a selector (`gridCell`) that calls another selector (`gridRow`) internally.
+The `gridRow` selector is passed to `gridCell` as a dependency.
 
 ```js
 import { Selector } from 'testcafe';
 
-const getGridRow  = Selector(n => document.getElementsByClassName('grid-row')[n]);
-const getGridCell = Selector((m, n) => getGridRow(m).children[n], {
-     dependencies: { getGridRow }
+const gridRow  = Selector(n => document.getElementsByClassName('grid-row')[n]);
+
+const gridCell = Selector((m, n) => gridRow(m).children[n], {
+     dependencies: { gridRow }
 });
 ```
 
@@ -113,15 +114,16 @@ The sample below shows how to overwrite the selector options so that it waits fo
 ```js
 import { Selector } from 'testcafe';
 
-const getElementById = Selector(id => document.getElementById(id));
+const elementWithId = Selector(id => document.getElementById(id));
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('My Test', async t => {
-    const getVisibleElementById = getElementById.with({
+    const visibleElementWithId = elementWithId.with({
         visibilityCheck: true
     });
-    const visibleButton = await getVisibleElementById('submit-button');
+
+    const visibleButton = await visibleElementWithId('submit-button');
 });
 ```

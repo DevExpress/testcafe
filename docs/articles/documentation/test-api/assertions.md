@@ -22,12 +22,12 @@ The following sample fixture demonstrates how to use assertions.
 import { expect } from 'chai';
 
 fixture `My fixture`
-    .page('http://example.com');
+    .page `http://example.com`;
 
 test('Test 1', async t => {
     await t.click('#myelem');
 
-    const myElement = await t.select(() => document.getElementById('myelem'));
+    const myElement = await t.select('#myelem');
 
     expect(myElement.visible).to.be.true;
 });
@@ -37,7 +37,7 @@ test('Test 2', async t => {
         .typeText('#input', 'Hello world!')
         .click('#apply');
 
-    const header = await t.select(() => document.getElementById('header'));
+    const header = await t.select('#header');
 
     expect(header.textContent).to.equal('Hello world!');
 });

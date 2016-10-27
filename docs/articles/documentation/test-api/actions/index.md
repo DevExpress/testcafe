@@ -14,7 +14,7 @@ The following sample types text into an input and clicks a button by using the `
 
 ```js
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('MyTest', async t => {
     await t
@@ -72,15 +72,15 @@ You can pass any of the following objects as a `selector`.
     import { Selector } from 'testcafe';
 
     fixture `My fixture`
-        .page('http://www.example.com/');
+        .page `http://www.example.com/`;
 
-    const getLastItem = Selector(() => document.querySelector('.toc-item:last-child'));
+    const lastItem = Selector(() => document.querySelector('.toc-item:last-child'));
 
     test('My Test', async t => {
 
         // Click will be performed on the element selected by
         // the 'getLastItem' selector.
-        await t.click(getLastItem);
+        await t.click(lastItem);
     });
     ```
 
@@ -89,13 +89,13 @@ You can pass any of the following objects as a `selector`.
     ```js
     import { Selector } from 'testcafe';
 
-    const getElementById = Selector(id => document.getElementById(id));
+    const elementWithId = Selector(id => document.getElementById(id));
 
     fixture `My fixture`
-        .page('http://www.example.com/');
+        .page `http://www.example.com/`;
 
     test('My Test', async t => {
-        const topMenuSnapshot = await getElementById('top-menu');
+        const topMenuSnapshot = await elementWithId('top-menu');
 
         // Click will be performed on the element whose snapshot
         // is specified. This is an element with the '#top-menu' ID.
@@ -108,17 +108,17 @@ You can pass any of the following objects as a `selector`.
     ```js
     import { Selector } from 'testcafe';
 
-    const getElementById = Selector(id => document.getElementById(id));
+    const elementWithId = Selector(id => document.getElementById(id));
 
     fixture `My fixture`
-        .page('http://www.example.com/');
+        .page `http://www.example.com/`;
 
     test('My Test', async t => {
 
         // Click will be performed on the element selected by
         // the 'getElementById' selector as soon as the promise
         // is resolved.
-        await t.click(getElementById('submit-button'));
+        await t.click(elementWithId('submit-button'));
     });
     ```
 

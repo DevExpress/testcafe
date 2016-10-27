@@ -24,17 +24,18 @@ then select an item and check that the combo box value has changed.
 
 ```js
 import { expect } from 'chai';
+import { Selector } from 'testcafe';
+
+const comboBox = Selector('.combo-box');
 
 fixture `My fixture`
-    .page('http://www.example.com/');
+    .page `http://www.example.com/`;
 
 test('Select combo box value', async t => {
     await t
-        .hover('.combo-box')
+        .hover(comboBox)
         .click('#i-prefer-both');
 
-    const comboBox = await t.select('.combo-box');
-
-    expect(comboBox.value).to.equal('Both');
+    expect(await comboBox.value).to.equal('Both');
 });
 ```
