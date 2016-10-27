@@ -225,8 +225,9 @@ For a list of members exposed by DOM node snapshots, see [DOM Node Snapshots](do
 
 #### Snapshot API Shorthands
 
-Selectors and promises returned by selectors expose snapshot API directly.
-This is useful when you need to access only one property or method of the snapshot.
+Selectors and promises returned by selectors expose snapshot API directly (except for
+snapshot's `getChildElement`, `getChildNode` and `getParentNode` methods).
+This is convenient when you need to use only one snapshot property or method.
 In this instance, you save a line of code because you do not need to obtain and save the snapshot object explicitly.
 
 ```js

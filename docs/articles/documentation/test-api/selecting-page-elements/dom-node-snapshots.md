@@ -11,7 +11,9 @@ This node can be a DOM element, document, fragment, text or comment node. DOM no
 
 This topic lists API members exposed by DOM node snapshots.
 
-> Selectors and promises returned by them also expose this API. See [Snapshot API Shorthands](selectors.md#snapshot-api-shorthands).
+> Selectors and promises returned by them also expose this API (except for
+snapshot's `getChildElement`, `getChildNode` and `getParentNode` methods).
+> See [Snapshot API Shorthands](selectors.md#snapshot-api-shorthands).
 
 ## Members Common Across All Nodes
 
