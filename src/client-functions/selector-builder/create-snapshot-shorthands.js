@@ -1,4 +1,4 @@
-import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './node-snapshot-properties';
+import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapshot-properties';
 import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
 import { getCallsite, getCallsiteForGetter } from '../../errors/callsite';
 
@@ -38,21 +38,21 @@ export default function createSnapshotPropertyShorthands (obj, selector) {
         var callsite = getCallsite('getStyleProperty');
         var snapshot = await getSnapshot(selector, callsite);
 
-        return snapshot.style[prop];
+        return snapshot.style ? snapshot.style[prop] : void 0;
     };
 
     obj.getAttribute = async attrName => {
         var callsite = getCallsite('getAttribute');
         var snapshot = await getSnapshot(selector, callsite);
 
-        return snapshot.attributes[attrName];
+        return snapshot.attributes ? snapshot.attributes[attrName] : void 0;
     };
 
     obj.getBoundingClientRectProperty = async prop => {
         var callsite = getCallsite('getBoundingClientRectProperty');
         var snapshot = await getSnapshot(selector, callsite);
 
-        return snapshot.boundingClientRect[prop];
+        return snapshot.boundingClientRect ? snapshot.boundingClientRect[prop] : void 0;
     };
 
     obj.hasClass = async name => {
