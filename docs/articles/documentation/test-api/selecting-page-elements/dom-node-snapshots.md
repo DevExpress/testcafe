@@ -9,7 +9,9 @@ checked: true
 A *DOM node snapshot* is an object that represents the state of a particular document node server side.
 This node can be a DOM element, document, fragment, text or comment node. DOM node snapshots are returned by [selectors](selectors.md).
 
-This topic lists members exposed by DOM node snapshots.
+This topic lists API members exposed by DOM node snapshots.
+
+> Selectors and promises returned by them also expose this API. See [Snapshot API Shorthands](selectors.md#snapshot-api-shorthands).
 
 ## Members Common Across All Nodes
 
@@ -33,8 +35,8 @@ Method | Type | Description
 
 Property | Type | Description
 ------ | ---- | ----
-`attributes` | Object | Attributes of the element as `{ name: value, ... }`.
-`boundingClientRect` | Object | The size of the element and its position relative to the viewport. Contains the `left`, `right`, `bottom`, `top`, `width` and `height` properties.
+`attributes` | Object | Attributes of the element as `{ name: value, ... }`. You can also use the `getAttribute` method to access attribute values.
+`boundingClientRect` | Object | The size of the element and its position relative to the viewport. Contains the `left`, `right`, `bottom`, `top`, `width` and `height` properties.  You can also use the `getBoundingClientRectProperty` method to access these properties.
 `checked` | Boolean | For checkbox and radio input elements, their current state. For other elements, `undefined`.
 `classNames` | Array of String | The list of element's classes.
 `clientHeight` | Number | The inner height of the element, including padding but not the horizontal scrollbar height, border, or margin. See [Element.clientHeight](https://developer.mozilla.org/en-US/docs/Web/API/Element/clientHeight).
@@ -53,7 +55,13 @@ Property | Type | Description
 `scrollLeft` | Number | The number of pixels that the element's content is scrolled to the left. See [Element.scrollLeft](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollLeft).
 `scrollTop` | Number | The number of pixels that the element's content is scrolled upward. See [Element.scrollTop](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop).
 `scrollWidth` | Number | Either the width in pixels of the element's content or the width of the element itself, whichever is greater. See [Element.scrollWidth](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollWidth).
-`style` | Object | The [computed](https://developer.mozilla.org/en-US/docs/Web/API/Window/getComputedStyle) values of element's CSS properties as `{ property: value, ... }`.
+`style` | Object | The [computed](https://developer.mozilla.org/en-US/docs/Web/API/Window/getComputedStyle) values of element's CSS properties as `{ property: value, ... }`. You can also use the `getStyleProperty` method to access CSS properties.
 `tagName` | String | The name of the element. See [Element.tagName](https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName).
 `value` | String | For input elements, the current value in the control. For other elements, `undefined`.
 `visible` | Boolean | `true` if the element is visible.
+
+Method | Type | Description
+------ | ---- | -----
+`getStyleProperty(propertyName)` | Object | Returns the computed value of the CSS `propertyName` property. You can also use the `style` property to access a hash table of CSS properties.
+`getAttribute(attributeName)` | String | Returns the value of the `attributeName` attribute. You can also use the `attributes` property to access a hash table of attributes.
+`getBoundingClientRectProperty(propertyName)` | Number | Returns the value of the `propertyName` property from the `boundingClientRect` object.
