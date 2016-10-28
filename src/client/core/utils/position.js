@@ -265,7 +265,12 @@ export function findCenter (el) {
 export function getClientPosition (el) {
     var { left, top } = getOffsetPosition(el);
 
-    return offsetToClientCoords({ x: left, y: top });
+    var clientCoords = offsetToClientCoords({ x: left, y: top });
+
+    clientCoords.x = Math.round(clientCoords.x);
+    clientCoords.y = Math.round(clientCoords.y);
+
+    return clientCoords;
 }
 
 export function getElementClientRectangle (el) {

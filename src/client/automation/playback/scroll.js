@@ -143,8 +143,8 @@ export default class ScrollAutomation {
         var parents = styleUtils.getScrollableParents(this.element);
 
         var currentChild   = this.element;
-        var currentOffsetX = this.offsetX - styleUtils.getScrollLeft(currentChild);
-        var currentOffsetY = this.offsetY - styleUtils.getScrollTop(currentChild);
+        var currentOffsetX = this.offsetX - Math.round(styleUtils.getScrollLeft(currentChild));
+        var currentOffsetY = this.offsetY - Math.round(styleUtils.getScrollTop(currentChild));
 
         var childDimensions  = null;
         var parentDimensions = null;
