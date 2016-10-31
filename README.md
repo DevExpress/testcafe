@@ -88,6 +88,7 @@ It will execute your code on the client and pass the returned value back to the 
 This allows you to determine the state of each element on the tested page or select a proper element to perform an action on.
 
 ```js
+import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 const elementWithId = Selector(id => document.querySelector(`#${id}`));
