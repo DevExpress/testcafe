@@ -10,6 +10,7 @@ function lintTask () {
         return null;
 
     var eslint = require('gulp-eslint');
+
     return gulp
         .src([
             'examples/**/*.js',
