@@ -30,7 +30,8 @@ import {
 import {
     TakeScreenshotCommand,
     ResizeWindowCommand,
-    ResizeWindowToFitDeviceCommand
+    ResizeWindowToFitDeviceCommand,
+    MaximizeWindowCommand
 } from '../test-run/commands/browser-manipulation';
 
 import { WaitCommand } from '../test-run/commands/observation';
@@ -203,6 +204,10 @@ export default class TestController {
 
     _resizeWindowToFitDevice$ (device, options) {
         return this._enqueueAction('resizeWindowToFitDevice', ResizeWindowToFitDeviceCommand, { device, options });
+    }
+
+    _maximizeWindow$ () {
+        return this._enqueueAction('maximizeWindow', MaximizeWindowCommand);
     }
 
     _switchToIframe$ (selector) {

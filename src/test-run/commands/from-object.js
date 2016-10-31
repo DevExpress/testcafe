@@ -23,7 +23,8 @@ import {
 import {
     TakeScreenshotCommand,
     ResizeWindowCommand,
-    ResizeWindowToFitDeviceCommand
+    ResizeWindowToFitDeviceCommand,
+    MaximizeWindowCommand
 } from './browser-manipulation';
 
 import { WaitCommand } from './observation';
@@ -85,6 +86,9 @@ export default function createCommandFromObject (obj) {
 
         case TYPE.resizeWindowToFitDevice:
             return new ResizeWindowToFitDeviceCommand(obj);
+
+        case TYPE.maximizeWindow:
+            return new MaximizeWindowCommand(obj);
 
         case TYPE.switchToIframe:
             return new SwitchToIframeCommand(obj);

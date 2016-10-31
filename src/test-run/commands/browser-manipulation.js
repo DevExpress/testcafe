@@ -75,3 +75,9 @@ export class ResizeWindowToFitDeviceCommand extends Assignable {
         ];
     }
 }
+
+export class MaximizeWindowCommand {
+    constructor () {
+        this.type = TYPE.maximizeWindow;
+    }
+}

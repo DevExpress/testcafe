@@ -82,7 +82,8 @@ export default class BrowserProviderPluginHost {
         return {
             hasResizeWindow:                this.hasOwnProperty('resizeWindow'),
             hasTakeScreenshot:              this.hasOwnProperty('takeScreenshot'),
-            hasCanResizeWindowToDimensions: this.hasOwnProperty('canResizeWindowToDimensions')
+            hasCanResizeWindowToDimensions: this.hasOwnProperty('canResizeWindowToDimensions'),
+            hasMaximizeWindow:              this.hasOwnProperty('maximizeWindow')
         };
     }
 
@@ -96,5 +97,9 @@ export default class BrowserProviderPluginHost {
 
     async takeScreenshot (/* browserId, screenshotPath, pageWidth, pageHeight */) {
         this.reportWarning(WARNING_MESSAGE.screenshotNotSupportedByBrowserProvider, this[name]);
+    }
+
+    async maximizeWindow (/*browserId*/) {
+        this.reportWarning(WARNING_MESSAGE.maximizeNotSupportedByBrowserProvider, this[name]);
     }
 }

@@ -148,6 +148,10 @@ export default class BrowserProvider {
         return width <= maxScreenSize.width && height <= maxScreenSize.height;
     }
 
+    async _maximizeLocalBrowserWindow (browserId) {
+        await browserTools.maximize(browserId);
+    }
+
     init () {
         this.initPromise = this.initPromise
             .then(initialized => initialized ? Promise.resolve() : this.plugin.init())
@@ -207,6 +211,16 @@ export default class BrowserProvider {
             return await this._canResizeLocalBrowserWindowToDimensions(browserId, width, height);
 
         return await this.plugin.canResizeWindowToDimensions(browserId, width, height);
+    }
+
+    async maximizeWindow (browserId) {
+        var isLocalBrowser    = await this.plugin.isLocalBrowser(browserId);
+        var supportedFeatures = await this.plugin.hasCustomActionForBrowser(browserId);
+
+        if (isLocalBrowser && !supportedFeatures.hasCanResizeWindowToDimensions)
+            return await this._maximizeLocalBrowserWindow(browserId);
+
+        return await this.plugin.maximizeWindow(browserId);
     }
 
     async takeScreenshot (browserId, screenshotPath, pageWidth, pageHeight) {

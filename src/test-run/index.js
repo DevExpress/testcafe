@@ -291,6 +291,13 @@ export default class TestRun extends Session {
         return new ResizeWindowCommand({ width, height });
     }
 
+    _maximizeBrowserWindow () {
+        var browserId = this.browserConnection.id;
+        var provider  = this.browserConnection.provider;
+
+        return provider.maximizeWindow(browserId);
+    }
+
     // Execute command
     async executeCommand (command, callsite) {
         this.debugLog.command(command);
@@ -310,6 +317,9 @@ export default class TestRun extends Session {
             if (!canResizeWindow)
                 return Promise.reject(new WindowDimensionsOverflowError(callsite));
         }
+
+        if (command.type === COMMAND_TYPE.maximizeWindow)
+            return this._maximizeBrowserWindow();
 
         if (isBrowserManipulationCommand(command)) {
             this.browserManipulationQueue.push(command);

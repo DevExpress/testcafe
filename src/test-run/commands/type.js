@@ -26,6 +26,7 @@ export default {
     prepareBrowserManipulation: 'prepare-browser-manipulation',
     resizeWindow:               'resize-window',
     resizeWindowToFitDevice:    'resize-window-to-fit-device',
+    maximizeWindow:             'maximize-window',
     switchToIframe:             'switch-to-iframe',
     switchToMainWindow:         'switch-to-main-window',
     setNativeDialogHandler:     'set-native-dialog-handler',
