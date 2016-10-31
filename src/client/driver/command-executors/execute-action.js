@@ -247,6 +247,7 @@ export default function executeAction (command, selectorTimeout, statusBar) {
                 requestBarrier = new RequestBarrier();
 
                 ensureCommandArguments(command);
+                pageUnloadBarrier.watchForPageNavigationTriggers();
 
                 return createAutomation(elements, command).run();
             })
