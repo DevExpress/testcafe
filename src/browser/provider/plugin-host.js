@@ -1,6 +1,6 @@
 /* global Symbol */
-import { assignIn } from 'lodash';
 import Promise from 'pinkie';
+import { assignIn } from 'lodash';
 import promisifyEvent from 'promisify-event';
 import BrowserConnection from '../connection';
 import WARNING_MESSAGE from '../../warnings/message';
@@ -45,7 +45,6 @@ export default class BrowserProviderPluginHost {
     }
 
     // API
-    // Required
     // Browser control
     async openBrowser (/* browserId, pageUrl, browserName */) {
         throw new Error('Not implemented!');
@@ -55,8 +54,6 @@ export default class BrowserProviderPluginHost {
         throw new Error('Not implemented!');
     }
 
-
-    // Optional
     // Initialization
     async init () {
         return;
@@ -77,11 +74,32 @@ export default class BrowserProviderPluginHost {
     }
 
     // Extra functions
+    async isLocalBrowser (/* browserId */) {
+        return false;
+    }
+
+    async hasCustomActionForBrowser (/* browserId */) {
+        return {
+            hasResizeWindow:                this.hasOwnProperty('resizeWindow'),
+            hasTakeScreenshot:              this.hasOwnProperty('takeScreenshot'),
+            hasCanResizeWindowToDimensions: this.hasOwnProperty('canResizeWindowToDimensions'),
+            hasMaximizeWindow:              this.hasOwnProperty('maximizeWindow')
+        };
+    }
+
     async resizeWindow (/* browserId, width, height, currentWidth, currentHeight */) {
         this.reportWarning(WARNING_MESSAGE.resizeNotSupportedByBrowserProvider, this[name]);
     }
 
+    async canResizeWindowToDimensions (/* browserId, width, height */) {
+        return true;
+    }
+
     async takeScreenshot (/* browserId, screenshotPath, pageWidth, pageHeight */) {
         this.reportWarning(WARNING_MESSAGE.screenshotNotSupportedByBrowserProvider, this[name]);
+    }
+
+    async maximizeWindow (/*browserId*/) {
+        this.reportWarning(WARNING_MESSAGE.maximizeNotSupportedByBrowserProvider, this[name]);
     }
 }

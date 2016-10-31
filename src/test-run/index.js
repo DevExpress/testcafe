@@ -3,15 +3,16 @@ import { readSync as read } from 'read-file-relative';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
 import { Session } from 'testcafe-hammerhead';
+import { getViewportSize } from 'testcafe-browser-tools';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import { PageLoadError } from '../errors/test-run/';
+import { PageLoadError, WindowDimensionsOverflowError } from '../errors/test-run/';
 import BrowserManipulationQueue from './browser-manipulation-queue';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
 import COMMAND_TYPE from './commands/type';
 
-import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
+import { TakeScreenshotOnFailCommand, ResizeWindowCommand } from './commands/browser-manipulation';
 
 import {
     TestDoneCommand,
@@ -281,12 +282,44 @@ export default class TestRun extends Session {
         return this.currentDriverTask ? this.currentDriverTask.command : null;
     }
 
+    static _transformResizeWindowToFitDeviceCommand (command) {
+        var { landscapeWidth, portraitWidth } = getViewportSize(command.device);
+        var portrait = command.options.portraitOrientation;
+        var width    = portrait ? portraitWidth : landscapeWidth;
+        var height   = portrait ? landscapeWidth : portraitWidth;
+
+        return new ResizeWindowCommand({ width, height });
+    }
+
+    _maximizeBrowserWindow () {
+        var browserId = this.browserConnection.id;
+        var provider  = this.browserConnection.provider;
+
+        return provider.maximizeWindow(browserId);
+    }
+
     // Execute command
-    executeCommand (command, callsite) {
+    async executeCommand (command, callsite) {
         this.debugLog.command(command);
 
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
+
+        if (command.type === COMMAND_TYPE.resizeWindowToFitDevice)
+            command = TestRun._transformResizeWindowToFitDeviceCommand(command);
+
+        if (command.type === COMMAND_TYPE.resizeWindow) {
+            var browserId = this.browserConnection.id;
+            var provider  = this.browserConnection.provider;
+
+            var canResizeWindow = await provider.canResizeWindowToDimensions(browserId, command.width, command.height);
+
+            if (!canResizeWindow)
+                return Promise.reject(new WindowDimensionsOverflowError(callsite));
+        }
+
+        if (command.type === COMMAND_TYPE.maximizeWindow)
+            return this._maximizeBrowserWindow();
 
         if (isBrowserManipulationCommand(command)) {
             this.browserManipulationQueue.push(command);

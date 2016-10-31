@@ -89,3 +89,10 @@ test('Resize the window to fit a device leads to js-error', async t => {
 
     await t.resizeWindowToFitDevice('iPhone');
 });
+
+test('Too big size', async t => {
+    var hugeWidth  = 100000;
+    var hugeHeight = 100000;
+
+    await t.resizeWindow(hugeWidth, hugeHeight);
+});

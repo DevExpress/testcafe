@@ -10,9 +10,19 @@ var browserProviderPool = require('../../lib/browser/provider/pool');
 var promisedRequest = promisify(request);
 
 describe('Browser connection', function () {
-    var testCafe   = null;
-    var connection = null;
+    var testCafe                  = null;
+    var connection                = null;
+    var origRemoteBrowserProvider = null;
 
+    var remoteBrowserProviderMock = {
+        openBrowser: function () {
+            return Promise.resolve();
+        },
+
+        closeBrowser: function () {
+            return Promise.resolve();
+        }
+    };
 
     // Fixture setup/teardown
     before(function () {
@@ -25,18 +35,16 @@ describe('Browser connection', function () {
                 return browserProviderPool.getProvider('remote');
             })
             .then(function (remoteBrowserProvider) {
-                remoteBrowserProvider.disableResizeHack = true;
+                origRemoteBrowserProvider = remoteBrowserProvider;
+
+                browserProviderPool.addProvider('remote', remoteBrowserProviderMock);
             });
     });
 
     after(function () {
-        return browserProviderPool
-            .getProvider('remote')
-            .then(function (remoteBrowserProvider) {
-                remoteBrowserProvider.disableResizeHack = false;
+        browserProviderPool.addProvider('remote', origRemoteBrowserProvider);
 
-                return testCafe.close();
-            });
+        return testCafe.close();
     });
 
 

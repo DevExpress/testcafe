@@ -49,6 +49,7 @@ var NativeDialogNotHandledError                       = require('../../lib/error
 var UncaughtErrorInNativeDialogHandler                = require('../../lib/errors/test-run').UncaughtErrorInNativeDialogHandler;
 var SetNativeDialogHandlerCodeWrongTypeError          = require('../../lib/errors/test-run').SetNativeDialogHandlerCodeWrongTypeError;
 var CantObtainInfoForElementSpecifiedBySelectorError  = require('../../lib/errors/test-run').CantObtainInfoForElementSpecifiedBySelectorError;
+var WindowDimensionsOverflowError                     = require('../../lib/errors/test-run').WindowDimensionsOverflowError;
 
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
@@ -282,6 +283,10 @@ describe('Error formatting', function () {
 
         it('Should format "cantObtainInfoForElementSpecifiedBySelectorError"', function () {
             assertErrorMessage('cant-obtain-info-for-element-specified-by-selector-error', new CantObtainInfoForElementSpecifiedBySelectorError(testCallsite));
+        });
+
+        it('Should format "windowDimensionsOverflowError"', function () {
+            assertErrorMessage('window-dimensions-overflow-error', new WindowDimensionsOverflowError());
         });
     });
 

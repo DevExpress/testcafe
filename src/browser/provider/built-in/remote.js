@@ -1,46 +1,47 @@
-import BrowserProviderBase from './base';
-import OS from 'os-family';
+import { findWindow } from 'testcafe-browser-tools';
 import WARNING_MESSAGE from '../../../warnings/message';
 
 
-export default class RemoteBrowserProvider extends BrowserProviderBase {
-    constructor () {
-        super();
-
-        // NOTE: This can be used to disable resize correction when running unit tests.
-        this.disableResizeHack = false;
-    }
+export default {
+    localBrowsersFlags: {},
 
     async openBrowser (browserId) {
-        try {
-            if (OS.win && !this.disableResizeHack)
-                await super.calculateResizeCorrections(browserId);
-        }
-        catch (e) {
-            return;
-        }
-    }
+        await this.waitForConnectionReady(browserId);
 
-    async closeBrowser () {
-        return;
-    }
+        var localBrowserWindow = await findWindow(browserId);
 
-    // NOTE: we must try to do a local screenshot or resize, if browser is accessible, but emit warning
-    async takeScreenshot (browserId, ...args) {
-        try {
-            await super.takeScreenshot(browserId, ...args);
-        }
-        catch (e) {
-            this.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsOnRemoteBrowser);
-        }
-    }
+        this.localBrowsersFlags[browserId] = localBrowserWindow !== null;
+    },
 
-    async resizeWindow (browserId, ...args) {
-        try {
-            await super.resizeWindow(browserId, ...args);
-        }
-        catch (e) {
-            this.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsOnRemoteBrowser);
-        }
+    async closeBrowser (browserId) {
+        delete this.localBrowsersFlags[browserId];
+    },
+
+    async isLocalBrowser (browserId) {
+        return this.localBrowsersFlags[browserId];
+    },
+
+    // NOTE: we must try to do a local screenshot or resize, if browser is accessible, and emit warning otherwise
+    async hasCustomActionForBrowser (browserId) {
+        var isLocalBrowser = this.localBrowsersFlags[browserId];
+
+        return {
+            hasResizeWindow:                !isLocalBrowser,
+            hasMaximizeWindow:              !isLocalBrowser,
+            hasTakeScreenshot:              !isLocalBrowser,
+            hasCanResizeWindowToDimensions: !isLocalBrowser
+        };
+    },
+
+    async takeScreenshot (browserId) {
+        this.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsOnRemoteBrowser);
+    },
+
+    async resizeWindow (browserId) {
+        this.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsOnRemoteBrowser);
+    },
+
+    async maximizeWindow (browserId) {
+        this.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsOnRemoteBrowser);
     }
-}
+};

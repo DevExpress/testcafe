@@ -14,10 +14,20 @@ var delay               = require('../../lib/utils/delay');
 
 
 describe('Runner', function () {
-    var testCafe   = null;
-    var runner     = null;
-    var connection = null;
+    var testCafe                  = null;
+    var runner                    = null;
+    var connection                = null;
+    var origRemoteBrowserProvider = null;
 
+    var remoteBrowserProviderMock = {
+        openBrowser: function () {
+            return Promise.resolve();
+        },
+
+        closeBrowser: function () {
+            return Promise.resolve();
+        }
+    };
 
     // Fixture setup/teardown
     before(function () {
@@ -28,7 +38,9 @@ describe('Runner', function () {
                 return browserProviderPool.getProvider('remote');
             })
             .then(function (remoteBrowserProvider) {
-                remoteBrowserProvider.disableResizeHack = true;
+                origRemoteBrowserProvider = remoteBrowserProvider;
+
+                browserProviderPool.addProvider('remote', remoteBrowserProviderMock);
 
                 return testCafe.createBrowserConnection();
             })
@@ -41,14 +53,10 @@ describe('Runner', function () {
     });
 
     after(function () {
-        return browserProviderPool
-            .getProvider('remote')
-            .then(function (remoteBrowserProvider) {
-                remoteBrowserProvider.disableResizeHack = false;
+        browserProviderPool.addProvider('remote', origRemoteBrowserProvider);
 
-                connection.close();
-                return testCafe.close();
-            });
+        connection.close();
+        return testCafe.close();
     });
 
 

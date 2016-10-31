@@ -1,10 +1,10 @@
-import PathBrowserProvider from './path';
-import LocallyInstalledBrowserProvider from './locally-installed';
-import RemoteBrowserProvider from './remote';
+import pathBrowserProvider from './path';
+import locallyInstalledBrowserProvider from './locally-installed';
+import remoteBrowserProvider from './remote';
 
 
 export default {
-    'locally-installed': new LocallyInstalledBrowserProvider(),
-    'path':              new PathBrowserProvider(),
-    'remote':            new RemoteBrowserProvider()
+    'locally-installed': locallyInstalledBrowserProvider,
+    'path':              pathBrowserProvider,
+    'remote':            remoteBrowserProvider
 };

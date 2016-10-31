@@ -211,5 +211,9 @@ export default {
 
     [TYPE.cantObtainInfoForElementSpecifiedBySelectorError]: err => markup(err, `
         Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.
+    `),
+
+    [TYPE.windowDimensionsOverflowError]: err => markup(err, `
+        Unable to resize the window because the specified size exceeds the screen size. On macOS, a window cannot be larger than the screen.
     `)
 };

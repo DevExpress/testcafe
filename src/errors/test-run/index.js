@@ -376,3 +376,11 @@ export class SetNativeDialogHandlerCodeWrongTypeError extends TestRunErrorBase {
         this.actualType = actualType;
     }
 }
+
+export class WindowDimensionsOverflowError extends TestRunErrorBase {
+    constructor (callsite) {
+        super(TYPE.windowDimensionsOverflowError);
+
+        this.callsite = callsite;
+    }
+}
