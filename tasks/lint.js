@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var nodeVer = require('node-version');
-var eslint = require('gulp-eslint');
 
 gulp.task('lint', lintTask);
 
@@ -10,6 +9,7 @@ function lintTask () {
     if (nodeVer.major === '0')
         return null;
 
+    var eslint = require('gulp-eslint');
     return gulp
         .src([
             'examples/**/*.js',
