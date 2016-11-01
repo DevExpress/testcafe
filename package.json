@@ -65,6 +65,7 @@
     "endpoint-utils": "^1.0.2",
     "globby": "^3.0.1",
     "indent-string": "^1.2.2",
+    "is-ci": "^1.0.10",
     "is-glob": "^2.0.1",
     "lodash": "^4.13.1",
     "log-update": "^1.0.2",
