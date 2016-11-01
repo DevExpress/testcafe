@@ -21,7 +21,7 @@ var waitingForUnloadTimeoutId = null;
 var waitingPromiseResolvers   = [];
 var unloading                 = false;
 
-var pageNavigationTriggeredListener = false;
+var pageNavigationTriggeredListener = null;
 var pageNavigationTriggered         = false;
 
 function overrideFormSubmit (form) {
