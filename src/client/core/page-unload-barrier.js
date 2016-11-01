@@ -21,6 +21,9 @@ var waitingForUnloadTimeoutId = null;
 var waitingPromiseResolvers   = [];
 var unloading                 = false;
 
+var pageNavigationTriggeredListener = null;
+var pageNavigationTriggered         = false;
+
 function overrideFormSubmit (form) {
     var submit = form.submit;
 
@@ -105,9 +108,25 @@ export function init () {
     handleBeforeUnload();
 }
 
+export function watchForPageNavigationTriggers () {
+    pageNavigationTriggeredListener = () => {
+        pageNavigationTriggered = true;
+    };
+
+    hammerhead.on(hammerhead.EVENTS.pageNavigationTriggered, pageNavigationTriggeredListener);
+}
+
 export function wait (timeout) {
     var waitForUnloadingPromise = new Promise(resolve => {
-        delay(timeout === void 0 ? DEFAULT_BARRIER_TIMEOUT : timeout)
+        if (timeout === void 0)
+            timeout = !pageNavigationTriggeredListener || pageNavigationTriggered ? DEFAULT_BARRIER_TIMEOUT : 0;
+
+        if (pageNavigationTriggeredListener) {
+            hammerhead.off(hammerhead.EVENTS.pageNavigationTriggered, pageNavigationTriggeredListener);
+            pageNavigationTriggeredListener = null;
+        }
+
+        delay(timeout)
             .then(() => {
                 if (unloading) {
                     waitForFailDownload()
