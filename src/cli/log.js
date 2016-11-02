@@ -2,12 +2,13 @@ import tty from 'tty';
 import elegantSpinner from 'elegant-spinner';
 import logUpdate from 'log-update';
 import chalk from 'chalk';
+import isCI from 'is-ci';
 
 // NOTE: To support piping, we use stderr as the log output
 // stream, while stdout is used for the report output.
 export default {
     animation:  null,
-    isAnimated: tty.isatty(1) && !process.env.CI,
+    isAnimated: tty.isatty(1) && !isCI,
 
     showSpinner () {
         // NOTE: we can use the spinner only if stderr is a TTY and we are not in CI environment (e.g. TravisCI),
