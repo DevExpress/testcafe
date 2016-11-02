@@ -87,6 +87,7 @@ export default class TestRun extends Session {
             fixtureName:         JSON.stringify(this.test.fixture.name),
             selectorTimeout:     this.opts.selectorTimeout,
             skipJsErrors:        this.opts.skipJsErrors,
+            speed:               this.opts.speed,
             dialogHandler:       JSON.stringify(this.dialogHandler)
         });
     }
@@ -95,6 +96,7 @@ export default class TestRun extends Session {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             testRunId:       JSON.stringify(this.id),
             selectorTimeout: this.opts.selectorTimeout,
+            speed:           this.opts.speed,
             dialogHandler:   JSON.stringify(this.dialogHandler)
         });
     }

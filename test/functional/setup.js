@@ -142,6 +142,7 @@ before(function () {
                 var skipOption         = opts && opts.skip;
                 var screenshotPath     = opts && opts.setScreenshotPath ? '___test-screenshots___' : '';
                 var screenshotsOnFails = opts && opts.screenshotsOnFails;
+                var speed              = opts && opts.speed;
 
                 var actualBrowsers = browsersInfo.filter(function (browserInfo) {
                     var only = onlyOption ? onlyOption.indexOf(browserInfo.settings.alias) > -1 : true;
@@ -178,7 +179,8 @@ before(function () {
                     .run({
                         skipJsErrors:    skipJsErrors,
                         quarantineMode:  quarantineMode,
-                        selectorTimeout: selectorTimeout
+                        selectorTimeout: selectorTimeout,
+                        speed:           speed
                     })
                     .then(function () {
                         var taskReport = JSON.parse(report);

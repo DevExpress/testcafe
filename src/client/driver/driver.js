@@ -80,6 +80,7 @@ export default class Driver {
         this.fixtureName      = runInfo.fixtureName;
         this.testName         = runInfo.testName;
         this.selectorTimeout  = options.selectorTimeout;
+        this.speed            = options.speed;
         this.skipJsErrors     = options.skipJsErrors;
         this.dialogHandler    = options.dialogHandler;
 
@@ -281,7 +282,7 @@ export default class Driver {
 
     // Commands handling
     _onActionCommand (command) {
-        var { startPromise, completionPromise } = executeActionCommand(command, this.selectorTimeout, this.statusBar);
+        var { startPromise, completionPromise } = executeActionCommand(command, this.selectorTimeout, this.statusBar, this.speed);
 
         startPromise.then(() => this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true));
 

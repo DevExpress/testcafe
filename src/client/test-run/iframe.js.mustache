@@ -1,6 +1,10 @@
 (function () {
-var IframeDriver = window['%testCafeIframeDriver%'];
-var driver = new IframeDriver({ testRun: {{{testRunId}}} }, { selectorTimeout: {{{selectorTimeout}}}, dialogHandler: {{{dialogHandler}}} });
+    var IframeDriver = window['%testCafeIframeDriver%'];
+    var driver       = new IframeDriver({ testRun: {{{testRunId}}} }, {
+        selectorTimeout: {{{selectorTimeout}}},
+        dialogHandler:   {{{dialogHandler}}},
+        speed:           {{{speed}}}
+    });
 
-driver.start();
+    driver.start();
 })();

@@ -468,6 +468,31 @@ describe('Runner', function () {
                     expect(err.message).eql('I have failed :(');
                 });
         });
+
+        it('Should raise an error if speed option has wrong value', function () {
+            var incorrectSpeedErrorMessage = 'Speed should be a number between 0.01 and 1.';
+
+            return testCafe
+                .createBrowserConnection()
+                .then(function (browserConnection) {
+                    return runner
+                        .browsers(browserConnection)
+                        .run({ speed: 'yo' });
+                })
+                .catch(function (err) {
+                    expect(err.message).eql(incorrectSpeedErrorMessage);
+                })
+                .then(function () {
+                    return runner.run({ speed: -0.01 });
+                }).catch(function (err) {
+                    expect(err.message).eql(incorrectSpeedErrorMessage);
+                })
+                .then(function () {
+                    return runner.run({ speed: 1.01 });
+                }).catch(function (err) {
+                    expect(err.message).eql(incorrectSpeedErrorMessage);
+                });
+        });
     });
 
     describe('Regression', function () {

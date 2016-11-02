@@ -7,6 +7,8 @@ import { flattenDeep as flatten, pull as remove } from 'lodash';
 import Bootstrapper from './bootstrapper';
 import Reporter from '../reporter';
 import Task from './task';
+import { GeneralError } from '../errors/runtime';
+import MESSAGE from '../errors/runtime/message';
 
 
 const DEFAULT_SELECTOR_TIMEOUT = 10000;
@@ -132,10 +134,15 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    run ({ skipJsErrors, quarantineMode, selectorTimeout } = {}) {
+    run ({ skipJsErrors, quarantineMode, selectorTimeout, speed = 1 } = {}) {
         this.opts.skipJsErrors    = !!skipJsErrors;
         this.opts.quarantineMode  = !!quarantineMode;
         this.opts.selectorTimeout = selectorTimeout === void 0 ? DEFAULT_SELECTOR_TIMEOUT : selectorTimeout;
+
+        if (typeof speed !== 'number' || speed < 0.01 || speed > 1)
+            throw new GeneralError(MESSAGE.speedIsNotValidValue);
+
+        this.opts.speed = speed;
 
         var runTaskPromise = this.bootstrapper.createRunnableConfiguration()
             .then(({ reporterPlugin, browserSet, tests }) => {

@@ -5,6 +5,7 @@ import {
     RequestBarrier,
     pageUnloadBarrier,
     parseKeySequence,
+    delay,
     NODE_TYPE_DESCRIPTIONS
 } from '../deps/testcafe-core';
 
@@ -44,6 +45,9 @@ import {
     ActionElementNotTextAreaError,
     ActionElementIsNotFileInputError
 } from '../../../errors/test-run';
+
+
+const MAX_DELAY_AFTER_STEP = 2000;
 
 
 // Ensure command element properties
@@ -230,12 +234,19 @@ function createAutomation (elements, command) {
 
 
 // Execute action
-export default function executeAction (command, selectorTimeout, statusBar) {
+export default function executeAction (command, selectorTimeout, statusBar, speed) {
     var resolveStartPromise = null;
 
     var startPromise = new Promise(resolve => {
         resolveStartPromise = resolve;
     });
+
+    var delayAfterAction = () => {
+        if (speed === 1)
+            return Promise.resolve();
+
+        return delay((1 - speed) * MAX_DELAY_AFTER_STEP);
+    };
 
     var completionPromise = new Promise(resolve => {
         var requestBarrier = null;
@@ -253,6 +264,7 @@ export default function executeAction (command, selectorTimeout, statusBar) {
             })
             .then(() => {
                 return Promise.all([
+                    delayAfterAction(),
                     requestBarrier.wait(),
                     pageUnloadBarrier.wait()
                 ]);

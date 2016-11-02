@@ -68,6 +68,15 @@ export default class CLIArgumentParser {
         throw new GeneralError(MESSAGE.selectorTimeoutIsNotAnInteger);
     }
 
+    static _parseSpeed (value) {
+        value = parseFloat(value);
+
+        if (isNaN(value) || value < 0.01 || value > 1)
+            throw new GeneralError(MESSAGE.speedIsNotValidValue);
+
+        return value;
+    }
+
     static _optionValueToRegExp (name, value) {
         if (value === void 0)
             return value;
@@ -145,6 +154,7 @@ export default class CLIArgumentParser {
             .option('-f, --fixture <name>', 'run only fixtures with the specified name')
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
             .option('--selector-timeout <ms>', 'set the amount of time within which selectors make attempts to obtain a node to be returned')
+            .option('--speed <number>', 'set the speed of tests execution (0.01 ... 1)')
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
@@ -192,6 +202,11 @@ export default class CLIArgumentParser {
             this.opts.selectorTimeout = CLIArgumentParser._parseSelectorTimeout(this.opts.selectorTimeout);
     }
 
+    async _parseSpeed () {
+        if (this.opts.speed)
+            this.opts.speed = CLIArgumentParser._parseSpeed(this.opts.speed);
+    }
+
     async _parsePorts () {
         if (this.opts.ports) {
             this.opts.ports = this.opts.ports
@@ -204,7 +219,7 @@ export default class CLIArgumentParser {
     }
 
     async _parseBrowserList () {
-        var browsersArg   = this.program.args[0] || '';
+        var browsersArg = this.program.args[0] || '';
 
         this.browsers = CLIArgumentParser
             ._parseBrowserArg(browsersArg)
@@ -279,6 +294,7 @@ export default class CLIArgumentParser {
 
         await Promise.all([
             this._parseElementTimeout(),
+            this._parseSpeed(),
             this._parsePorts(),
             this._parseScreenshotsPath(),
             this._parseBrowserList(),
