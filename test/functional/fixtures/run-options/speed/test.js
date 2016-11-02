@@ -8,6 +8,10 @@ describe('[API] Speed', function () {
     });
 
     it('Should add an additional delay after action if speed is decreased in iframe', function () {
-        return runTests('./testcafe-fixtures/speed-test.js', 'Decrease speed in iframe', { only: 'chrome', speed: 0.4 });
+        return runTests('./testcafe-fixtures/speed-test.js', 'Decrease speed in iframe', {
+            only:            'chrome',
+            speed:           0.4,
+            selectorTimeout: 10000
+        });
     });
 });
