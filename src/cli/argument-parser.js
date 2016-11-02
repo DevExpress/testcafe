@@ -68,15 +68,6 @@ export default class CLIArgumentParser {
         throw new GeneralError(MESSAGE.selectorTimeoutIsNotAnInteger);
     }
 
-    static _parseSpeed (value) {
-        value = parseFloat(value);
-
-        if (isNaN(value) || value < 0.01 || value > 1)
-            throw new GeneralError(MESSAGE.speedIsNotValidValue);
-
-        return value;
-    }
-
     static _optionValueToRegExp (name, value) {
         if (value === void 0)
             return value;
@@ -204,7 +195,7 @@ export default class CLIArgumentParser {
 
     async _parseSpeed () {
         if (this.opts.speed)
-            this.opts.speed = CLIArgumentParser._parseSpeed(this.opts.speed);
+            this.opts.speed = parseFloat(this.opts.speed);
     }
 
     async _parsePorts () {

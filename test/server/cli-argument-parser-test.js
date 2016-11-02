@@ -101,18 +101,6 @@ describe('CLI argument parser', function () {
                     expect(parser.opts.speed).eql(0.01);
                 });
         });
-
-        it('Should raise an error if the "--speed" option value is not a number', function () {
-            return assertRaisesError('--speed yo', 'Speed should be a number between 0.01 and 1.');
-        });
-
-        it('Should raise an error if the "--speed" option value less than 0.01', function () {
-            return assertRaisesError('--speed 0', 'Speed should be a number between 0.01 and 1.');
-        });
-
-        it('Should raise an error if the "--speed" option value more than 1', function () {
-            return assertRaisesError('--speed 1.01', 'Speed should be a number between 0.01 and 1.');
-        });
     });
 
 

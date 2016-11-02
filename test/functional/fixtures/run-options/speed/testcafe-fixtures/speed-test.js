@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 fixture `Speed`
-    .page `http://localhost:3000/fixtures/speed/pages/index.html`;
+    .page `http://localhost:3000/fixtures/run-options/speed/pages/index.html`;
 
 test('Decrease speed', async t => {
     // NOTE: do the first click to wait while the page is loaded

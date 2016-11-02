@@ -139,8 +139,8 @@ export default class Runner extends EventEmitter {
         this.opts.quarantineMode  = !!quarantineMode;
         this.opts.selectorTimeout = selectorTimeout === void 0 ? DEFAULT_SELECTOR_TIMEOUT : selectorTimeout;
 
-        if (typeof speed !== 'number' || speed < 0.01 || speed > 1)
-            throw new GeneralError(MESSAGE.speedIsNotValidValue);
+        if (typeof speed !== 'number' || isNaN(speed) || speed < 0.01 || speed > 1)
+            throw new GeneralError(MESSAGE.invalidSpeedValue);
 
         this.opts.speed = speed;
 
