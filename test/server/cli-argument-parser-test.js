@@ -110,7 +110,7 @@ describe('CLI argument parser', function () {
             return assertRaisesError('--speed 0', 'Speed should be a number between 0.01 and 1.');
         });
 
-        it('Should raise an error if the "--speed" option value more than 0.01', function () {
+        it('Should raise an error if the "--speed" option value more than 1', function () {
             return assertRaisesError('--speed 1.01', 'Speed should be a number between 0.01 and 1.');
         });
     });
