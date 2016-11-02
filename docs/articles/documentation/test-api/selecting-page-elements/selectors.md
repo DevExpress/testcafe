@@ -197,11 +197,11 @@ test('My test', async t => {
 
 ### DOM Node Snapshots
 
-TestCafe executes tests on the server, so selectors cannot return living DOM elements to test code.
-Instead, they return *DOM node snapshots* - server-side representation of the element's state.
+TestCafe executes tests on the server, so selectors cannot return actual DOM objects to test code.
+Instead, they return *DOM node snapshots* - server-side representation of the node's state.
 
-A snapshot contains information about the element's size, position, classes, parent and child nodes, etc.
-It exposes [API](dom-node-snapshots.md) that is similar to DOM object's.
+A snapshot contains information about the node's size, position, classes, parent and child nodes, etc.
+It exposes [API](dom-node-snapshots.md) that is similar to DOM objects.
 
 ```js
 import { expect } from 'chai';
@@ -228,7 +228,7 @@ For a list of members exposed by DOM node snapshots, see [DOM Node Snapshots](do
 Selectors and promises returned by selectors expose snapshot API directly (except for
 snapshot's `getChildElement`, `getChildNode` and `getParentNode` methods).
 This is convenient when you need to use only one snapshot property or method.
-In this instance, you save a line of code because you do not need to obtain and save the snapshot object explicitly.
+In this instance, you save a line of code, because you do not need to obtain and save the snapshot object explicitly.
 
 ```js
 import { expect } from 'chai';
