@@ -92,8 +92,16 @@ async resizeWindow (/* id, width, height, currentWidth, currentHeight */) {
     this.reportWarning('The window resize functionality is not supported by the "my-provider" browser provider.');
 },
 
+async canResizeWindowToDimensions (/* browserId, width, height */) {
+    return true;
+}
+
 async takeScreenshot (/* id, screenshotPath, pageWidth, pageHeight */) {
     this.reportWarning('The screenshot functionality is not supported by the "my-provider" browser provider.');
+}
+
+async maximizeWindow (/*browserId*/) {
+    this.reportWarning('The window maximization functionality is not supported by the "my-provider" browser provider.');
 }
 ```
 
@@ -107,8 +115,13 @@ The following example code demonstrates how you can implement the simple browser
 import path from 'path';
 import browserTools from 'testcafe-browser-tools';
 
+function getScreenSize () {
+    return { width: screen.availWidth, height: screen.availHeight };
+}
+
 export default {
     isMultiBrowser: true,
+    screenSizes: {},
 
     async openBrowser (id, pageUrl, browserName) {
         var browserInfo = {};
@@ -127,6 +140,10 @@ export default {
         }
 
         await browserTools.open(browserInfo, pageUrl);
+
+        await this.waitForConnectionReady(id);
+
+        this.screenSizes[id] = await this.runInitScript(id, getScreenSize.toString());    
     },
 
     async closeBrowser (id) {
@@ -145,6 +162,16 @@ export default {
 
     async resizeWindow (id, width, height, currentWidth, currentHeight) {
         await browserTools.resize(id, currentWidth, currentHeight, width, height);
+    },
+
+    async canResizeWindowToDimensions (id, width, height) {
+        var { width: screenWidth, height: screenHeight } = this.screenSizes[id];
+
+        return width <= screenWidth && height <= screenHeight;
+    }
+
+    async maximizeWindow (id) {
+        await browserTools.maximize(id);
     },
 
     async takeScreenshot (id, screenshotPath) {

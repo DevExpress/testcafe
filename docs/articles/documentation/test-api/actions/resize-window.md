@@ -10,6 +10,7 @@ There are two ways of resizing a browser window.
 
 * [Setting the Window Size](#setting-the-window-size)
 * [Fitting the Window into a Particular Device](#fitting-the-window-into-a-particular-device)
+* [Maximizing the Window](#maximizing-the-window)
 
 > Important! These actions are not yet available on Linux.
 > See the corresponding [issue on GitHub](https://github.com/DevExpress/testcafe-browser-natives/issues/12).
@@ -79,5 +80,31 @@ test('Header is displayed on Xperia Z in portrait', async t => {
     });
 
     expect(await header.getStyleProperty('display')).to.not.equal('none');
+});
+```
+
+## Maximizing the Window
+
+```text
+t.maximizeWindow( )
+```
+
+Maximizes the browser window.
+
+The following example shows how to use this action.
+
+```js
+import { expect } from 'chai';
+import { Selector } from 'testcafe';
+
+const menu = Selector('#side-menu');
+
+fixture `My fixture`
+    .page `http://www.example.com/`;
+
+test('Side menu is displayed in full screen', async t => {
+    await t.maximizeWindow();
+
+    expect(await menu.visible).to.be.ok;
 });
 ```
