@@ -143,7 +143,7 @@ export default {
 
         await this.waitForConnectionReady(id);
 
-        this.screenSizes[id] = await this.runInitScript(id, getScreenSize.toString());    
+        this.screenSizes[id] = await this.runInitScript(id, getScreenSize.toString());
     },
 
     async closeBrowser (id) {
