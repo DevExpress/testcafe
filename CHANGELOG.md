@@ -53,15 +53,12 @@
   }
   ```
 
-  See [Snapshot API Shorthands](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#snapshot-api-shorthands)
-  ([#899](https://github.com/DevExpress/testcafe/pull/899) and [#924](https://github.com/DevExpress/testcafe/pull/924))
+  See [Snapshot API Shorthands](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#snapshot-api-shorthands).  
 * **Improved automatic wait mechanism. ([#245](https://github.com/DevExpress/testcafe/issues/245))**
 
   We got rid of unnecessary waiting and tests now run almost two times faster.
 
   ![Tests running in v0.10.0 vs v0.9.0](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/new-0-10-0-autowait.gif)
-
-  ([#933](https://github.com/DevExpress/testcafe/pull/933))
 * **Test execution speed control. ([#938](https://github.com/DevExpress/testcafe/issues/938))**
 
   We have introduced an option that allows you to specify how fast tests run.
@@ -84,7 +81,7 @@
   })
   ```
 
-  You can use factor values between `1` (the fastest, used by default) and `0.01` (the slowest). ([#940](https://github.com/DevExpress/testcafe/pull/940))
+  You can use factor values between `1` (the fastest, used by default) and `0.01` (the slowest).
 * **`t.maximizeWindow` test action. ([#812](https://github.com/DevExpress/testcafe/issues/812))**
 
   We have added a test action that maximizes the browser window.
@@ -104,8 +101,6 @@
       expect(await menu.visible).to.be.ok;
   });
   ```
-
-  ([#837](https://github.com/DevExpress/testcafe/pull/837))
 
 ### Bug Fixes
 
