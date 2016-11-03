@@ -4,7 +4,7 @@
 
 ### Enhancements
 
-* Snapshot API shorthands.
+* **Snapshot API shorthands. ([#771](https://github.com/DevExpress/testcafe/issues/771))**
   
   Previously, if you needed to use a single property from the snapshot, you had to write two assignments
 
@@ -55,14 +55,14 @@
 
   See [Snapshot API Shorthands](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#snapshot-api-shorthands)
   ([#899](https://github.com/DevExpress/testcafe/pull/899) and [#924](https://github.com/DevExpress/testcafe/pull/924))
-* Improved automatic wait mechanism.
+* **Improved automatic wait mechanism. ([#245](https://github.com/DevExpress/testcafe/issues/245))**
 
   We got rid of unnecessary waiting and tests now run almost two times faster.
 
   ![Tests running in v0.10.0 vs v0.9.0](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/new-0-10-0-autowait.gif)
 
   ([#933](https://github.com/DevExpress/testcafe/pull/933))
-* Test execution speed control.
+* **Test execution speed control. ([#938](https://github.com/DevExpress/testcafe/issues/938))**
 
   We have introduced an option that allows you to specify how fast tests run.
   It controls the cursor speed and the delay between actions.
@@ -84,8 +84,8 @@
   })
   ```
 
-  You can use factor values between `1` (the fastest, used by default) and `0.01` (the slowest).
-* `t.maximizeWindow` test action.
+  You can use factor values between `1` (the fastest, used by default) and `0.01` (the slowest). ([#940](https://github.com/DevExpress/testcafe/pull/940))
+* **`t.maximizeWindow` test action. ([#812](https://github.com/DevExpress/testcafe/issues/812))**
 
   We have added a test action that maximizes the browser window.
 
@@ -109,12 +109,12 @@
 
 ### Bug Fixes
 
-* The `t.resizeWindow` and `t.resizeWindowToFitDevice` actions now work correctly on Mac ([#837](https://github.com/DevExpress/testcafe/pull/837))
-* Browser alias CLI parameter is now case insensitive ([#894](https://github.com/DevExpress/testcafe/pull/894))
-* Tests no longer hang if target scrolling coordinates are fractional ([#926](https://github.com/DevExpress/testcafe/pull/926))
-* The 'Element is not visible' error is no longer raised when scrolling a document in Quirks mode ([#883](https://github.com/DevExpress/testcafe/pull/883))
-* `<table>` child elements are now focused correctly ([#893](https://github.com/DevExpress/testcafe/pull/893))
-* The page is no longer scrolled to the parent element when focusing on a non-focusable child during click automation ([#921](https://github.com/DevExpress/testcafe/pull/921))
+* The `t.resizeWindow` and `t.resizeWindowToFitDevice` actions now work correctly on Mac ([#816](https://github.com/DevExpress/testcafe/issues/816))
+* Browser alias CLI parameter is now case insensitive ([#890](https://github.com/DevExpress/testcafe/issues/890))
+* Tests no longer hang if target scrolling coordinates are fractional ([#882](https://github.com/DevExpress/testcafe/issues/882))
+* The 'Element is not visible' error is no longer raised when scrolling a document in Quirks mode ([#883](https://github.com/DevExpress/testcafe/issues/883))
+* `<table>` child elements are now focused correctly ([#889](https://github.com/DevExpress/testcafe/issues/889))
+* The page is no longer scrolled to the parent element when focusing on a non-focusable child during click automation ([#913](https://github.com/DevExpress/testcafe/issues/913))
 
 ## v0.9.0 (2016-10-18)
 
