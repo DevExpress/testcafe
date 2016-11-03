@@ -64,7 +64,8 @@ async function runTests (argParser) {
         failed = await runner.run({
             skipJsErrors:    opts.skipJsErrors,
             quarantineMode:  opts.quarantineMode,
-            selectorTimeout: opts.selectorTimeout
+            selectorTimeout: opts.selectorTimeout,
+            speed:           opts.speed
         });
     }
 

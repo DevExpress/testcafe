@@ -5,6 +5,7 @@
     var testRunId           = {{{testRunId}}};
     var browserId           = {{{browserId}}};
     var selectorTimeout     = {{{selectorTimeout}}};
+    var speed               = {{{speed}}};
     var browserHeartbeatUrl = {{{browserHeartbeatUrl}}};
     var browserStatusUrl    = {{{browserStatusUrl}}};
     var skipJsErrors        = {{{skipJsErrors}}};
@@ -18,7 +19,7 @@
         { testRun: testRunId, browser: browserId },
         { heartbeat: browserHeartbeatUrl, status: browserStatusUrl },
         { userAgent: userAgent, fixtureName: fixtureName, testName: testName },
-        { selectorTimeout: selectorTimeout, skipJsErrors: skipJsErrors, dialogHandler: dialogHandler }
+        { selectorTimeout: selectorTimeout, skipJsErrors: skipJsErrors, dialogHandler: dialogHandler, speed: speed }
     );
 
     driver.start();

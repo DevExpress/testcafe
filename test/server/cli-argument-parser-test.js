@@ -1,8 +1,8 @@
-var expect                  = require('chai').expect;
-var path                    = require('path');
-var fs                      = require('fs');
-var tmp                     = require('tmp');
-var CliArgumentParser       = require('../../lib/cli/argument-parser');
+var expect            = require('chai').expect;
+var path              = require('path');
+var fs                = require('fs');
+var tmp               = require('tmp');
+var CliArgumentParser = require('../../lib/cli/argument-parser');
 
 describe('CLI argument parser', function () {
     this.timeout(10000);
@@ -91,6 +91,15 @@ describe('CLI argument parser', function () {
 
         it('Should raise an error if the "--selector-timeout" option value is not an integer', function () {
             return assertRaisesError('--selector-timeout yo', 'Selector timeout should be an integer.');
+        });
+    });
+
+    describe('Speed', function () {
+        it('Should parse "--speed" option as a number ', function () {
+            return parse('--speed 0.01')
+                .then(function (parser) {
+                    expect(parser.opts.speed).eql(0.01);
+                });
         });
     });
 
@@ -245,7 +254,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e --hostname myhost --qr-code ie test/server/data/file-list/file-1.js')
+        return parse('-r list -S -q -e --hostname myhost --qr-code --speed 0.5 ie test/server/data/file-list/file-1.js')
             .then(function (parser) {
                 expect(parser.browsers).eql(['ie']);
                 expect(parser.src).eql([path.resolve(process.cwd(), 'test/server/data/file-list/file-1.js')]);
@@ -255,6 +264,7 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.screenshotsOnFails).to.be.ok;
                 expect(parser.opts.quarantineMode).to.be.ok;
                 expect(parser.opts.skipJsErrors).to.be.ok;
+                expect(parser.opts.speed).eql(0.5);
                 expect(parser.opts.qrCode).to.be.ok;
             });
     });
