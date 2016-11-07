@@ -120,7 +120,7 @@ See [Example](index.md#example).
 
 ### canResizeWindowToDimensions
 
-Checks if the window can be resized to the specified dimensions.
+Checks if the browser window can be resized to the specified dimensions.
 
 ```text
 async canResizeWindowToDimensions ( id, width, height )

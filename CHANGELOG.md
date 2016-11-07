@@ -6,7 +6,7 @@
 
 * **Snapshot API shorthands. ([#771](https://github.com/DevExpress/testcafe/issues/771))**
   
-  Previously, if you needed to use a single property from the snapshot, you had to write two assignments
+  Previously, if you needed to use a single property from the snapshot, you had to introduce two assignments
 
   ```js
   const snapshot = await selector();
@@ -20,7 +20,7 @@
   ```
 
   Now snapshot methods and property getters are exposed by selectors
-  (and by promises returned by selectors as well) so that you can write more compact code.
+  (and selector promises as well) so that you can write more compact code.
 
   ```js
   const nodeType = await selector.nodeType;
@@ -30,7 +30,7 @@
   const nodeType = await selector('someParam').nodeType;
   ```
 
-  However, shorthand properties are not enough to avoid using parentheses with dictionary properties
+  However, shorthand properties do not allow you to omit parentheses when working with dictionary properties
   like `style`, `attributes` or `boudingClientRect`.
   
   ```js
@@ -62,18 +62,17 @@
 * **Test execution speed control. ([#938](https://github.com/DevExpress/testcafe/issues/938))**
 
   We have introduced an option that allows you to specify how fast tests run.
-  It controls the cursor speed and the delay between actions.
 
-  By default, tests run at the maximum speed. If this is too fast for you to understand what happens,
-  use the new `speed` option to slow them down.
+  By default, tests run at the maximum speed. However, if you need to watch a test running to understand what happens in it,
+  this speed may seem too fast. In this instance, use the new `speed` option to slow the test down.
 
-  This option is available from the command line...
+  This option is available from the command line
 
   ```sh
   testcafe chrome my-tests --speed 0.1
   ```
   
-  ...and from the API.
+  and from the API.
 
   ```js
   await runner.run({
@@ -104,12 +103,14 @@
 
 ### Bug Fixes
 
-* The `t.resizeWindow` and `t.resizeWindowToFitDevice` actions now work correctly on Mac ([#816](https://github.com/DevExpress/testcafe/issues/816))
-* Browser alias CLI parameter is now case insensitive ([#890](https://github.com/DevExpress/testcafe/issues/890))
+* The `t.resizeWindow` and `t.resizeWindowToFitDevice` actions now work correctly on macOS ([#816](https://github.com/DevExpress/testcafe/issues/816))
+* Browser aliases are now case insensitive in the command line ([#890](https://github.com/DevExpress/testcafe/issues/890))
 * Tests no longer hang if target scrolling coordinates are fractional ([#882](https://github.com/DevExpress/testcafe/issues/882))
 * The 'Element is not visible' error is no longer raised when scrolling a document in Quirks mode ([#883](https://github.com/DevExpress/testcafe/issues/883))
 * `<table>` child elements are now focused correctly ([#889](https://github.com/DevExpress/testcafe/issues/889))
 * The page is no longer scrolled to the parent element when focusing on a non-focusable child during click automation ([#913](https://github.com/DevExpress/testcafe/issues/913))
+* Browser auto-detection now works with all the Linux distributions ([#104](https://github.com/DevExpress/testcafe-browser-tools/issues/104),
+  [#915](https://github.com/DevExpress/testcafe/issues/915))
 
 ## v0.9.0 (2016-10-18)
 

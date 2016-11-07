@@ -294,15 +294,16 @@ If the hostname is not specified, TestCafe will use the operating system hostnam
 
 ### --speed \<factor\>
 
-Specifies the speed of test execution. Controls the cursor speed and the delay between actions.
+Specifies the speed of test execution.
 
-By default, tests run at the maximum speed. If this is too fast for you to understand what happens,
-use this option to slow them down.
+By default, tests run at the maximum speed. However, if you need to watch a test running
+to understand what happens in it, this speed may seem too fast. In this instance, use this option
+to slow the test down.
 
-`factor` should be a number between `1` (fastest) and `0.01` (slowest).
+`factor` should be a number between `1` (the fastest) and `0.01` (the slowest).
 
 ```sh
-testcafe ie my-tests --speed 0.1
+testcafe chrome my-tests --speed 0.1
 ```
 
 **Default value**: `1`
