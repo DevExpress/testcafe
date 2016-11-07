@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 
-describe('[API] Selector', function () {
+describe.only('[API] Selector', function () {
     it('Should provide basic properties in HTMLElement snapshots', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'HTMLElement snapshot basic properties');
     });

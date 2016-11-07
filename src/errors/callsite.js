@@ -19,5 +19,5 @@ export function getCallsite (methodName, typeName) {
 }
 
 export function getCallsiteForGetter () {
-    return getCallsite('get', 'Function');
+    return getCallsite('get');
 }

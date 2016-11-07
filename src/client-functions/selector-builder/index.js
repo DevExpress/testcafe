@@ -6,13 +6,19 @@ import { SelectorNodeTransform } from '../replicator';
 import { APIError, ClientFunctionAPIError } from '../../errors/runtime';
 import functionBuilderSymbol from '../builder-symbol';
 import MESSAGE from '../../errors/runtime/message';
+import { getCallsiteForGetter } from '../../errors/callsite';
+import deprecate from '../../warnings/deprecate';
 import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import defineLazyProperty from '../../utils/define-lazy-property';
 import createSnapshotShorthands from './create-snapshot-shorthands';
 import createSnapshotMethods from './create-snapshot-methods';
+import ensureDeprecatedOptions from './ensure-deprecated-options';
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
     constructor (fn, options, callsiteNames) {
+        if (callsiteNames && callsiteNames.instantiation === 'with')
+            ensureDeprecatedOptions('with', options);
+
         var builderFromSelector          = fn && fn[functionBuilderSymbol];
         var builderFromPromiseOrSnapshot = fn && fn.selector && fn.selector[functionBuilderSymbol];
         var builder                      = builderFromSelector || builderFromPromiseOrSnapshot;
@@ -31,6 +37,11 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
     static _defineNodeSnapshotDerivativeSelectorProperty (obj, propName, fn) {
         defineLazyProperty(obj, propName, () => {
+            deprecate(getCallsiteForGetter(), {
+                what:       `nodeSnapshot.${propName}`,
+                useInstead: 'hierarchical selectors (e.g. selector.find())'
+            });
+
             var builder = new SelectorBuilder(fnArg => {
                 /* eslint-disable no-undef */
                 var selectorResult = selector();
