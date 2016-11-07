@@ -525,3 +525,129 @@ test('Snapshot property shorthand - selector error', async () => {
 test('Snapshot shorthand method - selector error', async () => {
     await Selector(() => [].someUndefMethod()).hasClass('yo');
 });
+
+test('Selector "nth()" method', async () => {
+    // String selector
+    const getSecondEl = Selector('.idxEl').nth(1);
+
+    let el = await getSecondEl();
+
+    expect(el.id).eql('el2');
+
+    // Function selector
+    const getThirdEl = Selector(() => document.querySelectorAll('.idxEl')).nth(2);
+
+    el = await getThirdEl();
+
+    expect(el.id).eql('el3');
+
+    // Index should be ignored if functions returns element
+    const getFirstEl = Selector(() => document.querySelectorAll('.idxEl')[0]).nth(2);
+
+    el = await getFirstEl();
+
+    expect(el.id).eql('el1');
+
+    // Should work on parametrized selectors
+    const elWithClass = Selector(className => document.querySelectorAll('.' + className));
+
+    expect(await elWithClass('idxEl').nth(2).id).eql('el3');
+    expect(await elWithClass('idxEl').nth(3).id).eql('el4');
+
+    // Should be overridable
+    expect(await elWithClass('idxEl').nth(2).nth(1).id).eql('el2');
+    expect(await getSecondEl.nth(2).id).eql('el3');
+});
+
+test('Selector "withText" method', async () => {
+    // String selector and string filter
+    let selector = Selector('div').withText('element 4.');
+
+    let el = await selector();
+
+    expect(el.id).eql('el4');
+
+    // String selector and regexp filter
+    selector = Selector('div').withText(/This is element \d+/);
+
+    el = await selector();
+
+    expect(el.id).eql('el1');
+
+    // Function selector and string filter
+    selector = Selector(() => document.querySelectorAll('.idxEl')).withText('element 4.');
+
+    el = await selector();
+
+    expect(el.id).eql('el4');
+
+    // Function selector and regexp filter
+    selector = Selector(() => document.querySelectorAll('.idxEl')).withText(/This is element \d+/);
+
+    el = await selector();
+
+    expect(el.id).eql('el1');
+
+    // Should filter element if text filter specified
+    selector = Selector(id => document.getElementById(id)).withText('element 4.');
+
+    el = await selector('el1');
+
+    expect(el).to.be.null;
+
+    el = await selector('el4');
+
+    expect(el.id).eql('el4');
+
+    // Should filter document if text filter specified
+    selector = Selector(() => document).withText('Lorem ipsum dolor sit amet, consectetur');
+
+    el = await selector();
+
+    expect(el).to.be.null;
+
+    // Should be overridable
+    el = await selector.withText('Hey?! (yo)')();
+
+    expect(el.nodeType).eql(9);
+
+    selector = Selector(() => document.getElementById('el2').childNodes[0]).withText('Lorem ipsum dolor sit amet, consectetur');
+
+    el = await selector();
+
+    expect(el).to.be.null;
+
+    el = await selector.withText('Hey?! (yo)')();
+
+    expect(el.nodeType).eql(3);
+
+    // Should work on parametrized selectors
+    const elWithClass = Selector(className => document.querySelectorAll('.' + className));
+
+    expect(await elWithClass('idxEl').withText('element 4.').id).eql('el4');
+    expect(await elWithClass('idxEl').withText('element 1.').id).eql('el1');
+});
+
+test('Combination of filter methods', async t => {
+    const selector = Selector('div').withText('Hey?! (yo)').nth(1);
+
+    let el = await selector();
+
+    expect(el.id).eql('el3');
+
+    el = await selector.withText(/This is element \d+/)();
+
+    expect(el.id).eql('el4');
+
+    // Selector should maintain filter when used as parameter
+    const getId = ClientFunction(getEl => getEl().id);
+
+    let id = await getId(selector);
+
+    expect(id).eql('el3');
+
+    // Selector should maintain filter when used as dependency
+    id = await t.eval(() => selector().id, { dependencies: { selector: selector.nth(0) } });
+
+    expect(id).eql('el2');
+});

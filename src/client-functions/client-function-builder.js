@@ -6,6 +6,7 @@ import { ExecuteClientFunctionCommand } from '../test-run/commands/observation';
 import TestRun from '../test-run';
 import compileClientFunction from '../compiler/es-next/compile-client-function';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
+import { assertObject, assertNonNullObject } from '../errors/runtime/type-assertions';
 import MESSAGE from '../errors/runtime/message';
 import { getCallsite } from '../errors/callsite';
 
@@ -123,13 +124,7 @@ export default class ClientFunctionBuilder {
     }
 
     _validateOptions (options) {
-        var optionsType = typeof options;
-
-        if (isNullOrUndefined(options) || optionsType !== 'object') {
-            var actualVal = options === null ? 'null' : optionsType;
-
-            throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionsArgumentIsNotAnObject, actualVal);
-        }
+        assertNonNullObject(this.callsiteNames.instantiation, '"options" argument', options);
 
         if (!isNullOrUndefined(options.boundTestRun)) {
             // NOTE: we can't use strict `t instanceof TestController`
@@ -138,12 +133,8 @@ export default class ClientFunctionBuilder {
                 throw new APIError(this.callsiteNames.instantiation, MESSAGE.invalidClientFunctionTestRunBinding);
         }
 
-        if (!isNullOrUndefined(options.dependencies)) {
-            var dependenciesType = typeof options.dependencies;
-
-            if (dependenciesType !== 'object')
-                throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotAnObject, 'dependencies', dependenciesType);
-        }
+        if (!isNullOrUndefined(options.dependencies))
+            assertObject(this.callsiteNames.instantiation, '"dependencies" option', options.dependencies);
     }
 
     _getReplicatorTransforms () {

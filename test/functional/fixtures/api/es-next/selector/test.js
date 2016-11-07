@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 
-describe.only('[API] Selector', function () {
+describe('[API] Selector', function () {
     it('Should provide basic properties in HTMLElement snapshots', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'HTMLElement snapshot basic properties');
     });
@@ -81,6 +81,18 @@ describe.only('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot properties shorthands on selector', { only: 'chrome' });
     });
 
+    it('Should filter results with `nth()` method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "nth()" method', { only: 'chrome' });
+    });
+
+    it('Should filter results with `withText()` method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "withText" method', { only: 'chrome' });
+    });
+
+    it.only('Should filter using with combination of filter methods', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Combination of filter methods', { only: 'chrome' });
+    });
+
     describe('Errors', function () {
         it('Should handle errors in Selector code', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Error in code', { shouldFail: true })
@@ -117,7 +129,10 @@ describe.only('[API] Selector', function () {
         });
 
         it("Should raise error if snapshot property shorthand can't find element in DOM tree", function () {
-            return runTests('./testcafe-fixtures/selector-test.js', "Snapshot property shorthand - selector doesn't match any element", { shouldFail: true, only: 'chrome' })
+            return runTests('./testcafe-fixtures/selector-test.js', "Snapshot property shorthand - selector doesn't match any element", {
+                shouldFail: true,
+                only:       'chrome'
+            })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
                         'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.'
@@ -127,7 +142,10 @@ describe.only('[API] Selector', function () {
         });
 
         it("Should raise error if snapshot shorthand method can't find element in DOM tree", function () {
-            return runTests('./testcafe-fixtures/selector-test.js', "Snapshot shorthand method - selector doesn't match any element", { shouldFail: true, only: 'chrome' })
+            return runTests('./testcafe-fixtures/selector-test.js', "Snapshot shorthand method - selector doesn't match any element", {
+                shouldFail: true,
+                only:       'chrome'
+            })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
                         'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.'
@@ -137,7 +155,10 @@ describe.only('[API] Selector', function () {
         });
 
         it('Should raise error if error occurs in selector during shorthand property evaluation', function () {
-            return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot property shorthand - selector error', { shouldFail: true, only: 'chrome' })
+            return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot property shorthand - selector error', {
+                shouldFail: true,
+                only:       'chrome'
+            })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
@@ -147,7 +168,10 @@ describe.only('[API] Selector', function () {
         });
 
         it('Should raise error if error occurs in selector during shorthand method evaluation', function () {
-            return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot shorthand method - selector error', { shouldFail: true, only: 'chrome' })
+            return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot shorthand method - selector error', {
+                shouldFail: true,
+                only:       'chrome'
+            })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
