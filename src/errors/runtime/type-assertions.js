@@ -2,8 +2,12 @@ import { isFinite, isRegExp, isNil as isNullOrUndefined } from 'lodash';
 import { APIError } from './';
 import MESSAGE from './message';
 
+function isNonNegativeNumber (value) {
+    return isFinite(value) && value >= 0;
+}
+
 export function assertNonNegativeNumber (callsiteName, what, value) {
-    if (!isFinite(value) || value < 0) {
+    if (!isNonNegativeNumber(value)) {
         var valueType = typeof value;
         var actual    = valueType === 'number' ? value : valueType;
 
@@ -47,4 +51,11 @@ export function assertFunctionOrString (callsiteName, what, value) {
 
     if (type !== 'string' && type !== 'function')
         throw new APIError(callsiteName, MESSAGE.valueIsNotAFunctionOrString, what, type);
+}
+
+export function assertFunctionOrStringOnNonNegativeNumber (callsiteName, what, value) {
+    var type = typeof value;
+
+    if (type !== 'string' && type !== 'function' && (type !== 'number' || !isNonNegativeNumber(value)))
+        throw new APIError(callsiteName, MESSAGE.valueIsNotAFunctionOrStringOrNonNegativeNumber, what, type);
 }

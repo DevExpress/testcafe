@@ -97,6 +97,10 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "find" method');
     });
 
+    it('Should provide .parent() method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "parent" method');
+    });
+
     describe('Errors', function () {
         it('Should handle errors in Selector code', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Error in code', { shouldFail: true })

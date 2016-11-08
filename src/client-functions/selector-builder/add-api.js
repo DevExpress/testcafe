@@ -1,13 +1,42 @@
 import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapshot-properties';
 import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
 import { getCallsite, getCallsiteForGetter } from '../../errors/callsite';
+import ClientFunctionBuilder from '../client-function-builder';
 import {
     assertStringOrRegExp,
     assertNonNegativeNumber,
-    assertFunctionOrString
+    assertFunctionOrString,
+    assertFunctionOrStringOnNonNegativeNumber
 } from '../../errors/runtime/type-assertions';
 
 const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PROPERTIES);
+
+
+var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot) => {
+    if (typeof filter === 'number')
+        return nodes[filter];
+
+    var result = [];
+
+    if (typeof filter === 'string') {
+        var matching    = querySelectorRoot.querySelectorAll(filter);
+        var matchingArr = [];
+
+        for (var i = 0; i < matching.length; i++)
+            matchingArr.push(matching[i]);
+
+        filter = node => matchingArr.indexOf(node) > -1;
+    }
+
+    if (typeof filter === 'function') {
+        for (var j = 0; j < nodes.length; j++) {
+            if (filter(nodes[j]))
+                result.push(nodes[j]);
+        }
+    }
+
+    return result;
+})).getFunction();
 
 
 async function getSnapshot (getSelector, callsite) {
@@ -89,6 +118,7 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
 }
 
 function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
+    // Find
     obj.find = filter => {
         assertFunctionOrString('find', '"filter" argument', filter);
 
@@ -130,6 +160,38 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
             visitNode(node);
 
             return result;
+            /* eslint-enable no-undef */
+        }, builderOptions);
+
+        return builder.getFunction();
+    };
+
+    // Parent
+    obj.parent = filter => {
+        if (filter !== void 0)
+            assertFunctionOrStringOnNonNegativeNumber('parent', '"filter" argument', filter);
+
+        var builderOptions = {
+            dependencies: {
+                selector:    getSelector(),
+                filter:      filter,
+                filterNodes: filterNodes
+            }
+        };
+
+        var builder = new SelectorBuilder(() => {
+            /* eslint-disable no-undef */
+            var node = selector();
+
+            if (!node)
+                return null;
+
+            var parents = [];
+
+            for (node = node.parentNode; node; node = node.parentNode)
+                parents.push(node);
+
+            return filter ? filterNodes(parents, filter, document) : parents;
             /* eslint-enable no-undef */
         }, builderOptions);
 

@@ -670,4 +670,30 @@ test('Selector "find" method', async () => {
     const withId = Selector(id => document.getElementById(id));
 
     expect(await withId('htmlElement').find('span').id).eql('someSpan');
+
+    // With filters
+    expect(await Selector('#container').find('div').withText('element 4').id).eql('el4');
+});
+
+test('Selector "parent" method', async () => {
+    // Index filter
+    expect((await Selector('g').parent(1).tagName).toLowerCase()).eql('a');
+    expect((await Selector('g').parent().parent().tagName).toLowerCase()).eql('a');
+    expect((await Selector('#option1').parent(2).tagName).toLowerCase()).eql('body');
+
+    // CSS selector filter
+    expect((await Selector('g').parent('a').tagName).toLowerCase()).eql('a');
+    expect(await Selector('#childDiv').parent('.parent1').id).eql('p1');
+
+    // Function selector
+    expect(await Selector('#childDiv').parent(node => node.id === 'p2').id).eql('p2');
+
+    // Parametrized selector
+    const withId = Selector(id => document.getElementById(id));
+
+    expect(await withId('childDiv').parent('.parent1').id).eql('p1');
+
+    // With filters
+    expect(await Selector('#childDiv').parent().withText(/Hey/).id).eql('p2');
+    expect(await Selector('#childDiv').parent().nth(1).id).eql('p1');
 });
