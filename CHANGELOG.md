@@ -31,7 +31,7 @@
   ```
 
   However, shorthand properties do not allow you to omit parentheses when working with dictionary properties
-  like `style`, `attributes` or `boudingClientRect`.
+  like `style`, `attributes` or `boundingClientRect`.
   
   ```js
   const width = (await selector.style)['width'];
