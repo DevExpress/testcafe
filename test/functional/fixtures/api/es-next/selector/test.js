@@ -105,6 +105,10 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "child" method');
     });
 
+    it('Should provide .sibling() method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "sibling" method');
+    });
+
     describe('Errors', function () {
         it('Should handle errors in Selector code', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Error in code', { shouldFail: true })

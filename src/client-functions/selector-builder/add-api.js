@@ -238,6 +238,44 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
 
         return builder.getFunction();
     };
+
+    // Sibling
+    obj.sibling = filter => {
+        if (filter !== void 0)
+            assertFunctionOrStringOnNonNegativeNumber('sibling', '"filter" argument', filter);
+
+        var builderOptions = {
+            dependencies: {
+                selector:    getSelector(),
+                filter:      filter,
+                filterNodes: filterNodes
+            }
+        };
+
+        var builder = new SelectorBuilder(() => {
+            /* eslint-disable no-undef */
+            var node   = selector();
+            var parent = node && node.parentNode;
+
+            if (!parent)
+                return null;
+
+            var siblings = [];
+            var cnLength = parent.childNodes.length;
+
+            for (var i = 0; i < cnLength; i++) {
+                var child = parent.childNodes[i];
+
+                if (child.nodeType === 1 && child !== node)
+                    siblings.push(child);
+            }
+
+            return filter ? filterNodes(siblings, filter, parent) : siblings;
+            /* eslint-enable no-undef */
+        }, builderOptions);
+
+        return builder.getFunction();
+    };
 }
 
 export default function addAPI (obj, getSelector, SelectorBuilder) {

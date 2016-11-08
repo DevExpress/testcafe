@@ -719,3 +719,24 @@ test('Selector "child" method', async () => {
     // With filters
     expect(await Selector('#container').child().withText('element 4').id).eql('el4');
 });
+
+test('Selector "sibling" method', async () => {
+    // Index filter
+    expect(await Selector('#el2').sibling(1).id).eql('el3');
+    expect(await Selector('#el2').sibling().sibling().id).eql('el2');
+    expect(await Selector('#el1').sibling(2).id).eql('el4');
+
+    // CSS selector filter
+    expect(await Selector('#selectInput').sibling('[type=checkbox]').id).eql('checkInput');
+
+    // Function selector
+    expect(await Selector('#el2').sibling(el => el.id === 'el3').id).eql('el3');
+
+    // Parametrized selector
+    const withId = Selector(id => document.getElementById(id));
+
+    expect(await withId('el2').sibling().id).eql('el1');
+
+    // With filters
+    expect(await Selector('#el2').sibling().withText('element 4').id).eql('el4');
+});
