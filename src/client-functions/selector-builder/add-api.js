@@ -19,6 +19,10 @@ var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot) 
     var result = [];
 
     if (typeof filter === 'string') {
+        // NOTE: we can search for elements only in document or element.
+        if (querySelectorRoot.nodeType !== 1 && querySelectorRoot.nodeType !== 9)
+            return null;
+
         var matching    = querySelectorRoot.querySelectorAll(filter);
         var matchingArr = [];
 
@@ -192,6 +196,43 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
                 parents.push(node);
 
             return filter ? filterNodes(parents, filter, document) : parents;
+            /* eslint-enable no-undef */
+        }, builderOptions);
+
+        return builder.getFunction();
+    };
+
+    // Child
+    obj.child = filter => {
+        if (filter !== void 0)
+            assertFunctionOrStringOnNonNegativeNumber('child', '"filter" argument', filter);
+
+        var builderOptions = {
+            dependencies: {
+                selector:    getSelector(),
+                filter:      filter,
+                filterNodes: filterNodes
+            }
+        };
+
+        var builder = new SelectorBuilder(() => {
+            /* eslint-disable no-undef */
+            var node = selector();
+
+            if (!node)
+                return null;
+
+            var childElements = [];
+            var cnLength      = node.childNodes.length;
+
+            for (var i = 0; i < cnLength; i++) {
+                var child = node.childNodes[i];
+
+                if (child.nodeType === 1)
+                    childElements.push(child);
+            }
+
+            return filter ? filterNodes(childElements, filter, node) : childElements;
             /* eslint-enable no-undef */
         }, builderOptions);
 

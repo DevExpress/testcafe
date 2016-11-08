@@ -697,3 +697,25 @@ test('Selector "parent" method', async () => {
     expect(await Selector('#childDiv').parent().withText(/Hey/).id).eql('p2');
     expect(await Selector('#childDiv').parent().nth(1).id).eql('p1');
 });
+
+test('Selector "child" method', async () => {
+    // Index filter
+    expect(await Selector('#container').child(1).id).eql('el2');
+    expect(await Selector('#p2').child().child().id).eql('p0');
+    expect(await Selector('#container').child(3).id).eql('el4');
+
+    // CSS selector filter
+    expect(await Selector('#container').child('#el3').id).eql('el3');
+    expect(await Selector('form').child('select').id).eql('selectInput');
+
+    // Function selector
+    expect(await Selector('#container').child(el => el.id === 'el2').id).eql('el2');
+
+    // Parametrized selector
+    const withId = Selector(id => document.getElementById(id));
+
+    expect(await withId('container').child('#el3').id).eql('el3');
+
+    // With filters
+    expect(await Selector('#container').child().withText('element 4').id).eql('el4');
+});
