@@ -1,6 +1,6 @@
 import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapshot-properties';
 import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
-import { getCallsite, getCallsiteForGetter } from '../../errors/callsite';
+import getCallsite from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../client-function-builder';
 import {
     assertStringOrRegExp,
@@ -66,7 +66,7 @@ function addSnapshotPropertyShorthands (obj, getSelector) {
     SNAPSHOT_PROPERTIES.forEach(prop => {
         Object.defineProperty(obj, prop, {
             get: async () => {
-                var callsite = getCallsiteForGetter();
+                var callsite = getCallsite('get');
                 var snapshot = await getSnapshot(getSelector, callsite);
 
                 return snapshot[prop];
@@ -278,8 +278,36 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
     };
 }
 
+function createCounter (getSelector, SelectorBuilder) {
+    var builder = new SelectorBuilder(getSelector(), { counterMode: true }, {
+        instantiation: 'Selector',
+        execution:     'get'
+    });
+
+    return builder.getFunction();
+}
+
+function addCounterProperties (obj, getSelector, SelectorBuilder) {
+    Object.defineProperty(obj, 'count', {
+        get: () => {
+            var counter = createCounter(getSelector, SelectorBuilder);
+
+            return counter();
+        }
+    });
+
+    Object.defineProperty(obj, 'exists', {
+        get: async () => {
+            var counter = createCounter(getSelector, SelectorBuilder);
+
+            return await counter() > 0;
+        }
+    });
+}
+
 export default function addAPI (obj, getSelector, SelectorBuilder) {
     addSnapshotPropertyShorthands(obj, getSelector);
     addFilterMethods(obj, getSelector, SelectorBuilder);
     addHierachicalSelectors(obj, getSelector, SelectorBuilder);
+    addCounterProperties(obj, getSelector, SelectorBuilder);
 }

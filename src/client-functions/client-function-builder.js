@@ -8,7 +8,7 @@ import compileClientFunction from '../compiler/es-next/compile-client-function';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import { assertObject, assertNonNullObject } from '../errors/runtime/type-assertions';
 import MESSAGE from '../errors/runtime/message';
-import { getCallsite } from '../errors/callsite';
+import getCallsite from '../errors/get-callsite';
 
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 

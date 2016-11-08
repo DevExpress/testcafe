@@ -352,12 +352,12 @@ test('Selector "index" option', async () => {
 
     expect(el.id).eql('el3');
 
-    // Index should be ignored if functions returns element
+    // If single node is returned index should be always 0
     const getFirstEl = Selector(() => document.querySelectorAll('.idxEl')[0], { index: 2 });
 
     el = await getFirstEl();
 
-    expect(el.id).eql('el1');
+    expect(el).to.be.null;
 });
 
 test('Selector "text" option', async () => {
@@ -541,12 +541,12 @@ test('Selector "nth()" method', async () => {
 
     expect(el.id).eql('el3');
 
-    // Index should be ignored if functions returns element
+    // If single node is returned index should be always 0
     const getFirstEl = Selector(() => document.querySelectorAll('.idxEl')[0]).nth(2);
 
     el = await getFirstEl();
 
-    expect(el.id).eql('el1');
+    expect(el).to.be.null;
 
     // Should work on parametrized selectors
     const elWithClass = Selector(className => document.querySelectorAll('.' + className));
@@ -739,4 +739,32 @@ test('Selector "sibling" method', async () => {
 
     // With filters
     expect(await Selector('#el2').sibling().withText('element 4').id).eql('el4');
+});
+
+test('Selector "count" and "exists" properties', async () => {
+    expect(await Selector('.idxEl').count).eql(4);
+    expect(await Selector('.idxEl').nth(2).count).eql(1);
+    expect(await Selector('form').find('input').count).eql(2);
+    expect(await Selector('.notexists').count).eql(0);
+
+    const witClass = Selector(className => document.getElementsByClassName(className));
+
+    expect(await witClass('idxEl').count).eql(4);
+    expect(await witClass('idxEl').withText('Hey?!').count).eql(2);
+
+    expect(await Selector('.idxEl').exists).to.be.true;
+    expect(await Selector('.idxEl').nth(2).exists).to.be.true;
+    expect(await Selector('form').find('input').exists).to.be.true;
+    expect(await Selector('.notexists').exists).to.be.false;
+    expect(await witClass('idxEl').exists).to.be.true;
+    expect(await witClass('idxEl').withText('Hey?!').exists).to.be.true;
+    expect(await witClass('idxEl').withText('testtesttest').exists).to.be.false;
+});
+
+test('Snapshot "count" property - selector error', async () => {
+    await Selector(() => [].someUndefMethod()).count;
+});
+
+test('Snapshot "exists" property - selector error', async () => {
+    await Selector(() => [].someUndefMethod()).exists;
 });

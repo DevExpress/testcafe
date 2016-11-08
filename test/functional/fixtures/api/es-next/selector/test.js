@@ -109,6 +109,10 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "sibling" method');
     });
 
+    it('Should provide "exists" and "count" properties', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "count" and "exists" properties');
+    });
+
     describe('Errors', function () {
         it('Should handle errors in Selector code', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Error in code', { shouldFail: true })
@@ -193,6 +197,32 @@ describe('[API] Selector', function () {
                         'An error occurred in Selector code:'
                     );
                     expect(errs[0]).contains("> 526 |    await Selector(() => [].someUndefMethod()).hasClass('yo');");
+                });
+        });
+
+        it('Should raise error if error occurs in selector during "count" property evaluation', function () {
+            return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot "count" property - selector error', {
+                shouldFail: true,
+                only:       'chrome'
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).contains(
+                        'An error occurred in Selector code:'
+                    );
+                    expect(errs[0]).contains('> 765 |    await Selector(() => [].someUndefMethod()).count;');
+                });
+        });
+
+        it('Should raise error if error occurs in selector during "exists" property evaluation', function () {
+            return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot "exists" property - selector error', {
+                shouldFail: true,
+                only:       'chrome'
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).contains(
+                        'An error occurred in Selector code:'
+                    );
+                    expect(errs[0]).contains('> 769 |    await Selector(() => [].someUndefMethod()).exists;');
                 });
         });
     });

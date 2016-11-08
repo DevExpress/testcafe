@@ -6,7 +6,7 @@ import { SelectorNodeTransform } from '../replicator';
 import { ClientFunctionAPIError } from '../../errors/runtime';
 import functionBuilderSymbol from '../builder-symbol';
 import MESSAGE from '../../errors/runtime/message';
-import { getCallsiteForGetter } from '../../errors/callsite';
+import getCallsite from '../../errors/get-callsite';
 import { assertNonNegativeNumber, assertBoolean, assertStringOrRegExp } from '../../errors/runtime/type-assertions';
 import deprecate from '../../warnings/deprecate';
 import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
@@ -38,7 +38,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
     static _defineNodeSnapshotDerivativeSelectorProperty (obj, propName, fn) {
         defineLazyProperty(obj, propName, () => {
-            deprecate(getCallsiteForGetter(), {
+            deprecate(getCallsite('get'), {
                 what:       `nodeSnapshot.${propName}`,
                 useInstead: 'hierarchical selectors (e.g. selector.find())'
             });
@@ -84,8 +84,8 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                 `(function(){
                     var __f$=${code};
                     return function(){
-                        var args = __dependencies$.__boundArgs$ || arguments;
-                        return window['%testCafeSelectorFilter%'](__f$.apply(this, args), __dependencies$.__filterOptions$);
+                        var args = __dependencies$.boundArgs || arguments;
+                        return window['%testCafeSelectorFilter%'](__f$.apply(this, args), __dependencies$.filterOptions);
                     };
                  })();`
             );
@@ -110,7 +110,11 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             if (!resultPromise) {
                 resultPromise = super
                     ._executeCommand(args, testRun, callsite)
-                    .then(result => result ? this._decorateFunctionResult(result, args) : result);
+                    .then(result => {
+                        return result && !this.options.counterMode ?
+                               this._decorateFunctionResult(result, args) :
+                               result;
+                    });
             }
 
             return resultPromise;
@@ -135,12 +139,13 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             text = new RegExp(escapeRe(text));
 
         return assign({}, dependencies, {
-            __filterOptions$: {
-                index: this.options.index || 0,
-                text:  text
+            filterOptions: {
+                counterMode: this.options.counterMode,
+                index:       this.options.index || null,
+                text:        text
             },
 
-            __boundArgs$: this.options.boundArgs
+            boundArgs: this.options.boundArgs
         });
     }
 

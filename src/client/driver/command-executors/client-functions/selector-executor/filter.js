@@ -81,23 +81,30 @@ function filterNodeCollectionByText (collection, textRe) {
 // Selector filter
 Object.defineProperty(window, '%testCafeSelectorFilter%', {
     value: (node, options) => {
+        var filtered = [];
+
         if (node === null || node === void 0)
-            return node;
+            filtered = [];
 
-        if (node instanceof Node) {
-            if (options.text)
-                return hasText(node, options.text) ? node : null;
+        else if (node instanceof Node)
+            filtered = [node];
 
-            return node;
+        else if (node instanceof HTMLCollection || node instanceof NodeList || isArrayOfNodes(node))
+            filtered = node;
+
+        else
+            throw new InvalidSelectorResultError();
+
+        if (options.text)
+            filtered = filterNodeCollectionByText(filtered, options.text);
+
+        if (options.counterMode) {
+            if (options.index)
+                return filtered[options.index] ? 1 : 0;
+
+            return filtered.length;
         }
 
-        if (node instanceof HTMLCollection || node instanceof NodeList || isArrayOfNodes(node)) {
-            if (options.text)
-                node = filterNodeCollectionByText(node, options.text);
-
-            return node[options.index];
-        }
-
-        throw new InvalidSelectorResultError();
+        return filtered[options.index || 0];
     }
 });

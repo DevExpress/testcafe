@@ -1,5 +1,5 @@
 import deprecate from '../../warnings/deprecate';
-import { getCallsite } from '../../errors/callsite';
+import getCallsite from '../../errors/get-callsite';
 
 export default function ensureDeprecatedOptions (callsiteName, options) {
     if (options && (options.text || options.index || options.dependencies)) {
