@@ -842,13 +842,20 @@ where tests are not guaranteed to execute correctly.</p>
 <td>Specifies the amount of time, in milliseconds, within which <a href="../../test-api/selecting-page-elements/selectors.html">selectors</a> make attempts to obtain a node to be returned. See <a href="../../test-api/selecting-page-elements/selectors.html#selector-timeout">Selector Timeout</a>.</td>
 <td><code>10000</code></td>
 </tr>
+<tr>
+<td><code>speed</code></td>
+<td>Number</td>
+<td>Specifies the speed of test execution. Should be a number between <code>1</code> (the fastest) and <code>0.01</code> (the slowest).</td>
+<td><code>1</code></td>
+</tr>
 </tbody></table>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">failed</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span>
     <span class="na">skipJsErrors</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="na">quarantineMode</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="na">selectorTimeout</span><span class="p">:</span> <span class="mi">50000</span>
+    <span class="na">selectorTimeout</span><span class="p">:</span> <span class="mi">50000</span><span class="p">,</span>
+    <span class="na">speed</span><span class="p">:</span> <span class="mf">0.1</span>
 <span class="p">})</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Tests failed: '</span> <span class="o">+</span> <span class="nx">failed</span><span class="p">);</span>

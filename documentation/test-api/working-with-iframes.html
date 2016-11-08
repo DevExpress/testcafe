@@ -572,7 +572,7 @@ Likewise, if several <code>&lt;iframes&gt;</code> are involved in your test, you
 </tr>
 </tbody></table>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'switching to an iframe'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span>
@@ -584,7 +584,7 @@ Likewise, if several <code>&lt;iframes&gt;</code> are involved in your test, you
 </code></pre></div>
 <p>Switches the test&#39;s browsing context from an <code>&lt;iframe&gt;</code> back to the main window.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'switching back to main window'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span>

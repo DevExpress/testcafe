@@ -561,12 +561,12 @@ see <a href="selecting-page-elements/">Selecting Page Elements</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'chai'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Test 1'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#myelem'</span><span class="p">);</span>
 
-    <span class="kr">const</span> <span class="nx">myElement</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">select</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'myelem'</span><span class="p">));</span>
+    <span class="kr">const</span> <span class="nx">myElement</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">'#myelem'</span><span class="p">);</span>
 
     <span class="nx">expect</span><span class="p">(</span><span class="nx">myElement</span><span class="p">.</span><span class="nx">visible</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
 <span class="p">});</span>
@@ -576,7 +576,7 @@ see <a href="selecting-page-elements/">Selecting Page Elements</a>.</p>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#input'</span><span class="p">,</span> <span class="s1">'Hello world!'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#apply'</span><span class="p">);</span>
 
-    <span class="kr">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">select</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'header'</span><span class="p">));</span>
+    <span class="kr">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">'#header'</span><span class="p">);</span>
 
     <span class="nx">expect</span><span class="p">(</span><span class="nx">header</span><span class="p">.</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">'Hello world!'</span><span class="p">);</span>
 <span class="p">});</span>

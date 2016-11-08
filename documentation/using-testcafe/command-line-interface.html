@@ -577,6 +577,7 @@
 <li><a href="#--selector-timeout-ms">--selector-timeout &lt;ms&gt;</a></li>
 <li><a href="#--ports-port1port2">--ports &lt;port1,port2&gt;</a></li>
 <li><a href="#--hostname-name">--hostname &lt;name&gt;</a></li>
+<li><a href="#--speed-factor">--speed &lt;factor&gt;</a></li>
 <li><a href="#--qr-code">--qr-code</a></li>
 <li><a href="#--color">--color</a></li>
 <li><a href="#--no-color">--no-color</a></li>
@@ -717,6 +718,17 @@ attempts to obtain a node to be returned. See <a href="../test-api/selecting-pag
 <p>Specifies the hostname of your computer. It is used when running tests in <a href="#remote-browsers">remote browsers</a>.</p>
 
 <p>If the hostname is not specified, TestCafe will use the operating system hostname or network IP address of the current machine.</p>
+<h3><a class="anchor" name="--speed-factor"></a>--speed &lt;factor&gt; <a class="permalink" href="#--speed-factor">#</a></h3>
+<p>Specifies the speed of test execution.</p>
+
+<p>By default, tests run at the maximum speed. However, if you need to watch a test running
+to understand what happens in it, this speed may seem too fast. In this instance, use this option
+to slow the test down.</p>
+
+<p><code>factor</code> should be a number between <code>1</code> (the fastest) and <code>0.01</code> (the slowest).</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --speed 0.1
+</code></pre></div>
+<p><strong>Default value</strong>: <code>1</code></p>
 <h3><a class="anchor" name="--qr-code"></a>--qr-code <a class="permalink" href="#--qr-code">#</a></h3>
 <p>Outputs QR-code that represents URLs used to connect the <a href="#remote-browsers">remote browsers</a>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe remote my-tests --qr-code

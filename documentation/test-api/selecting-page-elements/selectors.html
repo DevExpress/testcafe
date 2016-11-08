@@ -567,7 +567,11 @@ To interact with the page, use <a href="../actions/">test actions</a>.</p>
 <li><a href="#executing-selectors">Executing Selectors</a>
 
 <ul>
-<li><a href="#return-values-dom-node-snapshots">Return Values. DOM Node Snapshots</a></li>
+<li><a href="#dom-node-snapshots">DOM Node Snapshots</a>
+
+<ul>
+<li><a href="#snapshot-api-shorthands">Snapshot API Shorthands</a></li>
+</ul></li>
 <li><a href="#selector-timeout">Selector Timeout</a></li>
 </ul></li>
 <li><a href="#one-time-selection">One-Time Selection</a></li>
@@ -603,7 +607,7 @@ Use <a href="../obtaining-data-from-the-client.html">client functions</a> to ret
 <p>The following example creates a selector from a function that returns a DOM element by its ID.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">getElement</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 </code></pre></div><h2><a class="anchor" name="selector-initializers"></a>Selector Initializers <a class="permalink" href="#selector-initializers">#</a></h2>
 <p>You can initialize a selector with any of these objects.</p>
 
@@ -615,45 +619,45 @@ NodeList, HTMLCollection, <code>null</code> or <code>undefined</code>. Cannot us
 <span class="c1">// A selector is created from a regular function.</span>
 <span class="c1">// This selector will take the 'id' parameter and return</span>
 <span class="c1">// a DOM element that has this ID.</span>
-<span class="kr">const</span> <span class="nx">getElementById</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 </code></pre></div></li>
 <li><p>A CSS selector string that matches one or several nodes.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="c1">// A selector is created from a CSS selector string.</span>
 <span class="c1">// This selector will return the first matching DOM node.</span>
-<span class="kr">const</span> <span class="nx">getSubmitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">submitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 </code></pre></div></li>
 <li><p>A selector.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="c1">// This selector is created from a function that returs all elements of a specified class.</span>
 <span class="c1">// The selector returns the third such element since its `index` option is set to 2.</span>
-<span class="kr">const</span> <span class="nx">getThirdElemByClass</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">cl</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">cl</span><span class="p">),</span> <span class="p">{</span>
+<span class="kr">const</span> <span class="nx">thirdElemWithClass</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">cl</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">cl</span><span class="p">),</span> <span class="p">{</span>
     <span class="na">index</span><span class="p">:</span> <span class="mi">2</span>
 <span class="p">});</span>
 
 <span class="c1">// This selector is created based on the previous selector and inherits its initializer,</span>
 <span class="c1">// but overwrites the `index` parameter to return the fourth element.</span>
-<span class="kr">const</span> <span class="nx">getFourthElemOfClass</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">getThirdElemByClass</span><span class="p">,</span> <span class="p">{</span> <span class="na">index</span><span class="p">:</span> <span class="mi">3</span> <span class="p">});</span>
+<span class="kr">const</span> <span class="nx">fourthElemWithClass</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">thirdElemWithClass</span><span class="p">,</span> <span class="p">{</span> <span class="na">index</span><span class="p">:</span> <span class="mi">3</span> <span class="p">});</span>
 </code></pre></div></li>
-<li><p>A <a href="#return-values-dom-node-snapshots">DOM node snapshot</a>.</p>
+<li><p>A <a href="#dom-node-snapshots">DOM node snapshot</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">getElementById</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">topMenuSnapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getElementById</span><span class="p">(</span><span class="s1">'top-menu'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">topMenuSnapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">elementWithId</span><span class="p">(</span><span class="s1">'top-menu'</span><span class="p">);</span>
 
     <span class="c1">// This selector is created from a DOM node snapshot returned</span>
     <span class="c1">// by a different selector. The new selector will use the same initializer</span>
-    <span class="c1">// as 'getElementById' and will always be executed with the same parameter</span>
+    <span class="c1">// as 'elementWithId' and will always be executed with the same parameter</span>
     <span class="c1">// values that were used to obtain 'topMenuSnapshot'. You can still</span>
     <span class="c1">// overwrite the selector options.</span>
-    <span class="kr">const</span> <span class="nx">getVisibleTopMenu</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">topMenuSnapshot</span><span class="p">,</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">visibleTopMenu</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">topMenuSnapshot</span><span class="p">,</span> <span class="p">{</span>
         <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span>
     <span class="p">});</span>
 <span class="p">});</span>
@@ -661,10 +665,10 @@ NodeList, HTMLCollection, <code>null</code> or <code>undefined</code>. Cannot us
 <li><p>A promise returned by a selector.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">getElementById</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
@@ -672,7 +676,7 @@ NodeList, HTMLCollection, <code>null</code> or <code>undefined</code>. Cannot us
     <span class="c1">// different selector. The new selector will be initialized with the</span>
     <span class="c1">// same function as the old one and with hard-coded parameter values</span>
     <span class="c1">// as in the previous example.</span>
-    <span class="kr">const</span> <span class="nx">getSubmitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'submit-button'</span><span class="p">));</span>
+    <span class="kr">const</span> <span class="nx">submitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">elementWithId</span><span class="p">(</span><span class="s1">'submit-button'</span><span class="p">));</span>
 <span class="p">});</span>
 </code></pre></div></li>
 </ul>
@@ -691,17 +695,17 @@ or a regular expression that matches this content.</p>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
-<span class="kr">const</span> <span class="nx">getRemoveButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">cl</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">cl</span><span class="p">),</span> <span class="p">{</span> <span class="na">text</span><span class="p">:</span> <span class="s1">'Remove'</span> <span class="p">});</span>
-<span class="kr">const</span> <span class="nx">getSecondButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">cl</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">cl</span><span class="p">),</span> <span class="p">{</span> <span class="na">index</span><span class="p">:</span> <span class="mi">1</span> <span class="p">});</span>
+<span class="kr">const</span> <span class="nx">removeButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">cl</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">cl</span><span class="p">),</span> <span class="p">{</span> <span class="na">text</span><span class="p">:</span> <span class="s1">'Remove'</span> <span class="p">});</span>
+<span class="kr">const</span> <span class="nx">secondButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">cl</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">cl</span><span class="p">),</span> <span class="p">{</span> <span class="na">index</span><span class="p">:</span> <span class="mi">1</span> <span class="p">});</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'A shadowed remove button is focused'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">expect</span><span class="p">((</span><span class="nx">await</span> <span class="nx">getRemoveButton</span><span class="p">(</span><span class="s1">'shadowed'</span><span class="p">)).</span><span class="nx">focused</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">await</span> <span class="nx">removeButton</span><span class="p">(</span><span class="s1">'shadowed'</span><span class="p">).</span><span class="nx">focused</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
 <span class="p">});</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'The second disabled button is visible'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">expect</span><span class="p">((</span><span class="nx">await</span> <span class="nx">getSecondButton</span><span class="p">(</span><span class="s1">'disabled'</span><span class="p">)).</span><span class="nx">visible</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">await</span> <span class="nx">secondButton</span><span class="p">(</span><span class="s1">'disabled'</span><span class="p">).</span><span class="nx">visible</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>If both options are specified, nodes are first filtered by the <code>text</code> filter,
@@ -714,32 +718,57 @@ are also applied when the selector is called from another selector or a <a href=
 <p>To execute a selector, call it with the <code>await</code> keyword like you would do with regular async functions.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">getElementById</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">button</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getElementById</span><span class="p">(</span><span class="s1">'my-button'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">button</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">elementWithId</span><span class="p">(</span><span class="s1">'my-button'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" name="return-values-dom-node-snapshots"></a>Return Values. DOM Node Snapshots <a class="permalink" href="#return-values-dom-node-snapshots">#</a></h3>
-<p>When you return a DOM node from the selector, what actually returns from the client
-is a <em>DOM node snapshot</em> - an object that reflects the state of the DOM node.</p>
+</code></pre></div><h3><a class="anchor" name="dom-node-snapshots"></a>DOM Node Snapshots <a class="permalink" href="#dom-node-snapshots">#</a></h3>
+<p>TestCafe executes tests on the server, so selectors cannot return actual DOM objects to test code.
+Instead, they return <em>DOM node snapshots</em> - server-side representation of the node&#39;s state.</p>
+
+<p>A snapshot contains information about the node&#39;s size, position, classes, parent and child nodes, etc.
+It exposes <a href="dom-node-snapshots.html">API</a> that is similar to DOM objects.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'chai'</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">getElementById</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Login field height'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">loginInput</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">elementWithId</span><span class="p">(</span><span class="s1">'login'</span><span class="p">);</span>
+
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">loginInput</span><span class="p">.</span><span class="nx">offsetWidth</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">95</span><span class="p">);</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">loginInput</span><span class="p">.</span><span class="nx">offsetHeight</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">35</span><span class="p">);</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">loginInput</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">'glow'</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">ok</span><span class="p">;</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>For a list of members exposed by DOM node snapshots, see <a href="dom-node-snapshots.html">DOM Node Snapshots</a>.</p>
+<h4><a class="anchor" name="snapshot-api-shorthands"></a>Snapshot API Shorthands <a class="permalink" href="#snapshot-api-shorthands">#</a></h4>
+<p>Selectors and promises returned by selectors expose snapshot API directly (except for
+snapshot&#39;s <code>getChildElement</code>, <code>getChildNode</code> and <code>getParentNode</code> methods).
+This is convenient when you need to use only one snapshot property or method.
+In this instance, you save a line of code, because you do not need to obtain and save the snapshot object explicitly.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'chai'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">loginInput</span>    <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#login-box'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Login field height'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">loginInput</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getElementById</span><span class="p">(</span><span class="s1">'login'</span><span class="p">);</span>
-
-    <span class="nx">expect</span><span class="p">(</span><span class="nx">loginInput</span><span class="p">.</span><span class="nx">offsetWidth</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">35</span><span class="p">);</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">await</span> <span class="nx">loginInput</span><span class="p">.</span><span class="nx">offsetWidth</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">95</span><span class="p">);</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">await</span> <span class="nx">elementWithId</span><span class="p">(</span><span class="s1">'password-box'</span><span class="p">).</span><span class="nx">offsetHeight</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">35</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>For a list of members exposed by DOM node snapshots, see <a href="dom-node-snapshots.html">DOM Node Snapshots</a>.</p>
+<p>Note that snapshot methods and property getters exposed through selectors are asynchronous.</p>
 <h3><a class="anchor" name="selector-timeout"></a>Selector Timeout <a class="permalink" href="#selector-timeout">#</a></h3>
 <p>When a selector is called in test code, TestCafe waits for the target node to appear
 in the DOM within the <em>selector timeout</em>.</p>
@@ -780,7 +809,7 @@ use the <code>select</code> method of the <a href="../test-code-structure.html#t
 
 <p>The following example shows how to get a DOM element by ID with <code>t.select</code>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kr">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">select</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'header'</span><span class="p">));</span>
@@ -790,12 +819,12 @@ use the <code>select</code> method of the <a href="../test-code-structure.html#t
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
-<span class="kr">const</span> <span class="nx">getLastItem</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'.toc-item:last-child'</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">lastItem</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'.toc-item:last-child'</span><span class="p">));</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">getLastItem</span><span class="p">);</span>
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">lastItem</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>In this instance, the selector will be called with no arguments.</p>
@@ -803,25 +832,25 @@ use the <code>select</code> method of the <a href="../test-code-structure.html#t
 <p>You can also pass a promise returned by a selector if you need to call it with arguments.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">getElementById</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'submit-button'</span><span class="p">));</span>
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">elementWithId</span><span class="p">(</span><span class="s1">'submit-button'</span><span class="p">));</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>DOM element snapshots can also be passed to test actions.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">getElementById</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">topMenuSnapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getElementById</span><span class="p">(</span><span class="s1">'top-menu'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">topMenuSnapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">elementWithId</span><span class="p">(</span><span class="s1">'top-menu'</span><span class="p">);</span>
 
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">topMenuSnapshot</span><span class="p">);</span>
 <span class="p">});</span>
@@ -844,12 +873,12 @@ you have to manually bind it to the test controller.</p>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
-<span class="kr">const</span> <span class="nx">getElementById</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Title changed'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">boundSelector</span> <span class="o">=</span> <span class="nx">getElementById</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">boundTestRun</span><span class="p">:</span> <span class="nx">t</span> <span class="p">});</span>
+    <span class="kr">const</span> <span class="nx">boundSelector</span> <span class="o">=</span> <span class="nx">elementWithId</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">boundTestRun</span><span class="p">:</span> <span class="nx">t</span> <span class="p">});</span>
 
     <span class="c1">// Performs an HTTP request that changes the article title on the page.</span>
     <span class="c1">// Resolves to a value indicating whether the title has been changed.</span>

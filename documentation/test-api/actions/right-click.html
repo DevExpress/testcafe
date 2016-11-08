@@ -574,7 +574,7 @@
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'chai'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Popup Menu'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">rightClick</span><span class="p">(</span><span class="s1">'#cell-1-1'</span><span class="p">);</span>

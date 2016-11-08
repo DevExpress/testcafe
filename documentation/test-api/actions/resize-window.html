@@ -553,6 +553,7 @@
 <ul>
 <li><a href="#setting-the-window-size">Setting the Window Size</a></li>
 <li><a href="#fitting-the-window-into-a-particular-device">Fitting the Window into a Particular Device</a></li>
+<li><a href="#maximizing-the-window">Maximizing the Window</a></li>
 </ul>
 <blockquote class="important"><div class="blockquote-content"><p>These actions are not yet available on Linux.
 See the corresponding <a href="https://github.com/DevExpress/testcafe-browser-natives/issues/12">issue on GitHub</a>.</p>
@@ -579,16 +580,17 @@ See the corresponding <a href="https://github.com/DevExpress/testcafe-browser-na
 
 <p>The following example demonstrates how to use the <code>t.resizeWindow</code> action.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'chai'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">menu</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#side-menu'</span><span class="p">);</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Side menu disappears on small screens'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">resizeWindow</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
 
-    <span class="kr">const</span> <span class="nx">menu</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">'#side-menu'</span><span class="p">);</span>
-
-    <span class="nx">expect</span><span class="p">(</span><span class="nx">menu</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">'none'</span><span class="p">);</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">await</span> <span class="nx">menu</span><span class="p">.</span><span class="nx">getStyleProperty</span><span class="p">(</span><span class="s1">'display'</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">'none'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="fitting-the-window-into-a-particular-device"></a>Fitting the Window into a Particular Device <a class="permalink" href="#fitting-the-window-into-a-particular-device">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.resizeWindowToFitDevice( deviceName [, options] )
 </code></pre></div>
@@ -631,18 +633,37 @@ See the corresponding <a href="https://github.com/DevExpress/testcafe-browser-na
 
 <p>The example below shows how to use the <code>t.resizeWindowToFitDevice</code> action.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'chai'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#header'</span><span class="p">);</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://www.example.com/'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Header is displayed on Xperia Z in portrait'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">resizeWindowToFitDevice</span><span class="p">(</span><span class="s1">'Sony Xperia Z'</span><span class="p">,</span> <span class="p">{</span>
         <span class="na">portraitOrientation</span><span class="p">:</span> <span class="kc">true</span>
     <span class="p">});</span>
 
-    <span class="kr">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">'#header'</span><span class="p">);</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">await</span> <span class="nx">header</span><span class="p">.</span><span class="nx">getStyleProperty</span><span class="p">(</span><span class="s1">'display'</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">'none'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="maximizing-the-window"></a>Maximizing the Window <a class="permalink" href="#maximizing-the-window">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.maximizeWindow( )
+</code></pre></div>
+<p>Maximizes the browser window.</p>
 
-    <span class="nx">expect</span><span class="p">(</span><span class="nx">header</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">'none'</span><span class="p">);</span>
+<p>The following example shows how to use this action.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'chai'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">menu</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#side-menu'</span><span class="p">);</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Side menu is displayed in full screen'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">maximizeWindow</span><span class="p">();</span>
+
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">await</span> <span class="nx">menu</span><span class="p">.</span><span class="nx">visible</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">ok</span><span class="p">;</span>
 <span class="p">});</span>
 </code></pre></div>
 

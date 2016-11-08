@@ -620,8 +620,16 @@ npm install -g generator-testcafe-browser-provider
     <span class="k">this</span><span class="p">.</span><span class="nx">reportWarning</span><span class="p">(</span><span class="s1">'The window resize functionality is not supported by the "my-provider" browser provider.'</span><span class="p">);</span>
 <span class="p">},</span>
 
+<span class="nx">async</span> <span class="nx">canResizeWindowToDimensions</span> <span class="p">(</span><span class="cm">/* browserId, width, height */</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
+
 <span class="nx">async</span> <span class="nx">takeScreenshot</span> <span class="p">(</span><span class="cm">/* id, screenshotPath, pageWidth, pageHeight */</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">reportWarning</span><span class="p">(</span><span class="s1">'The screenshot functionality is not supported by the "my-provider" browser provider.'</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">async</span> <span class="nx">maximizeWindow</span> <span class="p">(</span><span class="cm">/*browserId*/</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">reportWarning</span><span class="p">(</span><span class="s1">'The window maximization functionality is not supported by the "my-provider" browser provider.'</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>To implement these methods, you can use the <a href="https://github.com/DevExpress/testcafe-browser-tools">testcafe-browser-tools</a> library that contains methods for performing platform-dependent actions on browser windows.</p>
@@ -630,8 +638,13 @@ npm install -g generator-testcafe-browser-provider
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">path</span> <span class="nx">from</span> <span class="s1">'path'</span><span class="p">;</span>
 <span class="kr">import</span> <span class="nx">browserTools</span> <span class="nx">from</span> <span class="s1">'testcafe-browser-tools'</span><span class="p">;</span>
 
+<span class="kd">function</span> <span class="nx">getScreenSize</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">width</span><span class="p">:</span> <span class="nx">screen</span><span class="p">.</span><span class="nx">availWidth</span><span class="p">,</span> <span class="na">height</span><span class="p">:</span> <span class="nx">screen</span><span class="p">.</span><span class="nx">availHeight</span> <span class="p">};</span>
+<span class="p">}</span>
+
 <span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
     <span class="na">isMultiBrowser</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">screenSizes</span><span class="p">:</span> <span class="p">{},</span>
 
     <span class="nx">async</span> <span class="nx">openBrowser</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">pageUrl</span><span class="p">,</span> <span class="nx">browserName</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">browserInfo</span> <span class="o">=</span> <span class="p">{};</span>
@@ -650,6 +663,10 @@ npm install -g generator-testcafe-browser-provider
         <span class="p">}</span>
 
         <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">browserInfo</span><span class="p">,</span> <span class="nx">pageUrl</span><span class="p">);</span>
+
+        <span class="nx">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">waitForConnectionReady</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">screenSizes</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="nx">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">runInitScript</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">getScreenSize</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
     <span class="p">},</span>
 
     <span class="nx">async</span> <span class="nx">closeBrowser</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
@@ -668,6 +685,16 @@ npm install -g generator-testcafe-browser-provider
 
     <span class="nx">async</span> <span class="nx">resizeWindow</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">,</span> <span class="nx">currentWidth</span><span class="p">,</span> <span class="nx">currentHeight</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">currentWidth</span><span class="p">,</span> <span class="nx">currentHeight</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+    <span class="p">},</span>
+
+    <span class="nx">async</span> <span class="nx">canResizeWindowToDimensions</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="p">{</span> <span class="na">width</span><span class="p">:</span> <span class="nx">screenWidth</span><span class="p">,</span> <span class="na">height</span><span class="p">:</span> <span class="nx">screenHeight</span> <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">screenSizes</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
+
+        <span class="k">return</span> <span class="nx">width</span> <span class="o">&lt;=</span> <span class="nx">screenWidth</span> <span class="o">&amp;&amp;</span> <span class="nx">height</span> <span class="o">&lt;=</span> <span class="nx">screenHeight</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">async</span> <span class="nx">maximizeWindow</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">await</span> <span class="nx">browserTools</span><span class="p">.</span><span class="nx">maximize</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
     <span class="p">},</span>
 
     <span class="nx">async</span> <span class="nx">takeScreenshot</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">screenshotPath</span><span class="p">)</span> <span class="p">{</span>
