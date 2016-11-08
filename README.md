@@ -18,7 +18,7 @@
 
 ----
 
-TestCafe is a pure node.js solution for testing web apps. It takes care of all the stages: starting browsers, running tests, gathering test results and generating reports. TestCafe doesn’t need browser plugins - it works in all popular modern browsers out-of-the-box.
+TestCafe is a pure node.js end-to-end solution for testing web apps. It takes care of all the stages: starting browsers, running tests, gathering test results and generating reports. TestCafe doesn’t need browser plugins - it works in all popular modern browsers out-of-the-box.
 
 ![Install TestCafe and Run a Test](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/install-and-run-test.gif)
 
@@ -88,6 +88,7 @@ It will execute your code on the client and pass the returned value back to the 
 This allows you to determine the state of each element on the tested page or select a proper element to perform an action on.
 
 ```js
+import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 const elementWithId = Selector(id => document.querySelector(`#${id}`));

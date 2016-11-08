@@ -32,6 +32,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--ports \<port1,port2\>](#--ports-port1port2)
   * [--hostname \<name\>](#--hostname-name)
+  * [--speed \<factor\>](#--speed-factor)
   * [--qr-code](#--qr-code)
   * [--color](#--color)
   * [--no-color](#--no-color)
@@ -290,6 +291,22 @@ If ports are not specified, TestCafe selects ports.
 Specifies the hostname of your computer. It is used when running tests in [remote browsers](#remote-browsers).
 
 If the hostname is not specified, TestCafe will use the operating system hostname or network IP address of the current machine.
+
+### --speed \<factor\>
+
+Specifies the speed of test execution.
+
+By default, tests run at the maximum speed. However, if you need to watch a test running
+to understand what happens in it, this speed may seem too fast. In this instance, use this option
+to slow the test down.
+
+`factor` should be a number between `1` (the fastest) and `0.01` (the slowest).
+
+```sh
+testcafe chrome my-tests --speed 0.1
+```
+
+**Default value**: `1`
 
 ### --qr-code
 

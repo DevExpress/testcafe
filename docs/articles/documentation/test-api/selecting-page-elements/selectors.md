@@ -20,7 +20,8 @@ This topic contains the following sections.
 * [Selector Initializers](#selector-initializers)
   * [Initializers that Return Multiple Nodes](#initializers-that-return-multiple-nodes)
 * [Executing Selectors](#executing-selectors)
-  * [Return Values. DOM Node Snapshots](#return-values-dom-node-snapshots)
+  * [DOM Node Snapshots](#dom-node-snapshots)
+      * [Snapshot API Shorthands](#snapshot-api-shorthands)
   * [Selector Timeout](#selector-timeout)
 * [One-Time Selection](#one-time-selection)
 * [Using Selectors to Define Action Targets](#using-selectors-to-define-action-targets)
@@ -93,7 +94,7 @@ You can initialize a selector with any of these objects.
     const fourthElemWithClass = Selector(thirdElemWithClass, { index: 3 });
     ```
 
-* A [DOM node snapshot](#return-values-dom-node-snapshots).
+* A [DOM node snapshot](#dom-node-snapshots).
 
     ```js
     import { Selector } from 'testcafe';
@@ -194,10 +195,13 @@ test('My test', async t => {
 });
 ```
 
-### Return Values. DOM Node Snapshots
+### DOM Node Snapshots
 
-When you return a DOM node from the selector, what actually returns from the client
-is a *DOM node snapshot* - an object that reflects the state of the DOM node.
+TestCafe executes tests on the server, so selectors cannot return actual DOM objects to test code.
+Instead, they return *DOM node snapshots* - server-side representation of the node's state.
+
+A snapshot contains information about the node's size, position, classes, parent and child nodes, etc.
+It exposes [API](dom-node-snapshots.md) that is similar to DOM objects.
 
 ```js
 import { expect } from 'chai';
@@ -211,11 +215,38 @@ fixture `My fixture`
 test('Login field height', async t => {
     const loginInput = await elementWithId('login');
 
-    expect(loginInput.offsetWidth).to.equal(35);
+    expect(loginInput.offsetWidth).to.equal(95);
+    expect(loginInput.offsetHeight).to.equal(35);
+    expect(loginInput.hasClass('glow')).to.be.ok;
 });
 ```
 
 For a list of members exposed by DOM node snapshots, see [DOM Node Snapshots](dom-node-snapshots.md).
+
+#### Snapshot API Shorthands
+
+Selectors and promises returned by selectors expose snapshot API directly (except for
+snapshot's `getChildElement`, `getChildNode` and `getParentNode` methods).
+This is convenient when you need to use only one snapshot property or method.
+In this instance, you save a line of code, because you do not need to obtain and save the snapshot object explicitly.
+
+```js
+import { expect } from 'chai';
+import { Selector } from 'testcafe';
+
+const loginInput    = Selector('#login-box');
+const elementWithId = Selector(id => document.getElementById(id));
+
+fixture `My fixture`
+    .page('http://www.example.com/');
+
+test('Login field height', async t => {
+    expect(await loginInput.offsetWidth).to.equal(95);
+    expect(await elementWithId('password-box').offsetHeight).to.equal(35);
+});
+```
+
+Note that snapshot methods and property getters exposed through selectors are asynchronous.
 
 ### Selector Timeout
 
