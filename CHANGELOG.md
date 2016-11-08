@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.10.0 (2016-11-2)
+## v0.10.0 (2016-11-8)
 
 ### Enhancements
 
@@ -56,7 +56,7 @@
   See [Snapshot API Shorthands](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#snapshot-api-shorthands).  
 * **Improved automatic wait mechanism. ([#245](https://github.com/DevExpress/testcafe/issues/245))**
 
-  We got rid of unnecessary waiting and tests now run almost two times faster.
+  We got rid of unnecessary waiting so that tests now run almost two times faster.
 
   ![Tests running in v0.10.0 vs v0.9.0](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/new-0-10-0-autowait.gif)
 * **Test execution speed control. ([#938](https://github.com/DevExpress/testcafe/issues/938))**
