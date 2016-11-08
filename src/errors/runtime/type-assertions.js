@@ -40,5 +40,11 @@ export function assertNonNullObject (callsiteName, what, value) {
 
         throw new APIError(callsiteName, MESSAGE.valueIsNotAnObject, what, actualVal);
     }
+}
 
+export function assertFunctionOrString (callsiteName, what, value) {
+    var type = typeof value;
+
+    if (type !== 'string' && type !== 'function')
+        throw new APIError(callsiteName, MESSAGE.valueIsNotAFunctionOrString, what, type);
 }

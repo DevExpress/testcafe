@@ -651,3 +651,23 @@ test('Combination of filter methods', async t => {
 
     expect(id).eql('el2');
 });
+
+test('Selector "find" method', async () => {
+    // String filter
+    expect(await Selector('#htmlElement').find('span').id).eql('someSpan');
+
+    // Function filter
+    expect(await Selector('#container').find(node => node.id === 'el3').id).eql('el3');
+
+    // Compound
+    expect(await Selector('a').find('f').find('g').innerText).eql('h');
+
+    // Deep search
+    expect(await Selector('a').find('g').innerText).eql('h');
+    expect(await Selector('a').find(node => node.tagName && node.tagName.toLowerCase() === 'g').innerText).eql('h');
+
+    // Parametrized selector
+    const withId = Selector(id => document.getElementById(id));
+
+    expect(await withId('htmlElement').find('span').id).eql('someSpan');
+});

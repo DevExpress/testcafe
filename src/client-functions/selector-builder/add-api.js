@@ -1,7 +1,11 @@
 import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapshot-properties';
 import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
 import { getCallsite, getCallsiteForGetter } from '../../errors/callsite';
-import { assertStringOrRegExp, assertNonNegativeNumber } from '../../errors/runtime/type-assertions';
+import {
+    assertStringOrRegExp,
+    assertNonNegativeNumber,
+    assertFunctionOrString
+} from '../../errors/runtime/type-assertions';
 
 const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PROPERTIES);
 
@@ -84,7 +88,57 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
     };
 }
 
+function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
+    obj.find = filter => {
+        assertFunctionOrString('find', '"filter" argument', filter);
+
+        var builderOptions = {
+            dependencies: {
+                selector: getSelector(),
+                filter:   filter
+            }
+        };
+
+        var builder = new SelectorBuilder(() => {
+            /* eslint-disable no-undef */
+            var node = selector();
+
+            if (!node)
+                return null;
+
+            if (typeof filter === 'string') {
+                return typeof node.querySelectorAll === 'function' ?
+                       node.querySelectorAll(filter) :
+                       null;
+            }
+
+            var result = [];
+
+            var visitNode = currentNode => {
+                var cnLength = currentNode.childNodes.length;
+
+                for (var i = 0; i < cnLength; i++) {
+                    var child = currentNode.childNodes[i];
+
+                    if (filter(child))
+                        result.push(child);
+
+                    visitNode(child);
+                }
+            };
+
+            visitNode(node);
+
+            return result;
+            /* eslint-enable no-undef */
+        }, builderOptions);
+
+        return builder.getFunction();
+    };
+}
+
 export default function addAPI (obj, getSelector, SelectorBuilder) {
     addSnapshotPropertyShorthands(obj, getSelector);
     addFilterMethods(obj, getSelector, SelectorBuilder);
+    addHierachicalSelectors(obj, getSelector, SelectorBuilder);
 }

@@ -33,5 +33,6 @@ export default {
     valueIsNotANonNegativeNumber:        '{smthg} is expected to be a non-negative number, but it was {type}.',
     valueIsNotAnObject:                  '{smthg} is expected to be an object, but it was {type}.',
     valueIsNotAStringOrRegExp:           '{smthg} is expected to be a string or a regular expression, but it was {type}.',
+    valueIsNotAFunctionOrString:         '{smthg} is expected to be a string or a function, but it was {type}.',
     unableToOpenBrowser:                 'Was unable to open the browser "{alias}" due to error.\n\n{errMessage}'
 };
