@@ -145,7 +145,7 @@
         Automated browser testing<br/>for the modern web development stack
         </div>
         <div class="slogan">
-        TestCafe is a pure node.js solution for testing web apps. It takes care of all the stages: starting browsers, running tests, gathering test results and generating reports. TestCafe doesn’t need browser plugins - it works in all popular modern browsers out-of-the-box.
+        TestCafe is a pure node.js end-to-end solution for testing web apps. It takes care of all the stages: starting browsers, running tests, gathering test results and generating reports. TestCafe doesn’t need browser plugins - it works in all popular modern browsers out-of-the-box.
         </div>
         <div class="white-button-container">
         <a href="documentation/getting-started/" class="white-button">Get Started</a>
@@ -186,15 +186,17 @@
                 <pre><code>import { expect } from 'chai';
 
 fixture `Example page`
-    .page('http://devexpress.github.io/testcafe/example');
+    .page `https://devexpress.github.io/testcafe/example`;
 
 test('Emulate user actions and perform a verification', async t => {
     await t
-        .click('#send-button')
-        .typeText('#input', 'Peter Parker')
-        .wait(1000);
+        .setNativeDialogHandler(() => true)
+        .click('#populate')
+        .click('#submit-button');
 
-    expect(await t.eval(() => getSomethingOnTheClient())).to.be.true;
+    const location = await t.eval(() => window.location);
+
+    expect(location.pathname).eql('/testcafe/example/thank-you.html');
 });</code></pre>
                 <p>Additionally, TestCafe automatically generates source maps for easy debugging. To debug your test code, start a debugging session in an IDE that supports source maps.</p>
             </div>
@@ -206,20 +208,20 @@ test('Emulate user actions and perform a verification', async t => {
             <div class="description">
                 <p>TestCafe allows you to access webpage elements using standard CSS selectors or <a href="documentation/test-api/selecting-page-elements/selectors.html">custom selectors</a> that run client JavaScript code. You can call a custom selector as a regular function within your test. It will execute your code on the client and pass the returned value back to the test. This allows you to determine the state of each element on the tested page or select a proper element to perform an action on.</p>
 
-                <pre><code>import { Selector } from 'testcafe';
+                <pre><code>import { expect } from 'chai';
+import { Selector } from 'testcafe';
 
-const getElementById = Selector(id => document.querySelector(`#${id}`));
+const elementWithId = Selector(id => document.querySelector(`#${id}`));
 
 fixture `Example page`
-    .page('http://devexpress.github.io/testcafe/example');
+    .page `https://devexpress.github.io/testcafe/example`;
 
 test('Type the developer name, obtain the header text and check it', async t => {
     await t
         .typeText('#developer-name', 'John Smith')
         .click('#submit-button');
 
-    const articleHeader = await getElementById('article-header');
-    const headerText = articleHeader.innerText;
+    const headerText = await elementWithId('article-header').innerText;
 
     expect(headerText).to.equal('Thank you, John!');
 });</code></pre>
@@ -272,6 +274,7 @@ test('Type the developer name, obtain the header text and check it', async t => 
     </div>
     </form>
 </main>
+
 
       <div class="push"></div>
     </div>

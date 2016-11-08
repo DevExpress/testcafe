@@ -576,11 +576,11 @@ This file must have a special structure: tests must be organized into fixtures. 
 <p>In this tutorial, you will create a test for the <a href="/testcafe/example">http://devexpress.github.io/testcafe/example</a> sample page.
 Specify this page as a start page for the fixture by using the <a href="../test-api/test-code-structure.html#specifying-the-start-webpage">page</a> function.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe/example'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 </code></pre></div>
 <p>Then, create the <a href="../test-api/test-code-structure.html#tests">test</a> function where you will place test code.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe/example'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// Test code</span>
@@ -596,7 +596,7 @@ where tests are not guaranteed to execute correctly.</p>
 </div></blockquote>
 <p>For more information on how to configure the test run, see <a href="../using-testcafe/command-line-interface.html">Command Line Interface</a>.</p>
 <h2><a class="anchor" name="viewing-the-test-results"></a>Viewing the Test Results <a class="permalink" href="#viewing-the-test-results">#</a></h2>
-<p>While the test is running, TestCafe is gathering information about the test run and outputing the report right into a command shell.</p>
+<p>While the test is running, TestCafe is gathering information about the test run and outputting the report right into a command shell.</p>
 
 <p><img src="../../images/report.png" alt="Test Report"></p>
 
@@ -608,7 +608,7 @@ They can be called in a chain.</p>
 
 <p>The following fixture contains a simple test that types a developer name into a text editor and then clicks the Submit button.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe/example'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span>
@@ -633,10 +633,10 @@ The following example demonstrates how to access the article header element and 
 
 <span class="c1">// Declare the parameterized Selector function</span>
 <span class="c1">// to get access to a DOM element identified by the `id` attribute</span>
-<span class="kr">const</span> <span class="nx">getElementById</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe/example'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span>
@@ -644,10 +644,13 @@ The following example demonstrates how to access the article header element and 
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 
     <span class="c1">// Use the Selector function to get access to the article header</span>
-    <span class="kr">const</span> <span class="nx">articleHeader</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getElementById</span><span class="p">(</span><span class="s1">'article-header'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">articleHeader</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">elementWithId</span><span class="p">(</span><span class="s1">'article-header'</span><span class="p">);</span>
 
     <span class="c1">// Obtain the text of the article header</span>
-    <span class="kr">const</span> <span class="nx">headerText</span> <span class="o">=</span> <span class="nx">articleHeader</span><span class="p">.</span><span class="nx">innerText</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">headerText</span> <span class="o">=</span> <span class="nx">articleHeader</span><span class="p">.</span><span class="nx">innerText</span><span class="p">;</span>
+
+    <span class="c1">// Or use a shorthand form to obtain article header text directly</span>
+    <span class="nx">headerText</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">elementWithId</span><span class="p">(</span><span class="s1">'article-header'</span><span class="p">).</span><span class="nx">innerText</span><span class="p">;</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>For more information, see <a href="../test-api/selecting-page-elements/">Selecting Page Elements</a>.</p>
@@ -666,10 +669,10 @@ Before running the test, install the assertion library by calling the <code>npm 
 
 <span class="c1">// Declare the parameterized selector function</span>
 <span class="c1">// to obtain text content of an element identified by the `id` attribute</span>
-<span class="kr">const</span> <span class="nx">getElementById</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://devexpress.github.io/testcafe/example'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span>
@@ -677,10 +680,10 @@ Before running the test, install the assertion library by calling the <code>npm 
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 
     <span class="c1">// Use the Selector function to get access to the article header</span>
-    <span class="kr">const</span> <span class="nx">articleHeader</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getElementById</span><span class="p">(</span><span class="s1">'article-header'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">headerText</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">elementWithId</span><span class="p">(</span><span class="s1">'article-header'</span><span class="p">).</span><span class="nx">innerText</span><span class="p">;</span>
 
     <span class="c1">// Use the assertion to check if the actual header text is equal to the expected one</span>
-    <span class="nx">expect</span><span class="p">(</span><span class="nx">articleHeader</span><span class="p">.</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">'Thank you, John Smith!'</span><span class="p">);</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">headerText</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">'Thank you, John Smith!'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 

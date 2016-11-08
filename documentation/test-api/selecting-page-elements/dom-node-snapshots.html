@@ -551,8 +551,11 @@
 <p>A <em>DOM node snapshot</em> is an object that represents the state of a particular document node server side.
 This node can be a DOM element, document, fragment, text or comment node. DOM node snapshots are returned by <a href="selectors.html">selectors</a>.</p>
 
-<p>This topic lists members exposed by DOM node snapshots.</p>
-<h2><a class="anchor" name="members-common-across-all-nodes"></a>Members Common Across All Nodes <a class="permalink" href="#members-common-across-all-nodes">#</a></h2>
+<p>This topic lists API members exposed by DOM node snapshots.</p>
+<blockquote><div class="blockquote-content"><p>Selectors and promises returned by them also expose this API (except for
+snapshot&#39;s <code>getChildElement</code>, <code>getChildNode</code> and <code>getParentNode</code> methods).
+See <a href="selectors.html#snapshot-api-shorthands">Snapshot API Shorthands</a>.</p>
+</div></blockquote><h2><a class="anchor" name="members-common-across-all-nodes"></a>Members Common Across All Nodes <a class="permalink" href="#members-common-across-all-nodes">#</a></h2>
 <table><thead>
 <tr>
 <th>Property</th>
@@ -631,12 +634,12 @@ This node can be a DOM element, document, fragment, text or comment node. DOM no
 <tr>
 <td><code>attributes</code></td>
 <td>Object</td>
-<td>Attributes of the element as <code>{ name: value, ... }</code>.</td>
+<td>Attributes of the element as <code>{ name: value, ... }</code>. You can also use the <code>getAttribute</code> method to access attribute values.</td>
 </tr>
 <tr>
 <td><code>boundingClientRect</code></td>
 <td>Object</td>
-<td>The size of the element and its position relative to the viewport. Contains the <code>left</code>, <code>right</code>, <code>bottom</code>, <code>top</code>, <code>width</code> and <code>height</code> properties.</td>
+<td>The size of the element and its position relative to the viewport. Contains the <code>left</code>, <code>right</code>, <code>bottom</code>, <code>top</code>, <code>width</code> and <code>height</code> properties.  You can also use the <code>getBoundingClientRectProperty</code> method to access these properties.</td>
 </tr>
 <tr>
 <td><code>checked</code></td>
@@ -731,7 +734,7 @@ This node can be a DOM element, document, fragment, text or comment node. DOM no
 <tr>
 <td><code>style</code></td>
 <td>Object</td>
-<td>The <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/getComputedStyle">computed</a> values of element&#39;s CSS properties as <code>{ property: value, ... }</code>.</td>
+<td>The <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/getComputedStyle">computed</a> values of element&#39;s CSS properties as <code>{ property: value, ... }</code>. You can also use the <code>getStyleProperty</code> method to access CSS properties.</td>
 </tr>
 <tr>
 <td><code>tagName</code></td>
@@ -747,6 +750,30 @@ This node can be a DOM element, document, fragment, text or comment node. DOM no
 <td><code>visible</code></td>
 <td>Boolean</td>
 <td><code>true</code> if the element is visible.</td>
+</tr>
+</tbody></table>
+
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>getStyleProperty(propertyName)</code></td>
+<td>Object</td>
+<td>Returns the computed value of the CSS <code>propertyName</code> property. You can also use the <code>style</code> property to access a hash table of CSS properties.</td>
+</tr>
+<tr>
+<td><code>getAttribute(attributeName)</code></td>
+<td>String</td>
+<td>Returns the value of the <code>attributeName</code> attribute. You can also use the <code>attributes</code> property to access a hash table of attributes.</td>
+</tr>
+<tr>
+<td><code>getBoundingClientRectProperty(propertyName)</code></td>
+<td>Number</td>
+<td>Returns the value of the <code>propertyName</code> property from the <code>boundingClientRect</code> object.</td>
 </tr>
 </tbody></table>
 
