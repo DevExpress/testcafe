@@ -6,8 +6,8 @@
 <body>
 <table id="table" tabindex="0">
     <tr>
-        <td id="cell">table cell</td>
-        <td>
+        <td id="td1">table cell</td>
+        <td id="td2">
             <div id="div" style="width: 50px; height: 50px; background-color: green;"></div>
         </td>
     </tr>
@@ -15,6 +15,8 @@
 <script>
     window.tableFocusEventCount = 0;
     window.tableBlurEventCount = 0;
+    window.firstTableDataFocusEventCount = 0;
+    window.secondTableDataFocusEventCount = 0;
 
     document.getElementById('table').addEventListener('focus', function () {
         window.tableFocusEventCount++;
@@ -22,6 +24,14 @@
 
     document.getElementById('table').addEventListener('blur', function () {
         window.tableBlurEventCount++;
+    });
+
+    document.getElementById('td1').addEventListener('focus', function () {
+        window.firstTableDataFocusEventCount++;
+    });
+
+    document.getElementById('td2').addEventListener('focus', function () {
+        window.secondTableDataFocusEventCount++;
     });
 </script>
 </body>
