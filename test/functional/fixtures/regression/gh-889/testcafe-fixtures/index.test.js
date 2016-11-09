@@ -18,8 +18,8 @@ test('Click on children of table', async t => {
 });
 
 test('Click on children of table (for IE)', async t => {
-    var getFirstTableDateFocusEventCount  = ClientFunction(() => window.firstTableDateFocusEventCount);
-    var getSecondTableDateFocusEventCount = ClientFunction(() => window.secondTableDateFocusEventCount);
+    var getFirstTableDataFocusEventCount  = ClientFunction(() => window.firstTableDataFocusEventCount);
+    var getSecondTableDataFocusEventCount = ClientFunction(() => window.secondTableDataFocusEventCount);
 
     await t
         .click('#td1')
@@ -27,6 +27,6 @@ test('Click on children of table (for IE)', async t => {
 
     expect(await getTableFocusEventCount()).equals(0);
     expect(await getTableBlurEventCount()).equals(0);
-    expect(await getFirstTableDateFocusEventCount()).equals(1);
-    expect(await getSecondTableDateFocusEventCount()).equals(1);
+    expect(await getFirstTableDataFocusEventCount()).equals(1);
+    expect(await getSecondTableDataFocusEventCount()).equals(1);
 });
