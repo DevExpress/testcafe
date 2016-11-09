@@ -90,7 +90,7 @@
     "stack-chain": "^1.3.6",
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "1.1.2",
-    "testcafe-hammerhead": "10.1.1",
+    "testcafe-hammerhead": "10.1.2",
     "testcafe-legacy-api": "^2.0.0",
     "testcafe-reporter-json": "^2.0.0",
     "testcafe-reporter-list": "^2.0.0",
