@@ -44,7 +44,7 @@ var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot) 
 })).getFunction();
 
 
-var expandSelectorResults = (new ClientFunctionBuilder((selector, populateDerivativeNodes)=> {
+var expandSelectorResults = (new ClientFunctionBuilder((selector, populateDerivativeNodes) => {
     var nodes = selector();
 
     if (!nodes.length)
@@ -65,7 +65,7 @@ var expandSelectorResults = (new ClientFunctionBuilder((selector, populateDeriva
 
     return result;
 
-}).getFunction());
+})).getFunction();
 
 async function getSnapshot (getSelector, callsite) {
     var node     = null;
