@@ -14,7 +14,7 @@ const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PRO
 
 var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot) => {
     if (typeof filter === 'number')
-        return nodes[filter];
+        return [nodes[filter]];
 
     var result = [];
 
@@ -43,7 +43,7 @@ var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot) 
 })).getFunction();
 
 
-var createDerivativeNodeCollection = (new ClientFunctionBuilder((selector, populateDerivativeNodes)=> {
+var expandSelectorResults = (new ClientFunctionBuilder((selector, populateDerivativeNodes)=> {
     var nodes = selector();
 
     if (!nodes.length)
@@ -155,17 +155,9 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
     obj.find = filter => {
         assertFunctionOrString('find', '"filter" argument', filter);
 
-        var builderOptions = {
-            dependencies: {
-                selector:                       createSelectorInCollectionMode(getSelector, SelectorBuilder),
-                filter:                         filter,
-                createDerivativeNodeCollection: createDerivativeNodeCollection
-            }
-        };
-
         var selectorFn = () => {
             /* eslint-disable no-undef */
-            return createDerivativeNodeCollection(selector, node => {
+            return expandSelectorResults(selector, node => {
                 if (typeof filter === 'string') {
                     return typeof node.querySelectorAll === 'function' ?
                            node.querySelectorAll(filter) :
@@ -194,7 +186,13 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        var builder = new SelectorBuilder(selectorFn, builderOptions);
+        var builder = new SelectorBuilder(selectorFn, {
+            dependencies: {
+                selector:              createSelectorInCollectionMode(getSelector, SelectorBuilder),
+                filter:                filter,
+                expandSelectorResults: expandSelectorResults
+            }
+        });
 
         return builder.getFunction();
     };
@@ -204,29 +202,27 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
         if (filter !== void 0)
             assertFunctionOrStringOnNonNegativeNumber('parent', '"filter" argument', filter);
 
-        var builderOptions = {
-            dependencies: {
-                selector:    createSelectorInCollectionMode(getSelector, SelectorBuilder),
-                filter:      filter,
-                filterNodes: filterNodes
-            }
+        var selectorFn = () => {
+            /* eslint-disable no-undef */
+            return expandSelectorResults(selector, node => {
+                var parents = [];
+
+                for (node = node.parentNode; node; node = node.parentNode)
+                    parents.push(node);
+
+                return filter ? filterNodes(parents, filter, document) : parents;
+            });
+            /* eslint-enable no-undef */
         };
 
-        var builder = new SelectorBuilder(() => {
-            /* eslint-disable no-undef */
-            var nodes = selector();
-
-            if (!nodes.length)
-                return null;
-
-            var parents = [];
-
-            for (node = node.parentNode; node; node = node.parentNode)
-                parents.push(node);
-
-            return filter ? filterNodes(parents, filter, document) : parents;
-            /* eslint-enable no-undef */
-        }, builderOptions);
+        var builder = new SelectorBuilder(selectorFn, {
+            dependencies: {
+                selector:              createSelectorInCollectionMode(getSelector, SelectorBuilder),
+                filter:                filter,
+                filterNodes:           filterNodes,
+                expandSelectorResults: expandSelectorResults
+            }
+        });
 
         return builder.getFunction();
     };

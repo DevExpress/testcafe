@@ -710,6 +710,18 @@ test('Selector "parent" method', async () => {
     // With filters
     expect(await Selector('#childDiv').parent().withText(/Hey/).id).eql('p2');
     expect(await Selector('#childDiv').parent().nth(1).id).eql('p1');
+
+    // Should not apply implicit index filter when used as transitive selector
+    let selector = Selector('.common').parent('div').find('div');
+
+    expect(await selector.nth(0).id).eql('common1');
+    expect(await selector.nth(1).id).eql('common2');
+
+    // Should apply explicit index filter when used as transitive selector
+    selector = Selector('.common').parent('div').nth(0).find('div');
+
+    expect(await selector.nth(0).exists).to.be.true;
+    expect(await selector.nth(1).exists).to.be.false;
 });
 
 test('Selector "child" method', async () => {
