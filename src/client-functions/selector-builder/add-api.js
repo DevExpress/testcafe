@@ -43,6 +43,29 @@ var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot) 
 })).getFunction();
 
 
+var createDerivativeNodeCollection = (new ClientFunctionBuilder((selector, populateDerivativeNodes)=> {
+    var nodes = selector();
+
+    if (!nodes.length)
+        return null;
+
+    var result = [];
+
+    for (var i = 0; i < nodes.length; i++) {
+        var derivativeNodes = populateDerivativeNodes(nodes[i]);
+
+        if (derivativeNodes) {
+            for (var j = 0; j < derivativeNodes.length; j++) {
+                if (result.indexOf(derivativeNodes[j]) < 0)
+                    result.push(derivativeNodes[j]);
+            }
+        }
+    }
+
+    return result;
+
+}).getFunction());
+
 async function getSnapshot (getSelector, callsite) {
     var node     = null;
     var selector = getSelector();
@@ -134,58 +157,44 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
 
         var builderOptions = {
             dependencies: {
-                selector: createSelectorInCollectionMode(getSelector, SelectorBuilder),
-                filter:   filter
+                selector:                       createSelectorInCollectionMode(getSelector, SelectorBuilder),
+                filter:                         filter,
+                createDerivativeNodeCollection: createDerivativeNodeCollection
             }
         };
 
-        var builder = new SelectorBuilder(() => {
+        var selectorFn = () => {
             /* eslint-disable no-undef */
-            var nodes = selector();
-
-            if (!nodes.length)
-                return null;
-
-            var result = [];
-
-            var addToResults = resultNode => {
-                if (result.indexOf(resultNode) < 0)
-                    result.push(resultNode);
-            };
-
-            var visitNode = currentNode => {
-                var cnLength = currentNode.childNodes.length;
-
-                for (var j = 0; j < cnLength; j++) {
-                    var child = currentNode.childNodes[j];
-
-                    if (filter(child))
-                        addToResults(child);
-
-                    visitNode(child);
-                }
-            };
-
-            for (var i = 0; i < nodes.length; i++) {
-                var node = nodes[i];
-
+            return createDerivativeNodeCollection(selector, node => {
                 if (typeof filter === 'string') {
-                    if (typeof node.querySelectorAll === 'function') {
-                        var selected = node.querySelectorAll(filter);
-                        var sLength  = selected.length;
-
-                        for (var k = 0; k < sLength; k++)
-                            addToResults(selected[k]);
-                    }
+                    return typeof node.querySelectorAll === 'function' ?
+                           node.querySelectorAll(filter) :
+                           null;
                 }
 
-                else
-                    visitNode(node);
-            }
+                var results = [];
 
-            return result;
+                var visitNode = currentNode => {
+                    var cnLength = currentNode.childNodes.length;
+
+                    for (var i = 0; i < cnLength; i++) {
+                        var child = currentNode.childNodes[i];
+
+                        if (filter(child))
+                            results.push(child);
+
+                        visitNode(child);
+                    }
+                };
+
+                visitNode(node);
+
+                return results;
+            });
             /* eslint-enable no-undef */
-        }, builderOptions);
+        };
+
+        var builder = new SelectorBuilder(selectorFn, builderOptions);
 
         return builder.getFunction();
     };
@@ -197,7 +206,7 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
 
         var builderOptions = {
             dependencies: {
-                selector:    getSelector(),
+                selector:    createSelectorInCollectionMode(getSelector, SelectorBuilder),
                 filter:      filter,
                 filterNodes: filterNodes
             }
@@ -205,9 +214,9 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
 
         var builder = new SelectorBuilder(() => {
             /* eslint-disable no-undef */
-            var node = selector();
+            var nodes = selector();
 
-            if (!node)
+            if (!nodes.length)
                 return null;
 
             var parents = [];
