@@ -744,6 +744,20 @@ test('Selector "child" method', async () => {
 
     // With filters
     expect(await Selector('#container').child().withText('element 4').id).eql('el4');
+
+    // Should not apply implicit index filter when used as transitive selector
+    let label = Selector('#list').child('li').child('label');
+
+    expect(await label.withText('Write code').id).eql('write');
+    expect(await label.withText('Test it').id).eql('test');
+    expect(await label.withText('Release it').id).eql('release');
+
+    // Should apply explicit index filter when used as transitive selector
+    label = Selector('#list').child('li').nth(1).child('label');
+
+    expect(await label.withText('Write code').exists).to.be.false;
+    expect(await label.withText('Test it').exists).to.be.true;
+    expect(await label.withText('Release it').exists).to.be.false;
 });
 
 test('Selector "sibling" method', async () => {

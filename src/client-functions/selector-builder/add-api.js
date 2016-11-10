@@ -1,3 +1,4 @@
+import { assign } from 'lodash';
 import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapshot-properties';
 import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
 import getCallsite from '../../errors/get-callsite';
@@ -144,8 +145,18 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
     };
 }
 
-function createSelectorInCollectionMode (getSelector, SelectorBuilder) {
-    var builder = new SelectorBuilder(getSelector(), { collectionMode: true });
+function createHierachicalSelector (getSelector, SelectorBuilder, selectorFn, filter, additionalDependencies) {
+    var collectionModeSelectorBuilder = new SelectorBuilder(getSelector(), { collectionMode: true });
+
+    var dependencies = {
+        selector:              collectionModeSelectorBuilder.getFunction(),
+        filter:                filter,
+        expandSelectorResults: expandSelectorResults
+    };
+
+    dependencies = assign(dependencies, additionalDependencies);
+
+    var builder = new SelectorBuilder(selectorFn, { dependencies });
 
     return builder.getFunction();
 }
@@ -186,15 +197,7 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        var builder = new SelectorBuilder(selectorFn, {
-            dependencies: {
-                selector:              createSelectorInCollectionMode(getSelector, SelectorBuilder),
-                filter:                filter,
-                expandSelectorResults: expandSelectorResults
-            }
-        });
-
-        return builder.getFunction();
+        return createHierachicalSelector(getSelector, SelectorBuilder, selectorFn, filter);
     };
 
     // Parent
@@ -215,16 +218,7 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        var builder = new SelectorBuilder(selectorFn, {
-            dependencies: {
-                selector:              createSelectorInCollectionMode(getSelector, SelectorBuilder),
-                filter:                filter,
-                filterNodes:           filterNodes,
-                expandSelectorResults: expandSelectorResults
-            }
-        });
-
-        return builder.getFunction();
+        return createHierachicalSelector(getSelector, SelectorBuilder, selectorFn, filter, { filterNodes });
     };
 
     // Child
@@ -232,36 +226,25 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
         if (filter !== void 0)
             assertFunctionOrStringOnNonNegativeNumber('child', '"filter" argument', filter);
 
-        var builderOptions = {
-            dependencies: {
-                selector:    getSelector(),
-                filter:      filter,
-                filterNodes: filterNodes
-            }
+        var selectorFn = () => {
+            /* eslint-disable no-undef */
+            return expandSelectorResults(selector, node => {
+                var childElements = [];
+                var cnLength      = node.childNodes.length;
+
+                for (var i = 0; i < cnLength; i++) {
+                    var child = node.childNodes[i];
+
+                    if (child.nodeType === 1)
+                        childElements.push(child);
+                }
+
+                return filter ? filterNodes(childElements, filter, node) : childElements;
+            });
+            /* eslint-enable no-undef */
         };
 
-        var builder = new SelectorBuilder(() => {
-            /* eslint-disable no-undef */
-            var node = selector();
-
-            if (!node)
-                return null;
-
-            var childElements = [];
-            var cnLength      = node.childNodes.length;
-
-            for (var i = 0; i < cnLength; i++) {
-                var child = node.childNodes[i];
-
-                if (child.nodeType === 1)
-                    childElements.push(child);
-            }
-
-            return filter ? filterNodes(childElements, filter, node) : childElements;
-            /* eslint-enable no-undef */
-        }, builderOptions);
-
-        return builder.getFunction();
+        return createHierachicalSelector(getSelector, SelectorBuilder, selectorFn, filter, { filterNodes });
     };
 
     // Sibling
@@ -269,37 +252,30 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
         if (filter !== void 0)
             assertFunctionOrStringOnNonNegativeNumber('sibling', '"filter" argument', filter);
 
-        var builderOptions = {
-            dependencies: {
-                selector:    getSelector(),
-                filter:      filter,
-                filterNodes: filterNodes
-            }
+        var selectorFn = () => {
+            /* eslint-disable no-undef */
+            return expandSelectorResults(selector, node => {
+                var parent = node.parentNode;
+
+                if (!parent)
+                    return null;
+
+                var siblings = [];
+                var cnLength = parent.childNodes.length;
+
+                for (var i = 0; i < cnLength; i++) {
+                    var child = parent.childNodes[i];
+
+                    if (child.nodeType === 1 && child !== node)
+                        siblings.push(child);
+                }
+
+                return filter ? filterNodes(siblings, filter, parent) : siblings;
+            });
+            /* eslint-enable no-undef */
         };
 
-        var builder = new SelectorBuilder(() => {
-            /* eslint-disable no-undef */
-            var node   = selector();
-            var parent = node && node.parentNode;
-
-            if (!parent)
-                return null;
-
-            var siblings = [];
-            var cnLength = parent.childNodes.length;
-
-            for (var i = 0; i < cnLength; i++) {
-                var child = parent.childNodes[i];
-
-                if (child.nodeType === 1 && child !== node)
-                    siblings.push(child);
-            }
-
-            return filter ? filterNodes(siblings, filter, parent) : siblings;
-            /* eslint-enable no-undef */
-        }, builderOptions);
-
-        return builder.getFunction();
+        return createHierachicalSelector(getSelector, SelectorBuilder, selectorFn, filter, { filterNodes });
     };
 }
 

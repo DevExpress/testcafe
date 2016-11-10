@@ -209,7 +209,7 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
                     );
-                    expect(errs[0]).contains('> 765 |    await Selector(() => [].someUndefMethod()).count;');
+                    expect(errs[0]).contains('> 805 |    await Selector(() => [].someUndefMethod()).count;');
                 });
         });
 
@@ -222,7 +222,7 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
                     );
-                    expect(errs[0]).contains('> 769 |    await Selector(() => [].someUndefMethod()).exists;');
+                    expect(errs[0]).contains('> 809 |    await Selector(() => [].someUndefMethod()).exists;');
                 });
         });
     });
