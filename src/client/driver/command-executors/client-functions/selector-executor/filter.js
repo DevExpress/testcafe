@@ -99,10 +99,20 @@ Object.defineProperty(window, '%testCafeSelectorFilter%', {
             filtered = filterNodeCollectionByText(filtered, options.text);
 
         if (options.counterMode) {
-            if (options.index)
+            if (options.index !== null)
                 return filtered[options.index] ? 1 : 0;
 
             return filtered.length;
+        }
+
+        if (options.collectionMode) {
+            if (options.index !== null) {
+                var nodeOnIndex = filtered[options.index];
+
+                return nodeOnIndex ? [nodeOnIndex] : [];
+            }
+
+            return filtered;
         }
 
         return filtered[options.index || 0];

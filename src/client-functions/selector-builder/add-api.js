@@ -121,6 +121,12 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
     };
 }
 
+function createSelectorInCollectionMode (getSelector, SelectorBuilder) {
+    var builder = new SelectorBuilder(getSelector(), { collectionMode: true });
+
+    return builder.getFunction();
+}
+
 function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
     // Find
     obj.find = filter => {
@@ -128,40 +134,54 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
 
         var builderOptions = {
             dependencies: {
-                selector: getSelector(),
+                selector: createSelectorInCollectionMode(getSelector, SelectorBuilder),
                 filter:   filter
             }
         };
 
         var builder = new SelectorBuilder(() => {
             /* eslint-disable no-undef */
-            var node = selector();
+            var nodes = selector();
 
-            if (!node)
+            if (!nodes.length)
                 return null;
 
-            if (typeof filter === 'string') {
-                return typeof node.querySelectorAll === 'function' ?
-                       node.querySelectorAll(filter) :
-                       null;
-            }
-
             var result = [];
+
+            var addToResults = resultNode => {
+                if (result.indexOf(resultNode) < 0)
+                    result.push(resultNode);
+            };
 
             var visitNode = currentNode => {
                 var cnLength = currentNode.childNodes.length;
 
-                for (var i = 0; i < cnLength; i++) {
-                    var child = currentNode.childNodes[i];
+                for (var j = 0; j < cnLength; j++) {
+                    var child = currentNode.childNodes[j];
 
                     if (filter(child))
-                        result.push(child);
+                        addToResults(child);
 
                     visitNode(child);
                 }
             };
 
-            visitNode(node);
+            for (var i = 0; i < nodes.length; i++) {
+                var node = nodes[i];
+
+                if (typeof filter === 'string') {
+                    if (typeof node.querySelectorAll === 'function') {
+                        var selected = node.querySelectorAll(filter);
+                        var sLength  = selected.length;
+
+                        for (var k = 0; k < sLength; k++)
+                            addToResults(selected[k]);
+                    }
+                }
+
+                else
+                    visitNode(node);
+            }
 
             return result;
             /* eslint-enable no-undef */

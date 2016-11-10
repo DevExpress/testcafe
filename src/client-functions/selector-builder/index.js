@@ -140,9 +140,10 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
         return assign({}, dependencies, {
             filterOptions: {
-                counterMode: this.options.counterMode,
-                index:       this.options.index || null,
-                text:        text
+                counterMode:    this.options.counterMode,
+                collectionMode: this.options.collectionMode,
+                index:          isNullOrUndefined(this.options.index) ? null : this.options.index,
+                text:           text
             },
 
             boundArgs: this.options.boundArgs

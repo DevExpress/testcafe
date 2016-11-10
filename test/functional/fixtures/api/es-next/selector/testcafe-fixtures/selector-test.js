@@ -673,6 +673,20 @@ test('Selector "find" method', async () => {
 
     // With filters
     expect(await Selector('#container').find('div').withText('element 4').id).eql('el4');
+
+    // Should not apply implicit index filter when used as transitive selector
+    let label = Selector('#list').find('li').find('label');
+
+    expect(await label.withText('Write code').id).eql('write');
+    expect(await label.withText('Test it').id).eql('test');
+    expect(await label.withText('Release it').id).eql('release');
+
+    // Should apply explicit index filter when used as transitive selector
+    label = Selector('#list').find('li').nth(1).find('label');
+
+    expect(await label.withText('Write code').exists).to.be.false;
+    expect(await label.withText('Test it').exists).to.be.true;
+    expect(await label.withText('Release it').exists).to.be.false;
 });
 
 test('Selector "parent" method', async () => {
