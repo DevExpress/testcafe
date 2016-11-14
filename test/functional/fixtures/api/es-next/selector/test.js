@@ -89,7 +89,7 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "withText" method', { only: 'chrome' });
     });
 
-    it('Should filter using with combination of filter methods', function () {
+    it('Should filter using combination of filter methods', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Combination of filter methods', { only: 'chrome' });
     });
 

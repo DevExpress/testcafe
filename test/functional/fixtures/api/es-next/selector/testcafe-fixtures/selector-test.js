@@ -548,7 +548,7 @@ test('Selector "nth()" method', async () => {
 
     expect(el).to.be.null;
 
-    // Should work on parametrized selectors
+    // Should work on parameterized selectors
     const elWithClass = Selector(className => document.querySelectorAll('.' + className));
 
     expect(await elWithClass('idxEl').nth(2).id).eql('el3');
@@ -621,7 +621,7 @@ test('Selector "withText" method', async () => {
 
     expect(el.nodeType).eql(3);
 
-    // Should work on parametrized selectors
+    // Should work on parameterized selectors
     const elWithClass = Selector(className => document.querySelectorAll('.' + className));
 
     expect(await elWithClass('idxEl').withText('element 4.').id).eql('el4');
@@ -666,7 +666,7 @@ test('Selector "find" method', async () => {
     expect(await Selector('a').find('g').innerText).eql('h');
     expect(await Selector('a').find(node => node.tagName && node.tagName.toLowerCase() === 'g').innerText).eql('h');
 
-    // Parametrized selector
+    // Parameterized selector
     const withId = Selector(id => document.getElementById(id));
 
     expect(await withId('htmlElement').find('span').id).eql('someSpan');
@@ -702,7 +702,7 @@ test('Selector "parent" method', async () => {
     // Function selector
     expect(await Selector('#childDiv').parent(node => node.id === 'p2').id).eql('p2');
 
-    // Parametrized selector
+    // Parameterized selector
     const withId = Selector(id => document.getElementById(id));
 
     expect(await withId('childDiv').parent('.parent1').id).eql('p1');
@@ -737,7 +737,7 @@ test('Selector "child" method', async () => {
     // Function selector
     expect(await Selector('#container').child(el => el.id === 'el2').id).eql('el2');
 
-    // Parametrized selector
+    // Parameterized selector
     const withId = Selector(id => document.getElementById(id));
 
     expect(await withId('container').child('#el3').id).eql('el3');
@@ -772,7 +772,7 @@ test('Selector "sibling" method', async () => {
     // Function selector
     expect(await Selector('#el2').sibling(el => el.id === 'el3').id).eql('el3');
 
-    // Parametrized selector
+    // Parameterized selector
     const withId = Selector(id => document.getElementById(id));
 
     expect(await withId('el2').sibling().id).eql('el1');
