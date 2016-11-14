@@ -1,7 +1,7 @@
 import { renderers } from 'callsite-record';
 import MESSAGE from './message';
 import createStackFilter from '../create-stack-filter';
-import { getCallsite } from '../callsite';
+import getCallsite from '../get-callsite';
 import renderTemplate from '../../utils/render-template';
 
 // Errors

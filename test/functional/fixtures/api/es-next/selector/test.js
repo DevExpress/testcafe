@@ -81,6 +81,38 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot properties shorthands on selector', { only: 'chrome' });
     });
 
+    it('Should filter results with `nth()` method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "nth()" method', { only: 'chrome' });
+    });
+
+    it('Should filter results with `withText()` method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "withText" method', { only: 'chrome' });
+    });
+
+    it('Should filter using combination of filter methods', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Combination of filter methods', { only: 'chrome' });
+    });
+
+    it('Should provide .find() method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "find" method');
+    });
+
+    it('Should provide .parent() method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "parent" method');
+    });
+
+    it('Should provide .child() method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "child" method');
+    });
+
+    it('Should provide .sibling() method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "sibling" method');
+    });
+
+    it('Should provide "exists" and "count" properties', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "count" and "exists" properties');
+    });
+
     describe('Errors', function () {
         it('Should handle errors in Selector code', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Error in code', { shouldFail: true })
@@ -117,7 +149,10 @@ describe('[API] Selector', function () {
         });
 
         it("Should raise error if snapshot property shorthand can't find element in DOM tree", function () {
-            return runTests('./testcafe-fixtures/selector-test.js', "Snapshot property shorthand - selector doesn't match any element", { shouldFail: true, only: 'chrome' })
+            return runTests('./testcafe-fixtures/selector-test.js', "Snapshot property shorthand - selector doesn't match any element", {
+                shouldFail: true,
+                only:       'chrome'
+            })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
                         'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.'
@@ -127,7 +162,10 @@ describe('[API] Selector', function () {
         });
 
         it("Should raise error if snapshot shorthand method can't find element in DOM tree", function () {
-            return runTests('./testcafe-fixtures/selector-test.js', "Snapshot shorthand method - selector doesn't match any element", { shouldFail: true, only: 'chrome' })
+            return runTests('./testcafe-fixtures/selector-test.js', "Snapshot shorthand method - selector doesn't match any element", {
+                shouldFail: true,
+                only:       'chrome'
+            })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
                         'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.'
@@ -137,7 +175,10 @@ describe('[API] Selector', function () {
         });
 
         it('Should raise error if error occurs in selector during shorthand property evaluation', function () {
-            return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot property shorthand - selector error', { shouldFail: true, only: 'chrome' })
+            return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot property shorthand - selector error', {
+                shouldFail: true,
+                only:       'chrome'
+            })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
@@ -147,12 +188,41 @@ describe('[API] Selector', function () {
         });
 
         it('Should raise error if error occurs in selector during shorthand method evaluation', function () {
-            return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot shorthand method - selector error', { shouldFail: true, only: 'chrome' })
+            return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot shorthand method - selector error', {
+                shouldFail: true,
+                only:       'chrome'
+            })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
                     );
                     expect(errs[0]).contains("> 526 |    await Selector(() => [].someUndefMethod()).hasClass('yo');");
+                });
+        });
+
+        it('Should raise error if error occurs in selector during "count" property evaluation', function () {
+            return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot "count" property - selector error', {
+                shouldFail: true,
+                only:       'chrome'
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).contains(
+                        'An error occurred in Selector code:'
+                    );
+                    expect(errs[0]).contains('> 805 |    await Selector(() => [].someUndefMethod()).count;');
+                });
+        });
+
+        it('Should raise error if error occurs in selector during "exists" property evaluation', function () {
+            return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot "exists" property - selector error', {
+                shouldFail: true,
+                only:       'chrome'
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).contains(
+                        'An error occurred in Selector code:'
+                    );
+                    expect(errs[0]).contains('> 809 |    await Selector(() => [].someUndefMethod()).exists;');
                 });
         });
     });

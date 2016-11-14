@@ -1,7 +1,8 @@
 import Promise from 'pinkie';
 import { identity, assign, isNil as isNullOrUndefined } from 'lodash';
 import { MissingAwaitError } from '../errors/test-run';
-import { getCallsite } from '../errors/callsite';
+import getCallsite from '../errors/get-callsite';
+import deprecate from '../warnings/deprecate';
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import SelectorBuilder from '../client-functions/selector-builder';
 
@@ -229,6 +230,11 @@ export default class TestController {
     }
 
     _select$ (fn, options) {
+        deprecate(getCallsite('select'), {
+            what:       't.select',
+            useInstead: 'Selector'
+        });
+
         if (!isNullOrUndefined(options))
             options = assign({}, options, { boundTestRun: this });
 

@@ -6,12 +6,11 @@ import { UncaughtErrorInClientFunctionCode } from '../../../../errors/test-run';
 
 export default class ClientFunctionExecutor {
     constructor (command) {
-        this.command    = command;
-        this.replicator = this._createReplicator();
+        this.command      = command;
+        this.replicator   = this._createReplicator();
+        this.dependencies = this.replicator.decode(this.command.dependencies);
 
-        var dependencies = this.replicator.decode(this.command.dependencies);
-
-        this.fn = evalFunction(this.command.fnCode, dependencies);
+        this.fn = evalFunction(this.command.fnCode, this.dependencies);
     }
 
     getResult () {

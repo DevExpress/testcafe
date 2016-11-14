@@ -1,18 +1,25 @@
 import Promise from 'pinkie';
-import { isFinite, isRegExp, isNil as isNullOrUndefined, assign, escapeRegExp as escapeRe } from 'lodash';
+import { isNil as isNullOrUndefined, assign, escapeRegExp as escapeRe } from 'lodash';
 import dedent from 'dedent';
 import ClientFunctionBuilder from '../client-function-builder';
 import { SelectorNodeTransform } from '../replicator';
-import { APIError, ClientFunctionAPIError } from '../../errors/runtime';
+import { ClientFunctionAPIError } from '../../errors/runtime';
 import functionBuilderSymbol from '../builder-symbol';
 import MESSAGE from '../../errors/runtime/message';
+import getCallsite from '../../errors/get-callsite';
+import { assertNonNegativeNumber, assertBoolean, assertStringOrRegExp } from '../../errors/runtime/type-assertions';
+import deprecate from '../../warnings/deprecate';
 import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import defineLazyProperty from '../../utils/define-lazy-property';
-import createSnapshotShorthands from './create-snapshot-shorthands';
+import addAPI from './add-api';
 import createSnapshotMethods from './create-snapshot-methods';
+import ensureDeprecatedOptions from './ensure-deprecated-options';
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
     constructor (fn, options, callsiteNames) {
+        if (callsiteNames && callsiteNames.instantiation === 'with')
+            ensureDeprecatedOptions('with', options);
+
         var builderFromSelector          = fn && fn[functionBuilderSymbol];
         var builderFromPromiseOrSnapshot = fn && fn.selector && fn.selector[functionBuilderSymbol];
         var builder                      = builderFromSelector || builderFromPromiseOrSnapshot;
@@ -31,6 +38,11 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
     static _defineNodeSnapshotDerivativeSelectorProperty (obj, propName, fn) {
         defineLazyProperty(obj, propName, () => {
+            deprecate(getCallsite('get'), {
+                what:       `nodeSnapshot.${propName}`,
+                useInstead: 'hierarchical selectors (e.g. selector.find())'
+            });
+
             var builder = new SelectorBuilder(fnArg => {
                 /* eslint-disable no-undef */
                 var selectorResult = selector();
@@ -70,9 +82,10 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         if (code) {
             return dedent(
                 `(function(){
-                    var __f$=${code}
+                    var __f$=${code};
                     return function(){
-                        return window['%testCafeSelectorFilter%'](__f$.apply(this, arguments), __dependencies$.__filterOptions$);
+                        var args = __dependencies$.boundArgs || arguments;
+                        return window['%testCafeSelectorFilter%'](__f$.apply(this, args), __dependencies$.filterOptions);
                     };
                  })();`
             );
@@ -97,7 +110,11 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             if (!resultPromise) {
                 resultPromise = super
                     ._executeCommand(args, testRun, callsite)
-                    .then(result => result ? this._decorateFunctionResult(result, args) : result);
+                    .then(result => {
+                        return result && !this.options.counterMode ?
+                               this._decorateFunctionResult(result, args) :
+                               result;
+                    });
             }
 
             return resultPromise;
@@ -106,10 +123,10 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         lazyPromise.then  = (onFulfilled, onRejected) => execute().then(onFulfilled, onRejected);
         lazyPromise.catch = onRejected => execute().catch(onRejected);
 
-        this._defineSelectorPropertyWithBoundArgs(lazyPromise, args);
+        this._addBoundArgsSelectorGetter(lazyPromise, args);
 
         // OPTIMIZATION: use buffer function as selector not to trigger lazy property ahead of time
-        createSnapshotShorthands(lazyPromise, () => lazyPromise.selector);
+        addAPI(lazyPromise, () => lazyPromise.selector, SelectorBuilder);
 
         return lazyPromise;
     }
@@ -122,10 +139,14 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             text = new RegExp(escapeRe(text));
 
         return assign({}, dependencies, {
-            __filterOptions$: {
-                index: this.options.index || 0,
-                text:  text
-            }
+            filterOptions: {
+                counterMode:    this.options.counterMode,
+                collectionMode: this.options.collectionMode,
+                index:          isNullOrUndefined(this.options.index) ? null : this.options.index,
+                text:           text
+            },
+
+            boundArgs: this.options.boundArgs
         });
     }
 
@@ -140,34 +161,20 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         });
     }
 
-    _validateNonNegativeNumberOption (name, value) {
-        if (!isNullOrUndefined(value) && (!isFinite(value) || value < 0)) {
-            var valueType = typeof value;
-            var actual    = valueType === 'number' ? value : valueType;
-
-            throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotANonNegativeNumber, name, actual);
-        }
-    }
-
     _validateOptions (options) {
         super._validateOptions(options);
 
-        if (!isNullOrUndefined(options.visibilityCheck)) {
-            var visibilityCheckOptionType = typeof options.visibilityCheck;
+        if (!isNullOrUndefined(options.visibilityCheck))
+            assertBoolean(this.callsiteNames.instantiation, '"visibilityCheck" option', options.visibilityCheck);
 
-            if (visibilityCheckOptionType !== 'boolean')
-                throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotABoolean, 'visibilityCheck', visibilityCheckOptionType);
-        }
+        if (!isNullOrUndefined(options.text))
+            assertStringOrRegExp(this.callsiteNames.instantiation, '"text" option', options.text);
 
-        if (!isNullOrUndefined(options.text)) {
-            var textType = typeof options.text;
+        if (!isNullOrUndefined(options.timeout))
+            assertNonNegativeNumber(this.callsiteNames.instantiation, '"timeout" option', options.timeout);
 
-            if (textType !== 'string' && !isRegExp(options.text))
-                throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotAStringOrRegExp, 'text', textType);
-        }
-
-        this._validateNonNegativeNumberOption('timeout', options.timeout);
-        this._validateNonNegativeNumberOption('index', options.index);
+        if (!isNullOrUndefined(options.index))
+            assertNonNegativeNumber(this.callsiteNames.instantiation, '"index" option', options.index);
     }
 
     _getReplicatorTransforms () {
@@ -178,15 +185,9 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         return transforms;
     }
 
-    _defineSelectorPropertyWithBoundArgs (obj, selectorArgs) {
+    _addBoundArgsSelectorGetter (obj, selectorArgs) {
         defineLazyProperty(obj, 'selector', () => {
-            var builder = new SelectorBuilder(() => /* eslint-disable no-undef */selector.apply(null, args)/* eslint-enable no-undef */,
-                {
-                    dependencies: {
-                        selector: this.getFunction(),
-                        args:     selectorArgs
-                    }
-                });
+            var builder = new SelectorBuilder(this.getFunction(), { boundArgs: selectorArgs });
 
             return builder.getFunction();
         });
@@ -195,11 +196,11 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     _decorateFunction (selectorFn) {
         super._decorateFunction(selectorFn);
 
-        createSnapshotShorthands(selectorFn, selectorFn);
+        addAPI(selectorFn, () => selectorFn, SelectorBuilder);
     }
 
     _decorateFunctionResult (nodeSnapshot, selectorArgs) {
-        this._defineSelectorPropertyWithBoundArgs(nodeSnapshot, selectorArgs);
+        this._addBoundArgsSelectorGetter(nodeSnapshot, selectorArgs);
 
         SelectorBuilder._defineNodeSnapshotDerivativeSelectorProperty(nodeSnapshot, 'getParentNode', node => {
             return node ? node.parentNode : node;

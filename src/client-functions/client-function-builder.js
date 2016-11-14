@@ -6,8 +6,9 @@ import { ExecuteClientFunctionCommand } from '../test-run/commands/observation';
 import TestRun from '../test-run';
 import compileClientFunction from '../compiler/es-next/compile-client-function';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
+import { assertObject, assertNonNullObject } from '../errors/runtime/type-assertions';
 import MESSAGE from '../errors/runtime/message';
-import { getCallsite } from '../errors/callsite';
+import getCallsite from '../errors/get-callsite';
 
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
@@ -33,14 +34,10 @@ export default class ClientFunctionBuilder {
         this.replicator = createReplicator(this._getReplicatorTransforms());
     }
 
-    _resolveContextTestRun () {
+    static _resolveContextTestRun () {
         var testRunId = testRunTracker.getContextTestRunId();
-        var testRun   = TestRun.activeTestRuns[testRunId];
 
-        if (!testRun)
-            throw new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, MESSAGE.clientFunctionCantResolveTestRun);
-
-        return testRun;
+        return TestRun.activeTestRuns[testRunId];
     }
 
     _decorateFunction (clientFn) {
@@ -65,7 +62,7 @@ export default class ClientFunctionBuilder {
         var clientFn = function __$$clientFunction$$ () {
             var testRun = builder.options.boundTestRun ?
                           builder.options.boundTestRun.testRun :
-                          builder._resolveContextTestRun();
+                          ClientFunctionBuilder._resolveContextTestRun();
 
             var callsite = getCallsite(builder.callsiteNames.execution);
             var args     = [];
@@ -115,21 +112,19 @@ export default class ClientFunctionBuilder {
         return new ClientFunctionAPIError(this.callsiteNames.instantiation, this.callsiteNames.instantiation, MESSAGE.clientFunctionCodeIsNotAFunction, typeof this.fn);
     }
 
-    async _executeCommand (args, testRun, callsite) {
-        var command = this.getCommand(args);
-        var result  = await testRun.executeCommand(command, callsite);
+    _executeCommand (args, testRun, callsite) {
+        if (!testRun)
+            throw new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, MESSAGE.clientFunctionCantResolveTestRun);
 
-        return this.replicator.decode(result);
+        var command = this.getCommand(args);
+
+        return testRun
+            .executeCommand(command, callsite)
+            .then(result => this.replicator.decode(result));
     }
 
     _validateOptions (options) {
-        var optionsType = typeof options;
-
-        if (isNullOrUndefined(options) || optionsType !== 'object') {
-            var actualVal = options === null ? 'null' : optionsType;
-
-            throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionsArgumentIsNotAnObject, actualVal);
-        }
+        assertNonNullObject(this.callsiteNames.instantiation, '"options" argument', options);
 
         if (!isNullOrUndefined(options.boundTestRun)) {
             // NOTE: we can't use strict `t instanceof TestController`
@@ -138,12 +133,8 @@ export default class ClientFunctionBuilder {
                 throw new APIError(this.callsiteNames.instantiation, MESSAGE.invalidClientFunctionTestRunBinding);
         }
 
-        if (!isNullOrUndefined(options.dependencies)) {
-            var dependenciesType = typeof options.dependencies;
-
-            if (dependenciesType !== 'object')
-                throw new APIError(this.callsiteNames.instantiation, MESSAGE.optionValueIsNotAnObject, 'dependencies', dependenciesType);
-        }
+        if (!isNullOrUndefined(options.dependencies))
+            assertObject(this.callsiteNames.instantiation, '"dependencies" option', options.dependencies);
     }
 
     _getReplicatorTransforms () {

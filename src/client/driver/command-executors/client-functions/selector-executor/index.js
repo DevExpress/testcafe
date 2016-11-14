@@ -31,6 +31,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         this.createIsInvisibleError = createIsInvisibleError;
         this.timeout                = typeof command.timeout === 'number' ? command.timeout : globalTimeout;
         this.statusBar              = statusBar;
+        this.counterMode            = this.dependencies.filterOptions.counterMode;
 
         if (startTime) {
             var elapsed = new Date() - startTime;
@@ -77,6 +78,9 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
     }
 
     _executeFn (args) {
+        if (this.counterMode)
+            return super._executeFn(args);
+
         var startTime = new Date();
         var error     = null;
         var element   = null;

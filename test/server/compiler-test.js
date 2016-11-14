@@ -851,6 +851,163 @@ describe('Compiler', function () {
                 });
         });
 
+        it('Should raise an error if Selector.nth() `index` argument is not a non-negative number', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-nth-arg-is-not-non-negative-value/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"index" argument is expected to be a non-negative number, but it was string.',
+
+                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  ' > 5 |Selector(() => {}).nth(\'hey\');\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});'
+                    });
+                });
+        });
+
+        it('Should raise an error if Selector.withText `text` argument is not a RegExp or string', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-with-text-arg-is-not-regexp-or-string/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"text" argument is expected to be a string or a regular expression, but it was object.',
+
+                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  ' > 5 |Selector(() => {}).withText({});\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});'
+                    });
+                });
+        });
+
+        it('Should raise an error if Selector.find `filter` argument is not a function or string', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-find-arg-is-not-a-string-or-function/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"filter" argument is expected to be a string or a function, but it was object.',
+
+                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  ' > 5 |Selector(\'span\').find({});\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});'
+                    });
+                });
+        });
+
+        it('Should raise an error if Selector.parent `filter` argument is not a function or string', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-parent-incorrect-arg-type/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"filter" argument is expected to be a string, function or a non-negative number but it was object.',
+
+                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |Selector(\'span\').parent();\n' +
+                                  ' > 5 |Selector(\'span\').parent({});\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});'
+                    });
+                });
+        });
+
+        it('Should raise an error if Selector.child `filter` argument is not a function or string', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-child-incorrect-arg-type/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"filter" argument is expected to be a string, function or a non-negative number but it was object.',
+
+                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |Selector(\'span\').child();\n' +
+                                  ' > 5 |Selector(\'span\').child({});\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});'
+                    });
+                });
+        });
+
+        it('Should raise an error if Selector.sibling `filter` argument is not a function or string', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-sibling-incorrect-arg-type/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"filter" argument is expected to be a string, function or a non-negative number but it was object.',
+
+                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |Selector(\'span\').sibling();\n' +
+                                  ' > 5 |Selector(\'span\').sibling({});\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});'
+                    });
+                });
+        });
+
+
         it('Should raise an error if Selector `textFitler` option is not a RegExp or string', function () {
             var testfile = resolve('test/server/data/test-suites/selector-text-filter-is-not-regexp-or-string/testfile.js');
 
