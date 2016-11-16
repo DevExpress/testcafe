@@ -5,6 +5,7 @@ import getCallsite from '../errors/get-callsite';
 import deprecate from '../warnings/deprecate';
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import SelectorBuilder from '../client-functions/selector-builder';
+import Assertion from './assertion';
 
 
 import {
@@ -97,24 +98,32 @@ export default class TestController {
         return extendedPromise;
     }
 
-    _enqueueAction (apiMethodName, CmdCtor, cmdArgs) {
+    _enqueueTask (apiMethodName, createTaskExecutor) {
         this._checkForMissingAwait();
 
         var callsite = getCallsite(apiMethodName);
-        var command  = null;
+        var executor = createTaskExecutor(callsite);
 
-        try {
-            command = new CmdCtor(cmdArgs);
-        }
-        catch (err) {
-            err.callsite = callsite;
-            throw err;
-        }
-
-        this.executionChain       = this.executionChain.then(() => this.testRun.executeCommand(command, callsite));
+        this.executionChain       = this.executionChain.then(executor);
         this.callsiteWithoutAwait = callsite;
 
         return this._createExtendedPromise(this.executionChain, callsite);
+    }
+
+    _enqueueAction (apiMethodName, CmdCtor, cmdArgs) {
+        return this._enqueueTask(apiMethodName, callsite => {
+            var command = null;
+
+            try {
+                command = new CmdCtor(cmdArgs);
+            }
+            catch (err) {
+                err.callsite = callsite;
+                throw err;
+            }
+
+            return () => this.testRun.executeCommand(command, callsite);
+        });
     }
 
     _checkForMissingAwait () {
@@ -257,6 +266,10 @@ export default class TestController {
         var callsite = getCallsite('getNativeDialogHistory');
 
         return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite);
+    }
+
+    _expect$ (actual) {
+        return new Assertion(actual, this);
     }
 }
 
