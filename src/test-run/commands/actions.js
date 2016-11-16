@@ -19,9 +19,9 @@ import { APIError } from '../../errors/runtime';
 
 
 // Initializers
-function initSelector (name, val) {
+function initSelector (name, val, skipVisibilityCheck) {
     try {
-        var builder = new SelectorBuilder(val, { visibilityCheck: true }, { instantiation: 'Selector' });
+        var builder = new SelectorBuilder(val, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
 
         return builder.getCommand([]);
     }
@@ -331,7 +331,7 @@ export class SetFilesToUploadCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', init: initSelector, required: true },
+            { name: 'selector', init: (name, val) => initSelector(name, val, true), required: true },
             { name: 'filePath', type: stringOrStringArrayArgument, required: true }
         ];
     }
@@ -350,7 +350,7 @@ export class ClearUploadCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', init: initSelector, required: true }
+            { name: 'selector', init: (name, val) => initSelector(name, val, true), required: true }
         ];
     }
 }
