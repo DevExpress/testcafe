@@ -37,8 +37,14 @@ export default class ESNextCompiler {
         var presetES2015 = NODE_VER < 4 ? presetES2015Loose : presetES2015Node4;
 
         return {
-            presets:       [presetStage2, presetES2015],
-            plugins:       [transformRuntime],
+            passPerPreset: true,
+            presets:       [
+                { plugins: transformRuntime },
+                {
+                    passPerPreset: false,
+                    presets:       [presetStage2, presetES2015]
+                }
+            ],
             filename:      filename,
             sourceMaps:    true,
             retainLines:   true,
