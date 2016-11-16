@@ -8,8 +8,8 @@ permalink: /documentation/recipes/running-tests-locally.html
 There are many ways to run your tests locally using TestCafe, but in this recipe we will focus on a simple one that uses a few other packages and can be easily integrated into your workflow. To do this, go through the following steps.
 
 * [Step 1 - Install TestCafe and create tests](#step-1---install-testcafe-and-create-tests)
-* [Step 2 - Install http-server and concurrently](#step-1---install-testcafe-and-create-tests)
-* [Step 3 - Add the `test` script to package.json](#step-5---add-the-test-script-to-packagejson)
+* [Step 2 - Install http-server and concurrently](#step-2---install-http-server-and-concurrently)
+* [Step 3 - Add the `test` script to package.json](#step-3---add-the-test-script-to-packagejson)
 
 ## Step 1 - Install TestCafe and create tests
 
@@ -25,24 +25,16 @@ Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in 
 The default test script, for Node.js projects is `npm test`.
 To tell npm how to run your tests, you need to add the `test` script to the project's package.json file. The script should contain a `concurrently` command that will handle the local server and TestCafe.
 
-```text
+```json
 "scripts": {
-    "test":  "concurrently -k \"http-server\" \"http-server ./dist -p 4000" \"testcafe chrome ./test/acceptance/**\""
+    "test": "concurrently -r -k \"http-server\" \"http-server ./dist -p 4000 -s\" \"testcafe chrome ./test/acceptance/**\""
 }
 ```
 
 This script contains the following commands.
 
-1. `concurrently -k "http-server"` - kills the http-server after running the tests
-2. `"http-server ./dist -p 4000"` - starts the local server at port `4000` on the `./dist folder`
+1. `concurrently -r -k "http-server"` - starts concurrently with the raw output flag on and kills the http-server after running the tests
+2. `"http-server ./dist -p 4000 -s"` - starts the local server at port `4000` on the `./dist folder` in silent mode
 3. `"testcafe chrome ./test/acceptance/**"` - runs TestCafe tests on the `./test/acceptance` folder on Chrome
-
-If you want a cleaner output, you can use a few flags on concurrently and http-server, like this:
-
-```text
-"scripts": {
-    "test":  "concurrently -r -k \"http-server\" \"http-server ./dist -p 4000 -s" \"testcafe chrome ./test/acceptance/**\""
-}
-```
 
 For more information on how to configure a test run using a `testcafe` command, see [Command Line Interface](../using-testcafe/command-line-interface.md).
