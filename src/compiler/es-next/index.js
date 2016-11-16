@@ -36,6 +36,8 @@ export default class ESNextCompiler {
 
         var presetES2015 = NODE_VER < 4 ? presetES2015Loose : presetES2015Node4;
 
+        // NOTE: passPrePreset and complex presets is a workaround for https://github.com/babel/babel/issues/2877
+        // Fixes https://github.com/DevExpress/testcafe/issues/969
         return {
             passPerPreset: true,
             presets:       [
