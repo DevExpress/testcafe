@@ -19,8 +19,8 @@ function assertThrow (fn, expectedErr) {
     expect(actualErr).eql(expectedErr);
 }
 
-function makeSelector (str) {
-    var builder = new SelectorBuilder(str, { visibilityCheck: true }, { instantiation: 'Selector' });
+function makeSelector (str, skipVisibilityCheck) {
+    var builder = new SelectorBuilder(str, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
     var command = builder.getCommand([]);
 
     return JSON.parse(JSON.stringify(command));
@@ -709,7 +709,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.setFilesToUpload,
-                selector: makeSelector('#yo'),
+                selector: makeSelector('#yo', true),
                 filePath: '/test/path'
             });
 
@@ -728,7 +728,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.setFilesToUpload,
-                selector: makeSelector('#yo'),
+                selector: makeSelector('#yo', true),
                 filePath: ['/test/path/1', '/test/path/2']
             });
         });
@@ -748,7 +748,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.clearUpload,
-                selector: makeSelector('#yo')
+                selector: makeSelector('#yo', true)
             });
         });
 
