@@ -8,6 +8,6 @@
     "gitTag": true
   },
   "confirm": true,
-  "publishTag": "latest",
+  "publishTag": "alpha",
   "prePublishScript": "gulp test-server"
 }
