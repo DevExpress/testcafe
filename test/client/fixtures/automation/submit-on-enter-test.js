@@ -231,7 +231,7 @@ $(document).ready(function () {
 
         $('<input type="text">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 
-        checkSubmitRaisedOnEnterPress($form, $input, false);
+        checkSubmitRaisedOnEnterPress($form, $input, browserUtils.isFirefox);
     });
 
     module('event handlers');
