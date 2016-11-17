@@ -5,7 +5,13 @@ export default {
     isMultiBrowser: true,
 
     async openBrowser (browserId, pageUrl, browserName) {
-        var openParameters = await browserTools.getBrowserInfo(browserName);
+        var args  = browserName.split(' ');
+        var alias = args.shift();
+
+        var openParameters = await browserTools.getBrowserInfo(alias);
+
+        if (args.length)
+            openParameters.cmd += (openParameters.cmd ? ' ' : '') + args.join(' ');
 
         await browserTools.open(openParameters, pageUrl);
     },
@@ -27,7 +33,7 @@ export default {
     async isValidBrowserName (browserName) {
         var browserNames = await this.getBrowserList();
 
-        browserName = browserName.toLowerCase();
+        browserName = browserName.toLowerCase().split(' ')[0];
 
         return browserNames.indexOf(browserName) > -1;
     }

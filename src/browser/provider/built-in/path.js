@@ -1,8 +1,24 @@
 import browserTools from 'testcafe-browser-tools';
+import { splitQuotedText } from '../../../utils/string';
 
 
 export default {
     isMultiBrowser: true,
+
+    async _handleString (str) {
+        var args = splitQuotedText(str, ' ', '`"\'');
+        var path = args.shift();
+
+        var params = await browserTools.getBrowserInfo(path);
+
+        if (!params)
+            return null;
+
+        if (args.length)
+            params.cmd += (params.cmd ? ' ' : '') + args.join(' ');
+
+        return params;
+    },
 
     async _handleJSON (str) {
         var params = null;
@@ -29,7 +45,7 @@ export default {
     },
 
     async openBrowser (browserId, pageUrl, browserName) {
-        var openParameters = await browserTools.getBrowserInfo(browserName) || await this._handleJSON(browserName);
+        var openParameters = await this._handleString(browserName) || await this._handleJSON(browserName);
 
         if (!openParameters)
             throw new Error('The specified browser name is not valid!');
