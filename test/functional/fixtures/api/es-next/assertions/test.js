@@ -1,14 +1,14 @@
 var expect = require('chai').expect;
 
-describe('[API] Assertions', function () {
+describe.only('[API] Assertions', function () {
     it('Should perform .eql() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.eql() assertion', {
             shouldFail: true,
             only:       'chrome'
         })
             .catch(function (errs) {
-                expect(errs[0]).contains("AssertionError: expected 'hey' to deeply equal 'yo'");
-                expect(errs[0]).contains(">  8 |        .expect('hey').eql('yo');");
+                expect(errs[0]).contains("AssertionError: testMessage: expected 'hey' to deeply equal 'yo'");
+                expect(errs[0]).contains(">  8 |        .expect('hey').eql('yo', 'testMessage');");
             });
     });
 
@@ -155,6 +155,49 @@ describe('[API] Assertions', function () {
                 expect(errs[0]).contains('> 90 |        .expect(2.3).notWithin(2, 3);');
             });
     });
-    // TODO unawaited assertion
-    // TODO chaining
+
+    it('Should retry assertion for selector results', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Selector result assertion', { only: 'chrome' });
+    });
+
+    it('Should raise error assertion for selector results assertion on timeout', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Selector result assertion timeout', {
+            shouldFail:       true,
+            assertionTimeout: 20,
+            only:             'chrome'
+        })
+            .catch(function (errs) {
+                expect(errs[0]).contains("AssertionError: expected 'none' to deeply equal 'left'");
+                expect(errs[0]).contains("> 112 |        .expect(el.getStyleProperty('float')).eql('left');");
+            });
+    });
+
+    it('Should raise error if `await` is missing', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Missing await', {
+            shouldFail: true,
+            only:       'chrome'
+        })
+            .catch(function (errs) {
+                expect(errs[0]).contains('A call to an async function is not awaited.');
+                expect(errs[0]).contains('> 116 |    t.expect(42).eql(43); 117 |});');
+            });
+    });
+
+    it('Should raise error if "timeout" option is not a number', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', '"timeout" is not a number', {
+            shouldFail: true,
+            only:       'chrome'
+        })
+            .catch(function (errs) {
+                expect(errs[0]).contains('"timeout" option is expected to be a non-negative number, but it was string.');
+                expect(errs[0]).contains("> 120 |    await t.expect(42).eql(43, { timeout: 'hey' });");
+            });
+    });
+
+    it('Should raise error provide "timeout" option', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', '"timeout" option', {
+            only:             'chrome',
+            assertionTimeout: 0
+        });
+    });
 });

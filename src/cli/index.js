@@ -102,7 +102,9 @@ function useLocalInstallation () {
     var local = resolveCwd('testcafe/lib/cli');
 
     if (local && local !== __filename) {
+        log.write('Using locally installed version of TestCafe.');
         require(local);
+        
         return true;
     }
 

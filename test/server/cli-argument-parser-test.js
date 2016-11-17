@@ -81,7 +81,7 @@ describe('CLI argument parser', function () {
         });
     });
 
-    describe('Element availability timeout', function () {
+    describe('Selector timeout', function () {
         it('Should parse "--selector-timeout" option as integer value', function () {
             return parse('--selector-timeout 1000')
                 .then(function (parser) {
@@ -91,6 +91,19 @@ describe('CLI argument parser', function () {
 
         it('Should raise an error if the "--selector-timeout" option value is not an integer', function () {
             return assertRaisesError('--selector-timeout yo', 'Selector timeout should be an integer.');
+        });
+    });
+
+    describe('Assertion timeout', function () {
+        it('Should parse "--assertion-timeout" option as integer value', function () {
+            return parse('--assertion-timeout 1000')
+                .then(function (parser) {
+                    expect(parser.opts.assertionTimeout).eql(1000);
+                });
+        });
+
+        it('Should raise an error if the "--assertion-timeout" option value is not an integer', function () {
+            return assertRaisesError('--assertion-timeout yo', 'Assertion timeout should be an integer.');
         });
     });
 

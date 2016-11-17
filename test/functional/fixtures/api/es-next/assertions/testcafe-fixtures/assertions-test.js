@@ -1,11 +1,11 @@
-// NOTE: to preserve callsites, add new tests AFTER the existing ones
+import { Selector } from 'testcafe';
 fixture `Assertions`
     .page `http://localhost:3000/fixtures/api/es-next/assertions/pages/index.html`;
 
 test('.eql() assertion', async t => {
     await t
         .expect({ a: 2 }).eql({ a: 2 })
-        .expect('hey').eql('yo');
+        .expect('hey').eql('yo', 'testMessage');
 });
 
 test('.notEql() assertion', async t => {
@@ -88,4 +88,44 @@ test('.notWithin() assertion', async t => {
     await t
         .expect(4.5).notWithin(4.6, 7)
         .expect(2.3).notWithin(2, 3);
+});
+
+test('Selector result assertion', async t => {
+    const el = Selector('#el1');
+
+    await t
+        .click('#makeFloat')
+        .expect(el.getStyleProperty('float')).eql('left')
+        .click('#setClass')
+        .expect(el.hasClass('hey')).ok()
+        .click('#setAttr')
+        .expect(el.getAttribute('checked')).ok()
+        .click('#setTextContent')
+        .expect(el.textContent).eql('42');
+});
+
+test('Selector result assertion timeout', async t => {
+    const el = Selector('#el1');
+
+    await t
+        .click('#makeFloat')
+        .expect(el.getStyleProperty('float')).eql('left');
+});
+
+test('Missing await', async t => {
+    t.expect(42).eql(43);
+});
+
+test('"timeout" is not a number', async t => {
+    await t.expect(42).eql(43, { timeout: 'hey' });
+});
+
+test('"timeout" option', async t => {
+    const el = Selector('#el1');
+
+    await t
+        .click('#makeFloat')
+        .expect(el.getStyleProperty('float')).eql('left', { timeout: 500 })
+        .click('#setClass')
+        .expect(el.hasClass('hey')).ok('message', { timeout: 500 });
 });

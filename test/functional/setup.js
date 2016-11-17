@@ -17,7 +17,8 @@ var slBrowsers  = null;
 const WAIT_FOR_FREE_MACHINES_REQUEST_INTERVAL  = 60000;
 const WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT = 60;
 
-const FUNCTIONAL_TESTS_SELECTOR_TIMEOUT = 200;
+const FUNCTIONAL_TESTS_SELECTOR_TIMEOUT  = 200;
+const FUNCTIONAL_TESTS_ASSERTION_TIMEOUT = 1000;
 
 var envName     = process.env.TESTING_ENVIRONMENT || config.testingEnvironmentNames.localBrowsers;
 var environment = config.testingEnvironments[envName];
@@ -138,6 +139,7 @@ before(function () {
                 var skipJsErrors       = opts && opts.skipJsErrors;
                 var quarantineMode     = opts && opts.quarantineMode;
                 var selectorTimeout    = opts && opts.selectorTimeout || FUNCTIONAL_TESTS_SELECTOR_TIMEOUT;
+                var assertionTimeout   = opts && opts.assertionTimeout || FUNCTIONAL_TESTS_ASSERTION_TIMEOUT;
                 var onlyOption         = opts && opts.only;
                 var skipOption         = opts && opts.skip;
                 var screenshotPath     = opts && opts.setScreenshotPath ? '___test-screenshots___' : '';
@@ -177,10 +179,11 @@ before(function () {
                     .src(fixturePath)
                     .screenshots(screenshotPath, screenshotsOnFails)
                     .run({
-                        skipJsErrors:    skipJsErrors,
-                        quarantineMode:  quarantineMode,
-                        selectorTimeout: selectorTimeout,
-                        speed:           speed
+                        skipJsErrors:     skipJsErrors,
+                        quarantineMode:   quarantineMode,
+                        selectorTimeout:  selectorTimeout,
+                        assertionTimeout: assertionTimeout,
+                        speed:            speed
                     })
                     .then(function () {
                         var taskReport = JSON.parse(report);
