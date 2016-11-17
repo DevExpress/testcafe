@@ -104,7 +104,6 @@ function useLocalInstallation () {
     if (local && local !== __filename) {
         log.write('Using locally installed version of TestCafe.');
         require(local);
-        
         return true;
     }
 

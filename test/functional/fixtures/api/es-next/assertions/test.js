@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 
-describe.only('[API] Assertions', function () {
+describe('[API] Assertions', function () {
     it('Should perform .eql() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.eql() assertion', {
             shouldFail: true,
