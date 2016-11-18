@@ -194,7 +194,7 @@ describe('[API] Assertions', function () {
             });
     });
 
-    it('Should raise error provide "timeout" option', function () {
+    it('Should provide "timeout" option', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '"timeout" option', {
             only:             'chrome',
             assertionTimeout: 0

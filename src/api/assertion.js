@@ -66,7 +66,6 @@ export default class Assertion {
     _enqueueAssertion (apiMethodName, message, opts, executor) {
         if (typeof message === 'object')
             opts = message;
-
         else
             this.message = message;
 
