@@ -3,7 +3,7 @@ layout: docs
 title: Running Tests Locally
 permalink: /documentation/recipes/test-static-html-pages.html
 ---
-# Test static html pages
+# Test Static Html Pages
 
 There are many ways to test your static html pages using TestCafe, but in this recipe we will focus on a simple one that uses a few other packages and can be easily integrated into your workflow. To do this, go through the following steps.
 

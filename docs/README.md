@@ -48,3 +48,4 @@
     * [Browser Provider Methods](articles/documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.md)
 * [RECIPES](articles/documentation/recipes/index.md)
   * [Running Tests Using Travis CI and Sauce Labs](articles/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.md)
+  * [Test Static Html Pages](articles/documentation/recipes/test-static-html-pages.md)
