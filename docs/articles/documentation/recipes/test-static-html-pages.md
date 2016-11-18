@@ -1,11 +1,11 @@
 ---
 layout: docs
 title: Running Tests Locally
-permalink: /documentation/recipes/running-tests-locally.html
+permalink: /documentation/recipes/test-static-html-pages.html
 ---
-# Running Tests Locally
+# Test static html pages
 
-There are many ways to run your tests locally using TestCafe, but in this recipe we will focus on a simple one that uses a few other packages and can be easily integrated into your workflow. To do this, go through the following steps.
+There are many ways to test your static html pages using TestCafe, but in this recipe we will focus on a simple one that uses a few other packages and can be easily integrated into your workflow. To do this, go through the following steps.
 
 * [Step 1 - Install TestCafe and create tests](#step-1---install-testcafe-and-create-tests)
 * [Step 2 - Install http-server and concurrently](#step-2---install-http-server-and-concurrently)
