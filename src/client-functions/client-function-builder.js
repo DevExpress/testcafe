@@ -9,6 +9,7 @@ import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import { assertObject, assertNonNullObject } from '../errors/runtime/type-assertions';
 import MESSAGE from '../errors/runtime/message';
 import getCallsite from '../errors/get-callsite';
+import ensureDeprecatedOptions from './selector-builder/ensure-deprecated-options';
 
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
@@ -44,6 +45,8 @@ export default class ClientFunctionBuilder {
         clientFn[functionBuilderSymbol] = this;
 
         clientFn.with = options => {
+            ensureDeprecatedOptions('with', options);
+
             if (typeof options === 'object')
                 options = assign({}, this.options, options);
 

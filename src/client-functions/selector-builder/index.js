@@ -12,15 +12,10 @@ import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import defineLazyProperty from '../../utils/define-lazy-property';
 import addAPI from './add-api';
 import createSnapshotMethods from './create-snapshot-methods';
-import ensureDeprecatedOptions from './ensure-deprecated-options';
 import SelectorResultPromise from './result-promise';
-
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
     constructor (fn, options, callsiteNames) {
-        if (callsiteNames && callsiteNames.instantiation === 'with')
-            ensureDeprecatedOptions('with', options);
-
         var builderFromSelector          = fn && fn[functionBuilderSymbol];
         var builderFromPromiseOrSnapshot = fn && fn.selector && fn.selector[functionBuilderSymbol];
         var builder                      = builderFromSelector || builderFromPromiseOrSnapshot;
