@@ -2,7 +2,7 @@ import { Selector } from 'testcafe';
 import { expect } from 'chai';
 
 
-fixture `Scroll div container`
+fixture `Scroll a div container`
     .page `http://localhost:3000/fixtures/regression/gh-973/pages/container.html`;
 
 
@@ -15,7 +15,7 @@ test('Scroll container to the lower right corner element', async t => {
     await t.click(targetLowerRightSelector, { offsetX: 200, offsetY: 200 });
 
     const targetLowerRightSnapshot = await targetLowerRightSelector();
-    const parentSnapshot           = await targetLowerRightSnapshot.getParentNode();
+    const parentSnapshot           = await targetLowerRightSelector().parent()();
 
     const rightIndent  = parentSnapshot.getBoundingClientRectProperty('right') -
                          targetLowerRightSnapshot.getBoundingClientRectProperty('right');
@@ -32,7 +32,7 @@ test('Scroll container to the upper left corner element', async t => {
         .click(targetUpperLeftSelector, { offsetX: 0, offsetY: 0 });
 
     const targetUpperLeftSnapshot = await targetUpperLeftSelector();
-    const parentSnapshot          = await targetUpperLeftSnapshot.getParentNode();
+    const parentSnapshot          = await targetUpperLeftSelector().parent()();
 
     const leftIndent = targetUpperLeftSnapshot.getBoundingClientRectProperty('left') -
                        parentSnapshot.getBoundingClientRectProperty('left');
@@ -47,15 +47,15 @@ test('Scroll small container to the lower right corner element', async t => {
     await t.click(targetLowerRightSmallSelector, { offsetX: 100, offsetY: 100 });
 
     const targetLowerRightSmallSnapshot = await targetLowerRightSmallSelector();
-    const parentSnapshot                = await targetLowerRightSmallSnapshot.getParentNode();
+    const parentSnapshot                = await targetLowerRightSmallSelector().parent()();
 
     const rightIndent  = parentSnapshot.getBoundingClientRectProperty('right') -
                          targetLowerRightSmallSnapshot.getBoundingClientRectProperty('right');
     const bottomIndent = parentSnapshot.getBoundingClientRectProperty('bottom') -
                          targetLowerRightSmallSnapshot.getBoundingClientRectProperty('bottom');
 
-    expect(rightIndent).to.be.above(0).and.to.be.most(20);
-    expect(bottomIndent).to.be.above(0).and.to.be.most(20);
+    expect(rightIndent).to.be.above(0).and.to.be.most(25);
+    expect(bottomIndent).to.be.above(0).and.to.be.most(25);
 });
 
 test('Scroll small container to the upper left corner element', async t => {
@@ -64,13 +64,13 @@ test('Scroll small container to the upper left corner element', async t => {
         .click(targetUpperLeftSmallSelector, { offsetX: 0, offsetY: 0 });
 
     const targetUpperLeftSmallSnapshot = await targetUpperLeftSmallSelector();
-    const parentSnapshot               = await targetUpperLeftSmallSnapshot.getParentNode();
+    const parentSnapshot               = await targetUpperLeftSmallSelector().parent()();
 
     const leftIndent = targetUpperLeftSmallSnapshot.getBoundingClientRectProperty('left') -
                        parentSnapshot.getBoundingClientRectProperty('left');
     const topIndent  = targetUpperLeftSmallSnapshot.getBoundingClientRectProperty('top') -
                        parentSnapshot.getBoundingClientRectProperty('top');
 
-    expect(leftIndent).to.be.above(0).and.to.be.most(20);
-    expect(topIndent).to.be.above(0).and.to.be.most(20);
+    expect(leftIndent).to.be.above(0).and.to.be.most(25);
+    expect(topIndent).to.be.above(0).and.to.be.most(25);
 });

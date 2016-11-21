@@ -9,7 +9,6 @@ var positionUtils      = testCafeCore.positionUtils;
 var sendRequestToFrame = testCafeCore.sendRequestToFrame;
 
 
-const MIN_SCROLL_MARGIN   = 20;
 const MAX_SCROLL_MARGIN   = 50;
 const SCROLL_REQUEST_CMD  = 'automation|scroll|request';
 const SCROLL_RESPONSE_CMD = 'automation|scroll|response';
@@ -55,8 +54,8 @@ export default class ScrollAutomation {
         var needForwardScrollTop  = y >= elementDimensions.scroll.top + elementDimensions.height;
         var needBackwardScrollTop = y <= elementDimensions.scroll.top;
 
-        var maxLeftScrollMargin = Math.min(MIN_SCROLL_MARGIN, Math.floor(elementDimensions.width / 2));
-        var maxTopScrollMargin  = Math.min(MIN_SCROLL_MARGIN, Math.floor(elementDimensions.height / 2));
+        var maxLeftScrollMargin = Math.min(MAX_SCROLL_MARGIN, Math.floor(elementDimensions.width / 2));
+        var maxTopScrollMargin  = Math.min(MAX_SCROLL_MARGIN, Math.floor(elementDimensions.height / 2));
 
         var left = elementDimensions.scroll.left;
         var top  = elementDimensions.scroll.top;
