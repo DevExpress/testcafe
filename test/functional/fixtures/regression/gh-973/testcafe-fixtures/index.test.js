@@ -14,7 +14,7 @@ const getWindowSize = ClientFunction(()=> {
     return { height: window.innerHeight, width: window.innerWidth };
 });
 
-test('Scroll to lower right corner element', async t => {
+test('Scroll to the lower right corner element', async t => {
     await t.click(targetLowerRightSelector, { offsetX: 500, offsetY: 500 });
 
     const documentSnapshot         = await documentSelector();
@@ -28,7 +28,7 @@ test('Scroll to lower right corner element', async t => {
     expect(bottomIndent).to.be.above(0);
 });
 
-test('Scroll to upper left corner element', async t => {
+test('Scroll to the upper left corner element', async t => {
     await t
         .click(targetLowerRightSelector)
         .click(targetUpperLeftSelector, { offsetX: 0, offsetY: 0 });
@@ -42,7 +42,7 @@ test('Scroll to upper left corner element', async t => {
     expect(topIndent).to.be.above(0);
 });
 
-test('Scroll to lower right corner element (mobile)', async t => {
+test('Scroll to the lower right corner element (mobile)', async t => {
     await t.click(targetLowerRightSelector, { offsetX: 500, offsetY: 500 });
 
     const documentSnapshot         = await getWindowSize();

@@ -2,21 +2,49 @@
 <html>
 <head>
     <title>GH-913 container</title>
+    <style>
+        .target {
+            position: absolute;
+            background: #150;
+            width: 200px;
+            height: 200px
+        }
+
+        .smallTarget {
+            position: absolute;
+            background: #150;
+            width: 100px;
+            height: 100px
+        }
+
+        .container {
+            position:absolute;
+            background:#BBB;
+            width: 300px;
+            height: 300px;
+            overflow: scroll;
+        }
+
+        .smallContainer, .peg {
+            position: absolute;
+            background: #BBB;
+            width: 50px;
+            height: 50px;
+            overflow: scroll;
+        }
+    </style>
 </head>
 <body>
-<div style="height: 300px; width: 300px; position:absolute; left: 500px; top: 500px; background:yellow; overflow: scroll">
-    <div id='targetUpperLeft'
-         style="left:200px; top:200px; position:absolute; background: #150;    width: 50px;    height: 50px">
-        Upper left target
-    </div>
-    <div id='targetLowerRight'
-         style="left:2000px; top:2000px; position:absolute; background: #015;    width: 500px;    height: 500px">
-        Lower right target
-    </div>
-    <div
-        style="left:2700px; top:2700px; position:absolute; background: #000;    width: 50px;    height: 50px">
-    </div>
+<div class="container" style="left: 500px; top: 500px; ">
+    <div id='targetUpperLeft' class="target" style="left:200px; top:200px;">Upper left target</div>
+    <div id='targetLowerRight' class="target" style="left:2000px; top:2000px;">Lower right target</div>
+    <div class="peg" style="left:2700px; top:2700px;"></div>
 </div>
-<div style="top:1000px; position:absolute; left: 1000px; height: 100px; width: 100px"></div>
+<div class="smallContainer" style="left: 500px; top: 1000px;">
+    <div id='targetUpperLeftSmall' class="smallTarget" style="left:200px; top:200px;">Upper left target</div>
+    <div id='targetLowerRightSmall' class="smallTarget" style="left:2000px; top:2000px;">Lower right target</div>
+    <div class="peg" style="left:2700px; top:2700px;"></div>
+</div>
+<div class="peg" style="top:2000px; position:absolute; left: 1000px;"></div>
 </body>
 </html>
