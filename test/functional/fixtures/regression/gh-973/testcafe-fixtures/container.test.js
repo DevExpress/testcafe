@@ -54,8 +54,8 @@ test('Scroll small container to the lower right corner element', async t => {
     const bottomIndent = parentSnapshot.getBoundingClientRectProperty('bottom') -
                          targetLowerRightSmallSnapshot.getBoundingClientRectProperty('bottom');
 
-    expect(rightIndent).to.be.above(0).and.to.be.most(10);
-    expect(bottomIndent).to.be.above(0).and.to.be.most(10);
+    expect(rightIndent).to.be.above(0).and.to.be.most(20);
+    expect(bottomIndent).to.be.above(0).and.to.be.most(20);
 });
 
 test('Scroll small container to the upper left corner element', async t => {
@@ -71,6 +71,6 @@ test('Scroll small container to the upper left corner element', async t => {
     const topIndent  = targetUpperLeftSmallSnapshot.getBoundingClientRectProperty('top') -
                        parentSnapshot.getBoundingClientRectProperty('top');
 
-    expect(leftIndent).to.be.above(0).and.to.be.most(10);
-    expect(topIndent).to.be.above(0).and.to.be.most(10);
+    expect(leftIndent).to.be.above(0).and.to.be.most(20);
+    expect(topIndent).to.be.above(0).and.to.be.most(20);
 });

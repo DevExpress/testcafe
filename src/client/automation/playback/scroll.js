@@ -9,7 +9,7 @@ var positionUtils      = testCafeCore.positionUtils;
 var sendRequestToFrame = testCafeCore.sendRequestToFrame;
 
 
-const MIN_SCROLL_MARGIN   = 5;
+const MIN_SCROLL_MARGIN   = 20;
 const MAX_SCROLL_MARGIN   = 50;
 const SCROLL_REQUEST_CMD  = 'automation|scroll|request';
 const SCROLL_RESPONSE_CMD = 'automation|scroll|response';
