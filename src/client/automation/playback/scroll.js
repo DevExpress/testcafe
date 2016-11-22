@@ -77,26 +77,30 @@ export default class ScrollAutomation {
         var fullViewScrollLeft = null;
         var fullViewScrollTop  = null;
 
-        var canShowFullElementWidth  = parentDimensions.width >= childDimensions.width;
-        var canShowFullElementHeight = parentDimensions.height >= childDimensions.height;
+        var canShowFullElementWidth  = parentDimensions.width >= childDimensions.width + MAX_SCROLL_MARGIN;
+        var canShowFullElementHeight = parentDimensions.height >= childDimensions.height + MAX_SCROLL_MARGIN;
 
         var relativePosition = positionUtils.calcRelativePosition(childDimensions, parentDimensions);
 
         if (canShowFullElementWidth) {
-            if (relativePosition.left < 0)
-                fullViewScrollLeft = Math.round(parentDimensions.scroll.left + relativePosition.left);
+            if (relativePosition.left < 0) {
+                fullViewScrollLeft = Math.round(parentDimensions.scroll.left + relativePosition.left -
+                                                MAX_SCROLL_MARGIN);
+            }
             else if (relativePosition.left > 0 && relativePosition.right < 0) {
                 fullViewScrollLeft = Math.round(parentDimensions.scroll.left +
-                                                Math.min(relativePosition.left, -relativePosition.right));
+                                                Math.min(relativePosition.left, -relativePosition.right) +
+                                                MAX_SCROLL_MARGIN);
             }
         }
 
         if (canShowFullElementHeight) {
             if (relativePosition.top < 0)
-                fullViewScrollTop = Math.round(parentDimensions.scroll.top + relativePosition.top);
+                fullViewScrollTop = Math.round(parentDimensions.scroll.top + relativePosition.top - MAX_SCROLL_MARGIN);
             else if (relativePosition.top > 0 && relativePosition.bottom < 0) {
                 fullViewScrollTop = Math.round(parentDimensions.scroll.top +
-                                               Math.min(relativePosition.top, -relativePosition.bottom));
+                                               Math.min(relativePosition.top, -relativePosition.bottom) +
+                                               MAX_SCROLL_MARGIN);
             }
         }
 
