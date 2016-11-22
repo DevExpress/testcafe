@@ -404,7 +404,7 @@ $(document).ready(function () {
                 .width(250)
                 .height(200)
                 .addClass(TEST_ELEMENT_CLASS)
-                .appendTo($('body')[0]);
+                .appendTo(body);
 
             $('<div></div>').addClass(TEST_ELEMENT_CLASS)
                 .css({
@@ -414,6 +414,15 @@ $(document).ready(function () {
                     backgroundColor: '#ffff00'
                 })
                 .appendTo($scrollableContainer);
+
+            $('<div></div>').addClass(TEST_ELEMENT_CLASS)
+                .css({
+                    position: 'absolute',
+                    height:   '20px',
+                    width:    '20px',
+                    left:     '600px'
+                })
+                .appendTo(body);
 
             var scrollHandler = function () {
                 if (clickCount === 1)
