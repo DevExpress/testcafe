@@ -67,12 +67,40 @@ test('Emulate user actions and perform a verification', async t => {
                 <p>Additionally, TestCafe automatically generates source maps for easy debugging. To debug your test code, start a debugging session in an IDE that supports source maps.</p>
             </div>
         </div>
-       <div class="feature">
+		<div class="feature">
+            <span class="name">
+                Flexible Selectors System
+            </span>
+            <div class="description">
+                <p>You can access webpage elements in different ways (by css selector, text, DOM hierarchy or use any custom logic) with <a href="documentation/test-api/selecting-page-elements/selectors.html">selectors</a>. It provides you with rich capabilities for writing test scripts.</p>
+<p>Also it's very helpful to use Page Object methodology. It is one of the most popular patterns in web automation based on wrapping the pages or page fragments of a web app into objects.</p>
+                <pre><code>import { Selector } from 'testcafe';
+
+fixture `Getting Started`
+    .page `http://devexpress.github.io/testcafe/example`;
+
+const page = {
+    nameInput:             Selector('#developer-name'),
+    interfaceSelect:       Selector('#preferred-interface'),
+    interfaceSelectOption: Selector('#preferred-interface').child('option')
+};
+
+test('Use Page Object', async t => {
+    await t
+        .typeText(page.nameInput, 'John Smith')
+        .click(page.interfaceSelect)
+        .click(page.interfaceSelectOption.nth(2));
+
+    await t.expect(page.interfaceSelect.value).eql('Both');
+});</code></pre>
+                </div>
+            </div>
+        <div class="feature">
             <span class="name">
                 Direct Access to Page Elements
             </span>
             <div class="description">
-                <p>TestCafe allows you to access webpage elements using standard CSS selectors or <a href="documentation/test-api/selecting-page-elements/selectors.html">custom selectors</a> that run client JavaScript code. You can call a custom selector as a regular function within your test. It will execute your code on the client and pass the returned value back to the test. This allows you to determine the state of each element on the tested page or select a proper element to perform an action on.</p>
+                <p>TestCafe allows you to access webpage elements using <a href="documentation/test-api/selecting-page-elements/selectors.html">custom selectors</a> that run client JavaScript code. You can call a custom selector as a regular function within your test. It will execute your code on the client and pass the returned value back to the test. This allows you to determine the state of each element on the tested page or select a proper element to perform an action on.</p>
 
                 <pre><code>import { expect } from 'chai';
 import { Selector } from 'testcafe';

@@ -28,10 +28,10 @@ Property | Type | Description
 
 Method | Type | Description
 ------ | ---- | -----
-`getChildElement(idx)` | Selector | A selector that returns the snapshot of the child element at index `idx`. See [ParentNode.children](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/children).
-`getChildNode(idx)` | Selector | A selector that returns the snapshot of the child node at index `idx`. See [Node.childNodes](https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes).
-`getParentNode` | Selector | A selector that returns the parent node snapshot. See [Node.parentNode](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentNode).
 `hasClass(className)` | Boolean | `true` if the element has the specified class name.
+`getChildElement(idx)` | Selector | ***Deprecated.*** A selector that returns the snapshot of the child element at index `idx`. *Will be removed in future releases. Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy).*
+`getChildNode(idx)` | Selector | ***Deprecated.*** A selector that returns the snapshot of the child node at index `idx`. *Will be removed in future releases. Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy).*
+`getParentNode` | Selector | ***Deprecated.*** A selector that returns the parent node snapshot. *Will be removed in future releases. Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy).*
 
 ## Members Specific to Element Nodes
 
