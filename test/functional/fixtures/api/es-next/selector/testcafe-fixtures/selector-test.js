@@ -142,7 +142,7 @@ test('Input-specific element snapshot properties', async t => {
     expect(await select.selectedIndex).eql(0);
 
     await t
-        .click('#selectInput')
+        .click(select)
         .click('#option2');
 
     expect(await select.selectedIndex).eql(1);
