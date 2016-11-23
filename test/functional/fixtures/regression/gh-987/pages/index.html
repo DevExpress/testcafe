@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-987</title>
+    <style>
+        .row {
+            height: 24px;
+            width: 75px;
+            background: grey;
+            border: 1px solid black;
+        }
+
+        .column {
+            display: inline-block;
+            color: white;
+            width: 20px;
+            height: 70px;
+            border: 1px solid black;
+            background: grey;
+        }
+
+        .verticalContainer {
+            overflow-y: scroll;
+            left: 100px;
+            position: absolute;
+            height: 70px;
+            width: 100px;
+        }
+
+        .horizontalConatainer {
+            overflow-x: scroll;
+            white-space: nowrap;
+            height: 100px;
+            width: 70px;
+        }
+    </style>
+</head>
+<body>
+<div id="verticalContainer" class="verticalContainer">
+    <div id="targetTop" class="row"></div>
+    <div class="row"></div>
+    <div id="targetBottom" class="row"></div>
+</div>
+<div id="horizontalContainer" class="horizontalConatainer">
+    <div id="targetLeft" class="column"></div>
+    <div class="column"></div>
+    <div id="targetRight" class="column"></div>
+</div>
+</body>
+</html>
