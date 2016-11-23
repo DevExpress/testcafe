@@ -104,6 +104,7 @@
   "devDependencies": {
     "babel-eslint": "^6.0.0",
     "babel-plugin-add-module-exports": "^0.2.0",
+    "basic-auth": "^1.1.0",
     "broken-link-checker": "^0.7.0",
     "caller": "^1.0.1",
     "connect": "^3.4.0",
@@ -115,6 +116,7 @@
     "eslint-plugin-hammerhead": "0.0.6",
     "eslint-plugin-import": "^1.14.0",
     "express": "^4.13.3",
+    "express-ntlm": "^2.1.5",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",
     "gulp-connect": "^2.2.0",

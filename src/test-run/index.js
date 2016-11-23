@@ -49,6 +49,8 @@ export default class TestRun extends Session {
 
         this.dialogHandler = null;
 
+        this.authCredentials = test.fixture.authCredentials;
+
         this.pendingRequest   = null;
         this.pendingPageError = null;
 
@@ -104,7 +106,7 @@ export default class TestRun extends Session {
 
     // Hammerhead handlers
     getAuthCredentials () {
-        // TODO
+        return this.authCredentials;
     }
 
     handleFileDownload () {

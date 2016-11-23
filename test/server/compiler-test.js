@@ -503,6 +503,75 @@ describe('Compiler', function () {
                 });
         });
 
+        it('Should raise an error if httpAuth takes a wrong argument', function () {
+            var usernameIsNotStringTestFile = resolve('test/server/data/test-suites/httpAuth/username-is-not-a-string.js');
+            var passIsEmptyTestFile         = resolve('test/server/data/test-suites/httpAuth/pass-is-empty.js');
+            var domainIsNotString           = resolve('test/server/data/test-suites/httpAuth/domain-is-not-a-string.js');
+
+            return compile(usernameIsNotStringTestFile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: usernameIsNotStringTestFile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Fixture\'s "httpAuth" method requires a username as a string value, but the object value was passed.',
+
+                        callsite: '   1 |fixture `Username is not a string`\n' +
+                                  " > 2 |    .httpAuth({}, 'password');\n" +
+                                  '   3 |\n' +
+                                  "   4 |test('Some test', () => {\n" +
+                                  '   5 |\n' +
+                                  '   6 |});\n' +
+                                  '   7 |'
+                    });
+
+                    return compile(passIsEmptyTestFile);
+                })
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: passIsEmptyTestFile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Fixture\'s "httpAuth" method password parameter cannot be empty.',
+
+                        callsite: '   1 |fixture `Password is empty`\n' +
+                                  ' > 2 |    .httpAuth(\'username\', \'\');\n' +
+                                  '   3 |\n' +
+                                  "   4 |test('Some test', () => {\n" +
+                                  '   5 |\n' +
+                                  '   6 |});\n' +
+                                  '   7 |'
+                    });
+
+                    return compile(domainIsNotString);
+                })
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: domainIsNotString,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Fixture\'s "httpAuth" method requires a domain as a string value, but the object value was passed.',
+
+                        callsite: '   1 |fixture `Domain is not a string`\n' +
+                                  " > 2 |    .httpAuth('username', 'password', {});\n" +
+                                  '   3 |\n' +
+                                  "   4 |test('Some test', () => {\n" +
+                                  '   5 |\n' +
+                                  '   6 |});\n' +
+                                  '   7 |'
+                    });
+                });
+        });
+
         it('Should raise an error if afterEach is not a function', function () {
             var testfile = resolve('test/server/data/test-suites/after-each-is-not-a-function/testfile.js');
 
