@@ -26,6 +26,7 @@ export const ELEMENT_SNAPSHOT_PROPERTIES = [
     'value',
     'checked',
     'selected',
+    'selectedIndex',
     'scrollWidth',
     'scrollHeight',
     'scrollLeft',

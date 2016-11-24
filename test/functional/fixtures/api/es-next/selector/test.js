@@ -119,7 +119,7 @@ describe('[API] Selector', function () {
                 .catch(function (errs) {
                     expect(errs[0]).contains('An error occurred in Selector code:');
                     expect(errs[0]).contains('Error: Hey ya!');
-                    expect(errs[0]).contains('> 236 |    await selector();');
+                    expect(errs[0]).contains('> 242 |    await selector();');
                 });
         });
 
@@ -130,7 +130,7 @@ describe('[API] Selector', function () {
                         'Function that specifies a selector can only return a DOM node, an array of nodes, ' +
                         'NodeList, HTMLCollection, null or undefined. Use ClientFunction to return other values.'
                     );
-                    expect(errs[0]).contains("> 265 |    await Selector(() => 'hey')();");
+                    expect(errs[0]).contains("> 271 |    await Selector(() => 'hey')();");
                 });
         });
 
@@ -144,7 +144,7 @@ describe('[API] Selector', function () {
                     'node snapshot or a Promise returned by a Selector, but number was passed.'
                 )).eql(0);
 
-                expect(errs[0]).contains('> 206 |    await Selector(123)();');
+                expect(errs[0]).contains('> 212 |    await Selector(123)();');
             });
         });
 
@@ -157,7 +157,7 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.'
                     );
-                    expect(errs[0]).contains("> 514 |    await Selector('#someUnknownElement').tagName;");
+                    expect(errs[0]).contains("> 520 |    await Selector('#someUnknownElement').tagName;");
                 });
         });
 
@@ -170,7 +170,7 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.'
                     );
-                    expect(errs[0]).contains("> 518 |    await Selector('#someUnknownElement').getStyleProperty('width');");
+                    expect(errs[0]).contains("> 524 |    await Selector('#someUnknownElement').getStyleProperty('width');");
                 });
         });
 
@@ -183,7 +183,7 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
                     );
-                    expect(errs[0]).contains('> 522 |    await Selector(() => [].someUndefMethod()).nodeType;');
+                    expect(errs[0]).contains('> 528 |    await Selector(() => [].someUndefMethod()).nodeType;');
                 });
         });
 
@@ -196,7 +196,7 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
                     );
-                    expect(errs[0]).contains("> 526 |    await Selector(() => [].someUndefMethod()).hasClass('yo');");
+                    expect(errs[0]).contains("> 532 |    await Selector(() => [].someUndefMethod()).hasClass('yo');");
                 });
         });
 
@@ -209,7 +209,7 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
                     );
-                    expect(errs[0]).contains('> 805 |    await Selector(() => [].someUndefMethod()).count;');
+                    expect(errs[0]).contains('> 811 |    await Selector(() => [].someUndefMethod()).count;');
                 });
         });
 
@@ -222,7 +222,7 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
                     );
-                    expect(errs[0]).contains('> 809 |    await Selector(() => [].someUndefMethod()).exists;');
+                    expect(errs[0]).contains('> 815 |    await Selector(() => [].someUndefMethod()).exists;');
                 });
         });
     });
