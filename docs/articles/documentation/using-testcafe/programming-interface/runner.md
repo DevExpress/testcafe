@@ -258,6 +258,7 @@ Parameter         | Type    | Description                                       
 `skipJsErrors`    | Boolean | Defines whether to continue running a test after a JavaScript error occurs on a page (`true`), or consider such a test failed (`false`).                                              | `false`
 `quarantineMode`  | Boolean | Defines whether to enable the [quarantine mode](#quarantine-mode).                                                                                                                    | `false`
 `selectorTimeout` | Number  | Specifies the amount of time, in milliseconds, within which [selectors](../../test-api/selecting-page-elements/selectors.md) make attempts to obtain a node to be returned. See [Selector Timeout](../../test-api/selecting-page-elements/selectors.md#selector-timeout). | `10000`
+`assertionTimeout` | Number  | Specifies the amount of time, in milliseconds, within which TestCafe makes attempts  to successfully execute an [assertion](../../test-api/assertions/index.md) if [a selector property](../../test-api/selecting-page-elements/selectors.md#define-assertion-actual-value) was used. See [Smart Assertion Query Mechanism](../../test-api/assertions/index.md#smart-assertion-query-mechanism). | `3000`
 `speed`           | Number  | Specifies the speed of test execution. Should be a number between `1` (the fastest) and `0.01` (the slowest). | `1`
 
 **Example**
@@ -267,6 +268,7 @@ const failed = await runner.run({
     skipJsErrors: true,
     quarantineMode: true,
     selectorTimeout: 50000,
+    assertionTimeout: 7000,
     speed: 0.1
 })
 

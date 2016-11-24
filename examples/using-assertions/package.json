@@ -1,7 +1,7 @@
 {
-  "name": "basic-testcafe-example",
+  "name": "using-assertions",
   "version": "1.0.0",
-  "description": "Basic TestCafe API example",
+  "description": "An example of how to use TestCafe build-in assertions",
   "main": "test.js",
   "scripts": {
     "test": "testcafe all test.js"
@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/DevExpress/testcafe#readme",
   "devDependencies": {
-    "chai": "^3.0.0",
     "testcafe": "*"
   }
 }

@@ -31,6 +31,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-f \<name\>, --fixture \<name\>](#-f-name---fixture-name)
   * [-F \<pattern\>, --fixture-grep \<pattern\>](#-f-pattern---fixture-grep-pattern)
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
+  * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--ports \<port1,port2\>](#--ports-port1port2)
   * [--hostname \<name\>](#--hostname-name)
   * [--speed \<factor\>](#--speed-factor)
@@ -293,8 +294,21 @@ testcafe ie my-tests -F "Page.*"
 Specifies the amount of time, in milliseconds, within which [selectors](../test-api/selecting-page-elements/selectors.md) make
 attempts to obtain a node to be returned. See [Selector Timeout](../test-api/selecting-page-elements/selectors.md#selector-timeout).
 
+**Default value**: `10000`
+
 ```sh
 testcafe ie my-tests --selector-timeout 500000
+```
+
+### --assertion-timeout \<ms\>
+
+Specifies the amount of time, in milliseconds, within which TestCafe makes attempts to successfully execute an [assertion](../test-api/assertions/index.md) if [a selector property](../test-api/selecting-page-elements/selectors.md#define-assertion-actual-value) was used.
+See [Smart Assertion Query Mechanism](../test-api/assertions/index.md#smart-assertion-query-mechanism).
+
+**Default value**: `3000`
+
+```sh
+testcafe ie my-tests --assertion-timeout 10000
 ```
 
 ### --ports \<port1,port2\>

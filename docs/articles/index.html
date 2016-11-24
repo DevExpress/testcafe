@@ -108,6 +108,28 @@ test('Use Page Object', async t => {
             </div>
         <div class="feature">
             <span class="name">
+                Smart Assertions
+            </span>
+            <div class="description">
+                <p>TestCafe provides a full-featured set of <a href="documentation/test-api/assertions/assertion-api.html">built-in assertions</a>, so you do not need to reference additional libraries. Use assertions with <a href="documentation/test-api/selecting-page-elements/selectors.html#define-assertion-actual-value">Selector's DOM node state properties</a> to enable the <a href="documentation/test-api/assertions/index.html#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> and create stable, fast and reliable tests that do not depend on page response time.</p>
+
+                <pre><code>import { Selector } from 'testcafe';
+
+fixture `Example page`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+test('Check property of element', async t => {
+    const developerNameInput = Selector('#developer-name');
+
+    await t
+        .expect(developerNameInput.value).eql('', 'input is empty')
+        .typeText(developerNameInput, 'Peter Parker')
+        .expect(developerNameInput.value).contains('Peter', 'input contains text "Peter"');
+});</code></pre>
+            </div>
+        </div>
+        <div class="feature">
+            <span class="name">
                 No Extra Coding
             </span>
             <div class="description">

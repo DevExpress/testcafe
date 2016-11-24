@@ -69,7 +69,10 @@
     - name: DOM Node State
       url: /documentation/test-api/selecting-page-elements/dom-node-state.md
   - name: Assertions
-    url: /documentation/test-api/assertions.md
+    url: /documentation/test-api/assertions/index.md
+    content:
+    - name: Assertion methods
+      url: /documentation/test-api/assertions/assertion-api.md
   - name: Obtaining Data from the Client
     url: /documentation/test-api/obtaining-data-from-the-client.md
   - name: Pausing the Test
