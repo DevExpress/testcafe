@@ -1,6 +1,8 @@
-var os = require('os');
+var os   = require('os');
+var path = require('path');
 
 var isTravisEnvironment = !!process.env.TRAVIS;
+var isTravisMacOS       = process.env.TRAVIS_OS_NAME === 'osx';
 var isCCNetEnvironment  = !!process.env.CCNET;
 var hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
 
@@ -85,20 +87,9 @@ testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
 testingEnvironments[testingEnvironmentNames.localBrowsers] = {
     browsers: [
         {
-            platform:    'Windows 10',
-            browserName: 'chrome',
-            alias:       'chrome'
-        },
-        {
-            platform:    'Windows 10',
-            browserName: 'internet explorer',
-            version:     '11.0',
-            alias:       'ie'
-        },
-        {
-            platform:    'Windows 10',
-            browserName: 'firefox',
-            alias:       'firefox'
+            platform: 'OS X 10.11',
+            alias:    'firefox',
+            cmd:      '-override ' + path.join(__dirname, 'override.ini')
         }
     ]
 };
@@ -155,7 +146,7 @@ testingEnvironments[testingEnvironmentNames.legacy] = {
 
 
 module.exports = {
-    useLocalBrowsers: !isTravisEnvironment && !isCCNetEnvironment,
+    useLocalBrowsers: isTravisMacOS || !isTravisEnvironment && !isCCNetEnvironment,
 
     testingEnvironmentNames: testingEnvironmentNames,
     testingEnvironments:     testingEnvironments,
