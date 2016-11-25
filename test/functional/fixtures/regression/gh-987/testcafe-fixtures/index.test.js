@@ -9,13 +9,13 @@ fixture `Scroll a div container`
 const horizontalContainer = Selector('#horizontalContainer');
 const verticalContainer   = Selector('#verticalContainer');
 
-test('Scroll a vertical container to the bottom element', async t => {
+test('Scroll the vertical container to the bottom element', async t => {
     await t.click('#targetBottom');
 
     expect(await verticalContainer.scrollTop).to.be.least(8);
 });
 
-test('Scroll a vertical container to the top element', async t => {
+test('Scroll the vertical container to the top element', async t => {
     await t.eval(() => {
         document.querySelector('#verticalContainer').scrollTop = 8;
     });
@@ -25,7 +25,7 @@ test('Scroll a vertical container to the top element', async t => {
     expect(await verticalContainer.scrollTop).eql(0);
 });
 
-test('Scroll a horizontal container to the left element', async t => {
+test('Scroll the horizontal container to the left element', async t => {
     await t.eval(() => {
         document.querySelector('#horizontalContainer').scrollLeft = 8;
     });
@@ -35,7 +35,7 @@ test('Scroll a horizontal container to the left element', async t => {
     expect(await horizontalContainer.scrollLeft).eql(0);
 });
 
-test('Scroll a horizontal container to the right element', async t => {
+test('Scroll the horizontal container to the right element', async t => {
     await t.click('#targetRight');
 
     expect(await horizontalContainer.scrollLeft).to.be.least(3);
