@@ -83,8 +83,6 @@ returns one or several nodes. If none of these nodes match the `text` filter, th
 
 You can also use the [index](#optionsindex) option to identify a node by its index.
 
-For details, see [Initializers that Return Multiple Nodes](selectors.md#initializers-that-return-multiple-nodes).
-
 ## options.index
 
 > Important! ***Deprecated.*** *Use the [nth()](selectors.md#filter-multiple-dom-nodes) method to select a node by its index. The [options.index](#optionsindex) option will be removed in future releases.*
@@ -98,8 +96,6 @@ Use the `index` option when a function or CSS selector string that was used to i
 Otherwise, this option will be ignored.
 
 You can also use the [text](#optionstext) option to select a node by its text content.
-
-For details, see [Initializers that Return Multiple Nodes](selectors.md#initializers-that-return-multiple-nodes).
 
 **Default value**: `0`
 
