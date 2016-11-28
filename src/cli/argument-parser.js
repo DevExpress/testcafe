@@ -61,13 +61,6 @@ export default class CLIArgumentParser {
         throw new GeneralError(MESSAGE.portNumberIsNotInteger);
     }
 
-    static _parseSelectorTimeout (value) {
-        if (CLIArgumentParser._isInteger(value))
-            return parseInt(value, 10);
-
-        throw new GeneralError(MESSAGE.selectorTimeoutIsNotAnInteger);
-    }
-
     static _optionValueToRegExp (name, value) {
         if (value === void 0)
             return value;
@@ -145,6 +138,7 @@ export default class CLIArgumentParser {
             .option('-f, --fixture <name>', 'run only fixtures with the specified name')
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
             .option('--selector-timeout <ms>', 'set the amount of time within which selectors make attempts to obtain a node to be returned')
+            .option('--assertion-timeout <ms>', 'set the amount of time within which assertion should pass')
             .option('--speed <factor>', 'set the speed of test execution (0.01 ... 1)')
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
@@ -188,17 +182,32 @@ export default class CLIArgumentParser {
         };
     }
 
-    async _parseElementTimeout () {
-        if (this.opts.selectorTimeout)
-            this.opts.selectorTimeout = CLIArgumentParser._parseSelectorTimeout(this.opts.selectorTimeout);
+    _parseSelectorTimeout () {
+        if (this.opts.selectorTimeout) {
+            if (CLIArgumentParser._isInteger(this.opts.selectorTimeout))
+                this.opts.selectorTimeout = parseInt(this.opts.selectorTimeout, 10);
+
+            else
+                throw new GeneralError(MESSAGE.selectorTimeoutIsNotAnInteger);
+        }
     }
 
-    async _parseSpeed () {
+    _parseAssertionTimeout () {
+        if (this.opts.assertionTimeout) {
+            if (CLIArgumentParser._isInteger(this.opts.assertionTimeout))
+                this.opts.assertionTimeout = parseInt(this.opts.assertionTimeout, 10);
+
+            else
+                throw new GeneralError(MESSAGE.assertionTimeoutIsNotAnInteger);
+        }
+    }
+
+    _parseSpeed () {
         if (this.opts.speed)
             this.opts.speed = parseFloat(this.opts.speed);
     }
 
-    async _parsePorts () {
+    _parsePorts () {
         if (this.opts.ports) {
             this.opts.ports = this.opts.ports
                 .split(',')
@@ -209,7 +218,7 @@ export default class CLIArgumentParser {
         }
     }
 
-    async _parseBrowserList () {
+    _parseBrowserList () {
         var browsersArg = this.program.args[0] || '';
 
         this.browsers = CLIArgumentParser
@@ -284,7 +293,8 @@ export default class CLIArgumentParser {
         this._parseFilteringOptions();
 
         await Promise.all([
-            this._parseElementTimeout(),
+            this._parseSelectorTimeout(),
+            this._parseAssertionTimeout(),
             this._parseSpeed(),
             this._parsePorts(),
             this._parseScreenshotsPath(),

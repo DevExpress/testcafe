@@ -472,8 +472,8 @@ test('<option> text selector', async () => {
 test('Snapshot properties shorthands on selector', async () => {
     let el = Selector('#htmlElement');
 
-    expect(await el.nodeType).eql(1);
     expect(await el.id).eql('htmlElement');
+    expect(await el.nodeType).eql(1);
     expect(await el.tagName).eql('div');
     expect(await el.namespaceURI).eql('http://www.w3.org/1999/xhtml');
     expect(await el.childNodeCount).eql(3);

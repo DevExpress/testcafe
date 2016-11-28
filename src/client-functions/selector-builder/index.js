@@ -1,4 +1,3 @@
-import Promise from 'pinkie';
 import { isNil as isNullOrUndefined, assign, escapeRegExp as escapeRe } from 'lodash';
 import dedent from 'dedent';
 import ClientFunctionBuilder from '../client-function-builder';
@@ -14,6 +13,8 @@ import defineLazyProperty from '../../utils/define-lazy-property';
 import addAPI from './add-api';
 import createSnapshotMethods from './create-snapshot-methods';
 import ensureDeprecatedOptions from './ensure-deprecated-options';
+import SelectorResultPromise from './result-promise';
+
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
     constructor (fn, options, callsiteNames) {
@@ -99,29 +100,11 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     }
 
     _executeCommand (args, testRun, callsite) {
-        var lazyPromise   = Promise.resolve();
-        var resultPromise = null;
+        var lazyPromise = SelectorResultPromise.fromFn(async () => {
+            var result = await super._executeCommand(args, testRun, callsite);
 
-        // OPTIMIZATION: Selectors are executed lazily (once someone subscribes to their result).
-        // It's especially useful for situations when the selector's result is passed to
-        // an action, e.g.: `t.click(someSelector(42));` In that case, we create a new selector
-        // inside this action, but we are not interested in the result of ongoing execution.
-        var execute = () => {
-            if (!resultPromise) {
-                resultPromise = super
-                    ._executeCommand(args, testRun, callsite)
-                    .then(result => {
-                        return result && !this.options.counterMode ?
-                               this._decorateFunctionResult(result, args) :
-                               result;
-                    });
-            }
-
-            return resultPromise;
-        };
-
-        lazyPromise.then  = (onFulfilled, onRejected) => execute().then(onFulfilled, onRejected);
-        lazyPromise.catch = onRejected => execute().catch(onRejected);
+            return result && !this.options.counterMode ? this._decorateFunctionResult(result, args) : result;
+        });
 
         this._addBoundArgsSelectorGetter(lazyPromise, args);
 

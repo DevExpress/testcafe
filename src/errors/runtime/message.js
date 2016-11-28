@@ -11,6 +11,7 @@ export default {
     optionValueIsNotValidRegExp:                    'The "{optionName}" option value is not a valid regular expression.',
     portNumberIsNotInteger:                         'A port number should be a valid integer.',
     selectorTimeoutIsNotAnInteger:                  'Selector timeout should be an integer.',
+    assertionTimeoutIsNotAnInteger:                 'Assertion timeout should be an integer.',
     invalidSpeedValue:                              'Speed should be a number between 0.01 and 1.',
     portsOptionRequiresTwoNumbers:                  'The "--ports" option requires two numbers to be specified.',
     portIsNotFree:                                  'The specified {portNum} port is already in use by another program.',
