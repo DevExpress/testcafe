@@ -108,7 +108,7 @@ export default class KeyPressSimulator {
         if (character && !(modifiersState.ctrl || modifiersState.alt))
             this._type(activeElement, character);
 
-        if (this.sanitizedKey === 'enter' && KeyPressSimulator._isKeyActivatedInputElement(activeElement))
+        if (!browserUtils.isFirefox && this.sanitizedKey === 'enter' && KeyPressSimulator._isKeyActivatedInputElement(activeElement))
             activeElement.click();
 
         return raiseDefault;
@@ -121,7 +121,7 @@ export default class KeyPressSimulator {
         var raiseDefault  = eventSimulator.keyup(getDeepActiveElement(this.topSameDomainDocument), extend({ keyCode: this.keyCode }, modifiersState));
         var activeElement = getDeepActiveElement(this.topSameDomainDocument);
 
-        if (raiseDefault && this.sanitizedKey === 'space' &&
+        if (!browserUtils.isFirefox && raiseDefault && this.sanitizedKey === 'space' &&
             KeyPressSimulator._isKeyActivatedInputElement(activeElement))
             activeElement.click();
 
