@@ -284,7 +284,7 @@ Note that you can add text and index filters in the selector chain:
 Selector('.container').parent(1).nth(0).find('.content').withText('yo!').child('span');
 ```
 
-Finds the second parent (parent of parent) of `.container` elements. Peeks first element in the matching set. Then in that element finds elements that matches '.content' selector. Filter them by text `yo!`. And in each filtered element searches for a child with tag name `span`.
+Finds the second parent (parent of parent) of `.container` elements. Peeks first element in the matching set. Then in that element finds elements that matches `.content` selector. Filter them by text `yo!`. And in each filtered element searches for a child with tag name `span`.
 
 ------
 
