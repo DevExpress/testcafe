@@ -110,7 +110,7 @@ This function works for HTML elements that have the `contentEditable` attribute 
 The example below shows how to select several sections within a `contentEditable` area.
 
 ```js
-import { expect } from 'chai';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`
     .page `http://www.example.com/`;
@@ -118,10 +118,9 @@ fixture `My fixture`
 test('Delete text within a contentEditable element', async t => {
     await t
         .selectEditableContent('#foreword', '#chapter-3')
-        .pressKey('delete');
-
-    expect(await t.select('#chapter-2')).to.be.null;
-    expect(await t.select('#chapter-4')).to.not.be.null;
+        .pressKey('delete')
+        .expect(Selector('#chapter-2').exists).notOk()
+        .expect(Selector('#chapter-4').exists).ok();
 });
 ```
 

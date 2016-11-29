@@ -19,26 +19,21 @@ Examples in this documentation use [BDD-style Chai assertions](http://chaijs.com
 The following sample fixture demonstrates how to use assertions.
 
 ```js
-import { expect } from 'chai';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`
     .page `http://example.com`;
 
 test('Test 1', async t => {
-    await t.click('#myelem');
-
-    const myElement = await t.select('#myelem');
-
-    expect(myElement.visible).to.be.true;
+    await t
+        .click('#myelem')
+        .expect(Selector('#myelem').visible).ok();
 });
 
 test('Test 2', async t => {
     await t
         .typeText('#input', 'Hello world!')
-        .click('#apply');
-
-    const header = await t.select('#header');
-
-    expect(header.textContent).to.equal('Hello world!');
+        .click('#apply')
+        .expect(Selector('#header').textContent).eql('Hello world!');
 });
 ```
