@@ -48,8 +48,9 @@ test('Select text within input', async t => {
         .typeText(developerNameInput, 'Test Cafe', { caretPos: 0 })
         .selectText(developerNameInput, 7, 1);
 
-    await t.expect(await getElementSelectionStart(developerNameInput)).eql(1);
-    await t.expect(await getElementSelectionEnd(developerNameInput)).eql(7);
+    await t
+        .expect(await getElementSelectionStart(developerNameInput)).eql(1)
+        .expect(await getElementSelectionEnd(developerNameInput)).eql(7);
 });
 ```
 
@@ -92,8 +93,9 @@ test('Select text within textarea', async t => {
         ].join(',\n'))
         .selectTextAreaContent(commentTextArea, 0, 5, 2, 10);
 
-    await t.expect(await getElementSelectionStart(commentTextArea)).eql(5)
-    await t.expect(await getElementSelectionEnd(commentTextArea)).eql(67);
+    await t
+        .expect(await getElementSelectionStart(commentTextArea)).eql(5)
+        .expect(await getElementSelectionEnd(commentTextArea)).eql(67);
 });
 ```
 

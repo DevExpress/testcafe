@@ -129,8 +129,6 @@ Property | Type   | Description
 `url`    | String | The URL of the page that invoked the dialog. Use it to determine if the dialog originated from the main window or an `<iframe>`.
 
 ```js
-import { expect } from 'chai';
-
 fixture `My fixture`
     .page `http://www.example.com/`;
 
@@ -148,9 +146,10 @@ test('My test', async t => {
 
     const history = await t.getNativeDialogHistory();
 
-    expect(history[0].type).to.equal('prompt');
-    expect(history[0].text).to.equal('say hello');
-    expect(history[1].type).to.equal('confirm');
-    expect(history[2].type).to.equal('alert');
+    await t
+        .expect(history[0].type).eql('prompt')
+        .expect(history[0].text).eql('say hello')
+        .expect(history[1].type).eql('confirm')
+        .expect(history[2].type).eql('alert');
 });
 ```

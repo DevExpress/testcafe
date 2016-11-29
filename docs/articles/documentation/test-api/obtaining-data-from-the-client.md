@@ -171,7 +171,6 @@ Use the [boundTestRun](#optionsboundtestrun) option for this.
 
 ```js
 import { fs } from 'fs';
-import { expect } from 'chai';
 import { ClientFunction } from 'testcafe';
 
 fixture `My fixture`
@@ -190,7 +189,7 @@ test('Check client data', async t => {
         });
     });
 
-    expect(equal).to.be.true;
+    await t.expect(equal).ok();
 });
 ```
 

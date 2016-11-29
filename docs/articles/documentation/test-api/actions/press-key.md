@@ -40,7 +40,6 @@ For elements with the `contentEditable` attribute, the following key presses are
 The following example shows how to use the `t.pressKey` action.
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 const nameInput = Selector('#developer-name');
@@ -51,8 +50,7 @@ fixture `My fixture`
 test('Key Presses', async t => {
     await t
         .typeText(nameInput, 'Peter Parker')
-        .pressKey('home right . delete delete delete delete');
-
-    expect(await nameInput.value).to.equal('P. Parker');
+        .pressKey('home right . delete delete delete delete')
+        .expect(nameInput.value).eql('P. Parker');
 });
 ```

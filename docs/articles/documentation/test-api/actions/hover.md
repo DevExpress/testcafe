@@ -23,7 +23,6 @@ The following example shows how to move the mouse pointer over a combo box to di
 then select an item and check that the combo box value has changed.
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 const comboBox = Selector('.combo-box');
@@ -34,8 +33,7 @@ fixture `My fixture`
 test('Select combo box value', async t => {
     await t
         .hover(comboBox)
-        .click('#i-prefer-both');
-
-    expect(await comboBox.value).to.equal('Both');
+        .click('#i-prefer-both')
+        .expect(comboBox.value).eql('Both');
 });
 ```

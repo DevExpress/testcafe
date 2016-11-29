@@ -60,7 +60,6 @@ Parameter  | Type                                              | Description
 The example below shows how to use the `t.clearUpload` action.
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 const uploadBtn = Selector('#upload-button');
@@ -75,8 +74,7 @@ test('Trying to upload with no files specified', async t => {
             './uploads/2.jpg',
             './uploads/3.jpg'
         ])
-        .clearUpload('#upload-input');
-
-    expect(await uploadBtn.visible).to.be.false;
+        .clearUpload('#upload-input')
+        .expect(uploadBtn.visible).notOk();
 });
 ```

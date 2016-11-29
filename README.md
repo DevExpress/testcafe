@@ -61,8 +61,6 @@ You can write TestCafe tests in ES2016 using the latest JavaScript features like
 Chained syntax allows for code that is easy to write and read.
 
 ```js
-import { expect } from 'chai';
-
 fixture `Example page`
     .page `https://devexpress.github.io/testcafe/example`;
 
@@ -74,7 +72,7 @@ test('Emulate user actions and perform a verification', async t => {
 
     const location = await t.eval(() => window.location);
 
-    expect(location.pathname).eql('/testcafe/example/thank-you.html');
+    await t.expect(location.pathname).eql('/testcafe/example/thank-you.html');
 });
 ```
 
@@ -115,9 +113,8 @@ test('Use Page Object', async t => {
     await t
         .typeText(page.nameInput, 'John Smith')
         .click(page.interfaceSelect)
-        .click(page.interfaceSelectOption.nth(2));
-
-    await t.expect(page.interfaceSelect.value).eql('Both');
+        .click(page.interfaceSelectOption.nth(2))
+        .expect(page.interfaceSelect.value).eql('Both');
 });
 ```
 
