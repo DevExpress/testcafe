@@ -326,6 +326,7 @@ Selector('.container').parent(1).nth(0).find('.content').withText('yo!').child('
 ```
 
 In this example the selector:
+
 1. finds the second parent (parent of parent) of `.container` elements;
 2. peeks the first element in the matching set;
 3. in that element, finds elements that match the `.content` selector;
