@@ -22,7 +22,7 @@ This topic contains the following sections.
 * [Combined Selectors](#combined-selectors)
   * [Filter Multiple DOM Nodes](#filter-multiple-dom-nodes)
       * [nth](#nth)
-      * [withText](#withText)
+      * [withText](#withtext)
       * [filter](#filter)
   * [Find Elements by DOM Hierarchy](#find-elements-by-dom-hierarchy)
       * [find](#find)
@@ -206,9 +206,9 @@ Method | Type | Description
 
 Method | Type | Description
 ------ | ----- | -----
-`filter(index)` | Creates a selector that filters a matching set by `index`.
-`filter(cssSelector)` | Creates a selector that filters a matching set by `cssSelector`.
-`filter(filterFn)` | Creates a selector that filters a matching set by `filterFn`; `filterFn` is a client function predicate that receives a node.
+`filter(index)` | Selector | Creates a selector that filters a matching set by `index`.
+`filter(cssSelector)` | Selector | Creates a selector that filters a matching set by `cssSelector`.
+`filter(filterFn)` | Selector | Creates a selector that filters a matching set by `filterFn`; `filterFn` is a client function predicate that receives a node.
 
 ```js
 import { Selector } from 'testcafe';
@@ -458,7 +458,7 @@ import { Selector } from 'testcafe';
 fixture `My fixture`
     .page `http://www.example.com/`;
 
-const lastItem = Selector(() => document.querySelector('.toc-item:last-child'));
+const lastItem = Selector('.toc-item:last-child');
 
 test('My Test', async t => {
     await t.click(lastItem);
