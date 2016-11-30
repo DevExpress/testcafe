@@ -21,7 +21,14 @@ This topic contains the following sections.
   * [Check Selector Matching Set Length](#check-selector-matching-set-length)
 * [Combined Selectors](#combined-selectors)
   * [Filter Multiple DOM Nodes](#filter-multiple-dom-nodes)
+      * [nth](#nth)
+      * [withText](#withText)
+      * [filter](#filter)
   * [Find Elements by DOM Hierarchy](#find-elements-by-dom-hierarchy)
+      * [find](#find)
+      * [parent](#parent)
+      * [child](#child)
+      * [sibling](#sibling)
   * [Examples](#examples)
 * [Executing Selectors](#executing-selectors)
   * [DOM Node Snapshots](#dom-node-snapshots)
@@ -155,19 +162,18 @@ Property | Type | Description
 
 ```js
 import { Selector } from 'testcafe';
-import { expect } from 'chai';
 
 fixture `Example page`
     .page `http://devexpress.github.io/testcafe/example/`;
 
 test('My test', async t => {
-    const osCount            = await Selector('.column.col-2 label').count;
-    const submitButtonExists = await Selector('#submit-button').exists;
+    const osCount            = Selector('.column.col-2 label').count;
+    const submitButtonExists = Selector('#submit-button').exists;
 
-    expect(osCount).eql(3);
-    expect(submitButtonExists).is.true;
+    await t
+        .expect(osCount).eql(3)
+        .expect(submitButtonExists).ok();
 });
-
 ```
 
 Note that selector property getters are asynchronous.
@@ -183,26 +189,41 @@ If selector returns multiple DOM nodes, you must filter them to select
 a single node that will eventually be returned by the selector.
 The selector provides methods to filter DOM nodes by their index or text.
 
+#### nth
+
 Method | Type | Description
 ------ | ----- | -----
 `nth(index)` | Selector | Creates a selector that returns an element by its index in the matching set.
+
+#### withText
+
+Method | Type | Description
+------ | ----- | -----
 `withText(text)` | Selector | Creates a selector that filters a matching set by the specified text.
 `withText(re)` | Selector | Creates a selector that filters a matching set using the specified regular expression.
 
-```js
-import { expect } from 'chai';
-import { Selector } from 'testcafe';
+#### filter
 
+Method | Type | Description
+------ | ----- | -----
+`filter(index)` | Creates a selector that filters a matching set by `index`.
+`filter(cssSelector)` | Creates a selector that filters a matching set by `cssSelector`.
+`filter(filterFn)` | Creates a selector that filters a matching set by `filterFn`; `filterFn` is a client function predicate that receives a node.
+
+```js
+import { Selector } from 'testcafe';
 
 fixture `Example page`
     .page `http://devexpress.github.io/testcafe/example/`;
 
 test('My test', async t => {
     const secondCheckBox = Selector('input[type=checkbox]').nth(1);
+    const checkedInputs  = Selector('input[type=checkbox]').filter(node => node.checked);
     const windowsLabel   = Selector('label').withText('Windows');
 
     await t
         .click(secondCheckBox)
+        .expect(checkedInputs.count).eql(1)
         .click(windowsLabel);
 });
 ```
@@ -213,27 +234,42 @@ If all nodes are filtered out, the selector returns `null`.
 
 The selector API provides methods to find elements within a DOM hierarchy in jQuery style.
 
+#### find
+
 Property | Description
 ------ | -----
 `find(cssSelector)` | Finds all descendants of all nodes in the matching set and filters them by `cssSelector`.
 `find(filterFn)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn`; `filterFn` is a client function predicate that receives a node.
+
+#### parent
+
+Property | Description
+------ | -----
 `parent()` | Finds all parents of all nodes in the matching set.
 `parent(index)` | Finds all parents of all nodes in the matching set and filters them by `index` (0 is closest).
 `parent(cssSelector)` | Finds all parents of all nodes in the matching set and filters them by `cssSelector`.
 `parent(filterFn)` | Finds all parents of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a client function predicate that receives a node.
+
+#### child
+
+Property | Description
+------ | -----
 `child()` | Finds all child elements (not nodes) of all nodes in the matching set.
 `child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`.
 `child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
 `child(filterFn)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a client function predicate that receives node.
+
+#### sibling
+
+Property | Description
+------ | -----
 `sibling()` | Finds all sibling  elements (not nodes) of all nodes in the matching set.
 `sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`.
 `sibling(cssSelector)` | Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
 `sibling(filterFn)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a client function predicate that receives a node.
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
-
 
 fixture `Example page`
     .page `http://devexpress.github.io/testcafe/example/`;
@@ -241,9 +277,9 @@ fixture `Example page`
 test('My test', async t => {
     const macOSRadioButton = Selector('.column.col-2').find('label').child(el => el.value === 'MacOS');
 
-    await t.click(macOSRadioButton.parent());
-
-    expect(await macOSRadioButton.checked).to.be.true;
+    await t
+        .click(macOSRadioButton.parent())
+        .expect(macOSRadioButton.checked).ok();
 });
 ```
 
@@ -328,7 +364,6 @@ A snapshot contains information about the node's size, position, classes, parent
 It exposes [API](dom-node-snapshots.md) that is similar to DOM objects.
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 fixture `My fixture`
@@ -337,9 +372,10 @@ fixture `My fixture`
 test('Login field height', async t => {
     const loginInput = await Selector('#login');
 
-    expect(loginInput.offsetWidth).to.equal(95);
-    expect(loginInput.offsetHeight).to.equal(35);
-    expect(loginInput.hasClass('glow')).to.be.ok;
+    await t
+        .expect(loginInput.offsetWidth).eql(95)
+        .expect(loginInput.offsetHeight).eql(35)
+        .expect(loginInput.hasClass('glow')).ok();
 });
 ```
 
@@ -353,7 +389,6 @@ This is convenient when you need to use only one snapshot property or method.
 In this instance, you save a line of code, because you do not need to obtain and save the snapshot object explicitly.
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 const loginInput    = Selector('#login-box');
@@ -363,8 +398,9 @@ fixture `My fixture`
     .page('http://www.example.com/');
 
 test('Login field height', async t => {
-    expect(await loginInput.offsetWidth).to.equal(95);
-    expect(await elementWithId('password-box').offsetHeight).to.equal(35);
+    await t
+        .expect(loginInput.offsetWidth).eql(95)
+        .expect(elementWithId('password-box').offsetHeight).eql(35);
 });
 ```
 
@@ -501,7 +537,6 @@ Use the [boundTestRun](selector-options.md#optionsboundtestrun) option for this.
 
 ```js
 import { http } from 'http';
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 fixture `My fixture`
@@ -527,7 +562,7 @@ test('Title changed', async t => {
         req.end();
     });
 
-    expect(match).to.be.true;
+    await t.expect(match).ok();
 });
 ```
 

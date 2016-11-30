@@ -29,9 +29,9 @@ Property | Type | Description
 Method | Type | Description
 ------ | ---- | -----
 `hasClass(className)` | Boolean | `true` if the element has the specified class name.
-`getChildElement(idx)` | Selector | ***Deprecated.*** A selector that returns the snapshot of the child element at index `idx`. *Will be removed in future releases. Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy).*
-`getChildNode(idx)` | Selector | ***Deprecated.*** A selector that returns the snapshot of the child node at index `idx`. *Will be removed in future releases. Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy).*
-`getParentNode` | Selector | ***Deprecated.*** A selector that returns the parent node snapshot. *Will be removed in future releases. Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy).*
+`getChildElement(idx)` | Selector | ***Deprecated.*** A selector that returns the snapshot of the child element at index `idx`. *Will be removed in future releases. Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy) instead.*
+`getChildNode(idx)` | Selector | ***Deprecated.*** A selector that returns the snapshot of the child node at index `idx`. *Will be removed in future releases. Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy) instead.*
+`getParentNode` | Selector | ***Deprecated.*** A selector that returns the parent node snapshot. *Will be removed in future releases. Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy) instead.*
 
 ## Members Specific to Element Nodes
 

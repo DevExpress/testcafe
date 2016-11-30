@@ -49,7 +49,7 @@ or the [selector-timeout](../../using-testcafe/command-line-interface.md#--selec
 
 ## options.dependencies
 
-> Important! ***Deprecated.*** *Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy). The `option.dependencies` will be removed in future releases.*
+> Important! ***Deprecated.*** *Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy) instead. The `option.dependencies` will be removed in future releases.*
 
 **Type**: Object
 
