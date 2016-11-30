@@ -20,15 +20,15 @@ Parameter              | Type                                              | Des
 The following example shows how to use the `t.rightClick` action to invoke a grid's popup menu.
 
 ```js
-import { expect } from 'chai';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`
     .page `http://www.example.com/`;
 
 test('Popup Menu', async t => {
-    await t.rightClick('#cell-1-1');
-
-    expect(await t.select('#cell-popup-menu')).to.be.null;
+    await t
+        .rightClick('#cell-1-1')
+        .expect(Selector('#cell-popup-menu').exists).notOk();
 });
 ```
 

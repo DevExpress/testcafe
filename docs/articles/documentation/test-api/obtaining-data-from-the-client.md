@@ -119,13 +119,13 @@ The sample below shows how to overwrite the client function options.
 ```js
 import { Selector, ClientFunction } from 'testcafe';
 
-const thirdElemWithClass = Selector(cl => document.getElementsByClassName(cl), { index: 2 });
+const thirdElemWithClass = Selector(cl => document.getElementsByClassName(cl)).nth(2);
 
 const getThirdElemWidth   = ClientFunction(cl => getElement(cl).offsetWidth, {
      dependencies: { getElement: thirdElemWithClass }
 });
 
-const fourthElemWithClass = thirdElemWithClass.with({ index: 3 });
+const fourthElemWithClass = thirdElemWithClass.nth(3);
 
 const getFourthElemWidth = getThirdElemWidth.with({
     dependencies: { getElement: fourthElemWithClass }
