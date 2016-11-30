@@ -700,6 +700,7 @@ test('Selector "parent" method', async () => {
     expect((await Selector('g').parent(1).tagName).toLowerCase()).eql('a');
     expect((await Selector('g').parent().parent().tagName).toLowerCase()).eql('a');
     expect((await Selector('#option1').parent(2).tagName).toLowerCase()).eql('body');
+    expect(await Selector('g').parent(0).count).eql(1);
 
     // CSS selector filter
     expect((await Selector('g').parent('a').tagName).toLowerCase()).eql('a');
@@ -735,6 +736,7 @@ test('Selector "child" method', async () => {
     expect(await Selector('#container').child(1).id).eql('el2');
     expect(await Selector('#p2').child().child().id).eql('p0');
     expect(await Selector('#container').child(3).id).eql('el4');
+    expect(await Selector('body').child(0).count).eql(1);
 
     // CSS selector filter
     expect(await Selector('#container').child('#el3').id).eql('el3');
@@ -771,6 +773,7 @@ test('Selector "sibling" method', async () => {
     expect(await Selector('#el2').sibling(1).id).eql('el3');
     expect(await Selector('#el2').sibling().sibling().id).eql('el2');
     expect(await Selector('#el1').sibling(2).id).eql('el4');
+    expect(await Selector('#el2').sibling(0).count).eql(1);
 
     // CSS selector filter
     expect(await Selector('#selectInput').sibling('[type=checkbox]').id).eql('checkInput');
