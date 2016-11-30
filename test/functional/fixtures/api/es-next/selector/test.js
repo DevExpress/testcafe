@@ -89,6 +89,10 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "withText" method', { only: 'chrome' });
     });
 
+    it('Should filter results with `filter()` method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "filter" method', { only: 'chrome' });
+    });
+
     it('Should filter using combination of filter methods', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Combination of filter methods', { only: 'chrome' });
     });
@@ -209,7 +213,8 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
                     );
-                    expect(errs[0]).contains('> 814 |    await Selector(() => [].someUndefMethod()).count;');
+
+                    expect(errs[0]).contains('> 846 |    await Selector(() => [].someUndefMethod()).count;');
                 });
         });
 
@@ -222,7 +227,7 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
                     );
-                    expect(errs[0]).contains('> 818 |    await Selector(() => [].someUndefMethod()).exists;');
+                    expect(errs[0]).contains('> 850 |    await Selector(() => [].someUndefMethod()).exists;');
                 });
         });
     });

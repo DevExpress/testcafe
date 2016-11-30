@@ -194,6 +194,33 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
 
         return builder.getFunction();
     };
+
+    obj.filter = filter => {
+        assertFunctionOrString('filter', '"filter" argument', filter);
+
+        var selectorFn = () => {
+            /* eslint-disable no-undef */
+            var nodes = selector();
+
+            if (!nodes.length)
+                return null;
+
+            return filterNodes(nodes, filter, document);
+            /* eslint-enable no-undef */
+        };
+
+        var collectionModeSelectorBuilder = new SelectorBuilder(getSelector(), { collectionMode: true });
+
+        var dependencies = {
+            selector:    collectionModeSelectorBuilder.getFunction(),
+            filter:      filter,
+            filterNodes: filterNodes
+        };
+
+        var builder = new SelectorBuilder(selectorFn, { dependencies }, { instantiation: 'Selector' });
+
+        return builder.getFunction();
+    };
 }
 
 function createHierachicalSelector (getSelector, SelectorBuilder, selectorFn, filter, additionalDependencies) {

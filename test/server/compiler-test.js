@@ -903,6 +903,32 @@ describe('Compiler', function () {
                 });
         });
 
+        it('Should raise an error if Selector.filter `filter` argument is not a function or string', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-filter-arg-is-not-a-function-or-string/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"filter" argument is expected to be a string or a function, but it was object.',
+
+                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  " > 5 |Selector('span').filter({});\n" +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});'
+                    });
+                });
+        });
+
         it('Should raise an error if Selector.find `filter` argument is not a function or string', function () {
             var testfile = resolve('test/server/data/test-suites/selector-find-arg-is-not-a-string-or-function/testfile.js');
 
