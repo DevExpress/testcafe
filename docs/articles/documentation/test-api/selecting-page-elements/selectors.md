@@ -259,7 +259,7 @@ Then, for each `label` element finds a parent that matches the `div.someClass` s
 ------
 
 Like in jQuery, if you request a property of the matching set or try evaluate
-a snapshot, it returns values for the first element in the set.
+a snapshot, the selector returns values for the first element in the set.
 
 ```js
 // Returns id of the first element in the set
@@ -289,9 +289,12 @@ Note that you can add text and index filters in the selector chain.
 Selector('.container').parent(1).nth(0).find('.content').withText('yo!').child('span');
 ```
 
-Finds the second parent (parent of parent) of `.container` elements. Peeks first element in the matching set.
-Then, in that element, finds elements that match the `.content` selector. Filter them by text `yo!`.
-And in each filtered element, searches for a child with tag name `span`.
+In this example the selector:
+1. finds the second parent (parent of parent) of `.container` elements;
+2. peeks the first element in the matching set;
+3. in that element, finds elements that match the `.content` selector;
+4. filters them by text `yo!`;
+5. in each filtered element, searches for a child with tag name `span`.
 
 ------
 
@@ -395,7 +398,7 @@ t.select( init [, options] )
 
 Parameter              | Type     | Description
 ---------------------- | -------- | ------------------------------------------------------------------
-`init`                 | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a DOM node to be selected. See [Selector Initializers](#selector-initializers).
+`init`                 | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a DOM node to be selected; see [Selector Initializers](#selector-initializers).
 `options`&#160;*(optional)* | Object   | See [Options](selector-options.md).
 
 The following example shows how to get a DOM element by ID with `t.select`.
