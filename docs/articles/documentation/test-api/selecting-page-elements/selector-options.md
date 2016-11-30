@@ -2,7 +2,7 @@
 layout: docs
 title: Selector Options
 permalink: /documentation/test-api/selecting-page-elements/selector-options.html
-checked: false
+checked: true
 ---
 # Selector Options
 

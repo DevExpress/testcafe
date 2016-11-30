@@ -2,7 +2,7 @@
 layout: docs
 title: DOM Node Snapshots
 permalink: /documentation/test-api/selecting-page-elements/dom-node-snapshots.html
-checked: false
+checked: true
 ---
 # DOM Node Snapshots
 

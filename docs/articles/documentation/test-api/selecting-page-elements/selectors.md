@@ -2,11 +2,11 @@
 layout: docs
 title: Selectors
 permalink: /documentation/test-api/selecting-page-elements/selectors.html
-checked: false
+checked: true
 ---
 # Selectors
 
-A selector is a function that is executed in the browser and returns a DOM node.
+A selector is a function that is executed in the browser and that returns a DOM node.
 The identification and state of this node are passed to the server where
 they can be used to define an [action's](../actions/index.md) target or
 provide information for an [assertion](../assertions.md).
@@ -143,8 +143,10 @@ You can initialize a selector with any of these objects.
 
 ### Check Selector Matching Set Length
 
-Functions and CSS selector strings that initialize a selector may return a single matching DOM element on the page, multiple elements or nothing.
-You can use the following Selector properties to check whether the matching elements exist or get a number of them.
+Functions and CSS selector strings that initialize a selector may return
+a single matching DOM element on the page, multiple elements or nothing.
+You can use the following Selector properties to check whether the matching
+elements exist or get a number of them.
 
 Property | Type | Description
 ------ | ----- | -----
@@ -172,18 +174,20 @@ Note that selector property getters are asynchronous.
 
 ## Combined Selectors
 
-The selector API provides methods that can be combined together, thus providing you with a flexible functional-style selector mechanism.
+The selector API provides methods that can be combined together, thus
+providing you with a flexible functional-style selector mechanism.
 
 ### Filter Multiple DOM Nodes
 
-If selector returns multiple DOM nodes you must filter them to select a single node that will eventually be returned by the selector.
-Selector provides methods to filter DOM nodes by their index or text:
+If selector returns multiple DOM nodes, you must filter them to select
+a single node that will eventually be returned by the selector.
+The selector provides methods to filter DOM nodes by their index or text.
 
 Method | Type | Description
 ------ | ----- | -----
-`nth(index)` | Selector | Creates selector that return an element by its index in the matching set.
-`withText(text)` | Selector | Creates selector that filters matching set by the specified text.
-`withText(re)` | Selector | Creates selector that filters matching set using the specified regular expression.
+`nth(index)` | Selector | Creates a selector that returns an element by its index in the matching set.
+`withText(text)` | Selector | Creates a selector that filters a matching set by the specified text.
+`withText(re)` | Selector | Creates a selector that filters a matching set using the specified regular expression.
 
 ```js
 import { expect } from 'chai';
@@ -212,19 +216,19 @@ The selector API provides methods to find elements within a DOM hierarchy in jQu
 Property | Description
 ------ | -----
 `find(cssSelector)` | Finds all descendants of all nodes in the matching set and filters them by `cssSelector`.
-`find(filterFn)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn`. `filterFn` is a client function predicate that receives a node.
+`find(filterFn)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn`; `filterFn` is a client function predicate that receives a node.
 `parent()` | Finds all parents of all nodes in the matching set.
 `parent(index)` | Finds all parents of all nodes in the matching set and filters them by `index` (0 is closest).
 `parent(cssSelector)` | Finds all parents of all nodes in the matching set and filters them by `cssSelector`.
-`parent(filterFn)` | Finds all parents of all nodes in the matching set and filters them by `filterFn`. `filterFn` is a client function predicate that receives a node.
+`parent(filterFn)` | Finds all parents of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a client function predicate that receives a node.
 `child()` | Finds all child elements (not nodes) of all nodes in the matching set.
 `child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`.
 `child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`child(filterFn)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `filterFn`. `filterFn` is a client function predicate that receives node.
+`child(filterFn)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a client function predicate that receives node.
 `sibling()` | Finds all sibling  elements (not nodes) of all nodes in the matching set.
 `sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`.
 `sibling(cssSelector)` | Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`sibling(filterFn)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `filterFn`. `filterFn` is a client function predicate that receives a node.
+`sibling(filterFn)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a client function predicate that receives a node.
 
 ```js
 import { expect } from 'chai';
@@ -249,12 +253,13 @@ test('My test', async t => {
 Selector('ul').find('label').parent('div.someClass')
 ```
 
-Finds all `ul` elements on page. Then in each found `ul` element finds `label` elements.
-Then for each `label` element finds parent that matches `div.someClass` selector.
+Finds all `ul` elements on page. Then, in each found `ul` element finds `label` elements.
+Then, for each `label` element finds a parent that matches the `div.someClass` selector.
 
 ------
 
-Like in jQuery, if you request a property of the matching set or try evaluate a snapshot it returns values for the first element in the set:
+Like in jQuery, if you request a property of the matching set or try evaluate
+a snapshot, it returns values for the first element in the set.
 
 ```js
 // Returns id of the first element in the set
@@ -266,7 +271,7 @@ const snapshot = await Selector('ul').find('label').parent('div.someClass')();
 
 ------
 
-However, you can obtain data for any element in the set by using `nth` filter:
+However, you can obtain data for any element in the set by using `nth` filter.
 
 ```js
 // Returns id of the third element in the set
@@ -278,13 +283,15 @@ const snapshot = await Selector('ul').find('label').parent('div.someClass').nth(
 
 ------
 
-Note that you can add text and index filters in the selector chain:
+Note that you can add text and index filters in the selector chain.
 
 ```js
 Selector('.container').parent(1).nth(0).find('.content').withText('yo!').child('span');
 ```
 
-Finds the second parent (parent of parent) of `.container` elements. Peeks first element in the matching set. Then in that element finds elements that matches `.content` selector. Filter them by text `yo!`. And in each filtered element searches for a child with tag name `span`.
+Finds the second parent (parent of parent) of `.container` elements. Peeks first element in the matching set.
+Then, in that element, finds elements that match the `.content` selector. Filter them by text `yo!`.
+And in each filtered element, searches for a child with tag name `span`.
 
 ------
 
@@ -306,7 +313,8 @@ test('My test', async t => {
 });
 ```
 
-Note that if a selector initializer has several matching DOM nodes on the page, the selector returns the first node from the matching set.
+Note that if a selector initializer has several matching DOM nodes on the page,
+the selector returns the first node from the matching set.
 
 ### DOM Node Snapshots
 
