@@ -81,6 +81,9 @@ test('Emulate user actions and perform a verification', async t => {
                         <li>or use any custom logic</li>
                     </ul>
                 </p>
+                <p>The selector API provides methods that can be combined together, thus providing you with a flexible functional-style selector mechanism.
+                <pre><code>const macOSInput = Selector('.column').find('label').withText('MacOS').child('input');</code></pre>
+                </p>
                 <p>You can also use the helpful and popular Page Object methodology. This methodology is based on wrapping the pages or page fragments of a web app into objects:</p>
                 <pre><code>import { Selector } from 'testcafe';
 
@@ -103,30 +106,6 @@ test('Use Page Object', async t => {
 });</code></pre>
                 </div>
             </div>
-        <div class="feature">
-            <span class="name">
-                Direct Access to Page Elements
-            </span>
-            <div class="description">
-                <p>TestCafe allows you to access webpage elements using <a href="documentation/test-api/selecting-page-elements/selectors.html">custom selectors</a> that run client JavaScript code. You can call a custom selector as a regular function within your test. It will execute your code on the client and pass the returned value back to the test. This allows you to determine the state of each element on the tested page or select a proper element to perform an action on.</p>
-
-                <pre><code>import { expect } from 'chai';
-import { Selector } from 'testcafe';
-
-fixture `Example page`
-    .page `https://devexpress.github.io/testcafe/example`;
-
-test('Type the developer name, obtain the header text and check it', async t => {
-    await t
-        .typeText('#developer-name', 'John Smith')
-        .click('#submit-button');
-
-    const headerText = await Selector('#article-header').innerText;
-
-    expect(headerText).to.equal('Thank you, John!');
-});</code></pre>
-            </div>
-        </div>
         <div class="feature">
             <span class="name">
                 No Extra Coding
