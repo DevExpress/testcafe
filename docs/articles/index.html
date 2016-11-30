@@ -72,8 +72,16 @@ test('Emulate user actions and perform a verification', async t => {
                 Flexible Selectors System
             </span>
             <div class="description">
-                <p>You can access webpage elements in different ways (by css selector, text, DOM hierarchy or use any custom logic) with <a href="documentation/test-api/selecting-page-elements/selectors.html">selectors</a>. It provides you with rich capabilities for writing test scripts.</p>
-<p>Also it's very helpful to use Page Object methodology. It is one of the most popular patterns in web automation based on wrapping the pages or page fragments of a web app into objects.</p>
+                <p>TestCafe supports a flexible selector system that provides with rich capabilities for writing test scripts.</p>
+                <p>You can access webpage elements in different ways using <a href="documentation/test-api/selecting-page-elements/selectors.html">selectors</a>. For example, you can use one of the following selector types:
+                    <ul>
+                        <li>CSS selector</li>
+                        <li>Text</li>
+                        <li>DOM hierarchy</li>
+                        <li>or use any custom logic</li>
+                    </ul>
+                </p>
+                <p>You can also use the helpful and popular Page Object methodology. This methodology is based on wrapping the pages or page fragments of a web app into objects:</p>
                 <pre><code>import { Selector } from 'testcafe';
 
 fixture `Getting Started`
