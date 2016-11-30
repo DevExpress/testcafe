@@ -264,7 +264,7 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
                 for (node = node.parentNode; node; node = node.parentNode)
                     parents.push(node);
 
-                return filter ? filterNodes(parents, filter, document) : parents;
+                return filter !== void 0 ? filterNodes(parents, filter, document) : parents;
             });
             /* eslint-enable no-undef */
         };
@@ -290,7 +290,7 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
                         childElements.push(child);
                 }
 
-                return filter ? filterNodes(childElements, filter, node) : childElements;
+                return filter !== void 0 ? filterNodes(childElements, filter, node) : childElements;
             });
             /* eslint-enable no-undef */
         };
@@ -321,7 +321,7 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
                         siblings.push(child);
                 }
 
-                return filter ? filterNodes(siblings, filter, parent) : siblings;
+                return filter !== void 0 ? filterNodes(siblings, filter, parent) : siblings;
             });
             /* eslint-enable no-undef */
         };
