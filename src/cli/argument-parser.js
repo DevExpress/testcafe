@@ -12,7 +12,8 @@ import promisify from '../utils/promisify';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import getViewPortWidth from '../utils/get-viewport-width';
-import { wordWrap } from '../utils/string';
+import { wordWrap, splitQuotedText } from '../utils/string';
+
 
 var ensureDir = promisify(mkdirp);
 var stat      = promisify(fs.stat);
@@ -76,46 +77,6 @@ export default class CLIArgumentParser {
     static _getDescription () {
         // NOTE: add empty line to workaround commander-forced indentation on the first line.
         return '\n' + wordWrap(DESCRIPTION, 2, getViewPortWidth(process.stdout));
-    }
-
-    static _parseBrowserArg (browserArg) {
-        var currentBrowser = '';
-        var browsers       = [];
-        var quoteChar      = null;
-
-        for (var i = 0; i < browserArg.length; i++) {
-            var currentChar = browserArg[i];
-
-            switch (currentChar) {
-                case ',':
-                    if (quoteChar)
-                        currentBrowser += currentChar;
-                    else {
-                        browsers.push(currentBrowser);
-                        currentBrowser = '';
-                    }
-                    break;
-
-                case '"':
-                case '\'':
-                    if (quoteChar === currentChar)
-                        quoteChar = null;
-                    else if (!quoteChar)
-                        quoteChar = currentChar;
-                    else
-                        currentBrowser += currentChar;
-                    break;
-
-                default:
-                    currentBrowser += currentChar;
-                    break;
-            }
-        }
-
-        if (currentBrowser)
-            browsers.push(currentBrowser);
-
-        return browsers;
     }
 
     _describeProgram () {
@@ -221,8 +182,7 @@ export default class CLIArgumentParser {
     _parseBrowserList () {
         var browsersArg = this.program.args[0] || '';
 
-        this.browsers = CLIArgumentParser
-            ._parseBrowserArg(browsersArg)
+        this.browsers = splitQuotedText(browsersArg, ',')
             .filter(browser => browser && this._filterAndCountRemotes(browser));
     }
 

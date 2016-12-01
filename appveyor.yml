@@ -28,6 +28,4 @@ build: off
 # NOTE: We should prerun Firefox to avoid "Refresh Firefox" notification in the tests window.
 test_script:
 - cmd: >-
-    start /D "C:\Program Files (x86)\Mozilla Firefox" firefox.exe -new-window https://google.com
-
     npm test

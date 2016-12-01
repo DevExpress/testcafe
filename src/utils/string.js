@@ -39,3 +39,37 @@ export function wordWrap (str, indent, width) {
 
     return indentString(wrappedMsg + curStr, ' ', indent);
 }
+
+export function splitQuotedText (str, splitChar, quotes = '"\'') {
+    var currentPart = '';
+    var parts       = [];
+    var quoteChar   = null;
+
+    for (var i = 0; i < str.length; i++) {
+        var currentChar = str[i];
+
+        if (currentChar === splitChar) {
+            if (quoteChar)
+                currentPart += currentChar;
+            else {
+                parts.push(currentPart);
+                currentPart = '';
+            }
+        }
+        else if (quotes.indexOf(currentChar) > -1) {
+            if (quoteChar === currentChar)
+                quoteChar = null;
+            else if (!quoteChar)
+                quoteChar = currentChar;
+            else
+                currentPart += currentChar;
+        }
+        else
+            currentPart += currentChar;
+    }
+
+    if (currentPart)
+        parts.push(currentPart);
+
+    return parts;
+}

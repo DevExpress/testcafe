@@ -12,7 +12,7 @@ describe('CLI argument parser', function () {
     function parse (args, cwd) {
         var parser = new CliArgumentParser(cwd);
 
-        args = ['node', 'index.js'].concat(args.split(/\s+/));
+        args = ['node', 'index.js'].concat(typeof args === 'string' ? args.split(/\s+/) : args);
 
         return parser.parse(args)
             .then(function () {
@@ -59,6 +59,16 @@ describe('CLI argument parser', function () {
                     expect(parser.browsers).eql([
                         'path:/Apps,Libs/\'Firefox.app', 'ie', 'chrome', 'firefox',
                         'path:/Apps,Libs/"Chrome.app'
+                    ]);
+                });
+        });
+
+        it('Should split browsers correctly if providers have arguments', function () {
+            return parse(['path:"/Apps/Firefox.app --arg1",chrome --arg2'])
+                .then(function (parser) {
+                    expect(parser.browsers).eql([
+                        'path:/Apps/Firefox.app --arg1',
+                        'chrome --arg2'
                     ]);
                 });
         });
