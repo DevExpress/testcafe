@@ -1,6 +1,6 @@
 import { ClientFunction } from 'testcafe';
 
-fixture `t.pressKey on angular2 element`
+fixture `Check key and keyIdentifier event properties`
     .page('http://localhost:3000/fixtures/regression/gh-993/pages/index.html');
 
 test('Press the "enter" key on the input', async t => {
