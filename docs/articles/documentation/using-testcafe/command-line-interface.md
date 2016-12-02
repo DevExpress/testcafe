@@ -105,19 +105,19 @@ testcafe "saucelabs:Chrome@52.0:Windows 8.1" tests/sample-fixture.js
 
 ### Starting browser with arguments
 
-If you need to pass arguments for specified browser, you should write them after browser alias and surround this construction with quotation marks:
+If you need to pass arguments for the specified browser, you should write them right after browser alias. Surround the browser call and its arguments with quotation marks:
 
 ```sh
 testcafe "chrome --start-fullscreen" tests/sample-fixture.js
 ```
 
-You can also specify arguments for portable browsers. If the path to browser contains spaces, it should be surrounded with backticks:
+You can also specify arguments for portable browsers. If a path to a browser contains spaces, the path should be surrounded with backticks:
 
 ```sh
 testcafe "path:`C:\Program Files (x86)\Google\Chrome\Application\chrome.exe` --start-fullscreen" tests/sample-fixture.js
 ```
 
-Specifying arguments is possible for local browsers only.
+You can specify arguments for local browsers only.
 
 ## File Path/Glob Pattern
 
