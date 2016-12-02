@@ -179,7 +179,7 @@ Method | Type | Description
 `filter(cssSelector)` | Selector | Creates a selector that filters a matching set by `cssSelector`.
 `filter(filterFn)` | Selector | Creates a selector that filters a matching set by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
 
-#### Example
+**Example**
 
 ```js
 import { Selector } from 'testcafe';
@@ -238,6 +238,8 @@ Property | Description
 `sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`.
 `sibling(cssSelector)` | Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
 `sibling(filterFn)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
+
+**Example**
 
 ```js
 import { Selector } from 'testcafe';
@@ -371,8 +373,8 @@ test('Obtain Element State', async t => {
 
 If you need to get all state properties of the DOM element at once call the selector
 with the `await` keyword like you would do with regular async functions.
-It returns a *DOM Node Snapshot* that contains information about the node's size, position, classes, parent and child nodes, etc.
-It exposes [API](dom-node-state.md) that is similar to DOM objects.
+It returns a *DOM Node Snapshot* that contains [all property values](dom-node-state.md)
+exposed by selector in single object.
 
 ```js
 
@@ -395,7 +397,7 @@ test('DOM Node Snapshot', async t => {
 Note that if a selector initializer has several matching DOM nodes on the page,
 the selector returns the first node from the matching set.
 
-But it's not quite good practice to pass DOM Node Snapshot's properties
+> It's not recommended to pass DOM Node Snapshot's properties
 to [built-in assertions](../assertions/index.md) to check the state of the element.
 To enable [Smart Assertion Query Mechanism](../assertions/index.md#smart-assertion-query-mechanism)
 pass [selector's properties](./dom-node-state.md#members-common-across-all-nodes) to assertions instead.
@@ -449,6 +451,7 @@ Note that if a selector initializer has multiple matching DOM nodes on the page,
 ### Define Assertion Actual Value
 
 You can check whether a particular DOM node has an expected state by passing a selector property directly to [assertions](../assertions/index.md).
+In this case TestCafe enables [Smart Assertion Query Mechanism](../assertions/index.md#smart-assertion-query-mechanism) to avoid accidental errors and unstable tests.
 
 ```js
 
