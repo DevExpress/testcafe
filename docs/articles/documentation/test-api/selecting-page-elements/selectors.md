@@ -104,7 +104,7 @@ You can initialize a selector with any of these objects.
     Selector(submitButton, { visibilityCheck: false });
     ```
 
-* A [DOM node snapshots](#dom-node-snapshots).
+* A [DOM Node Snapshot](#dom-node-snapshot) returned by selector execution.
 
     ```js
     import { Selector } from 'testcafe';
@@ -115,7 +115,7 @@ You can initialize a selector with any of these objects.
     test('My Test', async t => {
         const topMenuSnapshot = await Selector('#top-menu')();
 
-        // This selector is created from a DOM node snapshot returned
+        // This selector is created from a DOM Node state object returned
         // by a different selector. The new selector will use the same initializer
         // as 'elementWithId' and will always be executed with the same parameter
         // values that were used to obtain 'topMenuSnapshot'. You can still
@@ -365,6 +365,8 @@ test('Obtain Element State', async t => {
 
  ```
 
+#### DOM Node Snapshot
+
 A selector allows to get a server-side representation of the DOM node's state from the webpage - *DOM node snapshot*.
 To get it, call the selector with the `await` keyword like you would do with regular async functions.
 A snapshot contains information about the node's size, position, classes, parent and child nodes, etc.
@@ -441,7 +443,7 @@ Note that if a selector initializer has multiple matching DOM nodes on the page,
 
 ### Define Assertion Actual Value
 
-You can check whether a particular DOM node has an expected state by passing a [selector property](#somelink) directly to [test actions](../assertions/index.md).
+You can check whether a particular DOM node has an expected state by passing a selector property directly to [test actions](../assertions/index.md).
 
 ```js
 

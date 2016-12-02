@@ -84,7 +84,7 @@ You can pass any of the following objects as a `selector`.
     });
     ```
 
-* A [DOM node snapshot](../selecting-page-elements/selectors.md#dom-node-snapshots).
+* A [DOM node snapshot](../selecting-page-elements/selectors.md#dom-node-snapshot).
 
     ```js
     import { Selector } from 'testcafe';
