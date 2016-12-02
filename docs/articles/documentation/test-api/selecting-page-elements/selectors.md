@@ -468,7 +468,7 @@ test('Assertion with Selector', async t => {
 
 ```
 
-In this example the developerNameInput.innerText property  will not be
+In this example the `developerNameInput.innerText` property will not be
 calculated immediately, but only then assertion will be executed.
 
 ### Selector Timeout
