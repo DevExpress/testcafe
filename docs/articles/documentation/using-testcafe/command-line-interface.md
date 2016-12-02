@@ -105,7 +105,7 @@ testcafe "saucelabs:Chrome@52.0:Windows 8.1" tests/sample-fixture.js
 
 ### Starting browser with arguments
 
-If you need to pass arguments for the specified browser, you should write them right after browser alias. Surround the browser call and its arguments with quotation marks:
+If you need to pass arguments for the specified browser, write them right after browser alias. Surround the browser call and its arguments with quotation marks:
 
 ```sh
 testcafe "chrome --start-fullscreen" tests/sample-fixture.js
