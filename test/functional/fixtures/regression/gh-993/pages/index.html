@@ -12,17 +12,11 @@
     var input = document.querySelector('input');
 
     input.addEventListener('keydown', function (e) {
-        if (e.key)
-            window.keydownSequence += e.key;
-        else
-            window.keydownSequence += e.keyIdentifier;
+        window.keydownSequence += e.key || e.keyIdentifier;
     });
 
     input.addEventListener('keyup', function (e) {
-        if (e.key)
-            window.keyupSequence += e.key;
-        else
-            window.keyupSequence += e.keyIdentifier;
+        window.keyupSequence += e.key || e.keyIdentifier;
     });
 </script>
 </body>

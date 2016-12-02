@@ -4,7 +4,7 @@ import { expect } from 'chai';
 fixture `t.pressKey on angular2 element`
     .page('http://localhost:3000/fixtures/regression/gh-993/pages/index.html');
 
-test('Perform t.pressKey on input', async t => {
+test("Press the 'enter' key on the input", async t => {
     await t
         .click('#target')
         .pressKey('enter');
