@@ -177,7 +177,9 @@ Method | Type | Description
 ------ | ----- | -----
 `filter(index)` | Selector | Creates a selector that filters a matching set by `index`.
 `filter(cssSelector)` | Selector | Creates a selector that filters a matching set by `cssSelector`.
-`filter(filterFn)` | Selector | Creates a selector that filters a matching set by `filterFn`; `filterFn` is a client function predicate that receives a node.
+`filter(filterFn)` | Selector | Creates a selector that filters a matching set by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
+
+#### Example
 
 ```js
 import { Selector } from 'testcafe';
@@ -208,16 +210,16 @@ The selector API provides methods to find elements within a DOM hierarchy in jQu
 Property | Description
 ------ | -----
 `find(cssSelector)` | Finds all descendants of all nodes in the matching set and filters them by `cssSelector`.
-`find(filterFn)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn`; `filterFn` is a client function predicate that receives a node.
+`find(filterFn)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
 
 #### parent
 
 Property | Description
 ------ | -----
-`parent()` | Finds all parents of all nodes in the matching set.
+`parent()` | Finds all parents of all nodes in the matching set (first element in the set will be the closest parent).
 `parent(index)` | Finds all parents of all nodes in the matching set and filters them by `index` (0 is closest).
 `parent(cssSelector)` | Finds all parents of all nodes in the matching set and filters them by `cssSelector`.
-`parent(filterFn)` | Finds all parents of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a client function predicate that receives a node.
+`parent(filterFn)` | Finds all parents of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
 
 #### child
 
@@ -226,7 +228,7 @@ Property | Description
 `child()` | Finds all child elements (not nodes) of all nodes in the matching set.
 `child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`.
 `child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`child(filterFn)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a client function predicate that receives node.
+`child(filterFn)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives node.
 
 #### sibling
 
@@ -235,7 +237,7 @@ Property | Description
 `sibling()` | Finds all sibling  elements (not nodes) of all nodes in the matching set.
 `sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`.
 `sibling(cssSelector)` | Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`sibling(filterFn)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a client function predicate that receives a node.
+`sibling(filterFn)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
 
 ```js
 import { Selector } from 'testcafe';
@@ -263,8 +265,8 @@ Then, for each `label` element finds a parent that matches the `div.someClass` s
 
 ------
 
-Like in jQuery, if you request a property of the matching set or try evaluate
-a snapshot, the selector returns values for the first element in the set.
+Like in jQuery, if you request a [property](./dom-node-state.md#members-common-across-all-nodes) of the matching set or try evaluate
+a [snapshot](#dom-node-snapshot), the selector returns values for the first element in the set.
 
 ```js
 // Returns id of the first element in the set
@@ -367,12 +369,10 @@ test('Obtain Element State', async t => {
 
 #### DOM Node Snapshot
 
-A selector allows to get a server-side representation of the DOM node's state from the webpage - *DOM node snapshot*.
-To get it, call the selector with the `await` keyword like you would do with regular async functions.
-A snapshot contains information about the node's size, position, classes, parent and child nodes, etc.
+If you need to get all state properties of the DOM element at once call the selector
+with the `await` keyword like you would do with regular async functions.
+It returns a *DOM Node Snapshot* that contains information about the node's size, position, classes, parent and child nodes, etc.
 It exposes [API](dom-node-state.md) that is similar to DOM objects.
-
-This is convenient when you need to get several properties of a DOM node in the same moment.
 
 ```js
 
@@ -394,6 +394,11 @@ test('DOM Node Snapshot', async t => {
 
 Note that if a selector initializer has several matching DOM nodes on the page,
 the selector returns the first node from the matching set.
+
+But it's not quite good practice to pass DOM Node Snapshot's properties
+to [built-in assertions](../assertions/index.md) to check the state of the element.
+To enable [Smart Assertion Query Mechanism](../assertions/index.md#smart-assertion-query-mechanism)
+pass [selector's properties](./dom-node-state.md#members-common-across-all-nodes) to assertions instead.
 
 ### Define Action Targets
 
@@ -443,7 +448,7 @@ Note that if a selector initializer has multiple matching DOM nodes on the page,
 
 ### Define Assertion Actual Value
 
-You can check whether a particular DOM node has an expected state by passing a selector property directly to [test actions](../assertions/index.md).
+You can check whether a particular DOM node has an expected state by passing a selector property directly to [assertions](../assertions/index.md).
 
 ```js
 
@@ -462,6 +467,9 @@ test('Assertion with Selector', async t => {
 });
 
 ```
+
+In this example the developerNameInput.innerText property  will not be
+calculated immediately, but only then assertion will be executed.
 
 ### Selector Timeout
 

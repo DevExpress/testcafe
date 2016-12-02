@@ -6,8 +6,8 @@ checked: false
 ---
 # DOM Node State
 
-Selectors allows to get a server-side representation of the DOM node's state
-from the webpage that exposes API that is similar to DOM objects.
+Selectors allow you to get a server-side representation of a DOM node's state.
+This representation exposes API that is similar to DOM objects.
 
 See how to obtain element state in the [Obtain Element State](./selectors.md#obtain-element-state) article.
 

@@ -111,16 +111,14 @@ For this purpose, it offers special kinds of functions that will execute your co
 and [ClientFunction](../test-api/obtaining-data-from-the-client.md) used to obtain arbitrary data from the client side.
 You call these functions as regular async functions, that is you can obtain their results and use parameters to pass data to them.
 
+The selector API provides methods and properties to select elements on the page and get theirs state.
+
 For example, clicking the Submit button on the sample web page opens a "Thank you" page.
 To get access to DOM elements on the opened page, the `Selector` function can be used.
 The following example demonstrates how to access the article header element and obtain its actual text.
 
 ```js
 import { Selector } from 'testcafe';
-
-// Declare the parameterized Selector function
-// to get access to a DOM element identified by the `id` attribute
-const elementWithId = Selector(id => document.getElementById(id));
 
 fixture `Getting Started`
     .page `http://devexpress.github.io/testcafe/example`;
@@ -130,14 +128,10 @@ test('My first test', async t => {
         .typeText('#developer-name', 'John Smith')
         .click('#submit-button');
 
-    // Use the Selector function to get access to the article header
-    const articleHeader = await elementWithId('article-header');
+    const articleHeader = await Selector('.result-content').find('h1');
 
     // Obtain the text of the article header
-    let headerText = articleHeader.innerText;
-
-    // Or use a shorthand form to obtain article header text directly
-    headerText = await elementWithId('article-header').innerText;
+    let headerText = await articleHeader.innerText;
 });
 ```
 
