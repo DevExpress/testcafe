@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-993</title>
+</head>
+<body>
+<input id="target" type="text">
+<script>
+    window.keydownSequence = '';
+    window.keyupSequence   = '';
+
+    var input = document.querySelector('input');
+
+    input.addEventListener('keydown', function (e) {
+        if (e.key)
+            window.keydownSequence += e.key;
+        else
+            window.keydownSequence += e.keyIdentifier;
+    });
+
+    input.addEventListener('keyup', function (e) {
+        if (e.key)
+            window.keyupSequence += e.key;
+        else
+            window.keyupSequence += e.keyIdentifier;
+    });
+</script>
+</body>
+</html>

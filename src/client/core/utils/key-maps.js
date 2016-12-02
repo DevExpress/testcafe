@@ -81,6 +81,14 @@ export default {
         option: 'alt'
     },
 
+    keyProperty: {
+        enter: 'Enter'
+    },
+
+    keyIdentifierProperty: {
+        enter: 'Enter'
+    },
+
     symbolCharCodeToKeyCode: {
         96: 192,    // `
         91: 219,    // [
