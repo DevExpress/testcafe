@@ -1,9 +1,9 @@
 import { ClientFunction } from 'testcafe';
 
-fixture `Check key and keyIdentifier event properties`
+fixture `Check the key and keyIdentifier event properties`
     .page('http://localhost:3000/fixtures/regression/gh-993/pages/index.html');
 
-test('Press the "enter" key on the input', async t => {
+test('Press the "Enter" key', async t => {
     await t
         .click('#target')
         .pressKey('enter');
