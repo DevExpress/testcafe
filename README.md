@@ -25,6 +25,7 @@ TestCafe is a pure node.js end-to-end solution for testing web apps. It takes ca
 * [Features](#features)
 * [Getting Started](#getting-started)
 * [Documentation](#documentation)
+* [Roadmap](#roadmap)
 * [Contributing](#contributing)
 * [Stay in Touch](#stay-in-touch)
 * [License](#license)
@@ -299,6 +300,11 @@ test('My first test', async t => {
 * [Using TestCafe](https://devexpress.github.io/testcafe/documentation/using-testcafe/)
 * [Extending TestCafe](https://devexpress.github.io/testcafe/documentation/extending-testcafe/)
 * [Recipes](https://devexpress.github.io/testcafe/documentation/recipes/)
+
+## Roadmap
+
+We plan to introduce other outstanding features so that you can test apps with even more efficiency.
+Meanwhile, you can help us improve TestCafe by voting for features on our [roadmap](https://github.com/DevExpress/testcafe/milestone/10).
 
 ## Contributing
 
