@@ -66,8 +66,8 @@
       url: /documentation/test-api/selecting-page-elements/selectors.md
     - name: Selector Options
       url: /documentation/test-api/selecting-page-elements/selector-options.md
-    - name: DOM Node Snapshots
-      url: /documentation/test-api/selecting-page-elements/dom-node-snapshots.md
+    - name: DOM Node State
+      url: /documentation/test-api/selecting-page-elements/dom-node-state.md
   - name: Assertions
     url: /documentation/test-api/assertions.md
   - name: Obtaining Data from the Client

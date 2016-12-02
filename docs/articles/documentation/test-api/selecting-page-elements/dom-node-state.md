@@ -1,19 +1,15 @@
 ---
 layout: docs
-title: DOM Node Snapshots
-permalink: /documentation/test-api/selecting-page-elements/dom-node-snapshots.html
-checked: true
+title: DOM Node State
+permalink: /documentation/test-api/selecting-page-elements/dom-node-state.html
+checked: false
 ---
-# DOM Node Snapshots
+# DOM Node State
 
-A *DOM node snapshot* is an object that represents the state of a particular document node server side.
-This node can be a DOM element, document, fragment, text or comment node. DOM node snapshots are returned by [selectors](selectors.md).
+Selectors allows to get a server-side representation of the DOM node's state
+from the webpage that exposes API that is similar to DOM objects.
 
-This topic lists API members exposed by DOM node snapshots.
-
-> Selectors and promises returned by them also expose this API (except for
-snapshot's `getChildElement`, `getChildNode` and `getParentNode` methods).
-> See [Snapshot API Shorthands](selectors.md#snapshot-api-shorthands).
+See how to obtain element state in the [Obtain Element State](./selectors.md#obtain-element-state) article.
 
 ## Members Common Across All Nodes
 
@@ -29,9 +25,6 @@ Property | Type | Description
 Method | Type | Description
 ------ | ---- | -----
 `hasClass(className)` | Boolean | `true` if the element has the specified class name.
-`getChildElement(idx)` | Selector | ***Deprecated.*** A selector that returns the snapshot of the child element at index `idx`. *Will be removed in future releases. Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy) instead.*
-`getChildNode(idx)` | Selector | ***Deprecated.*** A selector that returns the snapshot of the child node at index `idx`. *Will be removed in future releases. Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy) instead.*
-`getParentNode` | Selector | ***Deprecated.*** A selector that returns the parent node snapshot. *Will be removed in future releases. Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy) instead.*
 
 ## Members Specific to Element Nodes
 

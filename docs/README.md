@@ -33,7 +33,7 @@
   * [Selecting Page Elements](articles/documentation/test-api/selecting-page-elements/index.md)
     * [Selectors](articles/documentation/test-api/selecting-page-elements/selectors.md)
     * [Selector Options](articles/documentation/test-api/selecting-page-elements/selector-options.md)
-    * [DOM Node Snapshots](articles/documentation/test-api/selecting-page-elements/dom-node-snapshots.md)
+    * [DOM Node State](articles/documentation/test-api/selecting-page-elements/dom-node-state.md)
   * [Assertions](articles/documentation/test-api/assertions.md)
   * [Obtaining Data from the Client](articles/documentation/test-api/obtaining-data-from-the-client.md)
   * [Pausing the Test](articles/documentation/test-api/pausing-the-test.md)
