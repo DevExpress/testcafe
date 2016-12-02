@@ -33,22 +33,23 @@ Parameter               | Type                                              | De
 The following example demonstrates text selection in an input element.
 
 ```js
-import { expect } from 'chai';
-import { ClientFunction } from 'testcafe';
+import { ClientFunction, Selector } from 'testcafe';
 
 fixture `My fixture`
-    .page `http://www.example.com/`;
+    .page `http://devexpress.github.io/testcafe/example/`;
 
-const getElementSelectionStart = ClientFunction(id => document.getElementById(id).selectionStart);
-const getElementSelectionEnd   = ClientFunction(id => document.getElementById(id).selectionEnd);
+const developerNameInput = Selector('#developer-name');
+
+const getElementSelectionStart = ClientFunction(selector => selector().selectionStart);
+const getElementSelectionEnd   = ClientFunction(selector => selector().selectionEnd);
 
 test('Select text within input', async t => {
     await t
-        .typeText('#developer-name', 'Test Cafe', { caretPos: 0 })
-        .selectText('#developer-name', 7, 1);
+        .typeText(developerNameInput, 'Test Cafe', { caretPos: 0 })
+        .selectText(developerNameInput, 7, 1);
 
-    expect(await getElementSelectionStart('developer-name')).to.equal(1);
-    expect(await getElementSelectionEnd('developer-name')).to.equal(7);
+    await t.expect(await getElementSelectionStart(developerNameInput)).eql(1);
+    await t.expect(await getElementSelectionEnd(developerNameInput)).eql(7);
 });
 ```
 
@@ -71,20 +72,28 @@ Parameter  | Type                                              | Description    
 The following example shows how to select text within a `<textarea>` element.
 
 ```js
-import { expect } from 'chai';
-import { ClientFunction } from 'testcafe';
+import { ClientFunction, Selector } from 'testcafe';
 
 fixture `My fixture`
-    .page `http://www.example.com/`;
+    .page `http://devexpress.github.io/testcafe/example/`;
 
-const getElementSelectionStart = ClientFunction(id => document.getElementById(id).selectionStart);
-const getElementSelectionEnd   = ClientFunction(id => document.getElementById(id).selectionEnd);
+const commentTextArea = Selector('#comments');
+
+const getElementSelectionStart = ClientFunction(selector => selector().selectionStart);
+const getElementSelectionEnd   = ClientFunction(selector => selector().selectionEnd);
 
 test('Select text within textarea', async t => {
-    await t.selectTextAreaContent('#comment', 1, 5, 3, 10);
+    await t
+        .click('#tried-test-cafe')
+        .typeText(commentTextArea, [
+            'Lorem ipsum dolor sit amet',
+            'consectetur adipiscing elit',
+            'sed do eiusmod tempor'
+        ].join(',\n'))
+        .selectTextAreaContent(commentTextArea, 0, 5, 2, 10);
 
-    expect(await getElementSelectionStart('comment')).to.equal(5);
-    expect(await getElementSelectionEnd('comment')).to.equal(48);
+    await t.expect(await getElementSelectionStart(commentTextArea)).eql(5)
+    await t.expect(await getElementSelectionEnd(commentTextArea)).eql(67);
 });
 ```
 
