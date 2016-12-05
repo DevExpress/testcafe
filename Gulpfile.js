@@ -388,15 +388,15 @@ gulp.task('lint-docs', function () {
 
     var lintDocsAndExamples = globby([
         'docs/articles/**/*.md',
-        'examples/**/*.md',
-        'CHANGELOG.md'
+        'examples/**/*.md'
     ]).then(function (files) {
-        return lintFiles(files, require('./.markdownlint.json'));
+        return lintFiles(files, require('./.md-lint/docs.json'));
     });
 
-    var lintReadme = lintFiles('README.md', require('./.markdownlint-readme.json'));
+    var lintReadme    = lintFiles('README.md', require('./.md-lint/readme.json'));
+    var lintChangelog = lintFiles('CHANGELOG.md', require('./.md-lint/changelog.json'));
 
-    return Promise.all([lintDocsAndExamples, lintReadme]);
+    return Promise.all([lintDocsAndExamples, lintReadme, lintChangelog]);
 });
 
 gulp.task('clean-website', function () {
