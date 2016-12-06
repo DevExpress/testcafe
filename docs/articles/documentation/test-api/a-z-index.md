@@ -14,6 +14,7 @@ This topic lists test API members in alphabetical order.
 * [fixture](test-code-structure.html#fixtures)
     * [afterEach](test-code-structure.html#initialization-and-clean-up)
     * [beforeEach](test-code-structure.html#initialization-and-clean-up)
+    * [httpAuth](test-code-structure.html#http-authentication)
     * [page](test-code-structure.html#specifying-the-start-webpage)
 * [Selector](selecting-page-elements/selectors.html#creating-selectors)
     * [nth](selecting-page-elements/selectors.html#nth)
