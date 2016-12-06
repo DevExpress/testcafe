@@ -2,14 +2,15 @@
 layout: docs
 title: Selectors
 permalink: /documentation/test-api/selecting-page-elements/selectors.html
-checked: true
+checked: false
 ---
 # Selectors
 
-A selector is a function that is executed in the browser and returns a DOM node.
-The identification and state of this node are passed to the server where
-they can be used to define an [action's](../actions/index.md) target or
-provide information for an [assertion](../assertions.md).
+A selector is a function that identifies a webpage element in the test.
+The selector API provides methods and properties to select elements on the page and get theirs state.
+You can use selectors to [define action targets](#define-action-targets),
+[define assertion actual value](#define-assertion-actual-value) or
+[inspect elements state on the page](#obtain-element-state).
 
 > Important! Do not modify the tested webpage within selectors.
 > To interact with the page, use [test actions](../actions/index.md).
@@ -18,13 +19,24 @@ This topic contains the following sections.
 
 * [Creating Selectors](#creating-selectors)
 * [Selector Initializers](#selector-initializers)
-  * [Initializers that Return Multiple Nodes](#initializers-that-return-multiple-nodes)
-* [Executing Selectors](#executing-selectors)
-  * [DOM Node Snapshots](#dom-node-snapshots)
-      * [Snapshot API Shorthands](#snapshot-api-shorthands)
+* [Combined Selectors](#combined-selectors)
+  * [Filter Multiple DOM Nodes](#filter-multiple-dom-nodes)
+      * [nth](#nth)
+      * [withText](#withtext)
+      * [filter](#filter)
+  * [Find Elements by DOM Hierarchy](#find-elements-by-dom-hierarchy)
+      * [find](#find)
+      * [parent](#parent)
+      * [child](#child)
+      * [sibling](#sibling)
+  * [Examples](#examples)
+* [Using Selectors](#using-selectors)
+  * [Get Selector Matching Set Length](#get-selector-matching-set-length)
+  * [Obtain Element State](#obtain-element-state)
+  * [Define Action Targets](#define-action-targets)
+  * [Define Assertion Actual Value](#define-assertion-actual-value)
   * [Selector Timeout](#selector-timeout)
 * [One-Time Selection](#one-time-selection)
-* [Using Selectors to Define Action Targets](#using-selectors-to-define-action-targets)
 * [Calling Selectors from Node.js Callbacks](#calling-selectors-from-nodejs-callbacks)
 * [Limitations](#limitations)
 
@@ -41,32 +53,17 @@ Parameter              | Type     | Description
 `init`                 | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a DOM node to be selected. See [Selector Initializers](#selector-initializers).
 `options`&#160;*(optional)* | Object   | See [Options](selector-options.md).
 
-> Important! Selectors cannot return anything but a single DOM node or `null`.
-> Use [client functions](../obtaining-data-from-the-client.md) to return arbitrary data.
-
-The following example creates a selector from a function that returns a DOM element by its ID.
+The following example creates a selector from a css string for an element with 'username' id.
 
 ```js
 import { Selector } from 'testcafe';
 
-const elementWithId = Selector(id => document.getElementById(id));
+const usernameInput = Selector('#username');
 ```
 
 ## Selector Initializers
 
 You can initialize a selector with any of these objects.
-
-* A regular function. Executed on the client side. Must return a DOM node, array of DOM nodes,
-  NodeList, HTMLCollection, `null` or `undefined`. Cannot use outer-scope variables from test code.
-
-    ```js
-    import { Selector } from 'testcafe';
-
-    // A selector is created from a regular function.
-    // This selector will take the 'id' parameter and return
-    // a DOM element that has this ID.
-    const elementWithId = Selector(id => document.getElementById(id));
-    ```
 
 * A CSS selector string that matches one or several nodes.
 
@@ -74,8 +71,24 @@ You can initialize a selector with any of these objects.
     import { Selector } from 'testcafe';
 
     // A selector is created from a CSS selector string.
-    // This selector will return the first matching DOM node.
     const submitButton = Selector('#submit-button');
+    ```
+
+* A regular function. Executed on the client side. Must return a DOM node, array of DOM nodes,
+  NodeList, HTMLCollection, `null` or `undefined`. Cannot use outer-scope variables from test code.
+  This is convenient when you need to use some client-side logic to get an element.
+
+    ```js
+    import { Selector } from 'testcafe';
+
+    // A selector is created from a regular function.
+    // This selector will take an element by id that is saved in the localStorage
+    // a DOM element that has this ID.
+    const element = Selector(() => {
+        const storedElementId = window.localStorage.storedElementId;
+
+        return document.querySelector(storedElementId);
+    });
     ```
 
 * A selector.
@@ -83,31 +96,26 @@ You can initialize a selector with any of these objects.
     ```js
     import { Selector } from 'testcafe';
 
-    // This selector is created from a function that returs all elements of a specified class.
-    // The selector returns the third such element since its `index` option is set to 2.
-    const thirdElemWithClass = Selector(cl => document.getElementsByClassName(cl), {
-        index: 2
-    });
+    // This selector is created from a function that returns all elements of a specified class.
+    const submitButton = Selector('#submit-button');
 
-    // This selector is created based on the previous selector and inherits its initializer,
-    // but overwrites the `index` parameter to return the fourth element.
-    const fourthElemWithClass = Selector(thirdElemWithClass, { index: 3 });
+    // This selector is created based on the previous selector and inherits
+    // its initializer, but overwrites the `visibilityCheck` parameter.
+    Selector(submitButton, { visibilityCheck: false });
     ```
 
-* A [DOM node snapshot](#dom-node-snapshots).
+* A [DOM Node Snapshot](#dom-node-snapshot) returned by selector execution.
 
     ```js
     import { Selector } from 'testcafe';
-
-    const elementWithId = Selector(id => document.getElementById(id));
 
     fixture `My fixture`
         .page `http://www.example.com/`;
 
     test('My Test', async t => {
-        const topMenuSnapshot = await elementWithId('top-menu');
+        const topMenuSnapshot = await Selector('#top-menu')();
 
-        // This selector is created from a DOM node snapshot returned
+        // This selector is created from a DOM Node state object returned
         // by a different selector. The new selector will use the same initializer
         // as 'elementWithId' and will always be executed with the same parameter
         // values that were used to obtain 'topMenuSnapshot'. You can still
@@ -123,130 +131,348 @@ You can initialize a selector with any of these objects.
     ```js
     import { Selector } from 'testcafe';
 
-    const elementWithId = Selector(id => document.getElementById(id));
+    const elementWithIdOrClassName = Selector(value => {
+        return document.getElementById(value) || document.getElementsByClassName(value);
+    });
 
     fixture `My fixture`
         .page `http://www.example.com/`;
 
     test('My Test', async t => {
-
         // This selector is created from a promise returned by a call to a
         // different selector. The new selector will be initialized with the
         // same function as the old one and with hard-coded parameter values
         // as in the previous example.
-        const submitButton = Selector(elementWithId('submit-button'));
+        const submitButton = Selector(elementWithIdOrClassName('main-element'));
     });
     ```
 
-### Initializers that Return Multiple Nodes
+## Combined Selectors
 
-Functions and CSS selector stings that initialize a selector can return multiple DOM nodes.
-In this instance, you must filter these nodes to select a single node that will eventually be returned by the selector.
-Use the [text](selector-options.md#optionstext) and [index](selector-options.md#optionsindex) options for this.
+The selector API provides methods that can be combined together, thus
+providing you with a flexible functional-style selector mechanism.
 
-The [text](selector-options.md#optionstext) option specifies text content of the node that should be returned
-or a regular expression that matches this content.
+### Filter Multiple DOM Nodes
 
-The [index](selector-options.md#optionsindex) option specifies the index of the node that should be returned.
+If selector returns multiple DOM nodes, you must filter them to select
+a single node that will eventually be returned by the selector.
+The selector provides methods to filter DOM nodes by their index or text.
 
-The following example demonstrates how to use the `text` and `index` options.
+#### nth
+
+Method | Type | Description
+------ | ----- | -----
+`nth(index)` | Selector | Creates a selector that returns an element by its index in the matching set.
+
+#### withText
+
+Method | Type | Description
+------ | ----- | -----
+`withText(text)` | Selector | Creates a selector that filters a matching set by the specified text.
+`withText(re)` | Selector | Creates a selector that filters a matching set using the specified regular expression.
+
+#### filter
+
+Method | Type | Description
+------ | ----- | -----
+`filter(index)` | Selector | Creates a selector that filters a matching set by `index`.
+`filter(cssSelector)` | Selector | Creates a selector that filters a matching set by `cssSelector`.
+`filter(filterFn)` | Selector | Creates a selector that filters a matching set by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
+
+**Example**
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
-fixture `My fixture`
-    .page `http://www.example.com/`;
+fixture `Example page`
+    .page `http://devexpress.github.io/testcafe/example/`;
 
-const removeButton = Selector(cl => document.getElementsByClassName(cl), { text: 'Remove' });
-const secondButton = Selector(cl => document.getElementsByClassName(cl), { index: 1 });
+test('My test', async t => {
+    const secondCheckBox = Selector('input[type=checkbox]').nth(1);
+    const checkedInputs  = Selector('input[type=checkbox]').filter(node => node.checked);
+    const windowsLabel   = Selector('label').withText('Windows');
 
-test('A shadowed remove button is focused', async t => {
-    expect(await removeButton('shadowed').focused).to.be.true;
-});
-
-test('The second disabled button is visible', async t => {
-    expect(await secondButton('disabled').visible).to.be.true;
+    await t
+        .click(secondCheckBox)
+        .expect(checkedInputs.count).eql(1)
+        .click(windowsLabel);
 });
 ```
-
-If both options are specified, nodes are first filtered by the `text` filter,
-then a node at the `index` position is selected from the remaining nodes.
 
 If all nodes are filtered out, the selector returns `null`.
 
-> The [text](selector-options.md#optionstext) and [index](selector-options.md#optionsindex) options
-> are also applied when the selector is called from another selector or a [client function](../obtaining-data-from-the-client.md).
+### Find Elements by DOM Hierarchy
 
-## Executing Selectors
+The selector API provides methods to find elements within a DOM hierarchy in jQuery style.
 
-To execute a selector, call it with the `await` keyword like you would do with regular async functions.
+#### find
+
+Property | Description
+------ | -----
+`find(cssSelector)` | Finds all descendants of all nodes in the matching set and filters them by `cssSelector`.
+`find(filterFn)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
+
+#### parent
+
+Property | Description
+------ | -----
+`parent()` | Finds all parents of all nodes in the matching set (first element in the set will be the closest parent).
+`parent(index)` | Finds all parents of all nodes in the matching set and filters them by `index` (0 is closest).
+`parent(cssSelector)` | Finds all parents of all nodes in the matching set and filters them by `cssSelector`.
+`parent(filterFn)` | Finds all parents of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
+
+#### child
+
+Property | Description
+------ | -----
+`child()` | Finds all child elements (not nodes) of all nodes in the matching set.
+`child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`.
+`child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
+`child(filterFn)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives node.
+
+#### sibling
+
+Property | Description
+------ | -----
+`sibling()` | Finds all sibling  elements (not nodes) of all nodes in the matching set.
+`sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`.
+`sibling(cssSelector)` | Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
+`sibling(filterFn)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
+
+**Example**
 
 ```js
 import { Selector } from 'testcafe';
 
-const elementWithId = Selector(id => document.getElementById(id));
-
-fixture `My fixture`
-    .page `http://www.example.com/`;
+fixture `Example page`
+    .page `http://devexpress.github.io/testcafe/example/`;
 
 test('My test', async t => {
-    const button = await elementWithId('my-button');
+    const macOSRadioButton = Selector('.column.col-2').find('label').child(el => el.value === 'MacOS');
+
+    await t
+        .click(macOSRadioButton.parent())
+        .expect(macOSRadioButton.checked).ok();
 });
 ```
 
-### DOM Node Snapshots
-
-TestCafe executes tests on the server, so selectors cannot return actual DOM objects to test code.
-Instead, they return *DOM node snapshots* - server-side representation of the node's state.
-
-A snapshot contains information about the node's size, position, classes, parent and child nodes, etc.
-It exposes [API](dom-node-snapshots.md) that is similar to DOM objects.
+### Examples
 
 ```js
-import { expect } from 'chai';
-import { Selector } from 'testcafe';
-
-const elementWithId = Selector(id => document.getElementById(id));
-
-fixture `My fixture`
-    .page `http://www.example.com/`;
-
-test('Login field height', async t => {
-    const loginInput = await elementWithId('login');
-
-    expect(loginInput.offsetWidth).to.equal(95);
-    expect(loginInput.offsetHeight).to.equal(35);
-    expect(loginInput.hasClass('glow')).to.be.ok;
-});
+Selector('ul').find('label').parent('div.someClass')
 ```
 
-For a list of members exposed by DOM node snapshots, see [DOM Node Snapshots](dom-node-snapshots.md).
+Finds all `ul` elements on page. Then, in each found `ul` element finds `label` elements.
+Then, for each `label` element finds a parent that matches the `div.someClass` selector.
 
-#### Snapshot API Shorthands
+------
 
-Selectors and promises returned by selectors expose snapshot API directly (except for
-snapshot's `getChildElement`, `getChildNode` and `getParentNode` methods).
-This is convenient when you need to use only one snapshot property or method.
-In this instance, you save a line of code, because you do not need to obtain and save the snapshot object explicitly.
+Like in jQuery, if you request a [property](./dom-node-state.md#members-common-across-all-nodes) of the matching set or try evaluate
+a [snapshot](#dom-node-snapshot), the selector returns values for the first element in the set.
 
 ```js
-import { expect } from 'chai';
+// Returns id of the first element in the set
+const id = await Selector('ul').find('label').parent('div.someClass').id;
+
+// Returns snapshot for the first element in the set
+const snapshot = await Selector('ul').find('label').parent('div.someClass')();
+```
+
+------
+
+However, you can obtain data for any element in the set by using `nth` filter.
+
+```js
+// Returns id of the third element in the set
+const id = await Selector('ul').find('label').parent('div.someClass').nth(2).id;
+
+// Returns snapshot for the fourth element in the set
+const snapshot = await Selector('ul').find('label').parent('div.someClass').nth(4)();
+```
+
+------
+
+Note that you can add text and index filters in the selector chain.
+
+```js
+Selector('.container').parent(1).nth(0).find('.content').withText('yo!').child('span');
+```
+
+In this example the selector:
+
+1. finds the second parent (parent of parent) of `.container` elements;
+2. peeks the first element in the matching set;
+3. in that element, finds elements that match the `.content` selector;
+4. filters them by text `yo!`;
+5. in each filtered element, searches for a child with tag name `span`.
+
+------
+
+## Using Selectors
+
+### Get Selector Matching Set Length
+
+Functions and CSS selector strings that initialize a selector may return
+a single matching DOM element on the page, multiple elements or nothing.
+You can use the following Selector properties to check whether the matching
+elements exist or get a number of them.
+
+Property | Type | Description
+------ | ----- | -----
+`exists` | Boolean | `true` if at least one matching element exists.
+`count` | Number | The number of matching elements.
+
+```js
 import { Selector } from 'testcafe';
 
-const loginInput    = Selector('#login-box');
-const elementWithId = Selector(id => document.getElementById(id));
+fixture `Example page`
+    .page `http://devexpress.github.io/testcafe/example/`;
 
-fixture `My fixture`
-    .page('http://www.example.com/');
+test('My test', async t => {
+    const osCount            = Selector('.column.col-2 label').count;
+    const submitButtonExists = Selector('#submit-button').exists;
 
-test('Login field height', async t => {
-    expect(await loginInput.offsetWidth).to.equal(95);
-    expect(await elementWithId('password-box').offsetHeight).to.equal(35);
+    await t
+        .expect(osCount).eql(3)
+        .expect(submitButtonExists).ok();
 });
 ```
 
-Note that snapshot methods and property getters exposed through selectors are asynchronous.
+Note that selector property getters are asynchronous.
+
+### Obtain Element State
+
+Selectors and promises returned by selectors expose API to get state (size, position, classes, etc.) of matched element.
+See [DOM Node State](./dom-node-state.md). Note that these methods and property getters
+are asynchronous so you can obtain element's property from a browser in the following way:
+
+```js
+const headerText = await Selector('#header').textConent;
+```
+
+For example:
+
+```js
+
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page('http://devexpress.github.io/testcafe/example/');
+
+const windowsInput = Selector('#windows');
+
+test('Obtain Element State', async t => {
+    await t.click(windowsInput);
+
+    const windowsInputChecked = await windowsInput.checked; // returns true
+});
+
+ ```
+
+#### DOM Node Snapshot
+
+If you need to get all state properties of the DOM element at once call the selector
+with the `await` keyword like you would do with regular async functions.
+It returns a *DOM Node Snapshot* that contains [all property values](dom-node-state.md)
+exposed by selector in single object.
+
+```js
+
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+test('DOM Node Snapshot', async t => {
+    const sliderHandle = await Selector('#slider').child('span');
+
+    await t
+        .expect(sliderHandle.hasClass('ui-slider-handle')).ok()
+        .expect(sliderHandle.childElementCount).eql(0)
+        .expect(sliderHandle.visible).ok();
+});
+
+```
+
+Note that if a selector initializer has several matching DOM nodes on the page,
+the selector returns the first node from the matching set.
+
+> It's not recommended to pass DOM Node Snapshot's properties
+to [built-in assertions](../assertions/index.md) to check the state of the element.
+To enable [Smart Assertion Query Mechanism](../assertions/index.md#smart-assertion-query-mechanism)
+pass [selector's properties](./dom-node-state.md#members-common-across-all-nodes) to assertions instead.
+
+### Define Action Targets
+
+You can pass selectors to [test actions](../actions/index.md) to use the returned element as the action target.
+
+```js
+
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+const label = Selector('#tried-section').child('label');
+
+test('My Test', async t => {
+    await t.click(label);
+});
+
+```
+
+DOM element snapshots can also be passed to test actions.
+
+```js
+
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+const label = Selector('#tried-section').child('label');
+
+test('My Test', async t => {
+    const labelSnapshot = await label();
+
+    await t.click(labelSnapshot);
+});
+
+```
+
+In this instance, the selector that was used to fetch this snapshot will be called once again.
+
+Before executing an action, TestCafe waits for the target element to appear
+in the DOM and become visible. If this does not happen
+within the [selector timeout](#selector-timeout), the test fails.
+
+Note that if a selector initializer has multiple matching DOM nodes on the page, the action will be executed only for the first node from the matching set.
+
+### Define Assertion Actual Value
+
+You can check whether a particular DOM node has an expected state by passing a selector property directly to [assertions](../assertions/index.md).
+In this case TestCafe enables [Smart Assertion Query Mechanism](../assertions/index.md#smart-assertion-query-mechanism) to avoid accidental errors and unstable tests.
+
+```js
+
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+test('Assertion with Selector', async t => {
+    const developerNameInput = Selector('#developer-name');
+
+    await t
+        .expect(developerNameInput.innerText).eql('')
+        .typeText(developerNameInput, 'Peter')
+        .expect(developerNameInput.innerText).eql('Peter');
+});
+
+```
+
+In this example the `developerNameInput.innerText` property will not be
+calculated immediately, but only then assertion will be executed.
 
 ### Selector Timeout
 
@@ -266,85 +492,33 @@ To do this, use the [visibilityCheck](selector-options.md#optionsvisibilitycheck
 
 ## One-Time Selection
 
-To create a selector and immediately execute it without saving it,
-use the `select` method of the [test controller](../test-code-structure.md#test-controller).
+> Important! ***Deprecated*** *Use [selectors](#creating-selectors) instead. The `select` method of the [test controller](../test-code-structure.md#test-controller) will be removed in future releases.*
+
+To create a selector and immediately execute it without saving it, use the `select` method of the [test controller](../test-code-structure.md#test-controller).
 
 ```text
+
 t.select( init [, options] )
+
 ```
 
 Parameter              | Type     | Description
 ---------------------- | -------- | ------------------------------------------------------------------
-`init`                 | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a DOM node to be selected. See [Selector Initializers](#selector-initializers).
+`init`                 | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a DOM node to be selected; see [Selector Initializers](#selector-initializers).
 `options`&#160;*(optional)* | Object   | See [Options](selector-options.md).
 
 The following example shows how to get a DOM element by ID with `t.select`.
 
 ```js
-fixture `My fixture`
-    .page `http://www.example.com/`;
-
-test('My Test', async t => {
-    const header = await t.select(() => document.getElementById('header'));
-});
-```
-
-## Using Selectors to Define Action Targets
-
-You can pass selectors to [test actions](../actions/index.md) to use the returned element as the action target.
-
-```js
-import { Selector } from 'testcafe';
 
 fixture `My fixture`
-    .page `http://www.example.com/`;
-
-const lastItem = Selector(() => document.querySelector('.toc-item:last-child'));
+    .page `http://devexpress.github.io/testcafe/example/`;
 
 test('My Test', async t => {
-    await t.click(lastItem);
+    const header = await t.select('header');
 });
+
 ```
-
-In this instance, the selector will be called with no arguments.
-
-You can also pass a promise returned by a selector if you need to call it with arguments.
-
-```js
-import { Selector } from 'testcafe';
-
-const elementWithId = Selector(id => document.getElementById(id));
-
-fixture `My fixture`
-    .page `http://www.example.com/`;
-
-test('My Test', async t => {
-    await t.click(elementWithId('submit-button'));
-});
-```
-
-DOM element snapshots can also be passed to test actions.
-
-```js
-import { Selector } from 'testcafe';
-
-const elementWithId = Selector(id => document.getElementById(id));
-
-fixture `My fixture`
-    .page `http://www.example.com/`;
-
-test('My Test', async t => {
-    const topMenuSnapshot = await elementWithId('top-menu');
-
-    await t.click(topMenuSnapshot);
-});
-```
-
-In this instance, the selector that was used to fetch this snapshot will be called once again.
-
-Before executing an action, TestCafe waits for the target element to appear
-in the DOM and become visible. If this does not happen
-within the [selector timeout](#selector-timeout), the test fails.
 
 ## Calling Selectors from Node.js Callbacks
 
@@ -357,8 +531,8 @@ you have to manually bind it to the test controller.
 Use the [boundTestRun](selector-options.md#optionsboundtestrun) option for this.
 
 ```js
+
 import { http } from 'http';
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 fixture `My fixture`
@@ -384,8 +558,9 @@ test('Title changed', async t => {
         req.end();
     });
 
-    expect(match).to.be.true;
+    await t.expect(match).ok();
 });
+
 ```
 
 This approach only works for Node.js callbacks that fire during the test run. To ensure that the test function

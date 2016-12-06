@@ -67,30 +67,45 @@ test('Emulate user actions and perform a verification', async t => {
                 <p>Additionally, TestCafe automatically generates source maps for easy debugging. To debug your test code, start a debugging session in an IDE that supports source maps.</p>
             </div>
         </div>
-       <div class="feature">
+		<div class="feature">
             <span class="name">
-                Direct Access to Page Elements
+                Flexible Selectors System
             </span>
             <div class="description">
-                <p>TestCafe allows you to access webpage elements using standard CSS selectors or <a href="documentation/test-api/selecting-page-elements/selectors.html">custom selectors</a> that run client JavaScript code. You can call a custom selector as a regular function within your test. It will execute your code on the client and pass the returned value back to the test. This allows you to determine the state of each element on the tested page or select a proper element to perform an action on.</p>
+                <p>TestCafe supports a flexible selector system that provides API with rich capabilities for writing test scripts.</p>
+                <p>You can access webpage elements in different ways using <a href="documentation/test-api/selecting-page-elements/selectors.html">selectors</a>. For example, you can use one of the following selector types:
+                    <ul>
+                        <li>CSS selector</li>
+                        <li>Text</li>
+                        <li>DOM hierarchy</li>
+                        <li>or use any custom logic</li>
+                    </ul>
+                </p>
+                <p>The selector API provides methods that can be combined together, thus providing you with a flexible functional-style selector mechanism.
+                <pre><code>const macOSInput = Selector('.column').find('label').withText('MacOS').child('input');</code></pre>
+                </p>
+                <p>You can also use the helpful and popular Page Object methodology. This methodology is based on wrapping the pages or page fragments of a web app into objects:</p>
+                <pre><code>import { Selector } from 'testcafe';
 
-                <pre><code>import { expect } from 'chai';
-import { Selector } from 'testcafe';
+fixture `Getting Started`
+    .page `http://devexpress.github.io/testcafe/example`;
 
-fixture `Example page`
-    .page `https://devexpress.github.io/testcafe/example`;
+const page = {
+    nameInput:             Selector('#developer-name'),
+    interfaceSelect:       Selector('#preferred-interface'),
+    interfaceSelectOption: Selector('#preferred-interface').child('option')
+};
 
-test('Type the developer name, obtain the header text and check it', async t => {
+test('Use Page Object', async t => {
     await t
-        .typeText('#developer-name', 'John Smith')
-        .click('#submit-button');
+        .typeText(page.nameInput, 'John Smith')
+        .click(page.interfaceSelect)
+        .click(page.interfaceSelectOption.nth(2));
 
-    const headerText = await Selector('#article-header').innerText;
-
-    expect(headerText).to.equal('Thank you, John!');
+    await t.expect(page.interfaceSelect.value).eql('Both');
 });</code></pre>
+                </div>
             </div>
-        </div>
         <div class="feature">
             <span class="name">
                 No Extra Coding

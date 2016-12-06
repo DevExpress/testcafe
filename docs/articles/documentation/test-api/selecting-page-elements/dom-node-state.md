@@ -1,19 +1,15 @@
 ---
 layout: docs
-title: DOM Node Snapshots
-permalink: /documentation/test-api/selecting-page-elements/dom-node-snapshots.html
+title: DOM Node State
+permalink: /documentation/test-api/selecting-page-elements/dom-node-state.html
 checked: false
 ---
-# DOM Node Snapshots
+# DOM Node State
 
-A *DOM node snapshot* is an object that represents the state of a particular document node server side.
-This node can be a DOM element, document, fragment, text or comment node. DOM node snapshots are returned by [selectors](selectors.md).
+Selectors allow you to get a server-side representation of a DOM node's state.
+This representation exposes API that is similar to DOM objects.
 
-This topic lists API members exposed by DOM node snapshots.
-
-> Selectors and promises returned by them also expose this API (except for
-snapshot's `getChildElement`, `getChildNode` and `getParentNode` methods).
-> See [Snapshot API Shorthands](selectors.md#snapshot-api-shorthands).
+See how to obtain element state in the [Obtain Element State](./selectors.md#obtain-element-state) article.
 
 ## Members Common Across All Nodes
 
@@ -28,9 +24,6 @@ Property | Type | Description
 
 Method | Type | Description
 ------ | ---- | -----
-`getChildElement(idx)` | Selector | A selector that returns the snapshot of the child element at index `idx`. See [ParentNode.children](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/children).
-`getChildNode(idx)` | Selector | A selector that returns the snapshot of the child node at index `idx`. See [Node.childNodes](https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes).
-`getParentNode` | Selector | A selector that returns the parent node snapshot. See [Node.parentNode](https://developer.mozilla.org/en-US/docs/Web/API/Node/parentNode).
 `hasClass(className)` | Boolean | `true` if the element has the specified class name.
 
 ## Members Specific to Element Nodes
