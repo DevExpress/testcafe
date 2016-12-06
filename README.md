@@ -81,30 +81,43 @@ test('Emulate user actions and perform a verification', async t => {
 Additionally, TestCafe automatically generates source maps for easy debugging.
 To debug your test code, start a debugging session in an IDE that supports source maps.
 
-### Direct Access to Page Elements
+### Flexible Selectors System
 
-TestCafe allows you to access webpage elements using standard CSS selectors or [custom selectors](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html) that run client JavaScript code.
-You can call a custom selector as a regular function within your test.
-It will execute your code on the client and pass the returned value back to the test.
-This allows you to determine the state of each element on the tested page or select a proper element to perform an action on.
+TestCafe supports a flexible selector system that provides API with rich capabilities for writing test scripts.
+You can access webpage elements in different ways using [selectors](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html). For example, you can use one of the following selector types:
+
+* CSS selector
+* Text
+* DOM hierarchy
+* or use any custom logic
+
+The selector API provides methods that can be combined together, thus providing you with a flexible functional-style selector mechanism.
 
 ```js
-import { expect } from 'chai';
+const macOSInput = Selector('.column').find('label').withText('MacOS').child('input');
+```
+
+You can also use the helpful and popular Page Object methodology. This methodology is based on wrapping the pages or page fragments of a web app into objects:
+
+```js
 import { Selector } from 'testcafe';
 
-const elementWithId = Selector(id => document.querySelector(`#${id}`));
+fixture `Getting Started`
+    .page `http://devexpress.github.io/testcafe/example`;
 
-fixture `Example page`
-    .page `https://devexpress.github.io/testcafe/example`;
+const page = {
+    nameInput:             Selector('#developer-name'),
+    interfaceSelect:       Selector('#preferred-interface'),
+    interfaceSelectOption: Selector('#preferred-interface').child('option')
+};
 
-test('Type the developer name, obtain the header text and check it', async t => {
+test('Use Page Object', async t => {
     await t
-        .typeText('#developer-name', 'John Smith')
-        .click('#submit-button');
+        .typeText(page.nameInput, 'John Smith')
+        .click(page.interfaceSelect)
+        .click(page.interfaceSelectOption.nth(2));
 
-    const headerText = await elementWithId('article-header').innerText;
-
-    expect(headerText).to.equal('Thank you, John!');
+    await t.expect(page.interfaceSelect.value).eql('Both');
 });
 ```
 
@@ -243,9 +256,11 @@ To wait for actions to complete, use the `await` keyword when calling these acti
 
 TestCafe allows you to observe the page state.
 For this purpose, it offers special kinds of functions that will execute your code on the client:
-[Selector](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html) used to get direct access to DOM elements
-and [ClientFunction](https://devexpress.github.io/testcafe/documentation/test-api/obtaining-data-from-the-client.html) used to obtain arbitrary data from the client side.
+[Selector](../test-api/selecting-page-elements/selectors.md) used to get direct access to DOM elements
+and [ClientFunction](../test-api/obtaining-data-from-the-client.md) used to obtain arbitrary data from the client side.
 You call these functions as regular async functions, that is you can obtain their results and use parameters to pass data to them.
+
+The selector API provides methods and properties to select elements on the page and get theirs state.
 
 For example, clicking the Submit button on the sample web page opens a "Thank you" page.
 To get access to DOM elements on the opened page, the `Selector` function can be used.
@@ -254,26 +269,18 @@ The following example demonstrates how to access the article header element and 
 ```js
 import { Selector } from 'testcafe';
 
-// Declare the parameterized Selector function
-// to get access to a DOM element identified by the `id` attribute
-const elementWithId = Selector(id => document.getElementById(id));
-
 fixture `Getting Started`
-    .page `https://devexpress.github.io/testcafe/example`;
+    .page `http://devexpress.github.io/testcafe/example`;
 
 test('My first test', async t => {
     await t
         .typeText('#developer-name', 'John Smith')
         .click('#submit-button');
 
-    // Use the Selector function to get access to the article header
-    const articleHeader = await elementWithId('article-header');
+    const articleHeader = await Selector('.result-content').find('h1');
 
     // Obtain the text of the article header
-    let headerText = articleHeader.innerText;
-
-    // Or use a shorthand form to obtain article header text directly
-    headerText = await elementWithId('article-header').innerText;
+    let headerText = await articleHeader.innerText;
 });
 ```
 
