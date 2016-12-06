@@ -147,7 +147,7 @@ Use one of [built-in reporters](https://devexpress.github.io/testcafe/documentat
 
 ### Straightforward Continuous Integration
 
-TestCafe is easy to set up on popular Continuous Integration platforms as it allows you to test against various browsers: local, remote or cloud (e.g., [Sauce Labs](https://saucelabs.com/)).
+TestCafe is easy to set up on popular Continuous Integration platforms as it allows you to test against various browsers: local, remote, cloud (e.g., [Sauce Labs](https://saucelabs.com/)) or headless (e.g. [Nightmare](http://www.nightmarejs.org)).
 You can also create a custom [browser provider](https://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/index.html) to add support for a browser or a cloud platform of your choice.
 
 ## Getting Started

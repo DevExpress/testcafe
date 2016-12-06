@@ -18,7 +18,9 @@ This topic contains the following sections.
 * [Publishing the Provider to npm](#publishing-the-provider-to-npm)
 * [Specifying a Browser for a Test Task](#specifying-a-browser-for-a-test-task)
 
-> To run tests on [Sause Labs](https://saucelabs.com), you can use the existing [testcafe-browser-provider-saucelabs](https://github.com/DevExpress/testcafe-browser-provider-saucelabs/) plugin.
+> To run tests on [Sause Labs](https://saucelabs.com) or [Nightmare](https://github.com/segmentio/nightmare) browsers,
+> you can use the existing [testcafe-browser-provider-saucelabs](https://github.com/DevExpress/testcafe-browser-provider-saucelabs/)
+> or [testcafe-browser-provider-nightmare](https://github.com/ryx/testcafe-browser-provider-nightmare) plugin.
 
 ## Generating Browser Provider Project
 
@@ -181,7 +183,8 @@ export default {
 ```
 
 > To learn how to implement provider methods, you can also explore the existing browser provider plugins,
-> for example, [testcafe-browser-provider-saucelabs](https://github.com/DevExpress/testcafe-browser-provider-saucelabs/).
+> for example, [testcafe-browser-provider-saucelabs](https://github.com/DevExpress/testcafe-browser-provider-saucelabs/)
+> or [testcafe-browser-provider-nightmare](https://github.com/ryx/testcafe-browser-provider-nightmare).
 
 ## Building the Provider
 
@@ -223,6 +226,6 @@ After that, you can install the provider plugin as you would [install any other 
 ## Specifying a Browser for a Test Task
 
 When running tests, you can specify a browser accessed through the provider plugin by using a *browser alias*.
-The alias consists of the browser provider name and the name of the browser itself (the latter may be omitted in some providers); for example, `saucelabs:Chrome@52.0:Windows 8.1`.
+The alias consists of the browser provider name and the name of the browser itself (the latter may be omitted in some providers); for example, `saucelabs:Chrome@52.0:Windows 8.1` or `nightmare`.
 
 To obtain all the available aliases for your provider, run the `testcafe --list-browsers {shortProviderName}` command, where `{shortProviderName}` is the provider name (without the `testcafe-browser-provider-` prefix); for example, `testcafe --list-browsers my-provider`.
