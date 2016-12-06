@@ -93,7 +93,6 @@ The index of the node that should be selected. Specifies the node's position amo
 by the selector's [initializing](selectors.md#selector-initializers) function or CSS selector.
 
 Use the `index` option when a function or CSS selector string that was used to initialize the selector returns more than one DOM node.
-Otherwise, this option will be ignored.
 
 You can also use the [text](#optionstext) option to select a node by its text content.
 
