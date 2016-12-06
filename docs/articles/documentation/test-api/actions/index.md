@@ -44,17 +44,6 @@ For actions that target DOM elements, use the `selector` parameter to identify t
 
 You can pass any of the following objects as a `selector`.
 
-* A client-side function that returns a DOM element.
-
-    ```js
-    test('My Test', async t => {
-
-        // Click will be performed on the element returned by the function,
-        // which is the sixth element of the 'active' class.
-        await t.click(() => document.getElementsByClassName('active')[5]));
-    });
-    ```
-
 * A CSS selector string.
 
     ```js
@@ -74,7 +63,7 @@ You can pass any of the following objects as a `selector`.
     fixture `My fixture`
         .page `http://www.example.com/`;
 
-    const lastItem = Selector(() => document.querySelector('.toc-item:last-child'));
+    const lastItem = Selector('.toc-item:last-child');
 
     test('My Test', async t => {
 
@@ -84,18 +73,27 @@ You can pass any of the following objects as a `selector`.
     });
     ```
 
+* A client-side function that returns a DOM element.
+
+    ```js
+    test('My Test', async t => {
+
+        // Click will be performed on the element returned by the function,
+        // which is the third child of the document's body.
+        await t.click(() => document.body.children[2]);
+    });
+    ```
+
 * A [DOM node snapshot](../selecting-page-elements/selectors.md#dom-node-snapshots).
 
     ```js
     import { Selector } from 'testcafe';
 
-    const elementWithId = Selector(id => document.getElementById(id));
-
     fixture `My fixture`
         .page `http://www.example.com/`;
 
     test('My Test', async t => {
-        const topMenuSnapshot = await elementWithId('top-menu');
+        const topMenuSnapshot = await Selector('#top-menu');
 
         // Click will be performed on the element whose snapshot
         // is specified. This is an element with the '#top-menu' ID.
@@ -108,17 +106,16 @@ You can pass any of the following objects as a `selector`.
     ```js
     import { Selector } from 'testcafe';
 
-    const elementWithId = Selector(id => document.getElementById(id));
+    const submitButton = Selector('#submit-button');
 
     fixture `My fixture`
         .page `http://www.example.com/`;
 
     test('My Test', async t => {
 
-        // Click will be performed on the element selected by
-        // the 'getElementById' selector as soon as the promise
-        // is resolved.
-        await t.click(elementWithId('submit-button'));
+        // Click will be performed on the element specified by the selector
+        // as soon as the promise is resolved.
+        await t.click(submitButton());
     });
     ```
 

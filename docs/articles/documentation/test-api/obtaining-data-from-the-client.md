@@ -75,17 +75,17 @@ You can pass the following options to the
 Contains functions, variables or objects used by the client function internally.
 Properties of the `dependencies` object will be added to the client function's scope as variables.
 
-The following sample demonstrates a client function (`getElemWidth`) that
-calls a [selector](selecting-page-elements/selectors.md) (`getElemById`) internally.
-This selector is passed to `getElemWidth` as a dependency.
+The following sample demonstrates a client function (`getArticleHeaderHTML`) that
+calls a [selector](selecting-page-elements/selectors.md) (`articleHeader`) internally.
+This selector is passed to `getArticleHeaderHTML` as a dependency.
 
 ```js
 import { Selector, ClientFunction } from 'testcafe';
 
-const elementWithId  = Selector(id => document.getElementById(id));
+const articleHeader = Selector('#article-header');
 
-const getElemWidth = ClientFunction(id => elementWithId(id).offsetWidth, {
-     dependencies: { elementWithId }
+const getArticleHeaderHTML = ClientFunction(() => articleHeader().innerHTML, {
+     dependencies: { articleHeader }
 });
 ```
 
@@ -119,16 +119,18 @@ The sample below shows how to overwrite the client function options.
 ```js
 import { Selector, ClientFunction } from 'testcafe';
 
-const thirdElemWithClass = Selector(cl => document.getElementsByClassName(cl)).nth(2);
+const option = Selector('option');
 
-const getThirdElemWidth   = ClientFunction(cl => getElement(cl).offsetWidth, {
-     dependencies: { getElement: thirdElemWithClass }
+const thirdOption = option.nth(2);
+
+const getThirdOptionHTML = ClientFunction(() => option().innerHTML, {
+     dependencies: { option: thirdOption }
 });
 
-const fourthElemWithClass = thirdElemWithClass.nth(3);
+const fourthOption = option.nth(3);
 
-const getFourthElemWidth = getThirdElemWidth.with({
-    dependencies: { getElement: fourthElemWithClass }
+const getFourthOptionHTML = getThirdOptionHTML.with({
+    dependencies: { option: fourthOption }
 });
 ```
 

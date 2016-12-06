@@ -77,8 +77,6 @@ test('Emulate user actions and perform a verification', async t => {
                 <pre><code>import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
-const elementWithId = Selector(id => document.querySelector(`#${id}`));
-
 fixture `Example page`
     .page `https://devexpress.github.io/testcafe/example`;
 
@@ -87,7 +85,7 @@ test('Type the developer name, obtain the header text and check it', async t => 
         .typeText('#developer-name', 'John Smith')
         .click('#submit-button');
 
-    const headerText = await elementWithId('article-header').innerText;
+    const headerText = await Selector('#article-header').innerText;
 
     expect(headerText).to.equal('Thank you, John!');
 });</code></pre>
