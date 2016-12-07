@@ -97,7 +97,7 @@ TestCafe tests are executed server side. To manipulate the tested webpage, use [
 To determine the state of page elements or obtain any other data from the client side, use [selectors](selecting-page-elements/selectors.md) and
 [client functions](obtaining-data-from-the-client.md).
 
-To check if the page state matches the expected one, use [assertions](assertions.md).
+To check if the page state matches the expected one, use [assertions](assertions/index.md).
 
 ### Test Controller
 

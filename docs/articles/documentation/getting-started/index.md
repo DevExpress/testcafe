@@ -143,19 +143,10 @@ A functional test also should check the result of actions performed.
 For example, the article header on the "Thank you" page should address a user by the entered name.
 To check if the header is correct, you have to add an assertion to the test.
 
-You can use assertions from Node's built-in [assert](https://nodejs.org/api/assert.html) module or from any third-party assertion library.
-Before calling assertions, make sure an assertion library is installed into your project.
-
-The following test demonstrates how to use an assertion from [Chai Assertion Library](http://chaijs.com/api/bdd/).
-Before running the test, install the assertion library by calling the `npm install --save-dev chai` command.
+The following test demonstrates how to use [build-in assertions](../test-api/assertions/index.md).
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
-
-// Declare the parameterized selector function
-// to obtain text content of an element identified by the `id` attribute
-const elementWithId = Selector(id => document.getElementById(id));
 
 fixture `Getting Started`
     .page `http://devexpress.github.io/testcafe/example`;
@@ -163,12 +154,9 @@ fixture `Getting Started`
 test('My first test', async t => {
     await t
         .typeText('#developer-name', 'John Smith')
-        .click('#submit-button');
+        .click('#submit-button')
 
-    // Use the Selector function to get access to the article header
-    const headerText = await elementWithId('article-header').innerText;
-
-    // Use the assertion to check if the actual header text is equal to the expected one
-    expect(headerText).to.equal('Thank you, John Smith!');
+        // Use the assertion to check if the actual header text is equal to the expected one
+        .expect(Selector('#article-header').innerText).eql('Thank you, John Smith!');
 });
 ```

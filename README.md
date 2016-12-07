@@ -108,6 +108,27 @@ test('Type the developer name, obtain the header text and check it', async t => 
 });
 ```
 
+### Smart assertions
+
+TestCafe provides a full-featured set of [built-in assertions](https://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html), so you do not need to reference additional libraries.
+Use assertions with [Selector's DOM node state properties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#define-assertion-actual-value) to enable the [Smart Assertion Query Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/index.html#smart-assertion-query-mechanism) and create stable, fast and reliable tests that do not depend on page response time.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `Example page`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+test('Check property of element', async t => {
+    const developerNameInput = Selector('#developer-name');
+
+    await t
+        .expect(developerNameInput.value).eql('', 'input is empty')
+        .typeText(developerNameInput, 'Peter Parker')
+        .expect(developerNameInput.value).constains('Peter', 'input contains text "Peter"');
+});
+```
+
 ### No Extra Coding
 
 Write tests without boilerplate code.
@@ -264,19 +285,10 @@ A functional test also should check the result of actions performed.
 For example, the article header on the "Thank you" page should address a user by the entered name.
 To check if the header is correct, you have to add an assertion to the test.
 
-You can use assertions from Node's built-in [assert](https://nodejs.org/api/assert.html) module or from any third-party assertion library.
-Before calling assertions, make sure an assertion library is installed into your project.
-
-The following test demonstrates how to use an assertion from [Chai Assertion Library](http://chaijs.com/api/bdd/).
-Before running the test, install the assertion library by calling the `npm install --save-dev chai` command.
+The following test demonstrates how to use [build-in assertions](https://devexpress.github.io/testcafe/documentation/test-api/assertions/).
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
-
-// Declare the parameterized selector function
-// to obtain text content of an element identified by the `id` attribute
-const elementWithId = Selector(id => document.getElementById(id));
 
 fixture `Getting Started`
     .page('https://devexpress.github.io/testcafe/example');
@@ -284,13 +296,9 @@ fixture `Getting Started`
 test('My first test', async t => {
     await t
         .typeText('#developer-name', 'John Smith')
-        .click('#submit-button');
-
-    // Use the Selector function to get access to the article header
-    const headerText = await elementWithId('article-header').innerText;
-
-    // Use the assertion to check if the actual header text is equal to the expected one
-    expect(headerText).to.equal('Thank you, John Smith!');
+        .click('#submit-button')
+        // Use the assertion to check if the actual header text is equal to the expected one
+        .expect(Selector('#article-header').innerText).eql('Thank you, John Smith!');
 });
 ```
 
