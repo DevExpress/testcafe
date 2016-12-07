@@ -72,6 +72,6 @@ const designSurfaceItems = Selector('.design-surface').find('.items');
 test('Drag an item from the toolbox', async t => {
     await t
         .dragToElement('.toolbox-item.text-input', '.design-surface')
-        .expect(designSurfaceItems.count).ok();
+        .expect(designSurfaceItems.count).gt(0);
 });
 ```
