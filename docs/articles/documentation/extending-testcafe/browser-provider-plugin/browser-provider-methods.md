@@ -52,6 +52,8 @@ Performs initialization actions the provider may require. This method is called 
 async init ()
 ```
 
+For example, the [Nightmare browser provider](https://github.com/ryx/testcafe-browser-provider-nightmare) uses this method to create a Nightmare instance.
+
 ### dispose
 
 Performs cleanup actions for the provider data. This method is called before the `testcafe` process is finished.
