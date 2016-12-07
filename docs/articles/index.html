@@ -84,7 +84,7 @@ test('Emulate user actions and perform a verification', async t => {
                 <p>The selector API provides methods that can be combined together, thus providing you with a flexible functional-style selector mechanism.
                 <pre><code>const macOSInput = Selector('.column').find('label').withText('MacOS').child('input');</code></pre>
                 </p>
-                <p>You can also use the helpful and popular Page Object methodology. This methodology is based on wrapping the pages or page fragments of a web app into objects:</p>
+                <p>You can also use the helpful and popular <a href="http://martinfowler.com/bliki/PageObject.html">Page Object</a> methodology:</p>
                 <pre><code>import { Selector } from 'testcafe';
 
 fixture `Getting Started`

@@ -97,7 +97,7 @@ The selector API provides methods that can be combined together, thus providing 
 const macOSInput = Selector('.column').find('label').withText('MacOS').child('input');
 ```
 
-You can also use the helpful and popular Page Object methodology. This methodology is based on wrapping the pages or page fragments of a web app into objects:
+You can also use the helpful and popular [Page Object](http://martinfowler.com/bliki/PageObject.html) methodology:
 
 ```js
 import { Selector } from 'testcafe';
