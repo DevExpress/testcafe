@@ -81,7 +81,7 @@ test('Emulate user actions and perform a verification', async t => {
 Additionally, TestCafe automatically generates source maps for easy debugging.
 To debug your test code, start a debugging session in an IDE that supports source maps.
 
-### Flexible Selectors System
+### Flexible Selector System
 
 TestCafe supports a flexible selector system that provides API with rich capabilities for writing test scripts.
 You can access webpage elements in different ways using [selectors](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html). For example, you can use one of the following selector types:
