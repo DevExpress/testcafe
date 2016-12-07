@@ -18,7 +18,7 @@ This topic contains the following sections.
 * [Publishing the Provider to npm](#publishing-the-provider-to-npm)
 * [Specifying a Browser for a Test Task](#specifying-a-browser-for-a-test-task)
 
-> To run tests on [Sause Labs](https://saucelabs.com) or [Nightmare](https://github.com/segmentio/nightmare) browsers,
+> To run tests on [Sause Labs](https://saucelabs.com) or [headless](https://github.com/segmentio/nightmare) browsers,
 > you can use the existing [testcafe-browser-provider-saucelabs](https://github.com/DevExpress/testcafe-browser-provider-saucelabs/)
 > or [testcafe-browser-provider-nightmare](https://github.com/ryx/testcafe-browser-provider-nightmare) plugin.
 
