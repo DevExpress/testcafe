@@ -49,9 +49,7 @@ permalink: /
             <div class="description">
                 <p>You can write TestCafe tests in ES2016 using the latest JavaScript features like <code>async/await</code>.</p>
                 <p><a href="documentation/test-api">Test API</a> consists of over two dozen methods that can emulate all actions one could possibly do with a webpage. Chained syntax allows for code that is easy to write and read.</p>
-                <pre><code>import { expect } from 'chai';
-
-fixture `Example page`
+                <pre><code>fixture `Example page`
     .page `https://devexpress.github.io/testcafe/example`;
 
 test('Emulate user actions and perform a verification', async t => {
@@ -62,7 +60,7 @@ test('Emulate user actions and perform a verification', async t => {
 
     const location = await t.eval(() => window.location);
 
-    expect(location.pathname).eql('/testcafe/example/thank-you.html');
+    await t.expect(location.pathname).eql('/testcafe/example/thank-you.html');
 });</code></pre>
                 <p>Additionally, TestCafe automatically generates source maps for easy debugging. To debug your test code, start a debugging session in an IDE that supports source maps.</p>
             </div>
@@ -100,9 +98,8 @@ test('Use Page Object', async t => {
     await t
         .typeText(page.nameInput, 'John Smith')
         .click(page.interfaceSelect)
-        .click(page.interfaceSelectOption.nth(2));
-
-    await t.expect(page.interfaceSelect.value).eql('Both');
+        .click(page.interfaceSelectOption.nth(2))
+        .expect(page.interfaceSelect.value).eql('Both');
 });</code></pre>
                 </div>
             </div>

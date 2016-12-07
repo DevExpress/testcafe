@@ -6,5 +6,5 @@ fixture `Check if the button text changes`
 test('My test', async t => {
     await t
         .click('#click-here')
-        .expect(Selector('#click-here').value).to.equal('Hello!');
+        .expect(Selector('#click-here').value).eql('Hello!');
 });

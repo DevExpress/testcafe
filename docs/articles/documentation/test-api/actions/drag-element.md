@@ -31,7 +31,6 @@ Parameter              | Type                                              | Des
 The following example demonstrates how to use the `t.drag` action with a slider.
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 const slider = Selector('#developer-rating');
@@ -40,13 +39,11 @@ fixture `My fixture`
     .page `http://www.example.com/`;
 
 test('Drag slider', async t => {
-    await t.click('#i-tried-testcafe');
-
-    expect(await slider.value).to.equal(1);
-
-    await t.drag('.ui-slider-handle', 360, 0, { offsetX: 10, offsetY: 10 });
-
-    expect(await slider.value).to.equal(7);
+    await t
+        .click('#i-tried-testcafe');
+        .expect(slider.value).eql(1)
+        .drag('.ui-slider-handle', 360, 0, { offsetX: 10, offsetY: 10 })
+        .expect(slider.value).eql(7);
 });
 ```
 
@@ -65,17 +62,16 @@ Parameter              | Type                                              | Des
 This sample shows how to drop an element into a specific area using the `t.dragToElement` action.
 
 ```js
-import { expect } from 'chai';
 import { ClientFunction } from 'testcafe';
 
 fixture `My fixture`
     .page `http://www.example.com/`;
 
-const isDesignSurfaceEmpty = ClientFunction(() => !getDesignSurfaceElements().length);
+const designSurfaceItems = Selector('.design-surface').find('.items');
 
 test('Drag an item from the toolbox', async t => {
-    await t.dragToElement('.toolbox-item.text-input', '.design-surface');
-
-    expect(await isDesignSurfaceEmpty()).to.be.false;
+    await t
+        .dragToElement('.toolbox-item.text-input', '.design-surface')
+        .expect(designSurfaceItems.count).gt(0);
 });
 ```

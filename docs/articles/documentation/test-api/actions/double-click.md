@@ -20,7 +20,6 @@ Parameter              | Type                                              | Des
 The following example shows how to use the `t.doubleClick` action to invoke a dialog.
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 const dialog = Selector('#dialog');
@@ -29,9 +28,9 @@ fixture `My fixture`
     .page `http://www.example.com/`;
 
 test('Invoke Image Options Dialog', async t => {
-    await t.doubleClick('#thumbnail');
-
-    expect(await dialog.visible).to.be.true;
+    await t
+        .doubleClick('#thumbnail')
+        .expect(dialog.visible).ok();
 });
 ```
 

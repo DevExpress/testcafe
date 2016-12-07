@@ -19,7 +19,6 @@ Parameter | Type    | Description
 The following example uses the `t.wait` function to pause the test while animation is playing.
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 const header = Selector('#article-header');
@@ -30,8 +29,7 @@ fixture `My fixture`
 test('Wait Example', async t => {
     await t
         .click('#play-1-sec-animation')
-        .wait(1000);
-
-    expect(await header.getStyleProperty('opacity')).to.equal(0);
+        .wait(1000)
+        .expect(header.getStyleProperty('opacity')).eql(0);;
 });
 ```

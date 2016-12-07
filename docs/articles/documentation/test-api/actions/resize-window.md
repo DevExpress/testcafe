@@ -29,7 +29,6 @@ Parameter  | Type    | Description
 The following example demonstrates how to use the `t.resizeWindow` action.
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 const menu = Selector('#side-menu');
@@ -38,9 +37,9 @@ fixture `My fixture`
     .page `http://www.example.com/`;
 
 test('Side menu disappears on small screens', async t => {
-    await t.resizeWindow(200, 100);
-
-    expect(await menu.getStyleProperty('display')).to.equal('none');
+    await t
+        .resizeWindow(200, 100)
+        .expect(menu.getStyleProperty('display')).eql('none');
 });
 ```
 
@@ -66,7 +65,6 @@ Property              | Type    | Description
 The example below shows how to use the `t.resizeWindowToFitDevice` action.
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 const header = Selector('#header');
@@ -75,11 +73,11 @@ fixture `My fixture`
     .page `http://www.example.com/`;
 
 test('Header is displayed on Xperia Z in portrait', async t => {
-    await t.resizeWindowToFitDevice('Sony Xperia Z', {
-        portraitOrientation: true
-    });
-
-    expect(await header.getStyleProperty('display')).to.not.equal('none');
+    await t
+        .resizeWindowToFitDevice('Sony Xperia Z', {
+            portraitOrientation: true
+        })
+        .expect(header.getStyleProperty('display')).notEql('none');
 });
 ```
 
@@ -94,7 +92,6 @@ Maximizes the browser window.
 The following example shows how to use this action.
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 const menu = Selector('#side-menu');
@@ -103,8 +100,8 @@ fixture `My fixture`
     .page `http://www.example.com/`;
 
 test('Side menu is displayed in full screen', async t => {
-    await t.maximizeWindow();
-
-    expect(await menu.visible).to.be.ok;
+    await t
+        .maximizeWindow()
+        .expect(menu.visible).ok();
 });
 ```

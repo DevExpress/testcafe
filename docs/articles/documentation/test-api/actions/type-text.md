@@ -23,7 +23,6 @@ Parameter              | Type                                              | Des
 The following example shows how to use `t.typeText` with and without options.
 
 ```js
-import { expect } from 'chai';
 import { Selector } from 'testcafe';
 
 const nameInput = Selector('#developer-name');
@@ -35,8 +34,7 @@ test('Type and Replace', async t => {
     await t
         .typeText(nameInput, 'Peter')
         .typeText(nameInput, 'Paker', { replace: true })
-        .typeText(nameInput, 'r', { caretPos: 2 });
-
-    expect(await nameInput.value).to.equal('Parker');
+        .typeText(nameInput, 'r', { caretPos: 2 })
+        .expect(nameInput.value).eql('Parker');
 });
 ```

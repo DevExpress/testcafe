@@ -109,8 +109,6 @@ Use the test controller to call [test actions](actions/index.md), handle [browse
 use the [wait function](pausing-the-test.md) or [invoke selectors](selecting-page-elements/index.md).
 
 ```js
-import { expect } from 'chai';
-
 fixture `My fixture`
     .page `http://www.example.com/`;
 
@@ -122,7 +120,7 @@ test('My Test', async t => {
 
     const location = await t.eval(() => window.location);
 
-    expect(location.pathname).eql('/testcafe/example/thank-you.html');
+    await t.expect(location.pathname).eql('/testcafe/example/thank-you.html');
 });
 ```
 
