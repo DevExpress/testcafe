@@ -412,7 +412,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html"  >DOM Node Snapshots</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
 		
     </li>
 
@@ -423,7 +423,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions.html"  >Assertions</a>
+<a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -534,6 +545,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -552,16 +570,17 @@
 to perform an action on it, you can pass CSS selectors to the appropriate <a href="../actions/">action</a> function.</p>
 
 <p>However, there are cases when you may need direct access to DOM elements.
-For instance, you need to know the state of a particular page element to make an <a href="../assertions.html">assertion</a>.
+For instance, you need to know the state of a particular page element to make an <a href="../assertions/">assertion</a>.
 You may also find CSS selectors not powerful enough to identify an element on which you need to perform an action.</p>
 
-<p>To address these scenarios, TestCafe introduces the <em>selector</em> functions. They are executed on the client side, while
-their return value (a <a href="dom-node-snapshots.html">DOM node snapshot</a>) is sent to the server where it can be used to identify a DOM node or observe its state.</p>
+<p>To address these scenarios, TestCafe introduces the <em>selector</em> functions.
+A Selector identifies a webpage element in the test and allow to get its state and
+use it in actions and assertions.</p>
 
 <ul>
 <li><a href="selectors.html">Selectors</a></li>
 <li><a href="selector-options.html">Selector Options</a></li>
-<li><a href="dom-node-snapshots.html">DOM Node Snapshots</a></li>
+<li><a href="dom-node-state.html">DOM Node State</a></li>
 </ul>
 
 

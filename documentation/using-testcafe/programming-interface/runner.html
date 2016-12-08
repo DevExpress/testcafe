@@ -412,7 +412,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html"  >DOM Node Snapshots</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
 		
     </li>
 
@@ -423,7 +423,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions.html"  >Assertions</a>
+<a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -531,6 +542,13 @@
 		    
 		
 <a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
 		
     </li>
 
@@ -843,6 +861,12 @@ where tests are not guaranteed to execute correctly.</p>
 <td><code>10000</code></td>
 </tr>
 <tr>
+<td><code>assertionTimeout</code></td>
+<td>Number</td>
+<td>Specifies the amount of time, in milliseconds, within which TestCafe makes attempts  to successfully execute an <a href="../../test-api/assertions/">assertion</a> if <a href="../../test-api/selecting-page-elements/selectors.html#define-assertion-actual-value">a selector property</a> was used. See <a href="../../test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</td>
+<td><code>3000</code></td>
+</tr>
+<tr>
 <td><code>speed</code></td>
 <td>Number</td>
 <td>Specifies the speed of test execution. Should be a number between <code>1</code> (the fastest) and <code>0.01</code> (the slowest).</td>
@@ -855,6 +879,7 @@ where tests are not guaranteed to execute correctly.</p>
     <span class="na">skipJsErrors</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="na">quarantineMode</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="na">selectorTimeout</span><span class="p">:</span> <span class="mi">50000</span><span class="p">,</span>
+    <span class="na">assertionTimeout</span><span class="p">:</span> <span class="mi">7000</span><span class="p">,</span>
     <span class="na">speed</span><span class="p">:</span> <span class="mf">0.1</span>
 <span class="p">})</span>
 

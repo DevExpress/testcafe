@@ -412,7 +412,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html"  >DOM Node Snapshots</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
 		
     </li>
 
@@ -423,7 +423,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions.html"  >Assertions</a>
+<a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -534,6 +545,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -562,7 +580,9 @@ The provider should expose methods for performing common actions on the browser 
 <li><a href="#publishing-the-provider-to-npm">Publishing the Provider to npm</a></li>
 <li><a href="#specifying-a-browser-for-a-test-task">Specifying a Browser for a Test Task</a></li>
 </ul>
-<blockquote><div class="blockquote-content"><p>To run tests on <a href="https://saucelabs.com">Sause Labs</a>, you can use the existing <a href="https://github.com/DevExpress/testcafe-browser-provider-saucelabs/">testcafe-browser-provider-saucelabs</a> plugin.</p>
+<blockquote><div class="blockquote-content"><p>To run tests on <a href="https://saucelabs.com">Sause Labs</a> or <a href="https://github.com/segmentio/nightmare">headless</a> browsers,
+you can use the existing <a href="https://github.com/DevExpress/testcafe-browser-provider-saucelabs/">testcafe-browser-provider-saucelabs</a>
+or <a href="https://github.com/ryx/testcafe-browser-provider-nightmare">testcafe-browser-provider-nightmare</a> plugin.</p>
 </div></blockquote><h2><a class="anchor" name="generating-browser-provider-project"></a>Generating Browser Provider Project <a class="permalink" href="#generating-browser-provider-project">#</a></h2>
 <p>To create a browser provider project, use the <a href="https://github.com/DevExpress/generator-testcafe-browser-provider">TestCafe browser provider generator</a>.
 The generator will scaffold out the plugin, so that you only need to write a few lines of code.</p>
@@ -702,7 +722,8 @@ npm install -g generator-testcafe-browser-provider
     <span class="p">},</span>
 <span class="p">};</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>To learn how to implement provider methods, you can also explore the existing browser provider plugins,
-for example, <a href="https://github.com/DevExpress/testcafe-browser-provider-saucelabs/">testcafe-browser-provider-saucelabs</a>.</p>
+for example, <a href="https://github.com/DevExpress/testcafe-browser-provider-saucelabs/">testcafe-browser-provider-saucelabs</a>
+or <a href="https://github.com/ryx/testcafe-browser-provider-nightmare">testcafe-browser-provider-nightmare</a>.</p>
 </div></blockquote><h2><a class="anchor" name="building-the-provider"></a>Building the Provider <a class="permalink" href="#building-the-provider">#</a></h2>
 <p>You can build a browser provider project by using the <code>build</code> Gulp task.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">gulp build
@@ -727,7 +748,7 @@ That is why using the <code>publish-please</code> script instead of <code>npm pu
 <p>After that, you can install the provider plugin as you would <a href="../#installing-plugins">install any other plugin</a>.</p>
 <h2><a class="anchor" name="specifying-a-browser-for-a-test-task"></a>Specifying a Browser for a Test Task <a class="permalink" href="#specifying-a-browser-for-a-test-task">#</a></h2>
 <p>When running tests, you can specify a browser accessed through the provider plugin by using a <em>browser alias</em>.
-The alias consists of the browser provider name and the name of the browser itself (the latter may be omitted in some providers); for example, <code>saucelabs:Chrome@52.0:Windows 8.1</code>.</p>
+The alias consists of the browser provider name and the name of the browser itself (the latter may be omitted in some providers); for example, <code>saucelabs:Chrome@52.0:Windows 8.1</code> or <code>nightmare</code>.</p>
 
 <p>To obtain all the available aliases for your provider, run the <code>testcafe --list-browsers {shortProviderName}</code> command, where <code>{shortProviderName}</code> is the provider name (without the <code>testcafe-browser-provider-</code> prefix); for example, <code>testcafe --list-browsers my-provider</code>.</p>
 

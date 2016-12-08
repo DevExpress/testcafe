@@ -412,7 +412,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html"  >DOM Node Snapshots</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
 		
     </li>
 
@@ -423,7 +423,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions.html"  >Assertions</a>
+<a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -534,6 +545,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -626,14 +644,12 @@ For this purpose, it offers special kinds of functions that will execute your co
 and <a href="../test-api/obtaining-data-from-the-client.html">ClientFunction</a> used to obtain arbitrary data from the client side.
 You call these functions as regular async functions, that is you can obtain their results and use parameters to pass data to them.</p>
 
+<p>The selector API provides methods and properties to select elements on the page and get theirs state.</p>
+
 <p>For example, clicking the Submit button on the sample web page opens a &quot;Thank you&quot; page.
 To get access to DOM elements on the opened page, the <code>Selector</code> function can be used.
 The following example demonstrates how to access the article header element and obtain its actual text.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
-
-<span class="c1">// Declare the parameterized Selector function</span>
-<span class="c1">// to get access to a DOM element identified by the `id` attribute</span>
-<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
@@ -643,14 +659,10 @@ The following example demonstrates how to access the article header element and 
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'John Smith'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 
-    <span class="c1">// Use the Selector function to get access to the article header</span>
-    <span class="kr">const</span> <span class="nx">articleHeader</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">elementWithId</span><span class="p">(</span><span class="s1">'article-header'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">articleHeader</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.result-content'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'h1'</span><span class="p">);</span>
 
     <span class="c1">// Obtain the text of the article header</span>
-    <span class="kd">let</span> <span class="nx">headerText</span> <span class="o">=</span> <span class="nx">articleHeader</span><span class="p">.</span><span class="nx">innerText</span><span class="p">;</span>
-
-    <span class="c1">// Or use a shorthand form to obtain article header text directly</span>
-    <span class="nx">headerText</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">elementWithId</span><span class="p">(</span><span class="s1">'article-header'</span><span class="p">).</span><span class="nx">innerText</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">headerText</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">articleHeader</span><span class="p">.</span><span class="nx">innerText</span><span class="p">;</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>For more information, see <a href="../test-api/selecting-page-elements/">Selecting Page Elements</a>.</p>
@@ -659,17 +671,8 @@ The following example demonstrates how to access the article header element and 
 For example, the article header on the &quot;Thank you&quot; page should address a user by the entered name.
 To check if the header is correct, you have to add an assertion to the test.</p>
 
-<p>You can use assertions from Node&#39;s built-in <a href="https://nodejs.org/api/assert.html">assert</a> module or from any third-party assertion library.
-Before calling assertions, make sure an assertion library is installed into your project.</p>
-
-<p>The following test demonstrates how to use an assertion from <a href="http://chaijs.com/api/bdd/">Chai Assertion Library</a>.
-Before running the test, install the assertion library by calling the <code>npm install --save-dev chai</code> command.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'chai'</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
-
-<span class="c1">// Declare the parameterized selector function</span>
-<span class="c1">// to obtain text content of an element identified by the `id` attribute</span>
-<span class="kr">const</span> <span class="nx">elementWithId</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<p>The following test demonstrates how to use <a href="../test-api/assertions/">build-in assertions</a>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
@@ -677,13 +680,10 @@ Before running the test, install the assertion library by calling the <code>npm 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'John Smith'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
 
-    <span class="c1">// Use the Selector function to get access to the article header</span>
-    <span class="kr">const</span> <span class="nx">headerText</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">elementWithId</span><span class="p">(</span><span class="s1">'article-header'</span><span class="p">).</span><span class="nx">innerText</span><span class="p">;</span>
-
-    <span class="c1">// Use the assertion to check if the actual header text is equal to the expected one</span>
-    <span class="nx">expect</span><span class="p">(</span><span class="nx">headerText</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">'Thank you, John Smith!'</span><span class="p">);</span>
+        <span class="c1">// Use the assertion to check if the actual header text is equal to the expected one</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#article-header'</span><span class="p">).</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Thank you, John Smith!'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 

@@ -412,7 +412,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html"  >DOM Node Snapshots</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
 		
     </li>
 
@@ -423,7 +423,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions.html"  >Assertions</a>
+<a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -534,6 +545,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -601,7 +619,9 @@
 <h2><a class="anchor" name="optional-methods"></a>Optional Methods <a class="permalink" href="#optional-methods">#</a></h2><h3><a class="anchor" name="init"></a>init <a class="permalink" href="#init">#</a></h3>
 <p>Performs initialization actions the provider may require. This method is called once before other provider methods are called.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async init ()
-</code></pre></div><h3><a class="anchor" name="dispose"></a>dispose <a class="permalink" href="#dispose">#</a></h3>
+</code></pre></div>
+<p>For example, the <a href="https://github.com/ryx/testcafe-browser-provider-nightmare">Nightmare browser provider</a> uses this method to create a Nightmare instance.</p>
+<h3><a class="anchor" name="dispose"></a>dispose <a class="permalink" href="#dispose">#</a></h3>
 <p>Performs cleanup actions for the provider data. This method is called before the <code>testcafe</code> process is finished.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async dispose ()
 </code></pre></div><h3><a class="anchor" name="getbrowserlist"></a>getBrowserList <a class="permalink" href="#getbrowserlist">#</a></h3>

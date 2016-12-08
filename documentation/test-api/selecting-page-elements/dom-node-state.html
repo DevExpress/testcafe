@@ -6,14 +6,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Assertions | TestCafe</title>
+  <title>DOM Node State | TestCafe</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/assertions.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script>
@@ -412,7 +412,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html"  >DOM Node Snapshots</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html" class="active" >DOM Node State</a>
 		
     </li>
 
@@ -423,7 +423,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions.html" class="active" >Assertions</a>
+<a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -534,6 +545,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -547,40 +565,228 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Assertions</h1>
-<p>To check if the state of the tested webpage matches the one you expect to see, use <em>assertions</em>.</p>
+			<h1>DOM Node State</h1>
+<p>Selectors allow you to get a server-side representation of a DOM node&#39;s state.
+This representation exposes API that is similar to DOM objects.</p>
 
-<p>You can use assertions from Node&#39;s built-in <a href="https://nodejs.org/api/assert.html">assert</a> module or choose whatever 3rd-party library you like.</p>
+<p>See how to obtain element state in the <a href="./selectors.html#obtain-element-state">Obtain Element State</a> article.</p>
+<h2><a class="anchor" name="members-common-across-all-nodes"></a>Members Common Across All Nodes <a class="permalink" href="#members-common-across-all-nodes">#</a></h2>
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>childElementCount</code></td>
+<td>Number</td>
+<td>The number of child HTML elements.</td>
+</tr>
+<tr>
+<td><code>childNodeCount</code></td>
+<td>Number</td>
+<td>The number of child nodes.</td>
+</tr>
+<tr>
+<td><code>hasChildElements</code></td>
+<td>Boolean</td>
+<td><code>true</code> if this node has child HTML elements.</td>
+</tr>
+<tr>
+<td><code>hasChildNodes</code></td>
+<td>Boolean</td>
+<td><code>true</code> if this node has child nodes.</td>
+</tr>
+<tr>
+<td><code>nodeType</code></td>
+<td>Number</td>
+<td>The type of the node. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType">Node.nodeType</a>.</td>
+</tr>
+<tr>
+<td><code>textContent</code></td>
+<td>String</td>
+<td>The text content of the node and its descendants. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent">Node.textContent</a>.</td>
+</tr>
+</tbody></table>
 
-<p>Examples in this documentation use <a href="http://chaijs.com/api/bdd/">BDD-style Chai assertions</a> for demonstration purposes.</p>
-<blockquote><div class="blockquote-content"><p>In order to make an assertion, you need to know the recent state of the webpage and its elements.
-This means that you need to access the webpage on the client side. To learn how to do this,
-see <a href="selecting-page-elements/">Selecting Page Elements</a>.</p>
-</div></blockquote>
-<p>The following sample fixture demonstrates how to use assertions.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'chai'</span><span class="p">;</span>
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>hasClass(className)</code></td>
+<td>Boolean</td>
+<td><code>true</code> if the element has the specified class name.</td>
+</tr>
+</tbody></table>
+<h2><a class="anchor" name="members-specific-to-element-nodes"></a>Members Specific to Element Nodes <a class="permalink" href="#members-specific-to-element-nodes">#</a></h2>
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>attributes</code></td>
+<td>Object</td>
+<td>Attributes of the element as <code>{ name: value, ... }</code>. You can also use the <code>getAttribute</code> method to access attribute values.</td>
+</tr>
+<tr>
+<td><code>boundingClientRect</code></td>
+<td>Object</td>
+<td>The size of the element and its position relative to the viewport. Contains the <code>left</code>, <code>right</code>, <code>bottom</code>, <code>top</code>, <code>width</code> and <code>height</code> properties.  You can also use the <code>getBoundingClientRectProperty</code> method to access these properties.</td>
+</tr>
+<tr>
+<td><code>checked</code></td>
+<td>Boolean</td>
+<td>For checkbox and radio input elements, their current state. For other elements, <code>undefined</code>.</td>
+</tr>
+<tr>
+<td><code>classNames</code></td>
+<td>Array of String</td>
+<td>The list of element&#39;s classes.</td>
+</tr>
+<tr>
+<td><code>clientHeight</code></td>
+<td>Number</td>
+<td>The inner height of the element, including padding but not the horizontal scrollbar height, border, or margin. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/clientHeight">Element.clientHeight</a>.</td>
+</tr>
+<tr>
+<td><code>clientLeft</code></td>
+<td>Number</td>
+<td>The width of the left border of the element. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/clientLeft">Element.clientLeft</a>.</td>
+</tr>
+<tr>
+<td><code>clientTop</code></td>
+<td>Number</td>
+<td>The width of the top border of the element. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/clientTop">Element.clientTop</a>.</td>
+</tr>
+<tr>
+<td><code>clientWidth</code></td>
+<td>Number</td>
+<td>The inner width of the element, including padding but not the vertical scrollbar width, border, or margin. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/clientWidth">Element.clientWidth</a>.</td>
+</tr>
+<tr>
+<td><code>focused</code></td>
+<td>Boolean</td>
+<td><code>true</code> if the element is focused.</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>String</td>
+<td>The element&#39;s identifier. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/id">Element.id</a>.</td>
+</tr>
+<tr>
+<td><code>innerText</code></td>
+<td>String</td>
+<td>The element&#39;s text content &quot;as rendered&quot;. See <a href="https://html.spec.whatwg.org/multipage/dom.html#the-innertext-idl-attribute">The innerText IDL attribute</a>.</td>
+</tr>
+<tr>
+<td><code>namespaceURI</code></td>
+<td>String</td>
+<td>The namespace URI of the element. If the element does not have a namespace, this property is set to <code>null</code>. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/namespaceURI">Element.namespaceURI</a>.</td>
+</tr>
+<tr>
+<td><code>offsetHeight</code></td>
+<td>Number</td>
+<td>The height of the element including vertical padding and borders. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetHeight">HTMLElement.offsetHeight</a>.</td>
+</tr>
+<tr>
+<td><code>offsetLeft</code></td>
+<td>Number</td>
+<td>The number of pixels that the upper left corner of the element is offset by to the left within the <code>offsetParent</code> node. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetLeft">HTMLElement.offsetLeft</a>.</td>
+</tr>
+<tr>
+<td><code>offsetTop</code></td>
+<td>Number</td>
+<td>The number of pixels that the upper left corner of the element is offset by to the top within the <code>offsetParent</code> node. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop">HTMLElement.offsetTop</a>.</td>
+</tr>
+<tr>
+<td><code>offsetWidth</code></td>
+<td>Number</td>
+<td>The width of the element including vertical padding and borders. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetWidth">HTMLElement.offsetWidth</a>.</td>
+</tr>
+<tr>
+<td><code>selected</code></td>
+<td>Boolean</td>
+<td>Indicates that <code>&lt;option&gt;</code> element is currently selected. For other elements, <code>undefined</code>. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement">HTMLOptionElement</a>.</td>
+</tr>
+<tr>
+<td><code>selectedIndex</code></td>
+<td>Number</td>
+<td>For <code>&lt;select&gt;</code> element, the index of the first selected <code>&lt;option&gt;</code> element. For other elements, <code>undefined</code>. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/selectedIndex">HTMLSelectElement.selectedIndex</a>.</td>
+</tr>
+<tr>
+<td><code>scrollHeight</code></td>
+<td>Number</td>
+<td>The height of the element&#39;s content, including content not visible on the screen due to overflow. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight">Element.scrollHeight</a>.</td>
+</tr>
+<tr>
+<td><code>scrollLeft</code></td>
+<td>Number</td>
+<td>The number of pixels that the element&#39;s content is scrolled to the left. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollLeft">Element.scrollLeft</a>.</td>
+</tr>
+<tr>
+<td><code>scrollTop</code></td>
+<td>Number</td>
+<td>The number of pixels that the element&#39;s content is scrolled upward. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop">Element.scrollTop</a>.</td>
+</tr>
+<tr>
+<td><code>scrollWidth</code></td>
+<td>Number</td>
+<td>Either the width in pixels of the element&#39;s content or the width of the element itself, whichever is greater. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollWidth">Element.scrollWidth</a>.</td>
+</tr>
+<tr>
+<td><code>style</code></td>
+<td>Object</td>
+<td>The <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/getComputedStyle">computed</a> values of element&#39;s CSS properties as <code>{ property: value, ... }</code>. You can also use the <code>getStyleProperty</code> method to access CSS properties.</td>
+</tr>
+<tr>
+<td><code>tagName</code></td>
+<td>String</td>
+<td>The name of the element. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName">Element.tagName</a>.</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>String</td>
+<td>For input elements, the current value in the control. For other elements, <code>undefined</code>.</td>
+</tr>
+<tr>
+<td><code>visible</code></td>
+<td>Boolean</td>
+<td><code>true</code> if the element is visible.</td>
+</tr>
+</tbody></table>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`;</span>
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>getStyleProperty(propertyName)</code></td>
+<td>Object</td>
+<td>Returns the computed value of the CSS <code>propertyName</code> property. You can also use the <code>style</code> property to access a hash table of CSS properties.</td>
+</tr>
+<tr>
+<td><code>getAttribute(attributeName)</code></td>
+<td>String</td>
+<td>Returns the value of the <code>attributeName</code> attribute. You can also use the <code>attributes</code> property to access a hash table of attributes.</td>
+</tr>
+<tr>
+<td><code>getBoundingClientRectProperty(propertyName)</code></td>
+<td>Number</td>
+<td>Returns the value of the <code>propertyName</code> property from the <code>boundingClientRect</code> object.</td>
+</tr>
+</tbody></table>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Test 1'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#myelem'</span><span class="p">);</span>
-
-    <span class="kr">const</span> <span class="nx">myElement</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">'#myelem'</span><span class="p">);</span>
-
-    <span class="nx">expect</span><span class="p">(</span><span class="nx">myElement</span><span class="p">.</span><span class="nx">visible</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
-<span class="p">});</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Test 2'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#input'</span><span class="p">,</span> <span class="s1">'Hello world!'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#apply'</span><span class="p">);</span>
-
-    <span class="kr">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">'#header'</span><span class="p">);</span>
-
-    <span class="nx">expect</span><span class="p">(</span><span class="nx">header</span><span class="p">.</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">'Hello world!'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
 
 		</div>
 	</article>
