@@ -242,7 +242,7 @@ $(document).ready(function () {
                     return waitForIframeReloaded(iframe);
                 })
                 .then(function () {
-                    equal(iframe.contentWindow.location.pathname, '/sessionId/https://example.com/test-resource/focus-iframe.html', 'path is correct before click on link');
+                    equal(iframe.contentWindow.location.pathname, '/sessionId!i/https://example.com/test-resource/focus-iframe.html', 'path is correct after click on link');
                     ok(clicked);
 
                     testFinished = true;
