@@ -95,28 +95,8 @@ The selector API provides methods that can be combined together, thus providing 
 const macOSInput = Selector('.column').find('label').withText('MacOS').child('input');
 ```
 
-You can also use the helpful and popular [Page Object](http://martinfowler.com/bliki/PageObject.html) methodology:
-
-```js
-import { Selector } from 'testcafe';
-
-fixture `Getting Started`
-    .page `http://devexpress.github.io/testcafe/example`;
-
-const page = {
-    nameInput:             Selector('#developer-name'),
-    interfaceSelect:       Selector('#preferred-interface'),
-    interfaceSelectOption: Selector('#preferred-interface').child('option')
-};
-
-test('Use Page Object', async t => {
-    await t
-        .typeText(page.nameInput, 'John Smith')
-        .click(page.interfaceSelect)
-        .click(page.interfaceSelectOption.nth(2))
-        .expect(page.interfaceSelect.value).eql('Both');
-});
-```
+Check our [example](https://github.com/DevExpress/testcafe/blob/master/examples/basic) that demonstrates how to create tests using
+declarative [Page Objects](http://martinfowler.com/bliki/PageObject.html) built with TestCafe selectors.
 
 ### Smart assertions
 
