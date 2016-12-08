@@ -412,7 +412,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html"  >DOM Node Snapshots</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
 		
     </li>
 
@@ -423,7 +423,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions.html"  >Assertions</a>
+<a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -534,6 +545,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -614,15 +632,15 @@ To interact with the page, use <a href="actions/">test actions</a>.</p>
 <p>Contains functions, variables or objects used by the client function internally.
 Properties of the <code>dependencies</code> object will be added to the client function&#39;s scope as variables.</p>
 
-<p>The following sample demonstrates a client function (<code>getElemWidth</code>) that
-calls a <a href="selecting-page-elements/selectors.html">selector</a> (<code>getElemById</code>) internally.
-This selector is passed to <code>getElemWidth</code> as a dependency.</p>
+<p>The following sample demonstrates a client function (<code>getArticleHeaderHTML</code>) that
+calls a <a href="selecting-page-elements/selectors.html">selector</a> (<code>articleHeader</code>) internally.
+This selector is passed to <code>getArticleHeaderHTML</code> as a dependency.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">elementWithId</span>  <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">articleHeader</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#article-header'</span><span class="p">);</span>
 
-<span class="kr">const</span> <span class="nx">getElemWidth</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nx">elementWithId</span><span class="p">(</span><span class="nx">id</span><span class="p">).</span><span class="nx">offsetWidth</span><span class="p">,</span> <span class="p">{</span>
-     <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="nx">elementWithId</span> <span class="p">}</span>
+<span class="kr">const</span> <span class="nx">getArticleHeaderHTML</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">articleHeader</span><span class="p">().</span><span class="nx">innerHTML</span><span class="p">,</span> <span class="p">{</span>
+     <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="nx">articleHeader</span> <span class="p">}</span>
 <span class="p">});</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>When a client function calls a <a href="selecting-page-elements/selectors.html">selector</a> internally,
 the selector does not wait for the element to appear in the DOM
@@ -645,16 +663,18 @@ from the original function and new <code>options</code> that overwrite the origi
 <p>The sample below shows how to overwrite the client function options.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">thirdElemWithClass</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">cl</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">cl</span><span class="p">),</span> <span class="p">{</span> <span class="na">index</span><span class="p">:</span> <span class="mi">2</span> <span class="p">});</span>
+<span class="kr">const</span> <span class="nx">option</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'option'</span><span class="p">);</span>
 
-<span class="kr">const</span> <span class="nx">getThirdElemWidth</span>   <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(</span><span class="nx">cl</span> <span class="o">=&gt;</span> <span class="nx">getElement</span><span class="p">(</span><span class="nx">cl</span><span class="p">).</span><span class="nx">offsetWidth</span><span class="p">,</span> <span class="p">{</span>
-     <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="na">getElement</span><span class="p">:</span> <span class="nx">thirdElemWithClass</span> <span class="p">}</span>
+<span class="kr">const</span> <span class="nx">thirdOption</span> <span class="o">=</span> <span class="nx">option</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">getThirdOptionHTML</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">option</span><span class="p">().</span><span class="nx">innerHTML</span><span class="p">,</span> <span class="p">{</span>
+     <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="na">option</span><span class="p">:</span> <span class="nx">thirdOption</span> <span class="p">}</span>
 <span class="p">});</span>
 
-<span class="kr">const</span> <span class="nx">fourthElemWithClass</span> <span class="o">=</span> <span class="nx">thirdElemWithClass</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">index</span><span class="p">:</span> <span class="mi">3</span> <span class="p">});</span>
+<span class="kr">const</span> <span class="nx">fourthOption</span> <span class="o">=</span> <span class="nx">option</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
 
-<span class="kr">const</span> <span class="nx">getFourthElemWidth</span> <span class="o">=</span> <span class="nx">getThirdElemWidth</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span>
-    <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="na">getElement</span><span class="p">:</span> <span class="nx">fourthElemWithClass</span> <span class="p">}</span>
+<span class="kr">const</span> <span class="nx">getFourthOptionHTML</span> <span class="o">=</span> <span class="nx">getThirdOptionHTML</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span>
+    <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="na">option</span><span class="p">:</span> <span class="nx">fourthOption</span> <span class="p">}</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="one-time-client-code-execution"></a>One-Time Client Code Execution <a class="permalink" href="#one-time-client-code-execution">#</a></h2>
 <p>To create a client function and immediately execute it without saving it,
@@ -696,7 +716,6 @@ you will have to manually bind this function to the test controller.</p>
 
 <p>Use the <a href="#optionsboundtestrun">boundTestRun</a> option for this.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">fs</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'fs'</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'chai'</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
@@ -715,7 +734,7 @@ you will have to manually bind this function to the test controller.</p>
         <span class="p">});</span>
     <span class="p">});</span>
 
-    <span class="nx">expect</span><span class="p">(</span><span class="nx">equal</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">equal</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>This approach only works for Node.js callbacks that fire during the test run. To ensure that the test function

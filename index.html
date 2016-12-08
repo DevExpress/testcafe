@@ -183,9 +183,7 @@
             <div class="description">
                 <p>You can write TestCafe tests in ES2016 using the latest JavaScript features like <code>async/await</code>.</p>
                 <p><a href="documentation/test-api">Test API</a> consists of over two dozen methods that can emulate all actions one could possibly do with a webpage. Chained syntax allows for code that is easy to write and read.</p>
-                <pre><code>import { expect } from 'chai';
-
-fixture `Example page`
+                <pre><code>fixture `Example page`
     .page `https://devexpress.github.io/testcafe/example`;
 
 test('Emulate user actions and perform a verification', async t => {
@@ -196,34 +194,68 @@ test('Emulate user actions and perform a verification', async t => {
 
     const location = await t.eval(() => window.location);
 
-    expect(location.pathname).eql('/testcafe/example/thank-you.html');
+    await t.expect(location.pathname).eql('/testcafe/example/thank-you.html');
 });</code></pre>
                 <p>Additionally, TestCafe automatically generates source maps for easy debugging. To debug your test code, start a debugging session in an IDE that supports source maps.</p>
             </div>
         </div>
-       <div class="feature">
+		<div class="feature">
             <span class="name">
-                Direct Access to Page Elements
+                Flexible Selector System
             </span>
             <div class="description">
-                <p>TestCafe allows you to access webpage elements using standard CSS selectors or <a href="documentation/test-api/selecting-page-elements/selectors.html">custom selectors</a> that run client JavaScript code. You can call a custom selector as a regular function within your test. It will execute your code on the client and pass the returned value back to the test. This allows you to determine the state of each element on the tested page or select a proper element to perform an action on.</p>
+                <p>TestCafe supports a flexible selector system that provides API with rich capabilities for writing test scripts.</p>
+                <p>You can access webpage elements in different ways using <a href="documentation/test-api/selecting-page-elements/selectors.html">selectors</a>. For example, you can use one of the following selector types:
+                    <ul>
+                        <li>CSS selector</li>
+                        <li>Text</li>
+                        <li>DOM hierarchy</li>
+                        <li>or use any custom logic</li>
+                    </ul>
+                </p>
+                <p>The selector API provides methods that can be combined together, thus providing you with a flexible functional-style selector mechanism.
+                <pre><code>const macOSInput = Selector('.column').find('label').withText('MacOS').child('input');</code></pre>
+                </p>
+                <p>You can also use the helpful and popular <a href="http://martinfowler.com/bliki/PageObject.html">Page Object</a> methodology:</p>
+                <pre><code>import { Selector } from 'testcafe';
 
-                <pre><code>import { expect } from 'chai';
-import { Selector } from 'testcafe';
+fixture `Getting Started`
+    .page `http://devexpress.github.io/testcafe/example`;
 
-const elementWithId = Selector(id => document.querySelector(`#${id}`));
+const page = {
+    nameInput:             Selector('#developer-name'),
+    interfaceSelect:       Selector('#preferred-interface'),
+    interfaceSelectOption: Selector('#preferred-interface').child('option')
+};
+
+test('Use Page Object', async t => {
+    await t
+        .typeText(page.nameInput, 'John Smith')
+        .click(page.interfaceSelect)
+        .click(page.interfaceSelectOption.nth(2))
+        .expect(page.interfaceSelect.value).eql('Both');
+});</code></pre>
+                </div>
+            </div>
+        <div class="feature">
+            <span class="name">
+                Smart Assertions
+            </span>
+            <div class="description">
+                <p>TestCafe provides a full-featured set of <a href="documentation/test-api/assertions/assertion-api.html">built-in assertions</a>, so you do not need to reference additional libraries. Use assertions with <a href="documentation/test-api/selecting-page-elements/selectors.html#define-assertion-actual-value">Selector's DOM node state properties</a> to enable the <a href="documentation/test-api/assertions/index.html#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> and create stable, fast and reliable tests that do not depend on page response time.</p>
+
+                <pre><code>import { Selector } from 'testcafe';
 
 fixture `Example page`
-    .page `https://devexpress.github.io/testcafe/example`;
+    .page `http://devexpress.github.io/testcafe/example/`;
 
-test('Type the developer name, obtain the header text and check it', async t => {
+test('Check property of element', async t => {
+    const developerNameInput = Selector('#developer-name');
+
     await t
-        .typeText('#developer-name', 'John Smith')
-        .click('#submit-button');
-
-    const headerText = await elementWithId('article-header').innerText;
-
-    expect(headerText).to.equal('Thank you, John!');
+        .expect(developerNameInput.value).eql('', 'input is empty')
+        .typeText(developerNameInput, 'Peter Parker')
+        .expect(developerNameInput.value).contains('Peter', 'input contains text "Peter"');
 });</code></pre>
             </div>
         </div>
@@ -256,7 +288,7 @@ test('Type the developer name, obtain the header text and check it', async t => 
                 Straightforward Continuous Integration
             </span>
             <div class="description">
-                <p>TestCafe is easy to set up on popular Continuous Integration platforms as it allows you to test against various browsers: local, remote or cloud (e.g. <a href="https://saucelabs.com/">Sauce Labs</a>).
+                <p>TestCafe is easy to set up on popular Continuous Integration platforms as it allows you to test against various browsers: local, remote, cloud (e.g. <a href="https://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html">Sauce Labs</a>) or headless (e.g. <a href="https://github.com/ryx/testcafe-browser-provider-nightmare">Nightmare</a>).
                 You can also create a custom <a href="documentation/extending-testcafe/browser-provider-plugin">browser provider</a> to add support for a browser or a cloud platform of your choice.</p>
             </div>
         </div>
@@ -265,7 +297,7 @@ test('Type the developer name, obtain the header text and check it', async t => 
                 More to Come…
             </span>
             <div class="description">
-                <p>We plan to introduce other outstanding features so that you can test apps with even more efficiency. Meanwhile, you can help us improve TestCafe by voting for features on our road map or sharing your own ideas and code in our <a href="https://github.com/DevExpress/testcafe">GitHub repository</a>.</p>
+                <p>We plan to introduce other outstanding features so that you can test apps with even more efficiency. Meanwhile, you can help us improve TestCafe by voting for features on our <a href="https://github.com/DevExpress/testcafe/milestone/10">road map </a> or sharing your own ideas and code in our <a href="https://github.com/DevExpress/testcafe">GitHub repository</a>.</p>
             </div>
         </div>
         <div class="blue-button-container">

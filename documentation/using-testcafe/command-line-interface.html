@@ -412,7 +412,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html"  >DOM Node Snapshots</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
 		
     </li>
 
@@ -423,7 +423,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions.html"  >Assertions</a>
+<a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -534,6 +545,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -557,6 +575,7 @@
 <li><a href="#portable-browsers">Portable Browsers</a></li>
 <li><a href="#remote-browsers">Remote Browsers</a></li>
 <li><a href="#browsers-accessed-through-browser-provider-plugins">Browsers Accessed Through Browser Provider Plugins</a></li>
+<li><a href="#starting-browser-with-arguments">Starting browser with arguments</a></li>
 </ul></li>
 <li><a href="#file-pathglob-pattern">File Path/Glob Pattern</a></li>
 <li><a href="#options">Options</a>
@@ -575,6 +594,7 @@
 <li><a href="#-f-name---fixture-name">-f &lt;name&gt;, --fixture &lt;name&gt;</a></li>
 <li><a href="#-f-pattern---fixture-grep-pattern">-F &lt;pattern&gt;, --fixture-grep &lt;pattern&gt;</a></li>
 <li><a href="#--selector-timeout-ms">--selector-timeout &lt;ms&gt;</a></li>
+<li><a href="#--assertion-timeout-ms">--assertion-timeout &lt;ms&gt;</a></li>
 <li><a href="#--ports-port1port2">--ports &lt;port1,port2&gt;</a></li>
 <li><a href="#--hostname-name">--hostname &lt;name&gt;</a></li>
 <li><a href="#--speed-factor">--speed &lt;factor&gt;</a></li>
@@ -618,7 +638,15 @@ As a result, the browsers will be connected to TestCafe and tests will start.</p
 <p>To run tests in <a href="common-concepts/browser-support.html#browsers-in-cloud-testing-services">cloud browsers</a> or <a href="common-concepts/browser-support.html#nonconventional-browsers">other browsers</a> accessed through a <a href="../extending-testcafe/browser-provider-plugin/">browser provider plugin</a>,
 specify a browser alias that consists of the <code>{browser-provider-name}</code> prefix and the name of a browser itself (the latter can be omitted); for example, <code>saucelabs:Chrome@52.0:Windows 8.1</code>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"saucelabs:Chrome@52.0:Windows 8.1"</span> tests/sample-fixture.js
-</code></pre></div><h2><a class="anchor" name="file-pathglob-pattern"></a>File Path/Glob Pattern <a class="permalink" href="#file-pathglob-pattern">#</a></h2>
+</code></pre></div><h3><a class="anchor" name="starting-browser-with-arguments"></a>Starting browser with arguments <a class="permalink" href="#starting-browser-with-arguments">#</a></h3>
+<p>If you need to pass arguments for the specified browser, write them right after browser alias. Surround the browser call and its arguments with quotation marks:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome --start-fullscreen"</span> tests/sample-fixture.js
+</code></pre></div>
+<p>You can also specify arguments for portable browsers. If a path to a browser contains spaces, the path should be surrounded with backticks:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"path:</span><span class="sb">`</span>C:<span class="se">\P</span>rogram Files <span class="o">(</span>x86<span class="o">)</span><span class="se">\G</span>oogle<span class="se">\C</span>hrome<span class="se">\A</span>pplication<span class="se">\c</span>hrome.exe<span class="sb">`</span><span class="s2"> --start-fullscreen"</span> tests/sample-fixture.js
+</code></pre></div>
+<p>You can specify arguments for local browsers only.</p>
+<h2><a class="anchor" name="file-pathglob-pattern"></a>File Path/Glob Pattern <a class="permalink" href="#file-pathglob-pattern">#</a></h2>
 <p>The <code>file-or-glob ...</code> argument specifies the files or directories (separated by a space) from which to run these tests.</p>
 
 <p>For example, this command runs all tests located in the <code>my-tests</code> directory.</p>
@@ -709,7 +737,15 @@ specify this argument.</p>
 </code></pre></div><h3><a class="anchor" name="--selector-timeout-ms"></a>--selector-timeout &lt;ms&gt; <a class="permalink" href="#--selector-timeout-ms">#</a></h3>
 <p>Specifies the amount of time, in milliseconds, within which <a href="../test-api/selecting-page-elements/selectors.html">selectors</a> make
 attempts to obtain a node to be returned. See <a href="../test-api/selecting-page-elements/selectors.html#selector-timeout">Selector Timeout</a>.</p>
+
+<p><strong>Default value</strong>: <code>10000</code></p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests --selector-timeout 500000
+</code></pre></div><h3><a class="anchor" name="--assertion-timeout-ms"></a>--assertion-timeout &lt;ms&gt; <a class="permalink" href="#--assertion-timeout-ms">#</a></h3>
+<p>Specifies the amount of time, in milliseconds, within which TestCafe makes attempts to successfully execute an <a href="../test-api/assertions/">assertion</a> if <a href="../test-api/selecting-page-elements/selectors.html#define-assertion-actual-value">a selector property</a> was used.
+See <a href="../test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</p>
+
+<p><strong>Default value</strong>: <code>3000</code></p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests --assertion-timeout 10000
 </code></pre></div><h3><a class="anchor" name="--ports-port1port2"></a>--ports &lt;port1,port2&gt; <a class="permalink" href="#--ports-port1port2">#</a></h3>
 <p>Specifies custom port numbers used by TestCafe to perform testing. The number range is [0-65535].</p>
 

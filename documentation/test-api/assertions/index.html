@@ -6,14 +6,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>DOM Node Snapshots | TestCafe</title>
+  <title>Assertions | TestCafe</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/assertions/">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script>
@@ -412,7 +412,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html" class="active" >DOM Node Snapshots</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
 		
     </li>
 
@@ -423,7 +423,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions.html"  >Assertions</a>
+<a href="/testcafe/documentation/test-api/assertions/" class="active" >Assertions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -534,6 +545,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -547,236 +565,118 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>DOM Node Snapshots</h1>
-<p>A <em>DOM node snapshot</em> is an object that represents the state of a particular document node server side.
-This node can be a DOM element, document, fragment, text or comment node. DOM node snapshots are returned by <a href="selectors.html">selectors</a>.</p>
+			<h1>Assertions</h1>
+<p>To check if the state of the tested webpage matches the one you expect to see, use <em>assertions</em>.</p>
 
-<p>This topic lists API members exposed by DOM node snapshots.</p>
-<blockquote><div class="blockquote-content"><p>Selectors and promises returned by them also expose this API (except for
-snapshot&#39;s <code>getChildElement</code>, <code>getChildNode</code> and <code>getParentNode</code> methods).
-See <a href="selectors.html#snapshot-api-shorthands">Snapshot API Shorthands</a>.</p>
-</div></blockquote><h2><a class="anchor" name="members-common-across-all-nodes"></a>Members Common Across All Nodes <a class="permalink" href="#members-common-across-all-nodes">#</a></h2>
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>childElementCount</code></td>
-<td>Number</td>
-<td>The number of child HTML elements.</td>
-</tr>
-<tr>
-<td><code>childNodeCount</code></td>
-<td>Number</td>
-<td>The number of child nodes.</td>
-</tr>
-<tr>
-<td><code>hasChildElements</code></td>
-<td>Boolean</td>
-<td><code>true</code> if this node has child HTML elements.</td>
-</tr>
-<tr>
-<td><code>hasChildNodes</code></td>
-<td>Boolean</td>
-<td><code>true</code> if this node has child nodes.</td>
-</tr>
-<tr>
-<td><code>nodeType</code></td>
-<td>Number</td>
-<td>The type of the node. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType">Node.nodeType</a>.</td>
-</tr>
-<tr>
-<td><code>textContent</code></td>
-<td>String</td>
-<td>The text content of the node and its descendants. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent">Node.textContent</a>.</td>
-</tr>
-</tbody></table>
+<p>TestCafe provides a comprehensive set of assertions that are based on Behavior Driven Development style (BDD-style).
+See <a href="assertion-api.html">Assertion API</a>.</p>
 
-<table><thead>
-<tr>
-<th>Method</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>getChildElement(idx)</code></td>
-<td>Selector</td>
-<td>A selector that returns the snapshot of the child element at index <code>idx</code>. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/children">ParentNode.children</a>.</td>
-</tr>
-<tr>
-<td><code>getChildNode(idx)</code></td>
-<td>Selector</td>
-<td>A selector that returns the snapshot of the child node at index <code>idx</code>. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes">Node.childNodes</a>.</td>
-</tr>
-<tr>
-<td><code>getParentNode</code></td>
-<td>Selector</td>
-<td>A selector that returns the parent node snapshot. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/parentNode">Node.parentNode</a>.</td>
-</tr>
-<tr>
-<td><code>hasClass(className)</code></td>
-<td>Boolean</td>
-<td><code>true</code> if the element has the specified class name.</td>
-</tr>
-</tbody></table>
-<h2><a class="anchor" name="members-specific-to-element-nodes"></a>Members Specific to Element Nodes <a class="permalink" href="#members-specific-to-element-nodes">#</a></h2>
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>attributes</code></td>
-<td>Object</td>
-<td>Attributes of the element as <code>{ name: value, ... }</code>. You can also use the <code>getAttribute</code> method to access attribute values.</td>
-</tr>
-<tr>
-<td><code>boundingClientRect</code></td>
-<td>Object</td>
-<td>The size of the element and its position relative to the viewport. Contains the <code>left</code>, <code>right</code>, <code>bottom</code>, <code>top</code>, <code>width</code> and <code>height</code> properties.  You can also use the <code>getBoundingClientRectProperty</code> method to access these properties.</td>
-</tr>
-<tr>
-<td><code>checked</code></td>
-<td>Boolean</td>
-<td>For checkbox and radio input elements, their current state. For other elements, <code>undefined</code>.</td>
-</tr>
-<tr>
-<td><code>classNames</code></td>
-<td>Array of String</td>
-<td>The list of element&#39;s classes.</td>
-</tr>
-<tr>
-<td><code>clientHeight</code></td>
-<td>Number</td>
-<td>The inner height of the element, including padding but not the horizontal scrollbar height, border, or margin. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/clientHeight">Element.clientHeight</a>.</td>
-</tr>
-<tr>
-<td><code>clientLeft</code></td>
-<td>Number</td>
-<td>The width of the left border of the element. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/clientLeft">Element.clientLeft</a>.</td>
-</tr>
-<tr>
-<td><code>clientTop</code></td>
-<td>Number</td>
-<td>The width of the top border of the element. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/clientTop">Element.clientTop</a>.</td>
-</tr>
-<tr>
-<td><code>clientWidth</code></td>
-<td>Number</td>
-<td>The inner width of the element, including padding but not the vertical scrollbar width, border, or margin. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/clientWidth">Element.clientWidth</a>.</td>
-</tr>
-<tr>
-<td><code>focused</code></td>
-<td>Boolean</td>
-<td><code>true</code> if the element is focused.</td>
-</tr>
-<tr>
-<td><code>id</code></td>
-<td>String</td>
-<td>The element&#39;s identifier. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/id">Element.id</a>.</td>
-</tr>
-<tr>
-<td><code>innerText</code></td>
-<td>String</td>
-<td>The element&#39;s text content &quot;as rendered&quot;. See <a href="https://html.spec.whatwg.org/multipage/dom.html#the-innertext-idl-attribute">The innerText IDL attribute</a>.</td>
-</tr>
-<tr>
-<td><code>namespaceURI</code></td>
-<td>String</td>
-<td>The namespace URI of the element. If the element does not have a namespace, this property is set to <code>null</code>. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/namespaceURI">Element.namespaceURI</a>.</td>
-</tr>
-<tr>
-<td><code>offsetHeight</code></td>
-<td>Number</td>
-<td>The height of the element including vertical padding and borders. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetHeight">HTMLElement.offsetHeight</a>.</td>
-</tr>
-<tr>
-<td><code>offsetLeft</code></td>
-<td>Number</td>
-<td>The number of pixels that the upper left corner of the element is offset by to the left within the <code>offsetParent</code> node. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetLeft">HTMLElement.offsetLeft</a>.</td>
-</tr>
-<tr>
-<td><code>offsetTop</code></td>
-<td>Number</td>
-<td>The number of pixels that the upper left corner of the element is offset by to the top within the <code>offsetParent</code> node. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop">HTMLElement.offsetTop</a>.</td>
-</tr>
-<tr>
-<td><code>offsetWidth</code></td>
-<td>Number</td>
-<td>The width of the element including vertical padding and borders. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetWidth">HTMLElement.offsetWidth</a>.</td>
-</tr>
-<tr>
-<td><code>scrollHeight</code></td>
-<td>Number</td>
-<td>The height of the element&#39;s content, including content not visible on the screen due to overflow. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight">Element.scrollHeight</a>.</td>
-</tr>
-<tr>
-<td><code>scrollLeft</code></td>
-<td>Number</td>
-<td>The number of pixels that the element&#39;s content is scrolled to the left. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollLeft">Element.scrollLeft</a>.</td>
-</tr>
-<tr>
-<td><code>scrollTop</code></td>
-<td>Number</td>
-<td>The number of pixels that the element&#39;s content is scrolled upward. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop">Element.scrollTop</a>.</td>
-</tr>
-<tr>
-<td><code>scrollWidth</code></td>
-<td>Number</td>
-<td>Either the width in pixels of the element&#39;s content or the width of the element itself, whichever is greater. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollWidth">Element.scrollWidth</a>.</td>
-</tr>
-<tr>
-<td><code>style</code></td>
-<td>Object</td>
-<td>The <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/getComputedStyle">computed</a> values of element&#39;s CSS properties as <code>{ property: value, ... }</code>. You can also use the <code>getStyleProperty</code> method to access CSS properties.</td>
-</tr>
-<tr>
-<td><code>tagName</code></td>
-<td>String</td>
-<td>The name of the element. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName">Element.tagName</a>.</td>
-</tr>
-<tr>
-<td><code>value</code></td>
-<td>String</td>
-<td>For input elements, the current value in the control. For other elements, <code>undefined</code>.</td>
-</tr>
-<tr>
-<td><code>visible</code></td>
-<td>Boolean</td>
-<td><code>true</code> if the element is visible.</td>
-</tr>
-</tbody></table>
+<p>This topic contains the following sections.</p>
 
-<table><thead>
-<tr>
-<th>Method</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>getStyleProperty(propertyName)</code></td>
-<td>Object</td>
-<td>Returns the computed value of the CSS <code>propertyName</code> property. You can also use the <code>style</code> property to access a hash table of CSS properties.</td>
-</tr>
-<tr>
-<td><code>getAttribute(attributeName)</code></td>
-<td>String</td>
-<td>Returns the value of the <code>attributeName</code> attribute. You can also use the <code>attributes</code> property to access a hash table of attributes.</td>
-</tr>
-<tr>
-<td><code>getBoundingClientRectProperty(propertyName)</code></td>
-<td>Number</td>
-<td>Returns the value of the <code>propertyName</code> property from the <code>boundingClientRect</code> object.</td>
-</tr>
-</tbody></table>
+<ul>
+<li><a href="#assertion-structure">Assertion Structure</a></li>
+<li><a href="#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a></li>
+<li><a href="#assertion-options">Assertion options</a>
 
+<ul>
+<li><a href="#optionstimeout">options.timeout</a></li>
+</ul></li>
+</ul>
+<h2><a class="anchor" name="assertion-structure"></a>Assertion Structure <a class="permalink" href="#assertion-structure">#</a></h2>
+<p>TestCafe assertions start with the <code>expect</code> method exposed by <a href="../test-code-structure.html#test-controller">test controller</a>,
+which accepts the <code>actual</code> value argument. Then, the assertion method follows. An assertion method accepts an expected value
+and optionally other arguments, e.g., deep equality assertion:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).eql( expected, message, options );
+</code></pre></div>
+<p>The sample below demonstrates how to use assertions:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Example</span> <span class="nx">page</span><span class="err">`</span>
+   <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Check property of element'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="kr">const</span> <span class="nx">developerNameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+
+   <span class="nx">await</span> <span class="nx">t</span>
+       <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="s1">'input is empty'</span><span class="p">)</span>
+       <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">,</span> <span class="s1">'Peter Parker'</span><span class="p">)</span>
+       <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'Peter'</span><span class="p">,</span> <span class="s1">'input contains text "Peter"'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="smart-assertion-query-mechanism"></a>Smart Assertion Query Mechanism <a class="permalink" href="#smart-assertion-query-mechanism">#</a></h2>
+<p>In synchronous functional testing, you can perform the required assertions immediately after test action is executed:</p>
+
+<p><img src="../../../images/assertions/synchronous-testing.png" alt="Synchronous Functional Testing"></p>
+
+<p>On the web, functional tests are asynchronous. This means that we can not get the expected changes immediately after an end-user action.
+For example, the tested web page can send a request to the server for the required data, and this can take some time;
+or an end-user action launches animation after which the web page will reach its final state.
+All of these time gaps cannot be pre-calculated, because they depend on various factors: computer performance,
+network connection speed, etc. In this case, if we perform assertions immediately after the test action finished,
+we can get an indefinite result:</p>
+
+<p><img src="../../../images/assertions/asynchronous-testing.png" alt="Asynchronous Functional Testing"></p>
+
+<p>To perform asynchronous functional tests, the additional timeout as usually added:</p>
+
+<p><img src="../../../images/assertions/extra-waiting.png" alt="Asynchronous Functional Testing with Extra Waiting"></p>
+
+<p>To stabilize such tests, you need to add a timeout that will guarantee you a successful completion of required changes.
+Adding such timeouts can increase the test running time because of extra waiting.</p>
+
+<p>If the TestCafe assertion receives a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a>
+as an actual value, TestCafe uses the smart assertion query mechanism:
+if an assertion did not pass, the test does not fail immediately. The assertion retries to pass multiple times and
+each time it re-requests the actual property value. The test fails if the assertion could not complete successfully
+within a timeout:</p>
+
+<p><img src="../../../images/assertions/query-mechanism.png" alt="TestCafe Smart Assertion Query Mechanism"></p>
+
+<p><strong>Example:</strong></p>
+
+<p>Let&#39;s create a test for the following web page.</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"btn"</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+<span class="kd">var</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'btn'</span><span class="p">);</span>
+
+<span class="nx">btn</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">btn</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="s1">'Loading...'</span><span class="p">;</span>
+    <span class="p">},</span> <span class="mi">100</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div>
+<p>The test code will look as follows.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="s1">'Button click'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#btn'</span><span class="p">);</span>
+
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">btn</span><span class="p">)</span>
+        <span class="c1">// Regular assertion will fail immediately, but TestCafe retries to run DOM state</span>
+        <span class="c1">// assertions many times until this assertion pass successfully within the timeout.</span>
+        <span class="c1">// The default timeout is 3000 ms.</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">btn</span><span class="p">.</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'Loading...'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>The approach described above allows you to create stable tests that lack random errors and run fast without additional waiting.</p>
+
+<p>You can specify the assertion query timeout in test code by using the <a href="#assertion-options">options.timeout</a> option.
+To set the timeout when launching tests, pass the timeout value to the <a href="../../using-testcafe/programming-interface/runner.html#run">runner.run</a>
+method if you use API or specify the <a href="../../using-testcafe/command-line-interface.html#--assertion-timeout-ms">assertion-timeout</a> option
+if you run TestCafe from the command line.</p>
+<h2><a class="anchor" name="assertion-options"></a>Assertion options <a class="permalink" href="#assertion-options">#</a></h2><h3><a class="anchor" name="optionstimeout"></a>options.timeout <a class="permalink" href="#optionstimeout">#</a></h3>
+<p><strong>Type</strong>: Number</p>
+
+<p>The amount of time, in milliseconds, allowed for an assertion to pass before the test fails if
+<a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">a selector property</a> was used in assertion.</p>
+
+<p><strong>Default value</strong>: timeout is specified by using the <a href="../../using-testcafe/programming-interface/runner.html#run">runner.run</a> API method
+or the <a href="../../using-testcafe/command-line-interface.html#--assertion-timeout-ms">assertion-timeout</a> command line option.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#elementId'</span><span class="p">).</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'text'</span><span class="p">,</span> <span class="s1">'check element text'</span><span class="p">,</span> <span class="p">{</span> <span class="na">timeout</span><span class="p">:</span> <span class="mi">500</span> <span class="p">});</span>
+</code></pre></div><blockquote><div class="blockquote-content"><p>In addition to built-in assertions, you also can use assertions from Node&#39;s built-in <a href="https://nodejs.org/api/assert.html">assert</a> module or choose a 3rd-party library you like (for example <a href="http://chaijs.com/">chai</a>).
+In this case, you should care about the amount of time required to complete asynchronous actions using the <a href="../pausing-the-test.html">t.wait(timeout)</a> method.</p>
+</div></blockquote>
 
 		</div>
 	</article>

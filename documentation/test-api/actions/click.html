@@ -412,7 +412,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-snapshots.html"  >DOM Node Snapshots</a>
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
 		
     </li>
 
@@ -423,7 +423,18 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions.html"  >Assertions</a>
+<a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -534,6 +545,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -571,8 +589,7 @@
 </tbody></table>
 
 <p>The following example shows how to use the <code>t.click</code> action to check a checkbox element.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'chai'</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">checkbox</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#testing-on-remote-devices'</span><span class="p">);</span>
 
@@ -580,14 +597,13 @@
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'Click a check box and check its state'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">checkbox</span><span class="p">);</span>
-
-    <span class="nx">expect</span><span class="p">(</span><span class="nx">await</span> <span class="nx">checkbox</span><span class="p">.</span><span class="nx">checked</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">checkbox</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">checkbox</span><span class="p">.</span><span class="nx">checked</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>The next example uses the <code>options</code> parameter to set the caret position in an input box.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'chai'</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
 
@@ -598,9 +614,8 @@
     <span class="nx">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter Parker'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">5</span> <span class="p">})</span>
-        <span class="p">.</span><span class="nx">keyPress</span><span class="p">(</span><span class="s1">'backspace'</span><span class="p">);</span>
-
-    <span class="nx">expect</span><span class="p">(</span><span class="nx">await</span> <span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">'Pete Parker'</span><span class="p">);</span>
+        <span class="p">.</span><span class="nx">keyPress</span><span class="p">(</span><span class="s1">'backspace'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Pete Parker'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 
