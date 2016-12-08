@@ -67,17 +67,17 @@ export default class DragAutomationBase {
             clientY: point.y
         }, this.modifiers);
 
+        return getElementFromPoint(point.x, point.y, expectedElement)
+            .then(topElement => {
+                if (!topElement)
+                    throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 
-        var topElement = getElementFromPoint(point.x, point.y, expectedElement);
-
-        if (!topElement)
-            throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
-
-        return {
-            point:   point,
-            options: options,
-            element: topElement
-        };
+                return {
+                    point:   point,
+                    options: options,
+                    element: topElement
+                };
+            });
     }
 
     _move ({ element, offsetX, offsetY }) {
@@ -102,8 +102,9 @@ export default class DragAutomationBase {
     _mousedown () {
         return cursor
             .leftButtonDown()
-            .then(() => {
-                this.eventArgs = this._calculateEventArguments();
+            .then(() => this._calculateEventArguments())
+            .then(args => {
+                this.eventArgs = args;
 
                 eventSimulator[this.downEvent](this.eventArgs.element, this.eventArgs.options);
 
@@ -152,20 +153,28 @@ export default class DragAutomationBase {
             .buttonUp()
             .then(() => {
                 var point      = positionUtils.offsetToClientCoords(this.endPoint);
-                var topElement = getElementFromPoint(point.x, point.y);
+                var topElement = null;
                 var options    = extend({
                     clientX: point.x,
                     clientY: point.y
                 }, this.modifiers);
 
-                if (!topElement)
-                    return;
+                return getElementFromPoint(point.x, point.y)
+                    .then(element => {
+                        topElement = element;
 
-                eventSimulator[this.upEvent](topElement, options);
+                        if (!topElement)
+                            return topElement;
 
-                //B231323
-                if (getElementFromPoint(point.x, point.y) === topElement)
-                    eventSimulator.click(topElement, options);
+                        eventSimulator[this.upEvent](topElement, options);
+
+                        return getElementFromPoint(point.x, point.y);
+                    })
+                    .then(element => {
+                        //B231323
+                        if (topElement && element === topElement)
+                            eventSimulator.click(topElement, options);
+                    });
             });
     }
 

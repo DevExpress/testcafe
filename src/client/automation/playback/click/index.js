@@ -87,18 +87,20 @@ export default class ClickAutomation {
         var expectedElement = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY) ?
                               this.element : null;
 
-        var x          = point ? point.x : this.eventArgs.point.x;
-        var y          = point ? point.y : this.eventArgs.point.y;
-        var topElement = getElementFromPoint(x, y, expectedElement);
+        var x = point ? point.x : this.eventArgs.point.x;
+        var y = point ? point.y : this.eventArgs.point.y;
 
-        if (!topElement)
-            throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
+        return getElementFromPoint(x, y, expectedElement)
+            .then(topElement => {
+                if (!topElement)
+                    throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 
-        return {
-            point:   point || this.eventArgs.point,
-            options: options || this.eventArgs.options,
-            element: topElement
-        };
+                return {
+                    point:   point || this.eventArgs.point,
+                    options: options || this.eventArgs.options,
+                    element: topElement
+                };
+            });
     }
 
     _move ({ element, offsetX, offsetY }) {
@@ -143,11 +145,14 @@ export default class ClickAutomation {
     }
 
     _mousedown () {
-        this.eventArgs                = this._calculateEventArguments();
-        this.targetElementParentNodes = domUtils.getParents(this.eventArgs.element);
-        this.mouseDownElement         = this.eventArgs.element;
+        return this._calculateEventArguments()
+            .then(args => {
+                this.eventArgs                = args;
+                this.targetElementParentNodes = domUtils.getParents(this.eventArgs.element);
+                this.mouseDownElement         = this.eventArgs.element;
 
-        return cursor.leftButtonDown()
+                return cursor.leftButtonDown();
+            })
             .then(() => {
                 this._raiseTouchEvents();
 
@@ -251,8 +256,9 @@ export default class ClickAutomation {
     _mouseup () {
         return cursor
             .buttonUp()
-            .then(() => {
-                this.eventArgs = this._calculateEventArguments();
+            .then(() => this._calculateEventArguments())
+            .then(args => {
+                this.eventArgs = args;
 
                 this.eventState.clickElement = ClickAutomation._getElementForClick(this.mouseDownElement, this.eventArgs.element,
                     this.targetElementParentNodes);

@@ -47,10 +47,11 @@ export default class HoverAutomation {
         var expectedElement = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY) ?
                               this.element : null;
 
-        var topElement = getElementFromPoint(point.x, point.y, expectedElement);
-
-        if (!topElement)
-            throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
+        return getElementFromPoint(point.x, point.y, expectedElement)
+            .then(topElement => {
+                if (!topElement)
+                    throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
+            });
     }
 
     run () {

@@ -74,18 +74,20 @@ export default class RClickAutomation {
         var expectedElement = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY) ?
                               this.element : null;
 
-        var x          = point ? point.x : this.eventArgs.point.x;
-        var y          = point ? point.y : this.eventArgs.point.y;
-        var topElement = getElementFromPoint(x, y, expectedElement);
+        var x = point ? point.x : this.eventArgs.point.x;
+        var y = point ? point.y : this.eventArgs.point.y;
 
-        if (!topElement)
-            throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
+        return getElementFromPoint(x, y, expectedElement)
+            .then(topElement => {
+                if (!topElement)
+                    throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 
-        return {
-            point:   point || this.eventArgs.point,
-            options: options || this.eventArgs.options,
-            element: topElement
-        };
+                return {
+                    point:   point || this.eventArgs.point,
+                    options: options || this.eventArgs.options,
+                    element: topElement
+                };
+            });
     }
 
     _move ({ element, offsetX, offsetY }) {
@@ -106,8 +108,9 @@ export default class RClickAutomation {
     _mousedown () {
         return cursor
             .rightButtonDown()
-            .then(() => {
-                this.eventArgs = this._calculateEventArguments();
+            .then(() => this._calculateEventArguments())
+            .then(args => {
+                this.eventArgs = args;
 
                 this.activeElementBeforeMouseDown = domUtils.getActiveElement();
 
@@ -136,20 +139,24 @@ export default class RClickAutomation {
     _mouseup () {
         return cursor
             .buttonUp()
-            .then(() => {
-                this.eventArgs = this._calculateEventArguments();
+            .then(() => this._calculateEventArguments())
+            .then(args => {
+                this.eventArgs = args;
 
                 eventSimulator.mouseup(this.eventArgs.element, this.eventArgs.options);
             });
     }
 
     _contextmenu () {
-        this.eventArgs = this._calculateEventArguments();
+        return this._calculateEventArguments()
+            .then(args => {
+                this.eventArgs = args;
 
-        eventSimulator.contextmenu(this.eventArgs.element, this.eventArgs.options);
+                eventSimulator.contextmenu(this.eventArgs.element, this.eventArgs.options);
 
-        if (!domUtils.isElementFocusable(this.eventArgs.element))
-            focusByRelatedElement(this.eventArgs.element);
+                if (!domUtils.isElementFocusable(this.eventArgs.element))
+                    focusByRelatedElement(this.eventArgs.element);
+            });
     }
 
     run () {

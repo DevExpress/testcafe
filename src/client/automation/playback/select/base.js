@@ -44,17 +44,20 @@ export default class SelectBaseAutomation {
 
     static _calculateEventArguments (point) {
         var clientPoint = positionUtils.offsetToClientCoords(point);
-        var element     = getElementFromPoint(clientPoint.x, clientPoint.y);
 
-        if (!element)
-            throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
+        return getElementFromPoint(clientPoint.x, clientPoint.y)
+            .then(topElement => {
+                if (!topElement)
+                    throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 
-        return {
-            element, options: {
-                clientX: clientPoint.x,
-                clientY: clientPoint.y
-            }
-        };
+                return {
+                    element: topElement,
+                    options: {
+                        clientX: clientPoint.x,
+                        clientY: clientPoint.y
+                    }
+                };
+            });
     }
 
     _move ({ element, offsetX, offsetY }) {
@@ -102,8 +105,9 @@ export default class SelectBaseAutomation {
     _mousedown () {
         return cursor
             .leftButtonDown()
-            .then(() => {
-                this.eventArgs = SelectBaseAutomation._calculateEventArguments(this.clientPoint);
+            .then(() => SelectBaseAutomation._calculateEventArguments(this.clientPoint))
+            .then(args => {
+                this.eventArgs = args;
 
                 // NOTE: In WebKit and IE, the mousedown event opens the select element's dropdown;
                 // therefore, we should prevent mousedown and hide the dropdown (B236416).
@@ -145,7 +149,10 @@ export default class SelectBaseAutomation {
             .then(() => {
                 this._setSelection();
 
-                this.eventArgs = SelectBaseAutomation._calculateEventArguments(this.clientPoint);
+                return SelectBaseAutomation._calculateEventArguments(this.clientPoint);
+            })
+            .then(args => {
+                this.eventArgs = args;
 
                 eventSimulator[this.upEvent](this.eventArgs.element, this.eventArgs.options);
             });

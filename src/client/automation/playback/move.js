@@ -51,7 +51,7 @@ export default class MoveAutomation {
         this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
 
         this.dragMode    = moveOptions.dragMode;
-        this.dragElement = this.dragMode ? getElementUnderCursor() : null;
+        this.dragElement = null;
 
         this.element       = element;
         this.offsetX       = moveOptions.offsetX;
@@ -215,11 +215,9 @@ export default class MoveAutomation {
         };
     }
 
-    _emulateEvents () {
-        // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
-        var currentElement = this.dragMode && this.touchMode ? this.dragElement : getElementUnderCursor();
-        var whichButton    = this.dragMode ? eventUtils.WHICH_PARAMETER.leftButton : eventUtils.WHICH_PARAMETER.noButton;
-        var button         = this.dragMode ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
+    _emulateEvents (currentElement) {
+        var whichButton = this.dragMode ? eventUtils.WHICH_PARAMETER.leftButton : eventUtils.WHICH_PARAMETER.noButton;
+        var button      = this.dragMode ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
 
         var eventOptions = {
             clientX: this.x,
@@ -294,7 +292,9 @@ export default class MoveAutomation {
 
         return cursor
             .move(this.x, this.y)
-            .then(() => this._emulateEvents())
+            .then(getElementUnderCursor)
+            // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
+            .then(topElement => this._emulateEvents(this.dragMode && this.touchMode ? this.dragElement : topElement))
             .then(nextTick);
     }
 
@@ -348,18 +348,24 @@ export default class MoveAutomation {
         };
 
         if (activeWindow.parent === window) {
-            iframe            = domUtils.findIframeByWindow(activeWindow);
-            iframeRectangle   = positionUtils.getIframeClientCoordinates(iframe);
-            iframeUnderCursor = getElementUnderCursor() === iframe;
+            iframe          = domUtils.findIframeByWindow(activeWindow);
+            iframeRectangle = positionUtils.getIframeClientCoordinates(iframe);
 
-            msg.left              = iframeRectangle.left;
-            msg.top               = iframeRectangle.top;
-            msg.right             = iframeRectangle.right;
-            msg.bottom            = iframeRectangle.bottom;
-            msg.iframeUnderCursor = iframeUnderCursor;
+            msg.left   = iframeRectangle.left;
+            msg.top    = iframeRectangle.top;
+            msg.right  = iframeRectangle.right;
+            msg.bottom = iframeRectangle.bottom;
         }
 
-        return sendRequestToFrame(msg, MOVE_RESPONSE_CMD, activeWindow)
+        return getElementUnderCursor()
+            .then(topElement => {
+                iframeUnderCursor = topElement === iframe;
+
+                if (activeWindow.parent === window)
+                    msg.iframeUnderCursor = iframeUnderCursor;
+
+                return sendRequestToFrame(msg, MOVE_RESPONSE_CMD, activeWindow);
+            })
             .then(message => {
                 cursor.activeWindow = window;
 
@@ -371,8 +377,12 @@ export default class MoveAutomation {
     }
 
     run () {
-        return this
-            ._scroll()
+        return getElementUnderCursor()
+            .then(topElement => {
+                this.dragElement = this.dragMode ? topElement : null;
+
+                return this._scroll();
+            })
             .then(() => {
                 var { x, y }     = this._getTargetClientPoint();
                 var windowWidth  = styleUtils.getWidth(window);

@@ -8,14 +8,16 @@ var positionUtils = testCafeCore.positionUtils;
 var domUtils      = testCafeCore.domUtils;
 
 
-function getElementFromPoint (x, y) {
-    testCafeUI.hide();
+function getElementFromPoint (x, y, underTopRoot) {
+    var topElement = null;
 
-    var topElement = positionUtils.getElementFromPoint(x, y);
+    return testCafeUI.hide(underTopRoot)
+        .then(() => {
+            topElement = positionUtils.getElementFromPoint(x, y);
 
-    testCafeUI.show();
-
-    return topElement;
+            return testCafeUI.show(underTopRoot);
+        })
+        .then(() => topElement);
 }
 
 function ensureImageMap (imgElement, areaElement) {
@@ -34,13 +36,7 @@ function findElementOrNonEmptyChildFromPoint (x, y, element) {
     return null;
 }
 
-export function fromPoint (x, y, expectedElement) {
-    var topElement             = getElementFromPoint(x, y);
-    var expectedElementDefined = expectedElement && domUtils.isDomElement(expectedElement);
-
-    if (!expectedElementDefined || !topElement || topElement === expectedElement)
-        return topElement;
-
+function correctTopElementByExpectedElement (topElement, expectedElement) {
     var isTREFElement = domUtils.getTagName(expectedElement) === 'tref';
 
     // NOTE: 'document.elementFromPoint' can't find these types of elements
@@ -73,8 +69,33 @@ export function fromPoint (x, y, expectedElement) {
     var linkRect = expectedElement.getBoundingClientRect();
 
     return findElementOrNonEmptyChildFromPoint(linkRect.right - 1, linkRect.top + 1, expectedElement) ||
-           findElementOrNonEmptyChildFromPoint(linkRect.left + 1, linkRect.bottom - 1, expectedElement) ||
-           topElement;
+                 findElementOrNonEmptyChildFromPoint(linkRect.left + 1, linkRect.bottom - 1, expectedElement) ||
+                 topElement;
+}
+
+export function fromPoint (x, y, expectedElement) {
+    var expectedElementDefined = expectedElement && domUtils.isDomElement(expectedElement);
+
+    return getElementFromPoint(x, y)
+        .then(topElement => {
+            // NOTE: when trying to get an element by elementFromPoint in iframe and the target
+            // element is under any of shadow-ui elements, you will get null (only in IE).
+            // In this case, you should hide a top window's shadow-ui root to obtain an element.
+            if (!topElement) {
+                return getElementFromPoint(x, y, true)
+                    .then(element => {
+                        if (!expectedElementDefined || !element || element === expectedElement)
+                            return element;
+
+                        return correctTopElementByExpectedElement(element, expectedElement);
+                    });
+            }
+
+            if (!expectedElementDefined || !topElement || topElement === expectedElement)
+                return topElement;
+
+            return correctTopElementByExpectedElement(topElement, expectedElement);
+        });
 }
 
 export function underCursor () {
