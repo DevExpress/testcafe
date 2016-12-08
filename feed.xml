@@ -5,9 +5,183 @@
     <description></description>
     <link>http://devexpress.github.io/testcafe/</link>
     <atom:link href="http://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 08 Dec 2016 13:28:47 +0300</pubDate>
-    <lastBuildDate>Thu, 08 Dec 2016 13:28:47 +0300</lastBuildDate>
+    <pubDate>Thu, 08 Dec 2016 14:45:07 +0300</pubDate>
+    <lastBuildDate>Thu, 08 Dec 2016 14:45:07 +0300</lastBuildDate>
     <generator>Jekyll v3.3.1</generator>
+    
+      <item>
+        <title>TestCafe v0.11.0 Released</title>
+        <description>&lt;h1&gt;TestCafe v0.11.0 Released&lt;/h1&gt;
+&lt;p&gt;Redesigned selector system, built-in assertions and lots of bug fixes! 🚀🚀🚀&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;redesigned-selector-system-798&quot;&gt;&lt;/a&gt;⚙ Redesigned selector system. (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/798&quot;&gt;#798&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#redesigned-selector-system-798&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;&lt;a class=&quot;anchor&quot; name=&quot;new-selector-methods&quot;&gt;&lt;/a&gt;New selector methods &lt;a class=&quot;permalink&quot; href=&quot;#new-selector-methods&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;Multiple &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-multiple-dom-nodes&quot;&gt;filtering&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#find-elements-by-dom-hierarchy&quot;&gt;hierarchical&lt;/a&gt; methods were introduced for selectors.
+Now you can build flexible, lazily-evaluated functional-style selector chains.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Here are some examples:&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'ul'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'label'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'div.someClass'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Finds all &lt;code&gt;ul&lt;/code&gt; elements on page. Then, in each found &lt;code&gt;ul&lt;/code&gt; element finds &lt;code&gt;label&lt;/code&gt; elements.
+Then, for each &lt;code&gt;label&lt;/code&gt; element finds a parent that matches the &lt;code&gt;div.someClass&lt;/code&gt; selector.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;Like in jQuery, if you request a &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes&quot;&gt;property&lt;/a&gt; of the matching set or try evaluate
+a &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#dom-node-snapshot&quot;&gt;snapshot&lt;/a&gt;, the selector returns values for the first element in the set.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Returns id of the first element in the set&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'ul'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'label'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'div.someClass'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Returns snapshot for the first element in the set&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;snapshot&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'ul'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'label'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'div.someClass'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;hr&gt;
+
+&lt;p&gt;However, you can obtain data for any element in the set by using &lt;code&gt;nth&lt;/code&gt; filter.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Returns id of the third element in the set&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'ul'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'label'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'div.someClass'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Returns snapshot for the fourth element in the set&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;snapshot&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'ul'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'label'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'div.someClass'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;hr&gt;
+
+&lt;p&gt;Note that you can add text and index filters in the selector chain.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.container'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.content'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'yo!'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'span'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In this example the selector:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;finds the second parent (parent of parent) of &lt;code&gt;.container&lt;/code&gt; elements;&lt;/li&gt;
+&lt;li&gt;peeks the first element in the matching set;&lt;/li&gt;
+&lt;li&gt;in that element, finds elements that match the &lt;code&gt;.content&lt;/code&gt; selector;&lt;/li&gt;
+&lt;li&gt;filters them by text &lt;code&gt;yo!&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;in each filtered element, searches for a child with tag name &lt;code&gt;span&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr&gt;
+&lt;h4&gt;&lt;a class=&quot;anchor&quot; name=&quot;getting-selector-matching-set-length&quot;&gt;&lt;/a&gt;Getting selector matching set length &lt;a class=&quot;permalink&quot; href=&quot;#getting-selector-matching-set-length&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;Also, now you can get selector matching set length and check matching elements existence by using selector &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#get-selector-matching-set-length&quot;&gt;&lt;code&gt;count&lt;/code&gt; and &lt;code&gt;exists&lt;/code&gt; properties&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;&lt;a class=&quot;anchor&quot; name=&quot;unawaited-parametrized-selector-calls-now-allowed-outside-test-context&quot;&gt;&lt;/a&gt;Unawaited parametrized selector calls now allowed outside test context &lt;a class=&quot;permalink&quot; href=&quot;#unawaited-parametrized-selector-calls-now-allowed-outside-test-context&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;Previously selector call outside of text context thrown an error:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* selector code */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'someArg'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// &amp;lt;-- throws&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Some test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now it&amp;#39;s not a case if selector is not awaited. It&amp;#39;s useful when you need to build a page model outside the test context:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* selector code */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'someArg'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'span'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// &amp;lt;-- doesn't throw anymore&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Some test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;However, once you&amp;#39;ll try to obtain element property outside of test context it will throw:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* selector code */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'someArg'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// throws&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Some test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4&gt;&lt;a class=&quot;anchor&quot; name=&quot;index-filter-is-not-ignored-anymore-if-selector-returns-single-node&quot;&gt;&lt;/a&gt;Index filter is not ignored anymore if selector returns single node &lt;a class=&quot;permalink&quot; href=&quot;#index-filter-is-not-ignored-anymore-if-selector-returns-single-node&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;Previously if selector returned single node &lt;code&gt;index&lt;/code&gt; was ignored:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'#someId'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// index is ignored and selector returns element with id `someId`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;however it&amp;#39;s not a case now:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'#someId'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// returns `null`, since there is only one element in matching set with id `someId`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4&gt;&lt;a class=&quot;anchor&quot; name=&quot;deprecated-api&quot;&gt;&lt;/a&gt;Deprecated API &lt;a class=&quot;permalink&quot; href=&quot;#deprecated-api&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#one-time-selection&quot;&gt;&lt;code&gt;t.select&lt;/code&gt; method&lt;/a&gt; - use &lt;code&gt;Selector&lt;/code&gt; instead:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.someClass'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// can be replaced with&lt;/span&gt;
+
+&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.someClass'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionsindex&quot;&gt;selectorOptions.index&lt;/a&gt; - use &lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#nth&quot;&gt;selector.nth()&lt;/a&gt; instead.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionstext&quot;&gt;selectorOptions.text&lt;/a&gt; - use &lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#withtext&quot;&gt;selector.withText()&lt;/a&gt; instead.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionsdependencies&quot;&gt;selectorOptions.dependencies&lt;/a&gt; - use &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-multiple-dom-nodes&quot;&gt;filtering&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#find-elements-by-dom-hierarchy&quot;&gt;hierarchical&lt;/a&gt; methods to build combined selectors instead.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;built-in-assertions-998&quot;&gt;&lt;/a&gt;⚙ Built-in assertions. (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/998&quot;&gt;#998&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#built-in-assertions-998&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe now ships with &lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html&quot;&gt;numerous built-in BDD-style assertions&lt;/a&gt;.
+If the TestCafe assertion receives a &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#define-assertion-actual-value&quot;&gt;Selector&amp;#39;s DOM node state property&lt;/a&gt; as an actual value, TestCafe uses the &lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/assertions/index.html#smart-assertion-query-mechanism&quot;&gt;smart assertion query mechanism&lt;/a&gt;:
+if an assertion did not passed, the test does not fail immediately. The assertion retries to pass multiple times and each time it re-requests the actual shorthand value. The test fails if the assertion could not complete successfully within a timeout.
+This approach allows you to create stable tests that lack random errors and decrease the amount of time required to run all your tests due to the lack of extra waitings.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Example page markup:&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;btn&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;btn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getElementById&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'btn'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;btn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;setTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;btn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;innerText&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Loading...'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;Example test code:&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Button click'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;btn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'#btn'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;btn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// Regular assertion will fail immediately, but TestCafe retries to run DOM state&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// assertions many times until this assertion pass successfully within the timeout.&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// The default timeout is 3000 ms.&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;btn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;textContent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;contains&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Loading...'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;added-selected-and-selectedindex-dom-node-state-properties-951&quot;&gt;&lt;/a&gt;⚙ Added &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes&quot;&gt;&lt;code&gt;selected&lt;/code&gt; and &lt;code&gt;selectedIndex&lt;/code&gt; DOM node state properties&lt;/a&gt;. (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/951&quot;&gt;#951&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#added-selected-and-selectedindex-dom-node-state-properties-951&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;its-now-possible-to-start-browser-with-arguments-905&quot;&gt;&lt;/a&gt;⚙ It&amp;#39;s now possible to start browser with arguments. (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/905&quot;&gt;#905&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#its-now-possible-to-start-browser-with-arguments-905&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;If you need to pass arguments for the specified browser, write them right after browser alias. Surround the browser call and its arguments with quotation marks:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe &lt;span class=&quot;s2&quot;&gt;&quot;chrome --start-fullscreen&quot;&lt;/span&gt;,firefox tests/test.js
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;See &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#starting-browser-with-arguments&quot;&gt;Starting browser with arguments&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Action keyboard events now have &lt;code&gt;event.key&lt;/code&gt; and &lt;code&gt;event.keyIdentifier&lt;/code&gt; properties set (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/993&quot;&gt;#993&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;document.body.nextSibling&lt;/code&gt;, that was broken is some cases previously, now operates properly (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/958&quot;&gt;#958&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Now it&amp;#39;s possible to use &lt;code&gt;t.setFilesToUpload&lt;/code&gt; and &lt;code&gt;t.clearUpload&lt;/code&gt; methods with the hidden inputs (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/963&quot;&gt;#963&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Now test not hangs if object &lt;code&gt;toString&lt;/code&gt; method uses &lt;code&gt;this.location&lt;/code&gt; getter (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/953&quot;&gt;#953&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Touch events now correctly dispatched in latest Chrome versions with touch monitor (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/944&quot;&gt;#944&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Now test compilation doesn&amp;#39;t fail if imported helper contains module re-export (e.g. &lt;code&gt;export * from &amp;#39;./mod&amp;#39;&lt;/code&gt;) (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/969&quot;&gt;#969&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Actions now scroll to element to make it completely visible (there possible) (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/987&quot;&gt;#987&lt;/a&gt;, &lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/973&quot;&gt;#973&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Dispatched key events now successfully pass &lt;code&gt;instanceof&lt;/code&gt; check (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/964&quot;&gt;#964&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Ember elements doesn&amp;#39;t throw &lt;code&gt;Uncaught TypeError: e.getAttribute is not a function&lt;/code&gt; anymore (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/966&quot;&gt;#966&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;First run wizards now automatically disabled in Chrome in Firefox (&lt;a href=&quot;https://github.com/DevExpress/testcafe-browser-tools/issues/102&quot;&gt;testcafe-browser-tools#102&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;td&amp;gt;&lt;/code&gt; now correctly focused on actions (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/901&quot;&gt;testcafe-hammerhead#901&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;document.baseURI&lt;/code&gt; now returns correct value (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/920&quot;&gt;testcafe-hammerhead#920&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Function.constructor&lt;/code&gt; now returns correct value (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/913&quot;&gt;testcafe-hammerhead#913&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Setting &lt;code&gt;location&lt;/code&gt; to the URL hash value doesn&amp;#39;t lead to JavaScript error anymore (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/917&quot;&gt;testcafe-hammerhead#917&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Fixed corruption of &lt;code&gt;&amp;lt;template&amp;gt;&lt;/code&gt; content (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/912&quot;&gt;testcafe-hammerhead#912&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Fixed &lt;code&gt;querySelector&lt;/code&gt; for &lt;code&gt;href&lt;/code&gt; attribute if value contains URL hash (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/922&quot;&gt;testcafe-hammerhead#922&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;HTTP responses with &lt;a href=&quot;https://github.com/google/brotli&quot;&gt;Brotli&lt;/a&gt; encoding now processed correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/900&quot;&gt;testcafe-hammerhead#900&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Element.attributes&lt;/code&gt; now behaves as a live collection (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/924&quot;&gt;testcafe-hammerhead#924&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;TestCafe doesn&amp;#39;t fail with &lt;code&gt;Error: Can&amp;#39;t set headers after they are sent.&lt;/code&gt; error on network errors (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/937&quot;&gt;testcafe-hammerhead#937&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Element property value setters now return correct value (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/907&quot;&gt;testcafe-hammerhead#907&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;window.fetch&lt;/code&gt; without parameters now returns rejected promise as expected (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/939&quot;&gt;testcafe-hammerhead#939&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Hyperlinks created in iframe and added to the top window now have correct URL (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/564&quot;&gt;testcafe-hammerhead#564&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;autocomplete&lt;/code&gt; attribute now not forced on all elements (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/955&quot;&gt;testcafe-hammerhead#955&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Cookies set via XHR response now available from client code (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/905&quot;&gt;testcafe-hammerhead#905&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Fixed client rendering problems caused by incorrect DOM element determination (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/953&quot;&gt;testcafe-hammerhead#953&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 08 Dec 2016 00:00:00 +0300</pubDate>
+        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-11-0-released.html</link>
+        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-11-0-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v0.10.0 Released</title>
@@ -49,7 +223,7 @@ like &lt;code&gt;style&lt;/code&gt;, &lt;code&gt;attributes&lt;/code&gt; or &lt;
     &lt;span class=&quot;c1&quot;&gt;//...&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;See &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#snapshot-api-shorthands&quot;&gt;Snapshot API Shorthands&lt;/a&gt;.  &lt;/p&gt;
+&lt;p&gt;See &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#obtain-element-state&quot;&gt;Snapshot API Shorthands&lt;/a&gt;.  &lt;/p&gt;
 &lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;improved-automatic-wait-mechanism&quot;&gt;&lt;/a&gt;Improved automatic wait mechanism &lt;a class=&quot;permalink&quot; href=&quot;#improved-automatic-wait-mechanism&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;We got rid of unnecessary waiting so that tests now run almost two times faster.&lt;/p&gt;
 

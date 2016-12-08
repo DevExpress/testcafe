@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>TestCafe v0.11.0 Released | TestCafe</title>
+  <meta name="description" content="TestCafe v0.11.0 ReleasedRedesigned selector system, built-in assertions and lots of bug fixes! 🚀🚀🚀">
+  <meta name="viewport" content="width=device-width">
+
+  <link rel="shortcut icon" href="/testcafe/favicon.ico">
+  <link rel="stylesheet" href="/testcafe/css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/blog/testcafe-v0-11-0-released.html">
+  <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function (e) {
+          hljs.initHighlightingOnLoad();
+      });
+  </script>
+
+  
+  <script>
+    // Google Analytics
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83678642-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  
+  
+
+  
+
+  
+    <script>
+        if (document.images) {
+            img1 = new Image();
+            img1.src = '/testcafe/images/test-cafe-logo.png';
+        }
+    </script>
+  
+    <script>
+        function initHeader(siteHeader, contentWrapper) {
+            var MIN_BODY_WIDTH = 900;
+
+            function updateHeader() {
+                var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
+                
+                
+
+                siteHeader.style.position = bodyMinimized ? 'static' : '';
+
+                if(contentWrapper)
+                    contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
+            }
+
+            updateHeader();
+            window.addEventListener('scroll', updateHeader);
+            window.addEventListener('resize', updateHeader);
+        }
+        document.addEventListener('DOMContentLoaded', function (e) {
+            var contentWrapper = document.querySelector('.container');
+            var siteHeader     = document.querySelector('.site-header');
+
+            if(siteHeader) 
+                initHeader(siteHeader, contentWrapper);
+        });
+    </script>
+</head>
+
+
+  <body>
+    <div class="page-content-wrapper">
+
+      <header class="site-header minimized">
+  <div class="site-header-content">
+    <a class="site-logo" href="/testcafe/"></a>
+
+    <nav class="site-nav">
+      <div class="trigger">
+        
+          
+          <a class="page-link " href="/testcafe/documentation/getting-started/">Documentation</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://github.com/DevExpress/testcafe">GitHub</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link active" href="/testcafe/blog/">Blog</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://github.com/DevExpress/testcafe/issues">Issues</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://testcafe-discuss.devexpress.com/">Discuss</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
+          <span class="page-link-separator">|</span>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+      <div class="container">
+    <main>
+    <div class="post">
+        <div class="post-date">
+            DEC  8, 2016
+        </div>
+        <article class="post-content">
+            <h1>TestCafe v0.11.0 Released</h1>
+<p>Redesigned selector system, built-in assertions and lots of bug fixes! 🚀🚀🚀</p>
+
+<!--more-->
+<h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="redesigned-selector-system-798"></a>⚙ Redesigned selector system. (<a href="https://github.com/DevExpress/testcafe/issues/798">#798</a>) <a class="permalink" href="#redesigned-selector-system-798">#</a></h3><h4><a class="anchor" name="new-selector-methods"></a>New selector methods <a class="permalink" href="#new-selector-methods">#</a></h4>
+<p>Multiple <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-multiple-dom-nodes">filtering</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#find-elements-by-dom-hierarchy">hierarchical</a> methods were introduced for selectors.
+Now you can build flexible, lazily-evaluated functional-style selector chains.</p>
+
+<p><em>Here are some examples:</em></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">)</span>
+</code></pre></div>
+<p>Finds all <code>ul</code> elements on page. Then, in each found <code>ul</code> element finds <code>label</code> elements.
+Then, for each <code>label</code> element finds a parent that matches the <code>div.someClass</code> selector.</p>
+
+<hr>
+
+<p>Like in jQuery, if you request a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes">property</a> of the matching set or try evaluate
+a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#dom-node-snapshot">snapshot</a>, the selector returns values for the first element in the set.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Returns id of the first element in the set</span>
+<span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
+
+<span class="c1">// Returns snapshot for the first element in the set</span>
+<span class="kr">const</span> <span class="nx">snapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">)();</span>
+</code></pre></div>
+<hr>
+
+<p>However, you can obtain data for any element in the set by using <code>nth</code> filter.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Returns id of the third element in the set</span>
+<span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
+
+<span class="c1">// Returns snapshot for the fourth element in the set</span>
+<span class="kr">const</span> <span class="nx">snapshot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">'div.someClass'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">4</span><span class="p">)();</span>
+</code></pre></div>
+<hr>
+
+<p>Note that you can add text and index filters in the selector chain.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'.container'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'.content'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'yo!'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'span'</span><span class="p">);</span>
+</code></pre></div>
+<p>In this example the selector:</p>
+
+<ol>
+<li>finds the second parent (parent of parent) of <code>.container</code> elements;</li>
+<li>peeks the first element in the matching set;</li>
+<li>in that element, finds elements that match the <code>.content</code> selector;</li>
+<li>filters them by text <code>yo!</code>;</li>
+<li>in each filtered element, searches for a child with tag name <code>span</code>.</li>
+</ol>
+
+<hr>
+<h4><a class="anchor" name="getting-selector-matching-set-length"></a>Getting selector matching set length <a class="permalink" href="#getting-selector-matching-set-length">#</a></h4>
+<p>Also, now you can get selector matching set length and check matching elements existence by using selector <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#get-selector-matching-set-length"><code>count</code> and <code>exists</code> properties</a>.</p>
+<h4><a class="anchor" name="unawaited-parametrized-selector-calls-now-allowed-outside-test-context"></a>Unawaited parametrized selector calls now allowed outside test context <a class="permalink" href="#unawaited-parametrized-selector-calls-now-allowed-outside-test-context">#</a></h4>
+<p>Previously selector call outside of text context thrown an error:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">selector</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">arg</span> <span class="o">=&gt;</span> <span class="cm">/* selector code */</span><span class="p">);</span>
+
+<span class="nx">selector</span><span class="p">(</span><span class="s1">'someArg'</span><span class="p">);</span> <span class="c1">// &lt;-- throws</span>
+
+<span class="nx">test</span> <span class="p">(</span><span class="s1">'Some test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span><span class="o">=&gt;</span> <span class="p">{</span>
+<span class="p">...</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Now it&#39;s not a case if selector is not awaited. It&#39;s useful when you need to build a page model outside the test context:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">selector</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">arg</span> <span class="o">=&gt;</span> <span class="cm">/* selector code */</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">selector2</span> <span class="o">=</span> <span class="nx">selector</span><span class="p">(</span><span class="s1">'someArg'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'span'</span><span class="p">);</span> <span class="c1">// &lt;-- doesn't throw anymore</span>
+
+<span class="nx">test</span> <span class="p">(</span><span class="s1">'Some test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span><span class="o">=&gt;</span> <span class="p">{</span>
+<span class="p">...</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>However, once you&#39;ll try to obtain element property outside of test context it will throw:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">selector</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">arg</span> <span class="o">=&gt;</span> <span class="cm">/* selector code */</span><span class="p">);</span>
+
+<span class="nx">async</span> <span class="nx">getId</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">await</span> <span class="nx">selector</span><span class="p">(</span><span class="s1">'someArg'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span> <span class="c1">// throws</span>
+<span class="p">}</span>
+
+<span class="nx">getId</span><span class="p">();</span>
+
+<span class="nx">test</span> <span class="p">(</span><span class="s1">'Some test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span><span class="o">=&gt;</span> <span class="p">{</span>
+<span class="p">...</span>
+<span class="p">});</span>
+</code></pre></div><h4><a class="anchor" name="index-filter-is-not-ignored-anymore-if-selector-returns-single-node"></a>Index filter is not ignored anymore if selector returns single node <a class="permalink" href="#index-filter-is-not-ignored-anymore-if-selector-returns-single-node">#</a></h4>
+<p>Previously if selector returned single node <code>index</code> was ignored:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#someId'</span><span class="p">,</span> <span class="p">{</span> <span class="na">index</span><span class="p">:</span> <span class="mi">2</span> <span class="p">}</span> <span class="p">);</span> <span class="c1">// index is ignored and selector returns element with id `someId`</span>
+</code></pre></div>
+<p>however it&#39;s not a case now:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#someId'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="c1">// returns `null`, since there is only one element in matching set with id `someId`</span>
+</code></pre></div><h4><a class="anchor" name="deprecated-api"></a>Deprecated API <a class="permalink" href="#deprecated-api">#</a></h4>
+<ul>
+<li><a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#one-time-selection"><code>t.select</code> method</a> - use <code>Selector</code> instead:</li>
+</ul>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">'.someClass'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
+
+<span class="c1">// can be replaced with</span>
+
+<span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.someClass'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li><a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionsindex">selectorOptions.index</a> - use <a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#nth">selector.nth()</a> instead.</li>
+<li><a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionstext">selectorOptions.text</a> - use <a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#withtext">selector.withText()</a> instead.</li>
+<li><a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionsdependencies">selectorOptions.dependencies</a> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-multiple-dom-nodes">filtering</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#find-elements-by-dom-hierarchy">hierarchical</a> methods to build combined selectors instead.</li>
+</ul>
+<h3><a class="anchor" name="built-in-assertions-998"></a>⚙ Built-in assertions. (<a href="https://github.com/DevExpress/testcafe/issues/998">#998</a>) <a class="permalink" href="#built-in-assertions-998">#</a></h3>
+<p>TestCafe now ships with <a href="http://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html">numerous built-in BDD-style assertions</a>.
+If the TestCafe assertion receives a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a> as an actual value, TestCafe uses the <a href="http://devexpress.github.io/testcafe/documentation/test-api/assertions/index.html#smart-assertion-query-mechanism">smart assertion query mechanism</a>:
+if an assertion did not passed, the test does not fail immediately. The assertion retries to pass multiple times and each time it re-requests the actual shorthand value. The test fails if the assertion could not complete successfully within a timeout.
+This approach allows you to create stable tests that lack random errors and decrease the amount of time required to run all your tests due to the lack of extra waitings.</p>
+
+<p><em>Example page markup:</em></p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"btn"</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+<span class="kd">var</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'btn'</span><span class="p">);</span>
+
+<span class="nx">btn</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">btn</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="s1">'Loading...'</span><span class="p">;</span>
+    <span class="p">},</span> <span class="mi">100</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div>
+<p><em>Example test code:</em></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="s1">'Button click'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#btn'</span><span class="p">);</span>
+
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">btn</span><span class="p">)</span>
+        <span class="c1">// Regular assertion will fail immediately, but TestCafe retries to run DOM state</span>
+        <span class="c1">// assertions many times until this assertion pass successfully within the timeout.</span>
+        <span class="c1">// The default timeout is 3000 ms.</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">btn</span><span class="p">.</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'Loading...'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div><h3><a class="anchor" name="added-selected-and-selectedindex-dom-node-state-properties-951"></a>⚙ Added <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes"><code>selected</code> and <code>selectedIndex</code> DOM node state properties</a>. (<a href="https://github.com/DevExpress/testcafe/issues/951">#951</a>) <a class="permalink" href="#added-selected-and-selectedindex-dom-node-state-properties-951">#</a></h3><h3><a class="anchor" name="its-now-possible-to-start-browser-with-arguments-905"></a>⚙ It&#39;s now possible to start browser with arguments. (<a href="https://github.com/DevExpress/testcafe/issues/905">#905</a>) <a class="permalink" href="#its-now-possible-to-start-browser-with-arguments-905">#</a></h3>
+<p>If you need to pass arguments for the specified browser, write them right after browser alias. Surround the browser call and its arguments with quotation marks:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome --start-fullscreen"</span>,firefox tests/test.js
+</code></pre></div>
+<p>See <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#starting-browser-with-arguments">Starting browser with arguments</a>.</p>
+<h2><a class="anchor" name="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
+<ul>
+<li>Action keyboard events now have <code>event.key</code> and <code>event.keyIdentifier</code> properties set (<a href="https://github.com/DevExpress/testcafe/issues/993">#993</a>).</li>
+<li><code>document.body.nextSibling</code>, that was broken is some cases previously, now operates properly (<a href="https://github.com/DevExpress/testcafe/issues/958">#958</a>).</li>
+<li>Now it&#39;s possible to use <code>t.setFilesToUpload</code> and <code>t.clearUpload</code> methods with the hidden inputs (<a href="https://github.com/DevExpress/testcafe/issues/963">#963</a>).</li>
+<li>Now test not hangs if object <code>toString</code> method uses <code>this.location</code> getter (<a href="https://github.com/DevExpress/testcafe/issues/953">#953</a>).</li>
+<li>Touch events now correctly dispatched in latest Chrome versions with touch monitor (<a href="https://github.com/DevExpress/testcafe/issues/944">#944</a>).</li>
+<li>Now test compilation doesn&#39;t fail if imported helper contains module re-export (e.g. <code>export * from &#39;./mod&#39;</code>) (<a href="https://github.com/DevExpress/testcafe/issues/969">#969</a>).</li>
+<li>Actions now scroll to element to make it completely visible (there possible) (<a href="https://github.com/DevExpress/testcafe/issues/987">#987</a>, <a href="https://github.com/DevExpress/testcafe/issues/973">#973</a>).</li>
+<li>Dispatched key events now successfully pass <code>instanceof</code> check (<a href="https://github.com/DevExpress/testcafe/issues/964">#964</a>).</li>
+<li>Ember elements doesn&#39;t throw <code>Uncaught TypeError: e.getAttribute is not a function</code> anymore (<a href="https://github.com/DevExpress/testcafe/issues/966">#966</a>).</li>
+<li>First run wizards now automatically disabled in Chrome in Firefox (<a href="https://github.com/DevExpress/testcafe-browser-tools/issues/102">testcafe-browser-tools#102</a>).</li>
+<li><code>&lt;td&gt;</code> now correctly focused on actions (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/901">testcafe-hammerhead#901</a>).</li>
+<li><code>document.baseURI</code> now returns correct value (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/920">testcafe-hammerhead#920</a>).</li>
+<li><code>Function.constructor</code> now returns correct value (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/913">testcafe-hammerhead#913</a>).</li>
+<li>Setting <code>location</code> to the URL hash value doesn&#39;t lead to JavaScript error anymore (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/917">testcafe-hammerhead#917</a>).</li>
+<li>Fixed corruption of <code>&lt;template&gt;</code> content (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/912">testcafe-hammerhead#912</a>).</li>
+<li>Fixed <code>querySelector</code> for <code>href</code> attribute if value contains URL hash (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/922">testcafe-hammerhead#922</a>).</li>
+<li>HTTP responses with <a href="https://github.com/google/brotli">Brotli</a> encoding now processed correctly (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/900">testcafe-hammerhead#900</a>).</li>
+<li><code>Element.attributes</code> now behaves as a live collection (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/924">testcafe-hammerhead#924</a>).</li>
+<li>TestCafe doesn&#39;t fail with <code>Error: Can&#39;t set headers after they are sent.</code> error on network errors (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/937">testcafe-hammerhead#937</a>).</li>
+<li>Element property value setters now return correct value (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/907">testcafe-hammerhead#907</a>).</li>
+<li><code>window.fetch</code> without parameters now returns rejected promise as expected (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/939">testcafe-hammerhead#939</a>).</li>
+<li>Hyperlinks created in iframe and added to the top window now have correct URL (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/564">testcafe-hammerhead#564</a>).</li>
+<li><code>autocomplete</code> attribute now not forced on all elements (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/955">testcafe-hammerhead#955</a>).</li>
+<li>Cookies set via XHR response now available from client code (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/905">testcafe-hammerhead#905</a>).</li>
+<li>Fixed client rendering problems caused by incorrect DOM element determination (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/953">testcafe-hammerhead#953</a>).</li>
+</ul>
+
+        </article>
+        <div id="back-to-posts-link">
+            <p><a href="./">Back to Post List</a></p>
+        </div>
+        <div id="disqus_thread"></div>
+    </div>
+</main>
+
+
+<script>
+    var disqus_config = function () {
+        this.page.url = 'http://devexpress.github.io/testcafe/blog/testcafe-v0-11-0-released.html';
+        this.page.identifier = '/blog/testcafe-v0-11-0-released';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//testcafe-blog.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+</div>
+
+      <div class="push"></div>
+    </div>
+
+    <footer class="site-footer">
+    <div class="site-footer-content">
+        <div class="footer-col-1">
+            <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
+            Copyright © 1998-2016 Developer Express Inc.</p>
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

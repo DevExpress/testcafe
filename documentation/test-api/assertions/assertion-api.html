@@ -598,22 +598,22 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A comparison value</td>
+<td>A comparison value.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
 <td>Any type</td>
-<td>An expected value</td>
+<td>An expected value.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>An assertion message that will be displayed in the report if the test fails</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href=".#assertion-options">Options</a></td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -635,22 +635,22 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A comparison value</td>
+<td>A comparison value.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
 <td>Any type</td>
-<td>An unexpected value</td>
+<td>An unexpected value.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>An assertion message that will be displayed in the report if the test fails</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href=".#assertion-options">Options</a></td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -672,17 +672,17 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A value that should be truthy</td>
+<td>A value that should be truthy.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>An assertion message that will be displayed in the report if the test fails</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href=".#assertion-options">Options</a></td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -704,17 +704,17 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A value that should be falsy</td>
+<td>A value that should be falsy.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>An assertion message that will be displayed in the report if the test fails</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href=".#assertion-options">Options</a></td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -723,7 +723,7 @@
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'ok'</span><span class="p">).</span><span class="nx">notOk</span><span class="p">(</span><span class="s1">'this assertion will be failed'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="kc">false</span><span class="p">).</span><span class="nx">notOk</span><span class="p">(</span><span class="s1">'this assertion will be passed'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="contains"></a>Contains <a class="permalink" href="#contains">#</a></h2>
-<p>Asserts that <code>actual</code> contains <code>expected</code>. <code>Actual</code> should be String or Array.</p>
+<p>Asserts that <code>actual</code> contains <code>expected</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).contains( expected, message, options );
 </code></pre></div>
 <table><thead>
@@ -735,23 +735,23 @@
 </thead><tbody>
 <tr>
 <td><code>actual</code></td>
-<td>Any type</td>
-<td>A String or Array that should contain an <code>expected</code> value</td>
+<td>String &#124; Array</td>
+<td>A String or Array that should contain an <code>expected</code> value.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
 <td>Any type</td>
-<td>An expected value</td>
+<td>An expected value. Can be a <code>String</code> or <code>RegExp</code> if <code>actual</code> is a string.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>An assertion message that will be displayed in the report if the test fails</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href=".#assertion-options">Options</a></td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -760,7 +760,7 @@
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foo bar'</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'bar'</span><span class="p">,</span> <span class="s1">'actual string contains expected'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]).</span><span class="nx">contains</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'actual array contains expected'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="not-contains"></a>Not Contains <a class="permalink" href="#not-contains">#</a></h2>
-<p>Asserts that <code>actual</code> does not contain <code>expected</code>. <code>Actual</code> should be String or Array.</p>
+<p>Asserts that <code>actual</code> does not contain <code>expected</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).notContains( expected, message, options );
 </code></pre></div>
 <table><thead>
@@ -772,23 +772,23 @@
 </thead><tbody>
 <tr>
 <td><code>actual</code></td>
-<td>Any type</td>
-<td>A String or Array that should not contain an <code>expected</code> value</td>
+<td>String &#124; Array</td>
+<td>A String or Array that should not contain an <code>expected</code> value.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
 <td>Any type</td>
-<td>An expected value</td>
+<td>An expected value. Can be a <code>String</code> or <code>RegExp</code> if <code>actual</code> is a string.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>An assertion message that will be displayed in the report if the test fails</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href=".#assertion-options">Options</a></td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -797,7 +797,7 @@
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foo bar'</span><span class="p">).</span><span class="nx">notContains</span><span class="p">(</span><span class="s1">'baz'</span><span class="p">,</span> <span class="s1">'actual string do not contains expected'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]).</span><span class="nx">notContains</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">'actual array contains expected'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="type-of"></a>Type Of <a class="permalink" href="#type-of">#</a></h2>
-<p>Asserts that type of <code>actual</code> is <code>typeName</code>. Type of <code>actual</code> will be determined by <code>Object.prototype.toString.call( actual )</code>.</p>
+<p>Asserts that type of <code>actual</code> is <code>typeName</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).typeOf( typeName, message, options );
 </code></pre></div>
 <table><thead>
@@ -810,22 +810,22 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A comparison value</td>
+<td>A comparison value.</td>
 </tr>
 <tr>
 <td><code>typeName</code></td>
 <td>String</td>
-<td>The expected type of an <code>actual</code> value</td>
+<td>The expected type of an <code>actual</code> value.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>An assertion message that will be displayed in the report if the test fails</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href=".#assertion-options">Options</a></td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -835,7 +835,7 @@
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="sr">/bar/</span><span class="p">).</span><span class="nx">typeOf</span><span class="p">(</span><span class="s1">'regexp'</span><span class="p">,</span> <span class="s1">'it\'s a regular expression'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="kc">null</span><span class="p">).</span><span class="nx">typeOf</span><span class="p">(</span><span class="s1">'null'</span><span class="p">,</span> <span class="s1">'it\'s a null'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="not-type-of"></a>Not Type of <a class="permalink" href="#not-type-of">#</a></h2>
-<p>Asserts that type of <code>actual</code> is not <code>typeName</code>. Type of <code>actual</code> will be determined as a constructor&#39;s name.</p>
+<p>Asserts that type of <code>actual</code> is not <code>typeName</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).notTypeOf( typeName, message, options );
 </code></pre></div>
 <table><thead>
@@ -848,22 +848,22 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A comparison value</td>
+<td>A comparison value.</td>
 </tr>
 <tr>
 <td><code>typeName</code></td>
 <td>String</td>
-<td>An unexpected type of <code>actual</code> value</td>
+<td>An unexpected type of <code>actual</code> value.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>An assertion message that will be displayed in the report if the test fails</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href=".#assertion-options">Options</a></td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -883,22 +883,22 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A comparison value</td>
+<td>A comparison value.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
 <td>Any type</td>
-<td>A value that should be greater than <code>actual</code></td>
+<td>A value that should be greater than <code>actual</code>.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>An assertion message that will be displayed in the report if the test fails</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href=".#assertion-options">Options</a></td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -918,22 +918,22 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A comparison value</td>
+<td>A comparison value.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
 <td>Any type</td>
-<td>A value that should be greater than or equal to <code>actual</code></td>
+<td>A value that should be greater than or equal to <code>actual</code>.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>An assertion message that will be displayed in the report if the test fails</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href=".#assertion-options">Options</a></td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -955,22 +955,22 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A comparison value</td>
+<td>A comparison value.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
 <td>Any type</td>
-<td>A value that should be less than <code>actual</code></td>
+<td>A value that should be less than <code>actual</code>.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>An assertion message that will be displayed in the report if the test fails</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href=".#assertion-options">Options</a></td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -990,22 +990,22 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A comparison value</td>
+<td>A comparison value.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
 <td>Any type</td>
-<td>A value that should be less than or equal to <code>actual</code></td>
+<td>A value that should be less than or equal to <code>actual</code>.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>An assertion message that will be displayed in the report if the test fails</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href=".#assertion-options">Options</a></td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -1027,27 +1027,27 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A comparison value</td>
+<td>A comparison value.</td>
 </tr>
 <tr>
 <td><code>start</code></td>
 <td>Number</td>
-<td>A lower bound of range (included)</td>
+<td>A lower bound of range (included).</td>
 </tr>
 <tr>
 <td><code>finish</code></td>
 <td>Number</td>
-<td>An upper bound of range (included)</td>
+<td>An upper bound of range (included).</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>An assertion message that will be displayed in the report if the test fails</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href=".#assertion-options">Options</a></td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
 </tr>
 </tbody></table>
 
@@ -1067,27 +1067,27 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A comparison value</td>
+<td>A comparison value.</td>
 </tr>
 <tr>
 <td><code>start</code></td>
 <td>Number</td>
-<td>A lower bound of range (included)</td>
+<td>A lower bound of range (included).</td>
 </tr>
 <tr>
 <td><code>finish</code></td>
 <td>Number</td>
-<td>An upper bound of range (included)</td>
+<td>An upper bound of range (included).</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>An assertion message that will be displayed in the report if the test fails</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See <a href=".#assertion-options">Options</a></td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
 </tr>
 </tbody></table>
 
