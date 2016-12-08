@@ -268,7 +268,7 @@ See [Starting browser with arguments](https://devexpress.github.io/testcafe/docu
   }
   ```
 
-  See [Snapshot API Shorthands](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#snapshot-api-shorthands).
+  See [Snapshot API Shorthands](http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#obtain-element-state).
 
 #### :gear: Improved automatic wait mechanism. ([#245](https://github.com/DevExpress/testcafe/issues/245))
 
