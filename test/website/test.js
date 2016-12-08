@@ -1,3 +1,5 @@
+'use strict';
+
 const blc     = require('broken-link-checker');
 const http    = require('http');
 const https   = require('https');

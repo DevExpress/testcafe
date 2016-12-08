@@ -1,12 +1,19 @@
-# Changelog
+---
+layout: post
+title: TestCafe v0.11.0 Released
+permalink: /blog/:title.html
+---
+# TestCafe v0.11.0 Released
 
-## v0.11.0 (2016-12-8)
+Redesigned selector system, built-in assertions and lots of bug fixes! 🚀🚀🚀
 
-### Enhancements
+<!--more-->
 
-#### :gear: Redesigned selector system. ([#798](https://github.com/DevExpress/testcafe/issues/798))
+## Enhancements
 
-##### New selector methods
+### ⚙ Redesigned selector system. ([#798](https://github.com/DevExpress/testcafe/issues/798))
+
+#### New selector methods
 
 Multiple [filtering](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-multiple-dom-nodes) and [hierarchical](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#find-elements-by-dom-hierarchy) methods were introduced for selectors.
 Now you can build flexible, lazily-evaluated functional-style selector chains.
@@ -63,11 +70,11 @@ In this example the selector:
 
 ------
 
-##### Getting selector matching set length
+#### Getting selector matching set length
 
 Also, now you can get selector matching set length and check matching elements existence by using selector [`count` and `exists` properties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#get-selector-matching-set-length).
 
-##### Unawaited parametrized selector calls now allowed outside test context
+#### Unawaited parametrized selector calls now allowed outside test context
 
 Previously selector call outside of text context thrown an error:
 
@@ -108,7 +115,7 @@ test ('Some test', async t=> {
 });
 ```
 
-##### Index filter is not ignored anymore if selector returns single node
+#### Index filter is not ignored anymore if selector returns single node
 
 Previously if selector returned single node `index` was ignored:
 
@@ -122,7 +129,7 @@ however it's not a case now:
 Selector('#someId').nth(2); // returns `null`, since there is only one element in matching set with id `someId`
 ```
 
-##### Deprecated API
+#### Deprecated API
 
 * [`t.select` method](http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#one-time-selection) - use `Selector` instead:
 
@@ -138,10 +145,10 @@ const id = await Selector('.someClass').id;
 * [selectorOptions.text](http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionstext) - use [selector.withText()](http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#withtext) instead.
 * [selectorOptions.dependencies](http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionsdependencies) - use [filtering](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-multiple-dom-nodes) and [hierarchical](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#find-elements-by-dom-hierarchy) methods to build combined selectors instead.
 
-#### :gear: Built-in assertions. ([#998](https://github.com/DevExpress/testcafe/issues/998))
+### ⚙ Built-in assertions. ([#998](https://github.com/DevExpress/testcafe/issues/998))
 
 TestCafe now ships with [numerous built-in BDD-style assertions](http://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html).
-If the TestCafe assertion receives a [Selector's property](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes) as an actual value, TestCafe uses the [smart assertion query mechanism](http://devexpress.github.io/testcafe/documentation/test-api/assertions/index.html#smart-assertion-query-mechanism):
+If the TestCafe assertion receives a [Selector's DOM node state property](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#define-assertion-actual-value) as an actual value, TestCafe uses the [smart assertion query mechanism](http://devexpress.github.io/testcafe/documentation/test-api/assertions/index.html#smart-assertion-query-mechanism):
 if an assertion did not passed, the test does not fail immediately. The assertion retries to pass multiple times and each time it re-requests the actual shorthand value. The test fails if the assertion could not complete successfully within a timeout.
 This approach allows you to create stable tests that lack random errors and decrease the amount of time required to run all your tests due to the lack of extra waitings.
 
@@ -175,9 +182,9 @@ test('Button click', async t => {
 });
 ```
 
-#### :gear: Added [`selected` and `selectedIndex` DOM node state properties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes). ([#951](https://github.com/DevExpress/testcafe/issues/951))
+### ⚙ Added [`selected` and `selectedIndex` DOM node state properties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes). ([#951](https://github.com/DevExpress/testcafe/issues/951))
 
-#### :gear: It's now possible to start browser with arguments. ([#905](https://github.com/DevExpress/testcafe/issues/905))
+### ⚙ It's now possible to start browser with arguments. ([#905](https://github.com/DevExpress/testcafe/issues/905))
 
 If you need to pass arguments for the specified browser, write them right after browser alias. Surround the browser call and its arguments with quotation marks:
 
@@ -187,7 +194,7 @@ testcafe "chrome --start-fullscreen",firefox tests/test.js
 
 See [Starting browser with arguments](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#starting-browser-with-arguments).
 
-### Bug Fixes
+## Bug Fixes
 
 * Action keyboard events now have `event.key` and `event.keyIdentifier` properties set ([#993](https://github.com/DevExpress/testcafe/issues/993)).
 * `document.body.nextSibling`, that was broken is some cases previously, now operates properly ([#958](https://github.com/DevExpress/testcafe/issues/958)).
@@ -214,122 +221,3 @@ See [Starting browser with arguments](https://devexpress.github.io/testcafe/docu
 * `autocomplete` attribute now not forced on all elements ([testcafe-hammerhead#955](https://github.com/DevExpress/testcafe-hammerhead/issues/955)).
 * Cookies set via XHR response now available from client code ([testcafe-hammerhead#905](https://github.com/DevExpress/testcafe-hammerhead/issues/905)).
 * Fixed client rendering problems caused by incorrect DOM element determination ([testcafe-hammerhead#953](https://github.com/DevExpress/testcafe-hammerhead/issues/953)).
-
-## v0.10.0 (2016-11-8)
-
-### Enhancements
-
-#### :gear: Snapshot API shorthands. ([#771](https://github.com/DevExpress/testcafe/issues/771))
-
-  Previously, if you needed to use a single property from the snapshot, you had to introduce two assignments
-
-  ```js
-  const snapshot = await selector();
-  const nodeType = snapshot.nodeType;
-  ```
-
-  or additional parentheses.
-
-  ```js
-  const nodeType = (await selector()).nodeType;
-  ```
-
-  Now snapshot methods and property getters are exposed by selectors
-  (and selector promises as well) so that you can write more compact code.
-
-  ```js
-  const nodeType = await selector.nodeType;
-
-  // or
-
-  const nodeType = await selector('someParam').nodeType;
-  ```
-
-  However, shorthand properties do not allow you to omit parentheses when working with dictionary properties
-  like `style`, `attributes` or `boundingClientRect`.
-
-  ```js
-  const width = (await selector.style)['width'];
-  ```
-
-  That is why we have also introduced shorthand methods for these dictionaries: `getStyleProperty`, `getAttribute` and `getBoundingClientRectProperty`.
-
-  ```js
-  const width = await selector.getStyleProperty('width');
-  const id    = await selector.getAttribute('id');
-  const left  = await selector.getBoundingClientRectProperty('left');
-  ```
-
-  Finally, we have added the `hasClass` method.
-
-  ```js
-  if (await selector.hasClass('foo')) {
-      //...
-  }
-  ```
-
-  See [Snapshot API Shorthands](http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#obtain-element-state).
-
-#### :gear: Improved automatic wait mechanism. ([#245](https://github.com/DevExpress/testcafe/issues/245))
-
-  We got rid of unnecessary waiting so that tests now run almost two times faster.
-
-  ![Tests running in v0.10.0 vs v0.9.0](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/new-0-10-0-autowait.gif)
-
-#### :gear: Test execution speed control. ([#938](https://github.com/DevExpress/testcafe/issues/938))
-
-  We have introduced an option that allows you to specify how fast tests run.
-
-  By default, tests run at the maximum speed. However, if you need to watch a test running to understand what happens in it,
-  this speed may seem too fast. In this instance, use the new `speed` option to slow the test down.
-
-  This option is available from the command line
-
-  ```sh
-  testcafe chrome my-tests --speed 0.1
-  ```
-
-  and from the API.
-
-  ```js
-  await runner.run({
-      speed: 0.1
-  })
-  ```
-
-  You can use factor values between `1` (the fastest, used by default) and `0.01` (the slowest).
-
-#### :gear: `t.maximizeWindow` test action. ([#812](https://github.com/DevExpress/testcafe/issues/812))
-
-  We have added a test action that maximizes the browser window.
-
-  ```js
-  import { expect } from 'chai';
-  import { Selector } from 'testcafe';
-
-  const menu = Selector('#side-menu');
-
-  fixture `My fixture`
-      .page `http://www.example.com/`;
-
-  test('Side menu is displayed in full screen', async t => {
-      await t.maximizeWindow();
-
-      expect(await menu.visible).to.be.ok;
-  });
-  ```
-
-### Bug Fixes
-
-* The `t.resizeWindow` and `t.resizeWindowToFitDevice` actions now work correctly on macOS ([#816](https://github.com/DevExpress/testcafe/issues/816))
-* Browser aliases are now case insensitive in the command line ([#890](https://github.com/DevExpress/testcafe/issues/890))
-* Tests no longer hang if target scrolling coordinates are fractional ([#882](https://github.com/DevExpress/testcafe/issues/882))
-* The 'Element is not visible' error is no longer raised when scrolling a document in Quirks mode ([#883](https://github.com/DevExpress/testcafe/issues/883))
-* `<table>` child elements are now focused correctly ([#889](https://github.com/DevExpress/testcafe/issues/889))
-* The page is no longer scrolled to the parent element when focusing on a non-focusable child during click automation ([#913](https://github.com/DevExpress/testcafe/issues/913))
-* Browser auto-detection now works with all the Linux distributions ([#104](https://github.com/DevExpress/testcafe-browser-tools/issues/104),
-  [#915](https://github.com/DevExpress/testcafe/issues/915))
-
-## v0.9.0 (2016-10-18)
-
-:tada: Initial release :tada:

@@ -33,10 +33,10 @@ await t.expect( actual ).eql( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value
-`expected`             | Any type | An expected value
-`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options)
+`actual`             | Any type | A comparison value.
+`expected`             | Any type | An expected value.
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
 **Examples:**
 
@@ -56,10 +56,10 @@ await t.expect( actual ).notEql( unexpected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value
-`expected`             | Any type | An unexpected value
-`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options)
+`actual`             | Any type | A comparison value.
+`expected`             | Any type | An unexpected value.
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
 **Examples:**
 
@@ -79,9 +79,9 @@ await t.expect( actual ).ok( message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A value that should be truthy
-`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options)
+`actual`             | Any type | A value that should be truthy.
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
 **Examples:**
 
@@ -101,9 +101,9 @@ await t.expect( actual ).notOk( message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A value that should be falsy
-`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options)
+`actual`             | Any type | A value that should be falsy.
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
 **Examples:**
 
@@ -115,7 +115,7 @@ await t
 
 ## Contains
 
-Asserts that `actual` contains `expected`. `Actual` should be String or Array.
+Asserts that `actual` contains `expected`.
 
 ```text
 await t.expect( actual ).contains( expected, message, options );
@@ -123,10 +123,10 @@ await t.expect( actual ).contains( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A String or Array that should contain an `expected` value
-`expected`             | Any type | An expected value
-`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options)
+`actual`             | String &#124; Array | A String or Array that should contain an `expected` value.
+`expected`             | Any type | An expected value. Can be a `String` or `RegExp` if `actual` is a string.
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
 **Examples:**
 
@@ -138,7 +138,7 @@ await t
 
 ## Not Contains
 
-Asserts that `actual` does not contain `expected`. `Actual` should be String or Array.
+Asserts that `actual` does not contain `expected`.
 
 ```text
 await t.expect( actual ).notContains( expected, message, options );
@@ -146,10 +146,10 @@ await t.expect( actual ).notContains( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A String or Array that should not contain an `expected` value
-`expected`             | Any type | An expected value
-`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options)
+`actual`             | String &#124; Array | A String or Array that should not contain an `expected` value.
+`expected`             | Any type | An expected value. Can be a `String` or `RegExp` if `actual` is a string.
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
 **Examples:**
 
@@ -161,7 +161,7 @@ await t
 
 ## Type Of
 
-Asserts that type of `actual` is `typeName`. Type of `actual` will be determined by `Object.prototype.toString.call( actual )`.
+Asserts that type of `actual` is `typeName`.
 
 ```text
 await t.expect( actual ).typeOf( typeName, message, options );
@@ -169,10 +169,10 @@ await t.expect( actual ).typeOf( typeName, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value
-`typeName`             | String | The expected type of an `actual` value
-`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options)
+`actual`             | Any type | A comparison value.
+`typeName`             | String | The expected type of an `actual` value.
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
 **Examples:**
 
@@ -185,7 +185,7 @@ await t
 
 ## Not Type of
 
-Asserts that type of `actual` is not `typeName`. Type of `actual` will be determined as a constructor's name.
+Asserts that type of `actual` is not `typeName`.
 
 ```text
 await t.expect( actual ).notTypeOf( typeName, message, options );
@@ -193,10 +193,10 @@ await t.expect( actual ).notTypeOf( typeName, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value
-`typeName`             | String | An unexpected type of `actual` value
-`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options)
+`actual`             | Any type | A comparison value.
+`typeName`             | String | An unexpected type of `actual` value.
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
 **Example:**
 
@@ -214,10 +214,10 @@ await t.expect( actual ).gt( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value
-`expected`             | Any type | A value that should be greater than `actual`
-`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options)
+`actual`             | Any type | A comparison value.
+`expected`             | Any type | A value that should be greater than `actual`.
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
 **Example:**
 
@@ -235,10 +235,10 @@ await t.expect( actual ).gte( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value
-`expected`             | Any type | A value that should be greater than or equal to `actual`
-`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options)
+`actual`             | Any type | A comparison value.
+`expected`             | Any type | A value that should be greater than or equal to `actual`.
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
 **Examples:**
 
@@ -258,10 +258,10 @@ await t.expect( actual ).lt( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value
-`expected`             | Any type | A value that should be less than `actual`
-`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options)
+`actual`             | Any type | A comparison value.
+`expected`             | Any type | A value that should be less than `actual`.
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
 **Example:**
 
@@ -279,10 +279,10 @@ await t.expect( actual ).lte( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value
-`expected`             | Any type | A value that should be less than or equal to `actual`
-`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options)
+`actual`             | Any type | A comparison value.
+`expected`             | Any type | A value that should be less than or equal to `actual`.
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
 **Examples:**
 
@@ -302,11 +302,11 @@ await t.expect( actual ).within( start, finish, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value
-`start`             | Number | A lower bound of range (included)
-`finish`             | Number | An upper bound of range (included)
-`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options)
+`actual`             | Any type | A comparison value.
+`start`             | Number | A lower bound of range (included).
+`finish`             | Number | An upper bound of range (included).
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
 **Example:**
 
@@ -324,11 +324,11 @@ await t.expect( actual ).notWithin( start, finish, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value
-`start`             | Number | A lower bound of range (included)
-`finish`             | Number | An upper bound of range (included)
-`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options)
+`actual`             | Any type | A comparison value.
+`start`             | Number | A lower bound of range (included).
+`finish`             | Number | An upper bound of range (included).
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
 **Example:**
 
