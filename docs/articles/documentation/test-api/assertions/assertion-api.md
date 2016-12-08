@@ -124,7 +124,7 @@ await t.expect( actual ).contains( expected, message, options );
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
 `actual`             | String &#124; Array | A String or Array that should contain an `expected` value.
-`expected`             | Any type | An expected value. Can be a `String` or `RegExp` if `actual` is a string.
+`expected`             | Any type | An expected value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
@@ -147,7 +147,7 @@ await t.expect( actual ).notContains( expected, message, options );
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
 `actual`             | String &#124; Array | A String or Array that should not contain an `expected` value.
-`expected`             | Any type | An expected value. Can be a `String` or `RegExp` if `actual` is a string.
+`expected`             | Any type | An expected value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
