@@ -183,6 +183,7 @@ before(function () {
                         quarantineMode:   quarantineMode,
                         selectorTimeout:  selectorTimeout,
                         assertionTimeout: assertionTimeout,
+                        touchMode:        true,
                         speed:            speed
                     })
                     .then(function () {

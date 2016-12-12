@@ -4,12 +4,15 @@ import * as domUtils from './dom';
 
 var Promise       = hammerhead.Promise;
 var nativeMethods = hammerhead.nativeMethods;
+var browserUtils  = hammerhead.utils.browser;
 
 export const RECORDING_LISTENED_EVENTS = [
     'click', 'mousedown', 'mouseup', 'dblclick', 'contextmenu', 'mousemove', 'mouseover', 'mouseout',
     'touchstart', 'touchmove', 'touchend', 'keydown', 'keypress', 'input', 'keyup', 'change', 'focus', 'blur',
     'MSPointerDown', 'MSPointerMove', 'MSPointerOver', 'MSPointerOut', 'MSPointerUp', 'pointerdown',
     'pointermove', 'pointerover', 'pointerout', 'pointerup'];
+
+export let touchMode = null;
 
 // Imported form the hammerhead
 export const BUTTON            = hammerhead.utils.event.BUTTON;
@@ -70,4 +73,8 @@ export function documentReady () {
             bind(window, 'load', ready);
         }
     });
+}
+
+export function setTouchMode (enabled) {
+    touchMode = !!(browserUtils.isTouchDevice || enabled && browserUtils.hasTouchEvents);
 }

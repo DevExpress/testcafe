@@ -38,7 +38,6 @@ function clickOnOption (optionIndex, isOptionDisabled) {
     var curSelectIndex   = curSelectEl.selectedIndex;
     var realOption       = curSelectEl.getElementsByTagName('option')[optionIndex];
     var clickLeadChanges = !isOptionDisabled && optionIndex !== curSelectIndex;
-    var isMobileBrowser  = browserUtils.isSafari && browserUtils.hasTouchEvents || browserUtils.isAndroid;
 
     if (clickLeadChanges && !browserUtils.isIE)
         curSelectEl.selectedIndex = optionIndex;
@@ -49,7 +48,7 @@ function clickOnOption (optionIndex, isOptionDisabled) {
     if (browserUtils.isFirefox || browserUtils.isIE)
         eventSimulator.mousedown(browserUtils.isFirefox ? realOption : curSelectEl);
 
-    if (!isMobileBrowser)
+    if (!browserUtils.isTouchDevice)
         eventSimulator.mouseup(browserUtils.isFirefox ? realOption : curSelectEl);
 
     if ((browserUtils.isFirefox || browserUtils.isIE) && clickLeadChanges) {
@@ -59,7 +58,7 @@ function clickOnOption (optionIndex, isOptionDisabled) {
         eventSimulator.change(curSelectEl);
     }
 
-    if (!isMobileBrowser)
+    if (!browserUtils.isTouchDevice)
         eventSimulator.click(browserUtils.isFirefox || browserUtils.isIE ? realOption : curSelectEl);
 
     if (!isOptionDisabled)

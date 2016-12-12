@@ -28,8 +28,8 @@ export default class SelectBaseAutomation {
         this.absoluteEndPoint   = null;
         this.clientPoint        = null;
 
-        this.downEvent = browserUtils.hasTouchEvents ? 'touchstart' : 'mousedown';
-        this.upEvent   = browserUtils.hasTouchEvents ? 'touchend' : 'mouseup';
+        this.downEvent = eventUtils.touchMode ? 'touchstart' : 'mousedown';
+        this.upEvent   = eventUtils.touchMode ? 'touchend' : 'mouseup';
 
         this.eventArgs = {
             options: null,

@@ -23,8 +23,6 @@ $(document).ready(function () {
     var currentErrorElement      = null;
     var currentActionSourceIndex = null;
 
-    var isMobileBrowser = browserUtils.isSafari && browserUtils.hasTouchEvents || browserUtils.isAndroid;
-
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
         var seriesActionsRun = function (elements, callback) {
             window.async.forEachSeries(
@@ -114,7 +112,7 @@ $(document).ready(function () {
     });
 
     // NOTE: Android and iOS ignore the size and multiple attributes, all select elements behave like select with size=1
-    if (isMobileBrowser) {
+    if (browserUtils.isTouchDevice) {
         asyncTest('in select elements with "size" more than 1, click on an option raises an error when the option list is collapsed', function () {
             SETTINGS.ENABLE_SOURCE_INDEX = true;
             var select                   = createSelect(2);

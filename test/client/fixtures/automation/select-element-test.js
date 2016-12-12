@@ -26,9 +26,8 @@ $(document).ready(function () {
     var OPTION_LIST_CLASS  = 'tcOptionList';
 
     //utils
-    var handlersLog = [];
-
-    var isMobileBrowser = browserUtils.isSafari && browserUtils.hasTouchEvents || browserUtils.isAndroid;
+    var handlersLog     = [];
+    var isMobileBrowser = browserUtils.isTouchDevice;
 
     var createOption = function (parent, text) {
         return $('<option></option>').text(text)

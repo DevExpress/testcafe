@@ -62,7 +62,7 @@ var CursorUI = {
 
         // NOTE: For IE, we can't use the touch cursor in a cross-domain iframe
         // because we won't be able to get an element under the cursor
-        if (browserUtils.isTouchDevice && !browserUtils.isIE) {
+        if (eventUtils.touchMode && !browserUtils.isIE) {
             shadowUI.addClass(this.cursorElement, TOUCH_CLASS);
 
             // NOTE: in touch mode, the pointer should be in the center of the cursor
