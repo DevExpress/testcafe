@@ -1,4 +1,5 @@
 import { assign } from 'lodash';
+import clientFunctionBuilderSymbol from '../builder-symbol';
 import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapshot-properties';
 import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
 import getCallsite from '../../errors/get-callsite';
@@ -36,7 +37,7 @@ var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot) 
 
     if (typeof filter === 'function') {
         for (var j = 0; j < nodes.length; j++) {
-            if (filter(nodes[j]))
+            if (filter(nodes[j], j))
                 result.push(nodes[j]);
         }
     }
@@ -178,6 +179,34 @@ function addCounterProperties (obj, getSelector, SelectorBuilder) {
     });
 }
 
+function convertFilterToClientFunctionIfNecessary (callsiteName, filter, dependencies) {
+    if (typeof filter === 'function') {
+        var builder = filter[clientFunctionBuilderSymbol];
+        var fn      = builder ? builder.fn : filter;
+        var options = builder ? assign({}, builder.options, { dependencies }) : { dependencies };
+
+        return (new ClientFunctionBuilder(fn, options, { instantiation: callsiteName })).getFunction();
+    }
+
+    return filter;
+}
+
+function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selectorFn, filter, additionalDependencies) {
+    var collectionModeSelectorBuilder = new SelectorBuilder(getSelector(), { collectionMode: true });
+
+    var dependencies = {
+        selector:    collectionModeSelectorBuilder.getFunction(),
+        filter:      filter,
+        filterNodes: filterNodes
+    };
+
+    dependencies = assign(dependencies, additionalDependencies);
+
+    var builder = new SelectorBuilder(selectorFn, { dependencies }, { instantiation: 'Selector' });
+
+    return builder.getFunction();
+}
+
 function addFilterMethods (obj, getSelector, SelectorBuilder) {
     obj.nth = index => {
         assertNonNegativeNumber('nth', '"index" argument', index);
@@ -195,8 +224,10 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
         return builder.getFunction();
     };
 
-    obj.filter = filter => {
+    obj.filter = (filter, dependencies) => {
         assertFunctionOrString('filter', '"filter" argument', filter);
+
+        filter = convertFilterToClientFunctionIfNecessary('filter', filter, dependencies);
 
         var selectorFn = () => {
             /* eslint-disable no-undef */
@@ -209,40 +240,16 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        var collectionModeSelectorBuilder = new SelectorBuilder(getSelector(), { collectionMode: true });
-
-        var dependencies = {
-            selector:    collectionModeSelectorBuilder.getFunction(),
-            filter:      filter,
-            filterNodes: filterNodes
-        };
-
-        var builder = new SelectorBuilder(selectorFn, { dependencies }, { instantiation: 'Selector' });
-
-        return builder.getFunction();
+        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter);
     };
-}
-
-function createHierachicalSelector (getSelector, SelectorBuilder, selectorFn, filter, additionalDependencies) {
-    var collectionModeSelectorBuilder = new SelectorBuilder(getSelector(), { collectionMode: true });
-
-    var dependencies = {
-        selector:              collectionModeSelectorBuilder.getFunction(),
-        filter:                filter,
-        expandSelectorResults: expandSelectorResults
-    };
-
-    dependencies = assign(dependencies, additionalDependencies);
-
-    var builder = new SelectorBuilder(selectorFn, { dependencies }, { instantiation: 'Selector' });
-
-    return builder.getFunction();
 }
 
 function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
     // Find
-    obj.find = filter => {
+    obj.find = (filter, dependencies) => {
         assertFunctionOrString('find', '"filter" argument', filter);
+
+        filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
         var selectorFn = () => {
             /* eslint-disable no-undef */
@@ -261,8 +268,7 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
                     for (var i = 0; i < cnLength; i++) {
                         var child = currentNode.childNodes[i];
 
-                        if (filter(child))
-                            results.push(child);
+                        results.push(child);
 
                         visitNode(child);
                     }
@@ -270,18 +276,20 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
 
                 visitNode(node);
 
-                return results;
+                return filterNodes(results, filter, null);
             });
             /* eslint-enable no-undef */
         };
 
-        return createHierachicalSelector(getSelector, SelectorBuilder, selectorFn, filter);
+        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter, { expandSelectorResults });
     };
 
     // Parent
-    obj.parent = filter => {
+    obj.parent = (filter, dependencies) => {
         if (filter !== void 0)
             assertFunctionOrStringOnNonNegativeNumber('parent', '"filter" argument', filter);
+
+        filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
         var selectorFn = () => {
             /* eslint-disable no-undef */
@@ -296,13 +304,15 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        return createHierachicalSelector(getSelector, SelectorBuilder, selectorFn, filter, { filterNodes });
+        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter, { expandSelectorResults });
     };
 
     // Child
-    obj.child = filter => {
+    obj.child = (filter, dependencies) => {
         if (filter !== void 0)
             assertFunctionOrStringOnNonNegativeNumber('child', '"filter" argument', filter);
+
+        filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
         var selectorFn = () => {
             /* eslint-disable no-undef */
@@ -322,13 +332,15 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        return createHierachicalSelector(getSelector, SelectorBuilder, selectorFn, filter, { filterNodes });
+        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter, { expandSelectorResults });
     };
 
     // Sibling
-    obj.sibling = filter => {
+    obj.sibling = (filter, dependencies) => {
         if (filter !== void 0)
             assertFunctionOrStringOnNonNegativeNumber('sibling', '"filter" argument', filter);
+
+        filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
         var selectorFn = () => {
             /* eslint-disable no-undef */
@@ -353,7 +365,7 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
             /* eslint-enable no-undef */
         };
 
-        return createHierachicalSelector(getSelector, SelectorBuilder, selectorFn, filter, { filterNodes });
+        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter, { expandSelectorResults });
     };
 }
 
