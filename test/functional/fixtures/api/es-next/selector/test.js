@@ -117,6 +117,10 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "count" and "exists" properties');
     });
 
+    it('Should provide dependencies and index argument to selector filter', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector filter dependencies and index argument', { only: 'chrome' });
+    });
+
     describe('Errors', function () {
         it('Should handle errors in Selector code', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Error in code', { shouldFail: true })

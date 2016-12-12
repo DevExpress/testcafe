@@ -849,3 +849,16 @@ test('Snapshot "count" property - selector error', async () => {
 test('Snapshot "exists" property - selector error', async () => {
     await Selector(() => [].someUndefMethod()).exists;
 });
+
+test('Selector filter dependencies and index argument', async t => {
+    const isOne     = ClientFunction(i => i === 1);
+    const isTwo     = ClientFunction(i => i === 2);
+    const firstNode = ClientFunction((node, i) => isOne(i));
+
+    await t
+        .expect(Selector('.idxEl').filter((node, i) => isTwo(i), { isTwo }).id).eql('el3')
+        .expect(Selector('.find-parent').find((node, i) => isOne(i), { isOne }).id).eql('find-child2')
+        .expect(Selector('#childDiv').parent((node, i) => isTwo(i), { isTwo }).id).eql('p2')
+        .expect(Selector('.find-parent').child((node, i) => isOne(i), { isOne }).id).eql('find-child3')
+        .expect(Selector('#find-child1').sibling(firstNode, { isOne }).id).eql('find-child4');
+});
