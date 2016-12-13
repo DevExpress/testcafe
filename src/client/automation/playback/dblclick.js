@@ -58,49 +58,57 @@ export default class DblClickAutomation {
         var expectedElement = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY) ?
                               this.element : null;
 
-        var x          = point ? point.x : this.eventArgs.point.x;
-        var y          = point ? point.y : this.eventArgs.point.y;
-        var topElement = getElementFromPoint(x, y, expectedElement);
+        var x = point ? point.x : this.eventArgs.point.x;
+        var y = point ? point.y : this.eventArgs.point.y;
 
-        if (!topElement)
-            throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
+        return getElementFromPoint(x, y, expectedElement)
+            .then(topElement => {
+                if (!topElement)
+                    throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 
-        return {
-            screenPoint: screenPoint || this.eventArgs.screenPoint,
-            point:       point || this.eventArgs.point,
-            options:     options || this.eventArgs.options,
-            element:     topElement
-        };
+                return {
+                    screenPoint: screenPoint || this.eventArgs.screenPoint,
+                    point:       point || this.eventArgs.point,
+                    options:     options || this.eventArgs.options,
+                    element:     topElement
+                };
+            });
     }
 
     _firstClick () {
-        this.eventArgs = this._calculateEventArguments();
+        return this._calculateEventArguments()
+            .then(args => {
+                this.eventArgs = args;
 
-        var clickAutomation = new ClickAutomation(this.element, this.options);
+                var clickAutomation = new ClickAutomation(this.element, this.options);
 
-        return clickAutomation
-            .run()
+                return clickAutomation.run();
+            })
             .then(() => delay(FIRST_CLICK_DELAY));
     }
 
     _secondClick () {
-        this.eventArgs = this._calculateEventArguments();
+        var clickAutomation = null;
 
-        //NOTE: we should not call focus after the second mousedown (except in IE) because of the native browser behavior
-        if (browserUtils.isIE)
-            eventUtils.bind(document, 'focus', eventUtils.preventDefault, true);
+        return this._calculateEventArguments()
+            .then(args => {
+                this.eventArgs = args;
 
-        var clickOptions = new ClickOptions({
-            offsetX:   this.eventArgs.screenPoint.x,
-            offsetY:   this.eventArgs.screenPoint.y,
-            caretPos:  this.caretPos,
-            modifiers: this.modifiers
-        });
+                //NOTE: we should not call focus after the second mousedown (except in IE) because of the native browser behavior
+                if (browserUtils.isIE)
+                    eventUtils.bind(document, 'focus', eventUtils.preventDefault, true);
 
-        var clickAutomation = new ClickAutomation(document.documentElement, clickOptions);
+                var clickOptions = new ClickOptions({
+                    offsetX:   this.eventArgs.screenPoint.x,
+                    offsetY:   this.eventArgs.screenPoint.y,
+                    caretPos:  this.caretPos,
+                    modifiers: this.modifiers
+                });
 
-        return clickAutomation
-            .run()
+                clickAutomation = new ClickAutomation(document.documentElement, clickOptions);
+
+                return clickAutomation.run();
+            })
             .then(() => {
                 // NOTE: We should raise the `dblclick` event on an element that
                 // has been actually clicked during the second click automation.
