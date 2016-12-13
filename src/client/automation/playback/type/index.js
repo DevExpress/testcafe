@@ -137,11 +137,8 @@ export default class TypeAutomation {
         if (!this.replace)
             return;
 
-        if (domUtils.isTextEditableElementAndEditingAllowed(this.element)) {
+        if (domUtils.isTextEditableElementAndEditingAllowed(this.element))
             textSelection.select(this.element);
-
-            typeChar(this.element, '');
-        }
         else if (isContentEditable)
             textSelection.deleteSelectionContents(this.element, true);
     }
