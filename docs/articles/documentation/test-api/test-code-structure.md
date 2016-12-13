@@ -70,21 +70,15 @@ If the start page is not specified, it defaults to `about:blank`.
 TestCafe allows you to test web pages that are protected with Http Basic or Windows (NTLM) authentication. To set authentication credentials use the `httpAuth` fixture declaration method.
 
 ```text
-httpAuth( credentials )
+httpAuth( username, password, domain, workstation )
 ```
 
-Parameter     | Type   | Description
-------------- | ------ | ------------------------------------------------
-`credentials` | Object | Object that includes all necessary data for the authentication.
-
-Credentials parameter has following format:
-
-Parameter     | Type   | Description
-------------- | ------ | --------------------------------------------------------------------
-`username`    | String | Username for the authentication.
-`password`    | String | Password for the authentication.
-`workstation` | String | PC's ID in the local network (optional parameter).
-`domain`      | String | Domain name (optional parameter).
+Parameter                       | Type   | Description
+------------------------------- | ------ | ------------------------------------------------
+`username`                      | String | Username for the authentication.
+`password`                      | String | Password for the authentication.
+`domain`&#160;*(optional)*      | String | Domain name (optional parameter).
+`workstation`&#160;*(optional)* | String | PC's ID in the local network (optional parameter).
 
 The authentication credentials should include username and password for the basic http authentication. For the NTLM authentication, server may require additional information - workstation ID and domain name. The specified credentials will be used for all requests that require authentication.
 
@@ -93,14 +87,11 @@ Usage example:
 ```js
 fixture `My fixture`
     .page `http://example.com`
-    .httpAuth({
-        username: 'username',
-        password: 'Pa$$word',
-
+    .httpAuth('username', 'Pa$$word',
         // Optional parameters, can be required for the NTLM authentication.
-        domain: 'CORP-DOMAIN',
-        workstation: 'machine-win10'
-});
+        'CORP-DOMAIN',
+        'machine-win10'
+    );
 ```
 
 ## Tests
