@@ -24,6 +24,8 @@ export default {
     testNameIsNotAString:                           'The test name is expected to be a string, but it was {type}.',
     testBodyIsNotAFunction:                         'The test body is expected to be a function, but it was {type}.',
     beforeEachIsNotAFunction:                       `Fixture's "beforeEach" method takes a function, but {type} was passed.`,
+    authCredentialIsNotString:                      `Fixture's "httpAuth" method requires a {credential} as a string value, but the {type} value was passed.`,
+    authCredentialIsEmpty:                          `Fixture's "httpAuth" method {credential} parameter cannot be empty.`,
     afterEachIsNotAFunction:                        `Fixture's "afterEach" method takes a function, but {type} was passed.`,
     clientFunctionCodeIsNotAFunction:               '{#instantiationCallsiteName} code is expected to be specified as a function, but {type} was passed.',
     selectorInitializedWithWrongType:               '{#instantiationCallsiteName} is expected to be initialized with a function, CSS selector string, another Selector, node snapshot or a Promise returned by a Selector, but {type} was passed.',

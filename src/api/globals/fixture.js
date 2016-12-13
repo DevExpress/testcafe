@@ -13,11 +13,12 @@ export default class Fixture {
         if (nameType !== 'string')
             throw new APIError('fixture', MESSAGE.fixtureNameIsNotAString, nameType);
 
-        this.name         = name;
-        this.path         = filename;
-        this.pageUrl      = 'about:blank';
-        this.beforeEachFn = null;
-        this.afterEachFn  = null;
+        this.name            = name;
+        this.path            = filename;
+        this.pageUrl         = 'about:blank';
+        this.beforeEachFn    = null;
+        this.afterEachFn     = null;
+        this.authCredentials = null;
     }
 
     page (url, ...rest) {
@@ -33,6 +34,41 @@ export default class Fixture {
 
             this.pageUrl = protocol + this.pageUrl;
         }
+
+        return this;
+    }
+
+    httpAuth (username, password, domain, workstation) {
+        var userNameType = typeof username;
+
+        if (userNameType !== 'string')
+            throw new APIError('httpAuth', MESSAGE.authCredentialIsNotString, 'username', userNameType);
+        else if (!username)
+            throw new APIError('httpAuth', MESSAGE.authCredentialIsEmpty, 'username');
+
+        var passwordType = typeof password;
+
+        if (passwordType !== 'string')
+            throw new APIError('httpAuth', MESSAGE.authCredentialIsNotString, 'password', passwordType);
+        else if (!password)
+            throw new APIError('httpAuth', MESSAGE.authCredentialIsEmpty, 'password');
+
+        var domainType = typeof domain;
+
+        if (domainType !== 'string' && domainType !== 'undefined')
+            throw new APIError('httpAuth', MESSAGE.authCredentialIsNotString, 'domain', domainType);
+
+        var workstationType = typeof workstation;
+
+        if (workstationType !== 'string' && workstationType !== 'undefined')
+            throw new APIError('httpAuth', MESSAGE.authCredentialIsNotString, 'workstation', workstationType);
+
+        this.authCredentials = {
+            username,
+            password,
+            domain,
+            workstation
+        };
 
         return this;
     }
