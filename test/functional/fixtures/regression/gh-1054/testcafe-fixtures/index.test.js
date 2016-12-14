@@ -6,7 +6,7 @@ fixture `Check the target value when the first input event raised`
 
 const getFirstValue = ClientFunction(()=> window.storedValue);
 
-test('Type text in the textarea', async t => {
+test('Type text in the input', async t => {
     await t
         .typeText('input', 'text', { replace: true })
         .expect(Selector('input').value).eql('text');

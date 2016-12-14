@@ -9,18 +9,18 @@
 <script>
     window.storedValue = '';
 
-    var textarea = document.querySelector('input');
-    var div      = document.querySelector('div');
+    var input = document.querySelector('input');
+    var div   = document.querySelector('div');
 
     var storeValue = function (event) {
         var target = event.target;
 
-        window.storedValue = target.value ||target.innerText;
+        window.storedValue = target.value || target.innerText;
 
         target.removeEventListener('input', storeValue);
     };
 
-    textarea.addEventListener('input', storeValue);
+    input.addEventListener('input', storeValue);
     div.addEventListener('input', storeValue);
 </script>
 </body>

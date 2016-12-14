@@ -82,6 +82,26 @@ export default class TypeAutomation {
         return { element, options };
     }
 
+    _calculateTargetElement () {
+        var activeElement     = domUtils.getActiveElement();
+        var isContentEditable = domUtils.isContentEditableElement(this.element);
+
+        if (isContentEditable) {
+            if (activeElement !== contentEditable.findContentEditableParent(this.element)) {
+                this.eventState.skipType = true;
+
+                return;
+            }
+        }
+        else if (activeElement !== this.element) {
+            this.eventState.skipType = true;
+
+            return;
+        }
+
+        this.element = isContentEditable ? this.element : activeElement;
+    }
+
     _click () {
         var activeElement     = domUtils.getActiveElement();
         var isTextEditable    = domUtils.isTextEditableElementAndEditingAllowed(this.element);
@@ -115,37 +135,18 @@ export default class TypeAutomation {
         return Promise.resolve();
     }
 
-    _clearText () {
-        var activeElement     = domUtils.getActiveElement();
-        var isContentEditable = domUtils.isContentEditableElement(this.element);
-
-        if (isContentEditable) {
-            if (activeElement !== contentEditable.findContentEditableParent(this.element)) {
-                this.eventState.skipType = true;
-
-                return;
-            }
-        }
-        else if (activeElement !== this.element) {
-            this.eventState.skipType = true;
-
-            return;
-        }
-
-        this.element = isContentEditable ? this.element : activeElement;
-
-        if (!this.replace)
-            return;
-
-        if (domUtils.isTextEditableElementAndEditingAllowed(this.element))
-            textSelection.select(this.element);
-        else if (isContentEditable)
-            textSelection.deleteSelectionContents(this.element, true);
-    }
-
     _type () {
         if (this.eventState.skipType)
             return Promise.resolve();
+
+        var isContentEditable = domUtils.isContentEditableElement(this.element);
+
+        if (this.replace) {
+            if (domUtils.isTextEditableElementAndEditingAllowed(this.element))
+                textSelection.select(this.element);
+            else if (isContentEditable)
+                textSelection.deleteSelectionContents(this.element, true);
+        }
 
         return whilst(() => !this._isTypingFinished(), () => this._typingStep());
     }
@@ -231,7 +232,7 @@ export default class TypeAutomation {
     run () {
         return this
             ._click()
-            .then(() => this._clearText())
+            .then(() => this._calculateTargetElement())
             .then(() => this._type());
     }
 }
