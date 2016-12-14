@@ -5,12 +5,14 @@ permalink: /documentation/recipes/using-page-model.html
 ---
 # Using Page Model
 
-Page Model is a test automation pattern that allows you to create an abstraction of the tested page
+[Page Model](http://martinfowler.com/bliki/PageObject.html) is a test automation pattern that allows you to create an abstraction of the tested page
 and use it in test code to refer to page elements.
 
 ## Why Use Page Model
 
-Consider the following fixture with a test that types and edits the developer name on the [example](https://devexpress.github.io/testcafe/example/) webpage.
+Consider the following fixture with two tests: one that types and edits
+the developer name on the [example](https://devexpress.github.io/testcafe/example/) webpage and the other that
+checks check boxes in the Features section.
 
 ```js
 import { Selector } from 'testcafe';
@@ -18,62 +20,30 @@ import { Selector } from 'testcafe';
 fixture `My fixture`
     .page `https://devexpress.github.io/testcafe/example/`;
 
-const nameInput = Selector('#developer-name');
-
 test('Text typing basics', async t => {
     await t
-        .typeText(nameInput, 'Peter')
-        .typeText(nameInput, 'Paker', { replace: true })
-        .typeText(nameInput, 'r', { caretPos: 2 })
-        .expect(nameInput.value).eql('Parker');
+        .typeText('#developer-name', 'Peter')
+        .typeText('#developer-name', 'Paker', { replace: true })
+        .typeText('#developer-name', 'r', { caretPos: 2 })
+        .expect(Selector('#developer-name').value).eql('Parker');
+});
+
+test('Click check boxes and then verify their state', async t => {
+    await t
+        .click('input[id=remote-testing]')
+        .expect(Selector('input[id=remote-testing]').checked).ok()
+        .click('input[id=reusing-js-code]')
+        .expect(Selector('input[id=reusing-js-code]').checked).ok()
+        .click('input[id=continuous-integration-embedding]')
+        .expect(Selector('input[id=continuous-integration-embedding]').checked).ok();
 });
 ```
 
-With just a single test, the code is concise and clean.
+In the first test, notice that the `#developer-name` CSS selector is duplicated in code each time the test refers to the input element.
+In the second test, test logic is duplicated for each check box.
 
-Add another test that checks check boxes in the Features section.
-
-```js
-import { Selector } from 'testcafe';
-
-fixture `My fixture`
-    .page `https://devexpress.github.io/testcafe/example/`;
-
-const label = Selector('label');
-
-const remoteTestingLabel    = label.withText('Support for testing on remote devices');
-const remoteTestingCheckbox = remoteTestingLabel.find('input[type=checkbox]');
-
-const reusingCodeLabel    = label.withText('Re-using existing JavaScript code for testing');
-const reusingCodeCheckBox = reusingCodeLabel.find('input[type=checkbox]');
-
-const ciCodeLabel    = label.withText('Easy embedding into a Continuous integration system');
-const ciCodeCheckBox = ciCodeLabel.find('input[type=checkbox]');
-
-const nameInput = Selector('#developer-name');
-
-test('Text typing basics', async t => {
-    await t
-        .typeText(nameInput, 'Peter')
-        .typeText(nameInput, 'Paker', { replace: true })
-        .typeText(nameInput, 'r', { caretPos: 2 })
-        .expect(nameInput.value).eql('Parker');
-});
-
-test('Click labels and then check their state', async t => {
-    await t
-        .click(remoteTestingLabel)
-        .expect(remoteTestingCheckbox.checked).ok()
-        .click(reusingCodeLabel)
-        .expect(reusingCodeCheckBox.checked).ok()
-        .click(ciCodeLabel)
-        .expect(ciCodeCheckBox.checked).ok();
-});
-```
-
-The section of code where selectors are initialized has grown bigger and gained some excessive code.
-
-In this instance, the Page Model pattern will be helpful. It will provide a structured model of the tested page that is transparent and easy to use.
+These tests illustrate the case when Page Model pattern is quite helpful. Page Model allows you to keep all selectors in one place
+within a structured model of the tested page that is non-excessive, transparent and easy to use.
 
 ## Creating a Page Model
 
@@ -191,7 +161,7 @@ test('Text typing basics', async t => {
         .expect(page.nameInput.value).eql('Parker');
 });
 
-test('Click labels and then check their state', async t => {
+test('Click check boxes and then verify their state', async t => {
     for (const feature of page.featureList) {
         await t
             .click(feature.label)
