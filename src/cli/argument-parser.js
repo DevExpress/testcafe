@@ -100,6 +100,7 @@ export default class CLIArgumentParser {
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
             .option('--selector-timeout <ms>', 'set the amount of time within which selectors make attempts to obtain a node to be returned')
             .option('--assertion-timeout <ms>', 'set the amount of time within which assertion should pass')
+            .option('--touch-mode', 'emulate touch events instead of mouse event (for touch monitors only)')
             .option('--speed <factor>', 'set the speed of test execution (0.01 ... 1)')
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')

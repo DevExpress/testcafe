@@ -5,6 +5,7 @@
 :racing_car: A quick follow-up for the [v0.11.0](#v0110-2016-12-8) with important fix for Firefox users. :racing_car:
 
 ### Bug Fixes
+
 * Firefox now launches successfully if TestCafe installation directory contains whitespaces ([#1042](https://github.com/DevExpress/testcafe/issues/1042)).
 
 ## v0.11.0 (2016-12-8)
