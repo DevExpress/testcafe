@@ -1,10 +1,10 @@
 import { ClientFunction, Selector } from 'testcafe';
 
-fixture `Check the target value when the first input event raised`
+fixture `Check the target element value when the first input event raised`
     .page('http://localhost:3000/fixtures/regression/gh-1054/pages/index.html');
 
 
-const getFirstValue = ClientFunction(()=> window.storedValue);
+const getFirstValue = ClientFunction(() => window.storedValue);
 
 test('Type text in the input', async t => {
     await t
