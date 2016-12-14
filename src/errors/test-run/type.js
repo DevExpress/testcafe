@@ -9,6 +9,7 @@ export default {
     uncaughtNonErrorObjectInTestCode:                  'uncaughtNonErrorObjectInTestCode',
     uncaughtErrorInClientFunctionCode:                 'uncaughtErrorInClientFunctionCode',
     missingAwaitError:                                 'missingAwaitError',
+    actionIntegerOptionError:                          'actionIntegerOptionError',
     actionPositiveIntegerOptionError:                  'actionPositiveIntegerOptionError',
     actionBooleanOptionError:                          'actionBooleanOptionError',
     actionOptionsTypeError:                            'actionOptionsTypeError',

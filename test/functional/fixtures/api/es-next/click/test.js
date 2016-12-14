@@ -9,7 +9,7 @@ describe('[API] t.click()', function () {
                 expect(errs[0]).to.contains('Button clicked');
                 expect(errs[0]).to.contains(
                     ' 15 |test(\'Incorrect action option\', async t => {' +
-                    ' 16 |    await t.click(\'#btn\', { offsetX: -3 });' +
+                    ' 16 |    await t.click(\'#btn\', { offsetX: -3.5 });' +
                     ' 17 |});' +
                     ' 18 |' +
                     ' 19 |test(\'Click button\', async t => {' +
@@ -26,14 +26,14 @@ describe('[API] t.click()', function () {
             only:       'chrome'
         })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('The "offsetX" option is expected to be a positive integer, but it was -3.');
+                expect(errs[0]).to.contains('The "offsetX" option is expected to be an integer, but it was -3.5.');
                 expect(errs[0]).to.contains(
                     ' 11 |test(\'Incorrect action selector\', async t => {' +
                     ' 12 |    await t.click(123);' +
                     ' 13 |});' +
                     ' 14 |' +
                     ' 15 |test(\'Incorrect action option\', async t => {' +
-                    ' > 16 |    await t.click(\'#btn\', { offsetX: -3 });' +
+                    ' > 16 |    await t.click(\'#btn\', { offsetX: -3.5 });' +
                     ' 17 |});' +
                     ' 18 |' +
                     ' 19 |test(\'Click button\', async t => {' +
@@ -64,7 +64,7 @@ describe('[API] t.click()', function () {
                     ' 13 |});' +
                     ' 14 |' +
                     ' 15 |test(\'Incorrect action option\', async t => {' +
-                    ' 16 |    await t.click(\'#btn\', { offsetX: -3 });' +
+                    ' 16 |    await t.click(\'#btn\', { offsetX: -3.5 });' +
                     ' 17 |});'
                 );
             });

@@ -4,9 +4,18 @@
 // -------------------------------------------------------------
 
 import Assignable from '../../utils/assignable';
-import { createBooleanValidator, createPositiveIntegerValidator } from './validations/factories';
-import { ActionPositiveIntegerOptionError, ActionBooleanOptionError } from '../../errors/test-run';
+import {
+    createBooleanValidator,
+    createIntegerValidator,
+    createPositiveIntegerValidator
+} from './validations/factories';
+import {
+    ActionIntegerOptionError,
+    ActionPositiveIntegerOptionError,
+    ActionBooleanOptionError
+} from '../../errors/test-run';
 
+export var integerOption         = createIntegerValidator(ActionIntegerOptionError);
 export var positiveIntegerOption = createPositiveIntegerValidator(ActionPositiveIntegerOptionError);
 export var booleanOption         = createBooleanValidator(ActionBooleanOptionError);
 
@@ -24,8 +33,8 @@ export class OffsetOptions extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'offsetX', type: positiveIntegerOption },
-            { name: 'offsetY', type: positiveIntegerOption }
+            { name: 'offsetX', type: integerOption },
+            { name: 'offsetY', type: integerOption }
         ];
     }
 }

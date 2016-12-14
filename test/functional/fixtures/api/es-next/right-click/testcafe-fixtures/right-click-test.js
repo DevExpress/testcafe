@@ -12,5 +12,5 @@ test('Incorrect action selector', async t => {
 });
 
 test('Incorrect action option', async t => {
-    await t.rightClick('#button', { offsetX: -3 });
+    await t.rightClick('#button', { offsetX: -3.5 });
 });

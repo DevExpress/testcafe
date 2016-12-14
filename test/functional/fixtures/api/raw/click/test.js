@@ -96,7 +96,7 @@ describe('[Raw API] Click action', function () {
     it('Should fail if action has an incorrect option', function () {
         return runTests('./testcafe-fixtures/click.testcafe', 'Incorrect action option', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('The "offsetX" option is expected to be a positive integer, but it was string.');
+                expect(errs[0]).contains('The "offsetX" option is expected to be an integer, but it was string.');
                 expect(errs[0]).contains('[[Incorrect action option callsite]]');
             });
     });

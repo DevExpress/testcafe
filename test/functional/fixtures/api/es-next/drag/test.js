@@ -54,7 +54,7 @@ describe('[API] Drag actions', function () {
                 only:       'chrome'
             })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('The "offsetX" option is expected to be a positive integer, but it was string.');
+                    expect(errs[0]).to.contain('The "offsetX" option is expected to be an integer, but it was string.');
                     expect(errs[0]).to.contain('> 28 |    await t.drag(\'#draggable-div-1\', 10, 20, { offsetX: \'test\' });');
                 });
         });

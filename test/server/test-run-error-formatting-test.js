@@ -6,6 +6,7 @@ var ReporterPluginHost                                = require('../../lib/repor
 var TYPE                                              = require('../../lib/errors/test-run/type');
 var TestRunErrorFormattableAdapter                    = require('../../lib/errors/test-run/formattable-adapter');
 var testCallsite                                      = require('./data/test-callsite');
+var ActionIntegerOptionError                          = require('../../lib/errors/test-run').ActionIntegerOptionError;
 var ActionPositiveIntegerOptionError                  = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
 var ActionIntegerArgumentError                        = require('../../lib/errors/test-run').ActionIntegerArgumentError;
 var ActionPositiveIntegerArgumentError                = require('../../lib/errors/test-run').ActionPositiveIntegerArgumentError;
@@ -113,6 +114,10 @@ function assertErrorMessage (file, err) {
 
 describe('Error formatting', function () {
     describe('Errors', function () {
+        it('Should format "actionIntegerOptionError" message', function () {
+            assertErrorMessage('action-integer-option-error', new ActionIntegerOptionError('offsetX', '1.01'));
+        });
+
         it('Should format "actionPositiveIntegerOptionError" message', function () {
             assertErrorMessage('action-positive-integer-option-error', new ActionPositiveIntegerOptionError('caretPos', '-1'));
         });
