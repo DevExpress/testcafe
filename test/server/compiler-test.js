@@ -504,23 +504,23 @@ describe('Compiler', function () {
         });
 
         it('Should raise an error if httpAuth takes a wrong argument', function () {
-            var usernameIsNotStringTestFile = resolve('test/server/data/test-suites/httpAuth/username-is-not-a-string.js');
-            var passIsEmptyTestFile         = resolve('test/server/data/test-suites/httpAuth/pass-is-empty.js');
-            var domainIsNotString           = resolve('test/server/data/test-suites/httpAuth/domain-is-not-a-string.js');
+            var credentialsInNotObject = resolve('test/server/data/test-suites/http-auth/credentials-is-not-an-object.js');
+            var passIsNotString        = resolve('test/server/data/test-suites/http-auth/password-is-not-a-string.js');
+            var usernameIsNotDefined   = resolve('test/server/data/test-suites/http-auth/username-is-not-defined.js');
 
-            return compile(usernameIsNotStringTestFile)
+            return compile(credentialsInNotObject)
                 .then(function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
                     assertAPIError(err, {
-                        stackTop: usernameIsNotStringTestFile,
+                        stackTop: credentialsInNotObject,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Fixture\'s "httpAuth" method requires a username as a string value, but the object value was passed.',
+                                 'credentials is expected to be an object, but it was string.',
 
-                        callsite: '   1 |fixture `Username is not a string`\n' +
-                                  " > 2 |    .httpAuth({}, 'password');\n" +
+                        callsite: '   1 |fixture `Credentials is not an object`\n' +
+                                  " > 2 |    .httpAuth('');\n" +
                                   '   3 |\n' +
                                   "   4 |test('Some test', () => {\n" +
                                   '   5 |\n' +
@@ -528,20 +528,20 @@ describe('Compiler', function () {
                                   '   7 |'
                     });
 
-                    return compile(passIsEmptyTestFile);
+                    return compile(passIsNotString);
                 })
                 .then(function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
                     assertAPIError(err, {
-                        stackTop: passIsEmptyTestFile,
+                        stackTop: passIsNotString,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Fixture\'s "httpAuth" method password parameter cannot be empty.',
+                                 'credentials.password is expected to be a string, but it was object.',
 
-                        callsite: '   1 |fixture `Password is empty`\n' +
-                                  ' > 2 |    .httpAuth(\'username\', \'\');\n' +
+                        callsite: '   1 |fixture `Password is not a string`\n' +
+                                  ' > 2 |    .httpAuth({ username: \'username\', password: {} });\n' +
                                   '   3 |\n' +
                                   "   4 |test('Some test', () => {\n" +
                                   '   5 |\n' +
@@ -549,20 +549,20 @@ describe('Compiler', function () {
                                   '   7 |'
                     });
 
-                    return compile(domainIsNotString);
+                    return compile(usernameIsNotDefined);
                 })
                 .then(function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
                     assertAPIError(err, {
-                        stackTop: domainIsNotString,
+                        stackTop: usernameIsNotDefined,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Fixture\'s "httpAuth" method requires a domain as a string value, but the object value was passed.',
+                                 'credentials.username is expected to be a string, but it was undefined.',
 
-                        callsite: '   1 |fixture `Domain is not a string`\n' +
-                                  " > 2 |    .httpAuth('username', 'password', {});\n" +
+                        callsite: '   1 |fixture `Username is not defined`\n' +
+                                  " > 2 |    .httpAuth({ password: 'password' });\n" +
                                   '   3 |\n' +
                                   "   4 |test('Some test', () => {\n" +
                                   '   5 |\n' +

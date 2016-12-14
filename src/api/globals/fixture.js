@@ -2,6 +2,7 @@ import { APIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 import handleTagArgs from '../../utils/handle-tag-args';
 import wrapTestFunction from './wrap-test-function';
+import { assertObject, assertString } from '../../errors/runtime/type-assertions';
 
 const PROTOCOL_RE          = /^https?:\/\//;
 const IMPLICIT_PROTOCOL_RE = /^\/\//;
@@ -38,37 +39,17 @@ export default class Fixture {
         return this;
     }
 
-    httpAuth (username, password, domain, workstation) {
-        var userNameType = typeof username;
+    httpAuth (credentials) {
+        assertObject('httpAuth', 'credentials', credentials);
+        assertString('httpAuth', 'credentials.username', credentials.username);
+        assertString('httpAuth', 'credentials.password', credentials.password);
 
-        if (userNameType !== 'string')
-            throw new APIError('httpAuth', MESSAGE.authCredentialIsNotString, 'username', userNameType);
-        else if (!username)
-            throw new APIError('httpAuth', MESSAGE.authCredentialIsEmpty, 'username');
+        if (credentials.domain)
+            assertString('httpAuth', 'credentials.domain', credentials.domain);
+        if (credentials.workstation)
+            assertString('httpAuth', 'credentials.workstation', credentials.workstation);
 
-        var passwordType = typeof password;
-
-        if (passwordType !== 'string')
-            throw new APIError('httpAuth', MESSAGE.authCredentialIsNotString, 'password', passwordType);
-        else if (!password)
-            throw new APIError('httpAuth', MESSAGE.authCredentialIsEmpty, 'password');
-
-        var domainType = typeof domain;
-
-        if (domainType !== 'string' && domainType !== 'undefined')
-            throw new APIError('httpAuth', MESSAGE.authCredentialIsNotString, 'domain', domainType);
-
-        var workstationType = typeof workstation;
-
-        if (workstationType !== 'string' && workstationType !== 'undefined')
-            throw new APIError('httpAuth', MESSAGE.authCredentialIsNotString, 'workstation', workstationType);
-
-        this.authCredentials = {
-            username,
-            password,
-            domain,
-            workstation
-        };
+        this.authCredentials = credentials;
 
         return this;
     }
