@@ -156,6 +156,28 @@ describe('[API] Assertions', function () {
             });
     });
 
+    it('Should perform .match() assertion', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', '.match() assertion', {
+            shouldFail: true,
+            only:       'chrome'
+        })
+            .catch(function (errs) {
+                expect(errs[0]).contains("AssertionError: expected 'yo' to match /[x,z]o/");
+                expect(errs[0]).contains("> 136 |        .expect('yo').match(/[x,z]o/);");
+            });
+    });
+
+    it('Should perform .notMatch() assertion', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', '.notMatch() assertion', {
+            shouldFail: true,
+            only:       'chrome'
+        })
+            .catch(function (errs) {
+                expect(errs[0]).contains("AssertionError: expected '42 hey' not to match /\\d+ hey/");
+                expect(errs[0]).contains("> 142 |        .expect('42 hey').notMatch(/\\d+ hey/);");
+            });
+    });
+
     it('Should retry assertion for selector results', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Selector result assertion', { only: 'chrome' });
     });

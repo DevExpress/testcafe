@@ -133,4 +133,12 @@ export default class Assertion {
     notWithin (lo, hi, message, opts) {
         return this._enqueueAssertion('notWithin', message, opts, () => expect(this.actual).not.to.be.within(lo, hi, this.message));
     }
+
+    match (re, message, opts) {
+        return this._enqueueAssertion('match', message, opts, () => assert.match(this.actual, re, this.message));
+    }
+
+    notMatch (re, message, opts) {
+        return this._enqueueAssertion('notMatch', message, opts, () => assert.notMatch(this.actual, re, this.message));
+    }
 }
