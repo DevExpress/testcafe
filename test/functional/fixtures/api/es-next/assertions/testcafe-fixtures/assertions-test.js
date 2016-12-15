@@ -129,3 +129,15 @@ test('"timeout" option', async t => {
         .click('#setClass')
         .expect(el.hasClass('hey')).ok('message', { timeout: 500 });
 });
+
+test('.match() assertion', async t => {
+    await t
+        .expect('42 hey').match(/\d+ hey/)
+        .expect('yo').match(/[x,z]o/);
+});
+
+test('.notMatch() assertion', async t => {
+    await t
+        .expect('yo').notMatch(/[x,z]o/)
+        .expect('42 hey').notMatch(/\d+ hey/);
+});
