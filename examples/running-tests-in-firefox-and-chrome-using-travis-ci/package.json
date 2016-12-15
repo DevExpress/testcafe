@@ -1,10 +1,10 @@
 {
   "name": "running-tests-using-travis-and-saucelabs",
   "version": "1.0.0",
-  "description": "An example of how to run TestCafe tests in the cloud using Travis CI and Sauce Labs.",
+  "description": "An example of how to run TestCafe tests in the cloud using Firefox and Chrome with Travis CI.",
   "main": "server.js",
   "scripts": {
-    "test": "concurrently -s first -r -k 'node server.js' 'testcafe saucelabs:Chrome@beta tests/index-test.js'"
+    "test": "concurrently -s first -r -k 'node server.js' 'testcafe chrome,firefox tests/index-test.js'"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,6 @@
   "devDependencies": {
     "testcafe": "*",
     "chai": "^3.5.0",
-	"concurrently": "^3.1.0",
-    "testcafe-browser-provider-saucelabs": "^1.0.0"
+	"concurrently": "^3.1.0"
   }
 }

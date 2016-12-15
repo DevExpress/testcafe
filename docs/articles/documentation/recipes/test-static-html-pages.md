@@ -27,14 +27,14 @@ To tell npm how to run your tests, you need to add the `test` script to the proj
 
 ```json
 "scripts": {
-    "test": "concurrently -r -k \"http-server\" \"http-server ./dist -p 4000 -s\" \"testcafe chrome ./test/acceptance/**\""
+    "test": "concurrently -s first -r -k 'http-server ./dist -s' 'testcafe chrome ./test/acceptance/**'"
 }
 ```
 
 This script contains the following commands.
 
-1. `concurrently -r -k "http-server"` - starts concurrently with the raw output flag on and kills the http-server after running the tests
-2. `"http-server ./dist -p 4000 -s"` - starts the local server at port `4000` on the `./dist folder` in silent mode
+1. `concurrently -s first -r -k` - starts concurrently with the raw output flag on, kills the http-server after running the tests, and returns exit code of `testcafe` process
+2. `"http-server ./dist -s"` - starts the local server at port `8080` on the `./dist folder` in silent mode
 3. `"testcafe chrome ./test/acceptance/**"` - runs TestCafe tests on the `./test/acceptance` folder on Chrome
 
 For more information on how to configure a test run using a `testcafe` command, see [Command Line Interface](../using-testcafe/command-line-interface.md).

@@ -1,28 +1,26 @@
 ---
 layout: docs
-title: Running Tests Using Travis CI and Sauce Labs
-permalink: /documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html
+title: Running Tests in Firefox and Chrome Using Travis CI
+permalink: /documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html
 ---
-# Running Tests Using Travis CI and Sauce Labs
+# Running Tests in Firefox and Chrome Using Travis CI
 
 You can automatically run tests as a part of your build process using TestCafe and [Travis CI](https://travis-ci.org/).
-TestCafe also allows you to use [Sauce Labs](https://saucelabs.com/) browsers for testing.
-Thus, you can run your tests completely in the cloud.
+There are Linux versions of Chrome and Firefox browsers available for Travis CI builds, so you can run your tests completely in the cloud.
 
 Suppose you have a GitHub project for which you need to automatically run tests in the cloud when the project is modified. To do this, go through the following steps.
 
 * [Step 1 - Install TestCafe and create tests](#step-1---install-testcafe-and-create-tests)
 * [Step 2 - Enable Travis for your project](#step-2---enable-travis-for-your-project)
-* [Step 3 - Configure Travis to use Sauce Labs](#step-3---configure-travis-to-use-sauce-labs)
-* [Step 4 - Install the Sauce Labs browser provider plugin](#step-4---install-the-sauce-labs-browser-provider-plugin)
-* [Step 5 - Add the `test` script to package.json](#step-5---add-the-test-script-to-packagejson)
-* [Step 6 - Trigger a Travis CI build](#step-6---trigger-a-travis-ci-build)
+* [Step 3 - Configure Travis to use Xvfb](#step-3---configure-travis-to-use-Xvfb)
+* [Step 4 - Add the `test` script to package.json](#step-5---add-the-test-script-to-packagejson)
+* [Step 5 - Trigger a Travis CI build](#step-6---trigger-a-travis-ci-build)
 
-> TestCafe provides an [example](https://github.com/DevExpress/testcafe/tree/master/examples/running-tests-using-travis-and-saucelabs/) that can show you how to run tests with Travis CI and Sauce Labs.
+> TestCafe provides an [example](https://github.com/DevExpress/testcafe/tree/master/examples/running-tests-in-firefox-and-chrome-using-travis-ci/) that can show you how to run tests in Chrome and Firefox with Travis CI.
 
 ## Step 1 - Install TestCafe and create tests
 
-Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in your project and [create tests](../getting-started/index.md#creating-a-test).
+Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in your project and [create tests](../getting-started/#creating-a-test).
 
 ## Step 2 - Enable Travis for your project
 
@@ -46,32 +44,40 @@ Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in 
 
      Commit and push this file to your repository.
 
-## Step 3 - Configure Travis to use Sauce Labs
+## Step 3 - Configure Travis to use Xvfb
 
-1. Save your Sauce Labs username and access key to the SAUCE\_USERNAME and SAUCE\_ACCESS\_KEY environment variables, as described in [SauceLabs documentation](https://wiki.saucelabs.com/display/DOCS/Best+Practice%3A+Use+Environment+Variables+for+Authentication+Credentials).
-2. Go to the repository settings in Travis CI. In the **Environment Variables** section, define the SAUCE\_USERNAME and SAUCE\_ACCESS\_KEY variables (see [Defining Variables in Repository Settings](https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings)).
+Travis CI uses Ubuntu Server virtual machines, that do not have regular graphical environment like GNOME or KDE installed, So you have to setup and use [Xvfb](https://www.x.org/archive/X11R7.6/doc/man/man1/Xvfb.1.xhtml) to run browsers headlessly. 
 
-     ![Define variables](../../images/travis-step-3-2.png)
+You should add the following sections to your `.travis.yml` to start `Xvfb`:
 
-## Step 4 - Install the Sauce Labs browser provider plugin
+```
+dist: trusty
+sudo: required
 
-To run TestCafe tests in the cloud using Sauce Labs browsers, you need to install the [testcafe-browser-provider-saucelabs](https://www.npmjs.com/package/testcafe-browser-provider-saucelabs) plugin locally to your project.
-To do this, run the following command.
-
-```bash
-npm install --save-dev testcafe-browser-provider-saucelabs
+addons:
+  firefox: latest
+  apt:
+    sources:
+     - google-chrome
+    packages:
+     - google-chrome-stable
+     
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3
 ```
 
-For more information on testing in cloud browsers, see [Browsers in Cloud Testing Services](../using-testcafe/common-concepts/browser-support.md#browsers-in-cloud-testing-services).
+You can find more information about Travis and Xvfb in [this article](https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI).
 
-## Step 5 - Add the `test` script to package.json
+## Step 4 - Add the `test` script to package.json
 
 To test a project, Travis runs test scripts. For Node.js projects, the default test script is `npm test`.
 To tell npm how to run your tests, you need to add the `test` script to the project's package.json file. The script should contain a `testcafe` command to run tests on a Sauce Labs browser.
 
 ```text
 "scripts": {
-    "test":  "testcafe 'saucelabs:Chrome@beta:Windows 10' tests/index-test.js"
+    "test":  "testcafe chrome,firefox tests/index-test.js"
 }
 ```
 
@@ -82,7 +88,7 @@ For example, install [concurrently](https://github.com/kimmobrunfeldt/concurrent
 
 ```text
 "scripts": {
-  "test":  "concurrently -s first -r -k 'node server.js' 'testcafe saucelabs:Chrome@beta tests/index-test.js'"
+  "test":  "concurrently -s first -r -k 'node server.js' 'testcafe chrome,firefox tests/index-test.js'"
 }
 ```
 
@@ -90,8 +96,9 @@ This script contains the following commands.
 
 1. `concurrently -s first -r -k` - starts concurrently with the raw output flag on, kills the website server after running the tests and returns exit code of `testcafe` process
 2. `node server.js` - starts a website
-3. `testcafe saucelabs:Chrome@beta tests/index-test.js` - starts tests
-## Step 6 - Trigger a Travis CI build
+3. `testcafe chrome,firefox tests/index-test.js` - starts tests
+
+## Step 5 - Trigger a Travis CI build
 
 You can trigger a Travis CI build by pushing commits to your repository or creating a pull request.
 
