@@ -70,8 +70,8 @@ $(document).ready(function () {
                 top:             top ? top + 'px' : '850px',
                 zIndex:          5
             })
-            .bind(browserUtils.hasTouchEvents ? 'touchstart' : 'mousedown', function (e) {
-                lastCursorPosition = browserUtils.hasTouchEvents ? {
+            .bind(browserUtils.isTouchDevice ? 'touchstart' : 'mousedown', function (e) {
+                lastCursorPosition = browserUtils.isTouchDevice ? {
                     x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                     y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
                 } : {
@@ -80,14 +80,14 @@ $(document).ready(function () {
                 };
                 $(this).data('dragStarted', true);
             })
-            .bind(browserUtils.hasTouchEvents ? 'touchend' : 'mouseup', function () {
+            .bind(browserUtils.isTouchDevice ? 'touchend' : 'mouseup', function () {
                 lastCursorPosition = null;
                 $(this).data('dragStarted', false);
             })
             .appendTo($(curDocument).find('body'));
 
-        $(curDocument).bind(browserUtils.hasTouchEvents ? 'touchmove' : 'mousemove', function (e) {
-            var curMousePos = browserUtils.hasTouchEvents ? {
+        $(curDocument).bind(browserUtils.isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
+            var curMousePos = browserUtils.isTouchDevice ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                 y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
             } : {
@@ -273,7 +273,7 @@ $(document).ready(function () {
         });
     }
 
-    if (!browserUtils.hasTouchEvents) {
+    if (!browserUtils.isTouchDevice) {
         asyncTest('B236966 - TESTCafe - onmouseout event is not called during the execution of the method hover.', function () {
             var $element   = createDraggable(window, document, 200, 200);
             var firstEvent = null;

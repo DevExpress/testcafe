@@ -277,7 +277,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e --hostname myhost --qr-code --speed 0.5 --touch-mode ie test/server/data/file-list/file-1.js')
+        return parse('-r list -S -q -e --hostname myhost --qr-code --speed 0.5 ie test/server/data/file-list/file-1.js')
             .then(function (parser) {
                 expect(parser.browsers).eql(['ie']);
                 expect(parser.src).eql([path.resolve(process.cwd(), 'test/server/data/file-list/file-1.js')]);
@@ -289,7 +289,6 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.skipJsErrors).to.be.ok;
                 expect(parser.opts.speed).eql(0.5);
                 expect(parser.opts.qrCode).to.be.ok;
-                expect(parser.opts.touchMode).to.be.ok;
             });
     });
 });

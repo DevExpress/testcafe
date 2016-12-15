@@ -58,8 +58,8 @@ $(document).ready(function () {
             $doc.data(DRAGGABLE_BIND_FLAG, true);
             $doc.data(CURSOR_POSITION_PROPERTY, null);
 
-            $doc.bind(browserUtils.hasTouchEvents ? 'touchmove' : 'mousemove', function (e) {
-                var curMousePos = browserUtils.hasTouchEvents ? {
+            $doc.bind(browserUtils.isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
+                var curMousePos = browserUtils.isTouchDevice ? {
                     x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                     y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
                 } : {
@@ -121,8 +121,8 @@ $(document).ready(function () {
 
         $el.addClass(DRAGGABLE_CLASS);
 
-        $el.bind(browserUtils.hasTouchEvents ? 'touchstart' : 'mousedown', function (e) {
-            doc[CURSOR_POSITION_PROPERTY] = browserUtils.hasTouchEvents ? {
+        $el.bind(browserUtils.isTouchDevice ? 'touchstart' : 'mousedown', function (e) {
+            doc[CURSOR_POSITION_PROPERTY] = browserUtils.isTouchDevice ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                 y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
             } : {
@@ -135,7 +135,7 @@ $(document).ready(function () {
             $(this).data(DRAG_STARTED_PROPERTY, true);
         });
 
-        $el.bind(browserUtils.hasTouchEvents ? 'touchend' : 'mouseup', function () {
+        $el.bind(browserUtils.isTouchDevice ? 'touchend' : 'mouseup', function () {
             doc[CURSOR_POSITION_PROPERTY] = null;
             $(this).data(DRAG_STARTED_PROPERTY, false);
         });
@@ -413,7 +413,7 @@ $(document).ready(function () {
             equal(e.clientY, smallDraggablePosClient.y + dragOffsetY, 'mousedown clientY correct');
         };
 
-        if (!browserUtils.hasTouchEvents) {
+        if (!browserUtils.isTouchDevice) {
             $bigDraggable.bind('mousedown', function (e) {
                 var smallDraggablePos       = position.getOffsetPosition($smallDraggable[0]);
                 var smallDraggablePosClient = position.offsetToClientCoords({
@@ -454,7 +454,7 @@ $(document).ready(function () {
                 equal(position.getOffsetPosition($bigDraggable[0]).left, bigDraggableOffset.left + dragOffsetX);
                 equal(position.getOffsetPosition($bigDraggable[0]).top, bigDraggableOffset.top + dragOffsetY);
 
-                expect(browserUtils.hasTouchEvents ? 3 : 9);
+                expect(browserUtils.isTouchDevice ? 3 : 9);
 
                 startNext();
             });

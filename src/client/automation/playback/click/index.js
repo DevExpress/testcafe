@@ -138,7 +138,7 @@ export default class ClickAutomation {
     }
 
     _raiseTouchEvents () {
-        if (eventUtils.touchMode) {
+        if (browserUtils.isTouchDevice) {
             eventSimulator.touchstart(this.eventArgs.element, this.eventArgs.options);
             eventSimulator.touchend(this.eventArgs.element, this.eventArgs.options);
         }

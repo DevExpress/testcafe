@@ -99,7 +99,6 @@ function closeLocalBrowsers () {
     return Promise.all(closeBrowserPromises);
 }
 
-
 before(function () {
     var mocha = this;
 
@@ -183,7 +182,6 @@ before(function () {
                         quarantineMode:   quarantineMode,
                         selectorTimeout:  selectorTimeout,
                         assertionTimeout: assertionTimeout,
-                        touchMode:        true,
                         speed:            speed
                     })
                     .then(function () {

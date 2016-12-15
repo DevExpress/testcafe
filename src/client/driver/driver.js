@@ -82,7 +82,6 @@ export default class Driver {
         this.selectorTimeout  = options.selectorTimeout;
         this.speed            = options.speed;
         this.skipJsErrors     = options.skipJsErrors;
-        this.touchMode        = options.touchMode;
         this.dialogHandler    = options.dialogHandler;
 
         this.contextStorage       = null;
@@ -98,8 +97,6 @@ export default class Driver {
         this.readyPromise = eventUtils
             .documentReady()
             .then(() => this.pageInitialRequestBarrier.wait(true));
-
-        eventUtils.setTouchMode(this.touchMode);
 
         this._initChildDriverListening();
 

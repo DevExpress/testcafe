@@ -59,14 +59,11 @@
 
     //TestCafe setup
     var testCafeLegacyRunner = getTestCafeModule('testCafeLegacyRunner');
-    var testCafeCore         = getTestCafeModule('testCafeCore');
     var tcSettings           = testCafeLegacyRunner.get('./settings');
     var sandboxedJQuery      = testCafeLegacyRunner.get('./sandboxed-jquery');
 
     tcSettings.get().REFERER          = 'https://example.com';
     tcSettings.get().SELECTOR_TIMEOUT = 10000;
-
-    testCafeCore.eventUtils.setTouchMode(true);
 
     sandboxedJQuery.init(window);
 

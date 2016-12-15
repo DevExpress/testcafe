@@ -15,7 +15,7 @@ var positionUtils = testCafeCore.positionUtils;
 var eventUtils    = testCafeCore.eventUtils;
 var delay         = testCafeCore.delay;
 
-const FIRST_CLICK_DELAY = eventUtils.touchMode ? 0 : 160;
+const FIRST_CLICK_DELAY = browserUtils.isTouchDevice ? 0 : 160;
 
 
 export default class DblClickAutomation {

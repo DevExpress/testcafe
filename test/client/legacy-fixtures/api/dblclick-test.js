@@ -15,7 +15,7 @@ var stepIterator = new StepIterator();
 actionsAPI.init(stepIterator);
 
 var correctTestWaitingTime = function (time) {
-    if (browserUtils.hasTouchEvents && browserUtils.isFirefox)
+    if (browserUtils.isTouchDevice && browserUtils.isFirefox)
         return time * 2;
 
     return time;

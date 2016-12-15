@@ -65,8 +65,7 @@ async function runTests (argParser) {
             skipJsErrors:    opts.skipJsErrors,
             quarantineMode:  opts.quarantineMode,
             selectorTimeout: opts.selectorTimeout,
-            speed:           opts.speed,
-            touchMode:       opts.touchMode
+            speed:           opts.speed
         });
     }
 

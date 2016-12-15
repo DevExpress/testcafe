@@ -124,7 +124,7 @@ $(document).ready(function () {
             });
     });
 
-    if (!browserUtils.hasTouchEvents) {
+    if (!browserUtils.isTouchDevice) {
         asyncTest('over and move events on elements during moving', function () {
             var overed  = false;
             var entered = false;
@@ -776,7 +776,7 @@ $(document).ready(function () {
     });
 
     module('touch devices test');
-    if (browserUtils.hasTouchEvents) {
+    if (browserUtils.isTouchDevice) {
         asyncTest('touch event on click', function () {
             var event  = null;
             var events = {

@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Select text</title>
+    <script src="../../../../is-touch-device.js"></script>
 </head>
 <body>
 <input id="input" value="input"/>
@@ -15,19 +16,19 @@
 
 <button id="button">Button</button>
 <script>
-    var hasTouchEvents = "ontouchstart" in window;
+    var touchDevice = isTouchDevice();
 
-    document.getElementById('input').addEventListener(hasTouchEvents ? 'touchend' : 'mouseup', function () {
+    document.getElementById('input').addEventListener(touchDevice ? 'touchend' : 'mouseup', function () {
         if (this.selectionStart === 2 && this.selectionEnd === 4)
             throw new Error('Selected text in input');
     });
 
-    document.getElementById('textarea').addEventListener(hasTouchEvents ? 'touchend' : 'mouseup', function () {
+    document.getElementById('textarea').addEventListener(touchDevice ? 'touchend' : 'mouseup', function () {
         if (this.selectionStart === 1 && this.selectionEnd === 5)
             throw new Error('Selected text in textarea');
     });
 
-    document.getElementById('div').addEventListener(hasTouchEvents ? 'touchend' : 'mouseup', function () {
+    document.getElementById('div').addEventListener(touchDevice ? 'touchend' : 'mouseup', function () {
         var selection   = window.getSelection();
         var divTextNode = this.childNodes[0];
 

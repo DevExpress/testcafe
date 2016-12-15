@@ -15,7 +15,7 @@ var stepIterator = new StepIterator();
 actionsAPI.init(stepIterator);
 
 var correctTestWaitingTime = function (time) {
-    if (browserUtils.hasTouchEvents && browserUtils.isFirefox)
+    if (browserUtils.isTouchDevice && browserUtils.isFirefox)
         return time * 2;
 
     return time;
@@ -26,7 +26,7 @@ $(document).ready(function () {
     $('body').css('border', '0px');
 
     // NOTE: prevent auto scrolling
-    if (browserUtils.isSafari && browserUtils.hasTouchEvents) {
+    if (browserUtils.isSafari && browserUtils.isTouchDevice) {
         var $meta = $('<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">');
 
         $('head').append($meta);
@@ -42,7 +42,7 @@ $(document).ready(function () {
 
     //utils
     var asyncActionCallback;
-    var hasTouchEvents = browserUtils.hasTouchEvents;
+    var isTouchDevice = browserUtils.isTouchDevice;
 
     var createDraggable = function (left, top) {
         var $draggable = $('<div></div>')
@@ -55,17 +55,17 @@ $(document).ready(function () {
                 top:             top + 'px',
                 zIndex:          5
             })
-            .bind(hasTouchEvents ? 'touchstart' : 'mousedown', function () {
+            .bind(isTouchDevice ? 'touchstart' : 'mousedown', function () {
                 $(this).data('dragStarted', true);
             })
-            .bind(hasTouchEvents ? 'touchend' : 'mouseup', function () {
+            .bind(isTouchDevice ? 'touchend' : 'mouseup', function () {
                 $(this).data('dragStarted', false);
             })
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo('body');
 
-        $(document).bind(hasTouchEvents ? 'touchmove' : 'mousemove', function (e) {
-            var curMousePos = hasTouchEvents ? {
+        $(document).bind(isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
+            var curMousePos = isTouchDevice ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                 y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
             } : {

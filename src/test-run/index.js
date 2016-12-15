@@ -89,7 +89,6 @@ export default class TestRun extends Session {
             fixtureName:         JSON.stringify(this.test.fixture.name),
             selectorTimeout:     this.opts.selectorTimeout,
             skipJsErrors:        this.opts.skipJsErrors,
-            touchMode:           this.opts.touchMode,
             speed:               this.opts.speed,
             dialogHandler:       JSON.stringify(this.dialogHandler)
         });
@@ -100,7 +99,6 @@ export default class TestRun extends Session {
             testRunId:       JSON.stringify(this.id),
             selectorTimeout: this.opts.selectorTimeout,
             speed:           this.opts.speed,
-            touchMode:       this.opts.touchMode,
             dialogHandler:   JSON.stringify(this.dialogHandler)
         });
     }

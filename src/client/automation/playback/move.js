@@ -47,7 +47,7 @@ export default class MoveAutomation {
     constructor (element, moveOptions) {
         this.DEFAULT_SPEED = 1000; // pixes/ms
 
-        this.touchMode = eventUtils.touchMode;
+        this.touchMode = browserUtils.isTouchDevice;
         this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
 
         this.dragMode    = moveOptions.dragMode;
