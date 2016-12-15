@@ -2,4 +2,7 @@
 
 'use strict';
 
-require('../lib/cli');
+var path          = require('path');
+var v8FlagsFilter = require('bin-v8-flags-filter');
+
+v8FlagsFilter(path.join(__dirname, '../lib/cli'));
