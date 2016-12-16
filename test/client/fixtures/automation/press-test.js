@@ -11,6 +11,7 @@ preventRealEvents();
 
 var hammerhead    = window.getTestCafeModule('hammerhead');
 var iframeSandbox = hammerhead.sandbox.iframe;
+var browserUtils  = hammerhead.utils.browser;
 
 
 $(document).ready(function () {
@@ -156,4 +157,119 @@ $(document).ready(function () {
                     });
             });
     });
+
+    asyncTest('press tab with iframe', function () {
+        var $iframe = $('<iframe id="test1" src="about:blank"/>')
+            .addClass(TEST_ELEMENT_CLASS)
+            .appendTo($('body'));
+
+        var $iframeInput = $('<input type="text" id="iframeInput"/>')
+            .addClass(TEST_ELEMENT_CLASS);
+
+        window.QUnitGlobals.waitForIframe($iframe[0])
+            .then(function () {
+                $($iframe.contents()[0]).find('body').append($iframeInput);
+
+                domUtils.getActiveElement().blur();
+                $input.focus();
+
+                var press = new PressAutomation(parseKeySequence('tab').combinations);
+
+                press
+                    .run()
+                    .then(function () {
+                        ok(domUtils.getActiveElement() !== $input[0]);
+                        start();
+                    });
+            });
+    });
+
+    if (!browserUtils.isSafari && (!browserUtils.isChrome || browserUtils.version > 53)) {
+        asyncTest('T334620 - Wrong "key" property in keyEvent objects (press)', function () {
+            var textarea = document.createElement('textarea');
+
+            textarea.className = TEST_ELEMENT_CLASS;
+
+            document.body.appendChild(textarea);
+
+            var keydownKeyProperty  = '';
+            var keypressKeyProperty = '';
+            var keyupKeyProperty    = '';
+
+            textarea.focus();
+
+            textarea.addEventListener('keydown', function (e) {
+                keydownKeyProperty += e.key;
+            });
+
+            textarea.addEventListener('keypress', function (e) {
+                keypressKeyProperty += e.key;
+            });
+
+            textarea.addEventListener('keyup', function (e) {
+                keyupKeyProperty += e.key;
+            });
+
+            var press = new PressAutomation(parseKeySequence('a A shift+a ! enter shift+1 shift+!').combinations);
+
+            press
+                .run()
+                .then(function () {
+                    equal(keydownKeyProperty, 'aAShiftAShift!EnterShift!Shift!');
+                    equal(keypressKeyProperty, 'aAA!Enter!!');
+                    equal(keyupKeyProperty, 'aAAShift!ShiftEnter!Shift!Shift');
+                    equal(textarea.value, 'aAA!\n!!');
+                    start();
+                });
+        });
+    }
+    else {
+        asyncTest('T334620 - Wrong "keyIdentifier" property in keyEvent objects (press)', function () {
+            var textarea = document.createElement('textarea');
+
+            textarea.className = TEST_ELEMENT_CLASS;
+
+            document.body.appendChild(textarea);
+
+            var keydownKeyIdentifierProperty  = '';
+            var keypressKeyIdentifierProperty = '';
+            var keyupKeyIdentifierProperty    = '';
+
+            textarea.focus();
+
+            textarea.addEventListener('keydown', function (e) {
+                keydownKeyIdentifierProperty += e.keyIdentifier;
+            });
+
+            textarea.addEventListener('keypress', function (e) {
+                keypressKeyIdentifierProperty += e.keyIdentifier;
+            });
+
+            textarea.addEventListener('keyup', function (e) {
+                keyupKeyIdentifierProperty += e.keyIdentifier;
+            });
+
+            var press = new PressAutomation(parseKeySequence('a A shift+a ! enter shift+1 shift+!').combinations);
+
+            var s = {
+                '!': 'U+0021',
+                'a': 'U+0041'
+            };
+
+            var expectedKeydownSequence = s['a'] + s['a'] + 'Shift' + s['a'] + 'Shift' + s['!'] + 'Enter' + 'Shift' +
+                                          s['!'] + 'Shift' + s['!'];
+            var expectedKeyupSequence   = s['a'] + s['a'] + s['a'] + 'Shift' + s['!'] + 'Shift' + 'Enter' + s['!'] +
+                                          'Shift' + s['!'] + 'Shift';
+
+            press
+                .run()
+                .then(function () {
+                    equal(keydownKeyIdentifierProperty, expectedKeydownSequence);
+                    equal(keypressKeyIdentifierProperty, '');
+                    equal(keyupKeyIdentifierProperty, expectedKeyupSequence);
+                    equal(textarea.value, 'aAA!\n!!');
+                    start();
+                });
+        });
+    }
 });

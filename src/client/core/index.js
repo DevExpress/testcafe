@@ -1,6 +1,7 @@
 import hammerhead from './deps/hammerhead';
 
 import KEY_MAPS from './utils/key-maps';
+import KEY_IDENTIFIER_MAPS from './utils/key-identifier-maps';
 import NODE_TYPE_DESCRIPTIONS from './utils/node-type-descriptions';
 import RequestBarrier from './request-barrier';
 import * as pageUnloadBarrier from './page-unload-barrier';
@@ -20,6 +21,7 @@ import noop from './utils/noop';
 import getKeyArray from './utils/get-key-array';
 import getSanitizedKey from './utils/get-sanitized-key';
 import parseKeySequence from './utils/parse-key-sequence';
+import IsKeyIdentifierNeeded from './utils/is-key-identifier-needed';
 import sendRequestToFrame from './utils/send-request-to-frame';
 
 import * as browser from '../browser';
@@ -42,8 +44,10 @@ exports.noop                   = noop;
 exports.getKeyArray            = getKeyArray;
 exports.getSanitizedKey        = getSanitizedKey;
 exports.parseKeySequence       = parseKeySequence;
+exports.IsKeyIdentifierNeeded  = IsKeyIdentifierNeeded;
 exports.sendRequestToFrame     = sendRequestToFrame;
 exports.KEY_MAPS               = KEY_MAPS;
+exports.KEY_IDENTIFIER_MAPS    = KEY_IDENTIFIER_MAPS;
 exports.NODE_TYPE_DESCRIPTIONS = NODE_TYPE_DESCRIPTIONS;
 exports.browser                = browser;
 

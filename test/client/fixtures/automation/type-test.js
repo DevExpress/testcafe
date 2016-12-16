@@ -329,4 +329,86 @@ $(document).ready(function () {
                 start();
             });
     });
+
+    if (!browserUtils.isSafari && (!browserUtils.isChrome || browserUtils.version > 53)) {
+        asyncTest('T334620 - Wrong "key" property in keyEvent objects (type)', function () {
+            var textarea = document.createElement('textarea');
+
+            textarea.className = TEST_ELEMENT_CLASS;
+
+            document.body.appendChild(textarea);
+
+            var keydownKeyProperty  = '';
+            var keypressKeyProperty = '';
+            var keyupKeyProperty    = '';
+
+            textarea.addEventListener('keydown', function (e) {
+                keydownKeyProperty += e.key;
+            });
+
+            textarea.addEventListener('keypress', function (e) {
+                keypressKeyProperty += e.key;
+            });
+
+            textarea.addEventListener('keyup', function (e) {
+                keyupKeyProperty += e.key;
+            });
+
+            var type = new TypeAutomation(textarea, 'aA \r', new TypeOptions({ offsetX: 1, offsetY: 1 }));
+
+            type
+                .run()
+                .then(function () {
+                    equal(keydownKeyProperty, 'aA Enter');
+                    equal(keypressKeyProperty, 'aA Enter');
+                    equal(keyupKeyProperty, 'aA Enter');
+                    equal(textarea.value, 'aA \n');
+                    start();
+                });
+        });
+    }
+    else {
+        asyncTest('T334620 - Wrong "keyIdentifier" property in keyEvent objects (type)', function () {
+            var textarea = document.createElement('textarea');
+
+            textarea.className = TEST_ELEMENT_CLASS;
+
+            document.body.appendChild(textarea);
+
+            var keydownKeyIdentifierProperty  = '';
+            var keypressKeyIdentifierProperty = '';
+            var keyupKeyIdentifierProperty    = '';
+
+            textarea.addEventListener('keydown', function (e) {
+                keydownKeyIdentifierProperty += e.keyIdentifier;
+            });
+
+            textarea.addEventListener('keypress', function (e) {
+                keypressKeyIdentifierProperty += e.keyIdentifier;
+            });
+
+            textarea.addEventListener('keyup', function (e) {
+                keyupKeyIdentifierProperty += e.keyIdentifier;
+            });
+
+            var type = new TypeAutomation(textarea, 'aA \r', new TypeOptions({ offsetX: 1, offsetY: 1 }));
+
+            var s = {
+                ' ': 'U+0020',
+                'a': 'U+0041'
+            };
+
+            var expectedKeySequence = s['a'] + s['a'] + s[' '] + 'Enter';
+
+            type
+                .run()
+                .then(function () {
+                    equal(keydownKeyIdentifierProperty, expectedKeySequence);
+                    equal(keypressKeyIdentifierProperty, '');
+                    equal(keyupKeyIdentifierProperty, expectedKeySequence);
+                    equal(textarea.value, 'aA \n');
+                    start();
+                });
+        });
+    }
 });

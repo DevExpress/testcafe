@@ -3,7 +3,7 @@ import { arrayUtils, domUtils, delay, getKeyArray, sendRequestToFrame } from '..
 import KeyPressSimulator from './key-press-simulator';
 import supportedShortcutHandlers from './shortcuts';
 import each from '../../utils/promise-each';
-import { excludeShiftModifiedKeys, getDeepActiveElement } from './utils';
+import { getActualKeysAndEventKeyProperties, getDeepActiveElement } from './utils';
 import { ACTION_STEP_DELAY } from '../../settings';
 
 var Promise        = hammerhead.Promise;
@@ -31,20 +31,22 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
 
 export default class PressAutomation {
     constructor (keyCombinations) {
-        this.keyCombinations  = keyCombinations;
-        this.isSelectElement  = false;
-        this.pressedKeyString = '';
-        this.modifiersState   = null;
-        this.shortcutHandlers = null;
+        this.keyCombinations       = keyCombinations;
+        this.isSelectElement       = false;
+        this.pressedKeyString      = '';
+        this.modifiersState        = null;
+        this.shortcutHandlers      = null;
         this.topSameDomainDocument = domUtils.getTopSameDomainWindow(window).document;
     }
 
     static _getKeyPressSimulators (keyCombination) {
-        var keys = getKeyArray(keyCombination);
+        var keysArray = getKeyArray(keyCombination);
 
-        keys = excludeShiftModifiedKeys(keys);
+        // NOTE: symbols may have same keyCode, but their "event.key" will be different, so we
+        // need to get "event.key" property for each key, and add 'shift' key where is needed.
+        var { actualKeys, eventKeyProperties } = getActualKeysAndEventKeyProperties(keysArray);
 
-        return arrayUtils.map(keys, key => new KeyPressSimulator(key));
+        return arrayUtils.map(actualKeys, (key, index) => new KeyPressSimulator(key, eventKeyProperties[index]));
     }
 
     static _getShortcuts (keyCombination) {
