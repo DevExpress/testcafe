@@ -19,7 +19,7 @@ var delay      = testCafeCore.delay;
 var selectElementUI = testCafeUI.selectElement;
 
 
-const FOCUS_DELAY          = browserUtils.hasTouchEvents ? 0 : 160;
+const FOCUS_DELAY       = browserUtils.isTouchDevice ? 0 : 160;
 const CHROME_VERSION_RE = /chrom(e|ium)\/([0-9]+)\./;
 
 function getChromeVersion () {

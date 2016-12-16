@@ -19,7 +19,12 @@
         { testRun: testRunId, browser: browserId },
         { heartbeat: browserHeartbeatUrl, status: browserStatusUrl },
         { userAgent: userAgent, fixtureName: fixtureName, testName: testName },
-        { selectorTimeout: selectorTimeout, skipJsErrors: skipJsErrors, dialogHandler: dialogHandler, speed: speed }
+        {
+            selectorTimeout: selectorTimeout,
+            skipJsErrors:    skipJsErrors,
+            dialogHandler:   dialogHandler,
+            speed:           speed
+        }
     );
 
     driver.start();

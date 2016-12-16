@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Select textarea content</title>
+    <script src="../../../../../is-touch-device.js"></script>
 </head>
 <body>
 <textarea id="textarea">
@@ -10,9 +11,9 @@
 
 <input id="input" value="input"/>
 <script>
-    var hasTouchEvents = "ontouchstart" in window;
+    var touchDevice = isTouchDevice();
 
-    document.getElementById('textarea').addEventListener(hasTouchEvents ? 'touchend' : 'mouseup', function () {
+    document.getElementById('textarea').addEventListener(touchDevice ? 'touchend' : 'mouseup', function () {
         if (this.selectionStart === 2 && this.selectionEnd === 7)
             throw new Error('Selected text in textarea');
     });

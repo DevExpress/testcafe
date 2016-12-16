@@ -20,8 +20,8 @@ const DRAGGING_SPEED  = 4; // pixels/ms
 const MIN_MOVING_TIME = 25;
 
 var Promise          = hammerhead.Promise;
-var browserUtils     = hammerhead.utils.browser;
 var extend           = hammerhead.utils.extend;
+var browserUtils     = hammerhead.utils.browser;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
@@ -35,8 +35,8 @@ export default class DragAutomationBase {
         this.offsetY   = mouseOptions.offsetY;
 
         this.endPoint  = null;
-        this.downEvent = browserUtils.hasTouchEvents ? 'touchstart' : 'mousedown';
-        this.upEvent   = browserUtils.hasTouchEvents ? 'touchend' : 'mouseup';
+        this.downEvent = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
+        this.upEvent   = browserUtils.isTouchDevice ? 'touchend' : 'mouseup';
 
         this.eventArgs = {
             point:   null,

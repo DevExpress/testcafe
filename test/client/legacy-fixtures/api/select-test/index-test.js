@@ -20,7 +20,7 @@ var initAutomation = testCafeLegacyRunner.get('./init-automation');
 initAutomation();
 
 var correctTestWaitingTime = function (time) {
-    if (browserUtils.isTouchDevice)
+    if (browserUtils.isTouchDevice || browserUtils.hasTouchPoints)
         return time * 2;
 
     return time;
@@ -69,8 +69,8 @@ $(document).ready(function () {
 
     var INPUT_INITIAL_VALUE = '123456789';
 
-    var startSelectEvent = browserUtils.hasTouchEvents ? 'ontouchstart' : 'onmousedown';
-    var endSelectEvent   = browserUtils.hasTouchEvents ? 'ontouchend' : 'onmouseup';
+    var startSelectEvent = browserUtils.isTouchDevice ? 'ontouchstart' : 'onmousedown';
+    var endSelectEvent   = browserUtils.isTouchDevice ? 'ontouchend' : 'onmouseup';
 
     var mousedownOnInput    = false;
     var mouseupOnInput      = false;

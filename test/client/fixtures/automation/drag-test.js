@@ -18,7 +18,7 @@ $(document).ready(function () {
     $('body').css('border', '0px');
 
     // NOTE: prevent auto scrolling
-    if (browserUtils.isSafari && browserUtils.hasTouchEvents) {
+    if (browserUtils.isSafari && browserUtils.isTouchDevice) {
         var $meta = $('<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">');
 
         $('head').append($meta);
@@ -28,7 +28,7 @@ $(document).ready(function () {
     var TEST_ELEMENT_CLASS = 'testElement';
 
     //utils
-    var hasTouchEvents = browserUtils.hasTouchEvents;
+    var isTouchDevice = browserUtils.isTouchDevice;
 
     var createDraggable = function (left, top, withGloballCoord) {
         var $draggable = $('<div></div>')
@@ -41,22 +41,22 @@ $(document).ready(function () {
                 top:             top + 'px',
                 zIndex:          5
             })
-            .bind(hasTouchEvents ? 'touchstart' : 'mousedown', function () {
+            .bind(isTouchDevice ? 'touchstart' : 'mousedown', function () {
                 $(this).data('dragStarted', true);
             })
-            .bind(hasTouchEvents ? 'touchend' : 'mouseup', function () {
+            .bind(isTouchDevice ? 'touchend' : 'mouseup', function () {
                 $(this).data('dragStarted', false);
             })
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo('body');
 
-        $(document).bind(hasTouchEvents ? 'touchmove' : 'mousemove', function (e) {
+        $(document).bind(isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
             var startMouseClientPosition = position.offsetToClientCoords({
                 x: e.pageX,
                 y: e.pageY
             });
 
-            var curMousePos = hasTouchEvents ? {
+            var curMousePos = isTouchDevice ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                 y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
             } : {
@@ -202,7 +202,7 @@ $(document).ready(function () {
             });
     });
 
-    if (!browserUtils.hasTouchEvents) {
+    if (!browserUtils.isTouchDevice) {
         asyncTest('GH372-"mousemove" event sent to wrong element during dragging', function () {
             var $firstTarget  = createTarget(10, 10);
             var $secondTarget = createTarget(110, 110);

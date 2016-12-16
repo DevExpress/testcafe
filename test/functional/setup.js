@@ -99,7 +99,6 @@ function closeLocalBrowsers () {
     return Promise.all(closeBrowserPromises);
 }
 
-
 before(function () {
     var mocha = this;
 

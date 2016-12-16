@@ -494,7 +494,7 @@ $(document).ready(function () {
         var $input1 = addInputElement(200, 200, '12345');
         var $input2 = addInputElement(400, 400, 'qwerty');
 
-        if (browserUtils.hasTouchEvents)
+        if (browserUtils.isTouchDevice)
             bindHandlerToTouchEvents($input1, $input2, 'touchstart', eventMonitorObject, true);
         else
             bindMouseHandlersToSwappingElements($input1, $input2, 'mousedown', eventMonitorObject, true);
@@ -510,7 +510,7 @@ $(document).ready(function () {
 
                 ok(!eventMonitorObject.elementTwoMousedownRaised);
 
-                if (!browserUtils.hasTouchEvents)
+                if (!browserUtils.isTouchDevice)
                     ok(eventMonitorObject.elementTwoSelectRaised);
 
                 ok(eventMonitorObject.elementTwoMouseupRaised);
@@ -525,7 +525,7 @@ $(document).ready(function () {
         var $input1 = addInputElement(200, 200, '12345');
         var $input2 = addInputElement(400, 400, 'qwerty');
 
-        if (browserUtils.hasTouchEvents)
+        if (browserUtils.isTouchDevice)
             bindHandlerToTouchEvents($input1, $input2, 'touchend', eventMonitorObject, true);
         else
             bindMouseHandlersToSwappingElements($input1, $input2, 'mouseup', eventMonitorObject, true);
@@ -537,7 +537,7 @@ $(document).ready(function () {
             .then(function () {
                 ok(eventMonitorObject.elementOneMousedownRaised);
 
-                if (!browserUtils.hasTouchEvents)
+                if (!browserUtils.isTouchDevice)
                     ok(eventMonitorObject.elementOneSelectRaised);
 
                 ok(eventMonitorObject.elementOneMouseupRaised);

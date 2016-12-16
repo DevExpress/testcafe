@@ -31,8 +31,8 @@ $(document).ready(function () {
                             'dasdasdasdasdajksdjkajskdjk\najkdjkasjkdjksjkdjksjdkjs\nqwerty\ntest\n' +
                             'cafesadkaldklakldlakdklakldkalskd;';
 
-    var startSelectEvent       = browserUtils.hasTouchEvents ? 'ontouchstart' : 'onmousedown';
-    var endSelectEvent         = browserUtils.hasTouchEvents ? 'ontouchend' : 'onmouseup';
+    var startSelectEvent       = browserUtils.isTouchDevice ? 'ontouchstart' : 'onmousedown';
+    var endSelectEvent         = browserUtils.isTouchDevice ? 'ontouchend' : 'onmouseup';
     var checkScrollAfterSelect = !(browserUtils.isFirefox || browserUtils.isIE);
 
     var mousedownOnInput    = false;
