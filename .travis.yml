@@ -3,6 +3,8 @@ matrix:
  include:
   - node_js: "0.10"
     env: GULP_TASK="test-server"
+    install:
+      - npm install
   - node_js: "4"
     env: GULP_TASK="test-server"
   - node_js: "stable"
@@ -20,6 +22,10 @@ matrix:
 branches:
   except:
     - /^build-bot-temp-.*$/
+
+install:
+  - npm install -g yarn
+  - yarn install
 
 notifications:
  email: false
