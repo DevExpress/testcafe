@@ -488,7 +488,7 @@ $(document).ready(function () {
         });
 
         var el      = $el[0];
-        var offsets = getOffsetOptions($el[0], 10, 10);
+        var offsets = getOffsetOptions($el[0], 20, 20);
         var click   = new ClickAutomation($el[0], new ClickOptions({
             offsetX: offsets.offsetX,
             offsetY: offsets.offsetY
@@ -497,7 +497,7 @@ $(document).ready(function () {
         click
             .run()
             .then(function () {
-                var expectedPoint = { x: el.offsetLeft + 10, y: el.offsetTop + 10 };
+                var expectedPoint = { x: el.offsetLeft + 20, y: el.offsetTop + 20 };
 
                 deepEqual(eventPoint, expectedPoint, 'event point is correct');
                 startNext();
