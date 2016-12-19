@@ -39,136 +39,137 @@ test('Click check boxes and then verify their state', async t => {
 });
 ```
 
-In the first test, notice that the `#developer-name` CSS selector is duplicated in code each time the test refers to the input element.
+Note that both tests contain excessive code.
+In the first test, the `#developer-name` CSS selector is duplicated in code each time the test refers to the input element.
 In the second test, test logic is duplicated for each check box.
 
-These tests illustrate the case when Page Model pattern is quite helpful. Page Model allows you to keep all selectors in one place
+Page Model allows you to keep all selectors in one place -
 within a structured model of the tested page that is non-excessive, transparent and easy to use.
 
 ## Creating a Page Model
 
-Begin with a new `.js` file and declare the `Page` class there.
+1. Begin with a new `.js` file and declare the `Page` class there.
 
-```js
-export default class Page {
-    constructor () {
+    ```js
+    export default class Page {
+        constructor () {
+        }
     }
-}
-```
+    ```
 
-This class will contain the Page Model, so name this file `page-model.js`.
+    This class will contain the Page Model, so name the file `page-model.js`.
 
-Now add the `Developer Name` input element to the model. To do this,
-introduce the `nameInput` property and assign a proper [selector](../test-api/selecting-page-elements/selectors.md) to it.
+2. Add the `Developer Name` input element to the model. To do this,
+  introduce the `nameInput` property and assign a [selector](../test-api/selecting-page-elements/selectors.md) to it.
 
-```js
-import { Selector } from 'testcafe';
+    ```js
+    import { Selector } from 'testcafe';
 
-export default class Page {
-    constructor () {
-        this.nameInput = Selector('#developer-name');
+    export default class Page {
+        constructor () {
+            this.nameInput = Selector('#developer-name');
+        }
     }
-}
-```
+    ```
 
-In the test file, reference `page-model.js` and create an instance of the `Page` class.
-After that, you can use the `page.nameInput` property to identify the `Developer Name` input element.
+3. In the test file, import `page-model.js` and create an instance of the `Page` class.
+  After that, you can use the `page.nameInput` property to identify the `Developer Name` input element.
 
-```js
-import Page from './page-model';
+    ```js
+    import Page from './page-model';
 
-const page = new Page();
+    const page = new Page();
 
-fixture `My fixture`
-    .page `https://devexpress.github.io/testcafe/example/`;
+    fixture `My fixture`
+        .page `https://devexpress.github.io/testcafe/example/`;
 
-test('Text typing basics', async t => {
-    await t
-        .typeText(page.nameInput, 'Peter')
-        .typeText(page.nameInput, 'Paker', { replace: true })
-        .typeText(page.nameInput, 'r', { caretPos: 2 })
-        .expect(page.nameInput.value).eql('Parker');
-});
-```
-
-Now add check boxes from the Features section to the Page Model.
-
-As long as each item in the Features section contains a check box and a label,
-introduce a new class `Feature` with two properties: `label` and `checkbox`.
-
-```js
-import { Selector } from 'testcafe';
-
-const label = Selector('label');
-
-class Feature {
-    constructor (text) {
-        this.label    = label.withText(text);
-        this.checkbox = this.label.find('input[type=checkbox]');
-    }
-}
-
-export default class Page {
-    constructor () {
-        this.nameInput = Selector('#developer-name');
-    }
-}
-```
-
-In the `Page` class, add the `featureList` property with an array of `Feature` objects.
-
-```js
-import { Selector } from 'testcafe';
-
-const label = Selector('label');
-
-class Feature {
-    constructor (text) {
-        this.label    = label.withText(text);
-        this.checkbox = this.label.find('input[type=checkbox]');
-    }
-}
-
-export default class Page {
-    constructor () {
-        this.nameInput = Selector('#developer-name');
-        this.featureList = [
-            new Feature('Support for testing on remote devices'),
-            new Feature('Re-using existing JavaScript code for testing'),
-            new Feature('Easy embedding into a Continuous integration system')
-        ];
-    }
-}
-```
-
-Organizing check boxes in an array makes the page model semantically correct and simplifies iterating through the check boxes.
-
-Hence, the second test now boils down to a single loop.
-
-```js
-import Page from './page-model';
-
-fixture `My fixture`
-    .page `https://devexpress.github.io/testcafe/example/`;
-
-const page = new Page();
-
-test('Text typing basics', async t => {
-    await t
-        .typeText(page.nameInput, 'Peter')
-        .typeText(page.nameInput, 'Paker', { replace: true })
-        .typeText(page.nameInput, 'r', { caretPos: 2 })
-        .expect(page.nameInput.value).eql('Parker');
-});
-
-test('Click check boxes and then verify their state', async t => {
-    for (const feature of page.featureList) {
+    test('Text typing basics', async t => {
         await t
-            .click(feature.label)
-            .expect(feature.checkbox.checked).ok();
+            .typeText(page.nameInput, 'Peter')
+            .typeText(page.nameInput, 'Paker', { replace: true })
+            .typeText(page.nameInput, 'r', { caretPos: 2 })
+            .expect(page.nameInput.value).eql('Parker');
+    });
+    ```
+
+4. Add check boxes from the Features section to the Page Model.
+
+    As long as each item in the Features section contains a check box and a label,
+    introduce a new class `Feature` with two properties: `label` and `checkbox`.
+
+    ```js
+    import { Selector } from 'testcafe';
+
+    const label = Selector('label');
+
+    class Feature {
+        constructor (text) {
+            this.label    = label.withText(text);
+            this.checkbox = this.label.find('input[type=checkbox]');
+        }
     }
-});
-```
+
+    export default class Page {
+        constructor () {
+            this.nameInput = Selector('#developer-name');
+        }
+    }
+    ```
+
+5. In the `Page` class, add the `featureList` property with an array of `Feature` objects.
+
+    ```js
+    import { Selector } from 'testcafe';
+
+    const label = Selector('label');
+
+    class Feature {
+        constructor (text) {
+            this.label    = label.withText(text);
+            this.checkbox = this.label.find('input[type=checkbox]');
+        }
+    }
+
+    export default class Page {
+        constructor () {
+            this.nameInput = Selector('#developer-name');
+            this.featureList = [
+                new Feature('Support for testing on remote devices'),
+                new Feature('Re-using existing JavaScript code for testing'),
+                new Feature('Easy embedding into a Continuous integration system')
+            ];
+        }
+    }
+    ```
+
+    Organizing check boxes in an array makes the page model semantically correct and simplifies iterating through the check boxes.
+
+6. The second test now boils down to a single loop.
+
+    ```js
+    import Page from './page-model';
+
+    fixture `My fixture`
+        .page `https://devexpress.github.io/testcafe/example/`;
+
+    const page = new Page();
+
+    test('Text typing basics', async t => {
+        await t
+            .typeText(page.nameInput, 'Peter')
+            .typeText(page.nameInput, 'Paker', { replace: true })
+            .typeText(page.nameInput, 'r', { caretPos: 2 })
+            .expect(page.nameInput.value).eql('Parker');
+    });
+
+    test('Click check boxes and then verify their state', async t => {
+        for (const feature of page.featureList) {
+            await t
+                .click(feature.label)
+                .expect(feature.checkbox.checked).ok();
+        }
+    });
+    ```
 
 **Example**
 
