@@ -67,7 +67,7 @@ If the start page is not specified, it defaults to `about:blank`.
 
 ### Http Authentication
 
-TestCafe allows you to test web pages that are protected with Http [Basic](https://en.wikipedia.org/wiki/Basic_access_authentication) or [Windows (NTLM)](https://en.wikipedia.org/wiki/Integrated_Windows_Authentication) authentication. To set authentication credentials use the `httpAuth` fixture declaration method.
+TestCafe allows you to test web pages that are protected with Http [Basic](https://en.wikipedia.org/wiki/Basic_access_authentication) or [Windows (NTLM)](https://en.wikipedia.org/wiki/Integrated_Windows_Authentication) authentication. To specify the credentials, use the `httpAuth` method.
 
 ```text
 httpAuth( credentials )
@@ -75,20 +75,22 @@ httpAuth( credentials )
 
 Parameter     | Type   | Description
 ------------- | ------ | ------------------------------------------------
-`credentials` | Object | Object that includes all necessary data for the authentication.
+`credentials` | Object | Contains credentials used for authentication.
 
-Credentials parameter has following format:
+The `credentials` parameter has following properties.
 
 Parameter                       | Type   | Description
 ------------------------------- | ------ | --------------------------------------------------------------------
-`username`                      | String | Username for the authentication.
-`password`                      | String | Password for the authentication.
-`domain`&#160;*(optional)*      | String | Domain name.
-`workstation`&#160;*(optional)* | String | PC's ID in the local network.
+`username`                      | String | The user name for the account.
+`password`                      | String | The password for the account.
+`domain`&#160;*(optional)*      | String | The domain name.
+`workstation`&#160;*(optional)* | String | The workstation's ID in the local network.
 
-The authentication credentials should include username and password for the basic http authentication. For the NTLM authentication, server may require additional information - workstation ID and domain name. The specified credentials will be used for all requests that require authentication.
+The `credentials` parameter is required to include `username` and `password`. For NTLM authentication, the server may need additional information - the workstation ID and the domain name.
 
-Usage example:
+The specified credentials will be used for all requests that require authentication.
+
+**Example**
 
 ```js
 fixture `My fixture`
