@@ -318,6 +318,62 @@ $(document).ready(function () {
         );
     });
 
+    asyncTest('click with positive offsets', function () {
+        var eventPoint = null;
+
+        $el.css({
+            width:  '100px',
+            height: '100px',
+            border: '0px'
+        });
+
+        runAsyncTest(
+            function () {
+                $el.click(function (e) {
+                    eventPoint = { x: e.pageX, y: e.pageY };
+                });
+
+                actionsAPI.click($el[0], { offsetX: 10, offsetY: 10 });
+            },
+            function () {
+                var el            = $el[0];
+                var expectedPoint = { x: el.offsetLeft + 10, y: el.offsetTop + 10 };
+
+                deepEqual(eventPoint, expectedPoint, 'event point is correct');
+            },
+            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
+        );
+    });
+
+    asyncTest('click with negative offsets', function () {
+        var eventPoint = null;
+
+        $el.css({
+            width:  '100px',
+            height: '100px',
+            border: '0px'
+        });
+
+        runAsyncTest(
+            function () {
+                $el.click(function (e) {
+                    eventPoint = { x: e.pageX, y: e.pageY };
+                });
+
+                actionsAPI.click($el[0], { offsetX: -20, offsetY: -20 });
+            },
+            function () {
+                var el            = $el[0];
+                var expectedPoint = {
+                    x: el.offsetLeft + el.offsetWidth - 20,
+                    y: el.offsetTop + el.offsetHeight - 20
+                };
+
+                deepEqual(eventPoint, expectedPoint, 'event point is correct');
+            },
+            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
+        );
+    });
 
     module('wrong arguments');
 

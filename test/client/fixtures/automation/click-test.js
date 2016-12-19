@@ -6,6 +6,7 @@ var styleUtils        = testCafeCore.get('./utils/style');
 var preventRealEvents = testCafeCore.get('./prevent-real-events');
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
+var getOffsetOptions   = testCafeAutomation.getOffsetOptions;
 var ClickAutomation    = testCafeAutomation.Click;
 var ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
 
@@ -130,11 +131,12 @@ $(document).ready(function () {
             var entered = false;
             var moved   = false;
 
-            $el.css({
-                marginTop:  '100px',
-                marginLeft: '100px',
-                zIndex:     2
-            })
+            $el
+                .css({
+                    marginTop:  '100px',
+                    marginLeft: '100px',
+                    zIndex:     2
+                })
                 .mouseover(function () {
                     overed = true;
                 })
@@ -468,6 +470,69 @@ $(document).ready(function () {
                 equal(btnClicked, true, 'button clicked');
                 equal(divClicked, true, 'div clicked');
 
+                startNext();
+            });
+    });
+
+    asyncTest('click with positive offsets', function () {
+        var eventPoint = null;
+
+        $el.css({
+            width:  '100px',
+            height: '100px',
+            border: '0px'
+        });
+
+        $el.click(function (e) {
+            eventPoint = { x: e.pageX, y: e.pageY };
+        });
+
+        var el      = $el[0];
+        var offsets = getOffsetOptions($el[0], 20, 20);
+        var click   = new ClickAutomation($el[0], new ClickOptions({
+            offsetX: offsets.offsetX,
+            offsetY: offsets.offsetY
+        }));
+
+        click
+            .run()
+            .then(function () {
+                var expectedPoint = { x: el.offsetLeft + 20, y: el.offsetTop + 20 };
+
+                deepEqual(eventPoint, expectedPoint, 'event point is correct');
+                startNext();
+            });
+    });
+
+    asyncTest('click with negative offsets', function () {
+        var eventPoint = null;
+
+        $el.css({
+            width:  '100px',
+            height: '100px',
+            border: '0px'
+        });
+
+        $el.click(function (e) {
+            eventPoint = { x: e.pageX, y: e.pageY };
+        });
+
+        var el      = $el[0];
+        var offsets = getOffsetOptions($el[0], -20, -20);
+        var click   = new ClickAutomation($el[0], new ClickOptions({
+            offsetX: offsets.offsetX,
+            offsetY: offsets.offsetY
+        }));
+
+        click
+            .run()
+            .then(function () {
+                var expectedPoint = {
+                    x: el.offsetLeft + el.offsetWidth - 20,
+                    y: el.offsetTop + el.offsetHeight - 20
+                };
+
+                deepEqual(eventPoint, expectedPoint, 'event point is correct');
                 startNext();
             });
     });

@@ -168,22 +168,9 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError,
                     actualValue:     'object',
                     optionName:      'offsetX',
-                    callsite:        null
-                }
-            );
-
-            assertThrow(
-                function () {
-                    return new OffsetOptions({ offsetY: -3 }, true);
-                },
-                {
-                    isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
-                    actualValue:     -3,
-                    optionName:      'offsetY',
                     callsite:        null
                 }
             );
@@ -194,7 +181,7 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError,
                     actualValue:     NaN,
                     optionName:      'offsetX',
                     callsite:        null
@@ -207,7 +194,7 @@ describe('Test run command options', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError,
                     actualValue:     3.14,
                     optionName:      'offsetX',
                     callsite:        null

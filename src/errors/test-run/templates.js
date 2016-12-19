@@ -32,6 +32,10 @@ function markup (err, msgMarkup, opts = {}) {
 }
 
 export default {
+    [TYPE.actionIntegerOptionError]: err => markup(err, `
+        The "${err.optionName}" option is expected to be an integer, but it was ${err.actualValue}.
+    `),
+
     [TYPE.actionPositiveIntegerOptionError]: err => markup(err, `
         The "${err.optionName}" option is expected to be a positive integer, but it was ${err.actualValue}.
     `),

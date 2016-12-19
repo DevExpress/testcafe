@@ -13,7 +13,7 @@ test('Incorrect action selector', async t => {
 });
 
 test('Incorrect action option', async t => {
-    await t.click('#btn', { offsetX: -3 });
+    await t.click('#btn', { offsetX: -3.5 });
 });
 
 test('Click button', async t => {

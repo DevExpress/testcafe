@@ -936,7 +936,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError,
                     optionName:      'offsetX',
                     actualValue:     'string',
                     callsite:        null
@@ -955,7 +955,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError,
                     optionName:      'offsetX',
                     actualValue:     10.5,
                     callsite:        null
@@ -1027,7 +1027,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError,
                     optionName:      'offsetX',
                     actualValue:     'boolean',
                     callsite:        null
@@ -1192,7 +1192,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError,
                     optionName:      'offsetX',
                     actualValue:     'string',
                     callsite:        null
@@ -1205,15 +1205,15 @@ describe('Test run commands', function () {
                         type:     TYPE.hover,
                         selector: 'element',
                         options:  {
-                            offsetY: -10
+                            offsetY: 1.01
                         }
                     });
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError,
                     optionName:      'offsetY',
-                    actualValue:     -10,
+                    actualValue:     1.01,
                     callsite:        null
                 }
             );
@@ -1532,7 +1532,7 @@ describe('Test run commands', function () {
                 },
                 {
                     isTestCafeError: true,
-                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    type:            ERROR_TYPE.actionIntegerOptionError,
                     optionName:      'offsetX',
                     actualValue:     'string',
                     callsite:        null
