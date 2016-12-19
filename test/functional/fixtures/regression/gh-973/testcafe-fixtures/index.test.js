@@ -43,7 +43,7 @@ test('Scroll to the upper left corner element', async t => {
 });
 
 test('Scroll to the lower right corner element (mobile)', async t => {
-    await t.click(targetLowerRightSelector, { offsetX: 500, offsetY: 500 });
+    await t.click(targetLowerRightSelector, { offsetX: 499, offsetY: 499 });
 
     const documentSnapshot         = await getWindowSize();
     const targetLowerRightSnapshot = await targetLowerRightSelector();
