@@ -8,33 +8,33 @@ permalink: /documentation/recipes/test-static-html-pages.html
 There are many ways to test your static html pages using TestCafe, but in this recipe we will focus on a simple one that uses a few other packages and can be easily integrated into your workflow. To do this, go through the following steps.
 
 * [Step 1 - Install TestCafe and create tests](#step-1---install-testcafe-and-create-tests)
-* [Step 2 - Install http-server and concurrently](#step-2---install-http-server-and-concurrently)
+* [Step 2 - Install http-server](#step-2---install-http-server)
 * [Step 3 - Add the `test` script to package.json](#step-3---add-the-test-script-to-packagejson)
 
 ## Step 1 - Install TestCafe and create tests
 
 Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in your project and [create tests](../getting-started/index.md#creating-a-test).
 
-## Step 2 - Install http-server and concurrently
+## Step 2 - Install http-server
 
-* Install [http-server](https://github.com/indexzero/http-server) that will be our local server
-* Install [concurrently](https://github.com/kimmobrunfeldt/concurrently) that will be responsible for running both the server and TestCafe at the same time and before exiting, to finish the server process.
+Install [http-server](https://github.com/indexzero/http-server) that will be used as a local server.
 
 ## Step 3 - Add the `test` script to package.json
 
 The default test script, for Node.js projects is `npm test`.
-To tell npm how to run your tests, you need to add the `test` script to the project's package.json file. The script should contain a `concurrently` command that will handle the local server and TestCafe.
+To tell npm how to run your tests, you need to add the `test` script to the project's package.json file.
+Use the `--app-command` TestCafe option to provide a command that starts the local server.
+This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the server.
 
 ```json
 "scripts": {
-    "test": "concurrently -s first -r -k 'http-server ./dist -s' 'testcafe chrome ./test/acceptance/**'"
+    "test": "testcafe chrome ./test/acceptance/** --app-command 'http-server ./dist -s'"
 }
 ```
 
 This script contains the following commands.
 
-1. `concurrently -s first -r -k` - starts concurrently with the raw output flag on, kills the http-server after running the tests, and returns exit code of `testcafe` process
-2. `"http-server ./dist -s"` - starts the local server at port `8080` on the `./dist folder` in silent mode
-3. `"testcafe chrome ./test/acceptance/**"` - runs TestCafe tests on the `./test/acceptance` folder on Chrome
+1. `"http-server ./dist -s"` - starts the local server at port `8080` with files from the `./dist` folder in silent mode
+2. `"testcafe chrome ./test/acceptance/**"` - runs TestCafe tests from the `./test/acceptance` folder in Chrome after the server starts
 
 For more information on how to configure a test run using a `testcafe` command, see [Command Line Interface](../using-testcafe/command-line-interface.md).

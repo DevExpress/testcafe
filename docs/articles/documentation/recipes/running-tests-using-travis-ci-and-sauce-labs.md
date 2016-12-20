@@ -77,20 +77,16 @@ To tell npm how to run your tests, you need to add the `test` script to the proj
 
 For more information on how to configure a test run using a `testcafe` command, see [Command Line Interface](../using-testcafe/command-line-interface.md).
 
-**Important:** If you are going to run tests for a website that is not deployed, the `test` script should also include commands to run and stop the site. 
-For example, install [concurrently](https://github.com/kimmobrunfeldt/concurrently) and add `following to your package.json`: 
+**Important:** If you are going to run tests for a website that is not deployed, the `test` script should also include commands to run the site. 
+Use the `--app-command` TestCafe option to specify a command that deploys the website locally.
+This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the server.
 
 ```text
 "scripts": {
-  "test":  "concurrently -s first -r -k 'node server.js' 'testcafe saucelabs:Chrome@beta tests/index-test.js'"
+  "test":  "testcafe saucelabs:Chrome@beta tests/index-test.js --app-command 'node server.js'"
 }
 ```
 
-This script contains the following commands.
-
-1. `concurrently -s first -r -k` - starts concurrently with the raw output flag on, kills the website server after running the tests and returns exit code of `testcafe` process
-2. `node server.js` - starts a website
-3. `testcafe saucelabs:Chrome@beta tests/index-test.js` - starts tests
 ## Step 6 - Trigger a Travis CI build
 
 You can trigger a Travis CI build by pushing commits to your repository or creating a pull request.
