@@ -6,16 +6,20 @@ import { GeneralError } from '../errors/runtime';
 import browserProviderPool from '../browser/provider/pool';
 import MESSAGE from '../errors/runtime/message';
 import BrowserSet from './browser-set';
+import TestedApp from './tested-app';
 
+const DEFAULT_APP_INIT_DELAY = 1000;
 
 export default class Bootstrapper {
     constructor (browserConnectionGateway) {
         this.browserConnectionGateway = browserConnectionGateway;
 
-        this.sources  = [];
-        this.browsers = [];
-        this.filter   = null;
-        this.reporter = null;
+        this.sources      = [];
+        this.browsers     = [];
+        this.filter       = null;
+        this.reporter     = null;
+        this.appCommand   = null;
+        this.appInitDelay = DEFAULT_APP_INIT_DELAY;
     }
 
     async _getBrowserInfo () {
@@ -73,6 +77,18 @@ export default class Bootstrapper {
         return pluginFactory();
     }
 
+    async _startTestedApp () {
+        if (this.appCommand) {
+            var testedApp = new TestedApp();
+
+            await testedApp.start(this.appCommand, this.appInitDelay);
+
+            return testedApp;
+        }
+
+        return null;
+    }
+
 
     // API
     async createRunnableConfiguration () {
@@ -84,8 +100,9 @@ export default class Bootstrapper {
         // So, we need to retrieve the browser aliases and paths before tests compilation.
         var browserInfo = await this._getBrowserInfo();
         var tests       = await this._getTests();
+        var testedApp   = await this._startTestedApp();
         var browserSet  = await this._getBrowserConnections(browserInfo);
 
-        return { reporterPlugin, browserSet, tests };
+        return { reporterPlugin, browserSet, tests, testedApp };
     }
 }

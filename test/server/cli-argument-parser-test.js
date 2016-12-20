@@ -126,6 +126,18 @@ describe('CLI argument parser', function () {
         });
     });
 
+    describe('App initialization delay', function () {
+        it('Should parse "--app-init-delay" option as integer value', function () {
+            return parse('--app-init-delay 1000')
+                .then(function (parser) {
+                    expect(parser.opts.appInitDelay).eql(1000);
+                });
+        });
+
+        it('Should raise an error if the "--app-init-delay" option value is not an integer', function () {
+            return assertRaisesError('--app-init-delay yo', 'Tested app initialization delay should be an integer.');
+        });
+    });
 
     describe('Filtering options', function () {
         it('Should filter by test name with "-t, --test" option', function () {
@@ -277,12 +289,13 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e --hostname myhost --qr-code --speed 0.5 ie test/server/data/file-list/file-1.js')
+        return parse('-r list -S -q -e --hostname myhost --qr-code --app run-app --speed 0.5 ie test/server/data/file-list/file-1.js')
             .then(function (parser) {
                 expect(parser.browsers).eql(['ie']);
                 expect(parser.src).eql([path.resolve(process.cwd(), 'test/server/data/file-list/file-1.js')]);
                 expect(parser.opts.reporter).eql('list');
                 expect(parser.opts.hostname).eql('myhost');
+                expect(parser.opts.app).eql('run-app');
                 expect(parser.opts.screenshots).to.be.undefined;
                 expect(parser.opts.screenshotsOnFails).to.be.ok;
                 expect(parser.opts.quarantineMode).to.be.ok;

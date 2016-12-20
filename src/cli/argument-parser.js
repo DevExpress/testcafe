@@ -98,6 +98,8 @@ export default class CLIArgumentParser {
             .option('-T, --test-grep <pattern>', 'run only tests matching the specified pattern')
             .option('-f, --fixture <name>', 'run only fixtures with the specified name')
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
+            .option('-a, --app <command>', 'specify tested app startup command')
+            .option('--app-init-delay <ms>', 'specify time required for the initialization of the tested app before testing starts')
             .option('--selector-timeout <ms>', 'set the amount of time within which selectors make attempts to obtain a node to be returned')
             .option('--assertion-timeout <ms>', 'set the amount of time within which assertion should pass')
             .option('--speed <factor>', 'set the speed of test execution (0.01 ... 1)')
@@ -142,6 +144,17 @@ export default class CLIArgumentParser {
             return true;
         };
     }
+
+    _parseAppInitDelay () {
+        if (this.opts.appInitDelay) {
+            if (CLIArgumentParser._isInteger(this.opts.appInitDelay))
+                this.opts.appInitDelay = parseInt(this.opts.appInitDelay, 10);
+
+            else
+                throw new GeneralError(MESSAGE.appInitDelayIsNotAnInteger);
+        }
+    }
+
 
     _parseSelectorTimeout () {
         if (this.opts.selectorTimeout) {
@@ -251,14 +264,15 @@ export default class CLIArgumentParser {
         }
 
         this._parseFilteringOptions();
+        this._parseSelectorTimeout();
+        this._parseAssertionTimeout();
+        this._parseAppInitDelay();
+        this._parseSpeed();
+        this._parsePorts();
+        this._parseBrowserList();
 
         await Promise.all([
-            this._parseSelectorTimeout(),
-            this._parseAssertionTimeout(),
-            this._parseSpeed(),
-            this._parsePorts(),
             this._parseScreenshotsPath(),
-            this._parseBrowserList(),
             this._parseFileList()
         ]);
     }
