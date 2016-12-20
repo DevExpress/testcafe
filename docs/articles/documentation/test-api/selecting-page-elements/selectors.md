@@ -29,6 +29,7 @@ This topic contains the following sections.
       * [parent](#parent)
       * [child](#child)
       * [sibling](#sibling)
+  * [Filter Predicate](#filter-predicate)
   * [Examples](#examples)
 * [Using Selectors](#using-selectors)
   * [Get Selector Matching Set Length](#get-selector-matching-set-length)
@@ -177,7 +178,7 @@ Method | Type | Description
 ------ | ----- | -----
 `filter(index)` | Selector | Creates a selector that filters a matching set by `index`.
 `filter(cssSelector)` | Selector | Creates a selector that filters a matching set by `cssSelector`.
-`filter(filterFn)` | Selector | Creates a selector that filters a matching set by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
+`filter(filterFn)` | Selector | Creates a selector that filters a matching set by `filterFn` [filter predicate](#filter-predicate).
 
 **Example**
 
@@ -210,7 +211,7 @@ The selector API provides methods to find elements within a DOM hierarchy in jQu
 Property | Description
 ------ | -----
 `find(cssSelector)` | Finds all descendants of all nodes in the matching set and filters them by `cssSelector`.
-`find(filterFn)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
+`find(filterFn)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn` [filter predicate](#filter-predicate).
 
 #### parent
 
@@ -219,7 +220,7 @@ Property | Description
 `parent()` | Finds all parents of all nodes in the matching set (first element in the set will be the closest parent).
 `parent(index)` | Finds all parents of all nodes in the matching set and filters them by `index` (0 is closest).
 `parent(cssSelector)` | Finds all parents of all nodes in the matching set and filters them by `cssSelector`.
-`parent(filterFn)` | Finds all parents of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
+`parent(filterFn)` | Finds all parents of all nodes in the matching set and filters them by `filterFn` [filter predicate](#filter-predicate).
 
 #### child
 
@@ -228,7 +229,7 @@ Property | Description
 `child()` | Finds all child elements (not nodes) of all nodes in the matching set.
 `child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`.
 `child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`child(filterFn)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives node.
+`child(filterFn)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `filterFn` [filter predicate](#filter-predicate).
 
 #### sibling
 
@@ -237,7 +238,7 @@ Property | Description
 `sibling()` | Finds all sibling  elements (not nodes) of all nodes in the matching set.
 `sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`.
 `sibling(cssSelector)` | Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`sibling(filterFn)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
+`sibling(filterFn)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `filterFn` [filter predicate](#filter-predicate).
 
 **Example**
 
@@ -254,6 +255,28 @@ test('My test', async t => {
         .click(macOSRadioButton.parent())
         .expect(macOSRadioButton.checked).ok();
 });
+```
+
+### Filter Predicate
+
+The `filterFn` function used in `filter`, `find`, `parent`, `child` and `sibling` methods is a predicate that is executed on the client side.
+
+This predicate takes the following parameters.
+
+Property | Description
+------ | -----
+`node`  | The current DOM node.
+`idx` | Index of the current node among other nodes returned by the left-hand selector.
+`originNode` | Node returned by the left-hand selector.
+
+**Example**
+
+```js
+Selector('ul').parent((node, idx, originNode) => {
+    // node === the <ul>'s parent element
+    // idx === index of the <ul>'s parent element
+    // originNode === the <ul> element
+}));
 ```
 
 ### Examples
