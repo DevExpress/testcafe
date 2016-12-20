@@ -30,6 +30,21 @@
   content:
   - name: Test Code Structure
     url: /documentation/test-api/test-code-structure.md
+    content: 
+    - name: Fixtures
+      url: /documentation/test-api/test-code-structure.md#fixtures
+      content:
+      - name: Specifying the Start Webpage
+        url: /documentation/test-api/test-code-structure.md#specifying-the-start-webpage
+      - name: Initialization and Clean-Up
+        url: /documentation/test-api/test-code-structure.md#initialization-and-clean-up
+      - name: Http Authentication
+        url: /documentation/test-api/test-code-structure.md#http-authentication
+    - name: Tests
+      url: /documentation/test-api/test-code-structure.md#tests
+      content:
+      - name: Test Controller
+        url: /documentation/test-api/test-code-structure.md#test-controller
   - name: Actions
     url: /documentation/test-api/actions/index.md
     content:

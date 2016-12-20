@@ -10,9 +10,10 @@ This topic contains the following sections.
 
 * [Fixtures](#fixtures)
   * [Specifying the Start Webpage](#specifying-the-start-webpage)
+  * [Initialization and Clean-Up](#initialization-and-clean-up)
+  * [HTTP Authentication](#http-authentication)
 * [Tests](#tests)
   * [Test Controller](#test-controller)
-* [Initialization and Clean-Up](#initialization-and-clean-up)
 
 ## Fixtures
 
@@ -63,6 +64,78 @@ If the start page is not specified, it defaults to `about:blank`.
 
 > You can also call the [Navigate action](actions/navigate.md) at the beginning of a test
 > to navigate to the start page.
+
+### Initialization and Clean-Up
+
+You can provide initialization code that will be executed before each test starts and clean-up code that will run after a test finishes.
+To do this, add the `beforeEach` and `afterEach` functions to the [fixture declaration](#fixtures).
+
+```text
+beforeEach( fn(t) )
+```
+
+```text
+afterEach( fn(t) )
+```
+
+Parameter | Type     | Description
+--------- | -------- | ---------------------------------------------------------------------------
+`fn`      | Function | An asynchronous function that contains initialization or clean-up code.
+`t`       | Object   | The [test controller](#test-controller) used to access test run API.
+
+As long as the function you provide receives a [test controller](#test-controller),
+you can use [test actions](actions/index.md) and other test run API inside `beforeEach` and `afterEach`.
+
+```js
+fixture `My fixture`
+    .page `http://example.com`
+    .beforeEach( async t => {
+        /* initialization code */
+    })
+    .afterEach( async t => {
+        /* finalization code */
+    })
+```
+
+### HTTP Authentication
+
+TestCafe allows you to test web pages that are protected with HTTP [Basic](https://en.wikipedia.org/wiki/Basic_access_authentication) or [Windows (NTLM)](https://en.wikipedia.org/wiki/Integrated_Windows_Authentication) authentication. To specify the credentials, use the `httpAuth` method.
+
+```text
+httpAuth( credentials )
+```
+
+Parameter     | Type   | Description
+------------- | ------ | ------------------------------------------------
+`credentials` | Object | Contains credentials used for authentication.
+
+The `credentials` parameter has following properties.
+
+Parameter                       | Type   | Description
+------------------------------- | ------ | --------------------------------------------------------------------
+`username`                      | String | The user name for the account.
+`password`                      | String | The password for the account.
+`domain`&#160;*(optional)*      | String | The domain name.
+`workstation`&#160;*(optional)* | String | The workstation's ID in the local network.
+
+The `credentials` parameter is required to include `username` and `password`. For NTLM authentication, the server may need additional information - the workstation ID and the domain name.
+
+The specified credentials will be used for all requests that require authentication.
+
+**Example**
+
+```js
+fixture `My fixture`
+    .page `http://example.com`
+    .httpAuth({
+        username: 'username',
+        password: 'Pa$$word',
+
+        // Optional parameters, can be required for the NTLM authentication.
+        domain: 'CORP-DOMAIN',
+        workstation: 'machine-win10'
+});
+```
 
 ## Tests
 
@@ -128,35 +201,3 @@ Another job of the test controller is providing access to the internal context r
 This is why [selectors](selecting-page-elements/selectors.md) and
 [client functions](obtaining-data-from-the-client.md) need the test controller object when they are
 called from Node.js callbacks.
-
-## Initialization and Clean-Up
-
-You can provide initialization code that will be executed before each test starts and clean-up code that will run after a test finishes.
-To do this, add the `beforeEach` and `afterEach` functions to the [fixture declaration](#fixtures).
-
-```text
-beforeEach( fn(t) )
-```
-
-```text
-afterEach( fn(t) )
-```
-
-Parameter | Type     | Description
---------- | -------- | ---------------------------------------------------------------------------
-`fn`      | Function | An asynchronous function that contains initialization or clean-up code.
-`t`       | Object   | The [test controller](#test-controller) used to access test run API.
-
-As long as the function you provide receives a [test controller](#test-controller),
-you can use [test actions](actions/index.md) and other test run API inside `beforeEach` and `afterEach`.
-
-```js
-fixture `My fixture`
-    .page `http://example.com`
-    .beforeEach( async t => {
-        /* initialization code */
-    })
-    .afterEach( async t => {
-        /* finalization code */
-    })
-```
