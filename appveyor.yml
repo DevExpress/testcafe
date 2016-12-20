@@ -5,16 +5,15 @@ skip_commits:
   message: /^\[docs\]/
 
 environment:
-  GULP_TASK: "test-functional-local"
+  GULP_TASK: "test-functional-travis-desktop-osx-and-ms-edge"
   NODEJS_VERSION: "stable"
+  SAUCE_USERNAME_FUNCTIONAL_DESKTOP: "testcafe-func"
+  SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP:
+    secure: q+6r+08O8tBMSYwinL4DsTrC/nyTVvgVHPPoAsIP7nMz6/fW7m4Z9w/TZgLn6jnb
 
 install:
 - ps: >-
     Install-Product node $env:NODEJS_VERSION
-
-    choco install GoogleChrome
-
-    choco install Firefox
 
 - cmd: >-
     node --version
@@ -28,6 +27,4 @@ build: off
 # NOTE: We should prerun Firefox to avoid "Refresh Firefox" notification in the tests window.
 test_script:
 - cmd: >-
-    start /D "C:\Program Files (x86)\Mozilla Firefox" firefox.exe -new-window https://google.com
-
     npm test

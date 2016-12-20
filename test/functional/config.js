@@ -1,6 +1,6 @@
 var os = require('os');
 
-var isTravisEnvironment = !!process.env.TRAVIS;
+var isTravisEnvironment = false;
 var isCCNetEnvironment  = !!process.env.CCNET;
 var hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
 
@@ -23,26 +23,9 @@ testingEnvironments[testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers
 
     browsers: [
         {
-            platform:    'OS X 10.11',
-            browserName: 'safari',
-            version:     '9.0',
-            alias:       'safari'
-        },
-        {
-            platform:    'OS X 10.11',
-            browserName: 'chrome',
-            alias:       'chrome-osx'
-        },
-        {
-            platform:    'OS X 10.11',
-            browserName: 'firefox',
-            alias:       'firefox-osx'
-        },
-        {
             platform:    'Windows 10',
             browserName: 'microsoftedge',
-            alias:       'edge',
-            version:     '13.10586'
+            alias:       'edge'
         }
     ]
 };
@@ -155,7 +138,7 @@ testingEnvironments[testingEnvironmentNames.legacy] = {
 
 
 module.exports = {
-    useLocalBrowsers: !isTravisEnvironment && !isCCNetEnvironment,
+    useLocalBrowsers: false,
 
     testingEnvironmentNames: testingEnvironmentNames,
     testingEnvironments:     testingEnvironments,
