@@ -13,7 +13,7 @@ export default {
     selectorTimeoutIsNotAnInteger:                  'Selector timeout should be an integer.',
     assertionTimeoutIsNotAnInteger:                 'Assertion timeout should be an integer.',
     appInitDelayIsNotAnInteger:                     'Tested app initialization delay should be an integer.',
-    testedAppFailedWithError:                       'Tested app failed with the error:\n\n{errMessage}',
+    testedAppFailedWithError:                       'Tested app failed with an error:\n\n{errMessage}',
     invalidSpeedValue:                              'Speed should be a number between 0.01 and 1.',
     portsOptionRequiresTwoNumbers:                  'The "--ports" option requires two numbers to be specified.',
     portIsNotFree:                                  'The specified {portNum} port is already in use by another program.',
