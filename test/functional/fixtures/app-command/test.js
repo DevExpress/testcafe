@@ -1,5 +1,6 @@
 var expect     = require('chai').expect;
 var isFreePort = require('endpoint-utils').isFreePort;
+var delay      = require('../../../../lib/utils/delay');
 
 describe('App command', function () {
     it('Should fail task if app fails', function () {
@@ -16,6 +17,9 @@ describe('App command', function () {
         return runTests('./testcafe-fixtures/app-command-test.js', 'Click div', {
             appCommand: 'http-server test/functional/fixtures/app-command/static -p 3026'
         })
+            .then(function () {
+                return delay(1000);
+            })
             .then(function () {
                 return isFreePort(3026);
             })
