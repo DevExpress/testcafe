@@ -10,7 +10,7 @@ This topic contains the following sections.
 
 * [Fixtures](#fixtures)
   * [Specifying the Start Webpage](#specifying-the-start-webpage)
-  * [Http Authentication](#http-authentication)
+  * [HTTP Authentication](#http-authentication)
 * [Tests](#tests)
   * [Test Controller](#test-controller)
 * [Initialization and Clean-Up](#initialization-and-clean-up)
@@ -65,9 +65,9 @@ If the start page is not specified, it defaults to `about:blank`.
 > You can also call the [Navigate action](actions/navigate.md) at the beginning of a test
 > to navigate to the start page.
 
-### Http Authentication
+### HTTP Authentication
 
-TestCafe allows you to test web pages that are protected with Http [Basic](https://en.wikipedia.org/wiki/Basic_access_authentication) or [Windows (NTLM)](https://en.wikipedia.org/wiki/Integrated_Windows_Authentication) authentication. To specify the credentials, use the `httpAuth` method.
+TestCafe allows you to test web pages that are protected with HTTP [Basic](https://en.wikipedia.org/wiki/Basic_access_authentication) or [Windows (NTLM)](https://en.wikipedia.org/wiki/Integrated_Windows_Authentication) authentication. To specify the credentials, use the `httpAuth` method.
 
 ```text
 httpAuth( credentials )
