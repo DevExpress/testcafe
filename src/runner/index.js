@@ -37,10 +37,10 @@ export default class Runner extends EventEmitter {
         task.abort();
         task.removeAllListeners();
 
-        await Runner._disposeTaskAndRelatedAssets(browserSet, testedApp);
+        await Runner._disposeBrowserSetAndTestedApp(browserSet, testedApp);
     }
 
-    static async _disposeTaskRelatedAssets (browserSet, testedApp) {
+    static async _disposeBrowserSetAndTestedApp (browserSet, testedApp) {
         await browserSet.dispose();
 
         if (testedApp)
@@ -84,7 +84,7 @@ export default class Runner extends EventEmitter {
             throw err;
         }
 
-        await Runner._disposeTaskRelatedAssets(browserSet, testedApp);
+        await Runner._disposeBrowserSetAndTestedApp(browserSet, testedApp);
 
         return reporter.testCount - reporter.passed;
     }
