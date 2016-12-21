@@ -158,32 +158,6 @@ $(document).ready(function () {
             });
     });
 
-    asyncTest('press tab with iframe', function () {
-        var $iframe = $('<iframe id="test1" src="about:blank"/>')
-            .addClass(TEST_ELEMENT_CLASS)
-            .appendTo($('body'));
-
-        var $iframeInput = $('<input type="text" id="iframeInput"/>')
-            .addClass(TEST_ELEMENT_CLASS);
-
-        window.QUnitGlobals.waitForIframe($iframe[0])
-            .then(function () {
-                $($iframe.contents()[0]).find('body').append($iframeInput);
-
-                domUtils.getActiveElement().blur();
-                $input.focus();
-
-                var press = new PressAutomation(parseKeySequence('tab').combinations);
-
-                press
-                    .run()
-                    .then(function () {
-                        ok(domUtils.getActiveElement() !== $input[0]);
-                        start();
-                    });
-            });
-    });
-
     if (!browserUtils.isSafari && (!browserUtils.isChrome || browserUtils.version > 53)) {
         asyncTest('T334620 - Wrong "key" property in keyEvent objects (press)', function () {
             var textarea = document.createElement('textarea');

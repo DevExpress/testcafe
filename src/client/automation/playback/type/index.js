@@ -5,6 +5,7 @@ import ClickAutomation from '../click';
 import typeChar from './type-char';
 import getKeyCode from '../../utils/get-key-code';
 import getKeyIdentifier from '../../utils/get-key-identifier';
+import keyIdentifierRequiredForEvent from '../../utils/key-identifier-required-for-event';
 import whilst from '../../utils/promise-whilst';
 import { getDefaultAutomationOffsets } from '../../utils/offsets';
 import { ACTION_STEP_DELAY } from '../../settings';
@@ -18,7 +19,6 @@ var domUtils              = testCafeCore.domUtils;
 var contentEditable       = testCafeCore.contentEditable;
 var textSelection         = testCafeCore.textSelection;
 var delay                 = testCafeCore.delay;
-var IsKeyIdentifierNeeded = testCafeCore.IsKeyIdentifierNeeded;
 var SPECIAL_KEYS          = testCafeCore.KEY_MAPS.specialKeys;
 
 
@@ -85,7 +85,7 @@ export default class TypeAutomation {
         if (isPressEvent)
             options.charCode = this.currentCharCode;
 
-        if (IsKeyIdentifierNeeded())
+        if (keyIdentifierRequiredForEvent())
             options.keyIdentifier = isPressEvent ? '' : this.currentKeyIdentifier;
         else
             options.key = this.currentKey;

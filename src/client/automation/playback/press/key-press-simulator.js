@@ -1,10 +1,11 @@
 import hammerhead from '../../deps/hammerhead';
-import { KEY_MAPS, domUtils, getSanitizedKey, IsKeyIdentifierNeeded } from '../../deps/testcafe-core';
+import { KEY_MAPS, domUtils, getSanitizedKey } from '../../deps/testcafe-core';
 import typeChar from '../type/type-char';
 import { getChar, getDeepActiveElement, changeLetterCase } from './utils';
 import getKeyCode from '../../utils/get-key-code';
 import getKeyIdentifier from '../../utils/get-key-identifier';
 import isLetterKey from '../../utils/is-letter';
+import keyIdentifierRequiredForEvent from '../../utils/key-identifier-required-for-event';
 
 var browserUtils   = hammerhead.utils.browser;
 var extend         = hammerhead.utils.extend;
@@ -72,7 +73,7 @@ export default class KeyPressSimulator {
     }
 
     _addKeyPropertyToEventOptions (eventOptions) {
-        if (IsKeyIdentifierNeeded())
+        if (keyIdentifierRequiredForEvent())
             eventOptions.keyIdentifier = eventOptions.type === 'keypress' ? '' : this.keyIdentifierProperty;
         else
             eventOptions.key = this.keyProperty;
@@ -149,11 +150,11 @@ export default class KeyPressSimulator {
         var activeElement = getDeepActiveElement(this.topSameDomainDocument);
 
 
-        // NOTE: in some browsers we shouldn't emulate click on active element while pressing 'space' key
-        var isBrowserSuitable = !browserUtils.isFirefox && !browserUtils.isSafari &&
-                                (!browserUtils.isChrome || browserUtils.version >= 53);
+        // NOTE: in some browsers we should emulate click on active input element while pressing "space" key
+        var emulateClick = !browserUtils.isFirefox && !browserUtils.isSafari &&
+                                 (!browserUtils.isChrome || browserUtils.version >= 53);
 
-        if (isBrowserSuitable && raiseDefault && this.sanitizedKey === 'space' &&
+        if (emulateClick && raiseDefault && this.sanitizedKey === 'space' &&
             KeyPressSimulator._isKeyActivatedInputElement(activeElement))
             activeElement.click();
 
