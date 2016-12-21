@@ -22,6 +22,8 @@ The following assertion methods are available.
 * [Less than or Equal to](#less-than-or-equal-to)
 * [Within](#within)
 * [Not Within](#not-within)
+* [Match](#match)
+* [Not Match](#not-match)
 
 ## Deep Equal
 
@@ -334,4 +336,46 @@ Parameter              | Type                                              | Des
 
 ```js
 await t.expect(1).notWithin(3, 10, 'this assertion will be passed');
+```
+
+## Match
+
+Asserts that `actual` matches the `re` regular expression.
+
+```text
+await t.expect( actual ).match( re, message, options );
+```
+
+Parameter              | Type                                              | Description
+---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
+`actual`             | String | A comparison value.
+`re`             | Any type | A regular expression that is expected to match `actual`.
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+
+**Example:**
+
+```js
+await t.expect('foobar').match(/^f/, 'this assertion will be passed');
+```
+
+## Not Match
+
+Asserts that `actual` does not match the `re` regular expression.
+
+```text
+await t.expect( actual ).notMatch( re, message, options );
+```
+
+Parameter              | Type                                              | Description
+---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
+`actual`             | String | A comparison value.
+`re`             | Any type | A regular expression that is expected not to match `actual`.
+`message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
+`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+
+**Example:**
+
+```js
+await t.expect('foobar').notMatch(/^b/, 'this assertion will be passed');
 ```
