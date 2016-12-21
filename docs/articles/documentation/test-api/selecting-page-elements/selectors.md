@@ -178,7 +178,7 @@ Method | Type | Description
 ------ | ----- | -----
 `filter(index)` | Selector | Creates a selector that filters a matching set by `index`.
 `filter(cssSelector)` | Selector | Creates a selector that filters a matching set by `cssSelector`.
-`filter(filterFn)` | Selector | Creates a selector that filters a matching set by `filterFn` [filter predicate](#filter-predicate).
+`filter(filterFn, dependencies)` | Selector | Creates a selector that filters a matching set by `filterFn` [filter predicate](#filter-predicate). Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
 **Example**
 
@@ -211,7 +211,7 @@ The selector API provides methods to find elements within a DOM hierarchy in jQu
 Property | Description
 ------ | -----
 `find(cssSelector)` | Finds all descendants of all nodes in the matching set and filters them by `cssSelector`.
-`find(filterFn)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn` [filter predicate](#filter-predicate).
+`find(filterFn, dependencies)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn` [filter predicate](#filter-predicate). Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
 #### parent
 
@@ -220,7 +220,7 @@ Property | Description
 `parent()` | Finds all parents of all nodes in the matching set (first element in the set will be the closest parent).
 `parent(index)` | Finds all parents of all nodes in the matching set and filters them by `index` (0 is closest).
 `parent(cssSelector)` | Finds all parents of all nodes in the matching set and filters them by `cssSelector`.
-`parent(filterFn)` | Finds all parents of all nodes in the matching set and filters them by `filterFn` [filter predicate](#filter-predicate).
+`parent(filterFn, dependencies)` | Finds all parents of all nodes in the matching set and filters them by `filterFn` [filter predicate](#filter-predicate). Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
 #### child
 
@@ -229,7 +229,7 @@ Property | Description
 `child()` | Finds all child elements (not nodes) of all nodes in the matching set.
 `child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`.
 `child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`child(filterFn)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `filterFn` [filter predicate](#filter-predicate).
+`child(filterFn, dependencies)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `filterFn` [filter predicate](#filter-predicate). Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
 #### sibling
 
@@ -238,7 +238,7 @@ Property | Description
 `sibling()` | Finds all sibling  elements (not nodes) of all nodes in the matching set.
 `sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`.
 `sibling(cssSelector)` | Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`sibling(filterFn)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `filterFn` [filter predicate](#filter-predicate).
+`sibling(filterFn, dependencies)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `filterFn` [filter predicate](#filter-predicate). Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
 **Example**
 
@@ -266,8 +266,8 @@ This predicate takes the following parameters.
 Property | Description
 ------ | -----
 `node`  | The current DOM node.
-`idx` | Index of the current node among other nodes returned by the left-hand selector.
-`originNode` | Node returned by the left-hand selector.
+`idx` | Index of the current node among other nodes returned by the preceding selector.
+`originNode` | Node returned by the preceding selector.
 
 **Example**
 
