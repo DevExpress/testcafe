@@ -30,6 +30,8 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-T \<pattern\>, --test-grep \<pattern\>](#-t-pattern---test-grep-pattern)
   * [-f \<name\>, --fixture \<name\>](#-f-name---fixture-name)
   * [-F \<pattern\>, --fixture-grep \<pattern\>](#-f-pattern---fixture-grep-pattern)
+  * [-a \<command\>, --app-command \<command\>](#-a-command---app-command-command)
+  * [--app-init-delay \<ms\>](#--app-init-delay-ms)
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--ports \<port1,port2\>](#--ports-port1port2)
@@ -287,6 +289,32 @@ For example, the following command runs fixtures whose names match `Page.*`. The
 
 ```sh
 testcafe ie my-tests -F "Page.*"
+```
+
+### -a \<command\>, --app-command \<command\>
+
+Executes the specified shell command before running tests. Use it to launch or deploy the application you are going to test.
+
+After testing is finished, this application will be automatically terminated.
+
+```sh
+testcafe chrome my-tests --app-command 'node server.js'
+```
+
+> TestCafe adds `node_modules/.bin` to `PATH` so that you can use binaries provided by locally installed dependencies without prefixes.
+
+Use the [--app-init-delay]((#--app-init-delay) option to specify the amount of time allowed for this command to initialize the tested application.
+
+### --app-init-delay \<ms\>
+
+Specifies the amount of time, in milliseconds, allowed for an application launched by [--app-command]((#-a-command---app-command-command) to initialize.
+
+TestCafe waits for the specified time before it starts running tests.
+
+**Default value**: `1000`
+
+```sh
+testcafe chrome my-tests --app-command 'node server.js' --app-init-delay 4000
 ```
 
 ### --selector-timeout \<ms\>
