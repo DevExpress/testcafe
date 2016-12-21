@@ -15,7 +15,7 @@ import {
 const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PROPERTIES);
 
 
-var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot) => {
+var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode) => {
     if (typeof filter === 'number')
         return [nodes[filter]];
 
@@ -37,7 +37,7 @@ var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot) 
 
     if (typeof filter === 'function') {
         for (var j = 0; j < nodes.length; j++) {
-            if (filter(nodes[j], j))
+            if (filter(nodes[j], j, originNode))
                 result.push(nodes[j]);
         }
     }
@@ -236,7 +236,7 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
             if (!nodes.length)
                 return null;
 
-            return filterNodes(nodes, filter, document);
+            return filterNodes(nodes, filter, document, void 0);
             /* eslint-enable no-undef */
         };
 
@@ -276,7 +276,7 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
 
                 visitNode(node);
 
-                return filterNodes(results, filter, null);
+                return filterNodes(results, filter, null, node);
             });
             /* eslint-enable no-undef */
         };
@@ -296,10 +296,10 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
             return expandSelectorResults(selector, node => {
                 var parents = [];
 
-                for (node = node.parentNode; node; node = node.parentNode)
-                    parents.push(node);
+                for (var parent = node.parentNode; parent; parent = parent.parentNode)
+                    parents.push(parent);
 
-                return filter !== void 0 ? filterNodes(parents, filter, document) : parents;
+                return filter !== void 0 ? filterNodes(parents, filter, document, node) : parents;
             });
             /* eslint-enable no-undef */
         };
@@ -327,7 +327,7 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
                         childElements.push(child);
                 }
 
-                return filter !== void 0 ? filterNodes(childElements, filter, node) : childElements;
+                return filter !== void 0 ? filterNodes(childElements, filter, node, node) : childElements;
             });
             /* eslint-enable no-undef */
         };
@@ -360,7 +360,7 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
                         siblings.push(child);
                 }
 
-                return filter !== void 0 ? filterNodes(siblings, filter, parent) : siblings;
+                return filter !== void 0 ? filterNodes(siblings, filter, parent, node) : siblings;
             });
             /* eslint-enable no-undef */
         };

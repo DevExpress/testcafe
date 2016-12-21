@@ -121,6 +121,10 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector filter dependencies and index argument', { only: 'chrome' });
     });
 
+    it('Should provide filter origin argument', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector filter origin node argument', { only: 'chrome' });
+    });
+
     describe('Errors', function () {
         it('Should handle errors in Selector code', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Error in code', { shouldFail: true })

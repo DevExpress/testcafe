@@ -862,3 +862,23 @@ test('Selector filter dependencies and index argument', async t => {
         .expect(Selector('.find-parent').child((node, i) => isOne(i), { isOne }).id).eql('find-child3')
         .expect(Selector('#find-child1').sibling(firstNode, { isOne }).id).eql('find-child4');
 });
+
+test('Selector filter origin node argument', async t => {
+    await t
+        .expect(Selector('#p2').find((el, idx, ancestor) => {
+            return ancestor.id === 'p2' && el.id === 'childDiv';
+        }).id).eql('childDiv')
+
+        .expect(Selector('#p0').child((el, idx, parent) => {
+            return parent.id === 'p0' && el.id === 'childDiv';
+        }).id).eql('childDiv')
+
+        .expect(Selector('#childDiv').parent((el, idx, child) => {
+            return child.id === 'childDiv' && el.id === 'p1';
+        }).id).eql('p1')
+
+        .expect(Selector('#el2').sibling((el, idx, refSibling) => {
+            return refSibling.id === 'el2' && el.id === 'el3';
+        }).id).eql('el3');
+
+});
