@@ -3,6 +3,8 @@ matrix:
  include:
   - node_js: "0.10"
     env: GULP_TASK="test-server"
+    before_install: ''
+    install: npm install
   - node_js: "4"
     env: GULP_TASK="test-server"
   - node_js: "stable"
@@ -16,6 +18,14 @@ matrix:
   - node_js: "stable"
     env: GULP_TASK="test-functional-travis-mobile"
  fast_finish: true
+
+cache: yarn
+
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - export PATH=$HOME/.yarn/bin:$PATH
+
+install: yarn
 
 branches:
   except:

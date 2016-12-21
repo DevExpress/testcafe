@@ -56,17 +56,13 @@ async function runTests (argParser) {
         .browsers(browsers)
         .reporter(opts.reporter)
         .filter(argParser.filter)
-        .screenshots(opts.screenshots, opts.screenshotsOnFails);
+        .screenshots(opts.screenshots, opts.screenshotsOnFails)
+        .startApp(opts.app, opts.appInitDelay);
 
     runner.once('done-bootstrapping', () => log.hideSpinner());
 
     try {
-        failed = await runner.run({
-            skipJsErrors:    opts.skipJsErrors,
-            quarantineMode:  opts.quarantineMode,
-            selectorTimeout: opts.selectorTimeout,
-            speed:           opts.speed
-        });
+        failed = await runner.run(opts);
     }
 
     finally {

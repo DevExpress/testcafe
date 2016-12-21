@@ -33,11 +33,18 @@ export default class Runner extends EventEmitter {
         };
     }
 
-    static async _disposeTaskAndBrowsers (task, browserSet) {
+    static async _disposeTaskAndRelatedAssets (task, browserSet, testedApp) {
         task.abort();
         task.removeAllListeners();
 
+        await Runner._disposeBrowserSetAndTestedApp(browserSet, testedApp);
+    }
+
+    static async _disposeBrowserSetAndTestedApp (browserSet, testedApp) {
         await browserSet.dispose();
+
+        if (testedApp)
+            await testedApp.kill();
     }
 
     _createCancelablePromise (taskPromise) {
@@ -57,31 +64,39 @@ export default class Runner extends EventEmitter {
     }
 
     // Run task
-    async _getTaskResult (task, browserSet, reporter) {
+    async _getTaskResult (task, browserSet, reporter, testedApp) {
         task.on('browser-job-done', job => browserSet.releaseConnection(job.browserConnection));
 
+        var promises = [
+            promisifyEvent(task, 'done'),
+            promisifyEvent(browserSet, 'error')
+        ];
+
+        if (testedApp)
+            promises.push(testedApp.errorPromise);
+
         try {
-            await Promise.race([
-                promisifyEvent(task, 'done'),
-                promisifyEvent(browserSet, 'error')
-            ]);
+            await Promise.race(promises);
         }
         catch (err) {
-            await Runner._disposeTaskAndBrowsers(task, browserSet);
+            await Runner._disposeTaskAndRelatedAssets(task, browserSet, testedApp);
 
             throw err;
         }
 
-        await browserSet.dispose();
+        await Runner._disposeBrowserSetAndTestedApp(browserSet, testedApp);
 
         return reporter.testCount - reporter.passed;
     }
 
-    _runTask (reporterPlugin, browserSet, tests) {
+    _runTask (reporterPlugin, browserSet, tests, testedApp) {
         var completed         = false;
         var task              = new Task(tests, browserSet.connections, this.proxy, this.opts);
         var reporter          = new Reporter(reporterPlugin, task, this.opts.reportOutStream);
-        var completionPromise = this._getTaskResult(task, browserSet, reporter);
+        var completionPromise = this._getTaskResult(task, browserSet, reporter, testedApp);
+
+        if (testedApp)
+            completionPromise = Promise.race([completionPromise, testedApp.errorPromise]);
 
         var setCompleted = () => {
             completed = true;
@@ -93,7 +108,7 @@ export default class Runner extends EventEmitter {
 
         var cancelTask = async () => {
             if (!completed)
-                await Runner._disposeTaskAndBrowsers(task, browserSet);
+                await Runner._disposeTaskAndRelatedAssets(task, browserSet, testedApp);
         };
 
         return { completionPromise, cancelTask };
@@ -135,6 +150,13 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
+    startApp (command, initDelay) {
+        this.bootstrapper.appCommand   = command;
+        this.bootstrapper.appInitDelay = initDelay;
+
+        return this;
+    }
+
     run ({ skipJsErrors, quarantineMode, selectorTimeout, assertionTimeout, speed = 1 } = {}) {
         this.opts.skipJsErrors     = !!skipJsErrors;
         this.opts.quarantineMode   = !!quarantineMode;
@@ -147,10 +169,10 @@ export default class Runner extends EventEmitter {
         this.opts.speed = speed;
 
         var runTaskPromise = this.bootstrapper.createRunnableConfiguration()
-            .then(({ reporterPlugin, browserSet, tests }) => {
+            .then(({ reporterPlugin, browserSet, tests, testedApp }) => {
                 this.emit('done-bootstrapping');
 
-                return this._runTask(reporterPlugin, browserSet, tests);
+                return this._runTask(reporterPlugin, browserSet, tests, testedApp);
             });
 
         return this._createCancelablePromise(runTaskPromise);

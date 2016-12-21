@@ -144,6 +144,8 @@ before(function () {
                 var screenshotPath     = opts && opts.setScreenshotPath ? '___test-screenshots___' : '';
                 var screenshotsOnFails = opts && opts.screenshotsOnFails;
                 var speed              = opts && opts.speed;
+                var appCommand         = opts && opts.appCommand;
+                var appInitDelay       = opts && opts.appInitDelay;
 
                 var actualBrowsers = browsersInfo.filter(function (browserInfo) {
                     var only = onlyOption ? onlyOption.indexOf(browserInfo.settings.alias) > -1 : true;
@@ -161,6 +163,16 @@ before(function () {
                     return browserInfo.connection;
                 });
 
+                var handleError = function (err) {
+                    var shouldFail = opts && opts.shouldFail;
+
+                    if (shouldFail && !err)
+                        throw new Error('Test should have failed but it succeeded');
+
+                    if (err)
+                        throw err;
+                };
+
                 return runner
                     .browsers(connections)
                     .filter(function (test) {
@@ -177,6 +189,7 @@ before(function () {
                     })
                     .src(fixturePath)
                     .screenshots(screenshotPath, screenshotsOnFails)
+                    .startApp(appCommand, appInitDelay)
                     .run({
                         skipJsErrors:     skipJsErrors,
                         quarantineMode:   quarantineMode,
@@ -188,18 +201,14 @@ before(function () {
                         var taskReport = JSON.parse(report);
                         var testReport = taskReport.fixtures[0].tests[0];
                         var testError  = getTestError(testReport, actualBrowsers);
-                        var shouldFail = opts && opts.shouldFail;
 
                         testReport.warnings = taskReport.warnings;
 
                         global.testReport = testReport;
 
-                        if (shouldFail && !testError)
-                            throw new Error('Test should have failed but it succeeded');
-
-                        if (testError)
-                            throw testError;
-                    });
+                        handleError(testError);
+                    })
+                    .catch(handleError);
             };
         });
 });
