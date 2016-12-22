@@ -84,12 +84,12 @@ To tell npm how to run your tests, you need to add the `test` script to the proj
 For more information on how to configure a test run using a `testcafe` command, see [Command Line Interface](../using-testcafe/command-line-interface.md).
 
 **Important:** If you are going to run tests for a website that is not deployed, the `test` script should also include commands to run the site. 
-Use the `--app-command` TestCafe option to specify a command that deploys the website locally.
+Use the `--app` TestCafe option to specify a command that deploys the website locally.
 This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the server.
 
 ```text
 "scripts": {
-  "test":  "testcafe chrome,firefox tests/index-test.js --app-command 'node server.js'"
+  "test":  "testcafe chrome,firefox tests/index-test.js --app 'node server.js'"
 }
 ```
 
