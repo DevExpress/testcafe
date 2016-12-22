@@ -307,7 +307,7 @@ Use the [--app-init-delay](#--app-init-delay-ms) option to specify the amount of
 
 ### --app-init-delay \<ms\>
 
-Specifies the amount of time, in milliseconds, allowed for an application launched using the [--app]((#-a-command---app-command) option to initialize.
+Specifies the amount of time, in milliseconds, allowed for an application launched using the [--app](#-a-command---app-command) option to initialize.
 
 TestCafe waits for the specified time before it starts running tests.
 
