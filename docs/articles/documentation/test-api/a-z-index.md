@@ -68,3 +68,5 @@ This topic lists test API members in alphabetical order.
         * [lte](assertions/assertion-api.html#less-than-or-equal-to)
         * [within](assertions/assertion-api.html#within)
         * [notWithin](assertions/assertion-api.html#not-within)
+        * [match](assertions/assertion-api.html#match)
+        * [notMatch](assertions/assertion-api.html#not-match)
