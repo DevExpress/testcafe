@@ -89,13 +89,14 @@ Property         | Type             | Description
 `durationMs`     | Number           | The time spent on test execution (in milliseconds).
 `unstable`       | Boolean          | Specifies if the test has been marked as unstable.
 `screenshotPath` | String           | The directory path where screenshots have been saved to.
+`skipped`        | Boolean          | Specifies if the test was skipped.
 
 **Example**
 
 ```js
 reportTestDone (name, testRunInfo) {
     const hasErr = !!testRunInfo.errs.length;
-    const result = hasErr ? `passed` : `failed`;
+    const result = testRunInfo.skipped ? 'skipped' : hasErr ? `passed` : `failed`;
 
     name = `${this.currentFixtureName} - ${name}`;
 
@@ -114,6 +115,7 @@ reportTestDone (name, testRunInfo) {
 //=> failed First fixture - First test in first fixture (unstable) (screenshots: /screenshots/1445437598847)
 //=> passed First fixture - Second test in first fixture (screenshots: /screenshots/1445437598847)
 //=> failed First fixture - Third test in first fixture
+//=> skipped First fixture - Fourth test in first fixture
 ```
 
 ## reportTaskDone

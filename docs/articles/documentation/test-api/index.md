@@ -15,6 +15,7 @@ It contains the following subsections
 * [Selecting Page Elements](selecting-page-elements/index.md)
 * [Assertions](assertions/index.md)
 * [Obtaining Data From the Client](obtaining-data-from-the-client.md)
+* [HTTP Authentication](http-authentication.md)
 * [Pausing the Test](pausing-the-test.md)
 * [Handling Native Dialogs](handling-native-dialogs.md)
 * [Working with \<iframes\>](working-with-iframes.md)

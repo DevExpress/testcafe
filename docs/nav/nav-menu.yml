@@ -34,17 +34,19 @@
     - name: Fixtures
       url: /documentation/test-api/test-code-structure.md#fixtures
       content:
-      - name: Specifying the Start Webpage
-        url: /documentation/test-api/test-code-structure.md#specifying-the-start-webpage
-      - name: Initialization and Clean-Up
-        url: /documentation/test-api/test-code-structure.md#initialization-and-clean-up
-      - name: Http Authentication
-        url: /documentation/test-api/test-code-structure.md#http-authentication
     - name: Tests
       url: /documentation/test-api/test-code-structure.md#tests
       content:
       - name: Test Controller
         url: /documentation/test-api/test-code-structure.md#test-controller
+    - name: Specifying the Start Webpage
+      url: /documentation/test-api/test-code-structure.md#specifying-the-start-webpage
+    - name: Initialization and Clean-Up
+      url: /documentation/test-api/test-code-structure.md#initialization-and-clean-up
+    - name: Sharing Variables Across Test Code
+      url: /documentation/test-api/test-code-structure.md#sharing-variables-across-test-code
+    - name: Skipping Tests
+      url: /documentation/test-api/test-code-structure.md#skipping-tests
   - name: Actions
     url: /documentation/test-api/actions/index.md
     content:
@@ -90,6 +92,8 @@
       url: /documentation/test-api/assertions/assertion-api.md
   - name: Obtaining Data from the Client
     url: /documentation/test-api/obtaining-data-from-the-client.md
+  - name: HTTP Authentication
+    url: /documentation/test-api/http-authentication.md
   - name: Pausing the Test
     url: /documentation/test-api/pausing-the-test.md
   - name: Handling Native Dialogs

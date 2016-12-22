@@ -9,11 +9,12 @@ checked: true
 This topic contains the following sections.
 
 * [Fixtures](#fixtures)
-  * [Specifying the Start Webpage](#specifying-the-start-webpage)
-  * [Initialization and Clean-Up](#initialization-and-clean-up)
-  * [HTTP Authentication](#http-authentication)
 * [Tests](#tests)
   * [Test Controller](#test-controller)
+* [Specifying the Start Webpage](#specifying-the-start-webpage)
+* [Initialization and Clean-Up](#initialization-and-clean-up)
+* [Sharing Variables Across Test Code](#sharing-variables-across-test-code)
+* [Skipping Tests](#skipping-tests)
 
 > If you use [eslint](http://eslint.org/) in your project, get the [TestCafe plugin](https://www.npmjs.com/package/eslint-plugin-testcafe)
 to avoid the `'fixture' is not defined` and `'test' is not defined` errors.
@@ -40,105 +41,6 @@ Parameter     | Type   | Description
 This function returns the `fixture` object that allows you to configure the fixture - specify the [start webpage](#specifying-the-start-webpage) and [initialization and clean-up code](#initialization-and-clean-up) for tests included to the fixture.
 
 > [Tests](#tests) that constitute a fixture go after this declaration.
-
-### Specifying the Start Webpage
-
-You can optionally use the fixture declaration to specify a webpage at which all tests in a fixture start.
-To do this, use the `page` function.
-
-```text
-page( url )
-```
-
-```text
-page `url`
-```
-
-Parameter | Type   | Description
---------- | ------ | ------------------------------------------------
-`url`     | String | The URL of the webpage at which the tests start.
-
-```js
-fixture `My fixture`
-    .page `http://example.com`;
-```
-
-If the start page is not specified, it defaults to `about:blank`.
-
-> You can also call the [Navigate action](actions/navigate.md) at the beginning of a test
-> to navigate to the start page.
-
-### Initialization and Clean-Up
-
-You can provide initialization code that will be executed before each test starts and clean-up code that will run after a test finishes.
-To do this, add the `beforeEach` and `afterEach` functions to the [fixture declaration](#fixtures).
-
-```text
-beforeEach( fn(t) )
-```
-
-```text
-afterEach( fn(t) )
-```
-
-Parameter | Type     | Description
---------- | -------- | ---------------------------------------------------------------------------
-`fn`      | Function | An asynchronous function that contains initialization or clean-up code.
-`t`       | Object   | The [test controller](#test-controller) used to access test run API.
-
-As long as the function you provide receives a [test controller](#test-controller),
-you can use [test actions](actions/index.md) and other test run API inside `beforeEach` and `afterEach`.
-
-```js
-fixture `My fixture`
-    .page `http://example.com`
-    .beforeEach( async t => {
-        /* initialization code */
-    })
-    .afterEach( async t => {
-        /* finalization code */
-    })
-```
-
-### HTTP Authentication
-
-TestCafe allows you to test web pages that are protected with HTTP [Basic](https://en.wikipedia.org/wiki/Basic_access_authentication) or [Windows (NTLM)](https://en.wikipedia.org/wiki/Integrated_Windows_Authentication) authentication. To specify the credentials, use the `httpAuth` method.
-
-```text
-httpAuth( credentials )
-```
-
-Parameter     | Type   | Description
-------------- | ------ | ------------------------------------------------
-`credentials` | Object | Contains credentials used for authentication.
-
-The `credentials` parameter has following properties.
-
-Parameter                       | Type   | Description
-------------------------------- | ------ | --------------------------------------------------------------------
-`username`                      | String | The user name for the account.
-`password`                      | String | The password for the account.
-`domain`&#160;*(optional)*      | String | The domain name.
-`workstation`&#160;*(optional)* | String | The workstation's ID in the local network.
-
-The `credentials` parameter is required to include `username` and `password`. For NTLM authentication, the server may need additional information - the workstation ID and the domain name.
-
-The specified credentials will be used for all requests that require authentication.
-
-**Example**
-
-```js
-fixture `My fixture`
-    .page `http://example.com`
-    .httpAuth({
-        username: 'username',
-        password: 'Pa$$word',
-
-        // Optional parameters, can be required for the NTLM authentication.
-        domain: 'CORP-DOMAIN',
-        workstation: 'machine-win10'
-});
-```
 
 ## Tests
 
@@ -204,3 +106,210 @@ Another job of the test controller is providing access to the internal context r
 This is why [selectors](selecting-page-elements/selectors.md) and
 [client functions](obtaining-data-from-the-client.md) need the test controller object when they are
 called from Node.js callbacks.
+
+## Specifying the Start Webpage
+
+You can specify a webpage at which all tests in a fixture start.
+To do this, use the `fixture.page` function.
+
+```text
+fixture().page( url )
+```
+
+```text
+fixture().page `url`
+```
+
+Similarly, you can specify a start page for individual tests
+using the `test.page` function that overrides `fixture.page`.
+
+```text
+test().page( url )
+```
+
+```text
+test().page `url`
+```
+
+Parameter | Type   | Description
+--------- | ------ | ------------------------------------------------
+`url`     | String | The URL of the webpage at which this test starts.
+
+```js
+fixture `MyFixture`
+    .page `http://devexpress.github.io/testcafe/example`;
+
+test('Test1', async t => {
+    // Starts at http://devexpress.github.io/testcafe/example
+});
+
+test
+    .page `http://devexpress.github.io/testcafe/blog/`
+    ('Test2', async t => {
+        // Starts at http://devexpress.github.io/testcafe/blog/
+    });
+```
+
+If the start page is not specified, it defaults to `about:blank`.
+
+## Initialization and Clean-Up
+
+You can provide initialization code that will be executed before each test starts and clean-up code that will executed after the test finishes.
+To do this, add the `beforeEach` and `afterEach` functions to the [fixture declaration](#fixtures).
+
+```text
+fixture().beforeEach( fn(t) )
+```
+
+```text
+fixture().afterEach( fn(t) )
+```
+
+You can also specify initialization and clean-up logic for an individual test by using the `test.before` and `test.after` methods.
+
+```text
+test().before( fn(t) )
+```
+
+```text
+test().after( fn(t) )
+```
+
+> If `test.before` or `test.after` is specified, it overrides the corresponding
+> `fixture.beforeEach` and `fixture.afterEach` method, so that fixture's methods are not executed.
+
+Additionally, you can provide code that will be executed before the entire fixture starts and after it finishes.
+To do this, use the `fixture.before` and `fixture.after` functions.
+
+```text
+fixture().before( fn(t) )
+```
+
+```text
+fixture().after( fn(t) )
+```
+
+The `before`, `after`,  `beforeEach` and `afterEach` methods take the following parameters.
+
+Parameter | Type     | Description
+--------- | -------- | ---------------------------------------------------------------------------
+`fn`      | Function | An asynchronous function that contains initialization or clean-up code.
+`t`       | Object   | The [test controller](#test-controller) used to access test run API.
+
+As long as the function you provide receives a [test controller](#test-controller),
+you can use [test actions](actions/index.md) and other test run API inside the `before`, `after`,  `beforeEach` and `afterEach` functions.
+
+```js
+fixture `My fixture`
+    .page `http://example.com`
+    .before( async t => {
+        /* fixture initialization code */
+    })
+    .after( async t => {
+        /* fixture finalization code */
+    })
+    .beforeEach( async t => {
+        /* test initialization code */
+    })
+    .afterEach( async t => {
+        /* test finalization code */
+    });
+
+test
+    .before( async t => {
+        /* test initialization code */
+    })
+    .after( async t => {
+        /* test finalization code */
+    })
+    ('MyTest', async t => { /* ... */ });
+```
+
+## Sharing Variables Across Test Code
+
+TestCafe allows you to share variables across test code by using the *test context* object
+shared between `fixture.beforeEach`, `fixture.afterEach`, `test.before`, `test.after` functions and test code.
+
+Test context is available through the `t.ctx` property.
+
+```text
+t.ctx
+```
+
+Instead of using a global variable, assign the object you want to share directly to `t.ctx` or create a property like in the following example.
+
+```js
+fixture `Fixture1`
+    .beforeEach(async t  => {
+          t.ctx.someProp = 123;
+     })
+    .afterEach(async t  => {
+          console.log(t.ctx.someProp); // > 123
+    });
+
+test
+    .before(async t => {
+         console.log(t.ctx.someProp); // > 123
+    })
+    ('Test1', async t => {
+        console.log(t.ctx.someProp); // > 123
+    });
+```
+
+Each test run has its own test context.
+
+> `t.ctx` is initialized with an empty object without a prototype. You can iterate its keys without the `hasOwnProperty` check.
+
+## Skipping Tests
+
+TestCafe allows you to specify that a particular test or fixture should be skipped when running tests.
+Use the `fixture.skip` and `test.skip` methods for this.
+
+```text
+fixture().skip
+```
+
+```text
+test().skip
+```
+
+You can also use the `only` method to specify that only a particular test or fixture should run while all others should be skipped.
+
+```text
+fixture().only
+```
+
+```text
+test().only
+```
+
+If several tests or fixtures are marked with `only`, all the marked tests and fixtures will run.
+
+**Examples**
+
+```js
+fixture.skip `Fixture1`; // All tests in this fixture will be skipped
+
+test('Fixture1Test1', () => {});
+test('Fixture1Test2', () => {});
+
+fixture `Fixture2`;
+
+test('Fixture2Test1', () => {});
+test.skip('Fixture2Test2', () => {}); // This test will be skipped
+test('Fixture2Test3', () => {});
+```
+
+```js
+fixture.only `Fixture1`;
+test('Fixture1Test1', () => {});
+test('Fixture1Test2', () => {});
+
+fixture `Fixture2`;
+
+test('Fixture2Test1', () => {});
+test.only('Fixture2Test2', () => {});
+test('Fixture2Test3', () => {});
+
+// Only tests in Fixture1 and the Fixture2Test2 test will run
+```
