@@ -349,7 +349,7 @@ await t.expect( actual ).match( re, message, options );
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
 `actual`             | String | A comparison value.
-`re`             | Any type | A regular expression that is expected to match `actual`.
+`re`             | RegExp | A regular expression that is expected to match `actual`.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
@@ -370,7 +370,7 @@ await t.expect( actual ).notMatch( re, message, options );
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
 `actual`             | String | A comparison value.
-`re`             | Any type | A regular expression that is expected not to match `actual`.
+`re`             | RegExp | A regular expression that is expected not to match `actual`.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
 
