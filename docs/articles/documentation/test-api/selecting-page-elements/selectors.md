@@ -227,6 +227,14 @@ Property | Description
 `idx` | Index of `node` among other descendant nodes.
 `originNode` | A node from the left-hand selector's matching set whose descendants are being iterated.
 
+```js
+Selector('ul').find((node, idx, originNode) => {
+    // node === the <ul>'s descendant node
+    // idx === index of the current <ul>'s descendant node
+    // originNode === the <ul> element
+}));
+```
+
 #### parent
 
 Property | Description
@@ -243,6 +251,15 @@ Property | Description
 `node`  | The current parent node.
 `idx` | Index of `node` among other parent nodes.
 `originNode` | A node from the left-hand selector's matching set whose parents are being iterated.
+
+```js
+Selector('label').parent((node, idx, originNode) => {
+    // node === the <label>'s parent element
+    // idx === index of the current <label>'s parent element
+    // originNode === the <label> element
+}));
+```
+
 
 #### child
 
@@ -261,6 +278,14 @@ Property | Description
 `idx` | Index of `node` among other child nodes.
 `originNode` | A node from the left-hand selector's matching set whose children are being iterated.
 
+```js
+Selector('form').child((node, idx, originNode) => {
+    // node === the <form>'s child node
+    // idx === index of the current <form>'s child node
+    // originNode === the <form> element
+}));
+```
+
 #### sibling
 
 Property | Description
@@ -277,6 +302,14 @@ Property | Description
 `node`  | The current descendant node.
 `idx` | Index of `node` among other sibling nodes.
 `originNode` | A node from the left-hand selector's matching set whose siblings are being iterated.
+
+```js
+Selector('section').sibling((node, idx, originNode) => {
+    // node === the <section>'s sibling node
+    // idx === index of the current <section>'s sibling node
+    // originNode === the <section> element
+}));
+```
 
 **Example**
 
