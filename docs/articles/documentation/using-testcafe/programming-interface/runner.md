@@ -39,6 +39,7 @@ console.log('Tests failed: ' + failed);
     * [Specifying the Reporter](#specifying-the-reporter)
     * [Saving the Report to a File](#saving-the-report-to-a-file)
     * [Implementing a Custom Stream](#implementing-a-custom-stream)
+* [startApp](#startapp)
 * [run](#run)
     * [Cancelling Test Tasks](#cancelling-test-tasks)
     * [Quarantine Mode](#quarantine-mode)
@@ -238,6 +239,31 @@ runner.reporter('json', stream);
 ```
 
 You can also build your own reporter. Use a [dedicated Yeoman generator](https://github.com/DevExpress/generator-testcafe-reporter) to scaffold out a [reporter plugin](../../extending-testcafe/reporter-plugin/index.md).
+
+### startApp
+
+Specifies a shell command that will be executed before running tests. Use it to launch or deploy the application that will be tested.
+
+```text
+async startApp(command, initDelay) → this
+```
+
+After the testing is finished, the appication will be automatically terminated.
+
+The `startApp` function takes the following parameters.
+
+Parameter         | Type    | Description   Default
+----------------- | ------- | -------- | -------
+`command`                     | String | The shell command to be executed.
+`initDelay`&#160;*(optional)* | Number | The amount of time, in milliseconds, allowed for the command to initialize the tested application. | `1000`
+
+> TestCafe adds `node_modules/.bin` to `PATH` so that you can use binaries provided by locally installed dependencies without prefixes.
+
+**Example**
+
+```js
+runner.startApp('node server.js', 4000);
+```
 
 ### run
 
