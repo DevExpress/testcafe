@@ -179,7 +179,7 @@ Method | Type | Description
 `filter(cssSelector)` | Selector | Creates a selector that filters a matching set by `cssSelector`.
 `filter(filterFn, dependencies)` | Selector | Creates a selector that filters a matching set by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
-The `filterFn` predicate takes the following parameters.
+The `filterFn` predicate is executed on the client. It takes the following parameters.
 
 Property | Description
 ------ | -----
@@ -193,7 +193,7 @@ Selector('ul').filter((node, idx) => {
 }));
 ```
 
-The `dependencies` parameter allows you to pass objects to the `filterFn` function's scope where they appear as variables.
+The `dependencies` parameter allows you to pass objects to the `filterFn` client function's scope where they appear as variables.
 
 ```js
 const isNodeOk = ClientFunction((node, idx) => { /*...*/ });
@@ -236,7 +236,7 @@ Property | Description
 `find(cssSelector)` | Finds all descendants of all nodes in the matching set and filters them by `cssSelector`.
 `find(filterFn, dependencies)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
-The `filterFn` predicate takes the following parameters.
+The `filterFn` predicate is executed on the client. It takes the following parameters.
 
 Property | Description
 ------ | -----
@@ -252,7 +252,7 @@ Selector('ul').find((node, idx, originNode) => {
 }));
 ```
 
-The `dependencies` parameter allows you to pass objects to the `filterFn` function's scope where they appear as variables.
+The `dependencies` parameter allows you to pass objects to the `filterFn` client function's scope where they appear as variables.
 
 ```js
 const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
@@ -271,7 +271,7 @@ Property | Description
 `parent(cssSelector)` | Finds all parents of all nodes in the matching set and filters them by `cssSelector`.
 `parent(filterFn, dependencies)` | Finds all parents of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
-The `filterFn` predicate takes the following parameters.
+The `filterFn` predicate is executed on the client. It takes the following parameters.
 
 Property | Description
 ------ | -----
@@ -287,7 +287,7 @@ Selector('label').parent((node, idx, originNode) => {
 }));
 ```
 
-The `dependencies` parameter allows you to pass objects to the `filterFn` function's scope where they appear as variables.
+The `dependencies` parameter allows you to pass objects to the `filterFn` client function's scope where they appear as variables.
 
 ```js
 const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
@@ -306,7 +306,7 @@ Property | Description
 `child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
 `child(filterFn, dependencies)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
-The `filterFn` predicate takes the following parameters.
+The `filterFn` predicate is executed on the client. It takes the following parameters.
 
 Property | Description
 ------ | -----
@@ -322,7 +322,7 @@ Selector('form').child((node, idx, originNode) => {
 }));
 ```
 
-The `dependencies` parameter allows you to pass objects to the `filterFn` function's scope where they appear as variables.
+The `dependencies` parameter allows you to pass objects to the `filterFn` client function's scope where they appear as variables.
 
 ```js
 const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
@@ -341,7 +341,7 @@ Property | Description
 `sibling(cssSelector)` | Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
 `sibling(filterFn, dependencies)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
-The `filterFn` predicate takes the following parameters.
+The `filterFn` predicate is executed on the client. It takes the following parameters.
 
 Property | Description
 ------ | -----
@@ -357,7 +357,7 @@ Selector('section').sibling((node, idx, originNode) => {
 }));
 ```
 
-The `dependencies` parameter allows you to pass objects to the `filterFn` function's scope where they appear as variables.
+The `dependencies` parameter allows you to pass objects to the `filterFn` client function's scope where they appear as variables.
 
 ```js
 const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
