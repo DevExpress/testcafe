@@ -7,12 +7,13 @@ import mapReverse from 'map-reverse';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 
+const LOCAL_BROWSERS_READY_TIMEOUT  = 2 * 60 * 1000;
+const REMOTE_BROWSERS_READY_TIMEOUT = 6 * 60 * 1000;
 
 export default class BrowserSet extends EventEmitter {
     constructor (connections) {
         super();
 
-        this.READY_TIMEOUT   = 2 * 60 * 1000;
         this.RELEASE_TIMEOUT = 10000;
 
         this.pendingReleases = [];
@@ -44,7 +45,14 @@ export default class BrowserSet extends EventEmitter {
         await promisifyEvent(bc, 'closed');
     }
 
-    _waitConnectionsOpened () {
+    async _getReadyTimeout () {
+        var isLocalBrowserPromises = this.connections.map(connection => connection.provider.plugin.isLocalBrowser());
+        var remoteBrowsersCount    = (await Promise.all(isLocalBrowserPromises)).filter(isLocal => !isLocal).length;
+
+        return remoteBrowsersCount ? REMOTE_BROWSERS_READY_TIMEOUT : LOCAL_BROWSERS_READY_TIMEOUT;
+    }
+
+    async _waitConnectionsOpened () {
         var connectionsReadyPromise = Promise.all(
             this.connections
                 .filter(bc => !bc.opened)
@@ -52,8 +60,9 @@ export default class BrowserSet extends EventEmitter {
         );
 
         var timeoutError = new GeneralError(MESSAGE.cantEstablishBrowserConnection);
+        var readyTimeout = await this._getReadyTimeout();
 
-        return timeLimit(connectionsReadyPromise, this.READY_TIMEOUT, { rejectWith: timeoutError });
+        await timeLimit(connectionsReadyPromise, readyTimeout, { rejectWith: timeoutError });
     }
 
     _checkForDisconnections () {
