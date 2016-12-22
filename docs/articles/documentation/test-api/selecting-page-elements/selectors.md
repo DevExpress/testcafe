@@ -29,7 +29,6 @@ This topic contains the following sections.
       * [parent](#parent)
       * [child](#child)
       * [sibling](#sibling)
-  * [Filter Predicate](#filter-predicate)
   * [Examples](#examples)
 * [Using Selectors](#using-selectors)
   * [Get Selector Matching Set Length](#get-selector-matching-set-length)
@@ -178,7 +177,14 @@ Method | Type | Description
 ------ | ----- | -----
 `filter(index)` | Selector | Creates a selector that filters a matching set by `index`.
 `filter(cssSelector)` | Selector | Creates a selector that filters a matching set by `cssSelector`.
-`filter(filterFn, dependencies)` | Selector | Creates a selector that filters a matching set by `filterFn` [filter predicate](#filter-predicate). Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+`filter(filterFn, dependencies)` | Selector | Creates a selector that filters a matching set by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+
+The `filterFn` predicate takes the following parameters.
+
+Property | Description
+------ | -----
+`node`  | The current DOM node.
+`idx` | Index of the current node among other nodes in the matching set.
 
 **Example**
 
@@ -211,7 +217,15 @@ The selector API provides methods to find elements within a DOM hierarchy in jQu
 Property | Description
 ------ | -----
 `find(cssSelector)` | Finds all descendants of all nodes in the matching set and filters them by `cssSelector`.
-`find(filterFn, dependencies)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn` [filter predicate](#filter-predicate). Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+`find(filterFn, dependencies)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+
+The `filterFn` predicate takes the following parameters.
+
+Property | Description
+------ | -----
+`node`  | The current descendant node.
+`idx` | Index of `node` among other descendant nodes.
+`originNode` | A node from the left-hand selector's matching set whose descendants are being iterated.
 
 #### parent
 
@@ -220,7 +234,15 @@ Property | Description
 `parent()` | Finds all parents of all nodes in the matching set (first element in the set will be the closest parent).
 `parent(index)` | Finds all parents of all nodes in the matching set and filters them by `index` (0 is closest).
 `parent(cssSelector)` | Finds all parents of all nodes in the matching set and filters them by `cssSelector`.
-`parent(filterFn, dependencies)` | Finds all parents of all nodes in the matching set and filters them by `filterFn` [filter predicate](#filter-predicate). Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+`parent(filterFn, dependencies)` | Finds all parents of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+
+The `filterFn` predicate takes the following parameters.
+
+Property | Description
+------ | -----
+`node`  | The current parent node.
+`idx` | Index of `node` among other parent nodes.
+`originNode` | A node from the left-hand selector's matching set whose parents are being iterated.
 
 #### child
 
@@ -229,7 +251,15 @@ Property | Description
 `child()` | Finds all child elements (not nodes) of all nodes in the matching set.
 `child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`.
 `child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`child(filterFn, dependencies)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `filterFn` [filter predicate](#filter-predicate). Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+`child(filterFn, dependencies)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+
+The `filterFn` predicate takes the following parameters.
+
+Property | Description
+------ | -----
+`node`  | The current child node.
+`idx` | Index of `node` among other child nodes.
+`originNode` | A node from the left-hand selector's matching set whose children are being iterated.
 
 #### sibling
 
@@ -238,7 +268,15 @@ Property | Description
 `sibling()` | Finds all sibling  elements (not nodes) of all nodes in the matching set.
 `sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`.
 `sibling(cssSelector)` | Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`sibling(filterFn, dependencies)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `filterFn` [filter predicate](#filter-predicate). Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+`sibling(filterFn, dependencies)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+
+The `filterFn` predicate takes the following parameters.
+
+Property | Description
+------ | -----
+`node`  | The current descendant node.
+`idx` | Index of `node` among other sibling nodes.
+`originNode` | A node from the left-hand selector's matching set whose siblings are being iterated.
 
 **Example**
 
@@ -255,28 +293,6 @@ test('My test', async t => {
         .click(macOSRadioButton.parent())
         .expect(macOSRadioButton.checked).ok();
 });
-```
-
-### Filter Predicate
-
-The `filterFn` function used in `filter`, `find`, `parent`, `child` and `sibling` methods is a predicate that is executed on the client side.
-
-This predicate takes the following parameters.
-
-Property | Description
------- | -----
-`node`  | The current DOM node.
-`idx` | Index of the current node among other nodes in the matching set.
-`originNode` | Node returned by the preceding selector.
-
-**Example**
-
-```js
-Selector('ul').child((node, idx, originNode) => {
-    // node === the <ul>'s child element
-    // idx === index of the current <ul>'s child element
-    // originNode === the <ul> element
-}));
 ```
 
 ### Examples
