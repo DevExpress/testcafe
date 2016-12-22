@@ -362,7 +362,7 @@ gulp.task('generate-docs-readme', function () {
         return '# Documentation\n\n> This is a development version of the documentation. ' +
                'The functionality described here may not be included in the current release version. ' +
                'Unreleased functionality may change or be dropped before the next release. ' +
-               'Documentation for the release version is available at the [TestCafe website](https://devexpress.github.io/testcafe/getting-started/).\n\n' +
+               'Documentation for the release version is available at the [TestCafe website](https://devexpress.github.io/testcafe/documentation/getting-started/).\n\n' +
                tocList;
     }
 
