@@ -95,9 +95,6 @@ export default class Runner extends EventEmitter {
         var reporter          = new Reporter(reporterPlugin, task, this.opts.reportOutStream);
         var completionPromise = this._getTaskResult(task, browserSet, reporter, testedApp);
 
-        if (testedApp)
-            completionPromise = Promise.race([completionPromise, testedApp.errorPromise]);
-
         var setCompleted = () => {
             completed = true;
         };
