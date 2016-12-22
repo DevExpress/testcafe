@@ -266,15 +266,15 @@ This predicate takes the following parameters.
 Property | Description
 ------ | -----
 `node`  | The current DOM node.
-`idx` | Index of the current node among other nodes returned by the preceding selector.
+`idx` | Index of the current node among other nodes in the matching set.
 `originNode` | Node returned by the preceding selector.
 
 **Example**
 
 ```js
-Selector('ul').parent((node, idx, originNode) => {
-    // node === the <ul>'s parent element
-    // idx === index of the <ul>'s parent element
+Selector('ul').child((node, idx, originNode) => {
+    // node === the <ul>'s child element
+    // idx === index of the current <ul>'s child element
     // originNode === the <ul> element
 }));
 ```
