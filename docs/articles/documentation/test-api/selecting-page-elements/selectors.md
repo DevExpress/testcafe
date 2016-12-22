@@ -186,6 +186,23 @@ Property | Description
 `node`  | The current DOM node.
 `idx` | Index of the current node among other nodes in the matching set.
 
+```js
+Selector('ul').filter((node, idx) => {
+    // node === a <ul> node
+    // idx === index of the current <ul> node
+}));
+```
+
+The `dependencies` parameter allows you to pass objects to the `filterFn` function's scope where they appear as variables.
+
+```js
+const isNodeOk = ClientFunction((node, idx) => { /*...*/ });
+
+Selector('ul').filter((node, idx) => {
+    return isNodeOk(node, idx);
+}), { isNodeOk });
+```
+
 **Example**
 
 ```js
@@ -235,6 +252,16 @@ Selector('ul').find((node, idx, originNode) => {
 }));
 ```
 
+The `dependencies` parameter allows you to pass objects to the `filterFn` function's scope where they appear as variables.
+
+```js
+const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+
+Selector('ul').find((node, idx, originNode) => {
+    return isNodeOk(node, idx, originNode);
+}), { isNodeOk });
+```
+
 #### parent
 
 Property | Description
@@ -260,6 +287,15 @@ Selector('label').parent((node, idx, originNode) => {
 }));
 ```
 
+The `dependencies` parameter allows you to pass objects to the `filterFn` function's scope where they appear as variables.
+
+```js
+const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+
+Selector('ul').parent((node, idx, originNode) => {
+    return isNodeOk(node, idx, originNode);
+}), { isNodeOk });
+```
 
 #### child
 
@@ -286,6 +322,16 @@ Selector('form').child((node, idx, originNode) => {
 }));
 ```
 
+The `dependencies` parameter allows you to pass objects to the `filterFn` function's scope where they appear as variables.
+
+```js
+const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+
+Selector('ul').child((node, idx, originNode) => {
+    return isNodeOk(node, idx, originNode);
+}), { isNodeOk });
+```
+
 #### sibling
 
 Property | Description
@@ -309,6 +355,16 @@ Selector('section').sibling((node, idx, originNode) => {
     // idx === index of the current <section>'s sibling node
     // originNode === the <section> element
 }));
+```
+
+The `dependencies` parameter allows you to pass objects to the `filterFn` function's scope where they appear as variables.
+
+```js
+const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+
+Selector('ul').sibling((node, idx, originNode) => {
+    return isNodeOk(node, idx, originNode);
+}), { isNodeOk });
 ```
 
 **Example**
