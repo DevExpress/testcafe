@@ -174,7 +174,6 @@ Method | Type | Description
 
 Method | Type | Description
 ------ | ----- | -----
-`filter(index)` | Selector | Creates a selector that filters a matching set by `index`.
 `filter(cssSelector)` | Selector | Creates a selector that filters a matching set by `cssSelector`.
 `filter(filterFn, dependencies)` | Selector | Creates a selector that filters a matching set by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
