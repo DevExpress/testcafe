@@ -189,7 +189,7 @@ Parameter | Description
 Selector('ul').filter((node, idx) => {
     // node === a <ul> node
     // idx === index of the current <ul> node
-}));
+});
 ```
 
 The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
@@ -249,7 +249,7 @@ Selector('ul').find((node, idx, originNode) => {
     // node === the <ul>'s descendant node
     // idx === index of the current <ul>'s descendant node
     // originNode === the <ul> element
-}));
+});
 ```
 
 The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
@@ -285,7 +285,7 @@ Selector('label').parent((node, idx, originNode) => {
     // node === the <label>'s parent element
     // idx === index of the current <label>'s parent element
     // originNode === the <label> element
-}));
+});
 ```
 
 The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
@@ -321,7 +321,7 @@ Selector('form').child((node, idx, originNode) => {
     // node === the <form>'s child node
     // idx === index of the current <form>'s child node
     // originNode === the <form> element
-}));
+});
 ```
 
 The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
@@ -357,7 +357,7 @@ Selector('section').sibling((node, idx, originNode) => {
     // node === the <section>'s sibling node
     // idx === index of the current <section>'s sibling node
     // originNode === the <section> element
-}));
+});
 ```
 
 The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
