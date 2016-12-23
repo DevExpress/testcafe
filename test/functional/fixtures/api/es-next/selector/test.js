@@ -190,36 +190,6 @@ describe('[API] Selector', function () {
                 });
         });
 
-        it('Should raise error if snapshot extension argument is not object',
-            function () {
-                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extendSnapshot method - argument is not object', {
-                    shouldFail: true,
-                    only:       'chrome'
-                })
-                    .catch(function (errs) {
-                        expect(errs[0]).contains(
-                            '"extendSnapshot" option is expected to be an object, but it was number.'
-                        );
-                        expect(errs[0]).contains("> 904 |    await Selector('rect').extendSnapshot(42);");
-                    });
-            }
-        );
-
-        it('Should raise error if at least one of snapshot extensions is not function',
-            function () {
-                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extendSnapshot method - extension is not function', {
-                    shouldFail: true,
-                    only:       'chrome'
-                })
-                    .catch(function (errs) {
-                        expect(errs[0]).contains(
-                            "extendSnapshot 'field1' is expected to be a function, but it was number"
-                        );
-                        expect(errs[0]).contains("> 908 |    await Selector('rect').extendSnapshot({ field1: 1, field2: () => 42 });");
-                    });
-            }
-        );
-
         it('Should raise error if error occurs in selector during shorthand property evaluation', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot property shorthand - selector error', {
                 shouldFail: true,
@@ -272,6 +242,51 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains('> 853 |    await Selector(() => [].someUndefMethod()).exists;');
                 });
         });
+
+        it('Should raise error if snapshot extension argument is not object',
+            function () {
+                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extendSnapshot method - argument is not object', {
+                    shouldFail: true,
+                    only:       'chrome'
+                })
+                    .catch(function (errs) {
+                        expect(errs[0]).contains(
+                            '"extendSnapshot" option is expected to be an object, but it was number.'
+                        );
+                        expect(errs[0]).contains("> 931 |    await Selector('rect').extendSnapshot(42);");
+                    });
+            }
+        );
+
+        it('Should raise error if at least one of snapshot extensions is not function',
+            function () {
+                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extendSnapshot method - extension is not function', {
+                    shouldFail: true,
+                    only:       'chrome'
+                })
+                    .catch(function (errs) {
+                        expect(errs[0]).contains(
+                            "Snapshot extensions method \'prop1\' is expected to be a function, but it was number"
+                        );
+                        expect(errs[0]).contains("> 935 |    await Selector('rect').extendSnapshot({ prop1: 1, prop2: () => 42 });");
+                    });
+            }
+        );
+
+        it('Should raise error if snapshot extension throws an error',
+            function () {
+                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extendSnapshot method - extension throws an error', {
+                    shouldFail: true,
+                    only:       'chrome'
+                })
+                    .catch(function (errs) {
+                        expect(errs[0]).contains(
+                            'prop custom selector DOM property error:  Error: test'
+                        );
+                        expect(errs[0]).contains('> 945 |    await el();');
+                    });
+            }
+        );
     });
 
     describe('Regression', function () {

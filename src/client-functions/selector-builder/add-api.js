@@ -95,13 +95,16 @@ function assertSnapshotExtensionOptions (extensions) {
         assertObject('extendSnapshot', '"extendSnapshot" option', extensions);
 
         Object.keys(extensions).forEach(prop => {
-            assertFunction('extendSnapshot', `extendSnapshot '${prop.replace(/'/g, "\\'")}'`, extensions[prop]);
+            assertFunction('extendSnapshot', `Snapshot extensions method '${prop}'`, extensions[prop]);
         });
     }
 }
 
 function addSnapshotPropertyShorthands (obj, getSelector, snapshotExtensions) {
-    var properties = SNAPSHOT_PROPERTIES.concat(snapshotExtensions ? Object.keys(snapshotExtensions) : []);
+    var properties = SNAPSHOT_PROPERTIES;
+
+    if (snapshotExtensions)
+        properties = properties.concat(Object.keys(snapshotExtensions));
 
     properties.forEach(prop => {
         Object.defineProperty(obj, prop, {
@@ -207,6 +210,7 @@ function convertFilterToClientFunctionIfNecessary (callsiteName, filter, depende
 
 function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selectorFn, filter, additionalDependencies) {
     var collectionModeSelectorBuilder = new SelectorBuilder(getSelector(), { collectionMode: true });
+    var snapshotExtensions            = collectionModeSelectorBuilder.options.snapshotExtensions;
 
     var dependencies = {
         selector:    collectionModeSelectorBuilder.getFunction(),
@@ -216,7 +220,7 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
 
     dependencies = assign(dependencies, additionalDependencies);
 
-    var builder = new SelectorBuilder(selectorFn, { dependencies }, { instantiation: 'Selector' });
+    var builder = new SelectorBuilder(selectorFn, { dependencies, snapshotExtensions }, { instantiation: 'Selector' });
 
     return builder.getFunction();
 }
@@ -258,7 +262,7 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
     };
 }
 
-function addSnapshotExtensionMethods (obj, getSelector, SelectorBuilder) {
+function addCustomDomProperty (obj, getSelector, SelectorBuilder) {
     obj.extendSnapshot = extensions => {
         assertSnapshotExtensionOptions(extensions);
 
@@ -395,7 +399,7 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
 
 export default function addAPI (obj, getSelector, SelectorBuilder, snapshotExtensions) {
     addSnapshotPropertyShorthands(obj, getSelector, snapshotExtensions);
-    addSnapshotExtensionMethods(obj, getSelector, SelectorBuilder);
+    addCustomDomProperty(obj, getSelector, SelectorBuilder);
     addFilterMethods(obj, getSelector, SelectorBuilder);
     addHierarchicalSelectors(obj, getSelector, SelectorBuilder);
     addCounterProperties(obj, getSelector, SelectorBuilder);

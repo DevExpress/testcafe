@@ -79,6 +79,12 @@ export default {
         ${escapeHtml(err.errMsg)}
     `),
 
+    [TYPE.uncaughtErrorInSnapshotExtensionCode]: err => markup(err, `
+        ${err.property} custom selector DOM property error:
+
+        ${escapeHtml(err.errMsg)}
+    `),
+
     [TYPE.clientFunctionExecutionInterruptionError]: err => markup(err, `
         ${err.instantiationCallsiteName} execution was interrupted by page unload. This problem may appear if you trigger page navigation from ${err.instantiationCallsiteName} code.
     `),

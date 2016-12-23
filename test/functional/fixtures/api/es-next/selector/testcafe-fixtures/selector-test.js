@@ -893,7 +893,9 @@ test('Selector `extendSnapshot` method', async () => {
         });
 
     expect(await el.prop1).eql(42);
-    expect(await el.prop2).eql('tagName: rect');
+    expect(await el.parent().filter(() => true).prop2).eql('tagName: svg');
+    expect(await el.exists).to.be.true;
+    expect(await el.count).eql(1);
 
     el = el.extendSnapshot({
         prop2: () => 'other value',
@@ -903,13 +905,6 @@ test('Selector `extendSnapshot` method', async () => {
     expect(await el.prop1).eql(42);
     expect(await el.prop2).eql('other value');
     expect(await el.prop3).eql('test');
-
-    const elProp = Selector('rect')
-        .extendSnapshot({
-            customProp: () => 'custom'
-        }).customProp;
-
-    expect(await elProp).eql('custom');
 
     const elSnapshot = await Selector('rect')
         .extendSnapshot({
@@ -940,5 +935,15 @@ test('Snapshot extendSnapshot method - argument is not object', async () => {
 });
 
 test('Snapshot extendSnapshot method - extension is not function', async () => {
-    await Selector('rect').extendSnapshot({ field1: 1, field2: () => 42 });
+    await Selector('rect').extendSnapshot({ prop1: 1, prop2: () => 42 });
+});
+
+test('Snapshot extendSnapshot method - extension throws an error', async () => {
+    const el = Selector('rect').extendSnapshot({
+        prop: () => {
+            throw new Error('test');
+        }
+    });
+
+    await el();
 });

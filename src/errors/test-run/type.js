@@ -8,6 +8,7 @@ export default {
     uncaughtErrorInTestCode:                           'uncaughtErrorInTestCode',
     uncaughtNonErrorObjectInTestCode:                  'uncaughtNonErrorObjectInTestCode',
     uncaughtErrorInClientFunctionCode:                 'uncaughtErrorInClientFunctionCode',
+    uncaughtErrorInSnapshotExtensionCode:              'uncaughtErrorInSnapshotExtensionCode',
     missingAwaitError:                                 'missingAwaitError',
     actionIntegerOptionError:                          'actionIntegerOptionError',
     actionPositiveIntegerOptionError:                  'actionPositiveIntegerOptionError',

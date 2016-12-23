@@ -2,8 +2,7 @@ import { Promise } from '../../../deps/hammerhead';
 import { delay, positionUtils, domUtils } from '../../../deps/testcafe-core';
 import { selectElement as selectElementUI } from '../../../deps/testcafe-ui';
 import ClientFunctionExecutor from '../client-function-executor';
-import DriverStatus from '../../../status';
-import { createReplicator, FunctionTransform, SelectorNodeTransform } from '../replicator';
+import { SelectorNodeTransform } from '../replicator';
 import './filter';
 
 const CHECK_ELEMENT_DELAY = 200;
@@ -41,17 +40,10 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         }
     }
 
-    _extendSnapshot (snapshot, node, extensions) {
-        Object.keys(extensions).forEach(prop => {
-            snapshot[prop] = extensions[prop](node);
-        });
-    }
+    _addReplicatorTransform () {
+        var snapshotExtensions = this.dependencies && this.dependencies.snapshotExtensions;
 
-    _createReplicator () {
-        return createReplicator([
-            new SelectorNodeTransform(),
-            new FunctionTransform()
-        ]);
+        this.replicator.addTransforms([new SelectorNodeTransform(snapshotExtensions)]);
     }
 
     _checkElement (el, startTime, condition, createTimeoutError, reCheck) {
@@ -115,29 +107,5 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
                 return this.statusBar.resetWaitingStatus(!!el);
             })
             .then(() => element);
-    }
-
-    getResultDriverStatus () {
-        return this
-            .getResult()
-            .then(result => {
-                var node               = result;
-                var snapshot           = this.replicator.encode(result)[0];
-                var snapshotExtensions = this.dependencies.snapshotExtensions;
-
-                if (snapshotExtensions && node)
-                    this._extendSnapshot(snapshot.data, node, snapshotExtensions);
-
-                return new DriverStatus({
-                    isCommandResult: true,
-                    result:          [snapshot]
-                });
-            })
-            .catch(err => {
-                return new DriverStatus({
-                    isCommandResult: true,
-                    executionError:  err
-                });
-            });
     }
 }
