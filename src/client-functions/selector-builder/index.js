@@ -6,7 +6,7 @@ import { ClientFunctionAPIError } from '../../errors/runtime';
 import functionBuilderSymbol from '../builder-symbol';
 import MESSAGE from '../../errors/runtime/message';
 import getCallsite from '../../errors/get-callsite';
-import { assertNonNegativeNumber, assertBoolean, assertStringOrRegExp } from '../../errors/runtime/type-assertions';
+import { assertNumber, assertNonNegativeNumber, assertBoolean, assertStringOrRegExp } from '../../errors/runtime/type-assertions';
 import deprecate from '../../warnings/deprecate';
 import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import defineLazyProperty from '../../utils/define-lazy-property';
@@ -152,7 +152,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             assertNonNegativeNumber(this.callsiteNames.instantiation, '"timeout" option', options.timeout);
 
         if (!isNullOrUndefined(options.index))
-            assertNonNegativeNumber(this.callsiteNames.instantiation, '"index" option', options.index);
+            assertNumber(this.callsiteNames.instantiation, '"index" option', options.index);
     }
 
     _getReplicatorTransforms () {

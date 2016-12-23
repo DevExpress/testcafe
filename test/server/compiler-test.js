@@ -894,8 +894,8 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise an error if Selector `index` option is not a non-negative number', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-index-is-not-non-negative-value/testfile.js');
+        it('Should raise an error if Selector `index` option is not a number', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-index-is-not-a-number-value/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -906,13 +906,13 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"index" option is expected to be a non-negative number, but it was -3.',
+                                 '"index" option is expected to be a number, but it was boolean.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
                                   '   3 |fixture `Test`;\n' +
                                   '   4 |\n' +
-                                  ' > 5 |Selector(() => {}, { index: -3 });\n' +
+                                  ' > 5 |Selector(() => {}, { index: true });\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});'
@@ -920,8 +920,8 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise an error if Selector.nth() `index` argument is not a non-negative number', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-nth-arg-is-not-non-negative-value/testfile.js');
+        it('Should raise an error if Selector.nth() `index` argument is not a number', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-nth-arg-is-a-number-value/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -932,7 +932,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"index" argument is expected to be a non-negative number, but it was string.',
+                                 '"index" argument is expected to be a number, but it was string.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1036,7 +1036,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"filter" argument is expected to be a string, function or a non-negative number but it was object.',
+                                 '"filter" argument is expected to be a string, function or a number but it was object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1062,7 +1062,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"filter" argument is expected to be a string, function or a non-negative number but it was object.',
+                                 '"filter" argument is expected to be a string, function or a number but it was object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1088,7 +1088,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"filter" argument is expected to be a string, function or a non-negative number but it was object.',
+                                 '"filter" argument is expected to be a string, function or a number but it was object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +

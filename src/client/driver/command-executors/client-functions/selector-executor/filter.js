@@ -77,6 +77,10 @@ function filterNodeCollectionByText (collection, textRe) {
     return filtered;
 }
 
+function getNodeByIndex (collection, index) {
+    return index < 0 ? collection[collection.length + index] : collection[index];
+}
+
 
 // Selector filter
 Object.defineProperty(window, '%testCafeSelectorFilter%', {
@@ -100,14 +104,14 @@ Object.defineProperty(window, '%testCafeSelectorFilter%', {
 
         if (options.counterMode) {
             if (options.index !== null)
-                return filtered[options.index] ? 1 : 0;
+                return getNodeByIndex(filtered, options.index) ? 1 : 0;
 
             return filtered.length;
         }
 
         if (options.collectionMode) {
             if (options.index !== null) {
-                var nodeOnIndex = filtered[options.index];
+                var nodeOnIndex = getNodeByIndex(filtered, options.index);
 
                 return nodeOnIndex ? [nodeOnIndex] : [];
             }
@@ -115,6 +119,6 @@ Object.defineProperty(window, '%testCafeSelectorFilter%', {
             return filtered;
         }
 
-        return filtered[options.index || 0];
+        return getNodeByIndex(filtered, options.index || 0);
     }
 });
