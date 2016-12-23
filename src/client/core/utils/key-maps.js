@@ -31,7 +31,8 @@ const SHIFT_MAP = {
     '|': '\\',
     '<': ',',
     '>': '.',
-    '?': '/'
+    '?': '/',
+    '±': '§'
 };
 
 const SPECIAL_KEYS = {
@@ -82,11 +83,26 @@ export default {
     },
 
     keyProperty: {
-        enter: 'Enter'
-    },
-
-    keyIdentifierProperty: {
-        enter: 'Enter'
+        left:      browserUtils.isIE ? 'Left' : 'ArrowLeft',
+        down:      browserUtils.isIE ? 'Down' : 'ArrowDown',
+        right:     browserUtils.isIE ? 'Right' : 'ArrowRight',
+        up:        browserUtils.isIE ? 'Up' : 'ArrowUp',
+        backspace: 'Backspace',
+        capslock:  'CapsLock',
+        delete:    'Delete',
+        end:       'End',
+        enter:     'Enter',
+        esc:       'Escape',
+        home:      'Home',
+        ins:       'Insert',
+        pagedown:  'PageDown',
+        pageup:    'PageUp',
+        space:     ' ',
+        tab:       'Tab',
+        alt:       'Alt',
+        ctrl:      'Control',
+        meta:      'Meta',
+        shift:     'Shift'
     },
 
     symbolCharCodeToKeyCode: {

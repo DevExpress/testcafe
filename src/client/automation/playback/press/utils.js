@@ -2,13 +2,15 @@ import { KEY_MAPS, domUtils } from '../../deps/testcafe-core';
 import isLetter from '../../utils/is-letter';
 
 
-function changeLetterCase (letter) {
+export function changeLetterCase (letter) {
     var isLowCase = letter === letter.toLowerCase();
 
     return isLowCase ? letter.toUpperCase() : letter.toLowerCase();
 }
 
-export function excludeShiftModifiedKeys (keyArray) {
+export function getActualKeysAndEventKeyProperties (keyArray) {
+    var eventKeyProperties = keyArray.slice();
+
     //NOTE: check 'shift' modifier in keys
     for (var i = 0; i < keyArray.length; i++) {
         var key = keyArray[i];
@@ -21,16 +23,19 @@ export function excludeShiftModifiedKeys (keyArray) {
 
             if (KEY_MAPS.shiftMap[nextKey])
                 keyArray[i + 1] = KEY_MAPS.shiftMap[nextKey];
+            else if (KEY_MAPS.reversedShiftMap[nextKey])
+                eventKeyProperties[i + 1] = KEY_MAPS.reversedShiftMap[nextKey];
         }
 
         if (KEY_MAPS.shiftMap[key] && (!keyArray[i - 1] || keyArray[i - 1].toLowerCase() !== 'shift')) {
             keyArray[i] = KEY_MAPS.shiftMap[key];
             keyArray.splice(i, 0, 'shift');
+            eventKeyProperties.splice(i, 0, 'shift');
             i++;
         }
     }
 
-    return keyArray;
+    return { actualKeys: keyArray, eventKeyProperties };
 }
 
 export function getChar (key, shiftModified) {
