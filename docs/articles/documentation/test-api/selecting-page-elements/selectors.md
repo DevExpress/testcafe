@@ -7,10 +7,9 @@ checked: false
 # Selectors
 
 A selector is a function that identifies a webpage element in the test.
-The selector API provides methods and properties to select elements on the page and get theirs state.
-You can use selectors to [define action targets](#define-action-targets),
-[define assertion actual value](#define-assertion-actual-value) or
-[inspect elements state on the page](#obtain-element-state).
+The selector API provides methods and properties to select elements on the page and get their state.
+You can use selectors to [inspect elements state on the page](#obtain-element-state), define [action targets](#define-action-targets) and
+[assertion actual values](#define-assertion-actual-value).
 
 > Important! Do not modify the tested webpage within selectors.
 > To interact with the page, use [test actions](../actions/index.md).
@@ -19,19 +18,19 @@ This topic contains the following sections.
 
 * [Creating Selectors](#creating-selectors)
 * [Selector Initializers](#selector-initializers)
-* [Combined Selectors](#combined-selectors)
-  * [Filter Multiple DOM Nodes](#filter-multiple-dom-nodes)
+* [Functional-Style Selectors](#functional-style-selectors)
+  * [Filter DOM Nodes](#filter-dom-nodes)
       * [nth](#nth)
       * [withText](#withtext)
       * [filter](#filter)
-  * [Find Elements by DOM Hierarchy](#find-elements-by-dom-hierarchy)
+  * [Search for Elements in the DOM Hierarchy](#search-for-elements-in-the-dom-hierarchy)
       * [find](#find)
       * [parent](#parent)
       * [child](#child)
       * [sibling](#sibling)
   * [Examples](#examples)
 * [Using Selectors](#using-selectors)
-  * [Get Selector Matching Set Length](#get-selector-matching-set-length)
+  * [Check if an Element Exists](#check-if-an-element-exists)
   * [Obtain Element State](#obtain-element-state)
   * [Define Action Targets](#define-action-targets)
   * [Define Assertion Actual Value](#define-assertion-actual-value)
@@ -147,12 +146,12 @@ You can initialize a selector with any of these objects.
     });
     ```
 
-## Combined Selectors
+## Functional-Style Selectors
 
 The selector API provides methods that can be combined together, thus
 providing you with a flexible functional-style selector mechanism.
 
-### Filter Multiple DOM Nodes
+### Filter DOM Nodes
 
 If selector returns multiple DOM nodes, you must filter them to select
 a single node that will eventually be returned by the selector.
@@ -181,7 +180,7 @@ Method | Type | Description
 
 The `filterFn` predicate is executed on the client. It takes the following parameters.
 
-Property | Description
+Parameter | Description
 ------ | -----
 `node`  | The current DOM node.
 `idx` | Index of the current node among other nodes in the matching set.
@@ -225,20 +224,20 @@ test('My test', async t => {
 
 If all nodes are filtered out, the selector returns `null`.
 
-### Find Elements by DOM Hierarchy
+### Search for Elements in the DOM Hierarchy
 
 The selector API provides methods to find elements within a DOM hierarchy in jQuery style.
 
 #### find
 
-Property | Description
+Method | Description
 ------ | -----
 `find(cssSelector)` | Finds all descendants of all nodes in the matching set and filters them by `cssSelector`.
 `find(filterFn, dependencies)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
 The `filterFn` predicate is executed on the client. It takes the following parameters.
 
-Property | Description
+Parameter | Description
 ------ | -----
 `node`  | The current descendant node.
 `idx` | Index of `node` among other descendant nodes.
@@ -264,7 +263,7 @@ Selector('ul').find((node, idx, originNode) => {
 
 #### parent
 
-Property | Description
+Method | Description
 ------ | -----
 `parent()` | Finds all parents of all nodes in the matching set (first element in the set will be the closest parent).
 `parent(index)` | Finds all parents of all nodes in the matching set and filters them by `index` (0 is closest).
@@ -273,7 +272,7 @@ Property | Description
 
 The `filterFn` predicate is executed on the client. It takes the following parameters.
 
-Property | Description
+Parameter | Description
 ------ | -----
 `node`  | The current parent node.
 `idx` | Index of `node` among other parent nodes.
@@ -299,7 +298,7 @@ Selector('ul').parent((node, idx, originNode) => {
 
 #### child
 
-Property | Description
+Method | Description
 ------ | -----
 `child()` | Finds all child elements (not nodes) of all nodes in the matching set.
 `child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`.
@@ -308,7 +307,7 @@ Property | Description
 
 The `filterFn` predicate is executed on the client. It takes the following parameters.
 
-Property | Description
+Parameter | Description
 ------ | -----
 `node`  | The current child node.
 `idx` | Index of `node` among other child nodes.
@@ -334,7 +333,7 @@ Selector('ul').child((node, idx, originNode) => {
 
 #### sibling
 
-Property | Description
+Method | Description
 ------ | -----
 `sibling()` | Finds all sibling  elements (not nodes) of all nodes in the matching set.
 `sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`.
@@ -343,7 +342,7 @@ Property | Description
 
 The `filterFn` predicate is executed on the client. It takes the following parameters.
 
-Property | Description
+Parameter | Description
 ------ | -----
 `node`  | The current descendant node.
 `idx` | Index of `node` among other sibling nodes.
@@ -438,7 +437,7 @@ In this example the selector:
 
 ## Using Selectors
 
-### Get Selector Matching Set Length
+### Check if an Element Exists
 
 Functions and CSS selector strings that initialize a selector may return
 a single matching DOM element on the page, multiple elements or nothing.

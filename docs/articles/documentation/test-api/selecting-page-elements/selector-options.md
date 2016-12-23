@@ -49,7 +49,7 @@ or the [selector-timeout](../../using-testcafe/command-line-interface.md#--selec
 
 ## options.dependencies
 
-> Important! ***Deprecated.*** *Use [hierarchical selectors](selectors.md#find-elements-by-dom-hierarchy) instead. `options.dependencies` will be removed in future releases.*
+> Important! ***Deprecated.*** *Use [hierarchical selectors](selectors.md#search-for-elements-in-the-dom-hierarchy) instead. `options.dependencies` will be removed in future releases.*
 
 **Type**: Object
 
@@ -71,7 +71,7 @@ const gridCell = Selector((m, n) => gridRow(m).children[n], {
 
 ## options.text
 
-> Important! ***Deprecated.*** *Use the [withText()](selectors.md#filter-multiple-dom-nodes) method to filter elements by text content or a regular expression that matches this content. `options.text` will be removed in future releases.*
+> Important! ***Deprecated.*** *Use the [withText()](selectors.md#filter-dom-nodes) method to filter elements by text content or a regular expression that matches this content. `options.text` will be removed in future releases.*
 
 **Type**: String &#124; RegExp
 
@@ -85,7 +85,7 @@ You can also use the [index](#optionsindex) option to identify a node by its ind
 
 ## options.index
 
-> Important! ***Deprecated.*** *Use the [nth()](selectors.md#filter-multiple-dom-nodes) method to select a node by its index. `options.index` will be removed in future releases.*
+> Important! ***Deprecated.*** *Use the [nth()](selectors.md#filter-dom-nodes) method to select a node by its index. `options.index` will be removed in future releases.*
 
 **Type**: Number
 
