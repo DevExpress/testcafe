@@ -49,6 +49,8 @@ export default class Compiler {
         var tests        = [];
         var compileUnits = [];
 
+        // NOTE: split sources into chunks because the fs module can't read all files
+        // simultaneously if the number of them is too large (several thousands).
         while (sourceChunks.length) {
             compileUnits = sourceChunks.shift().map(filename => this._compileFile(filename));
             tests        = tests.concat(await Promise.all(compileUnits));
