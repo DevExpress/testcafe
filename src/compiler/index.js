@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import Promise from 'pinkie';
-import { flattenDeep as flatten, find } from 'lodash';
+import { flattenDeep as flatten, find, chunk } from 'lodash';
 import stripBom from 'strip-bom';
 import { Compiler as LegacyCompiler } from 'testcafe-legacy-api';
 import hammerhead from 'testcafe-hammerhead';
@@ -11,6 +11,8 @@ import MESSAGE from '../errors/runtime/message';
 import promisify from '../utils/promisify';
 
 var readFile = promisify(fs.readFile);
+
+const SOURCE_CHUNK_LENGTH = 1000;
 
 export default class Compiler {
     constructor (sources) {
@@ -43,8 +45,14 @@ export default class Compiler {
     }
 
     async getTests () {
-        var compileUnits = this.sources.map(filename => this._compileFile(filename));
-        var tests        = await Promise.all(compileUnits);
+        var sourceChunks = chunk(this.sources, SOURCE_CHUNK_LENGTH);
+        var tests        = [];
+        var compileUnits = [];
+
+        while (sourceChunks.length) {
+            compileUnits = sourceChunks.shift().map(filename => this._compileFile(filename));
+            tests        = tests.concat(await Promise.all(compileUnits));
+        }
 
         this.esNextCompiler.cleanUpCache();
 
