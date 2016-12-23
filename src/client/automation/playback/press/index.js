@@ -42,8 +42,8 @@ export default class PressAutomation {
     static _getKeyPressSimulators (keyCombination) {
         var keysArray = getKeyArray(keyCombination);
 
-        // NOTE: symbols may have same keyCode, but their "event.key" will be different, so we
-        // need to get "event.key" property for each key, and add 'shift' key where is needed.
+        // NOTE: symbols may have the same keyCode, but their "event.key" will be different, so we
+        // need to get the "event.key" property for each key, and add the 'shift' key where needed.
         var { actualKeys, eventKeyProperties } = getActualKeysAndEventKeyProperties(keysArray);
 
         return arrayUtils.map(actualKeys, (key, index) => new KeyPressSimulator(key, eventKeyProperties[index]));
