@@ -441,8 +441,8 @@ In this example the selector:
 
 Functions and CSS selector strings that initialize a selector may return
 a single matching DOM element on the page, multiple elements or nothing.
-You can use the following Selector properties to check whether the matching
-elements exist or get a number of them.
+You can use the following Selector properties to check whether matching
+elements exist and determine the number of matching elements.
 
 Property | Type | Description
 ------ | ----- | -----
@@ -469,18 +469,17 @@ Note that selector property getters are asynchronous.
 
 ### Obtain Element State
 
-Selectors and promises returned by selectors expose API to get state (size, position, classes, etc.) of matched element.
+Selectors and promises returned by selectors expose API to get the state (size, position, classes, etc.) of the matching element.
 See [DOM Node State](./dom-node-state.md). Note that these methods and property getters
-are asynchronous so you can obtain element's property from a browser in the following way:
+are asynchronous, so use `await` to obtain an element's property.
 
 ```js
 const headerText = await Selector('#header').textConent;
 ```
 
-For example:
+**Example**
 
 ```js
-
 import { Selector } from 'testcafe';
 
 fixture `My fixture`
@@ -498,10 +497,10 @@ test('Obtain Element State', async t => {
 
 #### DOM Node Snapshot
 
-If you need to get all state properties of the DOM element at once call the selector
+If you need to get the entire DOM element state, call the selector
 with the `await` keyword like you would do with regular async functions.
 It returns a *DOM Node Snapshot* that contains [all property values](dom-node-state.md)
-exposed by selector in single object.
+exposed by the selector in a single object.
 
 ```js
 
@@ -599,7 +598,7 @@ test('Assertion with Selector', async t => {
 ```
 
 In this example the `developerNameInput.innerText` property will not be
-calculated immediately, but only then assertion will be executed.
+calculated immediately, but it will wait until the assertion is executed.
 
 ### Selector Timeout
 

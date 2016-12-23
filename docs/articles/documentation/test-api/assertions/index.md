@@ -22,7 +22,7 @@ This topic contains the following sections.
 
 TestCafe assertions start with the `expect` method exposed by [test controller](../test-code-structure.html#test-controller),
 which accepts the `actual` value argument. Then, the assertion method follows. An assertion method accepts an expected value
-and optionally other arguments, e.g., deep equality assertion:
+and optionally other arguments. For example, this is how the deep equality assertion looks like.
 
 ```text
 await t.expect( actual ).eql( expected, message, options );
@@ -63,24 +63,24 @@ we can get an indefinite result:
 
 ![Asynchronous Functional Testing](../../../images/assertions/asynchronous-testing.png)
 
-To perform asynchronous functional tests, the additional timeout as usually added:
+To perform asynchronous functional tests, an additional timeout as usually added:
 
 ![Asynchronous Functional Testing with Extra Waiting](../../../images/assertions/extra-waiting.png)
 
-To stabilize such tests, you need to add a timeout that will guarantee you a successful completion of required changes.
+To stabilize such tests, you need to add a timeout that will guarantee that the required changes are successfully applied.
 Adding such timeouts can increase the test running time because of extra waiting.
 
 If the TestCafe assertion receives a [Selector's DOM node state property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
 as an actual value, TestCafe uses the smart assertion query mechanism:
 if an assertion did not pass, the test does not fail immediately. The assertion retries to pass multiple times and
-each time it re-requests the actual property value. The test fails if the assertion could not complete successfully
+each time it requests the actual property value. The test fails if the assertion could not complete successfully
 within a timeout:
 
 ![TestCafe Smart Assertion Query Mechanism](../../../images/assertions/query-mechanism.png)
 
 **Example:**
 
-Let's create a test for the following web page.
+Assume you have the following web page.
 
 ```html
 <div id="btn"></div>
@@ -95,7 +95,7 @@ btn.addEventListener(function() {
 </script>
 ```
 
-The test code will look as follows.
+Test code for this page can be as follows.
 
 ```js
 test('Button click', async t => {
@@ -110,7 +110,7 @@ test('Button click', async t => {
 });
 ```
 
-The approach described above allows you to create stable tests that lack random errors and run fast without additional waiting.
+The approach described above allows you to create stable tests free from random errors and running fast without additional waiting.
 
 You can specify the assertion query timeout in test code by using the [options.timeout](#assertion-options) option.
 To set the timeout when launching tests, pass the timeout value to the [runner.run](../../using-testcafe/programming-interface/runner.md#run)
