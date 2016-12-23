@@ -192,7 +192,8 @@ Selector('ul').filter((node, idx) => {
 }));
 ```
 
-The `dependencies` parameter allows you to pass objects to the `filterFn` client function's scope where they appear as variables.
+The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
+you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js
 const isNodeOk = ClientFunction((node, idx) => { /*...*/ });
@@ -251,7 +252,8 @@ Selector('ul').find((node, idx, originNode) => {
 }));
 ```
 
-The `dependencies` parameter allows you to pass objects to the `filterFn` client function's scope where they appear as variables.
+The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
+you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js
 const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
@@ -286,7 +288,8 @@ Selector('label').parent((node, idx, originNode) => {
 }));
 ```
 
-The `dependencies` parameter allows you to pass objects to the `filterFn` client function's scope where they appear as variables.
+The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
+you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js
 const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
@@ -321,7 +324,8 @@ Selector('form').child((node, idx, originNode) => {
 }));
 ```
 
-The `dependencies` parameter allows you to pass objects to the `filterFn` client function's scope where they appear as variables.
+The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
+you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js
 const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
@@ -356,7 +360,8 @@ Selector('section').sibling((node, idx, originNode) => {
 }));
 ```
 
-The `dependencies` parameter allows you to pass objects to the `filterFn` client function's scope where they appear as variables.
+The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
+you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js
 const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
