@@ -18,3 +18,6 @@ It contains the following subsections
 * [Pausing the Test](pausing-the-test.md)
 * [Handling Native Dialogs](handling-native-dialogs.md)
 * [Working with \<iframes\>](working-with-iframes.md)
+
+> If you use [eslint](http://eslint.org/) in your project, get the [TestCafe plugin](https://www.npmjs.com/package/eslint-plugin-testcafe)
+to enable eslint to report errors in test code.
