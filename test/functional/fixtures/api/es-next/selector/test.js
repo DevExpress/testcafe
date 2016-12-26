@@ -61,8 +61,8 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `hasClass` method');
     });
 
-    it('Should provide "extendSnapshot" method in node snapshot', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `extendSnapshot` method');
+    it('Should provide "extend" method in node snapshot', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `extend` method');
     });
 
     it('Should wait for element to appear on new page', function () {
@@ -245,37 +245,37 @@ describe('[API] Selector', function () {
 
         it('Should raise error if snapshot extension argument is not object',
             function () {
-                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extendSnapshot method - argument is not object', {
+                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extend method - argument is not object', {
                     shouldFail: true,
                     only:       'chrome'
                 })
                     .catch(function (errs) {
                         expect(errs[0]).contains(
-                            '"extendSnapshot" option is expected to be an object, but it was number.'
+                            '"extend" option is expected to be an object, but it was number.'
                         );
-                        expect(errs[0]).contains("> 931 |    await Selector('rect').extendSnapshot(42);");
+                        expect(errs[0]).contains("> 929 |    await Selector('rect').extend(42);");
                     });
             }
         );
 
         it('Should raise error if at least one of snapshot extensions is not function',
             function () {
-                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extendSnapshot method - extension is not function', {
+                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extend method - extension is not function', {
                     shouldFail: true,
                     only:       'chrome'
                 })
                     .catch(function (errs) {
                         expect(errs[0]).contains(
-                            "Snapshot extensions method \'prop1\' is expected to be a function, but it was number"
+                            "Snapshot extension method \'prop1\' is expected to be a function, but it was number"
                         );
-                        expect(errs[0]).contains("> 935 |    await Selector('rect').extendSnapshot({ prop1: 1, prop2: () => 42 });");
+                        expect(errs[0]).contains("> 933 |    await Selector('rect').extend({ prop1: 1, prop2: () => 42 });");
                     });
             }
         );
 
         it('Should raise error if snapshot extension throws an error',
             function () {
-                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extendSnapshot method - extension throws an error', {
+                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extend method - extension throws an error', {
                     shouldFail: true,
                     only:       'chrome'
                 })
@@ -283,7 +283,7 @@ describe('[API] Selector', function () {
                         expect(errs[0]).contains(
                             'prop custom selector DOM property error:  Error: test'
                         );
-                        expect(errs[0]).contains('> 945 |    await el();');
+                        expect(errs[0]).contains('> 943 |    await el();');
                     });
             }
         );

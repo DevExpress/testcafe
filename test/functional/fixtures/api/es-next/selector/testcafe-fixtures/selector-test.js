@@ -885,9 +885,9 @@ test('Selector filter origin node argument', async t => {
         }).id).eql('el3');
 });
 
-test('Selector `extendSnapshot` method', async () => {
+test('Selector `extend` method', async () => {
     let el = Selector('rect')
-        .extendSnapshot({
+        .extend({
             prop1: () => 42,
             prop2: node => 'tagName: ' + node.tagName
         });
@@ -897,7 +897,7 @@ test('Selector `extendSnapshot` method', async () => {
     expect(await el.exists).to.be.true;
     expect(await el.count).eql(1);
 
-    el = el.extendSnapshot({
+    el = el.extend({
         prop2: () => 'other value',
         prop3: () => 'test'
     });
@@ -907,7 +907,7 @@ test('Selector `extendSnapshot` method', async () => {
     expect(await el.prop3).eql('test');
 
     const elSnapshot = await Selector('rect')
-        .extendSnapshot({
+        .extend({
             prop1: () => 1,
             prop2: () => 2
         })();
@@ -915,31 +915,29 @@ test('Selector `extendSnapshot` method', async () => {
     expect(elSnapshot.prop1).eql(1);
     expect(elSnapshot.prop2).eql(2);
 
-    const nonExistingElement = await Selector('nonExistingElement').with({
-        snapshotExtensions: {
-            prop: () => 'value'
-        }
+    const nonExistingElement = await Selector('nonExistingElement').extend({
+        prop: () => 'value'
     })();
 
     expect(nonExistingElement).eql(null);
 
-    const getSecondEl = Selector('div').extendSnapshot({
+    const getSecondEl = Selector('div').extend({
         prop: () => 'second'
     }).nth(1);
 
     expect(await getSecondEl.prop).eql('second');
 });
 
-test('Snapshot extendSnapshot method - argument is not object', async () => {
-    await Selector('rect').extendSnapshot(42);
+test('Snapshot extend method - argument is not object', async () => {
+    await Selector('rect').extend(42);
 });
 
-test('Snapshot extendSnapshot method - extension is not function', async () => {
-    await Selector('rect').extendSnapshot({ prop1: 1, prop2: () => 42 });
+test('Snapshot extend method - extension is not function', async () => {
+    await Selector('rect').extend({ prop1: 1, prop2: () => 42 });
 });
 
-test('Snapshot extendSnapshot method - extension throws an error', async () => {
-    const el = Selector('rect').extendSnapshot({
+test('Snapshot extend method - extension throws an error', async () => {
+    const el = Selector('rect').extend({
         prop: () => {
             throw new Error('test');
         }

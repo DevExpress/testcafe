@@ -92,10 +92,10 @@ async function getSnapshot (getSelector, callsite) {
 
 function assertSnapshotExtensionOptions (extensions) {
     if (!isNullOrUndefined(extensions)) {
-        assertObject('extendSnapshot', '"extendSnapshot" option', extensions);
+        assertObject('extend', '"extend" option', extensions);
 
         Object.keys(extensions).forEach(prop => {
-            assertFunction('extendSnapshot', `Snapshot extensions method '${prop}'`, extensions[prop]);
+            assertFunction('extend', `Snapshot extension method '${prop}'`, extensions[prop]);
         });
     }
 }
@@ -263,7 +263,7 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
 }
 
 function addCustomDomProperty (obj, getSelector, SelectorBuilder) {
-    obj.extendSnapshot = extensions => {
+    obj.extend = extensions => {
         assertSnapshotExtensionOptions(extensions);
 
         var builder = new SelectorBuilder(getSelector(), { snapshotExtensions: extensions }, { instantiation: 'Selector' });

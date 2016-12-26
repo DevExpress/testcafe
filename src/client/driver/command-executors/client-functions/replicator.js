@@ -44,7 +44,7 @@ export class SelectorNodeTransform {
         this.extensions = extensions || {};
     }
 
-    _extendSnapshot (snapshot, node) {
+    _extend (snapshot, node) {
         Object.keys(this.extensions).forEach(prop => {
             try {
                 snapshot[prop] = this.extensions[prop](node);
@@ -63,7 +63,7 @@ export class SelectorNodeTransform {
         if (node.nodeType === 1) {
             var snapshot = new ElementSnapshot(node);
 
-            this._extendSnapshot(snapshot, node);
+            this._extend(snapshot, node);
 
             return snapshot;
         }
