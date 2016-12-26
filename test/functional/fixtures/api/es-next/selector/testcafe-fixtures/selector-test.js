@@ -352,9 +352,9 @@ test('Selector "index" option', async () => {
     expect(el.id).eql('el2');
 
     // Function selector
-    const getThirdEl = Selector(() => document.querySelectorAll('.idxEl'), { index: -1 });
+    const getLastEl = Selector(() => document.querySelectorAll('.idxEl'), { index: -1 });
 
-    el = await getThirdEl();
+    el = await getLastEl();
 
     expect(el.id).eql('el4');
 

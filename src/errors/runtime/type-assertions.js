@@ -1,17 +1,14 @@
-import { isFinite, isRegExp, isNil as isNullOrUndefined } from 'lodash';
+import { isFinite as isFiniteNumber, isRegExp, isNil as isNullOrUndefined } from 'lodash';
 import { APIError } from './';
 import MESSAGE from './message';
 
-function isNumber (value) {
-    return isFinite(value) && typeof value === 'number';
-}
 
 function isNonNegativeNumber (value) {
-    return isNumber && value >= 0;
+    return isFiniteNumber(value) && value >= 0;
 }
 
 export function assertNumber (callsiteName, what, value) {
-    if (!isNumber(value))
+    if (!isFiniteNumber(value))
         throw new APIError(callsiteName, MESSAGE.valueIsNotANumber, what, typeof value);
 }
 
@@ -72,6 +69,6 @@ export function assertFunctionOrString (callsiteName, what, value) {
 export function assertFunctionOrStringOrNumber (callsiteName, what, value) {
     var type = typeof value;
 
-    if (type !== 'string' && type !== 'function' && !isNumber(value))
+    if (type !== 'string' && type !== 'function' && !isFiniteNumber(value))
         throw new APIError(callsiteName, MESSAGE.valueIsNotAFunctionOrStringOrNumber, what, type);
 }
