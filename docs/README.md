@@ -44,6 +44,7 @@
     * [Take Screenshot](articles/documentation/test-api/actions/take-screenshot.md)
     * [Upload](articles/documentation/test-api/actions/upload.md)
     * [Resize Window](articles/documentation/test-api/actions/resize-window.md)
+    * [Debug](articles/documentation/test-api/actions/debug.md)
     * [Action Options](articles/documentation/test-api/actions/action-options.md)
   * [Assertions](articles/documentation/test-api/assertions/README.md)
     * [Assertion API](articles/documentation/test-api/assertions/assertion-api.md)

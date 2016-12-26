@@ -94,6 +94,8 @@
       url: /documentation/test-api/actions/upload.md
     - name: Resize Window
       url: /documentation/test-api/actions/resize-window.md
+    - name: Debug
+      url: /documentation/test-api/actions/debug.md
     - name: Action Options
       url: /documentation/test-api/actions/action-options.md
   - name: Assertions
