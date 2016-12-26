@@ -2,19 +2,19 @@ var expect = require('chai').expect;
 
 describe('[API] t.select', function () {
     it('Should execute an anonymous selector', function () {
-        return runTests('./testcafe-fixtures/select.js', 'Select element');
+        return runTests('./testcafe-fixtures/select-test.js', 'Select element');
     });
 
     it('Should execute an anonymous selector with dependencies', function () {
-        return runTests('./testcafe-fixtures/select.js', 'Select with dependencies');
+        return runTests('./testcafe-fixtures/select-test.js', 'Select with dependencies');
     });
 
     it('Should execute an anonymous selector with options', function () {
-        return runTests('./testcafe-fixtures/select.js', 'Select with options');
+        return runTests('./testcafe-fixtures/select-test.js', 'Select with options');
     });
 
     it('Should have the correct callsite if an error occurs on instantiation', function () {
-        return runTests('./testcafe-fixtures/select.js', 'Error on instantiation', { shouldFail: true })
+        return runTests('./testcafe-fixtures/select-test.js', 'Error on instantiation', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains(
                     'select is expected to be initialized with a function, CSS selector string, ' +
@@ -26,7 +26,7 @@ describe('[API] t.select', function () {
     });
 
     it('Should have the correct callsite if an error occurs during execution', function () {
-        return runTests('./testcafe-fixtures/select.js', 'Error during execution', { shouldFail: true })
+        return runTests('./testcafe-fixtures/select-test.js', 'Error during execution', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('An error occurred in select code:  Error: yo');
                 expect(errs[0]).contains('> 27 |    await t.select(() => {');
