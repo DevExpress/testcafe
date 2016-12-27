@@ -8,7 +8,7 @@ permalink: /documentation/recipes/using-testcafe-with-gulp.html
 If you are using Gulp to organize your build process,
 you can easily integrate TestCafe into the workflow.
 
-Suppose you have a project with Gulp.js set to run build tasks. To integrate TestCafe into the project, go through these steps.
+Suppose you have a project that uses Gulp.js to run build tasks. To integrate TestCafe into the project, go through these steps.
 
 * [Step 1 - Install TestCafe Gulp Plugin](#step-1---install-testcafe-gulp-plugin)
 * [Step 2 - Create a TestCafe Gulp Task](#step-2---create-a-testcafe-gulp-task)
@@ -16,7 +16,7 @@ Suppose you have a project with Gulp.js set to run build tasks. To integrate Tes
 
 ## Step 1 - Install TestCafe Gulp Plugin
 
-To install [TestCafe Gulp plugin](https://github.com/DevExpress/gulp-testcafe),
+To install the [TestCafe Gulp plugin](https://github.com/DevExpress/gulp-testcafe),
 execute the following command from your project's root directory.
 
 ```sh
@@ -50,7 +50,9 @@ Run this task through the command line.
 gulp run-testcafe-tests
 ```
 
-Or create and run a dependent task.
+> Gulp must be installed globally to run tasks from the command line.
+
+Alternatively, you can create and run a dependent task.
 
 ```js
 gulp.task('publish', ['run-testcafe-tests'], () => {
