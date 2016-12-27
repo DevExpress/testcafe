@@ -124,3 +124,5 @@
       url: /documentation/recipes/test-static-html-pages.md
     - name: Using Page Model
       url: /documentation/recipes/using-page-model.md
+    - name: Using TestCafe with Gulp
+      url: /documentation/recipes/using-testcafe-with-gulp.md
