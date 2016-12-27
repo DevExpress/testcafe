@@ -122,6 +122,8 @@
       url: /documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.md
     - name: Test Static Html Pages
       url: /documentation/recipes/test-static-html-pages.md
+    - name: Testing on Remote Computers and Mobile Devices
+      url: /documentation/recipes/testing-on-remote-computers-and-mobile-devices.html
     - name: Using Page Model
       url: /documentation/recipes/using-page-model.md
     - name: Using TestCafe with Gulp

@@ -56,5 +56,6 @@
 * [RECIPES](articles/documentation/recipes/index.md)
   * [Running Tests Using Travis CI and Sauce Labs](articles/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.md)
   * [Test Static Html Pages](articles/documentation/recipes/test-static-html-pages.md)
+  * [Testing on Remote Computers and Mobile Devices](articles/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html)
   * [Using Page Model](articles/documentation/recipes/using-page-model.md)
   * [Using TestCafe with Gulp](articles/documentation/recipes/using-testcafe-with-gulp.md)
