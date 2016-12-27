@@ -99,7 +99,7 @@ describe('[API] Select text', function () {
         });
 
         it('Should validate endPos argument', function () {
-            return runTests('./testcafe-fixtures/select-text-test', 'Incorrect endPos in selectTextAreaContent', {
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Incorrect endPos in selectTextAreaContent', {
                 shouldFail: true,
                 only:       'chrome'
             })
