@@ -46,10 +46,16 @@ export default class BrowserSet extends EventEmitter {
     }
 
     async _getReadyTimeout () {
-        var isLocalBrowserPromises = this.connections.map(connection => connection.provider.plugin.isLocalBrowser());
-        var remoteBrowsersCount    = (await Promise.all(isLocalBrowserPromises)).filter(isLocal => !isLocal).length;
+        var remoteBrowsersExists = false;
 
-        return remoteBrowsersCount ? REMOTE_BROWSERS_READY_TIMEOUT : LOCAL_BROWSERS_READY_TIMEOUT;
+        for (var i = 0; i < this.connections.length; i++) {
+            if (!await this.connections[i].provider.plugin.isLocalBrowser()) {
+                remoteBrowsersExists = true;
+                break;
+            }
+        }
+
+        return remoteBrowsersExists ? REMOTE_BROWSERS_READY_TIMEOUT : LOCAL_BROWSERS_READY_TIMEOUT;
     }
 
     async _waitConnectionsOpened () {
