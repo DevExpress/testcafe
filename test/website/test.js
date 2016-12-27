@@ -118,7 +118,7 @@ class WebsiteTester {
             const pageTests = [];
             let linkTests   = [];
 
-            const siteChecker = new blc.SiteChecker({ excludeLinksToSamePage: false }, {
+            const siteChecker = new blc.SiteChecker({ excludeLinksToSamePage: false, requestMethod: "get" }, {
                 link: result => linkTests.push(this._getBrokenLink(result)),
 
                 page: (error, pageUrl) => {
