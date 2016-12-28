@@ -15,6 +15,9 @@ This topic contains the following sections.
 * [Tests](#tests)
   * [Test Controller](#test-controller)
 
+> If you use [eslint](http://eslint.org/) in your project, get the [TestCafe plugin](https://www.npmjs.com/package/eslint-plugin-testcafe)
+to avoid the `'fixture' is not defined` and `'test' is not defined` errors.
+
 ## Fixtures
 
 TestCafe tests must be organized into categories called *fixtures*.
