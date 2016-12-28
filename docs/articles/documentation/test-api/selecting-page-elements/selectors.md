@@ -162,7 +162,7 @@ The selector provides methods to filter DOM nodes by their index or text.
 
 Method | Type | Description
 ------ | ----- | -----
-`nth(index)` | Selector | Creates a selector that returns an element by its index in the matching set.
+`nth(index)` | Selector | Creates a selector that returns an element by its index in the matching set. If `index` is negative, the index is counted from the end of the mathcing set.
 
 #### withText
 
@@ -217,7 +217,7 @@ Property | Description
 Property | Description
 ------ | -----
 `parent()` | Finds all parents of all nodes in the matching set (first element in the set will be the closest parent).
-`parent(index)` | Finds all parents of all nodes in the matching set and filters them by `index` (0 is closest).
+`parent(index)` | Finds all parents of all nodes in the matching set and filters them by `index` (0 is closest). If `index` is negative, the index is counted from the end of the mathcing set.
 `parent(cssSelector)` | Finds all parents of all nodes in the matching set and filters them by `cssSelector`.
 `parent(filterFn)` | Finds all parents of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
 
@@ -226,7 +226,7 @@ Property | Description
 Property | Description
 ------ | -----
 `child()` | Finds all child elements (not nodes) of all nodes in the matching set.
-`child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`.
+`child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`. If `index` is negative, the index is counted from the end of the mathcing set.
 `child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
 `child(filterFn)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives node.
 
@@ -235,7 +235,7 @@ Property | Description
 Property | Description
 ------ | -----
 `sibling()` | Finds all sibling  elements (not nodes) of all nodes in the matching set.
-`sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`.
+`sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`. If `index` is negative, the index is counted from the end of the mathcing set.
 `sibling(cssSelector)` | Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
 `sibling(filterFn)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
 
