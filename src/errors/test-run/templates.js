@@ -80,7 +80,7 @@ export default {
     `),
 
     [TYPE.uncaughtErrorInSnapshotExtensionCode]: err => markup(err, `
-        ${err.property} custom selector DOM property error:
+        An error occurred when trying to calculate a custom ${err.property} property:
 
         ${escapeHtml(err.errMsg)}
     `),

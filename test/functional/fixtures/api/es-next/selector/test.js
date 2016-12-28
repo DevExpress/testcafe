@@ -253,7 +253,7 @@ describe('[API] Selector', function () {
                         expect(errs[0]).contains(
                             '"extend" option is expected to be an object, but it was number.'
                         );
-                        expect(errs[0]).contains("> 929 |    await Selector('rect').extend(42);");
+                        expect(errs[0]).contains("> 932 |    await Selector('rect').extend(42);");
                     });
             }
         );
@@ -268,7 +268,7 @@ describe('[API] Selector', function () {
                         expect(errs[0]).contains(
                             "Snapshot extension method \'prop1\' is expected to be a function, but it was number"
                         );
-                        expect(errs[0]).contains("> 933 |    await Selector('rect').extend({ prop1: 1, prop2: () => 42 });");
+                        expect(errs[0]).contains("> 936 |    await Selector('rect').extend({ prop1: 1, prop2: () => 42 });");
                     });
             }
         );
@@ -281,9 +281,9 @@ describe('[API] Selector', function () {
                 })
                     .catch(function (errs) {
                         expect(errs[0]).contains(
-                            'prop custom selector DOM property error:  Error: test'
+                            'An error occurred when trying to calculate a custom prop property:  Error: test'
                         );
-                        expect(errs[0]).contains('> 943 |    await el();');
+                        expect(errs[0]).contains('> 946 |    await el();');
                     });
             }
         );

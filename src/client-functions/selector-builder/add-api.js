@@ -10,7 +10,7 @@ import {
     assertFunction,
     assertFunctionOrString,
     assertFunctionOrStringOrNumber,
-    assertStringOrRegExp
+    assertStringOrRegExp,
     assertObject
     } from '../../errors/runtime/type-assertions';
 
