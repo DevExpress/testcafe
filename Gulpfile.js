@@ -395,7 +395,7 @@ gulp.task('lint-docs', function () {
     });
 
     var lintRecipes = globby([
-        'docs/articles/documentation/recipes/**/*.md',
+        'docs/articles/documentation/recipes/**/*.md'
     ]).then(function (files) {
         return lintFiles(files, require('./.md-lint/recipes.json'));
     });
