@@ -20,7 +20,7 @@ Suppose you have a GitHub project for which you need to automatically run tests 
 
 ## Step 1 - Install TestCafe and create tests
 
-Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in your project and [create tests](../getting-started/#creating-a-test).
+Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in your project and [create tests](../getting-started/index.md#creating-a-test).
 
 ## Step 2 - Enable Travis for your project
 
