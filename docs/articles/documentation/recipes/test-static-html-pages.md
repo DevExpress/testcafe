@@ -13,7 +13,7 @@ There are many ways to test your static html pages using TestCafe, but in this r
 
 ## Step 1 - Install TestCafe and create tests
 
-Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in your project and [create tests](../getting-started/#creating-a-test).
+Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in your project and [create tests](../getting-started/index.md#creating-a-test).
 
 ## Step 2 - Install http-server and concurrently
 

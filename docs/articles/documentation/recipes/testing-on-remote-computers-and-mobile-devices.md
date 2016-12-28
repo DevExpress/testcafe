@@ -9,7 +9,7 @@ TestCafe allows you to run tests on any device that has network access to the ma
 
 This guide demonstrates how to test on a remote computer and a mobile device.
 It assumes that TestCafe is already [installed](../using-testcafe/installing-testcafe.md)
-in your project and you have [created some tests](../getting-started/#creating-a-test).
+in your project and you have [created some tests](../getting-started/index.md#creating-a-test).
 
 ## Run Tests on a Remote Computer
 
