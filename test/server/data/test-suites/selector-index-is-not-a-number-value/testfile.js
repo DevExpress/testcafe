@@ -2,7 +2,7 @@ import { Selector } from 'testcafe';
 
 fixture `Test`;
 
-Selector(() => {}, { index: -3 });
+Selector(() => {}, { index: true });
 
 test('yo', () => {
 });

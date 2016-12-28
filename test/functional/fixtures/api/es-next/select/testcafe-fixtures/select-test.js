@@ -33,4 +33,8 @@ test('Select with options', async t => {
     const el = await t.select('#invisible', { visibilityCheck: true });
 
     expect(el).to.be.null;
+
+    const div = await t.select('div', { index: -2 });
+
+    expect(div.id).to.be.equal('answer');
 });

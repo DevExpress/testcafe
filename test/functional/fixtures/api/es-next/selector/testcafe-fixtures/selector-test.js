@@ -352,11 +352,11 @@ test('Selector "index" option', async () => {
     expect(el.id).eql('el2');
 
     // Function selector
-    const getThirdEl = Selector(() => document.querySelectorAll('.idxEl'), { index: 2 });
+    const getLastEl = Selector(() => document.querySelectorAll('.idxEl'), { index: -1 });
 
-    el = await getThirdEl();
+    el = await getLastEl();
 
-    expect(el.id).eql('el3');
+    expect(el.id).eql('el4');
 
     // If single node is returned index should be always 0
     const getFirstEl = Selector(() => document.querySelectorAll('.idxEl')[0], { index: 2 });
@@ -451,7 +451,7 @@ test('Compound filter', async t => {
     expect(id).eql('el3');
 
     // Selector should maintain filter when used as dependency
-    id = await t.eval(() => selector().id, { dependencies: { selector: selector.with({ index: 0 }) } });
+    id = await t.eval(() => selector().id, { dependencies: { selector: selector.with({ index: -2 }) } });
 
     expect(id).eql('el2');
 });
@@ -534,7 +534,7 @@ test('Snapshot shorthand method - selector error', async () => {
 
 test('Selector "nth()" method', async () => {
     // String selector
-    const getSecondEl = Selector('.idxEl').nth(1);
+    const getSecondEl = Selector('.idxEl').nth(-3);
 
     let el = await getSecondEl();
 
@@ -558,7 +558,7 @@ test('Selector "nth()" method', async () => {
     const elWithClass = Selector(className => document.querySelectorAll('.' + className));
 
     expect(await elWithClass('idxEl').nth(2).id).eql('el3');
-    expect(await elWithClass('idxEl').nth(3).id).eql('el4');
+    expect(await elWithClass('idxEl').nth(-3).id).eql('el2');
 
     // Should be overridable
     expect(await elWithClass('idxEl').nth(2).nth(1).id).eql('el2');
@@ -731,7 +731,8 @@ test('Selector "parent" method', async () => {
     // Index filter
     expect((await Selector('g').parent(1).tagName).toLowerCase()).eql('a');
     expect((await Selector('g').parent().parent().tagName).toLowerCase()).eql('a');
-    expect((await Selector('#option1').parent(2).tagName).toLowerCase()).eql('body');
+    expect((await Selector('#option1').parent(1).tagName).toLowerCase()).eql('form');
+    expect((await Selector('#option1').parent(-2).tagName).toLowerCase()).eql('html');
     expect(await Selector('g').parent(0).count).eql(1);
 
     // CSS selector filter
@@ -768,6 +769,7 @@ test('Selector "child" method', async () => {
     expect(await Selector('#container').child(1).id).eql('el2');
     expect(await Selector('#p2').child().child().id).eql('p0');
     expect(await Selector('#container').child(3).id).eql('el4');
+    expect(await Selector('#container').child(-2).id).eql('el3');
     expect(await Selector('body').child(0).count).eql(1);
 
     // CSS selector filter
@@ -805,6 +807,7 @@ test('Selector "sibling" method', async () => {
     expect(await Selector('#el2').sibling(1).id).eql('el3');
     expect(await Selector('#el2').sibling().sibling().id).eql('el2');
     expect(await Selector('#el1').sibling(2).id).eql('el4');
+    expect(await Selector('#el1').sibling(-3).id).eql('el2');
     expect(await Selector('#el2').sibling(0).count).eql(1);
 
     // CSS selector filter

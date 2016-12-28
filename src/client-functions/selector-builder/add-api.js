@@ -7,9 +7,9 @@ import ClientFunctionBuilder from '../client-function-builder';
 import SelectorResultPromise from './result-promise';
 import {
     assertStringOrRegExp,
-    assertNonNegativeNumber,
+    assertNumber,
     assertFunctionOrString,
-    assertFunctionOrStringOnNonNegativeNumber
+    assertFunctionOrStringOrNumber
 } from '../../errors/runtime/type-assertions';
 
 const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PROPERTIES);
@@ -17,7 +17,7 @@ const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PRO
 
 var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode) => {
     if (typeof filter === 'number')
-        return [nodes[filter]];
+        return filter < 0 ? [nodes[nodes.length + filter]] : [nodes[filter]];
 
     var result = [];
 
@@ -209,7 +209,7 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
 
 function addFilterMethods (obj, getSelector, SelectorBuilder) {
     obj.nth = index => {
-        assertNonNegativeNumber('nth', '"index" argument', index);
+        assertNumber('nth', '"index" argument', index);
 
         var builder = new SelectorBuilder(getSelector(), { index: index }, { instantiation: 'Selector' });
 
@@ -287,7 +287,7 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
     // Parent
     obj.parent = (filter, dependencies) => {
         if (filter !== void 0)
-            assertFunctionOrStringOnNonNegativeNumber('parent', '"filter" argument', filter);
+            assertFunctionOrStringOrNumber('parent', '"filter" argument', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
@@ -310,7 +310,7 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
     // Child
     obj.child = (filter, dependencies) => {
         if (filter !== void 0)
-            assertFunctionOrStringOnNonNegativeNumber('child', '"filter" argument', filter);
+            assertFunctionOrStringOrNumber('child', '"filter" argument', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
@@ -338,7 +338,7 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
     // Sibling
     obj.sibling = (filter, dependencies) => {
         if (filter !== void 0)
-            assertFunctionOrStringOnNonNegativeNumber('sibling', '"filter" argument', filter);
+            assertFunctionOrStringOrNumber('sibling', '"filter" argument', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 

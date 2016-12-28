@@ -4,11 +4,11 @@ var expect = require('chai').expect;
 describe('[API] Select text', function () {
     describe('t.selectText', function () {
         it('Should select text in input', function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'Select text in input', { only: 'chrome' });
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Select text in input', { only: 'chrome' });
         });
 
         it('Should validate selector argument', function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'Incorrect selector in selectText', {
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Incorrect selector in selectText', {
                 shouldFail: true,
                 only:       'chrome'
             })
@@ -23,7 +23,7 @@ describe('[API] Select text', function () {
         });
 
         it('Should validate startPos argument', function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'Incorrect startPos in selectText', {
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Incorrect startPos in selectText', {
                 shouldFail: true,
                 only:       'chrome'
             })
@@ -34,7 +34,7 @@ describe('[API] Select text', function () {
         });
 
         it('Should validate endPos argument', function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'Incorrect endPos in selectText', {
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Incorrect endPos in selectText', {
                 shouldFail: true,
                 only:       'chrome'
             })
@@ -47,11 +47,11 @@ describe('[API] Select text', function () {
 
     describe('t.selectTextAreaContent', function () {
         it('Should select content in textarea', function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'Select content in textarea', { only: 'chrome' });
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Select content in textarea', { only: 'chrome' });
         });
 
         it('Should validate selector argument', function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'Incorrect selector in selectTextAreaContent', {
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Incorrect selector in selectTextAreaContent', {
                 shouldFail: true,
                 only:       'chrome'
             })
@@ -66,7 +66,7 @@ describe('[API] Select text', function () {
         });
 
         it('Should validate startLine argument', function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'Incorrect startLine in selectTextAreaContent', {
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Incorrect startLine in selectTextAreaContent', {
                 shouldFail: true,
                 only:       'chrome'
             })
@@ -77,7 +77,7 @@ describe('[API] Select text', function () {
         });
 
         it('Should validate startPos argument', function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'Incorrect startPos in selectTextAreaContent', {
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Incorrect startPos in selectTextAreaContent', {
                 shouldFail: true,
                 only:       'chrome'
             })
@@ -88,7 +88,7 @@ describe('[API] Select text', function () {
         });
 
         it('Should validate endLine argument', function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'Incorrect endLine in selectTextAreaContent', {
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Incorrect endLine in selectTextAreaContent', {
                 shouldFail: true,
                 only:       'chrome'
             })
@@ -99,7 +99,7 @@ describe('[API] Select text', function () {
         });
 
         it('Should validate endPos argument', function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'Incorrect endPos in selectTextAreaContent', {
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Incorrect endPos in selectTextAreaContent', {
                 shouldFail: true,
                 only:       'chrome'
             })
@@ -112,11 +112,11 @@ describe('[API] Select text', function () {
 
     describe('t.selectEditableContent', function () {
         it('Should select editable content', function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'Select editable content', { only: 'chrome' });
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Select editable content', { only: 'chrome' });
         });
 
         it('Should validate startSelector argument', function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'Incorrect startSelector in selectEditableContent', {
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Incorrect startSelector in selectEditableContent', {
                 shouldFail: true,
                 only:       'chrome'
             })
@@ -131,7 +131,7 @@ describe('[API] Select text', function () {
         });
 
         it('Should validate endSelector argument', function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'Incorrect endSelector in selectEditableContent', {
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Incorrect endSelector in selectEditableContent', {
                 shouldFail: true,
                 only:       'chrome'
             })
@@ -146,7 +146,7 @@ describe('[API] Select text', function () {
         });
 
         it("Should validate node type of element that startElement's selector returns", function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'Start element selector returns text node', { shouldFail: true })
+            return runTests('./testcafe-fixtures/select-text-test.js', 'Start element selector returns text node', { shouldFail: true })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The specified "startSelector" is expected to match a DOM element, but it matches a text node.');
                     expect(errs[0]).to.contains('> 93 |    await t.selectEditableContent(getNode, \'#p1\');');
@@ -154,7 +154,7 @@ describe('[API] Select text', function () {
         });
 
         it("Should validate node type of element that endElement's selector returns", function () {
-            return runTests('./testcafe-fixtures/select-test.js', 'End element selector returns text node', { shouldFail: true })
+            return runTests('./testcafe-fixtures/select-text-test.js', 'End element selector returns text node', { shouldFail: true })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The specified "endSelector" is expected to match a DOM element, but it matches a text node.');
                     expect(errs[0]).to.contains('>  99 |    await t.selectEditableContent(\'#p1\', getNode);');
