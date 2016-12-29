@@ -140,6 +140,15 @@ Use one of [built-in reporters](https://devexpress.github.io/testcafe/documentat
 TestCafe is easy to set up on popular Continuous Integration platforms as it allows you to test against various browsers: local, remote, cloud (e.g., [Sauce Labs](https://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html)) or headless (e.g. [Nightmare](https://github.com/ryx/testcafe-browser-provider-nightmare)).
 You can also create a custom [browser provider](https://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/index.html) to add support for a browser or a cloud platform of your choice.
 
+### Other Useful Features
+
+* Automatic screenshots of the tested page taken [whenever the test fails](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-on-fails) or [triggered from test code](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html).
+* [File upload](https://devexpress.github.io/testcafe/documentation/test-api/actions/upload.html) support.
+* Detecting JavaScript errors on the tested page.
+* [Handling native browser dialogs](https://devexpress.github.io/testcafe/documentation/test-api/handling-native-dialogs.html) (i.e., alert, confirm, prompt, beforeunload ) using custom logic whenever they are invoked during a test run.
+* [Resizing the browser window](https://devexpress.github.io/testcafe/documentation/test-api/actions/resize-window.html) during test execution.
+* [Adjusting the speed](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--speed-factor) of test execution.
+
 ## Getting Started
 
 ### Installing TestCafe
