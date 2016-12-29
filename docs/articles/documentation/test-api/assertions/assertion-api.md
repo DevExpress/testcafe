@@ -44,8 +44,8 @@ Parameter              | Type                                              | Des
 
 ```js
 await t
-    .expect({ a: 'bar' }).eql({ a: 'bar' }, 'this assertion will be passed')
-    .expect({ a: 'bar' }).eql({ a: 'foo' }, 'this assertion will be failed');
+    .expect({ a: 'bar' }).eql({ a: 'bar' }, 'this assertion will pass')
+    .expect({ a: 'bar' }).eql({ a: 'foo' }, 'this assertion will fail');
 ```
 
 ## Not Deep Equal
@@ -67,8 +67,8 @@ Parameter              | Type                                              | Des
 
 ```js
 await t
-    .expect({ a: 'bar' }).notEql({ a: 'bar' }, 'this assertion will be failed')
-    .expect({ a: 'bar' }).notEql({ a: 'foo' }, 'this assertion will be passed');
+    .expect({ a: 'bar' }).notEql({ a: 'bar' }, 'this assertion will fail')
+    .expect({ a: 'bar' }).notEql({ a: 'foo' }, 'this assertion will pass');
 ```
 
 ## Ok
@@ -89,8 +89,8 @@ Parameter              | Type                                              | Des
 
 ```js
 await t
-    .expect('ok').ok('this assertion will be passed')
-    .expect(false).ok('this assertion will be failed');
+    .expect('ok').ok('this assertion will pass')
+    .expect(false).ok('this assertion will fail');
 ```
 
 ## Not Ok
@@ -111,8 +111,8 @@ Parameter              | Type                                              | Des
 
 ```js
 await t
-    .expect('ok').notOk('this assertion will be failed')
-    .expect(false).notOk('this assertion will be passed');
+    .expect('ok').notOk('this assertion will fail')
+    .expect(false).notOk('this assertion will pass');
 ```
 
 ## Contains
@@ -313,7 +313,7 @@ Parameter              | Type                                              | Des
 **Example:**
 
 ```js
-await t.expect(5).within(3, 10, 'this assertion will be passed');
+await t.expect(5).within(3, 10, 'this assertion will pass');
 ```
 
 ## Not Within
@@ -335,7 +335,7 @@ Parameter              | Type                                              | Des
 **Example:**
 
 ```js
-await t.expect(1).notWithin(3, 10, 'this assertion will be passed');
+await t.expect(1).notWithin(3, 10, 'this assertion will pass');
 ```
 
 ## Match

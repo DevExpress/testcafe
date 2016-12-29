@@ -7,10 +7,9 @@ checked: false
 # Selectors
 
 A selector is a function that identifies a webpage element in the test.
-The selector API provides methods and properties to select elements on the page and get theirs state.
-You can use selectors to [define action targets](#define-action-targets),
-[define assertion actual value](#define-assertion-actual-value) or
-[inspect elements state on the page](#obtain-element-state).
+The selector API provides methods and properties to select elements on the page and get their state.
+You can use selectors to [inspect elements state on the page](#obtain-element-state), define [action targets](#define-action-targets) and
+[assertion actual values](#define-assertion-actual-value).
 
 > Important! Do not modify the tested webpage within selectors.
 > To interact with the page, use [test actions](../actions/index.md).
@@ -19,19 +18,19 @@ This topic contains the following sections.
 
 * [Creating Selectors](#creating-selectors)
 * [Selector Initializers](#selector-initializers)
-* [Combined Selectors](#combined-selectors)
-  * [Filter Multiple DOM Nodes](#filter-multiple-dom-nodes)
+* [Functional-Style Selectors](#functional-style-selectors)
+  * [Filter DOM Nodes](#filter-dom-nodes)
       * [nth](#nth)
       * [withText](#withtext)
       * [filter](#filter)
-  * [Find Elements by DOM Hierarchy](#find-elements-by-dom-hierarchy)
+  * [Search for Elements in the DOM Hierarchy](#search-for-elements-in-the-dom-hierarchy)
       * [find](#find)
       * [parent](#parent)
       * [child](#child)
       * [sibling](#sibling)
   * [Examples](#examples)
 * [Using Selectors](#using-selectors)
-  * [Get Selector Matching Set Length](#get-selector-matching-set-length)
+  * [Check if an Element Exists](#check-if-an-element-exists)
   * [Obtain Element State](#obtain-element-state)
   * [Define Action Targets](#define-action-targets)
   * [Define Assertion Actual Value](#define-assertion-actual-value)
@@ -147,12 +146,12 @@ You can initialize a selector with any of these objects.
     });
     ```
 
-## Combined Selectors
+## Functional-Style Selectors
 
 The selector API provides methods that can be combined together, thus
 providing you with a flexible functional-style selector mechanism.
 
-### Filter Multiple DOM Nodes
+### Filter DOM Nodes
 
 If selector returns multiple DOM nodes, you must filter them to select
 a single node that will eventually be returned by the selector.
@@ -175,9 +174,33 @@ Method | Type | Description
 
 Method | Type | Description
 ------ | ----- | -----
-`filter(index)` | Selector | Creates a selector that filters a matching set by `index`.
 `filter(cssSelector)` | Selector | Creates a selector that filters a matching set by `cssSelector`.
-`filter(filterFn)` | Selector | Creates a selector that filters a matching set by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
+`filter(filterFn, dependencies)` | Selector | Creates a selector that filters a matching set by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+
+The `filterFn` predicate is executed on the client. It takes the following parameters.
+
+Parameter | Description
+------ | -----
+`node`  | The current DOM node.
+`idx` | Index of the current node among other nodes in the matching set.
+
+```js
+Selector('ul').filter((node, idx) => {
+    // node === a <ul> node
+    // idx === index of the current <ul> node
+});
+```
+
+The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
+you to pass objects to the `filterFn` client-side scope where they appear as variables.
+
+```js
+const isNodeOk = ClientFunction((node, idx) => { /*...*/ });
+
+Selector('ul').filter((node, idx) => {
+    return isNodeOk(node, idx);
+}), { isNodeOk });
+```
 
 **Example**
 
@@ -201,43 +224,151 @@ test('My test', async t => {
 
 If all nodes are filtered out, the selector returns `null`.
 
-### Find Elements by DOM Hierarchy
+### Search for Elements in the DOM Hierarchy
 
 The selector API provides methods to find elements within a DOM hierarchy in jQuery style.
 
 #### find
 
-Property | Description
+Method | Description
 ------ | -----
 `find(cssSelector)` | Finds all descendants of all nodes in the matching set and filters them by `cssSelector`.
-`find(filterFn)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
+`find(filterFn, dependencies)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+
+The `filterFn` predicate is executed on the client. It takes the following parameters.
+
+Parameter | Description
+------ | -----
+`node`  | The current descendant node.
+`idx` | Index of `node` among other descendant nodes.
+`originNode` | A node from the left-hand selector's matching set whose descendants are being iterated.
+
+```js
+Selector('ul').find((node, idx, originNode) => {
+    // node === the <ul>'s descendant node
+    // idx === index of the current <ul>'s descendant node
+    // originNode === the <ul> element
+});
+```
+
+The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
+you to pass objects to the `filterFn` client-side scope where they appear as variables.
+
+```js
+const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+
+Selector('ul').find((node, idx, originNode) => {
+    return isNodeOk(node, idx, originNode);
+}), { isNodeOk });
+```
 
 #### parent
 
-Property | Description
+Method | Description
 ------ | -----
 `parent()` | Finds all parents of all nodes in the matching set (first element in the set will be the closest parent).
 `parent(index)` | Finds all parents of all nodes in the matching set and filters them by `index` (0 is closest). If `index` is negative, the index is counted from the end of the matching set.
 `parent(cssSelector)` | Finds all parents of all nodes in the matching set and filters them by `cssSelector`.
-`parent(filterFn)` | Finds all parents of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
+`parent(filterFn, dependencies)` | Finds all parents of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+
+The `filterFn` predicate is executed on the client. It takes the following parameters.
+
+Parameter | Description
+------ | -----
+`node`  | The current parent node.
+`idx` | Index of `node` among other parent nodes.
+`originNode` | A node from the left-hand selector's matching set whose parents are being iterated.
+
+```js
+Selector('label').parent((node, idx, originNode) => {
+    // node === the <label>'s parent element
+    // idx === index of the current <label>'s parent element
+    // originNode === the <label> element
+});
+```
+
+The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
+you to pass objects to the `filterFn` client-side scope where they appear as variables.
+
+```js
+const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+
+Selector('ul').parent((node, idx, originNode) => {
+    return isNodeOk(node, idx, originNode);
+}), { isNodeOk });
+```
 
 #### child
 
-Property | Description
+Method | Description
 ------ | -----
 `child()` | Finds all child elements (not nodes) of all nodes in the matching set.
 `child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`. If `index` is negative, the index is counted from the end of the matching set.
 `child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`child(filterFn)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives node.
+`child(filterFn, dependencies)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+
+The `filterFn` predicate is executed on the client. It takes the following parameters.
+
+Parameter | Description
+------ | -----
+`node`  | The current child node.
+`idx` | Index of `node` among other child nodes.
+`originNode` | A node from the left-hand selector's matching set whose children are being iterated.
+
+```js
+Selector('form').child((node, idx, originNode) => {
+    // node === the <form>'s child node
+    // idx === index of the current <form>'s child node
+    // originNode === the <form> element
+});
+```
+
+The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
+you to pass objects to the `filterFn` client-side scope where they appear as variables.
+
+```js
+const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+
+Selector('ul').child((node, idx, originNode) => {
+    return isNodeOk(node, idx, originNode);
+}), { isNodeOk });
+```
 
 #### sibling
 
-Property | Description
+Method | Description
 ------ | -----
 `sibling()` | Finds all sibling  elements (not nodes) of all nodes in the matching set.
 `sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`. If `index` is negative, the index is counted from the end of the matching set.
 `sibling(cssSelector)` | Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`sibling(filterFn)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `filterFn`; `filterFn` is a [client function](../obtaining-data-from-the-client.md#creating-client-functions) predicate that receives a node.
+`sibling(filterFn, dependencies)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+
+The `filterFn` predicate is executed on the client. It takes the following parameters.
+
+Parameter | Description
+------ | -----
+`node`  | The current descendant node.
+`idx` | Index of `node` among other sibling nodes.
+`originNode` | A node from the left-hand selector's matching set whose siblings are being iterated.
+
+```js
+Selector('section').sibling((node, idx, originNode) => {
+    // node === the <section>'s sibling node
+    // idx === index of the current <section>'s sibling node
+    // originNode === the <section> element
+});
+```
+
+The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
+you to pass objects to the `filterFn` client-side scope where they appear as variables.
+
+```js
+const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+
+Selector('ul').sibling((node, idx, originNode) => {
+    return isNodeOk(node, idx, originNode);
+}), { isNodeOk });
+```
 
 **Example**
 
@@ -310,12 +441,12 @@ In this example the selector:
 
 ## Using Selectors
 
-### Get Selector Matching Set Length
+### Check if an Element Exists
 
 Functions and CSS selector strings that initialize a selector may return
 a single matching DOM element on the page, multiple elements or nothing.
-You can use the following Selector properties to check whether the matching
-elements exist or get a number of them.
+You can use the following Selector properties to check whether matching
+elements exist and determine the number of matching elements.
 
 Property | Type | Description
 ------ | ----- | -----
@@ -342,18 +473,17 @@ Note that selector property getters are asynchronous.
 
 ### Obtain Element State
 
-Selectors and promises returned by selectors expose API to get state (size, position, classes, etc.) of matched element.
+Selectors and promises returned by selectors expose API to get the state (size, position, classes, etc.) of the matching element.
 See [DOM Node State](./dom-node-state.md). Note that these methods and property getters
-are asynchronous so you can obtain element's property from a browser in the following way:
+are asynchronous, so use `await` to obtain an element's property.
 
 ```js
 const headerText = await Selector('#header').textConent;
 ```
 
-For example:
+**Example**
 
 ```js
-
 import { Selector } from 'testcafe';
 
 fixture `My fixture`
@@ -371,10 +501,10 @@ test('Obtain Element State', async t => {
 
 #### DOM Node Snapshot
 
-If you need to get all state properties of the DOM element at once call the selector
+If you need to get the entire DOM element state, call the selector
 with the `await` keyword like you would do with regular async functions.
 It returns a *DOM Node Snapshot* that contains [all property values](dom-node-state.md)
-exposed by selector in single object.
+exposed by the selector in a single object.
 
 ```js
 
@@ -472,7 +602,7 @@ test('Assertion with Selector', async t => {
 ```
 
 In this example the `developerNameInput.innerText` property will not be
-calculated immediately, but only then assertion will be executed.
+calculated immediately, but it will wait until the assertion is executed.
 
 ### Selector Timeout
 
