@@ -617,10 +617,10 @@ To do this, use the [visibilityCheck](selector-options.md#optionsvisibilitycheck
 
 TestCafe allows you to extend [element state](#obtain-element-state) with custom properties calculated on the client side.
 
-To do this, use the selector's `extend` method.
+To do this, use the selector's `addCustomDOMProperties` method.
 
 ```text
-Selector().extend({
+Selector().addCustomDOMProperties({
     property1: fn1,
     property2: fn2,
     /* ... */
@@ -647,7 +647,7 @@ fixture `My fixture`
     .page `https://devexpress.github.io/testcafe/example/`
 
 test('Check Label HTML', async t => {
-    const label = Selector('label').extend({
+    const label = Selector('label').addCustomDOMProperties({
         innerHTML: el => el.innerHTML
     })
 
