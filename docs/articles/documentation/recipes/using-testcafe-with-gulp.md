@@ -40,7 +40,7 @@ gulp.task('run-testcafe-tests', () => {
 
 This task runs tests from the `tests/test.js` file in Chrome and Firefox.
 
-For complete API Reference, see [the plugin page](https://github.com/DevExpress/gulp-testcafe#gulp-testcafe).
+For a complete API Reference, see [the plugin page](https://github.com/DevExpress/gulp-testcafe#gulp-testcafe).
 
 ## Step 3 - Run the TestCafe Task
 
