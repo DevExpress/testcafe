@@ -43,8 +43,8 @@ Note that both tests contain excessive code.
 In the first test, the `#developer-name` CSS selector is duplicated in code each time the test refers to the input element.
 In the second test, test logic is duplicated for each check box.
 
-In rapidly developing web application, page markup and design may change often. When this happens, you need to modify selectors in all your tests.
-Page Model allows you to keep all selectors in one place, so the next time the webpage changes,
+In a rapidly developing web application, page markup and design may change often. When this happens, you need to modify selectors in all your tests.
+The Page Model allows you to keep all selectors in one place, so the next time the webpage changes,
 you will only need to modify the page model.
 
 Generally speaking, the Page Model pattern allows you to follow
