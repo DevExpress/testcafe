@@ -14,7 +14,7 @@ export default class TestingUnit {
         this.globals = globals;
 
         this.name    = null;
-        this.pageUrl = 'about:blank';
+        this.pageUrl = null;
         this.only    = false;
         this.skip    = false;
 

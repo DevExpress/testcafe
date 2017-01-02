@@ -10,6 +10,8 @@ export default class Fixture extends TestingUnit {
 
         this.path = globals.filename;
 
+        this.pageUrl = 'about:blank';
+
         this.beforeEachFn    = null;
         this.afterEachFn     = null;
         this.authCredentials = null;

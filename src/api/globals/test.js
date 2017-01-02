@@ -8,10 +8,7 @@ export default class Test extends TestingUnit {
 
         this.fixture = globals.currentFixture;
 
-        this.fn      = null;
-        this.only    = this.fixture.only;
-        this.skip    = this.fixture.skip;
-        this.pageUrl = this.fixture.pageUrl;
+        this.fn = null;
 
         return this.apiOrigin;
     }
