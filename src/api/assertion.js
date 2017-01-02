@@ -3,7 +3,7 @@ import { assign } from 'lodash';
 import delay from '../utils/delay';
 import { ExternalAssertionLibraryError } from '../errors/test-run';
 import { assertNonNegativeNumber } from '../errors/runtime/type-assertions';
-import SelectorResultPromise from '../client-functions/selector-builder/result-promise';
+import ClientFunctionResultPromise from '../client-functions/result-promise';
 
 const ASSERTION_DELAY = 200;
 
@@ -43,7 +43,7 @@ export default class Assertion {
     }
 
     _wrapExecutor (callsite, executor) {
-        if (this.actual instanceof SelectorResultPromise)
+        if (this.actual instanceof ClientFunctionResultPromise)
             executor = this._wrapSelectorResultAssertionExecutor(executor);
 
         return async () => {

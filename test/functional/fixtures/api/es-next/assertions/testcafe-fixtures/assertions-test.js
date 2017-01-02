@@ -1,4 +1,4 @@
-import { Selector } from 'testcafe';
+import { Selector, ClientFunction } from 'testcafe';
 fixture `Assertions`
     .page `http://localhost:3000/fixtures/api/es-next/assertions/pages/index.html`;
 
@@ -140,4 +140,10 @@ test('.notMatch() assertion', async t => {
     await t
         .expect('yo').notMatch(/[x,z]o/)
         .expect('42 hey').notMatch(/\d+ hey/);
+});
+
+test('ClientFunction result assertion', async t => {
+    const getSomeVar = ClientFunction(() => window.someVar);
+
+    await t.expect(getSomeVar()).eql(2);
 });

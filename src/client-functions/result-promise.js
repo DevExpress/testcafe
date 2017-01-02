@@ -1,9 +1,9 @@
 import Promise from 'pinkie';
 import { noop } from 'lodash';
-import testRunTracker from '../test-run-tracker';
+import testRunTracker from './test-run-tracker';
 
 
-export default class SelectorResultPromise extends Promise {
+export default class ClientFunctionResultPromise extends Promise {
     constructor (executorFn) {
         super(noop);
 
@@ -40,7 +40,7 @@ export default class SelectorResultPromise extends Promise {
         if (testRunId)
             asyncExecutorFn = testRunTracker.addTrackingMarkerToFunction(testRunId, asyncExecutorFn);
 
-        return new SelectorResultPromise(resolve => resolve(asyncExecutorFn()));
+        return new ClientFunctionResultPromise(resolve => resolve(asyncExecutorFn()));
     }
 }
 

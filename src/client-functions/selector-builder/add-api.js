@@ -4,7 +4,7 @@ import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapsho
 import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
 import getCallsite from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../client-function-builder';
-import SelectorResultPromise from './result-promise';
+import ClientFunctionResultPromise from '../result-promise';
 import {
     assertStringOrRegExp,
     assertNumber,
@@ -94,7 +94,7 @@ function addSnapshotPropertyShorthands (obj, getSelector) {
             get: () => {
                 var callsite = getCallsite('get');
 
-                return SelectorResultPromise.fromFn(async () => {
+                return ClientFunctionResultPromise.fromFn(async () => {
                     var snapshot = await getSnapshot(getSelector, callsite);
 
                     return snapshot[prop];
@@ -106,7 +106,7 @@ function addSnapshotPropertyShorthands (obj, getSelector) {
     obj.getStyleProperty = prop => {
         var callsite = getCallsite('getStyleProperty');
 
-        return SelectorResultPromise.fromFn(async () => {
+        return ClientFunctionResultPromise.fromFn(async () => {
             var snapshot = await getSnapshot(getSelector, callsite);
 
             return snapshot.style ? snapshot.style[prop] : void 0;
@@ -116,7 +116,7 @@ function addSnapshotPropertyShorthands (obj, getSelector) {
     obj.getAttribute = attrName => {
         var callsite = getCallsite('getAttribute');
 
-        return SelectorResultPromise.fromFn(async () => {
+        return ClientFunctionResultPromise.fromFn(async () => {
             var snapshot = await getSnapshot(getSelector, callsite);
 
             return snapshot.attributes ? snapshot.attributes[attrName] : void 0;
@@ -126,7 +126,7 @@ function addSnapshotPropertyShorthands (obj, getSelector) {
     obj.getBoundingClientRectProperty = prop => {
         var callsite = getCallsite('getBoundingClientRectProperty');
 
-        return SelectorResultPromise.fromFn(async () => {
+        return ClientFunctionResultPromise.fromFn(async () => {
             var snapshot = await getSnapshot(getSelector, callsite);
 
             return snapshot.boundingClientRect ? snapshot.boundingClientRect[prop] : void 0;
@@ -136,7 +136,7 @@ function addSnapshotPropertyShorthands (obj, getSelector) {
     obj.hasClass = name => {
         var callsite = getCallsite('hasClass');
 
-        return SelectorResultPromise.fromFn(async () => {
+        return ClientFunctionResultPromise.fromFn(async () => {
             var snapshot = await getSnapshot(getSelector, callsite);
 
             return snapshot.classNames ? snapshot.classNames.indexOf(name) > -1 : false;
@@ -166,7 +166,7 @@ function addCounterProperties (obj, getSelector, SelectorBuilder) {
         get: () => {
             var counter = createCounter(getSelector, SelectorBuilder);
 
-            return SelectorResultPromise.fromFn(() => counter());
+            return ClientFunctionResultPromise.fromFn(() => counter());
         }
     });
 
@@ -174,7 +174,7 @@ function addCounterProperties (obj, getSelector, SelectorBuilder) {
         get: () => {
             var counter = createCounter(getSelector, SelectorBuilder);
 
-            return SelectorResultPromise.fromFn(async () => await counter() > 0);
+            return ClientFunctionResultPromise.fromFn(async () => await counter() > 0);
         }
     });
 }

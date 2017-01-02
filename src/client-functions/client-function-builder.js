@@ -10,6 +10,7 @@ import { assertObject, assertNonNullObject } from '../errors/runtime/type-assert
 import MESSAGE from '../errors/runtime/message';
 import getCallsite from '../errors/get-callsite';
 import ensureDeprecatedOptions from './selector-builder/ensure-deprecated-options';
+import ClientFunctionResultPromise from './result-promise';
 
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
@@ -116,14 +117,29 @@ export default class ClientFunctionBuilder {
     }
 
     _executeCommand (args, testRun, callsite) {
-        if (!testRun)
-            throw new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, MESSAGE.clientFunctionCantResolveTestRun);
-
+        // NOTE: should be kept outside of lazy promise to preserve
+        // correct callsite in case of replicator error.
         var command = this.getCommand(args);
 
-        return testRun
-            .executeCommand(command, callsite)
-            .then(result => this.replicator.decode(result));
+        return ClientFunctionResultPromise.fromFn(async () => {
+            if (!testRun) {
+                var err = new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, MESSAGE.clientFunctionCantResolveTestRun);
+
+                // NOTE: force callsite here, because more likely it will
+                // be impossible to resolve it by method name from a lazy promise.
+                err.callsite = callsite;
+
+                throw err;
+            }
+
+            var result = await testRun.executeCommand(command, callsite);
+
+            return this._processResult(result, args);
+        });
+    }
+
+    _processResult (result) {
+        return this.replicator.decode(result);
     }
 
     _validateOptions (options) {

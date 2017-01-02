@@ -6,13 +6,17 @@ import { ClientFunctionAPIError } from '../../errors/runtime';
 import functionBuilderSymbol from '../builder-symbol';
 import MESSAGE from '../../errors/runtime/message';
 import getCallsite from '../../errors/get-callsite';
-import { assertNumber, assertNonNegativeNumber, assertBoolean, assertStringOrRegExp } from '../../errors/runtime/type-assertions';
+import {
+    assertNumber,
+    assertNonNegativeNumber,
+    assertBoolean,
+    assertStringOrRegExp
+} from '../../errors/runtime/type-assertions';
 import deprecate from '../../warnings/deprecate';
 import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import defineLazyProperty from '../../utils/define-lazy-property';
 import addAPI from './add-api';
 import createSnapshotMethods from './create-snapshot-methods';
-import SelectorResultPromise from './result-promise';
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
     constructor (fn, options, callsiteNames) {
@@ -95,18 +99,14 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     }
 
     _executeCommand (args, testRun, callsite) {
-        var lazyPromise = SelectorResultPromise.fromFn(async () => {
-            var result = await super._executeCommand(args, testRun, callsite);
+        var resultPromise = super._executeCommand(args, testRun, callsite);
 
-            return result && !this.options.counterMode ? this._decorateFunctionResult(result, args) : result;
-        });
-
-        this._addBoundArgsSelectorGetter(lazyPromise, args);
+        this._addBoundArgsSelectorGetter(resultPromise, args);
 
         // OPTIMIZATION: use buffer function as selector not to trigger lazy property ahead of time
-        addAPI(lazyPromise, () => lazyPromise.selector, SelectorBuilder);
+        addAPI(resultPromise, () => resultPromise.selector, SelectorBuilder);
 
-        return lazyPromise;
+        return resultPromise;
     }
 
     getFunctionDependencies () {
@@ -177,39 +177,43 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         addAPI(selectorFn, () => selectorFn, SelectorBuilder);
     }
 
-    _decorateFunctionResult (nodeSnapshot, selectorArgs) {
-        this._addBoundArgsSelectorGetter(nodeSnapshot, selectorArgs);
+    _processResult (result, selectorArgs) {
+        var snapshot = super._processResult(result, selectorArgs);
 
-        SelectorBuilder._defineNodeSnapshotDerivativeSelectorProperty(nodeSnapshot, 'getParentNode', node => {
-            return node ? node.parentNode : node;
-        });
+        if (snapshot && !this.options.counterMode) {
+            this._addBoundArgsSelectorGetter(snapshot, selectorArgs);
 
-        SelectorBuilder._defineNodeSnapshotDerivativeSelectorProperty(nodeSnapshot, 'getChildNode', (node, idx) => {
-            return node ? node.childNodes[idx] : node;
-        });
+            SelectorBuilder._defineNodeSnapshotDerivativeSelectorProperty(snapshot, 'getParentNode', node => {
+                return node ? node.parentNode : node;
+            });
 
-        SelectorBuilder._defineNodeSnapshotDerivativeSelectorProperty(nodeSnapshot, 'getChildElement', (node, idx) => {
-            if (node.children)
-                return node.children[idx];
+            SelectorBuilder._defineNodeSnapshotDerivativeSelectorProperty(snapshot, 'getChildNode', (node, idx) => {
+                return node ? node.childNodes[idx] : node;
+            });
 
-            // NOTE: IE doesn't have `children` for non-element nodes =/
-            var childNodeCount = node.childNodes.length;
-            var currentElIdx   = 0;
+            SelectorBuilder._defineNodeSnapshotDerivativeSelectorProperty(snapshot, 'getChildElement', (node, idx) => {
+                if (node.children)
+                    return node.children[idx];
 
-            for (var i = 0; i < childNodeCount; i++) {
-                if (node.childNodes[i].nodeType === 1) {
-                    if (currentElIdx === idx)
-                        return node.childNodes[i];
+                // NOTE: IE doesn't have `children` for non-element nodes =/
+                var childNodeCount = node.childNodes.length;
+                var currentElIdx   = 0;
 
-                    currentElIdx++;
+                for (var i = 0; i < childNodeCount; i++) {
+                    if (node.childNodes[i].nodeType === 1) {
+                        if (currentElIdx === idx)
+                            return node.childNodes[i];
+
+                        currentElIdx++;
+                    }
                 }
-            }
 
-            return null;
-        });
+                return null;
+            });
 
-        createSnapshotMethods(nodeSnapshot);
+            createSnapshotMethods(snapshot);
+        }
 
-        return nodeSnapshot;
+        return snapshot;
     }
 }

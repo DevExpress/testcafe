@@ -38,9 +38,9 @@ test('ClientFunction fn test run is unresolvable', async () => {
     var fn = ClientFunction(() => 123);
 
     return new Promise((resolve, reject) => {
-        fs.readFile('not/exists', () => {
+        fs.readFile('not/exists', async () => {
             try {
-                fn();
+                await fn();
                 resolve();
             }
             catch (err) {

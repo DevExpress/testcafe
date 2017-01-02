@@ -222,4 +222,9 @@ describe('[API] Assertions', function () {
             assertionTimeout: 0
         });
     });
+
+    it('Should retry assertion for ClientFunction results', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'ClientFunction result assertion', { only: 'chrome' });
+    });
+
 });
