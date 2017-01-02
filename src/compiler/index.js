@@ -58,10 +58,6 @@ export default class Compiler {
 
         this.esNextCompiler.cleanUpCache();
 
-        tests = flatten(tests).filter(test => !!test);
-
-        var testsWithOnlyFlag = tests.filter(test => test.only || test.fixture.only);
-
-        return testsWithOnlyFlag.length ? testsWithOnlyFlag : tests;
+        return flatten(tests).filter(test => !!test);
     }
 }
