@@ -1,28 +1,17 @@
 import { APIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
-import wrapTestFunction from './wrap-test-function';
-import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
+import TestingUnit from './testing-unit';
 
-// NOTE: initialized after class declaration
-var apiList = null;
-
-export default class Test {
+export default class Test extends TestingUnit {
     constructor (globals) {
-        this.globals = globals;
+        super(globals);
+
         this.fixture = globals.currentFixture;
 
-        this.name = null;
-        this.fn   = null;
-        this.only = this.fixture.only;
-        this.skip = this.fixture.skip;
-
-        var test = this;
-
-        this.apiOrigin = function apiOrigin (...args) {
-            return test._add(...args);
-        };
-
-        delegateAPI(this, this.apiOrigin, apiList, null, false);
+        this.fn      = null;
+        this.only    = this.fixture.only;
+        this.skip    = this.fixture.skip;
+        this.pageUrl = this.fixture.pageUrl;
 
         return this.apiOrigin;
     }
@@ -39,25 +28,13 @@ export default class Test {
             throw new APIError('apiOrigin', MESSAGE.testBodyIsNotAFunction, fnType);
 
         this.name = name;
-        this.fn   = wrapTestFunction(fn);
+        this.fn   = TestingUnit._wrapTestFunction(fn);
 
         if (this.globals.collectedTests.indexOf(this) < 0)
             this.globals.collectedTests.push(this);
 
         return this.apiOrigin;
     }
-
-    _only$FLAG () {
-        this.only = true;
-
-        return this.apiOrigin;
-    }
-
-    _skip$FLAG () {
-        this.skip = true;
-
-        return this.apiOrigin;
-    }
 }
 
-apiList = getDelegatedAPIList(Test.prototype);
+TestingUnit._makeAPIListForChildClass(Test);

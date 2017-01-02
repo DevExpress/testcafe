@@ -39,10 +39,6 @@ import {
 
 import { WaitCommand } from '../test-run/commands/observation';
 
-
-// NOTE: initialized after class declaration
-var apiList = null;
-
 export default class TestController {
     constructor (testRun) {
         this.testRun              = testRun;
@@ -76,7 +72,7 @@ export default class TestController {
             return originalThen.apply(this, arguments);
         };
 
-        delegateAPI(this, extendedPromise, apiList, ensureAwait, false);
+        delegateAPI(this, extendedPromise, TestController.API_LIST, ensureAwait, false);
 
         return extendedPromise;
     }
@@ -256,7 +252,7 @@ export default class TestController {
     }
 }
 
-apiList = getDelegatedAPIList(TestController.prototype);
+TestController.API_LIST = getDelegatedAPIList(TestController.prototype);
 
-delegateAPI(TestController.prototype, TestController.prototype, apiList, null, true);
+delegateAPI(TestController.prototype, TestController.prototype, TestController.API_LIST, null, true);
 

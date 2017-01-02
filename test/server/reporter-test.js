@@ -32,27 +32,33 @@ describe('Reporter', function () {
         {
             name:               'fixture1test1',
             fixture:            fixtureMocks[0],
+            skip:               false,
             screenshotExpected: true
         },
         {
             name:               'fixture1test2',
             fixture:            fixtureMocks[0],
+            skip:               false,
             screenshotExpected: true
         },
         {
             name:    'fixture1test3',
+            skip:    false,
             fixture: fixtureMocks[0]
         },
         {
             name:    'fixture2test1',
+            skip:    false,
             fixture: fixtureMocks[1]
         },
         {
             name:    'fixture2test2',
+            skip:    false,
             fixture: fixtureMocks[1]
         },
         {
             name:    'fixture3test1',
+            skip:    false,
             fixture: fixtureMocks[2]
         }
     ];
@@ -256,6 +262,7 @@ describe('Reporter', function () {
                         errs:           [],
                         durationMs:     74000,
                         unstable:       true,
+                        skipped:        false,
                         screenshotPath: '/screenshots/1445437598847'
                     }
                 ]
@@ -282,6 +289,7 @@ describe('Reporter', function () {
 
                         durationMs:     74000,
                         unstable:       false,
+                        skipped:        false,
                         screenshotPath: '/screenshots/1445437598847'
                     }
                 ]
@@ -294,6 +302,7 @@ describe('Reporter', function () {
                         errs:           [],
                         durationMs:     74000,
                         unstable:       false,
+                        skipped:        false,
                         screenshotPath: null
                     }
                 ]
@@ -313,6 +322,7 @@ describe('Reporter', function () {
                         errs:           [],
                         durationMs:     74000,
                         unstable:       false,
+                        skipped:        false,
                         screenshotPath: null
                     }
                 ]
@@ -325,6 +335,7 @@ describe('Reporter', function () {
                         errs:           [],
                         durationMs:     74000,
                         unstable:       false,
+                        skipped:        false,
                         screenshotPath: null
                     }
                 ]
@@ -350,6 +361,7 @@ describe('Reporter', function () {
 
                         durationMs:     74000,
                         unstable:       true,
+                        skipped:        false,
                         screenshotPath: null
                     }
                 ]

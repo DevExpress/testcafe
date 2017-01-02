@@ -22,7 +22,7 @@ export default {
     cannotParseRawFile:                  'Cannot parse a test source file in the raw format at "{path}" due to an error.\n\n{errMessage}',
     cannotPrepareTestsDueToError:        'Cannot prepare tests due to an error.\n\n{errMessage}',
     fixtureNameIsNotAString:             'The fixture name is expected to be a string, but it was {type}.',
-    fixturePageIsNotAString:             'The page URL is expected to be a string, but it was {type}.',
+    pageIsNotAString:                    'The page URL is expected to be a string, but it was {type}.',
     testNameIsNotAString:                'The test name is expected to be a string, but it was {type}.',
     testBodyIsNotAFunction:              'The test body is expected to be a function, but it was {type}.',
     beforeEachIsNotAFunction:            `Fixture's "beforeEach" method takes a function, but {type} was passed.`,

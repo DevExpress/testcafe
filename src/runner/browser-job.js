@@ -119,7 +119,7 @@ export default class BrowserJob extends EventEmitter {
             else {
                 testRun.start();
 
-                return this.proxy.openSession(testRun.test.fixture.pageUrl, testRun);
+                return this.proxy.openSession(testRun.test.pageUrl, testRun);
             }
         }
 

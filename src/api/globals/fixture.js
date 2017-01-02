@@ -1,37 +1,18 @@
 import { APIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
-import wrapTestFunction from './wrap-test-function';
 import { assertObject, assertString } from '../../errors/runtime/type-assertions';
 import handleTagArgs from '../../utils/handle-tag-args';
-import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
+import TestingUnit from './testing-unit';
 
-
-const PROTOCOL_RE          = /^https?:\/\//;
-const IMPLICIT_PROTOCOL_RE = /^\/\//;
-
-// NOTE: initialized after class declaration
-var apiList = null;
-
-export default class Fixture {
+export default class Fixture extends TestingUnit {
     constructor (globals) {
-        this.globals = globals;
-        this.path    = globals.filename;
+        super(globals);
 
-        this.name            = null;
-        this.pageUrl         = 'about:blank';
+        this.path = globals.filename;
+
         this.beforeEachFn    = null;
         this.afterEachFn     = null;
         this.authCredentials = null;
-        this.only            = false;
-        this.skip            = false;
-
-        var fixture = this;
-
-        this.apiOrigin = function apiOrigin (...args) {
-            return fixture._add(...args);
-        };
-
-        delegateAPI(this, this.apiOrigin, apiList, null, false);
 
         return this.apiOrigin;
     }
@@ -46,35 +27,6 @@ export default class Fixture {
 
         this.name                   = name;
         this.globals.currentFixture = this;
-
-        return this.apiOrigin;
-    }
-
-    _only$FLAG () {
-        this.only = true;
-
-        return this.apiOrigin;
-    }
-
-    _skip$FLAG () {
-        this.skip = true;
-
-        return this.apiOrigin;
-    }
-
-    _page$ (url, ...rest) {
-        this.pageUrl = handleTagArgs(url, rest);
-
-        var urlType = typeof this.pageUrl;
-
-        if (urlType !== 'string')
-            throw new APIError('page', MESSAGE.fixturePageIsNotAString, urlType);
-
-        if (!PROTOCOL_RE.test(this.pageUrl)) {
-            var protocol = IMPLICIT_PROTOCOL_RE.test(this.pageUrl) ? 'http:' : 'http://';
-
-            this.pageUrl = protocol + this.pageUrl;
-        }
 
         return this.apiOrigin;
     }
@@ -100,7 +52,7 @@ export default class Fixture {
         if (fnType !== 'function')
             throw new APIError('beforeEach', MESSAGE.beforeEachIsNotAFunction, fnType);
 
-        this.beforeEachFn = wrapTestFunction(fn);
+        this.beforeEachFn = TestingUnit._wrapTestFunction(fn);
 
         return this.apiOrigin;
     }
@@ -111,10 +63,10 @@ export default class Fixture {
         if (fnType !== 'function')
             throw new APIError('afterEach', MESSAGE.afterEachIsNotAFunction, fnType);
 
-        this.afterEachFn = wrapTestFunction(fn);
+        this.afterEachFn = TestingUnit._wrapTestFunction(fn);
 
         return this.apiOrigin;
     }
 }
 
-apiList = getDelegatedAPIList(Fixture.prototype);
+TestingUnit._makeAPIListForChildClass(Fixture);
