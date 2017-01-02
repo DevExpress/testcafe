@@ -1,28 +1,61 @@
 import { APIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
-import handleTagArgs from '../../utils/handle-tag-args';
 import wrapTestFunction from './wrap-test-function';
 import { assertObject, assertString } from '../../errors/runtime/type-assertions';
+import handleTagArgs from '../../utils/handle-tag-args';
+import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
+
 
 const PROTOCOL_RE          = /^https?:\/\//;
 const IMPLICIT_PROTOCOL_RE = /^\/\//;
 
+// NOTE: initialized after class declaration
+var apiList = null;
+
 export default class Fixture {
-    constructor (name, filename) {
-        var nameType = typeof name;
+    constructor (globals) {
+        this.globals = globals;
+        this.path    = globals.filename;
 
-        if (nameType !== 'string')
-            throw new APIError('fixture', MESSAGE.fixtureNameIsNotAString, nameType);
-
-        this.name            = name;
-        this.path            = filename;
+        this.name            = null;
         this.pageUrl         = 'about:blank';
         this.beforeEachFn    = null;
         this.afterEachFn     = null;
         this.authCredentials = null;
+        this.only            = false;
+
+        var fixture = this;
+
+        this.apiOrigin = function apiOrigin (...args) {
+            return fixture._add(...args);
+        };
+
+        delegateAPI(this, this.apiOrigin, apiList, null, false);
+
+        return this.apiOrigin;
     }
 
-    page (url, ...rest) {
+    _add (name, ...rest) {
+        name = handleTagArgs(name, rest);
+
+        var nameType = typeof name;
+
+        if (nameType !== 'string')
+            throw new APIError('apiOrigin', MESSAGE.fixtureNameIsNotAString, nameType);
+
+        this.name                   = name;
+        this.globals.currentFixture = this;
+
+        return this.apiOrigin;
+    }
+
+    _only$FLAG () {
+        this.only = true;
+
+        return this.apiOrigin;
+    }
+
+    _page$ (url, ...rest) {
         this.pageUrl = handleTagArgs(url, rest);
 
         var urlType = typeof this.pageUrl;
@@ -36,10 +69,10 @@ export default class Fixture {
             this.pageUrl = protocol + this.pageUrl;
         }
 
-        return this;
+        return this.apiOrigin;
     }
 
-    httpAuth (credentials) {
+    _httpAuth$ (credentials) {
         assertObject('httpAuth', 'credentials', credentials);
         assertString('httpAuth', 'credentials.username', credentials.username);
         assertString('httpAuth', 'credentials.password', credentials.password);
@@ -51,10 +84,10 @@ export default class Fixture {
 
         this.authCredentials = credentials;
 
-        return this;
+        return this.apiOrigin;
     }
 
-    beforeEach (fn) {
+    _beforeEach$ (fn) {
         var fnType = typeof fn;
 
         if (fnType !== 'function')
@@ -62,10 +95,10 @@ export default class Fixture {
 
         this.beforeEachFn = wrapTestFunction(fn);
 
-        return this;
+        return this.apiOrigin;
     }
 
-    afterEach (fn) {
+    _afterEach$ (fn) {
         var fnType = typeof fn;
 
         if (fnType !== 'function')
@@ -73,6 +106,8 @@ export default class Fixture {
 
         this.afterEachFn = wrapTestFunction(fn);
 
-        return this;
+        return this.apiOrigin;
     }
 }
+
+apiList = getDelegatedAPIList(Fixture.prototype);

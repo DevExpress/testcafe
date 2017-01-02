@@ -6,6 +6,7 @@ import deprecate from '../warnings/deprecate';
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import SelectorBuilder from '../client-functions/selector-builder';
 import Assertion from './assertion';
+import { getDelegatedAPIList, delegateAPI } from '../utils/delegated-api';
 
 
 import {
@@ -38,27 +39,16 @@ import {
 
 import { WaitCommand } from '../test-run/commands/observation';
 
-const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$$/;
+
+// NOTE: initialized after class declaration
+var apiList = null;
 
 export default class TestController {
     constructor (testRun) {
         this.testRun              = testRun;
         this.executionChain       = Promise.resolve();
-        this.apiMethods           = this._createAPIMethodsList();
         this.callsiteWithoutAwait = null;
     }
-
-    _createAPIMethodsList () {
-        return Object
-            .keys(TestController.prototype)
-            .map(prop => {
-                var match = prop.match(API_IMPLEMENTATION_METHOD_RE);
-
-                return match && match[1];
-            })
-            .filter(name => !!name);
-    }
-
 
     // NOTE: we track missing `awaits` by exposing a special custom Promise to user code.
     // Action or assertion is awaited if:
@@ -86,14 +76,7 @@ export default class TestController {
             return originalThen.apply(this, arguments);
         };
 
-        this.apiMethods.forEach(name => {
-            var controller = this;
-
-            extendedPromise[name] = function () {
-                ensureAwait();
-                return controller[`_${name}$`].apply(controller, arguments);
-            };
-        });
+        delegateAPI(this, extendedPromise, apiList, ensureAwait, false);
 
         return extendedPromise;
     }
@@ -273,19 +256,7 @@ export default class TestController {
     }
 }
 
-(function createAPIMethods () {
-    Object
-        .keys(TestController.prototype)
-        .forEach(prop => {
-            var match = prop.match(API_IMPLEMENTATION_METHOD_RE);
+apiList = getDelegatedAPIList(TestController.prototype);
 
-            if (match) {
-                var apiMethodName = match[1];
-
-                TestController.prototype[apiMethodName] = function () {
-                    return TestController.prototype[prop].apply(this, arguments);
-                };
-            }
-        });
-})();
+delegateAPI(TestController.prototype, TestController.prototype, apiList, null, true);
 
