@@ -13,7 +13,8 @@ export default class Test {
 
         this.name = null;
         this.fn   = null;
-        this.only = false;
+        this.only = this.fixture.only;
+        this.skip = this.fixture.skip;
 
         var test = this;
 
@@ -48,6 +49,12 @@ export default class Test {
 
     _only$FLAG () {
         this.only = true;
+
+        return this.apiOrigin;
+    }
+
+    _skip$FLAG () {
+        this.skip = true;
 
         return this.apiOrigin;
     }

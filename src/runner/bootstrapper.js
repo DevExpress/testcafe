@@ -51,7 +51,7 @@ export default class Bootstrapper {
         var compiler = new Compiler(this.sources);
         var tests    = await compiler.getTests();
 
-        var testsWithOnlyFlag = tests.filter(test => test.only || test.fixture.only);
+        var testsWithOnlyFlag = tests.filter(test => test.only);
 
         if (testsWithOnlyFlag.length)
             tests = testsWithOnlyFlag;

@@ -23,6 +23,7 @@ export default class Fixture {
         this.afterEachFn     = null;
         this.authCredentials = null;
         this.only            = false;
+        this.skip            = false;
 
         var fixture = this;
 
@@ -51,6 +52,12 @@ export default class Fixture {
 
     _only$FLAG () {
         this.only = true;
+
+        return this.apiOrigin;
+    }
+
+    _skip$FLAG () {
+        this.skip = true;
 
         return this.apiOrigin;
     }
