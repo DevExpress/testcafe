@@ -10,4 +10,8 @@ describe('Basic and NTLM authentications', function () {
     it('Should authenticate on a "NTLM" server with correct credentials', function () {
         return runTests('./testcafe-fixtures/ntlm-auth-check-username-test.js');
     });
+
+    it('Should override credentials with test.httpAuth', function () {
+        return runTests('./testcafe-fixtures/override-credentials-test.js');
+    });
 });

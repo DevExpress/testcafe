@@ -11,8 +11,8 @@ import stackCleaningHook from '../../errors/stack-cleaning-hook';
 const COMMON_API_PATH = join(__dirname, '../../api/common');
 const CWD             = process.cwd();
 
-const FIXTURE_RE       = /(^|;|\s+)fixture\s*(\.\S+)?\s*(\(.+?\)|`.+?`)/;
-const TEST_RE          = /(^|;|\s+)test\s*(\.\S+)?\s*\(.+?,/;
+const FIXTURE_RE       = /(^|;|\s+)fixture\s*\.|\(/;
+const TEST_RE          = /(^|;|\s+)test\s*\.|\(/;
 const BABEL_RUNTIME_RE = /^babel-runtime(\\|\/|$)/;
 
 var Module = module.constructor;
