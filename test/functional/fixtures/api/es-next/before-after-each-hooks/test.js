@@ -27,7 +27,7 @@ describe('[API] beforeEach/afterEach hooks', function () {
         return runTests('./testcafe-fixtures/fail-in-before-each.js', 'Test', { shouldFail: true, only: 'chrome' })
             .catch(function (errs) {
                 expect(errs[0].indexOf(
-                    '- Error in beforeEach hook - ' +
+                    '- Error in fixture.beforeEach hook - ' +
                     'Error on page "http://localhost:3000/fixtures/api/es-next/before-after-each-hooks/pages/index.html":  ' +
                     'Uncaught Error: [beforeEach]'
                 )).eql(0);

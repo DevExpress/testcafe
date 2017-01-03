@@ -30,7 +30,7 @@ describe('[Raw API] beforeEach/afterEach hooks', function () {
             .catch(function (errs) {
 
                 expect(errs[0]).contains(
-                    '- Error in beforeEach hook - ' +
+                    '- Error in fixture.beforeEach hook - ' +
                     'Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
                     'Uncaught Error: [beforeEach]'
                 );
