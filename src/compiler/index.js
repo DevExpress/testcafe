@@ -13,7 +13,7 @@ import promisify from '../utils/promisify';
 var readFile = promisify(fs.readFile);
 
 const SOURCE_CHUNK_LENGTH      = 1000;
-const BORROWED_TEST_PROPERTIES = ['skip', 'only', 'pageUrl'];
+const BORROWED_TEST_PROPERTIES = ['skip', 'only', 'pageUrl', 'authCredentials'];
 
 export default class Compiler {
     constructor (sources) {

@@ -503,6 +503,54 @@ describe('Compiler', function () {
                 });
         });
 
+        it('Should raise an error if test.before is not a function', function () {
+            var testfile = resolve('test/server/data/test-suites/test-before-is-not-a-function/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'test.before hook is expected to be a string or a function, but it was number.',
+
+                        callsite: '   1 |fixture `Fixture`;\n' +
+                                  '   2 |\n' +
+                                  " > 3 |test.before(123)('Some test', () => {\n" +
+                                  '   4 |\n' +
+                                  '   5 |});\n' +
+                                  '   6 |'
+                    });
+                });
+        });
+
+        it('Should raise an error if test.after is not a function', function () {
+            var testfile = resolve('test/server/data/test-suites/test-after-is-not-a-function/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'test.after hook is expected to be a string or a function, but it was number.',
+
+                        callsite: '   1 |fixture `Fixture`;\n' +
+                                  '   2 |\n' +
+                                  " > 3 |test.after(123)('Some test', () => {\n" +
+                                  '   4 |\n' +
+                                  '   5 |});\n' +
+                                  '   6 |'
+                    });
+                });
+        });
+
         it('Should raise an error if httpAuth takes a wrong argument', function () {
             var credentialsInNotObject = resolve('test/server/data/test-suites/http-auth/credentials-is-not-an-object.js');
             var passIsNotString        = resolve('test/server/data/test-suites/http-auth/password-is-not-a-string.js');

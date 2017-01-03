@@ -2,6 +2,7 @@ import { APIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 import handleTagArgs from '../../utils/handle-tag-args';
 import { delegateAPI, getDelegatedAPIList } from '../../utils/delegated-api';
+import { assertObject, assertString } from '../../errors/runtime/type-assertions';
 import TestController from '../test-controller';
 import clientFnTestRunTracker from '../../client-functions/test-run-tracker';
 import processTestFnError from '../../errors/process-test-fn-error';
@@ -13,10 +14,11 @@ export default class TestingUnit {
     constructor (globals) {
         this.globals = globals;
 
-        this.name    = null;
-        this.pageUrl = null;
-        this.only    = false;
-        this.skip    = false;
+        this.name            = null;
+        this.pageUrl         = null;
+        this.authCredentials = null;
+        this.only            = false;
+        this.skip            = false;
 
         var unit = this;
 
@@ -56,6 +58,21 @@ export default class TestingUnit {
 
             this.pageUrl = protocol + this.pageUrl;
         }
+
+        return this.apiOrigin;
+    }
+
+    _httpAuth$ (credentials) {
+        assertObject('httpAuth', 'credentials', credentials);
+        assertString('httpAuth', 'credentials.username', credentials.username);
+        assertString('httpAuth', 'credentials.password', credentials.password);
+
+        if (credentials.domain)
+            assertString('httpAuth', 'credentials.domain', credentials.domain);
+        if (credentials.workstation)
+            assertString('httpAuth', 'credentials.workstation', credentials.workstation);
+
+        this.authCredentials = credentials;
 
         return this.apiOrigin;
     }

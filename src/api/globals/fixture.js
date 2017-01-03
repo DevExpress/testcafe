@@ -1,6 +1,5 @@
 import { APIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
-import { assertObject, assertString } from '../../errors/runtime/type-assertions';
 import handleTagArgs from '../../utils/handle-tag-args';
 import TestingUnit from './testing-unit';
 
@@ -14,7 +13,6 @@ export default class Fixture extends TestingUnit {
 
         this.beforeEachFn    = null;
         this.afterEachFn     = null;
-        this.authCredentials = null;
 
         return this.apiOrigin;
     }
@@ -29,21 +27,6 @@ export default class Fixture extends TestingUnit {
 
         this.name                   = name;
         this.globals.currentFixture = this;
-
-        return this.apiOrigin;
-    }
-
-    _httpAuth$ (credentials) {
-        assertObject('httpAuth', 'credentials', credentials);
-        assertString('httpAuth', 'credentials.username', credentials.username);
-        assertString('httpAuth', 'credentials.password', credentials.password);
-
-        if (credentials.domain)
-            assertString('httpAuth', 'credentials.domain', credentials.domain);
-        if (credentials.workstation)
-            assertString('httpAuth', 'credentials.workstation', credentials.workstation);
-
-        this.authCredentials = credentials;
 
         return this.apiOrigin;
     }
