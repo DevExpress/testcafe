@@ -52,6 +52,8 @@ export default class TestRun extends Session {
         this.pendingRequest   = null;
         this.pendingPageError = null;
 
+        this.ctxStorage = {};
+
         this.errs = [];
 
         this.lastDriverStatusId       = null;

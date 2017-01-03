@@ -17,12 +17,39 @@ test('Test2', async t => {
     await t.click('#test');
 });
 
-test('Test3', async t => {
-    await t.click('#test');
-}).before(async t => {
-    await t.click('#testBefore');
-}).after(async t => {
-    await t
-        .click('#testAfter')
-        .click('#failAndReport');
-});
+test
+    .before(async t => {
+        await t.click('#testBefore');
+    })
+    ('Test3', async t => {
+        await t.click('#test');
+    })
+    .after(async t => {
+        await t
+            .click('#testAfter')
+            .click('#failAndReport');
+    });
+
+test
+    .before(async t => {
+        t.ctx.val = {
+            browsers: [],
+            steps:    []
+        };
+
+        t.ctx.val.browsers.push(await t.eval(()=>navigator.userAgent));
+        t.ctx.val.steps.push('before');
+    })
+    ('t.ctx', async t => {
+        // NOTE: check that context is correctly exposed in chained calls
+        const ctx = t.click('#test').ctx;
+
+        ctx.val.browsers.push(await t.eval(()=>navigator.userAgent));
+        ctx.val.steps.push('test');
+    })
+    .after(async t => {
+        t.ctx.val.browsers.push(await t.eval(()=>navigator.userAgent));
+        t.ctx.val.steps.push('after');
+
+        throw `###${JSON.stringify(t.ctx.val)}###`;
+    });

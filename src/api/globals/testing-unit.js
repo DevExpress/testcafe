@@ -33,13 +33,13 @@ export default class TestingUnit {
         throw new Error('Not implemented');
     }
 
-    _only$FLAG () {
+    _only$getter () {
         this.only = true;
 
         return this.apiOrigin;
     }
 
-    _skip$FLAG () {
+    _skip$getter () {
         this.skip = true;
 
         return this.apiOrigin;

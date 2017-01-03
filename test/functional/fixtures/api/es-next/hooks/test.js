@@ -1,4 +1,5 @@
 var expect = require('chai').expect;
+var uniq   = require('lodash').uniq;
 
 // NOTE: we run tests in chrome only, because we mainly test server API functionality.
 describe('[API] fixture.beforeEach/fixture.afterEach hooks', function () {
@@ -64,5 +65,27 @@ describe('[API] test.before/test.after hooks', function () {
                 expect(errs[0]).contains('[testBefore][test][testAfter]');
             });
     });
+});
 
+describe('[API] t.ctx', function () {
+    it('Should pass context object to tests and hooks', function () {
+        return runTests('./testcafe-fixtures/run-all.js', 't.ctx', { shouldFail: true, only: 'chrome,ie,firefox' })
+            .catch(function (errs) {
+                var browsers = [];
+
+                Object.keys(errs).forEach(function (browser) {
+                    var ctxJson = errs[browser][0].match(/###(.+)###/)[1];
+                    var ctx     = JSON.parse(ctxJson);
+
+                    // NOTE: check that we have same browser for each stage
+                    expect(uniq(ctx.browsers).length).eql(1);
+                    expect(ctx.steps).eql(['before', 'test', 'after']);
+
+                    browsers.push(ctx.browsers[0]);
+                });
+
+                // NOTE: check that each context is from different browsers
+                expect(uniq(browsers).length).eql(3);
+            });
+    });
 });

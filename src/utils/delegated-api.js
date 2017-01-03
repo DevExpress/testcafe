@@ -1,4 +1,4 @@
-const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$(FLAG)?$/;
+const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$(getter)?$/;
 
 export function getDelegatedAPIList (src) {
     return Object
@@ -8,9 +8,9 @@ export function getDelegatedAPIList (src) {
 
             if (match) {
                 return {
-                    srcProp: prop,
-                    apiProp: match[1],
-                    isFlag:  match[2]
+                    srcProp:  prop,
+                    apiProp:  match[1],
+                    isGetter: match[2]
                 };
             }
 
@@ -20,7 +20,7 @@ export function getDelegatedAPIList (src) {
 }
 
 export function delegateAPI (src, dest, apiList, proxyMethod, useDynamicMethodCtx) {
-    apiList.forEach(({ srcProp, apiProp, isFlag }) => {
+    apiList.forEach(({ srcProp, apiProp, isGetter }) => {
         var fn = function (...args) {
             if (proxyMethod)
                 proxyMethod();
@@ -30,7 +30,7 @@ export function delegateAPI (src, dest, apiList, proxyMethod, useDynamicMethodCt
             return ctx[srcProp](...args);
         };
 
-        if (isFlag)
+        if (isGetter)
             Object.defineProperty(dest, apiProp, { get: fn });
 
         else
