@@ -17,6 +17,6 @@ describe('[API] t.navigateTo', function () {
 
 describe('[API] test.page', function () {
     it('Should navigate to the specified url on test start', function () {
-        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Page directive', { only: 'chrome'});
+        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Page directive', { only: 'chrome' });
     });
 });

@@ -3,17 +3,18 @@ import { escape as escapeHtml } from 'lodash';
 import TYPE from './type';
 import TEST_RUN_STATE from '../../test-run/state';
 
+const SUBTITLES = {
+    [TEST_RUN_STATE.initial]:                 '',
+    [TEST_RUN_STATE.inFixtureBeforeEachHook]: '<span class="subtitle">Error in fixture.beforeEach hook</span>\n',
+    [TEST_RUN_STATE.inTestBeforeHook]:        '<span class="subtitle">Error in test.before hook</span>\n',
+    [TEST_RUN_STATE.inTest]:                  '',
+    [TEST_RUN_STATE.inFixtureAfterEachHook]:  '<span class="subtitle">Error in fixture.afterEach hook</span>\n',
+    [TEST_RUN_STATE.inTestAfterHook]:         '<span class="subtitle">Error in test.after hook</span>\n',
+};
+
 function markup (err, msgMarkup, opts = {}) {
-    var subtitle = '';
-
-    if (err.testRunState === TEST_RUN_STATE.inBeforeEach)
-        subtitle = `<span class="subtitle">Error in beforeEach hook</span>\n`;
-
-    else if (err.testRunState === TEST_RUN_STATE.inAfterEach)
-        subtitle = `<span class="subtitle">Error in afterEach hook</span>\n`;
-
     msgMarkup = dedent(`
-        ${subtitle}<div class="message">${dedent(msgMarkup)}</div>
+        ${SUBTITLES[err.testRunState]}<div class="message">${dedent(msgMarkup)}</div>
 
         <strong>Browser:</strong> <span class="user-agent">${err.userAgent}</span>
     `);

@@ -38,6 +38,7 @@ export default {
     valueIsNotAnObject:                  '{smthg} is expected to be an object, but it was {type}.',
     valueIsNotAString:                   '{smthg} is expected to be a string, but it was {type}.',
     valueIsNotAStringOrRegExp:           '{smthg} is expected to be a string or a regular expression, but it was {type}.',
+    valueIsNotAFunction:                 '{smthg} is expected to be a function, but it was {type}.',
     valueIsNotAFunctionOrString:         '{smthg} is expected to be a string or a function, but it was {type}.',
     valueIsNotAFunctionOrStringOrNumber: '{smthg} is expected to be a string, function or a number but it was {type}.',
     unableToOpenBrowser:                 'Was unable to open the browser "{alias}" due to error.\n\n{errMessage}'

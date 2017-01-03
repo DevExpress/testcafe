@@ -14,7 +14,7 @@ describe('[API] beforeEach/afterEach hooks', function () {
                 expect(errs[0]).eql(test1Err);
 
                 expect(errs[0].indexOf(
-                    '- Error in afterEach hook - ' +
+                    '- Error in fixture.afterEach hook - ' +
                     'Error on page "http://localhost:3000/fixtures/api/es-next/before-after-each-hooks/pages/index.html":  ' +
                     'Uncaught Error: [beforeEach][test][afterEach]'
                 )).eql(0);
@@ -45,7 +45,7 @@ describe('[API] beforeEach/afterEach hooks', function () {
                 )).eql(0);
 
                 expect(errs[1].indexOf(
-                    '- Error in afterEach hook - ' +
+                    '- Error in fixture.afterEach hook - ' +
                     'Error on page "http://localhost:3000/fixtures/api/es-next/before-after-each-hooks/pages/index.html":  ' +
                     'Uncaught Error: [beforeEach][afterEach]'
                 )).eql(0);

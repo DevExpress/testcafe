@@ -14,7 +14,7 @@ describe('[Raw API] beforeEach/afterEach hooks', function () {
                 expect(errs[0]).eql(test1Err);
 
                 expect(errs[0]).contains(
-                    '- Error in afterEach hook - ' +
+                    '- Error in fixture.afterEach hook - ' +
                     'Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
                     'Uncaught Error: [beforeEach][test][afterEach]'
                 );
@@ -43,7 +43,7 @@ describe('[Raw API] beforeEach/afterEach hooks', function () {
             .catch(function (errs) {
                 expect(errs[0]).to.contains('Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
                                             'Uncaught Error: [beforeEach]');
-                expect(errs[1]).to.contains('- Error in afterEach hook - ' +
+                expect(errs[1]).to.contains('- Error in fixture.afterEach hook - ' +
                                             'Error on page "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html":  ' +
                                             'Uncaught Error: [beforeEach][afterEach]');
             });

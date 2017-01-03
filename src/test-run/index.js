@@ -145,19 +145,34 @@ export default class TestRun extends Session {
         return !this._addPendingPageErrorIfAny();
     }
 
-    async start () {
-        var beforeEachFn = this.test.fixture.beforeEachFn;
-        var afterEachFn  = this.test.fixture.afterEachFn;
+    async _runBeforeHook () {
+        if (this.test.beforeFn)
+            return await this._executeTestFn(STATE.inTestBeforeHook, this.test.beforeFn);
 
+        if (this.test.fixture.beforeEachFn)
+            return await this._executeTestFn(STATE.inFixtureBeforeEachHook, this.test.fixture.beforeEachFn);
+
+        return true;
+    }
+
+    async _runAfterHook () {
+        if (this.test.afterFn)
+            return await this._executeTestFn(STATE.inTestAfterHook, this.test.afterFn);
+
+        if (this.test.fixture.afterEachFn)
+            return await this._executeTestFn(STATE.inFixtureAfterEachHook, this.test.fixture.afterEachFn);
+
+        return true;
+    }
+
+    async start () {
         TestRun.activeTestRuns[this.id] = this;
 
         this.emit('start');
 
-        if (!beforeEachFn || await this._executeTestFn(STATE.inBeforeEach, beforeEachFn)) {
+        if (await this._runBeforeHook()) {
             await this._executeTestFn(STATE.inTest, this.test.fn);
-
-            if (afterEachFn)
-                await this._executeTestFn(STATE.inAfterEach, afterEachFn);
+            await this._runAfterHook();
         }
 
         await this.executeCommand(new TestDoneCommand());
@@ -288,9 +303,9 @@ export default class TestRun extends Session {
 
     static _transformResizeWindowToFitDeviceCommand (command) {
         var { landscapeWidth, portraitWidth } = getViewportSize(command.device);
-        var portrait = command.options.portraitOrientation;
-        var width    = portrait ? portraitWidth : landscapeWidth;
-        var height   = portrait ? landscapeWidth : portraitWidth;
+        var portrait                          = command.options.portraitOrientation;
+        var width                             = portrait ? portraitWidth : landscapeWidth;
+        var height                            = portrait ? landscapeWidth : portraitWidth;
 
         return new ResizeWindowCommand({ width, height });
     }

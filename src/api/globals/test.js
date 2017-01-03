@@ -1,6 +1,7 @@
 import { APIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 import TestingUnit from './testing-unit';
+import { assertFunction } from '../../errors/runtime/type-assertions';
 
 export default class Test extends TestingUnit {
     constructor (globals) {
@@ -8,7 +9,9 @@ export default class Test extends TestingUnit {
 
         this.fixture = globals.currentFixture;
 
-        this.fn = null;
+        this.fn       = null;
+        this.beforeFn = null;
+        this.afterFn  = null;
 
         return this.apiOrigin;
     }
@@ -29,6 +32,22 @@ export default class Test extends TestingUnit {
 
         if (this.globals.collectedTests.indexOf(this) < 0)
             this.globals.collectedTests.push(this);
+
+        return this.apiOrigin;
+    }
+
+    _before$ (fn) {
+        assertFunction('before', 'test.before hook', fn);
+
+        this.beforeFn = TestingUnit._wrapTestFunction(fn);
+
+        return this.apiOrigin;
+    }
+
+    _after$ (fn) {
+        assertFunction('after', 'test.after hook', fn);
+
+        this.afterFn = TestingUnit._wrapTestFunction(fn);
 
         return this.apiOrigin;
     }
