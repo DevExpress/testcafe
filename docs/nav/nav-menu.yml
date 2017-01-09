@@ -30,7 +30,7 @@
   content:
   - name: Test Code Structure
     url: /documentation/test-api/test-code-structure.md
-    content: 
+    content:
     - name: Fixtures
       url: /documentation/test-api/test-code-structure.md#fixtures
       content:
@@ -123,7 +123,7 @@
     - name: Test Static Html Pages
       url: /documentation/recipes/test-static-html-pages.md
     - name: Testing on Remote Computers and Mobile Devices
-      url: /documentation/recipes/testing-on-remote-computers-and-mobile-devices.html
+      url: /documentation/recipes/testing-on-remote-computers-and-mobile-devices.md
     - name: Using Page Model
       url: /documentation/recipes/using-page-model.md
     - name: Using TestCafe with Gulp
