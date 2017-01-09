@@ -74,14 +74,17 @@ describe('[API] t.ctx', function () {
                 var browsers = [];
 
                 Object.keys(errs).forEach(function (browser) {
-                    var ctxJson = errs[browser][0].match(/###(.+)###/)[1];
-                    var ctx     = JSON.parse(ctxJson);
+                    var dataJson = errs[browser][0].match(/###(.+)###/)[1];
+                    var data     = JSON.parse(dataJson);
+
+                    // NOTE: check context assignment
+                    expect(data.ctx).eql(123);
 
                     // NOTE: check that we have same browser for each stage
-                    expect(uniq(ctx.browsers).length).eql(1);
-                    expect(ctx.steps).eql(['before', 'test', 'after']);
+                    expect(uniq(data.val.browsers).length).eql(1);
+                    expect(data.val.steps).eql(['before', 'test', 'after']);
 
-                    browsers.push(ctx.browsers[0]);
+                    browsers.push(data.val.browsers[0]);
                 });
 
                 // NOTE: check that each context is from different browsers

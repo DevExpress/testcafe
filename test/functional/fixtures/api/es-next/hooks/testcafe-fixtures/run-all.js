@@ -51,5 +51,9 @@ test
         t.ctx.val.browsers.push(await t.eval(()=>navigator.userAgent));
         t.ctx.val.steps.push('after');
 
-        throw `###${JSON.stringify(t.ctx.val)}###`;
+        var val = t.ctx.val;
+
+        t.ctx = 123;
+
+        throw `###${JSON.stringify({ val, ctx: t.ctx })}###`;
     });

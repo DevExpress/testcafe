@@ -1,4 +1,4 @@
-const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$(getter)?$/;
+const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$(getter|setter)?$/;
 
 export function getDelegatedAPIList (src) {
     return Object
@@ -10,7 +10,7 @@ export function getDelegatedAPIList (src) {
                 return {
                     srcProp:  prop,
                     apiProp:  match[1],
-                    isGetter: match[2]
+                    accessor: match[2]
                 };
             }
 
@@ -20,7 +20,7 @@ export function getDelegatedAPIList (src) {
 }
 
 export function delegateAPI (src, dest, apiList, proxyMethod, useDynamicMethodCtx) {
-    apiList.forEach(({ srcProp, apiProp, isGetter }) => {
+    apiList.forEach(({ srcProp, apiProp, accessor }) => {
         var fn = function (...args) {
             if (proxyMethod)
                 proxyMethod();
@@ -30,8 +30,11 @@ export function delegateAPI (src, dest, apiList, proxyMethod, useDynamicMethodCt
             return ctx[srcProp](...args);
         };
 
-        if (isGetter)
-            Object.defineProperty(dest, apiProp, { get: fn });
+        if (accessor === 'getter')
+            Object.defineProperty(dest, apiProp, { get: fn, configurable: true });
+
+        else if (accessor === 'setter')
+            Object.defineProperty(dest, apiProp, { set: fn, configurable: true });
 
         else
             dest[apiProp] = fn;

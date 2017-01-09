@@ -44,7 +44,6 @@ export default class TestController {
         this.testRun              = testRun;
         this.executionChain       = Promise.resolve();
         this.callsiteWithoutAwait = null;
-        this.ctxStorage           = testRun.ctxStorage;
     }
 
     // NOTE: we track missing `awaits` by exposing a special custom Promise to user code.
@@ -116,7 +115,13 @@ export default class TestController {
     // methods in chained wrappers then we will have callsite for the wrapped method
     // in this file instead of chained method callsite in user code.
     _ctx$getter () {
-        return this.ctxStorage;
+        return this.testRun.ctx;
+    }
+
+    _ctx$setter (val) {
+        this.testRun.ctx = val;
+
+        return this.testRun.ctx;
     }
 
     _click$ (selector, options) {
