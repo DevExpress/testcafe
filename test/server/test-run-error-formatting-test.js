@@ -23,7 +23,7 @@ var UncaughtErrorOnPage                               = require('../../lib/error
 var UncaughtErrorInTestCode                           = require('../../lib/errors/test-run').UncaughtErrorInTestCode;
 var UncaughtErrorInClientFunctionCode                 = require('../../lib/errors/test-run').UncaughtErrorInClientFunctionCode;
 var UncaughtNonErrorObjectInTestCode                  = require('../../lib/errors/test-run').UncaughtNonErrorObjectInTestCode;
-var UncaughtErrorInSnapshotExtensionCode              = require('../../lib/errors/test-run').UncaughtErrorInSnapshotExtensionCode;
+var UncaughtErrorInCustomDOMPropertyCode              = require('../../lib/errors/test-run').UncaughtErrorInCustomDOMPropertyCode;
 var ActionElementNotFoundError                        = require('../../lib/errors/test-run').ActionElementNotFoundError;
 var ActionElementIsInvisibleError                     = require('../../lib/errors/test-run').ActionElementIsInvisibleError;
 var ActionSelectorMatchesWrongNodeTypeError           = require('../../lib/errors/test-run').ActionSelectorMatchesWrongNodeTypeError;
@@ -153,8 +153,8 @@ describe('Error formatting', function () {
             assertErrorMessage('uncaught-non-error-object-in-test-code', new UncaughtNonErrorObjectInTestCode('Hey ya!'));
         });
 
-        it('Should format "uncaughtErrorInSnapshotExtensionCode" message', function () {
-            assertErrorMessage('uncaught-error-in-snapshot-extension-code', new UncaughtErrorInSnapshotExtensionCode(testCallsite, new Error('Custom script error'), 'prop'));
+        it('Should format "uncaughtErrorInAddCustomDOMProperties" message', function () {
+            assertErrorMessage('uncaught-error-in-add-custom-dom-properties-code', new UncaughtErrorInCustomDOMPropertyCode(testCallsite, new Error('Custom script error'), 'prop'));
         });
 
         it('Should format "actionElementNotFoundError" message', function () {

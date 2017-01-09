@@ -885,59 +885,59 @@ test('Selector filter origin node argument', async t => {
         }).id).eql('el3');
 });
 
-test('Selector `extend` method', async () => {
+test('Selector `extend` method', async t => {
     let el = Selector('rect')
-        .extend({
+        .addCustomDOMProperties({
             prop1: () => 42,
             prop2: node => 'tagName: ' + node.tagName
         });
 
-    expect(await el.prop1).eql(42);
-    expect(await el.parent().filter(() => true).prop2).eql('tagName: svg');
-    expect(await el.exists).to.be.true;
-    expect(await el.count).eql(1);
+    await t.expect(await el.prop1).eql(42)
+        .expect(await el.parent().filter(() => true).prop2).eql('tagName: svg')
+        .expect(await el.exists).ok()
+        .expect(await el.count).eql(1);
 
-    el = el.extend({
+    el = el.addCustomDOMProperties({
         prop2: () => 'other value',
         prop3: () => 'test'
     });
 
-    expect(await el.prop1).eql(42);
-    expect(await el.prop2).eql('other value');
-    expect(await el.prop3).eql('test');
+    await t.expect(await el.prop1).eql(42)
+        .expect(await el.prop2).eql('other value')
+        .expect(await el.prop3).eql('test');
 
     const elSnapshot = await Selector('rect')
-        .extend({
+        .addCustomDOMProperties({
             prop1: () => 1,
             prop2: () => 2
         })();
 
-    expect(elSnapshot.prop1).eql(1);
-    expect(elSnapshot.prop2).eql(2);
+    await t.expect(elSnapshot.prop1).eql(1)
+        .expect(elSnapshot.prop2).eql(2);
 
-    const nonExistingElement = await Selector('nonExistingElement').extend({
+    const nonExistingElement = await Selector('nonExistingElement').addCustomDOMProperties({
         prop: () => 'value'
     })();
 
-    expect(nonExistingElement).eql(null);
+    await t.expect(nonExistingElement).eql(null);
 
-    const getSecondEl = Selector('div').extend({
+    const getSecondEl = Selector('div').addCustomDOMProperties({
         prop: () => 'second'
     }).nth(1);
 
-    expect(await getSecondEl.prop).eql('second');
+    await t.expect(await getSecondEl.prop).eql('second');
 });
 
-test('Snapshot extend method - argument is not object', async () => {
-    await Selector('rect').extend(42);
+test('Add custom DOM properties method - argument is not object', async () => {
+    await Selector('rect').addCustomDOMProperties(42);
 });
 
-test('Snapshot extend method - extension is not function', async () => {
-    await Selector('rect').extend({ prop1: 1, prop2: () => 42 });
+test('Add custom DOM properties method - property is not function', async () => {
+    await Selector('rect').addCustomDOMProperties({ prop1: 1, prop2: () => 42 });
 });
 
-test('Snapshot extend method - extension throws an error', async () => {
-    const el = Selector('rect').extend({
+test('Add custom DOM properties method - property throws an error', async () => {
+    const el = Selector('rect').addCustomDOMProperties({
         prop: () => {
             throw new Error('test');
         }

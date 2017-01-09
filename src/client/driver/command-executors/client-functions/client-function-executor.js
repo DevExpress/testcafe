@@ -6,12 +6,9 @@ import { UncaughtErrorInClientFunctionCode } from '../../../../errors/test-run';
 
 export default class ClientFunctionExecutor {
     constructor (command) {
-        this.command    = command;
-        this.replicator = createReplicator([new FunctionTransform()]);
-
+        this.command      = command;
+        this.replicator   = this._createReplicator();
         this.dependencies = this.replicator.decode(this.command.dependencies);
-
-        this._addReplicatorTransform();
 
         this.fn = evalFunction(this.command.fnCode, this.dependencies);
     }
@@ -47,8 +44,11 @@ export default class ClientFunctionExecutor {
     }
 
     //Overridable methods
-    _addReplicatorTransform () {
-        this.replicator.addTransforms([new ClientFunctionNodeTransform(this.command.instantiationCallsiteName)]);
+    _createReplicator () {
+        return createReplicator([
+            new ClientFunctionNodeTransform(this.command.instantiationCallsiteName),
+            new FunctionTransform()
+        ]);
     }
 
     _executeFn (args) {

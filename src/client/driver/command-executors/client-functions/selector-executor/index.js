@@ -2,7 +2,7 @@ import { Promise } from '../../../deps/hammerhead';
 import { delay, positionUtils, domUtils } from '../../../deps/testcafe-core';
 import { selectElement as selectElementUI } from '../../../deps/testcafe-ui';
 import ClientFunctionExecutor from '../client-function-executor';
-import { SelectorNodeTransform } from '../replicator';
+import { createReplicator, FunctionTransform, SelectorNodeTransform } from '../replicator';
 import './filter';
 
 const CHECK_ELEMENT_DELAY = 200;
@@ -38,12 +38,16 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
 
             this.timeout = Math.max(this.timeout - elapsed, 0);
         }
+
+        var customDOMProperties = this.dependencies && this.dependencies.customDOMProperties;
+
+        this.replicator.addTransforms([new SelectorNodeTransform(customDOMProperties)]);
     }
 
-    _addReplicatorTransform () {
-        var snapshotExtensions = this.dependencies && this.dependencies.snapshotExtensions;
-
-        this.replicator.addTransforms([new SelectorNodeTransform(snapshotExtensions)]);
+    _createReplicator () {
+        return createReplicator([
+            new FunctionTransform()
+        ]);
     }
 
     _checkElement (el, startTime, condition, createTimeoutError, reCheck) {

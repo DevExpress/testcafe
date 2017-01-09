@@ -103,15 +103,15 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         this._addBoundArgsSelectorGetter(resultPromise, args);
 
         // OPTIMIZATION: use buffer function as selector not to trigger lazy property ahead of time
-        addAPI(resultPromise, () => resultPromise.selector, SelectorBuilder, this.options.snapshotExtensions);
+        addAPI(resultPromise, () => resultPromise.selector, SelectorBuilder, this.options.customDOMProperties);
 
         return resultPromise;
     }
 
     getFunctionDependencies () {
-        var dependencies       = super.getFunctionDependencies();
-        var text               = this.options.text;
-        var snapshotExtensions = this.options.snapshotExtensions;
+        var dependencies        = super.getFunctionDependencies();
+        var text                = this.options.text;
+        var customDOMProperties = this.options.customDOMProperties;
 
         if (typeof text === 'string')
             text = new RegExp(escapeRe(text));
@@ -124,8 +124,8 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                 text:           text
             },
 
-            boundArgs:          this.options.boundArgs,
-            snapshotExtensions: snapshotExtensions
+            boundArgs:           this.options.boundArgs,
+            customDOMProperties: customDOMProperties
         });
     }
 
@@ -175,7 +175,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     _decorateFunction (selectorFn) {
         super._decorateFunction(selectorFn);
 
-        addAPI(selectorFn, () => selectorFn, SelectorBuilder, this.options.snapshotExtensions);
+        addAPI(selectorFn, () => selectorFn, SelectorBuilder, this.options.customDOMProperties);
     }
 
     _processResult (result, selectorArgs) {

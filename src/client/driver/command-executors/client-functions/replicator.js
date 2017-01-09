@@ -1,7 +1,7 @@
 import Replicator from 'replicator';
 import evalFunction from './eval-function';
 import { NodeSnapshot, ElementSnapshot } from './selector-executor/node-snapshots';
-import { DomNodeClientFunctionResultError, UncaughtErrorInSnapshotExtensionCode } from '../../../../errors/test-run';
+import { DomNodeClientFunctionResultError, UncaughtErrorInCustomDOMPropertyCode } from '../../../../errors/test-run';
 
 // NOTE: save original ctors because they may be overwritten by page code
 var Node     = window.Node;
@@ -39,18 +39,18 @@ export class FunctionTransform {
 }
 
 export class SelectorNodeTransform {
-    constructor (extensions) {
+    constructor (customDOMProperties) {
         this.type       = 'Node';
-        this.extensions = extensions || {};
+        this.customDOMProperties = customDOMProperties || {};
     }
 
     _extend (snapshot, node) {
-        Object.keys(this.extensions).forEach(prop => {
+        Object.keys(this.customDOMProperties).forEach(prop => {
             try {
-                snapshot[prop] = this.extensions[prop](node);
+                snapshot[prop] = this.customDOMProperties[prop](node);
             }
             catch (err) {
-                throw new UncaughtErrorInSnapshotExtensionCode(this.instantiationCallsiteName, err, prop);
+                throw new UncaughtErrorInCustomDOMPropertyCode(this.instantiationCallsiteName, err, prop);
             }
         });
     }

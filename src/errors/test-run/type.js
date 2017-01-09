@@ -8,7 +8,7 @@ export default {
     uncaughtErrorInTestCode:                           'uncaughtErrorInTestCode',
     uncaughtNonErrorObjectInTestCode:                  'uncaughtNonErrorObjectInTestCode',
     uncaughtErrorInClientFunctionCode:                 'uncaughtErrorInClientFunctionCode',
-    uncaughtErrorInSnapshotExtensionCode:              'uncaughtErrorInSnapshotExtensionCode',
+    uncaughtErrorInCustomDOMPropertyCode:              'uncaughtErrorInCustomDOMPropertyCode',
     missingAwaitError:                                 'missingAwaitError',
     actionIntegerOptionError:                          'actionIntegerOptionError',
     actionPositiveIntegerOptionError:                  'actionPositiveIntegerOptionError',

@@ -243,45 +243,45 @@ describe('[API] Selector', function () {
                 });
         });
 
-        it('Should raise error if snapshot extension argument is not object',
+        it('Should raise error if addCustomDOMProperties method argument is not object',
             function () {
-                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extend method - argument is not object', {
+                return runTests('./testcafe-fixtures/selector-test.js', 'Add custom DOM properties method - argument is not object', {
                     shouldFail: true,
                     only:       'chrome'
                 })
                     .catch(function (errs) {
                         expect(errs[0]).contains(
-                            '"extend" option is expected to be an object, but it was number.'
+                            '"addCustomDOMProperties" option is expected to be an object, but it was number.'
                         );
-                        expect(errs[0]).contains("> 932 |    await Selector('rect').extend(42);");
+                        expect(errs[0]).contains("> 932 |    await Selector('rect').addCustomDOMProperties(42);");
                     });
             }
         );
 
-        it('Should raise error if at least one of snapshot extensions is not function',
+        it('Should raise error if at least one of custom DOM properties is not function',
             function () {
-                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extend method - extension is not function', {
+                return runTests('./testcafe-fixtures/selector-test.js', 'Add custom DOM properties method - property is not function', {
                     shouldFail: true,
                     only:       'chrome'
                 })
                     .catch(function (errs) {
                         expect(errs[0]).contains(
-                            "Snapshot extension method \'prop1\' is expected to be a function, but it was number"
+                            "Custom DOM properties method \'prop1\' is expected to be a function, but it was number"
                         );
-                        expect(errs[0]).contains("> 936 |    await Selector('rect').extend({ prop1: 1, prop2: () => 42 });");
+                        expect(errs[0]).contains("> 936 |    await Selector('rect').addCustomDOMProperties({ prop1: 1, prop2: () => 42 });");
                     });
             }
         );
 
-        it('Should raise error if snapshot extension throws an error',
+        it('Should raise error if custom DOM property throws an error',
             function () {
-                return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot extend method - extension throws an error', {
+                return runTests('./testcafe-fixtures/selector-test.js', 'Add custom DOM properties method - property throws an error', {
                     shouldFail: true,
                     only:       'chrome'
                 })
                     .catch(function (errs) {
                         expect(errs[0]).contains(
-                            'An error occurred when trying to calculate a custom prop property:  Error: test'
+                            'An error occurred when trying to calculate a custom Selector property prop:  Error: test'
                         );
                         expect(errs[0]).contains('> 946 |    await el();');
                     });
