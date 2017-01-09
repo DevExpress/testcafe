@@ -33,24 +33,27 @@ Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in 
 
      ![Enable builds](../../images/travis-step-2-4.png)
 
-3. Add a `.travis.yml` configuration file to the root of your project. This file should contain parameters and commands that instruct Travis CI how to execute your builds. For more information, see [Customizing the Build](https://docs.travis-ci.com/user/customizing-the-build).
+3. Add a `.travis.yml` configuration file to the root of your project. This file contains parameters and commands that instruct Travis CI how to execute your builds. For more information, see [Customizing the Build](https://docs.travis-ci.com/user/customizing-the-build).
 
      For Node.js projects, the `.travis.yml` file can have the following content.
 
      ```yaml
      language: node_js
      node_js: "stable"
+  
+     before_install:
+        - stty cols 80
      ```
 
      Commit and push this file to your repository.
 
 ## Step 3 - Configure Travis to use Xvfb
 
-Travis CI uses Ubuntu Server virtual machines, that do not have regular graphical environment like GNOME or KDE installed, So you have to setup and use [Xvfb](https://www.x.org/archive/X11R7.6/doc/man/man1/Xvfb.1.xhtml) to run browsers headlessly. 
+Travis CI uses Ubuntu Server virtual machines, that do not have regular graphical environment like Unity, GNOME or KDE installed, So you have to setup and use [Xvfb](https://www.x.org/archive/X11R7.6/doc/man/man1/Xvfb.1.xhtml) to run browsers headlessly.
 
-You should add the following sections to your `.travis.yml` to start `Xvfb`:
+The following sections are required in your `.travis.yml` to start `Xvfb`:
 
-```
+```yaml
 dist: trusty
 sudo: required
 
@@ -61,7 +64,7 @@ addons:
      - google-chrome
     packages:
      - google-chrome-stable
-     
+
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
@@ -73,7 +76,7 @@ You can find more information about Travis and Xvfb in [this article](https://do
 ## Step 4 - Add the `test` script to package.json
 
 To test a project, Travis runs test scripts. For Node.js projects, the default test script is `npm test`.
-To tell npm how to run your tests, you need to add the `test` script to the project's package.json file. The script should contain a `testcafe` command to run tests on a Sauce Labs browser.
+To tell npm how to run your tests, add the `test` script to the project's package.json file. Use `testcafe` command in the script to run tests in Chrome and Firefox.
 
 ```text
 "scripts": {
@@ -83,13 +86,12 @@ To tell npm how to run your tests, you need to add the `test` script to the proj
 
 For more information on how to configure a test run using a `testcafe` command, see [Command Line Interface](../using-testcafe/command-line-interface.md).
 
-**Important:** If you are going to run tests for a website that is not deployed, the `test` script should also include commands to run the site. 
-Use the `--app` TestCafe option to specify a command that deploys the website locally.
-This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the server.
+**Note:** If your app requires starting a custom web server, use the `--app` TestCafe option to specify a command that starts your server.
+This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the app server.
 
 ```text
 "scripts": {
-  "test":  "testcafe chrome,firefox tests/index-test.js --app 'node server.js'"
+  "test":  "testcafe chrome,firefox tests/index-test.js --app \"node server.js\""
 }
 ```
 

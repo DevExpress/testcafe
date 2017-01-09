@@ -22,19 +22,22 @@ Install [http-server](https://github.com/indexzero/http-server) that will be use
 ## Step 3 - Add the `test` script to package.json
 
 The default test script, for Node.js projects is `npm test`.
-To tell npm how to run your tests, you need to add the `test` script to the project's package.json file.
+To tell npm how to run your tests, add the `test` script to the project's package.json file.
 Use the `--app` TestCafe option to provide a command that starts the local server.
 This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the server.
 
 ```json
 "scripts": {
-    "test": "testcafe chrome ./test/acceptance/** --app 'http-server ./dist -s'"
+    "test": "testcafe chrome ./test/acceptance/** --app \"http-server ./dist -s\""
 }
 ```
 
 This script contains the following commands.
 
-1. `"http-server ./dist -s"` - starts the local server at port `8080` with files from the `./dist` folder in silent mode
+1. `"http-server ./dist -s"` - starts the local server at port `8080` with files from the `./dist` folder in silent mode.
+ The contents of the`./dist` folder will be served at `http://localhost:8080`. So, if you want to test the `./dist/dir/page.html` page,
+ use `fixture('...').page('http://localhost:8080/dir/page.html')` in your fixture file.
+
 2. `"testcafe chrome ./test/acceptance/**"` - runs TestCafe tests from the `./test/acceptance` folder in Chrome after the server starts
 
 For more information on how to configure a test run using a `testcafe` command, see [Command Line Interface](../using-testcafe/command-line-interface.md).
