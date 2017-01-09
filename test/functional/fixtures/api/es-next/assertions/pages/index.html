@@ -45,6 +45,18 @@
             div.textContent = '42';
         }, 180);
     });
+
+    var value = 4;
+
+    Object.defineProperty(window, 'someVar', {
+        get: function () {
+            window.setTimeout(function () {
+                value = 2;
+            }, 400);
+
+            return value;
+        }
+    })
 </script>
 
 </body>

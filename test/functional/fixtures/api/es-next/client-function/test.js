@@ -108,7 +108,7 @@ describe('[API] ClientFunction', function () {
                     'ClientFunction cannot implicitly resolve the test run in context of which it should be executed.'
                 )).eql(0);
 
-                expect(errs[0]).contains(' > 43 |                fn();');
+                expect(errs[0]).contains(' > 43 |                await fn();');
             });
         });
 
