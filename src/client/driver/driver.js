@@ -14,7 +14,8 @@ import TEST_RUN_MESSAGES from '../../test-run/client-messages';
 import COMMAND_TYPE from '../../test-run/commands/type';
 import {
     isCommandRejectableByPageError,
-    isExecutableInTopWindowOnly
+    isExecutableInTopWindowOnly,
+    isVisualManipulationCommand
 } from '../../test-run/commands/utils';
 import {
     UncaughtErrorOnPage,
@@ -52,6 +53,7 @@ const EXECUTING_CLIENT_FUNCTION_DESCRIPTOR = 'testcafe|driver|executing-client-f
 const SELECTOR_EXECUTION_START_TIME        = 'testcafe|driver|selector-execution-start-time';
 const PENDING_PAGE_ERROR                   = 'testcafe|driver|pending-page-error';
 const ACTIVE_IFRAME_SELECTOR               = 'testcafe|driver|active-iframe-selector';
+const STOP_AFTER_NEXT_ACTION               = 'testcafe|driver|stop-after-next-action';
 const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;
 
 const ACTION_IFRAME_ERROR_CTORS = {
@@ -104,6 +106,10 @@ export default class Driver {
         preventRealEvents();
 
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
+    }
+
+    _isDebugging (command) {
+        return this.contextStorage.getItem(STOP_AFTER_NEXT_ACTION) && isVisualManipulationCommand(command);
     }
 
     // Error handling
@@ -225,16 +231,16 @@ export default class Driver {
 
                 return this.activeChildDriverLink.executeCommand(command);
             })
-            .then(status => this._onCommandExecutedInIframe(status))
-            .catch(err => this._onCommandExecutedInIframe(new DriverStatus({
+            .then(status => this._onCommandExecutedInIframe(command, status))
+            .catch(err => this._onCommandExecutedInIframe(command, new DriverStatus({
                 isCommandResult: true,
                 executionError:  err
             })));
     }
 
-    _onCommandExecutedInIframe (status) {
+    _onCommandExecutedInIframe (command, status) {
         this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, false);
-        this._onReady(status);
+        this._onReady(status, this._isDebugging(command));
     }
 
     _ensureChildDriverLink (iframeWindow, ErrorCtor) {
@@ -290,7 +296,7 @@ export default class Driver {
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
 
-                return this._onReady(driverStatus);
+                return this._onReady(driverStatus, this._isDebugging(command));
             });
     }
 
@@ -302,7 +308,10 @@ export default class Driver {
     }
 
     _onGetNativeDialogHistoryCommand () {
-        this._onReady(new DriverStatus({ isCommandResult: true, result: this.nativeDialogsTracker.appearedDialogs }));
+        this._onReady(new DriverStatus({
+            isCommandResult: true,
+            result:          this.nativeDialogsTracker.appearedDialogs
+        }));
     }
 
     _onNavigateToCommand (command) {
@@ -312,7 +321,7 @@ export default class Driver {
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
 
-                return this._onReady(driverStatus);
+                return this._onReady(driverStatus, this._isDebugging(command));
             });
     }
 
@@ -365,6 +374,16 @@ export default class Driver {
             });
     }
 
+    _onDebuggerCommand () {
+        this
+            .statusBar.setDebuggerStatus()
+            .then(stopAfterNextAction => {
+                this.contextStorage.setItem(STOP_AFTER_NEXT_ACTION, stopAfterNextAction);
+
+                this._onReady(new DriverStatus({ isCommandResult: true }));
+            });
+    }
+
     _onTestDone (status) {
         this.contextStorage.setItem(TEST_DONE_SENT_FLAG, true);
 
@@ -375,8 +394,19 @@ export default class Driver {
 
 
     // Routing
+    _onReady (status, debugging) {
+        if (debugging) {
+            this
+                .statusBar.setDebuggerStatus()
+                .then(stopAfterNextAction => {
+                    this.contextStorage.setItem(STOP_AFTER_NEXT_ACTION, stopAfterNextAction);
 
-    _onReady (status) {
+                    this._onReady(status);
+                });
+
+            return;
+        }
+
         this._sendStatus(status)
             .then(command => {
                 if (command)
@@ -391,6 +421,9 @@ export default class Driver {
     _executeCommand (command) {
         if (command.type === COMMAND_TYPE.testDone)
             this._onTestDone(new DriverStatus({ isCommandResult: true }));
+
+        else if (command.type === COMMAND_TYPE.debugger)
+            this._onDebuggerCommand();
 
         else if (command.type === COMMAND_TYPE.prepareBrowserManipulation)
             this._onPrepareBrowserManipulationCommand();
@@ -452,6 +485,8 @@ export default class Driver {
 
     // API
     start () {
+        var status = null;
+
         this.contextStorage       = new ContextStorage(window, this.testRunId);
         this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.dialogHandler);
 
@@ -459,7 +494,12 @@ export default class Driver {
 
         this.statusBar = new StatusBar(this.userAgent, this.fixtureName, this.testName);
 
-        this.readyPromise.then(() => this.statusBar.resetPageLoadingStatus());
+        this.readyPromise.then(() => {
+            this.statusBar.resetPageLoadingStatus();
+
+            if (this.contextStorage.getItem(STOP_AFTER_NEXT_ACTION))
+                this._onReady(status, true);
+        });
 
         var pendingStatus = this.contextStorage.getItem(PENDING_STATUS);
 
@@ -483,11 +523,12 @@ export default class Driver {
         var inCommandExecution = this.contextStorage.getItem(this.COMMAND_EXECUTING_FLAG) ||
                                  this.contextStorage.getItem(this.EXECUTING_IN_IFRAME_FLAG);
 
-        var status = pendingStatus || new DriverStatus({ isCommandResult: inCommandExecution });
+        status = pendingStatus || new DriverStatus({ isCommandResult: inCommandExecution });
 
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
         this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, false);
 
-        this._onReady(status);
+        if (!this.contextStorage.getItem(STOP_AFTER_NEXT_ACTION))
+            this._onReady(status);
     }
 }

@@ -69,3 +69,9 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
     }
 }
 
+export class DebuggerCommand {
+    constructor () {
+        this.type = TYPE.debugger;
+    }
+}
+

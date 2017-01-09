@@ -382,6 +382,77 @@
                     color: #36B6E5;
                     line-height: 27px;
                 }
+
+                .buttons {
+                    height: 47px;
+                    margin-top: 10px;
+                    display: inline-block;
+                    position: absolute;
+                    right: 10px;
+                    line-height: 0;
+
+                    .button {
+                        .rounded-corners(3px);
+
+                        font-size: 12px;
+                        width: auto;
+                        padding: 0 15px 0 15px;
+                        float: none;
+                        display: inline-block;
+
+                        height: 30px;
+                        line-height: 26px;
+                        border: none !important;
+                        white-space: pre;
+                        word-wrap: normal;
+                        text-transform: none;
+
+                        font-family: Segoe UI, Helvetica, sans-serif;
+                        color: #ffffff !important;
+                        text-align: center !important;
+                        cursor: pointer !important;
+
+                        & * {
+                            cursor: pointer !important;
+                        }
+
+                        .button-icon {
+                            .sprite-icon();
+
+                            vertical-align: middle;
+                            display: inline-block;
+                            cursor: pointer;
+                            margin: 6px 4px 6px 0;
+                        }
+
+                        span {
+                            position: relative;
+                            top: 1px;
+                            padding-right: 4px;
+                        }
+
+                        &.continue {
+                            background-color: #51B7E7;
+
+                            .button-icon {
+                                width: 18px;
+                                height: 18px;
+                                background-position: 0 -64px;
+                            }
+                        }
+
+                        &.next-action {
+                            background-color: #38A3D5;
+                            margin-left: 5px;
+
+                            .button-icon {
+                                width: 25px;
+                                height: 18px;
+                                background-position: -15px -64px;
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -438,6 +509,42 @@
             }
             .status-container {
                 display: none;
+            }
+        }
+
+        &.icon-buttons {
+            .container {
+                .info-container {
+                    width: 40px;
+
+                    .icon {
+                        margin-right: 0;
+                    }
+
+                    .fixture-container {
+                        display: none;
+                    }
+                }
+            }
+            .status-container > .status {
+                display: none;
+            }
+        }
+
+        &.only-buttons{
+            .info-container{
+                display: none;
+            }
+
+            .status-container {
+                .status{
+                    display: none;
+                }
+                .buttons {
+                    left: 0;
+                    right: 0;
+                    text-align: center !important;
+                }
             }
         }
 

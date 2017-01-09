@@ -31,5 +31,6 @@ export default {
     switchToMainWindow:         'switch-to-main-window',
     setNativeDialogHandler:     'set-native-dialog-handler',
     getNativeDialogHistory:     'get-native-dialog-history',
+    debugger:                   'debugger',
     testDone:                   'test-done'
 };

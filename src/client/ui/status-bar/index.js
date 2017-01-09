@@ -8,32 +8,42 @@ var Promise        = hammerhead.Promise;
 var shadowUI       = hammerhead.shadowUI;
 var nativeMethods  = hammerhead.nativeMethods;
 var messageSandbox = hammerhead.eventSandbox.message;
+var browserUtils   = hammerhead.utils.browser;
 
 var styleUtils = testCafeCore.styleUtils;
 var eventUtils = testCafeCore.eventUtils;
 var domUtils   = testCafeCore.domUtils;
 
 
-const STATUS_BAR_CLASS              = 'status-bar';
-const CONTAINER_CLASS               = 'container';
-const ICON_CLASS                    = 'icon';
-const INFO_CONTAINER_CLASS          = 'info-container';
-const FIXTURE_CONTAINER_CLASS       = 'fixture-container';
-const FIXTURE_DIV_CLASS             = 'fixture';
-const USER_AGENT_DIV_CLASS          = 'user-agent';
-const STATUS_CONTAINER_CLASS        = 'status-container';
-const STATUS_DIV_CLASS              = 'status';
-const ONLY_ICON_CLASS               = 'only-icon';
-const ICON_AND_STATUS_CLASS         = 'icon-status';
-const WAITING_ELEMENT_FAILED_CLASS  = 'waiting-element-failed';
-const WAITING_ELEMENT_SUCCESS_CLASS = 'waiting-element-success';
-const LOADING_PAGE_TEXT             = 'Loading Web Page...';
-const WAITING_FOR_ELEMENT_TEXT      = 'Waiting for an element to appear...';
-const MIDDLE_WINDOW_WIDTH           = 670;
-const SMALL_WINDOW_WIDTH            = 380;
-const SHOWING_DELAY                 = 300;
-const ANIMATION_DELAY               = 500;
-const ANIMATION_UPDATE_INTERVAL     = 10;
+const STATUS_BAR_CLASS                = 'status-bar';
+const CONTAINER_CLASS                 = 'container';
+const ICON_CLASS                      = 'icon';
+const INFO_CONTAINER_CLASS            = 'info-container';
+const FIXTURE_CONTAINER_CLASS         = 'fixture-container';
+const FIXTURE_DIV_CLASS               = 'fixture';
+const USER_AGENT_DIV_CLASS            = 'user-agent';
+const STATUS_CONTAINER_CLASS          = 'status-container';
+const BUTTONS_CLASS                   = 'buttons';
+const BUTTON_ICON_CLASS               = 'button-icon';
+const CONTINUE_BUTTON_CLASS           = 'continue';
+const NEXT_ACTION_CLASS               = 'next-action';
+const STATUS_DIV_CLASS                = 'status';
+const ONLY_ICON_CLASS                 = 'only-icon';
+const ONLY_BUTTONS_CLASS              = 'only-buttons';
+const ICON_AND_BUTTONS_CLASS          = 'icon-buttons';
+const ICON_AND_STATUS_CLASS           = 'icon-status';
+const WAITING_ELEMENT_FAILED_CLASS    = 'waiting-element-failed';
+const WAITING_ELEMENT_SUCCESS_CLASS   = 'waiting-element-success';
+const LOADING_PAGE_TEXT               = 'Loading Web Page...';
+const WAITING_FOR_ELEMENT_TEXT        = 'Waiting for an element to appear...';
+const DEBUGGING_TEXT                  = 'Debugging test...';
+const MIDDLE_WINDOW_WIDTH             = 720;
+const SMALL_WINDOW_WIDTH              = 380;
+const SMALL_WINDOW_WIDTH_IN_DEBUGGING = 540;
+const ONLY_BUTTONS_WIDTH              = 330;
+const SHOWING_DELAY                   = 300;
+const ANIMATION_DELAY                 = 500;
+const ANIMATION_UPDATE_INTERVAL       = 10;
 
 
 export default class StatusBar {
@@ -47,7 +57,10 @@ export default class StatusBar {
         this.infoContainer    = null;
         this.icon             = null;
         this.fixtureContainer = null;
+        this.continueButton   = null;
+        this.nextActionButton = null;
         this.statusDiv        = null;
+        this.buttons          = null;
 
         this.progressBar       = null;
         this.animationInterval = null;
@@ -55,6 +68,7 @@ export default class StatusBar {
         this.created           = false;
         this.showing           = false;
         this.hidding           = false;
+        this.debugging         = false;
 
         this._createBeforeReady();
         this._initChildListening();
@@ -97,6 +111,36 @@ export default class StatusBar {
 
         shadowUI.addClass(this.statusDiv, STATUS_DIV_CLASS);
         statusContainer.appendChild(this.statusDiv);
+
+        this.buttons = document.createElement('div');
+        shadowUI.addClass(this.buttons, BUTTONS_CLASS);
+        statusContainer.appendChild(this.buttons);
+
+        this.continueButton   = this._createButton('Continue Test', CONTINUE_BUTTON_CLASS);
+        this.nextActionButton = this._createButton('Next Action', NEXT_ACTION_CLASS);
+    }
+
+    _createButton (text, className) {
+        var button = document.createElement('div');
+        var icon   = document.createElement('div');
+        var span   = document.createElement('span');
+
+        span.textContent = text;
+
+        shadowUI.addClass(button, 'button');
+        shadowUI.addClass(button, className);
+        shadowUI.addClass(icon, BUTTON_ICON_CLASS);
+
+        if (browserUtils.isSafari) {
+            span.style.position = 'relative';
+            span.style.top      = '1px';
+        }
+
+        button.appendChild(icon);
+        button.appendChild(span);
+        this.buttons.appendChild(button);
+
+        return button;
     }
 
     _create () {
@@ -135,21 +179,46 @@ export default class StatusBar {
     }
 
     _setSizeStyle (windowWidth) {
+        var smallWidth = this.debugging ? SMALL_WINDOW_WIDTH_IN_DEBUGGING : SMALL_WINDOW_WIDTH;
+
         if (windowWidth > MIDDLE_WINDOW_WIDTH) {
             shadowUI.removeClass(this.statusBar, ONLY_ICON_CLASS);
+            shadowUI.removeClass(this.statusBar, ONLY_BUTTONS_CLASS);
+            shadowUI.removeClass(this.statusBar, ICON_AND_BUTTONS_CLASS);
             shadowUI.removeClass(this.statusBar, ICON_AND_STATUS_CLASS);
         }
-        else if (windowWidth < MIDDLE_WINDOW_WIDTH && windowWidth > SMALL_WINDOW_WIDTH) {
+        else if (windowWidth < MIDDLE_WINDOW_WIDTH && windowWidth > smallWidth) {
             shadowUI.removeClass(this.statusBar, ONLY_ICON_CLASS);
+            shadowUI.removeClass(this.statusBar, ONLY_BUTTONS_CLASS);
+            shadowUI.removeClass(this.statusBar, ICON_AND_BUTTONS_CLASS);
             shadowUI.addClass(this.statusBar, ICON_AND_STATUS_CLASS);
         }
-        else if (windowWidth < SMALL_WINDOW_WIDTH) {
+        else if (this.debugging) {
+            if (windowWidth < smallWidth && windowWidth > ONLY_BUTTONS_WIDTH) {
+                shadowUI.removeClass(this.statusBar, ONLY_ICON_CLASS);
+                shadowUI.removeClass(this.statusBar, ONLY_BUTTONS_CLASS);
+                shadowUI.addClass(this.statusBar, ICON_AND_BUTTONS_CLASS);
+                shadowUI.removeClass(this.statusBar, ICON_AND_STATUS_CLASS);
+            }
+            else if (windowWidth < ONLY_BUTTONS_WIDTH) {
+                shadowUI.removeClass(this.statusBar, ONLY_ICON_CLASS);
+                shadowUI.addClass(this.statusBar, ONLY_BUTTONS_CLASS);
+                shadowUI.removeClass(this.statusBar, ICON_AND_BUTTONS_CLASS);
+                shadowUI.removeClass(this.statusBar, ICON_AND_STATUS_CLASS);
+            }
+        }
+        else if (windowWidth < smallWidth) {
+            shadowUI.removeClass(this.statusBar, ONLY_BUTTONS_CLASS);
             shadowUI.removeClass(this.statusBar, ICON_AND_STATUS_CLASS);
+            shadowUI.removeClass(this.statusBar, ICON_AND_BUTTONS_CLASS);
             shadowUI.addClass(this.statusBar, ONLY_ICON_CLASS);
         }
     }
 
     _setFixtureContainerWidth () {
+        if (styleUtils.get(this.fixtureContainer, 'display') === 'none')
+            return;
+
         var infoContainerWidth    = styleUtils.getWidth(this.infoContainer);
         var iconWidth             = styleUtils.getWidth(this.icon);
         var iconMargin            = styleUtils.getElementMargin(this.icon);
@@ -165,9 +234,12 @@ export default class StatusBar {
         var infoContainerWidth = styleUtils.getWidth(this.infoContainer);
         var containerWidth     = styleUtils.getWidth(this.container);
         var statusDivWidth     = styleUtils.getWidth(this.statusDiv);
-        var marginLeft         = Math.round(containerWidth / 2 - statusDivWidth / 2 - infoContainerWidth);
+        var marginLeft         = containerWidth / 2 - statusDivWidth / 2 - infoContainerWidth;
 
-        styleUtils.set(this.statusDiv, 'marginLeft', Math.max(marginLeft, 0) + 'px');
+        if (this.debugging)
+            marginLeft -= styleUtils.getWidth(this.buttons) / 2;
+
+        styleUtils.set(this.statusDiv, 'marginLeft', Math.max(Math.round(marginLeft), 0) + 'px');
     }
 
     _recalculateSizes () {
@@ -215,7 +287,7 @@ export default class StatusBar {
         eventUtils.bind(window, 'resize', () => this._recalculateSizes());
 
         eventUtils.bind(this.statusBar, 'mouseover', () => {
-            if (this.hidding)
+            if (this.hidding || this.debugging)
                 return;
 
             this.showing = false;
@@ -224,7 +296,10 @@ export default class StatusBar {
         });
 
         eventUtils.bind(this.statusBar, 'mouseout', e => {
-            if (!domUtils.containsElement(this.statusBar, e.relatedTarget) && !this.showing) {
+            if (this.showing || this.debugging)
+                return;
+
+            if (!domUtils.containsElement(this.statusBar, e.relatedTarget)) {
                 this.hidding = false;
                 this.showing = true;
                 this._animate(true);
@@ -247,6 +322,10 @@ export default class StatusBar {
     }
 
     _resetState () {
+        this.debugging = false;
+
+        this.buttons.style.display = 'none';
+
         this.statusDiv.textContent = '';
         this.progressBar.hide();
     }
@@ -268,6 +347,29 @@ export default class StatusBar {
                 this._resetState();
                 resolve();
             }, forceReset ? 0 : ANIMATION_DELAY);
+        });
+    }
+
+    _showDebuggerStatus () {
+        this.debugging = true;
+
+        this.statusDiv.textContent = DEBUGGING_TEXT;
+        this.buttons.style.display = '';
+
+        this._recalculateSizes();
+
+        return new Promise(resolve => {
+            eventUtils.bind(this.continueButton, browserUtils.isTouchDevice ? 'touchstart' : 'click', () => {
+                this._resetState();
+
+                resolve();
+            });
+
+            eventUtils.bind(this.nextActionButton, browserUtils.isTouchDevice ? 'touchstart' : 'click', () => {
+                this._resetState();
+
+                resolve(true);
+            });
         });
     }
 
@@ -309,5 +411,12 @@ export default class StatusBar {
         }
 
         return this._hideWaitingStatus(forceReset);
+    }
+
+    setDebuggerStatus () {
+        this._stopAnimation();
+        styleUtils.set(this.statusBar, 'opacity', 1);
+
+        return this._showDebuggerStatus();
     }
 }

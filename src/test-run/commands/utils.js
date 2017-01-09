@@ -12,11 +12,29 @@ export function isCommandRejectableByPageError (command) {
 function isObservationCommand (command) {
     return command.type === TYPE.executeClientFunction ||
            command.type === TYPE.executeSelector ||
-           command.type === TYPE.wait;
+           command.type === TYPE.wait ||
+           command.type === TYPE.debugger;
 }
 
 function isWindowSwitchingCommand (command) {
     return command.type === TYPE.switchToIframe || command.type === TYPE.switchToMainWindow;
+}
+
+export function isVisualManipulationCommand (command) {
+    return command.type === TYPE.click ||
+           command.type === TYPE.rightClick ||
+           command.type === TYPE.doubleClick ||
+           command.type === TYPE.hover ||
+           command.type === TYPE.typeText ||
+           command.type === TYPE.drag ||
+           command.type === TYPE.dragToElement ||
+           command.type === TYPE.selectText ||
+           command.type === TYPE.selectTextAreaContent ||
+           command.type === TYPE.selectEditableContent ||
+           command.type === TYPE.pressKey ||
+           command.type === TYPE.navigateTo ||
+           command.type === TYPE.setFilesToUpload ||
+           command.type === TYPE.clearUpload;
 }
 
 export function isBrowserManipulationCommand (command) {
@@ -45,6 +63,7 @@ export function isServiceCommand (command) {
 
 export function isExecutableInTopWindowOnly (command) {
     return command.type === TYPE.testDone ||
+           command.type === TYPE.debugger ||
            command.type === TYPE.prepareBrowserManipulation ||
            command.type === TYPE.switchToMainWindow ||
            command.type === TYPE.setNativeDialogHandler ||
