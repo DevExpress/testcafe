@@ -24,7 +24,7 @@ Ensure that [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) are
 npm install -g testcafe
 ```
 
-For more information, see [Installing TestCafe](../using-testcafe/installing-testcafe.html).
+For more information, see [Installing TestCafe](../using-testcafe/installing-testcafe.md).
 
 ## Creating a Test
 

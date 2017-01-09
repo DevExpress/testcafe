@@ -67,8 +67,8 @@ To run tests on a remote mobile and desktop device, this device must have networ
 
 First, you will need to create a remote browser connection.
 
-* Command line: specify the `remote` *alias* (see [Remote Browsers](../command-line-interface.html#remote-browsers))
-* API: use the [createBrowserConnection](../programming-interface/testcafe.html#createbrowserconnection) method
+* Command line: specify the `remote` *alias* (see [Remote Browsers](../command-line-interface.md#remote-browsers))
+* API: use the [createBrowserConnection](../programming-interface/testcafe.md#createbrowserconnection) method
 
 After that, TestCafe will provide a URL to open on the remote device in the browser against which you want to test.
 As you open this URL, the browser connects to the TestCafe server and starts testing.

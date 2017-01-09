@@ -20,7 +20,7 @@ This topic contains the following sections.
 
 ## Assertion Structure
 
-TestCafe assertions start with the `expect` method exposed by [test controller](../test-code-structure.html#test-controller),
+TestCafe assertions start with the `expect` method exposed by [test controller](../test-code-structure.md#test-controller),
 which accepts the `actual` value argument. Then, the assertion method follows. An assertion method accepts an expected value
 and optionally other arguments. For example, this is how the deep equality assertion looks like.
 

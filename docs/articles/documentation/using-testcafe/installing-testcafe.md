@@ -14,7 +14,7 @@ You can install TestCafe globally or locally in your project.
 npm install -g testcafe
 ```
 
-After that, you can run TestCafe from a [command line](command-line-interface.html) by using the `testcafe` command.
+After that, you can run TestCafe from a [command line](command-line-interface.md) by using the `testcafe` command.
 
 ```bash
 testcafe chrome tests/
@@ -28,12 +28,12 @@ The following command will install TestCafe into your project directory and save
 npm install --save-dev testcafe
 ```
 
-The local installation is preferred for continuous integration scenarios or if you are going to use TestCafe from a Node.js application (see [Programming Interface](programming-interface/index.html)). This kind of installation has two advantages.
+The local installation is preferred for continuous integration scenarios or if you are going to use TestCafe from a Node.js application (see [Programming Interface](programming-interface/index.md)). This kind of installation has two advantages.
 
 * It makes your project setup easier: running `npm install` in the project directory will automatically install TestCafe as well.
 * Different projects can depend on different versions of TestCafe.
 
-You can use the local version of TestCafe from a [command line](command-line-interface.html) as well. To run it, use one of the following ways.
+You can use the local version of TestCafe from a [command line](command-line-interface.md) as well. To run it, use one of the following ways.
 
 * By using [npm scripts](https://docs.npmjs.com/misc/scripts).
 
