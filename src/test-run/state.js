@@ -1,6 +1,8 @@
 export default {
-    initial:      'initial',
-    inBeforeEach: 'inBeforeEach',
-    inTest:       'inTest',
-    inAfterEach:  'inAfterEach'
+    initial:                 'initial',
+    inFixtureBeforeEachHook: 'inFixtureBeforeEachHook',
+    inTestBeforeHook:        'inTestBeforeHook',
+    inTest:                  'inTest',
+    inTestAfterHook:         'inTestAfterHook',
+    inFixtureAfterEachHook:  'inFixtureAfterEachHook'
 };

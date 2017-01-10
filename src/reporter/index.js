@@ -6,7 +6,8 @@ export default class Reporter {
         this.plugin = new ReporterPluginHost(plugin, outStream);
 
         this.passed      = 0;
-        this.testCount   = task.tests.length;
+        this.skipped     = task.tests.filter(test => test.skip).length;
+        this.testCount   = task.tests.length - this.skipped;
         this.reportQueue = Reporter._createReportQueue(task);
 
         this._assignTaskEventHandlers(task);
@@ -36,7 +37,8 @@ export default class Reporter {
             errs:           sortBy(reportItem.errs, ['userAgent', 'type']),
             durationMs:     new Date() - reportItem.startTime,
             unstable:       reportItem.unstable,
-            screenshotPath: reportItem.screenshotPath
+            screenshotPath: reportItem.screenshotPath,
+            skipped:        reportItem.test.skip
         };
     }
 
@@ -51,7 +53,7 @@ export default class Reporter {
         // Therefore, tests always get completed sequentially.
         var reportItem = this.reportQueue.shift();
 
-        if (!reportItem.errs.length)
+        if (!reportItem.errs.length && !reportItem.test.skip)
             this.passed++;
 
         this.plugin.reportTestDone(reportItem.test.name, Reporter._createTestRunInfo(reportItem));

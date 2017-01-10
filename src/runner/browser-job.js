@@ -107,16 +107,20 @@ export default class BrowserJob extends EventEmitter {
     }
 
     popNextTestRunUrl () {
-        var testRun = this.testRunQueue.shift();
+        for (var testRun = this.testRunQueue.shift(); testRun; testRun = this.testRunQueue.shift()) {
+            if (!this.started) {
+                this.started = true;
+                this.emit('start');
+            }
 
-        if (!this.started) {
-            this.started = true;
-            this.emit('start');
-        }
+            if (testRun.test.skip)
+                this._reportTestRunDone(testRun);
 
-        if (testRun) {
-            testRun.start();
-            return this.proxy.openSession(testRun.test.fixture.pageUrl, testRun);
+            else {
+                testRun.start();
+
+                return this.proxy.openSession(testRun.test.pageUrl, testRun);
+            }
         }
 
         return null;

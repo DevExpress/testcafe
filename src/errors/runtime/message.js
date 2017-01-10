@@ -22,7 +22,7 @@ export default {
     cannotParseRawFile:                  'Cannot parse a test source file in the raw format at "{path}" due to an error.\n\n{errMessage}',
     cannotPrepareTestsDueToError:        'Cannot prepare tests due to an error.\n\n{errMessage}',
     fixtureNameIsNotAString:             'The fixture name is expected to be a string, but it was {type}.',
-    fixturePageIsNotAString:             'The page URL is expected to be a string, but it was {type}.',
+    pageIsNotAString:                    'The page URL is expected to be a string, but it was {type}.',
     testNameIsNotAString:                'The test name is expected to be a string, but it was {type}.',
     testBodyIsNotAFunction:              'The test body is expected to be a function, but it was {type}.',
     beforeEachIsNotAFunction:            `Fixture's "beforeEach" method takes a function, but {type} was passed.`,
@@ -38,6 +38,7 @@ export default {
     valueIsNotAnObject:                  '{smthg} is expected to be an object, but it was {type}.',
     valueIsNotAString:                   '{smthg} is expected to be a string, but it was {type}.',
     valueIsNotAStringOrRegExp:           '{smthg} is expected to be a string or a regular expression, but it was {type}.',
+    valueIsNotAFunction:                 '{smthg} is expected to be a function, but it was {type}.',
     valueIsNotAFunctionOrString:         '{smthg} is expected to be a string or a function, but it was {type}.',
     valueIsNotAFunctionOrStringOrNumber: '{smthg} is expected to be a string, function or a number but it was {type}.',
     unableToOpenBrowser:                 'Was unable to open the browser "{alias}" due to error.\n\n{errMessage}'

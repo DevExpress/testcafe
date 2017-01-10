@@ -199,14 +199,16 @@ before(function () {
                     })
                     .then(function () {
                         var taskReport = JSON.parse(report);
-                        var testReport = taskReport.fixtures[0].tests[0];
-                        var testError  = getTestError(testReport, actualBrowsers);
+                        var errorDescr = getTestError(taskReport, actualBrowsers);
+                        var testReport = taskReport.fixtures.length === 1 ?
+                                         taskReport.fixtures[0].tests[0] :
+                                         taskReport;
 
                         testReport.warnings = taskReport.warnings;
 
                         global.testReport = testReport;
 
-                        handleError(testError);
+                        handleError(errorDescr);
                     })
                     .catch(handleError);
             };

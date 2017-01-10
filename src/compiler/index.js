@@ -12,7 +12,8 @@ import promisify from '../utils/promisify';
 
 var readFile = promisify(fs.readFile);
 
-const SOURCE_CHUNK_LENGTH = 1000;
+const SOURCE_CHUNK_LENGTH      = 1000;
+const BORROWED_TEST_PROPERTIES = ['skip', 'only', 'pageUrl', 'authCredentials'];
 
 export default class Compiler {
     constructor (sources) {
@@ -58,6 +59,14 @@ export default class Compiler {
 
         this.esNextCompiler.cleanUpCache();
 
-        return flatten(tests).filter(test => !!test);
+        tests = flatten(tests).filter(test => !!test);
+
+        tests.forEach(test => {
+            BORROWED_TEST_PROPERTIES.forEach(prop => {
+                test[prop] = test[prop] || test.fixture[prop];
+            });
+        });
+
+        return tests;
     }
 }

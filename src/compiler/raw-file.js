@@ -32,6 +32,12 @@ export default class RawFileCompiler {
         test.fixture = fixture;
         test.fn      = RawFileCompiler._createTestFn(test.commands);
 
+        if (test.beforeCommands)
+            test.beforeFn = RawFileCompiler._createTestFn(test.beforeCommands);
+
+        if (test.afterCommands)
+            test.afterFn = RawFileCompiler._createTestFn(test.afterCommands);
+
         return test;
     }
 

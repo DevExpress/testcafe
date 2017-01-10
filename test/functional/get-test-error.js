@@ -30,15 +30,23 @@ function normalizeError (err, userAgents) {
 // If tests run in several browsers and the same error occurs in all of them, the method returns an array as well.
 // If different errors occur in several browsers, a dictionary object is returned. In this case, browser aliases are
 // keys, and values are arrays of errors.
-module.exports = function getTestError (testReport, browsers) {
-    if (!testReport.errs.length)
+module.exports = function getTestError (taskReport, browsers) {
+    var errs = [];
+
+    taskReport.fixtures.forEach(function (fixture) {
+        fixture.tests.forEach(function (test) {
+            errs = errs.concat(test.errs);
+        });
+    });
+
+    if (!errs.length)
         return null;
 
     var userAgents = browsers.map(function (browserInfo) {
         return browserInfo.connection.userAgent;
     });
 
-    var normalizedErrors = testReport.errs.map(function (err) {
+    var normalizedErrors = errs.map(function (err) {
         return normalizeError(err, userAgents);
     });
 
@@ -49,7 +57,7 @@ module.exports = function getTestError (testReport, browsers) {
         var testError = {};
 
         browsers.forEach(function (browserInfo) {
-            var errorsArray = testReport.errs
+            var errorsArray = errs
                 .filter(function (error) {
                     return error.indexOf(browserInfo.connection.userAgent) > -1;
                 })

@@ -1,12 +1,16 @@
 {
     "fixtures": [
         {
-            "name": "Fail in test",
-            "pageUrl": "http://localhost:3000/fixtures/api/raw/before-after-each-hooks/pages/index.html",
+            "name": "Fail in beforeEach",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/hooks/pages/index.html",
             "beforeEachCommands": [
                 {
                     "type": "click",
                     "selector": "#beforeEach"
+                },
+                {
+                    "type": "click",
+                    "selector": "#failAndReport"
                 }
             ],
             "afterEachCommands": [
@@ -23,6 +27,10 @@
                 {
                     "name": "Test",
                     "commands": [
+                        {
+                            "type": "click",
+                            "selector": "#test"
+                        },
                         {
                             "type": "click",
                             "selector": "#failAndReport"
