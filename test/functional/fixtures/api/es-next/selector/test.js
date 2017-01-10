@@ -253,7 +253,7 @@ describe('[API] Selector', function () {
                         expect(errs[0]).contains(
                             '"addCustomDOMProperties" option is expected to be an object, but it was number.'
                         );
-                        expect(errs[0]).contains("> 932 |    await Selector('rect').addCustomDOMProperties(42);");
+                        expect(errs[0]).contains("> 938 |    await Selector('rect').addCustomDOMProperties(42);");
                     });
             }
         );
@@ -268,7 +268,7 @@ describe('[API] Selector', function () {
                         expect(errs[0]).contains(
                             "Custom DOM properties method \'prop1\' is expected to be a string or a function, but it was number"
                         );
-                        expect(errs[0]).contains("> 936 |    await Selector('rect').addCustomDOMProperties({ prop1: 1, prop2: () => 42 });");
+                        expect(errs[0]).contains("> 942 |    await Selector('rect').addCustomDOMProperties({ prop1: 1, prop2: () => 42 });");
                     });
             }
         );
@@ -283,7 +283,7 @@ describe('[API] Selector', function () {
                         expect(errs[0]).contains(
                             'An error occurred when trying to calculate a custom Selector property "prop":  Error: test'
                         );
-                        expect(errs[0]).contains('> 946 |    await el();');
+                        expect(errs[0]).contains('> 952 |    await el();');
                     });
             }
         );

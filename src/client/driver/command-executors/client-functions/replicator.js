@@ -60,15 +60,11 @@ export class SelectorNodeTransform {
     }
 
     toSerializable (node) {
-        if (node.nodeType === 1) {
-            var snapshot = new ElementSnapshot(node);
+        var snapshot = node.nodeType === 1 ? new ElementSnapshot(node) : new NodeSnapshot(node);
 
-            this._extend(snapshot, node);
+        this._extend(snapshot, node);
 
-            return snapshot;
-        }
-
-        return new NodeSnapshot(node);
+        return snapshot;
     }
 }
 

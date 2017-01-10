@@ -926,6 +926,12 @@ test('Selector `extend` method', async t => {
     }).nth(1);
 
     await t.expect(await getSecondEl.prop).eql('second');
+
+    const doc = await Selector(() => document).addCustomDOMProperties({
+        prop: () => 'documentProp'
+    });
+
+    await t.expect(await doc.prop).eql('documentProp');
 });
 
 test('Add custom DOM properties method - argument is not object', async () => {
