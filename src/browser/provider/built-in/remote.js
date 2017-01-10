@@ -1,5 +1,5 @@
 import { findWindow } from 'testcafe-browser-tools';
-import WARNING_MESSAGE from '../../../warnings/message';
+import WARNING_MESSAGE from '../../../notifications/warning-message';
 
 
 export default {

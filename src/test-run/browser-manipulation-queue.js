@@ -1,6 +1,6 @@
 import { isServiceCommand } from './commands/utils';
 import COMMAND_TYPE from './commands/type';
-import WARNING_MESSAGE from '../warnings/message';
+import WARNING_MESSAGE from '../notifications/warning-message';
 
 export default class BrowserManipulationQueue {
     constructor (browserConnection, screenshotCapturer, warningLog) {

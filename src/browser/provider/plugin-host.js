@@ -3,7 +3,7 @@ import Promise from 'pinkie';
 import { assignIn } from 'lodash';
 import promisifyEvent from 'promisify-event';
 import BrowserConnection from '../connection';
-import WARNING_MESSAGE from '../../warnings/message';
+import WARNING_MESSAGE from '../../notifications/warning-message';
 
 
 const name = Symbol();

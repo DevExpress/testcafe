@@ -2,6 +2,7 @@ import path from 'path';
 import { readSync as read } from 'read-file-relative';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
+import showDebuggerMessage from '../notifications/debugger-message';
 import { Session } from 'testcafe-hammerhead';
 import { getViewportSize } from 'testcafe-browser-tools';
 import TestRunDebugLog from './debug-log';
@@ -418,4 +419,12 @@ ServiceMessages[CLIENT_MESSAGES.waitForFileDownload] = function (msg) {
         else
             this.resolveWaitForFileDownloadingPromise = resolve;
     });
+};
+
+ServiceMessages[CLIENT_MESSAGES.showDebuggingMessage] = function (msg) {
+    this.debugLog.driverMessage(msg);
+
+    showDebuggerMessage(this.currentDriverTask.callsite, this.browserConnection.userAgent);
+
+    return Promise.resolve();
 };

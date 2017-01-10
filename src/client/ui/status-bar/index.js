@@ -354,7 +354,7 @@ export default class StatusBar {
         this.debugging = true;
 
         this.statusDiv.textContent = DEBUGGING_TEXT;
-        this.buttons.style.display = '';
+        this.buttons.style.display = 'inline-block';
 
         this._recalculateSizes();
 
@@ -413,7 +413,7 @@ export default class StatusBar {
         return this._hideWaitingStatus(forceReset);
     }
 
-    setDebuggerStatus () {
+    setDebuggingStatus () {
         this._stopAnimation();
         styleUtils.set(this.statusBar, 'opacity', 1);
 

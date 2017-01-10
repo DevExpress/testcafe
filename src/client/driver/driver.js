@@ -108,8 +108,11 @@ export default class Driver {
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
     }
 
-    _isDebugging (command) {
-        return this.contextStorage.getItem(STOP_AFTER_NEXT_ACTION) && isVisualManipulationCommand(command);
+    _setDebuggingStatus () {
+        return transport
+            .queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.showDebuggingMessage })
+            .then(() => this.statusBar.setDebuggingStatus())
+            .then(stopAfterNextAction => this.contextStorage.setItem(STOP_AFTER_NEXT_ACTION, stopAfterNextAction));
     }
 
     // Error handling
@@ -176,7 +179,11 @@ export default class Driver {
         // NOTE: postpone status sending if the page is unloading
         return pageUnloadBarrier
             .wait(0)
-            .then(() => transport.queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.ready, status, disableResending: true }))
+            .then(() => transport.queuedAsyncServiceMsg({
+                cmd:              TEST_RUN_MESSAGES.ready,
+                status:           status,
+                disableResending: true
+            }))
 
             //NOTE: do not execute the next command if the page is unloading
             .then(res => {
@@ -231,16 +238,16 @@ export default class Driver {
 
                 return this.activeChildDriverLink.executeCommand(command);
             })
-            .then(status => this._onCommandExecutedInIframe(command, status))
-            .catch(err => this._onCommandExecutedInIframe(command, new DriverStatus({
+            .then(status => this._onCommandExecutedInIframe(status))
+            .catch(err => this._onCommandExecutedInIframe(new DriverStatus({
                 isCommandResult: true,
                 executionError:  err
             })));
     }
 
-    _onCommandExecutedInIframe (command, status) {
+    _onCommandExecutedInIframe (status) {
         this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, false);
-        this._onReady(status, this._isDebugging(command));
+        this._onReady(status);
     }
 
     _ensureChildDriverLink (iframeWindow, ErrorCtor) {
@@ -296,7 +303,7 @@ export default class Driver {
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
 
-                return this._onReady(driverStatus, this._isDebugging(command));
+                return this._onReady(driverStatus);
             });
     }
 
@@ -321,7 +328,7 @@ export default class Driver {
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
 
-                return this._onReady(driverStatus, this._isDebugging(command));
+                return this._onReady(driverStatus);
             });
     }
 
@@ -375,13 +382,8 @@ export default class Driver {
     }
 
     _onDebuggerCommand () {
-        this
-            .statusBar.setDebuggerStatus()
-            .then(stopAfterNextAction => {
-                this.contextStorage.setItem(STOP_AFTER_NEXT_ACTION, stopAfterNextAction);
-
-                this._onReady(new DriverStatus({ isCommandResult: true }));
-            });
+        this._setDebuggingStatus()
+            .then(() => this._onReady(new DriverStatus({ isCommandResult: true })));
     }
 
     _onTestDone (status) {
@@ -394,23 +396,20 @@ export default class Driver {
 
 
     // Routing
-    _onReady (status, debugging) {
-        if (debugging) {
-            this
-                .statusBar.setDebuggerStatus()
-                .then(stopAfterNextAction => {
-                    this.contextStorage.setItem(STOP_AFTER_NEXT_ACTION, stopAfterNextAction);
-
-                    this._onReady(status);
-                });
-
-            return;
-        }
-
+    _onReady (status) {
         this._sendStatus(status)
             .then(command => {
-                if (command)
-                    this._onCommand(command);
+                if (command) {
+                    var isDebugging = this.contextStorage.getItem(STOP_AFTER_NEXT_ACTION) &&
+                                      isVisualManipulationCommand(command);
+
+                    if (isDebugging) {
+                        this._setDebuggingStatus()
+                            .then(() => this._onCommand(command));
+                    }
+                    else
+                        this._onCommand(command);
+                }
 
                 // NOTE: the driver gets an empty response if TestRun doesn't get a new command within 2 minutes
                 else
@@ -485,8 +484,6 @@ export default class Driver {
 
     // API
     start () {
-        var status = null;
-
         this.contextStorage       = new ContextStorage(window, this.testRunId);
         this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.dialogHandler);
 
@@ -494,12 +491,7 @@ export default class Driver {
 
         this.statusBar = new StatusBar(this.userAgent, this.fixtureName, this.testName);
 
-        this.readyPromise.then(() => {
-            this.statusBar.resetPageLoadingStatus();
-
-            if (this.contextStorage.getItem(STOP_AFTER_NEXT_ACTION))
-                this._onReady(status, true);
-        });
+        this.readyPromise.then(() => this.statusBar.resetPageLoadingStatus());
 
         var pendingStatus = this.contextStorage.getItem(PENDING_STATUS);
 
@@ -523,12 +515,11 @@ export default class Driver {
         var inCommandExecution = this.contextStorage.getItem(this.COMMAND_EXECUTING_FLAG) ||
                                  this.contextStorage.getItem(this.EXECUTING_IN_IFRAME_FLAG);
 
-        status = pendingStatus || new DriverStatus({ isCommandResult: inCommandExecution });
+        var status = pendingStatus || new DriverStatus({ isCommandResult: inCommandExecution });
 
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
         this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, false);
 
-        if (!this.contextStorage.getItem(STOP_AFTER_NEXT_ACTION))
-            this._onReady(status);
+        this._onReady(status);
     }
 }
