@@ -40,7 +40,7 @@ export class FunctionTransform {
 
 export class SelectorNodeTransform {
     constructor (customDOMProperties) {
-        this.type       = 'Node';
+        this.type                = 'Node';
         this.customDOMProperties = customDOMProperties || {};
     }
 

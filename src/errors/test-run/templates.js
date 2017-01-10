@@ -80,7 +80,7 @@ export default {
     `),
 
     [TYPE.uncaughtErrorInCustomDOMPropertyCode]: err => markup(err, `
-        An error occurred when trying to calculate a custom Selector property ${err.property}:
+        An error occurred when trying to calculate a custom Selector property "${err.property}":
 
         ${escapeHtml(err.errMsg)}
     `),

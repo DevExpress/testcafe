@@ -266,7 +266,7 @@ describe('[API] Selector', function () {
                 })
                     .catch(function (errs) {
                         expect(errs[0]).contains(
-                            "Custom DOM properties method \'prop1\' is expected to be a function, but it was number"
+                            "Custom DOM properties method \'prop1\' is expected to be a string or a function, but it was number"
                         );
                         expect(errs[0]).contains("> 936 |    await Selector('rect').addCustomDOMProperties({ prop1: 1, prop2: () => 42 });");
                     });
@@ -281,7 +281,7 @@ describe('[API] Selector', function () {
                 })
                     .catch(function (errs) {
                         expect(errs[0]).contains(
-                            'An error occurred when trying to calculate a custom Selector property prop:  Error: test'
+                            'An error occurred when trying to calculate a custom Selector property "prop":  Error: test'
                         );
                         expect(errs[0]).contains('> 946 |    await el();');
                     });
