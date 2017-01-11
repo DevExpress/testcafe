@@ -127,6 +127,16 @@ export class UncaughtErrorInClientFunctionCode extends TestRunErrorBase {
     }
 }
 
+export class UncaughtErrorInCustomDOMPropertyCode extends TestRunErrorBase {
+    constructor (instantiationCallsiteName, err, prop) {
+        super(TYPE.uncaughtErrorInCustomDOMPropertyCode, err, prop);
+
+        this.errMsg                    = String(err);
+        this.property                  = prop;
+        this.instantiationCallsiteName = instantiationCallsiteName;
+    }
+}
+
 
 // Assertion errors
 //--------------------------------------------------------------------

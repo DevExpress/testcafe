@@ -1,4 +1,4 @@
-import { isNil as isNullOrUndefined, assign, escapeRegExp as escapeRe } from 'lodash';
+import { isNil as isNullOrUndefined, merge, escapeRegExp as escapeRe } from 'lodash';
 import dedent from 'dedent';
 import ClientFunctionBuilder from '../client-function-builder';
 import { SelectorNodeTransform } from '../replicator';
@@ -30,7 +30,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             fn = builder.fn;
 
             if (options === void 0 || typeof options === 'object')
-                options = assign({}, builder.options, options, { sourceSelectorBuilder: builder });
+                options = merge({}, builder.options, options, { sourceSelectorBuilder: builder });
         }
 
         super(fn, options, callsiteNames);
@@ -78,7 +78,6 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                    `(function(){return document.querySelectorAll(${JSON.stringify(this.fn)});});` :
                    super._getCompiledFnCode();
 
-
         if (code) {
             return dedent(
                 `(function(){
@@ -104,19 +103,20 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         this._addBoundArgsSelectorGetter(resultPromise, args);
 
         // OPTIMIZATION: use buffer function as selector not to trigger lazy property ahead of time
-        addAPI(resultPromise, () => resultPromise.selector, SelectorBuilder);
+        addAPI(resultPromise, () => resultPromise.selector, SelectorBuilder, this.options.customDOMProperties);
 
         return resultPromise;
     }
 
     getFunctionDependencies () {
-        var dependencies = super.getFunctionDependencies();
-        var text         = this.options.text;
+        var dependencies        = super.getFunctionDependencies();
+        var text                = this.options.text;
+        var customDOMProperties = this.options.customDOMProperties;
 
         if (typeof text === 'string')
             text = new RegExp(escapeRe(text));
 
-        return assign({}, dependencies, {
+        return merge({}, dependencies, {
             filterOptions: {
                 counterMode:    this.options.counterMode,
                 collectionMode: this.options.collectionMode,
@@ -124,7 +124,8 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                 text:           text
             },
 
-            boundArgs: this.options.boundArgs
+            boundArgs:           this.options.boundArgs,
+            customDOMProperties: customDOMProperties
         });
     }
 
@@ -174,7 +175,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     _decorateFunction (selectorFn) {
         super._decorateFunction(selectorFn);
 
-        addAPI(selectorFn, () => selectorFn, SelectorBuilder);
+        addAPI(selectorFn, () => selectorFn, SelectorBuilder, this.options.customDOMProperties);
     }
 
     _processResult (result, selectorArgs) {

@@ -1,4 +1,4 @@
-import { assign } from 'lodash';
+import { isNil as isNullOrUndefined, assign } from 'lodash';
 import clientFunctionBuilderSymbol from '../builder-symbol';
 import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapshot-properties';
 import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
@@ -6,11 +6,13 @@ import getCallsite from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../client-function-builder';
 import ClientFunctionResultPromise from '../result-promise';
 import {
-    assertStringOrRegExp,
     assertNumber,
+    assertFunction,
     assertFunctionOrString,
-    assertFunctionOrStringOrNumber
-} from '../../errors/runtime/type-assertions';
+    assertFunctionOrStringOrNumber,
+    assertStringOrRegExp,
+    assertObject
+    } from '../../errors/runtime/type-assertions';
 
 const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PROPERTIES);
 
@@ -88,8 +90,23 @@ async function getSnapshot (getSelector, callsite) {
     return node;
 }
 
-function addSnapshotPropertyShorthands (obj, getSelector) {
-    SNAPSHOT_PROPERTIES.forEach(prop => {
+function assertAddCustomDOMPropertiesOptions (properties) {
+    if (!isNullOrUndefined(properties)) {
+        assertObject('addCustomDOMProperties', '"addCustomDOMProperties" option', properties);
+
+        Object.keys(properties).forEach(prop => {
+            assertFunction('addCustomDOMProperties', `Custom DOM properties method '${prop}'`, properties[prop]);
+        });
+    }
+}
+
+function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties) {
+    var properties = SNAPSHOT_PROPERTIES;
+
+    if (customDOMProperties)
+        properties = properties.concat(Object.keys(customDOMProperties));
+
+    properties.forEach(prop => {
         Object.defineProperty(obj, prop, {
             get: () => {
                 var callsite = getCallsite('get');
@@ -193,6 +210,7 @@ function convertFilterToClientFunctionIfNecessary (callsiteName, filter, depende
 
 function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selectorFn, filter, additionalDependencies) {
     var collectionModeSelectorBuilder = new SelectorBuilder(getSelector(), { collectionMode: true });
+    var customDOMProperties           = collectionModeSelectorBuilder.options.customDOMProperties;
 
     var dependencies = {
         selector:    collectionModeSelectorBuilder.getFunction(),
@@ -202,7 +220,7 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
 
     dependencies = assign(dependencies, additionalDependencies);
 
-    var builder = new SelectorBuilder(selectorFn, { dependencies }, { instantiation: 'Selector' });
+    var builder = new SelectorBuilder(selectorFn, { dependencies, customDOMProperties }, { instantiation: 'Selector' });
 
     return builder.getFunction();
 }
@@ -244,7 +262,17 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
     };
 }
 
-function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
+function addCustomDOMPropertiesMethod (obj, getSelector, SelectorBuilder) {
+    obj.addCustomDOMProperties = properties => {
+        assertAddCustomDOMPropertiesOptions(properties);
+
+        var builder = new SelectorBuilder(getSelector(), { customDOMProperties: properties }, { instantiation: 'Selector' });
+
+        return builder.getFunction();
+    };
+}
+
+function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
     // Find
     obj.find = (filter, dependencies) => {
         assertFunctionOrString('find', '"filter" argument', filter);
@@ -369,9 +397,10 @@ function addHierachicalSelectors (obj, getSelector, SelectorBuilder) {
     };
 }
 
-export default function addAPI (obj, getSelector, SelectorBuilder) {
-    addSnapshotPropertyShorthands(obj, getSelector);
+export default function addAPI (obj, getSelector, SelectorBuilder, customDOMProperties) {
+    addSnapshotPropertyShorthands(obj, getSelector, customDOMProperties);
+    addCustomDOMPropertiesMethod(obj, getSelector, SelectorBuilder);
     addFilterMethods(obj, getSelector, SelectorBuilder);
-    addHierachicalSelectors(obj, getSelector, SelectorBuilder);
+    addHierarchicalSelectors(obj, getSelector, SelectorBuilder);
     addCounterProperties(obj, getSelector, SelectorBuilder);
 }

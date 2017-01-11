@@ -1,7 +1,7 @@
 import Replicator from 'replicator';
 import evalFunction from './eval-function';
 import { NodeSnapshot, ElementSnapshot } from './selector-executor/node-snapshots';
-import { DomNodeClientFunctionResultError } from '../../../../errors/test-run';
+import { DomNodeClientFunctionResultError, UncaughtErrorInCustomDOMPropertyCode } from '../../../../errors/test-run';
 
 // NOTE: save original ctors because they may be overwritten by page code
 var Node     = window.Node;
@@ -39,8 +39,20 @@ export class FunctionTransform {
 }
 
 export class SelectorNodeTransform {
-    constructor () {
-        this.type = 'Node';
+    constructor (customDOMProperties) {
+        this.type                = 'Node';
+        this.customDOMProperties = customDOMProperties || {};
+    }
+
+    _extend (snapshot, node) {
+        Object.keys(this.customDOMProperties).forEach(prop => {
+            try {
+                snapshot[prop] = this.customDOMProperties[prop](node);
+            }
+            catch (err) {
+                throw new UncaughtErrorInCustomDOMPropertyCode(this.instantiationCallsiteName, err, prop);
+            }
+        });
     }
 
     shouldTransform (type, val) {
@@ -48,7 +60,11 @@ export class SelectorNodeTransform {
     }
 
     toSerializable (node) {
-        return node.nodeType === 1 ? new ElementSnapshot(node) : new NodeSnapshot(node);
+        var snapshot = node.nodeType === 1 ? new ElementSnapshot(node) : new NodeSnapshot(node);
+
+        this._extend(snapshot, node);
+
+        return snapshot;
     }
 }
 

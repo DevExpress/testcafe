@@ -43,7 +43,7 @@ export default class ClientFunctionExecutor {
             });
     }
 
-    // Overridable methods
+    //Overridable methods
     _createReplicator () {
         return createReplicator([
             new ClientFunctionNodeTransform(this.command.instantiationCallsiteName),

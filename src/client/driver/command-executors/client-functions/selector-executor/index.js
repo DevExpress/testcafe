@@ -38,11 +38,14 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
 
             this.timeout = Math.max(this.timeout - elapsed, 0);
         }
+
+        var customDOMProperties = this.dependencies && this.dependencies.customDOMProperties;
+
+        this.replicator.addTransforms([new SelectorNodeTransform(customDOMProperties)]);
     }
 
     _createReplicator () {
         return createReplicator([
-            new SelectorNodeTransform(),
             new FunctionTransform()
         ]);
     }
