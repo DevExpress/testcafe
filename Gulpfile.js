@@ -55,6 +55,7 @@ var CLIENT_TESTS_SETTINGS_BASE = {
         { src: '/core.js', path: 'lib/client/core/index.js' },
         { src: '/ui.js', path: 'lib/client/ui/index.js' },
         { src: '/automation.js', path: 'lib/client/automation/index.js' },
+        { src: '/driver.js', path: 'lib/client/driver/index.js' },
         { src: '/legacy-runner.js', path: 'node_modules/testcafe-legacy-api/lib/client/index.js' },
         { src: '/before-test.js', path: 'test/client/before-test.js' }
     ],

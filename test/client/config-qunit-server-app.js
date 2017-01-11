@@ -51,7 +51,7 @@ module.exports = function (app) {
         preventCaching(res);
 
         setTimeout(function () {
-            res.send(req.originalUrl || req.url);
+            res.send(req.query.expectedResponse || req.originalUrl || req.url);
         }, delay);
     });
 

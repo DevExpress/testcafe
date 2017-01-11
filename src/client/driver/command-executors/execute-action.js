@@ -9,6 +9,8 @@ import {
     NODE_TYPE_DESCRIPTIONS
 } from '../deps/testcafe-core';
 
+import ScriptExecutionBarrier from '../script-execution-barrier';
+
 import {
     ERROR_TYPES as AUTOMATION_ERROR_TYPES,
     calculateSelectTextArguments,
@@ -249,13 +251,15 @@ export default function executeAction (command, selectorTimeout, statusBar, spee
     };
 
     var completionPromise = new Promise(resolve => {
-        var requestBarrier = null;
+        var requestBarrier         = null;
+        var scriptExecutionBarrier = null;
 
         ensureCommandElements(command, selectorTimeout, statusBar)
             .then(elements => {
                 resolveStartPromise();
 
-                requestBarrier = new RequestBarrier();
+                requestBarrier         = new RequestBarrier();
+                scriptExecutionBarrier = new ScriptExecutionBarrier();
 
                 ensureCommandArguments(command);
                 pageUnloadBarrier.watchForPageNavigationTriggers();
@@ -265,7 +269,13 @@ export default function executeAction (command, selectorTimeout, statusBar, spee
             .then(() => {
                 return Promise.all([
                     delayAfterAction(),
-                    requestBarrier.wait(),
+
+                    // NOTE: script can be added by xhr-request, so we should run
+                    // script execution barrier waiting after request barrier resolved
+                    requestBarrier
+                        .wait()
+                        .then(() => scriptExecutionBarrier.wait()),
+
                     pageUnloadBarrier.wait()
                 ]);
             })
