@@ -478,7 +478,7 @@ See [DOM Node State](./dom-node-state.md). Note that these methods and property 
 are asynchronous, so use `await` to obtain an element's property.
 
 ```js
-const headerText = await Selector('#header').textConent;
+const headerText = await Selector('#header').textContent;
 ```
 
 **Example**
