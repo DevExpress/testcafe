@@ -4,7 +4,7 @@
   "description": "An example of how to run TestCafe tests in the cloud using Travis CI and Sauce Labs.",
   "main": "server.js",
   "scripts": {
-    "test": "node server.js & testcafe 'saucelabs:Chrome@beta:Windows 10' tests/index-test.js; EXIT_CODE=$?; kill $!; exit $EXIT_CODE"
+    "test": "testcafe \"saucelabs:Chrome@beta:Windows 10\" tests/index-test.js --app \"node server.js\""
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,6 @@
   },
   "devDependencies": {
     "testcafe": "*",
-    "chai": "^3.5.0",
     "testcafe-browser-provider-saucelabs": "^1.0.0"
   }
 }
