@@ -624,7 +624,7 @@ Selector().addCustomDOMProperties({
     property1: fn1,
     property2: fn2,
     /* ... */
-})
+});
 ```
 
 Parameter                     | Type     | Description
@@ -641,15 +641,15 @@ Parameter   | Type     | Description
 **Example**
 
 ```js
-import { Selector } from 'testcafe'
+import { Selector } from 'testcafe';
 
 fixture `My fixture`
-    .page `https://devexpress.github.io/testcafe/example/`
+    .page `https://devexpress.github.io/testcafe/example/`;
 
 test('Check Label HTML', async t => {
     const label = Selector('label').addCustomDOMProperties({
         innerHTML: el => el.innerHTML
-    })
+    });
 
     await t.expect(label.innerHTML).contains('input type="checkbox" name="remote"');
 });
