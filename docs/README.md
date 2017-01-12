@@ -54,6 +54,7 @@
   * [Browser Provider Plugin](articles/documentation/extending-testcafe/browser-provider-plugin/index.md)
     * [Browser Provider Methods](articles/documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.md)
 * [RECIPES](articles/documentation/recipes/index.md)
+  * [Running Tests in Firefox and Chrome Using Travis CI](articles/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.md)
   * [Running Tests Using Travis CI and Sauce Labs](articles/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.md)
   * [Test Static Html Pages](articles/documentation/recipes/test-static-html-pages.md)
   * [Testing on Remote Computers and Mobile Devices](articles/documentation/recipes/testing-on-remote-computers-and-mobile-devices.md)

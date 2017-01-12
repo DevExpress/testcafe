@@ -12,9 +12,9 @@ Suppose you have a GitHub project for which you need to automatically run tests 
 
 * [Step 1 - Install TestCafe and create tests](#step-1---install-testcafe-and-create-tests)
 * [Step 2 - Enable Travis for your project](#step-2---enable-travis-for-your-project)
-* [Step 3 - Configure Travis to use Xvfb](#step-3---configure-travis-to-use-Xvfb)
-* [Step 4 - Add the `test` script to package.json](#step-5---add-the-test-script-to-packagejson)
-* [Step 5 - Trigger a Travis CI build](#step-6---trigger-a-travis-ci-build)
+* [Step 3 - Configure Travis to use Xvfb](#step-3---configure-travis-to-use-xvfb)
+* [Step 4 - Add the `test` script to package.json](#step-4---add-the-test-script-to-packagejson)
+* [Step 5 - Trigger a Travis CI build](#step-5---trigger-a-travis-ci-build)
 
 > TestCafe provides an [example](https://github.com/DevExpress/testcafe/tree/master/examples/running-tests-in-firefox-and-chrome-using-travis-ci/) that can show you how to run tests in Chrome and Firefox with Travis CI.
 
