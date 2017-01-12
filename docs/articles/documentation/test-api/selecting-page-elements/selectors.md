@@ -32,7 +32,7 @@ This topic contains the following sections.
 * [Using Selectors](#using-selectors)
   * [Check if an Element Exists](#check-if-an-element-exists)
   * [Obtain Element State](#obtain-element-state)
-    * [DOM Node Snapshot](#dom-node-snapshot])
+    * [DOM Node Snapshot](#dom-node-snapshot)
   * [Define Action Targets](#define-action-targets)
   * [Define Assertion Actual Value](#define-assertion-actual-value)
   * [Selector Timeout](#selector-timeout)
