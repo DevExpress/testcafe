@@ -10,7 +10,6 @@ var transport     = hammerhead.transport;
 
 
 const DEFAULT_BARRIER_TIMEOUT       = 400;
-const WAIT_FOR_UNLOAD_TIMEOUT       = 3000;
 const SHORT_WAIT_FOR_UNLOAD_TIMEOUT = 30;
 const FILE_DOWNLOAD_CHECK_DELAY     = 500;
 const MAX_UNLOADING_TIMEOUT         = 15 * 1000;
@@ -23,27 +22,6 @@ var unloading                 = false;
 
 var pageNavigationTriggeredListener = null;
 var pageNavigationTriggered         = false;
-
-function overrideFormSubmit (form) {
-    var submit = form.submit;
-
-    form.submit = () => {
-        prolongUnloadWaiting(WAIT_FOR_UNLOAD_TIMEOUT);
-        submit.apply(form, arguments);
-    };
-}
-
-function handleSubmit () {
-    eventUtils.bind(document, 'submit', e => {
-        if (e.target.tagName.toLowerCase() === 'form')
-            prolongUnloadWaiting(WAIT_FOR_UNLOAD_TIMEOUT);
-    });
-
-    var forms = document.getElementsByTagName('form');
-
-    for (var i = 0; i < forms.length; i++)
-        overrideFormSubmit(forms[i]);
-}
 
 function onBeforeUnload () {
     if (!browserUtils.isIE) {
@@ -63,14 +41,6 @@ function onBeforeUnload () {
         });
 }
 
-function handleBeforeUnload () {
-    hammerhead.on(hammerhead.EVENTS.beforeUnload, onBeforeUnload);
-
-    eventUtils.bind(window, 'unload', () => {
-        unloading = true;
-    });
-}
-
 function prolongUnloadWaiting (timeout) {
     if (waitingForUnloadTimeoutId)
         nativeMethods.clearTimeout.call(window, waitingForUnloadTimeoutId);
@@ -86,7 +56,7 @@ function prolongUnloadWaiting (timeout) {
     }, timeout);
 }
 
-function waitForFailDownload () {
+function waitForFileDownload () {
     return new Promise(resolve => {
         nativeMethods.setTimeout.call(window, () => {
             transport
@@ -104,8 +74,11 @@ function waitForFailDownload () {
 
 // API
 export function init () {
-    handleSubmit();
-    handleBeforeUnload();
+    hammerhead.on(hammerhead.EVENTS.beforeUnload, onBeforeUnload);
+
+    eventUtils.bind(window, 'unload', () => {
+        unloading = true;
+    });
 }
 
 export function watchForPageNavigationTriggers () {
@@ -129,7 +102,7 @@ export function wait (timeout) {
         delay(timeout)
             .then(() => {
                 if (unloading) {
-                    waitForFailDownload()
+                    waitForFileDownload()
                         .then(() => {
                             unloading = false;
                             resolve();
