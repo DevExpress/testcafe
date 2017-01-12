@@ -35,13 +35,16 @@ Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in 
 
      ![Enable builds](../../images/travis-step-2-4.png)
 
-3. Add a `.travis.yml` configuration file to the root of your project. This file should contain parameters and commands that instruct Travis CI how to execute your builds. For more information, see [Customizing the Build](https://docs.travis-ci.com/user/customizing-the-build).
+3. Add a `.travis.yml` configuration file to the root of your project. This file contains parameters and commands that instruct Travis CI how to execute your builds. For more information, see [Customizing the Build](https://docs.travis-ci.com/user/customizing-the-build).
 
      For Node.js projects, the `.travis.yml` file can have the following content.
 
      ```yaml
      language: node_js
      node_js: "stable"
+  
+     before_install:
+       - stty cols 80
      ```
 
      Commit and push this file to your repository.
@@ -67,31 +70,24 @@ For more information on testing in cloud browsers, see [Browsers in Cloud Testin
 ## Step 5 - Add the `test` script to package.json
 
 To test a project, Travis runs test scripts. For Node.js projects, the default test script is `npm test`.
-To tell npm how to run your tests, you need to add the `test` script to the project's package.json file. The script should contain a `testcafe` command to run tests on a Sauce Labs browser.
+To tell npm how to run your tests, add the `test` script to the project's package.json file. Use `testcafe` command in the script to run tests on a Sauce Labs browser.
 
 ```text
 "scripts": {
-    "test":  "testcafe 'saucelabs:Chrome@beta:Windows 10' tests/index-test.js"
+    "test":  "testcafe \"saucelabs:Chrome@beta:Windows 10\" tests/index-test.js"
 }
 ```
 
 For more information on how to configure a test run using a `testcafe` command, see [Command Line Interface](../using-testcafe/command-line-interface.md).
 
-**Important:** If you are going to run tests for a website that is not deployed, the `test` script should also include commands to run and stop the site; for example:
+**Note:** If your app requires starting a custom web server, use the `--app` TestCafe option to specify a command that starts your server.
+This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the app server.
 
 ```text
 "scripts": {
-  "test":  "node server.js & testcafe 'saucelabs:Chrome@beta:Windows 10' tests/index-test.js; EXIT_CODE=$?; kill $!; exit $EXIT_CODE"
+  "test":  "testcafe \"saucelabs:Chrome@beta:Windows 10\" tests/index-test.js --app \"node server.js\""
 }
 ```
-
-This script contains the following commands.
-
-1. `node server.js` - starts a website
-2. `testcafe 'saucelabs:Chrome@beta:Windows 10' tests/index-test.js` - starts tests
-3. `EXIT_CODE=$?` - saves an exit code returned by TestCafe. If tests passed, the exit code is 0.
-4. `kill $!` - stops the server
-5. `exit $EXIT_CODE` - exits the `test` script with the code returned by TestCafe; thus, if the tests passed, the `npm test` will exit with a zero exit code (success)
 
 ## Step 6 - Trigger a Travis CI build
 
