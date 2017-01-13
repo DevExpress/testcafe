@@ -2,7 +2,6 @@ import Promise from 'pinkie';
 import browserTools from 'testcafe-browser-tools';
 import OS from 'os-family';
 import delay from '../../utils/delay';
-import WARNING_MESSAGE from '../../warnings/message';
 
 
 /*eslint-disable no-undef*/
@@ -113,12 +112,6 @@ export default class BrowserProvider {
     }
 
     async _resizeLocalBrowserWindow (browserId, width, height, currentWidth, currentHeight) {
-        // TODO: remove once https://github.com/DevExpress/testcafe-browser-tools/issues/12 implemented
-        if (OS.linux) {
-            this.plugin.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
-            return;
-        }
-
         if (this.resizeCorrections[browserId]) {
             width -= this.resizeCorrections[browserId].width;
             height -= this.resizeCorrections[browserId].height;
@@ -130,12 +123,6 @@ export default class BrowserProvider {
     }
 
     async _takeLocalBrowserScreenshot (browserId, screenshotPath) {
-        // TODO: remove once https://github.com/DevExpress/testcafe-browser-tools/issues/12 implemented
-        if (OS.linux) {
-            this.plugin.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsNotSupportedOnLinux);
-            return;
-        }
-
         await browserTools.screenshot(browserId, screenshotPath);
     }
 
