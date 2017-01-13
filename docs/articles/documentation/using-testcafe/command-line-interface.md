@@ -207,9 +207,6 @@ to save screenshots to.
 testcafe all tests/sample-fixture.js -s screenshots
 ```
 
-> The screenshot functionality is not yet available on Linux.
-> See the corresponding [issue on Github](https://github.com/DevExpress/testcafe-browser-natives/issues/12).
-
 ### -S, --screenshots-on-fails
 
 Takes a screenshot whenever a test fails. Screenshots are saved to the directory
@@ -222,9 +219,6 @@ For example, the following command runs tests from the
 ```sh
 testcafe all tests/sample-fixture.js -S -s screenshots
 ```
-
-> The screenshot functionality is not yet available on Linux.
-> See the corresponding [issue on Github](https://github.com/DevExpress/testcafe-browser-natives/issues/12).
 
 ### -q, --quarantine-mode
 

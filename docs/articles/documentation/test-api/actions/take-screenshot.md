@@ -33,6 +33,3 @@ test('Take a screenshot of my new avatar', async t => {
         .takeScreenshot();
 });
 ```
-
-> Important! This action is not yet available on Linux.
-> See the corresponding [issue on GitHub](https://github.com/DevExpress/testcafe-browser-natives/issues/12).

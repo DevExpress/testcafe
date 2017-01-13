@@ -12,9 +12,6 @@ There are two ways of resizing a browser window.
 * [Fitting the Window into a Particular Device](#fitting-the-window-into-a-particular-device)
 * [Maximizing the Window](#maximizing-the-window)
 
-> Important! These actions are not yet available on Linux.
-> See the corresponding [issue on GitHub](https://github.com/DevExpress/testcafe-browser-natives/issues/12).
-
 ## Setting the Window Size
 
 ```text
