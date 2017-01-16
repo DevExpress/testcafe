@@ -20,8 +20,8 @@ export function getOffsetOptions (element, offsetX, offsetY) {
         return { offsetX, offsetY };
 
     var dimensions = positionUtils.getClientDimensions(element);
-    var width      = Math.max(element.scrollWidth, dimensions.width);
-    var height     = Math.max(element.scrollHeight, dimensions.height);
+    var width      = Math.round(Math.max(element.scrollWidth, dimensions.width));
+    var height     = Math.round(Math.max(element.scrollHeight, dimensions.height));
     var maxX       = dimensions.scrollbar.right + dimensions.border.left + dimensions.border.right + width;
     var maxY       = dimensions.scrollbar.bottom + dimensions.border.top + dimensions.border.bottom + height;
 
