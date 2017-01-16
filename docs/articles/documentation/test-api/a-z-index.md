@@ -17,6 +17,7 @@ This topic lists test API members in alphabetical order.
     * [httpAuth](test-code-structure.md#http-authentication)
     * [page](test-code-structure.md#specifying-the-start-webpage)
 * [Selector](selecting-page-elements/selectors.md#creating-selectors)
+    * [addCustomDOMProperties](selecting-page-elements/selectors.md#adding-custom-properties-to-element-state)
     * [nth](selecting-page-elements/selectors.md#nth)
     * [withText](selecting-page-elements/selectors.md#withtext)
     * [filter](selecting-page-elements/selectors.md#filter)
