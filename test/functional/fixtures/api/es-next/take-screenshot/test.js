@@ -1,5 +1,4 @@
 var expect          = require('chai').expect;
-var OS              = require('os-family');
 var config          = require('../../../../config.js');
 var assertionHelper = require('../../../../assertion-helper.js');
 
@@ -85,20 +84,6 @@ describe('[API] t.takeScreenshot()', function () {
                 .catch(function () {
                     expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
                     expect(assertionHelper.checkScreenshotsCreated(false, 2, null, 3)).eql(true);
-                });
-        });
-    }
-
-    if (OS.linux) {
-        it('Should create warning on attempt to take screenshot on Linux', function () {
-            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot', { setScreenshotPath: true })
-                .catch(function () {
-                    expect(assertionHelper.isScreenshotDirExists()).eql(false);
-
-                    expect(testReport.warnings).includes(
-                        'The screenshot and window resize functionalities are not yet supported on Linux. ' +
-                        'Subscribe to the following issue to keep track: https://github.com/DevExpress/testcafe-browser-tools/issues/12'
-                    );
                 });
         });
     }

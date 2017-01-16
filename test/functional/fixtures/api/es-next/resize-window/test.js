@@ -72,16 +72,4 @@ describe('[API] Resize window actions', function () {
             });
         }
     }
-
-    if (OS.linux) {
-        it('Should create a warning on attempt to resize the window on Linux', function () {
-            return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window')
-                .catch(function () {
-                    expect(testReport.warnings).includes(
-                        'The screenshot and window resize functionalities are not yet supported on Linux. ' +
-                        'Subscribe to the following issue to keep track: https://github.com/DevExpress/testcafe-browser-tools/issues/12'
-                    );
-                });
-        });
-    }
 });
