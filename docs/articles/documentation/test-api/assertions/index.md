@@ -20,9 +20,14 @@ This topic contains the following sections.
 
 ## Assertion Structure
 
-TestCafe assertions start with the `expect` method exposed by [test controller](../test-code-structure.md#test-controller),
-which accepts the `actual` value argument. Then, the assertion method follows. An assertion method accepts an expected value
-and optionally other arguments. For example, this is how the deep equality assertion looks like.
+TestCafe assertions start with the `expect` method exposed by [test controller](../test-code-structure.html#test-controller).
+This method accepts the actual value. You can pass an object, a [Selector's DOM node state property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
+or a [client function](../obtaining-data-from-the-client.md).
+
+Then, an [assertion method](assertion-api.md) follows. Assertion methods accept an expected value
+and, optionally, other arguments.
+
+For instance, the deep equality assertion has the following structure.
 
 ```text
 await t.expect( actual ).eql( expected, message, options );
@@ -103,8 +108,8 @@ test('Button click', async t => {
 
     await t
         .click(btn)
-        // Regular assertion will fail immediately, but TestCafe retries to run DOM state
-        // assertions many times until this assertion pass successfully within the timeout.
+        // A regular assertion will fail immediately, but TestCafe retries to run DOM state
+        // assertions many times within the timeout until this assertion passes successfully.
         // The default timeout is 3000 ms.
         .expect(btn.textContent).contains('Loading...');
 });
