@@ -185,8 +185,6 @@ Set the `takeOnFails` parameter to `true` to additionally take a screenshot when
 
 > Important! If the `screenshots` function is not called, TestCafe does not take screenshots.
 
-The screenshot functionality is not yet available on Linux. See the corresponding [issue on GitHub](https://github.com/DevExpress/testcafe-browser-natives/issues/12).
-
 **Example**
 
 ```js
