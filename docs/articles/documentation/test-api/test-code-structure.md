@@ -110,20 +110,20 @@ You can specify a webpage at which all tests in a fixture start.
 To do this, use the `fixture.page` function.
 
 ```text
-fixture().page( url )
-fixture.page( url )()
-fixture().page `url`
-fixture.page `url`()
+fixture( fixtureName ).page( url )
+fixture.page( url )( fixtureName )
+fixture( fixtureName ).page `url`
+fixture.page `url`( fixtureName )
 ```
 
 Similarly, you can specify a start page for individual tests
 using the `test.page` function that overrides `fixture.page`.
 
 ```text
-test().page( url )
-test.page( url )()
-test().page `url`
-test.page `url`()
+test( testName, fn(t) ).page( url )
+test.page( url )( testName, fn(t) )
+test( testName, fn(t) ).page `url`
+test.page `url`( testName, fn(t) )
 ```
 
 Parameter | Type   | Description
@@ -153,25 +153,25 @@ You can provide initialization code that will be executed before each test start
 To do this, add the `beforeEach` and `afterEach` functions to the [fixture declaration](#fixtures).
 
 ```text
-fixture().beforeEach( fn(t) )
-fixture.beforeEach( fn(t) )()
+fixture( fixtureName ).beforeEach( fn(t) )
+fixture.beforeEach( fn(t) )( fixtureName )
 ```
 
 ```text
-fixture().afterEach( fn(t) )
-fixture.afterEach( fn(t) )()
+fixture( fixtureName ).afterEach( fn(t) )
+fixture.afterEach( fn(t) )( fixtureName )
 ```
 
 You can also specify initialization and clean-up logic for an individual test by using the `test.before` and `test.after` methods.
 
 ```text
-test().before( fn(t) )
-test.before( fn(t) )()
+test( testName, fn(t) ).before( fn(t) )
+test.before( fn(t) )( testName, fn(t) )
 ```
 
 ```text
-test().after( fn(t) )
-test.after( fn(t) )()
+test( testName, fn(t) ).after( fn(t) )
+test.after( fn(t) )( testName, fn(t) )
 ```
 
 > If `test.before` or `test.after` is specified, it overrides the corresponding
@@ -181,13 +181,13 @@ Additionally, you can provide code that will be executed before the entire fixtu
 To do this, use the `fixture.before` and `fixture.after` functions.
 
 ```text
-fixture().before( fn(t) )
-fixture.before( fn(t) )()
+fixture( fixtureName ).before( fn(t) )
+fixture.before( fn(t) )( fixtureName )
 ```
 
 ```text
-fixture().after( fn(t) )
-fixture.after( fn(t) )()
+fixture( fixtureName ).after( fn(t) )
+fixture.after( fn(t) )( fixtureName )
 ```
 
 The `before`, `after`,  `beforeEach` and `afterEach` methods take the following parameters.
@@ -267,25 +267,25 @@ TestCafe allows you to specify that a particular test or fixture should be skipp
 Use the `fixture.skip` and `test.skip` methods for this.
 
 ```text
-fixture().skip
-fixture.skip()
+fixture( fixtureName ).skip
+fixture.skip( fixtureName )
 ```
 
 ```text
-test().skip
-test.skip()
+test( testName, fn(t) ).skip
+test.skip( testName, fn(t) )
 ```
 
 You can also use the `only` method to specify that only a particular test or fixture should run while all others should be skipped.
 
 ```text
-fixture().only
-fixture.only()
+fixture( fixtureName ).only
+fixture.only( fixtureName )
 ```
 
 ```text
-test().only
-test.only()
+test( testName, fn(t) ).only
+test.only( testName, fn(t) )
 ```
 
 If several tests or fixtures are marked with `only`, all the marked tests and fixtures will run.
