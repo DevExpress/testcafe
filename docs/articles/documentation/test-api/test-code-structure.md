@@ -81,7 +81,7 @@ passed to each function that is expected to contain server-side test code (like 
 [beforeEach](#initialization-and-clean-up) or [afterEach](#initialization-and-clean-up)).
 
 Use the test controller to call [test actions](actions/index.md), handle [browser dialogs](handling-native-dialogs.md),
-use the [wait function](pausing-the-test.md) or [invoke selectors](selecting-page-elements/index.md).
+use the [wait function](pausing-the-test.md) or [execute assertions](assertions/index.md).
 
 ```js
 fixture `My fixture`
@@ -120,10 +120,10 @@ Similarly, you can specify a start page for individual tests
 using the `test.page` function that overrides `fixture.page`.
 
 ```text
-test( testName, fn(t) ).page( url )
-test.page( url )( testName, fn(t) )
-test( testName, fn(t) ).page `url`
-test.page `url`( testName, fn(t) )
+test( testName, testBody) ).page( url )
+test.page( url )( testName, testBody )
+test( testName, testBody ).page `url`
+test.page `url`( testName, testBody )
 ```
 
 Parameter | Type   | Description
@@ -165,13 +165,13 @@ fixture.afterEach( fn(t) )( fixtureName )
 You can also specify initialization and clean-up logic for an individual test by using the `test.before` and `test.after` methods.
 
 ```text
-test( testName, fn(t) ).before( fn(t) )
-test.before( fn(t) )( testName, fn(t) )
+test( testName, testBody ).before( fn(t) )
+test.before( fn(t) )( testName, testBody )
 ```
 
 ```text
-test( testName, fn(t) ).after( fn(t) )
-test.after( fn(t) )( testName, fn(t) )
+test( testName, testBody ).after( fn(t) )
+test.after( fn(t) )( testName, testBody )
 ```
 
 > If `test.before` or `test.after` is specified, it overrides the corresponding
@@ -220,10 +220,10 @@ test
     .before( async t => {
         /* test initialization code */
     })
+    ('MyTest', async t => { /* ... */ })
     .after( async t => {
         /* test finalization code */
-    })
-    ('MyTest', async t => { /* ... */ });
+    });
 ```
 
 ## Sharing Variables Across Test Code
@@ -272,8 +272,8 @@ fixture.skip( fixtureName )
 ```
 
 ```text
-test( testName, fn(t) ).skip
-test.skip( testName, fn(t) )
+test( testName, testBody ).skip
+test.skip( testName, testBody )
 ```
 
 You can also use the `only` method to specify that only a particular test or fixture should run while all others should be skipped.
@@ -284,8 +284,8 @@ fixture.only( fixtureName )
 ```
 
 ```text
-test( testName, fn(t) ).only
-test.only( testName, fn(t) )
+test( testName, testBody ).only
+test.only( testName, testBody )
 ```
 
 If several tests or fixtures are marked with `only`, all the marked tests and fixtures will run.

@@ -12,13 +12,13 @@ Use the `test.httpAuth` method to specify the credentials to be used by an indiv
 and the `fixture.httpAuth` method to specify the credentials for the entire fixture.
 
 ```text
-fixture().httpAuth( credentials )
-fixture.httpAuth( credentials )()
+fixture( fixtureName ).httpAuth( credentials )
+fixture.httpAuth( credentials )( fixtureName )
 ```
 
 ```text
-test().httpAuth( credentials )
-test.httpAuth( credentials )()
+test( testName, testBody ).httpAuth( credentials )
+test.httpAuth( credentials )( testName, testBody )
 ```
 
 Parameter     | Type   | Description
