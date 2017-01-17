@@ -34,6 +34,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--app-init-delay \<ms\>](#--app-init-delay-ms)
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
+  * [--touch-mode](#--touch-mode)
   * [--ports \<port1,port2\>](#--ports-port1port2)
   * [--hostname \<name\>](#--hostname-name)
   * [--speed \<factor\>](#--speed-factor)
@@ -331,6 +332,16 @@ See [Smart Assertion Query Mechanism](../test-api/assertions/index.md#smart-asse
 
 ```sh
 testcafe ie my-tests --assertion-timeout 10000
+```
+
+### --touch-mode
+
+Enables emulation of touch events instead of mouse events on a touch monitor. When test runs on touch devices (like smartphones or tablets), touch events are always simulated and this option has no effect.
+
+**Default value**: `false`
+
+```sh
+testcafe ie my-tests --touch-mode
 ```
 
 ### --ports \<port1,port2\>
