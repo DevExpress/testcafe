@@ -32,9 +32,11 @@ This topic contains the following sections.
 * [Using Selectors](#using-selectors)
   * [Check if an Element Exists](#check-if-an-element-exists)
   * [Obtain Element State](#obtain-element-state)
+    * [DOM Node Snapshot](#dom-node-snapshot)
   * [Define Action Targets](#define-action-targets)
   * [Define Assertion Actual Value](#define-assertion-actual-value)
   * [Selector Timeout](#selector-timeout)
+* [Adding Custom Properties to Element State](#adding-custom-properties-to-element-state)
 * [One-Time Selection](#one-time-selection)
 * [Calling Selectors from Node.js Callbacks](#calling-selectors-from-nodejs-callbacks)
 * [Limitations](#limitations)
@@ -496,8 +498,7 @@ test('Obtain Element State', async t => {
 
     const windowsInputChecked = await windowsInput.checked; // returns true
 });
-
- ```
+```
 
 #### DOM Node Snapshot
 
@@ -507,7 +508,6 @@ It returns a *DOM Node Snapshot* that contains [all property values](dom-node-st
 exposed by the selector in a single object.
 
 ```js
-
 import { Selector } from 'testcafe';
 
 fixture `My fixture`
@@ -521,7 +521,6 @@ test('DOM Node Snapshot', async t => {
         .expect(sliderHandle.childElementCount).eql(0)
         .expect(sliderHandle.visible).ok();
 });
-
 ```
 
 Note that if a selector initializer has several matching DOM nodes on the page,
@@ -537,7 +536,6 @@ pass [selector's properties](./dom-node-state.md#members-common-across-all-nodes
 You can pass selectors to [test actions](../actions/index.md) to use the returned element as the action target.
 
 ```js
-
 import { Selector } from 'testcafe';
 
 fixture `My fixture`
@@ -548,13 +546,11 @@ const label = Selector('#tried-section').child('label');
 test('My Test', async t => {
     await t.click(label);
 });
-
 ```
 
 DOM element snapshots can also be passed to test actions.
 
 ```js
-
 import { Selector } from 'testcafe';
 
 fixture `My fixture`
@@ -567,7 +563,6 @@ test('My Test', async t => {
 
     await t.click(labelSnapshot);
 });
-
 ```
 
 In this instance, the selector that was used to fetch this snapshot will be called once again.
@@ -584,7 +579,6 @@ You can check whether a particular DOM node has an expected state by passing a s
 In this case TestCafe enables [Smart Assertion Query Mechanism](../assertions/index.md#smart-assertion-query-mechanism) to avoid accidental errors and unstable tests.
 
 ```js
-
 import { Selector } from 'testcafe';
 
 fixture `My fixture`
@@ -598,7 +592,6 @@ test('Assertion with Selector', async t => {
         .typeText(developerNameInput, 'Peter')
         .expect(developerNameInput.innerText).eql('Peter');
 });
-
 ```
 
 In this example the `developerNameInput.innerText` property will not be
@@ -620,6 +613,48 @@ DOM node or the timeout exceeds.
 Note that you can additionally require that the node returned by the selector is visible.
 To do this, use the [visibilityCheck](selector-options.md#optionsvisibilitycheck) option.
 
+## Adding Custom Properties to Element State
+
+TestCafe allows you to extend [element state](#obtain-element-state) with custom properties calculated on the client side.
+
+To do this, use the selector's `addCustomDOMProperties` method.
+
+```text
+Selector().addCustomDOMProperties({
+    property1: fn1,
+    property2: fn2,
+    /* ... */
+});
+```
+
+Parameter                     | Type     | Description
+----------------------------- | -------- | -----------
+`property1`, `property2`, ... | String   | Property names.
+`fn1`, `fn2`, ...             | Function | Functions that calculate property values. Executed on the client side in the browser.
+
+Functions that calculate property values (`fn1`, `fn2`, ...) take the following parameters.
+
+Parameter   | Type     | Description
+----------- | -------- | -----------
+`node`      | Object   | The DOM node.
+
+**Example**
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `https://devexpress.github.io/testcafe/example/`;
+
+test('Check Label HTML', async t => {
+    const label = Selector('label').addCustomDOMProperties({
+        innerHTML: el => el.innerHTML
+    });
+
+    await t.expect(label.innerHTML).contains('input type="checkbox" name="remote"');
+});
+```
+
 ## One-Time Selection
 
 > Important! ***Deprecated*** *Use [selectors](#creating-selectors) instead. The `select` method of the [test controller](../test-code-structure.md#test-controller) will be removed in future releases.*
@@ -627,9 +662,7 @@ To do this, use the [visibilityCheck](selector-options.md#optionsvisibilitycheck
 To create a selector and immediately execute it without saving it, use the `select` method of the [test controller](../test-code-structure.md#test-controller).
 
 ```text
-
 t.select( init [, options] )
-
 ```
 
 Parameter              | Type     | Description
@@ -640,14 +673,12 @@ Parameter              | Type     | Description
 The following example shows how to get a DOM element by ID with `t.select`.
 
 ```js
-
 fixture `My fixture`
     .page `http://devexpress.github.io/testcafe/example/`;
 
 test('My Test', async t => {
     const header = await t.select('header');
 });
-
 ```
 
 ## Calling Selectors from Node.js Callbacks
@@ -661,7 +692,6 @@ you have to manually bind it to the test controller.
 Use the [boundTestRun](selector-options.md#optionsboundtestrun) option for this.
 
 ```js
-
 import { http } from 'http';
 import { Selector } from 'testcafe';
 
@@ -690,7 +720,6 @@ test('Title changed', async t => {
 
     await t.expect(match).ok();
 });
-
 ```
 
 This approach only works for Node.js callbacks that fire during the test run. To ensure that the test function
