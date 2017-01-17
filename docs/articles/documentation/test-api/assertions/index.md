@@ -21,7 +21,7 @@ This topic contains the following sections.
 ## Assertion Structure
 
 TestCafe assertions start with the `expect` method exposed by [test controller](../test-code-structure.html#test-controller).
-This method accepts the actual value. You can pass an object, a [Selector's DOM node state property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
+This method accepts the actual value. You can pass a value, a [Selector's DOM node state property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
 or a [client function](../obtaining-data-from-the-client.md).
 
 Then, an [assertion method](assertion-api.md) follows. Assertion methods accept an expected value
@@ -76,6 +76,7 @@ To stabilize such tests, you need to add a timeout that will guarantee that the 
 Adding such timeouts can increase the test running time because of extra waiting.
 
 If the TestCafe assertion receives a [Selector's DOM node state property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
+or a [client function](../obtaining-data-from-the-client.md)
 as an actual value, TestCafe uses the smart assertion query mechanism:
 if an assertion did not pass, the test does not fail immediately. The assertion retries to pass multiple times and
 each time it requests the actual property value. The test fails if the assertion could not complete successfully
