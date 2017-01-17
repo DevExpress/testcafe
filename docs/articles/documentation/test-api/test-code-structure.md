@@ -28,9 +28,6 @@ To declare a test fixture, use the `fixture` function.
 
 ```text
 fixture( fixtureName )
-```
-
-```text
 fixture `fixtureName`
 ```
 
@@ -114,10 +111,9 @@ To do this, use the `fixture.page` function.
 
 ```text
 fixture().page( url )
-```
-
-```text
+fixture.page( url )()
 fixture().page `url`
+fixture.page `url`()
 ```
 
 Similarly, you can specify a start page for individual tests
@@ -125,10 +121,9 @@ using the `test.page` function that overrides `fixture.page`.
 
 ```text
 test().page( url )
-```
-
-```text
+test.page( url )()
 test().page `url`
+test.page `url`()
 ```
 
 Parameter | Type   | Description
@@ -159,20 +154,24 @@ To do this, add the `beforeEach` and `afterEach` functions to the [fixture decla
 
 ```text
 fixture().beforeEach( fn(t) )
+fixture.beforeEach( fn(t) )()
 ```
 
 ```text
 fixture().afterEach( fn(t) )
+fixture.afterEach( fn(t) )()
 ```
 
 You can also specify initialization and clean-up logic for an individual test by using the `test.before` and `test.after` methods.
 
 ```text
 test().before( fn(t) )
+test.before( fn(t) )()
 ```
 
 ```text
 test().after( fn(t) )
+test.after( fn(t) )()
 ```
 
 > If `test.before` or `test.after` is specified, it overrides the corresponding
@@ -183,10 +182,12 @@ To do this, use the `fixture.before` and `fixture.after` functions.
 
 ```text
 fixture().before( fn(t) )
+fixture.before( fn(t) )()
 ```
 
 ```text
 fixture().after( fn(t) )
+fixture.after( fn(t) )()
 ```
 
 The `before`, `after`,  `beforeEach` and `afterEach` methods take the following parameters.
@@ -267,20 +268,24 @@ Use the `fixture.skip` and `test.skip` methods for this.
 
 ```text
 fixture().skip
+fixture.skip()
 ```
 
 ```text
 test().skip
+test.skip()
 ```
 
 You can also use the `only` method to specify that only a particular test or fixture should run while all others should be skipped.
 
 ```text
 fixture().only
+fixture.only()
 ```
 
 ```text
 test().only
+test.only()
 ```
 
 If several tests or fixtures are marked with `only`, all the marked tests and fixtures will run.

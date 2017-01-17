@@ -13,10 +13,12 @@ and the `fixture.httpAuth` method to specify the credentials for the entire fixt
 
 ```text
 fixture().httpAuth( credentials )
+fixture.httpAuth( credentials )()
 ```
 
 ```text
 test().httpAuth( credentials )
+test.httpAuth( credentials )()
 ```
 
 Parameter     | Type   | Description
@@ -49,14 +51,14 @@ fixture `My fixture`
         // Optional parameters, can be required for the NTLM authentication.
         domain: 'CORP-DOMAIN',
         workstation: 'machine-win10'
-});
+    });
 
 test('Test1', async t => {});          // Logs in as username
 
 test                                   // Logs in as differentUserName
     .httpAuth({
         username: 'differentUserName',
-        password: 'differentPa$$word',
+        password: 'differentPa$$word'
     })
     ('Test2', async t => {});
 ```
