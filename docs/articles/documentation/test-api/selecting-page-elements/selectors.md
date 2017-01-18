@@ -201,7 +201,7 @@ const isNodeOk = ClientFunction((node, idx) => { /*...*/ });
 
 Selector('ul').filter((node, idx) => {
     return isNodeOk(node, idx);
-}), { isNodeOk });
+}, { isNodeOk });
 ```
 
 **Example**
@@ -261,7 +261,7 @@ const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
 
 Selector('ul').find((node, idx, originNode) => {
     return isNodeOk(node, idx, originNode);
-}), { isNodeOk });
+}, { isNodeOk });
 ```
 
 #### parent
@@ -297,7 +297,7 @@ const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
 
 Selector('ul').parent((node, idx, originNode) => {
     return isNodeOk(node, idx, originNode);
-}), { isNodeOk });
+}, { isNodeOk });
 ```
 
 #### child
@@ -333,7 +333,7 @@ const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
 
 Selector('ul').child((node, idx, originNode) => {
     return isNodeOk(node, idx, originNode);
-}), { isNodeOk });
+}, { isNodeOk });
 ```
 
 #### sibling
@@ -369,7 +369,7 @@ const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
 
 Selector('ul').sibling((node, idx, originNode) => {
     return isNodeOk(node, idx, originNode);
-}), { isNodeOk });
+}, { isNodeOk });
 ```
 
 **Example**
