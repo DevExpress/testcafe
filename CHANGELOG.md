@@ -271,7 +271,8 @@ Get it to ensure that ESLint does not fail on TestCafe test code.
 * Touch events are no longer emulated for touch monitors ([#984](https://github.com/DevExpress/testcafe/issues/984))
 * v8 flags can now be passed to Node.js when using TestCafe from the command line ([#1006](https://github.com/DevExpress/testcafe/issues/1006))
 * ShadowUI root is now hidden for `elementFromPoint` in an iframe in IE ([#1029](https://github.com/DevExpress/testcafe/issues/1029))
-* Preventing the form submit event no longer leads to additional delay between actions [#1115](https://github.com/DevExpress/testcafe/issues/1115)
+* Preventing the form submit event no longer leads to additional delay between actions ([#1115](https://github.com/DevExpress/testcafe/issues/1115))
+* TestCafe no longer hangs when a cursor is moved out of a reloading iframe ([#1140](https://github.com/DevExpress/testcafe/issues/1140))
 
 ## v0.11.1 (2016-12-8)
 
