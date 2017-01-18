@@ -20,9 +20,14 @@ This topic contains the following sections.
 
 ## Assertion Structure
 
-TestCafe assertions start with the `expect` method exposed by [test controller](../test-code-structure.md#test-controller),
-which accepts the `actual` value argument. Then, the assertion method follows. An assertion method accepts an expected value
-and optionally other arguments. For example, this is how the deep equality assertion looks like.
+TestCafe assertions start with the `expect` method exposed by [test controller](../test-code-structure.html#test-controller).
+This method accepts the actual value. You can pass a value, a [Selector's DOM node state property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
+or a [client function](../obtaining-data-from-the-client.md).
+
+Then, an [assertion method](assertion-api.md) follows. Assertion methods accept an expected value
+and, optionally, other arguments.
+
+For instance, the deep equality assertion has the following structure.
 
 ```text
 await t.expect( actual ).eql( expected, message, options );
@@ -71,6 +76,7 @@ To stabilize such tests, you need to add a timeout that will guarantee that the 
 Adding such timeouts can increase the test running time because of extra waiting.
 
 If the TestCafe assertion receives a [Selector's DOM node state property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
+or a [client function](../obtaining-data-from-the-client.md)
 as an actual value, TestCafe uses the smart assertion query mechanism:
 if an assertion did not pass, the test does not fail immediately. The assertion retries to pass multiple times and
 each time it requests the actual property value. The test fails if the assertion could not complete successfully
@@ -103,8 +109,8 @@ test('Button click', async t => {
 
     await t
         .click(btn)
-        // Regular assertion will fail immediately, but TestCafe retries to run DOM state
-        // assertions many times until this assertion pass successfully within the timeout.
+        // A regular assertion will fail immediately, but TestCafe retries to run DOM state
+        // assertions many times within the timeout until this assertion passes successfully.
         // The default timeout is 3000 ms.
         .expect(btn.textContent).contains('Loading...');
 });
@@ -124,7 +130,8 @@ if you run TestCafe from the command line.
 **Type**: Number
 
 The amount of time, in milliseconds, allowed for an assertion to pass before the test fails if
-[a selector property](../selecting-page-elements/selectors.md#define-assertion-actual-value) was used in assertion.
+[a selector property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
+or a [client function](../obtaining-data-from-the-client.md) was used in assertion.
 
 **Default value**: timeout is specified by using the [runner.run](../../using-testcafe/programming-interface/runner.md#run) API method
 or the [assertion-timeout](../../using-testcafe/command-line-interface.md#--assertion-timeout-ms) command line option.
