@@ -130,7 +130,8 @@ if you run TestCafe from the command line.
 **Type**: Number
 
 The amount of time, in milliseconds, allowed for an assertion to pass before the test fails if
-[a selector property](../selecting-page-elements/selectors.md#define-assertion-actual-value) was used in assertion.
+[a selector property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
+or a [client function](../obtaining-data-from-the-client.md) was used in assertion.
 
 **Default value**: timeout is specified by using the [runner.run](../../using-testcafe/programming-interface/runner.md#run) API method
 or the [assertion-timeout](../../using-testcafe/command-line-interface.md#--assertion-timeout-ms) command line option.
