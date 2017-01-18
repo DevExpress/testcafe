@@ -142,7 +142,10 @@ export default class MoveAutomation {
             var clientX = startX - iframeRectangle.left;
             var clientY = startY - iframeRectangle.top;
 
-            eventSimulator.mouseout(lastHoveredElement, { clientX, clientY, relatedTarget: null });
+            // NOTE: We should not emulate mouseout if iframe was reloaded.
+            if (lastHoveredElement)
+                eventSimulator.mouseout(lastHoveredElement, { clientX, clientY, relatedTarget: null });
+
             messageSandbox.sendServiceMsg({ cmd: MOVE_RESPONSE_CMD }, parentWin);
 
             return;

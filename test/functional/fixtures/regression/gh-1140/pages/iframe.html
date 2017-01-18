@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-1140 iframe</title>
+    <style>
+        #target {
+            width:200px;
+            height:200px;
+            background: grey;
+        }
+    </style>
+</head>
+<body>
+<div id="target"></div>
+<script>
+    document
+            .querySelector('#target')
+            .addEventListener('click', function () {
+                window.location.reload();
+            });
+</script>
+</body>
+</html>
