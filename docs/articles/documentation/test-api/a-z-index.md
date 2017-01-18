@@ -12,9 +12,7 @@ This topic lists test API members in alphabetical order.
 * [DOM Node State](selecting-page-elements/dom-node-state.md)
    * *[members](selecting-page-elements/dom-node-state.md#members-common-across-all-nodes)*
 * [fixture](test-code-structure.md#fixtures)
-    * [after](test-code-structure.md#initialization-and-clean-up)
     * [afterEach](test-code-structure.md#initialization-and-clean-up)
-    * [before](test-code-structure.md#initialization-and-clean-up)
     * [beforeEach](test-code-structure.md#initialization-and-clean-up)
     * [httpAuth](http-authentication.md)
     * [only](test-code-structure.md#skipping-tests)
