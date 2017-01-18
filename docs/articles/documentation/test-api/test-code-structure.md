@@ -169,18 +169,7 @@ test.after( fn(t) )
 > If `test.before` or `test.after` is specified, it overrides the corresponding
 > `fixture.beforeEach` and `fixture.afterEach` method, so that fixture's methods are not executed.
 
-Additionally, you can provide code that will be executed before the entire fixture starts and after it finishes.
-To do this, use the `fixture.before` and `fixture.after` hooks.
-
-```text
-fixture.before( fn(t) )
-```
-
-```text
-fixture.after( fn(t) )
-```
-
-The `before`, `after`,  `beforeEach` and `afterEach` methods take the following parameters.
+The `test.before`, `test.after`,  `fixture.beforeEach` and `fixture.afterEach` methods take the following parameters.
 
 Parameter | Type     | Description
 --------- | -------- | ---------------------------------------------------------------------------
@@ -188,17 +177,11 @@ Parameter | Type     | Description
 `t`       | Object   | The [test controller](#test-controller) used to access test run API.
 
 As long as the function you provide receives a [test controller](#test-controller),
-you can use [test actions](actions/index.md) and other test run API inside the `before`, `after`,  `beforeEach` and `afterEach` functions.
+you can use [test actions](actions/index.md) and other test run API inside the `test.before`, `test.after`,  `fixture.beforeEach` and `fixture.afterEach` functions.
 
 ```js
 fixture `My fixture`
     .page `http://example.com`
-    .before( async t => {
-        /* fixture initialization code */
-    })
-    .after( async t => {
-        /* fixture finalization code */
-    })
     .beforeEach( async t => {
         /* test initialization code */
     })
