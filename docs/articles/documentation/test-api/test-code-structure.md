@@ -13,7 +13,7 @@ This topic contains the following sections.
   * [Test Controller](#test-controller)
 * [Specifying the Start Webpage](#specifying-the-start-webpage)
 * [Initialization and Clean-Up](#initialization-and-clean-up)
-* [Sharing Variables Across Test Code](#sharing-variables-across-test-code)
+  * [Sharing Variables Between the Hooks and Test Code](#sharing-variables-between-the-hooks-and-test-code)
 * [Skipping Tests](#skipping-tests)
 
 > If you use [eslint](http://eslint.org/) in your project, get the [TestCafe plugin](https://www.npmjs.com/package/eslint-plugin-testcafe)
@@ -146,7 +146,7 @@ If the start page is not specified, it defaults to `about:blank`.
 ## Initialization and Clean-Up
 
 You can provide initialization code that will be executed before each test starts and clean-up code that will executed after the test finishes.
-To do this, add the `beforeEach` and `afterEach` functions to the [fixture declaration](#fixtures).
+To do this, add the `beforeEach` and `afterEach` *hook functions* to the [fixture declaration](#fixtures).
 
 ```text
 fixture.beforeEach( fn(t) )
@@ -156,7 +156,7 @@ fixture.beforeEach( fn(t) )
 fixture.afterEach( fn(t) )
 ```
 
-You can also specify initialization and clean-up logic for an individual test by using the `test.before` and `test.after` methods.
+You can also specify initialization and clean-up logic for an individual test by using the `test.before` and `test.after` hooks.
 
 ```text
 test.before( fn(t) )
@@ -170,7 +170,7 @@ test.after( fn(t) )
 > `fixture.beforeEach` and `fixture.afterEach` method, so that fixture's methods are not executed.
 
 Additionally, you can provide code that will be executed before the entire fixture starts and after it finishes.
-To do this, use the `fixture.before` and `fixture.after` functions.
+To do this, use the `fixture.before` and `fixture.after` hooks.
 
 ```text
 fixture.before( fn(t) )
@@ -216,10 +216,10 @@ test
     });
 ```
 
-## Sharing Variables Across Test Code
+### Sharing Variables Between the Hooks and Test Code
 
-TestCafe allows you to share variables across test code by using the *test context* object
-shared between `fixture.beforeEach`, `fixture.afterEach`, `test.before`, `test.after` functions and test code.
+You can share variables between `fixture.beforeEach`, `fixture.afterEach`, `test.before`, `test.after` functions and test code
+by using the *test context* object.
 
 Test context is available through the `t.ctx` property.
 

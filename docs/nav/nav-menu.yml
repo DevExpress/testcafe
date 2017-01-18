@@ -43,8 +43,9 @@
       url: /documentation/test-api/test-code-structure.md#specifying-the-start-webpage
     - name: Initialization and Clean-Up
       url: /documentation/test-api/test-code-structure.md#initialization-and-clean-up
-    - name: Sharing Variables Across Test Code
-      url: /documentation/test-api/test-code-structure.md#sharing-variables-across-test-code
+      content:
+      - name: Sharing Variables Between the Hooks and Test Code
+        url: /documentation/test-api/test-code-structure.md#sharing-variables-between-the-hooks-and-test-code
     - name: Skipping Tests
       url: /documentation/test-api/test-code-structure.md#skipping-tests
   - name: Actions

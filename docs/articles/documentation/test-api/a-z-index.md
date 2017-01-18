@@ -42,7 +42,7 @@ This topic lists test API members in alphabetical order.
 * [Test Controller](test-code-structure.md#test-controller)
     * [clearUpload](actions/upload.md#clear-file-upload-input)
     * [click](actions/click.md)
-    * [ctx](test-code-structure.md#sharing-variables-across-test-code)
+    * [ctx](test-code-structure.md#sharing-variables-between-the-hooks-and-test-code)
     * [doubleClick](actions/double-click.md)
     * [drag](actions/drag-element.md#drag-an-element-by-an-offset)
     * [dragtoElement](actions/drag-element.md#drag-an-element-onto-another-one)
