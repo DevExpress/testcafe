@@ -137,19 +137,22 @@ An individual test can now override the fixture's `page` setting and start on a 
      });
  ```
 
-#### Initialization and finalization methods for a fixture ([#903](https://github.com/DevExpress/testcafe/issues/903))
+#### Initialization and finalization methods for a test ([#1108](https://github.com/DevExpress/testcafe/issues/1108))
 
-We have added the `before` and `after` methods to the fixture declaration.
-Use them to provide code that will be executed before a fixture is started and after it is finished.
+We have added the `before` and `after` methods to the test declaration.
+Use them to provide code that will be executed before a test is started and after it is finished.
 
 ```js
-fixture `MyFixture`
+test
     .before( async t => {
-        /* fixture initialization code */
+        /* test initialization code */
+    })
+    ('My Test', async t => {
+        /* test code */
     })
     .after( async t => {
-        /* fixture finalization code */
-    })
+        /* test finalization code */
+    });
 ```
 
 #### Sharing variables between hooks and test code ([#841](https://github.com/DevExpress/testcafe/issues/841))
