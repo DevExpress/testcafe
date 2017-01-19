@@ -115,7 +115,7 @@ test('Check property of element', async t => {
     await t
         .expect(developerNameInput.value).eql('', 'input is empty')
         .typeText(developerNameInput, 'Peter Parker')
-        .expect(developerNameInput.value).constains('Peter', 'input contains text "Peter"');
+        .expect(developerNameInput.value).contains('Peter', 'input contains text "Peter"');
 });
 ```
 
