@@ -252,7 +252,7 @@ const windowLocation = ClientFunction(() => window.location);
 fixture `My Fixture`
     .page `http://www.example.com`;
 
-test('My Test', asynct t => {
+test('My Test', async t => {
     await t.expect(windowLocation()).to.eql('http://www.example.com');
 });
 ```
