@@ -247,13 +247,13 @@ will run this client function and use the return value as the assertion's actual
 ```js
 import { ClientFunction } from 'testcafe';
 
-const windowLocation = ClientFunction(() => window.location);
+const windowLocation = ClientFunction(() => window.location.toString());
 
 fixture `My Fixture`
     .page `http://www.example.com`;
 
 test('My Test', async t => {
-    await t.expect(windowLocation()).to.eql('http://www.example.com');
+    await t.expect(windowLocation()).eql('http://www.example.com');
 });
 ```
 
