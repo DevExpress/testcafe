@@ -47,7 +47,7 @@ fixture `My fixture`
         password: 'Pa$$word',
 
         // Optional parameters, can be required for the NTLM authentication.
-        domain: 'CORP-DOMAIN',
+        domain:      'CORP-DOMAIN',
         workstation: 'machine-win10'
     });
 
