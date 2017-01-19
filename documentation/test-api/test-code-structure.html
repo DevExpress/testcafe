@@ -6,9 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  
   <title>Test Code Structure | TestCafe</title>
+
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
+  
+  <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html" />
+  <meta property="og:title" content="Test Code Structure | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
@@ -44,57 +51,80 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script>
-        function initNav(nav) {
-            var MIN_BODY_WIDTH = 900;
-            var FOOTER_HEIGHT  = 63;
-            var HEADER_HEIGHT  = 52;
+        var MIN_BODY_WIDTH = 900;
+        var FOOTER_HEIGHT  = 63;
+        var HEADER_HEIGHT  = 52;
 
-            function updatePosition() {
-                var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset + document.body.clientHeight;
+        var nav            = null;
+        var isMobileDevice = window.screen.width < 800 || window.screen.height < 800;
 
+        function setNavTopPosition () {
+            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
+
+            if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                if (nav.style.top !== HEADER_HEIGHT + 'px') {
+                    nav.style.top = HEADER_HEIGHT + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if(!isMobileZoomed) {
+                var top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
+
+                if (nav.style.top !== top) {
+                    nav.style.top = top;
+                    Ps.update(nav);
+                }
+            }
+        }
+
+        function setNavBottomPosition () {
+            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
+                                      document.body.clientHeight;
+
+            if (footerVisibleHeight > 0) {
+                if (nav.style.bottom !== footerVisibleHeight + 'px') {
+                    nav.style.bottom = footerVisibleHeight + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if (nav.style.bottom !== '0') {
+                nav.style.bottom = '0';
+                Ps.update(nav);
+            }
+        }
+
+        function updatePosition () {
+            if (isMobileDevice)
+                changeBodyHeight();
+            else
                 nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+
+            setNavBottomPosition();
+            setNavTopPosition();
+        }
+        
+        function changeBodyHeight () {
+            if (document.body.style.height !== window.innerHeight + 'px')
+                document.body.style.height = window.innerHeight + 'px';
+        }
+        
+        function initScrollBar() {
+            Ps.initialize(nav);
             
-                if (footerVisibleHeight > 0) {
-                    if(nav.style.bottom !== footerVisibleHeight + 'px') {
-                        nav.style.bottom = footerVisibleHeight + 'px';
-                        Ps.update(nav);
-                    }
-                }
-                else if(nav.style.bottom !== '0') {
-                    nav.style.bottom = '0';
-                    Ps.update(nav);
-                }
+            window.addEventListener('resize', function () {
+                Ps.update(nav);
+            });
+        }
 
-                if (document.body.clientWidth > MIN_BODY_WIDTH) {
-                    if (nav.style.top !== HEADER_HEIGHT + 'px') {
-                        nav.style.top = HEADER_HEIGHT + 'px';
-                        Ps.update(nav);
-                    }
-                }
-                else {
-                    var top = window.pageYOffset <= HEADER_HEIGHT ? (HEADER_HEIGHT - window.pageYOffset) + 'px' : '0';
-
-                    if(nav.style.top !== top) {
-                        nav.style.top = top;
-                        Ps.update(nav);
-                    }
-                }
-            }
-            function initScrollBar() {
-                Ps.initialize(nav);
-                
-                window.addEventListener('resize', function () {
-                    Ps.update(nav);
-                });
-            }
-
+        function initNav() {
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
         }
+
         document.addEventListener('DOMContentLoaded', function (e) {
-            var nav = document.querySelector('.doc-nav');
+            nav = document.querySelector('.doc-nav');
 
             if(nav)
                 initNav(nav);
@@ -284,6 +314,67 @@
 		
 <a href="/testcafe/documentation/test-api/test-code-structure.html" class="active" >Test Code Structure</a>
 		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixtures"  >Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#tests"  >Tests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-controller"  >Test Controller</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage"  >Specifying the Start Webpage</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-the-hooks-and-test-code"  >Sharing Variables Between the Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#skipping-tests"  >Skipping Tests</a>
+		
+    </li>
+
+</ul>
+		
     </li>
 
     <li>
@@ -430,7 +521,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion API</a>
 		
     </li>
 
@@ -442,6 +533,13 @@
 		    
 		
 <a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/http-authentication.html"  >HTTP Authentication</a>
 		
     </li>
 
@@ -541,6 +639,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
 		
     </li>
@@ -549,6 +654,27 @@
 		    
 		
 <a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html"  >Testing on Remote Computers and Mobile Devices</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-page-model.html"  >Using Page Model</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-testcafe-with-gulp.html"  >Using TestCafe with Gulp</a>
 		
     </li>
 
@@ -569,25 +695,29 @@
 <p>This topic contains the following sections.</p>
 
 <ul>
-<li><a href="#fixtures">Fixtures</a>
-
-<ul>
-<li><a href="#specifying-the-start-webpage">Specifying the Start Webpage</a></li>
-</ul></li>
+<li><a href="#fixtures">Fixtures</a></li>
 <li><a href="#tests">Tests</a>
 
 <ul>
 <li><a href="#test-controller">Test Controller</a></li>
 </ul></li>
-<li><a href="#initialization-and-clean-up">Initialization and Clean-Up</a></li>
+<li><a href="#specifying-the-start-webpage">Specifying the Start Webpage</a></li>
+<li><a href="#initialization-and-clean-up">Initialization and Clean-Up</a>
+
+<ul>
+<li><a href="#sharing-variables-between-the-hooks-and-test-code">Sharing Variables Between the Hooks and Test Code</a></li>
+</ul></li>
+<li><a href="#skipping-tests">Skipping Tests</a></li>
 </ul>
-<h2><a class="anchor" name="fixtures"></a>Fixtures <a class="permalink" href="#fixtures">#</a></h2>
+<blockquote><div class="blockquote-content"><p>If you use <a href="http://eslint.org/">eslint</a> in your project, get the <a href="https://www.npmjs.com/package/eslint-plugin-testcafe">TestCafe plugin</a>
+to avoid the <code>&#39;fixture&#39; is not defined</code> and <code>&#39;test&#39; is not defined</code> errors.</p>
+</div></blockquote><h2><a class="anchor" name="fixtures"></a>Fixtures <a class="permalink" href="#fixtures">#</a></h2>
 <p>TestCafe tests must be organized into categories called <em>fixtures</em>.
 A JavaScript file with TestCafe tests can contain one or more fixtures.</p>
 
 <p>To declare a test fixture, use the <code>fixture</code> function.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">fixture( fixtureName )
-</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">fixture `fixtureName`
+fixture `fixtureName`
 </code></pre></div>
 <table><thead>
 <tr>
@@ -605,31 +735,6 @@ A JavaScript file with TestCafe tests can contain one or more fixtures.</p>
 
 <p>This function returns the <code>fixture</code> object that allows you to configure the fixture - specify the <a href="#specifying-the-start-webpage">start webpage</a> and <a href="#initialization-and-clean-up">initialization and clean-up code</a> for tests included to the fixture.</p>
 <blockquote><div class="blockquote-content"><p><a href="#tests">Tests</a> that constitute a fixture go after this declaration.</p>
-</div></blockquote><h3><a class="anchor" name="specifying-the-start-webpage"></a>Specifying the Start Webpage <a class="permalink" href="#specifying-the-start-webpage">#</a></h3>
-<p>You can optionally use the fixture declaration to specify a webpage at which all tests in a fixture start.
-To do this, use the <code>page</code> function.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">page( url )
-</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">page `url`
-</code></pre></div>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>url</code></td>
-<td>String</td>
-<td>The URL of the webpage at which the tests start.</td>
-</tr>
-</tbody></table>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`;</span>
-</code></pre></div>
-<p>If the start page is not specified, it defaults to <code>about:blank</code>.</p>
-<blockquote><div class="blockquote-content"><p>You can also call the <a href="actions/navigate.html">Navigate action</a> at the beginning of a test
-to navigate to the start page.</p>
 </div></blockquote><h2><a class="anchor" name="tests"></a>Tests <a class="permalink" href="#tests">#</a></h2>
 <p>To introduce a test, call the <code>test</code> function and pass test code inside.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">test( testName, fn(t) )
@@ -681,7 +786,7 @@ passed to each function that is expected to contain server-side test code (like 
 <a href="#initialization-and-clean-up">beforeEach</a> or <a href="#initialization-and-clean-up">afterEach</a>).</p>
 
 <p>Use the test controller to call <a href="actions/">test actions</a>, handle <a href="handling-native-dialogs.html">browser dialogs</a>,
-use the <a href="pausing-the-test.html">wait function</a> or <a href="selecting-page-elements/">invoke selectors</a>.</p>
+use the <a href="pausing-the-test.html">wait function</a> or <a href="assertions/">execute assertions</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
 
@@ -700,12 +805,58 @@ use the <a href="pausing-the-test.html">wait function</a> or <a href="selecting-
 This is why <a href="selecting-page-elements/selectors.html">selectors</a> and
 <a href="obtaining-data-from-the-client.html">client functions</a> need the test controller object when they are
 called from Node.js callbacks.</p>
-<h2><a class="anchor" name="initialization-and-clean-up"></a>Initialization and Clean-Up <a class="permalink" href="#initialization-and-clean-up">#</a></h2>
-<p>You can provide initialization code that will be executed before each test starts and clean-up code that will run after a test finishes.
-To do this, add the <code>beforeEach</code> and <code>afterEach</code> functions to the <a href="#fixtures">fixture declaration</a>.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">beforeEach( fn(t) )
-</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">afterEach( fn(t) )
+<h2><a class="anchor" name="specifying-the-start-webpage"></a>Specifying the Start Webpage <a class="permalink" href="#specifying-the-start-webpage">#</a></h2>
+<p>You can specify a webpage at which all tests in a fixture start.
+To do this, use the <code>fixture.page</code> function.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">fixture.page( url )
+fixture.page `url`
 </code></pre></div>
+<p>Similarly, you can specify a start page for individual tests
+using the <code>test.page</code> function that overrides <code>fixture.page</code>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">test.page( url )
+test.page `url`
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>url</code></td>
+<td>String</td>
+<td>The URL of the webpage at which this test starts.</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Test1'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// Starts at http://devexpress.github.io/testcafe/example</span>
+<span class="p">});</span>
+
+<span class="nx">test</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/blog/`</span>
+    <span class="p">(</span><span class="s1">'Test2'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// Starts at http://devexpress.github.io/testcafe/blog/</span>
+    <span class="p">});</span>
+</code></pre></div>
+<p>If the start page is not specified, it defaults to <code>about:blank</code>.</p>
+<h2><a class="anchor" name="initialization-and-clean-up"></a>Initialization and Clean-Up <a class="permalink" href="#initialization-and-clean-up">#</a></h2>
+<p>You can provide initialization code that will be executed before each test starts and clean-up code that will executed after the test finishes.
+To do this, add the <code>beforeEach</code> and <code>afterEach</code> <em>hook functions</em> to the <a href="#fixtures">fixture declaration</a>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">fixture.beforeEach( fn(t) )
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">fixture.afterEach( fn(t) )
+</code></pre></div>
+<p>You can also specify initialization and clean-up logic for an individual test by using the <code>test.before</code> and <code>test.after</code> hooks.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">test.before( fn(t) )
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">test.after( fn(t) )
+</code></pre></div><blockquote><div class="blockquote-content"><p>If <code>test.before</code> or <code>test.after</code> is specified, it overrides the corresponding
+<code>fixture.beforeEach</code> and <code>fixture.afterEach</code> method, so that fixture&#39;s methods are not executed.</p>
+</div></blockquote>
+<p>The <code>test.before</code>, <code>test.after</code>,  <code>fixture.beforeEach</code> and <code>fixture.afterEach</code> methods take the following parameters.</p>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -726,15 +877,81 @@ To do this, add the <code>beforeEach</code> and <code>afterEach</code> functions
 </tbody></table>
 
 <p>As long as the function you provide receives a <a href="#test-controller">test controller</a>,
-you can use <a href="actions/">test actions</a> and other test run API inside <code>beforeEach</code> and <code>afterEach</code>.</p>
+you can use <a href="actions/">test actions</a> and other test run API inside the <code>test.before</code>, <code>test.after</code>,  <code>fixture.beforeEach</code> and <code>fixture.afterEach</code> functions.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`</span>
     <span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="cm">/* initialization code */</span>
+        <span class="cm">/* test initialization code */</span>
     <span class="p">})</span>
     <span class="p">.</span><span class="nx">afterEach</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="cm">/* finalization code */</span>
+        <span class="cm">/* test finalization code */</span>
+    <span class="p">});</span>
+
+<span class="nx">test</span>
+    <span class="p">.</span><span class="nx">before</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="cm">/* test initialization code */</span>
     <span class="p">})</span>
+    <span class="p">(</span><span class="s1">'MyTest'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">after</span><span class="p">(</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="cm">/* test finalization code */</span>
+    <span class="p">});</span>
+</code></pre></div><h3><a class="anchor" name="sharing-variables-between-the-hooks-and-test-code"></a>Sharing Variables Between the Hooks and Test Code <a class="permalink" href="#sharing-variables-between-the-hooks-and-test-code">#</a></h3>
+<p>You can share variables between <code>fixture.beforeEach</code>, <code>fixture.afterEach</code>, <code>test.before</code>, <code>test.after</code> functions and test code
+by using the <em>test context</em> object.</p>
+
+<p>Test context is available through the <code>t.ctx</code> property.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.ctx
+</code></pre></div>
+<p>Instead of using a global variable, assign the object you want to share directly to <code>t.ctx</code> or create a property like in the following example.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span><span class="nx">async</span> <span class="nx">t</span>  <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">t</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">someProp</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span>
+    <span class="p">});</span>
+
+<span class="nx">test</span>
+    <span class="p">(</span><span class="s1">'Test1'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">someProp</span><span class="p">);</span> <span class="c1">// &gt; 123</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">someProp</span><span class="p">);</span> <span class="c1">// &gt; 123</span>
+    <span class="p">});</span>
+</code></pre></div>
+<p>Each test run has its own test context.</p>
+<blockquote><div class="blockquote-content"><p><code>t.ctx</code> is initialized with an empty object without a prototype. You can iterate its keys without the <code>hasOwnProperty</code> check.</p>
+</div></blockquote><h2><a class="anchor" name="skipping-tests"></a>Skipping Tests <a class="permalink" href="#skipping-tests">#</a></h2>
+<p>TestCafe allows you to specify that a particular test or fixture should be skipped when running tests.
+Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">fixture.skip
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">test.skip
+</code></pre></div>
+<p>You can also use the <code>only</code> method to specify that only a particular test or fixture should run while all others should be skipped.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">fixture.only
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">test.only
+</code></pre></div>
+<p>If several tests or fixtures are marked with <code>only</code>, all the marked tests and fixtures will run.</p>
+
+<p><strong>Examples</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">.</span><span class="nx">skip</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span><span class="p">;</span> <span class="c1">// All tests in this fixture will be skipped</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture1Test1'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture1Test2'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture2</span><span class="err">`</span><span class="p">;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture2Test1'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
+<span class="nx">test</span><span class="p">.</span><span class="nx">skip</span><span class="p">(</span><span class="s1">'Fixture2Test2'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span> <span class="c1">// This test will be skipped</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture2Test3'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">.</span><span class="nx">only</span> <span class="err">`</span><span class="nx">Fixture1</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture1Test1'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture1Test2'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture2</span><span class="err">`</span><span class="p">;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture2Test1'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
+<span class="nx">test</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="s1">'Fixture2Test2'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Fixture2Test3'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{});</span>
+
+<span class="c1">// Only tests in Fixture1 and the Fixture2Test2 test will run</span>
 </code></pre></div>
 
 		</div>
@@ -749,7 +966,7 @@ you can use <a href="actions/">test actions</a> and other test run API inside <c
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 1998-2016 Developer Express Inc.</p>
+            Copyright © 1998-2017 Developer Express Inc.</p>
         </div>
     </div>
 </footer>

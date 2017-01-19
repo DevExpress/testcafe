@@ -288,7 +288,7 @@ html, body {
   position: fixed;
   top: 52px;
   bottom: 0;
-  width: 250px;
+  width: 350px;
   vertical-align: top;
   font-size: 13px;
   background-color: #fdfdfd; }
@@ -328,7 +328,7 @@ html, body {
 
 .doc {
   max-width: 1100px;
-  margin: 12px 0 40px calc(250px + 40px);
+  margin: 12px 0 40px calc(350px + 40px);
   padding-right: 40px; }
 
 .bottom {

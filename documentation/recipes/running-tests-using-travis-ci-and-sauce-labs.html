@@ -6,9 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  
   <title>Running Tests Using Travis CI and Sauce Labs | TestCafe</title>
+
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
+  
+  <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html" />
+  <meta property="og:title" content="Running Tests Using Travis CI and Sauce Labs | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
@@ -44,57 +51,80 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script>
-        function initNav(nav) {
-            var MIN_BODY_WIDTH = 900;
-            var FOOTER_HEIGHT  = 63;
-            var HEADER_HEIGHT  = 52;
+        var MIN_BODY_WIDTH = 900;
+        var FOOTER_HEIGHT  = 63;
+        var HEADER_HEIGHT  = 52;
 
-            function updatePosition() {
-                var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset + document.body.clientHeight;
+        var nav            = null;
+        var isMobileDevice = window.screen.width < 800 || window.screen.height < 800;
 
+        function setNavTopPosition () {
+            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
+
+            if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                if (nav.style.top !== HEADER_HEIGHT + 'px') {
+                    nav.style.top = HEADER_HEIGHT + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if(!isMobileZoomed) {
+                var top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
+
+                if (nav.style.top !== top) {
+                    nav.style.top = top;
+                    Ps.update(nav);
+                }
+            }
+        }
+
+        function setNavBottomPosition () {
+            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
+                                      document.body.clientHeight;
+
+            if (footerVisibleHeight > 0) {
+                if (nav.style.bottom !== footerVisibleHeight + 'px') {
+                    nav.style.bottom = footerVisibleHeight + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if (nav.style.bottom !== '0') {
+                nav.style.bottom = '0';
+                Ps.update(nav);
+            }
+        }
+
+        function updatePosition () {
+            if (isMobileDevice)
+                changeBodyHeight();
+            else
                 nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+
+            setNavBottomPosition();
+            setNavTopPosition();
+        }
+        
+        function changeBodyHeight () {
+            if (document.body.style.height !== window.innerHeight + 'px')
+                document.body.style.height = window.innerHeight + 'px';
+        }
+        
+        function initScrollBar() {
+            Ps.initialize(nav);
             
-                if (footerVisibleHeight > 0) {
-                    if(nav.style.bottom !== footerVisibleHeight + 'px') {
-                        nav.style.bottom = footerVisibleHeight + 'px';
-                        Ps.update(nav);
-                    }
-                }
-                else if(nav.style.bottom !== '0') {
-                    nav.style.bottom = '0';
-                    Ps.update(nav);
-                }
+            window.addEventListener('resize', function () {
+                Ps.update(nav);
+            });
+        }
 
-                if (document.body.clientWidth > MIN_BODY_WIDTH) {
-                    if (nav.style.top !== HEADER_HEIGHT + 'px') {
-                        nav.style.top = HEADER_HEIGHT + 'px';
-                        Ps.update(nav);
-                    }
-                }
-                else {
-                    var top = window.pageYOffset <= HEADER_HEIGHT ? (HEADER_HEIGHT - window.pageYOffset) + 'px' : '0';
-
-                    if(nav.style.top !== top) {
-                        nav.style.top = top;
-                        Ps.update(nav);
-                    }
-                }
-            }
-            function initScrollBar() {
-                Ps.initialize(nav);
-                
-                window.addEventListener('resize', function () {
-                    Ps.update(nav);
-                });
-            }
-
+        function initNav() {
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
         }
+
         document.addEventListener('DOMContentLoaded', function (e) {
-            var nav = document.querySelector('.doc-nav');
+            nav = document.querySelector('.doc-nav');
 
             if(nav)
                 initNav(nav);
@@ -284,6 +314,67 @@
 		
 <a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
 		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixtures"  >Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#tests"  >Tests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-controller"  >Test Controller</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage"  >Specifying the Start Webpage</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-the-hooks-and-test-code"  >Sharing Variables Between the Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#skipping-tests"  >Skipping Tests</a>
+		
+    </li>
+
+</ul>
+		
     </li>
 
     <li>
@@ -430,7 +521,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion API</a>
 		
     </li>
 
@@ -442,6 +533,13 @@
 		    
 		
 <a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/http-authentication.html"  >HTTP Authentication</a>
 		
     </li>
 
@@ -541,6 +639,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html" class="active" >Running Tests Using Travis CI and Sauce Labs</a>
 		
     </li>
@@ -549,6 +654,27 @@
 		    
 		
 <a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html"  >Testing on Remote Computers and Mobile Devices</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-page-model.html"  >Using Page Model</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-testcafe-with-gulp.html"  >Using TestCafe with Gulp</a>
 		
     </li>
 
@@ -593,11 +719,14 @@ Thus, you can run your tests completely in the cloud.</p>
 <p>By default, Travic CI runs builds on pushes and pull requests. You can manage this behavior in your repository&#39;s settings.</p>
 
 <p><img src="../../images/travis-step-2-4.png" alt="Enable builds"></p></li>
-<li><p>Add a <code>.travis.yml</code> configuration file to the root of your project. This file should contain parameters and commands that instruct Travis CI how to execute your builds. For more information, see <a href="https://docs.travis-ci.com/user/customizing-the-build">Customizing the Build</a>.</p>
+<li><p>Add a <code>.travis.yml</code> configuration file to the root of your project. This file contains parameters and commands that instruct Travis CI how to execute your builds. For more information, see <a href="https://docs.travis-ci.com/user/customizing-the-build">Customizing the Build</a>.</p>
 
 <p>For Node.js projects, the <code>.travis.yml</code> file can have the following content.</p>
 <div class="highlight"><pre><code class="language-yaml" data-lang="yaml"> <span class="s">language</span><span class="pi">:</span> <span class="s">node_js</span>
  <span class="s">node_js</span><span class="pi">:</span> <span class="s2">"</span><span class="s">stable"</span>
+
+ <span class="s">before_install</span><span class="pi">:</span>
+   <span class="pi">-</span> <span class="s">stty cols 80</span>
 </code></pre></div>
 <p>Commit and push this file to your repository.</p></li>
 </ol>
@@ -616,28 +745,19 @@ To do this, run the following command.</p>
 <p>For more information on testing in cloud browsers, see <a href="../using-testcafe/common-concepts/browser-support.html#browsers-in-cloud-testing-services">Browsers in Cloud Testing Services</a>.</p>
 <h2><a class="anchor" name="step-5---add-the-test-script-to-packagejson"></a>Step 5 - Add the <code>test</code> script to package.json <a class="permalink" href="#step-5---add-the-test-script-to-packagejson">#</a></h2>
 <p>To test a project, Travis runs test scripts. For Node.js projects, the default test script is <code>npm test</code>.
-To tell npm how to run your tests, you need to add the <code>test</code> script to the project&#39;s package.json file. The script should contain a <code>testcafe</code> command to run tests on a Sauce Labs browser.</p>
+To tell npm how to run your tests, add the <code>test</code> script to the project&#39;s package.json file. Use <code>testcafe</code> command in the script to run tests on a Sauce Labs browser.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">"scripts": {
-    "test":  "testcafe 'saucelabs:Chrome@beta:Windows 10' tests/index-test.js"
+    "test":  "testcafe \"saucelabs:Chrome@beta:Windows 10\" tests/index-test.js"
 }
 </code></pre></div>
 <p>For more information on how to configure a test run using a <code>testcafe</code> command, see <a href="../using-testcafe/command-line-interface.html">Command Line Interface</a>.</p>
 
-<p><strong>Important:</strong> If you are going to run tests for a website that is not deployed, the <code>test</code> script should also include commands to run and stop the site; for example:</p>
+<p><strong>Note:</strong> If your app requires starting a custom web server, use the <code>--app</code> TestCafe option to specify a command that starts your server.
+This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the app server.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">"scripts": {
-  "test":  "node server.js &amp; testcafe 'saucelabs:Chrome@beta:Windows 10' tests/index-test.js; EXIT_CODE=$?; kill $!; exit $EXIT_CODE"
+  "test":  "testcafe \"saucelabs:Chrome@beta:Windows 10\" tests/index-test.js --app \"node server.js\""
 }
-</code></pre></div>
-<p>This script contains the following commands.</p>
-
-<ol>
-<li><code>node server.js</code> - starts a website</li>
-<li><code>testcafe &#39;saucelabs:Chrome@beta:Windows 10&#39; tests/index-test.js</code> - starts tests</li>
-<li><code>EXIT_CODE=$?</code> - saves an exit code returned by TestCafe. If tests passed, the exit code is 0.</li>
-<li><code>kill $!</code> - stops the server</li>
-<li><code>exit $EXIT_CODE</code> - exits the <code>test</code> script with the code returned by TestCafe; thus, if the tests passed, the <code>npm test</code> will exit with a zero exit code (success)</li>
-</ol>
-<h2><a class="anchor" name="step-6---trigger-a-travis-ci-build"></a>Step 6 - Trigger a Travis CI build <a class="permalink" href="#step-6---trigger-a-travis-ci-build">#</a></h2>
+</code></pre></div><h2><a class="anchor" name="step-6---trigger-a-travis-ci-build"></a>Step 6 - Trigger a Travis CI build <a class="permalink" href="#step-6---trigger-a-travis-ci-build">#</a></h2>
 <p>You can trigger a Travis CI build by pushing commits to your repository or creating a pull request.</p>
 
 <p>To check if the build passed or failed, go to the <a href="https://travis-ci.org/repositories">build status page</a>.</p>
@@ -655,7 +775,7 @@ To tell npm how to run your tests, you need to add the <code>test</code> script 
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 1998-2016 Developer Express Inc.</p>
+            Copyright © 1998-2017 Developer Express Inc.</p>
         </div>
     </div>
 </footer>

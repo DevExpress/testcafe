@@ -6,9 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  
   <title>Browser Provider Plugin | TestCafe</title>
+
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
+  
+  <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/" />
+  <meta property="og:title" content="Browser Provider Plugin | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
@@ -44,57 +51,80 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script>
-        function initNav(nav) {
-            var MIN_BODY_WIDTH = 900;
-            var FOOTER_HEIGHT  = 63;
-            var HEADER_HEIGHT  = 52;
+        var MIN_BODY_WIDTH = 900;
+        var FOOTER_HEIGHT  = 63;
+        var HEADER_HEIGHT  = 52;
 
-            function updatePosition() {
-                var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset + document.body.clientHeight;
+        var nav            = null;
+        var isMobileDevice = window.screen.width < 800 || window.screen.height < 800;
 
+        function setNavTopPosition () {
+            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
+
+            if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                if (nav.style.top !== HEADER_HEIGHT + 'px') {
+                    nav.style.top = HEADER_HEIGHT + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if(!isMobileZoomed) {
+                var top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
+
+                if (nav.style.top !== top) {
+                    nav.style.top = top;
+                    Ps.update(nav);
+                }
+            }
+        }
+
+        function setNavBottomPosition () {
+            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
+                                      document.body.clientHeight;
+
+            if (footerVisibleHeight > 0) {
+                if (nav.style.bottom !== footerVisibleHeight + 'px') {
+                    nav.style.bottom = footerVisibleHeight + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if (nav.style.bottom !== '0') {
+                nav.style.bottom = '0';
+                Ps.update(nav);
+            }
+        }
+
+        function updatePosition () {
+            if (isMobileDevice)
+                changeBodyHeight();
+            else
                 nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+
+            setNavBottomPosition();
+            setNavTopPosition();
+        }
+        
+        function changeBodyHeight () {
+            if (document.body.style.height !== window.innerHeight + 'px')
+                document.body.style.height = window.innerHeight + 'px';
+        }
+        
+        function initScrollBar() {
+            Ps.initialize(nav);
             
-                if (footerVisibleHeight > 0) {
-                    if(nav.style.bottom !== footerVisibleHeight + 'px') {
-                        nav.style.bottom = footerVisibleHeight + 'px';
-                        Ps.update(nav);
-                    }
-                }
-                else if(nav.style.bottom !== '0') {
-                    nav.style.bottom = '0';
-                    Ps.update(nav);
-                }
+            window.addEventListener('resize', function () {
+                Ps.update(nav);
+            });
+        }
 
-                if (document.body.clientWidth > MIN_BODY_WIDTH) {
-                    if (nav.style.top !== HEADER_HEIGHT + 'px') {
-                        nav.style.top = HEADER_HEIGHT + 'px';
-                        Ps.update(nav);
-                    }
-                }
-                else {
-                    var top = window.pageYOffset <= HEADER_HEIGHT ? (HEADER_HEIGHT - window.pageYOffset) + 'px' : '0';
-
-                    if(nav.style.top !== top) {
-                        nav.style.top = top;
-                        Ps.update(nav);
-                    }
-                }
-            }
-            function initScrollBar() {
-                Ps.initialize(nav);
-                
-                window.addEventListener('resize', function () {
-                    Ps.update(nav);
-                });
-            }
-
+        function initNav() {
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
         }
+
         document.addEventListener('DOMContentLoaded', function (e) {
-            var nav = document.querySelector('.doc-nav');
+            nav = document.querySelector('.doc-nav');
 
             if(nav)
                 initNav(nav);
@@ -284,6 +314,67 @@
 		
 <a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
 		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixtures"  >Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#tests"  >Tests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-controller"  >Test Controller</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage"  >Specifying the Start Webpage</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-the-hooks-and-test-code"  >Sharing Variables Between the Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#skipping-tests"  >Skipping Tests</a>
+		
+    </li>
+
+</ul>
+		
     </li>
 
     <li>
@@ -430,7 +521,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion API</a>
 		
     </li>
 
@@ -442,6 +533,13 @@
 		    
 		
 <a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/http-authentication.html"  >HTTP Authentication</a>
 		
     </li>
 
@@ -541,6 +639,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
 		
     </li>
@@ -549,6 +654,27 @@
 		    
 		
 <a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html"  >Testing on Remote Computers and Mobile Devices</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-page-model.html"  >Using Page Model</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-testcafe-with-gulp.html"  >Using TestCafe with Gulp</a>
 		
     </li>
 
@@ -765,7 +891,7 @@ The alias consists of the browser provider name and the name of the browser itse
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 1998-2016 Developer Express Inc.</p>
+            Copyright © 1998-2017 Developer Express Inc.</p>
         </div>
     </div>
 </footer>

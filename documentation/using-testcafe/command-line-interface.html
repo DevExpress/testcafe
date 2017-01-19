@@ -6,9 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  
   <title>Command Line Interface | TestCafe</title>
+
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
+  
+  <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html" />
+  <meta property="og:title" content="Command Line Interface | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
@@ -44,57 +51,80 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script>
-        function initNav(nav) {
-            var MIN_BODY_WIDTH = 900;
-            var FOOTER_HEIGHT  = 63;
-            var HEADER_HEIGHT  = 52;
+        var MIN_BODY_WIDTH = 900;
+        var FOOTER_HEIGHT  = 63;
+        var HEADER_HEIGHT  = 52;
 
-            function updatePosition() {
-                var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset + document.body.clientHeight;
+        var nav            = null;
+        var isMobileDevice = window.screen.width < 800 || window.screen.height < 800;
 
+        function setNavTopPosition () {
+            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
+
+            if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                if (nav.style.top !== HEADER_HEIGHT + 'px') {
+                    nav.style.top = HEADER_HEIGHT + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if(!isMobileZoomed) {
+                var top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
+
+                if (nav.style.top !== top) {
+                    nav.style.top = top;
+                    Ps.update(nav);
+                }
+            }
+        }
+
+        function setNavBottomPosition () {
+            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
+                                      document.body.clientHeight;
+
+            if (footerVisibleHeight > 0) {
+                if (nav.style.bottom !== footerVisibleHeight + 'px') {
+                    nav.style.bottom = footerVisibleHeight + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if (nav.style.bottom !== '0') {
+                nav.style.bottom = '0';
+                Ps.update(nav);
+            }
+        }
+
+        function updatePosition () {
+            if (isMobileDevice)
+                changeBodyHeight();
+            else
                 nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+
+            setNavBottomPosition();
+            setNavTopPosition();
+        }
+        
+        function changeBodyHeight () {
+            if (document.body.style.height !== window.innerHeight + 'px')
+                document.body.style.height = window.innerHeight + 'px';
+        }
+        
+        function initScrollBar() {
+            Ps.initialize(nav);
             
-                if (footerVisibleHeight > 0) {
-                    if(nav.style.bottom !== footerVisibleHeight + 'px') {
-                        nav.style.bottom = footerVisibleHeight + 'px';
-                        Ps.update(nav);
-                    }
-                }
-                else if(nav.style.bottom !== '0') {
-                    nav.style.bottom = '0';
-                    Ps.update(nav);
-                }
+            window.addEventListener('resize', function () {
+                Ps.update(nav);
+            });
+        }
 
-                if (document.body.clientWidth > MIN_BODY_WIDTH) {
-                    if (nav.style.top !== HEADER_HEIGHT + 'px') {
-                        nav.style.top = HEADER_HEIGHT + 'px';
-                        Ps.update(nav);
-                    }
-                }
-                else {
-                    var top = window.pageYOffset <= HEADER_HEIGHT ? (HEADER_HEIGHT - window.pageYOffset) + 'px' : '0';
-
-                    if(nav.style.top !== top) {
-                        nav.style.top = top;
-                        Ps.update(nav);
-                    }
-                }
-            }
-            function initScrollBar() {
-                Ps.initialize(nav);
-                
-                window.addEventListener('resize', function () {
-                    Ps.update(nav);
-                });
-            }
-
+        function initNav() {
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
         }
+
         document.addEventListener('DOMContentLoaded', function (e) {
-            var nav = document.querySelector('.doc-nav');
+            nav = document.querySelector('.doc-nav');
 
             if(nav)
                 initNav(nav);
@@ -284,6 +314,67 @@
 		
 <a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
 		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixtures"  >Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#tests"  >Tests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-controller"  >Test Controller</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage"  >Specifying the Start Webpage</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-the-hooks-and-test-code"  >Sharing Variables Between the Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#skipping-tests"  >Skipping Tests</a>
+		
+    </li>
+
+</ul>
+		
     </li>
 
     <li>
@@ -430,7 +521,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion API</a>
 		
     </li>
 
@@ -442,6 +533,13 @@
 		    
 		
 <a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/http-authentication.html"  >HTTP Authentication</a>
 		
     </li>
 
@@ -541,6 +639,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
 		
     </li>
@@ -549,6 +654,27 @@
 		    
 		
 <a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html"  >Testing on Remote Computers and Mobile Devices</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-page-model.html"  >Using Page Model</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-testcafe-with-gulp.html"  >Using TestCafe with Gulp</a>
 		
     </li>
 
@@ -593,6 +719,8 @@
 <li><a href="#-t-pattern---test-grep-pattern">-T &lt;pattern&gt;, --test-grep &lt;pattern&gt;</a></li>
 <li><a href="#-f-name---fixture-name">-f &lt;name&gt;, --fixture &lt;name&gt;</a></li>
 <li><a href="#-f-pattern---fixture-grep-pattern">-F &lt;pattern&gt;, --fixture-grep &lt;pattern&gt;</a></li>
+<li><a href="#-a-command---app-command">-a &lt;command&gt;, --app &lt;command&gt;</a></li>
+<li><a href="#--app-init-delay-ms">--app-init-delay &lt;ms&gt;</a></li>
 <li><a href="#--selector-timeout-ms">--selector-timeout &lt;ms&gt;</a></li>
 <li><a href="#--assertion-timeout-ms">--assertion-timeout &lt;ms&gt;</a></li>
 <li><a href="#--ports-port1port2">--ports &lt;port1,port2&gt;</a></li>
@@ -687,9 +815,7 @@ by using the &gt; redirection operator and specifying the report file path.</p>
 <p>Enables screenshot capturing and specifies the directory path
 to save screenshots to.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js -s screenshots
-</code></pre></div><blockquote><div class="blockquote-content"><p>The screenshot functionality is not yet available on Linux.
-See the corresponding <a href="https://github.com/DevExpress/testcafe-browser-natives/issues/12">issue on Github</a>.</p>
-</div></blockquote><h3><a class="anchor" name="-s---screenshots-on-fails"></a>-S, --screenshots-on-fails <a class="permalink" href="#-s---screenshots-on-fails">#</a></h3>
+</code></pre></div><h3><a class="anchor" name="-s---screenshots-on-fails"></a>-S, --screenshots-on-fails <a class="permalink" href="#-s---screenshots-on-fails">#</a></h3>
 <p>Takes a screenshot whenever a test fails. Screenshots are saved to the directory
 specified by using the <strong>-screenshots &lt;path&gt;</strong> option.</p>
 
@@ -697,9 +823,7 @@ specified by using the <strong>-screenshots &lt;path&gt;</strong> option.</p>
   <code>sample-fixture.js</code> file in all browsers, takes screenshots if tests fail,
   and saves the screenshots to the <code>screenshots</code> directory.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js -S -s screenshots
-</code></pre></div><blockquote><div class="blockquote-content"><p>The screenshot functionality is not yet available on Linux.
-See the corresponding <a href="https://github.com/DevExpress/testcafe-browser-natives/issues/12">issue on Github</a>.</p>
-</div></blockquote><h3><a class="anchor" name="-q---quarantine-mode"></a>-q, --quarantine-mode <a class="permalink" href="#-q---quarantine-mode">#</a></h3>
+</code></pre></div><h3><a class="anchor" name="-q---quarantine-mode"></a>-q, --quarantine-mode <a class="permalink" href="#-q---quarantine-mode">#</a></h3>
 <p>Enables the quarantine mode for tests that fail.
 In this mode, a failed test is executed several more times.
 The test result depends on the outcome (<em>passed</em> or <em>failed</em>) that occurs most often.
@@ -734,6 +858,21 @@ specify this argument.</p>
 
 <p>For example, the following command runs fixtures whose names match <code>Page.*</code>. These can be the <code>Page1</code>, <code>Page2</code> fixtures, etc.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests -F <span class="s2">"Page.*"</span>
+</code></pre></div><h3><a class="anchor" name="-a-command---app-command"></a>-a &lt;command&gt;, --app &lt;command&gt; <a class="permalink" href="#-a-command---app-command">#</a></h3>
+<p>Executes the specified shell command before running tests. Use it to launch or deploy the application you are going to test.</p>
+
+<p>After testing is finished, this application will be automatically terminated.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --app <span class="s1">'node server.js'</span>
+</code></pre></div><blockquote><div class="blockquote-content"><p>TestCafe adds <code>node_modules/.bin</code> to <code>PATH</code> so that you can use binaries provided by locally installed dependencies without prefixes.</p>
+</div></blockquote>
+<p>Use the <a href="#--app-init-delay-ms">--app-init-delay</a> option to specify the amount of time allowed for this command to initialize the tested application.</p>
+<h3><a class="anchor" name="--app-init-delay-ms"></a>--app-init-delay &lt;ms&gt; <a class="permalink" href="#--app-init-delay-ms">#</a></h3>
+<p>Specifies the amount of time, in milliseconds, allowed for an application launched using the <a href="#-a-command---app-command">--app</a> option to initialize.</p>
+
+<p>TestCafe waits for the specified time before it starts running tests.</p>
+
+<p><strong>Default value</strong>: <code>1000</code></p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --app <span class="s1">'node server.js'</span> --app-init-delay 4000
 </code></pre></div><h3><a class="anchor" name="--selector-timeout-ms"></a>--selector-timeout &lt;ms&gt; <a class="permalink" href="#--selector-timeout-ms">#</a></h3>
 <p>Specifies the amount of time, in milliseconds, within which <a href="../test-api/selecting-page-elements/selectors.html">selectors</a> make
 attempts to obtain a node to be returned. See <a href="../test-api/selecting-page-elements/selectors.html#selector-timeout">Selector Timeout</a>.</p>
@@ -741,7 +880,9 @@ attempts to obtain a node to be returned. See <a href="../test-api/selecting-pag
 <p><strong>Default value</strong>: <code>10000</code></p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests --selector-timeout 500000
 </code></pre></div><h3><a class="anchor" name="--assertion-timeout-ms"></a>--assertion-timeout &lt;ms&gt; <a class="permalink" href="#--assertion-timeout-ms">#</a></h3>
-<p>Specifies the amount of time, in milliseconds, within which TestCafe makes attempts to successfully execute an <a href="../test-api/assertions/">assertion</a> if <a href="../test-api/selecting-page-elements/selectors.html#define-assertion-actual-value">a selector property</a> was used.
+<p>Specifies the amount of time, in milliseconds, within which TestCafe makes attempts to successfully execute an <a href="../test-api/assertions/">assertion</a>
+if a <a href="../test-api/selecting-page-elements/selectors.html#define-assertion-actual-value">selector property</a>
+or a <a href="../test-api/obtaining-data-from-the-client.html">client function</a> was passed as an actual value.
 See <a href="../test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</p>
 
 <p><strong>Default value</strong>: <code>3000</code></p>
@@ -786,7 +927,7 @@ to slow the test down.</p>
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 1998-2016 Developer Express Inc.</p>
+            Copyright © 1998-2017 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
