@@ -1,10 +1,12 @@
 # Changelog
 
-## v0.12.0
+## v0.12.0 (2017-1-19)
+
+HTTP authentication support, a CI-friendly way to start and stop the tested app and lots of API enhancements.
 
 ### Enhancements
 
-#### HTTP authentication support ([#955](https://github.com/DevExpress/testcafe/issues/955), [#1109](https://github.com/DevExpress/testcafe/issues/1109))
+#### :gear: HTTP authentication support ([#955](https://github.com/DevExpress/testcafe/issues/955), [#1109](https://github.com/DevExpress/testcafe/issues/1109))
 
 TestCafe now supports testing webpages protected with HTTP Basic and NTLM authentication.
 
@@ -32,7 +34,7 @@ test                                   // Logs in as differentUserName
     ('Test2', async t => {});
 ```
 
-#### Built-in CI-friendly way to start and stop the tested web app ([#1047](https://github.com/DevExpress/testcafe/issues/1047))
+#### :gear: Built-in CI-friendly way to start and stop the tested web app ([#1047](https://github.com/DevExpress/testcafe/issues/1047))
 
 When launching tests, you can now specify a command that starts the tested application.
 TestCafe will automatically execute this command before running tests and stop the process when tests are finished.
@@ -59,11 +61,11 @@ runner
     .run();
 ```
 
-#### Screenshot and window resize actions now work on Linux ([#1117](https://github.com/DevExpress/testcafe/issues/1117))
+#### :gear: Screenshot and window resize actions now work on Linux ([#1117](https://github.com/DevExpress/testcafe/issues/1117))
 
 The `t.takeScreenshot`, `t.resizeWindow`, `t.resizeWindowToFitDevice` and `t.maximizeWindow` actions can now be executed on Linux machines.
 
-#### Adding custom properties to the element state ([#749](https://github.com/DevExpress/testcafe/issues/749))
+#### :gear: Adding custom properties to the element state ([#749](https://github.com/DevExpress/testcafe/issues/749))
 
 The state of webpage elements can now be extended with custom properties.
 
@@ -85,7 +87,7 @@ test('Check Label HTML', async t => {
 });
 ```
 
-#### Skipping tests ([#246](https://github.com/DevExpress/testcafe/issues/246))
+#### :gear: Skipping tests ([#246](https://github.com/DevExpress/testcafe/issues/246))
 
 TestCafe now allows you to specify that a particular test or fixture should be skipped when running tests.
 Use the `fixture.skip` and `test.skip` methods for this.
@@ -118,7 +120,7 @@ test('Fixture2Test3', () => {});
 // Only tests in Fixture1 and the Fixture2Test2 test will run
 ```
 
-#### Specifying the start webpage for a test ([#501](https://github.com/DevExpress/testcafe/issues/501))
+#### :gear: Specifying the start webpage for a test ([#501](https://github.com/DevExpress/testcafe/issues/501))
 
 An individual test can now override the fixture's `page` setting and start on a different page.
 
@@ -137,7 +139,7 @@ An individual test can now override the fixture's `page` setting and start on a 
      });
  ```
 
-#### Initialization and finalization methods for a test ([#1108](https://github.com/DevExpress/testcafe/issues/1108))
+#### :gear: Initialization and finalization methods for a test ([#1108](https://github.com/DevExpress/testcafe/issues/1108))
 
 We have added the [before](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up)
 and [after](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up) methods to the test declaration.
@@ -156,7 +158,7 @@ test
     });
 ```
 
-#### Sharing variables between hooks and test code ([#841](https://github.com/DevExpress/testcafe/issues/841))
+#### :gear: Sharing variables between hooks and test code ([#841](https://github.com/DevExpress/testcafe/issues/841))
 
 You can now share variables between `fixture.beforeEach`, `fixture.afterEach`, `test.before`, `test.after` functions and test code
 by using the *test context* object.
@@ -183,7 +185,7 @@ test
     });
 ```
 
-#### Assertion methods to check for regexp match ([#1038](https://github.com/DevExpress/testcafe/issues/1038))
+#### :gear: Assertion methods to check for regexp match ([#1038](https://github.com/DevExpress/testcafe/issues/1038))
 
 We have added `match` and `notMatch` methods to check if a string matches a particular regular expression.
 
@@ -195,7 +197,7 @@ await t.expect('foobar').match(/^f/, 'this assertion passes');
 await t.expect('foobar').notMatch(/^b/, 'this assertion passes');
 ```
 
-#### Improved filtering by predicates in selectors ([#1025](https://github.com/DevExpress/testcafe/issues/1025) and [#1065](https://github.com/DevExpress/testcafe/issues/1065))
+#### :gear: Improved filtering by predicates in selectors ([#1025](https://github.com/DevExpress/testcafe/issues/1025) and [#1065](https://github.com/DevExpress/testcafe/issues/1065))
 
 Selector's filter predicates now receive more information about the current node, which enables you to implement more advanced filtering logic.
 
@@ -222,7 +224,7 @@ Selector('ul').child(node => {
 }, { isNodeOk, flag });
 ```
 
-#### Filtering by negative index in selectors ([#738](https://github.com/DevExpress/testcafe/issues/738))
+#### :gear: Filtering by negative index in selectors ([#738](https://github.com/DevExpress/testcafe/issues/738))
 
 You can now pass negative `index` values to selector methods. In this instance, index is counted from the end of the matching set.
 
@@ -230,7 +232,7 @@ You can now pass negative `index` values to selector methods. In this instance, 
 const lastChild = Selector('.someClass').child(-1);
 ```
 
-#### Improved cursor positioning in test actions ([#981](https://github.com/DevExpress/testcafe/issues/981))
+#### :gear: Improved cursor positioning in test actions ([#981](https://github.com/DevExpress/testcafe/issues/981))
 
 In action options, X and Y offsets that define the point where action is performed can now be negative.
 In this instance, the cursor position is calculated from the bottom-right corner of the target element.
@@ -239,7 +241,7 @@ In this instance, the cursor position is calculated from the bottom-right corner
 await t.click('#element', { offsetX: -10, offsetY: -30 });
 ```
 
-#### Client functions as an assertion's actual value ([#1009](https://github.com/DevExpress/testcafe/issues/1009))
+#### :gear: Client functions as an assertion's actual value ([#1009](https://github.com/DevExpress/testcafe/issues/1009))
 
 You can now pass client functions to assertion's `expect` method. In this instance, the
 [Smart Assertion Query Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism)
@@ -254,15 +256,15 @@ fixture `My Fixture`
     .page `http://www.example.com`;
 
 test('My Test', asynct t => {
-    await t.expect(windowLocation).to.eql('http://www.example.com');
+    await t.expect(windowLocation()).to.eql('http://www.example.com');
 });
 ```
 
-#### Automatic waiting for scripts added during a test action ([#1072](https://github.com/DevExpress/testcafe/issues/1072))
+#### :gear: Automatic waiting for scripts added during a test action ([#1072](https://github.com/DevExpress/testcafe/issues/1072))
 
 If a test action adds scripts on a page, TestCafe now automatically waits for them to finish before proceeding to the next test action.
 
-#### New ESLint plugin ([#1083](https://github.com/DevExpress/testcafe/issues/1083))
+#### :gear: New ESLint plugin ([#1083](https://github.com/DevExpress/testcafe/issues/1083))
 
 We have prepared an [ESLint plugin](https://github.com/miherlosev/eslint-plugin-testcafe).
 Get it to ensure that ESLint does not fail on TestCafe test code.
