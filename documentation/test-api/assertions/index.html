@@ -6,9 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  
   <title>Assertions | TestCafe</title>
+
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
+  
+  <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/assertions/" />
+  <meta property="og:title" content="Assertions | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
@@ -44,57 +51,80 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script>
-        function initNav(nav) {
-            var MIN_BODY_WIDTH = 900;
-            var FOOTER_HEIGHT  = 63;
-            var HEADER_HEIGHT  = 52;
+        var MIN_BODY_WIDTH = 900;
+        var FOOTER_HEIGHT  = 63;
+        var HEADER_HEIGHT  = 52;
 
-            function updatePosition() {
-                var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset + document.body.clientHeight;
+        var nav            = null;
+        var isMobileDevice = window.screen.width < 800 || window.screen.height < 800;
 
+        function setNavTopPosition () {
+            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
+
+            if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                if (nav.style.top !== HEADER_HEIGHT + 'px') {
+                    nav.style.top = HEADER_HEIGHT + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if(!isMobileZoomed) {
+                var top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
+
+                if (nav.style.top !== top) {
+                    nav.style.top = top;
+                    Ps.update(nav);
+                }
+            }
+        }
+
+        function setNavBottomPosition () {
+            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
+                                      document.body.clientHeight;
+
+            if (footerVisibleHeight > 0) {
+                if (nav.style.bottom !== footerVisibleHeight + 'px') {
+                    nav.style.bottom = footerVisibleHeight + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if (nav.style.bottom !== '0') {
+                nav.style.bottom = '0';
+                Ps.update(nav);
+            }
+        }
+
+        function updatePosition () {
+            if (isMobileDevice)
+                changeBodyHeight();
+            else
                 nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+
+            setNavBottomPosition();
+            setNavTopPosition();
+        }
+        
+        function changeBodyHeight () {
+            if (document.body.style.height !== window.innerHeight + 'px')
+                document.body.style.height = window.innerHeight + 'px';
+        }
+        
+        function initScrollBar() {
+            Ps.initialize(nav);
             
-                if (footerVisibleHeight > 0) {
-                    if(nav.style.bottom !== footerVisibleHeight + 'px') {
-                        nav.style.bottom = footerVisibleHeight + 'px';
-                        Ps.update(nav);
-                    }
-                }
-                else if(nav.style.bottom !== '0') {
-                    nav.style.bottom = '0';
-                    Ps.update(nav);
-                }
+            window.addEventListener('resize', function () {
+                Ps.update(nav);
+            });
+        }
 
-                if (document.body.clientWidth > MIN_BODY_WIDTH) {
-                    if (nav.style.top !== HEADER_HEIGHT + 'px') {
-                        nav.style.top = HEADER_HEIGHT + 'px';
-                        Ps.update(nav);
-                    }
-                }
-                else {
-                    var top = window.pageYOffset <= HEADER_HEIGHT ? (HEADER_HEIGHT - window.pageYOffset) + 'px' : '0';
-
-                    if(nav.style.top !== top) {
-                        nav.style.top = top;
-                        Ps.update(nav);
-                    }
-                }
-            }
-            function initScrollBar() {
-                Ps.initialize(nav);
-                
-                window.addEventListener('resize', function () {
-                    Ps.update(nav);
-                });
-            }
-
+        function initNav() {
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
         }
+
         document.addEventListener('DOMContentLoaded', function (e) {
-            var nav = document.querySelector('.doc-nav');
+            nav = document.querySelector('.doc-nav');
 
             if(nav)
                 initNav(nav);
@@ -284,6 +314,67 @@
 		
 <a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
 		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixtures"  >Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#tests"  >Tests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-controller"  >Test Controller</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage"  >Specifying the Start Webpage</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-the-hooks-and-test-code"  >Sharing Variables Between the Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#skipping-tests"  >Skipping Tests</a>
+		
+    </li>
+
+</ul>
+		
     </li>
 
     <li>
@@ -430,7 +521,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion API</a>
 		
     </li>
 
@@ -442,6 +533,13 @@
 		    
 		
 <a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/http-authentication.html"  >HTTP Authentication</a>
 		
     </li>
 
@@ -541,6 +639,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
 		
     </li>
@@ -549,6 +654,27 @@
 		    
 		
 <a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html"  >Testing on Remote Computers and Mobile Devices</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-page-model.html"  >Using Page Model</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-testcafe-with-gulp.html"  >Using TestCafe with Gulp</a>
 		
     </li>
 
@@ -583,9 +709,14 @@ See <a href="assertion-api.html">Assertion API</a>.</p>
 </ul></li>
 </ul>
 <h2><a class="anchor" name="assertion-structure"></a>Assertion Structure <a class="permalink" href="#assertion-structure">#</a></h2>
-<p>TestCafe assertions start with the <code>expect</code> method exposed by <a href="../test-code-structure.html#test-controller">test controller</a>,
-which accepts the <code>actual</code> value argument. Then, the assertion method follows. An assertion method accepts an expected value
-and optionally other arguments, e.g., deep equality assertion:</p>
+<p>TestCafe assertions start with the <code>expect</code> method exposed by <a href="../test-code-structure.html#test-controller">test controller</a>.
+This method accepts the actual value. You can pass a value, a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a>
+or a <a href="../obtaining-data-from-the-client.html">client function</a>.</p>
+
+<p>Then, an <a href="assertion-api.html">assertion method</a> follows. Assertion methods accept an expected value
+and, optionally, other arguments.</p>
+
+<p>For instance, the deep equality assertion has the following structure.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).eql( expected, message, options );
 </code></pre></div>
 <p>The sample below demonstrates how to use assertions:</p>
@@ -618,24 +749,25 @@ we can get an indefinite result:</p>
 
 <p><img src="../../../images/assertions/asynchronous-testing.png" alt="Asynchronous Functional Testing"></p>
 
-<p>To perform asynchronous functional tests, the additional timeout as usually added:</p>
+<p>To perform asynchronous functional tests, an additional timeout as usually added:</p>
 
 <p><img src="../../../images/assertions/extra-waiting.png" alt="Asynchronous Functional Testing with Extra Waiting"></p>
 
-<p>To stabilize such tests, you need to add a timeout that will guarantee you a successful completion of required changes.
+<p>To stabilize such tests, you need to add a timeout that will guarantee that the required changes are successfully applied.
 Adding such timeouts can increase the test running time because of extra waiting.</p>
 
 <p>If the TestCafe assertion receives a <a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a>
+or a <a href="../obtaining-data-from-the-client.html">client function</a>
 as an actual value, TestCafe uses the smart assertion query mechanism:
 if an assertion did not pass, the test does not fail immediately. The assertion retries to pass multiple times and
-each time it re-requests the actual property value. The test fails if the assertion could not complete successfully
+each time it requests the actual property value. The test fails if the assertion could not complete successfully
 within a timeout:</p>
 
 <p><img src="../../../images/assertions/query-mechanism.png" alt="TestCafe Smart Assertion Query Mechanism"></p>
 
 <p><strong>Example:</strong></p>
 
-<p>Let&#39;s create a test for the following web page.</p>
+<p>Assume you have the following web page.</p>
 <div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"btn"</span><span class="nt">&gt;&lt;/div&gt;</span>
 <span class="nt">&lt;script&gt;</span>
 <span class="kd">var</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'btn'</span><span class="p">);</span>
@@ -647,19 +779,19 @@ within a timeout:</p>
 <span class="p">});</span>
 <span class="nt">&lt;/script&gt;</span>
 </code></pre></div>
-<p>The test code will look as follows.</p>
+<p>Test code for this page can be as follows.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="s1">'Button click'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kr">const</span> <span class="nx">btn</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#btn'</span><span class="p">);</span>
 
     <span class="nx">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">btn</span><span class="p">)</span>
-        <span class="c1">// Regular assertion will fail immediately, but TestCafe retries to run DOM state</span>
-        <span class="c1">// assertions many times until this assertion pass successfully within the timeout.</span>
+        <span class="c1">// A regular assertion will fail immediately, but TestCafe retries to run DOM state</span>
+        <span class="c1">// assertions many times within the timeout until this assertion passes successfully.</span>
         <span class="c1">// The default timeout is 3000 ms.</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">btn</span><span class="p">.</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'Loading...'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>The approach described above allows you to create stable tests that lack random errors and run fast without additional waiting.</p>
+<p>The approach described above allows you to create stable tests free from random errors and running fast without additional waiting.</p>
 
 <p>You can specify the assertion query timeout in test code by using the <a href="#assertion-options">options.timeout</a> option.
 To set the timeout when launching tests, pass the timeout value to the <a href="../../using-testcafe/programming-interface/runner.html#run">runner.run</a>
@@ -669,7 +801,8 @@ if you run TestCafe from the command line.</p>
 <p><strong>Type</strong>: Number</p>
 
 <p>The amount of time, in milliseconds, allowed for an assertion to pass before the test fails if
-<a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">a selector property</a> was used in assertion.</p>
+<a href="../selecting-page-elements/selectors.html#define-assertion-actual-value">a selector property</a>
+or a <a href="../obtaining-data-from-the-client.html">client function</a> was used in assertion.</p>
 
 <p><strong>Default value</strong>: timeout is specified by using the <a href="../../using-testcafe/programming-interface/runner.html#run">runner.run</a> API method
 or the <a href="../../using-testcafe/command-line-interface.html#--assertion-timeout-ms">assertion-timeout</a> command line option.</p>
@@ -690,7 +823,7 @@ In this case, you should care about the amount of time required to complete asyn
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 1998-2016 Developer Express Inc.</p>
+            Copyright © 1998-2017 Developer Express Inc.</p>
         </div>
     </div>
 </footer>

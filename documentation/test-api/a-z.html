@@ -6,9 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  
   <title>A-Z Index | TestCafe</title>
+
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
+  
+  <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/a-z.html" />
+  <meta property="og:title" content="A-Z Index | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
@@ -44,57 +51,80 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script>
-        function initNav(nav) {
-            var MIN_BODY_WIDTH = 900;
-            var FOOTER_HEIGHT  = 63;
-            var HEADER_HEIGHT  = 52;
+        var MIN_BODY_WIDTH = 900;
+        var FOOTER_HEIGHT  = 63;
+        var HEADER_HEIGHT  = 52;
 
-            function updatePosition() {
-                var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset + document.body.clientHeight;
+        var nav            = null;
+        var isMobileDevice = window.screen.width < 800 || window.screen.height < 800;
 
+        function setNavTopPosition () {
+            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
+
+            if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                if (nav.style.top !== HEADER_HEIGHT + 'px') {
+                    nav.style.top = HEADER_HEIGHT + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if(!isMobileZoomed) {
+                var top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
+
+                if (nav.style.top !== top) {
+                    nav.style.top = top;
+                    Ps.update(nav);
+                }
+            }
+        }
+
+        function setNavBottomPosition () {
+            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
+                                      document.body.clientHeight;
+
+            if (footerVisibleHeight > 0) {
+                if (nav.style.bottom !== footerVisibleHeight + 'px') {
+                    nav.style.bottom = footerVisibleHeight + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if (nav.style.bottom !== '0') {
+                nav.style.bottom = '0';
+                Ps.update(nav);
+            }
+        }
+
+        function updatePosition () {
+            if (isMobileDevice)
+                changeBodyHeight();
+            else
                 nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+
+            setNavBottomPosition();
+            setNavTopPosition();
+        }
+        
+        function changeBodyHeight () {
+            if (document.body.style.height !== window.innerHeight + 'px')
+                document.body.style.height = window.innerHeight + 'px';
+        }
+        
+        function initScrollBar() {
+            Ps.initialize(nav);
             
-                if (footerVisibleHeight > 0) {
-                    if(nav.style.bottom !== footerVisibleHeight + 'px') {
-                        nav.style.bottom = footerVisibleHeight + 'px';
-                        Ps.update(nav);
-                    }
-                }
-                else if(nav.style.bottom !== '0') {
-                    nav.style.bottom = '0';
-                    Ps.update(nav);
-                }
+            window.addEventListener('resize', function () {
+                Ps.update(nav);
+            });
+        }
 
-                if (document.body.clientWidth > MIN_BODY_WIDTH) {
-                    if (nav.style.top !== HEADER_HEIGHT + 'px') {
-                        nav.style.top = HEADER_HEIGHT + 'px';
-                        Ps.update(nav);
-                    }
-                }
-                else {
-                    var top = window.pageYOffset <= HEADER_HEIGHT ? (HEADER_HEIGHT - window.pageYOffset) + 'px' : '0';
-
-                    if(nav.style.top !== top) {
-                        nav.style.top = top;
-                        Ps.update(nav);
-                    }
-                }
-            }
-            function initScrollBar() {
-                Ps.initialize(nav);
-                
-                window.addEventListener('resize', function () {
-                    Ps.update(nav);
-                });
-            }
-
+        function initNav() {
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
         }
+
         document.addEventListener('DOMContentLoaded', function (e) {
-            var nav = document.querySelector('.doc-nav');
+            nav = document.querySelector('.doc-nav');
 
             if(nav)
                 initNav(nav);
@@ -284,6 +314,67 @@
 		
 <a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
 		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixtures"  >Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#tests"  >Tests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-controller"  >Test Controller</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage"  >Specifying the Start Webpage</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-the-hooks-and-test-code"  >Sharing Variables Between the Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#skipping-tests"  >Skipping Tests</a>
+		
+    </li>
+
+</ul>
+		
     </li>
 
     <li>
@@ -430,7 +521,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion methods</a>
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion API</a>
 		
     </li>
 
@@ -442,6 +533,13 @@
 		    
 		
 <a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/http-authentication.html"  >HTTP Authentication</a>
 		
     </li>
 
@@ -541,6 +639,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
 		
     </li>
@@ -549,6 +654,27 @@
 		    
 		
 <a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html"  >Testing on Remote Computers and Mobile Devices</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-page-model.html"  >Using Page Model</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-testcafe-with-gulp.html"  >Using TestCafe with Gulp</a>
 		
     </li>
 
@@ -584,32 +710,66 @@
 <ul>
 <li><a href="test-code-structure.html#initialization-and-clean-up">afterEach</a></li>
 <li><a href="test-code-structure.html#initialization-and-clean-up">beforeEach</a></li>
+<li><a href="http-authentication.html">httpAuth</a></li>
+<li><a href="test-code-structure.html#skipping-tests">only</a></li>
 <li><a href="test-code-structure.html#specifying-the-start-webpage">page</a></li>
+<li><a href="test-code-structure.html#skipping-tests">skip</a></li>
 </ul></li>
 <li><a href="selecting-page-elements/selectors.html#creating-selectors">Selector</a>
 
 <ul>
-<li><a href="selecting-page-elements/selectors.html#nth">nth</a></li>
-<li><a href="selecting-page-elements/selectors.html#withtext">withText</a></li>
+<li><a href="selecting-page-elements/selectors.html#adding-custom-properties-to-element-state">addCustomDOMProperties</a></li>
+<li><a href="selecting-page-elements/selectors.html#child">child</a></li>
+<li><a href="selecting-page-elements/selectors.html#check-if-an-element-exists">count</a></li>
+<li><a href="selecting-page-elements/selectors.html#check-if-an-element-exists">exists</a></li>
 <li><a href="selecting-page-elements/selectors.html#filter">filter</a></li>
 <li><a href="selecting-page-elements/selectors.html#find">find</a></li>
+<li><a href="selecting-page-elements/selectors.html#nth">nth</a></li>
 <li><a href="selecting-page-elements/selectors.html#parent">parent</a></li>
-<li><a href="selecting-page-elements/selectors.html#child">child</a></li>
 <li><a href="selecting-page-elements/selectors.html#sibling">sibling</a></li>
-<li><a href="selecting-page-elements/selectors.html#get-selector-matching-set-length">exists</a></li>
-<li><a href="selecting-page-elements/selectors.html#get-selector-matching-set-length">count</a></li>
 <li><a href="selecting-page-elements/selector-options.html#overwriting-options">with</a></li>
+<li><a href="selecting-page-elements/selectors.html#withtext">withText</a></li>
 </ul></li>
-<li><a href="test-code-structure.html#tests">test</a></li>
+<li><a href="test-code-structure.html#tests">test</a>
+
+<ul>
+<li><a href="test-code-structure.html#initialization-and-clean-up">after</a></li>
+<li><a href="test-code-structure.html#initialization-and-clean-up">before</a></li>
+<li><a href="http-authentication.html">httpAuth</a></li>
+<li><a href="test-code-structure.html#skipping-tests">only</a></li>
+<li><a href="test-code-structure.html#specifying-the-start-webpage">page</a></li>
+<li><a href="test-code-structure.html#skipping-tests">skip</a></li>
+</ul></li>
 <li><a href="test-code-structure.html#test-controller">Test Controller</a>
 
 <ul>
 <li><a href="actions/upload.html#clear-file-upload-input">clearUpload</a></li>
 <li><a href="actions/click.html">click</a></li>
+<li><a href="test-code-structure.html#sharing-variables-between-the-hooks-and-test-code">ctx</a></li>
 <li><a href="actions/double-click.html">doubleClick</a></li>
 <li><a href="actions/drag-element.html#drag-an-element-by-an-offset">drag</a></li>
 <li><a href="actions/drag-element.html#drag-an-element-onto-another-one">dragtoElement</a></li>
 <li><a href="obtaining-data-from-the-client.html#one-time-client-code-execution">eval</a></li>
+<li><a href="assertions/">expect</a>
+
+<ul>
+<li><a href="assertions/assertion-api.html#deep-equal">eql</a></li>
+<li><a href="assertions/assertion-api.html#not-deep-equal">notEql</a></li>
+<li><a href="assertions/assertion-api.html#ok">ok</a></li>
+<li><a href="assertions/assertion-api.html#not-ok">notOk</a></li>
+<li><a href="assertions/assertion-api.html#contains">contains</a></li>
+<li><a href="assertions/assertion-api.html#not-contains">notContains</a></li>
+<li><a href="assertions/assertion-api.html#type-of">typeOf</a></li>
+<li><a href="assertions/assertion-api.html#not-type-of">notTypeOf</a></li>
+<li><a href="assertions/assertion-api.html#great-than">gt</a></li>
+<li><a href="assertions/assertion-api.html#great-than-or-equal-to">gte</a></li>
+<li><a href="assertions/assertion-api.html#less-than">lt</a></li>
+<li><a href="assertions/assertion-api.html#less-than-or-equal-to">lte</a></li>
+<li><a href="assertions/assertion-api.html#within">within</a></li>
+<li><a href="assertions/assertion-api.html#not-within">notWithin</a></li>
+<li><a href="assertions/assertion-api.html#match">match</a></li>
+<li><a href="assertions/assertion-api.html#not-match">notMatch</a></li>
+</ul></li>
 <li><a href="handling-native-dialogs.html#dialog-history">getNativeDialogHistory</a></li>
 <li><a href="actions/hover.html">hover</a></li>
 <li><a href="actions/navigate.html">navigate</a></li>
@@ -628,24 +788,6 @@
 <li><a href="actions/take-screenshot.html">takeScreenshot</a></li>
 <li><a href="actions/type-text.html">typeText</a></li>
 <li><a href="pausing-the-test.html">wait</a></li>
-<li><a href="assertions/index.html">expect</a>
-
-<ul>
-<li><a href="assertions/assertion-api.html#deep-equal">eql</a></li>
-<li><a href="assertions/assertion-api.html#not-deep-equal">notEql</a></li>
-<li><a href="assertions/assertion-api.html#ok">ok</a></li>
-<li><a href="assertions/assertion-api.html#not-ok">notOk</a></li>
-<li><a href="assertions/assertion-api.html#contains">contains</a></li>
-<li><a href="assertions/assertion-api.html#not-contains">notContains</a></li>
-<li><a href="assertions/assertion-api.html#type-of">typeOf</a></li>
-<li><a href="assertions/assertion-api.html#not-type-of">notTypeOf</a></li>
-<li><a href="assertions/assertion-api.html#great-than">gt</a></li>
-<li><a href="assertions/assertion-api.html#great-than-or-equal-to">gte</a></li>
-<li><a href="assertions/assertion-api.html#less-than">lt</a></li>
-<li><a href="assertions/assertion-api.html#less-than-or-equal-to">lte</a></li>
-<li><a href="assertions/assertion-api.html#within">within</a></li>
-<li><a href="assertions/assertion-api.html#not-within">notWithin</a></li>
-</ul></li>
 </ul></li>
 </ul>
 
@@ -662,7 +804,7 @@
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 1998-2016 Developer Express Inc.</p>
+            Copyright © 1998-2017 Developer Express Inc.</p>
         </div>
     </div>
 </footer>

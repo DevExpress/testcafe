@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Using Page Model | TestCafe</title>
+
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  
+  <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html" />
+  <meta property="og:title" content="Using Page Model | TestCafe" />
+
+  <link rel="shortcut icon" href="/testcafe/favicon.ico">
+  <link rel="stylesheet" href="/testcafe/css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html">
+  <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function (e) {
+          hljs.initHighlightingOnLoad();
+      });
+  </script>
+
+  
+  <script>
+    // Google Analytics
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83678642-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
+    <script>
+        var MIN_BODY_WIDTH = 900;
+        var FOOTER_HEIGHT  = 63;
+        var HEADER_HEIGHT  = 52;
+
+        var nav            = null;
+        var isMobileDevice = window.screen.width < 800 || window.screen.height < 800;
+
+        function setNavTopPosition () {
+            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
+
+            if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                if (nav.style.top !== HEADER_HEIGHT + 'px') {
+                    nav.style.top = HEADER_HEIGHT + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if(!isMobileZoomed) {
+                var top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
+
+                if (nav.style.top !== top) {
+                    nav.style.top = top;
+                    Ps.update(nav);
+                }
+            }
+        }
+
+        function setNavBottomPosition () {
+            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
+                                      document.body.clientHeight;
+
+            if (footerVisibleHeight > 0) {
+                if (nav.style.bottom !== footerVisibleHeight + 'px') {
+                    nav.style.bottom = footerVisibleHeight + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if (nav.style.bottom !== '0') {
+                nav.style.bottom = '0';
+                Ps.update(nav);
+            }
+        }
+
+        function updatePosition () {
+            if (isMobileDevice)
+                changeBodyHeight();
+            else
+                nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+
+            setNavBottomPosition();
+            setNavTopPosition();
+        }
+        
+        function changeBodyHeight () {
+            if (document.body.style.height !== window.innerHeight + 'px')
+                document.body.style.height = window.innerHeight + 'px';
+        }
+        
+        function initScrollBar() {
+            Ps.initialize(nav);
+            
+            window.addEventListener('resize', function () {
+                Ps.update(nav);
+            });
+        }
+
+        function initNav() {
+            initScrollBar();
+            updatePosition();
+            window.addEventListener('scroll', updatePosition);
+            window.addEventListener('resize', updatePosition);
+        }
+
+        document.addEventListener('DOMContentLoaded', function (e) {
+            nav = document.querySelector('.doc-nav');
+
+            if(nav)
+                initNav(nav);
+        });
+    </script>
+  
+    <script>
+        function initHeader(siteHeader, contentWrapper) {
+            var MIN_BODY_WIDTH = 900;
+
+            function updateHeader() {
+                var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
+                
+                
+
+                siteHeader.style.position = bodyMinimized ? 'static' : '';
+
+                if(contentWrapper)
+                    contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
+            }
+
+            updateHeader();
+            window.addEventListener('scroll', updateHeader);
+            window.addEventListener('resize', updateHeader);
+        }
+        document.addEventListener('DOMContentLoaded', function (e) {
+            var contentWrapper = document.querySelector('.container');
+            var siteHeader     = document.querySelector('.site-header');
+
+            if(siteHeader) 
+                initHeader(siteHeader, contentWrapper);
+        });
+    </script>
+</head>
+
+
+  <body>
+    <div class="page-content-wrapper">
+
+      <header class="site-header minimized">
+  <div class="site-header-content">
+    <a class="site-logo" href="/testcafe/"></a>
+
+    <nav class="site-nav">
+      <div class="trigger">
+        
+          
+          <a class="page-link active" href="/testcafe/documentation/getting-started/">Documentation</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://github.com/DevExpress/testcafe">GitHub</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="/testcafe/blog/">Blog</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://github.com/DevExpress/testcafe/issues">Issues</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://testcafe-discuss.devexpress.com/">Discuss</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
+          <span class="page-link-separator">|</span>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+      <div class="container">
+    	<nav class="doc-nav">	
+		<div class="doc-nav-content">
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/getting-started/"  >GETTING STARTED</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/"  >USING TESTCAFE</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/installing-testcafe.html"  >Installing TestCafe</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/command-line-interface.html"  >Command Line Interface</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/"  >Programming Interface</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/testcafe.html"  >TestCafe Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/browserconnection.html"  >BrowserConnection Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/runner.html"  >Runner Class</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html"  >createTestCafe Factory</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/"  >Common Concepts</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browser-support.html"  >Browser Support</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/"  >TEST API</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixtures"  >Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#tests"  >Tests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-controller"  >Test Controller</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage"  >Specifying the Start Webpage</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-the-hooks-and-test-code"  >Sharing Variables Between the Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#skipping-tests"  >Skipping Tests</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/"  >Actions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/click.html"  >Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/double-click.html"  >Double Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/right-click.html"  >Right Click</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/drag-element.html"  >Drag Element</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/hover.html"  >Hover</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/select-text.html"  >Select Text</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/type-text.html"  >Type Text</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/press-key.html"  >Press Key</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/take-screenshot.html"  >Take Screenshot</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/upload.html"  >Upload</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/resize-window.html"  >Resize Window</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/actions/action-options.html"  >Action Options</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/"  >Selecting Page Elements</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors.html"  >Selectors</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/selector-options.html"  >Selector Options</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion API</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/http-authentication.html"  >HTTP Authentication</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/pausing-the-test.html"  >Pausing the Test</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/handling-native-dialogs.html"  >Handling Native Dialogs</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/working-with-iframes.html"  >Working with &lt;iframes&gt;</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/a-z.html"  >A-Z Index</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/"  >EXTENDING TESTCAFE</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/"  >Reporter Plugin</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html"  >Reporter Methods</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/helpers.html"  >Helpers</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/"  >Browser Provider Plugin</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.html"  >Browser Provider Methods</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/"  >RECIPES</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html"  >Testing on Remote Computers and Mobile Devices</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-page-model.html" class="active" >Using Page Model</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-testcafe-with-gulp.html"  >Using TestCafe with Gulp</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+</ul>
+		</div>
+	</nav>
+
+
+<main>
+	<article class="doc">
+		<div class="post-content">
+
+			<h1>Using Page Model</h1>
+<p><a href="http://martinfowler.com/bliki/PageObject.html">Page Model</a> is a test automation pattern that allows you to create an abstraction of the tested page
+and use it in test code to refer to page elements.</p>
+<h2><a class="anchor" name="why-use-page-model"></a>Why Use Page Model <a class="permalink" href="#why-use-page-model">#</a></h2>
+<p>Consider the following fixture with two tests: one that types and edits
+the developer name on the <a href="https://devexpress.github.io/testcafe/example/">example</a> webpage and the other that
+checks check boxes in the Features section.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Text typing basics'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'Paker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">2</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">).</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Parker'</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Click check boxes and then verify their state'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'input[id=remote-testing]'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'input[id=remote-testing]'</span><span class="p">).</span><span class="nx">checked</span><span class="p">).</span><span class="nx">ok</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'input[id=reusing-js-code]'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'input[id=reusing-js-code]'</span><span class="p">).</span><span class="nx">checked</span><span class="p">).</span><span class="nx">ok</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'input[id=continuous-integration-embedding]'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'input[id=continuous-integration-embedding]'</span><span class="p">).</span><span class="nx">checked</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Note that both tests contain excessive code.
+In the first test, the <code>#developer-name</code> CSS selector is duplicated in code each time the test refers to the input element.
+In the second test, test logic is duplicated for each check box.</p>
+
+<p>In a rapidly developing web application, page markup and design may change often. When this happens, you need to modify selectors in all your tests.
+The Page Model allows you to keep all selectors in one place, so the next time the webpage changes,
+you will only need to modify the page model.</p>
+
+<p>Generally speaking, the Page Model pattern allows you to follow
+the separation of concerns principle - you keep page representation in the Page Model,
+while tests remain focused on the behavior.</p>
+<h2><a class="anchor" name="creating-a-page-model"></a>Creating a Page Model <a class="permalink" href="#creating-a-page-model">#</a></h2>
+<ol>
+<li><p>Begin with a new <code>.js</code> file and declare the <code>Page</code> class there.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>This class will contain the Page Model, so name the file <code>page-model.js</code>.</p></li>
+<li><p>Add the <code>Developer Name</code> input element to the model. To do this,
+introduce the <code>nameInput</code> property and assign a <a href="../test-api/selecting-page-elements/selectors.html">selector</a> to it.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></li>
+<li><p>In the test file, import <code>page-model.js</code> and create an instance of the <code>Page</code> class.
+After that, you can use the <code>page.nameInput</code> property to identify the <code>Developer Name</code> input element.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">Page</span> <span class="nx">from</span> <span class="s1">'./page-model'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Page</span><span class="p">();</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Text typing basics'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Paker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">2</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Parker'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></li>
+<li><p>Add check boxes from the Features section to the Page Model.</p>
+
+<p>As long as each item in the Features section contains a check box and a label,
+introduce a new class <code>Feature</code> with two properties: <code>label</code> and <code>checkbox</code>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
+
+<span class="kr">class</span> <span class="nx">Feature</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">label</span>    <span class="o">=</span> <span class="nx">label</span><span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">checkbox</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'input[type=checkbox]'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></li>
+<li><p>In the <code>Page</code> class, add the <code>featureList</code> property with an array of <code>Feature</code> objects.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
+
+<span class="kr">class</span> <span class="nx">Feature</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">label</span>    <span class="o">=</span> <span class="nx">label</span><span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">checkbox</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'input[type=checkbox]'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">featureList</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Support for testing on remote devices'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Re-using existing JavaScript code for testing'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Easy embedding into a Continuous integration system'</span><span class="p">)</span>
+        <span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Organizing check boxes in an array makes the page model semantically correct and simplifies iterating through the check boxes.</p></li>
+<li><p>The second test now boils down to a single loop.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">Page</span> <span class="nx">from</span> <span class="s1">'./page-model'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Page</span><span class="p">();</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Text typing basics'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Paker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">2</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Parker'</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Click check boxes and then verify their state'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kr">const</span> <span class="nx">feature</span> <span class="nx">of</span> <span class="nx">page</span><span class="p">.</span><span class="nx">featureList</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">await</span> <span class="nx">t</span>
+            <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">feature</span><span class="p">.</span><span class="nx">label</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">feature</span><span class="p">.</span><span class="nx">checkbox</span><span class="p">.</span><span class="nx">checked</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></li>
+</ol>
+
+<p><strong>Example</strong></p>
+
+<p>This sample shows a page model for the example page at <a href="https://devexpress.github.io/testcafe/example/">https://devexpress.github.io/testcafe/example/</a>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
+
+<span class="kr">class</span> <span class="nx">Feature</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">label</span>    <span class="o">=</span> <span class="nx">label</span><span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">checkbox</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'input[type=checkbox]'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">class</span> <span class="nx">OperatingSystem</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">label</span>       <span class="o">=</span> <span class="nx">label</span><span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">radioButton</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'input[type=radio]'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
+    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span>             <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">triedTestCafeCheckbox</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#tried-test-cafe'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">populateButton</span>        <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">submitButton</span>          <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">results</span>               <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.result-content'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">commentsTextArea</span>      <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#comments'</span><span class="p">);</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">featureList</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Support for testing on remote devices'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Re-using existing JavaScript code for testing'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Running tests in background and/or in parallel in multiple browsers'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Easy embedding into a Continuous integration system'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Advanced traffic and markup analysis'</span><span class="p">)</span>
+        <span class="p">];</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">osList</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="k">new</span> <span class="nx">OperatingSystem</span><span class="p">(</span><span class="s1">'Windows'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">OperatingSystem</span><span class="p">(</span><span class="s1">'MacOS'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">OperatingSystem</span><span class="p">(</span><span class="s1">'Linux'</span><span class="p">)</span>
+        <span class="p">];</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">slider</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="na">handle</span><span class="p">:</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.ui-slider-handle'</span><span class="p">),</span>
+            <span class="na">tick</span><span class="p">:</span>   <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.slider-value'</span><span class="p">)</span>
+        <span class="p">};</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">interfaceSelect</span>       <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#preferred-interface'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">interfaceSelectOption</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">interfaceSelect</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'option'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+		</div>
+	</article>
+</main>
+</div>
+
+      <div class="push"></div>
+    </div>
+
+    <footer class="site-footer">
+    <div class="site-footer-content">
+        <div class="footer-col-1">
+            <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
+            Copyright © 1998-2017 Developer Express Inc.</p>
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

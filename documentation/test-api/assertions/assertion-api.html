@@ -6,9 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  
   <title>Assertion methods | TestCafe</title>
+
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
+  
+  <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html" />
+  <meta property="og:title" content="Assertion methods | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
@@ -44,57 +51,80 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script>
-        function initNav(nav) {
-            var MIN_BODY_WIDTH = 900;
-            var FOOTER_HEIGHT  = 63;
-            var HEADER_HEIGHT  = 52;
+        var MIN_BODY_WIDTH = 900;
+        var FOOTER_HEIGHT  = 63;
+        var HEADER_HEIGHT  = 52;
 
-            function updatePosition() {
-                var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset + document.body.clientHeight;
+        var nav            = null;
+        var isMobileDevice = window.screen.width < 800 || window.screen.height < 800;
 
+        function setNavTopPosition () {
+            var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
+
+            if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                if (nav.style.top !== HEADER_HEIGHT + 'px') {
+                    nav.style.top = HEADER_HEIGHT + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if(!isMobileZoomed) {
+                var top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
+
+                if (nav.style.top !== top) {
+                    nav.style.top = top;
+                    Ps.update(nav);
+                }
+            }
+        }
+
+        function setNavBottomPosition () {
+            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
+                                      document.body.clientHeight;
+
+            if (footerVisibleHeight > 0) {
+                if (nav.style.bottom !== footerVisibleHeight + 'px') {
+                    nav.style.bottom = footerVisibleHeight + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if (nav.style.bottom !== '0') {
+                nav.style.bottom = '0';
+                Ps.update(nav);
+            }
+        }
+
+        function updatePosition () {
+            if (isMobileDevice)
+                changeBodyHeight();
+            else
                 nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+
+            setNavBottomPosition();
+            setNavTopPosition();
+        }
+        
+        function changeBodyHeight () {
+            if (document.body.style.height !== window.innerHeight + 'px')
+                document.body.style.height = window.innerHeight + 'px';
+        }
+        
+        function initScrollBar() {
+            Ps.initialize(nav);
             
-                if (footerVisibleHeight > 0) {
-                    if(nav.style.bottom !== footerVisibleHeight + 'px') {
-                        nav.style.bottom = footerVisibleHeight + 'px';
-                        Ps.update(nav);
-                    }
-                }
-                else if(nav.style.bottom !== '0') {
-                    nav.style.bottom = '0';
-                    Ps.update(nav);
-                }
+            window.addEventListener('resize', function () {
+                Ps.update(nav);
+            });
+        }
 
-                if (document.body.clientWidth > MIN_BODY_WIDTH) {
-                    if (nav.style.top !== HEADER_HEIGHT + 'px') {
-                        nav.style.top = HEADER_HEIGHT + 'px';
-                        Ps.update(nav);
-                    }
-                }
-                else {
-                    var top = window.pageYOffset <= HEADER_HEIGHT ? (HEADER_HEIGHT - window.pageYOffset) + 'px' : '0';
-
-                    if(nav.style.top !== top) {
-                        nav.style.top = top;
-                        Ps.update(nav);
-                    }
-                }
-            }
-            function initScrollBar() {
-                Ps.initialize(nav);
-                
-                window.addEventListener('resize', function () {
-                    Ps.update(nav);
-                });
-            }
-
+        function initNav() {
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
         }
+
         document.addEventListener('DOMContentLoaded', function (e) {
-            var nav = document.querySelector('.doc-nav');
+            nav = document.querySelector('.doc-nav');
 
             if(nav)
                 initNav(nav);
@@ -284,6 +314,67 @@
 		
 <a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
 		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixtures"  >Fixtures</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#tests"  >Tests</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-controller"  >Test Controller</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage"  >Specifying the Start Webpage</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-the-hooks-and-test-code"  >Sharing Variables Between the Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#skipping-tests"  >Skipping Tests</a>
+		
+    </li>
+
+</ul>
+		
     </li>
 
     <li>
@@ -430,7 +521,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/assertions/assertion-api.html" class="active" >Assertion methods</a>
+<a href="/testcafe/documentation/test-api/assertions/assertion-api.html" class="active" >Assertion API</a>
 		
     </li>
 
@@ -442,6 +533,13 @@
 		    
 		
 <a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/http-authentication.html"  >HTTP Authentication</a>
 		
     </li>
 
@@ -541,6 +639,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
 		
     </li>
@@ -549,6 +654,27 @@
 		    
 		
 <a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static Html Pages</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html"  >Testing on Remote Computers and Mobile Devices</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-page-model.html"  >Using Page Model</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/recipes/using-testcafe-with-gulp.html"  >Using TestCafe with Gulp</a>
 		
     </li>
 
@@ -583,6 +709,8 @@
 <li><a href="#less-than-or-equal-to">Less than or Equal to</a></li>
 <li><a href="#within">Within</a></li>
 <li><a href="#not-within">Not Within</a></li>
+<li><a href="#match">Match</a></li>
+<li><a href="#not-match">Not Match</a></li>
 </ul>
 <h2><a class="anchor" name="deep-equal"></a>Deep Equal <a class="permalink" href="#deep-equal">#</a></h2>
 <p>Asserts that <code>actual</code> is deeply equal to <code>expected</code>.</p>
@@ -619,8 +747,8 @@
 
 <p><strong>Examples:</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">}).</span><span class="nx">eql</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">},</span> <span class="s1">'this assertion will be passed'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">}).</span><span class="nx">eql</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'foo'</span> <span class="p">},</span> <span class="s1">'this assertion will be failed'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">}).</span><span class="nx">eql</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">},</span> <span class="s1">'this assertion will pass'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">}).</span><span class="nx">eql</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'foo'</span> <span class="p">},</span> <span class="s1">'this assertion will fail'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="not-deep-equal"></a>Not Deep Equal <a class="permalink" href="#not-deep-equal">#</a></h2>
 <p>Assert that <code>actual</code> is not deeply equal to <code>unexpected</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).notEql( unexpected, message, options );
@@ -656,8 +784,8 @@
 
 <p><strong>Examples:</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">}).</span><span class="nx">notEql</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">},</span> <span class="s1">'this assertion will be failed'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">}).</span><span class="nx">notEql</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'foo'</span> <span class="p">},</span> <span class="s1">'this assertion will be passed'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">}).</span><span class="nx">notEql</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">},</span> <span class="s1">'this assertion will fail'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">}).</span><span class="nx">notEql</span><span class="p">({</span> <span class="na">a</span><span class="p">:</span> <span class="s1">'foo'</span> <span class="p">},</span> <span class="s1">'this assertion will pass'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="ok"></a>Ok <a class="permalink" href="#ok">#</a></h2>
 <p>Asserts that <code>actual</code> is truthy.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).ok( message, options );
@@ -688,8 +816,8 @@
 
 <p><strong>Examples:</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'ok'</span><span class="p">).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'this assertion will be passed'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="kc">false</span><span class="p">).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'this assertion will be failed'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'ok'</span><span class="p">).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'this assertion will pass'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="kc">false</span><span class="p">).</span><span class="nx">ok</span><span class="p">(</span><span class="s1">'this assertion will fail'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="not-ok"></a>Not Ok <a class="permalink" href="#not-ok">#</a></h2>
 <p>Asserts that <code>actual</code> is falsy.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).notOk( message, options );
@@ -720,8 +848,8 @@
 
 <p><strong>Examples:</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'ok'</span><span class="p">).</span><span class="nx">notOk</span><span class="p">(</span><span class="s1">'this assertion will be failed'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="kc">false</span><span class="p">).</span><span class="nx">notOk</span><span class="p">(</span><span class="s1">'this assertion will be passed'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'ok'</span><span class="p">).</span><span class="nx">notOk</span><span class="p">(</span><span class="s1">'this assertion will fail'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="kc">false</span><span class="p">).</span><span class="nx">notOk</span><span class="p">(</span><span class="s1">'this assertion will pass'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="contains"></a>Contains <a class="permalink" href="#contains">#</a></h2>
 <p>Asserts that <code>actual</code> contains <code>expected</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).contains( expected, message, options );
@@ -1052,7 +1180,7 @@
 </tbody></table>
 
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">within</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'this assertion will be passed'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">within</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'this assertion will pass'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="not-within"></a>Not Within <a class="permalink" href="#not-within">#</a></h2>
 <p>Asserts that <code>actual</code> is not within a range from <code>start</code> to <code>finish</code>. Bounds are inclusive.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).notWithin( start, finish, message, options );
@@ -1092,7 +1220,77 @@
 </tbody></table>
 
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">notWithin</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'this assertion will be passed'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">notWithin</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'this assertion will pass'</span><span class="p">);</span>
+</code></pre></div><h2><a class="anchor" name="match"></a>Match <a class="permalink" href="#match">#</a></h2>
+<p>Asserts that <code>actual</code> matches the <code>re</code> regular expression.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).match( re, message, options );
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>actual</code></td>
+<td>String</td>
+<td>A comparison value.</td>
+</tr>
+<tr>
+<td><code>re</code></td>
+<td>RegExp</td>
+<td>A regular expression that is expected to match <code>actual</code>.</td>
+</tr>
+<tr>
+<td><code>message</code>&#160;<em>(optional)</em></td>
+<td>String</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
+</tr>
+<tr>
+<td><code>options</code>&#160;<em>(optional)</em></td>
+<td>Object</td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
+</tr>
+</tbody></table>
+
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foobar'</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^f/</span><span class="p">,</span> <span class="s1">'this assertion will be passed'</span><span class="p">);</span>
+</code></pre></div><h2><a class="anchor" name="not-match"></a>Not Match <a class="permalink" href="#not-match">#</a></h2>
+<p>Asserts that <code>actual</code> does not match the <code>re</code> regular expression.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).notMatch( re, message, options );
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>actual</code></td>
+<td>String</td>
+<td>A comparison value.</td>
+</tr>
+<tr>
+<td><code>re</code></td>
+<td>RegExp</td>
+<td>A regular expression that is expected not to match <code>actual</code>.</td>
+</tr>
+<tr>
+<td><code>message</code>&#160;<em>(optional)</em></td>
+<td>String</td>
+<td>An assertion message that will be displayed in the report if the test fails.</td>
+</tr>
+<tr>
+<td><code>options</code>&#160;<em>(optional)</em></td>
+<td>Object</td>
+<td>See <a href=".#assertion-options">Options</a>.</td>
+</tr>
+</tbody></table>
+
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foobar'</span><span class="p">).</span><span class="nx">notMatch</span><span class="p">(</span><span class="sr">/^b/</span><span class="p">,</span> <span class="s1">'this assertion will be passed'</span><span class="p">);</span>
 </code></pre></div>
 
 		</div>
@@ -1107,7 +1305,7 @@
     <div class="site-footer-content">
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
-            Copyright © 1998-2016 Developer Express Inc.</p>
+            Copyright © 1998-2017 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
