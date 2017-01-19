@@ -8,7 +8,7 @@
 
 TestCafe now supports testing webpages protected with HTTP Basic and NTLM authentication.
 
-Use the `httpAuth` function in fixture or test declaration to specify the credentials.
+Use the [httpAuth](https://devexpress.github.io/testcafe/documentation/test-api/http-authentication.html) function in fixture or test declaration to specify the credentials.
 
 ```js
 fixture `My fixture`
@@ -18,7 +18,7 @@ fixture `My fixture`
         password: 'Pa$$word',
 
         // Optional parameters, can be required for the NTLM authentication.
-        domain: 'CORP-DOMAIN',
+        domain:      'CORP-DOMAIN',
         workstation: 'machine-win10'
     });
 
@@ -67,14 +67,14 @@ The `t.takeScreenshot`, `t.resizeWindow`, `t.resizeWindowToFitDevice` and `t.max
 
 The state of webpage elements can now be extended with custom properties.
 
-We have added the [addCustomDOMProperties](https://devexpress,github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#adding-custom-properties-to-element-state)
+We have added the [addCustomDOMProperties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#adding-custom-properties-to-element-state)
 method to the selector, so that you can add properties to the element state like in the following example.
 
 ```js
-import {Selector} from 'testcafe'
+import { Selector } from 'testcafe'
 
 fixture `My fixture`
-    .page `https://devexpress.github.io/testcafe/example/`
+    .page `https://devexpress.github.io/testcafe/example/`;
 
 test('Check Label HTML', async t => {
     const label = Selector('label').addCustomDOMProperties({
@@ -139,7 +139,8 @@ An individual test can now override the fixture's `page` setting and start on a 
 
 #### Initialization and finalization methods for a test ([#1108](https://github.com/DevExpress/testcafe/issues/1108))
 
-We have added the `before` and `after` methods to the test declaration.
+We have added the [before](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up)
+and [after](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up) methods to the test declaration.
 Use them to provide code that will be executed before a test is started and after it is finished.
 
 ```js
@@ -214,11 +215,11 @@ an optional `dependencies` parameter.
 
 ```js
 const isNodeOk = ClientFunction(node => { /*...*/ });
-const aFlag = getFlag();
+const flag = getFlag();
 
 Selector('ul').child(node => {
-    return isNodeOk(node) && aFlag;
-}, { isNodeOk, aFlag });
+    return isNodeOk(node) && flag;
+}, { isNodeOk, flag });
 ```
 
 #### Filtering by negative index in selectors ([#738](https://github.com/DevExpress/testcafe/issues/738))
@@ -257,9 +258,9 @@ test('My Test', asynct t => {
 });
 ```
 
-#### Automatic waiting for scripts ([#1072](https://github.com/DevExpress/testcafe/issues/1072))
+#### Automatic waiting for scripts added during a test action ([#1072](https://github.com/DevExpress/testcafe/issues/1072))
 
-TestCafe now automatically waits for scripts to finish before proceeding to the next test action.
+If a test action adds scripts on a page, TestCafe now automatically waits for them to finish before proceeding to the next test action.
 
 #### New ESLint plugin ([#1083](https://github.com/DevExpress/testcafe/issues/1083))
 
@@ -276,6 +277,18 @@ Get it to ensure that ESLint does not fail on TestCafe test code.
 * ShadowUI root is now hidden for `elementFromPoint` in an iframe in IE ([#1029](https://github.com/DevExpress/testcafe/issues/1029))
 * Preventing the form submit event no longer leads to additional delay between actions ([#1115](https://github.com/DevExpress/testcafe/issues/1115))
 * TestCafe no longer hangs when a cursor is moved out of a reloading iframe ([#1140](https://github.com/DevExpress/testcafe/issues/1140))
+* Onclick event handler is now executed correctly during click automation in specific cases ([#1138](https://github.com/DevExpress/testcafe/issues/1138))
+* The `application/pdf` mime type is no longer recognized as a page ([#1014](https://github.com/DevExpress/testcafe-hammerhead/issues/1014))
+* Limited support for the `frameset` tag is implemented ([#1009](https://github.com/DevExpress/testcafe-hammerhead/issues/1009))
+* `Function.prototype.toString` is now proxied correctly when it is overriden in a customer script ([#999](https://github.com/DevExpress/testcafe-hammerhead/issues/999))
+* Script processing no longer hangs on chained assignments ([#866](https://github.com/DevExpress/testcafe-hammerhead/issues/866))
+* `formaction` attribute is now processed ([#988](https://github.com/DevExpress/testcafe-hammerhead/issues/988))
+* `document.styleSheets` is now overrided ([#1000](https://github.com/DevExpress/testcafe-hammerhead/issues/1000))
+* `href` attribute is now processed correctly in an iframe without src when it is set from the main window ([#620](https://github.com/DevExpress/testcafe-hammerhead/issues/620))
+* Cookies without a key are now set correctly ([#899](https://github.com/DevExpress/testcafe-hammerhead/issues/899))
+* The `noscript` tag is now processed correctly when it was added via `innerHTML` ([#987](https://github.com/DevExpress/testcafe-hammerhead/issues/987))
+* `Element.insertAdjacentHTML` function is now overrided in IE ([#954](https://github.com/DevExpress/testcafe-hammerhead/issues/954))
+* Browser behaviour is now emulated correctly when the cookie size is bigger than the browser limit ([#767](https://github.com/DevExpress/testcafe-hammerhead/issues/767))
 
 ## v0.11.1 (2016-12-8)
 
