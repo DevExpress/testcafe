@@ -215,18 +215,15 @@ Instead of using a global variable, assign the object you want to share directly
 ```js
 fixture `Fixture1`
     .beforeEach(async t  => {
-          t.ctx.someProp = 123;
-     })
-    .afterEach(async t  => {
-          console.log(t.ctx.someProp); // > 123
+        t.ctx.someProp = 123;
     });
 
 test
-    .before(async t => {
-         console.log(t.ctx.someProp); // > 123
-    })
     ('Test1', async t => {
         console.log(t.ctx.someProp); // > 123
+    })
+    .after(async t => {
+         console.log(t.ctx.someProp); // > 123
     });
 ```
 
