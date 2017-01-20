@@ -10,7 +10,6 @@ var messageSandbox = hammerhead.eventSandbox.message;
 
 var styleUtils    = testCafeCore.styleUtils;
 var positionUtils = testCafeCore.positionUtils;
-var eventUtils    = testCafeCore.eventUtils;
 
 const CURSOR_CLASS       = 'cursor';
 const TOUCH_CLASS        = 'touch';
@@ -71,8 +70,6 @@ var CursorUI = {
         }
 
         shadowUI.getRoot().appendChild(this.cursorElement);
-
-        eventUtils.bind(window, 'scroll', () => this.move(this.x, this.y));
     },
 
     isVisible () {
@@ -101,8 +98,8 @@ var CursorUI = {
             this._createElement();
 
         styleUtils.set(this.cursorElement, {
-            left: this.x + styleUtils.getScrollLeft(document) - this.pointerOffsetX + 'px',
-            top:  this.y + styleUtils.getScrollTop(document) - this.pointerOffsetY + 'px'
+            left: this.x - this.pointerOffsetX + 'px',
+            top:  this.y - this.pointerOffsetY + 'px'
         });
 
         return Promise.resolve();
