@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.12.1 (2017-1-20)
+
+:racing_car: A recovery release following [v0.12.0](#v0120-2017-1-19) with an important fix. :racing_car:
+
+### Bug Fixes
+
+* Fixed a bug when the cursor was not visible while running tests ([#1156](https://github.com/DevExpress/testcafe/issues/1156)).
+
 ## v0.12.0 (2017-1-19)
 
 HTTP authentication support, a CI-friendly way to start and stop the tested app and lots of API enhancements.
