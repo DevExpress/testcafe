@@ -256,10 +256,10 @@ export default class MoveAutomation {
             eventSimulator[this.moveEvent](currentElement, eventOptions);
 
         if (currentElementChanged) {
-            if (currentElement)
+            if (currentElement && domUtils.isElementInDocument(currentElement))
                 eventSimulator.mouseover(currentElement, extend({ relatedTarget: lastHoveredElement }, eventOptions));
 
-            lastHoveredElement = currentElement;
+            lastHoveredElement = domUtils.isElementInDocument(currentElement) ? currentElement : null;
         }
 
         if (!browserUtils.isIE && currentElement)
@@ -267,7 +267,7 @@ export default class MoveAutomation {
 
         // NOTE: we need to add an extra 'mousemove' if the element was changed because sometimes
         // the client script requires several 'mousemove' events for an element (T246904)
-        if (currentElementChanged && currentElement)
+        if (currentElementChanged && currentElement && domUtils.isElementInDocument(currentElement))
             eventSimulator[this.moveEvent](currentElement, eventOptions);
     }
 

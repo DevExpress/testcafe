@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-1161</title>
+    <style>
+        td {
+            border: 0px solid black;
+            width: 50px;
+            height: 30px;
+            background: darkgrey;
+        }
+
+        #topDiv {
+            width: 100px;
+            height: 25px;
+            background: red;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div id="topDiv"></div>
+<table>
+    <tr>
+        <td id="data1"></td>
+        <td id="data2"></td>
+        <td id="data3"></td>
+        <td id="data4"></td>
+    </tr>
+</table>
+<script>
+    var topDiv = document.querySelector('#topDiv');
+
+    topDiv.style.left = '170px';
+
+    document.addEventListener('mousemove', function (e) {
+        var topDiv = document.querySelector('#topDiv');
+
+        topDiv.removeNode();
+
+        var newTopDiv = document.createElement('div');
+
+        newTopDiv.id = 'topDiv';
+        newTopDiv.style.left = (e.clientX) - 80 + 'px';
+        newTopDiv.style.top  = e.clientY - 10 + 'px';
+
+        document.body.appendChild(newTopDiv);
+    });
+</script>
+</body>
+</html>
