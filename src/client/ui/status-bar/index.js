@@ -350,7 +350,7 @@ export default class StatusBar {
         });
     }
 
-    _showDebuggerStatus () {
+    _showDebuggingStatus () {
         this.debugging = true;
 
         this.statusDiv.textContent = DEBUGGING_TEXT;
@@ -417,6 +417,6 @@ export default class StatusBar {
         this._stopAnimation();
         styleUtils.set(this.statusBar, 'opacity', 1);
 
-        return this._showDebuggerStatus();
+        return this._showDebuggingStatus();
     }
 }

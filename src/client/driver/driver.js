@@ -381,7 +381,7 @@ export default class Driver {
             });
     }
 
-    _onDebuggerCommand () {
+    _onDebugCommand () {
         this._setDebuggingStatus()
             .then(() => this._onReady(new DriverStatus({ isCommandResult: true })));
     }
@@ -421,8 +421,8 @@ export default class Driver {
         if (command.type === COMMAND_TYPE.testDone)
             this._onTestDone(new DriverStatus({ isCommandResult: true }));
 
-        else if (command.type === COMMAND_TYPE.debugger)
-            this._onDebuggerCommand();
+        else if (command.type === COMMAND_TYPE.debug)
+            this._onDebugCommand();
 
         else if (command.type === COMMAND_TYPE.prepareBrowserManipulation)
             this._onPrepareBrowserManipulationCommand();

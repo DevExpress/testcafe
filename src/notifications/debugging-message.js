@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import createStackFilter from '../errors/create-stack-filter';
 
-export default function showDebuggerMessage (callsite, userAgent) {
+export default function showDebuggingMessage (callsite, userAgent) {
     var callsiteStr = callsite.renderSync({
         frameSize:   1,
         stackFilter: createStackFilter(Error.stackTraceLimit),

@@ -13,7 +13,7 @@ function isObservationCommand (command) {
     return command.type === TYPE.executeClientFunction ||
            command.type === TYPE.executeSelector ||
            command.type === TYPE.wait ||
-           command.type === TYPE.debugger;
+           command.type === TYPE.debug;
 }
 
 function isWindowSwitchingCommand (command) {
@@ -63,7 +63,7 @@ export function isServiceCommand (command) {
 
 export function isExecutableInTopWindowOnly (command) {
     return command.type === TYPE.testDone ||
-           command.type === TYPE.debugger ||
+           command.type === TYPE.debug ||
            command.type === TYPE.prepareBrowserManipulation ||
            command.type === TYPE.switchToMainWindow ||
            command.type === TYPE.setNativeDialogHandler ||

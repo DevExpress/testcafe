@@ -37,7 +37,7 @@ import {
     MaximizeWindowCommand
 } from '../test-run/commands/browser-manipulation';
 
-import { WaitCommand, DebuggerCommand } from '../test-run/commands/observation';
+import { WaitCommand, DebugCommand } from '../test-run/commands/observation';
 
 export default class TestController {
     constructor (testRun) {
@@ -261,8 +261,8 @@ export default class TestController {
         return new Assertion(actual, this);
     }
 
-    _debugger$ () {
-        return this._enqueueAction('debugger', DebuggerCommand);
+    _debug$ () {
+        return this._enqueueAction('debug', DebugCommand);
     }
 }
 
