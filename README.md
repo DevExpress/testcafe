@@ -25,6 +25,7 @@ TestCafe is a pure node.js end-to-end solution for testing web apps. It takes ca
 * [Features](#features)
 * [Getting Started](#getting-started)
 * [Documentation](#documentation)
+* [TestCafe Ecosystem](#testcafe-ecosystem)
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
 * [Stay in Touch](#stay-in-touch)
@@ -301,6 +302,43 @@ test('My first test', async t => {
 * [Using TestCafe](https://devexpress.github.io/testcafe/documentation/using-testcafe/)
 * [Extending TestCafe](https://devexpress.github.io/testcafe/documentation/extending-testcafe/)
 * [Recipes](https://devexpress.github.io/testcafe/documentation/recipes/)
+
+## TestCafe Ecosystem
+
+The following plugins make your work with TestCafe easy and introduce new features.
+
+### IDE Plugins
+
+Run tests and view test results right from your favorite IDE.
+
+* [Visual Studio Code](https://github.com/romanresh/vscode-testcafe)
+* [SublimeText](https://github.com/churkin/testcafe-sublimetext)
+
+### Plugins for Task Runners
+
+Easily integrate TestCafe into your project's workflow.
+
+* [Grunt](https://github.com/crudo/grunt-testcafe)
+* [Gulp](https://github.com/DevExpress/gulp-testcafe)
+
+### Browser Providers
+
+Provide support for more browsers to test against.
+
+* [SauceLabs](https://github.com/DevExpress/testcafe-browser-provider-saucelabs)
+* [Nightmare](https://github.com/ryx/testcafe-browser-provider-nightmare)
+
+### Custom Reporters
+
+Enable TestCafe to present test results in different formats.
+
+* [NUnit](https://github.com/AndreyBelym/testcafe-reporter-nunit)
+
+### ESLint
+
+Use ESLint when writing and editing TestCafe tests.
+
+* [ESLint plugin](https://github.com/miherlosev/eslint-plugin-testcafe)
 
 ## Roadmap
 
