@@ -2,7 +2,7 @@ import Promise from 'pinkie';
 import { identity, assign, isNil as isNullOrUndefined } from 'lodash';
 import { MissingAwaitError } from '../errors/test-run';
 import getCallsite from '../errors/get-callsite';
-import deprecate from '../warnings/deprecate';
+import showDeprecationMessage from '../notifications/deprecation-message';
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import SelectorBuilder from '../client-functions/selector-builder';
 import Assertion from './assertion';
@@ -37,7 +37,7 @@ import {
     MaximizeWindowCommand
 } from '../test-run/commands/browser-manipulation';
 
-import { WaitCommand } from '../test-run/commands/observation';
+import { WaitCommand, DebugCommand } from '../test-run/commands/observation';
 
 export default class TestController {
     constructor (testRun) {
@@ -228,7 +228,7 @@ export default class TestController {
     }
 
     _select$ (fn, options) {
-        deprecate(getCallsite('select'), {
+        showDeprecationMessage(getCallsite('select'), {
             what:       't.select',
             useInstead: 'Selector'
         });
@@ -259,6 +259,10 @@ export default class TestController {
 
     _expect$ (actual) {
         return new Assertion(actual, this);
+    }
+
+    _debug$ () {
+        return this._enqueueAction('debug', DebugCommand);
     }
 }
 

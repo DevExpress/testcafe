@@ -14,7 +14,8 @@ import TEST_RUN_MESSAGES from '../../test-run/client-messages';
 import COMMAND_TYPE from '../../test-run/commands/type';
 import {
     isCommandRejectableByPageError,
-    isExecutableInTopWindowOnly
+    isExecutableInTopWindowOnly,
+    isVisualManipulationCommand
 } from '../../test-run/commands/utils';
 import {
     UncaughtErrorOnPage,
@@ -52,6 +53,7 @@ const EXECUTING_CLIENT_FUNCTION_DESCRIPTOR = 'testcafe|driver|executing-client-f
 const SELECTOR_EXECUTION_START_TIME        = 'testcafe|driver|selector-execution-start-time';
 const PENDING_PAGE_ERROR                   = 'testcafe|driver|pending-page-error';
 const ACTIVE_IFRAME_SELECTOR               = 'testcafe|driver|active-iframe-selector';
+const STOP_AFTER_NEXT_ACTION               = 'testcafe|driver|stop-after-next-action';
 const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;
 
 const ACTION_IFRAME_ERROR_CTORS = {
@@ -104,6 +106,13 @@ export default class Driver {
         preventRealEvents();
 
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
+    }
+
+    _setDebuggingStatus () {
+        return transport
+            .queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.showDebuggerMessage })
+            .then(() => this.statusBar.setDebuggingStatus())
+            .then(stopAfterNextAction => this.contextStorage.setItem(STOP_AFTER_NEXT_ACTION, stopAfterNextAction));
     }
 
     // Error handling
@@ -170,7 +179,11 @@ export default class Driver {
         // NOTE: postpone status sending if the page is unloading
         return pageUnloadBarrier
             .wait(0)
-            .then(() => transport.queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.ready, status, disableResending: true }))
+            .then(() => transport.queuedAsyncServiceMsg({
+                cmd:              TEST_RUN_MESSAGES.ready,
+                status:           status,
+                disableResending: true
+            }))
 
             //NOTE: do not execute the next command if the page is unloading
             .then(res => {
@@ -302,7 +315,10 @@ export default class Driver {
     }
 
     _onGetNativeDialogHistoryCommand () {
-        this._onReady(new DriverStatus({ isCommandResult: true, result: this.nativeDialogsTracker.appearedDialogs }));
+        this._onReady(new DriverStatus({
+            isCommandResult: true,
+            result:          this.nativeDialogsTracker.appearedDialogs
+        }));
     }
 
     _onNavigateToCommand (command) {
@@ -365,6 +381,11 @@ export default class Driver {
             });
     }
 
+    _onDebugCommand () {
+        this._setDebuggingStatus()
+            .then(() => this._onReady(new DriverStatus({ isCommandResult: true })));
+    }
+
     _onTestDone (status) {
         this.contextStorage.setItem(TEST_DONE_SENT_FLAG, true);
 
@@ -375,12 +396,20 @@ export default class Driver {
 
 
     // Routing
-
     _onReady (status) {
         this._sendStatus(status)
             .then(command => {
-                if (command)
-                    this._onCommand(command);
+                if (command) {
+                    var isDebugging = this.contextStorage.getItem(STOP_AFTER_NEXT_ACTION) &&
+                                      isVisualManipulationCommand(command);
+
+                    if (isDebugging) {
+                        this._setDebuggingStatus()
+                            .then(() => this._onCommand(command));
+                    }
+                    else
+                        this._onCommand(command);
+                }
 
                 // NOTE: the driver gets an empty response if TestRun doesn't get a new command within 2 minutes
                 else
@@ -391,6 +420,9 @@ export default class Driver {
     _executeCommand (command) {
         if (command.type === COMMAND_TYPE.testDone)
             this._onTestDone(new DriverStatus({ isCommandResult: true }));
+
+        else if (command.type === COMMAND_TYPE.debug)
+            this._onDebugCommand();
 
         else if (command.type === COMMAND_TYPE.prepareBrowserManipulation)
             this._onPrepareBrowserManipulationCommand();

@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { renderers } from 'callsite-record';
 import createStackFilter from '../errors/create-stack-filter';
 
-export default function deprecate (callsite, info) {
+export default function showDeprecationMessage (callsite, info) {
     var callsiteStr = '';
 
     if (callsite) {
