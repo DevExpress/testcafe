@@ -32,8 +32,7 @@ createTestCafe('localhost', 1337, 1338)
                 .src('test.js')
                 .browsers(remoteConnection)
                 .run()
-                .then(failedCount => { /* ... */ })
-                .catch(error => { /* ... */});
+                .then(failedCount => { /* ... */ });
         });
     });
 ```

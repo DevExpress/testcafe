@@ -26,8 +26,7 @@ createTestCafe('localhost', 1337, 1338)
     })
     .then(failedCount => {
         console.log('Tests failed: ' + failedCount);
-    })
-    .catch(error => { /* ... */});
+    });
 ```
 
 ## Methods
@@ -173,8 +172,7 @@ createTestCafe('localhost', 1337, 1338)
                 .src('test.js')
                 .browsers(remoteConnection)
                 .run()
-                .then(failedCount => { /* ... */ })
-                .catch(error => { /* ... */});
+                .then(failedCount => { /* ... */ });
         });
     });
 ```
@@ -234,8 +232,7 @@ runner
     .run()
     .then(failedCount => {
         stream.end();
-    })
-    .catch(error => { /* ... */});
+    });
 ```
 
 #### Implementing a Custom Stream
@@ -315,7 +312,7 @@ runner
     .then(failed => {
         console.log('Tests failed: ' + failed);
     })
-    .catch(error => { /* ... */});
+    .catch(error => { /* ... */ });
 ```
 
 #### Cancelling Test Tasks
