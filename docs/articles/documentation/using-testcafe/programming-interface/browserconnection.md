@@ -13,20 +13,28 @@ Created by the [testCafe.createBrowserConnection](testcafe.md#createbrowserconne
 **Example**
 
 ```js
-const createTestCafe   = require('testcafe');
-const testCafe         = await createTestCafe('localhost', 1337, 1338);
+const createTestCafe = require('testcafe');
+let runner           = null;
 
-const remoteConnection = await testcafe.createBrowserConnection();
+createTestCafe('localhost', 1337, 1338)
+    .then(testcafe => {
+        runner = testcafe.createRunner();
 
-// Outputs remoteConnection.url so that it can be visited from the remote browser.
-console.log(remoteConnection.url);
+        return testcafe.createBrowserConnection();
+    })
+    .then(remoteConnection => {
 
-remoteConnection.once('ready', async () => {
-    await testCafe
-        .createRunner()
-        .browsers(remoteConnection)
-        .run();
-});
+        // Outputs remoteConnection.url so that it can be visited from the remote browser.
+        console.log(remoteConnection.url);
+
+        remoteConnection.once('ready', () => {
+            runner
+                .src('test.js')
+                .browsers(remoteConnection)
+                .run()
+                .then(failedCount => { /* ... */ });
+        });
+    });
 ```
 
 ## Properties

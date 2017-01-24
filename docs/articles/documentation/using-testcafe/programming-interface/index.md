@@ -13,7 +13,11 @@ the [createTestCafe](createtestcafe.md) factory function.
 
 ```js
 const createTestCafe = require('testcafe');
-const testCafe       = await createTestCafe('localhost', 1337, 1338);
+
+createTestCafe('localhost', 1337, 1338)
+    .then(testcafe => {
+        /* ... */
+    });
 ```
 
 Use this instance to create other entities required to execute tests:
@@ -21,8 +25,18 @@ Use this instance to create other entities required to execute tests:
 and the [test runner](runner.md).
 
 ```js
-const remoteConnection = await testcafe.createBrowserConnection();
-const runner           = testcafe.createRunner();
+const createTestCafe = require('testcafe');
+let runner           = null;
+
+createTestCafe('localhost', 1337, 1338)
+    .then(testcafe => {
+        runner = testcafe.createRunner();
+
+        return testcafe.createBrowserConnection();
+    })
+    .then(remoteConnection => {
+         /* ... */
+    });
 ```
 
 [Remote browser connections](browserconnection.md) allow you to run tests on remote devices.
@@ -34,11 +48,14 @@ Google Chrome installed locally and another browser (that can be any of the supp
 The test run report will be output in the JSON format.
 
 ```js
-const failedCount = await runner
+runner
     .src('tests/myFixture.js')
     .browsers([remoteConnection, 'chrome'])
     .reporter('json')
-    .run();
+    .run()
+    .then(failedCount => {
+        /* ... */
+    });
 ```
 
 For details, see the reference topics below.

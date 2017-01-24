@@ -14,7 +14,11 @@ To create a server instance, use the [createTestCafe](createtestcafe.md) factory
 
 ```js
 const createTestCafe = require('testcafe');
-const testCafe       = await createTestCafe('localhost', 1337, 1338);
+
+createTestCafe('localhost', 1337, 1338)
+    .then(testcafe => {
+        /* ... */
+    });
 ```
 
 ## Methods
@@ -36,20 +40,28 @@ To connect a remote browser, navigate it to [BrowserConnection.url](browserconne
 **Example**
 
 ```js
-const createTestCafe   = require('testcafe');
-const testCafe         = await createTestCafe('localhost', 1337, 1338);
+const createTestCafe = require('testcafe');
+let runner           = null;
 
-const remoteConnection = await testcafe.createBrowserConnection();
+createTestCafe('localhost', 1337, 1338)
+    .then(testcafe => {
+        runner = testcafe.createRunner();
 
-// Outputs remoteConnection.url to navigate the remote browser to it.
-console.log(remoteConnection.url);
+        return testcafe.createBrowserConnection();
+    })
+    .then(remoteConnection => {
 
-remoteConnection.once('ready', async () => {
-    await testCafe
-        .createRunner()
-        .browsers(remoteConnection)
-        .run();
-});
+        // Outputs remoteConnection.url so that it can be visited from the remote browser.
+        console.log(remoteConnection.url);
+
+        remoteConnection.once('ready', () => {
+            runner
+                .src('test.js')
+                .browsers(remoteConnection)
+                .run()
+                .then(failedCount => { /* ... */ });
+        });
+    });
 ```
 
 ### createRunner
@@ -64,15 +76,19 @@ createRunner() → Runner
 
 ```js
 const createTestCafe = require('testcafe');
-const testCafe       = await createTestCafe('localhost', 1337, 1338);
 
-const failed = await testCafe
-    .createRunner()
-    .src(['tests/fixture1.js', 'tests/func/fixture3.js'])
-    .browsers(['chrome', 'safari'])
-    .run();
+createTestCafe('localhost', 1337, 1338)
+    .then(testcafe => {
+        const runner = testcafe.createRunner();
 
-console.log('Tests failed: ' + failed);
+        return runner
+            .src(['tests/fixture1.js', 'tests/func/fixture3.js'])
+            .browsers(['chrome', 'safari'])
+            .run();
+    })
+    .then(failedCount => {
+        console.log('Tests failed: ' + failedCount);
+    });
 ```
 
 ### close
