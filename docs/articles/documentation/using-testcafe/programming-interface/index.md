@@ -55,6 +55,9 @@ runner
     .run()
     .then(failedCount => {
         /* ... */
+    })
+    .catch(error => {
+        /* ... */
     });
 ```
 

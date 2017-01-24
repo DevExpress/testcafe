@@ -59,7 +59,8 @@ createTestCafe('localhost', 1337, 1338)
                 .src('test.js')
                 .browsers(remoteConnection)
                 .run()
-                .then(failedCount => { /* ... */ });
+                .then(failedCount => { /* ... */ })
+                .catch(error => { /* ... */});
         });
     });
 ```
@@ -88,7 +89,8 @@ createTestCafe('localhost', 1337, 1338)
     })
     .then(failedCount => {
         console.log('Tests failed: ' + failedCount);
-    });
+    })
+    .catch(error => { /* ... */});
 ```
 
 ### close
