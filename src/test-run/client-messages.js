@@ -2,5 +2,5 @@ export default {
     ready:                       'ready',
     readyForBrowserManipulation: 'ready-for-browser-manipulation',
     waitForFileDownload:         'wait-for-file-download',
-    showDebuggingMessage:        'show-debugging-message'
+    showDebuggerMessage:         'show-debugger-message'
 };

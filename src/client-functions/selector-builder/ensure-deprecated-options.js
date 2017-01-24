@@ -1,4 +1,4 @@
-import showDeprecatedMessage from '../../notifications/deprecated-message';
+import showDeprecationMessage from '../../notifications/deprecation-message';
 import getCallsite from '../../errors/get-callsite';
 
 export default function ensureDeprecatedOptions (callsiteName, options) {
@@ -6,21 +6,21 @@ export default function ensureDeprecatedOptions (callsiteName, options) {
         var callsite = getCallsite(callsiteName);
 
         if (options.text) {
-            showDeprecatedMessage(callsite, {
+            showDeprecationMessage(callsite, {
                 what:       'selectorOptions.text',
                 useInstead: 'selector.withText()'
             });
         }
 
         if (options.index) {
-            showDeprecatedMessage(callsite, {
+            showDeprecationMessage(callsite, {
                 what:       'selectorOptions.index',
                 useInstead: 'selector.nth()'
             });
         }
 
         if (options.dependencies) {
-            showDeprecatedMessage(callsite, {
+            showDeprecationMessage(callsite, {
                 what:       'selectorOptions.dependencies',
                 useInstead: 'hierarchical selectors (e.g. selector.find())'
             });

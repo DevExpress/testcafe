@@ -110,7 +110,7 @@ export default class Driver {
 
     _setDebuggingStatus () {
         return transport
-            .queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.showDebuggingMessage })
+            .queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.showDebuggerMessage })
             .then(() => this.statusBar.setDebuggingStatus())
             .then(stopAfterNextAction => this.contextStorage.setItem(STOP_AFTER_NEXT_ACTION, stopAfterNextAction));
     }

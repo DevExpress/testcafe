@@ -12,7 +12,7 @@ import {
     assertBoolean,
     assertStringOrRegExp
 } from '../../errors/runtime/type-assertions';
-import showDeprecatedMessage from '../../notifications/deprecated-message';
+import showDeprecationMessage from '../../notifications/deprecation-message';
 import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import defineLazyProperty from '../../utils/define-lazy-property';
 import addAPI from './add-api';
@@ -38,7 +38,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
     static _defineNodeSnapshotDerivativeSelectorProperty (obj, propName, fn) {
         defineLazyProperty(obj, propName, () => {
-            showDeprecatedMessage(getCallsite('get'), {
+            showDeprecationMessage(getCallsite('get'), {
                 what:       `nodeSnapshot.${propName}`,
                 useInstead: 'hierarchical selectors (e.g. selector.find())'
             });
