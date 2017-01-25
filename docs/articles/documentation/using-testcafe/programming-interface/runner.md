@@ -14,15 +14,19 @@ Created by the [testCafe.createRunner](testcafe.md#createrunner) function.
 
 ```js
 const createTestCafe = require('testcafe');
-const testCafe       = await createTestCafe('localhost', 1337, 1338);
 
-const failed = await testCafe
-    .createRunner()
-    .src(['tests/fixture1.js', 'tests/func/fixture3.js'])
-    .browsers(['chrome', 'safari'])
-    .run();
+createTestCafe('localhost', 1337, 1338)
+    .then(testcafe => {
+        const runner = testcafe.createRunner();
 
-console.log('Tests failed: ' + failed);
+        return runner
+            .src(['tests/fixture1.js', 'tests/func/fixture3.js'])
+            .browsers(['chrome', 'safari'])
+            .run();
+    })
+    .then(failedCount => {
+        console.log('Tests failed: ' + failedCount);
+    });
 ```
 
 ## Methods
@@ -149,20 +153,28 @@ runner.browsers({
 #### Passing a Remote Browser Connection
 
 ```js
-const createTestCafe   = require('testcafe');
-const testCafe         = await createTestCafe('localhost', 1337, 1338);
+const createTestCafe = require('testcafe');
+let runner           = null;
 
-const remoteConnection = await testcafe.createBrowserConnection();
+createTestCafe('localhost', 1337, 1338)
+    .then(testcafe => {
+        runner = testcafe.createRunner();
 
-// Outputs remoteConnection.url to visit it from the remote browser.
-console.log(remoteConnection.url);
+        return testcafe.createBrowserConnection();
+    })
+    .then(remoteConnection => {
 
-remoteConnection.once('ready', async () => {
-    await testCafe
-        .createRunner()
-        .browsers(remoteConnection)
-        .run();
-});
+        // Outputs remoteConnection.url so that it can be visited from the remote browser.
+        console.log(remoteConnection.url);
+
+        remoteConnection.once('ready', () => {
+            runner
+                .src('test.js')
+                .browsers(remoteConnection)
+                .run()
+                .then(failedCount => { /* ... */ });
+        });
+    });
 ```
 
 ### screenshots
@@ -215,11 +227,12 @@ runner.reporter('minimal');
 ```js
 const stream = fs.createWriteStream('report.xml');
 
-await runner
+runner
     .reporter('xunit', stream)
-    .run();
-
-stream.end();
+    .run()
+    .then(failedCount => {
+        stream.end();
+    });
 ```
 
 #### Implementing a Custom Stream
@@ -288,15 +301,18 @@ Parameter         | Type    | Description                                       
 **Example**
 
 ```js
-const failed = await runner.run({
-    skipJsErrors: true,
-    quarantineMode: true,
-    selectorTimeout: 50000,
-    assertionTimeout: 7000,
-    speed: 0.1
-})
-
-console.log('Tests failed: ' + failed);
+runner
+    .run({
+        skipJsErrors: true,
+        quarantineMode: true,
+        selectorTimeout: 50000,
+        assertionTimeout: 7000,
+        speed: 0.1
+    })
+    .then(failed => {
+        console.log('Tests failed: ' + failed);
+    })
+    .catch(error => { /* ... */ });
 ```
 
 #### Cancelling Test Tasks
@@ -310,7 +326,7 @@ const taskPromise = runner
     .reporter('json')
     .run();
 
-await taskPromise.cancel();
+taskPromise.cancel();
 ```
 
 You can also cancel all pending tasks at once by using the [runner.stop](#stop) function.

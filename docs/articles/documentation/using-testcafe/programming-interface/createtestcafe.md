@@ -21,7 +21,11 @@ Parameter                     | Type   | Description                            
 
 ```js
 const createTestCafe = require('testcafe');
-const testCafe       = await createTestCafe('localhost', 1337, 1338);
+
+createTestCafe('localhost', 1337, 1338)
+    .then(testcafe => {
+        /* ... */
+    });
 ```
 
 ## See Also
