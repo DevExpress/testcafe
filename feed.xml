@@ -5,8 +5,8 @@
     <description></description>
     <link>http://devexpress.github.io/testcafe/</link>
     <atom:link href="http://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 19 Jan 2017 16:18:48 +0300</pubDate>
-    <lastBuildDate>Thu, 19 Jan 2017 16:18:48 +0300</lastBuildDate>
+    <pubDate>Wed, 25 Jan 2017 16:38:28 +0300</pubDate>
+    <lastBuildDate>Wed, 25 Jan 2017 16:38:28 +0300</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
@@ -229,7 +229,7 @@ Get it to ensure that ESLint does not fail on TestCafe test code.&lt;/p&gt;
 
 &lt;!--more--&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;redesigned-selector-system-798&quot;&gt;&lt;/a&gt;⚙ Redesigned selector system. (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/798&quot;&gt;#798&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#redesigned-selector-system-798&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;&lt;a class=&quot;anchor&quot; name=&quot;new-selector-methods&quot;&gt;&lt;/a&gt;New selector methods &lt;a class=&quot;permalink&quot; href=&quot;#new-selector-methods&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
-&lt;p&gt;Multiple &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-multiple-dom-nodes&quot;&gt;filtering&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#find-elements-by-dom-hierarchy&quot;&gt;hierarchical&lt;/a&gt; methods were introduced for selectors.
+&lt;p&gt;Multiple &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-dom-nodes&quot;&gt;filtering&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#search-for-elements-in-the-dom-hierarchy&quot;&gt;hierarchical&lt;/a&gt; methods were introduced for selectors.
 Now you can build flexible, lazily-evaluated functional-style selector chains.&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;Here are some examples:&lt;/em&gt;&lt;/p&gt;
@@ -274,7 +274,7 @@ a &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/
 
 &lt;hr&gt;
 &lt;h4&gt;&lt;a class=&quot;anchor&quot; name=&quot;getting-selector-matching-set-length&quot;&gt;&lt;/a&gt;Getting selector matching set length &lt;a class=&quot;permalink&quot; href=&quot;#getting-selector-matching-set-length&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
-&lt;p&gt;Also, now you can get selector matching set length and check matching elements existence by using selector &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#get-selector-matching-set-length&quot;&gt;&lt;code&gt;count&lt;/code&gt; and &lt;code&gt;exists&lt;/code&gt; properties&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Also, now you can get selector matching set length and check matching elements existence by using selector &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#check-if-an-element-exists&quot;&gt;&lt;code&gt;count&lt;/code&gt; and &lt;code&gt;exists&lt;/code&gt; properties&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;&lt;a class=&quot;anchor&quot; name=&quot;unawaited-parametrized-selector-calls-now-allowed-outside-test-context&quot;&gt;&lt;/a&gt;Unawaited parametrized selector calls now allowed outside test context &lt;a class=&quot;permalink&quot; href=&quot;#unawaited-parametrized-selector-calls-now-allowed-outside-test-context&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
 &lt;p&gt;Previously selector call outside of text context thrown an error:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* selector code */&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
@@ -324,7 +324,7 @@ a &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionsindex&quot;&gt;selectorOptions.index&lt;/a&gt; - use &lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#nth&quot;&gt;selector.nth()&lt;/a&gt; instead.&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionstext&quot;&gt;selectorOptions.text&lt;/a&gt; - use &lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#withtext&quot;&gt;selector.withText()&lt;/a&gt; instead.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionsdependencies&quot;&gt;selectorOptions.dependencies&lt;/a&gt; - use &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-multiple-dom-nodes&quot;&gt;filtering&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#find-elements-by-dom-hierarchy&quot;&gt;hierarchical&lt;/a&gt; methods to build combined selectors instead.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionsdependencies&quot;&gt;selectorOptions.dependencies&lt;/a&gt; - use &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-dom-nodes&quot;&gt;filtering&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#search-for-elements-in-the-dom-hierarchy&quot;&gt;hierarchical&lt;/a&gt; methods to build combined selectors instead.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;built-in-assertions-998&quot;&gt;&lt;/a&gt;⚙ Built-in assertions. (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/998&quot;&gt;#998&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#built-in-assertions-998&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;TestCafe now ships with &lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html&quot;&gt;numerous built-in BDD-style assertions&lt;/a&gt;.
