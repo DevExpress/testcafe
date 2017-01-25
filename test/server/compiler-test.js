@@ -870,7 +870,7 @@ describe('Compiler', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: "Cannot prepare tests due to an error.\n\n" +
+                        message: 'Cannot prepare tests due to an error.\n\n' +
                                  "Cannot implicitly resolve the test run in the context of which the test controller action should be executed. Use test function's 't' argument instead.",
 
                         callsite: '    1 |import { t } from \'testcafe\';\n' +
