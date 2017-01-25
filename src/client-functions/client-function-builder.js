@@ -1,5 +1,5 @@
 import { isNil as isNullOrUndefined, assign } from 'lodash';
-import testRunTracker from './test-run-tracker';
+import testRunTracker from '../api/test-run-tracker';
 import functionBuilderSymbol from './builder-symbol';
 import { createReplicator, FunctionTransform } from './replicator';
 import { ExecuteClientFunctionCommand } from '../test-run/commands/observation';
@@ -36,12 +36,6 @@ export default class ClientFunctionBuilder {
         this.replicator = createReplicator(this._getReplicatorTransforms());
     }
 
-    static _resolveContextTestRun () {
-        var testRunId = testRunTracker.getContextTestRunId();
-
-        return TestRun.activeTestRuns[testRunId];
-    }
-
     _decorateFunction (clientFn) {
         clientFn[functionBuilderSymbol] = this;
 
@@ -66,7 +60,7 @@ export default class ClientFunctionBuilder {
         var clientFn = function __$$clientFunction$$ () {
             var testRun = builder.options.boundTestRun ?
                           builder.options.boundTestRun.testRun :
-                          ClientFunctionBuilder._resolveContextTestRun();
+                          testRunTracker.resolveContextTestRun();
 
             var callsite = getCallsite(builder.callsiteNames.execution);
             var args     = [];

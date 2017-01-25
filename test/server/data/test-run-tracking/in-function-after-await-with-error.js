@@ -1,4 +1,4 @@
-import clientFnTestRunTracker from '../../../../lib/client-functions/test-run-tracker';
+import testRunTracker from '../../../../lib/api/test-run-tracker';
 
 fixture `In test function after "await" with error`;
 
@@ -11,6 +11,6 @@ test('test', async () => {
         await yo();
     }
     catch (err) {
-        return clientFnTestRunTracker.getContextTestRunId();
+        return testRunTracker.getContextTestRunId();
     }
 });

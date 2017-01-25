@@ -1,9 +1,9 @@
-import clientFnTestRunTracker from '../../../../lib/client-functions/test-run-tracker';
+import testRunTracker from '../../../../lib/api/test-run-tracker';
 
 fixture `In helper after "await"`;
 
 function yo () {
-    return clientFnTestRunTracker.getContextTestRunId();
+    return testRunTracker.getContextTestRunId();
 }
 
 function hey () {

@@ -859,6 +859,33 @@ describe('Compiler', function () {
                 });
         });
 
+        it('Should raise an error if TestControllerProxy can not resolve test run', function () {
+            var testfile = resolve('test/server/data/test-suites/cant-resolve-test-run-proxy-context/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: "Cannot prepare tests due to an error.\n\n" +
+                                 "Cannot implicitly resolve the test run in the context of which the test controller action should be executed. Use test function's 't' argument instead.",
+
+                        callsite: '    1 |import { t } from \'testcafe\';\n' +
+                                  '    2 |\n' +
+                                  '    3 |fixture `Some fixture`;\n' +
+                                  '    4 |\n' +
+                                  ' >  5 |t.click(\'div\');\n' +
+                                  '    6 |\n' +
+                                  '    7 |test(\'Some test\', async () => {\n' +
+                                  '    8 |\n' +
+                                  '    9 |});'
+                    });
+                });
+        });
+
         it('Should raise an error if Selector `visibilityCheck` option is not a boolean value', function () {
             var testfile = resolve('test/server/data/test-suites/selector-visibility-check-opt-not-bool/testfile.js');
 

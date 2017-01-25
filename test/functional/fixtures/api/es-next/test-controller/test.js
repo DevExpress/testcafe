@@ -11,7 +11,10 @@ describe('[API] TestController', function () {
     });
 
     it('Should produce correct callsites for chained calls', function () {
-        return runTests('./testcafe-fixtures/test-controller-test.js', 'Chaining callsites', { shouldFail: true, only: 'chrome' })
+        return runTests('./testcafe-fixtures/test-controller-test.js', 'Chaining callsites', {
+            shouldFail: true,
+            only:       'chrome'
+        })
             .catch(function (errs) {
                 expect(errs[0]).to.contains(
                     ' 16 |' +
@@ -26,12 +29,21 @@ describe('[API] TestController', function () {
             });
     });
 
+    describe('Proxy object', function () {
+        it('Should provide importable proxy object', function () {
+            return runTests('./testcafe-fixtures/proxy-test.js', 'Proxy object');
+        });
+    });
+
     describe('Missing `await` tracking', function () {
         var missingAwaitErrMsg = 'A call to an async function is not awaited. Use the "await" keyword before actions, ' +
                                  'assertions or chains of them to ensure that they run in the right sequence.';
 
         it('Should track missing `await`', function () {
-            return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await', { shouldFail: true, only: 'chrome' })
+            return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await', {
+                shouldFail: true,
+                only:       'chrome'
+            })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains(missingAwaitErrMsg);
                     expect(errs[0]).to.contains("> 28 |    t.click(\'#page2-btn1\');");

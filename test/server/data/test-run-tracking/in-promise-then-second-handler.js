@@ -1,4 +1,4 @@
-import clientFnTestRunTracker from '../../../../lib/client-functions/test-run-tracker';
+import testRunTracker from '../../../../lib/api/test-run-tracker';
 
 fixture `In Promise.then() second handler`;
 
@@ -7,5 +7,5 @@ test('test', async () => {
         .then(() => {
             throw new Error('yo')
         })
-        .then(() => null, () => clientFnTestRunTracker.getContextTestRunId());
+        .then(() => null, () => testRunTracker.getContextTestRunId());
 });

@@ -1,5 +1,6 @@
 import getStackFrames from 'callsite';
 import BabelPromise from 'babel-runtime/core-js/promise';
+import TestRun from '../test-run';
 
 const TRACKING_MARK_RE = /^\$\$testcafe_test_run\$\$(\S+)\$\$$/;
 const STACK_CAPACITY   = 5000;
@@ -73,7 +74,14 @@ export default {
     addTrackingMarkerToFunction (testRunId, fn) {
         var markerFactoryBody = `
             return function $$testcafe_test_run$$${encodeTestRunId(testRunId)}$$ () {
-                return fn.apply(this, arguments);
+                switch (arguments.length) {
+                    case 0: return fn.call(this);
+                    case 1: return fn.call(this, arguments[0]);
+                    case 2: return fn.call(this, arguments[0], arguments[1]);
+                    case 3: return fn.call(this, arguments[0], arguments[1], arguments[2]);
+                    case 4: return fn.call(this, arguments[0], arguments[1], arguments[2], arguments[3]);
+                    default: return fn.apply(this, arguments);
+                }
             };
         `;
 
@@ -97,5 +105,11 @@ export default {
         }
 
         return null;
+    },
+
+    resolveContextTestRun () {
+        var testRunId = this.getContextTestRunId();
+
+        return TestRun.activeTestRuns[testRunId];
     }
 };
