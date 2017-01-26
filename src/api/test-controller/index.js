@@ -1,13 +1,12 @@
 import Promise from 'pinkie';
 import { identity, assign, isNil as isNullOrUndefined } from 'lodash';
-import { MissingAwaitError } from '../errors/test-run';
-import getCallsite from '../errors/get-callsite';
-import showDeprecationMessage from '../notifications/deprecation-message';
-import ClientFunctionBuilder from '../client-functions/client-function-builder';
-import SelectorBuilder from '../client-functions/selector-builder';
-import Assertion from './assertion';
-import { getDelegatedAPIList, delegateAPI } from '../utils/delegated-api';
-
+import { MissingAwaitError } from '../../errors/test-run';
+import getCallsite from '../../errors/get-callsite';
+import showDeprecationMessage from '../../notifications/deprecation-message';
+import ClientFunctionBuilder from '../../client-functions/client-function-builder';
+import SelectorBuilder from '../../client-functions/selector-builder';
+import Assertion from '../assertion';
+import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
 
 import {
     ClickCommand,
@@ -28,16 +27,16 @@ import {
     SwitchToMainWindowCommand,
     SetNativeDialogHandlerCommand,
     GetNativeDialogHistoryCommand
-} from '../test-run/commands/actions';
+} from '../../test-run/commands/actions';
 
 import {
     TakeScreenshotCommand,
     ResizeWindowCommand,
     ResizeWindowToFitDeviceCommand,
     MaximizeWindowCommand
-} from '../test-run/commands/browser-manipulation';
+} from '../../test-run/commands/browser-manipulation';
 
-import { WaitCommand, DebugCommand } from '../test-run/commands/observation';
+import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 
 export default class TestController {
     constructor (testRun) {
@@ -72,7 +71,10 @@ export default class TestController {
             return originalThen.apply(this, arguments);
         };
 
-        delegateAPI(this, extendedPromise, TestController.API_LIST, ensureAwait, false);
+        delegateAPI(extendedPromise, TestController.API_LIST, {
+            handler:     this,
+            proxyMethod: ensureAwait
+        });
 
         return extendedPromise;
     }
@@ -268,5 +270,4 @@ export default class TestController {
 
 TestController.API_LIST = getDelegatedAPIList(TestController.prototype);
 
-delegateAPI(TestController.prototype, TestController.prototype, TestController.API_LIST, null, true);
-
+delegateAPI(TestController.prototype, TestController.API_LIST, { useCurrentCtxAsHandler: true });

@@ -4,7 +4,7 @@ import handleTagArgs from '../../utils/handle-tag-args';
 import { delegateAPI, getDelegatedAPIList } from '../../utils/delegated-api';
 import { assertObject, assertString } from '../../errors/runtime/type-assertions';
 import TestController from '../test-controller';
-import clientFnTestRunTracker from '../../client-functions/test-run-tracker';
+import testRunTracker from '../test-run-tracker';
 import processTestFnError from '../../errors/process-test-fn-error';
 
 const PROTOCOL_RE          = /^https?:\/\//;
@@ -26,7 +26,7 @@ export default class TestingUnit {
             return unit._add(...args);
         };
 
-        delegateAPI(this, this.apiOrigin, this.constructor.API_LIST, null, false);
+        delegateAPI(this.apiOrigin, this.constructor.API_LIST, { handler: this });
     }
 
     _add () {
@@ -80,13 +80,14 @@ export default class TestingUnit {
     static _wrapTestFunction (fn) {
         return async testRun => {
             var result     = null;
-            var controller = new TestController(testRun);
-            var markeredfn = clientFnTestRunTracker.addTrackingMarkerToFunction(testRun.id, fn);
+            var markeredfn = testRunTracker.addTrackingMarkerToFunction(testRun.id, fn);
 
-            clientFnTestRunTracker.ensureEnabled();
+            testRun.controller = new TestController(testRun);
+
+            testRunTracker.ensureEnabled();
 
             try {
-                result = await markeredfn(controller);
+                result = await markeredfn(testRun.controller);
             }
             catch (err) {
                 throw processTestFnError(err);
@@ -94,7 +95,7 @@ export default class TestingUnit {
 
             // NOTE: check if the last command in the test
             // function is missing the `await` keyword.
-            controller._checkForMissingAwait();
+            testRun.controller._checkForMissingAwait();
 
             return result;
         };

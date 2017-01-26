@@ -1,6 +1,6 @@
 import Promise from 'pinkie';
 import { noop } from 'lodash';
-import testRunTracker from './test-run-tracker';
+import testRunTracker from '../api/test-run-tracker';
 
 
 export default class ClientFunctionResultPromise extends Promise {

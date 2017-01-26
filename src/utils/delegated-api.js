@@ -19,15 +19,24 @@ export function getDelegatedAPIList (src) {
         .filter(item => !!item);
 }
 
-export function delegateAPI (src, dest, apiList, proxyMethod, useDynamicMethodCtx) {
+export function delegateAPI (dest, apiList, opts) {
     apiList.forEach(({ srcProp, apiProp, accessor }) => {
         var fn = function (...args) {
-            if (proxyMethod)
-                proxyMethod();
+            if (opts.proxyMethod)
+                opts.proxyMethod();
 
-            var ctx = useDynamicMethodCtx ? this : src;
+            var handler = null;
 
-            return ctx[srcProp](...args);
+            if (opts.useCurrentCtxAsHandler)
+                handler = this;
+
+            else if (opts.getHandler)
+                handler = opts.getHandler(apiProp, accessor);
+
+            else
+                handler = opts.handler;
+
+            return handler[srcProp](...args);
         };
 
         if (accessor === 'getter')

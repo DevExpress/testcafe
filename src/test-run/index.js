@@ -53,7 +53,8 @@ export default class TestRun extends Session {
         this.pendingRequest   = null;
         this.pendingPageError = null;
 
-        this.ctx = Object.create(null);
+        this.controller = null;
+        this.ctx        = Object.create(null);
 
         this.errs = [];
 
@@ -304,9 +305,9 @@ export default class TestRun extends Session {
 
     static _transformResizeWindowToFitDeviceCommand (command) {
         var { landscapeWidth, portraitWidth } = getViewportSize(command.device);
-        var portrait                          = command.options.portraitOrientation;
-        var width                             = portrait ? portraitWidth : landscapeWidth;
-        var height                            = portrait ? landscapeWidth : portraitWidth;
+        var portrait = command.options.portraitOrientation;
+        var width    = portrait ? portraitWidth : landscapeWidth;
+        var height   = portrait ? landscapeWidth : portraitWidth;
 
         return new ResizeWindowCommand({ width, height });
     }
