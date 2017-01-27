@@ -2,9 +2,7 @@ import Promise from 'pinkie';
 import { identity, assign, isNil as isNullOrUndefined } from 'lodash';
 import { MissingAwaitError } from '../../errors/test-run';
 import getCallsite from '../../errors/get-callsite';
-import showDeprecationMessage from '../../notifications/deprecation-message';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
-import SelectorBuilder from '../../client-functions/selector-builder';
 import Assertion from '../assertion';
 import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
 
@@ -227,21 +225,6 @@ export default class TestController {
         var clientFn = builder.getFunction();
 
         return clientFn();
-    }
-
-    _select$ (fn, options) {
-        showDeprecationMessage(getCallsite('select'), {
-            what:       't.select',
-            useInstead: 'Selector'
-        });
-
-        if (!isNullOrUndefined(options))
-            options = assign({}, options, { boundTestRun: this });
-
-        var builder  = new SelectorBuilder(fn, options, { instantiation: 'select', execution: 'select' });
-        var selector = builder.getFunction();
-
-        return selector();
     }
 
     _setNativeDialogHandler$ (dialogHandler, options) {

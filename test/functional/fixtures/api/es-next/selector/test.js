@@ -45,18 +45,6 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `selector` method');
     });
 
-    it('Should provide "getParentNode" method in node snapshot', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `getParentNode` method');
-    });
-
-    it('Should provide "getChildNode" method in node snapshot', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `getChildNode` method');
-    });
-
-    it('Should provide "getChildElement" method in node snapshot', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `getChildElement` method');
-    });
-
     it('Should provide "hasClass" method in node snapshot', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `hasClass` method');
     });
@@ -67,18 +55,6 @@ describe('[API] Selector', function () {
 
     it('Should wait for element to appear on new page', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Element on new page');
-    });
-
-    it('Should filter results with "index" options', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "index" option');
-    });
-
-    it('Should filter results with "text" options', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "text" option');
-    });
-
-    it('Should filter results using compound filter', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Compound filter');
     });
 
     it('Should provide snapshot property shorthands on selector', function () {
@@ -173,7 +149,7 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.'
                     );
-                    expect(errs[0]).contains("> 520 |    await Selector('#someUnknownElement').tagName;");
+                    expect(errs[0]).contains("> 367 |    await Selector('#someUnknownElement').tagName;");
                 });
         });
 
@@ -186,7 +162,7 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.'
                     );
-                    expect(errs[0]).contains("> 524 |    await Selector('#someUnknownElement').getStyleProperty('width');");
+                    expect(errs[0]).contains("> 371 |    await Selector('#someUnknownElement').getStyleProperty('width');");
                 });
         });
 
@@ -199,7 +175,7 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
                     );
-                    expect(errs[0]).contains('> 528 |    await Selector(() => [].someUndefMethod()).nodeType;');
+                    expect(errs[0]).contains('> 375 |    await Selector(() => [].someUndefMethod()).nodeType;');
                 });
         });
 
@@ -212,7 +188,7 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
                     );
-                    expect(errs[0]).contains("> 532 |    await Selector(() => [].someUndefMethod()).hasClass('yo');");
+                    expect(errs[0]).contains("> 379 |    await Selector(() => [].someUndefMethod()).hasClass('yo');");
                 });
         });
 
@@ -226,7 +202,7 @@ describe('[API] Selector', function () {
                         'An error occurred in Selector code:'
                     );
 
-                    expect(errs[0]).contains('> 849 |    await Selector(() => [].someUndefMethod()).count;');
+                    expect(errs[0]).contains('> 696 |    await Selector(() => [].someUndefMethod()).count;');
                 });
         });
 
@@ -239,7 +215,7 @@ describe('[API] Selector', function () {
                     expect(errs[0]).contains(
                         'An error occurred in Selector code:'
                     );
-                    expect(errs[0]).contains('> 853 |    await Selector(() => [].someUndefMethod()).exists;');
+                    expect(errs[0]).contains('> 700 |    await Selector(() => [].someUndefMethod()).exists;');
                 });
         });
 
@@ -253,7 +229,7 @@ describe('[API] Selector', function () {
                         expect(errs[0]).contains(
                             '"addCustomDOMProperties" option is expected to be an object, but it was number.'
                         );
-                        expect(errs[0]).contains("> 938 |    await Selector('rect').addCustomDOMProperties(42);");
+                        expect(errs[0]).contains("> 785 |    await Selector('rect').addCustomDOMProperties(42);");
                     });
             }
         );
@@ -268,7 +244,7 @@ describe('[API] Selector', function () {
                         expect(errs[0]).contains(
                             "Custom DOM properties method \'prop1\' is expected to be a string or a function, but it was number"
                         );
-                        expect(errs[0]).contains("> 942 |    await Selector('rect').addCustomDOMProperties({ prop1: 1, prop2: () => 42 });");
+                        expect(errs[0]).contains("> 789 |    await Selector('rect').addCustomDOMProperties({ prop1: 1, prop2: () => 42 });");
                     });
             }
         );
@@ -283,7 +259,7 @@ describe('[API] Selector', function () {
                         expect(errs[0]).contains(
                             'An error occurred when trying to calculate a custom Selector property "prop":  Error: test'
                         );
-                        expect(errs[0]).contains('> 952 |    await el();');
+                        expect(errs[0]).contains('> 799 |    await el();');
                     });
             }
         );

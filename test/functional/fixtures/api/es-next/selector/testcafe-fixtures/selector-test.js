@@ -279,46 +279,6 @@ test('Snapshot `selector` method', async () => {
     expect(el.id).eql('htmlElement');
 });
 
-test('Snapshot `getParentNode` method', async () => {
-    let el     = await getElementById('textInput');
-    let parent = await el.getParentNode();
-
-    expect(parent.tagName).eql('form');
-
-    el     = await getElementById('htmlElement');
-    parent = await el.getParentNode();
-
-    expect(parent.tagName).eql('body');
-});
-
-test('Snapshot `getChildNode` method', async () => {
-    const body = await Selector(() => document.body)();
-
-    let node = await body.getChildNode(0);
-
-    expect(node.nodeType).eql(3);
-
-    node = await body.getChildNode(1);
-
-    expect(node.id).eql('htmlElement');
-
-    node = await body.getChildNode(3);
-
-    expect(node.tagName).eql('svg');
-});
-
-test('Snapshot `getChildElement` method', async () => {
-    const doc = await Selector(() => document)();
-
-    let el = await doc.getChildElement(0);
-
-    expect(el.tagName).eql('html');
-
-    el = await el.getChildElement(1);
-
-    expect(el.tagName).eql('body');
-});
-
 test('Snapshot `hasClass` method', async () => {
     let el = await getElementById('htmlElement');
 
@@ -343,119 +303,6 @@ test('Element on new page', async t => {
     expect(el.tagName).eql('div');
 });
 
-test('Selector "index" option', async () => {
-    // String selector
-    const getSecondEl = Selector('.idxEl', { index: 1 });
-
-    let el = await getSecondEl();
-
-    expect(el.id).eql('el2');
-
-    // Function selector
-    const getLastEl = Selector(() => document.querySelectorAll('.idxEl'), { index: -1 });
-
-    el = await getLastEl();
-
-    expect(el.id).eql('el4');
-
-    // If single node is returned index should be always 0
-    const getFirstEl = Selector(() => document.querySelectorAll('.idxEl')[0], { index: 2 });
-
-    el = await getFirstEl();
-
-    expect(el).to.be.null;
-});
-
-test('Selector "text" option', async () => {
-    // String selector and string filter
-    let selector = Selector('div', { text: 'element 4.' });
-
-    let el = await selector();
-
-    expect(el.id).eql('el4');
-
-    // String selector and regexp filter
-    selector = Selector('div', { text: /This is element \d+/ });
-
-    el = await selector();
-
-    expect(el.id).eql('el1');
-
-    // Function selector and string filter
-    selector = Selector(() => document.querySelectorAll('.idxEl'), { text: 'element 4.' });
-
-    el = await selector();
-
-    expect(el.id).eql('el4');
-
-    // Function selector and regexp filter
-    selector = Selector(() => document.querySelectorAll('.idxEl'), { text: /This is element \d+/ });
-
-    el = await selector();
-
-    expect(el.id).eql('el1');
-
-    // Should filter element if text filter specified
-    selector = Selector(id => document.getElementById(id), { text: 'element 4.' });
-
-    el = await selector('el1');
-
-    expect(el).to.be.null;
-
-    el = await selector('el4');
-
-    expect(el.id).eql('el4');
-
-    // Should filter document if text filter specified
-    selector = Selector(() => document, { text: 'Lorem ipsum dolor sit amet, consectetur' });
-
-    el = await selector();
-
-    expect(el).to.be.null;
-
-    el = await selector.with({ text: 'Hey?! (yo)' })();
-
-    expect(el.nodeType).eql(9);
-
-    // Should text node if text filter specified
-    selector = Selector(() => document.getElementById('el2').childNodes[0], { text: 'Lorem ipsum dolor sit amet, consectetur' });
-
-    el = await selector();
-
-    expect(el).to.be.null;
-
-    el = await selector.with({ text: 'Hey?! (yo)' })();
-
-    expect(el.nodeType).eql(3);
-});
-
-test('Compound filter', async t => {
-    const selector = Selector('div', {
-        text:  'Hey?! (yo)',
-        index: 1
-    });
-
-    let el = await selector();
-
-    expect(el.id).eql('el3');
-
-    el = await selector.with({ text: /This is element \d+/ })();
-
-    expect(el.id).eql('el4');
-
-    // Selector should maintain filter when used as parameter
-    const getId = ClientFunction(getEl => getEl().id);
-
-    let id = await getId(selector);
-
-    expect(id).eql('el3');
-
-    // Selector should maintain filter when used as dependency
-    id = await t.eval(() => selector().id, { dependencies: { selector: selector.with({ index: -2 }) } });
-
-    expect(id).eql('el2');
-});
-
 test('Derivative selector without options', async () => {
     var derivative = Selector(getElementById('textInput'));
 
@@ -463,7 +310,7 @@ test('Derivative selector without options', async () => {
 });
 
 test('<option> text selector', async () => {
-    const selector = Selector('#selectInput > option').with({ text: 'O2' });
+    const selector = Selector('#selectInput > option').withText('O2');
     const el       = await selector();
 
     expect(el.id).eql('option2');

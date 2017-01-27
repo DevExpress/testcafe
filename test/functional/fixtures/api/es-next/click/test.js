@@ -102,7 +102,7 @@ describe('[API] t.click()', function () {
         return runTests('./testcafe-fixtures/click-test.js', 'Selector returns text node', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('The specified selector is expected to match a DOM element, but it matches a text node.');
-                expect(errs[0]).to.contains('> 85 |    await t.click(getNode);');
+                expect(errs[0]).to.contains('> 83 |    await t.click(getNode);');
             });
     });
 
@@ -118,7 +118,7 @@ describe('[API] t.click()', function () {
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The element that matches the specified selector is not visible.');
                     expect(errs[0]).to.contains(
-                        "> 19 |        .click('[value=Second]');"
+                        "> 17 |        .click('[value=Second]');"
                     );
                 });
         });
