@@ -37,8 +37,8 @@ test('Error in selector', async t => {
 });
 
 const isStatusBtnClicked = ClientFunction(() => document.querySelector('#status').textContent === 'Clicked!');
-const getElementById     = Selector(id => document.querySelector(`#${id}`));
-const getStatusBtn       = Selector(() => getElementById('statusBtn'), { dependencies: { getElementById } });
+const getStatusBtn       = Selector('#statusBtn');
+
 
 test('Function as selector', async t => {
     await t.click(() => document.querySelector('#statusBtn'));
@@ -64,9 +64,7 @@ test('Promise returned by selector as selector', async t => {
     const getElementByIdAndIncCounter = Selector(id => {
         window.selectorCallCount++;
 
-        return getElementById(id);
-    }, {
-        dependencies: { getElementById }
+        return document.getElementById(id);
     });
 
     await t.click(getElementByIdAndIncCounter('statusBtn'));

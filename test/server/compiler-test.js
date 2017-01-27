@@ -938,32 +938,6 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise an error if Selector `index` option is not a number', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-index-is-not-a-number-value/testfile.js');
-
-            return compile(testfile)
-                .then(function () {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(function (err) {
-                    assertAPIError(err, {
-                        stackTop: testfile,
-
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"index" option is expected to be a number, but it was boolean.',
-
-                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
-                                  '   2 |\n' +
-                                  '   3 |fixture `Test`;\n' +
-                                  '   4 |\n' +
-                                  ' > 5 |Selector(() => {}, { index: true });\n' +
-                                  '   6 |\n' +
-                                  "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
-                    });
-                });
-        });
-
         it('Should raise an error if Selector.nth() `index` argument is not a number', function () {
             var testfile = resolve('test/server/data/test-suites/selector-nth-arg-is-a-number-value/testfile.js');
 
@@ -1139,33 +1113,6 @@ describe('Compiler', function () {
                                   '   3 |fixture `Test`;\n' +
                                   '   4 |Selector(\'span\').sibling();\n' +
                                   ' > 5 |Selector(\'span\').sibling({});\n' +
-                                  '   6 |\n' +
-                                  "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
-                    });
-                });
-        });
-
-
-        it('Should raise an error if Selector `textFitler` option is not a RegExp or string', function () {
-            var testfile = resolve('test/server/data/test-suites/selector-text-filter-is-not-regexp-or-string/testfile.js');
-
-            return compile(testfile)
-                .then(function () {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(function (err) {
-                    assertAPIError(err, {
-                        stackTop: testfile,
-
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"text" option is expected to be a string or a regular expression, but it was object.',
-
-                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
-                                  '   2 |\n' +
-                                  '   3 |fixture `Test`;\n' +
-                                  '   4 |\n' +
-                                  ' > 5 |Selector(() => {}, { text: {} });\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});'

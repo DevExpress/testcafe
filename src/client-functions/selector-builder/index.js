@@ -5,14 +5,12 @@ import { SelectorNodeTransform } from '../replicator';
 import { ClientFunctionAPIError } from '../../errors/runtime';
 import functionBuilderSymbol from '../builder-symbol';
 import MESSAGE from '../../errors/runtime/message';
-import getCallsite from '../../errors/get-callsite';
 import {
     assertNumber,
     assertNonNegativeNumber,
     assertBoolean,
     assertStringOrRegExp
 } from '../../errors/runtime/type-assertions';
-import showDeprecationMessage from '../../notifications/deprecation-message';
 import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import defineLazyProperty from '../../utils/define-lazy-property';
 import addAPI from './add-api';
@@ -34,33 +32,6 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         }
 
         super(fn, options, callsiteNames);
-    }
-
-    static _defineNodeSnapshotDerivativeSelectorProperty (obj, propName, fn) {
-        defineLazyProperty(obj, propName, () => {
-            showDeprecationMessage(getCallsite('get'), {
-                what:       `nodeSnapshot.${propName}`,
-                useInstead: 'hierarchical selectors (e.g. selector.find())'
-            });
-
-            var builder = new SelectorBuilder(fnArg => {
-                /* eslint-disable no-undef */
-                var selectorResult = selector();
-
-                if (selectorResult && typeof selectorResult.then === 'function')
-                    return selectorResult.then(node => fn(node, fnArg));
-
-                return fn(selectorResult, fnArg);
-                /* eslint-enable no-undef */
-            }, {
-                dependencies: {
-                    selector: obj.selector,
-                    fn:       fn
-                }
-            });
-
-            return builder.getFunction();
-        });
     }
 
     _getCompiledFnCode () {
@@ -183,35 +154,6 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
         if (snapshot && !this.options.counterMode) {
             this._addBoundArgsSelectorGetter(snapshot, selectorArgs);
-
-            SelectorBuilder._defineNodeSnapshotDerivativeSelectorProperty(snapshot, 'getParentNode', node => {
-                return node ? node.parentNode : node;
-            });
-
-            SelectorBuilder._defineNodeSnapshotDerivativeSelectorProperty(snapshot, 'getChildNode', (node, idx) => {
-                return node ? node.childNodes[idx] : node;
-            });
-
-            SelectorBuilder._defineNodeSnapshotDerivativeSelectorProperty(snapshot, 'getChildElement', (node, idx) => {
-                if (node.children)
-                    return node.children[idx];
-
-                // NOTE: IE doesn't have `children` for non-element nodes =/
-                var childNodeCount = node.childNodes.length;
-                var currentElIdx   = 0;
-
-                for (var i = 0; i < childNodeCount; i++) {
-                    if (node.childNodes[i].nodeType === 1) {
-                        if (currentElIdx === idx)
-                            return node.childNodes[i];
-
-                        currentElIdx++;
-                    }
-                }
-
-                return null;
-            });
-
             createSnapshotMethods(snapshot);
         }
 
