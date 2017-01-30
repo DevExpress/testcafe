@@ -123,6 +123,8 @@
 - name: RECIPES
   url: /documentation/recipes/index.md
   content:
+    - name: Debugging Tests
+      url: /documentation/recipes/debugging-tests.md
     - name: Running Tests in Firefox and Chrome Using Travis CI
       url: /documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.md
     - name: Running Tests Using Travis CI and Sauce Labs
