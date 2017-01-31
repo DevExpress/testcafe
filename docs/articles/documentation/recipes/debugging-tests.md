@@ -5,10 +5,10 @@ permalink: /documentation/recipes/debugging-tests.html
 ---
 # Debugging Tests
 
-TestCafe allows you to debug server-side test code and the tested webpage.
+TestCafe allows you to debug server-side test code and test behavior on the client.
 
 * [Debugging Test Code](#debugging-test-code)
-* [Debugging the Tested Webpage](#debugging-the-tested-webpage)
+* [Debugging Test Behavior on the Client](#debugging-test-behavior-on-the-client)
 * [Options Useful for Debugging](#options-useful-for-debugging)
 
 ## Debugging Test Code
@@ -49,9 +49,9 @@ You can also debug test code from an IDE.
 For instance, Visual Studio Code has a dedicated [TestCafe plugin](https://github.com/romanresh/vscode-testcafe).
 It allows you to run and debug your tests in the IDE using the context menu.
 
-## Debugging the Tested Webpage
+## Debugging Test Behavior on the Client
 
-To debug the tested webpage, use the [t.debug](../test-api/actions/debug.md) action.
+To debug test behavior on the client, use the [t.debug](../test-api/actions/debug.md) action.
 
 ```js
 fixture `My fixture`
@@ -111,7 +111,7 @@ Analyzing these screenshots helps save time on debugging and allows you to deter
 TestCafe provides the capability to change test speed. By default, tests are executed at full speed with minimum delays between actions and assertions.
 This makes it hard to identify problems visually when running the test.
 To slow down the test, use the [--speed](../using-testcafe/command-line-interface.html#--speed-factor)
-CLI flag. You can use values from 1 to 0.01.
+CLI flag. You can use values from `1` to `0.01`.
 
 ```sh
 testcafe chrome ./my-tests --speed 0.1
