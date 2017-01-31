@@ -29,6 +29,7 @@ var functionalTestConfig = require('./test/functional/config');
 var assignIn             = require('lodash').assignIn;
 var runSequence          = require('run-sequence');
 var yaml                 = require('js-yaml');
+var childProcess         = require('child_process');
 
 
 ll
@@ -144,6 +145,8 @@ var CLIENT_TESTS_SAUCELABS_SETTINGS = {
     name:      'testcafe client tests',
     timeout:   720
 };
+
+var PUBLISH_TAG = JSON.parse(fs.readFileSync(path.join(__dirname, '.publishrc')).toString()).publishTag;
 
 var websiteServer = null;
 
@@ -573,4 +576,17 @@ gulp.task('test-functional-travis-legacy', ['build'], function () {
 
 gulp.task('test-functional-travis-old-browsers', ['build'], function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.oldBrowsers);
+});
+
+gulp.task('docker-build', function () {
+    var imageId = childProcess
+        .execSync('docker build -q -t testcafe -f docker/Dockerfile .')
+        .toString()
+        .replace(/\n/g, '');
+
+    childProcess.execSync('docker tag ' + imageId + ' testcafe/testcafe:' + PUBLISH_TAG, { stdio: 'inherit' });
+});
+
+gulp.task('docker-publish', ['docker-build'], function () {
+    childProcess.execSync('docker push testcafe/testcafe:' + PUBLISH_TAG, { stdio: 'inherit' });
 });
