@@ -21,7 +21,7 @@ const F12_KEY_CODE = 123;
 function checkBrowserHotkey (e) {
     // NOTE: Opening browser tools with F12, CTRL+SHIFT+<SYMBOL KEY>
     // on PC or with OPTION(ALT)+CMD+<SYMBOL KEY> on Mac.
-    return e.shiftKey && e.ctrlKey || e.altKey && e.isMacPlatform || e.keyCode === F12_KEY_CODE;
+    return e.shiftKey && e.ctrlKey || (e.altKey || e.metaKey) && browserUtils.isMacPlatform || e.keyCode === F12_KEY_CODE;
 }
 
 // NOTE: when tests are running, we should block real events (from mouse
