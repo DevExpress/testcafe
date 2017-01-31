@@ -361,6 +361,8 @@ to slow the test down.
 testcafe chrome my-tests --speed 0.1
 ```
 
+If speed is also specified for an [individual action](../test-api/actions/action-options.md#basic-action-options), the action speed setting overrides test speed.
+
 **Default value**: `1`
 
 ### --qr-code

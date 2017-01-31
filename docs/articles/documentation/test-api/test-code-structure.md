@@ -11,6 +11,7 @@ This topic contains the following sections.
 * [Fixtures](#fixtures)
 * [Tests](#tests)
   * [Test Controller](#test-controller)
+  * [Setting Test Speed](#setting-test-speed)
 * [Specifying the Start Webpage](#specifying-the-start-webpage)
 * [Initialization and Clean-Up](#initialization-and-clean-up)
   * [Test Hooks](#test-hooks)
@@ -154,6 +155,42 @@ export default class Page {
 ```
 
 TestCafe will implicitly resolve test context and provide the right test controller.
+
+### Setting Test Speed
+
+TestCafe allows you to specify the speed of test execution.
+
+By default, tests run at the maximum speed. However, if you need to watch a test running
+to understand what happens in it, this speed may seem too fast. In this instance, use the `t.setTestSpeed` method
+to slow the test down.
+
+```text
+t.setTestSpeed( factor )
+```
+
+Parameter  | Type      | Description
+---------- | --------- | -----------
+`factor`   | Number    | Specifies the test speed. Must be a number between `1` (the fastest) and `0.01` (the slowest).
+
+If speed is also specified for an [individual action](actions/action-options.md#basic-action-options), the action speed setting overrides test speed.
+
+**Example**
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `Test Speed`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+const nameInput = Selector('#developer-name');
+
+test(`Test Speed`, async t => {
+    await t
+        .typeText(nameInput, 'Peter')
+        .setTestSpeed(0.1)
+        .typeText(nameInput, ' Parker');
+});
+```
 
 ## Specifying the Start Webpage
 
@@ -420,3 +457,4 @@ test('Fixture2Test3', () => {});
 
 // Only tests in Fixture1 and the Fixture2Test2 test will run
 ```
+

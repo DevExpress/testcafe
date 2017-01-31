@@ -39,6 +39,8 @@
       content:
       - name: Test Controller
         url: /documentation/test-api/test-code-structure.md#test-controller
+      - name: Setting Test Speed
+        url: /documentation/test-api/test-code-structure.md#setting-test-speed 
     - name: Specifying the Start Webpage
       url: /documentation/test-api/test-code-structure.md#specifying-the-start-webpage
     - name: Initialization and Clean-Up
