@@ -19,6 +19,10 @@ The footer displays buttons that allow you to continue test execution or step to
 
 ![Page Footer when Debugging on a Client](../../../images/debugging/client-debugging-footer.png)
 
+TestCafe logs points in code where the debugger stopped.
+
+![Logging Debugger Breakpoints](../../../images/debugging/log-debugger.png)
+
 **Example**
 
 ```js
