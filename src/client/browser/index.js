@@ -55,7 +55,7 @@ function executeInitScript (initScriptUrl, createXHR) {
             /* eslint-enable no-eval */
         })
         .then(() => {
-            setTimeout(executeInitScript(initScriptUrl, createXHR), 1000);
+            window.setTimeout(() => executeInitScript(initScriptUrl, createXHR), 1000);
         });
 }
 
