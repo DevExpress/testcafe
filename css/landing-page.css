@@ -23,6 +23,10 @@
   max-width: 1100px;
   margin: auto; }
 
+.animation img {
+  margin: 70px 0px 40px;
+  box-shadow: 5px 5px 60px; }
+
 .feature {
   display: inline-block;
   padding: 0 0 60px;
