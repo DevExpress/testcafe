@@ -6,7 +6,7 @@ import { ExecuteClientFunctionCommand } from '../test-run/commands/observation';
 import TestRun from '../test-run';
 import compileClientFunction from '../compiler/es-next/compile-client-function';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
-import { assertObject, assertNonNullObject } from '../errors/runtime/type-assertions';
+import { assertType, is } from '../errors/runtime/type-assertions';
 import MESSAGE from '../errors/runtime/message';
 import getCallsite from '../errors/get-callsite';
 import ClientFunctionResultPromise from './result-promise';
@@ -134,7 +134,7 @@ export default class ClientFunctionBuilder {
     }
 
     _validateOptions (options) {
-        assertNonNullObject(this.callsiteNames.instantiation, '"options" argument', options);
+        assertType(is.nonNullObject, this.callsiteNames.instantiation, '"options" argument', options);
 
         if (!isNullOrUndefined(options.boundTestRun)) {
             // NOTE: we can't use strict `t instanceof TestController`
@@ -144,7 +144,7 @@ export default class ClientFunctionBuilder {
         }
 
         if (!isNullOrUndefined(options.dependencies))
-            assertObject(this.callsiteNames.instantiation, '"dependencies" option', options.dependencies);
+            assertType(is.nonNullObject, this.callsiteNames.instantiation, '"dependencies" option', options.dependencies);
     }
 
     _getReplicatorTransforms () {

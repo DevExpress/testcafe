@@ -1,81 +1,87 @@
 import { isFinite as isFiniteNumber, isRegExp, isNil as isNullOrUndefined } from 'lodash';
-import { APIError } from './';
+import { APIError, GeneralError } from './';
 import MESSAGE from './message';
 
-
-function isNonNegativeNumber (value) {
+function isNonNegativeValue (value) {
     return isFiniteNumber(value) && value >= 0;
 }
 
-export function assertNumber (callsiteName, what, value) {
-    if (!isFiniteNumber(value))
-        throw new APIError(callsiteName, MESSAGE.valueIsNotANumber, what, typeof value);
-}
+export var is = {
+    number: {
+        name:      'number',
+        predicate: isFiniteNumber
+    },
 
-export function assertNonNegativeNumber (callsiteName, what, value) {
-    if (!isNonNegativeNumber(value)) {
-        var valueType = typeof value;
-        var actual    = valueType === 'number' ? value : valueType;
+    nonNegativeNumber: {
+        name:              'non-negative number',
+        predicate:         isNonNegativeValue,
+        getActualValueMsg: (value, type) => type === 'number' ? value : type
+    },
 
-        throw new APIError(callsiteName, MESSAGE.valueIsNotANonNegativeNumber, what, actual);
+    nonNegativeNumberString: {
+        name:      'non-negative number',
+        predicate: value => isNonNegativeValue(parseInt(value, 10)),
+
+        getActualValueMsg: value => {
+            var number = parseInt(value, 10);
+
+            return isNaN(number) ? JSON.stringify(value) : number;
+        }
+    },
+
+    boolean: {
+        name:      'boolean',
+        predicate: (value, type) => type === 'boolean'
+    },
+
+    string: {
+        name:      'string',
+        predicate: (value, type) => type === 'string'
+    },
+
+    function: {
+        name:      'function',
+        predicate: (value, type) => type === 'function'
+    },
+
+    regExp: {
+        name:      'regular expression',
+        predicate: isRegExp
+    },
+
+    nonNullObject: {
+        name:              'non-null object',
+        predicate:         (value, type) => type === 'object' && !isNullOrUndefined(value),
+        getActualValueMsg: (value, type) => isNullOrUndefined(value) ? String(value) : type
     }
-}
+};
 
-export function assertBoolean (callsiteName, what, value) {
-    var type = typeof value;
+export function assertType (types, callsiteName, what, value) {
+    types = Array.isArray(types) ? types : [types];
 
-    if (type !== 'boolean')
-        throw new APIError(callsiteName, MESSAGE.valueIsNotABoolean, what, type);
-}
+    var pass            = false;
+    var actualType      = typeof value;
+    var actualMsg       = actualType;
+    var expectedTypeMsg = '';
+    var last            = types.length - 1;
 
-export function assertStringOrRegExp (callsiteName, what, value) {
-    var type = typeof value;
+    types.forEach((type, i) => {
+        pass = pass || type.predicate(value, actualType);
 
-    if (type !== 'string' && !isRegExp(value))
-        throw new APIError(callsiteName, MESSAGE.valueIsNotAStringOrRegExp, what, type);
-}
+        if (type.getActualValueMsg)
+            actualMsg = type.getActualValueMsg(value, actualType);
 
-export function assertObject (callsiteName, what, value) {
-    var type = typeof value;
+        if (i === 0)
+            expectedTypeMsg += type.name;
+        else
+            expectedTypeMsg += (i === last ? ' or a ' : ', ') + type.name;
+    });
 
-    if (type !== 'object')
-        throw new APIError(callsiteName, MESSAGE.valueIsNotAnObject, what, type);
-}
+    if (!pass) {
+        var err = callsiteName ?
+                  new APIError(callsiteName, MESSAGE.invalidValueType, what, expectedTypeMsg, actualMsg) :
+                  new GeneralError(MESSAGE.invalidValueType, what, expectedTypeMsg, actualMsg);
 
-export function assertString (callsiteName, what, value) {
-    var type = typeof value;
-
-    if (type !== 'string')
-        throw new APIError(callsiteName, MESSAGE.valueIsNotAString, what, type);
-}
-
-export function assertNonNullObject (callsiteName, what, value) {
-    var type = typeof value;
-
-    if (isNullOrUndefined(value) || type !== 'object') {
-        var actualVal = value === null ? 'null' : type;
-
-        throw new APIError(callsiteName, MESSAGE.valueIsNotAnObject, what, actualVal);
+        throw err;
     }
-}
-
-export function assertFunction (callsiteName, what, value) {
-    var type = typeof value;
-
-    if (type !== 'function')
-        throw new APIError(callsiteName, MESSAGE.valueIsNotAFunctionOrString, what, type);
-}
-
-export function assertFunctionOrString (callsiteName, what, value) {
-    var type = typeof value;
-
-    if (type !== 'string' && type !== 'function')
-        throw new APIError(callsiteName, MESSAGE.valueIsNotAFunctionOrString, what, type);
-}
-
-export function assertFunctionOrStringOrNumber (callsiteName, what, value) {
-    var type = typeof value;
-
-    if (type !== 'string' && type !== 'function' && !isFiniteNumber(value))
-        throw new APIError(callsiteName, MESSAGE.valueIsNotAFunctionOrStringOrNumber, what, type);
 }

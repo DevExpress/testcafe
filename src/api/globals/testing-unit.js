@@ -1,8 +1,6 @@
-import { APIError } from '../../errors/runtime';
-import MESSAGE from '../../errors/runtime/message';
 import handleTagArgs from '../../utils/handle-tag-args';
 import { delegateAPI, getDelegatedAPIList } from '../../utils/delegated-api';
-import { assertObject, assertString } from '../../errors/runtime/type-assertions';
+import { assertType, is } from '../../errors/runtime/type-assertions';
 import TestController from '../test-controller';
 import testRunTracker from '../test-run-tracker';
 import processTestFnError from '../../errors/process-test-fn-error';
@@ -48,10 +46,7 @@ export default class TestingUnit {
     _page$ (url, ...rest) {
         this.pageUrl = handleTagArgs(url, rest);
 
-        var urlType = typeof this.pageUrl;
-
-        if (urlType !== 'string')
-            throw new APIError('page', MESSAGE.pageIsNotAString, urlType);
+        assertType(is.string, 'page', 'The page URL', this.pageUrl);
 
         if (!PROTOCOL_RE.test(this.pageUrl)) {
             var protocol = IMPLICIT_PROTOCOL_RE.test(this.pageUrl) ? 'http:' : 'http://';
@@ -63,14 +58,14 @@ export default class TestingUnit {
     }
 
     _httpAuth$ (credentials) {
-        assertObject('httpAuth', 'credentials', credentials);
-        assertString('httpAuth', 'credentials.username', credentials.username);
-        assertString('httpAuth', 'credentials.password', credentials.password);
+        assertType(is.nonNullObject, 'httpAuth', 'credentials', credentials);
+        assertType(is.string, 'httpAuth', 'credentials.username', credentials.username);
+        assertType(is.string, 'httpAuth', 'credentials.password', credentials.password);
 
         if (credentials.domain)
-            assertString('httpAuth', 'credentials.domain', credentials.domain);
+            assertType(is.string, 'httpAuth', 'credentials.domain', credentials.domain);
         if (credentials.workstation)
-            assertString('httpAuth', 'credentials.workstation', credentials.workstation);
+            assertType(is.string, 'httpAuth', 'credentials.workstation', credentials.workstation);
 
         this.authCredentials = credentials;
 

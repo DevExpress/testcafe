@@ -490,7 +490,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Fixture\'s "beforeEach" method takes a function, but string was passed.',
+                                 'fixture.beforeEach hook is expected to be a function, but it was string.',
 
                         callsite: '   1 |fixture `beforeEach is not a function`\n' +
                                   " > 2 |    .beforeEach('yo');\n" +
@@ -515,7 +515,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'test.before hook is expected to be a string or a function, but it was number.',
+                                 'test.before hook is expected to be a function, but it was number.',
 
                         callsite: '   1 |fixture `Fixture`;\n' +
                                   '   2 |\n' +
@@ -539,7 +539,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'test.after hook is expected to be a string or a function, but it was number.',
+                                 'test.after hook is expected to be a function, but it was number.',
 
                         callsite: '   1 |fixture `Fixture`;\n' +
                                   '   2 |\n' +
@@ -565,7 +565,7 @@ describe('Compiler', function () {
                         stackTop: credentialsInNotObject,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'credentials is expected to be an object, but it was string.',
+                                 'credentials is expected to be a non-null object, but it was string.',
 
                         callsite: '   1 |fixture `Credentials is not an object`\n' +
                                   " > 2 |    .httpAuth('');\n" +
@@ -632,7 +632,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Fixture\'s "afterEach" method takes a function, but string was passed.',
+                                 'fixture.afterEach hook is expected to be a function, but it was string.',
 
                         callsite: '   1 |fixture `afterEach is not a function`\n' +
                                   " > 2 |    .afterEach('yo');\n" +
@@ -795,7 +795,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"options" argument is expected to be an object, but it was number.',
+                                 '"options" argument is expected to be a non-null object, but it was number.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -821,7 +821,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"dependencies" option is expected to be an object, but it was string.',
+                                 '"dependencies" option is expected to be a non-null object, but it was string.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1054,7 +1054,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"filter" argument is expected to be a string, function or a number but it was object.',
+                                 '"filter" argument is expected to be a string, function or a number, but it was object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1080,7 +1080,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"filter" argument is expected to be a string, function or a number but it was object.',
+                                 '"filter" argument is expected to be a string, function or a number, but it was object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1106,7 +1106,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"filter" argument is expected to be a string, function or a number but it was object.',
+                                 '"filter" argument is expected to be a string, function or a number, but it was object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
