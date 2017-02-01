@@ -31,8 +31,8 @@ fixture `Debugger example`
 
 test('Debugger', async t => {
     await t
-        .click('#developer-name')
         .debug()
-        .typeText('#developer-name', 'Peter Parker');
+        .click('#populate')
+        .click('#submit-button');
 });
 ```
