@@ -71,6 +71,10 @@ In the footer, you'll find buttons that allow you to continue test execution or 
 
 ![Page Footer when Debugging on a Client](../../images/debugging/client-debugging-footer.png)
 
+TestCafe logs points in code where the debugger stopped.
+
+![Logging Debugger Breakpoints](../../images/debugging/log-debugger.png)
+
 ## Options Useful for Debugging
 
 TestCafe includes a few features helpful when you need to find the cause of issues in your tests.
@@ -99,7 +103,7 @@ You can also turn on the [--screenshots-on-fails](../using-testcafe/command-line
 option.
 
 ```sh
-testcafe chrome --screenshots-on-fails ./my-tests
+testcafe chrome ./my-tests --screenshots ./screenshots --screenshots-on-fails
 ```
 
 This option enables TestCafe to take a screenshot automatically when a test fails.
