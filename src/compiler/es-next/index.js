@@ -3,7 +3,6 @@ import { readFileSync } from 'fs';
 import stripBom from 'strip-bom';
 import sourceMapSupport from 'source-map-support';
 import loadBabelLibs from './load-babel-libs';
-import NODE_VER from '../../utils/node-version';
 import Globals from '../../api/globals';
 import { TestCompilationError, APIError } from '../../errors/runtime';
 import stackCleaningHook from '../../errors/stack-cleaning-hook';
@@ -32,9 +31,7 @@ export default class ESNextCompiler {
     }
 
     static _getBabelOptions (filename) {
-        var { presetStage2, transformRuntime, presetES2015Loose, presetES2015Node4 } = loadBabelLibs();
-
-        var presetES2015 = NODE_VER < 4 ? presetES2015Loose : presetES2015Node4;
+        var { presetStage2, transformRuntime, presetEnv } = loadBabelLibs();
 
         // NOTE: passPrePreset and complex presets is a workaround for https://github.com/babel/babel/issues/2877
         // Fixes https://github.com/DevExpress/testcafe/issues/969
@@ -44,7 +41,7 @@ export default class ESNextCompiler {
                 { plugins: transformRuntime },
                 {
                     passPerPreset: false,
-                    presets:       [presetStage2, presetES2015]
+                    presets:       [presetStage2, presetEnv]
                 }
             ],
             filename:      filename,

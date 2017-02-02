@@ -52,10 +52,10 @@ var babelArtifactPolyfills = {
 
 
 function getBabelOptions () {
-    var { presetES2015Loose } = loadBabelLibs();
+    var { presetFallback } = loadBabelLibs();
 
     return {
-        presets:       [presetES2015Loose],
+        presets:       [presetFallback],
         sourceMaps:    false,
         retainLines:   true,
         ast:           false,

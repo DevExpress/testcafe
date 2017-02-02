@@ -1,7 +1,7 @@
 {
   "compact": false,
   "presets": [
-    ["es2015", { "loose": true }],
+    ["env", { "loose": true }],
     "babel-preset-stage-2"
   ],
   "plugins": [
