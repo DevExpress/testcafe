@@ -5,12 +5,7 @@ import { SelectorNodeTransform } from '../replicator';
 import { ClientFunctionAPIError } from '../../errors/runtime';
 import functionBuilderSymbol from '../builder-symbol';
 import MESSAGE from '../../errors/runtime/message';
-import {
-    assertNumber,
-    assertNonNegativeNumber,
-    assertBoolean,
-    assertStringOrRegExp
-} from '../../errors/runtime/type-assertions';
+import { assertType, is } from '../../errors/runtime/type-assertions';
 import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import defineLazyProperty from '../../utils/define-lazy-property';
 import addAPI from './add-api';
@@ -115,16 +110,10 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         super._validateOptions(options);
 
         if (!isNullOrUndefined(options.visibilityCheck))
-            assertBoolean(this.callsiteNames.instantiation, '"visibilityCheck" option', options.visibilityCheck);
-
-        if (!isNullOrUndefined(options.text))
-            assertStringOrRegExp(this.callsiteNames.instantiation, '"text" option', options.text);
+            assertType(is.boolean, this.callsiteNames.instantiation, '"visibilityCheck" option', options.visibilityCheck);
 
         if (!isNullOrUndefined(options.timeout))
-            assertNonNegativeNumber(this.callsiteNames.instantiation, '"timeout" option', options.timeout);
-
-        if (!isNullOrUndefined(options.index))
-            assertNumber(this.callsiteNames.instantiation, '"index" option', options.index);
+            assertType(is.nonNegativeNumber, this.callsiteNames.instantiation, '"timeout" option', options.timeout);
     }
 
     _getReplicatorTransforms () {

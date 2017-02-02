@@ -2,7 +2,7 @@ import { assert, expect } from 'chai';
 import { assign } from 'lodash';
 import delay from '../utils/delay';
 import { ExternalAssertionLibraryError } from '../errors/test-run';
-import { assertNonNegativeNumber } from '../errors/runtime/type-assertions';
+import { assertType, is } from '../errors/runtime/type-assertions';
 import ClientFunctionResultPromise from '../client-functions/result-promise';
 
 const ASSERTION_DELAY = 200;
@@ -72,7 +72,7 @@ export default class Assertion {
         this.opts = assign(this.opts, opts);
 
         if (this.opts.timeout !== void 0)
-            assertNonNegativeNumber(apiMethodName, '"timeout" option', this.opts.timeout);
+            assertType(is.nonNegativeNumber, apiMethodName, '"timeout" option', this.opts.timeout);
 
         return this.testController._enqueueTask(apiMethodName, callsite => this._wrapExecutor(callsite, executor));
     }

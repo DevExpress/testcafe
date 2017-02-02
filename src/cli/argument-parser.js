@@ -11,6 +11,7 @@ import { readSync as read } from 'read-file-relative';
 import promisify from '../utils/promisify';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
+import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
 
@@ -56,10 +57,9 @@ export default class CLIArgumentParser {
     }
 
     static _parsePortNumber (value) {
-        if (CLIArgumentParser._isInteger(value))
-            return parseInt(value, 10);
+        assertType(is.nonNegativeNumberString, null, 'Port number', value);
 
-        throw new GeneralError(MESSAGE.portNumberIsNotInteger);
+        return parseInt(value, 10);
     }
 
     static _optionValueToRegExp (name, value) {
@@ -147,32 +147,26 @@ export default class CLIArgumentParser {
 
     _parseAppInitDelay () {
         if (this.opts.appInitDelay) {
-            if (CLIArgumentParser._isInteger(this.opts.appInitDelay))
-                this.opts.appInitDelay = parseInt(this.opts.appInitDelay, 10);
+            assertType(is.nonNegativeNumberString, null, 'Tested app initialization delay', this.opts.appInitDelay);
 
-            else
-                throw new GeneralError(MESSAGE.appInitDelayIsNotAnInteger);
+            this.opts.appInitDelay = parseInt(this.opts.appInitDelay, 10);
         }
     }
 
 
     _parseSelectorTimeout () {
         if (this.opts.selectorTimeout) {
-            if (CLIArgumentParser._isInteger(this.opts.selectorTimeout))
-                this.opts.selectorTimeout = parseInt(this.opts.selectorTimeout, 10);
+            assertType(is.nonNegativeNumberString, null, 'Selector timeout', this.opts.selectorTimeout);
 
-            else
-                throw new GeneralError(MESSAGE.selectorTimeoutIsNotAnInteger);
+            this.opts.selectorTimeout = parseInt(this.opts.selectorTimeout, 10);
         }
     }
 
     _parseAssertionTimeout () {
         if (this.opts.assertionTimeout) {
-            if (CLIArgumentParser._isInteger(this.opts.assertionTimeout))
-                this.opts.assertionTimeout = parseInt(this.opts.assertionTimeout, 10);
+            assertType(is.nonNegativeNumberString, null, 'Assertion timeout', this.opts.assertionTimeout);
 
-            else
-                throw new GeneralError(MESSAGE.assertionTimeoutIsNotAnInteger);
+            this.opts.assertionTimeout = parseInt(this.opts.assertionTimeout, 10);
         }
     }
 

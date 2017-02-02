@@ -113,8 +113,10 @@ export default class BrowserJob extends EventEmitter {
                 this.emit('start');
             }
 
-            if (testRun.test.skip)
+            if (testRun.test.skip) {
+                this.emit('test-run-start', testRun);
                 this._reportTestRunDone(testRun);
+            }
 
             else {
                 testRun.start();

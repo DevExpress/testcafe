@@ -83,7 +83,7 @@ describe('CLI argument parser', function () {
         });
 
         it('Should raise error if "--ports" option value is not a integer', function () {
-            return assertRaisesError('--ports 1337,yo', 'A port number should be a valid integer.');
+            return assertRaisesError('--ports 1337,yo', 'Port number is expected to be a non-negative number, but it was "yo".');
         });
 
         it('Should raise error if "--ports" option has less than 2 ports specified', function () {
@@ -100,7 +100,7 @@ describe('CLI argument parser', function () {
         });
 
         it('Should raise an error if the "--selector-timeout" option value is not an integer', function () {
-            return assertRaisesError('--selector-timeout yo', 'Selector timeout should be an integer.');
+            return assertRaisesError('--selector-timeout yo', 'Selector timeout is expected to be a non-negative number, but it was "yo".');
         });
     });
 
@@ -113,7 +113,7 @@ describe('CLI argument parser', function () {
         });
 
         it('Should raise an error if the "--assertion-timeout" option value is not an integer', function () {
-            return assertRaisesError('--assertion-timeout yo', 'Assertion timeout should be an integer.');
+            return assertRaisesError('--assertion-timeout yo', 'Assertion timeout is expected to be a non-negative number, but it was "yo".');
         });
     });
 
@@ -135,7 +135,7 @@ describe('CLI argument parser', function () {
         });
 
         it('Should raise an error if the "--app-init-delay" option value is not an integer', function () {
-            return assertRaisesError('--app-init-delay yo', 'Tested app initialization delay should be an integer.');
+            return assertRaisesError('--app-init-delay yo', 'Tested app initialization delay is expected to be a non-negative number, but it was "yo".');
         });
     });
 

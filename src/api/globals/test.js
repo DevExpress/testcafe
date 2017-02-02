@@ -1,7 +1,5 @@
-import { APIError } from '../../errors/runtime';
-import MESSAGE from '../../errors/runtime/message';
 import TestingUnit from './testing-unit';
-import { assertFunction } from '../../errors/runtime/type-assertions';
+import { assertType, is } from '../../errors/runtime/type-assertions';
 
 export default class Test extends TestingUnit {
     constructor (globals) {
@@ -17,15 +15,8 @@ export default class Test extends TestingUnit {
     }
 
     _add (name, fn) {
-        var nameType = typeof name;
-
-        if (nameType !== 'string')
-            throw new APIError('apiOrigin', MESSAGE.testNameIsNotAString, nameType);
-
-        var fnType = typeof fn;
-
-        if (fnType !== 'function')
-            throw new APIError('apiOrigin', MESSAGE.testBodyIsNotAFunction, fnType);
+        assertType(is.string, 'apiOrigin', 'The test name', name);
+        assertType(is.function, 'apiOrigin', 'The test body', fn);
 
         this.name = name;
         this.fn   = TestingUnit._wrapTestFunction(fn);
@@ -37,7 +28,7 @@ export default class Test extends TestingUnit {
     }
 
     _before$ (fn) {
-        assertFunction('before', 'test.before hook', fn);
+        assertType(is.function, 'before', 'test.before hook', fn);
 
         this.beforeFn = TestingUnit._wrapTestFunction(fn);
 
@@ -45,7 +36,7 @@ export default class Test extends TestingUnit {
     }
 
     _after$ (fn) {
-        assertFunction('after', 'test.after hook', fn);
+        assertType(is.function, 'after', 'test.after hook', fn);
 
         this.afterFn = TestingUnit._wrapTestFunction(fn);
 

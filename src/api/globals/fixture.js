@@ -1,5 +1,4 @@
-import { APIError } from '../../errors/runtime';
-import MESSAGE from '../../errors/runtime/message';
+import { assertType, is } from '../../errors/runtime/type-assertions';
 import handleTagArgs from '../../utils/handle-tag-args';
 import TestingUnit from './testing-unit';
 
@@ -11,8 +10,8 @@ export default class Fixture extends TestingUnit {
 
         this.pageUrl = 'about:blank';
 
-        this.beforeEachFn    = null;
-        this.afterEachFn     = null;
+        this.beforeEachFn = null;
+        this.afterEachFn  = null;
 
         return this.apiOrigin;
     }
@@ -20,10 +19,7 @@ export default class Fixture extends TestingUnit {
     _add (name, ...rest) {
         name = handleTagArgs(name, rest);
 
-        var nameType = typeof name;
-
-        if (nameType !== 'string')
-            throw new APIError('apiOrigin', MESSAGE.fixtureNameIsNotAString, nameType);
+        assertType(is.string, 'apiOrigin', 'The fixture name', name);
 
         this.name                   = name;
         this.globals.currentFixture = this;
@@ -32,10 +28,7 @@ export default class Fixture extends TestingUnit {
     }
 
     _beforeEach$ (fn) {
-        var fnType = typeof fn;
-
-        if (fnType !== 'function')
-            throw new APIError('beforeEach', MESSAGE.beforeEachIsNotAFunction, fnType);
+        assertType(is.function, 'beforeEach', 'fixture.beforeEach hook', fn);
 
         this.beforeEachFn = TestingUnit._wrapTestFunction(fn);
 
@@ -43,10 +36,7 @@ export default class Fixture extends TestingUnit {
     }
 
     _afterEach$ (fn) {
-        var fnType = typeof fn;
-
-        if (fnType !== 'function')
-            throw new APIError('afterEach', MESSAGE.afterEachIsNotAFunction, fnType);
+        assertType(is.function, 'afterEach', 'fixture.afterEach hook', fn);
 
         this.afterEachFn = TestingUnit._wrapTestFunction(fn);
 

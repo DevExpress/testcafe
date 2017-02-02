@@ -227,7 +227,7 @@ describe('[API] Selector', function () {
                 })
                     .catch(function (errs) {
                         expect(errs[0]).contains(
-                            '"addCustomDOMProperties" option is expected to be an object, but it was number.'
+                            '"addCustomDOMProperties" option is expected to be a non-null object, but it was number.'
                         );
                         expect(errs[0]).contains("> 785 |    await Selector('rect').addCustomDOMProperties(42);");
                     });
@@ -242,7 +242,7 @@ describe('[API] Selector', function () {
                 })
                     .catch(function (errs) {
                         expect(errs[0]).contains(
-                            "Custom DOM properties method \'prop1\' is expected to be a string or a function, but it was number"
+                            "Custom DOM properties method \'prop1\' is expected to be a function, but it was number"
                         );
                         expect(errs[0]).contains("> 789 |    await Selector('rect').addCustomDOMProperties({ prop1: 1, prop2: () => 42 });");
                     });

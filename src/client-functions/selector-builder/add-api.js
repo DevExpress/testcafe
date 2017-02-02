@@ -1,18 +1,11 @@
-import { isNil as isNullOrUndefined, assign } from 'lodash';
+import { assign } from 'lodash';
 import clientFunctionBuilderSymbol from '../builder-symbol';
 import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapshot-properties';
 import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
 import getCallsite from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../client-function-builder';
 import ClientFunctionResultPromise from '../result-promise';
-import {
-    assertNumber,
-    assertFunction,
-    assertFunctionOrString,
-    assertFunctionOrStringOrNumber,
-    assertStringOrRegExp,
-    assertObject
-    } from '../../errors/runtime/type-assertions';
+import { assertType, is } from '../../errors/runtime/type-assertions';
 
 const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PROPERTIES);
 
@@ -91,13 +84,11 @@ async function getSnapshot (getSelector, callsite) {
 }
 
 function assertAddCustomDOMPropertiesOptions (properties) {
-    if (!isNullOrUndefined(properties)) {
-        assertObject('addCustomDOMProperties', '"addCustomDOMProperties" option', properties);
+    assertType(is.nonNullObject, 'addCustomDOMProperties', '"addCustomDOMProperties" option', properties);
 
-        Object.keys(properties).forEach(prop => {
-            assertFunction('addCustomDOMProperties', `Custom DOM properties method '${prop}'`, properties[prop]);
-        });
-    }
+    Object.keys(properties).forEach(prop => {
+        assertType(is.function, 'addCustomDOMProperties', `Custom DOM properties method '${prop}'`, properties[prop]);
+    });
 }
 
 function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties) {
@@ -227,7 +218,7 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
 
 function addFilterMethods (obj, getSelector, SelectorBuilder) {
     obj.nth = index => {
-        assertNumber('nth', '"index" argument', index);
+        assertType(is.number, 'nth', '"index" argument', index);
 
         var builder = new SelectorBuilder(getSelector(), { index: index }, { instantiation: 'Selector' });
 
@@ -235,7 +226,7 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
     };
 
     obj.withText = text => {
-        assertStringOrRegExp('withText', '"text" argument', text);
+        assertType([is.string, is.regExp], 'withText', '"text" argument', text);
 
         var builder = new SelectorBuilder(getSelector(), { text: text }, { instantiation: 'Selector' });
 
@@ -243,7 +234,7 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
     };
 
     obj.filter = (filter, dependencies) => {
-        assertFunctionOrString('filter', '"filter" argument', filter);
+        assertType([is.string, is.function], 'filter', '"filter" argument', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('filter', filter, dependencies);
 
@@ -275,7 +266,7 @@ function addCustomDOMPropertiesMethod (obj, getSelector, SelectorBuilder) {
 function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
     // Find
     obj.find = (filter, dependencies) => {
-        assertFunctionOrString('find', '"filter" argument', filter);
+        assertType([is.string, is.function], 'find', '"filter" argument', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
@@ -315,7 +306,7 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
     // Parent
     obj.parent = (filter, dependencies) => {
         if (filter !== void 0)
-            assertFunctionOrStringOrNumber('parent', '"filter" argument', filter);
+            assertType([is.string, is.function, is.number], 'parent', '"filter" argument', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
@@ -338,7 +329,7 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
     // Child
     obj.child = (filter, dependencies) => {
         if (filter !== void 0)
-            assertFunctionOrStringOrNumber('child', '"filter" argument', filter);
+            assertType([is.string, is.function, is.number], 'child', '"filter" argument', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
@@ -366,7 +357,7 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
     // Sibling
     obj.sibling = (filter, dependencies) => {
         if (filter !== void 0)
-            assertFunctionOrStringOrNumber('sibling', '"filter" argument', filter);
+            assertType([is.string, is.function, is.number], 'sibling', '"filter" argument', filter);
 
         filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
 
