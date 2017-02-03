@@ -13,6 +13,9 @@ export default class Fixture extends TestingUnit {
         this.beforeEachFn = null;
         this.afterEachFn  = null;
 
+        this.beforeFn = null;
+        this.afterFn  = null;
+
         return this.apiOrigin;
     }
 
@@ -23,6 +26,22 @@ export default class Fixture extends TestingUnit {
 
         this.name                   = name;
         this.globals.currentFixture = this;
+
+        return this.apiOrigin;
+    }
+
+    _before$ (fn) {
+        assertType(is.function, 'before', 'fixture.before hook', fn);
+
+        this.beforeFn = fn;
+
+        return this.apiOrigin;
+    }
+
+    _after$ (fn) {
+        assertType(is.function, 'after', 'fixture.after hook', fn);
+
+        this.afterFn = fn;
 
         return this.apiOrigin;
     }

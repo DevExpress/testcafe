@@ -92,3 +92,42 @@ describe('[API] t.ctx', function () {
             });
     });
 });
+
+describe('[API] fixture.before/fixture.after hooks', function () {
+    it('Should run hooks before and after fixture', function () {
+        return runTests('./testcafe-fixtures/fixture-hooks.js', null);
+    });
+
+    it('Should keep sequential reports with long executing hooks', function () {
+        return runTests('./testcafe-fixtures/fixture-hooks-seq.js', null, {
+            shouldFail: true,
+            only:       'chrome'
+        }).catch(function (errs) {
+            expect(errs[0]).contains('$$test1$$');
+            expect(errs[1]).contains('$$afterhook1$$');
+            expect(errs[2]).contains('$$test2$$');
+            expect(errs[3]).contains('$$afterhook2$$');
+            expect(errs[4]).contains('$$test3$$');
+        });
+    });
+
+    it('Should fail all tests in fixture if fixture.before hooks fails', function () {
+        return runTests('./testcafe-fixtures/fixture-before-fail.js', null, {
+            shouldFail: true,
+            only:       'chrome, firefox'
+        }).catch(function (errs) {
+            var allErrors = errs['chrome'].concat(errs['firefox']);
+
+            expect(allErrors.length).eql(6);
+
+            allErrors.forEach(function (err) {
+                expect(err).contains('Error in fixture.before hook');
+                expect(err).contains('$$before$$');
+            });
+        });
+    });
+
+    it('Fixture context', function () {
+        return runTests('./testcafe-fixtures/fixture-ctx.js', null, { only: 'chrome, firefox' });
+    });
+});

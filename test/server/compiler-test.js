@@ -503,6 +503,31 @@ describe('Compiler', function () {
                 });
         });
 
+        it('Should raise an error if fixture.before is not a function', function () {
+            var testfile = resolve('test/server/data/test-suites/fixture-before-is-not-a-function/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'fixture.before hook is expected to be a function, but it was string.',
+
+                        callsite: '   1 |fixture `before is not a function`\n' +
+                                  " > 2 |    .before('yo');\n" +
+                                  '   3 |\n' +
+                                  "   4 |test('Some test', () => {\n" +
+                                  '   5 |\n' +
+                                  '   6 |});\n' +
+                                  '   7 |'
+                    });
+                });
+        });
+
         it('Should raise an error if test.before is not a function', function () {
             var testfile = resolve('test/server/data/test-suites/test-before-is-not-a-function/testfile.js');
 
@@ -636,6 +661,31 @@ describe('Compiler', function () {
 
                         callsite: '   1 |fixture `afterEach is not a function`\n' +
                                   " > 2 |    .afterEach('yo');\n" +
+                                  '   3 |\n' +
+                                  "   4 |test('Some test', () => {\n" +
+                                  '   5 |\n' +
+                                  '   6 |});\n' +
+                                  '   7 |'
+                    });
+                });
+        });
+
+        it('Should raise an error if fixture.after is not a function', function () {
+            var testfile = resolve('test/server/data/test-suites/fixture-after-is-not-a-function/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'fixture.after hook is expected to be a function, but it was string.',
+
+                        callsite: '   1 |fixture `after is not a function`\n' +
+                                  " > 2 |    .after('yo');\n" +
                                   '   3 |\n' +
                                   "   4 |test('Some test', () => {\n" +
                                   '   5 |\n' +

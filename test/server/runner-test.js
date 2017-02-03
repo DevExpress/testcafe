@@ -455,16 +455,18 @@ describe('Runner', function () {
                         .src('test/server/data/test-suites/basic/testfile2.js')
                         .run();
 
+                    function check () {
+                        setTimeout(function () {
+                            brokenConnection.getStatus().then(function (status) {
+                                if (test.timedOut || status.cmd === COMMAND.run)
+                                    brokenConnection.emit('error', new Error('I have failed :('));
+                                else
+                                    check();
+                            });
+                        }, 200);
+                    }
 
-                    var interval = setInterval(function () {
-                        var status = brokenConnection.getStatus();
-
-                        if (test.timedOut || status.cmd === COMMAND.run) {
-                            clearInterval(interval);
-
-                            brokenConnection.emit('error', new Error('I have failed :('));
-                        }
-                    }, 200);
+                    check();
 
                     return run;
                 })

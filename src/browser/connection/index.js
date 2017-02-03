@@ -113,11 +113,11 @@ export default class BrowserConnection extends EventEmitter {
         }, this.HEARTBEAT_TIMEOUT);
     }
 
-    _popNextTestRunUrl () {
+    async _popNextTestRunUrl () {
         while (this.hasQueuedJobs && !this.currentJob.hasQueuedTestRuns)
             this.jobQueue.shift();
 
-        return this.hasQueuedJobs ? this.currentJob.popNextTestRunUrl() : null;
+        return this.hasQueuedJobs ? await this.currentJob.popNextTestRunUrl() : null;
     }
 
     static getById (id) {
@@ -217,7 +217,7 @@ export default class BrowserConnection extends EventEmitter {
             initScriptPromise.resolve(JSON.parse(data));
     }
 
-    getStatus () {
+    async getStatus () {
         if (this.switchingToIdle) {
             this.switchingToIdle = false;
             this.idle            = true;
@@ -225,7 +225,7 @@ export default class BrowserConnection extends EventEmitter {
         }
 
         if (this.opened) {
-            var testRunUrl = this._popNextTestRunUrl();
+            var testRunUrl = await this._popNextTestRunUrl();
 
             if (testRunUrl) {
                 this.idle = false;

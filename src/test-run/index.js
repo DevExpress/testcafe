@@ -55,6 +55,7 @@ export default class TestRun extends Session {
 
         this.controller = null;
         this.ctx        = Object.create(null);
+        this.fixtureCtx = null;
 
         this.errs = [];
 
@@ -140,7 +141,7 @@ export default class TestRun extends Session {
             if (this.opts.takeScreenshotsOnFails)
                 screenshotPath = await this.executeCommand(new TakeScreenshotOnFailCommand());
 
-            this._addError(err, screenshotPath);
+            this.addError(err, screenshotPath);
             return false;
         }
 
@@ -189,7 +190,7 @@ export default class TestRun extends Session {
     // Errors
     _addPendingPageErrorIfAny () {
         if (this.pendingPageError) {
-            this._addError(this.pendingPageError);
+            this.addError(this.pendingPageError);
             this.pendingPageError = null;
             return true;
         }
@@ -197,7 +198,7 @@ export default class TestRun extends Session {
         return false;
     }
 
-    _addError (err, screenshotPath) {
+    addError (err, screenshotPath) {
         var adapter = new TestRunErrorFormattableAdapter(err, {
             userAgent:      this.browserConnection.userAgent,
             screenshotPath: screenshotPath || '',
