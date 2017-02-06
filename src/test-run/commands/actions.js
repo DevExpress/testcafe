@@ -3,7 +3,7 @@ import SelectorBuilder from '../../client-functions/selector-builder';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import functionBuilderSymbol from '../../client-functions/builder-symbol';
 import Assignable from '../../utils/assignable';
-import { ClickOptions, MouseOptions, TypeOptions } from './options';
+import { ActionOptions, ClickOptions, MouseOptions, TypeOptions } from './options';
 
 import {
     actionOptions,
@@ -11,7 +11,8 @@ import {
     positiveIntegerArgument,
     nonEmptyStringArgument,
     urlArgument,
-    stringOrStringArrayArgument
+    stringOrStringArrayArgument,
+    setSpeedArgument
 } from './validations/argument';
 
 import { ActionSelectorError, SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
@@ -30,6 +31,10 @@ function initSelector (name, val, skipVisibilityCheck) {
 
         throw new ActionSelectorError(name, msg);
     }
+}
+
+function initActionOptions (name, val) {
+    return new ActionOptions(val, true);
 }
 
 function initClickOptions (name, val) {
@@ -226,6 +231,7 @@ export class SelectTextCommand extends Assignable {
         this.selector = null;
         this.startPos = null;
         this.endPos   = null;
+        this.options  = null;
 
         this._assignFrom(obj, true);
     }
@@ -234,7 +240,8 @@ export class SelectTextCommand extends Assignable {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'startPos', type: positiveIntegerArgument },
-            { name: 'endPos', type: positiveIntegerArgument }
+            { name: 'endPos', type: positiveIntegerArgument },
+            { name: 'options', type: actionOptions, init: initActionOptions, required: true }
         ];
     }
 }
@@ -246,6 +253,7 @@ export class SelectEditableContentCommand extends Assignable {
         this.type          = TYPE.selectEditableContent;
         this.startSelector = null;
         this.endSelector   = null;
+        this.options       = null;
 
         this._assignFrom(obj, true);
     }
@@ -253,7 +261,8 @@ export class SelectEditableContentCommand extends Assignable {
     _getAssignableProperties () {
         return [
             { name: 'startSelector', init: initSelector, required: true },
-            { name: 'endSelector', init: initSelector }
+            { name: 'endSelector', init: initSelector },
+            { name: 'options', type: actionOptions, init: initActionOptions, required: true }
         ];
     }
 }
@@ -268,6 +277,7 @@ export class SelectTextAreaContentCommand extends Assignable {
         this.startPos  = null;
         this.endLine   = null;
         this.endPos    = null;
+        this.options   = null;
 
         this._assignFrom(obj, true);
     }
@@ -278,7 +288,8 @@ export class SelectTextAreaContentCommand extends Assignable {
             { name: 'startLine', type: positiveIntegerArgument },
             { name: 'startPos', type: positiveIntegerArgument },
             { name: 'endLine', type: positiveIntegerArgument },
-            { name: 'endPos', type: positiveIntegerArgument }
+            { name: 'endPos', type: positiveIntegerArgument },
+            { name: 'options', type: actionOptions, init: initActionOptions, required: true }
         ];
     }
 }
@@ -287,15 +298,17 @@ export class PressKeyCommand extends Assignable {
     constructor (obj) {
         super(obj);
 
-        this.type = TYPE.pressKey;
-        this.keys = '';
+        this.type    = TYPE.pressKey;
+        this.keys    = '';
+        this.options = null;
 
         this._assignFrom(obj, true);
     }
 
     _getAssignableProperties () {
         return [
-            { name: 'keys', type: nonEmptyStringArgument, required: true }
+            { name: 'keys', type: nonEmptyStringArgument, required: true },
+            { name: 'options', type: actionOptions, init: initActionOptions, required: true }
         ];
     }
 }
@@ -397,5 +410,22 @@ export class SetNativeDialogHandlerCommand extends Assignable {
 export class GetNativeDialogHistoryCommand {
     constructor () {
         this.type = TYPE.getNativeDialogHistory;
+    }
+}
+
+export class SetTestSpeedCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type  = TYPE.setTestSpeed;
+        this.speed = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'speed', type: setSpeedArgument, required: true }
+        ];
     }
 }

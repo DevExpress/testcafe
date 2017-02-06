@@ -1,4 +1,5 @@
 var expect                   = require('chai').expect;
+var ActionOptions            = require('../../lib/test-run/commands/options').ActionOptions;
 var OffsetOptions            = require('../../lib/test-run/commands/options').OffsetOptions;
 var MouseOptions             = require('../../lib/test-run/commands/options').MouseOptions;
 var ClickOptions             = require('../../lib/test-run/commands/options').ClickOptions;
@@ -31,7 +32,8 @@ describe('Test run command options', function () {
 
             expect(JSON.parse(JSON.stringify(options))).eql({
                 offsetX: null,
-                offsetY: 15
+                offsetY: 15,
+                speed:   null
             });
         });
 
@@ -50,6 +52,7 @@ describe('Test run command options', function () {
             expect(JSON.parse(JSON.stringify(options))).eql({
                 offsetX: 15,
                 offsetY: null,
+                speed:   null,
 
                 modifiers: {
                     ctrl:  true,
@@ -77,6 +80,7 @@ describe('Test run command options', function () {
                 offsetX:  15,
                 offsetY:  null,
                 caretPos: 20,
+                speed:    null,
 
                 modifiers: {
                     ctrl:  true,
@@ -140,6 +144,7 @@ describe('Test run command options', function () {
                 caretPos: 20,
                 replace:  true,
                 paste:    true,
+                speed:    null,
 
                 modifiers: {
                     ctrl:  true,
@@ -163,6 +168,47 @@ describe('Test run command options', function () {
     });
 
     describe('Validation', function () {
+        it('Should validate ActionOptions', function () {
+            assertThrow(
+                function () {
+                    return new ActionOptions({ speed: '1' }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionSpeedOptionError,
+                    actualValue:     'string',
+                    optionName:      'speed',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new ActionOptions({ speed: 5 }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionSpeedOptionError,
+                    actualValue:     5,
+                    optionName:      'speed',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new ActionOptions({ speed: 0 }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionSpeedOptionError,
+                    actualValue:     0,
+                    optionName:      'speed',
+                    callsite:        null
+                }
+            );
+        });
+
         it('Should validate OffsetOptions', function () {
             assertThrow(
                 function () {

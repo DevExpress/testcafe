@@ -25,6 +25,7 @@ export default class DblClickAutomation {
         this.element   = element;
         this.modifiers = clickOptions.modifiers;
         this.caretPos  = clickOptions.caretPos;
+        this.speed     = clickOptions.speed;
 
         this.offsetX = clickOptions.offsetX;
         this.offsetY = clickOptions.offsetY;
@@ -102,7 +103,8 @@ export default class DblClickAutomation {
                     offsetX:   this.eventArgs.screenPoint.x,
                     offsetY:   this.eventArgs.screenPoint.y,
                     caretPos:  this.caretPos,
-                    modifiers: this.modifiers
+                    modifiers: this.modifiers,
+                    speed:     this.speed
                 });
 
                 clickAutomation = new ClickAutomation(document.documentElement, clickOptions);

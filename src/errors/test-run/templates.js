@@ -47,6 +47,10 @@ export default {
         The "${err.optionName}" option is expected to be a boolean value, but it was ${err.actualValue}.
     `),
 
+    [TYPE.actionSpeedOptionError]: err => markup(err, `
+        The "${err.optionName}" option is expected to be a number between 0.01 and 1, but it was ${err.actualValue}.
+    `),
+
     [TYPE.pageLoadError]: err => markup(err, `
         ${err.errMsg}
     `),
@@ -69,6 +73,10 @@ export default {
         An error occurred in the native dialog handler called for a native ${err.dialogType} dialog on page <a href="${err.pageUrl}">${err.pageUrl}</a>:
 
         ${escapeHtml(err.errMsg)}
+    `),
+
+    [TYPE.setTestSpeedArgumentError]: err => markup(err, `
+        Speed should be a number between 0.01 and 1, but ${err.actualValue} was passed.
     `),
 
     [TYPE.setNativeDialogHandlerCodeWrongTypeError]: err => markup(err, `

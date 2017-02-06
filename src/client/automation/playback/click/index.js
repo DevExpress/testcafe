@@ -11,7 +11,7 @@ import nextTick from '../../utils/next-tick';
 import { getMoveAutomationOffsets } from '../../utils/offsets';
 import getAutomationPoint from '../../utils/get-automation-point';
 import screenPointToClient from '../../utils/screen-point-to-client';
-import { ACTION_STEP_DELAY } from '../../settings';
+import AutomationSettings from '../../settings';
 import AUTOMATION_ERROR_TYPES from '../../errors';
 
 var Promise = hammerhead.Promise;
@@ -40,6 +40,8 @@ export default class ClickAutomation {
         this.offsetX = clickOptions.offsetX;
         this.offsetY = clickOptions.offsetY;
 
+        this.automationSettings = new AutomationSettings(clickOptions.speed);
+
         this.targetElementParentNodes     = [];
         this.activeElementBeforeMouseDown = null;
         this.mouseDownElement             = null;
@@ -65,7 +67,8 @@ export default class ClickAutomation {
         return {
             element: clickOnElement ? this.element : document.documentElement,
             offsetX: moveActionOffsets.offsetX,
-            offsetY: moveActionOffsets.offsetY
+            offsetY: moveActionOffsets.offsetY,
+            speed:   this.options.speed
         };
     }
 
@@ -103,10 +106,11 @@ export default class ClickAutomation {
             });
     }
 
-    _move ({ element, offsetX, offsetY }) {
+    _move ({ element, offsetX, offsetY, speed }) {
         var moveOptions = new MoveOptions({
             offsetX,
             offsetY,
+            speed,
 
             modifiers: this.modifiers
         }, false);
@@ -115,7 +119,7 @@ export default class ClickAutomation {
 
         return moveAutomation
             .run()
-            .then(() => delay(ACTION_STEP_DELAY));
+            .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }
 
     _bindMousedownHandler () {
@@ -299,10 +303,10 @@ export default class ClickAutomation {
 
         var moveArguments = this._getMoveArguments();
 
-        // NOTE: we should raise mouseup event with ACTION_STEP_DELAY after we trigger
+        // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger
         // mousedown event regardless of how long mousedown event handlers were executing
         return this._move(moveArguments)
-            .then(() => Promise.all([delay(ACTION_STEP_DELAY), this._mousedown()]))
+            .then(() => Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown()]))
             .then(() => this._mouseup())
             .then(() => this._click());
     }

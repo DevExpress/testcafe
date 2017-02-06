@@ -3,7 +3,8 @@ import { isValidDeviceName } from 'testcafe-browser-tools';
 import {
     createBooleanValidator,
     createIntegerValidator,
-    createPositiveIntegerValidator
+    createPositiveIntegerValidator,
+    createSpeedValidator
 } from './factories';
 
 import {
@@ -15,7 +16,8 @@ import {
     ActionUnsupportedUrlProtocolError,
     ActionStringOrStringArrayArgumentError,
     ActionStringArrayElementError,
-    ActionUnsupportedDeviceTypeError
+    ActionUnsupportedDeviceTypeError,
+    SetTestSpeedArgumentError
 } from '../../../errors/test-run';
 
 
@@ -26,6 +28,7 @@ const SUPPORTED_PROTOCOL_RE = /^https?/i;
 export var integerArgument         = createIntegerValidator(ActionIntegerArgumentError);
 export var positiveIntegerArgument = createPositiveIntegerValidator(ActionPositiveIntegerArgumentError);
 export var booleanArgument         = createBooleanValidator(ActionBooleanArgumentError);
+export var setSpeedArgument        = createSpeedValidator(SetTestSpeedArgumentError);
 
 
 export function actionOptions (name, val) {

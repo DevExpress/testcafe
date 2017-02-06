@@ -15,6 +15,7 @@ export default class HoverAutomation {
 
         this.offsetX = hoverOptions.offsetX;
         this.offsetY = hoverOptions.offsetY;
+        this.speed   = hoverOptions.speed;
     }
 
     _getMoveArguments () {
@@ -24,14 +25,16 @@ export default class HoverAutomation {
         return {
             element: clickOnElement ? this.element : document.documentElement,
             offsetX: moveActionOffsets.offsetX,
-            offsetY: moveActionOffsets.offsetY
+            offsetY: moveActionOffsets.offsetY,
+            speed:   this.speed
         };
     }
 
-    _move ({ element, offsetX, offsetY }) {
+    _move ({ element, offsetX, offsetY, speed }) {
         var moveOptions = new MoveOptions({
             offsetX,
             offsetY,
+            speed,
 
             modifiers: this.modifiers
         }, false);

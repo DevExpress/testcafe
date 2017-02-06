@@ -8,8 +8,8 @@ var positionUtils = testCafeCore.positionUtils;
 
 
 export default class SelectTextAutomation extends SelectBaseAutomation {
-    constructor (element, startPos, endPos) {
-        super(element);
+    constructor (element, startPos, endPos, actionOptions) {
+        super(element, actionOptions);
 
         this.startPos = startPos;
         this.endPos   = endPos;

@@ -54,6 +54,7 @@ const SELECTOR_EXECUTION_START_TIME        = 'testcafe|driver|selector-execution
 const PENDING_PAGE_ERROR                   = 'testcafe|driver|pending-page-error';
 const ACTIVE_IFRAME_SELECTOR               = 'testcafe|driver|active-iframe-selector';
 const STOP_AFTER_NEXT_ACTION               = 'testcafe|driver|stop-after-next-action';
+const TEST_SPEED                           = 'testcafe|driver|test-speed';
 const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;
 
 const ACTION_IFRAME_ERROR_CTORS = {
@@ -82,7 +83,7 @@ export default class Driver {
         this.fixtureName      = runInfo.fixtureName;
         this.testName         = runInfo.testName;
         this.selectorTimeout  = options.selectorTimeout;
-        this.speed            = options.speed;
+        this.initialSpeed     = options.speed;
         this.skipJsErrors     = options.skipJsErrors;
         this.dialogHandler    = options.dialogHandler;
 
@@ -113,6 +114,14 @@ export default class Driver {
             .queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.showDebuggerMessage })
             .then(() => this.statusBar.setDebuggingStatus())
             .then(stopAfterNextAction => this.contextStorage.setItem(STOP_AFTER_NEXT_ACTION, stopAfterNextAction));
+    }
+
+    set speed (val) {
+        this.contextStorage.setItem(TEST_SPEED, val);
+    }
+
+    get speed () {
+        return this.contextStorage.getItem(TEST_SPEED);
     }
 
     // Error handling
@@ -236,7 +245,7 @@ export default class Driver {
             .then(() => {
                 this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, true);
 
-                return this.activeChildDriverLink.executeCommand(command);
+                return this.activeChildDriverLink.executeCommand(command, this.speed);
             })
             .then(status => this._onCommandExecutedInIframe(status))
             .catch(err => this._onCommandExecutedInIframe(new DriverStatus({
@@ -386,6 +395,11 @@ export default class Driver {
             .then(() => this._onReady(new DriverStatus({ isCommandResult: true })));
     }
 
+    _onSetTestSpeedCommand (command) {
+        this.speed = command.speed;
+        this._onReady(new DriverStatus({ isCommandResult: true }));
+    }
+
     _onTestDone (status) {
         this.contextStorage.setItem(TEST_DONE_SENT_FLAG, true);
 
@@ -448,6 +462,9 @@ export default class Driver {
         else if (command.type === COMMAND_TYPE.getNativeDialogHistory)
             this._onGetNativeDialogHistoryCommand(command);
 
+        else if (command.type === COMMAND_TYPE.setTestSpeed)
+            this._onSetTestSpeedCommand(command);
+
         else
             this._onActionCommand(command);
     }
@@ -486,6 +503,9 @@ export default class Driver {
     start () {
         this.contextStorage       = new ContextStorage(window, this.testRunId);
         this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.dialogHandler);
+
+        if (!this.speed)
+            this.speed = this.initialSpeed;
 
         browser.startHeartbeat(this.heartbeatUrl, hammerhead.createNativeXHR);
 

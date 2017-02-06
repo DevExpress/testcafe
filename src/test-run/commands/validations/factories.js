@@ -38,3 +38,15 @@ export function createBooleanValidator (ErrorCtor) {
             throw new ErrorCtor(name, valType);
     };
 }
+
+export function createSpeedValidator (ErrorCtor) {
+    return (name, val) => {
+        var valType = typeof val;
+
+        if (valType !== 'number')
+            throw new ErrorCtor(name, valType);
+
+        if (isNaN(val) || val < 0.01 || val > 1)
+            throw new ErrorCtor(name, val);
+    };
+}

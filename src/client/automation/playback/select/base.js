@@ -5,7 +5,7 @@ import * as selectUtils from './utils';
 import MoveAutomation from '../move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
-import { DRAG_ACTION_STEP_DELAY } from '../../settings';
+import AutomationSettings from '../../settings';
 import AUTOMATION_ERROR_TYPES from '../../errors';
 
 var Promise          = hammerhead.Promise;
@@ -21,12 +21,16 @@ var delay           = testCafeCore.delay;
 
 
 export default class SelectBaseAutomation {
-    constructor (element) {
+    constructor (element, actionOptions) {
         this.element = element;
 
         this.absoluteStartPoint = null;
         this.absoluteEndPoint   = null;
         this.clientPoint        = null;
+
+        this.speed = actionOptions.speed;
+
+        this.automationSettings = new AutomationSettings(this.speed);
 
         this.downEvent = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
         this.upEvent   = browserUtils.isTouchDevice ? 'touchend' : 'mouseup';
@@ -60,14 +64,14 @@ export default class SelectBaseAutomation {
             });
     }
 
-    _move ({ element, offsetX, offsetY }) {
-        var moveOptions = new MoveOptions({ offsetX, offsetY }, false);
+    _move ({ element, offsetX, offsetY, speed }) {
+        var moveOptions = new MoveOptions({ offsetX, offsetY, speed }, false);
 
         var moveAutomation = new MoveAutomation(element, moveOptions);
 
         return moveAutomation
             .run()
-            .then(() => delay(DRAG_ACTION_STEP_DELAY));
+            .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }
 
     _bindMousedownHandler () {
@@ -96,7 +100,8 @@ export default class SelectBaseAutomation {
         var moveArguments = {
             element: document.documentElement,
             offsetX: this.clientPoint.x,
-            offsetY: this.clientPoint.y
+            offsetY: this.clientPoint.y,
+            speed:   this.speed
         };
 
         return this._move(moveArguments);
@@ -120,10 +125,8 @@ export default class SelectBaseAutomation {
                 this.eventState.simulateDefaultBehavior = eventSimulator[this.downEvent](this.eventArgs.element,
                     this.eventArgs.options);
 
-                if (this.eventState.simulateDefaultBehavior === false) {
-                    this.eventState.simulateDefaultBehavior = needCloseSelectDropDown &&
-                                                              !this.eventState.mousedownPrevented;
-                }
+                if (this.eventState.simulateDefaultBehavior === false)
+                    this.eventState.simulateDefaultBehavior = needCloseSelectDropDown && !this.eventState.mousedownPrevented;
 
                 return this._focus();
             });

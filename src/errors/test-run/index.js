@@ -171,6 +171,12 @@ export class ActionBooleanOptionError extends ActionOptionErrorBase {
     }
 }
 
+export class ActionSpeedOptionError extends ActionOptionErrorBase {
+    constructor (optionName, actualValue) {
+        super(TYPE.actionSpeedOptionError, optionName, actualValue);
+    }
+}
+
 export class ActionOptionsTypeError extends TestRunErrorBase {
     constructor (actualType) {
         super(TYPE.actionOptionsTypeError);
@@ -210,6 +216,12 @@ export class ActionStringArrayElementError extends ActionArgumentErrorBase {
         super(TYPE.actionStringArrayElementError, argumentName, actualValue);
 
         this.elementIndex = elementIndex;
+    }
+}
+
+export class SetTestSpeedArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TYPE.setTestSpeedArgumentError, argumentName, actualValue);
     }
 }
 

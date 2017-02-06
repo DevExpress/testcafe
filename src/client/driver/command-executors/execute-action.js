@@ -214,13 +214,13 @@ function createAutomation (elements, command) {
         case COMMAND_TYPE.selectTextAreaContent:
             selectArgs = calculateSelectTextArguments(elements[0], command);
 
-            return new SelectTextAutomation(elements[0], selectArgs.startPos, selectArgs.endPos);
+            return new SelectTextAutomation(elements[0], selectArgs.startPos, selectArgs.endPos, command.options);
 
         case COMMAND_TYPE.selectEditableContent:
-            return new SelectEditableContentAutomation(elements[0], elements[1]);
+            return new SelectEditableContentAutomation(elements[0], elements[1], command.options);
 
         case COMMAND_TYPE.pressKey:
-            return new PressAutomation(parseKeySequence(command.keys).combinations);
+            return new PressAutomation(parseKeySequence(command.keys).combinations, command.options);
 
         case COMMAND_TYPE.setFilesToUpload :
             return new UploadAutomation(elements[0], command.filePath,
@@ -236,18 +236,21 @@ function createAutomation (elements, command) {
 
 
 // Execute action
-export default function executeAction (command, selectorTimeout, statusBar, speed) {
+export default function executeAction (command, selectorTimeout, statusBar, testSpeed) {
     var resolveStartPromise = null;
 
     var startPromise = new Promise(resolve => {
         resolveStartPromise = resolve;
     });
 
+    if (!command.options.speed)
+        command.options.speed = testSpeed;
+
     var delayAfterAction = () => {
-        if (speed === 1)
+        if (command.options.speed === 1)
             return Promise.resolve();
 
-        return delay((1 - speed) * MAX_DELAY_AFTER_STEP);
+        return delay((1 - command.options.speed) * MAX_DELAY_AFTER_STEP);
     };
 
     var completionPromise = new Promise(resolve => {
