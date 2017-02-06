@@ -1,18 +1,20 @@
-var expect       = require('chai').expect;
-var fs           = require('fs');
-var path         = require('path');
-var parseFixture = require('../../lib/utils/parse-fixture');
-var Promise      = require('pinkie');
+var expect      = require('chai').expect;
+var fs          = require('fs');
+var path        = require('path');
+var getTestList = require('../../lib/embedding-utils').getTestList;
+var Promise     = require('pinkie');
 
 function testFixtureParser (dir, expectedStructure) {
     var dirPath  = path.join(__dirname, dir);
-    var fileList = fs.readdirSync(dirPath);
+    var fileList = fs.readdirSync(dirPath).sort();
 
     var parseFilePromises = fileList.map(function (filename, index) {
         var filePath = path.join(dirPath, filename);
         var expected = expectedStructure[index];
 
-        return parseFixture(filePath).then(function (structure) {
+        return getTestList(filePath).then(function (structure) {
+            //console.log(JSON.stringify(structure, null, 4));
+
             expect(structure).eql(expected);
         });
     });
@@ -28,6 +30,9 @@ describe('Should get structure of esnext files', function () {
             [
                 {
                     name: 'Fixture1',
+
+                    start: 30,
+                    end:   49,
 
                     loc: {
                         end: {
@@ -45,6 +50,9 @@ describe('Should get structure of esnext files', function () {
                         {
                             name: 'Fixture1Test1',
 
+                            start: 52,
+                            end:   148,
+
                             loc: {
                                 end: {
                                     column: 2,
@@ -60,10 +68,13 @@ describe('Should get structure of esnext files', function () {
                         {
                             name: '<computed name>',
 
+                            start: 187,
+                            end:   238,
+
                             loc: {
                                 end: {
-                                    'column': 2,
-                                    'line':   15
+                                    column: 2,
+                                    line:   15
                                 },
 
                                 start: {
@@ -77,15 +88,18 @@ describe('Should get structure of esnext files', function () {
                 {
                     name: '<computed name>',
 
+                    start: 241,
+                    end:   353,
+
                     loc: {
-                        end: {
-                            column: 26,
-                            line:   20
+                        start: {
+                            line:   17,
+                            column: 0
                         },
 
-                        start: {
-                            column: 0,
-                            line:   17
+                        end: {
+                            line:   20,
+                            column: 26
                         }
                     },
 
@@ -93,15 +107,18 @@ describe('Should get structure of esnext files', function () {
                         {
                             name: 'Fixture2Test1',
 
+                            start: 356,
+                            end:   413,
+
                             loc: {
-                                end: {
-                                    column: 2,
-                                    line:   24
+                                start: {
+                                    line:   22,
+                                    column: 0
                                 },
 
-                                start: {
-                                    column: 0,
-                                    line:   22
+                                end: {
+                                    line:   24,
+                                    column: 2
                                 }
                             }
                         }
@@ -112,15 +129,18 @@ describe('Should get structure of esnext files', function () {
                 {
                     name: 'Fixture3',
 
+                    start: 30,
+                    end:   136,
+
                     loc: {
-                        end: {
-                            column: 27,
-                            line:   6
+                        start: {
+                            line:   3,
+                            column: 0
                         },
 
-                        start: {
-                            column: 0,
-                            line:   3
+                        end: {
+                            line:   6,
+                            column: 27
                         }
                     },
 
@@ -128,15 +148,18 @@ describe('Should get structure of esnext files', function () {
                         {
                             name: '<computed name>',
 
+                            start: 178,
+                            end:   271,
+
                             loc: {
-                                end: {
-                                    column: 2,
-                                    line:   14
+                                start: {
+                                    line:   10,
+                                    column: 0
                                 },
 
-                                start: {
-                                    column: 0,
-                                    line:   10
+                                end: {
+                                    line:   14,
+                                    column: 2
                                 }
                             }
                         }
@@ -153,6 +176,9 @@ describe('Should get structure of esnext files', function () {
             {
                 name: 'Yo',
 
+                start: 173,
+                end:   185,
+
                 loc: {
                     end: {
                         column: 12,
@@ -168,6 +194,9 @@ describe('Should get structure of esnext files', function () {
                 tests: [
                     {
                         name: 'Test',
+
+                        start: 214,
+                        end:   254,
 
                         loc: {
                             end: {
@@ -193,6 +222,9 @@ describe('Should get structure of esnext files', function () {
             [{
                 name: 'Test name is not a string',
 
+                start: 0,
+                end:   35,
+
                 loc: {
                     end: {
                         column: 35,
@@ -208,6 +240,9 @@ describe('Should get structure of esnext files', function () {
                 tests: [
                     {
                         name: 'TheAnswer',
+
+                        start: 210,
+                        end:   238,
 
                         loc: {
                             end: {
@@ -228,11 +263,13 @@ describe('Should get structure of esnext files', function () {
         return testFixtureParser('./data/test-suites/test-name-is-not-a-string', expectedStructure);
     });
 
-
     it('Call from async function', function () {
         var expectedStructure = [
             [{
                 name: 'fixture 1',
+
+                start: 0,
+                end:   20,
 
                 loc: {
                     end: {
@@ -246,10 +283,12 @@ describe('Should get structure of esnext files', function () {
                     }
                 },
 
-
                 tests: [
                     {
                         name: 'test 1',
+
+                        start: 466,
+                        end:   480,
 
                         loc: {
                             end: {
@@ -269,5 +308,146 @@ describe('Should get structure of esnext files', function () {
         ];
 
         return testFixtureParser('./data/test-suites/call-fixture-from-async-function', expectedStructure);
+    });
+
+    it('.skip, .after, .before in test file', function () {
+        var expectedStructure = [
+            [
+                {
+                    name:  'fixture1',
+                    start: 0,
+                    end:   23,
+
+                    loc: {
+                        end: {
+                            column: 23,
+                            line:   1
+                        },
+
+                        start: {
+                            column: 0,
+                            line:   1
+                        }
+                    },
+
+                    tests: [
+                        {
+                            name: 'fixture1test1',
+
+                            start: 26,
+                            end:   111,
+
+                            loc: {
+                                end: {
+                                    column: 2,
+                                    line:   9
+                                },
+
+                                start: {
+                                    column: 0,
+                                    line:   3
+                                }
+                            }
+
+                        }
+                    ]
+                },
+                {
+                    name: 'fixture2',
+
+                    start: 115,
+                    end:   137,
+
+                    loc: {
+                        end: {
+                            column: 22,
+                            line:   12
+                        },
+
+                        start: {
+                            column: 0,
+                            line:   12
+                        }
+                    },
+
+                    tests: [
+                        {
+                            name: 'fixture2test1',
+
+                            start: 140,
+                            end:   164,
+
+                            loc: {
+                                start: {
+                                    line:   14,
+                                    column: 0
+                                },
+
+                                end: {
+                                    line:   14,
+                                    column: 24
+                                }
+                            }
+                        },
+                        {
+                            name: 'fixture2test2',
+
+                            start: 166,
+                            end:   190,
+
+                            loc: {
+                                start: {
+                                    line:   15,
+                                    column: 0
+                                },
+
+                                end: {
+                                    line:   15,
+                                    column: 24
+                                }
+                            }
+                        },
+                        {
+                            name: 'fixture2test3',
+
+                            start: 193,
+                            end:   219,
+
+                            loc: {
+                                start: {
+                                    line:   17,
+                                    column: 0
+                                },
+
+                                end: {
+                                    line:   17,
+                                    column: 26
+                                }
+                            }
+                        },
+                        {
+                            name: 'fixture2test4',
+
+                            start: 221,
+                            end:   247,
+
+                            loc: {
+                                start: {
+                                    line:   18,
+                                    column: 0
+                                },
+
+                                end: {
+                                    line:   18,
+                                    column: 26
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        ];
+
+        return testFixtureParser('./data/test-suites/after-before-skip-in-testfile', expectedStructure);
     });
 });
