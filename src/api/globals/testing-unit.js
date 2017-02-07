@@ -5,7 +5,7 @@ import TestController from '../test-controller';
 import testRunTracker from '../test-run-tracker';
 import processTestFnError from '../../errors/process-test-fn-error';
 
-const PROTOCOL_RE          = /^https?:\/\//;
+const PROTOCOL_RE          = /^(https?|file):\/\//;
 const IMPLICIT_PROTOCOL_RE = /^\/\//;
 
 export default class TestingUnit {
