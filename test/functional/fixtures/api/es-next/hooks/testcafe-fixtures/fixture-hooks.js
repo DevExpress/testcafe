@@ -44,13 +44,10 @@ test('Test3', async t => {
     // NOTE: after hook for first fixture runs in parallel with test,
     // so we just expect it to be executed eventually at some point.
     async function check () {
-        if (hooksExecuted.fixture1After !== 1) {
-            await delay(1000);
-            await check();
-        }
+        return Promise.resolve().then(() => hooksExecuted.fixture1After === 1 ? null : delay(100).then(check));
     }
 
-    await timeLimit(check(), 3000, { rejectWith: new Error('Fixture1 after hook is not executed') });
+    await timeLimit(check(), 5000, { rejectWith: new Error('Fixture1 after hook is not executed') });
 });
 
 fixture `Fixture3`
