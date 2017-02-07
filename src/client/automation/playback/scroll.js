@@ -9,17 +9,21 @@ var positionUtils      = testCafeCore.positionUtils;
 var sendRequestToFrame = testCafeCore.sendRequestToFrame;
 
 
-const MAX_SCROLL_MARGIN   = 50;
+const DEFAULT_MAX_SCROLL_MARGIN   = 50;
+const SCROLL_MARGIN_INCREASE_STEP = 20;
+
 const SCROLL_REQUEST_CMD  = 'automation|scroll|request';
 const SCROLL_RESPONSE_CMD = 'automation|scroll|response';
 
 // Setup cross-iframe interaction
 messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     if (e.message.cmd === SCROLL_REQUEST_CMD) {
-        var element = domUtils.findIframeByWindow(e.source);
-        var offsetX = e.message.offsetX;
-        var offsetY = e.message.offsetY;
-        var scroll  = new ScrollAutomation(element, { offsetX, offsetY });
+        var element         = domUtils.findIframeByWindow(e.source);
+        var offsetX         = e.message.offsetX;
+        var offsetY         = e.message.offsetY;
+        var forceScroll     = e.message.forceScroll;
+        var maxScrollMargin = e.message.maxScrollMargin;
+        var scroll          = new ScrollAutomation(element, { offsetX, offsetY }, forceScroll, maxScrollMargin);
 
         scroll
             .run()
@@ -28,10 +32,12 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
 });
 
 export default class ScrollAutomation {
-    constructor (element, offsetOptions) {
-        this.element = element;
-        this.offsetX = offsetOptions.offsetX;
-        this.offsetY = offsetOptions.offsetY;
+    constructor (element, offsetOptions, forceScroll = false, maxScrollMargin = DEFAULT_MAX_SCROLL_MARGIN) {
+        this.element         = element;
+        this.offsetX         = offsetOptions.offsetX;
+        this.offsetY         = offsetOptions.offsetY;
+        this.forceScroll     = forceScroll;
+        this.maxScrollMargin = maxScrollMargin;
     }
 
     static _setScroll (element, { left, top }) {
@@ -47,33 +53,39 @@ export default class ScrollAutomation {
         styleUtils.setScrollTop(element, top);
     }
 
-    static _getScrollToPoint (elementDimensions, { x, y }) {
+    _getScrollToPoint (elementDimensions, { x, y }) {
         var needForwardScrollLeft  = x >= elementDimensions.scroll.left + elementDimensions.width;
         var needBackwardScrollLeft = x <= elementDimensions.scroll.left;
 
         var needForwardScrollTop  = y >= elementDimensions.scroll.top + elementDimensions.height;
         var needBackwardScrollTop = y <= elementDimensions.scroll.top;
 
-        var maxLeftScrollMargin = Math.min(MAX_SCROLL_MARGIN, Math.floor(elementDimensions.width / 2));
-        var maxTopScrollMargin  = Math.min(MAX_SCROLL_MARGIN, Math.floor(elementDimensions.height / 2));
+        var needForcedForwardScrollLeft = this.forceScroll &&
+                                          x >= elementDimensions.scroll.left + elementDimensions.width / 2;
+
+        var needForcedForwardScrollTop  = this.forceScroll &&
+                                          y >= elementDimensions.scroll.top + elementDimensions.height / 2;
+
+        var maxLeftScrollMargin = Math.min(this.maxScrollMargin, Math.floor(elementDimensions.width / 2));
+        var maxTopScrollMargin  = Math.min(this.maxScrollMargin, Math.floor(elementDimensions.height / 2));
 
         var left = elementDimensions.scroll.left;
         var top  = elementDimensions.scroll.top;
 
-        if (needForwardScrollLeft)
+        if (needForwardScrollLeft || needForcedForwardScrollLeft)
             left = x - elementDimensions.width + maxLeftScrollMargin;
-        else if (needBackwardScrollLeft)
+        else if (needBackwardScrollLeft || this.forceScroll)
             left = x - maxLeftScrollMargin;
 
-        if (needForwardScrollTop)
+        if (needForwardScrollTop || needForcedForwardScrollTop)
             top = y - elementDimensions.height + maxTopScrollMargin;
-        else if (needBackwardScrollTop)
+        else if (needBackwardScrollTop || this.forceScroll)
             top = y - maxTopScrollMargin;
 
         return { left, top };
     }
 
-    static _getScrollToFullChildView (parentDimensions, childDimensions) {
+    _getScrollToFullChildView (parentDimensions, childDimensions) {
         var fullViewScrollLeft = null;
         var fullViewScrollTop  = null;
 
@@ -83,14 +95,17 @@ export default class ScrollAutomation {
         var relativePosition = positionUtils.calcRelativePosition(childDimensions, parentDimensions);
 
         if (canShowFullElementWidth) {
-            var maxLeftScrollMargin = Math.min(MAX_SCROLL_MARGIN, Math.floor(parentDimensions.width -
-                                                                             childDimensions.width));
+            var maxLeftScrollMargin = Math.min(this.maxScrollMargin, Math.floor(parentDimensions.width -
+                                                                                childDimensions.width));
 
-            if (relativePosition.left < 0) {
+            var needForcedBackwardHorizontalScroll = this.forceScroll &&
+                                                     relativePosition.left < parentDimensions.width / 2;
+
+            if (relativePosition.left < 0 || needForcedBackwardHorizontalScroll) {
                 fullViewScrollLeft = Math.round(parentDimensions.scroll.left + relativePosition.left -
                                                 maxLeftScrollMargin);
             }
-            else if (relativePosition.left > 0 && relativePosition.right < 0) {
+            else if (relativePosition.left > 0 && relativePosition.right < 0 || this.forceScroll) {
                 fullViewScrollLeft = Math.round(parentDimensions.scroll.left +
                                                 Math.min(relativePosition.left, -relativePosition.right) +
                                                 maxLeftScrollMargin);
@@ -98,12 +113,15 @@ export default class ScrollAutomation {
         }
 
         if (canShowFullElementHeight) {
-            var maxTopScrollMargin = Math.min(MAX_SCROLL_MARGIN, Math.floor(parentDimensions.height -
-                                                                            childDimensions.height));
+            var maxTopScrollMargin = Math.min(this.maxScrollMargin, Math.floor(parentDimensions.height -
+                                                                               childDimensions.height));
 
-            if (relativePosition.top < 0)
+            var needForcedBackwardVerticalScroll = this.forceScroll &&
+                                                   relativePosition.top < parentDimensions.height / 2;
+
+            if (relativePosition.top < 0 || needForcedBackwardVerticalScroll)
                 fullViewScrollTop = Math.round(parentDimensions.scroll.top + relativePosition.top - maxTopScrollMargin);
-            else if (relativePosition.top > 0 && relativePosition.bottom < 0) {
+            else if (relativePosition.top > 0 && relativePosition.bottom < 0 || this.forceScroll) {
                 fullViewScrollTop = Math.round(parentDimensions.scroll.top +
                                                Math.min(relativePosition.top, -relativePosition.bottom) +
                                                maxTopScrollMargin);
@@ -116,7 +134,7 @@ export default class ScrollAutomation {
         };
     }
 
-    static _scrollToChild (parent, child, { offsetX, offsetY }) {
+    _scrollToChild (parent, child, { offsetX, offsetY }) {
         var parentDimensions = positionUtils.getClientDimensions(parent);
         var childDimensions  = positionUtils.getClientDimensions(child);
 
@@ -127,8 +145,8 @@ export default class ScrollAutomation {
                childDimensions.border.top + offsetY
         };
 
-        var scrollToFullView = ScrollAutomation._getScrollToFullChildView(parentDimensions, childDimensions);
-        var scrollToPoint    = ScrollAutomation._getScrollToPoint(parentDimensions, childPoint);
+        var scrollToFullView = this._getScrollToFullChildView(parentDimensions, childDimensions);
+        var scrollToPoint    = this._getScrollToPoint(parentDimensions, childPoint);
 
         var left = scrollToFullView.left === null ? scrollToPoint.left : scrollToFullView.left;
         var top  = scrollToFullView.top === null ? scrollToPoint.top : scrollToFullView.top;
@@ -141,7 +159,7 @@ export default class ScrollAutomation {
             return;
 
         var elementDimensions = positionUtils.getClientDimensions(this.element);
-        var scroll            = ScrollAutomation._getScrollToPoint(elementDimensions, {
+        var scroll            = this._getScrollToPoint(elementDimensions, {
             x: this.offsetX,
             y: this.offsetY
         });
@@ -160,7 +178,7 @@ export default class ScrollAutomation {
         var parentDimensions = null;
 
         for (var i = 0; i < parents.length; i++) {
-            ScrollAutomation._scrollToChild(parents[i], currentChild, {
+            this._scrollToChild(parents[i], currentChild, {
                 offsetX: currentOffsetX,
                 offsetY: currentOffsetY
             });
@@ -176,18 +194,49 @@ export default class ScrollAutomation {
 
         if (window.top !== window) {
             return sendRequestToFrame({
-                cmd:     SCROLL_REQUEST_CMD,
-                offsetX: currentOffsetX,
-                offsetY: currentOffsetY
+                cmd:             SCROLL_REQUEST_CMD,
+                offsetX:         currentOffsetX,
+                offsetY:         currentOffsetY,
+                forceScroll:     this.forceScroll,
+                maxScrollMargin: this.maxScrollMargin
             }, SCROLL_RESPONSE_CMD, window.parent);
         }
 
         return Promise.resolve();
     }
 
+    _isElementHiddenByFixed () {
+        var clientDimensions = positionUtils.getClientDimensions(this.element);
+        var elementInPoint   = positionUtils.getElementFromPoint(clientDimensions.left +
+                                                                 this.offsetX, clientDimensions.top + this.offsetY);
+
+        return elementInPoint && styleUtils.getComputedStyle(elementInPoint).position === 'fixed';
+    }
+
+    _isScrollMarginTooBig () {
+        var minWindowDimension = Math.min(styleUtils.getInnerWidth(window), styleUtils.getInnerHeight(window));
+
+        return this.maxScrollMargin >= minWindowDimension / 2;
+    }
+
     run () {
         this._scrollElement();
 
-        return this._scrollParents();
+        return this
+            ._scrollParents()
+            .then(() => {
+                if (this._isScrollMarginTooBig() || !this._isElementHiddenByFixed())
+                    return Promise.resolve();
+
+                var offsetOptions = {
+                    offsetX: this.offsetX,
+                    offsetY: this.offsetY
+                };
+
+                var newMaxScrollMargin = this.maxScrollMargin + SCROLL_MARGIN_INCREASE_STEP;
+                var correctionScroll   = new ScrollAutomation(this.element, offsetOptions, true, newMaxScrollMargin);
+
+                return correctionScroll.run();
+            });
     }
 }

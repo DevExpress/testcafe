@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <title></title>
+    <style>
+        body {
+            width: 3000px;
+            height: 3000px;
+        }
+
+        #target1 {
+            position: absolute;
+            left: 500px;
+            top: 500px;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+        }
+
+        #target2 {
+            position: absolute;
+            left: 2500px;
+            top: 2500px;
+            width: 20px;
+            height: 20px;
+            background-color: blue;
+        }
+
+        .fixed-bottom {position:fixed; bottom:0; left:0; right: 0; height: 125px; background-color: rgba(244, 244, 50, 0.5)}
+        .fixed-right {position:fixed; top:0; bottom:0; right: 0; width: 150px; background-color: rgba(244, 244, 50, 0.5)}
+        .fixed-top {position:fixed; top:0; left:0; right: 0; height: 75px; background-color: rgba(244, 244, 50, 0.5)}
+        .fixed-left {position:fixed; top:0; bottom:0; left: 0; width: 100px; background-color: rgba(244, 244, 50, 0.5)}
+    </style>
+</head>
+<body>
+<div id="target1" onclick="window.target1Clicked = true"></div>
+<div id="target2" onclick="window.target2Clicked = true"></div>
+
+<div class="fixed-bottom" onclick="throw new Error('Misplaced click')"></div>
+<div class="fixed-right" onclick="throw new Error('Misplaced click')"></div>
+<div class="fixed-top" onclick="throw new Error('Misplaced click')"></div>
+<div class="fixed-left" onclick="throw new Error('Misplaced click')"></div>
+
+<script>
+    var userAgent = window.navigator.userAgent.toLocaleLowerCase();
+    var isIOS = /(iphone|ipod|ipad)/.test(userAgent);
+
+    // NOTE: Try to avoid odd scrolls in iOS on sauceLabs
+    if (isIOS) {
+        var originWindowScrollTo = window.scrollTo;
+        var lastScrollTop        = window.scrollY;
+        var lastScrollLeft       = window.scrollX;
+
+        window.scrollTo = function () {
+            lastScrollLeft = arguments[0];
+            lastScrollTop  = arguments[1];
+
+            originWindowScrollTo.apply(window, arguments);
+        };
+
+        window.addEventListener('scroll', function () {
+            if (window.scrollX !== lastScrollLeft || window.scrollY !== lastScrollTop)
+                window.scrollTo(lastScrollLeft, lastScrollTop);
+        });
+
+        Object.defineProperty(document.body, 'scrollTop', {
+            get: function () {
+                return window.scrollY;
+            },
+
+            set: function (y) {
+                window.scrollTo(window.scrollX, y);
+            }
+        });
+
+        Object.defineProperty(document.body, 'scrollLeft', {
+            get: function () {
+                return window.scrollX;
+            },
+
+            set: function (x) {
+                window.scrollTo(x, window.scrollY);
+            }
+        });
+    }
+</script>
+</body>
+</html>
