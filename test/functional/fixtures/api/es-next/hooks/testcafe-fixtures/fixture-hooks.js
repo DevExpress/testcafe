@@ -47,7 +47,7 @@ test('Test3', async t => {
         return Promise.resolve().then(() => hooksExecuted.fixture1After === 1 ? null : delay(100).then(check));
     }
 
-    await timeLimit(check(), 5000, { rejectWith: new Error('Fixture1 after hook is not executed') });
+    await timeLimit(check(), 5000, { rejectWith: new Error(`fixture1After counter is expected to be 1, but it was ${hooksExecuted.fixture1After}`) });
 });
 
 fixture `Fixture3`
