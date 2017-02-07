@@ -44,7 +44,7 @@ test('Test3', async t => {
     // NOTE: after hook for first fixture runs in parallel with test,
     // so we just expect it to be executed eventually at some point.
     async function check () {
-        if(hooksExecuted.fixture1After !== 1) {
+        if (hooksExecuted.fixture1After !== 1) {
             await delay(1000);
             await check();
         }
