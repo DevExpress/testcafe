@@ -327,6 +327,7 @@ Provide support for more browsers to test against.
 
 * [SauceLabs](https://github.com/DevExpress/testcafe-browser-provider-saucelabs)
 * [Nightmare](https://github.com/ryx/testcafe-browser-provider-nightmare)
+* [iOS Simulator](https://github.com/Ents24/testcafe-browser-provider-fbsimctl)
 
 ### Custom Reporters
 
