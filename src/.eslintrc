@@ -6,5 +6,8 @@
   },
   "plugins": [
     "babel"
-  ]
+  ],
+  "globals": {
+     "Map": true
+   }
 }

@@ -79,9 +79,9 @@ export default class BrowserConnectionGateway {
             res.end(connection.renderIdlePage());
     }
 
-    static onStatusRequest (req, res, connection) {
+    static async onStatusRequest (req, res, connection) {
         if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
-            var status = connection.getStatus();
+            var status = await connection.getStatus();
 
             respondWithJSON(res, status);
         }

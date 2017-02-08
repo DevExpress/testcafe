@@ -3,6 +3,7 @@ import { pull as remove } from 'lodash';
 import BrowserJob from './browser-job';
 import Screenshots from '../screenshots';
 import WarningLog from '../notifications/warning-log';
+import FixtureHookController from './fixture-hook-controller';
 
 export default class Task extends EventEmitter {
     constructor (tests, browserConnections, proxy, opts) {
@@ -14,7 +15,8 @@ export default class Task extends EventEmitter {
         this.screenshots        = new Screenshots(opts.screenshotPath);
         this.warningLog         = new WarningLog();
 
-        this.pendingBrowserJobs = this._createBrowserJobs(proxy, opts);
+        this.fixtureHookController = new FixtureHookController(tests, browserConnections.length);
+        this.pendingBrowserJobs    = this._createBrowserJobs(proxy, opts);
     }
 
     _assignBrowserJobEventHandlers (job) {
@@ -39,7 +41,7 @@ export default class Task extends EventEmitter {
 
     _createBrowserJobs (proxy, opts) {
         return this.browserConnections.map(bc => {
-            var job = new BrowserJob(this.tests, bc, proxy, this.screenshots, this.warningLog, opts);
+            var job = new BrowserJob(this.tests, bc, proxy, this.screenshots, this.warningLog, this.fixtureHookController, opts);
 
             this._assignBrowserJobEventHandlers(job);
             bc.addJob(job);

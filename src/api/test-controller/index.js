@@ -124,6 +124,10 @@ export default class TestController {
         return this.testRun.ctx;
     }
 
+    _fixtureCtx$getter () {
+        return this.testRun.fixtureCtx;
+    }
+
     _click$ (selector, options) {
         return this._enqueueAction('click', ClickCommand, { selector, options });
     }
