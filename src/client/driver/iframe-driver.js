@@ -28,8 +28,8 @@ export default class IframeDriver extends Driver {
         eventSandbox.message.on(eventSandbox.message.SERVICE_MSG_RECEIVED_EVENT, e => {
             var msg = e.message;
 
-            pageUnloadBarrier
-                .wait(0)
+            Promise
+                .all([pageUnloadBarrier.wait(0), this.readyPromise])
                 .then(() => {
                     // NOTE: the parent driver repeats commands sent to a child driver if it doesn't get a confirmation
                     // from the child in time. However, confirmations sent by child drivers may be delayed when the browser
