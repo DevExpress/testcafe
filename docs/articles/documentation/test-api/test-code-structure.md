@@ -245,7 +245,7 @@ Each test run has its own test context.
 
 Fixture hooks are executed before the first test in a fixture is started and after the last test is finished.
 
-Unlike [test hooks](#test-hooks), fixture hooks are executed when tests are not running.
+Unlike [test hooks](#test-hooks), fixture hooks are executed between test runs and do not have access to the tested page.
 Use them to perform server-side operations like preparing the server that hosts the tested app.
 
 To specify fixture hooks, use the `fixture.before` and `fixture.after` methods.
