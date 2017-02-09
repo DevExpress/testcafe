@@ -13,7 +13,10 @@ This topic contains the following sections.
   * [Test Controller](#test-controller)
 * [Specifying the Start Webpage](#specifying-the-start-webpage)
 * [Initialization and Clean-Up](#initialization-and-clean-up)
-  * [Sharing Variables Between the Hooks and Test Code](#sharing-variables-between-the-hooks-and-test-code)
+  * [Test Hooks](#test-hooks)
+    * [Sharing Variables Between Test Hooks and Test Code](#sharing-variables-between-test-hooks-and-test-code)
+  * [Fixture Hooks](#fixture-hooks)
+    * [Sharing Variables Between Fixture Hooks and Test Code](#sharing-variables-between-fixture-hooks-and-test-code)
 * [Skipping Tests](#skipping-tests)
 
 > If you use [eslint](http://eslint.org/) in your project, get the [TestCafe plugin](https://www.npmjs.com/package/eslint-plugin-testcafe)
@@ -145,8 +148,15 @@ If the start page is not specified, it defaults to `about:blank`.
 
 ## Initialization and Clean-Up
 
-You can provide initialization code that will be executed before each test starts and clean-up code that will executed after the test finishes.
-To do this, add the `beforeEach` and `afterEach` *hook functions* to the [fixture declaration](#fixtures).
+TestCafe allows you to specify functions that will be executed before a fixture or test is started and after it is finished.
+These functions are called *hook functions* or *hooks*.
+
+### Test Hooks
+
+Test hooks are executed before a test is started and after it is finished.
+At the moment they run, the tested webpage is already loaded, so that you can use [test actions](actions/index.md) and other test run API inside test hooks.
+
+You can specify a hook for each test in a fixture by using the `beforeEach` and `afterEach` methods in the [fixture declaration](#fixtures).
 
 ```text
 fixture.beforeEach( fn(t) )
@@ -156,7 +166,7 @@ fixture.beforeEach( fn(t) )
 fixture.afterEach( fn(t) )
 ```
 
-You can also specify initialization and clean-up logic for an individual test by using the `test.before` and `test.after` hooks.
+You can also specify hooks for an individual test by using the `test.before` and `test.after` methods.
 
 ```text
 test.before( fn(t) )
@@ -167,17 +177,16 @@ test.after( fn(t) )
 ```
 
 > If `test.before` or `test.after` is specified, it overrides the corresponding
-> `fixture.beforeEach` and `fixture.afterEach` method, so that fixture's methods are not executed.
+> `fixture.beforeEach` and `fixture.afterEach` hook, so that the latter are not executed.
 
 The `test.before`, `test.after`,  `fixture.beforeEach` and `fixture.afterEach` methods take the following parameters.
 
 Parameter | Type     | Description
 --------- | -------- | ---------------------------------------------------------------------------
-`fn`      | Function | An asynchronous function that contains initialization or clean-up code.
+`fn`      | Function | An asynchronous hook function that contains initialization or clean-up code.
 `t`       | Object   | The [test controller](#test-controller) used to access test run API.
 
-As long as the function you provide receives a [test controller](#test-controller),
-you can use [test actions](actions/index.md) and other test run API inside the `test.before`, `test.after`,  `fixture.beforeEach` and `fixture.afterEach` functions.
+**Example**
 
 ```js
 fixture `My fixture`
@@ -199,9 +208,9 @@ test
     });
 ```
 
-### Sharing Variables Between the Hooks and Test Code
+#### Sharing Variables Between Test Hooks and Test Code
 
-You can share variables between `fixture.beforeEach`, `fixture.afterEach`, `test.before`, `test.after` functions and test code
+You can share variables between test hook functions and test code
 by using the *test context* object.
 
 Test context is available through the `t.ctx` property.
@@ -230,6 +239,82 @@ test
 Each test run has its own test context.
 
 > `t.ctx` is initialized with an empty object without a prototype. You can iterate its keys without the `hasOwnProperty` check.
+
+### Fixture Hooks
+
+Fixture hooks are executed before the first test in a fixture is started and after the last test is finished.
+
+To specify fixture hooks, use the `fixture.before` and `fixture.after` methods.
+
+```text
+fixture.before( fn(ctx) )
+```
+
+```text
+fixture.after( fn(ctx) )
+```
+
+Parameter | Type     | Description
+--------- | -------- | ---------------------------------------------------------------------------
+`fn`      | Function | An asynchronous hook function that contains initialization or clean-up code.
+`ctx`     | Object   | A *fixture context* object used to [share variables](#sharing-variables-between-fixture-hooks-and-test-code) between fixture hooks and test code.
+
+**Example**
+
+```js
+fixture `My fixture`
+    .page `http://example.com`
+    .before( async ctx => {
+        /* fixture initialization code */
+    })
+    .after( async ctx => {
+        /* fixture finalization code */
+    });
+```
+
+#### Sharing Variables Between Fixture Hooks and Test Code
+
+Hook functions passed to `fixture.before` and `fixture.after` methods take a `ctx` parameter that contains *fixture context*.
+You can assign to this parameter to share the value or object with test code.
+
+```js
+fixture `Fixture1`
+    .before(async ctx  => {
+        ctx = 123;
+    })
+    .after(async ctx  => {
+        console.log(ctx); // > 123
+    });
+```
+
+To access fixture context from tests, use the `t.fixtureCtx` property.
+
+```text
+t.fixtureCtx
+```
+
+Test code can read from the `t.fixtureCtx` property but it cannot assign to it.
+If you need to add info to `t.fixtureCtx` from a test, introduce a new property.
+
+**Example**
+
+```js
+fixture `Fixture1`
+    .before(async ctx  => {
+        ctx.someProp = 123;
+    })
+    .after(async ctx  => {
+        console.log(ctx.newProp); // > abc
+    });
+
+test('Test1', async t => {
+    console.log(t.fixtureCtx.someProp); // > 123
+});
+
+test('Test2', async t => {
+    t.fixtureCtx.newProp = 'abc';
+});
+```
 
 ## Skipping Tests
 
