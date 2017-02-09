@@ -153,8 +153,9 @@ These functions are called *hook functions* or *hooks*.
 
 ### Test Hooks
 
-Test hooks are executed before a test is started and after it is finished.
-At the moment they run, the tested webpage is already loaded, so that you can use [test actions](actions/index.md) and other test run API inside test hooks.
+Test hooks are executed in each test run before a test is started and after it is finished. If a test runs in several browsers, test hooks are executed in each browser.
+
+At the moment test hooks run, the tested webpage is already loaded, so that you can use [test actions](actions/index.md) and other test run API inside test hooks.
 
 You can specify a hook for each test in a fixture by using the `beforeEach` and `afterEach` methods in the [fixture declaration](#fixtures).
 
@@ -244,6 +245,9 @@ Each test run has its own test context.
 
 Fixture hooks are executed before the first test in a fixture is started and after the last test is finished.
 
+Unlike [test hooks](#test-hooks), fixture hooks are executed when tests are not running.
+Use them to perform server-side operations like preparing the server that hosts the tested app.
+
 To specify fixture hooks, use the `fixture.before` and `fixture.after` methods.
 
 ```text
@@ -275,15 +279,15 @@ fixture `My fixture`
 #### Sharing Variables Between Fixture Hooks and Test Code
 
 Hook functions passed to `fixture.before` and `fixture.after` methods take a `ctx` parameter that contains *fixture context*.
-You can assign to this parameter to share the value or object with test code.
+You can add properties to this parameter to share the value or object with test code.
 
 ```js
 fixture `Fixture1`
     .before(async ctx  => {
-        ctx = 123;
+        ctx.someProp = 123;
     })
     .after(async ctx  => {
-        console.log(ctx); // > 123
+        console.log(ctx.someProp); // > 123
     });
 ```
 
@@ -293,8 +297,7 @@ To access fixture context from tests, use the `t.fixtureCtx` property.
 t.fixtureCtx
 ```
 
-Test code can read from the `t.fixtureCtx` property but it cannot assign to it.
-If you need to add info to `t.fixtureCtx` from a test, introduce a new property.
+Test code can read from `t.fixtureCtx`, assign to its properties or add new ones, but it cannot overwrite the entire `t.fixtureCtx` object.
 
 **Example**
 
