@@ -28,6 +28,8 @@ This topic contains the following sections.
       * [parent](#parent)
       * [child](#child)
       * [sibling](#sibling)
+      * [nextSibling](#nextsibling)
+      * [prevSibling](#prevsibling)
   * [Examples](#examples)
 * [Using Selectors](#using-selectors)
   * [Check if an Element Exists](#check-if-an-element-exists)
@@ -349,7 +351,7 @@ The `filterFn` predicate is executed on the client. It takes the following param
 
 Parameter | Description
 ------ | -----
-`node`  | The current descendant node.
+`node`  | The current sibling node.
 `idx` | Index of `node` among other sibling nodes.
 `originNode` | A node from the left-hand selector's matching set whose siblings are being iterated.
 
@@ -368,6 +370,78 @@ you to pass objects to the `filterFn` client-side scope where they appear as var
 const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
 
 Selector('ul').sibling((node, idx, originNode) => {
+    return isNodeOk(node, idx, originNode);
+}, { isNodeOk });
+```
+
+#### nextSibling
+
+Method | Description
+------ | -----
+`nextSibling()` | Finds all succeeding sibling elements (not nodes) of all nodes in the matching set.
+`nextSibling(index)` | Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by `index`. If `index` is negative, the index is counted from the end of the matching set.
+`nextSibling(cssSelector)` | Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
+`nextSibling(filterFn, dependencies)` |  Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+
+The `filterFn` predicate is executed on the client. It takes the following parameters.
+
+Parameter | Description
+------ | -----
+`node`  | The current succeeding sibling node.
+`idx` | Index of `node` among other succeeding sibling nodes.
+`originNode` | A node from the left-hand selector's matching set whose siblings are being iterated.
+
+```js
+Selector('section').nextSibling((node, idx, originNode) => {
+    // node === the <section>'s succeeding sibling node
+    // idx === index of the current <section>'s succeeding sibling node
+    // originNode === the <section> element
+});
+```
+
+The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
+you to pass objects to the `filterFn` client-side scope where they appear as variables.
+
+```js
+const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+
+Selector('ul').nextSibling((node, idx, originNode) => {
+    return isNodeOk(node, idx, originNode);
+}, { isNodeOk });
+```
+
+#### prevSibling
+
+Method | Description
+------ | -----
+`prevSibling()` | Finds all preceding sibling elements (not nodes) of all nodes in the matching set.
+`prevSibling(index)` | Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by `index`. If `index` is negative, the index is counted from the end of the matching set.
+`prevSibling(cssSelector)` | Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
+`prevSibling(filterFn, dependencies)` |  Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
+
+The `filterFn` predicate is executed on the client. It takes the following parameters.
+
+Parameter | Description
+------ | -----
+`node`  | The current preceding sibling node.
+`idx` | Index of `node` among other preceding sibling nodes.
+`originNode` | A node from the left-hand selector's matching set whose siblings are being iterated.
+
+```js
+Selector('section').prevSibling((node, idx, originNode) => {
+    // node === the <section>'s preceding sibling node
+    // idx === index of the current <section>'s preceding sibling node
+    // originNode === the <section> element
+});
+```
+
+The [dependencies parameter](../obtaining-data-from-the-client.md#optionsdependencies) allows
+you to pass objects to the `filterFn` client-side scope where they appear as variables.
+
+```js
+const isNodeOk = ClientFunction((node, idx, originNode) => { /*...*/ });
+
+Selector('ul').prevSibling((node, idx, originNode) => {
     return isNodeOk(node, idx, originNode);
 }, { isNodeOk });
 ```
