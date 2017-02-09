@@ -386,6 +386,80 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
 
         return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter, { expandSelectorResults });
     };
+
+    // Next sibling
+    obj.nextSibling = (filter, dependencies) => {
+        if (filter !== void 0)
+            assertType([is.string, is.function, is.number], 'nextSibling', '"filter" argument', filter);
+
+        filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
+
+        var selectorFn = () => {
+            /* eslint-disable no-undef */
+            return expandSelectorResults(selector, node => {
+                var parent = node.parentNode;
+
+                if (!parent)
+                    return null;
+
+                var siblings  = [];
+                var cnLength  = parent.childNodes.length;
+                var afterNode = false;
+
+                for (var i = 0; i < cnLength; i++) {
+                    var child = parent.childNodes[i];
+
+                    if (child === node)
+                        afterNode = true;
+
+                    else if (afterNode && child.nodeType === 1)
+                        siblings.push(child);
+                }
+
+                return filter !== void 0 ? filterNodes(siblings, filter, parent, node) : siblings;
+            });
+            /* eslint-enable no-undef */
+        };
+
+        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter, { expandSelectorResults });
+    };
+
+    // Prev sibling
+    obj.prevSibling = (filter, dependencies) => {
+        if (filter !== void 0)
+            assertType([is.string, is.function, is.number], 'prevSibling', '"filter" argument', filter);
+
+        filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
+
+        var selectorFn = () => {
+            /* eslint-disable no-undef */
+            return expandSelectorResults(selector, node => {
+                var parent = node.parentNode;
+
+                if (!parent)
+                    return null;
+
+                var siblings = [];
+                var cnLength = parent.childNodes.length;
+
+                for (var i = 0; i < cnLength; i++) {
+                    var child = parent.childNodes[i];
+
+                    if (child === node)
+                        break;
+
+                    if (child.nodeType === 1)
+                        siblings.push(child);
+                }
+
+                return filter !== void 0 ? filterNodes(siblings, filter, parent, node) : siblings;
+            });
+            /* eslint-enable no-undef */
+        };
+
+        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter, { expandSelectorResults });
+    };
+
 }
 
 export default function addAPI (obj, getSelector, SelectorBuilder, customDOMProperties) {

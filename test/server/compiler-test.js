@@ -1169,6 +1169,58 @@ describe('Compiler', function () {
                     });
                 });
         });
+
+        it('Should raise an error if Selector.nextSibling `filter` argument is not a function or string', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-next-sibling-incorrect-arg-type/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"filter" argument is expected to be a string, function or a number, but it was object.',
+
+                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |Selector(\'span\').nextSibling();\n' +
+                                  ' > 5 |Selector(\'span\').nextSibling({});\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});'
+                    });
+                });
+        });
+
+        it('Should raise an error if Selector.prevSibling `filter` argument is not a function or string', function () {
+            var testfile = resolve('test/server/data/test-suites/selector-prev-sibling-incorrect-arg-type/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"filter" argument is expected to be a string, function or a number, but it was object.',
+
+                        callsite: "   1 |import { Selector } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |Selector(\'span\').prevSibling();\n' +
+                                  ' > 5 |Selector(\'span\').prevSibling({});\n' +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});'
+                    });
+                });
+        });
     });
 
     describe('Raw data compiler', function () {

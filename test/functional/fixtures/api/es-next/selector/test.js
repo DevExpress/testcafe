@@ -93,6 +93,14 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "sibling" method');
     });
 
+    it('Should provide .nextSibling() method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "nextSibling" method');
+    });
+
+    it('Should provide .prevSibling() method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "prevSibling" method');
+    });
+
     it('Should provide "exists" and "count" properties', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "count" and "exists" properties');
     });

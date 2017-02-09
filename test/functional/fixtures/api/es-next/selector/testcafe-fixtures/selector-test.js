@@ -798,3 +798,51 @@ test('Add custom DOM properties method - property throws an error', async () => 
 
     await el();
 });
+
+test('Selector "nextSibling" method', async t => {
+    // Index filter
+    await t
+        .expect(Selector('#el2').nextSibling(1).id).eql('el4')
+        .expect(Selector('#el2').nextSibling().nextSibling().id).eql('el4')
+        .expect(Selector('#el1').nextSibling().id).eql('el2')
+        .expect(Selector('#el1').nextSibling(-2).id).eql('el3')
+        .expect(Selector('#el2').nextSibling(0).count).eql(1);
+
+    // CSS selector filter
+    await t.expect(Selector('#textInput').nextSibling('select').id).eql('selectInput');
+
+    // Function selector
+    await t.expect(Selector('#el2').nextSibling(el => el.id === 'el3').id).eql('el3');
+
+    // Parameterized selector
+    const withId = Selector(id => document.getElementById(id));
+
+    await t.expect(withId('el2').nextSibling().id).eql('el3');
+
+    // With filters
+    await t.expect(Selector('#el2').nextSibling().withText('element 4').id).eql('el4');
+});
+
+test('Selector "prevSibling" method', async t => {
+    // Index filter
+    await t
+        .expect(Selector('#el3').prevSibling(1).id).eql('el2')
+        .expect(Selector('#el3').prevSibling().nextSibling().prevSibling().id).eql('el1')
+        .expect(Selector('#el3').prevSibling().id).eql('el1')
+        .expect(Selector('#el3').prevSibling(-2).id).eql('el1')
+        .expect(Selector('#el2').prevSibling(0).count).eql(1);
+
+    // CSS selector filter
+    await t.expect(Selector('#selectInput').prevSibling('[type=text]').id).eql('textInput');
+
+    // Function selector
+    await t.expect(Selector('#el3').prevSibling(el => el.id === 'el2').id).eql('el2');
+
+    // Parameterized selector
+    const withId = Selector(id => document.getElementById(id));
+
+    await t.expect(withId('el2').prevSibling().id).eql('el1');
+
+    // With filters
+    await t.expect(Selector('#el4').prevSibling().withText('Hey?!').nth(0).id).eql('el2');
+});
