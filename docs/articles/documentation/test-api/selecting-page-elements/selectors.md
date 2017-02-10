@@ -37,7 +37,6 @@ This topic contains the following sections.
   * [Define Assertion Actual Value](#define-assertion-actual-value)
   * [Selector Timeout](#selector-timeout)
 * [Adding Custom Properties to Element State](#adding-custom-properties-to-element-state)
-* [One-Time Selection](#one-time-selection)
 * [Calling Selectors from Node.js Callbacks](#calling-selectors-from-nodejs-callbacks)
 * [Limitations](#limitations)
 
@@ -652,32 +651,6 @@ test('Check Label HTML', async t => {
     });
 
     await t.expect(label.innerHTML).contains('input type="checkbox" name="remote"');
-});
-```
-
-## One-Time Selection
-
-> Important! ***Deprecated*** *Use [selectors](#creating-selectors) instead. The `select` method of the [test controller](../test-code-structure.md#test-controller) will be removed in future releases.*
-
-To create a selector and immediately execute it without saving it, use the `select` method of the [test controller](../test-code-structure.md#test-controller).
-
-```text
-t.select( init [, options] )
-```
-
-Parameter              | Type     | Description
----------------------- | -------- | ------------------------------------------------------------------
-`init`                 | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a DOM node to be selected; see [Selector Initializers](#selector-initializers).
-`options`&#160;*(optional)* | Object   | See [Options](selector-options.md).
-
-The following example shows how to get a DOM element by ID with `t.select`.
-
-```js
-fixture `My fixture`
-    .page `http://devexpress.github.io/testcafe/example/`;
-
-test('My Test', async t => {
-    const header = await t.select('header');
 });
 ```
 

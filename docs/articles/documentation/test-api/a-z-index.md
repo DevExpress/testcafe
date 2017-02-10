@@ -69,7 +69,6 @@ This topic lists test API members in alphabetical order.
     * [resizeWindow](actions/resize-window.md#setting-the-window-size)
     * [resizeWindowToFitDevice](actions/resize-window.md#fitting-the-window-into-a-particular-device)
     * [rightClick](actions/right-click.md)
-    * [select](selecting-page-elements/selectors.md#one-time-selection)
     * [selectEditableContent](actions/select-text.md#perform-selection-within-editable-content)
     * [selectText](actions/select-text.md#select-text-in-input-elements)
     * [selectTextAreaContent](actions/select-text.md#select-textarea-content)
