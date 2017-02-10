@@ -243,11 +243,11 @@ export default function executeAction (command, selectorTimeout, statusBar, test
         resolveStartPromise = resolve;
     });
 
-    if (!command.options.speed)
+    if (command.options && !command.options.speed)
         command.options.speed = testSpeed;
 
     var delayAfterAction = () => {
-        if (command.options.speed === 1)
+        if (!command.options || command.options.speed === 1)
             return Promise.resolve();
 
         return delay((1 - command.options.speed) * MAX_DELAY_AFTER_STEP);

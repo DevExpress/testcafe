@@ -39,7 +39,7 @@ $(document).ready(function () {
     }
 
     function runPressAutomation (keys, callback) {
-        var pressAutomation = new PressAutomation(parseKeySequence(keys).combinations);
+        var pressAutomation = new PressAutomation(parseKeySequence(keys).combinations, {});
 
         pressAutomation
             .run()

@@ -780,7 +780,7 @@ $(document).ready(function () {
                 var endPos   = 11;
                 var backward = true;
 
-                var selectTextAutomation = new SelectTextAutomation(input, endPos, startPos);
+                var selectTextAutomation = new SelectTextAutomation(input, endPos, startPos, {});
 
                 selectTextAutomation
                     .run()
@@ -868,7 +868,7 @@ $(document).ready(function () {
             var $input          = createInput('number').attr('maxLength', 2);
             var inputEventCount = 0;
             var keySequence     = '1 2 3';
-            var pressAutomation = new PressAutomation(parseKeySequence(keySequence).combinations);
+            var pressAutomation = new PressAutomation(parseKeySequence(keySequence).combinations, {});
 
             $input.bind('input', function () {
                 inputEventCount++;

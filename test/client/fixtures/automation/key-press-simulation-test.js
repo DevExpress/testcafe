@@ -125,7 +125,7 @@ $(document).ready(function () {
 
     function testKeysPress (keySequence, expectedEvents) {
         var keyCombinations = parseKeySequence(keySequence).combinations;
-        var pressAutomation = new PressAutomation(keyCombinations);
+        var pressAutomation = new PressAutomation(keyCombinations, {});
 
         pressAutomation
             .run()
@@ -137,7 +137,7 @@ $(document).ready(function () {
 
     function runPressAutomation (keySequence, callback) {
         var keyCombinations = parseKeySequence(keySequence).combinations;
-        var pressAutomation = new PressAutomation(keyCombinations);
+        var pressAutomation = new PressAutomation(keyCombinations, {});
 
         pressAutomation
             .run()

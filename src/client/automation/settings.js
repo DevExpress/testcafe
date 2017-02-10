@@ -12,7 +12,7 @@ const CURSOR_FACTOR      = 4;
 
 export default class AutomationSettings {
     constructor (speed) {
-        this.speedFactor = speed === void 0 ? 1 : speed;
+        this.speedFactor = speed || 1;
     }
 
     get mouseActionStepDelay () {

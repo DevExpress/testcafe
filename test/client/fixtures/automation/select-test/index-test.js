@@ -178,7 +178,7 @@ $(document).ready(function () {
 
         setValueToInput('');
 
-        var select = new SelectTextAutomation($input[0], 0, 0);
+        var select = new SelectTextAutomation($input[0], 0, 0, {});
 
         select
             .run()
@@ -196,7 +196,7 @@ $(document).ready(function () {
 
         setValueToTextarea('');
 
-        var select = new SelectTextAutomation($textarea[0], 0, 0);
+        var select = new SelectTextAutomation($textarea[0], 0, 0, {});
 
         select
             .run()
@@ -214,7 +214,7 @@ $(document).ready(function () {
 
         setValueToInput('1   2     3    4    5      6');
 
-        var select = new SelectTextAutomation($input[0], 3, 25);
+        var select = new SelectTextAutomation($input[0], 3, 25, {});
 
         select
             .run()
@@ -234,7 +234,7 @@ $(document).ready(function () {
         setValueToTextarea('123456789abcd\n\n\nefghi\njklmop\n\nqwerty test cafe');
         valueLength = $textarea[0].value.length;
 
-        var select = new SelectTextAutomation($textarea[0], 3, valueLength - 3);
+        var select = new SelectTextAutomation($textarea[0], 3, valueLength - 3, {});
 
         select
             .run()
@@ -268,7 +268,7 @@ $(document).ready(function () {
             mouseup = true;
         };
 
-        var select = new SelectTextAutomation(input, 3, 33);
+        var select = new SelectTextAutomation(input, 3, 33, {});
 
         select
             .run()
@@ -310,7 +310,7 @@ $(document).ready(function () {
             mouseup = true;
         };
 
-        var select = new SelectTextAutomation(input, 33, 0);
+        var select = new SelectTextAutomation(input, 33, 0, {});
 
         select
             .run()
@@ -355,7 +355,7 @@ $(document).ready(function () {
             mouseup = true;
         };
 
-        var select = new SelectTextAutomation(textarea, 2, 628);
+        var select = new SelectTextAutomation(textarea, 2, 628, {});
 
         select
             .run()
@@ -398,7 +398,7 @@ $(document).ready(function () {
             mouseup = true;
         };
 
-        var select = new SelectTextAutomation(textarea, 34, 591);
+        var select = new SelectTextAutomation(textarea, 34, 591, {});
 
         select
             .run()
@@ -445,7 +445,7 @@ $(document).ready(function () {
             mouseup = true;
         };
 
-        var select = new SelectTextAutomation(textarea, 591, 34);
+        var select = new SelectTextAutomation(textarea, 591, 34, {});
 
         select
             .run()
@@ -492,7 +492,7 @@ $(document).ready(function () {
             mouseup = true;
         };
 
-        var select = new SelectTextAutomation(textarea, 628, 2);
+        var select = new SelectTextAutomation(textarea, 628, 2, {});
 
         select
             .run()
