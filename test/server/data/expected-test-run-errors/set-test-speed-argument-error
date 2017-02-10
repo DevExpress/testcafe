@@ -1,4 +1,4 @@
-Speed should be a number between 0.01 and 1, but string was passed.
+Speed is expected to be a number between 0.01 and 1, but string was passed.
 
 Browser: Chrome 15.0.874 / Mac OS X 10.8.1
 Screenshot: /unix/path/with/<tag>

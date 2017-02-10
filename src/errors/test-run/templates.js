@@ -76,7 +76,7 @@ export default {
     `),
 
     [TYPE.setTestSpeedArgumentError]: err => markup(err, `
-        Speed should be a number between 0.01 and 1, but ${err.actualValue} was passed.
+        Speed is expected to be a number between 0.01 and 1, but ${err.actualValue} was passed.
     `),
 
     [TYPE.setNativeDialogHandlerCodeWrongTypeError]: err => markup(err, `
