@@ -314,6 +314,12 @@ Run tests and view test results right from your favorite IDE.
 * [Visual Studio Code](https://github.com/romanresh/vscode-testcafe)
 * [SublimeText](https://github.com/churkin/testcafe-sublimetext)
 
+### Framework-Specific Selectors
+
+Work with page elements in a way that is native to your framework.
+
+* [Aurelia](https://github.com/miherlosev/testcafe-aurelia-selectors)
+
 ### Plugins for Task Runners
 
 Easily integrate TestCafe into your project's workflow.
