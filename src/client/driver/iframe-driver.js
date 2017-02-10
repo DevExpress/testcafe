@@ -29,7 +29,7 @@ export default class IframeDriver extends Driver {
             var msg = e.message;
 
             Promise
-                .all([pageUnloadBarrier.wait(0)])
+                .all([pageUnloadBarrier.wait(0), this.readyPromise])
                 .then(() => {
                     // NOTE: the parent driver repeats commands sent to a child driver if it doesn't get a confirmation
                     // from the child in time. However, confirmations sent by child drivers may be delayed when the browser
