@@ -81,7 +81,8 @@ Provide additional parameters for a typing operation.
     offsetX: Number,
     offsetY: Number,
     caretPos: Number,
-    replace: Boolean
+    replace: Boolean,
+    paste: Boolean
 }
 ```
 
@@ -91,5 +92,6 @@ Parameter                      | Type    | Description                          
 `offsetX`, `offsetY`           | Number  | Mouse pointer coordinates that define a point where the action is performed or started. If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the target element. If an offset is a negative integer, they are calculated relative to the bottom-right corner. | The center of the target element.
 `caretPos`                     | Number  | The initial caret position. A zero-based integer.                                                                                        | The length of the input field content.
 `replace`                      | Boolean | `true` to remove the current text in the target element, and `false` to leave the text as it is.                                                         | `false`
+`paste`                        | Boolean | `true` to insert the entire block of current text in a single keystroke (similar to a copy & paste function), and `false` to insert the current text character by character.                         | `false`
 
 Typing action options are used in the [t.typeText](type-text.md) action.
