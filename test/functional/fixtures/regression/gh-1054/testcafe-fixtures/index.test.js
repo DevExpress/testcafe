@@ -8,7 +8,7 @@ const getFirstValue = ClientFunction(() => window.storedValue);
 
 test('Type text in the input', async t => {
     await t
-        .typeText('input', 'text', { replace: true })
+        .typeText('input', 'text', { replace: true, paste: true })
         .expect(Selector('input').value).eql('text');
 
     await t.expect(await getFirstValue()).eql('t');
@@ -16,7 +16,7 @@ test('Type text in the input', async t => {
 
 test('Type text in the content editable element', async t => {
     await t
-        .typeText('div', 'text', { replace: true })
+        .typeText('div', 'text', { replace: true, paste: true })
         .expect(Selector('div').textContent).eql('text');
 
     await t.expect(await getFirstValue()).eql('t');
