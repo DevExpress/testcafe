@@ -161,6 +161,37 @@ $(document).ready(function () {
             });
     });
 
+    asyncTest('set option.paste to true to insert all text in one keystroke', function () {
+        var keydownCount    = 0;
+        var keyupCount      = 0;
+        var keypressCount   = 0;
+        var text = 'new text';
+
+        $commonInput[0].value = '';
+
+        $commonInput[0].addEventListener('keydown', function () {
+            keydownCount++;
+        });
+        $commonInput[0].addEventListener('keypress', function () {
+            keydownCount++;
+        });
+        $commonInput[0].addEventListener('keyup', function () {
+            keydownCount++;
+        });
+
+        var type = new TypeAutomation($commonInput[0], text, new TypeOptions({ paste: true, offsetX: 5, offsetY: 5 }));
+
+        type
+            .run()
+            .then(function () {
+                equal($commonInput[0].value, text, 'text entered in one keystroke');
+                equal(keydownCount, 1, 'keydown event raises once');
+                equal(keyupCount, 1, 'keyup event raises once');
+                equal(keypressCount, 1, 'keypress event raises once');
+                start();
+            });
+    });
+
     asyncTest('do not change readonly inputs value', function () {
         var $input1      = $('<input type="text" readonly />').addClass(TEST_ELEMENT_CLASS).appendTo($('body'));
         var $input2      = $('<input type="text" value="value" />').attr('readonly', 'readonly').addClass(TEST_ELEMENT_CLASS).appendTo($('body'));

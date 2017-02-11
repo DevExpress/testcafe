@@ -30,6 +30,7 @@ export default class TypeAutomation {
         this.modifiers = typeOptions.modifiers;
         this.caretPos  = typeOptions.caretPos;
         this.replace   = typeOptions.replace;
+        this.paste     = typeOptions.paste;
         this.offsetX   = typeOptions.offsetX;
         this.offsetY   = typeOptions.offsetY;
 
@@ -200,6 +201,16 @@ export default class TypeAutomation {
 
         this.eventArgs = this._calculateEventArguments();
 
+        if (this.paste) {
+            return this
+                ._typeAllText(elementForTyping)
+                .then(() => {
+                    eventSimulator.keyup(this.eventArgs.element, this.eventArgs.options);
+
+                    this.currentPos = this.text.length;
+                });
+        }
+
         return this
             ._typeChar(elementForTyping)
             .then(() => {
@@ -241,6 +252,11 @@ export default class TypeAutomation {
 
         typeChar(element, currentChar);
 
+        return delay(ACTION_STEP_DELAY);
+    }
+
+    _typeAllText (element) {
+        typeChar(element, this.text);
         return delay(ACTION_STEP_DELAY);
     }
 

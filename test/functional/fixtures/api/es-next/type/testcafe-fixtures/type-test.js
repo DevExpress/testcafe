@@ -23,6 +23,10 @@ test('Incorrect action text', async t => {
     await t.typeText('#input', 123);
 });
 
-test('Incorrect action option', async t => {
+test('Incorrect action option (replace)', async t => {
     await t.typeText('#input', 'a', { replace: null });
+});
+
+test('Incorrect action option (paste)', async t => {
+    await t.typeText('#input', 'a', { paste: null });
 });
