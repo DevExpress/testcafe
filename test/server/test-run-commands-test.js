@@ -455,6 +455,7 @@ describe('Test run commands', function () {
                     caretPos: 2,
                     dummy:    'yo',
                     replace:  true,
+                    paste:    true,
 
                     modifiers: {
                         ctrl:  true,
@@ -478,6 +479,7 @@ describe('Test run commands', function () {
                     offsetY:  32,
                     caretPos: 2,
                     replace:  true,
+                    paste:    true,
 
                     modifiers: {
                         ctrl:  true,
@@ -506,6 +508,7 @@ describe('Test run commands', function () {
                     offsetY:  null,
                     caretPos: null,
                     replace:  false,
+                    paste:    false,
 
                     modifiers: {
                         ctrl:  false,
