@@ -18,6 +18,19 @@
                     ]
                 },
                 {
+                    "name": "Type with paste option",
+                    "commands": [
+                        {
+                            "type": "type-text",
+                            "selector": "#input",
+                            "text": "block of text to be inserted in one keystroke",
+                            "options": {
+                                "paste": true
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "Type with empty text argument",
                     "commands": [
                         {
