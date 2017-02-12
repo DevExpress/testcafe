@@ -8,13 +8,14 @@ describe('[API] t.typeText()', function () {
     });
 
     it('Should validate options', function () {
-        return runTests('./testcafe-fixtures/type-test.js', 'Incorrect action option', {
+        return runTests('./testcafe-fixtures/type-test.js', 'Incorrect action options', {
             shouldFail: true,
             only:       'chrome'
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('The "replace" option is expected to be a boolean value, but it was object.');
-                expect(errs[0]).to.contains('> 27 |    await t.typeText(\'#input\', \'a\', { replace: null });');
+                expect(errs[0]).to.contains('The "paste" option is expected to be a boolean value, but it was object.');
+                expect(errs[0]).to.contains('> 27 |    await t.typeText(\'#input\', \'a\', { replace: null, paste: null });');
             });
     });
 
