@@ -173,10 +173,10 @@ $(document).ready(function () {
             keydownCount++;
         });
         $commonInput[0].addEventListener('keypress', function () {
-            keydownCount++;
+            keypressCount++;
         });
         $commonInput[0].addEventListener('keyup', function () {
-            keydownCount++;
+            keyupCount++;
         });
 
         var type = new TypeAutomation($commonInput[0], text, new TypeOptions({ paste: true, offsetX: 5, offsetY: 5 }));
