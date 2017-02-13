@@ -110,6 +110,8 @@ You may sometimes need to call test API from outside of test code. For instance,
 can contain methods that perform common operations used in many tests, like authentication.
 
 ```js
+import { Selector } from 'testcafe';
+
 export default class Page {
     constructor () {
         this.loginInput    = Selector('#login');
@@ -132,7 +134,7 @@ TestCafe allows you to avoid passing the test controller to the method explicitl
 Instead, you can simply import `t` to the page model file.
 
 ```js
-import { t } from 'testcafe';
+import { Selector, t } from 'testcafe';
 
 export default class Page {
     constructor () {
