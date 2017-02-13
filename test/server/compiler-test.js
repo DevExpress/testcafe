@@ -1343,6 +1343,21 @@ describe('Compiler', function () {
                 });
         });
 
+        it('Should successfully compile tests if re-export is used', function () {
+            this.timeout(5000);
+
+            var src      = 'test/server/data/test-suites/regression-gh-969/testfile.js';
+            var compiler = new Compiler([src]);
+
+            return compiler
+                .getTests()
+                .then(function (tests) {
+                    var test = tests[0];
+
+                    return test.fn(testRunMock);
+                });
+        });
+
         it('Incorrect callsite stack in error report if "import" is used (GH-1226)', function () {
             this.timeout(5000);
 

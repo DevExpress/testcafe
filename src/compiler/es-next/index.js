@@ -33,11 +33,11 @@ export default class ESNextCompiler {
     static _getBabelOptions (filename) {
         var { presetStage2, transformRuntime, presetEnv } = loadBabelLibs();
 
-        // NOTE: passPrePreset and complex presets is a workaround for https://github.com/babel/babel/issues/2877
+        // NOTE: "[transformRuntime, { polyfill: false }]" is a workaround for https://github.com/babel/babel/issues/2877
         // Fixes https://github.com/DevExpress/testcafe/issues/969
         return {
             presets:       [presetStage2, presetEnv],
-            plugins:       [transformRuntime],
+            plugins:       [[transformRuntime, { polyfill: false }]],
             filename:      filename,
             sourceMaps:    true,
             retainLines:   true,
