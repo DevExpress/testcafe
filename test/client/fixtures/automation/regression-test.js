@@ -212,6 +212,7 @@ $(document).ready(function () {
         var typeOptions = new TypeOptions({
             caretPos: options.caretPos,
             replace:  options.replace,
+            paste:    options.paste,
             offsetX:  offsets.offsetX,
             offsetY:  offsets.offsetY
         });

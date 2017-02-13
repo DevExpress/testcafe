@@ -112,12 +112,16 @@ export class TypeOptions extends ClickOptions {
         super();
 
         this.replace = false;
+        this.paste   = false;
 
         this._assignFrom(obj, validate);
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([{ name: 'replace', type: booleanOption }]);
+        return super._getAssignableProperties().concat([
+            { name: 'replace', type: booleanOption },
+            { name: 'paste', type: booleanOption }
+        ]);
     }
 }
 

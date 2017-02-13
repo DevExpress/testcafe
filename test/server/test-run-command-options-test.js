@@ -125,6 +125,7 @@ describe('Test run command options', function () {
                 caretPos: 20,
                 replace:  true,
                 dummy:    false,
+                paste:    true,
 
                 modifiers: {
                     ctrl:  true,
@@ -138,6 +139,7 @@ describe('Test run command options', function () {
                 offsetY:  null,
                 caretPos: 20,
                 replace:  true,
+                paste:    true,
 
                 modifiers: {
                     ctrl:  true,
