@@ -11,9 +11,6 @@ You can pass the following options to the [Selector constructor](selectors.md#cr
 * [options.boundTestRun](#optionsboundtestrun)
 * [options.timeout](#optionstimeout)
 * [options.visibilityCheck](#optionsvisibilitycheck)
-* (***deprecated***) [options.dependencies](#optionsdependencies)
-* (***deprecated***) [options.text](#optionstext)
-* (***deprecated***) [options.index](#optionsindex)
 
 You can also overwrite the options you have specified before.
 
@@ -46,57 +43,6 @@ or the [selector-timeout](../../using-testcafe/command-line-interface.md#--selec
 `true` to additionally require the returned element to become visible within [options.timeout](#optionstimeout).
 
 **Default value**: `false`
-
-## options.dependencies
-
-> Important! ***Deprecated.*** *Use [hierarchical selectors](selectors.md#search-for-elements-in-the-dom-hierarchy) instead. `options.dependencies` will be removed in future releases.*
-
-**Type**: Object
-
-Contains functions, variables or objects used by the selector internally.
-Properties of the `dependencies` object will be added to the selector's scope as variables.
-
-The following sample demonstrates a selector (`gridCell`) that calls another selector (`gridRow`) internally.
-The `gridRow` selector is passed to `gridCell` as a dependency.
-
-```js
-import { Selector } from 'testcafe';
-
-const gridRow  = Selector(n => document.getElementsByClassName('grid-row')[n]);
-
-const gridCell = Selector((m, n) => gridRow(m).children[n], {
-     dependencies: { gridRow }
-});
-```
-
-## options.text
-
-> Important! ***Deprecated.*** *Use the [withText()](selectors.md#filter-dom-nodes) method to filter elements by text content or a regular expression that matches this content. `options.text` will be removed in future releases.*
-
-**Type**: String &#124; RegExp
-
-Text content of the node that should be selected or a regular expression that matches this content.
-Use this option to filter nodes returned by the selector's [initializing](selectors.md#selector-initializers) function or CSS selector.
-
-The `text` filter is applied whenever a function or CSS selector string that was used to initialize the selector
-returns one or several nodes. If none of these nodes match the `text` filter, the selector will return `null`.
-
-You can also use the [index](#optionsindex) option to identify a node by its index.
-
-## options.index
-
-> Important! ***Deprecated.*** *Use the [nth()](selectors.md#filter-dom-nodes) method to select a node by its index. `options.index` will be removed in future releases.*
-
-**Type**: Number
-
-The index of the node that should be selected. Specifies the node's position among other nodes returned
-by the selector's [initializing](selectors.md#selector-initializers) function or CSS selector.
-
-Use the `index` option when a function or CSS selector string that was used to initialize the selector returns more than one DOM node.
-
-You can also use the [text](#optionstext) option to select a node by its text content.
-
-**Default value**: `0`
 
 ## Overwriting Options
 
