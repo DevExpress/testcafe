@@ -74,13 +74,13 @@ export default class ChildDriverLink {
         eventSandbox.message.sendServiceMsg(msg, this.driverWindow);
     }
 
-    executeCommand (command) {
+    executeCommand (command, testSpeed) {
         // NOTE:  We should check if the iframe is visible and exists before executing the next
         // command, because the iframe might be hidden or removed since the previous command.
         return this
             ._ensureIframe()
             .then(() => {
-                var msg = new ExecuteCommandMessage(command);
+                var msg = new ExecuteCommandMessage(command, testSpeed);
 
                 return Promise.all([
                     sendMessageToDriver(msg, this.driverWindow, this.timeout, CurrentIframeIsNotLoadedError),

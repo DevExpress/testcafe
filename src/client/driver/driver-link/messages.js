@@ -31,10 +31,11 @@ export class CommandExecutedMessage extends InterDriverMessage {
 }
 
 export class ExecuteCommandMessage extends InterDriverMessage {
-    constructor (command) {
+    constructor (command, testSpeed) {
         super(TYPE.executeCommand);
 
-        this.command = command;
+        this.command   = command;
+        this.testSpeed = testSpeed;
     }
 }
 

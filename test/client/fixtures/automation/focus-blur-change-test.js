@@ -708,7 +708,7 @@ if (browserUtils.isIE) {
 asyncTest('Change event not raised after press action if element was focused by client script', function () {
     runAsyncTest(function () {
         var changed         = false;
-        var pressAutomation = new PressAutomation(parseKeySequence('ctrl+a delete').combinations);
+        var pressAutomation = new PressAutomation(parseKeySequence('ctrl+a delete').combinations, {});
 
         input2.value = 'test';
 

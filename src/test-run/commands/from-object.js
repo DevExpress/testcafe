@@ -17,7 +17,8 @@ import {
     ClearUploadCommand,
     SwitchToIframeCommand,
     SwitchToMainWindowCommand,
-    SetNativeDialogHandlerCommand
+    SetNativeDialogHandlerCommand,
+    SetTestSpeedCommand
 } from './actions';
 
 import {
@@ -98,6 +99,9 @@ export default function createCommandFromObject (obj) {
 
         case TYPE.setNativeDialogHandler:
             return new SetNativeDialogHandlerCommand(obj);
+
+        case TYPE.setTestSpeed:
+            return new SetTestSpeedCommand(obj);
     }
 
     return null;

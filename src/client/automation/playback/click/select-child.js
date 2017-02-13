@@ -4,7 +4,7 @@ import testCafeUI from '../../deps/testcafe-ui';
 import MoveAutomation from '../move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import { getDefaultAutomationOffsets } from '../../utils/offsets';
-import { ACTION_STEP_DELAY } from '../../settings';
+import AutomationSettings from '../../settings';
 
 var Promise = hammerhead.Promise;
 
@@ -18,7 +18,7 @@ var delay      = testCafeCore.delay;
 
 var selectElementUI = testCafeUI.selectElement;
 
-const FOCUS_DELAY       = browserUtils.isTouchDevice ? 0 : 160;
+const FOCUS_DELAY = browserUtils.isTouchDevice ? 0 : 160;
 
 
 export default class SelectChildClickAutomation {
@@ -29,6 +29,9 @@ export default class SelectChildClickAutomation {
 
         this.offsetX = clickOptions.offsetX;
         this.offsetY = clickOptions.offsetY;
+        this.speed   = clickOptions.speed;
+
+        this.automationSettings = new AutomationSettings(clickOptions.speed);
 
         this.parentSelect       = domUtils.getSelectParent(this.element);
         this.optionListExpanded = this.parentSelect ? selectElementUI.isOptionListExpanded(this.parentSelect) : false;
@@ -83,13 +86,14 @@ export default class SelectChildClickAutomation {
             offsetY = elementCenter.y;
         }
 
-        return { element, offsetX, offsetY };
+        return { element, offsetX, offsetY, speed: this.speed };
     }
 
-    _move ({ element, offsetX, offsetY }) {
+    _move ({ element, offsetX, offsetY, speed }) {
         var moveOptions = new MoveOptions({
             offsetX,
             offsetY,
+            speed,
 
             modifiers: this.modifiers
         }, false);
@@ -98,7 +102,7 @@ export default class SelectChildClickAutomation {
 
         return moveAutomation
             .run()
-            .then(() => delay(ACTION_STEP_DELAY));
+            .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }
 
     _mousedown () {

@@ -205,7 +205,7 @@ $(document).ready(function () {
     };
 
     var runPressAutomation = function (keys, callback) {
-        var pressAutomation = new PressAutomation(parseKeySequence(keys).combinations);
+        var pressAutomation = new PressAutomation(parseKeySequence(keys).combinations, {});
 
         pressAutomation
             .run()
@@ -322,7 +322,7 @@ $(document).ready(function () {
 
         $input[0].value = '123456789qwertyuiop';
 
-        var selectTextAutomation = new SelectTextAutomation($input[0], 10, 2);
+        var selectTextAutomation = new SelectTextAutomation($input[0], 10, 2, {});
 
         selectTextAutomation
             .run()
@@ -340,7 +340,7 @@ $(document).ready(function () {
         $textarea[0].textContent = value;
         $textarea.text(value);
 
-        var selectTextAutomation = new SelectTextAutomation($textarea[0], 2, value.length - 5);
+        var selectTextAutomation = new SelectTextAutomation($textarea[0], 2, value.length - 5, {});
 
         selectTextAutomation
             .run()

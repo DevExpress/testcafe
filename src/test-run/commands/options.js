@@ -7,21 +7,41 @@ import Assignable from '../../utils/assignable';
 import {
     createBooleanValidator,
     createIntegerValidator,
-    createPositiveIntegerValidator
+    createPositiveIntegerValidator,
+    createSpeedValidator
 } from './validations/factories';
 import {
     ActionIntegerOptionError,
     ActionPositiveIntegerOptionError,
-    ActionBooleanOptionError
+    ActionBooleanOptionError,
+    ActionSpeedOptionError
 } from '../../errors/test-run';
 
 export var integerOption         = createIntegerValidator(ActionIntegerOptionError);
 export var positiveIntegerOption = createPositiveIntegerValidator(ActionPositiveIntegerOptionError);
 export var booleanOption         = createBooleanValidator(ActionBooleanOptionError);
+export var speedOption           = createSpeedValidator(ActionSpeedOptionError);
 
+
+// Acitons
+export class ActionOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this.speed = null;
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'speed', type: speedOption }
+        ];
+    }
+}
 
 // Offset
-export class OffsetOptions extends Assignable {
+export class OffsetOptions extends ActionOptions {
     constructor (obj, validate) {
         super();
 
@@ -32,10 +52,10 @@ export class OffsetOptions extends Assignable {
     }
 
     _getAssignableProperties () {
-        return [
+        return super._getAssignableProperties().concat([
             { name: 'offsetX', type: integerOption },
             { name: 'offsetY', type: integerOption }
-        ];
+        ]);
     }
 }
 

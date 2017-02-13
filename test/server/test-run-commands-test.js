@@ -38,6 +38,7 @@ describe('Test run commands', function () {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
+                    speed:    0.5,
                     dummy:    'yo',
 
                     modifiers: {
@@ -60,6 +61,7 @@ describe('Test run commands', function () {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
+                    speed:    0.5,
 
                     modifiers: {
                         ctrl:  true,
@@ -85,6 +87,7 @@ describe('Test run commands', function () {
                     offsetX:  null,
                     offsetY:  null,
                     caretPos: null,
+                    speed:    null,
 
                     modifiers: {
                         ctrl:  false,
@@ -106,6 +109,7 @@ describe('Test run commands', function () {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
+                    speed:    0.5,
                     dummy:    'yo',
 
                     modifiers: {
@@ -128,6 +132,7 @@ describe('Test run commands', function () {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
+                    speed:    0.5,
 
                     modifiers: {
                         ctrl:  true,
@@ -153,6 +158,7 @@ describe('Test run commands', function () {
                     offsetX:  null,
                     offsetY:  null,
                     caretPos: null,
+                    speed:    null,
 
                     modifiers: {
                         ctrl:  false,
@@ -174,6 +180,7 @@ describe('Test run commands', function () {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
+                    speed:    0.5,
                     dummy:    'yo',
 
                     modifiers: {
@@ -196,6 +203,7 @@ describe('Test run commands', function () {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
+                    speed:    0.5,
 
                     modifiers: {
                         ctrl:  true,
@@ -221,6 +229,7 @@ describe('Test run commands', function () {
                     offsetX:  null,
                     offsetY:  null,
                     caretPos: null,
+                    speed:    null,
 
                     modifiers: {
                         ctrl:  false,
@@ -242,6 +251,7 @@ describe('Test run commands', function () {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
+                    speed:    0.5,
                     dummy:    'yo',
 
                     modifiers: {
@@ -263,6 +273,7 @@ describe('Test run commands', function () {
                 options: {
                     offsetX: 23,
                     offsetY: 32,
+                    speed:   0.5,
 
                     modifiers: {
                         ctrl:  true,
@@ -287,6 +298,7 @@ describe('Test run commands', function () {
                 options: {
                     offsetX: null,
                     offsetY: null,
+                    speed:   null,
 
                     modifiers: {
                         ctrl:  false,
@@ -310,6 +322,7 @@ describe('Test run commands', function () {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
+                    speed:    0.5,
                     dummy:    1,
 
                     modifiers: {
@@ -333,6 +346,7 @@ describe('Test run commands', function () {
                 options: {
                     offsetX: 23,
                     offsetY: 32,
+                    speed:   0.5,
 
                     modifiers: {
                         ctrl:  true,
@@ -361,6 +375,7 @@ describe('Test run commands', function () {
                 options: {
                     offsetX: null,
                     offsetY: null,
+                    speed:   null,
 
                     modifiers: {
                         ctrl:  false,
@@ -383,6 +398,7 @@ describe('Test run commands', function () {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
+                    speed:    0.5,
                     dummy:    1,
 
                     modifiers: {
@@ -405,6 +421,7 @@ describe('Test run commands', function () {
                 options: {
                     offsetX: 23,
                     offsetY: 32,
+                    speed:   0.5,
 
                     modifiers: {
                         ctrl:  true,
@@ -431,6 +448,7 @@ describe('Test run commands', function () {
                 options: {
                     offsetX: null,
                     offsetY: null,
+                    speed:   null,
 
                     modifiers: {
                         ctrl:  false,
@@ -453,6 +471,7 @@ describe('Test run commands', function () {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
+                    speed:    0.5,
                     dummy:    'yo',
                     replace:  true,
                     paste:    true,
@@ -478,6 +497,7 @@ describe('Test run commands', function () {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
+                    speed:    0.5,
                     replace:  true,
                     paste:    true,
 
@@ -507,6 +527,7 @@ describe('Test run commands', function () {
                     offsetX:  null,
                     offsetY:  null,
                     caretPos: null,
+                    speed:    null,
                     replace:  false,
                     paste:    false,
 
@@ -530,7 +551,8 @@ describe('Test run commands', function () {
 
                 options: {
                     offsetX: 23,
-                    dummy:   'yo'
+                    dummy:   'yo',
+                    speed:   0.5
                 }
             };
 
@@ -540,7 +562,11 @@ describe('Test run commands', function () {
                 type:     TYPE.selectText,
                 selector: makeSelector('#yo'),
                 startPos: 1,
-                endPos:   2
+                endPos:   2,
+
+                options: {
+                    speed: 0.5
+                }
             });
 
             commandObj = {
@@ -554,7 +580,11 @@ describe('Test run commands', function () {
                 type:     TYPE.selectText,
                 selector: makeSelector('#yo'),
                 startPos: null,
-                endPos:   null
+                endPos:   null,
+
+                options: {
+                    speed: null
+                }
             });
         });
 
@@ -570,7 +600,8 @@ describe('Test run commands', function () {
 
                 options: {
                     offsetX: 23,
-                    dummy:   'yo'
+                    dummy:   'yo',
+                    speed:   0.5
                 }
             };
 
@@ -582,7 +613,11 @@ describe('Test run commands', function () {
                 startLine: 0,
                 startPos:  1,
                 endLine:   2,
-                endPos:    3
+                endPos:    3,
+
+                options: {
+                    speed: 0.5
+                }
             });
 
             commandObj = {
@@ -598,7 +633,11 @@ describe('Test run commands', function () {
                 startLine: null,
                 startPos:  null,
                 endLine:   null,
-                endPos:    null
+                endPos:    null,
+
+                options: {
+                    speed: null
+                }
             });
         });
 
@@ -612,7 +651,8 @@ describe('Test run commands', function () {
 
                 options: {
                     offsetX: 23,
-                    dummy:   'yo'
+                    dummy:   'yo',
+                    speed:   0.5
                 }
             };
 
@@ -621,7 +661,11 @@ describe('Test run commands', function () {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.selectEditableContent,
                 startSelector: makeSelector('#node1'),
-                endSelector:   makeSelector('#node2')
+                endSelector:   makeSelector('#node2'),
+
+                options: {
+                    speed: 0.5
+                }
             });
 
             commandObj = {
@@ -635,7 +679,11 @@ describe('Test run commands', function () {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.selectEditableContent,
                 startSelector: makeSelector('#node1'),
-                endSelector:   null
+                endSelector:   null,
+
+                options: {
+                    speed: null
+                }
             });
         });
 
@@ -650,6 +698,7 @@ describe('Test run commands', function () {
                     offsetX: 23,
                     offsetY: 32,
                     dummy:   'yo',
+                    speed:   0.5,
 
                     modifiers: {
                         ctrl:  true,
@@ -665,7 +714,11 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type: TYPE.pressKey,
-                keys: 'a+b c'
+                keys: 'a+b c',
+
+                options: {
+                    speed: 0.5
+                }
             });
         });
 
@@ -870,6 +923,19 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type: TYPE.switchToMainWindow
+            });
+        });
+
+        it('Should create SetTestSpeedCommand from object', function () {
+            var commandObj = {
+                type:  TYPE.setTestSpeed,
+                speed: 0.5
+            };
+            var command    = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:  TYPE.setTestSpeed,
+                speed: 0.5
             });
         });
     });
@@ -1666,6 +1732,22 @@ describe('Test run commands', function () {
                     callsite:        null
                 }
             );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.selectText,
+                        selector: 'element',
+                        options:  1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    actualType:      'number',
+                    callsite:        null
+                }
+            );
         });
 
         it('Should validate SelectTextAreaContentСommand', function () {
@@ -1771,6 +1853,22 @@ describe('Test run commands', function () {
                     callsite:        null
                 }
             );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.selectTextAreaContent,
+                        selector: 'element',
+                        options:  1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    actualType:      'number',
+                    callsite:        null
+                }
+            );
         });
 
         it('Should validate SelectEditableContentСommand', function () {
@@ -1827,6 +1925,23 @@ describe('Test run commands', function () {
                     callsite: null
                 }
             );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:          TYPE.selectEditableContent,
+                        startSelector: 'node1',
+                        endSelector:   'node2',
+                        options:       1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    actualType:      'number',
+                    callsite:        null
+                }
+            );
         });
 
         it('Should validate PressKeyСommand', function () {
@@ -1873,6 +1988,22 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'keys',
                     actualValue:     '""',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.pressKey,
+                        keys:    'a',
+                        options: 1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    actualType:      'number',
                     callsite:        null
                 }
             );
@@ -2315,6 +2446,40 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionBooleanOptionError,
                     optionName:      'portraitOrientation',
                     actualValue:     'object',
+                    callsite:        null
+                }
+            );
+        });
+
+
+        it('Should validate SetTestSpeedCommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.setTestSpeed,
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.setTestSpeedArgumentError,
+                    argumentName:    'speed',
+                    actualValue:     'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:  TYPE.setTestSpeed,
+                        speed: 2
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.setTestSpeedArgumentError,
+                    argumentName:    'speed',
+                    actualValue:     2,
                     callsite:        null
                 }
             );

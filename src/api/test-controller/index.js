@@ -24,7 +24,8 @@ import {
     SwitchToIframeCommand,
     SwitchToMainWindowCommand,
     SetNativeDialogHandlerCommand,
-    GetNativeDialogHistoryCommand
+    GetNativeDialogHistoryCommand,
+    SetTestSpeedCommand
 } from '../../test-run/commands/actions';
 
 import {
@@ -156,29 +157,31 @@ export default class TestController {
         return this._enqueueAction('typeText', TypeTextCommand, { selector, text, options });
     }
 
-    _selectText$ (selector, startPos, endPos) {
-        return this._enqueueAction('selectText', SelectTextCommand, { selector, startPos, endPos });
+    _selectText$ (selector, startPos, endPos, options) {
+        return this._enqueueAction('selectText', SelectTextCommand, { selector, startPos, endPos, options });
     }
 
-    _selectTextAreaContent$ (selector, startLine, startPos, endLine, endPos) {
+    _selectTextAreaContent$ (selector, startLine, startPos, endLine, endPos, options) {
         return this._enqueueAction('selectTextAreaContent', SelectTextAreaContentCommand, {
             selector,
             startLine,
             startPos,
             endLine,
-            endPos
+            endPos,
+            options
         });
     }
 
-    _selectEditableContent$ (startSelector, endSelector) {
+    _selectEditableContent$ (startSelector, endSelector, options) {
         return this._enqueueAction('selectEditableContent', SelectEditableContentCommand, {
             startSelector,
-            endSelector
+            endSelector,
+            options
         });
     }
 
-    _pressKey$ (keys) {
-        return this._enqueueAction('pressKey', PressKeyCommand, { keys });
+    _pressKey$ (keys, options) {
+        return this._enqueueAction('pressKey', PressKeyCommand, { keys, options });
     }
 
     _wait$ (timeout) {
@@ -252,6 +255,10 @@ export default class TestController {
 
     _debug$ () {
         return this._enqueueAction('debug', DebugCommand);
+    }
+
+    _setTestSpeed$ (speed) {
+        return this._enqueueAction('setTestSpeed', SetTestSpeedCommand, { speed });
     }
 }
 

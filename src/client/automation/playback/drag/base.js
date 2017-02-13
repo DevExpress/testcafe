@@ -12,11 +12,10 @@ import cursor from '../../cursor';
 import { getMoveAutomationOffsets } from '../../utils/offsets';
 import getAutomationPoint from '../../utils/get-automation-point';
 import screenPointToClient from '../../utils/screen-point-to-client';
-import { DRAG_ACTION_STEP_DELAY } from '../../settings';
+import AutomationSettings from '../../settings';
 import AUTOMATION_ERROR_TYPES from '../../errors';
 
 
-const DRAGGING_SPEED  = 4; // pixels/ms
 const MIN_MOVING_TIME = 25;
 
 var Promise          = hammerhead.Promise;
@@ -33,6 +32,9 @@ export default class DragAutomationBase {
         this.modifiers = mouseOptions.modifiers;
         this.offsetX   = mouseOptions.offsetX;
         this.offsetY   = mouseOptions.offsetY;
+        this.speed     = mouseOptions.speed;
+
+        this.automationSettings = new AutomationSettings(this.speed);
 
         this.endPoint  = null;
         this.downEvent = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
@@ -52,7 +54,8 @@ export default class DragAutomationBase {
         return {
             element: containsOffset ? this.element : document.documentElement,
             offsetX: moveActionOffsets.offsetX,
-            offsetY: moveActionOffsets.offsetY
+            offsetY: moveActionOffsets.offsetY,
+            speed:   this.speed
         };
     }
 
@@ -80,10 +83,11 @@ export default class DragAutomationBase {
             });
     }
 
-    _move ({ element, offsetX, offsetY }) {
+    _move ({ element, offsetX, offsetY, speed }) {
         var moveOptions = new MoveOptions({
             offsetX,
             offsetY,
+            speed,
 
             modifiers: this.modifiers
         }, false);
@@ -92,7 +96,7 @@ export default class DragAutomationBase {
 
         return moveAutomation
             .run()
-            .then(() => delay(DRAG_ACTION_STEP_DELAY));
+            .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }
 
     _getEndPoint () {
@@ -110,7 +114,7 @@ export default class DragAutomationBase {
 
                 return this._focus();
             })
-            .then(() => delay(DRAG_ACTION_STEP_DELAY));
+            .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }
 
     _focus () {
@@ -136,7 +140,7 @@ export default class DragAutomationBase {
             offsetX:       offsets.offsetX,
             offsetY:       offsets.offsetY,
             modifiers:     this.modifiers,
-            speed:         DRAGGING_SPEED,
+            speed:         this.speed,
             minMovingTime: MIN_MOVING_TIME,
             dragMode:      true
         }, false);
@@ -145,7 +149,7 @@ export default class DragAutomationBase {
 
         return moveAutomation
             .run()
-            .then(() => delay(DRAG_ACTION_STEP_DELAY));
+            .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }
 
     _mouseup () {

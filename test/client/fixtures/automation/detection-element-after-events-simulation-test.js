@@ -499,7 +499,7 @@ $(document).ready(function () {
         else
             bindMouseHandlersToSwappingElements($input1, $input2, 'mousedown', eventMonitorObject, true);
 
-        var selectText = new SelectTextAutomation($input1[0], 2, 4);
+        var selectText = new SelectTextAutomation($input1[0], 2, 4, {});
 
         selectText
             .run()
@@ -530,7 +530,7 @@ $(document).ready(function () {
         else
             bindMouseHandlersToSwappingElements($input1, $input2, 'mouseup', eventMonitorObject, true);
 
-        var selectText = new SelectTextAutomation($input1[0], 2, 4);
+        var selectText = new SelectTextAutomation($input1[0], 2, 4, {});
 
         selectText
             .run()
@@ -864,7 +864,7 @@ $(document).ready(function () {
                     $inputIFrame.focus();
                 });
 
-                var press = new PressAutomation(parseKeySequence('f').combinations);
+                var press = new PressAutomation(parseKeySequence('f').combinations, {});
 
                 press
                     .run()

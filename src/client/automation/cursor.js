@@ -65,7 +65,7 @@ export default {
     },
 
     rightButtonDown () {
-        return cursorUI.leftButtonDown();
+        return cursorUI.rightButtonDown();
     },
 
     buttonUp () {

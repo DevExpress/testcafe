@@ -8,6 +8,7 @@ import { underCursor as getElementUnderCursor } from '../get-element';
 import getLineRectIntersection from '../utils/get-line-rect-intersection';
 import whilst from '../utils/promise-whilst';
 import nextTick from '../utils/next-tick';
+import AutomationSettings from '../settings';
 
 var Promise        = hammerhead.Promise;
 var nativeMethods  = hammerhead.nativeMethods;
@@ -45,18 +46,19 @@ var lastHoveredElement = null;
 
 export default class MoveAutomation {
     constructor (element, moveOptions) {
-        this.DEFAULT_SPEED = 1000; // pixes/ms
-
         this.touchMode = browserUtils.isTouchDevice;
         this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
 
         this.dragMode    = moveOptions.dragMode;
         this.dragElement = null;
 
+        this.automationSettings = new AutomationSettings(moveOptions.speed);
+
         this.element       = element;
         this.offsetX       = moveOptions.offsetX;
         this.offsetY       = moveOptions.offsetY;
-        this.speed         = moveOptions.speed || this.DEFAULT_SPEED;
+        this.speed         = moveOptions.speed;
+        this.cursorSpeed   = this.dragMode ? this.automationSettings.draggingSpeed : this.automationSettings.cursorSpeed;
         this.minMovingTime = moveOptions.minMovingTime || null;
         this.modifiers     = moveOptions.modifiers || {};
         this.skipScrolling = moveOptions.skipScrolling;
@@ -99,6 +101,7 @@ export default class MoveAutomation {
             modifiers: e.message.modifiers,
             offsetX:   intersectionRelatedToIframe.x + iframeBorders.left + iframePadding.left,
             offsetY:   intersectionRelatedToIframe.y + iframeBorders.top + iframePadding.top,
+            speed:     e.message.speed,
 
             // NOTE: we should not perform scrolling because the active window was
             // already scrolled to the target element before the request (GH-847)
@@ -177,6 +180,7 @@ export default class MoveAutomation {
             modifiers: e.message.modifiers,
             offsetX:   intersectionPoint.x - iframeRectangle.left,
             offsetY:   intersectionPoint.y - iframeRectangle.top,
+            speed:     e.message.speed,
 
             // NOTE: we should not perform scrolling because the active window was
             // already scrolled to the target element before the request (GH-847)
@@ -313,7 +317,7 @@ export default class MoveAutomation {
         this.distanceX = this.endPoint.x - this.startPoint.x;
         this.distanceY = this.endPoint.y - this.startPoint.y;
 
-        this.movingTime = Math.max(Math.abs(this.distanceX), Math.abs(this.distanceY)) / this.speed;
+        this.movingTime = Math.max(Math.abs(this.distanceX), Math.abs(this.distanceY)) / this.cursorSpeed;
 
         if (this.minMovingTime)
             this.movingTime = Math.max(this.movingTime, this.minMovingTime);
@@ -347,7 +351,8 @@ export default class MoveAutomation {
             startY:    y,
             endX:      this.endPoint.x,
             endY:      this.endPoint.y,
-            modifiers: this.modifiers
+            modifiers: this.modifiers,
+            speed:     this.speed
         };
 
         if (activeWindow.parent === window) {

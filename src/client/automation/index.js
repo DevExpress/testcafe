@@ -15,7 +15,7 @@ import {
     ClickOptions,
     TypeOptions
 } from '../../test-run/commands/options';
-import * as SETTINGS from './settings';
+import AutomationSettings from './settings';
 import { getOffsetOptions } from './utils/offsets';
 import calculateSelectTextArguments from './playback/select/calculate-select-text-arguments';
 import ERROR_TYPES from './errors';
@@ -37,7 +37,7 @@ exports.ClickOptions          = ClickOptions;
 exports.TypeOptions           = TypeOptions;
 
 exports.ERROR_TYPES                  = ERROR_TYPES;
-exports.SETTINGS                     = SETTINGS;
+exports.AutomationSettings           = AutomationSettings;
 exports.getOffsetOptions             = getOffsetOptions;
 exports.calculateSelectTextArguments = calculateSelectTextArguments;
 

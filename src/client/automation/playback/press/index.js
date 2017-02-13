@@ -4,14 +4,13 @@ import KeyPressSimulator from './key-press-simulator';
 import supportedShortcutHandlers from './shortcuts';
 import each from '../../utils/promise-each';
 import { getActualKeysAndEventKeyProperties, getDeepActiveElement } from './utils';
-import { ACTION_STEP_DELAY } from '../../settings';
+import AutomationSettings from '../../settings';
 
 var Promise        = hammerhead.Promise;
 var browserUtils   = hammerhead.utils.browser;
 var messageSandbox = hammerhead.eventSandbox.message;
 
 
-const KEY_PRESS_DELAY    = 80;
 const PRESS_REQUEST_CMD  = 'automation|press|request';
 const PRESS_RESPONSE_CMD = 'automation|press|response';
 
@@ -21,7 +20,7 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     if (e.message.cmd === PRESS_REQUEST_CMD) {
         hammerhead.on(hammerhead.EVENTS.beforeUnload, () => messageSandbox.sendServiceMsg({ cmd: PRESS_RESPONSE_CMD }, e.source));
 
-        var pressAutomation = new PressAutomation(e.message.keyCombinations);
+        var pressAutomation = new PressAutomation(e.message.keyCombinations, e.message.options);
 
         pressAutomation
             .run()
@@ -30,13 +29,15 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
 });
 
 export default class PressAutomation {
-    constructor (keyCombinations) {
+    constructor (keyCombinations, options) {
         this.keyCombinations       = keyCombinations;
         this.isSelectElement       = false;
         this.pressedKeyString      = '';
         this.modifiersState        = null;
         this.shortcutHandlers      = null;
         this.topSameDomainDocument = domUtils.getTopSameDomainWindow(window).document;
+        this.automationSettings    = new AutomationSettings(options.speed);
+        this.options               = options;
     }
 
     static _getKeyPressSimulators (keyCombination) {
@@ -112,7 +113,7 @@ export default class PressAutomation {
         // affect the assignment of the new selectedIndex. So, we should execute a shortcut
         // for the select element without taking into account that 'key' events are suppressed
         if (keyEventPrevented && !this.isSelectElement)
-            return delay(KEY_PRESS_DELAY);
+            return delay(this.automationSettings.keyActionStepDelay);
 
         var currentShortcutHandler = this.shortcutHandlers[this.pressedKeyString];
         var keyPressPrevented      = false;
@@ -123,16 +124,16 @@ export default class PressAutomation {
 
         if ((!keyPressPrevented || this.isSelectElement) && currentShortcutHandler) {
             return currentShortcutHandler(getDeepActiveElement(this.topSameDomainDocument))
-                .then(() => delay(KEY_PRESS_DELAY));
+                .then(() => delay(this.automationSettings.keyActionStepDelay));
         }
 
-        return delay(KEY_PRESS_DELAY);
+        return delay(this.automationSettings.keyActionStepDelay);
     }
 
     _up (keyPressSimulator) {
         keyPressSimulator.up(this.modifiersState);
 
-        return delay(KEY_PRESS_DELAY);
+        return delay(this.automationSettings.keyActionStepDelay);
     }
 
     _runCombination (keyCombination) {
@@ -162,7 +163,8 @@ export default class PressAutomation {
         if (window.top === window && activeElementIsIframe && activeElement.contentWindow) {
             var msg = {
                 cmd:             PRESS_REQUEST_CMD,
-                keyCombinations: this.keyCombinations
+                keyCombinations: this.keyCombinations,
+                options:         this.options
             };
 
             return sendRequestToFrame(msg, PRESS_RESPONSE_CMD, activeElement.contentWindow);
@@ -171,7 +173,7 @@ export default class PressAutomation {
         return each(this.keyCombinations, combination => {
             return this
                 ._runCombination(combination)
-                .then(() => delay(ACTION_STEP_DELAY));
+                .then(() => delay(this.automationSettings.keyActionStepDelay));
         });
     }
 }

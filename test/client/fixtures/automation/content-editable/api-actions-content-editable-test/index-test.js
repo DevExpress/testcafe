@@ -262,7 +262,7 @@ $(document).ready(function () {
         $parent = $('#1');
         $el     = $parent.find('p');
 
-        var selectText = new SelectTextAutomation($el[0], 5, 30);
+        var selectText = new SelectTextAutomation($el[0], 5, 30, {});
 
         selectText
             .run()
@@ -277,7 +277,7 @@ $(document).ready(function () {
         $el     = $('#4');
         $parent = $el;
 
-        var selectText = new SelectTextAutomation($el[0], 15, 151);
+        var selectText = new SelectTextAutomation($el[0], 15, 151, {});
 
         selectText
             .run()
@@ -291,7 +291,7 @@ $(document).ready(function () {
     asyncTest('simple inverse select', function () {
         $el = $('#2');
 
-        var selectText = new SelectTextAutomation($el[0], 21, 4);
+        var selectText = new SelectTextAutomation($el[0], 21, 4, {});
 
         selectText
             .run()
@@ -310,7 +310,7 @@ $(document).ready(function () {
     asyncTest('difficult inverse select', function () {
         $el = $('#6');
 
-        var selectText = new SelectTextAutomation($el[0], 141, 4);
+        var selectText = new SelectTextAutomation($el[0], 141, 4, {});
 
         selectText
             .run()
@@ -330,7 +330,7 @@ $(document).ready(function () {
         $parent = $('#6');
         $el     = $parent.find('i:first');
 
-        var selectText = new SelectTextAutomation($el[0], 18, 54);
+        var selectText = new SelectTextAutomation($el[0], 18, 54, {});
 
         selectText
             .run()
@@ -352,7 +352,7 @@ $(document).ready(function () {
         oldInnerHTML = $el[0].innerHTML;
         $el.focus();
 
-        var press = new PressAutomation(parseKeySequence('ctrl+a').combinations);
+        var press = new PressAutomation(parseKeySequence('ctrl+a').combinations, {});
 
         press
             .run()
@@ -373,7 +373,7 @@ $(document).ready(function () {
         selectByNodesAndOffsets($el[0].childNodes[1].childNodes[2], 11, $el[0].childNodes[10].childNodes[0], 3);
         equal($el[0].childNodes[1].childNodes[2].nodeValue, oldNodeValue, 'nodeValue is correct');
 
-        var press = new PressAutomation(parseKeySequence('delete').combinations);
+        var press = new PressAutomation(parseKeySequence('delete').combinations, {});
 
         press
             .run()
@@ -398,7 +398,7 @@ $(document).ready(function () {
         window.setTimeout(function () {
             equal($(element).text(), oldElementText, 'nodeValue is correct');
 
-            var press = new PressAutomation(parseKeySequence('backspace').combinations);
+            var press = new PressAutomation(parseKeySequence('backspace').combinations, {});
 
             press
                 .run()
@@ -427,7 +427,7 @@ $(document).ready(function () {
         selectByNodesAndOffsets(startNode, startOffset, endNode, endOffset);
         checkSelection($el, startNode, startOffset, endNode, endOffset);
 
-        var press = new PressAutomation(parseKeySequence('left').combinations);
+        var press = new PressAutomation(parseKeySequence('left').combinations, {});
 
         press
             .run()
@@ -453,7 +453,7 @@ $(document).ready(function () {
         selectByNodesAndOffsets(startNode, startOffset, endNode, endOffset);
         checkSelection($el, startNode, startOffset, endNode, endOffset);
 
-        var press = new PressAutomation(parseKeySequence('right').combinations);
+        var press = new PressAutomation(parseKeySequence('right').combinations, {});
 
         press
             .run()

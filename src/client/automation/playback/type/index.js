@@ -8,18 +8,18 @@ import getKeyIdentifier from '../../utils/get-key-identifier';
 import keyIdentifierRequiredForEvent from '../../utils/key-identifier-required-for-event';
 import whilst from '../../utils/promise-whilst';
 import { getDefaultAutomationOffsets } from '../../utils/offsets';
-import { ACTION_STEP_DELAY } from '../../settings';
+import AutomationSettings from '../../settings';
 
 var Promise               = hammerhead.Promise;
 var extend                = hammerhead.utils.extend;
 var eventSimulator        = hammerhead.eventSandbox.eventSimulator;
 var elementEditingWatcher = hammerhead.eventSandbox.elementEditingWatcher;
 
-var domUtils              = testCafeCore.domUtils;
-var contentEditable       = testCafeCore.contentEditable;
-var textSelection         = testCafeCore.textSelection;
-var delay                 = testCafeCore.delay;
-var SPECIAL_KEYS          = testCafeCore.KEY_MAPS.specialKeys;
+var domUtils        = testCafeCore.domUtils;
+var contentEditable = testCafeCore.contentEditable;
+var textSelection   = testCafeCore.textSelection;
+var delay           = testCafeCore.delay;
+var SPECIAL_KEYS    = testCafeCore.KEY_MAPS.specialKeys;
 
 
 export default class TypeAutomation {
@@ -33,6 +33,9 @@ export default class TypeAutomation {
         this.paste     = typeOptions.paste;
         this.offsetX   = typeOptions.offsetX;
         this.offsetY   = typeOptions.offsetY;
+        this.speed     = typeOptions.speed;
+
+        this.automationSettings = new AutomationSettings(this.speed);
 
         this.elementChanged       = element !== this.element;
         this.currentPos           = 0;
@@ -121,9 +124,10 @@ export default class TypeAutomation {
 
         if (activeElement !== this.element) {
             var { offsetX, offsetY } = getDefaultAutomationOffsets(this.element);
-            var clickOptions = new ClickOptions({
+            var clickOptions         = new ClickOptions({
                 offsetX:   this.elementChanged ? offsetX : this.offsetX,
                 offsetY:   this.elementChanged ? offsetY : this.offsetY,
+                speed:     this.speed,
                 caretPos:  this.caretPos,
                 modifiers: this.modifiers
             });
@@ -132,7 +136,7 @@ export default class TypeAutomation {
 
             return clickAutomation
                 .run()
-                .then(() => delay(ACTION_STEP_DELAY));
+                .then(() => delay(this.automationSettings.mouseActionStepDelay));
         }
 
         if (isTextEditable)
@@ -226,7 +230,7 @@ export default class TypeAutomation {
         if (this.eventState.simulateKeypress === false || this.eventState.simulateTypeChar === false) {
             elementEditingWatcher.restartWatchingElementEditing(element);
 
-            return delay(ACTION_STEP_DELAY);
+            return delay(this.automationSettings.keyActionStepDelay);
         }
 
         var currentChar       = this.text.charAt(this.currentPos);
@@ -242,7 +246,7 @@ export default class TypeAutomation {
             var isPermissibleSymbol = currentChar === '.' || currentChar === '-' && valueLength;
 
             if (!isDigit && (textHasDigits || !isPermissibleSymbol || selectionStart !== 0))
-                return delay(ACTION_STEP_DELAY);
+                return delay(this.automationSettings.keyActionStepDelay);
 
             // NOTE: allow to type '.' or '-' only if it is the first symbol and the input already has
             // a value, or if '.' or '-' are added to a digit. Otherwise, the value won't be set.
@@ -252,12 +256,12 @@ export default class TypeAutomation {
 
         typeChar(element, currentChar);
 
-        return delay(ACTION_STEP_DELAY);
+        return delay(this.automationSettings.keyActionStepDelay);
     }
 
     _typeAllText (element) {
         typeChar(element, this.text);
-        return delay(ACTION_STEP_DELAY);
+        return delay(this.automationSettings.keyActionStepDelay);
     }
 
     run () {

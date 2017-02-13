@@ -67,5 +67,6 @@ export function isExecutableInTopWindowOnly (command) {
            command.type === TYPE.prepareBrowserManipulation ||
            command.type === TYPE.switchToMainWindow ||
            command.type === TYPE.setNativeDialogHandler ||
-           command.type === TYPE.getNativeDialogHistory;
+           command.type === TYPE.getNativeDialogHistory ||
+           command.type === TYPE.setTestSpeed;
 }

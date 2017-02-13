@@ -326,7 +326,7 @@ $(document).ready(function () {
 
         $input.focus();
 
-        var press = new PressAutomation(parseKeySequence('t e s t').combinations);
+        var press = new PressAutomation(parseKeySequence('t e s t').combinations, {});
 
         press
             .run()

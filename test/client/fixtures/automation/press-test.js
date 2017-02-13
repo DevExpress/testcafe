@@ -41,7 +41,7 @@ $(document).ready(function () {
     module('different scenarios');
 
     asyncTest('press a', function () {
-        var press = new PressAutomation(parseKeySequence('left a').combinations);
+        var press = new PressAutomation(parseKeySequence('left a').combinations, {});
 
         press
             .run()
@@ -52,7 +52,7 @@ $(document).ready(function () {
     });
 
     asyncTest('press +', function () {
-        var press = new PressAutomation(parseKeySequence('+ shift++').combinations);
+        var press = new PressAutomation(parseKeySequence('+ shift++').combinations, {});
 
         press
             .run()
@@ -63,7 +63,7 @@ $(document).ready(function () {
     });
 
     asyncTest('press space', function () {
-        var press = new PressAutomation(parseKeySequence('left space').combinations);
+        var press = new PressAutomation(parseKeySequence('left space').combinations, {});
 
         press
             .run()
@@ -74,7 +74,7 @@ $(document).ready(function () {
     });
 
     asyncTest('press shift+a', function () {
-        var press = new PressAutomation(parseKeySequence('shift+a').combinations);
+        var press = new PressAutomation(parseKeySequence('shift+a').combinations, {});
 
         press
             .run()
@@ -85,7 +85,7 @@ $(document).ready(function () {
     });
 
     asyncTest('press shift+1', function () {
-        var press = new PressAutomation(parseKeySequence('shift+1').combinations);
+        var press = new PressAutomation(parseKeySequence('shift+1').combinations, {});
 
         press
             .run()
@@ -100,7 +100,7 @@ $(document).ready(function () {
         $('body').focus();
         $input.attr('tabIndex', 1);
 
-        var press = new PressAutomation(parseKeySequence('tab').combinations);
+        var press = new PressAutomation(parseKeySequence('tab').combinations, {});
 
         press
             .run()
@@ -122,7 +122,7 @@ $(document).ready(function () {
         domUtils.getActiveElement().blur();
         $('body').focus();
 
-        var press = new PressAutomation(parseKeySequence('tab').combinations);
+        var press = new PressAutomation(parseKeySequence('tab').combinations, {});
 
         press
             .run()
@@ -147,7 +147,7 @@ $(document).ready(function () {
                 domUtils.getActiveElement().blur();
                 $input.focus();
 
-                var press = new PressAutomation(parseKeySequence('tab').combinations);
+                var press = new PressAutomation(parseKeySequence('tab').combinations, {});
 
                 press
                     .run()
@@ -184,7 +184,7 @@ $(document).ready(function () {
                 keyupKeyProperty += e.key;
             });
 
-            var press = new PressAutomation(parseKeySequence('a A shift+a ! enter shift+1 shift+!').combinations);
+            var press = new PressAutomation(parseKeySequence('a A shift+a ! enter shift+1 shift+!').combinations, {});
 
             press
                 .run()
@@ -223,7 +223,7 @@ $(document).ready(function () {
                 keyupKeyIdentifierProperty += e.keyIdentifier;
             });
 
-            var press = new PressAutomation(parseKeySequence('a A shift+a ! enter shift+1 shift+!').combinations);
+            var press = new PressAutomation(parseKeySequence('a A shift+a ! enter shift+1 shift+!').combinations, {});
 
             var s = {
                 '!': 'U+0021',

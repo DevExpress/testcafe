@@ -8,8 +8,8 @@ var positionUtils   = testCafeCore.positionUtils;
 
 
 export default class SelectEditableContentAutomation extends SelectBaseAutomation {
-    constructor (startNode, endNode) {
-        super(contentEditable.getNearestCommonAncestor(startNode, endNode));
+    constructor (startNode, endNode, actionOptions) {
+        super(contentEditable.getNearestCommonAncestor(startNode, endNode), actionOptions);
 
         var startOffset = contentEditable.getFirstVisiblePosition(startNode);
         var endOffset   = contentEditable.getLastVisiblePosition(endNode);

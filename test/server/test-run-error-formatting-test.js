@@ -12,6 +12,7 @@ var ActionPositiveIntegerOptionError                  = require('../../lib/error
 var ActionIntegerArgumentError                        = require('../../lib/errors/test-run').ActionIntegerArgumentError;
 var ActionPositiveIntegerArgumentError                = require('../../lib/errors/test-run').ActionPositiveIntegerArgumentError;
 var ActionBooleanOptionError                          = require('../../lib/errors/test-run').ActionBooleanOptionError;
+var ActionSpeedOptionError                            = require('../../lib/errors/test-run').ActionSpeedOptionError;
 var ActionSelectorError                               = require('../../lib/errors/test-run').ActionSelectorError;
 var ActionOptionsTypeError                            = require('../../lib/errors/test-run').ActionOptionsTypeError;
 var ActionStringArgumentError                         = require('../../lib/errors/test-run').ActionStringArgumentError;
@@ -53,7 +54,7 @@ var UncaughtErrorInNativeDialogHandler                = require('../../lib/error
 var SetNativeDialogHandlerCodeWrongTypeError          = require('../../lib/errors/test-run').SetNativeDialogHandlerCodeWrongTypeError;
 var CantObtainInfoForElementSpecifiedBySelectorError  = require('../../lib/errors/test-run').CantObtainInfoForElementSpecifiedBySelectorError;
 var WindowDimensionsOverflowError                     = require('../../lib/errors/test-run').WindowDimensionsOverflowError;
-
+var SetTestSpeedArgumentError                         = require('../../lib/errors/test-run').SetTestSpeedArgumentError;
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
 
@@ -135,6 +136,10 @@ describe('Error formatting', function () {
 
         it('Should format "actionBooleanOptionError" message', function () {
             assertErrorMessage('action-boolean-option-error', new ActionBooleanOptionError('modifier.ctrl', 'object'));
+        });
+
+        it('Should format "actionSpeedOptionError" message', function () {
+            assertErrorMessage('action-speed-option-error', new ActionSpeedOptionError('speed', 'object'));
         });
 
         it('Should format "pageLoadError" message', function () {
@@ -299,6 +304,10 @@ describe('Error formatting', function () {
 
         it('Should format "windowDimensionsOverflowError"', function () {
             assertErrorMessage('window-dimensions-overflow-error', new WindowDimensionsOverflowError());
+        });
+
+        it('Should format "setTestSpeedArgumentError"', function () {
+            assertErrorMessage('set-test-speed-argument-error', new SetTestSpeedArgumentError('speed', 'string'));
         });
     });
 
