@@ -36,14 +36,8 @@ export default class ESNextCompiler {
         // NOTE: passPrePreset and complex presets is a workaround for https://github.com/babel/babel/issues/2877
         // Fixes https://github.com/DevExpress/testcafe/issues/969
         return {
-            passPerPreset: true,
-            presets:       [
-                { plugins: transformRuntime },
-                {
-                    passPerPreset: false,
-                    presets:       [presetStage2, presetEnv]
-                }
-            ],
+            presets:       [presetStage2, presetEnv],
+            plugins:       [transformRuntime],
             filename:      filename,
             sourceMaps:    true,
             retainLines:   true,
