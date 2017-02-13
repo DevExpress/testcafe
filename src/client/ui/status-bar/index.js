@@ -305,6 +305,8 @@ export default class StatusBar {
                 this._animate(true);
             }
         });
+
+        eventUtils.bind(this.statusBar, browserUtils.isTouchDevice ? 'touchstart' : 'mousedown', eventUtils.preventDefault);
     }
 
     _initChildListening () {
@@ -351,25 +353,36 @@ export default class StatusBar {
     }
 
     _showDebuggingStatus () {
-        this.debugging = true;
-
-        this.statusDiv.textContent = DEBUGGING_TEXT;
-        this.buttons.style.display = 'inline-block';
-
-        this._recalculateSizes();
-
         return new Promise(resolve => {
-            eventUtils.bind(this.continueButton, browserUtils.isTouchDevice ? 'touchstart' : 'click', () => {
-                this._resetState();
+            this.debugging = true;
 
+            this.statusDiv.textContent = DEBUGGING_TEXT;
+            this.buttons.style.display = 'inline-block';
+
+            this._recalculateSizes();
+
+            var eventName               = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
+            var continueButtonHandler   = null;
+            var nextActionButtonHandler = null;
+
+            continueButtonHandler = e => {
+                eventUtils.preventDefault(e);
+                this._resetState();
+                eventUtils.unbind(this.continueButton, eventName, continueButtonHandler);
+                eventUtils.unbind(this.nextActionButton, eventName, nextActionButtonHandler);
                 resolve();
-            });
+            };
 
-            eventUtils.bind(this.nextActionButton, browserUtils.isTouchDevice ? 'touchstart' : 'click', () => {
+            nextActionButtonHandler = e => {
+                eventUtils.preventDefault(e);
                 this._resetState();
-
+                eventUtils.unbind(this.continueButton, eventName, continueButtonHandler);
+                eventUtils.unbind(this.nextActionButton, eventName, nextActionButtonHandler);
                 resolve(true);
-            });
+            };
+
+            eventUtils.bind(this.continueButton, eventName, continueButtonHandler);
+            eventUtils.bind(this.nextActionButton, eventName, nextActionButtonHandler);
         });
     }
 
