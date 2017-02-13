@@ -261,7 +261,7 @@ export default class TypeAutomation {
 
     _typeAllText (element) {
         typeChar(element, this.text);
-        return delay(ACTION_STEP_DELAY);
+        return delay(this.automationSettings.keyActionStepDelay);
     }
 
     run () {
