@@ -20,7 +20,7 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     if (e.message.cmd === PRESS_REQUEST_CMD) {
         hammerhead.on(hammerhead.EVENTS.beforeUnload, () => messageSandbox.sendServiceMsg({ cmd: PRESS_RESPONSE_CMD }, e.source));
 
-        var pressAutomation = new PressAutomation(e.message.keyCombinations);
+        var pressAutomation = new PressAutomation(e.message.keyCombinations, e.message.options);
 
         pressAutomation
             .run()
@@ -37,6 +37,7 @@ export default class PressAutomation {
         this.shortcutHandlers      = null;
         this.topSameDomainDocument = domUtils.getTopSameDomainWindow(window).document;
         this.automationSettings    = new AutomationSettings(options.speed);
+        this.options               = options;
     }
 
     static _getKeyPressSimulators (keyCombination) {
@@ -162,7 +163,8 @@ export default class PressAutomation {
         if (window.top === window && activeElementIsIframe && activeElement.contentWindow) {
             var msg = {
                 cmd:             PRESS_REQUEST_CMD,
-                keyCombinations: this.keyCombinations
+                keyCombinations: this.keyCombinations,
+                options:         this.options
             };
 
             return sendRequestToFrame(msg, PRESS_RESPONSE_CMD, activeElement.contentWindow);
