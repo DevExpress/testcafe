@@ -71,7 +71,7 @@ Parameter                      | Type    | Description                          
 ------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------
 `ctrl`, `alt`, `shift`, `meta` | Boolean | Indicate which modifier keys are to be pressed during the mouse action.                                                                                     | `false`
 `offsetX`, `offsetY`           | Number  | Mouse pointer coordinates that define a point where the action is performed or started. If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the target element. If an offset is a negative integer, they are calculated relative to the bottom-right corner. | The center of the target element.
-`speed`   | Number | The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between `1` (the maximum speed) and `0.01` (the minimum speed). If test speed is also specified in the [CLI](../../using-testcafe/command-line-interface.md#--speed-factor) or [programmatically](../../using-testcafe/programming-interface/runner.md#run), the action speed is multiplied by test speed. | `1`
+`speed`   | Number | The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between `1` (the maximum speed) and `0.01` (the minimum speed). If test speed is also specified in the [CLI](../../using-testcafe/command-line-interface.md#--speed-factor) or [programmatically](../../using-testcafe/programming-interface/runner.md#run), the action speed setting overrides test speed. | `1`
 
 Mouse action options are used in the [t.drag](drag-element.md#drag-an-element-by-an-offset),
 [t.dragToElement](drag-element.md#drag-an-element-onto-another-one) and [t.hover](hover.md) actions.
@@ -124,7 +124,7 @@ Parameter                      | Type    | Description                          
 `ctrl`, `alt`, `shift`, `meta` | Boolean | Indicate which modifier keys are to be pressed during the mouse action.                                                                                     | `false`
 `offsetX`, `offsetY`           | Number  | Mouse pointer coordinates that define a point where the action is performed or started. If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the target element. If an offset is a negative integer, they are calculated relative to the bottom-right corner. | The center of the target element.
 `caretPos`                     | Number  | The initial caret position if the action is performed on a text input field. A zero-based integer.                                                          | The length of the input field content.
-`speed`   | Number | The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between `1` (the maximum speed) and `0.01` (the minimum speed). If test speed is also specified in the [CLI](../../using-testcafe/command-line-interface.md#--speed-factor) or [programmatically](../../using-testcafe/programming-interface/runner.md#run), the action speed is multiplied by test speed. | `1`
+`speed`   | Number | The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between `1` (the maximum speed) and `0.01` (the minimum speed). If test speed is also specified in the [CLI](../../using-testcafe/command-line-interface.md#--speed-factor) or [programmatically](../../using-testcafe/programming-interface/runner.md#run), the action speed setting overrides test speed. | `1`
 
 Click action options are used in the [t.click](click.md), [t.doubleClick](double-click.md) and [t.rightClick](right-click.md) actions.
 
@@ -174,8 +174,12 @@ Parameter                      | Type    | Description                          
 `offsetX`, `offsetY`           | Number  | Mouse pointer coordinates that define a point where the action is performed or started. If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the target element. If an offset is a negative integer, they are calculated relative to the bottom-right corner. | The center of the target element.
 `caretPos`                     | Number  | The initial caret position. A zero-based integer.                                                                                        | The length of the input field content.
 `replace`                      | Boolean | `true` to remove the current text in the target element, and `false` to leave the text as it is.                                                         | `false`
+<<<<<<< HEAD
 `paste`                        | Boolean | `true` to insert the entire block of current text in a single keystroke (similar to a copy & paste function), and `false` to insert the current text character by character.                         | `false`
 `speed`   | Number | The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between `1` (the maximum speed) and `0.01` (the minimum speed). If test speed is also specified in the [CLI](../../using-testcafe/command-line-interface.md#--speed-factor) or [programmatically](../../using-testcafe/programming-interface/runner.md#run), the action speed is multiplied by test speed. | `1`
+=======
+`speed`   | Number | The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between `1` (the maximum speed) and `0.01` (the minimum speed). If test speed is also specified in the [CLI](../../using-testcafe/command-line-interface.md#--speed-factor) or [programmatically](../../using-testcafe/programming-interface/runner.md#run), the action speed setting overrides test speed. | `1`
+>>>>>>> Fix: test speeds are not multiplied
 
 Typing action options are used in the [t.typeText](type-text.md) action.
 
