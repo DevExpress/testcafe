@@ -44,8 +44,16 @@
     - name: Initialization and Clean-Up
       url: /documentation/test-api/test-code-structure.md#initialization-and-clean-up
       content:
-      - name: Sharing Variables Between the Hooks and Test Code
-        url: /documentation/test-api/test-code-structure.md#sharing-variables-between-the-hooks-and-test-code
+      - name: Test Hooks
+        url: /documentation/test-api/test-code-structure.md#test-hooks
+        content:
+        - name: Sharing Variables Between Test Hooks and Test Code
+          url: /documentation/test-api/test-code-structure.md#sharing-variables-between-test-hooks-and-test-code
+      - name: Fixture Hooks
+        url: /documentation/test-api/test-code-structure.md#fixture-hooks
+        content:
+        - name: Sharing Variables Between Fixture Hooks and Test Code
+          url: /documentation/test-api/test-code-structure.md#sharing-variables-between-fixture-hooks-and-test-code
     - name: Skipping Tests
       url: /documentation/test-api/test-code-structure.md#skipping-tests
   - name: Actions
