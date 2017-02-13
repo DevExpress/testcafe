@@ -69,7 +69,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         this._addBoundArgsSelectorGetter(resultPromise, args);
 
         // OPTIMIZATION: use buffer function as selector not to trigger lazy property ahead of time
-        addAPI(resultPromise, () => resultPromise.selector, SelectorBuilder, this.options.customDOMProperties);
+        addAPI(resultPromise, () => resultPromise.selector, SelectorBuilder, this.options.customDOMProperties, this.options.customMethods);
 
         return resultPromise;
     }
@@ -78,6 +78,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         var dependencies        = super.getFunctionDependencies();
         var text                = this.options.text;
         var customDOMProperties = this.options.customDOMProperties;
+        var customMethods       = this.options.customMethods;
 
         if (typeof text === 'string')
             text = new RegExp(escapeRe(text));
@@ -91,7 +92,8 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             },
 
             boundArgs:           this.options.boundArgs,
-            customDOMProperties: customDOMProperties
+            customDOMProperties: customDOMProperties,
+            customMethods:       customMethods
         });
     }
 
@@ -135,7 +137,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     _decorateFunction (selectorFn) {
         super._decorateFunction(selectorFn);
 
-        addAPI(selectorFn, () => selectorFn, SelectorBuilder, this.options.customDOMProperties);
+        addAPI(selectorFn, () => selectorFn, SelectorBuilder, this.options.customDOMProperties, this.options.customMethods);
     }
 
     _processResult (result, selectorArgs) {
@@ -144,6 +146,22 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         if (snapshot && !this.options.counterMode) {
             this._addBoundArgsSelectorGetter(snapshot, selectorArgs);
             createSnapshotMethods(snapshot);
+
+            if (this.options.customMethods) {
+                Object.keys(this.options.customMethods).forEach(prop => {
+                    var customMethod = this.options.customMethods[prop];
+
+                    snapshot[prop] = (new ClientFunctionBuilder(
+                        (...args) => {
+                            /* eslint-disable no-undef */
+                            var node = selector();
+                            /* eslint-enable no-undef */
+
+                            return customMethod.apply(customMethod, [node].concat(args));
+                        }, { dependencies: { customMethod, selector: this.getFunction() } }, { instantiation: prop })
+                    ).getFunction();
+                });
+            }
         }
 
         return snapshot;

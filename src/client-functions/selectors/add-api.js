@@ -94,7 +94,15 @@ function assertAddCustomDOMPropertiesOptions (properties) {
     });
 }
 
-function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties) {
+function assertAddCustomMethods (properties) {
+    assertType(is.nonNullObject, 'addCustomMethods', '"addCustomMethods" option', properties);
+
+    Object.keys(properties).forEach(prop => {
+        assertType(is.function, 'addCustomMethods', `Custom method '${prop}'`, properties[prop]);
+    });
+}
+
+function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties, customMethods) {
     var properties = SNAPSHOT_PROPERTIES;
 
     if (customDOMProperties)
@@ -113,6 +121,26 @@ function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties) {
             }
         });
     });
+
+    if (customMethods) {
+        Object.keys(customMethods).forEach(prop => {
+            var customMethod = customMethods[prop];
+
+            var customMethodClientFunction = (new ClientFunctionBuilder(
+                (...args) => {
+                    /* eslint-disable no-undef */
+                    var node = selector();
+                    /* eslint-enable no-undef */
+
+                    return customMethod.apply(customMethod, [node].concat(args));
+                }, { dependencies: { customMethod, selector: getSelector() } }, { instantiation: prop }
+            )).getFunction();
+
+            Object.defineProperty(obj, prop, {
+                get: () => customMethodClientFunction
+            });
+        });
+    }
 
     obj.getStyleProperty = prop => {
         var callsite = getCallsite('getStyleProperty');
@@ -205,6 +233,7 @@ function convertFilterToClientFunctionIfNecessary (callsiteName, filter, depende
 function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selectorFn, filter, additionalDependencies) {
     var collectionModeSelectorBuilder = new SelectorBuilder(getSelector(), { collectionMode: true });
     var customDOMProperties           = collectionModeSelectorBuilder.options.customDOMProperties;
+    var customMethods                 = collectionModeSelectorBuilder.options.customMethods;
 
     var dependencies = {
         selector:    collectionModeSelectorBuilder.getFunction(),
@@ -214,7 +243,11 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
 
     dependencies = assign(dependencies, additionalDependencies);
 
-    var builder = new SelectorBuilder(selectorFn, { dependencies, customDOMProperties }, { instantiation: 'Selector' });
+    var builder = new SelectorBuilder(selectorFn, {
+        dependencies,
+        customDOMProperties,
+        customMethods
+    }, { instantiation: 'Selector' });
 
     return builder.getFunction();
 }
@@ -257,10 +290,20 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
 }
 
 function addCustomDOMPropertiesMethod (obj, getSelector, SelectorBuilder) {
-    obj.addCustomDOMProperties = properties => {
-        assertAddCustomDOMPropertiesOptions(properties);
+    obj.addCustomDOMProperties = customDOMProperties => {
+        assertAddCustomDOMPropertiesOptions(customDOMProperties);
 
-        var builder = new SelectorBuilder(getSelector(), { customDOMProperties: properties }, { instantiation: 'Selector' });
+        var builder = new SelectorBuilder(getSelector(), { customDOMProperties }, { instantiation: 'Selector' });
+
+        return builder.getFunction();
+    };
+}
+
+function addCustomMethodsMethod (obj, getSelector, SelectorBuilder) {
+    obj.addCustomMethods = customMethods => {
+        assertAddCustomMethods(customMethods);
+
+        var builder = new SelectorBuilder(getSelector(), { customMethods }, { instantiation: 'Selector' });
 
         return builder.getFunction();
     };
@@ -465,9 +508,10 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
 
 }
 
-export default function addAPI (obj, getSelector, SelectorBuilder, customDOMProperties) {
-    addSnapshotPropertyShorthands(obj, getSelector, customDOMProperties);
+export default function addAPI (obj, getSelector, SelectorBuilder, customDOMProperties, customMethods) {
+    addSnapshotPropertyShorthands(obj, getSelector, customDOMProperties, customMethods);
     addCustomDOMPropertiesMethod(obj, getSelector, SelectorBuilder);
+    addCustomMethodsMethod(obj, getSelector, SelectorBuilder);
     addFilterMethods(obj, getSelector, SelectorBuilder);
     addHierarchicalSelectors(obj, getSelector, SelectorBuilder);
     addCounterProperties(obj, getSelector, SelectorBuilder);
