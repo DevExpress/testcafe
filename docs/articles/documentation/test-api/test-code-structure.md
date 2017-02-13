@@ -117,11 +117,11 @@ export default class Page {
         this.signInButton  = Selector('#sign-in-button');
         /* ... */
     }
-    async login () {
-        // await t
-        //     .typeText(this.loginInput, 'MyLogin')
-        //     .typeText(this.passwordInput, 'Pa$$word')
-        //     .click(this.signInButton);
+    async login (t) {
+        await t
+            .typeText(this.loginInput, 'MyLogin')
+            .typeText(this.passwordInput, 'Pa$$word')
+            .click(this.signInButton);
     }
 }
 ```
