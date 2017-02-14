@@ -201,7 +201,6 @@ const id = await Selector('.someClass').id;
 * Fixed a bug where the Authorization Header was wrongly removed ([testcafe-hammerhead/#1016](https://github.com/DevExpress/testcafe-hammerhead/issues/1016))
 * The `file://` protocol is now supported ([testcafe-hammerhead/#908](https://github.com/DevExpress/testcafe-hammerhead/issues/908))
 
-
 ## v0.12.1 (2017-1-20)
 
 :racing_car: A recovery release following [v0.12.0](#v0120-2017-1-19) with an important fix. :racing_car:
