@@ -38,7 +38,9 @@ This topic contains the following sections.
   * [Define Action Targets](#define-action-targets)
   * [Define Assertion Actual Value](#define-assertion-actual-value)
   * [Selector Timeout](#selector-timeout)
-* [Adding Custom Properties to Element State](#adding-custom-properties-to-element-state)
+* [Adding Custom Properties and Methods to the Element State](#adding-custom-properties-and-methods-to-the-element-state)
+  * [Custom Properties](#custom-properties)
+  * [Custom Methods](#custom-methods)
 * [Calling Selectors from Node.js Callbacks](#calling-selectors-from-nodejs-callbacks)
 * [Limitations](#limitations)
 
@@ -686,11 +688,13 @@ DOM node or the timeout exceeds.
 Note that you can additionally require that the node returned by the selector is visible.
 To do this, use the [visibilityCheck](selector-options.md#optionsvisibilitycheck) option.
 
-## Adding Custom Properties to Element State
+## Adding Custom Properties and Methods to the Element State
 
-TestCafe allows you to extend [element state](#obtain-element-state) with custom properties calculated on the client side.
+TestCafe allows you to extend [element state](#obtain-element-state) with custom properties and methods executed on the client side.
 
-To do this, use the selector's `addCustomDOMProperties` method.
+### Custom Properties
+
+To add custom properties, use the selector's `addCustomDOMProperties` method.
 
 ```text
 Selector().addCustomDOMProperties({
@@ -726,6 +730,44 @@ test('Check Label HTML', async t => {
 
     await t.expect(label.innerHTML).contains('input type="checkbox" name="remote"');
 });
+```
+
+### Custom Methods
+
+To add custom methods, use the `addCustomMethods` method.
+
+```text
+Selector().addCustomMethods({
+    method1: fn1,
+    method2: fn2,
+    /* ... */
+});
+```
+
+Parameter                     | Type     | Description
+----------------------------- | -------- | -----------
+`method1`, `method2`, ...     | String   | Method names.
+`fn1`, `fn2`, ...             | Function | Functions that contain method code. Executed on the client side in the browser.
+
+Functions that contain method code (`fn1`, `fn2`, ...) take the following parameters.
+
+Parameter               | Type     | Description
+----------------------- | -------- | -----------
+`node`                  | Object   | The DOM node.
+`param1`, `param2`, ... | Any      | Method parameters.
+
+The `addCustomMethods` function also adds the specified methods to the [element state](#obtain-element-state) returned by the selector.
+
+**Example**
+
+```js
+const myTable = Selector('.my-table').addCustomMethods({
+    getCellText: (table, rowIndex, columnIndex) => {
+        return table.rows[rowIndex].cells[columnIndex].innerText;
+    }
+});
+
+await myTable.getCellText(2,5);
 ```
 
 ## Calling Selectors from Node.js Callbacks
