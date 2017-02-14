@@ -138,7 +138,7 @@ export default class Page {
 
 TestCafe will implicitly resolve test context and provide the right test controller.
 
-#### :gear: Inserting text with one keystroke with t.typeText action (by @ericyd) ([#1230](https://github.com/DevExpress/testcafe/issues/1230))
+#### :gear: Inserting text with one keystroke with t.typeText action (by [@ericyd](https://github.com/ericyd)) ([#1230](https://github.com/DevExpress/testcafe/issues/1230))
 
 The new `paste` option allows you to insert a portion of text with one keystroke, similar to the paste operation.
 
