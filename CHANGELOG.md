@@ -157,7 +157,7 @@ test(`My test`, async t => {
 });
 ```
 
-#### :gear: New selector's DOM search methods ([#1218](https://github.com/DevExpress/testcafe/issues/1218))
+#### :gear: prevSibling and nextSibling selector's DOM search methods ([#1218](https://github.com/DevExpress/testcafe/issues/1218))
 
 The new `prevSibling` and `nextSibling` methods allow you to search among sibling elements that reside before and after the selector's matching elements in the DOM tree.
 
