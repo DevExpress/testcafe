@@ -117,7 +117,6 @@ export default class Page {
         this.loginInput    = Selector('#login');
         this.passwordInput = Selector('#password');
         this.signInButton  = Selector('#sign-in-button');
-        /* ... */
     }
     async login (t) {
         await t
@@ -141,7 +140,6 @@ export default class Page {
         this.loginInput    = Selector('#login');
         this.passwordInput = Selector('#password');
         this.signInButton  = Selector('#sign-in-button');
-        /* ... */
     }
     async login () {
         await t
