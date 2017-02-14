@@ -102,12 +102,7 @@ function assertAddCustomMethods (properties) {
     });
 }
 
-function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties, customMethods) {
-    var properties = SNAPSHOT_PROPERTIES;
-
-    if (customDOMProperties)
-        properties = properties.concat(Object.keys(customDOMProperties));
-
+function addSnapshotProperties (obj, getSelector, properties) {
     properties.forEach(prop => {
         Object.defineProperty(obj, prop, {
             get: () => {
@@ -121,26 +116,29 @@ function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties, c
             }
         });
     });
+}
 
-    if (customMethods) {
-        Object.keys(customMethods).forEach(prop => {
-            var customMethod = customMethods[prop];
+function addCustomMethods (obj, getSelector, customMethods) {
+    var customMethodProps = customMethods ? Object.keys(customMethods) : [];
 
-            var customMethodClientFunction = (new ClientFunctionBuilder(
-                (...args) => {
-                    /* eslint-disable no-undef */
-                    var node = selector();
-                    /* eslint-enable no-undef */
+    customMethodProps.forEach(prop => {
+        obj[prop] = (...args) => ClientFunctionResultPromise.fromFn(async () => {
+            var callsite = getCallsite(prop);
+            var snapshot = await getSnapshot(getSelector, callsite);
 
-                    return customMethod.apply(customMethod, [node].concat(args));
-                }, { dependencies: { customMethod, selector: getSelector() } }, { instantiation: prop }
-            )).getFunction();
-
-            Object.defineProperty(obj, prop, {
-                get: () => customMethodClientFunction
-            });
+            return snapshot[prop].apply(snapshot[prop], args);
         });
-    }
+    });
+}
+
+function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties, customMethods) {
+    var properties = SNAPSHOT_PROPERTIES;
+
+    if (customDOMProperties)
+        properties = properties.concat(Object.keys(customDOMProperties));
+
+    addSnapshotProperties(obj, getSelector, properties);
+    addCustomMethods(obj, getSelector, customMethods);
 
     obj.getStyleProperty = prop => {
         var callsite = getCallsite('getStyleProperty');

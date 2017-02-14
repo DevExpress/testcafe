@@ -850,13 +850,13 @@ test('Selector "prevSibling" method', async t => {
 test('Selector `addCustomMethods` method', async t => {
     let el = Selector('rect').addCustomMethods({
         prop1: (node, str) => str + '42',
-        prop2: (node, str) => str + node.tagName
+        prop2: (node, str, separator) => [str, node.tagName].join(separator)
     });
 
     await t
         .expect(await el.prop1('value: ')).eql('value: 42')
         .expect(await el().prop1('value: ')).eql('value: 42')
-        .expect(await el.prop2('tagName: ')).eql('tagName: rect')
+        .expect(await el.prop2('tagName', ': ')).eql('tagName: rect')
 
         .expect(await el.parent().filter(() => true).tagName).eql('svg')
         .expect(await el.exists).ok()
@@ -874,7 +874,7 @@ test('Selector `addCustomMethods` method', async t => {
 
     await t
         .expect(el.prop1('Hi')).eql('Hi!!!')
-        .expect(el.prop2('tagName: ')).eql('tagName: rect');
+        .expect(el.prop2('tagName', ': ')).eql('tagName: rect');
 
     const nonExistingElement = await Selector('nonExistingElement').addCustomMethods({
         prop: () => 'value'
