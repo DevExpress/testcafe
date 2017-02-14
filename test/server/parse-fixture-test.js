@@ -13,8 +13,6 @@ function testFixtureParser (dir, expectedStructure) {
         var expected = expectedStructure[index];
 
         return getTestList(filePath).then(function (structure) {
-            //console.log(JSON.stringify(structure, null, 4));
-
             expect(structure).eql(expected);
         });
     });
@@ -35,15 +33,8 @@ describe('Should get structure of esnext files', function () {
                     end:   49,
 
                     loc: {
-                        end: {
-                            column: 19,
-                            line:   3
-                        },
-
-                        start: {
-                            column: 0,
-                            line:   3
-                        }
+                        end:   { column: 19, line: 3 },
+                        start: { column: 0, line: 3 }
                     },
 
                     tests: [
@@ -54,15 +45,8 @@ describe('Should get structure of esnext files', function () {
                             end:   148,
 
                             loc: {
-                                end: {
-                                    column: 2,
-                                    line:   9
-                                },
-
-                                start: {
-                                    column: 0,
-                                    line:   5
-                                }
+                                end:   { column: 2, line: 9 },
+                                start: { column: 0, line: 5 }
                             }
                         },
                         {
@@ -72,15 +56,8 @@ describe('Should get structure of esnext files', function () {
                             end:   238,
 
                             loc: {
-                                end: {
-                                    column: 2,
-                                    line:   15
-                                },
-
-                                start: {
-                                    column: 0,
-                                    line:   13
-                                }
+                                end:   { column: 2, line: 15 },
+                                start: { column: 0, line: 13 }
                             }
                         }
                     ]
@@ -92,15 +69,8 @@ describe('Should get structure of esnext files', function () {
                     end:   353,
 
                     loc: {
-                        start: {
-                            line:   17,
-                            column: 0
-                        },
-
-                        end: {
-                            line:   20,
-                            column: 26
-                        }
+                        start: { line: 17, column: 0 },
+                        end:   { line: 20, column: 26 }
                     },
 
                     tests: [
@@ -111,15 +81,8 @@ describe('Should get structure of esnext files', function () {
                             end:   413,
 
                             loc: {
-                                start: {
-                                    line:   22,
-                                    column: 0
-                                },
-
-                                end: {
-                                    line:   24,
-                                    column: 2
-                                }
+                                start: { line: 22, column: 0 },
+                                end:   { line: 24, column: 2 }
                             }
                         }
                     ]
@@ -133,15 +96,8 @@ describe('Should get structure of esnext files', function () {
                     end:   136,
 
                     loc: {
-                        start: {
-                            line:   3,
-                            column: 0
-                        },
-
-                        end: {
-                            line:   6,
-                            column: 27
-                        }
+                        start: { line: 3, column: 0 },
+                        end:   { line: 6, column: 27 }
                     },
 
                     tests: [
@@ -152,15 +108,8 @@ describe('Should get structure of esnext files', function () {
                             end:   271,
 
                             loc: {
-                                start: {
-                                    line:   10,
-                                    column: 0
-                                },
-
-                                end: {
-                                    line:   14,
-                                    column: 2
-                                }
+                                start: { line: 10, column: 0 },
+                                end:   { line: 14, column: 2 }
                             }
                         }
                     ]
@@ -180,15 +129,8 @@ describe('Should get structure of esnext files', function () {
                 end:   185,
 
                 loc: {
-                    end: {
-                        column: 12,
-                        line:   5
-                    },
-
-                    start: {
-                        column: 0,
-                        line:   5
-                    }
+                    end:   { column: 12, line: 5 },
+                    start: { column: 0, line: 5 }
                 },
 
                 tests: [
@@ -199,15 +141,8 @@ describe('Should get structure of esnext files', function () {
                         end:   254,
 
                         loc: {
-                            end: {
-                                column: 2,
-                                line:   11
-                            },
-
-                            start: {
-                                column: 0,
-                                line:   9
-                            }
+                            end:   { column: 2, line: 11 },
+                            start: { column: 0, line: 9 }
                         }
                     }
                 ]
@@ -226,15 +161,8 @@ describe('Should get structure of esnext files', function () {
                 end:   35,
 
                 loc: {
-                    end: {
-                        column: 35,
-                        line:   1
-                    },
-
-                    start: {
-                        column: 0,
-                        line:   1
-                    }
+                    end:   { column: 35, line: 1 },
+                    start: { column: 0, line: 1 }
                 },
 
                 tests: [
@@ -245,15 +173,8 @@ describe('Should get structure of esnext files', function () {
                         end:   238,
 
                         loc: {
-                            end: {
-                                column: 2,
-                                line:   7
-                            },
-
-                            start: {
-                                column: 0,
-                                line:   6
-                            }
+                            end:   { column: 2, line: 7 },
+                            start: { column: 0, line: 6 }
                         }
                     }
                 ]
@@ -272,15 +193,8 @@ describe('Should get structure of esnext files', function () {
                 end:   20,
 
                 loc: {
-                    end: {
-                        column: 20,
-                        line:   1
-                    },
-
-                    start: {
-                        column: 0,
-                        line:   1
-                    }
+                    end:   { column: 20, line: 1 },
+                    start: { column: 0, line: 1 }
                 },
 
                 tests: [
@@ -291,15 +205,8 @@ describe('Should get structure of esnext files', function () {
                         end:   480,
 
                         loc: {
-                            end: {
-                                column: 14,
-                                line:   38
-                            },
-
-                            start: {
-                                column: 0,
-                                line:   38
-                            }
+                            end:   { column: 14, line: 38 },
+                            start: { column: 0, line: 38 }
                         }
 
                     }
@@ -310,7 +217,7 @@ describe('Should get structure of esnext files', function () {
         return testFixtureParser('./data/test-suites/call-fixture-from-async-function', expectedStructure);
     });
 
-    it('.skip, .after, .before in test file', function () {
+    it.only('.skip, .after, .before in test file', function () {
         var expectedStructure = [
             [
                 {
@@ -319,15 +226,8 @@ describe('Should get structure of esnext files', function () {
                     end:   23,
 
                     loc: {
-                        end: {
-                            column: 23,
-                            line:   1
-                        },
-
-                        start: {
-                            column: 0,
-                            line:   1
-                        }
+                        end:   { column: 23, line: 1 },
+                        start: { column: 0, line: 1 }
                     },
 
                     tests: [
@@ -338,15 +238,8 @@ describe('Should get structure of esnext files', function () {
                             end:   111,
 
                             loc: {
-                                end: {
-                                    column: 2,
-                                    line:   9
-                                },
-
-                                start: {
-                                    column: 0,
-                                    line:   3
-                                }
+                                end:   { column: 2, line: 9 },
+                                start: { column: 0, line: 3 }
                             }
 
                         }
@@ -359,15 +252,8 @@ describe('Should get structure of esnext files', function () {
                     end:   137,
 
                     loc: {
-                        end: {
-                            column: 22,
-                            line:   12
-                        },
-
-                        start: {
-                            column: 0,
-                            line:   12
-                        }
+                        end:   { column: 22, line: 12 },
+                        start: { column: 0, line: 12 }
                     },
 
                     tests: [
@@ -378,15 +264,8 @@ describe('Should get structure of esnext files', function () {
                             end:   164,
 
                             loc: {
-                                start: {
-                                    line:   14,
-                                    column: 0
-                                },
-
-                                end: {
-                                    line:   14,
-                                    column: 24
-                                }
+                                start: { line: 14, column: 0 },
+                                end:   { line: 14, column: 24 }
                             }
                         },
                         {
@@ -396,51 +275,205 @@ describe('Should get structure of esnext files', function () {
                             end:   190,
 
                             loc: {
-                                start: {
-                                    line:   15,
-                                    column: 0
-                                },
-
-                                end: {
-                                    line:   15,
-                                    column: 24
-                                }
+                                start: { line: 15, column: 0 },
+                                end:   { line: 15, column: 24 }
                             }
                         },
                         {
                             name: 'fixture2test3',
 
                             start: 193,
-                            end:   219,
+                            end:   241,
 
                             loc: {
-                                start: {
-                                    line:   17,
-                                    column: 0
-                                },
-
-                                end: {
-                                    line:   17,
-                                    column: 26
-                                }
+                                start: { line: 17, column: 0 },
+                                end:   { line: 17, column: 48 }
                             }
                         },
                         {
                             name: 'fixture2test4',
 
-                            start: 221,
-                            end:   247,
+                            start: 243,
+                            end:   269,
 
                             loc: {
-                                start: {
-                                    line:   18,
-                                    column: 0
-                                },
+                                start: { line: 18, column: 0 },
+                                end:   { line: 18, column: 26 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: 'fixture 3',
 
-                                end: {
-                                    line:   18,
-                                    column: 26
-                                }
+                    start: 272,
+                    end:   297,
+
+                    loc: {
+                        end:   { column: 25, line: 20 },
+                        start: { column: 0, line: 20 }
+                    },
+
+                    tests: [
+                        {
+                            name: 'fixture3test1',
+
+                            start: 300,
+                            end:   348,
+
+                            loc: {
+                                end:   { column: 48, line: 22 },
+                                start: { column: 0, line: 22 }
+                            }
+                        },
+                        {
+                            name: 'fixture3test2',
+
+                            start: 350,
+                            end:   376,
+
+                            loc: {
+                                end:   { column: 26, line: 23 },
+                                start: { column: 0, line: 23 }
+                            }
+
+                        },
+                        {
+                            name: 'fixture3test4',
+
+                            start: 379,
+                            end:   468,
+
+                            loc: {
+                                end:   { column: 6, line: 32 },
+                                start: { column: 0, line: 25 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: 'fixture4',
+
+                    start: 472,
+                    end:   554,
+
+                    loc: {
+                        end:   { column: 16, line: 38 },
+                        start: { column: 0, line: 35 }
+                    },
+
+                    tests: [
+                        {
+                            name: 'fixture4test1',
+
+                            start: 557,
+                            end:   636,
+
+                            loc: {
+                                end:   { column: 21, line: 43 },
+                                start: { column: 0, line: 40 }
+                            }
+
+                        }
+                    ]
+                },
+                {
+                    name: 'fixture5',
+
+                    start: 639,
+                    end:   721,
+
+                    loc: {
+                        end:   { column: 16, line: 48 },
+                        start: { column: 0, line: 45 }
+                    },
+
+                    tests: [
+                        {
+                            name: 'fixture5test1',
+
+                            start: 724,
+                            end:   801,
+
+                            loc: {
+                                end:   { column: 19, line: 53 },
+                                start: { column: 0, line: 50 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: 'fixture6',
+
+                    start: 804,
+                    end:   912,
+
+                    loc: {
+                        end:   { column: 25, line: 59 },
+                        start: { column: 0, line: 55 }
+                    },
+
+                    tests: [
+                        {
+                            name: 'fixture6test1',
+
+                            start: 915,
+                            end:   1026,
+
+                            loc: {
+                                end:   { column: 31, line: 65 },
+                                start: { column: 0, line: 61 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: 'fixture7',
+
+                    start: 1029,
+                    end:   1137,
+
+                    loc: {
+                        end:   { column: 25, line: 71 },
+                        start: { column: 0, line: 67 }
+                    },
+
+                    tests: [
+                        {
+                            name: 'fixture7test1',
+
+                            start: 1140,
+                            end:   1251,
+
+                            loc: {
+                                end:   { column: 31, line: 77 },
+                                start: { column: 0, line: 73 }
+                            }
+
+                        }
+                    ]
+                },
+                {
+                    name: 'fixture8',
+
+                    start: 1254,
+                    end:   1360,
+
+                    loc: {
+                        end:   { column: 25, line: 83 },
+                        start: { column: 0, line: 79 }
+                    },
+
+                    tests: [
+                        {
+                            name: 'fixture8test1',
+
+                            start: 1363,
+                            end:   1472,
+
+                            loc: {
+                                end:   { column: 31, line: 89 },
+                                start: { column: 0, line: 85 }
                             }
                         }
                     ]
@@ -448,6 +481,12 @@ describe('Should get structure of esnext files', function () {
             ]
         ];
 
-        return testFixtureParser('./data/test-suites/after-before-skip-in-testfile', expectedStructure);
+        return testFixtureParser('./data/test-suites/fixture-and-test-hooks', expectedStructure);
+    });
+
+    it.only('.skip, .after, .before in test file - invalid usage', function () {
+        var expectedStructure = [[]];
+
+        return testFixtureParser('./data/test-suites/fixture-and-test-hooks-invalid-usage', expectedStructure);
     });
 });

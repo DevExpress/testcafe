@@ -4,7 +4,7 @@ import * as testRunErrors from './errors/test-run';
 import TestRun from './test-run';
 import COMMAND_TYPE from './test-run/commands/type';
 import Assignable from './utils/assignable';
-import getTestList from './compiler/es-next/parse-fixture';
+import getTestList from './compiler/parse-fixture';
 
 export default {
     getTestList,
