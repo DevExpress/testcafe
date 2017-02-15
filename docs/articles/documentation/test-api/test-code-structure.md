@@ -107,6 +107,54 @@ This is why [selectors](selecting-page-elements/selectors.md) and
 [client functions](obtaining-data-from-the-client.md) need the test controller object when they are
 called from Node.js callbacks.
 
+#### Using Test Controller Outside of Test Code
+
+You may sometimes need to call test API from outside of test code. For instance, your [page model](../recipes/using-page-model.md)
+can contain methods that perform common operations used in many tests, like authentication.
+
+```js
+import { Selector } from 'testcafe';
+
+export default class Page {
+    constructor () {
+        this.loginInput    = Selector('#login');
+        this.passwordInput = Selector('#password');
+        this.signInButton  = Selector('#sign-in-button');
+    }
+    async login (t) {
+        await t
+            .typeText(this.loginInput, 'MyLogin')
+            .typeText(this.passwordInput, 'Pa$$word')
+            .click(this.signInButton);
+    }
+}
+```
+
+In this instance, you need to access the test controller from the page model's `login` method.
+
+TestCafe allows you to avoid passing the test controller to the method explicitly.
+Instead, you can simply import `t` to the page model file.
+
+```js
+import { Selector, t } from 'testcafe';
+
+export default class Page {
+    constructor () {
+        this.loginInput    = Selector('#login');
+        this.passwordInput = Selector('#password');
+        this.signInButton  = Selector('#sign-in-button');
+    }
+    async login () {
+        await t
+            .typeText(this.loginInput, 'MyLogin')
+            .typeText(this.passwordInput, 'Pa$$word')
+            .click(this.signInButton);
+    }
+}
+```
+
+TestCafe will implicitly resolve test context and provide the right test controller.
+
 ## Specifying the Start Webpage
 
 You can specify a webpage at which all tests in a fixture start.
