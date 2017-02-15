@@ -164,7 +164,7 @@ The selector provides methods to filter DOM nodes by their index or text.
 
 Method | Type | Description
 ------ | ----- | -----
-`nth(index)` | Selector | Creates a selector that returns an element by its index in the matching set. If `index` is negative, the index is counted from the end of the matching set.
+`nth(index)` | Selector | Creates a selector that returns an element by its index in the matching set. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matching set.
 
 #### withText
 
@@ -243,7 +243,7 @@ The `filterFn` predicate is executed on the client. It takes the following param
 Parameter | Description
 ------ | -----
 `node`  | The current descendant node.
-`idx` | Index of `node` among other descendant nodes.
+`idx` | A zero-based index of `node` among other descendant nodes.
 `originNode` | A node from the left-hand selector's matching set whose descendants are being iterated.
 
 ```js
@@ -270,7 +270,7 @@ Selector('ul').find((node, idx, originNode) => {
 Method | Description
 ------ | -----
 `parent()` | Finds all parents of all nodes in the matching set (first element in the set will be the closest parent).
-`parent(index)` | Finds all parents of all nodes in the matching set and filters them by `index` (0 is closest). If `index` is negative, the index is counted from the end of the matching set.
+`parent(index)` | Finds all parents of all nodes in the matching set and filters them by `index` (0 is the closest). If `index` is negative, the index is counted from the end of the matching set.
 `parent(cssSelector)` | Finds all parents of all nodes in the matching set and filters them by `cssSelector`.
 `parent(filterFn, dependencies)` | Finds all parents of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
@@ -279,7 +279,7 @@ The `filterFn` predicate is executed on the client. It takes the following param
 Parameter | Description
 ------ | -----
 `node`  | The current parent node.
-`idx` | Index of `node` among other parent nodes.
+`idx` | A zero-based index of `node` among other parent nodes.
 `originNode` | A node from the left-hand selector's matching set whose parents are being iterated.
 
 ```js
@@ -306,7 +306,7 @@ Selector('ul').parent((node, idx, originNode) => {
 Method | Description
 ------ | -----
 `child()` | Finds all child elements (not nodes) of all nodes in the matching set.
-`child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`. If `index` is negative, the index is counted from the end of the matching set.
+`child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matching set.
 `child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
 `child(filterFn, dependencies)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
@@ -315,7 +315,7 @@ The `filterFn` predicate is executed on the client. It takes the following param
 Parameter | Description
 ------ | -----
 `node`  | The current child node.
-`idx` | Index of `node` among other child nodes.
+`idx` | A zero-based index of `node` among other child nodes.
 `originNode` | A node from the left-hand selector's matching set whose children are being iterated.
 
 ```js
@@ -342,7 +342,7 @@ Selector('ul').child((node, idx, originNode) => {
 Method | Description
 ------ | -----
 `sibling()` | Finds all sibling  elements (not nodes) of all nodes in the matching set.
-`sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`. If `index` is negative, the index is counted from the end of the matching set.
+`sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matching set.
 `sibling(cssSelector)` | Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
 `sibling(filterFn, dependencies)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
@@ -351,7 +351,7 @@ The `filterFn` predicate is executed on the client. It takes the following param
 Parameter | Description
 ------ | -----
 `node`  | The current sibling node.
-`idx` | Index of `node` among other sibling nodes.
+`idx` | A zero-based index of `node` among other sibling nodes.
 `originNode` | A node from the left-hand selector's matching set whose siblings are being iterated.
 
 ```js
@@ -378,7 +378,7 @@ Selector('ul').sibling((node, idx, originNode) => {
 Method | Description
 ------ | -----
 `nextSibling()` | Finds all succeeding sibling elements (not nodes) of all nodes in the matching set.
-`nextSibling(index)` | Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by `index`. If `index` is negative, the index is counted from the end of the matching set.
+`nextSibling(index)` | Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by `index`. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matching set.
 `nextSibling(cssSelector)` | Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
 `nextSibling(filterFn, dependencies)` |  Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
@@ -387,7 +387,7 @@ The `filterFn` predicate is executed on the client. It takes the following param
 Parameter | Description
 ------ | -----
 `node`  | The current succeeding sibling node.
-`idx` | Index of `node` among other succeeding sibling nodes.
+`idx` |  A zero-based index of `node` among other succeeding sibling nodes.
 `originNode` | A node from the left-hand selector's matching set whose siblings are being iterated.
 
 ```js
@@ -414,7 +414,7 @@ Selector('ul').nextSibling((node, idx, originNode) => {
 Method | Description
 ------ | -----
 `prevSibling()` | Finds all preceding sibling elements (not nodes) of all nodes in the matching set.
-`prevSibling(index)` | Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by `index`. If `index` is negative, the index is counted from the end of the matching set.
+`prevSibling(index)` | Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by `index`. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matching set.
 `prevSibling(cssSelector)` | Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
 `prevSibling(filterFn, dependencies)` |  Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects used in the `filterFn` function internally.
 
@@ -423,7 +423,7 @@ The `filterFn` predicate is executed on the client. It takes the following param
 Parameter | Description
 ------ | -----
 `node`  | The current preceding sibling node.
-`idx` | Index of `node` among other preceding sibling nodes.
+`idx` |  A zero-based index of `node` among other preceding sibling nodes.
 `originNode` | A node from the left-hand selector's matching set whose siblings are being iterated.
 
 ```js
