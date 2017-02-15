@@ -199,6 +199,12 @@ export class ActionIntegerArgumentError extends ActionArgumentErrorBase {
     }
 }
 
+export class ActionNumberArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TYPE.actionNumberArgumentError, argumentName, actualValue);
+    }
+}
+
 export class ActionPositiveIntegerArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
         super(TYPE.actionPositiveIntegerArgumentError, argumentName, actualValue);
@@ -237,6 +243,15 @@ export class ActionUnsupportedUrlProtocolError extends TestRunErrorBase {
 export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
     constructor (argumentName, argumentValue) {
         super(TYPE.actionUnsupportedDeviceTypeError, argumentName, argumentValue);
+    }
+}
+
+export class ActionUnsupportedAssertionTypeError extends TestRunErrorBase {
+    constructor (argumentName, assertionType) {
+        super(TYPE.actionUnsupportedAssertionTypeError);
+
+        this.argumentName  = argumentName;
+        this.assertionType = assertionType;
     }
 }
 

@@ -1,144 +1,97 @@
-import { assert, expect } from 'chai';
-import { assign } from 'lodash';
-import delay from '../utils/delay';
-import { ExternalAssertionLibraryError } from '../errors/test-run';
-import { assertType, is } from '../errors/runtime/type-assertions';
-import ClientFunctionResultPromise from '../client-functions/result-promise';
-
-const ASSERTION_DELAY = 200;
+import AssertionCommand from '../test-run/commands/assertion';
 
 export default class Assertion {
-    constructor (actual, testContoller) {
+    constructor (actual, testController) {
+        this.testController = testController;
         this.actual         = actual;
-        this.testController = testContoller;
-        this.message        = void 0;
-        this.opts           = {};
     }
 
-    _wrapSelectorResultAssertionExecutor (executor) {
-        return async () => {
-            var startTime     = new Date();
-            var resultPromise = this.actual;
-            var passed        = false;
-            var timeout       = this.opts.timeout === void 0 ?
-                                this.testController.testRun.opts.assertionTimeout :
-                                this.opts.timeout;
+    _enqueueAssertion (apiMethodName, assertionArgs) {
+        var options = assertionArgs.opts || {};
+        var message = assertionArgs.message;
 
-            while (!passed) {
-                this.actual = await resultPromise._reExecute();
+        if (typeof message === 'object') {
+            options = assertionArgs.message;
+            message = void 0;
+        }
 
-                try {
-                    executor();
-                    passed = true;
-                }
+        var timeout = options.timeout === void 0 ?
+                      this.testController.testRun.opts.assertionTimeout :
+                      options.timeout;
 
-                catch (err) {
-                    if (new Date() - startTime >= timeout)
-                        throw err;
-
-                    await delay(ASSERTION_DELAY);
-                }
-            }
-        };
-    }
-
-    _wrapExecutor (callsite, executor) {
-        if (this.actual instanceof ClientFunctionResultPromise)
-            executor = this._wrapSelectorResultAssertionExecutor(executor);
-
-        return async () => {
-            try {
-                await executor();
-            }
-
-            catch (err) {
-                if (err.name === 'AssertionError' || err.constructor.name === 'AssertionError')
-                    throw new ExternalAssertionLibraryError(err, callsite);
-
-                if (err.isTestCafeError)
-                    err.callsite = callsite;
-
-                throw err;
-            }
-        };
-    }
-
-    _enqueueAssertion (apiMethodName, message, opts, executor) {
-        if (typeof message === 'object')
-            opts = message;
-        else
-            this.message = message;
-
-        this.opts = assign(this.opts, opts);
-
-        if (this.opts.timeout !== void 0)
-            assertType(is.nonNegativeNumber, apiMethodName, '"timeout" option', this.opts.timeout);
-
-        return this.testController._enqueueTask(apiMethodName, callsite => this._wrapExecutor(callsite, executor));
+        return this.testController._enqueueCommand(apiMethodName, AssertionCommand, {
+            assertionType: apiMethodName,
+            actual:        this.actual,
+            expected:      assertionArgs.expected,
+            start:         assertionArgs.start,
+            finish:        assertionArgs.finish,
+            message:       message,
+            options:       { timeout }
+        });
     }
 
     eql (expected, message, opts) {
-        return this._enqueueAssertion('eql', message, opts, () => assert.deepEqual(this.actual, expected, this.message));
+        return this._enqueueAssertion('eql', { expected, message, opts });
     }
 
-    notEql (unexpected, message, opts) {
-        return this._enqueueAssertion('notEql', message, opts, () => assert.notDeepEqual(this.actual, unexpected, this.message));
+    notEql (expected, message, opts) {
+        return this._enqueueAssertion('notEql', { expected, message, opts });
     }
 
     ok (message, opts) {
-        return this._enqueueAssertion('ok', message, opts, () => assert.isOk(this.actual, this.message));
+        return this._enqueueAssertion('ok', { message, opts });
     }
 
     notOk (message, opts) {
-        return this._enqueueAssertion('notOk', message, opts, () => assert.isNotOk(this.actual, this.message));
+        return this._enqueueAssertion('notOk', { message, opts });
     }
 
-    contains (what, message, opts) {
-        return this._enqueueAssertion('contains', message, opts, () => assert.include(this.actual, what, this.message));
+    contains (expected, message, opts) {
+        return this._enqueueAssertion('contains', { expected, message, opts });
     }
 
-    notContains (what, message, opts) {
-        return this._enqueueAssertion('notContains', message, opts, () => assert.notInclude(this.actual, what, this.message));
+    notContains (expected, message, opts) {
+        return this._enqueueAssertion('notContains', { expected, message, opts });
     }
 
-    typeOf (type, message, opts) {
-        return this._enqueueAssertion('typeOf', message, opts, () => assert.typeOf(this.actual, type, this.message));
+    typeOf (expected, message, opts) {
+        return this._enqueueAssertion('typeOf', { expected, message, opts });
     }
 
-    notTypeOf (type, message, opts) {
-        return this._enqueueAssertion('notTypeOf', message, opts, () => assert.notTypeOf(this.actual, type, this.message));
+    notTypeOf (expected, message, opts) {
+        return this._enqueueAssertion('notTypeOf', { expected, message, opts });
     }
 
     gt (expected, message, opts) {
-        return this._enqueueAssertion('gt', message, opts, () => assert.isAbove(this.actual, expected, this.message));
+        return this._enqueueAssertion('gt', { expected, message, opts });
     }
 
     gte (expected, message, opts) {
-        return this._enqueueAssertion('gte', message, opts, () => assert.isAtLeast(this.actual, expected, this.message));
+        return this._enqueueAssertion('gte', { expected, message, opts });
     }
 
     lt (expected, message, opts) {
-        return this._enqueueAssertion('lt', message, opts, () => assert.isBelow(this.actual, expected, this.message));
+        return this._enqueueAssertion('lt', { expected, message, opts });
     }
 
     lte (expected, message, opts) {
-        return this._enqueueAssertion('lte', message, opts, () => assert.isAtMost(this.actual, expected, this.message));
+        return this._enqueueAssertion('lte', { expected, message, opts });
     }
 
-    within (lo, hi, message, opts) {
+    within (start, finish, message, opts) {
         // NOTE: `within` is not available in Chai `assert` interface.
-        return this._enqueueAssertion('within', message, opts, () => expect(this.actual).to.be.within(lo, hi, this.message));
+        return this._enqueueAssertion('within', { start, finish, message, opts });
     }
 
-    notWithin (lo, hi, message, opts) {
-        return this._enqueueAssertion('notWithin', message, opts, () => expect(this.actual).not.to.be.within(lo, hi, this.message));
+    notWithin (start, finish, message, opts) {
+        return this._enqueueAssertion('notWithin', { start, finish, message, opts });
     }
 
-    match (re, message, opts) {
-        return this._enqueueAssertion('match', message, opts, () => assert.match(this.actual, re, this.message));
+    match (expected, message, opts) {
+        return this._enqueueAssertion('match', { expected, message, opts });
     }
 
-    notMatch (re, message, opts) {
-        return this._enqueueAssertion('notMatch', message, opts, () => assert.notMatch(this.actual, re, this.message));
+    notMatch (expected, message, opts) {
+        return this._enqueueAssertion('notMatch', { expected, message, opts });
     }
 }
