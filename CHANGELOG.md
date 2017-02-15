@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.13.0 (2017-2-15)
+## v0.13.0 (2017-2-16)
 
 Fixture hooks, `speed` option for test actions, a couple of API enhancements and lots of bug fixes.
 
