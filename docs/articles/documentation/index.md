@@ -9,3 +9,4 @@ permalink: /documentation/
 * [Test API](test-api/index.md)
 * [Using TestCafe](using-testcafe/index.md)
 * [Extending TestCafe](extending-testcafe/index.md)
+* [Recipes](recipes/index.md)
