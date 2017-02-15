@@ -2,7 +2,7 @@
 
 ## v0.13.0 (2017-2-15)
 
-Fixture hooks, `speed` option for test actions and lots of bug fixes.
+Fixture hooks, `speed` option for test actions, a couple of API enhancements and lots of bug fixes.
 
 ### Enhancements
 
