@@ -30,7 +30,7 @@ export default class ESNextCompiler {
         return Module._nodeModulePaths(dir);
     }
 
-    static _getBabelOptions1 (filename) {
+    static _getBabelOptions (filename) {
         var { presetStage2, transformRuntime, presetEnv } = loadBabelLibs();
 
         // NOTE: passPrePreset and complex presets is a workaround for https://github.com/babel/babel/issues/2877
@@ -38,45 +38,11 @@ export default class ESNextCompiler {
         return {
             passPerPreset: true,
             presets:       [
-                { plugins: transformRuntime },
                 {
                     passPerPreset: false,
-                    presets:       [presetStage2, presetEnv]
+                    presets:       [{ plugins: [transformRuntime] }, presetStage2, presetEnv]
                 }
             ],
-            filename:      filename,
-            sourceMaps:    true,
-            retainLines:   true,
-            ast:           false,
-            babelrc:       false,
-            highlightCode: false,
-
-            resolveModuleSource: source => {
-                if (source === 'testcafe')
-                    return COMMON_API_PATH;
-
-                if (BABEL_RUNTIME_RE.test(source)) {
-                    try {
-                        return require.resolve(source);
-                    }
-                    catch (err) {
-                        return source;
-                    }
-                }
-
-                return source;
-            }
-        };
-    }
-
-    static _getBabelOptions2 (filename) {
-        var { presetStage2, transformRuntime, presetEnv } = loadBabelLibs();
-
-        // NOTE: passPrePreset and complex presets is a workaround for https://github.com/babel/babel/issues/2877
-        // Fixes https://github.com/DevExpress/testcafe/issues/969
-        return {
-            presets:       [presetStage2, presetEnv],
-            plugins:       [[transformRuntime, { polyfill: false }]],
             filename:      filename,
             sourceMaps:    true,
             retainLines:   true,
@@ -136,16 +102,13 @@ export default class ESNextCompiler {
         if (this.cache[filename])
             return this.cache[filename];
 
-        var opts1     = ESNextCompiler._getBabelOptions2(filename);
-        var compiled1 = babel.transform(code, opts1);
+        var opts     = ESNextCompiler._getBabelOptions(filename);
+        var compiled = babel.transform(code, opts);
 
-        var opts2     = ESNextCompiler._getBabelOptions1(filename);
-        var compiled2 = babel.transform(compiled1.code, opts2);
+        this.cache[filename]      = compiled.code;
+        this.sourceMaps[filename] = compiled.map;
 
-        this.cache[filename]      = compiled2.code;
-        this.sourceMaps[filename] = compiled2.map;
-
-        return compiled2.code;
+        return compiled.code;
     }
 
     _setupRequireHook (globals) {
