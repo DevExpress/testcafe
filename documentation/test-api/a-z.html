@@ -337,6 +337,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#setting-test-speed"  >Setting Test Speed</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -358,7 +365,36 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-the-hooks-and-test-code"  >Sharing Variables Between the Hooks and Test Code</a>
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-hooks"  >Test Hooks</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-test-hooks-and-test-code"  >Sharing Variables Between Test Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixture-hooks"  >Fixture Hooks</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-fixture-hooks-and-test-code"  >Sharing Variables Between Fixture Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -639,6 +675,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/recipes/debugging-tests.html"  >Debugging Tests</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
 		
     </li>
@@ -708,7 +751,9 @@
 <li><a href="test-code-structure.html#fixtures">fixture</a>
 
 <ul>
+<li><a href="test-code-structure.html#fixture-hooks">after</a></li>
 <li><a href="test-code-structure.html#initialization-and-clean-up">afterEach</a></li>
+<li><a href="test-code-structure.html#fixture-hooks">before</a></li>
 <li><a href="test-code-structure.html#initialization-and-clean-up">beforeEach</a></li>
 <li><a href="http-authentication.html">httpAuth</a></li>
 <li><a href="test-code-structure.html#skipping-tests">only</a></li>
@@ -724,8 +769,10 @@
 <li><a href="selecting-page-elements/selectors.html#check-if-an-element-exists">exists</a></li>
 <li><a href="selecting-page-elements/selectors.html#filter">filter</a></li>
 <li><a href="selecting-page-elements/selectors.html#find">find</a></li>
+<li><a href="selecting-page-elements/selectors.html#nextsibling">nextSibling</a></li>
 <li><a href="selecting-page-elements/selectors.html#nth">nth</a></li>
 <li><a href="selecting-page-elements/selectors.html#parent">parent</a></li>
+<li><a href="selecting-page-elements/selectors.html#prevsibling">prevSibling</a></li>
 <li><a href="selecting-page-elements/selectors.html#sibling">sibling</a></li>
 <li><a href="selecting-page-elements/selector-options.html#overwriting-options">with</a></li>
 <li><a href="selecting-page-elements/selectors.html#withtext">withText</a></li>
@@ -745,7 +792,7 @@
 <ul>
 <li><a href="actions/upload.html#clear-file-upload-input">clearUpload</a></li>
 <li><a href="actions/click.html">click</a></li>
-<li><a href="test-code-structure.html#sharing-variables-between-the-hooks-and-test-code">ctx</a></li>
+<li><a href="test-code-structure.html#sharing-variables-between-test-hooks-and-test-code">ctx</a></li>
 <li><a href="actions/double-click.html">doubleClick</a></li>
 <li><a href="actions/drag-element.html#drag-an-element-by-an-offset">drag</a></li>
 <li><a href="actions/drag-element.html#drag-an-element-onto-another-one">dragtoElement</a></li>
@@ -770,6 +817,7 @@
 <li><a href="assertions/assertion-api.html#match">match</a></li>
 <li><a href="assertions/assertion-api.html#not-match">notMatch</a></li>
 </ul></li>
+<li><a href="test-code-structure.html#sharing-variables-between-fixture-hooks-and-test-code">fixtureCtx</a></li>
 <li><a href="handling-native-dialogs.html#dialog-history">getNativeDialogHistory</a></li>
 <li><a href="actions/hover.html">hover</a></li>
 <li><a href="actions/navigate.html">navigate</a></li>
@@ -777,12 +825,12 @@
 <li><a href="actions/resize-window.html#setting-the-window-size">resizeWindow</a></li>
 <li><a href="actions/resize-window.html#fitting-the-window-into-a-particular-device">resizeWindowToFitDevice</a></li>
 <li><a href="actions/right-click.html">rightClick</a></li>
-<li><a href="selecting-page-elements/selectors.html#one-time-selection">select</a></li>
 <li><a href="actions/select-text.html#perform-selection-within-editable-content">selectEditableContent</a></li>
 <li><a href="actions/select-text.html#select-text-in-input-elements">selectText</a></li>
 <li><a href="actions/select-text.html#select-textarea-content">selectTextAreaContent</a></li>
 <li><a href="actions/upload.html#populate-file-upload-input">setFilesToUpload</a></li>
 <li><a href="handling-native-dialogs.html#dialog-handler">setNativeDialogHandler</a></li>
+<li><a href="test-code-structure.html#setting-test-speed">setTestSpeed</a></li>
 <li><a href="working-with-iframes.html#switching-to-an-iframe">switchToIframe</a></li>
 <li><a href="working-with-iframes.html#switching-back-to-the-main-window">switchToMainWindow</a></li>
 <li><a href="actions/take-screenshot.html">takeScreenshot</a></li>
