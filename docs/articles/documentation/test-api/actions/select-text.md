@@ -17,7 +17,7 @@ TestCafe allows you to select text within inputs, `<textarea>` and `contentEdita
 `t.selectText` selects text in input elements of various types.
 
 ```text
-t.selectText( selector [, startPos] [, endPos] )
+t.selectText( selector [, startPos] [, endPos] [, options] )
 ```
 
 Parameter               | Type                                              | Description                                                                                                                                          | Default
@@ -25,6 +25,7 @@ Parameter               | Type                                              | De
 `selector`              | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element whose text will be selected. See [Selecting Target Elements](index.md#selecting-target-elements).
 `startPos`&#160;*(optional)* | Number                                            | The start position of the selection. A zero-based integer.                                                                              | `0`
 `endPos`&#160;*(optional)*   | Number                                            | The end position of the selection. A zero-based integer.                                                                                | Length of the visible text content.
+`options`&#160;*(optional)*  | Object                                            | A set of options that provide additional parameters for the action. See [Basic Action Options](action-options.md#basic-action-options).
 
 > You can use `t.selectText` for `<textarea>` and `contentEditable` elements as well. However, the [t.selectTextAreaContent](#select-textarea-content)
 > and [t.selectEditableContent](#perform-selection-within-editable-content) actions allow you to specify the selection range
@@ -59,7 +60,7 @@ test('Select text within input', async t => {
 ## Select \<textarea\> Content
 
 ```text
-t.selectTextAreaContent( selector [, startLine] [, startPos] [, endLine] [, endPos] )
+t.selectTextAreaContent( selector [, startLine] [, startPos] [, endLine] [, endPos] [, options] )
 ```
 
 Parameter  | Type                                              | Description                                                                                                                                   | Default
@@ -69,6 +70,7 @@ Parameter  | Type                                              | Description    
 `startPos`&#160;*(optional)*  | Number                                            | The start position of selection within the line defined by the `startLine`. A zero-based integer.                          | `0`
 `endLine`&#160;*(optional)*   | Number                                            | The line number at which selection ends. A zero-based integer.                                                             | The index of the last line.
 `endPos`&#160;*(optional)*    | Number                                            | The end position of selection within the line defined by `endLine`. A zero-based integer.                                  | The last position in `endLine`.
+`options`&#160;*(optional)*  | Object                                            | A set of options that provide additional parameters for the action. See [Basic Action Options](action-options.md#basic-action-options).
 
 The following example shows how to select text within a `<textarea>` element.
 
@@ -105,13 +107,14 @@ test('Select text within textarea', async t => {
 ## Perform Selection within Editable Content
 
 ```text
-t.selectEditableContent( startSelector, endSelector )
+t.selectEditableContent( startSelector, endSelector [, options] )
 ```
 
 Parameter       | Type                                              | Description
 --------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 `startSelector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element from which selection starts. The start position of selection is the first character of the element's text. See [Selecting Target Elements](index.md#selecting-target-elements).
 `endSelector`   | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element at which selection ends. The end position of selection is the last character of the element's text. See [Selecting Target Elements](index.md#selecting-target-elements).
+`options`&#160;*(optional)*  | Object                                            | A set of options that provide additional parameters for the action. See [Basic Action Options](action-options.md#basic-action-options).
 
 This function works for HTML elements that have the `contentEditable` attribute enabled.
 

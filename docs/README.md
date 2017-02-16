@@ -19,6 +19,7 @@
     * [Fixtures](articles/documentation/test-api/test-code-structure.md#fixtures)
     * [Tests](articles/documentation/test-api/test-code-structure.md#tests)
       * [Test Controller](articles/documentation/test-api/test-code-structure.md#test-controller)
+      * [Setting Test Speed](articles/documentation/test-api/test-code-structure.md#setting-test-speed)
     * [Specifying the Start Webpage](articles/documentation/test-api/test-code-structure.md#specifying-the-start-webpage)
     * [Initialization and Clean-Up](articles/documentation/test-api/test-code-structure.md#initialization-and-clean-up)
       * [Test Hooks](articles/documentation/test-api/test-code-structure.md#test-hooks)

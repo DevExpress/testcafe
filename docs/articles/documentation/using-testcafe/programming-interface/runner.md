@@ -296,7 +296,7 @@ Parameter         | Type    | Description                                       
 `quarantineMode`  | Boolean | Defines whether to enable the [quarantine mode](#quarantine-mode).                                                                                                                    | `false`
 `selectorTimeout` | Number  | Specifies the amount of time, in milliseconds, within which [selectors](../../test-api/selecting-page-elements/selectors.md) make attempts to obtain a node to be returned. See [Selector Timeout](../../test-api/selecting-page-elements/selectors.md#selector-timeout). | `10000`
 `assertionTimeout` | Number  | Specifies the amount of time, in milliseconds, within which TestCafe makes attempts  to successfully execute an [assertion](../../test-api/assertions/index.md) if [a selector property](../../test-api/selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../../test-api/obtaining-data-from-the-client.md) was passed as an actual value. See [Smart Assertion Query Mechanism](../../test-api/assertions/index.md#smart-assertion-query-mechanism). | `3000`
-`speed`           | Number  | Specifies the speed of test execution. Should be a number between `1` (the fastest) and `0.01` (the slowest). | `1`
+`speed`           | Number  | Specifies the speed of test execution. Should be a number between `1` (the fastest) and `0.01` (the slowest). If speed is also specified for an [individual action](../../test-api/actions/action-options.md#basic-action-options), the action speed setting overrides test speed. | `1`
 
 **Example**
 

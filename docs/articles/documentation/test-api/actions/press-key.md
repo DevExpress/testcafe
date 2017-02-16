@@ -9,12 +9,13 @@ checked: true
 Presses the specified keyboard keys.
 
 ```text
-t.pressKey( keys )
+t.pressKey( keys [, options] )
 ```
 
 Parameter | Type   | Description
 --------- | ------ | --------------------------------------------------------
 `keys`    | String | The sequence of keys and key combinations to be pressed.
+`options`&#160;*(optional)*  | Object | A set of options that provide additional parameters for the action. See [Basic Action Options](action-options.md#basic-action-options).
 
 The following table shows how to specify keys of different types, key sequences and combinations.
 
