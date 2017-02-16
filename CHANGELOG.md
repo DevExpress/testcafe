@@ -2,9 +2,21 @@
 
 ## v0.13.0 (2017-2-16)
 
-Fixture hooks, `speed` option for test actions, a couple of API enhancements and lots of bug fixes.
+IDE plugins, fixture hooks, `speed` option for test actions, a couple of API enhancements and lots of bug fixes.
 
 ### Enhancements
+
+#### :gear: IDE Plugins
+
+With this release, we have prepared test runner plugins for
+[VSCode](https://github.com/romanresh/vscode-testcafe) and [SublimeText](https://github.com/churkin/testcafe-sublimetext).
+These plugins allow you to
+
+* Run a particular test, fixture, all tests in a file or directory via the context menu or built-in commands,
+* Automatically detect browsers installed on the local machine,
+* Repeat last test run,
+* Debug tests,
+* View test results in the `Debug Console` panel.
 
 #### :gear: Fixture hooks ([#903](https://github.com/DevExpress/testcafe/issues/903))
 
