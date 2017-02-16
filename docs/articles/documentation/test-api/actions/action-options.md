@@ -98,7 +98,6 @@ test('My Test', async t => {
 });
 ```
 
-
 ## Click Action Options
 
 Provide additional parameters for a click action.
