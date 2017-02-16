@@ -337,6 +337,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#setting-test-speed"  >Setting Test Speed</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -358,7 +365,36 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-the-hooks-and-test-code"  >Sharing Variables Between the Hooks and Test Code</a>
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-hooks"  >Test Hooks</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-test-hooks-and-test-code"  >Sharing Variables Between Test Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixture-hooks"  >Fixture Hooks</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-fixture-hooks-and-test-code"  >Sharing Variables Between Fixture Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -639,6 +675,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/recipes/debugging-tests.html"  >Debugging Tests</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
 		
     </li>
@@ -692,14 +735,54 @@
 		<div class="post-content">
 
 			<h1>Action Options</h1>
-<p>This topic describes three types of <a href=".">test action</a> options.</p>
+<p>This topic describes <a href=".">test action</a> options.</p>
 
 <ul>
+<li><a href="#basic-action-options">Basic Action Options</a></li>
 <li><a href="#mouse-action-options">Mouse Action Options</a></li>
 <li><a href="#click-action-options">Click Action Options</a></li>
 <li><a href="#typing-action-options">Typing Action Options</a></li>
 </ul>
-<h2><a class="anchor" name="mouse-action-options"></a>Mouse Action Options <a class="permalink" href="#mouse-action-options">#</a></h2>
+<h2><a class="anchor" name="basic-action-options"></a>Basic Action Options <a class="permalink" href="#basic-action-options">#</a></h2>
+<p>Provide additional parameters for an action.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">speed</span><span class="p">:</span> <span class="nb">Number</span>
+<span class="p">}</span>
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>speed</code></td>
+<td>Number</td>
+<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A number between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a>, <a href="../../using-testcafe/programming-interface/runner.html#run">API</a> or in <a href="../test-code-structure.html#setting-test-speed">test code</a>, the action speed setting overrides test speed.</td>
+<td><code>1</code></td>
+</tr>
+</tbody></table>
+
+<p>Basic action options are used in the <a href="press-key.html">t.pressKey</a>,
+<a href="select-text.html#select-text-in-input-elements">t.selectText</a>, <a href="select-text.html#select-textarea-content">t.selectTextAreaContent</a> and
+<a href="select-text.html#perform-selection-within-editable-content">t.selectEditableContent</a> actions.</p>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">' Parker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">speed</span><span class="p">:</span> <span class="mf">0.1</span> <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="mouse-action-options"></a>Mouse Action Options <a class="permalink" href="#mouse-action-options">#</a></h2>
 <p>Provide additional parameters for a mouse action.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
     <span class="nl">modifiers</span><span class="p">:</span> <span class="p">{</span>
@@ -710,7 +793,8 @@
     <span class="p">},</span>
 
     <span class="nx">offsetX</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">offsetY</span><span class="err">:</span> <span class="nb">Number</span>
+    <span class="nx">offsetY</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">speed</span><span class="err">:</span> <span class="nb">Number</span>
 <span class="p">}</span>
 </code></pre></div>
 <table><thead>
@@ -733,11 +817,36 @@
 <td>Mouse pointer coordinates that define a point where the action is performed or started. If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the target element. If an offset is a negative integer, they are calculated relative to the bottom-right corner.</td>
 <td>The center of the target element.</td>
 </tr>
+<tr>
+<td><code>speed</code></td>
+<td>Number</td>
+<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.html#run">programmatically</a>, the action speed setting overrides test speed.</td>
+<td><code>1</code></td>
+</tr>
 </tbody></table>
 
 <p>Mouse action options are used in the <a href="drag-element.html#drag-an-element-by-an-offset">t.drag</a>,
 <a href="drag-element.html#drag-an-element-onto-another-one">t.dragToElement</a> and <a href="hover.html">t.hover</a> actions.</p>
-<h2><a class="anchor" name="click-action-options"></a>Click Action Options <a class="permalink" href="#click-action-options">#</a></h2>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">sliderHandle</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.ui-slider-handle'</span><span class="p">);</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">drag</span><span class="p">(</span><span class="nx">sliderHandle</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">{</span>
+            <span class="na">offsetX</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="na">offsetY</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="na">modifiers</span><span class="p">:</span> <span class="p">{</span>
+                <span class="na">shift</span><span class="p">:</span> <span class="kc">true</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="click-action-options"></a>Click Action Options <a class="permalink" href="#click-action-options">#</a></h2>
 <p>Provide additional parameters for a click action.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
     <span class="nl">modifiers</span><span class="p">:</span> <span class="p">{</span>
@@ -749,7 +858,8 @@
 
     <span class="nx">offsetX</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
     <span class="nx">offsetY</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">caretPos</span><span class="err">:</span> <span class="nb">Number</span>
+    <span class="nx">caretPos</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
+    <span class="nx">speed</span><span class="err">:</span> <span class="nb">Number</span>
 <span class="p">}</span>
 </code></pre></div>
 <table><thead>
@@ -778,10 +888,31 @@
 <td>The initial caret position if the action is performed on a text input field. A zero-based integer.</td>
 <td>The length of the input field content.</td>
 </tr>
+<tr>
+<td><code>speed</code></td>
+<td>Number</td>
+<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.html#run">programmatically</a>, the action speed setting overrides test speed.</td>
+<td><code>1</code></td>
+</tr>
 </tbody></table>
 
 <p>Click action options are used in the <a href="click.html">t.click</a>, <a href="double-click.html">t.doubleClick</a> and <a href="right-click.html">t.rightClick</a> actions.</p>
-<h2><a class="anchor" name="typing-action-options"></a>Typing Action Options <a class="permalink" href="#typing-action-options">#</a></h2>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Pete Parker'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">4</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nx">pressKey</span><span class="p">(</span><span class="s1">'r'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="typing-action-options"></a>Typing Action Options <a class="permalink" href="#typing-action-options">#</a></h2>
 <p>Provide additional parameters for a typing operation.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
     <span class="nl">modifiers</span><span class="p">:</span> <span class="p">{</span>
@@ -794,7 +925,9 @@
     <span class="nx">offsetX</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
     <span class="nx">offsetY</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
     <span class="nx">caretPos</span><span class="err">:</span> <span class="nb">Number</span><span class="p">,</span>
-    <span class="nx">replace</span><span class="err">:</span> <span class="nb">Boolean</span>
+    <span class="nx">replace</span><span class="err">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+    <span class="nx">paste</span><span class="err">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+    <span class="nx">speed</span><span class="err">:</span> <span class="nb">Number</span>
 <span class="p">}</span>
 </code></pre></div>
 <table><thead>
@@ -829,10 +962,36 @@
 <td><code>true</code> to remove the current text in the target element, and <code>false</code> to leave the text as it is.</td>
 <td><code>false</code></td>
 </tr>
+<tr>
+<td><code>paste</code></td>
+<td>Boolean</td>
+<td><code>true</code> to insert the entire block of current text in a single keystroke (similar to a copy &amp; paste function), and <code>false</code> to insert the current text character by character.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>speed</code></td>
+<td>Number</td>
+<td>The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between <code>1</code> (the maximum speed) and <code>0.01</code> (the minimum speed). If test speed is also specified in the <a href="../../using-testcafe/command-line-interface.html#--speed-factor">CLI</a> or <a href="../../using-testcafe/programming-interface/runner.html#run">programmatically</a>, the action speed setting overrides test speed.</td>
+<td><code>1</code></td>
+</tr>
 </tbody></table>
 
 <p>Typing action options are used in the <a href="type-text.html">t.typeText</a> action.</p>
 
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Parker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
 
 		</div>
 	</article>

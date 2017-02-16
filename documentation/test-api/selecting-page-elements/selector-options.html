@@ -337,6 +337,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#setting-test-speed"  >Setting Test Speed</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -358,7 +365,36 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-the-hooks-and-test-code"  >Sharing Variables Between the Hooks and Test Code</a>
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-hooks"  >Test Hooks</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-test-hooks-and-test-code"  >Sharing Variables Between Test Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixture-hooks"  >Fixture Hooks</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-fixture-hooks-and-test-code"  >Sharing Variables Between Fixture Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -639,6 +675,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/recipes/debugging-tests.html"  >Debugging Tests</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
 		
     </li>
@@ -698,9 +741,6 @@
 <li><a href="#optionsboundtestrun">options.boundTestRun</a></li>
 <li><a href="#optionstimeout">options.timeout</a></li>
 <li><a href="#optionsvisibilitycheck">options.visibilityCheck</a></li>
-<li>(<strong><em>deprecated</em></strong>) <a href="#optionsdependencies">options.dependencies</a></li>
-<li>(<strong><em>deprecated</em></strong>) <a href="#optionstext">options.text</a></li>
-<li>(<strong><em>deprecated</em></strong>) <a href="#optionsindex">options.index</a></li>
 </ul>
 
 <p>You can also overwrite the options you have specified before.</p>
@@ -730,45 +770,6 @@ or the <a href="../../using-testcafe/command-line-interface.html#--selector-time
 <p><code>true</code> to additionally require the returned element to become visible within <a href="#optionstimeout">options.timeout</a>.</p>
 
 <p><strong>Default value</strong>: <code>false</code></p>
-<h2><a class="anchor" name="optionsdependencies"></a>options.dependencies <a class="permalink" href="#optionsdependencies">#</a></h2><blockquote class="important"><div class="blockquote-content"><p><strong><em>Deprecated.</em></strong> <em>Use <a href="selectors.html#search-for-elements-in-the-dom-hierarchy">hierarchical selectors</a> instead. <code>options.dependencies</code> will be removed in future releases.</em></p>
-</div></blockquote>
-<p><strong>Type</strong>: Object</p>
-
-<p>Contains functions, variables or objects used by the selector internally.
-Properties of the <code>dependencies</code> object will be added to the selector&#39;s scope as variables.</p>
-
-<p>The following sample demonstrates a selector (<code>gridCell</code>) that calls another selector (<code>gridRow</code>) internally.
-The <code>gridRow</code> selector is passed to <code>gridCell</code> as a dependency.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
-
-<span class="kr">const</span> <span class="nx">gridRow</span>  <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">n</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="s1">'grid-row'</span><span class="p">)[</span><span class="nx">n</span><span class="p">]);</span>
-
-<span class="kr">const</span> <span class="nx">gridCell</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">((</span><span class="nx">m</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">gridRow</span><span class="p">(</span><span class="nx">m</span><span class="p">).</span><span class="nx">children</span><span class="p">[</span><span class="nx">n</span><span class="p">],</span> <span class="p">{</span>
-     <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="nx">gridRow</span> <span class="p">}</span>
-<span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="optionstext"></a>options.text <a class="permalink" href="#optionstext">#</a></h2><blockquote class="important"><div class="blockquote-content"><p><strong><em>Deprecated.</em></strong> <em>Use the <a href="selectors.html#filter-dom-nodes">withText()</a> method to filter elements by text content or a regular expression that matches this content. <code>options.text</code> will be removed in future releases.</em></p>
-</div></blockquote>
-<p><strong>Type</strong>: String &#124; RegExp</p>
-
-<p>Text content of the node that should be selected or a regular expression that matches this content.
-Use this option to filter nodes returned by the selector&#39;s <a href="selectors.html#selector-initializers">initializing</a> function or CSS selector.</p>
-
-<p>The <code>text</code> filter is applied whenever a function or CSS selector string that was used to initialize the selector
-returns one or several nodes. If none of these nodes match the <code>text</code> filter, the selector will return <code>null</code>.</p>
-
-<p>You can also use the <a href="#optionsindex">index</a> option to identify a node by its index.</p>
-<h2><a class="anchor" name="optionsindex"></a>options.index <a class="permalink" href="#optionsindex">#</a></h2><blockquote class="important"><div class="blockquote-content"><p><strong><em>Deprecated.</em></strong> <em>Use the <a href="selectors.html#filter-dom-nodes">nth()</a> method to select a node by its index. <code>options.index</code> will be removed in future releases.</em></p>
-</div></blockquote>
-<p><strong>Type</strong>: Number</p>
-
-<p>The index of the node that should be selected. Specifies the node&#39;s position among other nodes returned
-by the selector&#39;s <a href="selectors.html#selector-initializers">initializing</a> function or CSS selector.</p>
-
-<p>Use the <code>index</code> option when a function or CSS selector string that was used to initialize the selector returns more than one DOM node.</p>
-
-<p>You can also use the <a href="#optionstext">text</a> option to select a node by its text content.</p>
-
-<p><strong>Default value</strong>: <code>0</code></p>
 <h2><a class="anchor" name="overwriting-options"></a>Overwriting Options <a class="permalink" href="#overwriting-options">#</a></h2>
 <p>You can overwrite selector options by using the selector&#39;s <code>with</code> function.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">selector.with( options ) → Selector

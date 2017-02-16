@@ -337,6 +337,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#setting-test-speed"  >Setting Test Speed</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -358,7 +365,36 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-the-hooks-and-test-code"  >Sharing Variables Between the Hooks and Test Code</a>
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-hooks"  >Test Hooks</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-test-hooks-and-test-code"  >Sharing Variables Between Test Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixture-hooks"  >Fixture Hooks</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-fixture-hooks-and-test-code"  >Sharing Variables Between Fixture Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -639,6 +675,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/recipes/debugging-tests.html"  >Debugging Tests</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
 		
     </li>
@@ -721,6 +764,8 @@ To interact with the page, use <a href="../actions/">test actions</a>.</p>
 <li><a href="#parent">parent</a></li>
 <li><a href="#child">child</a></li>
 <li><a href="#sibling">sibling</a></li>
+<li><a href="#nextsibling">nextSibling</a></li>
+<li><a href="#prevsibling">prevSibling</a></li>
 </ul></li>
 <li><a href="#examples">Examples</a></li>
 </ul></li>
@@ -735,7 +780,6 @@ To interact with the page, use <a href="../actions/">test actions</a>.</p>
 <li><a href="#selector-timeout">Selector Timeout</a></li>
 </ul></li>
 <li><a href="#adding-custom-properties-to-element-state">Adding Custom Properties to Element State</a></li>
-<li><a href="#one-time-selection">One-Time Selection</a></li>
 <li><a href="#calling-selectors-from-nodejs-callbacks">Calling Selectors from Node.js Callbacks</a></li>
 <li><a href="#limitations">Limitations</a></li>
 </ul>
@@ -856,7 +900,7 @@ The selector provides methods to filter DOM nodes by their index or text.</p>
 <tr>
 <td><code>nth(index)</code></td>
 <td>Selector</td>
-<td>Creates a selector that returns an element by its index in the matching set. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
+<td>Creates a selector that returns an element by its index in the matching set. The <code>index</code> parameter is zero-based. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
 </tr>
 </tbody></table>
 <h4><a class="anchor" name="withtext"></a>withText <a class="permalink" href="#withtext">#</a></h4>
@@ -979,7 +1023,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </tr>
 <tr>
 <td><code>idx</code></td>
-<td>Index of <code>node</code> among other descendant nodes.</td>
+<td>A zero-based index of <code>node</code> among other descendant nodes.</td>
 </tr>
 <tr>
 <td><code>originNode</code></td>
@@ -1012,7 +1056,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </tr>
 <tr>
 <td><code>parent(index)</code></td>
-<td>Finds all parents of all nodes in the matching set and filters them by <code>index</code> (0 is closest). If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
+<td>Finds all parents of all nodes in the matching set and filters them by <code>index</code> (0 is the closest). If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
 </tr>
 <tr>
 <td><code>parent(cssSelector)</code></td>
@@ -1038,7 +1082,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </tr>
 <tr>
 <td><code>idx</code></td>
-<td>Index of <code>node</code> among other parent nodes.</td>
+<td>A zero-based index of <code>node</code> among other parent nodes.</td>
 </tr>
 <tr>
 <td><code>originNode</code></td>
@@ -1071,7 +1115,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </tr>
 <tr>
 <td><code>child(index)</code></td>
-<td>Finds all child elements (not nodes) of all nodes in the matching set and filters them by <code>index</code>. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
+<td>Finds all child elements (not nodes) of all nodes in the matching set and filters them by <code>index</code>. The <code>index</code> parameter is zero-based. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
 </tr>
 <tr>
 <td><code>child(cssSelector)</code></td>
@@ -1097,7 +1141,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </tr>
 <tr>
 <td><code>idx</code></td>
-<td>Index of <code>node</code> among other child nodes.</td>
+<td>A zero-based index of <code>node</code> among other child nodes.</td>
 </tr>
 <tr>
 <td><code>originNode</code></td>
@@ -1130,7 +1174,7 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </tr>
 <tr>
 <td><code>sibling(index)</code></td>
-<td>Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by <code>index</code>. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
+<td>Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by <code>index</code>. The <code>index</code> parameter is zero-based. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
 </tr>
 <tr>
 <td><code>sibling(cssSelector)</code></td>
@@ -1152,11 +1196,11 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 </thead><tbody>
 <tr>
 <td><code>node</code></td>
-<td>The current descendant node.</td>
+<td>The current sibling node.</td>
 </tr>
 <tr>
 <td><code>idx</code></td>
-<td>Index of <code>node</code> among other sibling nodes.</td>
+<td>A zero-based index of <code>node</code> among other sibling nodes.</td>
 </tr>
 <tr>
 <td><code>originNode</code></td>
@@ -1174,6 +1218,124 @@ you to pass objects to the <code>filterFn</code> client-side scope where they ap
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">});</span>
 
 <span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">sibling</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">);</span>
+<span class="p">},</span> <span class="p">{</span> <span class="nx">isNodeOk</span> <span class="p">});</span>
+</code></pre></div><h4><a class="anchor" name="nextsibling"></a>nextSibling <a class="permalink" href="#nextsibling">#</a></h4>
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>nextSibling()</code></td>
+<td>Finds all succeeding sibling elements (not nodes) of all nodes in the matching set.</td>
+</tr>
+<tr>
+<td><code>nextSibling(index)</code></td>
+<td>Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by <code>index</code>. The <code>index</code> parameter is zero-based. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
+</tr>
+<tr>
+<td><code>nextSibling(cssSelector)</code></td>
+<td>Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by <code>cssSelector</code>.</td>
+</tr>
+<tr>
+<td><code>nextSibling(filterFn, dependencies)</code></td>
+<td>Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects used in the <code>filterFn</code> function internally.</td>
+</tr>
+</tbody></table>
+
+<p>The <code>filterFn</code> predicate is executed on the client. It takes the following parameters.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>node</code></td>
+<td>The current succeeding sibling node.</td>
+</tr>
+<tr>
+<td><code>idx</code></td>
+<td>A zero-based index of <code>node</code> among other succeeding sibling nodes.</td>
+</tr>
+<tr>
+<td><code>originNode</code></td>
+<td>A node from the left-hand selector&#39;s matching set whose siblings are being iterated.</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'section'</span><span class="p">).</span><span class="nx">nextSibling</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// node === the &lt;section&gt;'s succeeding sibling node</span>
+    <span class="c1">// idx === index of the current &lt;section&gt;'s succeeding sibling node</span>
+    <span class="c1">// originNode === the &lt;section&gt; element</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>The <a href="../obtaining-data-from-the-client.html#optionsdependencies">dependencies parameter</a> allows
+you to pass objects to the <code>filterFn</code> client-side scope where they appear as variables.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">});</span>
+
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">nextSibling</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">);</span>
+<span class="p">},</span> <span class="p">{</span> <span class="nx">isNodeOk</span> <span class="p">});</span>
+</code></pre></div><h4><a class="anchor" name="prevsibling"></a>prevSibling <a class="permalink" href="#prevsibling">#</a></h4>
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>prevSibling()</code></td>
+<td>Finds all preceding sibling elements (not nodes) of all nodes in the matching set.</td>
+</tr>
+<tr>
+<td><code>prevSibling(index)</code></td>
+<td>Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by <code>index</code>. The <code>index</code> parameter is zero-based. If <code>index</code> is negative, the index is counted from the end of the matching set.</td>
+</tr>
+<tr>
+<td><code>prevSibling(cssSelector)</code></td>
+<td>Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by <code>cssSelector</code>.</td>
+</tr>
+<tr>
+<td><code>prevSibling(filterFn, dependencies)</code></td>
+<td>Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by the <code>filterFn</code> predicate. Use an optional <code>dependencies</code> parameter to pass functions, variables or objects used in the <code>filterFn</code> function internally.</td>
+</tr>
+</tbody></table>
+
+<p>The <code>filterFn</code> predicate is executed on the client. It takes the following parameters.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>node</code></td>
+<td>The current preceding sibling node.</td>
+</tr>
+<tr>
+<td><code>idx</code></td>
+<td>A zero-based index of <code>node</code> among other preceding sibling nodes.</td>
+</tr>
+<tr>
+<td><code>originNode</code></td>
+<td>A node from the left-hand selector&#39;s matching set whose siblings are being iterated.</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'section'</span><span class="p">).</span><span class="nx">prevSibling</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// node === the &lt;section&gt;'s preceding sibling node</span>
+    <span class="c1">// idx === index of the current &lt;section&gt;'s preceding sibling node</span>
+    <span class="c1">// originNode === the &lt;section&gt; element</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>The <a href="../obtaining-data-from-the-client.html#optionsdependencies">dependencies parameter</a> allows
+you to pass objects to the <code>filterFn</code> client-side scope where they appear as variables.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">isNodeOk</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">});</span>
+
+<span class="nx">Selector</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">prevSibling</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">isNodeOk</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">originNode</span><span class="p">);</span>
 <span class="p">},</span> <span class="p">{</span> <span class="nx">isNodeOk</span> <span class="p">});</span>
 </code></pre></div>
@@ -1437,37 +1599,6 @@ To do this, use the <a href="selector-options.html#optionsvisibilitycheck">visib
     <span class="p">});</span>
 
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">label</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'input type="checkbox" name="remote"'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="one-time-selection"></a>One-Time Selection <a class="permalink" href="#one-time-selection">#</a></h2><blockquote class="important"><div class="blockquote-content"><p><strong><em>Deprecated</em></strong> <em>Use <a href="#creating-selectors">selectors</a> instead. The <code>select</code> method of the <a href="../test-code-structure.html#test-controller">test controller</a> will be removed in future releases.</em></p>
-</div></blockquote>
-<p>To create a selector and immediately execute it without saving it, use the <code>select</code> method of the <a href="../test-code-structure.html#test-controller">test controller</a>.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.select( init [, options] )
-</code></pre></div>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>init</code></td>
-<td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
-<td>Identifies a DOM node to be selected; see <a href="#selector-initializers">Selector Initializers</a>.</td>
-</tr>
-<tr>
-<td><code>options</code>&#160;<em>(optional)</em></td>
-<td>Object</td>
-<td>See <a href="selector-options.html">Options</a>.</td>
-</tr>
-</tbody></table>
-
-<p>The following example shows how to get a DOM element by ID with <code>t.select</code>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">'header'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" name="calling-selectors-from-nodejs-callbacks"></a>Calling Selectors from Node.js Callbacks <a class="permalink" href="#calling-selectors-from-nodejs-callbacks">#</a></h2>
 <p>Selectors need access to the <a href="../test-code-structure.html#test-controller">test controller</a> to be executed.

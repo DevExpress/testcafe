@@ -337,6 +337,13 @@
 		
     </li>
 
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#setting-test-speed"  >Setting Test Speed</a>
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -358,7 +365,36 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-the-hooks-and-test-code"  >Sharing Variables Between the Hooks and Test Code</a>
+<a href="/testcafe/documentation/test-api/test-code-structure.html#test-hooks"  >Test Hooks</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-test-hooks-and-test-code"  >Sharing Variables Between Test Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#fixture-hooks"  >Fixture Hooks</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-fixture-hooks-and-test-code"  >Sharing Variables Between Fixture Hooks and Test Code</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -639,6 +675,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/recipes/debugging-tests.html"  >Debugging Tests</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
 		
     </li>
@@ -701,7 +744,7 @@
 </ul>
 <h2><a class="anchor" name="select-text-in-input-elements"></a>Select Text in Input Elements <a class="permalink" href="#select-text-in-input-elements">#</a></h2>
 <p><code>t.selectText</code> selects text in input elements of various types.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.selectText( selector [, startPos] [, endPos] )
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.selectText( selector [, startPos] [, endPos] [, options] )
 </code></pre></div>
 <table><thead>
 <tr>
@@ -729,6 +772,12 @@
 <td>The end position of the selection. A zero-based integer.</td>
 <td>Length of the visible text content.</td>
 </tr>
+<tr>
+<td><code>options</code>&#160;<em>(optional)</em></td>
+<td>Object</td>
+<td>A set of options that provide additional parameters for the action. See <a href="action-options.html#basic-action-options">Basic Action Options</a>.</td>
+<td></td>
+</tr>
 </tbody></table>
 <blockquote><div class="blockquote-content"><p>You can use <code>t.selectText</code> for <code>&lt;textarea&gt;</code> and <code>contentEditable</code> elements as well. However, the <a href="#select-textarea-content">t.selectTextAreaContent</a>
 and <a href="#perform-selection-within-editable-content">t.selectEditableContent</a> actions allow you to specify the selection range
@@ -755,7 +804,7 @@ in a way that is more relevant for these elements.</p>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">await</span> <span class="nx">getElementSelectionEnd</span><span class="p">(</span><span class="nx">developerNameInput</span><span class="p">)).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>If the <code>startPos</code> value is greater than the <code>endPos</code> value, the action will perform a backward selection.</p>
-</div></blockquote><h2><a class="anchor" name="select-textarea-content"></a>Select &lt;textarea&gt; Content <a class="permalink" href="#select-textarea-content">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.selectTextAreaContent( selector [, startLine] [, startPos] [, endLine] [, endPos] )
+</div></blockquote><h2><a class="anchor" name="select-textarea-content"></a>Select &lt;textarea&gt; Content <a class="permalink" href="#select-textarea-content">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.selectTextAreaContent( selector [, startLine] [, startPos] [, endLine] [, endPos] [, options] )
 </code></pre></div>
 <table><thead>
 <tr>
@@ -795,6 +844,12 @@ in a way that is more relevant for these elements.</p>
 <td>The end position of selection within the line defined by <code>endLine</code>. A zero-based integer.</td>
 <td>The last position in <code>endLine</code>.</td>
 </tr>
+<tr>
+<td><code>options</code>&#160;<em>(optional)</em></td>
+<td>Object</td>
+<td>A set of options that provide additional parameters for the action. See <a href="action-options.html#basic-action-options">Basic Action Options</a>.</td>
+<td></td>
+</tr>
 </tbody></table>
 
 <p>The following example shows how to select text within a <code>&lt;textarea&gt;</code> element.</p>
@@ -824,7 +879,7 @@ in a way that is more relevant for these elements.</p>
 <span class="p">});</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>If the position defined by <code>startLine</code> and <code>startPos</code> is greater than the one defined
 by <code>endLine</code> and <code>endPos</code>, the action will perform a backward selection.</p>
-</div></blockquote><h2><a class="anchor" name="perform-selection-within-editable-content"></a>Perform Selection within Editable Content <a class="permalink" href="#perform-selection-within-editable-content">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.selectEditableContent( startSelector, endSelector )
+</div></blockquote><h2><a class="anchor" name="perform-selection-within-editable-content"></a>Perform Selection within Editable Content <a class="permalink" href="#perform-selection-within-editable-content">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.selectEditableContent( startSelector, endSelector [, options] )
 </code></pre></div>
 <table><thead>
 <tr>
@@ -842,6 +897,11 @@ by <code>endLine</code> and <code>endPos</code>, the action will perform a backw
 <td><code>endSelector</code></td>
 <td>Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise</td>
 <td>Identifies a webpage element at which selection ends. The end position of selection is the last character of the element&#39;s text. See <a href=".#selecting-target-elements">Selecting Target Elements</a>.</td>
+</tr>
+<tr>
+<td><code>options</code>&#160;<em>(optional)</em></td>
+<td>Object</td>
+<td>A set of options that provide additional parameters for the action. See <a href="action-options.html#basic-action-options">Basic Action Options</a>.</td>
 </tr>
 </tbody></table>
 

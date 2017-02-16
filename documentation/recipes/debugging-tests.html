@@ -7,20 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Pausing the Test | TestCafe</title>
+  <title>Debugging Tests | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/pausing-the-test.html" />
-  <meta property="og:title" content="Pausing the Test | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/recipes/debugging-tests.html" />
+  <meta property="og:title" content="Debugging Tests | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/pausing-the-test.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/recipes/debugging-tests.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script>
@@ -582,7 +582,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/pausing-the-test.html" class="active" >Pausing the Test</a>
+<a href="/testcafe/documentation/test-api/pausing-the-test.html"  >Pausing the Test</a>
 		
     </li>
 
@@ -675,7 +675,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/debugging-tests.html"  >Debugging Tests</a>
+<a href="/testcafe/documentation/recipes/debugging-tests.html" class="active" >Debugging Tests</a>
 		
     </li>
 
@@ -734,39 +734,77 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Pausing the Test</h1>
-<p>Use the <a href="test-code-structure.html#test-controller">test controller&#39;s</a> <code>wait</code> function to pause a test for a specified period of time.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.wait( timeout )
+			<h1>Debugging Tests</h1>
+<p>TestCafe allows you to debug server-side test code and provides a number of options useful for debugging.</p>
+
+<ul>
+<li><a href="#debugging-test-code">Debugging Test Code</a></li>
+<li><a href="#options-useful-for-debugging">Options Useful for Debugging</a></li>
+</ul>
+<h2><a class="anchor" name="debugging-test-code"></a>Debugging Test Code <a class="permalink" href="#debugging-test-code">#</a></h2>
+<p>Starting with version 6.3.0, Node.js allows you to debug applications in Chrome Developer Tools.
+If you have Chrome and an appropriate version of Node.js installed on your machine,
+you can debug TestCafe test code.
+To do this, add the <code>--inspect</code> and <code>--debug-brk</code> flags to the test run command.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe --inspect --debug-brk chrome ./tests
 </code></pre></div>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>timeout</code></td>
-<td>Number</td>
-<td>The pause duration, in milliseconds.</td>
-</tr>
-</tbody></table>
+<p>Put the <code>debugger</code> keyword in test code where you want to stop.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 
-<p>The following example uses the <code>t.wait</code> function to pause the test while animation is playing.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
-
-<span class="kr">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#article-header'</span><span class="p">);</span>
-
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Wait Example'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">debugger</span><span class="p">;</span>
     <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#play-1-sec-animation'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">header</span><span class="p">.</span><span class="nx">getStyleProperty</span><span class="p">(</span><span class="s1">'opacity'</span><span class="p">)).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">0</span><span class="p">);;</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
+<p>After the test run command is executed, a debugging URL will appear in the console.</p>
+
+<p><img src="../../images/debugging/server-debugging-console.png" alt="Console with a debugging URL"></p>
+
+<p>Open this URL in a new Chrome instance. Chrome will invoke its Developer Tools and the debugger will stop test execution at the first line.
+Click the &#39;Resume script execution&#39; button or press F5 to continue. After that, text execution will pause at the <code>debugger</code> keyword allowing you to debug test code.</p>
+
+<p><img src="../../images/debugging/server-debugging-chrome.png" alt="Chrome Developer Tools"></p>
+
+<p>You can also debug test code from an IDE.
+For instance, Visual Studio Code has a dedicated <a href="https://github.com/romanresh/vscode-testcafe">TestCafe plugin</a>.
+It allows you to run and debug your tests in the IDE using the context menu.</p>
+<h2><a class="anchor" name="options-useful-for-debugging"></a>Options Useful for Debugging <a class="permalink" href="#options-useful-for-debugging">#</a></h2>
+<p>TestCafe includes a few features helpful when you need to find the cause of issues in your tests.</p>
+<h3><a class="anchor" name="screenshots"></a>Screenshots <a class="permalink" href="#screenshots">#</a></h3>
+<p>You can specify that a screenshot should be taken in a particular place in a test.
+Use the <a href="../test-api/actions/take-screenshot.html">t.takeScreenshot</a> action for this.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">(</span><span class="s1">'./screenshots'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">(</span><span class="s1">'./screenshots'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>You can also turn on the <a href="../using-testcafe/command-line-interface.html#-s---screenshots-on-fails">--screenshots-on-fails</a>
+option.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests --screenshots ./screenshots --screenshots-on-fails
+</code></pre></div>
+<p>This option enables TestCafe to take a screenshot automatically when a test fails.</p>
+
+<p>Analyzing these screenshots helps save time on debugging and allows you to determine the reason of issues earlier.</p>
+<h3><a class="anchor" name="test-speed"></a>Test Speed <a class="permalink" href="#test-speed">#</a></h3>
+<p>TestCafe provides the capability to change test speed. By default, tests are executed at full speed with minimum delays between actions and assertions.
+This makes it hard to identify problems visually when running the test.
+To slow down the test, use the <a href="../using-testcafe/command-line-interface.html#--speed-factor">--speed</a>
+CLI flag. You can use values from <code>1</code> to <code>0.01</code>.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests --speed 0.1
+</code></pre></div>
+<p>When tests run slowly, you can monitor test execution more easily and notice when test behavior differs from the one that&#39;s expected.</p>
+
 
 		</div>
 	</article>
