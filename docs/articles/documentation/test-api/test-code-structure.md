@@ -231,6 +231,13 @@ test
 
 If the start page is not specified, it defaults to `about:blank`.
 
+To test webpages in local directories, you can use the `file://` protocol.
+
+```js
+fixture `MyFixture`
+    .page `file:///user/my-website/index.html`;
+```
+
 ## Initialization and Clean-Up
 
 TestCafe allows you to specify functions that will be executed before a fixture or test is started and after it is finished.
