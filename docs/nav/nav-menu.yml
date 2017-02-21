@@ -58,6 +58,15 @@
           url: /documentation/test-api/test-code-structure.md#sharing-variables-between-fixture-hooks-and-test-code
     - name: Skipping Tests
       url: /documentation/test-api/test-code-structure.md#skipping-tests
+  - name: Selecting Page Elements
+    url: /documentation/test-api/selecting-page-elements/index.md
+    content:
+    - name: Selectors
+      url: /documentation/test-api/selecting-page-elements/selectors.md
+    - name: Selector Options
+      url: /documentation/test-api/selecting-page-elements/selector-options.md
+    - name: DOM Node State
+      url: /documentation/test-api/selecting-page-elements/dom-node-state.md
   - name: Actions
     url: /documentation/test-api/actions/index.md
     content:
@@ -87,15 +96,6 @@
       url: /documentation/test-api/actions/resize-window.md
     - name: Action Options
       url: /documentation/test-api/actions/action-options.md
-  - name: Selecting Page Elements
-    url: /documentation/test-api/selecting-page-elements/index.md
-    content:
-    - name: Selectors
-      url: /documentation/test-api/selecting-page-elements/selectors.md
-    - name: Selector Options
-      url: /documentation/test-api/selecting-page-elements/selector-options.md
-    - name: DOM Node State
-      url: /documentation/test-api/selecting-page-elements/dom-node-state.md
   - name: Assertions
     url: /documentation/test-api/assertions/index.md
     content:
