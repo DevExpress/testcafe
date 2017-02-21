@@ -53,7 +53,7 @@
     <script>
         var MIN_BODY_WIDTH = 900;
         var FOOTER_HEIGHT  = 63;
-        var HEADER_HEIGHT  = 52;
+        var HEADER_HEIGHT  = 102;
 
         var nav            = null;
         var isMobileDevice = window.screen.width < 800 || window.screen.height < 800;
@@ -132,7 +132,7 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper) {
+        function initHeader(siteHeader, contentWrapper, docTopMenu) {
             var MIN_BODY_WIDTH = 900;
 
             function updateHeader() {
@@ -141,6 +141,9 @@
                 
 
                 siteHeader.style.position = bodyMinimized ? 'static' : '';
+
+                if(docTopMenu)
+                    docTopMenu.style.position = bodyMinimized ? 'static' : '';
 
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
@@ -153,9 +156,10 @@
         document.addEventListener('DOMContentLoaded', function (e) {
             var contentWrapper = document.querySelector('.container');
             var siteHeader     = document.querySelector('.site-header');
+            var docTopMenu     = document.querySelector('.doc-top-nav');
 
             if(siteHeader) 
-                initHeader(siteHeader, contentWrapper);
+                initHeader(siteHeader, contentWrapper, docTopMenu);
         });
     </script>
 </head>
@@ -197,480 +201,57 @@
         
       </div>
     </nav>
+
   </div>
 </header>
 
 
+  <div class="doc-top-nav">
+    <div class="doc-top-nav-content">
+    
+      <a class="" href="/testcafe/documentation/getting-started/">Getting Started</a>
+      <span class="page-link-separator level-2">|</span>
+    
+      <a class="" href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>
+      <span class="page-link-separator level-2">|</span>
+    
+      <a class="" href="/testcafe/documentation/test-api/">Test API</a>
+      <span class="page-link-separator level-2">|</span>
+    
+      <a class="" href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>
+      <span class="page-link-separator level-2">|</span>
+    
+      <a class="active" href="/testcafe/documentation/recipes/">Recipes</a>
+      <span class="page-link-separator level-2">|</span>
+    
+    </div>
+  </div>
+
+
+
       <div class="container">
-    	<nav class="doc-nav">	
+    
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+	
+	
+	<nav class="doc-nav">	
 		<div class="doc-nav-content">
 			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/getting-started/"  >GETTING STARTED</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/"  >USING TESTCAFE</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/installing-testcafe.html"  >Installing TestCafe</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/command-line-interface.html"  >Command Line Interface</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/"  >Programming Interface</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/testcafe.html"  >TestCafe Class</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/browserconnection.html"  >BrowserConnection Class</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/runner.html"  >Runner Class</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html"  >createTestCafe Factory</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/"  >Common Concepts</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/browser-support.html"  >Browser Support</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/"  >TEST API</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#fixtures"  >Fixtures</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#tests"  >Tests</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#test-controller"  >Test Controller</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#setting-test-speed"  >Setting Test Speed</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage"  >Specifying the Start Webpage</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#test-hooks"  >Test Hooks</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-test-hooks-and-test-code"  >Sharing Variables Between Test Hooks and Test Code</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#fixture-hooks"  >Fixture Hooks</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-fixture-hooks-and-test-code"  >Sharing Variables Between Fixture Hooks and Test Code</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#skipping-tests"  >Skipping Tests</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/"  >Actions</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/click.html"  >Click</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/double-click.html"  >Double Click</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/right-click.html"  >Right Click</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/drag-element.html"  >Drag Element</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/hover.html"  >Hover</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/select-text.html"  >Select Text</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/type-text.html"  >Type Text</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/press-key.html"  >Press Key</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/take-screenshot.html"  >Take Screenshot</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/upload.html"  >Upload</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/resize-window.html"  >Resize Window</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/action-options.html"  >Action Options</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/"  >Selecting Page Elements</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors.html"  >Selectors</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selector-options.html"  >Selector Options</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion API</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/http-authentication.html"  >HTTP Authentication</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/pausing-the-test.html"  >Pausing the Test</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/handling-native-dialogs.html"  >Handling Native Dialogs</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/working-with-iframes.html"  >Working with &lt;iframes&gt;</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/a-z.html"  >A-Z Index</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/"  >EXTENDING TESTCAFE</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/"  >Reporter Plugin</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html"  >Reporter Methods</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/helpers.html"  >Helpers</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/"  >Browser Provider Plugin</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.html"  >Browser Provider Methods</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
+				<li>
+				
 <a href="/testcafe/documentation/recipes/"  >RECIPES</a>
-		
-			<ul>
+				<ul>
 
     <li>
 		    
@@ -722,12 +303,12 @@
     </li>
 
 </ul>
-		
-    </li>
-
-</ul>
+				</li>
+			</ul>
 		</div>
 	</nav>
+	
+	
 
 
 <main>
@@ -735,33 +316,45 @@
 		<div class="post-content">
 
 			<h1>Test Static HTML Pages</h1>
-<p>There are many ways to test your static HTML pages using TestCafe, but in this recipe we will focus on a simple one that uses a few other packages and can be easily integrated into your workflow. To do this, go through the following steps.</p>
+<p>There are many ways to test your static HTML pages using TestCafe, but in this recipe
+we will focus on two simple methods that use a few other packages and can be easily integrated into your workflow.</p>
 
 <ul>
-<li><a href="#step-1---install-testcafe-and-create-tests">Step 1 - Install TestCafe and create tests</a></li>
-<li><a href="#step-2---install-http-server">Step 2 - Install http-server</a></li>
-<li><a href="#step-3---add-the-test-script-to-packagejson">Step 3 - Add the <code>test</code> script to package.json</a></li>
+<li><a href="#install-testcafe-and-create-tests">Install TestCafe and create tests</a></li>
+<li><a href="#option-1---use-the-file-protocol">Option 1 - Use the file:// protocol</a></li>
+<li><a href="#option-2---use-a-local-http-server">Option 2 - Use a local HTTP server</a></li>
 </ul>
-<h2><a class="anchor" name="step-1---install-testcafe-and-create-tests"></a>Step 1 - Install TestCafe and create tests <a class="permalink" href="#step-1---install-testcafe-and-create-tests">#</a></h2>
+<h2><a class="anchor" name="install-testcafe-and-create-tests"></a>Install TestCafe and create tests <a class="permalink" href="#install-testcafe-and-create-tests">#</a></h2>
 <p>Install TestCafe <a href="../using-testcafe/installing-testcafe.html#locally">locally</a> in your project and <a href="../getting-started/#creating-a-test">create tests</a>.</p>
-<h2><a class="anchor" name="step-2---install-http-server"></a>Step 2 - Install http-server <a class="permalink" href="#step-2---install-http-server">#</a></h2>
-<p>Install <a href="https://github.com/indexzero/http-server">http-server</a> that will be used as a local server.</p>
-<h2><a class="anchor" name="step-3---add-the-test-script-to-packagejson"></a>Step 3 - Add the <code>test</code> script to package.json <a class="permalink" href="#step-3---add-the-test-script-to-packagejson">#</a></h2>
-<p>The default test script, for Node.js projects is <code>npm test</code>.
-To tell npm how to run your tests, add the <code>test</code> script to the project&#39;s package.json file.
-Use the <code>--app</code> TestCafe option to provide a command that starts the local server.
-This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the server.</p>
+<h2><a class="anchor" name="option-1---use-the-file-protocol"></a>Option 1 - Use the file:// protocol <a class="permalink" href="#option-1---use-the-file-protocol">#</a></h2>
+<p><a href="../test-api/test-code-structure.html#specifying-the-start-webpage">Specify the target webpage</a> using the <code>file://</code> protocol.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">file</span><span class="err">:</span><span class="c1">///user/my-website/index.html`</span>
+</code></pre></div>
+<p>Add a command that runs tests to the <code>package.json</code> file.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome ./test/acceptance/** --app \"http-server ./dist -s\""</span><span class="w">
+    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome ./test/acceptance/**"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This script runs tests from the <code>./test/acceptance/</code> directory in Chrome.</p>
+<h2><a class="anchor" name="option-2---use-a-local-http-server"></a>Option 2 - Use a local HTTP server <a class="permalink" href="#option-2---use-a-local-http-server">#</a></h2>
+<p>Install <a href="https://github.com/indexzero/http-server">http-server</a> that will be used as a local server.</p>
+
+<p>Use the <code>--app</code> TestCafe option to provide a command that starts the local server.
+This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the server.</p>
+
+<p>Add the following code to <code>package.json</code>.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome ./test/acceptance/** --app \"http-server ./my-website -s\""</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>This script contains the following commands.</p>
 
 <ol>
-<li><p><code>&quot;http-server ./dist -s&quot;</code> - starts the local server at port <code>8080</code> with files from the <code>./dist</code> folder in silent mode.
-The contents of the<code>./dist</code> folder will be served at <code>http://localhost:8080</code>. So, if you want to test the <code>./dist/dir/page.html</code> page,
+<li><p><code>&quot;http-server ./my-website -s&quot;</code> - starts the local server at port <code>8080</code> with files from the <code>./my-website</code> folder in silent mode.
+The contents of the <code>./my-website</code> folder will be served at <code>http://localhost:8080</code>. So, if you want to test the <code>./my-website/dir/page.html</code> page,
 use <code>fixture(&#39;...&#39;).page(&#39;http://localhost:8080/dir/page.html&#39;)</code> in your fixture file.</p></li>
-<li><p><code>&quot;testcafe chrome ./test/acceptance/**&quot;</code> - runs TestCafe tests from the <code>./test/acceptance</code> folder in Chrome after the server starts</p></li>
+<li><p><code>&quot;testcafe chrome ./test/acceptance/**&quot;</code> - runs TestCafe tests from the <code>./test/acceptance</code> directory in Chrome after the server starts</p></li>
 </ol>
 
 <p>For more information on how to configure a test run using a <code>testcafe</code> command, see <a href="../using-testcafe/command-line-interface.html">Command Line Interface</a>.</p>

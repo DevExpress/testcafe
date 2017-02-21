@@ -5,8 +5,8 @@
     <description></description>
     <link>http://devexpress.github.io/testcafe/</link>
     <atom:link href="http://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 16 Feb 2017 17:50:00 +0300</pubDate>
-    <lastBuildDate>Thu, 16 Feb 2017 17:50:00 +0300</lastBuildDate>
+    <pubDate>Tue, 21 Feb 2017 16:09:34 +0300</pubDate>
+    <lastBuildDate>Tue, 21 Feb 2017 16:09:34 +0300</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
@@ -92,7 +92,7 @@ You can assign to &lt;code&gt;ctx&lt;/code&gt; parameter&amp;#39;s properties or
         &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nameInput&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;' Parker'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;using-test-controller-outside-of-test-code-1166&quot;&gt;&lt;/a&gt;⚙ Using test controller outside of test code (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1166&quot;&gt;#1166&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#using-test-controller-outside-of-test-code-1166&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;You may sometimes need to call test API from outside of test code. For instance, your &lt;a href=&quot;../recipes/using-page-model.md&quot;&gt;page model&lt;/a&gt;
+&lt;p&gt;You may sometimes need to call test API from outside of test code. For instance, your &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html&quot;&gt;page model&lt;/a&gt;
 can contain methods that perform common operations used in many tests, like authentication.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
@@ -496,7 +496,7 @@ a &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'#someId'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// returns `null`, since there is only one element in matching set with id `someId`&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4&gt;&lt;a class=&quot;anchor&quot; name=&quot;deprecated-api&quot;&gt;&lt;/a&gt;Deprecated API &lt;a class=&quot;permalink&quot; href=&quot;#deprecated-api&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#one-time-selection&quot;&gt;&lt;code&gt;t.select&lt;/code&gt; method&lt;/a&gt; - use &lt;code&gt;Selector&lt;/code&gt; instead:&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;t.select&lt;/code&gt; method - use &lt;code&gt;Selector&lt;/code&gt; instead:&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.someClass'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
@@ -505,9 +505,9 @@ a &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/
 &lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.someClass'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionsindex&quot;&gt;selectorOptions.index&lt;/a&gt; - use &lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#nth&quot;&gt;selector.nth()&lt;/a&gt; instead.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionstext&quot;&gt;selectorOptions.text&lt;/a&gt; - use &lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#withtext&quot;&gt;selector.withText()&lt;/a&gt; instead.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionsdependencies&quot;&gt;selectorOptions.dependencies&lt;/a&gt; - use &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-dom-nodes&quot;&gt;filtering&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#search-for-elements-in-the-dom-hierarchy&quot;&gt;hierarchical&lt;/a&gt; methods to build combined selectors instead.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;selectorOptions.index&lt;/code&gt; - use &lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#nth&quot;&gt;selector.nth()&lt;/a&gt; instead.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;selectorOptions.text&lt;/code&gt; - use &lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#withtext&quot;&gt;selector.withText()&lt;/a&gt; instead.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;selectorOptions.dependencies&lt;/code&gt; - use &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-dom-nodes&quot;&gt;filtering&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#search-for-elements-in-the-dom-hierarchy&quot;&gt;hierarchical&lt;/a&gt; methods to build combined selectors instead.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;built-in-assertions-998&quot;&gt;&lt;/a&gt;⚙ Built-in assertions. (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/998&quot;&gt;#998&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#built-in-assertions-998&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;TestCafe now ships with &lt;a href=&quot;http://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html&quot;&gt;numerous built-in BDD-style assertions&lt;/a&gt;.

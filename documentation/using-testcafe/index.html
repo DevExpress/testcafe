@@ -53,7 +53,7 @@
     <script>
         var MIN_BODY_WIDTH = 900;
         var FOOTER_HEIGHT  = 63;
-        var HEADER_HEIGHT  = 52;
+        var HEADER_HEIGHT  = 102;
 
         var nav            = null;
         var isMobileDevice = window.screen.width < 800 || window.screen.height < 800;
@@ -132,7 +132,7 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper) {
+        function initHeader(siteHeader, contentWrapper, docTopMenu) {
             var MIN_BODY_WIDTH = 900;
 
             function updateHeader() {
@@ -141,6 +141,9 @@
                 
 
                 siteHeader.style.position = bodyMinimized ? 'static' : '';
+
+                if(docTopMenu)
+                    docTopMenu.style.position = bodyMinimized ? 'static' : '';
 
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
@@ -153,9 +156,10 @@
         document.addEventListener('DOMContentLoaded', function (e) {
             var contentWrapper = document.querySelector('.container');
             var siteHeader     = document.querySelector('.site-header');
+            var docTopMenu     = document.querySelector('.doc-top-nav');
 
             if(siteHeader) 
-                initHeader(siteHeader, contentWrapper);
+                initHeader(siteHeader, contentWrapper, docTopMenu);
         });
     </script>
 </head>
@@ -197,28 +201,48 @@
         
       </div>
     </nav>
+
   </div>
 </header>
 
 
+  <div class="doc-top-nav">
+    <div class="doc-top-nav-content">
+    
+      <a class="" href="/testcafe/documentation/getting-started/">Getting Started</a>
+      <span class="page-link-separator level-2">|</span>
+    
+      <a class="active" href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>
+      <span class="page-link-separator level-2">|</span>
+    
+      <a class="" href="/testcafe/documentation/test-api/">Test API</a>
+      <span class="page-link-separator level-2">|</span>
+    
+      <a class="" href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>
+      <span class="page-link-separator level-2">|</span>
+    
+      <a class="" href="/testcafe/documentation/recipes/">Recipes</a>
+      <span class="page-link-separator level-2">|</span>
+    
+    </div>
+  </div>
+
+
+
       <div class="container">
-    	<nav class="doc-nav">	
+    
+	
+	
+
+	
+	
+	<nav class="doc-nav">	
 		<div class="doc-nav-content">
 			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/getting-started/"  >GETTING STARTED</a>
-		
-    </li>
-
-    <li>
-		    
-		
+				<li>
+				
 <a href="/testcafe/documentation/using-testcafe/" class="active" >USING TESTCAFE</a>
-		
-			<ul>
+				<ul>
 
     <li>
 		    
@@ -299,435 +323,21 @@
     </li>
 
 </ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/"  >TEST API</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#fixtures"  >Fixtures</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#tests"  >Tests</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#test-controller"  >Test Controller</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#setting-test-speed"  >Setting Test Speed</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage"  >Specifying the Start Webpage</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#test-hooks"  >Test Hooks</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-test-hooks-and-test-code"  >Sharing Variables Between Test Hooks and Test Code</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#fixture-hooks"  >Fixture Hooks</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-fixture-hooks-and-test-code"  >Sharing Variables Between Fixture Hooks and Test Code</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#skipping-tests"  >Skipping Tests</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/"  >Actions</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/click.html"  >Click</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/double-click.html"  >Double Click</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/right-click.html"  >Right Click</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/drag-element.html"  >Drag Element</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/hover.html"  >Hover</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/select-text.html"  >Select Text</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/type-text.html"  >Type Text</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/press-key.html"  >Press Key</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/take-screenshot.html"  >Take Screenshot</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/upload.html"  >Upload</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/resize-window.html"  >Resize Window</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/action-options.html"  >Action Options</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/"  >Selecting Page Elements</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors.html"  >Selectors</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selector-options.html"  >Selector Options</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion API</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client.html"  >Obtaining Data from the Client</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/http-authentication.html"  >HTTP Authentication</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/pausing-the-test.html"  >Pausing the Test</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/handling-native-dialogs.html"  >Handling Native Dialogs</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/working-with-iframes.html"  >Working with &lt;iframes&gt;</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/a-z.html"  >A-Z Index</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/"  >EXTENDING TESTCAFE</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/"  >Reporter Plugin</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html"  >Reporter Methods</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/reporter-plugin/helpers.html"  >Helpers</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/"  >Browser Provider Plugin</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.html"  >Browser Provider Methods</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/"  >RECIPES</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/debugging-tests.html"  >Debugging Tests</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html"  >Running Tests in Firefox and Chrome Using Travis CI</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static HTML Pages</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html"  >Testing on Remote Computers and Mobile Devices</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/using-page-model.html"  >Using Page Model</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/recipes/using-testcafe-with-gulp.html"  >Using TestCafe with Gulp</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-</ul>
+				</li>
+			</ul>
 		</div>
 	</nav>
+	
+
+	
+	
+
+	
+	
+
+	
+	
+	
 
 
 <main>
