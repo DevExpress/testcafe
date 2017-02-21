@@ -38,10 +38,9 @@ export default class ESNextCompiler {
         return {
             passPerPreset: true,
             presets:       [
-                { plugins: transformRuntime },
                 {
                     passPerPreset: false,
-                    presets:       [presetStage2, presetEnv]
+                    presets:       [{ plugins: [transformRuntime] }, presetStage2, presetEnv]
                 }
             ],
             filename:      filename,
@@ -71,8 +70,8 @@ export default class ESNextCompiler {
 
     static _isNodeModulesDep (filename) {
         return relative(CWD, filename)
-            .split(pathSep)
-            .indexOf('node_modules') >= 0;
+                   .split(pathSep)
+                   .indexOf('node_modules') >= 0;
     }
 
     static _execAsModule (code, filename) {

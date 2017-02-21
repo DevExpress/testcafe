@@ -1,16 +1,17 @@
-var expect      = require('chai').expect;
-var resolve     = require('path').resolve;
-var sep         = require('path').sep;
-var readFile    = require('fs').readFileSync;
-var Promise     = require('pinkie');
-var stackParser = require('error-stack-parser');
-var stripAnsi   = require('strip-ansi');
-var sortBy      = require('lodash').sortBy;
-var renderers   = require('callsite-record').renderers;
-var ERR_TYPE    = require('../../lib/errors/test-run/type');
-var Compiler    = require('../../lib/compiler');
-var commonAPI   = require('../../lib/api/common');
-var NODE_VER    = require('../../lib/utils/node-version');
+var expect            = require('chai').expect;
+var resolve           = require('path').resolve;
+var sep               = require('path').sep;
+var readFile          = require('fs').readFileSync;
+var Promise           = require('pinkie');
+var stackParser       = require('error-stack-parser');
+var stripAnsi         = require('strip-ansi');
+var sortBy            = require('lodash').sortBy;
+var renderers         = require('callsite-record').renderers;
+var ERR_TYPE          = require('../../lib/errors/test-run/type');
+var Compiler          = require('../../lib/compiler');
+var commonAPI         = require('../../lib/api/common');
+var NODE_VER          = require('../../lib/utils/node-version');
+var createStackFilter = require('../../lib/errors/create-stack-filter.js');
 
 describe('Compiler', function () {
     var testRunMock = { id: 'yo' };
@@ -1320,8 +1321,6 @@ describe('Compiler', function () {
 
     describe('Regression', function () {
         it('Incorrect callsite line in error report on node v0.10.41 (GH-599)', function () {
-            this.timeout(5000);
-
             var src      = 'test/server/data/test-suites/regression-gh-599/testfile.js';
             var compiler = new Compiler([src]);
 
@@ -1339,6 +1338,44 @@ describe('Compiler', function () {
                     var callsite = err.callsite.renderSync({ renderer: renderers.noColor });
 
                     expect(callsite).contains(' > 19 |        .method1()\n');
+                });
+        });
+
+        it('Should successfully compile tests if re-export is used', function () {
+            var src      = 'test/server/data/test-suites/regression-gh-969/testfile.js';
+            var compiler = new Compiler([src]);
+
+            return compiler
+                .getTests()
+                .then(function (tests) {
+                    var test = tests[0];
+
+                    return test.fn(testRunMock);
+                });
+        });
+
+        it('Incorrect callsite stack in error report if "import" is used (GH-1226)', function () {
+            var src      = 'test/server/data/test-suites/regression-gh-1226/testfile.js';
+            var compiler = new Compiler([src]);
+
+            return compiler
+                .getTests()
+                .then(function (tests) {
+                    var test = tests[0];
+
+                    return test.fn(testRunMock);
+                })
+                .then(function () {
+                    throw 'Promise rejection expected';
+                })
+                .catch(function (err) {
+                    var stackTraceLimit = 200;
+                    var stack           = err.callsite.stackFrames.filter(createStackFilter(stackTraceLimit));
+
+                    expect(stack.length).eql(3);
+                    expect(stack[0].source).to.have.string('helper.js');
+                    expect(stack[1].source).to.have.string('helper.js');
+                    expect(stack[2].source).to.have.string('testfile.js');
                 });
         });
     });
