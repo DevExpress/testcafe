@@ -56,7 +56,7 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper) {
+        function initHeader(siteHeader, contentWrapper, docTopMenu) {
             var MIN_BODY_WIDTH = 900;
 
             function updateHeader() {
@@ -65,6 +65,9 @@
                 
 
                 siteHeader.style.position = bodyMinimized ? 'static' : '';
+
+                if(docTopMenu)
+                    docTopMenu.style.position = bodyMinimized ? 'static' : '';
 
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
@@ -77,9 +80,10 @@
         document.addEventListener('DOMContentLoaded', function (e) {
             var contentWrapper = document.querySelector('.container');
             var siteHeader     = document.querySelector('.site-header');
+            var docTopMenu     = document.querySelector('.doc-top-nav');
 
             if(siteHeader) 
-                initHeader(siteHeader, contentWrapper);
+                initHeader(siteHeader, contentWrapper, docTopMenu);
         });
     </script>
 </head>
@@ -121,8 +125,11 @@
         
       </div>
     </nav>
+
   </div>
 </header>
+
+
 
 
       <div class="container">
@@ -213,7 +220,7 @@ You can assign to <code>ctx</code> parameter&#39;s properties or add new propert
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">' Parker'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" name="using-test-controller-outside-of-test-code-1166"></a>⚙ Using test controller outside of test code (<a href="https://github.com/DevExpress/testcafe/issues/1166">#1166</a>) <a class="permalink" href="#using-test-controller-outside-of-test-code-1166">#</a></h3>
-<p>You may sometimes need to call test API from outside of test code. For instance, your <a href="../recipes/using-page-model.md">page model</a>
+<p>You may sometimes need to call test API from outside of test code. For instance, your <a href="https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html">page model</a>
 can contain methods that perform common operations used in many tests, like authentication.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
 
