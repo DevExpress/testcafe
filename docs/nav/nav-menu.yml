@@ -103,6 +103,8 @@
       url: /documentation/test-api/assertions/assertion-api.md
   - name: Obtaining Data from the Client
     url: /documentation/test-api/obtaining-data-from-the-client.md
+  - name: Waiting for Page Elements to Appear
+    url: /documentation/test-api/waiting-for-page-elements-to-appear.md
   - name: HTTP Authentication
     url: /documentation/test-api/http-authentication.md
   - name: Pausing the Test

@@ -48,6 +48,7 @@
   * [Assertions](articles/documentation/test-api/assertions/index.md)
     * [Assertion API](articles/documentation/test-api/assertions/assertion-api.md)
   * [Obtaining Data from the Client](articles/documentation/test-api/obtaining-data-from-the-client.md)
+  * [Waiting for Page Elements to Appear](articles/documentation/test-api/waiting-for-page-elements-to-appear.md)
   * [HTTP Authentication](articles/documentation/test-api/http-authentication.md)
   * [Pausing the Test](articles/documentation/test-api/pausing-the-test.md)
   * [Handling Native Dialogs](articles/documentation/test-api/handling-native-dialogs.md)
