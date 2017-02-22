@@ -4,10 +4,10 @@
     "uncommittedChanges": true,
     "untrackedFiles": true,
     "sensitiveData": true,
-    "branch": "alpha",
+    "branch": "master",
     "gitTag": true
   },
   "confirm": true,
-  "publishTag": "latest",
+  "publishTag": "alpha",
   "prePublishScript": "gulp test-server"
 }
