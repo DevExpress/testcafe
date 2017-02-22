@@ -1,5 +1,6 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
+import { cursor } from '../deps/testcafe-automation';
 import MESSAGE from '../../../test-run/client-messages';
 import DriverStatus from '../status';
 
@@ -30,6 +31,11 @@ export default function prepareBrowserManipulation (browserId) {
 
     document.title = assignedTitle;
 
+    var isCursorVisible = cursor.visible;
+
+    if (isCursorVisible)
+        cursor.hide();
+
     return delay(APPLY_DOCUMENT_TITLE_TIMEOUT)
         .then(() => {
             var message = {
@@ -45,6 +51,9 @@ export default function prepareBrowserManipulation (browserId) {
             result = res;
             nativeMethods.clearInterval.call(window, checkTitleIntervalId);
             document.title = savedDocumentTitle;
+
+            if (isCursorVisible)
+                cursor.show();
 
             return delay(RESTORE_DOCUMENT_TITLE_TIMEOUT);
         })
