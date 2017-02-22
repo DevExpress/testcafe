@@ -122,12 +122,21 @@ function addCustomMethods (obj, getSelector, customMethods) {
     var customMethodProps = customMethods ? Object.keys(customMethods) : [];
 
     customMethodProps.forEach(prop => {
-        obj[prop] = (...args) => ClientFunctionResultPromise.fromFn(async () => {
+        obj[prop] = (...args) => {
             var callsite = getCallsite(prop);
-            var snapshot = await getSnapshot(getSelector, callsite);
 
-            return snapshot[prop].apply(snapshot[prop], args);
-        });
+            return ClientFunctionResultPromise.fromFn(async () => {
+                var snapshot = await getSnapshot(getSelector, callsite);
+
+                try {
+                    return await snapshot[prop].apply(snapshot[prop], args);
+                }
+                catch (err) {
+                    err.callsite = callsite;
+                    throw err;
+                }
+            });
+        };
     });
 }
 
