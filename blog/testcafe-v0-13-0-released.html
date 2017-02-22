@@ -11,7 +11,7 @@
 
   <meta name="description" content="TestCafe v0.13.0 ReleasedIDE plugins, fixture hooks, speed setting for actions, a couple of API enhancements and lots of bug fixes.">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/blog/testcafe-v0-13-0-released.html" />
@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
   <link rel="canonical" href="http://devexpress.github.io/testcafe/blog/testcafe-v0-13-0-released.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
@@ -61,7 +62,7 @@
 
             function updateHeader() {
                 var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
-                
+
                 
 
                 siteHeader.style.position = bodyMinimized ? 'static' : '';
@@ -82,7 +83,7 @@
             var siteHeader     = document.querySelector('.site-header');
             var docTopMenu     = document.querySelector('.doc-top-nav');
 
-            if(siteHeader) 
+            if(siteHeader)
                 initHeader(siteHeader, contentWrapper, docTopMenu);
         });
     </script>
@@ -95,9 +96,7 @@
       <header class="site-header minimized">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
-
     <nav class="site-nav">
-      <div class="trigger">
         
           
           <a class="page-link " href="/testcafe/documentation/getting-started/">Documentation</a>
@@ -123,7 +122,7 @@
           <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
           <span class="page-link-separator">|</span>
         
-      </div>
+      <input type="text" placeholder="Search" id="search"/>
     </nav>
 
   </div>
@@ -352,6 +351,15 @@ Instead, you can simply import <code>t</code> to the page model file.</p>
     </div>
 </footer>
 
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+    <script type="text/javascript"> docsearch({
+          apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
+          indexName: 'testcafe',
+          inputSelector: '#search',
+          debug: false // Set debug to true if you want to inspect the dropdown
+      });
+    </script>
 
   </body>
 
