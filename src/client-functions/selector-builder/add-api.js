@@ -11,8 +11,11 @@ const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PRO
 
 
 var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode) => {
-    if (typeof filter === 'number')
-        return filter < 0 ? [nodes[nodes.length + filter]] : [nodes[filter]];
+    if (typeof filter === 'number') {
+        var matchingNode = filter < 0 ? nodes[nodes.length + filter] : nodes[filter];
+
+        return matchingNode ? [matchingNode] : [];
+    }
 
     var result = [];
 
