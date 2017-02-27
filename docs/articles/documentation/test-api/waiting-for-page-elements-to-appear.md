@@ -33,33 +33,6 @@ test('My test', async t => {
 TestCafe tries to evaluate the specified selector multiple times within the [timeout](selecting-page-elements/selectors.md#selector-timeout).
 If the element does not appear, the test will fail.
 
-## Waiting for Elements in Assertions
-
-TestCafe assertions feature the [Smart Assertion Query Mechanism](assertions/index.md#smart-assertion-query-mechanism).
-This mechanism is activated when you pass a [selector property](selecting-page-elements/selectors.md#obtain-element-state)
-or a [client function](obtaining-data-from-the-client.md) as an actual value. In this instance, TestCafe keeps trying to obtain the actual
-value until the [assertion timeout](assertions/index.md#optionstimeout) passes.
-
-```js
-import { Selector } from 'testcafe';
-
-fixture `My fixture`
-    .page `https://devexpress.github.io/testcafe/example`;
-
-const nameInput = Selector('#developer-name');
-const populate  = Selector('#populate');
-
-test('My test', async t => {
-    await t
-        .setNativeDialogHandler(() => true)
-        .click(populate)
-
-        // Keeps trying to obtain nameInput.value
-        // within the assertion timeout.
-        .expect(nameInput.value).eql('Peter Parker');
-});
-```
-
 ## Waiting for Elements When Evaluating Selectors
 
 When evaluating a selector, TestCafe automatically waits for the element to appear in the DOM.
@@ -96,5 +69,42 @@ test('My test', async t => {
 
     // Waits for '#developer-name' to appear in the DOM and become visible.
     const nameInputElement = await nameInput.with({ visibilityCheck: true })();
+});
+```
+
+## Waiting for Assertions to Pass
+
+TestCafe assertions feature the [Smart Assertion Query Mechanism](assertions/index.md#smart-assertion-query-mechanism).
+This mechanism is activated when you pass a [selector property](selecting-page-elements/selectors.md#obtain-element-state)
+or a [client function](obtaining-data-from-the-client.md) as an actual value. In this instance, TestCafe keeps recalculating the actual
+value until it matches the expected value or the [assertion timeout](assertions/index.md#optionstimeout) passes.
+
+Note that the Smart Assertion Query Mechanism does not wait for page elements to appear.
+If you need to wait for an element before executing an assertion,
+add another assertion that checks the selector's [count](selecting-page-elements/selectors.md#check-if-an-element-exists)
+or [exists](selecting-page-elements/selectors.md#check-if-an-element-exists) property.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `https://devexpress.github.io/testcafe/example`;
+
+const nameInput = Selector('#developer-name');
+const populate  = Selector('#populate');
+
+test('My test', async t => {
+    await t
+        .setNativeDialogHandler(() => true)
+        .click(populate)
+
+        // Waits for the '#developer-name'
+        // element to appear in DOM.
+        .expect(nameInput.exists).ok()
+
+        // Keeps trying to obtain nameInput.value
+        // until it equals 'Peter Parker'
+        // or the timeout passes.
+        .expect(nameInput.value).eql('Peter Parker');
 });
 ```
