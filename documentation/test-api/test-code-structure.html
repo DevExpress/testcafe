@@ -52,7 +52,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script>
-        var MIN_BODY_WIDTH = 900;
+        var MIN_BODY_WIDTH = 1000;
         var FOOTER_HEIGHT  = 63;
         var HEADER_HEIGHT  = 102;
 
@@ -160,8 +160,8 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper, docTopMenu) {
-            var MIN_BODY_WIDTH = 900;
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article) {
+            var MIN_BODY_WIDTH = 1000;
 
             function updateHeader() {
                 var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
@@ -175,6 +175,9 @@
 
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
+
+                if(article)
+                    article.style.marginTop = bodyMinimized ? '21px' : '72px';
             }
 
             updateHeader();
@@ -185,9 +188,10 @@
             var contentWrapper = document.querySelector('.container');
             var siteHeader     = document.querySelector('.site-header');
             var docTopMenu     = document.querySelector('.doc-top-nav');
+            var article        = document.querySelector('.doc');
 
-            if(siteHeader)
-                initHeader(siteHeader, contentWrapper, docTopMenu);
+            if(siteHeader) 
+                initHeader(siteHeader, contentWrapper, docTopMenu, article);
         });
     </script>
 </head>
@@ -824,11 +828,7 @@ test.page `url`
     <span class="p">});</span>
 </code></pre></div>
 <p>If the start page is not specified, it defaults to <code>about:blank</code>.</p>
-
-<p>To test webpages in local directories, you can use the <code>file://</code> protocol.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">MyFixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">file</span><span class="err">:</span><span class="c1">///user/my-website/index.html`;</span>
-</code></pre></div><h2><a class="anchor" name="initialization-and-clean-up"></a>Initialization and Clean-Up <a class="permalink" href="#initialization-and-clean-up">#</a></h2>
+<h2><a class="anchor" name="initialization-and-clean-up"></a>Initialization and Clean-Up <a class="permalink" href="#initialization-and-clean-up">#</a></h2>
 <p>TestCafe allows you to specify functions that will be executed before a fixture or test is started and after it is finished.
 These functions are called <em>hook functions</em> or <em>hooks</em>.</p>
 <h3><a class="anchor" name="test-hooks"></a>Test Hooks <a class="permalink" href="#test-hooks">#</a></h3>
