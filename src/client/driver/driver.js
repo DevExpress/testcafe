@@ -400,6 +400,16 @@ export default class Driver {
         this._onReady(new DriverStatus({ isCommandResult: true }));
     }
 
+    _onStartAssertionExecutionCommand (command) {
+        this.statusBar.setWaitingAssertionExecutionStatus(command.timeout);
+        this._onReady(new DriverStatus({ isCommandResult: true }));
+    }
+
+    _onEndAssertionExecutionCommand (command) {
+        this.statusBar.resetWaitingAssertionExecutionStatus(command.success)
+            .then(() => this._onReady(new DriverStatus({ isCommandResult: true })));
+    }
+
     _onTestDone (status) {
         this.contextStorage.setItem(TEST_DONE_SENT_FLAG, true);
 
@@ -465,6 +475,11 @@ export default class Driver {
         else if (command.type === COMMAND_TYPE.setTestSpeed)
             this._onSetTestSpeedCommand(command);
 
+        else if (command.type === COMMAND_TYPE.startAssertionExecution)
+            this._onStartAssertionExecutionCommand(command);
+
+        else if (command.type === COMMAND_TYPE.endAssertionExecution)
+            this._onEndAssertionExecutionCommand(command);
         else
             this._onActionCommand(command);
     }

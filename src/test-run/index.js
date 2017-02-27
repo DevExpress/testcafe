@@ -12,13 +12,15 @@ import BrowserManipulationQueue from './browser-manipulation-queue';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
 import COMMAND_TYPE from './commands/type';
-import createAssertionExecutor from './commands/create-assertion-executor';
+import Assertions from '../assertions';
 
 import { TakeScreenshotOnFailCommand, ResizeWindowCommand } from './commands/browser-manipulation';
 
 import {
     TestDoneCommand,
-    PrepareBrowserManipulationCommand
+    PrepareBrowserManipulationCommand,
+    StartAssertionExecutionCommand,
+    EndAssertionExecutionCommand
 } from './commands/service';
 
 import {
@@ -67,6 +69,12 @@ export default class TestRun extends Session {
         this.resolveWaitForFileDownloadingPromise = null;
 
         this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, warningLog);
+
+
+        this.assertions = new Assertions();
+
+        this.assertions.on('start-assertion-execution', timeout => this._enqueueCommand(new StartAssertionExecutionCommand(timeout)));
+        this.assertions.on('end-assertion-execution', success => this._enqueueCommand(new EndAssertionExecutionCommand(success)));
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
@@ -360,7 +368,7 @@ export default class TestRun extends Session {
             return this._enqueueSetDialogHandlerCommand(command, callsite);
 
         if (command.type === COMMAND_TYPE.assertion) {
-            var executor = createAssertionExecutor(command, callsite);
+            var executor = this.assertions.createExecutor(command, callsite);
 
             return await executor();
         }

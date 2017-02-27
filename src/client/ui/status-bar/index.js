@@ -15,35 +15,36 @@ var eventUtils = testCafeCore.eventUtils;
 var domUtils   = testCafeCore.domUtils;
 
 
-const STATUS_BAR_CLASS                = 'status-bar';
-const CONTAINER_CLASS                 = 'container';
-const ICON_CLASS                      = 'icon';
-const INFO_CONTAINER_CLASS            = 'info-container';
-const FIXTURE_CONTAINER_CLASS         = 'fixture-container';
-const FIXTURE_DIV_CLASS               = 'fixture';
-const USER_AGENT_DIV_CLASS            = 'user-agent';
-const STATUS_CONTAINER_CLASS          = 'status-container';
-const BUTTONS_CLASS                   = 'buttons';
-const BUTTON_ICON_CLASS               = 'button-icon';
-const CONTINUE_BUTTON_CLASS           = 'continue';
-const NEXT_ACTION_CLASS               = 'next-action';
-const STATUS_DIV_CLASS                = 'status';
-const ONLY_ICON_CLASS                 = 'only-icon';
-const ONLY_BUTTONS_CLASS              = 'only-buttons';
-const ICON_AND_BUTTONS_CLASS          = 'icon-buttons';
-const ICON_AND_STATUS_CLASS           = 'icon-status';
-const WAITING_ELEMENT_FAILED_CLASS    = 'waiting-element-failed';
-const WAITING_ELEMENT_SUCCESS_CLASS   = 'waiting-element-success';
-const LOADING_PAGE_TEXT               = 'Loading Web Page...';
-const WAITING_FOR_ELEMENT_TEXT        = 'Waiting for an element to appear...';
-const DEBUGGING_TEXT                  = 'Debugging test...';
-const MIDDLE_WINDOW_WIDTH             = 720;
-const SMALL_WINDOW_WIDTH              = 380;
-const SMALL_WINDOW_WIDTH_IN_DEBUGGING = 540;
-const ONLY_BUTTONS_WIDTH              = 330;
-const SHOWING_DELAY                   = 300;
-const ANIMATION_DELAY                 = 500;
-const ANIMATION_UPDATE_INTERVAL       = 10;
+const STATUS_BAR_CLASS                     = 'status-bar';
+const CONTAINER_CLASS                      = 'container';
+const ICON_CLASS                           = 'icon';
+const INFO_CONTAINER_CLASS                 = 'info-container';
+const FIXTURE_CONTAINER_CLASS              = 'fixture-container';
+const FIXTURE_DIV_CLASS                    = 'fixture';
+const USER_AGENT_DIV_CLASS                 = 'user-agent';
+const STATUS_CONTAINER_CLASS               = 'status-container';
+const BUTTONS_CLASS                        = 'buttons';
+const BUTTON_ICON_CLASS                    = 'button-icon';
+const CONTINUE_BUTTON_CLASS                = 'continue';
+const NEXT_ACTION_CLASS                    = 'next-action';
+const STATUS_DIV_CLASS                     = 'status';
+const ONLY_ICON_CLASS                      = 'only-icon';
+const ONLY_BUTTONS_CLASS                   = 'only-buttons';
+const ICON_AND_BUTTONS_CLASS               = 'icon-buttons';
+const ICON_AND_STATUS_CLASS                = 'icon-status';
+const WAITING_FAILED_CLASS                 = 'waiting-element-failed';
+const WAITING_SUCCESS_CLASS                = 'waiting-element-success';
+const LOADING_PAGE_TEXT                    = 'Loading Web Page...';
+const WAITING_FOR_ELEMENT_TEXT             = 'Waiting for an element to appear...';
+const WAITING_FOR_ASSERTION_EXECUTION_TEXT = 'Waiting for an assertion execution...';
+const DEBUGGING_TEXT                       = 'Debugging test...';
+const MIDDLE_WINDOW_WIDTH                  = 720;
+const SMALL_WINDOW_WIDTH                   = 380;
+const SMALL_WINDOW_WIDTH_IN_DEBUGGING      = 540;
+const ONLY_BUTTONS_WIDTH                   = 330;
+const SHOWING_DELAY                        = 300;
+const ANIMATION_DELAY                      = 500;
+const ANIMATION_UPDATE_INTERVAL            = 10;
 
 
 export default class StatusBar {
@@ -62,13 +63,14 @@ export default class StatusBar {
         this.statusDiv        = null;
         this.buttons          = null;
 
-        this.progressBar       = null;
-        this.animationInterval = null;
-        this.showingTimeout    = null;
-        this.created           = false;
-        this.showing           = false;
-        this.hidding           = false;
-        this.debugging         = false;
+        this.progressBar        = null;
+        this.animationInterval  = null;
+        this.showingTimeout     = null;
+        this.created            = false;
+        this.showing            = false;
+        this.hidding            = false;
+        this.debugging          = false;
+        this.assertionExecution = false;
 
         this._createBeforeReady();
         this._initChildListening();
@@ -311,12 +313,17 @@ export default class StatusBar {
         messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
             var msg = e.message;
 
-            if (msg.cmd === MESSAGES.startWaitingForElement)
-                this.setWaitingStatus(msg.timeout);
-            else if (msg.cmd === MESSAGES.stopWaitingForElementRequest) {
-                this
-                    .resetWaitingStatus(msg.waitingSuccess)
-                    .then(() => messageSandbox.sendServiceMsg({ cmd: MESSAGES.stopWaitingForElementResponse }, e.source));
+            if (msg.cmd === MESSAGES.startWaitingElement)
+                this.setWaitingElementStatus(msg.timeout);
+            else if (msg.cmd === MESSAGES.stopWaitingElementRequest) {
+                this.resetWaitingElementStatus(msg.waitingSuccess)
+                    .then(() => messageSandbox.sendServiceMsg({ cmd: MESSAGES.stopWaitingElementResponse }, e.source));
+            }
+            else if (msg.cmd === MESSAGES.startWaitingAssertionExecution)
+                this.setWaitingAssertionExecutionStatus(msg.timeout);
+            else if (msg.cmd === MESSAGES.stopWaitingAssertionExecutionRequest) {
+                this.resetWaitingAssertionExecutionStatus(msg.waitingSuccess)
+                    .then(() => messageSandbox.sendServiceMsg({ cmd: MESSAGES.stopWaitingAssertionExecutionResponse }, e.source));
             }
         });
     }
@@ -331,7 +338,7 @@ export default class StatusBar {
     }
 
     _showWaitingStatus () {
-        this.statusDiv.textContent = WAITING_FOR_ELEMENT_TEXT;
+        this.statusDiv.textContent = this.assertionExecution ? WAITING_FOR_ASSERTION_EXECUTION_TEXT : WAITING_FOR_ELEMENT_TEXT;
         this._setStatusDivLeftMargin();
         this.progressBar.show();
     }
@@ -339,8 +346,8 @@ export default class StatusBar {
     _hideWaitingStatus (forceReset) {
         return new Promise(resolve => {
             nativeMethods.setTimeout.call(window, () => {
-                shadowUI.removeClass(this.statusBar, WAITING_ELEMENT_SUCCESS_CLASS);
-                shadowUI.removeClass(this.statusBar, WAITING_ELEMENT_FAILED_CLASS);
+                shadowUI.removeClass(this.statusBar, WAITING_SUCCESS_CLASS);
+                shadowUI.removeClass(this.statusBar, WAITING_FAILED_CLASS);
 
                 this.progressBar.determinateIndicator.reset();
 
@@ -373,16 +380,7 @@ export default class StatusBar {
         });
     }
 
-    //API
-    resetPageLoadingStatus () {
-        if (!this.created)
-            this._create();
-
-        this.progressBar.indeterminateIndicator.stop();
-        this._resetState();
-    }
-
-    setWaitingStatus (timeout) {
+    _setWaitingStatus (timeout) {
         this.progressBar.determinateIndicator.start(timeout);
 
         this.showingTimeout = nativeMethods.setTimeout.call(window, () => {
@@ -392,13 +390,13 @@ export default class StatusBar {
         }, SHOWING_DELAY);
     }
 
-    resetWaitingStatus (waitingSuccess) {
+    _resetWaitingStatus (waitingSuccess) {
         this.progressBar.determinateIndicator.stop();
 
         if (waitingSuccess)
-            shadowUI.addClass(this.statusBar, WAITING_ELEMENT_SUCCESS_CLASS);
+            shadowUI.addClass(this.statusBar, WAITING_SUCCESS_CLASS);
         else
-            shadowUI.addClass(this.statusBar, WAITING_ELEMENT_FAILED_CLASS);
+            shadowUI.addClass(this.statusBar, WAITING_FAILED_CLASS);
 
         var forceReset = this.showingTimeout && waitingSuccess;
 
@@ -413,10 +411,43 @@ export default class StatusBar {
         return this._hideWaitingStatus(forceReset);
     }
 
+    //API
+    resetPageLoadingStatus () {
+        if (!this.created)
+            this._create();
+
+        this.progressBar.indeterminateIndicator.stop();
+        this._resetState();
+    }
+
     setDebuggingStatus () {
         this._stopAnimation();
         styleUtils.set(this.statusBar, 'opacity', 1);
 
         return this._showDebuggingStatus();
+    }
+
+    setWaitingElementStatus (timeout) {
+        if (!this.assertionExecution)
+            this._setWaitingStatus(timeout);
+    }
+
+    resetWaitingElementStatus (waitingSuccess) {
+        if (!this.assertionExecution)
+            return this._resetWaitingStatus(waitingSuccess);
+
+        return Promise.resolve();
+    }
+
+    setWaitingAssertionExecutionStatus (timeout) {
+        this.assertionExecution = true;
+        this._setWaitingStatus(timeout);
+    }
+
+    resetWaitingAssertionExecutionStatus (waitingSuccess) {
+        return this._resetWaitingStatus(waitingSuccess)
+            .then(() => {
+                this.assertionExecution = false;
+            });
     }
 }

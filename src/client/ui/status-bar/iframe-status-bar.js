@@ -13,13 +13,23 @@ export default class IframeStatusBar extends StatusBar {
     }
 
     //API
-    setWaitingStatus (timeout) {
-        messageSandbox.sendServiceMsg({ cmd: MESSAGES.startWaitingForElement, timeout }, window.top);
+    setWaitingElementStatus (timeout) {
+        messageSandbox.sendServiceMsg({ cmd: MESSAGES.startWaitingElement, timeout }, window.top);
     }
 
-    resetWaitingStatus (waitingSuccess) {
-        var msg = { cmd: MESSAGES.stopWaitingForElementRequest, waitingSuccess };
+    resetWaitingElementStatus (waitingSuccess) {
+        var msg = { cmd: MESSAGES.stopWaitingElementRequest, waitingSuccess };
 
-        return sendRequestToFrame(msg, MESSAGES.stopWaitingForElementResponse, window.top);
+        return sendRequestToFrame(msg, MESSAGES.stopWaitingElementResponse, window.top);
+    }
+
+    setWaitingAssertionExecutionStatus (timeout) {
+        messageSandbox.sendServiceMsg({ cmd: MESSAGES.startWaitingAssertionExecution, timeout }, window.top);
+    }
+
+    resetWaitingAssertionExecutionStatus (waitingSuccess) {
+        var msg = { cmd: MESSAGES.stopWaitingAssertionExecutionRequest, waitingSuccess };
+
+        return sendRequestToFrame(msg, MESSAGES.stopWaitingAssertionExecutionResponse, window.top);
     }
 }

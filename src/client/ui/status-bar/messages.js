@@ -1,5 +1,9 @@
 export default {
-    startWaitingForElement:        'start-waiting-for-element',
-    stopWaitingForElementRequest:  'stop-waiting-for-element-request',
-    stopWaitingForElementResponse: 'stop-waiting-for-element-response'
+    startWaitingElement:        'start-waiting-element',
+    stopWaitingElementRequest:  'stop-waiting-element-request',
+    stopWaitingElementResponse: 'stop-waiting-element-response',
+
+    startWaitingAssertionExecution:        'start-waiting-assertion-execution',
+    stopWaitingAssertionExecutionRequest:  'stop-waiting-assertion-execution-request',
+    stopWaitingAssertionExecutionResponse: 'stop-waiting-assertion-execution-response',
 };

@@ -24,6 +24,8 @@ export default {
     takeScreenshot:             'take-screenshot',
     takeScreenshotOnFail:       'take-screenshot-on-fail',
     prepareBrowserManipulation: 'prepare-browser-manipulation',
+    startAssertionExecution:    'start-assertion-execution',
+    endAssertionExecution:      'end-assertion-execution',
     resizeWindow:               'resize-window',
     resizeWindowToFitDevice:    'resize-window-to-fit-device',
     maximizeWindow:             'maximize-window',

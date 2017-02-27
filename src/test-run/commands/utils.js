@@ -58,6 +58,8 @@ function isServicePrepareBrowserManipulationCommand (command) {
 export function isServiceCommand (command) {
     return command.type === TYPE.testDone ||
            command.type === TYPE.takeScreenshotOnFail ||
+           command.type === TYPE.startAssertionExecution ||
+           command.type === TYPE.endAssertionExecution ||
            isServicePrepareBrowserManipulationCommand(command);
 }
 
