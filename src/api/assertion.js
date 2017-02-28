@@ -77,13 +77,13 @@ export default class Assertion {
         return this._enqueueAssertion('lte', { expected, message, opts });
     }
 
-    within (expected, expected2, message, opts) {
+    within (start, finish, message, opts) {
         // NOTE: `within` is not available in Chai `assert` interface.
-        return this._enqueueAssertion('within', { expected, expected2, message, opts });
+        return this._enqueueAssertion('within', { expected: start, expected2: finish, message, opts });
     }
 
-    notWithin (expected, expected2, message, opts) {
-        return this._enqueueAssertion('notWithin', { expected, expected2, message, opts });
+    notWithin (start, finish, message, opts) {
+        return this._enqueueAssertion('notWithin', { expected: start, expected2: finish, message, opts });
     }
 
     match (expected, message, opts) {
