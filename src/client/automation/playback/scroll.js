@@ -1,5 +1,7 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
+import whilst from '../utils/promise-whilst';
+
 
 var Promise            = hammerhead.Promise;
 var messageSandbox     = hammerhead.eventSandbox.message;
@@ -21,9 +23,12 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
         var element         = domUtils.findIframeByWindow(e.source);
         var offsetX         = e.message.offsetX;
         var offsetY         = e.message.offsetY;
-        var forceScroll     = e.message.forceScroll;
         var maxScrollMargin = e.message.maxScrollMargin;
-        var scroll          = new ScrollAutomation(element, { offsetX, offsetY }, forceScroll, maxScrollMargin);
+
+        var scroll          = new ScrollAutomation(element, { offsetX, offsetY });
+
+        if (maxScrollMargin !== DEFAULT_MAX_SCROLL_MARGIN)
+            scroll._forceMaxScrollMargin(maxScrollMargin);
 
         scroll
             .run()
@@ -32,12 +37,12 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
 });
 
 export default class ScrollAutomation {
-    constructor (element, offsetOptions, forceScroll = false, maxScrollMargin = DEFAULT_MAX_SCROLL_MARGIN) {
+    constructor (element, offsetOptions) {
         this.element         = element;
         this.offsetX         = offsetOptions.offsetX;
         this.offsetY         = offsetOptions.offsetY;
-        this.forceScroll     = forceScroll;
-        this.maxScrollMargin = maxScrollMargin;
+        this.forceScroll     = false;
+        this.maxScrollMargin = DEFAULT_MAX_SCROLL_MARGIN;
     }
 
     static _setScroll (element, { left, top }) {
@@ -51,6 +56,11 @@ export default class ScrollAutomation {
 
         styleUtils.setScrollLeft(element, left);
         styleUtils.setScrollTop(element, top);
+    }
+
+    _forceMaxScrollMargin (newMaxScrollMargin) {
+        this.forceScroll     = true;
+        this.maxScrollMargin = newMaxScrollMargin;
     }
 
     _getScrollToPoint (elementDimensions, { x, y }) {
@@ -197,7 +207,6 @@ export default class ScrollAutomation {
                 cmd:             SCROLL_REQUEST_CMD,
                 offsetX:         currentOffsetX,
                 offsetY:         currentOffsetY,
-                forceScroll:     this.forceScroll,
                 maxScrollMargin: this.maxScrollMargin
             }, SCROLL_RESPONSE_CMD, window.parent);
         }
@@ -224,19 +233,13 @@ export default class ScrollAutomation {
 
         return this
             ._scrollParents()
-            .then(() => {
+            .then(() => whilst(() => !this._isScrollMarginTooBig() && this._isElementHiddenByFixed(), () => {
                 if (this._isScrollMarginTooBig() || !this._isElementHiddenByFixed())
                     return Promise.resolve();
 
-                var offsetOptions = {
-                    offsetX: this.offsetX,
-                    offsetY: this.offsetY
-                };
+                this._forceMaxScrollMargin(this.maxScrollMargin + SCROLL_MARGIN_INCREASE_STEP);
 
-                var newMaxScrollMargin = this.maxScrollMargin + SCROLL_MARGIN_INCREASE_STEP;
-                var correctionScroll   = new ScrollAutomation(this.element, offsetOptions, true, newMaxScrollMargin);
-
-                return correctionScroll.run();
-            });
+                return this._scrollParents();
+            }));
     }
 }
