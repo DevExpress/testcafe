@@ -10,7 +10,6 @@ var testCallsite                                      = require('./data/test-cal
 var ActionIntegerOptionError                          = require('../../lib/errors/test-run').ActionIntegerOptionError;
 var ActionPositiveIntegerOptionError                  = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
 var ActionIntegerArgumentError                        = require('../../lib/errors/test-run').ActionIntegerArgumentError;
-var ActionNumberArgumentError                         = require('../../lib/errors/test-run').ActionNumberArgumentError;
 var ActionPositiveIntegerArgumentError                = require('../../lib/errors/test-run').ActionPositiveIntegerArgumentError;
 var ActionBooleanOptionError                          = require('../../lib/errors/test-run').ActionBooleanOptionError;
 var ActionSpeedOptionError                            = require('../../lib/errors/test-run').ActionSpeedOptionError;
@@ -56,7 +55,6 @@ var SetNativeDialogHandlerCodeWrongTypeError          = require('../../lib/error
 var CantObtainInfoForElementSpecifiedBySelectorError  = require('../../lib/errors/test-run').CantObtainInfoForElementSpecifiedBySelectorError;
 var WindowDimensionsOverflowError                     = require('../../lib/errors/test-run').WindowDimensionsOverflowError;
 var SetTestSpeedArgumentError                         = require('../../lib/errors/test-run').SetTestSpeedArgumentError;
-var ActionUnsupportedAssertionTypeError               = require('../../lib/errors/test-run').ActionUnsupportedAssertionTypeError;
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
 
@@ -130,10 +128,6 @@ describe('Error formatting', function () {
 
         it('Should format "actionIntegerArgumentError" message', function () {
             assertErrorMessage('action-integer-argument-error', new ActionIntegerArgumentError('dragOffsetX', 'NaN'));
-        });
-
-        it('Should format "actionNumberArgumentError" message', function () {
-            assertErrorMessage('action-number-argument-error', new ActionNumberArgumentError('start', 'NaN'));
         });
 
         it('Should format "actionPositiveIntegerArgumentError" message', function () {
@@ -314,10 +308,6 @@ describe('Error formatting', function () {
 
         it('Should format "setTestSpeedArgumentError"', function () {
             assertErrorMessage('set-test-speed-argument-error', new SetTestSpeedArgumentError('speed', 'string'));
-        });
-
-        it('Should format "actionUnsupportedAssertionTypeError"', function () {
-            assertErrorMessage('action-unsupported-assertion-type-error', new ActionUnsupportedAssertionTypeError('assertionType', 'equal.to'));
         });
     });
 

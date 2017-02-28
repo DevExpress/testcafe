@@ -90,15 +90,15 @@
                             "type": "assertion",
                             "assertionType": "within",
                             "actual": 2.3,
-                            "start": 2,
-                            "finish": 3
+                            "expected": 2,
+                            "expected2": 3
                         },
                         {
                             "type": "assertion",
                             "assertionType": "within",
                             "actual": 4.5,
-                            "start": 4.6,
-                            "finish": 7,
+                            "expected": 4.6,
+                            "expected2": 7,
                             "callsite": "[[Within assertion failed callsite]]"
                         }
                     ]
@@ -110,15 +110,15 @@
                             "type": "assertion",
                             "assertionType": "notWithin",
                             "actual": 4.5,
-                            "start": 4.6,
-                            "finish": 7
+                            "expected": 4.6,
+                            "expected2": 7
                         },
                         {
                             "type": "assertion",
                             "assertionType": "notWithin",
                             "actual": 2.3,
-                            "start": 2,
-                            "finish": 3,
+                            "expected": 2,
+                            "expected2": 3,
                             "callsite": "[[NotWithin assertion failed callsite]]"
                         }
                     ]

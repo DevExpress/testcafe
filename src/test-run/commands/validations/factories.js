@@ -3,28 +3,19 @@
 // Do not use any browser or node-specific API!
 // -------------------------------------------------------------
 
-function numberValidator (name, val, ErrorCtor) {
-    var valType = typeof val;
-
-    if (valType !== 'number')
-        throw new ErrorCtor(name, valType);
-
-    if (isNaN(val) && !isFinite(val))
-        throw new ErrorCtor(name, val);
-}
-
 export function createIntegerValidator (ErrorCtor) {
     return (name, val) => {
-        numberValidator(name, val, ErrorCtor);
+        var valType = typeof val;
 
-        if (val !== Math.floor(val))
+        if (valType !== 'number')
+            throw new ErrorCtor(name, valType);
+
+        var isInteger = !isNaN(val) &&
+                        isFinite(val) &&
+                        val === Math.floor(val);
+
+        if (!isInteger)
             throw new ErrorCtor(name, val);
-    };
-}
-
-export function createNumberValidator (ErrorCtor) {
-    return (name, val) => {
-        numberValidator(name, val, ErrorCtor);
     };
 }
 

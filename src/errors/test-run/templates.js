@@ -111,10 +111,6 @@ export default {
         The "${err.argumentName}" argument specifies a URL that uses an unsupported ${err.protocol}:// protocol. Only HTTP and HTTPS are supported, as well as protocol-relative and relative URLs.
     `),
 
-    [TYPE.actionUnsupportedAssertionTypeError]: err => markup(err, `
-        The "${err.argumentName}" argument specifies an unsupported "${err.assertionType}" assertion type. For a list of supported assertions, refer to <a href="https://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html">Assertions API</a>.
-    `),
-
     [TYPE.actionStringArgumentError]: err => markup(err, `
         The "${err.argumentName}" argument is expected to be a non-empty string, but it was ${err.actualValue}.
     `),
@@ -129,10 +125,6 @@ export default {
 
     [TYPE.actionIntegerArgumentError]: err => markup(err, `
         The "${err.argumentName}" argument is expected to be an integer, but it was ${err.actualValue}.
-    `),
-
-    [TYPE.actionNumberArgumentError]: err => markup(err, `
-        The "${err.argumentName}" argument is expected to be a number, but it was ${err.actualValue}.
     `),
 
     [TYPE.actionPositiveIntegerArgumentError]: err => markup(err, `

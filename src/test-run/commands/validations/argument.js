@@ -1,35 +1,33 @@
 import { isValidDeviceName } from 'testcafe-browser-tools';
 
 import {
+    createBooleanValidator,
     createIntegerValidator,
     createPositiveIntegerValidator,
-    createSpeedValidator,
-    createNumberValidator
+    createSpeedValidator
 } from './factories';
 
 import {
     ActionOptionsTypeError,
+    ActionBooleanArgumentError,
     ActionStringArgumentError,
     ActionIntegerArgumentError,
-    ActionNumberArgumentError,
     ActionPositiveIntegerArgumentError,
     ActionUnsupportedUrlProtocolError,
     ActionStringOrStringArrayArgumentError,
     ActionStringArrayElementError,
     ActionUnsupportedDeviceTypeError,
-    SetTestSpeedArgumentError,
-    ActionUnsupportedAssertionTypeError
+    SetTestSpeedArgumentError
 } from '../../../errors/test-run';
 
 
-const PROTOCOL_RE              = /^([\w-]+?)(?=\:)/;
-const SUPPORTED_PROTOCOL_RE    = /^https?/i;
-const SUPPORTED_ASSERTION_TYPE = /^(eql|notEql|ok|notOk|contains|notContains|typeOf|notTypeOf|gt|gte|lt|lte|within|notWithin|match|notMatch)$/;
+const PROTOCOL_RE           = /^([\w-]+?)(?=\:)/;
+const SUPPORTED_PROTOCOL_RE = /^https?/i;
 
 // Validators
 export var integerArgument         = createIntegerValidator(ActionIntegerArgumentError);
 export var positiveIntegerArgument = createPositiveIntegerValidator(ActionPositiveIntegerArgumentError);
-export var numberArgument          = createNumberValidator(ActionNumberArgumentError);
+export var booleanArgument         = createBooleanValidator(ActionBooleanArgumentError);
 export var setSpeedArgument        = createSpeedValidator(SetTestSpeedArgumentError);
 
 
@@ -41,7 +39,7 @@ export function actionOptions (name, val) {
 }
 
 
-export function stringArgument (argument, val, createError) {
+export function nonEmptyStringArgument (argument, val, createError) {
     if (!createError)
         createError = actualValue => new ActionStringArgumentError(argument, actualValue);
 
@@ -49,13 +47,6 @@ export function stringArgument (argument, val, createError) {
 
     if (type !== 'string')
         throw createError(type);
-}
-
-export function nonEmptyStringArgument (argument, val, createError) {
-    if (!createError)
-        createError = actualValue => new ActionStringArgumentError(argument, actualValue);
-
-    stringArgument(argument, val, createError);
 
     if (!val.length)
         throw createError('""');
@@ -102,11 +93,4 @@ export function resizeWindowDeviceArgument (name, val) {
 
     if (!isValidDeviceName(val))
         throw new ActionUnsupportedDeviceTypeError(name, val);
-}
-
-export function assertionTypeArgument (name, val) {
-    nonEmptyStringArgument(name, val);
-
-    if (!SUPPORTED_ASSERTION_TYPE.test(val.trim()))
-        throw new ActionUnsupportedAssertionTypeError(name, val);
 }

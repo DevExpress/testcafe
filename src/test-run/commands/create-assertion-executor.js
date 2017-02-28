@@ -50,7 +50,7 @@ function wrapExecutor (command, callsite, executor) {
     };
 }
 
-export default function getAssertionExecutionMethod (command, callsite) {
+export default function createAssertionExecutor (command, callsite) {
     var method = null;
 
     switch (command.assertionType) {
@@ -103,11 +103,11 @@ export default function getAssertionExecutionMethod (command, callsite) {
             break;
 
         case 'within':
-            method = () => expect(command.actual).to.be.within(command.start, command.finish, command.message);
+            method = () => expect(command.actual).to.be.within(command.expected, command.expected2, command.message);
             break;
 
         case 'notWithin':
-            method = () => expect(command.actual).not.to.be.within(command.start, command.finish, command.message);
+            method = () => expect(command.actual).not.to.be.within(command.expected, command.expected2, command.message);
             break;
 
         case 'match':

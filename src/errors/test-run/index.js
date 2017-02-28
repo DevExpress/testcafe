@@ -199,12 +199,6 @@ export class ActionIntegerArgumentError extends ActionArgumentErrorBase {
     }
 }
 
-export class ActionNumberArgumentError extends ActionArgumentErrorBase {
-    constructor (argumentName, actualValue) {
-        super(TYPE.actionNumberArgumentError, argumentName, actualValue);
-    }
-}
-
 export class ActionPositiveIntegerArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
         super(TYPE.actionPositiveIntegerArgumentError, argumentName, actualValue);
@@ -245,16 +239,6 @@ export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
         super(TYPE.actionUnsupportedDeviceTypeError, argumentName, argumentValue);
     }
 }
-
-export class ActionUnsupportedAssertionTypeError extends TestRunErrorBase {
-    constructor (argumentName, assertionType) {
-        super(TYPE.actionUnsupportedAssertionTypeError);
-
-        this.argumentName  = argumentName;
-        this.assertionType = assertionType;
-    }
-}
-
 
 // Selector errors
 export class ActionSelectorError extends TestRunErrorBase {

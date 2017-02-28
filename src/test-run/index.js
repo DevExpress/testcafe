@@ -12,7 +12,7 @@ import BrowserManipulationQueue from './browser-manipulation-queue';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
 import COMMAND_TYPE from './commands/type';
-import getAssertionExecutionMethod from './commands/get-assertion-execution-method';
+import createAssertionExecutor from './commands/create-assertion-executor';
 
 import { TakeScreenshotOnFailCommand, ResizeWindowCommand } from './commands/browser-manipulation';
 
@@ -360,9 +360,9 @@ export default class TestRun extends Session {
             return this._enqueueSetDialogHandlerCommand(command, callsite);
 
         if (command.type === COMMAND_TYPE.assertion) {
-            var executionMethod = getAssertionExecutionMethod(command, callsite);
+            var executor = createAssertionExecutor(command, callsite);
 
-            return await executionMethod();
+            return await executor();
         }
 
         return this._enqueueCommand(command, callsite);

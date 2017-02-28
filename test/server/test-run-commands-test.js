@@ -944,9 +944,8 @@ describe('Test run commands', function () {
                 type:          TYPE.assertion,
                 assertionType: 'eql',
                 actual:        1,
-                expected:      2,
-                start:         0.2,
-                finish:        3.5,
+                expected:      0.2,
+                expected2:     3.5,
                 yo:            'test',
                 message:       'ok',
 
@@ -962,9 +961,8 @@ describe('Test run commands', function () {
                 type:          TYPE.assertion,
                 assertionType: 'eql',
                 actual:        1,
-                expected:      2,
-                start:         0.2,
-                finish:        3.5,
+                expected:      0.2,
+                expected2:     3.5,
                 message:       'ok',
 
                 options: {
@@ -2563,56 +2561,6 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionStringArgumentError,
                     argumentName:    'assertionType',
                     actualValue:     'number',
-                    callsite:        null
-                }
-            );
-
-            assertThrow(
-                function () {
-                    return createCommand({
-                        type:          TYPE.assertion,
-                        assertionType: 'equal'
-                    });
-                },
-                {
-                    isTestCafeError: true,
-                    type:            ERROR_TYPE.actionUnsupportedAssertionTypeError,
-                    argumentName:    'assertionType',
-                    assertionType:   'equal',
-                    callsite:        null
-                }
-            );
-
-            assertThrow(
-                function () {
-                    return createCommand({
-                        type:          TYPE.assertion,
-                        assertionType: 'within',
-                        start:         '123'
-                    });
-                },
-                {
-                    isTestCafeError: true,
-                    type:            ERROR_TYPE.actionNumberArgumentError,
-                    argumentName:    'start',
-                    actualValue:     'string',
-                    callsite:        null
-                }
-            );
-
-            assertThrow(
-                function () {
-                    return createCommand({
-                        type:          TYPE.assertion,
-                        assertionType: 'within',
-                        finish:        true
-                    });
-                },
-                {
-                    isTestCafeError: true,
-                    type:            ERROR_TYPE.actionNumberArgumentError,
-                    argumentName:    'finish',
-                    actualValue:     'boolean',
                     callsite:        null
                 }
             );

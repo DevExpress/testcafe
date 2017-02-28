@@ -18,7 +18,7 @@ import {
     SwitchToIframeCommand,
     SwitchToMainWindowCommand,
     SetNativeDialogHandlerCommand,
-    SetTestSpeedCommand,
+    SetTestSpeedCommand
 } from './actions';
 
 import AssertionCommand from './assertion';

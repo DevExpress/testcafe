@@ -23,8 +23,7 @@ export default class Assertion {
             assertionType: apiMethodName,
             actual:        this.actual,
             expected:      assertionArgs.expected,
-            start:         assertionArgs.start,
-            finish:        assertionArgs.finish,
+            expected2:     assertionArgs.expected2,
             message:       message,
             options:       { timeout }
         });
@@ -78,13 +77,13 @@ export default class Assertion {
         return this._enqueueAssertion('lte', { expected, message, opts });
     }
 
-    within (start, finish, message, opts) {
+    within (expected, expected2, message, opts) {
         // NOTE: `within` is not available in Chai `assert` interface.
-        return this._enqueueAssertion('within', { start, finish, message, opts });
+        return this._enqueueAssertion('within', { expected, expected2, message, opts });
     }
 
-    notWithin (start, finish, message, opts) {
-        return this._enqueueAssertion('notWithin', { start, finish, message, opts });
+    notWithin (expected, expected2, message, opts) {
+        return this._enqueueAssertion('notWithin', { expected, expected2, message, opts });
     }
 
     match (expected, message, opts) {
