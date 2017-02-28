@@ -111,7 +111,6 @@ describe('[API] Assertions', function () {
             });
     });
 
-
     it('Should perform .lt() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.lt() assertion', {
             shouldFail: true,
@@ -211,7 +210,7 @@ describe('[API] Assertions', function () {
             only:       'chrome'
         })
             .catch(function (errs) {
-                expect(errs[0]).contains('"timeout" option is expected to be a non-negative number, but it was string.');
+                expect(errs[0]).contains('The "timeout" option is expected to be a positive integer, but it was string.');
                 expect(errs[0]).contains("> 120 |    await t.expect(42).eql(43, { timeout: 'hey' });");
             });
     });

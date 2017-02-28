@@ -938,6 +938,55 @@ describe('Test run commands', function () {
                 speed: 0.5
             });
         });
+
+        it('Should create AssertionCommand from object', function () {
+            var commandObj = {
+                type:          TYPE.assertion,
+                assertionType: 'eql',
+                actual:        1,
+                expected:      0.2,
+                expected2:     3.5,
+                yo:            'test',
+                message:       'ok',
+
+                options: {
+                    offsetX: 23,
+                    timeout: 100
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:          TYPE.assertion,
+                assertionType: 'eql',
+                actual:        1,
+                expected:      0.2,
+                expected2:     3.5,
+                message:       'ok',
+
+                options: {
+                    timeout: 100
+                }
+            });
+
+            commandObj = {
+                type:          TYPE.assertion,
+                assertionType: 'ok',
+                actual:        1
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:          TYPE.assertion,
+                assertionType: 'ok',
+                actual:        1,
+                message:       null,
+
+                options: { timeout: null }
+            });
+        });
     });
 
     describe('Validation', function () {
@@ -2451,7 +2500,6 @@ describe('Test run commands', function () {
             );
         });
 
-
         it('Should validate SetTestSpeedCommand', function () {
             assertThrow(
                 function () {
@@ -2480,6 +2528,93 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.setTestSpeedArgumentError,
                     argumentName:    'speed',
                     actualValue:     2,
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate AssertionСommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.assertion
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'assertionType',
+                    actualValue:     'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:          TYPE.assertion,
+                        assertionType: 123
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionStringArgumentError,
+                    argumentName:    'assertionType',
+                    actualValue:     'number',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:          TYPE.assertion,
+                        assertionType: 'ok',
+                        options:       1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionOptionsTypeError,
+                    actualType:      'number',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:          TYPE.assertion,
+                        assertionType: 'ok',
+                        options:       {
+                            timeout: 'timeout'
+                        }
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    optionName:      'timeout',
+                    actualValue:     'string',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:          TYPE.assertion,
+                        assertionType: 'ok',
+                        options:       {
+                            timeout: 10.5
+                        }
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionPositiveIntegerOptionError,
+                    optionName:      'timeout',
+                    actualValue:     10.5,
                     callsite:        null
                 }
             );

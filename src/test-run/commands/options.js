@@ -161,3 +161,20 @@ export class ResizeToFitDeviceOptions extends Assignable {
         ];
     }
 }
+
+//Assertion
+export class AssertionOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this.timeout = null;
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'timeout', type: positiveIntegerOption }
+        ];
+    }
+}

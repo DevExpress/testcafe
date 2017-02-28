@@ -33,5 +33,6 @@ export default {
     getNativeDialogHistory:     'get-native-dialog-history',
     setTestSpeed:               'set-test-speed',
     debug:                      'debug',
+    assertion:                  'assertion',
     testDone:                   'test-done'
 };

@@ -90,7 +90,7 @@ export default class TestController {
         return this._createExtendedPromise(this.executionChain, callsite);
     }
 
-    _enqueueAction (apiMethodName, CmdCtor, cmdArgs) {
+    _enqueueCommand (apiMethodName, CmdCtor, cmdArgs) {
         return this._enqueueTask(apiMethodName, callsite => {
             var command = null;
 
@@ -130,39 +130,39 @@ export default class TestController {
     }
 
     _click$ (selector, options) {
-        return this._enqueueAction('click', ClickCommand, { selector, options });
+        return this._enqueueCommand('click', ClickCommand, { selector, options });
     }
 
     _rightClick$ (selector, options) {
-        return this._enqueueAction('rightClick', RightClickCommand, { selector, options });
+        return this._enqueueCommand('rightClick', RightClickCommand, { selector, options });
     }
 
     _doubleClick$ (selector, options) {
-        return this._enqueueAction('doubleClick', DoubleClickCommand, { selector, options });
+        return this._enqueueCommand('doubleClick', DoubleClickCommand, { selector, options });
     }
 
     _hover$ (selector, options) {
-        return this._enqueueAction('hover', HoverCommand, { selector, options });
+        return this._enqueueCommand('hover', HoverCommand, { selector, options });
     }
 
     _drag$ (selector, dragOffsetX, dragOffsetY, options) {
-        return this._enqueueAction('drag', DragCommand, { selector, dragOffsetX, dragOffsetY, options });
+        return this._enqueueCommand('drag', DragCommand, { selector, dragOffsetX, dragOffsetY, options });
     }
 
     _dragToElement$ (selector, destinationSelector, options) {
-        return this._enqueueAction('dragToElement', DragToElementCommand, { selector, destinationSelector, options });
+        return this._enqueueCommand('dragToElement', DragToElementCommand, { selector, destinationSelector, options });
     }
 
     _typeText$ (selector, text, options) {
-        return this._enqueueAction('typeText', TypeTextCommand, { selector, text, options });
+        return this._enqueueCommand('typeText', TypeTextCommand, { selector, text, options });
     }
 
     _selectText$ (selector, startPos, endPos, options) {
-        return this._enqueueAction('selectText', SelectTextCommand, { selector, startPos, endPos, options });
+        return this._enqueueCommand('selectText', SelectTextCommand, { selector, startPos, endPos, options });
     }
 
     _selectTextAreaContent$ (selector, startLine, startPos, endLine, endPos, options) {
-        return this._enqueueAction('selectTextAreaContent', SelectTextAreaContentCommand, {
+        return this._enqueueCommand('selectTextAreaContent', SelectTextAreaContentCommand, {
             selector,
             startLine,
             startPos,
@@ -173,7 +173,7 @@ export default class TestController {
     }
 
     _selectEditableContent$ (startSelector, endSelector, options) {
-        return this._enqueueAction('selectEditableContent', SelectEditableContentCommand, {
+        return this._enqueueCommand('selectEditableContent', SelectEditableContentCommand, {
             startSelector,
             endSelector,
             options
@@ -181,47 +181,47 @@ export default class TestController {
     }
 
     _pressKey$ (keys, options) {
-        return this._enqueueAction('pressKey', PressKeyCommand, { keys, options });
+        return this._enqueueCommand('pressKey', PressKeyCommand, { keys, options });
     }
 
     _wait$ (timeout) {
-        return this._enqueueAction('wait', WaitCommand, { timeout });
+        return this._enqueueCommand('wait', WaitCommand, { timeout });
     }
 
     _navigateTo$ (url) {
-        return this._enqueueAction('navigateTo', NavigateToCommand, { url });
+        return this._enqueueCommand('navigateTo', NavigateToCommand, { url });
     }
 
     _setFilesToUpload$ (selector, filePath) {
-        return this._enqueueAction('setFilesToUpload', SetFilesToUploadCommand, { selector, filePath });
+        return this._enqueueCommand('setFilesToUpload', SetFilesToUploadCommand, { selector, filePath });
     }
 
     _clearUpload$ (selector) {
-        return this._enqueueAction('clearUpload', ClearUploadCommand, { selector });
+        return this._enqueueCommand('clearUpload', ClearUploadCommand, { selector });
     }
 
     _takeScreenshot$ (path) {
-        return this._enqueueAction('takeScreenshot', TakeScreenshotCommand, { path });
+        return this._enqueueCommand('takeScreenshot', TakeScreenshotCommand, { path });
     }
 
     _resizeWindow$ (width, height) {
-        return this._enqueueAction('resizeWindow', ResizeWindowCommand, { width, height });
+        return this._enqueueCommand('resizeWindow', ResizeWindowCommand, { width, height });
     }
 
     _resizeWindowToFitDevice$ (device, options) {
-        return this._enqueueAction('resizeWindowToFitDevice', ResizeWindowToFitDeviceCommand, { device, options });
+        return this._enqueueCommand('resizeWindowToFitDevice', ResizeWindowToFitDeviceCommand, { device, options });
     }
 
     _maximizeWindow$ () {
-        return this._enqueueAction('maximizeWindow', MaximizeWindowCommand);
+        return this._enqueueCommand('maximizeWindow', MaximizeWindowCommand);
     }
 
     _switchToIframe$ (selector) {
-        return this._enqueueAction('switchToIframe', SwitchToIframeCommand, { selector });
+        return this._enqueueCommand('switchToIframe', SwitchToIframeCommand, { selector });
     }
 
     _switchToMainWindow$ () {
-        return this._enqueueAction('switchToMainWindow', SwitchToMainWindowCommand);
+        return this._enqueueCommand('switchToMainWindow', SwitchToMainWindowCommand);
     }
 
     _eval$ (fn, options) {
@@ -235,7 +235,7 @@ export default class TestController {
     }
 
     _setNativeDialogHandler$ (dialogHandler, options) {
-        return this._enqueueAction('setNativeDialogHandler', SetNativeDialogHandlerCommand, {
+        return this._enqueueCommand('setNativeDialogHandler', SetNativeDialogHandlerCommand, {
             dialogHandler: {
                 dialogHandler,
                 options
@@ -254,11 +254,11 @@ export default class TestController {
     }
 
     _debug$ () {
-        return this._enqueueAction('debug', DebugCommand);
+        return this._enqueueCommand('debug', DebugCommand);
     }
 
     _setTestSpeed$ (speed) {
-        return this._enqueueAction('setTestSpeed', SetTestSpeedCommand, { speed });
+        return this._enqueueCommand('setTestSpeed', SetTestSpeedCommand, { speed });
     }
 }
 

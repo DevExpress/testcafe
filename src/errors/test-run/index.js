@@ -240,7 +240,6 @@ export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
     }
 }
 
-
 // Selector errors
 export class ActionSelectorError extends TestRunErrorBase {
     constructor (selectorName, errMsg) {

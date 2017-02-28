@@ -21,6 +21,8 @@ import {
     SetTestSpeedCommand
 } from './actions';
 
+import AssertionCommand from './assertion';
+
 import {
     TakeScreenshotCommand,
     ResizeWindowCommand,
@@ -102,6 +104,9 @@ export default function createCommandFromObject (obj) {
 
         case TYPE.setTestSpeed:
             return new SetTestSpeedCommand(obj);
+
+        case TYPE.assertion:
+            return new AssertionCommand(obj);
     }
 
     return null;
