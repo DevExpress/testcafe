@@ -11,7 +11,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/getting-started/" />
@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
   <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/getting-started/">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
@@ -51,15 +52,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script>
-        var MIN_BODY_WIDTH = 900;
+        var MIN_BODY_WIDTH = 1000;
         var FOOTER_HEIGHT  = 63;
         var HEADER_HEIGHT  = 102;
 
         var nav            = null;
+        var article        = null;
         var isMobileDevice = window.screen.width < 800 || window.screen.height < 800;
 
         function setNavTopPosition () {
             var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
+            var top = null;
+
+            if(isMobileDevice) {
+                top = window.pageYOffset >= HEADER_HEIGHT ? window.pageYOffset - HEADER_HEIGHT + 'px' : '0';
+
+                if (nav.style.paddingTop !== top) {
+                    nav.style.paddingTop = top;
+                    Ps.update(nav);
+                }
+
+                return;
+            }
 
             if (document.body.clientWidth > MIN_BODY_WIDTH) {
                 if (nav.style.top !== HEADER_HEIGHT + 'px') {
@@ -68,7 +82,7 @@
                 }
             }
             else if(!isMobileZoomed) {
-                var top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
+                top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
 
                 if (nav.style.top !== top) {
                     nav.style.top = top;
@@ -102,29 +116,43 @@
             setNavBottomPosition();
             setNavTopPosition();
         }
-        
+
         function changeBodyHeight () {
             if (document.body.style.height !== window.innerHeight + 'px')
                 document.body.style.height = window.innerHeight + 'px';
         }
-        
+
         function initScrollBar() {
             Ps.initialize(nav);
-            
+
             window.addEventListener('resize', function () {
                 Ps.update(nav);
             });
         }
 
         function initNav() {
+            if(isMobileDevice) {
+                nav.style.position = 'relative';
+                nav.style.float = 'left';
+                nav.style.top = '0px';
+
+                article.style.marginTop = '0px';
+                article.style.paddingTop = '22px';
+            }
+
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
+
+            if(isMobileDevice) {
+                nav.style.height = window.innerHeight + 'px';
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function (e) {
-            nav = document.querySelector('.doc-nav');
+            nav     = document.querySelector('.doc-nav');
+            article = document.querySelector('.doc');
 
             if(nav)
                 initNav(nav);
@@ -132,12 +160,12 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper, docTopMenu) {
-            var MIN_BODY_WIDTH = 900;
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article) {
+            var MIN_BODY_WIDTH = 1000;
 
             function updateHeader() {
                 var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
-                
+
                 
 
                 siteHeader.style.position = bodyMinimized ? 'static' : '';
@@ -147,6 +175,9 @@
 
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
+
+                if(article)
+                    article.style.marginTop = bodyMinimized ? '21px' : '72px';
             }
 
             updateHeader();
@@ -157,9 +188,10 @@
             var contentWrapper = document.querySelector('.container');
             var siteHeader     = document.querySelector('.site-header');
             var docTopMenu     = document.querySelector('.doc-top-nav');
+            var article        = document.querySelector('.doc');
 
             if(siteHeader) 
-                initHeader(siteHeader, contentWrapper, docTopMenu);
+                initHeader(siteHeader, contentWrapper, docTopMenu, article);
         });
     </script>
 </head>
@@ -171,9 +203,7 @@
       <header class="site-header minimized">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
-
     <nav class="site-nav">
-      <div class="trigger">
         
           
           <a class="page-link active" href="/testcafe/documentation/getting-started/">Documentation</a>
@@ -199,7 +229,7 @@
           <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
           <span class="page-link-separator">|</span>
         
-      </div>
+      <input type="text" placeholder="Search" id="search"/>
     </nav>
 
   </div>
@@ -391,6 +421,15 @@ To check if the header is correct, you have to add an assertion to the test.</p>
     </div>
 </footer>
 
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+    <script type="text/javascript"> docsearch({
+          apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
+          indexName: 'testcafe',
+          inputSelector: '#search',
+          debug: false // Set debug to true if you want to inspect the dropdown
+      });
+    </script>
 
   </body>
 

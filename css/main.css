@@ -202,6 +202,11 @@ table > tbody > tr > td {
         -moz-transition: padding-top 0.3s;
         -o-transition: padding-top 0.3s;
         -webkit-transition: padding-top 0.3s; }
+    .site-header.animated #search {
+      transition: margin-top 0.3s;
+      -moz-transition: margin-top 0.3s;
+      -o-transition: margin-top 0.3s;
+      -webkit-transition: margin-top 0.3s; }
   .site-header.minimized {
     height: 51px; }
     .site-header.minimized .site-logo {
@@ -213,6 +218,8 @@ table > tbody > tr > td {
       line-height: 50px; }
       .site-header.minimized .site-nav .page-link {
         padding-top: 0; }
+    .site-header.minimized #search {
+      margin-top: 14px; }
 
 .site-header-content {
   padding: 0 40px; }
@@ -238,9 +245,8 @@ table > tbody > tr > td {
     padding-top: 49px;
     color: #111;
     line-height: 1.5;
-    display: inline-block; }
-    .site-nav .page-link:not(:last-of-type) {
-      margin-right: 5px; }
+    display: inline-block;
+    margin-right: 5px; }
     .site-nav .page-link.active {
       color: #2fa4cf;
       font-weight: bold; }
@@ -249,10 +255,10 @@ table > tbody > tr > td {
   margin-right: 5px;
   font-size: 16px;
   color: #c9c9c9; }
-  .page-link-separator:last-of-type {
-    display: none; }
   .page-link-separator.level-2 {
     color: white; }
+    .page-link-separator.level-2:last-of-type {
+      display: none; }
 
 .doc-top-nav {
   position: fixed;
@@ -274,7 +280,7 @@ table > tbody > tr > td {
 
 html, body {
   height: 100%;
-  min-width: 900px; }
+  min-width: 1000px; }
 
 .page-content-wrapper {
   min-height: 100%;
@@ -435,3 +441,16 @@ html, body {
 #disqus_thread {
   margin: 60px auto 0;
   max-width: 710px; }
+
+#search {
+  border: none;
+  font-size: 14px;
+  outline: none;
+  background-image: url("/testcafe/images/icon-search.png");
+  background-repeat: no-repeat;
+  background-position: 5px 5px;
+  padding-left: 25px;
+  margin-top: 17px;
+  height: 20px;
+  background-color: #f3f3f3;
+  border-radius: 10px; }

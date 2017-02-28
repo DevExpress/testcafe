@@ -11,7 +11,7 @@
 
   <meta name="description" content="TestCafe v0.11.0 ReleasedRedesigned selector system, built-in assertions and lots of bug fixes! 🚀🚀🚀">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/blog/testcafe-v0-11-0-released.html" />
@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
   <link rel="canonical" href="http://devexpress.github.io/testcafe/blog/testcafe-v0-11-0-released.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
@@ -56,12 +57,12 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper, docTopMenu) {
-            var MIN_BODY_WIDTH = 900;
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article) {
+            var MIN_BODY_WIDTH = 1000;
 
             function updateHeader() {
                 var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
-                
+
                 
 
                 siteHeader.style.position = bodyMinimized ? 'static' : '';
@@ -71,6 +72,9 @@
 
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
+
+                if(article)
+                    article.style.marginTop = bodyMinimized ? '21px' : '72px';
             }
 
             updateHeader();
@@ -81,9 +85,10 @@
             var contentWrapper = document.querySelector('.container');
             var siteHeader     = document.querySelector('.site-header');
             var docTopMenu     = document.querySelector('.doc-top-nav');
+            var article        = document.querySelector('.doc');
 
             if(siteHeader) 
-                initHeader(siteHeader, contentWrapper, docTopMenu);
+                initHeader(siteHeader, contentWrapper, docTopMenu, article);
         });
     </script>
 </head>
@@ -95,9 +100,7 @@
       <header class="site-header minimized">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
-
     <nav class="site-nav">
-      <div class="trigger">
         
           
           <a class="page-link " href="/testcafe/documentation/getting-started/">Documentation</a>
@@ -123,7 +126,7 @@
           <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
           <span class="page-link-separator">|</span>
         
-      </div>
+      <input type="text" placeholder="Search" id="search"/>
     </nav>
 
   </div>
@@ -228,7 +231,7 @@ a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selectin
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#someId'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="c1">// returns `null`, since there is only one element in matching set with id `someId`</span>
 </code></pre></div><h4><a class="anchor" name="deprecated-api"></a>Deprecated API <a class="permalink" href="#deprecated-api">#</a></h4>
 <ul>
-<li><code>t.select</code> method - use <code>Selector</code> instead:</li>
+<li><a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#one-time-selection"><code>t.select</code> method</a> - use <code>Selector</code> instead:</li>
 </ul>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">'.someClass'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
 
@@ -237,9 +240,9 @@ a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selectin
 <span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.someClass'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
 </code></pre></div>
 <ul>
-<li><code>selectorOptions.index</code> - use <a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#nth">selector.nth()</a> instead.</li>
-<li><code>selectorOptions.text</code> - use <a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#withtext">selector.withText()</a> instead.</li>
-<li><code>selectorOptions.dependencies</code> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-dom-nodes">filtering</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#search-for-elements-in-the-dom-hierarchy">hierarchical</a> methods to build combined selectors instead.</li>
+<li><a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionsindex">selectorOptions.index</a> - use <a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#nth">selector.nth()</a> instead.</li>
+<li><a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionstext">selectorOptions.text</a> - use <a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#withtext">selector.withText()</a> instead.</li>
+<li><a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionsdependencies">selectorOptions.dependencies</a> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-dom-nodes">filtering</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#search-for-elements-in-the-dom-hierarchy">hierarchical</a> methods to build combined selectors instead.</li>
 </ul>
 <h3><a class="anchor" name="built-in-assertions-998"></a>⚙ Built-in assertions. (<a href="https://github.com/DevExpress/testcafe/issues/998">#998</a>) <a class="permalink" href="#built-in-assertions-998">#</a></h3>
 <p>TestCafe now ships with <a href="http://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html">numerous built-in BDD-style assertions</a>.
@@ -343,6 +346,15 @@ This approach allows you to create stable tests that lack random errors and decr
     </div>
 </footer>
 
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+    <script type="text/javascript"> docsearch({
+          apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
+          indexName: 'testcafe',
+          inputSelector: '#search',
+          debug: false // Set debug to true if you want to inspect the dropdown
+      });
+    </script>
 
   </body>
 

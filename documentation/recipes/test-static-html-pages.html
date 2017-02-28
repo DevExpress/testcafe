@@ -11,7 +11,7 @@
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  
+
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/recipes/test-static-html-pages.html" />
@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
   <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/recipes/test-static-html-pages.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
   <script>
       document.addEventListener('DOMContentLoaded', function (e) {
@@ -51,15 +52,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
     <script>
-        var MIN_BODY_WIDTH = 900;
+        var MIN_BODY_WIDTH = 1000;
         var FOOTER_HEIGHT  = 63;
         var HEADER_HEIGHT  = 102;
 
         var nav            = null;
+        var article        = null;
         var isMobileDevice = window.screen.width < 800 || window.screen.height < 800;
 
         function setNavTopPosition () {
             var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
+            var top = null;
+
+            if(isMobileDevice) {
+                top = window.pageYOffset >= HEADER_HEIGHT ? window.pageYOffset - HEADER_HEIGHT + 'px' : '0';
+
+                if (nav.style.paddingTop !== top) {
+                    nav.style.paddingTop = top;
+                    Ps.update(nav);
+                }
+
+                return;
+            }
 
             if (document.body.clientWidth > MIN_BODY_WIDTH) {
                 if (nav.style.top !== HEADER_HEIGHT + 'px') {
@@ -68,7 +82,7 @@
                 }
             }
             else if(!isMobileZoomed) {
-                var top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
+                top = window.pageYOffset <= HEADER_HEIGHT ? HEADER_HEIGHT - window.pageYOffset + 'px' : '0';
 
                 if (nav.style.top !== top) {
                     nav.style.top = top;
@@ -102,29 +116,43 @@
             setNavBottomPosition();
             setNavTopPosition();
         }
-        
+
         function changeBodyHeight () {
             if (document.body.style.height !== window.innerHeight + 'px')
                 document.body.style.height = window.innerHeight + 'px';
         }
-        
+
         function initScrollBar() {
             Ps.initialize(nav);
-            
+
             window.addEventListener('resize', function () {
                 Ps.update(nav);
             });
         }
 
         function initNav() {
+            if(isMobileDevice) {
+                nav.style.position = 'relative';
+                nav.style.float = 'left';
+                nav.style.top = '0px';
+
+                article.style.marginTop = '0px';
+                article.style.paddingTop = '22px';
+            }
+
             initScrollBar();
             updatePosition();
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
+
+            if(isMobileDevice) {
+                nav.style.height = window.innerHeight + 'px';
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function (e) {
-            nav = document.querySelector('.doc-nav');
+            nav     = document.querySelector('.doc-nav');
+            article = document.querySelector('.doc');
 
             if(nav)
                 initNav(nav);
@@ -132,12 +160,12 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper, docTopMenu) {
-            var MIN_BODY_WIDTH = 900;
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article) {
+            var MIN_BODY_WIDTH = 1000;
 
             function updateHeader() {
                 var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
-                
+
                 
 
                 siteHeader.style.position = bodyMinimized ? 'static' : '';
@@ -147,6 +175,9 @@
 
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
+
+                if(article)
+                    article.style.marginTop = bodyMinimized ? '21px' : '72px';
             }
 
             updateHeader();
@@ -157,9 +188,10 @@
             var contentWrapper = document.querySelector('.container');
             var siteHeader     = document.querySelector('.site-header');
             var docTopMenu     = document.querySelector('.doc-top-nav');
+            var article        = document.querySelector('.doc');
 
             if(siteHeader) 
-                initHeader(siteHeader, contentWrapper, docTopMenu);
+                initHeader(siteHeader, contentWrapper, docTopMenu, article);
         });
     </script>
 </head>
@@ -171,9 +203,7 @@
       <header class="site-header minimized">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
-
     <nav class="site-nav">
-      <div class="trigger">
         
           
           <a class="page-link active" href="/testcafe/documentation/getting-started/">Documentation</a>
@@ -199,7 +229,7 @@
           <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
           <span class="page-link-separator">|</span>
         
-      </div>
+      <input type="text" placeholder="Search" id="search"/>
     </nav>
 
   </div>
@@ -316,45 +346,33 @@
 		<div class="post-content">
 
 			<h1>Test Static HTML Pages</h1>
-<p>There are many ways to test your static HTML pages using TestCafe, but in this recipe
-we will focus on two simple methods that use a few other packages and can be easily integrated into your workflow.</p>
+<p>There are many ways to test your static HTML pages using TestCafe, but in this recipe we will focus on a simple one that uses a few other packages and can be easily integrated into your workflow. To do this, go through the following steps.</p>
 
 <ul>
-<li><a href="#install-testcafe-and-create-tests">Install TestCafe and create tests</a></li>
-<li><a href="#option-1---use-the-file-protocol">Option 1 - Use the file:// protocol</a></li>
-<li><a href="#option-2---use-a-local-http-server">Option 2 - Use a local HTTP server</a></li>
+<li><a href="#step-1---install-testcafe-and-create-tests">Step 1 - Install TestCafe and create tests</a></li>
+<li><a href="#step-2---install-http-server">Step 2 - Install http-server</a></li>
+<li><a href="#step-3---add-the-test-script-to-packagejson">Step 3 - Add the <code>test</code> script to package.json</a></li>
 </ul>
-<h2><a class="anchor" name="install-testcafe-and-create-tests"></a>Install TestCafe and create tests <a class="permalink" href="#install-testcafe-and-create-tests">#</a></h2>
+<h2><a class="anchor" name="step-1---install-testcafe-and-create-tests"></a>Step 1 - Install TestCafe and create tests <a class="permalink" href="#step-1---install-testcafe-and-create-tests">#</a></h2>
 <p>Install TestCafe <a href="../using-testcafe/installing-testcafe.html#locally">locally</a> in your project and <a href="../getting-started/#creating-a-test">create tests</a>.</p>
-<h2><a class="anchor" name="option-1---use-the-file-protocol"></a>Option 1 - Use the file:// protocol <a class="permalink" href="#option-1---use-the-file-protocol">#</a></h2>
-<p><a href="../test-api/test-code-structure.html#specifying-the-start-webpage">Specify the target webpage</a> using the <code>file://</code> protocol.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">file</span><span class="err">:</span><span class="c1">///user/my-website/index.html`</span>
-</code></pre></div>
-<p>Add a command that runs tests to the <code>package.json</code> file.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome ./test/acceptance/**"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>This script runs tests from the <code>./test/acceptance/</code> directory in Chrome.</p>
-<h2><a class="anchor" name="option-2---use-a-local-http-server"></a>Option 2 - Use a local HTTP server <a class="permalink" href="#option-2---use-a-local-http-server">#</a></h2>
+<h2><a class="anchor" name="step-2---install-http-server"></a>Step 2 - Install http-server <a class="permalink" href="#step-2---install-http-server">#</a></h2>
 <p>Install <a href="https://github.com/indexzero/http-server">http-server</a> that will be used as a local server.</p>
-
-<p>Use the <code>--app</code> TestCafe option to provide a command that starts the local server.
+<h2><a class="anchor" name="step-3---add-the-test-script-to-packagejson"></a>Step 3 - Add the <code>test</code> script to package.json <a class="permalink" href="#step-3---add-the-test-script-to-packagejson">#</a></h2>
+<p>The default test script, for Node.js projects is <code>npm test</code>.
+To tell npm how to run your tests, add the <code>test</code> script to the project&#39;s package.json file.
+Use the <code>--app</code> TestCafe option to provide a command that starts the local server.
 This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the server.</p>
-
-<p>Add the following code to <code>package.json</code>.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome ./test/acceptance/** --app \"http-server ./my-website -s\""</span><span class="w">
+    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome ./test/acceptance/** --app \"http-server ./dist -s\""</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>This script contains the following commands.</p>
 
 <ol>
-<li><p><code>&quot;http-server ./my-website -s&quot;</code> - starts the local server at port <code>8080</code> with files from the <code>./my-website</code> folder in silent mode.
-The contents of the <code>./my-website</code> folder will be served at <code>http://localhost:8080</code>. So, if you want to test the <code>./my-website/dir/page.html</code> page,
+<li><p><code>&quot;http-server ./dist -s&quot;</code> - starts the local server at port <code>8080</code> with files from the <code>./dist</code> folder in silent mode.
+The contents of the<code>./dist</code> folder will be served at <code>http://localhost:8080</code>. So, if you want to test the <code>./dist/dir/page.html</code> page,
 use <code>fixture(&#39;...&#39;).page(&#39;http://localhost:8080/dir/page.html&#39;)</code> in your fixture file.</p></li>
-<li><p><code>&quot;testcafe chrome ./test/acceptance/**&quot;</code> - runs TestCafe tests from the <code>./test/acceptance</code> directory in Chrome after the server starts</p></li>
+<li><p><code>&quot;testcafe chrome ./test/acceptance/**&quot;</code> - runs TestCafe tests from the <code>./test/acceptance</code> folder in Chrome after the server starts</p></li>
 </ol>
 
 <p>For more information on how to configure a test run using a <code>testcafe</code> command, see <a href="../using-testcafe/command-line-interface.html">Command Line Interface</a>.</p>
@@ -377,6 +395,15 @@ use <code>fixture(&#39;...&#39;).page(&#39;http://localhost:8080/dir/page.html&#
     </div>
 </footer>
 
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+    <script type="text/javascript"> docsearch({
+          apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
+          indexName: 'testcafe',
+          inputSelector: '#search',
+          debug: false // Set debug to true if you want to inspect the dropdown
+      });
+    </script>
 
   </body>
 
