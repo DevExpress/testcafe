@@ -1,4 +1,4 @@
-import { utils, eventSandbox, nativeMethods } from './deps/hammerhead';
+import { utils, eventSandbox } from './deps/hammerhead';
 
 import { get, hasDimensions } from './utils/style';
 import { filter } from './utils/array';
@@ -52,10 +52,12 @@ function preventRealEventHandler (e, dispatched, preventDefault, cancelHandlers,
                 }
 
                 if (isElementInvisible || invisibleParents.length) {
-                    // NOTE: B254768 - reason of setTimeout method using.
-                    nativeMethods.setTimeout.call(window, () => {
+                    // NOTE: In IE we should prevent the event and raise it on timeout. This is a fix for
+                    // the case when a focus event leads to the element disappearing. If we don't prevent
+                    // the blur event it will be raised before the previous focus event is raised (see B254768)
+                    eventSandbox.timers.deferFunction(() => {
                         eventSimulator.blur(target);
-                    }, 0);
+                    });
                 }
             }
             // NOTE: fix for a jQuery bug. An exception is raised when calling .is(':visible')
