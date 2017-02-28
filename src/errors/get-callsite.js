@@ -1,4 +1,4 @@
-import createCallsiteRecord from 'callsite-record';
+import createCallsiteRecord from '../../modules/callsite-record';
 import stackCleaningHook from './stack-cleaning-hook';
 
 const STACK_TRACE_LIMIT = 2000;
