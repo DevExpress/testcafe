@@ -41,7 +41,6 @@ export default class ScrollAutomation {
         this.element         = element;
         this.offsetX         = offsetOptions.offsetX;
         this.offsetY         = offsetOptions.offsetY;
-        this.forceScroll     = false;
         this.maxScrollMargin = DEFAULT_MAX_SCROLL_MARGIN;
     }
 
@@ -59,38 +58,31 @@ export default class ScrollAutomation {
     }
 
     _changeMaxScrollMargin (newMaxScrollMargin) {
-        this.forceScroll     = true;
         this.maxScrollMargin = newMaxScrollMargin;
     }
 
     _getScrollToPoint (elementDimensions, { x, y }) {
-        var needForwardScrollLeft  = x >= elementDimensions.scroll.left + elementDimensions.width;
-        var needBackwardScrollLeft = x <= elementDimensions.scroll.left;
+        var leftScrollMargin = Math.min(this.maxScrollMargin, Math.floor(elementDimensions.width / 2));
+        var topScrollMargin  = Math.min(this.maxScrollMargin, Math.floor(elementDimensions.height / 2));
 
-        var needForwardScrollTop  = y >= elementDimensions.scroll.top + elementDimensions.height;
-        var needBackwardScrollTop = y <= elementDimensions.scroll.top;
+        var needForwardScrollLeft  = x >= elementDimensions.scroll.left + elementDimensions.width - leftScrollMargin;
+        var needBackwardScrollLeft = x <= elementDimensions.scroll.left + leftScrollMargin;
 
-        var needForcedForwardScrollLeft = this.forceScroll &&
-                                          x >= elementDimensions.scroll.left + elementDimensions.width / 2;
-
-        var needForcedForwardScrollTop  = this.forceScroll &&
-                                          y >= elementDimensions.scroll.top + elementDimensions.height / 2;
-
-        var maxLeftScrollMargin = Math.min(this.maxScrollMargin, Math.floor(elementDimensions.width / 2));
-        var maxTopScrollMargin  = Math.min(this.maxScrollMargin, Math.floor(elementDimensions.height / 2));
+        var needForwardScrollTop  = y >= elementDimensions.scroll.top + elementDimensions.height - topScrollMargin;
+        var needBackwardScrollTop = y <= elementDimensions.scroll.top + topScrollMargin;
 
         var left = elementDimensions.scroll.left;
         var top  = elementDimensions.scroll.top;
 
-        if (needForwardScrollLeft || needForcedForwardScrollLeft)
-            left = x - elementDimensions.width + maxLeftScrollMargin;
-        else if (needBackwardScrollLeft || this.forceScroll)
-            left = x - maxLeftScrollMargin;
+        if (needForwardScrollLeft)
+            left = x - elementDimensions.width + leftScrollMargin;
+        else if (needBackwardScrollLeft)
+            left = x - leftScrollMargin;
 
-        if (needForwardScrollTop || needForcedForwardScrollTop)
-            top = y - elementDimensions.height + maxTopScrollMargin;
-        else if (needBackwardScrollTop || this.forceScroll)
-            top = y - maxTopScrollMargin;
+        if (needForwardScrollTop)
+            top = y - elementDimensions.height + topScrollMargin;
+        else if (needBackwardScrollTop)
+            top = y - topScrollMargin;
 
         return { left, top };
     }
@@ -105,36 +97,30 @@ export default class ScrollAutomation {
         var relativePosition = positionUtils.calcRelativePosition(childDimensions, parentDimensions);
 
         if (canShowFullElementWidth) {
-            var maxLeftScrollMargin = Math.min(this.maxScrollMargin, Math.floor(parentDimensions.width -
-                                                                                childDimensions.width));
+            var availableLeftScrollMargin = Math.floor((parentDimensions.width - childDimensions.width) / 2);
+            var leftScrollMargin          = Math.min(this.maxScrollMargin, availableLeftScrollMargin);
 
-            var needForcedBackwardHorizontalScroll = this.forceScroll &&
-                                                     relativePosition.left < parentDimensions.width / 2;
-
-            if (relativePosition.left < 0 || needForcedBackwardHorizontalScroll) {
+            if (relativePosition.left < leftScrollMargin) {
                 fullViewScrollLeft = Math.round(parentDimensions.scroll.left + relativePosition.left -
-                                                maxLeftScrollMargin);
+                                                leftScrollMargin);
             }
-            else if (relativePosition.left > 0 && relativePosition.right < 0 || this.forceScroll) {
+            else if (relativePosition.right < leftScrollMargin) {
                 fullViewScrollLeft = Math.round(parentDimensions.scroll.left +
                                                 Math.min(relativePosition.left, -relativePosition.right) +
-                                                maxLeftScrollMargin);
+                                                leftScrollMargin);
             }
         }
 
         if (canShowFullElementHeight) {
-            var maxTopScrollMargin = Math.min(this.maxScrollMargin, Math.floor(parentDimensions.height -
-                                                                               childDimensions.height));
+            var availableTopScrollMargin = Math.floor((parentDimensions.height - childDimensions.height) / 2);
+            var topScrollMargin          = Math.min(this.maxScrollMargin, availableTopScrollMargin);
 
-            var needForcedBackwardVerticalScroll = this.forceScroll &&
-                                                   relativePosition.top < parentDimensions.height / 2;
-
-            if (relativePosition.top < 0 || needForcedBackwardVerticalScroll)
-                fullViewScrollTop = Math.round(parentDimensions.scroll.top + relativePosition.top - maxTopScrollMargin);
-            else if (relativePosition.top > 0 && relativePosition.bottom < 0 || this.forceScroll) {
+            if (relativePosition.top < topScrollMargin)
+                fullViewScrollTop = Math.round(parentDimensions.scroll.top + relativePosition.top - topScrollMargin);
+            else if (relativePosition.bottom < topScrollMargin) {
                 fullViewScrollTop = Math.round(parentDimensions.scroll.top +
                                                Math.min(relativePosition.top, -relativePosition.bottom) +
-                                               maxTopScrollMargin);
+                                               topScrollMargin);
             }
         }
 
