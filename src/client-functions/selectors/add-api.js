@@ -122,21 +122,20 @@ function addCustomMethods (obj, getSelector, customMethods) {
     var customMethodProps = customMethods ? Object.keys(customMethods) : [];
 
     customMethodProps.forEach(prop => {
-        obj[prop] = (...args) => {
-            var callsite = getCallsite(prop);
-
-            return ClientFunctionResultPromise.fromFn(async () => {
-                var snapshot = await getSnapshot(getSelector, callsite);
-
-                try {
-                    return await snapshot[prop].apply(snapshot[prop], args);
-                }
-                catch (err) {
-                    err.callsite = callsite;
-                    throw err;
-                }
-            });
+        var dependencies = {
+            customMethod: customMethods[prop],
+            selector:     getSelector()
         };
+
+        var callsiteNames = { instantiation: prop };
+
+        obj[prop] = (new ClientFunctionBuilder((...args) => {
+            /* eslint-disable no-undef */
+            var node = selector();
+
+            return customMethod.apply(customMethod, [node].concat(args));
+            /* eslint-enable no-undef */
+        }, { dependencies }, callsiteNames)).getFunction();
     });
 }
 

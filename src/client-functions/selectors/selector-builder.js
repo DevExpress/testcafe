@@ -148,18 +148,9 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             createSnapshotMethods(snapshot);
 
             if (this.options.customMethods) {
+                // NOTE: copy methods from the Selector instance
                 Object.keys(this.options.customMethods).forEach(prop => {
-                    var customMethod = this.options.customMethods[prop];
-
-                    snapshot[prop] = (new ClientFunctionBuilder(
-                        (...args) => {
-                            /* eslint-disable no-undef */
-                            var node = selector();
-                            /* eslint-enable no-undef */
-
-                            return customMethod.apply(customMethod, [node].concat(args));
-                        }, { dependencies: { customMethod, selector: this.getFunction() } }, { instantiation: prop })
-                    ).getFunction();
+                    snapshot[prop] = this.getFunction()[prop];
                 });
             }
         }
