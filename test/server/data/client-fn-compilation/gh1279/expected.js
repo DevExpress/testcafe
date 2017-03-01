@@ -1,5 +1,5 @@
 (function () {
-    return function fn () {
+    return function fn_123$$ () {
         return true;
     };
 })();

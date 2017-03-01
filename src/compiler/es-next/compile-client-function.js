@@ -7,7 +7,7 @@ import { ClientFunctionAPIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 
 const ANONYMOUS_FN_RE                = /^function\s*\*?\s*\(/;
-const NON_ES6_METHOD_RE              = /^(function[\s\*]|\()/;
+const ES6_OBJ_METHOD_NAME_RE         = /^(\S+?)\s*\(/;
 const USE_STRICT_RE                  = /^('|")use strict('|");?/;
 const TRAILING_SEMICOLON_RE          = /;\s*$/;
 const REGENERATOR_FOOTPRINTS_RE      = /(_index\d+\.default|_regenerator\d+\.default|regeneratorRuntime)\.wrap\(function _callee\$\(_context\)/;
@@ -111,7 +111,9 @@ function makeFnCodeSuitableForParsing (fnCode) {
         return `(${fnCode})`;
 
     // NOTE: 'myFn () {}' -> 'function myFn() {}'
-    if (!NON_ES6_METHOD_RE.test(fnCode))
+    var match = fnCode.match(ES6_OBJ_METHOD_NAME_RE);
+
+    if (match && match[1] !== 'function')
         return `function ${fnCode}`;
 
     return fnCode;

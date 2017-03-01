@@ -8,10 +8,10 @@ function compile (fn) {
 
 test('Test', () => {
     var obj = {
-        fn() {
+        fn_123$$() {
             return true;
         }
     };
 
-    return compile(obj.fn);
+    return compile(obj.fn_123$$);
 });
