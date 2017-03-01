@@ -7,7 +7,7 @@ import { ClientFunctionAPIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 
 const ANONYMOUS_FN_RE                = /^function\*?\s*\(/;
-const ES6_OBJ_METHOD_NAME_RE         = /^([A-Za-z\*\$]+)\s*\(/;
+const ES6_OBJ_METHOD_NAME_RE         = /^\*?\s*(.+?)\(/;
 const USE_STRICT_RE                  = /^('|")use strict('|");?/;
 const TRAILING_SEMICOLON_RE          = /;\s*$/;
 const REGENERATOR_FOOTPRINTS_RE      = /(_index\d+\.default|_regenerator\d+\.default|regeneratorRuntime)\.wrap\(function _callee\$\(_context\)/;
