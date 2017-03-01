@@ -7,6 +7,7 @@ import { ClientFunctionAPIError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 
 const ANONYMOUS_FN_RE                = /^function\*?\s*\(/;
+const ES6_OBJ_METHOD_NAME_RE         = /^([A-Za-z\*\$]+)\s*\(/;
 const USE_STRICT_RE                  = /^('|")use strict('|");?/;
 const TRAILING_SEMICOLON_RE          = /;\s*$/;
 const REGENERATOR_FOOTPRINTS_RE      = /(_index\d+\.default|_regenerator\d+\.default|regeneratorRuntime)\.wrap\(function _callee\$\(_context\)/;
@@ -104,12 +105,25 @@ function getDependenciesDefinition (dependencies) {
         }, '');
 }
 
+function makeFnCodeSuitableForParsing (fnCode) {
+    // NOTE: 'function() {}' -> '(function() {})'
+    if (ANONYMOUS_FN_RE.test(fnCode))
+        return `(${fnCode})`;
+
+    // NOTE: 'myFn () {}' -> 'function myFn() {}'
+    var match = fnCode.match(ES6_OBJ_METHOD_NAME_RE);
+
+    if (match && match[1] !== 'function')
+        return `function ${fnCode}`;
+
+    return fnCode;
+}
+
 export default function compileClientFunction (fnCode, dependencies, instantiationCallsiteName, compilationCallsiteName) {
     if (fnCode === ASYNC_TO_GENERATOR_OUTPUT_CODE)
         throw new ClientFunctionAPIError(compilationCallsiteName, instantiationCallsiteName, MESSAGE.regeneratorInClientFunctionCode);
 
-    if (ANONYMOUS_FN_RE.test(fnCode))
-        fnCode = `(${fnCode})`;
+    fnCode = makeFnCodeSuitableForParsing(fnCode);
 
     // NOTE: we need to recompile ES6 code for the browser if we are on newer versions of Node.
     if (NODE_VER >= 4)
