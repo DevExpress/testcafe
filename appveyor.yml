@@ -5,7 +5,7 @@ skip_commits:
   message: /^\[docs\]/
 
 environment:
-  GULP_TASK: "test-functional-local"
+  GULP_TASK: "test-server"
   NODEJS_VERSION: "stable"
 
 install:
