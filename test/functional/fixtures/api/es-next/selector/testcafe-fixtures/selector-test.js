@@ -781,14 +781,6 @@ test('Selector `addCustomDOMProperties` method', async t => {
     await t.expect(await doc.prop).eql('documentProp');
 });
 
-test('Add custom DOM properties method - argument is not object', async () => {
-    await Selector('rect').addCustomDOMProperties(42);
-});
-
-test('Add custom DOM properties method - property is not function', async () => {
-    await Selector('rect').addCustomDOMProperties({ prop1: 1, prop2: () => 42 });
-});
-
 test('Add custom DOM properties method - property throws an error', async () => {
     const el = Selector('rect').addCustomDOMProperties({
         prop: () => {
@@ -881,14 +873,6 @@ test('Selector `addCustomMethods` method', async t => {
     })();
 
     await t.expect(nonExistingElement).eql(null);
-});
-
-test('Add custom method - argument is not object', async () => {
-    await Selector('rect').addCustomMethods(42);
-});
-
-test('Add custom method - method is not function', async () => {
-    await Selector('rect').addCustomMethods({ prop1: 1, prop2: () => 42 });
 });
 
 test('Add custom method - method throws an error', async () => {
