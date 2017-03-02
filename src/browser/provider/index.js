@@ -139,22 +139,44 @@ export default class BrowserProvider {
         await browserTools.maximize(browserId);
     }
 
-    init () {
-        this.initPromise = this.initPromise
-            .then(initialized => initialized ? Promise.resolve() : this.plugin.init())
-            .then(() => true)
-            .catch(() => false);
+    async init () {
+        var initialized = await this.initPromise;
 
-        return this.initPromise;
+        if (initialized)
+            return;
+
+        this.initPromise = this.plugin
+            .init()
+            .then(() => true);
+
+        try {
+            await this.initPromise;
+        }
+        catch (error) {
+            this.initPromise = Promise.resolve(false);
+
+            throw error;
+        }
     }
 
-    dispose () {
-        this.initPromise = this.initPromise
-            .then(initialized => initialized ? this.plugin.dispose() : Promise.resolve())
-            .then(() => false)
-            .catch(() => false);
+    async dispose () {
+        var initialized = await this.initPromise;
 
-        return this.initPromise;
+        if (!initialized)
+            return;
+
+        this.initPromise = this.plugin
+            .dispose()
+            .then(() => false);
+
+        try {
+            await this.initPromise;
+        }
+        catch (error) {
+            this.initPromise = Promise.resolve(false);
+
+            throw error;
+        }
     }
 
     async openBrowser (browserId, pageUrl, browserName) {
