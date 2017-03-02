@@ -6,50 +6,24 @@ import ClientFunctionResultPromise from '../client-functions/result-promise';
 
 const ASSERTION_DELAY = 200;
 
-export default class Assertions extends EventEmitter {
-    constructor () {
+export default class AssertionExecutor extends EventEmitter {
+    constructor (command, callsite) {
         super();
+
+        this.command  = command;
+        this.callsite = callsite;
+
+        this.startTime = null;
+        this.passed    = false;
+        this.inRetry   = false;
+
+        var executor = AssertionExecutor._getExecutor(this.command);
+
+        this.executor = this.command.actual instanceof ClientFunctionResultPromise ?
+                        this._wrapExecutor(executor) : executor;
     }
 
-    _wrapSelectorResultAssertionExecutor (command, executor) {
-        return async () => {
-            var startTime     = new Date();
-            var elapsedTime   = null;
-            var resultPromise = command.actual;
-            var passed        = false;
-            var reexecuted    = false;
-
-            while (!passed) {
-                command.actual = await resultPromise._reExecute();
-
-                try {
-                    executor();
-                    passed = true;
-                }
-
-                catch (err) {
-                    if (new Date() - startTime >= command.options.timeout) {
-                        if (reexecuted)
-                            this.emit('end-assertion-execution', false);
-                        throw err;
-                    }
-
-                    await delay(ASSERTION_DELAY);
-
-                    if (!reexecuted) {
-                        reexecuted  = true;
-                        elapsedTime = command.options.timeout - (new Date() - startTime);
-                        this.emit('start-assertion-execution', elapsedTime);
-                    }
-                }
-            }
-
-            if (reexecuted)
-                this.emit('end-assertion-execution', true);
-        };
-    }
-
-    _getExecutor (command) {
+    static _getExecutor (command) {
         switch (command.assertionType) {
             case 'eql':
                 return () => assert.deepEqual(command.actual, command.expected, command.message);
@@ -105,26 +79,58 @@ export default class Assertions extends EventEmitter {
         }
     }
 
-    createExecutor (command, callsite) {
-        var executor = this._getExecutor(command);
+    _getTimeLeft () {
+        return this.command.options.timeout - (new Date() - this.startTime);
+    }
 
-        if (command.actual instanceof ClientFunctionResultPromise)
-            executor = this._wrapSelectorResultAssertionExecutor(command, executor);
+    _onExecutionFinished () {
+        if (this.inRetry)
+            this.emit('end-assertion-retries', this.passed);
+    }
 
+    _wrapExecutor (executor) {
         return async () => {
-            try {
-                await executor();
-            }
+            var resultPromise = this.command.actual;
 
-            catch (err) {
-                if (err.name === 'AssertionError' || err.constructor.name === 'AssertionError')
-                    throw new ExternalAssertionLibraryError(err, callsite);
+            while (!this.passed) {
+                this.command.actual = await resultPromise._reExecute();
 
-                if (err.isTestCafeError)
-                    err.callsite = callsite;
+                try {
+                    executor();
+                    this.passed = true;
+                    this._onExecutionFinished();
+                }
 
-                throw err;
+                catch (err) {
+                    if (this._getTimeLeft() <= 0) {
+                        this._onExecutionFinished();
+                        throw err;
+                    }
+
+                    await delay(ASSERTION_DELAY);
+
+                    this.inRetry = true;
+                    this.emit('start-assertion-retries', this._getTimeLeft());
+                }
             }
         };
+    }
+
+    async run () {
+        this.startTime = new Date();
+
+        try {
+            await this.executor();
+        }
+
+        catch (err) {
+            if (err.name === 'AssertionError' || err.constructor.name === 'AssertionError')
+                throw new ExternalAssertionLibraryError(err, this.callsite);
+
+            if (err.isTestCafeError)
+                err.callsite = this.callsite;
+
+            throw err;
+        }
     }
 }

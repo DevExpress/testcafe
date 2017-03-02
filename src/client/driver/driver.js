@@ -109,10 +109,10 @@ export default class Driver {
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
     }
 
-    _setDebuggingStatus () {
+    _showDebuggingStatus () {
         return transport
             .queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.showDebuggerMessage })
-            .then(() => this.statusBar.setDebuggingStatus())
+            .then(() => this.statusBar.showDebuggingStatus())
             .then(stopAfterNextAction => this.contextStorage.setItem(STOP_AFTER_NEXT_ACTION, stopAfterNextAction));
     }
 
@@ -391,7 +391,7 @@ export default class Driver {
     }
 
     _onDebugCommand () {
-        this._setDebuggingStatus()
+        this._showDebuggingStatus()
             .then(() => this._onReady(new DriverStatus({ isCommandResult: true })));
     }
 
@@ -400,13 +400,13 @@ export default class Driver {
         this._onReady(new DriverStatus({ isCommandResult: true }));
     }
 
-    _onStartAssertionExecutionCommand (command) {
-        this.statusBar.setWaitingAssertionExecutionStatus(command.timeout);
+    _onShowAssertionRetriesStatusCommand (command) {
+        this.statusBar.showWaitingAssertionRetriesStatus(command.timeout);
         this._onReady(new DriverStatus({ isCommandResult: true }));
     }
 
-    _onEndAssertionExecutionCommand (command) {
-        this.statusBar.resetWaitingAssertionExecutionStatus(command.success)
+    _onHideAssertionRetriesStatusCommand (command) {
+        this.statusBar.hideWaitingAssertionRetriesStatus(command.success)
             .then(() => this._onReady(new DriverStatus({ isCommandResult: true })));
     }
 
@@ -428,7 +428,7 @@ export default class Driver {
                                       isVisualManipulationCommand(command);
 
                     if (isDebugging) {
-                        this._setDebuggingStatus()
+                        this._showDebuggingStatus()
                             .then(() => this._onCommand(command));
                     }
                     else
@@ -475,11 +475,11 @@ export default class Driver {
         else if (command.type === COMMAND_TYPE.setTestSpeed)
             this._onSetTestSpeedCommand(command);
 
-        else if (command.type === COMMAND_TYPE.startAssertionExecution)
-            this._onStartAssertionExecutionCommand(command);
+        else if (command.type === COMMAND_TYPE.showAssertionRetriesStatus)
+            this._onShowAssertionRetriesStatusCommand(command);
 
-        else if (command.type === COMMAND_TYPE.endAssertionExecution)
-            this._onEndAssertionExecutionCommand(command);
+        else if (command.type === COMMAND_TYPE.hideAssertionRetriesStatus)
+            this._onHideAssertionRetriesStatusCommand(command);
         else
             this._onActionCommand(command);
     }
@@ -526,7 +526,7 @@ export default class Driver {
 
         this.statusBar = new StatusBar(this.userAgent, this.fixtureName, this.testName);
 
-        this.readyPromise.then(() => this.statusBar.resetPageLoadingStatus());
+        this.readyPromise.then(() => this.statusBar.hidePageLoadingStatus());
 
         var pendingStatus = this.contextStorage.getItem(PENDING_STATUS);
 

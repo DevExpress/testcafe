@@ -8,16 +8,16 @@ export class PrepareBrowserManipulationCommand {
     }
 }
 
-export class StartAssertionExecutionCommand {
+export class ShowAssertionRetriesStatusCommand {
     constructor (timeout) {
-        this.type    = TYPE.startAssertionExecution;
+        this.type    = TYPE.showAssertionRetriesStatus;
         this.timeout = timeout;
     }
 }
 
-export class EndAssertionExecutionCommand {
+export class HideAssertionRetriesStatusCommand {
     constructor (success) {
-        this.type    = TYPE.endAssertionExecution;
+        this.type    = TYPE.hideAssertionRetriesStatus;
         this.success = success;
     }
 }

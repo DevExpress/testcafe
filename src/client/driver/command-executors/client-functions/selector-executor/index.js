@@ -88,7 +88,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         var error     = null;
         var element   = null;
 
-        this.statusBar.setWaitingElementStatus(this.timeout);
+        this.statusBar.showWaitingElementStatus(this.timeout);
 
         return this
             ._ensureExists(args, startTime)
@@ -101,14 +101,14 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
             .catch(err => {
                 error = err;
 
-                return this.statusBar.resetWaitingElementStatus(false);
+                return this.statusBar.hideWaitingElementStatus(false);
             })
             .then(el => {
                 if (error)
                     throw error;
 
                 element = el;
-                return this.statusBar.resetWaitingElementStatus(!!el);
+                return this.statusBar.hideWaitingElementStatus(!!el);
             })
             .then(() => element);
     }

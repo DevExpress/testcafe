@@ -12,15 +12,15 @@ import BrowserManipulationQueue from './browser-manipulation-queue';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
 import COMMAND_TYPE from './commands/type';
-import Assertions from '../assertions';
+import AssertionExecutor from '../assertions/executor';
 
 import { TakeScreenshotOnFailCommand, ResizeWindowCommand } from './commands/browser-manipulation';
 
 import {
     TestDoneCommand,
     PrepareBrowserManipulationCommand,
-    StartAssertionExecutionCommand,
-    EndAssertionExecutionCommand
+    ShowAssertionRetriesStatusCommand,
+    HideAssertionRetriesStatusCommand
 } from './commands/service';
 
 import {
@@ -69,12 +69,6 @@ export default class TestRun extends Session {
         this.resolveWaitForFileDownloadingPromise = null;
 
         this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, warningLog);
-
-
-        this.assertions = new Assertions();
-
-        this.assertions.on('start-assertion-execution', timeout => this._enqueueCommand(new StartAssertionExecutionCommand(timeout)));
-        this.assertions.on('end-assertion-execution', success => this._enqueueCommand(new EndAssertionExecutionCommand(success)));
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
@@ -368,9 +362,12 @@ export default class TestRun extends Session {
             return this._enqueueSetDialogHandlerCommand(command, callsite);
 
         if (command.type === COMMAND_TYPE.assertion) {
-            var executor = this.assertions.createExecutor(command, callsite);
+            var executor = new AssertionExecutor(command, callsite);
 
-            return await executor();
+            executor.once('start-assertion-retries', timeout => this._enqueueCommand(new ShowAssertionRetriesStatusCommand(timeout)));
+            executor.once('end-assertion-retries', success => this._enqueueCommand(new HideAssertionRetriesStatusCommand(success)));
+
+            return await executor.run();
         }
 
         return this._enqueueCommand(command, callsite);

@@ -63,14 +63,14 @@ export default class StatusBar {
         this.statusDiv        = null;
         this.buttons          = null;
 
-        this.progressBar        = null;
-        this.animationInterval  = null;
-        this.showingTimeout     = null;
-        this.created            = false;
-        this.showing            = false;
-        this.hidding            = false;
-        this.debugging          = false;
-        this.assertionExecution = false;
+        this.progressBar       = null;
+        this.animationInterval = null;
+        this.showingTimeout    = null;
+        this.created           = false;
+        this.showing           = false;
+        this.hidding           = false;
+        this.debugging         = false;
+        this.assertionRetries  = false;
 
         this._createBeforeReady();
         this._initChildListening();
@@ -314,16 +314,16 @@ export default class StatusBar {
             var msg = e.message;
 
             if (msg.cmd === MESSAGES.startWaitingElement)
-                this.setWaitingElementStatus(msg.timeout);
-            else if (msg.cmd === MESSAGES.stopWaitingElementRequest) {
-                this.resetWaitingElementStatus(msg.waitingSuccess)
-                    .then(() => messageSandbox.sendServiceMsg({ cmd: MESSAGES.stopWaitingElementResponse }, e.source));
+                this.showWaitingElementStatus(msg.timeout);
+            else if (msg.cmd === MESSAGES.endWaitingElementRequest) {
+                this.hideWaitingElementStatus(msg.waitingSuccess)
+                    .then(() => messageSandbox.sendServiceMsg({ cmd: MESSAGES.endWaitingElementResponse }, e.source));
             }
-            else if (msg.cmd === MESSAGES.startWaitingAssertionExecution)
-                this.setWaitingAssertionExecutionStatus(msg.timeout);
-            else if (msg.cmd === MESSAGES.stopWaitingAssertionExecutionRequest) {
-                this.resetWaitingAssertionExecutionStatus(msg.waitingSuccess)
-                    .then(() => messageSandbox.sendServiceMsg({ cmd: MESSAGES.stopWaitingAssertionExecutionResponse }, e.source));
+            else if (msg.cmd === MESSAGES.startWaitingAssertionRetries)
+                this.showWaitingAssertionRetriesStatus(msg.timeout);
+            else if (msg.cmd === MESSAGES.endWaitingAssertionRetriesRequest) {
+                this.hideWaitingAssertionRetriesStatus(msg.waitingSuccess)
+                    .then(() => messageSandbox.sendServiceMsg({ cmd: MESSAGES.endWaitingAssertionRetriesResponse }, e.source));
             }
         });
     }
@@ -338,7 +338,7 @@ export default class StatusBar {
     }
 
     _showWaitingStatus () {
-        this.statusDiv.textContent = this.assertionExecution ? WAITING_FOR_ASSERTION_EXECUTION_TEXT : WAITING_FOR_ELEMENT_TEXT;
+        this.statusDiv.textContent = this.assertionRetries ? WAITING_FOR_ASSERTION_EXECUTION_TEXT : WAITING_FOR_ELEMENT_TEXT;
         this._setStatusDivLeftMargin();
         this.progressBar.show();
     }
@@ -412,7 +412,7 @@ export default class StatusBar {
     }
 
     //API
-    resetPageLoadingStatus () {
+    hidePageLoadingStatus () {
         if (!this.created)
             this._create();
 
@@ -420,34 +420,34 @@ export default class StatusBar {
         this._resetState();
     }
 
-    setDebuggingStatus () {
+    showDebuggingStatus () {
         this._stopAnimation();
         styleUtils.set(this.statusBar, 'opacity', 1);
 
         return this._showDebuggingStatus();
     }
 
-    setWaitingElementStatus (timeout) {
-        if (!this.assertionExecution)
+    showWaitingElementStatus (timeout) {
+        if (!this.assertionRetries)
             this._setWaitingStatus(timeout);
     }
 
-    resetWaitingElementStatus (waitingSuccess) {
-        if (!this.assertionExecution)
+    hideWaitingElementStatus (waitingSuccess) {
+        if (!this.assertionRetries)
             return this._resetWaitingStatus(waitingSuccess);
 
         return Promise.resolve();
     }
 
-    setWaitingAssertionExecutionStatus (timeout) {
-        this.assertionExecution = true;
+    showWaitingAssertionRetriesStatus (timeout) {
+        this.assertionRetries = true;
         this._setWaitingStatus(timeout);
     }
 
-    resetWaitingAssertionExecutionStatus (waitingSuccess) {
+    hideWaitingAssertionRetriesStatus (waitingSuccess) {
         return this._resetWaitingStatus(waitingSuccess)
             .then(() => {
-                this.assertionExecution = false;
+                this.assertionRetries = false;
             });
     }
 }

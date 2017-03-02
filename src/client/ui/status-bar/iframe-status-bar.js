@@ -13,23 +13,23 @@ export default class IframeStatusBar extends StatusBar {
     }
 
     //API
-    setWaitingElementStatus (timeout) {
+    showWaitingElementStatus (timeout) {
         messageSandbox.sendServiceMsg({ cmd: MESSAGES.startWaitingElement, timeout }, window.top);
     }
 
-    resetWaitingElementStatus (waitingSuccess) {
-        var msg = { cmd: MESSAGES.stopWaitingElementRequest, waitingSuccess };
+    hideWaitingElementStatus (waitingSuccess) {
+        var msg = { cmd: MESSAGES.endWaitingElementRequest, waitingSuccess };
 
-        return sendRequestToFrame(msg, MESSAGES.stopWaitingElementResponse, window.top);
+        return sendRequestToFrame(msg, MESSAGES.endWaitingElementResponse, window.top);
     }
 
-    setWaitingAssertionExecutionStatus (timeout) {
-        messageSandbox.sendServiceMsg({ cmd: MESSAGES.startWaitingAssertionExecution, timeout }, window.top);
+    showWaitingAssertionRetriesStatus (timeout) {
+        messageSandbox.sendServiceMsg({ cmd: MESSAGES.startWaitingAssertionRetries, timeout }, window.top);
     }
 
-    resetWaitingAssertionExecutionStatus (waitingSuccess) {
-        var msg = { cmd: MESSAGES.stopWaitingAssertionExecutionRequest, waitingSuccess };
+    hideWaitingAssertionRetriesStatus (waitingSuccess) {
+        var msg = { cmd: MESSAGES.endWaitingAssertionRetriesRequest, waitingSuccess };
 
-        return sendRequestToFrame(msg, MESSAGES.stopWaitingAssertionExecutionResponse, window.top);
+        return sendRequestToFrame(msg, MESSAGES.endWaitingAssertionRetriesResponse, window.top);
     }
 }

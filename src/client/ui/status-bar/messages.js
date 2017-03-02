@@ -1,9 +1,9 @@
 export default {
-    startWaitingElement:        'start-waiting-element',
-    stopWaitingElementRequest:  'stop-waiting-element-request',
-    stopWaitingElementResponse: 'stop-waiting-element-response',
+    startWaitingElement:       'start-waiting-element',
+    endWaitingElementRequest:  'end-waiting-element-request',
+    endWaitingElementResponse: 'end-waiting-element-response',
 
-    startWaitingAssertionExecution:        'start-waiting-assertion-execution',
-    stopWaitingAssertionExecutionRequest:  'stop-waiting-assertion-execution-request',
-    stopWaitingAssertionExecutionResponse: 'stop-waiting-assertion-execution-response',
+    startWaitingAssertionRetries:       'start-waiting-assertion-retries',
+    endWaitingAssertionRetriesRequest:  'end-waiting-assertion-retries-request',
+    endWaitingAssertionRetriesResponse: 'end-waiting-assertion-retries-response'
 };
