@@ -27,8 +27,7 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
 
         var scroll          = new ScrollAutomation(element, { offsetX, offsetY });
 
-        if (maxScrollMargin !== DEFAULT_MAX_SCROLL_MARGIN)
-            scroll._changeMaxScrollMargin(maxScrollMargin);
+        scroll.maxScrollMargin = maxScrollMargin;
 
         scroll
             .run()
@@ -55,10 +54,6 @@ export default class ScrollAutomation {
 
         styleUtils.setScrollLeft(element, left);
         styleUtils.setScrollTop(element, top);
-    }
-
-    _changeMaxScrollMargin (newMaxScrollMargin) {
-        this.maxScrollMargin = newMaxScrollMargin;
     }
 
     _getScrollToPoint (elementDimensions, { x, y }) {
@@ -220,7 +215,7 @@ export default class ScrollAutomation {
         return this
             ._scrollParents()
             .then(() => whilst(() => !this._isScrollMarginTooBig() && this._isElementHiddenByFixed(), () => {
-                this._changeMaxScrollMargin(this.maxScrollMargin + SCROLL_MARGIN_INCREASE_STEP);
+                this.maxScrollMargin += SCROLL_MARGIN_INCREASE_STEP;
 
                 return this._scrollParents();
             }));
