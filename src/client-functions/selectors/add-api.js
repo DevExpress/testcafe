@@ -118,7 +118,7 @@ function addSnapshotProperties (obj, getSelector, properties) {
     });
 }
 
-function addCustomMethods (obj, getSelector, customMethods) {
+export function addCustomMethods (obj, getSelector, customMethods) {
     var customMethodProps = customMethods ? Object.keys(customMethods) : [];
 
     customMethodProps.forEach(prop => {
@@ -514,7 +514,7 @@ function addHierarchicalSelectors (obj, getSelector, SelectorBuilder) {
 
 }
 
-export default function addAPI (obj, getSelector, SelectorBuilder, customDOMProperties, customMethods) {
+export function addAPI (obj, getSelector, SelectorBuilder, customDOMProperties, customMethods) {
     addSnapshotPropertyShorthands(obj, getSelector, customDOMProperties, customMethods);
     addCustomDOMPropertiesMethod(obj, getSelector, SelectorBuilder);
     addCustomMethodsMethod(obj, getSelector, SelectorBuilder);

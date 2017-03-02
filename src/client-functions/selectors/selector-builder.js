@@ -8,7 +8,7 @@ import MESSAGE from '../../errors/runtime/message';
 import { assertType, is } from '../../errors/runtime/type-assertions';
 import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import defineLazyProperty from '../../utils/define-lazy-property';
-import addAPI from './add-api';
+import { addAPI, addCustomMethods } from './add-api';
 import createSnapshotMethods from './create-snapshot-methods';
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
@@ -147,12 +147,8 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             this._addBoundArgsSelectorGetter(snapshot, selectorArgs);
             createSnapshotMethods(snapshot);
 
-            if (this.options.customMethods) {
-                // NOTE: copy methods from the Selector instance
-                Object.keys(this.options.customMethods).forEach(prop => {
-                    snapshot[prop] = this.getFunction()[prop];
-                });
-            }
+            if (this.options.customMethods)
+                addCustomMethods(snapshot, () => snapshot.selector, this.options.customMethods);
         }
 
         return snapshot;
