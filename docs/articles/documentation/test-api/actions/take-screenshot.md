@@ -8,6 +8,8 @@ checked: true
 
 Takes a screenshot of the tested page.
 
+**Note**: this action requires a [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
+
 ```text
 t.takeScreenshot( [path] )
 ```
