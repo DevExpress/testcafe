@@ -6,6 +6,7 @@ import { filter, some } from './array';
 var styleUtils = hammerhead.utils.style;
 
 export var getBordersWidth      = hammerhead.utils.style.getBordersWidth;
+export var getComputedStyle     = hammerhead.utils.style.getComputedStyle;
 export var getElementMargin     = hammerhead.utils.style.getElementMargin;
 export var getElementPadding    = hammerhead.utils.style.getElementPadding;
 export var getElementScroll     = hammerhead.utils.style.getElementScroll;
