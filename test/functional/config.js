@@ -49,8 +49,8 @@ testingEnvironments[testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers
 
 testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
     sauceLabs: {
-        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_MOBILE,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_MOBILE,
+        username:  process.env.BROWSER_STACK_FUNCTIONAL_MOBILE,
+        accessKey: process.env.BROWSER_STACK_FUNCTIONAL_MOBILE,
         jobName:   'functional tests - mobile browsers'
     },
 

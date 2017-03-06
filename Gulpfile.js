@@ -560,7 +560,7 @@ gulp.task('test-functional-travis-desktop-osx-and-ms-edge', ['build'], function 
 });
 
 gulp.task('test-functional-travis-mobile', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.saucelabsMobileBrowsers);
+    return testFunctional('test/functional/fixtures/api/es-next/click', functionalTestConfig.testingEnvironmentNames.saucelabsMobileBrowsers);
 });
 
 gulp.task('test-functional-local', ['build'], function () {
