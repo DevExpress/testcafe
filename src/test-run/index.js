@@ -68,6 +68,8 @@ export default class TestRun extends Session {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
+        this.debugging = false;
+
         this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, warningLog);
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
@@ -324,6 +326,15 @@ export default class TestRun extends Session {
     }
 
     // Execute command
+    async _executeAssertion (command, callsite) {
+        var executor = new AssertionExecutor(command, callsite);
+
+        executor.once('start-assertion-retries', timeout => this._enqueueCommand(new ShowAssertionRetriesStatusCommand(timeout)));
+        executor.once('end-assertion-retries', success => this._enqueueCommand(new HideAssertionRetriesStatusCommand(success)));
+
+        return executor.run();
+    }
+
     async executeCommand (command, callsite) {
         this.debugLog.command(command);
 
@@ -361,13 +372,12 @@ export default class TestRun extends Session {
         if (command.type === COMMAND_TYPE.setNativeDialogHandler)
             return this._enqueueSetDialogHandlerCommand(command, callsite);
 
+
         if (command.type === COMMAND_TYPE.assertion) {
-            var executor = new AssertionExecutor(command, callsite);
+            if (this.debugging)
+                await this._enqueueCommand(command, callsite);
 
-            executor.once('start-assertion-retries', timeout => this._enqueueCommand(new ShowAssertionRetriesStatusCommand(timeout)));
-            executor.once('end-assertion-retries', success => this._enqueueCommand(new HideAssertionRetriesStatusCommand(success)));
-
-            return await executor.run();
+            return this._executeAssertion(command, callsite);
         }
 
         return this._enqueueCommand(command, callsite);
@@ -403,6 +413,8 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 
     this.lastDriverStatusId       = msg.status.id;
     this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
+
+    this.debugging = msg.status.debugging;
 
     if (this.lastDriverStatusResponse)
         return this.lastDriverStatusResponse;
