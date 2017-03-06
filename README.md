@@ -332,6 +332,7 @@ Easily integrate TestCafe into your project's workflow.
 Provide support for more browsers to test against.
 
 * [SauceLabs](https://github.com/DevExpress/testcafe-browser-provider-saucelabs)
+* [BrowserStack](https://github.com/DevExpress/testcafe-browser-provider-browserstack)
 * [Nightmare](https://github.com/ryx/testcafe-browser-provider-nightmare)
 * [iOS Simulator](https://github.com/Ents24/testcafe-browser-provider-fbsimctl)
 
