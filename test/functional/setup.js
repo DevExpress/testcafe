@@ -28,7 +28,7 @@ config.browsers = environment.browsers;
 const REQUESTED_MACHINES_COUNT = environment.browsers.length;
 
 function wait (ms) {
-    return new Promise(resove => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function getBrowserInfo (settings) {
