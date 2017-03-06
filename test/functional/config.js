@@ -55,13 +55,13 @@ testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
     },
 
     browsers: [
-        {
+        /*{
             os:        'android',
             osVersion: '5.0',
             device:    'Google Nexus 5',
             browser:   'Android Browser',
             alias:     'android'
-        },
+        },*/
         {
             os:        'ios',
             osVersion: '9.3',

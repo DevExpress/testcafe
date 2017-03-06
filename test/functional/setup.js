@@ -27,6 +27,9 @@ config.browsers = environment.browsers;
 
 const REQUESTED_MACHINES_COUNT = environment.browsers.length;
 
+function wait (ms) {
+    return new Promise(resove => setTimeout(resolve, ms));
+}
 
 function getBrowserInfo (settings) {
     return testCafe
@@ -62,7 +65,7 @@ function openRemoteBrowsers () {
                     { jobName: environment.sauceLabs.jobName });
             });
 
-            return Promise.all(openBrowserPromises);
+            return Promise.all(openBrowserPromises).then(() => wait(30000));
         })
         .then(function (browsers) {
             bsBrowsers = browsers;
