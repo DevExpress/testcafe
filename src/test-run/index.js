@@ -12,13 +12,15 @@ import BrowserManipulationQueue from './browser-manipulation-queue';
 import CLIENT_MESSAGES from './client-messages';
 import STATE from './state';
 import COMMAND_TYPE from './commands/type';
-import createAssertionExecutor from './commands/create-assertion-executor';
+import AssertionExecutor from '../assertions/executor';
 
 import { TakeScreenshotOnFailCommand, ResizeWindowCommand } from './commands/browser-manipulation';
 
 import {
     TestDoneCommand,
-    PrepareBrowserManipulationCommand
+    PrepareBrowserManipulationCommand,
+    ShowAssertionRetriesStatusCommand,
+    HideAssertionRetriesStatusCommand
 } from './commands/service';
 
 import {
@@ -360,9 +362,12 @@ export default class TestRun extends Session {
             return this._enqueueSetDialogHandlerCommand(command, callsite);
 
         if (command.type === COMMAND_TYPE.assertion) {
-            var executor = createAssertionExecutor(command, callsite);
+            var executor = new AssertionExecutor(command, callsite);
 
-            return await executor();
+            executor.once('start-assertion-retries', timeout => this._enqueueCommand(new ShowAssertionRetriesStatusCommand(timeout)));
+            executor.once('end-assertion-retries', success => this._enqueueCommand(new HideAssertionRetriesStatusCommand(success)));
+
+            return await executor.run();
         }
 
         return this._enqueueCommand(command, callsite);

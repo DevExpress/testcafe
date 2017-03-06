@@ -8,6 +8,20 @@ export class PrepareBrowserManipulationCommand {
     }
 }
 
+export class ShowAssertionRetriesStatusCommand {
+    constructor (timeout) {
+        this.type    = TYPE.showAssertionRetriesStatus;
+        this.timeout = timeout;
+    }
+}
+
+export class HideAssertionRetriesStatusCommand {
+    constructor (success) {
+        this.type    = TYPE.hideAssertionRetriesStatus;
+        this.success = success;
+    }
+}
+
 export class TestDoneCommand {
     constructor () {
         this.type = TYPE.testDone;
