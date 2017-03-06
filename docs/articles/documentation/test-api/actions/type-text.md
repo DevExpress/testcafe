@@ -14,7 +14,7 @@ t.typeText( selector, text [, options] )
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------
-`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element that will receive input focus. See [Selecting Target Elements](index.md#selecting-target-elements).
+`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element that will receive input focus. See [Selecting Target Elements](README.md#selecting-target-elements).
 `text`                 | String                                            | The text to be typed into the specified webpage element.
 `options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Typing Action Options](action-options.md#typing-action-options). If this parameter is omitted, TestCafe sets the cursor to the end of the text before typing, thus preserving the text that is already in the input box.
 

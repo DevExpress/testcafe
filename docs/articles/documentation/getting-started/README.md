@@ -83,7 +83,7 @@ For more information, see [Reporters](../using-testcafe/common-concepts/reporter
 ### Performing Actions on the Page
 
 Every test should be capable of interacting with page content. To perform user actions, TestCafe provides
-a number of [actions](../test-api/actions/index.md): `click`, `hover`, `typeText`, `setFilesToUpload`, etc.
+a number of [actions](../test-api/actions/README.md): `click`, `hover`, `typeText`, `setFilesToUpload`, etc.
 They can be called in a chain.
 
 The following fixture contains a simple test that types a developer name into a text editor and then clicks the Submit button.
@@ -135,7 +135,7 @@ test('My first test', async t => {
 });
 ```
 
-For more information, see [Selecting Page Elements](../test-api/selecting-page-elements/index.md).
+For more information, see [Selecting Page Elements](../test-api/selecting-page-elements/README.md).
 
 ### Assertions
 
@@ -143,7 +143,7 @@ A functional test also should check the result of actions performed.
 For example, the article header on the "Thank you" page should address a user by the entered name.
 To check if the header is correct, you have to add an assertion to the test.
 
-The following test demonstrates how to use [build-in assertions](../test-api/assertions/index.md).
+The following test demonstrates how to use [build-in assertions](../test-api/assertions/README.md).
 
 ```js
 import { Selector } from 'testcafe';

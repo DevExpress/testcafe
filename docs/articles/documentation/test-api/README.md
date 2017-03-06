@@ -11,9 +11,9 @@ This section demonstrates how to organize test code and describes the API used t
 It contains the following subsections
 
 * [Test Code Structure](test-code-structure.md)
-* [Actions](actions/index.md)
-* [Selecting Page Elements](selecting-page-elements/index.md)
-* [Assertions](assertions/index.md)
+* [Actions](actions/README.md)
+* [Selecting Page Elements](selecting-page-elements/README.md)
+* [Assertions](assertions/README.md)
 * [Obtaining Data From the Client](obtaining-data-from-the-client.md)
 * [Waiting for Page Elements to Appear](waiting-for-page-elements-to-appear.md)
 * [HTTP Authentication](http-authentication.md)

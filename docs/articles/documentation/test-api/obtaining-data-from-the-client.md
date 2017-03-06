@@ -11,7 +11,7 @@ serializable value from the client side, like the current URL
 or custom data calculated by a client script.
 
 > Important! Do not modify the tested webpage within client functions.
-> To interact with the page, use [test actions](actions/index.md).
+> To interact with the page, use [test actions](actions/README.md).
 
 This topic contains the following sections.
 

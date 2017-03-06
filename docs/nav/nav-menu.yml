@@ -1,14 +1,14 @@
 - name: GETTING STARTED
-  url: /documentation/getting-started/index.md
+  url: /documentation/getting-started/README.md
 - name: USING TESTCAFE
-  url: /documentation/using-testcafe/index.md
+  url: /documentation/using-testcafe/README.md
   content:
   - name: Installing TestCafe
     url: /documentation/using-testcafe/installing-testcafe.md
   - name: Command Line Interface
     url: /documentation/using-testcafe/command-line-interface.md
   - name: Programming Interface
-    url: /documentation/using-testcafe/programming-interface/index.md
+    url: /documentation/using-testcafe/programming-interface/README.md
     content:
     - name: TestCafe Class
       url: /documentation/using-testcafe/programming-interface/testcafe.md
@@ -19,14 +19,14 @@
     - name: createTestCafe Factory
       url: /documentation/using-testcafe/programming-interface/createtestcafe.md
   - name: Common Concepts
-    url: /documentation/using-testcafe/common-concepts/index.md
+    url: /documentation/using-testcafe/common-concepts/README.md
     content:
     - name: Browser Support
       url: /documentation/using-testcafe/common-concepts/browser-support.md
     - name: Reporters
       url: /documentation/using-testcafe/common-concepts/reporters.md
 - name: TEST API
-  url: /documentation/test-api/index.md
+  url: /documentation/test-api/README.md
   content:
   - name: Test Code Structure
     url: /documentation/test-api/test-code-structure.md
@@ -59,7 +59,7 @@
     - name: Skipping Tests
       url: /documentation/test-api/test-code-structure.md#skipping-tests
   - name: Selecting Page Elements
-    url: /documentation/test-api/selecting-page-elements/index.md
+    url: /documentation/test-api/selecting-page-elements/README.md
     content:
     - name: Selectors
       url: /documentation/test-api/selecting-page-elements/selectors.md
@@ -68,7 +68,7 @@
     - name: DOM Node State
       url: /documentation/test-api/selecting-page-elements/dom-node-state.md
   - name: Actions
-    url: /documentation/test-api/actions/index.md
+    url: /documentation/test-api/actions/README.md
     content:
     - name: Click
       url: /documentation/test-api/actions/click.md
@@ -97,7 +97,7 @@
     - name: Action Options
       url: /documentation/test-api/actions/action-options.md
   - name: Assertions
-    url: /documentation/test-api/assertions/index.md
+    url: /documentation/test-api/assertions/README.md
     content:
     - name: Assertion API
       url: /documentation/test-api/assertions/assertion-api.md
@@ -116,24 +116,24 @@
   - name: A-Z Index
     url: /documentation/test-api/a-z.md
 - name: EXTENDING TESTCAFE
-  url: /documentation/extending-testcafe/index.md
+  url: /documentation/extending-testcafe/README.md
   content:
   - name: Reporter Plugin
-    url: /documentation/extending-testcafe/reporter-plugin/index.md
+    url: /documentation/extending-testcafe/reporter-plugin/README.md
     content:
     - name: Reporter Methods
       url: /documentation/extending-testcafe/reporter-plugin/reporter-methods.md
     - name: Helpers
       url: /documentation/extending-testcafe/reporter-plugin/helpers.md
   - name: Browser Provider Plugin
-    url: /documentation/extending-testcafe/browser-provider-plugin/index.md
+    url: /documentation/extending-testcafe/browser-provider-plugin/README.md
     content:
     - name: Browser Provider Methods
       url: /documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.md
 #  - name: Selector Extensions
 #    url: .
 - name: RECIPES
-  url: /documentation/recipes/index.md
+  url: /documentation/recipes/README.md
   content:
     - name: Debugging Tests
       url: /documentation/recipes/debugging-tests.md

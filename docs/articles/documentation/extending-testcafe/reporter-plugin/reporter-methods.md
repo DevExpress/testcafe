@@ -6,7 +6,7 @@ checked: false
 ---
 # Reporter Methods
 
-To create a [reporter](index.md#implementing-the-reporter), you need to implement the following methods.
+To create a [reporter](README.md#implementing-the-reporter), you need to implement the following methods.
 
 > You can use [helper methods and libraries](helpers.md) within the reporter methods to output required data.
 

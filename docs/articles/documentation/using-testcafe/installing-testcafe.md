@@ -28,7 +28,7 @@ The following command will install TestCafe into your project directory and save
 npm install --save-dev testcafe
 ```
 
-The local installation is preferred for continuous integration scenarios or if you are going to use TestCafe from a Node.js application (see [Programming Interface](programming-interface/index.md)). This kind of installation has two advantages.
+The local installation is preferred for continuous integration scenarios or if you are going to use TestCafe from a Node.js application (see [Programming Interface](programming-interface/README.md)). This kind of installation has two advantages.
 
 * It makes your project setup easier: running `npm install` in the project directory will automatically install TestCafe as well.
 * Different projects can depend on different versions of TestCafe.

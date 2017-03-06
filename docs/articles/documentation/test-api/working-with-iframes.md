@@ -23,7 +23,7 @@ Switches the test's browsing context to the specified `<iframe>`.
 
 Parameter  | Type                                              | Description
 ---------- | ------------------------------------------------- | -----------------------------------------------------------------------------------------------------------
-`selector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies an `<iframe>` on the tested page. See [Selecting Target Elements](actions/index.md#selecting-target-elements).
+`selector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies an `<iframe>` on the tested page. See [Selecting Target Elements](actions/README.md#selecting-target-elements).
 
 ```js
 fixture `My fixture`

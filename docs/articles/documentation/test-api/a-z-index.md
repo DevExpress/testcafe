@@ -49,7 +49,7 @@ This topic lists test API members in alphabetical order.
     * [drag](actions/drag-element.md#drag-an-element-by-an-offset)
     * [dragtoElement](actions/drag-element.md#drag-an-element-onto-another-one)
     * [eval](obtaining-data-from-the-client.md#one-time-client-code-execution)
-    * [expect](assertions/index.md)
+    * [expect](assertions/README.md)
         * [eql](assertions/assertion-api.md#deep-equal)
         * [notEql](assertions/assertion-api.md#not-deep-equal)
         * [ok](assertions/assertion-api.md#ok)

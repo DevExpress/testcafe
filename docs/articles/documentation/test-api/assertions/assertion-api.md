@@ -38,7 +38,7 @@ Parameter              | Type                                              | Des
 `actual`             | Any type | A comparison value.
 `expected`             | Any type | An expected value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Examples:**
 
@@ -61,7 +61,7 @@ Parameter              | Type                                              | Des
 `actual`             | Any type | A comparison value.
 `expected`             | Any type | An unexpected value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Examples:**
 
@@ -83,7 +83,7 @@ Parameter              | Type                                              | Des
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
 `actual`             | Any type | A value that should be truthy.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Examples:**
 
@@ -105,7 +105,7 @@ Parameter              | Type                                              | Des
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
 `actual`             | Any type | A value that should be falsy.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Examples:**
 
@@ -128,7 +128,7 @@ Parameter              | Type                                              | Des
 `actual`             | String &#124; Array | A String or Array that should contain an `expected` value.
 `expected`             | Any type | An expected value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Examples:**
 
@@ -151,7 +151,7 @@ Parameter              | Type                                              | Des
 `actual`             | String &#124; Array | A String or Array that should not contain an `expected` value.
 `expected`             | Any type | An expected value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Examples:**
 
@@ -174,7 +174,7 @@ Parameter              | Type                                              | Des
 `actual`             | Any type | A comparison value.
 `typeName`             | String | The expected type of an `actual` value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Examples:**
 
@@ -198,7 +198,7 @@ Parameter              | Type                                              | Des
 `actual`             | Any type | A comparison value.
 `typeName`             | String | An unexpected type of `actual` value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Example:**
 
@@ -219,7 +219,7 @@ Parameter              | Type                                              | Des
 `actual`             | Any type | A comparison value.
 `expected`             | Any type | A value that should be greater than `actual`.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Example:**
 
@@ -240,7 +240,7 @@ Parameter              | Type                                              | Des
 `actual`             | Any type | A comparison value.
 `expected`             | Any type | A value that should be greater than or equal to `actual`.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Examples:**
 
@@ -263,7 +263,7 @@ Parameter              | Type                                              | Des
 `actual`             | Any type | A comparison value.
 `expected`             | Any type | A value that should be less than `actual`.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Example:**
 
@@ -284,7 +284,7 @@ Parameter              | Type                                              | Des
 `actual`             | Any type | A comparison value.
 `expected`             | Any type | A value that should be less than or equal to `actual`.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Examples:**
 
@@ -308,7 +308,7 @@ Parameter              | Type                                              | Des
 `start`             | Number | A lower bound of range (included).
 `finish`             | Number | An upper bound of range (included).
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Example:**
 
@@ -330,7 +330,7 @@ Parameter              | Type                                              | Des
 `start`             | Number | A lower bound of range (included).
 `finish`             | Number | An upper bound of range (included).
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Example:**
 
@@ -351,7 +351,7 @@ Parameter              | Type                                              | Des
 `actual`             | String | A comparison value.
 `re`             | RegExp | A regular expression that is expected to match `actual`.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Example:**
 
@@ -372,7 +372,7 @@ Parameter              | Type                                              | Des
 `actual`             | String | A comparison value.
 `re`             | RegExp | A regular expression that is expected not to match `actual`.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
-`options`&#160;*(optional)* | Object   | See [Options](index.md#assertion-options).
+`options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
 **Example:**
 

@@ -12,7 +12,7 @@ You can use selectors to [inspect elements state on the page](#obtain-element-st
 [assertion actual values](#define-assertion-actual-value).
 
 > Important! Do not modify the tested webpage within selectors.
-> To interact with the page, use [test actions](../actions/index.md).
+> To interact with the page, use [test actions](../actions/README.md).
 
 This topic contains the following sections.
 
@@ -600,13 +600,13 @@ Note that if a selector initializer has several matching DOM nodes on the page,
 the selector returns the first node from the matching set.
 
 > It's not recommended to pass DOM Node Snapshot's properties
-to [built-in assertions](../assertions/index.md) to check the state of the element.
-To enable [Smart Assertion Query Mechanism](../assertions/index.md#smart-assertion-query-mechanism)
+to [built-in assertions](../assertions/README.md) to check the state of the element.
+To enable [Smart Assertion Query Mechanism](../assertions/README.md#smart-assertion-query-mechanism)
 pass [selector's properties](./dom-node-state.md#members-common-across-all-nodes) to assertions instead.
 
 ### Define Action Targets
 
-You can pass selectors to [test actions](../actions/index.md) to use the returned element as the action target.
+You can pass selectors to [test actions](../actions/README.md) to use the returned element as the action target.
 
 ```js
 import { Selector } from 'testcafe';
@@ -648,8 +648,8 @@ Note that if a selector initializer has multiple matching DOM nodes on the page,
 
 ### Define Assertion Actual Value
 
-You can check whether a particular DOM node has an expected state by passing a selector property directly to [assertions](../assertions/index.md).
-In this case TestCafe enables [Smart Assertion Query Mechanism](../assertions/index.md#smart-assertion-query-mechanism) to avoid accidental errors and unstable tests.
+You can check whether a particular DOM node has an expected state by passing a selector property directly to [assertions](../assertions/README.md).
+In this case TestCafe enables [Smart Assertion Query Mechanism](../assertions/README.md#smart-assertion-query-mechanism) to avoid accidental errors and unstable tests.
 
 ```js
 import { Selector } from 'testcafe';
