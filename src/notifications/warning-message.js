@@ -5,5 +5,6 @@ export default {
     screenshotNotSupportedByBrowserProvider: 'The screenshot functionality is not supported by the "{providerName}" browser provider.',
     resizeNotSupportedByBrowserProvider:     'The window resize functionality is not supported by the "{providerName}" browser provider.',
     maximizeNotSupportedByBrowserProvider:   'The window maximization functionality is not supported by the "{providerName}" browser provider.',
-    resizeError:                             'Was unable to resize the window due to an error.\n\n{errMessage}'
+    resizeError:                             'Was unable to resize the window due to an error.\n\n{errMessage}',
+    maximizeError:                           'Was unable to maximize the window due to an error.\n\n{errMessage}'
 };

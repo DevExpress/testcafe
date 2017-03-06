@@ -41,7 +41,13 @@ export function isBrowserManipulationCommand (command) {
     return command.type === TYPE.takeScreenshot ||
            command.type === TYPE.takeScreenshotOnFail ||
            command.type === TYPE.resizeWindow ||
-           command.type === TYPE.resizeWindowToFitDevice;
+           command.type === TYPE.resizeWindowToFitDevice ||
+           command.type === TYPE.maximizeWindow;
+}
+
+export function isBrowserResizeCommand (command) {
+    return command.type === TYPE.resizeWindowToFitDevice ||
+           command.type === TYPE.resizeWindow;
 }
 
 function isRejectablePrepareBrowserManipulationCommand (command) {

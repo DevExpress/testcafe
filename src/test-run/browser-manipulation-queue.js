@@ -21,6 +21,16 @@ export default class BrowserManipulationQueue {
         }
     }
 
+    async _maximizeWindow (currentWidth, currentHeight) {
+        try {
+            return await this.browserProvider.maximizeWindow(this.browserId, currentWidth, currentHeight);
+        }
+        catch (err) {
+            this.warningLog.addWarning(WARNING_MESSAGE.maximizeError, err.message);
+            return null;
+        }
+    }
+
     async _takeScreenshot (capture) {
         if (!this.screenshotCapturer.enabled) {
             this.warningLog.addWarning(WARNING_MESSAGE.screenshotsPathNotSpecified);
@@ -56,6 +66,9 @@ export default class BrowserManipulationQueue {
 
             case COMMAND_TYPE.resizeWindow:
                 return await this._resizeWindow(command.width, command.height, driverMsg.innerWidth, driverMsg.innerHeight);
+
+            case COMMAND_TYPE.maximizeWindow:
+                return await this._maximizeWindow(driverMsg.innerWidth, driverMsg.innerHeight);
         }
 
         return null;

@@ -25,6 +25,7 @@ import {
 
 import {
     isCommandRejectableByPageError,
+    isBrowserResizeCommand,
     isBrowserManipulationCommand,
     isServiceCommand
 } from './commands/utils';
@@ -316,11 +317,19 @@ export default class TestRun extends Session {
         return new ResizeWindowCommand({ width, height });
     }
 
-    _maximizeBrowserWindow () {
+    async _prepareResizeCommand (command, callsite) {
+        if (command.type === COMMAND_TYPE.resizeWindowToFitDevice)
+            command = TestRun._transformResizeWindowToFitDeviceCommand(command);
+
         var browserId = this.browserConnection.id;
         var provider  = this.browserConnection.provider;
 
-        return provider.maximizeWindow(browserId);
+        var canResizeWindow = await provider.canResizeWindowToDimensions(browserId, command.width, command.height);
+
+        if (!canResizeWindow)
+            throw new WindowDimensionsOverflowError(callsite);
+
+        return command;
     }
 
     // Execute command
@@ -330,21 +339,8 @@ export default class TestRun extends Session {
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
 
-        if (command.type === COMMAND_TYPE.resizeWindowToFitDevice)
-            command = TestRun._transformResizeWindowToFitDeviceCommand(command);
-
-        if (command.type === COMMAND_TYPE.resizeWindow) {
-            var browserId = this.browserConnection.id;
-            var provider  = this.browserConnection.provider;
-
-            var canResizeWindow = await provider.canResizeWindowToDimensions(browserId, command.width, command.height);
-
-            if (!canResizeWindow)
-                return Promise.reject(new WindowDimensionsOverflowError(callsite));
-        }
-
-        if (command.type === COMMAND_TYPE.maximizeWindow)
-            return this._maximizeBrowserWindow();
+        if (isBrowserResizeCommand(command))
+            command = await this._prepareResizeCommand(command, callsite);
 
         if (isBrowserManipulationCommand(command)) {
             this.browserManipulationQueue.push(command);
