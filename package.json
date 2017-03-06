@@ -107,7 +107,7 @@
     "babel-plugin-add-module-exports": "^0.2.0",
     "basic-auth": "^1.1.0",
     "broken-link-checker": "^0.7.0",
-    "browserstack-connector": "0.0.1",
+    "browserstack-connector": "^0.0.2",
     "caller": "^1.0.1",
     "connect": "^3.4.0",
     "cross-spawn": "^4.0.0",
