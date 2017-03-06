@@ -62,13 +62,13 @@ testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
             browser:   'Android Browser',
             alias:     'android'
         },*/
-        {
+        /*{
             os:        'ios',
             osVersion: '9.3',
             device:    'iPad Pro',
             browser:   'Mobile Safari',
             alias:     'ipad'
-        },
+        },*/
         {
             os:        'ios',
             osVersion: '10.0',
