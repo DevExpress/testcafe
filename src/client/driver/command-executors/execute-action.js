@@ -28,7 +28,7 @@ import {
     Upload as UploadAutomation
 } from '../deps/testcafe-automation';
 
-import DriverStatus from '../status';
+import DriverStatus from '../status/driver-status';
 import SelectorExecutor from './client-functions/selector-executor';
 import COMMAND_TYPE from '../../../test-run/commands/type';
 

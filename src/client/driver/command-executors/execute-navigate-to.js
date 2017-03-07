@@ -1,6 +1,6 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
-import DriverStatus from '../status';
+import DriverStatus from '../status/driver-status';
 
 var Promise = hammerhead.Promise;
 

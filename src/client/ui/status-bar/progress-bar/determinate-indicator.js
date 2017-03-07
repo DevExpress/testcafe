@@ -29,11 +29,11 @@ export default class DeterminateIndicator {
         styleUtils.set(this.firstValueElement, 'width', newWidth + 'px');
     }
 
-    start (maxTimeout) {
+    start (maxTimeout, startTime) {
         shadowUI.addClass(this.progressBar, DETERMINATE_STYLE_CLASS);
 
         this.maxTimeout = maxTimeout;
-        this.startTime  = Date.now();
+        this.startTime  = startTime || Date.now();
 
         this._setCurrentProgress();
 

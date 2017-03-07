@@ -32,7 +32,8 @@ import NativeDialogTracker from './native-dialog-tracker';
 
 import { SetNativeDialogHandlerMessage, TYPE as MESSAGE_TYPE } from './driver-link/messages';
 import ContextStorage from './storage';
-import DriverStatus from './status';
+import DriverStatus from './status/driver-status';
+import AssertionRetriesStatus from './status/assertion-retries-status';
 import generateId from './generate-id';
 import ChildDriverLink from './driver-link/child';
 
@@ -55,6 +56,7 @@ const PENDING_PAGE_ERROR                   = 'testcafe|driver|pending-page-error
 const ACTIVE_IFRAME_SELECTOR               = 'testcafe|driver|active-iframe-selector';
 const STOP_AFTER_NEXT_ACTION               = 'testcafe|driver|stop-after-next-action';
 const TEST_SPEED                           = 'testcafe|driver|test-speed';
+const ASSERTION_RETRIES_STATUS             = 'testcafe|driver|assertion-retries-status';
 const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;
 
 const ACTION_IFRAME_ERROR_CTORS = {
@@ -401,11 +403,15 @@ export default class Driver {
     }
 
     _onShowAssertionRetriesStatusCommand (command) {
+        this.contextStorage.setItem(ASSERTION_RETRIES_STATUS, new AssertionRetriesStatus(command.timeout, Date.now()));
+
         this.statusBar.showWaitingAssertionRetriesStatus(command.timeout);
         this._onReady(new DriverStatus({ isCommandResult: true }));
     }
 
     _onHideAssertionRetriesStatusCommand (command) {
+        this.contextStorage.setItem(ASSERTION_RETRIES_STATUS, null);
+
         this.statusBar.hideWaitingAssertionRetriesStatus(command.success)
             .then(() => this._onReady(new DriverStatus({ isCommandResult: true })));
     }
@@ -526,7 +532,18 @@ export default class Driver {
 
         this.statusBar = new StatusBar(this.userAgent, this.fixtureName, this.testName);
 
-        this.readyPromise.then(() => this.statusBar.hidePageLoadingStatus());
+        this.readyPromise.then(() => {
+            this.statusBar.hidePageLoadingStatus();
+
+            var status = this.contextStorage.getItem(ASSERTION_RETRIES_STATUS);
+
+            if (status) {
+                var timeLeft = status.timeout - (new Date() - status.startTime);
+
+                if (timeLeft > 0)
+                    this.statusBar.showWaitingAssertionRetriesStatus(status.timeout, status.startTime);
+            }
+        });
 
         var pendingStatus = this.contextStorage.getItem(PENDING_STATUS);
 
