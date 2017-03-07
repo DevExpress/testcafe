@@ -2,7 +2,7 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import { cursor } from '../deps/testcafe-automation';
 import MESSAGE from '../../../test-run/client-messages';
-import DriverStatus from '../status/driver-status';
+import DriverStatus from '../statuses/driver';
 
 
 var nativeMethods = hammerhead.nativeMethods;

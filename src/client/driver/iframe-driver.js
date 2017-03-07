@@ -3,7 +3,7 @@ import { pageUnloadBarrier } from './deps/testcafe-core';
 import { IframeStatusBar } from './deps/testcafe-ui';
 import Driver from './driver';
 import ContextStorage from './storage';
-import DriverStatus from './status/driver-status';
+import DriverStatus from './statuses/driver';
 import ParentDriverLink from './driver-link/parent';
 import { TYPE as MESSAGE_TYPE } from './driver-link/messages';
 import IframeNativeDialogTracker from './native-dialog-tracker/iframe';

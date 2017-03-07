@@ -32,8 +32,8 @@ import NativeDialogTracker from './native-dialog-tracker';
 
 import { SetNativeDialogHandlerMessage, TYPE as MESSAGE_TYPE } from './driver-link/messages';
 import ContextStorage from './storage';
-import DriverStatus from './status/driver-status';
-import AssertionRetriesStatus from './status/assertion-retries-status';
+import DriverStatus from './statuses/driver';
+import AssertionRetriesStatus from './statuses/assertion-retries';
 import generateId from './generate-id';
 import ChildDriverLink from './driver-link/child';
 

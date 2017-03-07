@@ -3,7 +3,7 @@ import { domUtils, delay, waitFor, positionUtils } from '../deps/testcafe-core';
 import { CurrentIframeIsNotLoadedError, CurrentIframeNotFoundError, CurrentIframeIsInvisibleError } from '../../../errors/test-run';
 import sendMessageToDriver from './send-message-to-driver';
 import { ExecuteCommandMessage, ConfirmationMessage, TYPE as MESSAGE_TYPE } from './messages';
-import DriverStatus from '../status/driver-status';
+import DriverStatus from '../statuses/driver';
 
 
 const CHECK_IFRAME_EXISTENCE_INTERVAL = 1000;
