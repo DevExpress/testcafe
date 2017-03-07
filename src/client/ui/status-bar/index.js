@@ -393,8 +393,8 @@ export default class StatusBar {
         });
     }
 
-    _setWaitingStatus (timeout) {
-        this.progressBar.determinateIndicator.start(timeout);
+    _setWaitingStatus (timeout, startTime) {
+        this.progressBar.determinateIndicator.start(timeout, startTime);
 
         this.showingTimeout = nativeMethods.setTimeout.call(window, () => {
             this.showingTimeout = null;
@@ -452,9 +452,9 @@ export default class StatusBar {
         return Promise.resolve();
     }
 
-    showWaitingAssertionRetriesStatus (timeout) {
+    showWaitingAssertionRetriesStatus (timeout, startTime) {
         this.assertionRetries = true;
-        this._setWaitingStatus(timeout);
+        this._setWaitingStatus(timeout, startTime);
     }
 
     hideWaitingAssertionRetriesStatus (waitingSuccess) {

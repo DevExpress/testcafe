@@ -1,5 +1,5 @@
-import Assignable from '../../utils/assignable';
-import generateId from './generate-id';
+import Assignable from '../../../utils/assignable';
+import generateId from '../generate-id';
 
 
 export default class DriverStatus extends Assignable {
