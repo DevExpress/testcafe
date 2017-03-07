@@ -374,6 +374,8 @@ export default class TestRun extends Session {
 
 
         if (command.type === COMMAND_TYPE.assertion) {
+            // NOTE: we should send assertion command on client only in case of execution test
+            // step-by-step in debugging mode to show debugging status UI in status panel
             if (this.debugging)
                 await this._enqueueCommand(command, callsite);
 
