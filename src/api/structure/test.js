@@ -1,5 +1,6 @@
 import TestingUnit from './testing-unit';
 import { assertType, is } from '../../errors/runtime/type-assertions';
+import wrapTestFunction from '../wrap-test-function';
 
 export default class Test extends TestingUnit {
     constructor (testFile) {
@@ -19,7 +20,7 @@ export default class Test extends TestingUnit {
         assertType(is.function, 'apiOrigin', 'The test body', fn);
 
         this.name = name;
-        this.fn   = TestingUnit._wrapTestFunction(fn);
+        this.fn   = wrapTestFunction(fn);
 
         if (this.testFile.collectedTests.indexOf(this) < 0)
             this.testFile.collectedTests.push(this);
@@ -30,7 +31,7 @@ export default class Test extends TestingUnit {
     _before$ (fn) {
         assertType(is.function, 'before', 'test.before hook', fn);
 
-        this.beforeFn = TestingUnit._wrapTestFunction(fn);
+        this.beforeFn = wrapTestFunction(fn);
 
         return this.apiOrigin;
     }
@@ -38,7 +39,7 @@ export default class Test extends TestingUnit {
     _after$ (fn) {
         assertType(is.function, 'after', 'test.after hook', fn);
 
-        this.afterFn = TestingUnit._wrapTestFunction(fn);
+        this.afterFn = wrapTestFunction(fn);
 
         return this.apiOrigin;
     }
