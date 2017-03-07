@@ -78,18 +78,17 @@ export default class RawFileCompiler {
     }
 
     compile (code, filename) {
-        var data = null;
+        var data     = null;
+        var testFile = new TestFile(filename);
 
         try {
             data = JSON.parse(code);
+
+            data.fixtures.forEach(fixtureSrc => RawFileCompiler._addFixture(testFile, fixtureSrc));
         }
         catch (err) {
             throw new GeneralError(MESSAGE.cannotParseRawFile, filename, err.toString());
         }
-
-        var testFile = new TestFile(filename);
-
-        data.fixtures.forEach(fixtureSrc => RawFileCompiler._addFixture(testFile, fixtureSrc));
 
         return testFile.getTests();
     }
