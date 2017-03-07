@@ -1,5 +1,5 @@
 import TYPE from './type';
-import SelectorBuilder from '../../client-functions/selector-builder';
+import SelectorBuilder from '../../client-functions/selectors/selector-builder';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import functionBuilderSymbol from '../../client-functions/builder-symbol';
 import Assignable from '../../utils/assignable';

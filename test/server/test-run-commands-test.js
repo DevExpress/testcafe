@@ -2,7 +2,7 @@ var expect          = require('chai').expect;
 var TYPE            = require('../../lib/test-run/commands/type');
 var createCommand   = require('../../lib/test-run/commands/from-object');
 var ERROR_TYPE      = require('../../lib/errors/test-run/type');
-var SelectorBuilder = require('../../lib/client-functions/selector-builder');
+var SelectorBuilder = require('../../lib/client-functions/selectors/selector-builder');
 
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects

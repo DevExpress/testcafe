@@ -1,4 +1,4 @@
-import AssertionCommand from '../test-run/commands/assertion';
+import AssertionCommand from '../../test-run/commands/assertion';
 
 export default class Assertion {
     constructor (actual, testController) {

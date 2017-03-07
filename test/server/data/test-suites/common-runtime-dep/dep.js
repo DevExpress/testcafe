@@ -1,3 +1,3 @@
-import commons from 'testcafe';
+import exportableLib from 'testcafe';
 
-export default commons;
+export default exportableLib;

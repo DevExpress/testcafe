@@ -1,5 +1,5 @@
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
-import SelectorBuilder from '../client-functions/selector-builder';
+import SelectorBuilder from '../client-functions/selectors/selector-builder';
 import testControllerProxy from './test-controller/proxy';
 
 export default {

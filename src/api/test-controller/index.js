@@ -3,7 +3,7 @@ import { identity, assign, isNil as isNullOrUndefined } from 'lodash';
 import { MissingAwaitError } from '../../errors/test-run';
 import getCallsite from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
-import Assertion from '../assertion';
+import Assertion from './assertion';
 import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
 
 import {

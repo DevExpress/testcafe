@@ -3,10 +3,10 @@ import handleTagArgs from '../../utils/handle-tag-args';
 import TestingUnit from './testing-unit';
 
 export default class Fixture extends TestingUnit {
-    constructor (globals) {
-        super(globals);
+    constructor (testFile) {
+        super(testFile);
 
-        this.path = globals.filename;
+        this.path = testFile.filename;
 
         this.pageUrl = 'about:blank';
 
@@ -24,8 +24,8 @@ export default class Fixture extends TestingUnit {
 
         assertType(is.string, 'apiOrigin', 'The fixture name', name);
 
-        this.name                   = name;
-        this.globals.currentFixture = this;
+        this.name                    = name;
+        this.testFile.currentFixture = this;
 
         return this.apiOrigin;
     }

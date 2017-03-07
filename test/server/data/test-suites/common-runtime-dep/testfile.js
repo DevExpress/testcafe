@@ -1,11 +1,11 @@
-import commons from 'testcafe';
-import commonsInDep from './dep';
+import exportableLib from 'testcafe';
+import exportableLibInDep from './dep';
 
 fixture `Fixture`;
 
 test('Get common runtime funcs', () => {
     return {
-        commonsEql: commons === commonsInDep,
-        commons:    commons
+        exportableLibsEql: exportableLib === exportableLibInDep,
+        exportableLib:     exportableLib
     };
 });
