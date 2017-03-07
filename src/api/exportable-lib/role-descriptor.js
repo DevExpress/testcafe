@@ -1,10 +1,13 @@
 import { isNil as isNullOrUndefined } from 'lodash';
+import shortId from 'shortid';
 import { assertType, is } from '../../errors/runtime/type-assertions';
 import wrapTestFunction from '../wrap-test-function';
 import ensureUrlProtocol from '../../utils/ensure-url-protocol';
 
 export default class RoleDescriptor {
     constructor (loginPage, initFn) {
+        this.id = shortId.generate();
+
         this.loginPage = null;
         this.initFn    = null;
 
