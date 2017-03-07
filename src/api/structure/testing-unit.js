@@ -9,8 +9,8 @@ const PROTOCOL_RE          = /^(https?|file):\/\//;
 const IMPLICIT_PROTOCOL_RE = /^\/\//;
 
 export default class TestingUnit {
-    constructor (globals) {
-        this.globals = globals;
+    constructor (testFile) {
+        this.testFile = testFile;
 
         this.name            = null;
         this.pageUrl         = null;
@@ -48,7 +48,7 @@ export default class TestingUnit {
 
         assertType(is.string, 'page', 'The page URL', this.pageUrl);
 
-        if (!PROTOCOL_RE.test(this.pageUrl)) {
+        if (!PROTOCOL_RE.test(this.pageUrl) && this.pageUrl !== 'about:blank') {
             var protocol = IMPLICIT_PROTOCOL_RE.test(this.pageUrl) ? 'http:' : 'http://';
 
             this.pageUrl = protocol + this.pageUrl;

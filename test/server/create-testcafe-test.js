@@ -2,7 +2,7 @@ var expect         = require('chai').expect;
 var url            = require('url');
 var net            = require('net');
 var createTestCafe = require('../../lib/');
-var commonAPI      = require('../../lib/api/common');
+var exportableLib  = require('../../lib/api/exportable-lib');
 var Promise        = require('pinkie');
 
 
@@ -90,7 +90,7 @@ describe('TestCafe factory function', function () {
     it('Should contain plugin testing, embedding utils and common runtime functions', function () {
         expect(createTestCafe.pluginTestingUtils).to.be.an.object;
         expect(createTestCafe.embeddingUtils).to.be.an.object;
-        expect(createTestCafe.Role).eql(commonAPI.Role);
-        expect(createTestCafe.ClientFunction).eql(commonAPI.ClientFunction);
+        expect(createTestCafe.Role).eql(exportableLib.Role);
+        expect(createTestCafe.ClientFunction).eql(exportableLib.ClientFunction);
     });
 });

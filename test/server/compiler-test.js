@@ -9,7 +9,7 @@ var sortBy            = require('lodash').sortBy;
 var renderers         = require('callsite-record').renderers;
 var ERR_TYPE          = require('../../lib/errors/test-run/type');
 var Compiler          = require('../../lib/compiler');
-var commonAPI         = require('../../lib/api/common');
+var exportableLib     = require('../../lib/api/exportable-lib');
 var NODE_VER          = require('../../lib/utils/node-version');
 var createStackFilter = require('../../lib/errors/create-stack-filter.js');
 
@@ -157,8 +157,8 @@ describe('Compiler', function () {
                 return compiled.tests[0].fn(testRunMock);
             })
             .then(function (result) {
-                expect(result.commonsEql).to.be.true;
-                expect(result.commons).eql(commonAPI);
+                expect(result.exportableLibsEql).to.be.true;
+                expect(result.exportableLib).eql(exportableLib);
             });
     });
 
@@ -1278,6 +1278,7 @@ describe('Compiler', function () {
 
         describe('test.fn()', function () {
             var TestRunMock = function (expectedError) {
+                this.id            = 'PPBqWA9';
                 this.commands      = [];
                 this.expectedError = expectedError;
             };

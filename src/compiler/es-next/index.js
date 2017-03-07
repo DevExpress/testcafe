@@ -3,12 +3,14 @@ import { readFileSync } from 'fs';
 import stripBom from 'strip-bom';
 import sourceMapSupport from 'source-map-support';
 import loadBabelLibs from './load-babel-libs';
-import Globals from '../../api/globals';
+import TestFile from '../../api/structure/test-file';
+import Fixture from '../../api/structure/fixture';
+import Test from '../../api/structure/test';
 import { TestCompilationError, APIError } from '../../errors/runtime';
 import stackCleaningHook from '../../errors/stack-cleaning-hook';
 
-const COMMON_API_PATH = join(__dirname, '../../api/common');
-const CWD             = process.cwd();
+const EXPORTABLE_LIB_PATH = join(__dirname, '../../api/exportable-lib');
+const CWD                 = process.cwd();
 
 const FIXTURE_RE       = /(^|;|\s+)fixture\s*(\.|\(|`)/;
 const TEST_RE          = /(^|;|\s+)test\s*(\.|\()/;
@@ -52,7 +54,7 @@ export default class ESNextCompiler {
 
             resolveModuleSource: source => {
                 if (source === 'testcafe')
-                    return COMMON_API_PATH;
+                    return EXPORTABLE_LIB_PATH;
 
                 if (BABEL_RUNTIME_RE.test(source)) {
                     try {
@@ -111,12 +113,12 @@ export default class ESNextCompiler {
         return compiled.code;
     }
 
-    _setupRequireHook (globals) {
+    _setupRequireHook (testFile) {
         var origRequireExtension = require.extensions['.js'];
 
         require.extensions['.js'] = (mod, filename) => {
             // NOTE: remove global API so that it will be unavailable for the dependencies
-            globals.remove();
+            this._removeGlobalAPI();
 
             if (ESNextCompiler._isNodeModulesDep(filename))
                 origRequireExtension(mod, filename);
@@ -129,7 +131,7 @@ export default class ESNextCompiler {
                 mod._compile(compiledCode, filename);
             }
 
-            globals.setup();
+            this._addGlobalAPI(testFile);
         };
 
         return origRequireExtension;
@@ -153,6 +155,23 @@ export default class ESNextCompiler {
         return compiledCode;
     }
 
+    _addGlobalAPI (testFile) {
+        Object.defineProperty(global, 'fixture', {
+            get:          () => new Fixture(testFile),
+            configurable: true
+        });
+
+        Object.defineProperty(global, 'test', {
+            get:          () => new Test(testFile),
+            configurable: true
+        });
+    }
+
+    _removeGlobalAPI () {
+        delete global.fixture;
+        delete global.test;
+    }
+
     canCompile (code, filename) {
         return /\.js$/.test(filename) &&
                FIXTURE_RE.test(code) &&
@@ -161,13 +180,13 @@ export default class ESNextCompiler {
 
     compile (code, filename) {
         var compiledCode = this._compileESForTestFile(code, filename);
-        var globals      = new Globals(filename);
+        var testFile     = new TestFile(filename);
 
-        globals.setup();
+        this._addGlobalAPI(testFile);
 
         stackCleaningHook.enabled = true;
 
-        var origRequireExtension = this._setupRequireHook(globals);
+        var origRequireExtension = this._setupRequireHook(testFile);
 
         try {
             ESNextCompiler._execAsModule(compiledCode, filename);
@@ -184,10 +203,10 @@ export default class ESNextCompiler {
             require.extensions['.js'] = origRequireExtension;
             stackCleaningHook.enabled = false;
 
-            globals.remove();
+            this._removeGlobalAPI();
         }
 
-        return globals.collectedTests;
+        return testFile.getTests();
     }
 
     cleanUpCache () {

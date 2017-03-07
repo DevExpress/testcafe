@@ -2,10 +2,10 @@ import TestingUnit from './testing-unit';
 import { assertType, is } from '../../errors/runtime/type-assertions';
 
 export default class Test extends TestingUnit {
-    constructor (globals) {
-        super(globals);
+    constructor (testFile) {
+        super(testFile);
 
-        this.fixture = globals.currentFixture;
+        this.fixture = testFile.currentFixture;
 
         this.fn       = null;
         this.beforeFn = null;
@@ -21,8 +21,8 @@ export default class Test extends TestingUnit {
         this.name = name;
         this.fn   = TestingUnit._wrapTestFunction(fn);
 
-        if (this.globals.collectedTests.indexOf(this) < 0)
-            this.globals.collectedTests.push(this);
+        if (this.testFile.collectedTests.indexOf(this) < 0)
+            this.testFile.collectedTests.push(this);
 
         return this.apiOrigin;
     }

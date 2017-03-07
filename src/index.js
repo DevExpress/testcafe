@@ -4,7 +4,7 @@ import * as endpointUtils from 'endpoint-utils';
 import { GeneralError } from './errors/runtime';
 import MESSAGE from './errors/runtime/message';
 import embeddingUtils from './embedding-utils';
-import commonAPI from './api/common';
+import exportableLib from './api/exportable-lib';
 
 
 // Validations
@@ -49,8 +49,8 @@ async function createTestCafe (hostname, port1, port2) {
 createTestCafe.embeddingUtils = embeddingUtils;
 
 // Common API
-Object.keys(commonAPI).forEach(key => {
-    createTestCafe[key] = commonAPI[key];
+Object.keys(exportableLib).forEach(key => {
+    createTestCafe[key] = exportableLib[key];
 });
 
 export default createTestCafe;

@@ -53,6 +53,11 @@ export var is = {
         name:              'non-null object',
         predicate:         (value, type) => type === 'object' && !isNullOrUndefined(value),
         getActualValueMsg: (value, type) => isNullOrUndefined(value) ? String(value) : type
+    },
+
+    'undefined': {
+        name:      'undefined',
+        predicate: value => value === void 0
     }
 };
 
@@ -78,10 +83,8 @@ export function assertType (types, callsiteName, what, value) {
     });
 
     if (!pass) {
-        var err = callsiteName ?
-                  new APIError(callsiteName, MESSAGE.invalidValueType, what, expectedTypeMsg, actualMsg) :
-                  new GeneralError(MESSAGE.invalidValueType, what, expectedTypeMsg, actualMsg);
-
-        throw err;
+        throw callsiteName ?
+              new APIError(callsiteName, MESSAGE.invalidValueType, what, expectedTypeMsg, actualMsg) :
+              new GeneralError(MESSAGE.invalidValueType, what, expectedTypeMsg, actualMsg);
     }
 }
