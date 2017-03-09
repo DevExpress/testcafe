@@ -181,6 +181,8 @@ export default class Driver {
         if (!status.resent) {
             this._addPendingErrorToStatus(status);
             this._addUnexpectedDialogErrorToStatus(status);
+
+            status.debugging = !!this.contextStorage.getItem(STOP_AFTER_NEXT_ACTION);
         }
 
         this.contextStorage.setItem(PENDING_STATUS, status);
@@ -416,6 +418,10 @@ export default class Driver {
             .then(() => this._onReady(new DriverStatus({ isCommandResult: true })));
     }
 
+    _onAssertionCommand () {
+        return this._onReady(new DriverStatus({ isCommandResult: true }));
+    }
+
     _onTestDone (status) {
         this.contextStorage.setItem(TEST_DONE_SENT_FLAG, true);
 
@@ -486,6 +492,10 @@ export default class Driver {
 
         else if (command.type === COMMAND_TYPE.hideAssertionRetriesStatus)
             this._onHideAssertionRetriesStatusCommand(command);
+
+        else if (command.type === COMMAND_TYPE.assertion)
+            this._onAssertionCommand();
+
         else
             this._onActionCommand(command);
     }

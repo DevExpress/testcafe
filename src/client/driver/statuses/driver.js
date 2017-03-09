@@ -12,6 +12,7 @@ export default class DriverStatus extends Assignable {
         this.pageError       = null;
         this.resent          = false;
         this.result          = null;
+        this.debugging       = false;
 
         this._assignFrom(obj, true);
     }

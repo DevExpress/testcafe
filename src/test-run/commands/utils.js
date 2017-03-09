@@ -34,7 +34,8 @@ export function isVisualManipulationCommand (command) {
            command.type === TYPE.pressKey ||
            command.type === TYPE.navigateTo ||
            command.type === TYPE.setFilesToUpload ||
-           command.type === TYPE.clearUpload;
+           command.type === TYPE.clearUpload ||
+           command.type === TYPE.assertion;
 }
 
 export function isBrowserManipulationCommand (command) {
