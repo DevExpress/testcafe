@@ -14,11 +14,9 @@ var ProxyServer = module.exports = function (port) {
         });
     }
 
-    this.appServer = http
-        .createServer(ProxyServer._onRequest)
-        .listen(port);
-
+    this.appServer = http.createServer(ProxyServer._onRequest);
     this.appServer.on('connection', handler);
+    this.appServer.listen(port);
 };
 
 ProxyServer._onRequest = function (req, res) {
