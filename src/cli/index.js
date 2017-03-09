@@ -57,6 +57,7 @@ async function runTests (argParser) {
         .reporter(opts.reporter)
         .filter(argParser.filter)
         .screenshots(opts.screenshots, opts.screenshotsOnFails)
+        .useProxy(opts.proxyHost)
         .startApp(opts.app, opts.appInitDelay);
 
     runner.once('done-bootstrapping', () => log.hideSpinner());

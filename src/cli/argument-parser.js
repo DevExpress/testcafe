@@ -105,7 +105,7 @@ export default class CLIArgumentParser {
             .option('--speed <factor>', 'set the speed of test execution (0.01 ... 1)')
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
-            .option('--proxyHost <host>', 'specify proxy host')
+            .option('--proxy-host <host>', 'specify proxy host')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
 
             // NOTE: these options will be handled by chalk internally
