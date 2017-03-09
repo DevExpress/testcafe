@@ -13,8 +13,8 @@ You can install existing plugins or develop custom ones that will suit your need
 
 The following topics provide detailed information on creating the most widely used plugins and extensions.
 
-* [Reporter Plugin](reporter-plugin/index.md)
-* [Browser Provider Plugin](browser-provider-plugin/index.md)
+* [Reporter Plugin](reporter-plugin/README.md)
+* [Browser Provider Plugin](browser-provider-plugin/README.md)
 
 ## Installing Plugins
 

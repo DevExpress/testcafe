@@ -9,5 +9,5 @@ This section provides general information on TestCafe and describes the ways you
 
 * [Installing TestCafe](installing-testcafe.md)
 * [Command Line Interface](command-line-interface.md)
-* [Programming Interface](programming-interface/index.md)
-* [Common Concepts](common-concepts/index.md)
+* [Programming Interface](programming-interface/README.md)
+* [Common Concepts](common-concepts/README.md)

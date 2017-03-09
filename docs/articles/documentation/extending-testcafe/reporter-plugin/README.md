@@ -225,5 +225,5 @@ That is why using the `publish-please` script instead of `npm publish` is what i
 npm run publish-please
 ```
 
-After that, you can install the reporter plugin as you would [install any other plugin](../index.md#installing-plugins) and use it in the same manner
+After that, you can install the reporter plugin as you would [install any other plugin](../README.md#installing-plugins) and use it in the same manner
 as you would use [built-in reporters](../../using-testcafe/common-concepts/reporters.md#using-the-reporters).

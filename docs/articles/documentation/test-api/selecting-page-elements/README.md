@@ -7,10 +7,10 @@ checked: false
 # Selecting Page Elements
 
 TestCafe runs test code on the server. When you need to refer to a DOM element
-to perform an action on it, you can pass CSS selectors to the appropriate [action](../actions/index.md) function.
+to perform an action on it, you can pass CSS selectors to the appropriate [action](../actions/README.md) function.
 
 However, there are cases when you may need direct access to DOM elements.
-For instance, you need to know the state of a particular page element to make an [assertion](../assertions/index.md).
+For instance, you need to know the state of a particular page element to make an [assertion](../assertions/README.md).
 You may also find CSS selectors not powerful enough to identify an element on which you need to perform an action.
 
 To address these scenarios, TestCafe introduces the *selector* functions.

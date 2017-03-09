@@ -23,7 +23,7 @@ t.drag( selector, dragOffsetX, dragOffsetY [, options] )
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being dragged. See [Selecting Target Elements](index.md#selecting-target-elements).
+`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being dragged. See [Selecting Target Elements](README.md#selecting-target-elements).
 `dragOffsetX`          | Number                                            | An X-offset of the drop coordinates from the mouse pointer's initial position.
 `dragOffsetY`          | Number                                            | An Y-offset of the drop coordinates from the mouse pointer's initial position.
 `options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Mouse Action Options](action-options.md#mouse-action-options).
@@ -55,8 +55,8 @@ t.dragToElement( selector, destinationSelector [, options] )
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------
-`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being dragged. See [Selecting Target Elements](index.md#selecting-target-elements).
-`destinationSelector`  | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element that serves as the drop location. See [Selecting Target Elements](index.md#selecting-target-elements).
+`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being dragged. See [Selecting Target Elements](README.md#selecting-target-elements).
+`destinationSelector`  | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element that serves as the drop location. See [Selecting Target Elements](README.md#selecting-target-elements).
 `options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Mouse Action Options](action-options.md#mouse-action-options).
 
 This sample shows how to drop an element into a specific area using the `t.dragToElement` action.

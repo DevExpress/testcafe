@@ -6,7 +6,7 @@ checked: true
 ---
 # Helpers
 
-Helpers are methods and libraries used to format report output when [implementing a reporter](index.md#implementing-the-reporter). TestCafe mixes in these methods to the reporter.
+Helpers are methods and libraries used to format report output when [implementing a reporter](README.md#implementing-the-reporter). TestCafe mixes in these methods to the reporter.
 
 To access helpers, use `this`.
 

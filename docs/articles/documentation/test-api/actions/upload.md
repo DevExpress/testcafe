@@ -21,7 +21,7 @@ t.setFilesToUpload( selector, filePath )
 
 Parameter  | Type                                              | Description
 ---------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------
-`selector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the input field to which file paths are written. See [Selecting Target Elements](index.md#selecting-target-elements).
+`selector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the input field to which file paths are written. See [Selecting Target Elements](README.md#selecting-target-elements).
 `filePath` | String &#124; Array                                            | The path to the uploaded file, or several such paths. Relative paths resolve from the folder with the test file.
 
 The following example illustrates how to use the `t.setFilesToUpload` action.
@@ -55,7 +55,7 @@ t.clearUpload( selector )
 
 Parameter  | Type                                              | Description
 ---------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------
-`selector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the input field that needs to be cleared. See [Selecting Target Elements](index.md#selecting-target-elements).
+`selector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the input field that needs to be cleared. See [Selecting Target Elements](README.md#selecting-target-elements).
 
 The example below shows how to use the `t.clearUpload` action.
 

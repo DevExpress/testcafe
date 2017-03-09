@@ -6,7 +6,7 @@ checked: true
 ---
 # Action Options
 
-This topic describes [test action](index.md) options.
+This topic describes [test action](README.md) options.
 
 * [Basic Action Options](#basic-action-options)
 * [Mouse Action Options](#mouse-action-options)

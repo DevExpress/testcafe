@@ -22,7 +22,7 @@ t.selectText( selector [, startPos] [, endPos] [, options] )
 
 Parameter               | Type                                              | Description                                                                                                                                          | Default
 ----------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------
-`selector`              | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element whose text will be selected. See [Selecting Target Elements](index.md#selecting-target-elements).
+`selector`              | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element whose text will be selected. See [Selecting Target Elements](README.md#selecting-target-elements).
 `startPos`&#160;*(optional)* | Number                                            | The start position of the selection. A zero-based integer.                                                                              | `0`
 `endPos`&#160;*(optional)*   | Number                                            | The end position of the selection. A zero-based integer.                                                                                | Length of the visible text content.
 `options`&#160;*(optional)*  | Object                                            | A set of options that provide additional parameters for the action. See [Basic Action Options](action-options.md#basic-action-options).
@@ -65,7 +65,7 @@ t.selectTextAreaContent( selector [, startLine] [, startPos] [, endLine] [, endP
 
 Parameter  | Type                                              | Description                                                                                                                                   | Default
 ---------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------
-`selector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the `<textarea>` whose text will be selected. See [Selecting Target Elements](index.md#selecting-target-elements).
+`selector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the `<textarea>` whose text will be selected. See [Selecting Target Elements](README.md#selecting-target-elements).
 `startLine`&#160;*(optional)* | Number                                            | The line number at which selection starts. A zero-based integer.                                                           | `0`
 `startPos`&#160;*(optional)*  | Number                                            | The start position of selection within the line defined by the `startLine`. A zero-based integer.                          | `0`
 `endLine`&#160;*(optional)*   | Number                                            | The line number at which selection ends. A zero-based integer.                                                             | The index of the last line.
@@ -112,8 +112,8 @@ t.selectEditableContent( startSelector, endSelector [, options] )
 
 Parameter       | Type                                              | Description
 --------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-`startSelector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element from which selection starts. The start position of selection is the first character of the element's text. See [Selecting Target Elements](index.md#selecting-target-elements).
-`endSelector`   | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element at which selection ends. The end position of selection is the last character of the element's text. See [Selecting Target Elements](index.md#selecting-target-elements).
+`startSelector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element from which selection starts. The start position of selection is the first character of the element's text. See [Selecting Target Elements](README.md#selecting-target-elements).
+`endSelector`   | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element at which selection ends. The end position of selection is the last character of the element's text. See [Selecting Target Elements](README.md#selecting-target-elements).
 `options`&#160;*(optional)*  | Object                                            | A set of options that provide additional parameters for the action. See [Basic Action Options](action-options.md#basic-action-options).
 
 This function works for HTML elements that have the `contentEditable` attribute enabled.

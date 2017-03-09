@@ -32,7 +32,7 @@ You can search for available reporter packages on npm: [https://www.npmjs.com/se
 
 ## Installing the Reporters
 
-You can install reporter packages from npm as you would install any other plugin. See [Installing Plugins](../../extending-testcafe/index.md#installing-plugins).
+You can install reporter packages from npm as you would install any other plugin. See [Installing Plugins](../../extending-testcafe/README.md#installing-plugins).
 
 ## Using the Reporters
 

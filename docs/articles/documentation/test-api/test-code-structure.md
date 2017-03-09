@@ -72,11 +72,11 @@ test('Test2', async t => {
 You are free to structure test code in any manner, and you can
 reference any modules or libraries you need.
 
-TestCafe tests are executed server side. To manipulate the tested webpage, use [test actions](actions/index.md).
+TestCafe tests are executed server side. To manipulate the tested webpage, use [test actions](actions/README.md).
 To determine the state of page elements or obtain any other data from the client side, use [selectors](selecting-page-elements/selectors.md) and
 [client functions](obtaining-data-from-the-client.md).
 
-To check if the page state matches the expected one, use [assertions](assertions/index.md).
+To check if the page state matches the expected one, use [assertions](assertions/README.md).
 
 ### Test Controller
 
@@ -84,8 +84,8 @@ A *test controller* object `t` exposes methods of test API. That is why it is
 passed to each function that is expected to contain server-side test code (like [test](#tests),
 [beforeEach](#initialization-and-clean-up) or [afterEach](#initialization-and-clean-up)).
 
-Use the test controller to call [test actions](actions/index.md), handle [browser dialogs](handling-native-dialogs.md),
-use the [wait function](pausing-the-test.md) or [execute assertions](assertions/index.md).
+Use the test controller to call [test actions](actions/README.md), handle [browser dialogs](handling-native-dialogs.md),
+use the [wait function](pausing-the-test.md) or [execute assertions](assertions/README.md).
 
 ```js
 fixture `My fixture`
@@ -240,7 +240,7 @@ These functions are called *hook functions* or *hooks*.
 
 Test hooks are executed in each test run before a test is started and after it is finished. If a test runs in several browsers, test hooks are executed in each browser.
 
-At the moment test hooks run, the tested webpage is already loaded, so that you can use [test actions](actions/index.md) and other test run API inside test hooks.
+At the moment test hooks run, the tested webpage is already loaded, so that you can use [test actions](actions/README.md) and other test run API inside test hooks.
 
 You can specify a hook for each test in a fixture by using the `beforeEach` and `afterEach` methods in the [fixture declaration](#fixtures).
 

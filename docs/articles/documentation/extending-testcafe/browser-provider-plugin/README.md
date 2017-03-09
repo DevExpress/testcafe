@@ -221,7 +221,7 @@ That is why using the `publish-please` script instead of `npm publish` is what i
 npm run publish-please
 ```
 
-After that, you can install the provider plugin as you would [install any other plugin](../index.md#installing-plugins).
+After that, you can install the provider plugin as you would [install any other plugin](../README.md#installing-plugins).
 
 ## Specifying a Browser for a Test Task
 
