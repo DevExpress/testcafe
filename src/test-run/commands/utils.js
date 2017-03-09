@@ -45,15 +45,11 @@ export function isBrowserManipulationCommand (command) {
            command.type === TYPE.maximizeWindow;
 }
 
-export function isBrowserResizeCommand (command) {
-    return command.type === TYPE.resizeWindowToFitDevice ||
-           command.type === TYPE.resizeWindow;
-}
-
 function isRejectablePrepareBrowserManipulationCommand (command) {
     return command.type === TYPE.prepareBrowserManipulation &&
            (command.manipulationCommandType === TYPE.resizeWindow ||
-            command.manipulationCommandType === TYPE.resizeWindowToFitDevice);
+            command.manipulationCommandType === TYPE.resizeWindowToFitDevice ||
+            command.manipulationCommandType === TYPE.maximizeWindow);
 }
 
 function isServicePrepareBrowserManipulationCommand (command) {
