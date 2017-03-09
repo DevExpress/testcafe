@@ -1,7 +1,7 @@
 node_modules
 .idea
-lib
-site
+/lib
+/site
 .sass-cache
 .publish
 ___test-screenshots___

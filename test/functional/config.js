@@ -171,7 +171,8 @@ module.exports = {
         port1:     3000,
         port2:     3001,
         port3:     3002,
-        port4:     3003
+        port4:     3003,
+        port5:     3004
     },
 
     browsers: []

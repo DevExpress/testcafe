@@ -29,7 +29,8 @@ export default class Runner extends EventEmitter {
             skipJsErrors:           false,
             quarantineMode:         false,
             reportOutStream:        void 0,
-            selectorTimeout:        DEFAULT_SELECTOR_TIMEOUT
+            selectorTimeout:        DEFAULT_SELECTOR_TIMEOUT,
+            proxyHost:              null
         };
     }
 
@@ -150,6 +151,12 @@ export default class Runner extends EventEmitter {
     startApp (command, initDelay) {
         this.bootstrapper.appCommand   = command;
         this.bootstrapper.appInitDelay = initDelay;
+
+        return this;
+    }
+
+    useProxy (host) {
+        this.opts.proxyHost = host;
 
         return this;
     }

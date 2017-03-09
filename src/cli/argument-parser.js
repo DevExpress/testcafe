@@ -105,6 +105,7 @@ export default class CLIArgumentParser {
             .option('--speed <factor>', 'set the speed of test execution (0.01 ... 1)')
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
+            .option('--proxyHost <host>', 'specify proxy host')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
 
             // NOTE: these options will be handled by chalk internally
@@ -186,6 +187,11 @@ export default class CLIArgumentParser {
         }
     }
 
+    _parseProxyHost () {
+        if (this.opts.proxyHost)
+            assertType(is.string, null, 'Proxy host', this.opts.proxyHost);
+    }
+
     _parseBrowserList () {
         var browsersArg = this.program.args[0] || '';
 
@@ -263,6 +269,7 @@ export default class CLIArgumentParser {
         this._parseAppInitDelay();
         this._parseSpeed();
         this._parsePorts();
+        this._parseProxyHost();
         this._parseBrowserList();
 
         await Promise.all([
