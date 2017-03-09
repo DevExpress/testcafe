@@ -61,4 +61,6 @@ ProxyServer.prototype.close = function () {
     this.sockets.forEach(function (socket) {
         socket.destroy();
     });
+
+    this.appServer.close();
 };
