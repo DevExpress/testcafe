@@ -85,11 +85,11 @@ export default class RawFileCompiler {
             data = JSON.parse(code);
 
             data.fixtures.forEach(fixtureSrc => RawFileCompiler._addFixture(testFile, fixtureSrc));
+
+            return testFile.getTests();
         }
         catch (err) {
             throw new GeneralError(MESSAGE.cannotParseRawFile, filename, err.toString());
         }
-
-        return testFile.getTests();
     }
 }

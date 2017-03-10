@@ -1263,16 +1263,27 @@ describe('Compiler', function () {
         });
 
         it('Should raise an error if it cannot parse a raw file', function () {
-            var testfile = resolve('test/server/data/test-suites/raw/invalid.testcafe');
+            var testfile1 = resolve('test/server/data/test-suites/raw/invalid.testcafe');
+            var testfile2 = resolve('test/server/data/test-suites/raw/invalid2.testcafe');
 
-            return compile(testfile)
+            return compile(testfile1)
                 .then(function () {
                     throw new Error('Promise rejection is expected');
                 })
                 .catch(function (err) {
-                    expect(err.message).contains('Cannot parse a test source file in the raw format at "' + testfile +
+                    expect(err.message).contains('Cannot parse a test source file in the raw format at "' + testfile1 +
                                                  '" due to an error.\n\n' +
                                                  'SyntaxError: Unexpected token i');
+                })
+                .then(function () {
+                    return compile(testfile2);
+                })
+                .then(function () {
+                    throw new Error('Promise rejection is expected');
+                })
+                .catch(function (err) {
+                    expect(err.message).contains('Cannot parse a test source file in the raw format at "' + testfile2 +
+                                                 '" due to an error.\n\n');
                 });
         });
 
