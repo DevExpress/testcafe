@@ -1,5 +1,5 @@
 import { Promise } from '../../deps/hammerhead';
-import DriverStatus from '../../statuses/driver';
+import DriverStatus from '../../status';
 import { createReplicator, FunctionTransform, ClientFunctionNodeTransform } from './replicator';
 import evalFunction from './eval-function';
 import { UncaughtErrorInClientFunctionCode } from '../../../../errors/test-run';

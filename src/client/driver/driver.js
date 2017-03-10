@@ -14,8 +14,7 @@ import TEST_RUN_MESSAGES from '../../test-run/client-messages';
 import COMMAND_TYPE from '../../test-run/commands/type';
 import {
     isCommandRejectableByPageError,
-    isExecutableInTopWindowOnly,
-    isVisualManipulationCommand
+    isExecutableInTopWindowOnly
 } from '../../test-run/commands/utils';
 import {
     UncaughtErrorOnPage,
@@ -32,8 +31,7 @@ import NativeDialogTracker from './native-dialog-tracker';
 
 import { SetNativeDialogHandlerMessage, TYPE as MESSAGE_TYPE } from './driver-link/messages';
 import ContextStorage from './storage';
-import DriverStatus from './statuses/driver';
-import AssertionRetriesStatus from './statuses/assertion-retries';
+import DriverStatus from './status';
 import generateId from './generate-id';
 import ChildDriverLink from './driver-link/child';
 
@@ -54,9 +52,9 @@ const EXECUTING_CLIENT_FUNCTION_DESCRIPTOR = 'testcafe|driver|executing-client-f
 const SELECTOR_EXECUTION_START_TIME        = 'testcafe|driver|selector-execution-start-time';
 const PENDING_PAGE_ERROR                   = 'testcafe|driver|pending-page-error';
 const ACTIVE_IFRAME_SELECTOR               = 'testcafe|driver|active-iframe-selector';
-const STOP_AFTER_NEXT_ACTION               = 'testcafe|driver|stop-after-next-action';
 const TEST_SPEED                           = 'testcafe|driver|test-speed';
-const ASSERTION_RETRIES_STATUS             = 'testcafe|driver|assertion-retries-status';
+const ASSERTION_RETRIES_TIMEOUT            = 'testcafe|driver|assertion-retries-timeout';
+const ASSERTION_RETRIES_START_TIME         = 'testcafe|driver|assertion-retries-start-time';
 const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;
 
 const ACTION_IFRAME_ERROR_CTORS = {
@@ -109,13 +107,6 @@ export default class Driver {
         preventRealEvents();
 
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
-    }
-
-    _showDebuggingStatus () {
-        return transport
-            .queuedAsyncServiceMsg({ cmd: TEST_RUN_MESSAGES.showDebuggerMessage })
-            .then(() => this.statusBar.showDebuggingStatus())
-            .then(stopAfterNextAction => this.contextStorage.setItem(STOP_AFTER_NEXT_ACTION, stopAfterNextAction));
     }
 
     set speed (val) {
@@ -181,8 +172,6 @@ export default class Driver {
         if (!status.resent) {
             this._addPendingErrorToStatus(status);
             this._addUnexpectedDialogErrorToStatus(status);
-
-            status.debugging = !!this.contextStorage.getItem(STOP_AFTER_NEXT_ACTION);
         }
 
         this.contextStorage.setItem(PENDING_STATUS, status);
@@ -394,9 +383,12 @@ export default class Driver {
             });
     }
 
-    _onDebugCommand () {
-        this._showDebuggingStatus()
-            .then(() => this._onReady(new DriverStatus({ isCommandResult: true })));
+    _onSetBreakpointCommand () {
+        this.statusBar.showDebuggingStatus()
+            .then(stopAfterNextAction => this._onReady(new DriverStatus({
+                isCommandResult: true,
+                result:          stopAfterNextAction
+            })));
     }
 
     _onSetTestSpeedCommand (command) {
@@ -405,21 +397,19 @@ export default class Driver {
     }
 
     _onShowAssertionRetriesStatusCommand (command) {
-        this.contextStorage.setItem(ASSERTION_RETRIES_STATUS, new AssertionRetriesStatus(command.timeout, Date.now()));
+        this.contextStorage.setItem(ASSERTION_RETRIES_TIMEOUT, command.timeout);
+        this.contextStorage.setItem(ASSERTION_RETRIES_START_TIME, Date.now());
 
         this.statusBar.showWaitingAssertionRetriesStatus(command.timeout);
         this._onReady(new DriverStatus({ isCommandResult: true }));
     }
 
     _onHideAssertionRetriesStatusCommand (command) {
-        this.contextStorage.setItem(ASSERTION_RETRIES_STATUS, null);
+        this.contextStorage.setItem(ASSERTION_RETRIES_TIMEOUT, null);
+        this.contextStorage.setItem(ASSERTION_RETRIES_START_TIME, null);
 
         this.statusBar.hideWaitingAssertionRetriesStatus(command.success)
             .then(() => this._onReady(new DriverStatus({ isCommandResult: true })));
-    }
-
-    _onAssertionCommand () {
-        return this._onReady(new DriverStatus({ isCommandResult: true }));
     }
 
     _onTestDone (status) {
@@ -435,17 +425,8 @@ export default class Driver {
     _onReady (status) {
         this._sendStatus(status)
             .then(command => {
-                if (command) {
-                    var isDebugging = this.contextStorage.getItem(STOP_AFTER_NEXT_ACTION) &&
-                                      isVisualManipulationCommand(command);
-
-                    if (isDebugging) {
-                        this._showDebuggingStatus()
-                            .then(() => this._onCommand(command));
-                    }
-                    else
-                        this._onCommand(command);
-                }
+                if (command)
+                    this._onCommand(command);
 
                 // NOTE: the driver gets an empty response if TestRun doesn't get a new command within 2 minutes
                 else
@@ -457,8 +438,8 @@ export default class Driver {
         if (command.type === COMMAND_TYPE.testDone)
             this._onTestDone(new DriverStatus({ isCommandResult: true }));
 
-        else if (command.type === COMMAND_TYPE.debug)
-            this._onDebugCommand();
+        else if (command.type === COMMAND_TYPE.setBreakpoint)
+            this._onSetBreakpointCommand();
 
         else if (command.type === COMMAND_TYPE.prepareBrowserManipulation)
             this._onPrepareBrowserManipulationCommand();
@@ -492,9 +473,6 @@ export default class Driver {
 
         else if (command.type === COMMAND_TYPE.hideAssertionRetriesStatus)
             this._onHideAssertionRetriesStatusCommand(command);
-
-        else if (command.type === COMMAND_TYPE.assertion)
-            this._onAssertionCommand();
 
         else
             this._onActionCommand(command);
@@ -545,13 +523,14 @@ export default class Driver {
         this.readyPromise.then(() => {
             this.statusBar.hidePageLoadingStatus();
 
-            var status = this.contextStorage.getItem(ASSERTION_RETRIES_STATUS);
+            var assertionRetriesTimeout = this.contextStorage.getItem(ASSERTION_RETRIES_TIMEOUT);
 
-            if (status) {
-                var timeLeft = status.timeout - (new Date() - status.startTime);
+            if (assertionRetriesTimeout) {
+                var startTime = this.contextStorage.getItem(ASSERTION_RETRIES_START_TIME);
+                var timeLeft  = assertionRetriesTimeout - (new Date() - startTime);
 
                 if (timeLeft > 0)
-                    this.statusBar.showWaitingAssertionRetriesStatus(status.timeout, status.startTime);
+                    this.statusBar.showWaitingAssertionRetriesStatus(assertionRetriesTimeout, startTime);
             }
         });
 
