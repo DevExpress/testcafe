@@ -1,22 +1,22 @@
 import dedent from 'dedent';
 import { escape as escapeHtml } from 'lodash';
 import TYPE from './type';
-import TEST_RUN_STATE from '../../test-run/state';
+import TEST_RUN_PHASE from '../../test-run/phase';
 
 const SUBTITLES = {
-    [TEST_RUN_STATE.initial]:                 '',
-    [TEST_RUN_STATE.inFixtureBeforeHook]:     '<span class="subtitle">Error in fixture.before hook</span>\n',
-    [TEST_RUN_STATE.inFixtureBeforeEachHook]: '<span class="subtitle">Error in fixture.beforeEach hook</span>\n',
-    [TEST_RUN_STATE.inTestBeforeHook]:        '<span class="subtitle">Error in test.before hook</span>\n',
-    [TEST_RUN_STATE.inTest]:                  '',
-    [TEST_RUN_STATE.inTestAfterHook]:         '<span class="subtitle">Error in test.after hook</span>\n',
-    [TEST_RUN_STATE.inFixtureAfterEachHook]:  '<span class="subtitle">Error in fixture.afterEach hook</span>\n',
-    [TEST_RUN_STATE.inFixtureAfterHook]:      '<span class="subtitle">Error in fixture.after hook</span>\n'
+    [TEST_RUN_PHASE.initial]:                 '',
+    [TEST_RUN_PHASE.inFixtureBeforeHook]:     '<span class="subtitle">Error in fixture.before hook</span>\n',
+    [TEST_RUN_PHASE.inFixtureBeforeEachHook]: '<span class="subtitle">Error in fixture.beforeEach hook</span>\n',
+    [TEST_RUN_PHASE.inTestBeforeHook]:        '<span class="subtitle">Error in test.before hook</span>\n',
+    [TEST_RUN_PHASE.inTest]:                  '',
+    [TEST_RUN_PHASE.inTestAfterHook]:         '<span class="subtitle">Error in test.after hook</span>\n',
+    [TEST_RUN_PHASE.inFixtureAfterEachHook]:  '<span class="subtitle">Error in fixture.afterEach hook</span>\n',
+    [TEST_RUN_PHASE.inFixtureAfterHook]:      '<span class="subtitle">Error in fixture.after hook</span>\n'
 };
 
 function markup (err, msgMarkup, opts = {}) {
     msgMarkup = dedent(`
-        ${SUBTITLES[err.testRunState]}<div class="message">${dedent(msgMarkup)}</div>
+        ${SUBTITLES[err.testRunPhase]}<div class="message">${dedent(msgMarkup)}</div>
 
         <strong>Browser:</strong> <span class="user-agent">${err.userAgent}</span>
     `);

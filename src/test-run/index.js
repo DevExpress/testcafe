@@ -9,7 +9,7 @@ import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapt
 import { PageLoadError } from '../errors/test-run/';
 import BrowserManipulationQueue from './browser-manipulation-queue';
 import CLIENT_MESSAGES from './client-messages';
-import STATE from './state';
+import PHASE from './phase';
 import COMMAND_TYPE from './commands/type';
 import AssertionExecutor from '../assertions/executor';
 
@@ -45,7 +45,7 @@ export default class TestRun extends Session {
         this.test              = test;
         this.browserConnection = browserConnection;
 
-        this.state = STATE.initial;
+        this.phase = PHASE.initial;
 
         this.driverTaskQueue       = [];
         this.testDoneCommandQueued = false;
@@ -133,8 +133,8 @@ export default class TestRun extends Session {
 
 
     // Test function execution
-    async _executeTestFn (state, fn) {
-        this.state = state;
+    async _executeTestFn (phase, fn) {
+        this.phase = phase;
 
         try {
             await fn(this);
@@ -154,20 +154,20 @@ export default class TestRun extends Session {
 
     async _runBeforeHook () {
         if (this.test.beforeFn)
-            return await this._executeTestFn(STATE.inTestBeforeHook, this.test.beforeFn);
+            return await this._executeTestFn(PHASE.inTestBeforeHook, this.test.beforeFn);
 
         if (this.test.fixture.beforeEachFn)
-            return await this._executeTestFn(STATE.inFixtureBeforeEachHook, this.test.fixture.beforeEachFn);
+            return await this._executeTestFn(PHASE.inFixtureBeforeEachHook, this.test.fixture.beforeEachFn);
 
         return true;
     }
 
     async _runAfterHook () {
         if (this.test.afterFn)
-            return await this._executeTestFn(STATE.inTestAfterHook, this.test.afterFn);
+            return await this._executeTestFn(PHASE.inTestAfterHook, this.test.afterFn);
 
         if (this.test.fixture.afterEachFn)
-            return await this._executeTestFn(STATE.inFixtureAfterEachHook, this.test.fixture.afterEachFn);
+            return await this._executeTestFn(PHASE.inFixtureAfterEachHook, this.test.fixture.afterEachFn);
 
         return true;
     }
@@ -178,7 +178,7 @@ export default class TestRun extends Session {
         this.emit('start');
 
         if (await this._runBeforeHook()) {
-            await this._executeTestFn(STATE.inTest, this.test.fn);
+            await this._executeTestFn(PHASE.inTest, this.test.fn);
             await this._runAfterHook();
         }
 
@@ -206,7 +206,7 @@ export default class TestRun extends Session {
         var adapter = new TestRunErrorFormattableAdapter(err, {
             userAgent:      this.browserConnection.userAgent,
             screenshotPath: screenshotPath || '',
-            testRunState:   this.state
+            testRunPhase:   this.phase
         });
 
         this.errs.push(adapter);
@@ -333,12 +333,8 @@ export default class TestRun extends Session {
         if (command.type === COMMAND_TYPE.wait)
             return new Promise(resolve => setTimeout(resolve, command.timeout));
 
-        if (command.type === COMMAND_TYPE.testDone)
-            this.testDoneCommandQueued = true;
-
         if (command.type === COMMAND_TYPE.setNativeDialogHandler)
             return this._enqueueSetDialogHandlerCommand(command, callsite);
-
 
         if (command.type === COMMAND_TYPE.assertion) {
             // NOTE: we should send the assertion command to the client only if the test is executed
@@ -348,6 +344,9 @@ export default class TestRun extends Session {
 
             return this._executeAssertion(command, callsite);
         }
+
+        if (command.type === COMMAND_TYPE.testDone)
+            this.testDoneCommandQueued = true;
 
         return this._enqueueCommand(command, callsite);
     }

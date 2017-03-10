@@ -3,7 +3,7 @@ var read                                              = require('read-file-relat
 var remove                                            = require('lodash').pull;
 var escapeRe                                          = require('lodash').escapeRegExp;
 var ReporterPluginHost                                = require('../../lib/reporter/plugin-host');
-var TEST_RUN_STATE                                    = require('../../lib/test-run/state');
+var TEST_RUN_PHASE                                    = require('../../lib/test-run/phase');
 var TYPE                                              = require('../../lib/errors/test-run/type');
 var TestRunErrorFormattableAdapter                    = require('../../lib/errors/test-run/formattable-adapter');
 var testCallsite                                      = require('./data/test-callsite');
@@ -95,7 +95,7 @@ function assertErrorMessage (file, err) {
         userAgent:      userAgentMock,
         screenshotPath: screenshotPath,
         callsite:       testCallsite,
-        testRunState:   TEST_RUN_STATE.initial
+        testRunPhase:   TEST_RUN_PHASE.initial
     });
 
     plugin
