@@ -18,12 +18,11 @@ export default class Compiler {
     constructor (sources) {
         this.sources         = sources;
         this.esNextCompiler  = new EsNextCompiler();
-        this.rawDataCompiler = new RawFileCompiler();
 
         this.compilers = [
             new LegacyCompiler(hammerhead.processScript),
             this.esNextCompiler,
-            this.rawDataCompiler
+            new RawFileCompiler()
         ];
     }
 
