@@ -13,6 +13,7 @@ import PHASE from './phase';
 import COMMAND_TYPE from './commands/type';
 import AssertionExecutor from '../assertions/executor';
 import delay from '../utils/delay';
+import testRunMarker from './marker-symbol';
 
 import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
 
@@ -42,6 +43,8 @@ export default class TestRun extends Session {
 
         super(uploadsRoot);
 
+        this[testRunMarker] = true;
+
         this.opts              = opts;
         this.test              = test;
         this.browserConnection = browserConnection;
@@ -53,6 +56,7 @@ export default class TestRun extends Session {
 
         this.activeDialogHandler  = null;
         this.activeIframeSelector = null;
+        this.speed                = this.opts.speed;
 
         this.pendingRequest   = null;
         this.pendingPageError = null;
@@ -98,7 +102,7 @@ export default class TestRun extends Session {
             fixtureName:         JSON.stringify(this.test.fixture.name),
             selectorTimeout:     this.opts.selectorTimeout,
             skipJsErrors:        this.opts.skipJsErrors,
-            speed:               this.opts.speed,
+            speed:               this.speed,
             dialogHandler:       JSON.stringify(this.activeDialogHandler)
         });
     }
@@ -107,7 +111,7 @@ export default class TestRun extends Session {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             testRunId:       JSON.stringify(this.id),
             selectorTimeout: this.opts.selectorTimeout,
-            speed:           this.opts.speed,
+            speed:           this.speed,
             dialogHandler:   JSON.stringify(this.activeDialogHandler)
         });
     }
@@ -326,6 +330,9 @@ export default class TestRun extends Session {
 
         else if (command.type === COMMAND_TYPE.switchToMainWindow)
             this.activeIframeSelector = null;
+
+        else if (command.type === COMMAND_TYPE.setTestSpeed)
+            this.speed = command.speed;
     }
 
     async executeCommand (command, callsite) {
