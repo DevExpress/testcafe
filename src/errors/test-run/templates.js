@@ -80,7 +80,7 @@ export default {
     `),
 
     [TYPE.setNativeDialogHandlerCodeWrongTypeError]: err => markup(err, `
-        The native dialog handler is expected to be specified as a regular function or ClientFunction, but ${err.actualType} was passed.
+        The native dialog handler is expected to be a function, ClientFunction or null, but it was ${err.actualType}.
     `),
 
     [TYPE.uncaughtErrorInClientFunctionCode]: err => markup(err, `

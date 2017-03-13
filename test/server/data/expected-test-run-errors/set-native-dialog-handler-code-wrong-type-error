@@ -1,5 +1,5 @@
-The native dialog handler is expected to be specified as a regular function
-or ClientFunction, but number was passed.
+The native dialog handler is expected to be a function, ClientFunction or
+null, but it was number.
 
 Browser: Chrome 15.0.874 / Mac OS X 10.8.1
 Screenshot: /unix/path/with/<tag>

@@ -12,6 +12,7 @@ import CLIENT_MESSAGES from './client-messages';
 import PHASE from './phase';
 import COMMAND_TYPE from './commands/type';
 import AssertionExecutor from '../assertions/executor';
+import delay from '../utils/delay';
 
 import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
 
@@ -50,7 +51,8 @@ export default class TestRun extends Session {
         this.driverTaskQueue       = [];
         this.testDoneCommandQueued = false;
 
-        this.dialogHandler = null;
+        this.activeDialogHandler  = null;
+        this.activeIframeSelector = null;
 
         this.pendingRequest   = null;
         this.pendingPageError = null;
@@ -97,7 +99,7 @@ export default class TestRun extends Session {
             selectorTimeout:     this.opts.selectorTimeout,
             skipJsErrors:        this.opts.skipJsErrors,
             speed:               this.opts.speed,
-            dialogHandler:       JSON.stringify(this.dialogHandler)
+            dialogHandler:       JSON.stringify(this.activeDialogHandler)
         });
     }
 
@@ -106,7 +108,7 @@ export default class TestRun extends Session {
             testRunId:       JSON.stringify(this.id),
             selectorTimeout: this.opts.selectorTimeout,
             speed:           this.opts.speed,
-            dialogHandler:   JSON.stringify(this.dialogHandler)
+            dialogHandler:   JSON.stringify(this.activeDialogHandler)
         });
     }
 
@@ -220,12 +222,6 @@ export default class TestRun extends Session {
         return new Promise((resolve, reject) => this.driverTaskQueue.push({ command, resolve, reject, callsite }));
     }
 
-    _enqueueSetDialogHandlerCommand (command, callsite) {
-        this.dialogHandler = command.dialogHandler;
-
-        return this._enqueueCommand(command, callsite);
-    }
-
     _removeAllNonServiceTasks () {
         this.driverTaskQueue = this.driverTaskQueue.filter(driverTask => isServiceCommand(driverTask.command));
 
@@ -318,6 +314,20 @@ export default class TestRun extends Session {
         return executor.run();
     }
 
+    _adjustConfigurationWithCommand (command) {
+        if (command.type === COMMAND_TYPE.testDone)
+            this.testDoneCommandQueued = true;
+
+        else if (command.type === COMMAND_TYPE.setNativeDialogHandler)
+            this.activeDialogHandler = command.dialogHandler;
+
+        else if (command.type === COMMAND_TYPE.switchToIframe)
+            this.activeIframeSelector = command.selector;
+
+        else if (command.type === COMMAND_TYPE.switchToMainWindow)
+            this.activeIframeSelector = null;
+    }
+
     async executeCommand (command, callsite) {
         this.debugLog.command(command);
 
@@ -331,10 +341,7 @@ export default class TestRun extends Session {
         }
 
         if (command.type === COMMAND_TYPE.wait)
-            return new Promise(resolve => setTimeout(resolve, command.timeout));
-
-        if (command.type === COMMAND_TYPE.setNativeDialogHandler)
-            return this._enqueueSetDialogHandlerCommand(command, callsite);
+            return delay(command.timeout);
 
         if (command.type === COMMAND_TYPE.assertion) {
             // NOTE: we should send the assertion command to the client only if the test is executed
@@ -345,8 +352,7 @@ export default class TestRun extends Session {
             return this._executeAssertion(command, callsite);
         }
 
-        if (command.type === COMMAND_TYPE.testDone)
-            this.testDoneCommandQueued = true;
+        this._adjustConfigurationWithCommand(command);
 
         return this._enqueueCommand(command, callsite);
     }

@@ -50,34 +50,26 @@ function initTypeOptions (name, val) {
 }
 
 function initDialogHandler (name, val) {
-    var fn         = val.dialogHandler;
-    var options    = val.options;
-    var methodName = 'setNativeDialogHandler';
-    var builder    = fn && fn[functionBuilderSymbol];
+    var fn = val.dialogHandler;
 
-    builder = builder instanceof ClientFunctionBuilder ? builder : null;
+    if (fn === null)
+        return fn;
 
-    if (builder) {
-        if (builder instanceof SelectorBuilder)
-            throw new SetNativeDialogHandlerCodeWrongTypeError(builder.callsiteNames.instantiation);
+    var options      = val.options;
+    var methodName   = 'setNativeDialogHandler';
+    var builder      = fn && fn[functionBuilderSymbol];
+    var isSelector   = builder instanceof SelectorBuilder;
+    var functionType = typeof fn;
 
-        fn = fn.with(options);
+    if (functionType !== 'function' || isSelector)
+        throw new SetNativeDialogHandlerCodeWrongTypeError(isSelector ? 'Selector' : functionType);
 
-        builder = fn[functionBuilderSymbol];
-    }
-    else {
-        var functionType = typeof fn;
-
-        if (functionType !== 'function')
-            throw new SetNativeDialogHandlerCodeWrongTypeError(functionType);
-
-        builder = new ClientFunctionBuilder(fn, options, {
-            instantiation: methodName,
-            execution:     methodName
-        });
-    }
+    builder = builder instanceof ClientFunctionBuilder ?
+              fn.with(options)[functionBuilderSymbol] :
+              new ClientFunctionBuilder(fn, options, { instantiation: methodName, execution: methodName });
 
     return builder.getCommand([]);
+
 }
 
 // Commands

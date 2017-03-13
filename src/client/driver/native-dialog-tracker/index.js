@@ -137,9 +137,11 @@ export default class NativeDialogTracker {
     setHandler (dialogHandler) {
         this.dialogHandler = dialogHandler;
 
-        window.alert   = this._createDialogHandler('alert');
-        window.confirm = this._createDialogHandler('confirm');
-        window.prompt  = this._createDialogHandler('prompt');
+        ['alert', 'confirm', 'prompt'].forEach(dialogType => {
+            window[dialogType] = this.dialogHandler ?
+                                 this._createDialogHandler(dialogType) :
+                                 () => this._defaultDialogHandler(dialogType);
+        });
     }
 
     getUnexpectedDialogError () {

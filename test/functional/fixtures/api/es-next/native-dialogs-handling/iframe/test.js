@@ -1,4 +1,4 @@
-var errorInEachBrowserContains                = require('../../../assertion-helper.js').errorInEachBrowserContains;
+var errorInEachBrowserContains                = require('../../../../../assertion-helper.js').errorInEachBrowserContains;
 var getNativeDialogNotHandledErrorText        = require('../errors.js').getNativeDialogNotHandledErrorText;
 var getUncaughtErrorInNativeDialogHandlerText = require('../errors.js').getUncaughtErrorInNativeDialogHandlerText;
 
@@ -11,9 +11,9 @@ var DEFAULT_FAILED_RUN_IN_IFRAME_OPTIONS = {
     shouldFail:      true,
     selectorTimeout: DEFAULT_SELECTOR_TIMEOUT
 };
-var pageUrl                              = 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/page-with-iframe.html';
-var iframeUrl                            = 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/iframe.html';
-var pageLoadingUrl                       = 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/page-load.html';
+var pageUrl                              = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/page-with-iframe.html';
+var iframeUrl                            = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/iframe.html';
+var pageLoadingUrl                       = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/page-load.html';
 
 
 describe('Native dialogs handling in iframe', function () {
