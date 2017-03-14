@@ -5,8 +5,11 @@
 import TYPE from './type';
 
 export function isCommandRejectableByPageError (command) {
-    return !isObservationCommand(command) && !isBrowserManipulationCommand(command) && !isServiceCommand(command) ||
-           isRejectablePrepareBrowserManipulationCommand(command) && !isWindowSwitchingCommand(command);
+    return !isObservationCommand(command) &&
+           !isBrowserManipulationCommand(command) &&
+           !isServiceCommand(command) ||
+           isRejectablePrepareBrowserManipulationCommand(command)
+           && !isWindowSwitchingCommand(command);
 }
 
 function isObservationCommand (command) {
@@ -35,7 +38,8 @@ export function isVisualManipulationCommand (command) {
            command.type === TYPE.navigateTo ||
            command.type === TYPE.setFilesToUpload ||
            command.type === TYPE.clearUpload ||
-           command.type === TYPE.assertion;
+           command.type === TYPE.assertion ||
+           command.type === TYPE.useRole;
 }
 
 export function isBrowserManipulationCommand (command) {

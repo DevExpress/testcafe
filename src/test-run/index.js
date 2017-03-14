@@ -359,6 +359,9 @@ export default class TestRun extends Session {
         if (command.type === COMMAND_TYPE.wait)
             return delay(command.timeout);
 
+        if (command.type === COMMAND_TYPE.useRole)
+            return await this._useRole(command.role);
+
         if (command.type === COMMAND_TYPE.assertion) {
             // NOTE: we should send the assertion command to the client only if the test is executed
             // step-by-step in debugging mode to show debugging status in the status panel
@@ -413,7 +416,7 @@ export default class TestRun extends Session {
         else if (role.phase === ROLE_PHASE.pendingInitialization)
             await promisifyEvent(role, 'initialized');
 
-        if (!role.initErr)
+        if (role.initErr)
             throw role.initErr;
 
         this.phase = prevPhase;
@@ -421,14 +424,14 @@ export default class TestRun extends Session {
         return role.stateSnapshot;
     }
 
-    async useRole (role) {
+    async _useRole (role) {
         if (this.phase === PHASE.inRoleInitializer)
             throw new RoleSwitchInRoleInitializerError();
 
         var bookmark = await createBookmark(this);
 
         if (this.currentRoleId)
-            this.usedRoleStates = this.getStateSnapshot();
+            this.usedRoleStates[this.currentRoleId] = this.getStateSnapshot();
 
         var stateSnapshot = this.usedRoleStates[role.id] || await this._getStateSnapshotFromRole(role);
 

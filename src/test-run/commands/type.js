@@ -36,5 +36,6 @@ export default {
     setTestSpeed:               'set-test-speed',
     debug:                      'debug',
     assertion:                  'assertion',
+    useRole:                    'useRole',
     testDone:                   'test-done'
 };

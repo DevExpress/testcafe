@@ -6,6 +6,9 @@ import wrapTestFunction from '../api/wrap-test-function';
 import ensureUrlProtocol from '../utils/ensure-url-protocol';
 import { NavigateToCommand } from '../test-run/commands/actions';
 import roleMarker from './marker-symbol';
+import delay from '../utils/delay';
+
+const COOKIE_SYNC_DELAY = 100;
 
 class Role extends EventEmitter {
     constructor (loginPage, initFn) {
@@ -39,8 +42,11 @@ class Role extends EventEmitter {
             this.initErr = err;
         }
 
-        if (!this.initErr)
+        if (!this.initErr) {
+            // NOTE: give Hammerhead time to sync cookies from client
+            await delay(COOKIE_SYNC_DELAY);
             this.stateSnapshot = testRun.getStateSnapshot();
+        }
 
         this.phase = PHASE.initialized;
         this.emit('initialized');

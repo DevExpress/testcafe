@@ -427,6 +427,7 @@ export class UseRoleCommand extends Assignable {
     constructor (obj) {
         super(obj);
 
+        this.type = TYPE.useRole;
         this.role = null;
 
         this._assignFrom(obj, true);
