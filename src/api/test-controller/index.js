@@ -25,7 +25,8 @@ import {
     SwitchToMainWindowCommand,
     SetNativeDialogHandlerCommand,
     GetNativeDialogHistoryCommand,
-    SetTestSpeedCommand
+    SetTestSpeedCommand,
+    UseRoleCommand
 } from '../../test-run/commands/actions';
 
 import {
@@ -259,6 +260,10 @@ export default class TestController {
 
     _setTestSpeed$ (speed) {
         return this._enqueueCommand('setTestSpeed', SetTestSpeedCommand, { speed });
+    }
+
+    _useRole$ (role) {
+        return this._enqueueCommand('useRole', UseRoleCommand, { role });
     }
 }
 
