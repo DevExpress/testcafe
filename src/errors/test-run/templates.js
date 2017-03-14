@@ -11,7 +11,8 @@ const SUBTITLES = {
     [TEST_RUN_PHASE.inTest]:                  '',
     [TEST_RUN_PHASE.inTestAfterHook]:         '<span class="subtitle">Error in test.after hook</span>\n',
     [TEST_RUN_PHASE.inFixtureAfterEachHook]:  '<span class="subtitle">Error in fixture.afterEach hook</span>\n',
-    [TEST_RUN_PHASE.inFixtureAfterHook]:      '<span class="subtitle">Error in fixture.after hook</span>\n'
+    [TEST_RUN_PHASE.inFixtureAfterHook]:      '<span class="subtitle">Error in fixture.after hook</span>\n',
+    [TEST_RUN_PHASE.inRoleInitializer]:       '<span class="subtitle">Error in Role initializer</span>\n'
 };
 
 function markup (err, msgMarkup, opts = {}) {
@@ -236,5 +237,9 @@ export default {
 
     [TYPE.windowDimensionsOverflowError]: err => markup(err, `
         Unable to resize the window because the specified size exceeds the screen size. On macOS, a window cannot be larger than the screen.
+    `),
+
+    [TYPE.roleSwitchInRoleInitializerError]: err => markup(err, `
+        Role cannot be switched while another role is being initialized.
     `)
 };

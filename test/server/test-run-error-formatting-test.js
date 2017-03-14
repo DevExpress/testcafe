@@ -55,6 +55,7 @@ var SetNativeDialogHandlerCodeWrongTypeError          = require('../../lib/error
 var CantObtainInfoForElementSpecifiedBySelectorError  = require('../../lib/errors/test-run').CantObtainInfoForElementSpecifiedBySelectorError;
 var WindowDimensionsOverflowError                     = require('../../lib/errors/test-run').WindowDimensionsOverflowError;
 var SetTestSpeedArgumentError                         = require('../../lib/errors/test-run').SetTestSpeedArgumentError;
+var RoleSwitchInRoleInitializerError                  = require('../../lib/errors/test-run').RoleSwitchInRoleInitializerError;
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
 
@@ -308,6 +309,10 @@ describe('Error formatting', function () {
 
         it('Should format "setTestSpeedArgumentError"', function () {
             assertErrorMessage('set-test-speed-argument-error', new SetTestSpeedArgumentError('speed', 'string'));
+        });
+
+        it('Should format "roleSwitchInRoleInitializerError"', function () {
+            assertErrorMessage('role-switch-in-role-initializer-error', new RoleSwitchInRoleInitializerError());
         });
     });
 

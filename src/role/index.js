@@ -4,6 +4,7 @@ import PHASE from './phase';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import wrapTestFunction from '../api/wrap-test-function';
 import ensureUrlProtocol from '../utils/ensure-url-protocol';
+import { NavigateToCommand } from '../test-run/commands/actions';
 
 class Role extends EventEmitter {
     constructor (loginPage, initFn) {
@@ -20,8 +21,27 @@ class Role extends EventEmitter {
         this.initErr       = null;
     }
 
-    async getStateSnapshot () {
+    async initialize (testRun) {
+        this.phase = PHASE.pendingInitialization;
 
+        await testRun.switchToCleanRun();
+
+        var navigateCommand = new NavigateToCommand({ url: this.loginPage });
+
+        await testRun.executeCommand(navigateCommand);
+
+        try {
+            await this.initFn(testRun);
+        }
+        catch (err) {
+            this.initErr = err;
+        }
+
+        if (!this.initErr)
+            this.stateSnapshot = testRun.getStateSnapshot();
+
+        this.phase = PHASE.initialized;
+        this.emit('initialized');
     }
 }
 

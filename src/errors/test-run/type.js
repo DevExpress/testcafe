@@ -51,5 +51,6 @@ export default {
     cantObtainInfoForElementSpecifiedBySelectorError:  'cantObtainInfoForElementSpecifiedBySelectorError',
     externalAssertionLibraryError:                     'externalAssertionLibraryError',
     pageLoadError:                                     'pageLoadError',
-    windowDimensionsOverflowError:                     'windowDimensionsOverflowError'
+    windowDimensionsOverflowError:                     'windowDimensionsOverflowError',
+    roleSwitchInRoleInitializerError:                  'roleSwitchInRoleInitializerError'
 };

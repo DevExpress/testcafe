@@ -409,3 +409,9 @@ export class WindowDimensionsOverflowError extends TestRunErrorBase {
         super(TYPE.windowDimensionsOverflowError);
     }
 }
+
+export class RoleSwitchInRoleInitializerError extends TestRunErrorBase {
+    constructor () {
+        super(TYPE.roleSwitchInRoleInitializerError);
+    }
+}

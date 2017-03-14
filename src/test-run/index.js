@@ -1,12 +1,13 @@
 import path from 'path';
 import { readSync as read } from 'read-file-relative';
+import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
 import showDebuggerMessage from '../notifications/debugger-message';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import { PageLoadError } from '../errors/test-run/';
+import { PageLoadError, WindowDimensionsOverflowError, RoleSwitchInRoleInitializerError } from '../errors/test-run/';
 import BrowserManipulationQueue from './browser-manipulation-queue';
 import CLIENT_MESSAGES from './client-messages';
 import PHASE from './phase';
@@ -14,8 +15,13 @@ import COMMAND_TYPE from './commands/type';
 import AssertionExecutor from '../assertions/executor';
 import delay from '../utils/delay';
 import testRunMarker from './marker-symbol';
+import testRunTracker from '../api/test-run-tracker';
+import ROLE_PHASE from '../role/phase';
+import createBookmark from './bookmark';
 
-import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
+import { TakeScreenshotOnFailCommand, ResizeWindowCommand } from './commands/browser-manipulation';
+import { SetNativeDialogHandlerCommand, SetTestSpeedCommand } from './commands/actions';
+
 
 import {
     TestDoneCommand,
@@ -64,6 +70,9 @@ export default class TestRun extends Session {
         this.controller = null;
         this.ctx        = Object.create(null);
         this.fixtureCtx = null;
+
+        this.currentRoleId  = null;
+        this.usedRoleStates = Object.create(null);
 
         this.errs = [];
 
@@ -179,7 +188,7 @@ export default class TestRun extends Session {
     }
 
     async start () {
-        TestRun.activeTestRuns[this.id] = this;
+        testRunTracker.activeTestRuns[this.id] = this;
 
         this.emit('start');
 
@@ -191,7 +200,7 @@ export default class TestRun extends Session {
         await this.executeCommand(new TestDoneCommand());
         this._addPendingPageErrorIfAny();
 
-        delete TestRun.activeTestRuns[this.id];
+        delete testRunTracker.activeTestRuns[this.id];
 
         this.emit('done');
     }
@@ -372,11 +381,64 @@ export default class TestRun extends Session {
 
         return Promise.reject(err);
     }
+
+    // Role management
+    async switchToCleanRun () {
+        this.ctx        = Object.create(null);
+        this.fixtureCtx = null;
+
+        this.useStateSnapshot(null);
+
+        if (this.activeDialogHandler) {
+            var removeDialogHandlerCommand = new SetNativeDialogHandlerCommand({ dialogHandler: null });
+
+            await this.executeCommand(removeDialogHandlerCommand);
+        }
+
+        if (this.speed !== this.opts.speed) {
+            var setSpeedCommand = new SetTestSpeedCommand({ speed: this.opts.speed });
+
+            await this.executeCommand(setSpeedCommand);
+        }
+    }
+
+    async _getStateSnapshotFromRole (role) {
+        var prevPhase = this.phase;
+
+        this.phase = PHASE.inRoleInitializer;
+
+        if (role.phase === ROLE_PHASE.uninitialized)
+            await role.initialize(this);
+
+        else if (role.phase === ROLE_PHASE.pendingInitialization)
+            await promisifyEvent(role, 'initialized');
+
+        if (!role.initErr)
+            throw role.initErr;
+
+        this.phase = prevPhase;
+
+        return role.stateSnapshot;
+    }
+
+    async useRole (role) {
+        if (this.phase === PHASE.inRoleInitializer)
+            throw new RoleSwitchInRoleInitializerError();
+
+        var bookmark = await createBookmark(this);
+
+        if (this.currentRoleId)
+            this.usedRoleStates = this.getStateSnapshot();
+
+        var stateSnapshot = this.usedRoleStates[role.id] || await this._getStateSnapshotFromRole(role);
+
+        this.useStateSnapshot(stateSnapshot);
+
+        this.currentRoleId = role.id;
+
+        await bookmark.restore();
+    }
 }
-
-
-// Active test runs pool, used by client functions
-TestRun.activeTestRuns = {};
 
 
 // Service message handlers

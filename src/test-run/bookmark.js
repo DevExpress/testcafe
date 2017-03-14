@@ -66,7 +66,7 @@ export default async function createBookmark (testRun) {
     var bookmark = new TestRunBookmark(testRun);
 
     if (testRun.activeIframeSelector)
-        await testRun.execCommand(new SwitchToMainWindowCommand());
+        await testRun.executeCommand(new SwitchToMainWindowCommand());
 
     var builder = new ClientFunctionBuilder(() => {
         /* eslint-disable no-undef */

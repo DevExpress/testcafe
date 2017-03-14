@@ -6,5 +6,6 @@ export default {
     inTest:                  'inTest',
     inTestAfterHook:         'inTestAfterHook',
     inFixtureAfterEachHook:  'inFixtureAfterEachHook',
-    inFixtureAfterHook:      'inFixtureAfterHook'
+    inFixtureAfterHook:      'inFixtureAfterHook',
+    inRoleInitializer:       'inRoleInitializer'
 };
