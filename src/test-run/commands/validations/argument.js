@@ -1,4 +1,5 @@
 import { isValidDeviceName } from 'testcafe-browser-tools';
+import roleMarkerSymbol from '../../../role/marker-symbol';
 
 import {
     createBooleanValidator,
@@ -12,6 +13,7 @@ import {
     ActionBooleanArgumentError,
     ActionStringArgumentError,
     ActionIntegerArgumentError,
+    ActionRoleArgumentError,
     ActionPositiveIntegerArgumentError,
     ActionUnsupportedUrlProtocolError,
     ActionStringOrStringArrayArgumentError,
@@ -30,6 +32,11 @@ export var positiveIntegerArgument = createPositiveIntegerValidator(ActionPositi
 export var booleanArgument         = createBooleanValidator(ActionBooleanArgumentError);
 export var setSpeedArgument        = createSpeedValidator(SetTestSpeedArgumentError);
 
+
+export function actionRoleArgument (name, val) {
+    if (!val || !val[roleMarkerSymbol])
+        throw new ActionRoleArgumentError(name, typeof val);
+}
 
 export function actionOptions (name, val) {
     var type = typeof val;

@@ -199,6 +199,12 @@ export class ActionIntegerArgumentError extends ActionArgumentErrorBase {
     }
 }
 
+export class ActionRoleArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TYPE.actionRoleArgumentError, argumentName, actualValue);
+    }
+}
+
 export class ActionPositiveIntegerArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
         super(TYPE.actionPositiveIntegerArgumentError, argumentName, actualValue);

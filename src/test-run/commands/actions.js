@@ -12,7 +12,8 @@ import {
     nonEmptyStringArgument,
     urlArgument,
     stringOrStringArrayArgument,
-    setSpeedArgument
+    setSpeedArgument,
+    actionRoleArgument
 } from './validations/argument';
 
 import { ActionSelectorError, SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
@@ -418,6 +419,22 @@ export class SetTestSpeedCommand extends Assignable {
     _getAssignableProperties () {
         return [
             { name: 'speed', type: setSpeedArgument, required: true }
+        ];
+    }
+}
+
+export class UseRoleCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.role = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'role', type: actionRoleArgument, required: true }
         ];
     }
 }

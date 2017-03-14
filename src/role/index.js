@@ -5,17 +5,19 @@ import { assertType, is } from '../errors/runtime/type-assertions';
 import wrapTestFunction from '../api/wrap-test-function';
 import ensureUrlProtocol from '../utils/ensure-url-protocol';
 import { NavigateToCommand } from '../test-run/commands/actions';
+import roleMarker from './marker-symbol';
 
 class Role extends EventEmitter {
     constructor (loginPage, initFn) {
         super();
 
-        this.id = shortId.generate();
+        this[roleMarker] = true;
+
+        this.id    = shortId.generate();
+        this.phase = loginPage ? PHASE.uninitialized : PHASE.initialized;
 
         this.loginPage = loginPage;
         this.initFn    = initFn;
-
-        this.phase = loginPage ? PHASE.uninitialized : PHASE.initialized;
 
         this.stateSnapshot = null;
         this.initErr       = null;

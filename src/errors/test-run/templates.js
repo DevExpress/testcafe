@@ -128,6 +128,10 @@ export default {
         The "${err.argumentName}" argument is expected to be an integer, but it was ${err.actualValue}.
     `),
 
+    [TYPE.actionRoleArgumentError]: err => markup(err, `
+        The "${err.argumentName}" argument is expected to be a Role instance, but it was ${err.actualValue}.
+    `),
+
     [TYPE.actionPositiveIntegerArgumentError]: err => markup(err, `
         The "${err.argumentName}" argument is expected to be a positive integer, but it was ${err.actualValue}.
     `),
