@@ -12,6 +12,12 @@
     <input type="submit" value="SetToken">
 </form>
 
+<div id="element-on-page">
+</div>
+
+<iframe id="iframe" src="./iframe.html"></iframe>
+<input id="show-alert" type="button">
+
 <script>
     function getCookie (name) {
         var kvs = document.cookie.split(';')
@@ -29,6 +35,10 @@
 
     document.querySelector('#user-name').textContent = getCookie('name');
     document.querySelector('#token').textContent = getCookie('token');
+
+    document.querySelector('#show-alert').addEventListener('click', function () {
+        alert('Hey!');
+    });
 
 </script>
 

@@ -21,7 +21,7 @@ class TestRunBookmark {
 
     async _restoreDialogHandler () {
         if (this.testRun.activeDialogHandler !== this.dialogHandler) {
-            var restoreDialogCommand = new SetNativeDialogHandlerCommand({ dialogHandler: this.dialogHandler });
+            var restoreDialogCommand = new SetNativeDialogHandlerCommand({ dialogHandler: { fn: this.dialogHandler } });
 
             await this.testRun.executeCommand(restoreDialogCommand);
         }

@@ -18,10 +18,14 @@ import {
 
 import { ActionSelectorError, SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
 import { APIError } from '../../errors/runtime';
+import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './observation';
 
 
 // Initializers
 function initSelector (name, val, skipVisibilityCheck) {
+    if (val instanceof ExecuteSelectorCommand)
+        return val;
+
     try {
         var builder = new SelectorBuilder(val, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
 
@@ -51,9 +55,9 @@ function initTypeOptions (name, val) {
 }
 
 function initDialogHandler (name, val) {
-    var fn = val.dialogHandler;
+    var fn = val.fn;
 
-    if (fn === null)
+    if (fn === null || fn instanceof ExecuteClientFunctionCommand)
         return fn;
 
     var options      = val.options;

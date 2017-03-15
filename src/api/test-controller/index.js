@@ -235,12 +235,9 @@ export default class TestController {
         return clientFn();
     }
 
-    _setNativeDialogHandler$ (dialogHandler, options) {
+    _setNativeDialogHandler$ (fn, options) {
         return this._enqueueCommand('setNativeDialogHandler', SetNativeDialogHandlerCommand, {
-            dialogHandler: {
-                dialogHandler,
-                options
-            }
+            dialogHandler: { fn, options }
         });
     }
 

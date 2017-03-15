@@ -388,12 +388,12 @@ export default class TestRun extends Session {
     // Role management
     async switchToCleanRun () {
         this.ctx        = Object.create(null);
-        this.fixtureCtx = null;
+        this.fixtureCtx = Object.create(null);
 
         this.useStateSnapshot(null);
 
         if (this.activeDialogHandler) {
-            var removeDialogHandlerCommand = new SetNativeDialogHandlerCommand({ dialogHandler: null });
+            var removeDialogHandlerCommand = new SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });
 
             await this.executeCommand(removeDialogHandlerCommand);
         }
