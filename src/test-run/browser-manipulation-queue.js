@@ -38,9 +38,9 @@ export default class BrowserManipulationQueue {
         return await this._resizeWindow(width, height, currentWidth, currentHeight);
     }
 
-    async _maximizeWindow (currentWidth, currentHeight) {
+    async _maximizeWindow () {
         try {
-            return await this.browserProvider.maximizeWindow(this.browserId, currentWidth, currentHeight);
+            return await this.browserProvider.maximizeWindow(this.browserId);
         }
         catch (err) {
             this.warningLog.addWarning(WARNING_MESSAGE.maximizeError, err.message);
@@ -88,7 +88,7 @@ export default class BrowserManipulationQueue {
                 return await this._resizeWindowToFitDevice(command.device, command.options.portraitOrientation, driverMsg.innerWidth, driverMsg.innerHeight);
 
             case COMMAND_TYPE.maximizeWindow:
-                return await this._maximizeWindow(driverMsg.innerWidth, driverMsg.innerHeight);
+                return await this._maximizeWindow();
         }
 
         return null;

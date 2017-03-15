@@ -135,16 +135,7 @@ export default class BrowserProvider {
         return width <= maxScreenSize.width && height <= maxScreenSize.height;
     }
 
-    async _maximizeLocalBrowserWindow (browserId, currentWidth, currentHeight) {
-        // NOTE: no true maximizing on macOS: https://github.com/DevExpress/testcafe-browser-tools/issues/89
-        if (OS.mac) {
-            var maxSize = this.maxScreenSizes[browserId];
-
-            await browserTools.resize(browserId, maxSize.width, maxSize.height, currentWidth, currentHeight);
-
-            return;
-        }
-
+    async _maximizeLocalBrowserWindow (browserId) {
         await browserTools.maximize(browserId);
     }
 
@@ -231,12 +222,12 @@ export default class BrowserProvider {
         return await this.plugin.canResizeWindowToDimensions(browserId, width, height);
     }
 
-    async maximizeWindow (browserId, currentWidth, currentHeight) {
+    async maximizeWindow (browserId) {
         var isLocalBrowser    = await this.plugin.isLocalBrowser(browserId);
         var supportedFeatures = await this.plugin.hasCustomActionForBrowser(browserId);
 
         if (isLocalBrowser && !supportedFeatures.hasCanResizeWindowToDimensions)
-            return await this._maximizeLocalBrowserWindow(browserId, currentWidth, currentHeight);
+            return await this._maximizeLocalBrowserWindow(browserId);
 
         return await this.plugin.maximizeWindow(browserId);
     }
