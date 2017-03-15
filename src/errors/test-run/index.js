@@ -417,7 +417,9 @@ export class WindowDimensionsOverflowError extends TestRunErrorBase {
 }
 
 export class RoleSwitchInRoleInitializerError extends TestRunErrorBase {
-    constructor () {
+    constructor (callsite) {
         super(TYPE.roleSwitchInRoleInitializerError);
+
+        this.callsite = callsite;
     }
 }

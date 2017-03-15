@@ -1,4 +1,6 @@
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
+import TEST_RUN_PHASE from '../test-run/phase';
+
 import {
     SwitchToMainWindowCommand,
     SwitchToIframeCommand,
@@ -51,14 +53,27 @@ class TestRunBookmark {
         await this.testRun.executeCommand(navigateCommand);
     }
 
-    async restore () {
+    async restore (callsite) {
+        var prevPhase = this.testRun.phase;
+
+        this.testRun.phase = TEST_RUN_PHASE.inBookmarkRestore;
+
         this.testRun.ctx        = this.ctx;
         this.testRun.fixtureCtx = this.fixtureCtx;
 
-        await this._restoreDialogHandler();
-        await this._restoreSpeed();
-        await this._restorePage();
-        await this._restoreWorkingFrame();
+        try {
+            await this._restoreDialogHandler();
+            await this._restoreSpeed();
+            await this._restorePage();
+            await this._restoreWorkingFrame();
+        }
+        catch (err) {
+            err.callsite = callsite;
+
+            throw err;
+        }
+
+        this.testRun.phase = prevPhase;
     }
 }
 

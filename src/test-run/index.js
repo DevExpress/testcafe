@@ -360,7 +360,7 @@ export default class TestRun extends Session {
             return delay(command.timeout);
 
         if (command.type === COMMAND_TYPE.useRole)
-            return await this._useRole(command.role);
+            return await this._useRole(command.role, callsite);
 
         if (command.type === COMMAND_TYPE.assertion) {
             // NOTE: we should send the assertion command to the client only if the test is executed
@@ -424,9 +424,9 @@ export default class TestRun extends Session {
         return role.stateSnapshot;
     }
 
-    async _useRole (role) {
+    async _useRole (role, callsite) {
         if (this.phase === PHASE.inRoleInitializer)
-            throw new RoleSwitchInRoleInitializerError();
+            throw new RoleSwitchInRoleInitializerError(callsite);
 
         var bookmark = await createBookmark(this);
 
@@ -439,7 +439,7 @@ export default class TestRun extends Session {
 
         this.currentRoleId = role.id;
 
-        await bookmark.restore();
+        await bookmark.restore(callsite);
     }
 }
 

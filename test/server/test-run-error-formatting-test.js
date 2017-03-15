@@ -314,7 +314,7 @@ describe('Error formatting', function () {
         });
 
         it('Should format "roleSwitchInRoleInitializerError"', function () {
-            assertErrorMessage('role-switch-in-role-initializer-error', new RoleSwitchInRoleInitializerError());
+            assertErrorMessage('role-switch-in-role-initializer-error', new RoleSwitchInRoleInitializerError(testCallsite));
         });
 
         it('Should format "actionRoleArgumentError"', function () {
