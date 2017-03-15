@@ -5,9 +5,10 @@ permalink: /documentation/recipes/debugging-tests.html
 ---
 # Debugging Tests
 
-TestCafe allows you to debug server-side test code and provides a number of options useful for debugging.
+TestCafe allows you to debug server-side test code and test behavior on the client.
 
 * [Debugging Test Code](#debugging-test-code)
+* [Debugging Test Behavior on the Client](#debugging-test-behavior-on-the-client)
 * [Options Useful for Debugging](#options-useful-for-debugging)
 
 ## Debugging Test Code
@@ -47,6 +48,32 @@ Click the 'Resume script execution' button or press F5 to continue. After that, 
 You can also debug test code from an IDE.
 For instance, Visual Studio Code has a dedicated [TestCafe plugin](https://github.com/romanresh/vscode-testcafe).
 It allows you to run and debug your tests in the IDE using the context menu.
+
+## Debugging Test Behavior on the Client
+
+To debug test behavior on the client, use the [t.debug](../test-api/actions/debug.md) action.
+
+```js
+fixture `My fixture`
+    .page `https://devexpress.github.io/testcafe/example`;
+
+test('My test', async t => {
+    await t
+        .debug()
+        .click('#populate')
+        .click('#submit-button');
+});
+```
+
+When test execution reaches this action, it pauses so that you can open browser's developer tools
+and check the web page state, DOM elements location, their CSS styles.
+In the footer, you'll find buttons that allow you to continue test execution or step to the next test action.
+
+![Page Footer when Debugging on a Client](../../images/debugging/client-debugging-footer.png)
+
+TestCafe logs points in code where the debugger stopped.
+
+![Logging Debugger Breakpoints](../../images/debugging/log-debugger.png)
 
 ## Options Useful for Debugging
 
