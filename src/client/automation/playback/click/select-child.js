@@ -142,15 +142,7 @@ export default class SelectChildClickAutomation {
     }
 
     _mouseup () {
-        if (browserUtils.isFirefox || browserUtils.isSafari || browserUtils.isChrome && browserUtils.version >= 53) {
-            eventSimulator.mouseup(this.eventsArgs.element, this.eventsArgs.options);
-
-            if (this.clickCausesChange) {
-                eventSimulator.input(this.parentSelect);
-                eventSimulator.change(this.parentSelect);
-            }
-        }
-        else if (browserUtils.isIE) {
+        if (browserUtils.isIE) {
             eventSimulator.mouseup(this.parentSelect, this.eventsArgs.options);
 
             if (this.clickCausesChange) {
@@ -159,8 +151,15 @@ export default class SelectChildClickAutomation {
                 eventSimulator.change(this.parentSelect);
             }
         }
-        else
+        else {
             eventSimulator.mouseup(this.eventsArgs.element, this.eventsArgs.options);
+
+            if ((browserUtils.isFirefox || browserUtils.isSafari ||
+                 browserUtils.isChrome && browserUtils.version >= 53) && this.clickCausesChange) {
+                eventSimulator.input(this.parentSelect);
+                eventSimulator.change(this.parentSelect);
+            }
+        }
 
         return Promise.resolve();
     }
