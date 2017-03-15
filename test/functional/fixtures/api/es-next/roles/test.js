@@ -2,7 +2,7 @@ var expect = require('chai').expect;
 
 describe('[API] t.useRole()', function () {
     it('Should initialize and switch roles', function () {
-        return runTests('./testcafe-fixtures/use-role-test.js');
+        return runTests('./testcafe-fixtures/use-role-test.js', null, { only: 'chrome,ie,firefox' });
     });
 
     it('Should switch to Role.anonymous()', function () {
@@ -23,7 +23,10 @@ describe('[API] t.useRole()', function () {
 
     describe('Errors', function () {
         it('Should fail all tests that use role with the initiliazer error', function () {
-            return runTests('./testcafe-fixtures/init-error-test.js', null, { shouldFail: true })
+            return runTests('./testcafe-fixtures/init-error-test.js', null, {
+                shouldFail: true,
+                only:       'chrome,ie,firefox'
+            })
                 .catch(function (errs) {
                     const browsers = Object.keys(errs);
 
