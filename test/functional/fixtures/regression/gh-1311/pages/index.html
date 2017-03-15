@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+<select id="target1" size="1">
+    <option value="One">One</option>
+    <option value="Two">Two</option>
+    <option value="Three">Three</option>
+    <option value="Four">Four</option>
+</select>
+<select id="target2" size="2">
+    <option value="Um">Um</option>
+    <option value="Dois">Dois</option>
+    <option value="Tres">Tres</option>
+    <option value="Quatro">Quatro</option>
+</select>
+<script>
+    window.inputEventCounter = 0;
+
+    function increaseInputEventCounter () {
+        window.inputEventCounter++;
+    }
+
+    document.querySelector('#target1').addEventListener('input', increaseInputEventCounter);
+    document.querySelector('#target2').addEventListener('input', increaseInputEventCounter);
+</script>
+</body>
+</html>
