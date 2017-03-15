@@ -13,12 +13,12 @@ describe('[API] t.useRole()', function () {
         return runTests('./testcafe-fixtures/configuration-test.js', 'Clear configuration', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('- Error in Role initializer - A native alert dialog was invoked');
-                expect(errs[0]).contains('> 30 |    await t.click(showAlertBtn);');
+                expect(errs[0]).contains('> 31 |    await t.click(showAlertBtn);');
             });
     });
 
     it('Should restore configuration after role initializer', function () {
-        return runTests('./testcafe-fixtures/configuration-test.js', 'Restore configuration');
+        return runTests('./testcafe-fixtures/configuration-test.js', 'Restore configuration', { selectorTimeout: 5000 });
     });
 
     describe('Errors', function () {

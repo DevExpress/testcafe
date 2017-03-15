@@ -26,7 +26,7 @@ const role1 = Role('http://localhost:3000/fixtures/api/es-next/roles/pages/index
     await t
         .expect(pageElement.exists).ok()
         .expect(t.ctx.someVal).notOk()
-        .expect(t.fixureCtx.someVal).notOk();
+        .expect(t.fixtureCtx.someVal).notOk();
 
     await t.click(showAlertBtn);
 });
