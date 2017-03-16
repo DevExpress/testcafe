@@ -351,6 +351,23 @@ export class ActionElementIsNotFileInputError extends TestRunErrorBase {
     }
 }
 
+export class WindowDimensionsOverflowError extends TestRunErrorBase {
+    constructor (callsite) {
+        super(TYPE.windowDimensionsOverflowError);
+
+        this.callsite = callsite;
+    }
+}
+
+export class RoleSwitchInRoleInitializerError extends TestRunErrorBase {
+    constructor (callsite) {
+        super(TYPE.roleSwitchInRoleInitializerError);
+
+        this.callsite = callsite;
+    }
+}
+
+
 // Iframe errors
 export class ActionElementNotIframeError extends TestRunErrorBase {
     constructor () {
@@ -410,16 +427,3 @@ export class SetNativeDialogHandlerCodeWrongTypeError extends TestRunErrorBase {
     }
 }
 
-export class WindowDimensionsOverflowError extends TestRunErrorBase {
-    constructor () {
-        super(TYPE.windowDimensionsOverflowError);
-    }
-}
-
-export class RoleSwitchInRoleInitializerError extends TestRunErrorBase {
-    constructor (callsite) {
-        super(TYPE.roleSwitchInRoleInitializerError);
-
-        this.callsite = callsite;
-    }
-}
