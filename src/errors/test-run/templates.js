@@ -109,10 +109,6 @@ export default {
         Action options is expected to be an object, null or undefined but it was ${err.actualType}.
     `),
 
-    [TYPE.actionUnsupportedUrlProtocolError]: err => markup(err, `
-        The "${err.argumentName}" argument specifies a URL that uses an unsupported ${err.protocol}:// protocol. Only HTTP and HTTPS are supported, as well as protocol-relative and relative URLs.
-    `),
-
     [TYPE.actionStringArgumentError]: err => markup(err, `
         The "${err.argumentName}" argument is expected to be a non-empty string, but it was ${err.actualValue}.
     `),

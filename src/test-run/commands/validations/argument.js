@@ -15,16 +15,14 @@ import {
     ActionIntegerArgumentError,
     ActionRoleArgumentError,
     ActionPositiveIntegerArgumentError,
-    ActionUnsupportedUrlProtocolError,
     ActionStringOrStringArrayArgumentError,
     ActionStringArrayElementError,
     ActionUnsupportedDeviceTypeError,
     SetTestSpeedArgumentError
 } from '../../../errors/test-run';
 
+import { assertUrl } from '../../../api/test-page-url';
 
-const PROTOCOL_RE           = /^([\w-]+?)(?=\:)/;
-const SUPPORTED_PROTOCOL_RE = /^https?/i;
 
 // Validators
 export var integerArgument         = createIntegerValidator(ActionIntegerArgumentError);
@@ -62,11 +60,7 @@ export function nonEmptyStringArgument (argument, val, createError) {
 export function urlArgument (name, val) {
     nonEmptyStringArgument(name, val);
 
-    var url      = val.trim();
-    var protocol = url.match(PROTOCOL_RE);
-
-    if (protocol && !SUPPORTED_PROTOCOL_RE.test(protocol[0]))
-        throw new ActionUnsupportedUrlProtocolError(name, protocol[0]);
+    assertUrl(val.trim(), 'navigateTo');
 }
 
 export function stringOrStringArrayArgument (argument, val) {

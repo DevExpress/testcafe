@@ -231,15 +231,6 @@ export class SetTestSpeedArgumentError extends ActionArgumentErrorBase {
     }
 }
 
-export class ActionUnsupportedUrlProtocolError extends TestRunErrorBase {
-    constructor (argumentName, protocol) {
-        super(TYPE.actionUnsupportedUrlProtocolError);
-
-        this.argumentName = argumentName;
-        this.protocol     = protocol;
-    }
-}
-
 export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
     constructor (argumentName, argumentValue) {
         super(TYPE.actionUnsupportedDeviceTypeError, argumentName, argumentValue);

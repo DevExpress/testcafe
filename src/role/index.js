@@ -3,7 +3,7 @@ import shortId from 'shortid';
 import PHASE from './phase';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import wrapTestFunction from '../api/wrap-test-function';
-import ensureUrlProtocol from '../utils/ensure-url-protocol';
+import { resolvePageUrl } from '../api/test-page-url';
 import { NavigateToCommand } from '../test-run/commands/actions';
 import roleMarker from './marker-symbol';
 import delay from '../utils/delay';
@@ -57,7 +57,7 @@ export function createRole (loginPage, initFn) {
     assertType(is.string, 'Role', '"loginPage" argument', loginPage);
     assertType(is.function, 'Role', '"initFn" argument', initFn);
 
-    loginPage = ensureUrlProtocol(loginPage);
+    loginPage = resolvePageUrl(loginPage);
     initFn    = wrapTestFunction(initFn);
 
     return new Role(loginPage, initFn);

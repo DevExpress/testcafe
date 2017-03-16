@@ -22,7 +22,6 @@ export default {
     actionRoleArgumentError:                           'actionRoleArgumentError',
     actionPositiveIntegerArgumentError:                'actionPositiveIntegerArgumentError',
     actionSelectorError:                               'actionSelectorError',
-    actionUnsupportedUrlProtocolError:                 'actionUnsupportedUrlProtocolError',
     actionElementNotFoundError:                        'actionElementNotFoundError',
     actionElementIsInvisibleError:                     'actionElementIsInvisibleError',
     actionSelectorMatchesWrongNodeTypeError:           'actionSelectorMatchesWrongNodeTypeError',
