@@ -108,10 +108,10 @@
   - name: Authentication
     url: /documentation/test-api/authentication/README.md
     content:
-    - name: HTTP Authentication
-      url: /documentation/test-api/authentication/http-authentication.md
     - name: User Roles
       url: /documentation/test-api/authentication/user-roles.md
+    - name: HTTP Authentication
+      url: /documentation/test-api/authentication/http-authentication.md
   - name: Pausing the Test
     url: /documentation/test-api/pausing-the-test.md
   - name: Handling Native Dialogs
