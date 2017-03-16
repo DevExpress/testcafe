@@ -15,25 +15,26 @@ A piece of logic that logs in a particular user is called a *role*. Define a rol
 Use the `Role` constructor to create and initialize a role.
 
 ```text
-Role( func( t ) )
+Role( url, func( t ) )
 ```
 
 Parameter | Type     | Description
 --------- | -------- | --------------------------------------------------------------------------------
+`url`     | String   | The URL of the login page.
 `func`    | Function | An asynchronous function that contains logic that authenticates the user.
 `t`       | Object   | The [test controller](../test-code-structure.md#test-controller) used to access test run API.
 
 ```js
 import { Role } from 'testcafe';
 
-const regularAccUser = Role(async t => {
+const regularAccUser = Role('http://example.com/login', async t => {
     await t
         .typeText('#login', 'TestUser')
         .typeText('#password', 'testpass')
         .click('#sign-in');
 });
 
-const facebookAccUser = Role(async t => {
+const facebookAccUser = Role('http://example.com/login', async t => {
     await t
         .click('#sign-in-with-facebook')
         .typeText('#email', 'testuser@mycompany.com')
@@ -41,7 +42,7 @@ const facebookAccUser = Role(async t => {
         .click('#submit');
 });
 
-const admin = Role(async t => {
+const admin = Role('http://example.com/login', async t => {
     await t
         .typeText('#login', 'Admin')
         .typeText('#password', 'adminpass')
@@ -52,6 +53,8 @@ const admin = Role(async t => {
 > Role initialization code is executed only once when the role is used for the first time.
 
 After you create the roles, you can switch between users at any moment except for the role initialization code.
+
+If you switch to a role for the first time in test run, the browser will be navigated from the original page to a login page where the role initialization code will be executed. Then the original page will be reloaded with new credentials. If you switch to a role that has already been initialized, TestCafe simply reloads the current page with the appropriate credentials.
 
 To switch to a role, use the `t.useRole` function.
 
