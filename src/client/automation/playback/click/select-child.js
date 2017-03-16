@@ -142,24 +142,23 @@ export default class SelectChildClickAutomation {
     }
 
     _mouseup () {
-        if (browserUtils.isIE) {
-            eventSimulator.mouseup(this.parentSelect, this.eventsArgs.options);
+        var elementForMouseupEvent = browserUtils.isIE ? this.parentSelect : this.eventsArgs.element;
 
-            if (this.clickCausesChange) {
-                this.parentSelect.selectedIndex = this.childIndex;
+        eventSimulator.mouseup(elementForMouseupEvent, this.eventsArgs.options);
 
-                eventSimulator.change(this.parentSelect);
-            }
-        }
-        else {
-            eventSimulator.mouseup(this.eventsArgs.element, this.eventsArgs.options);
+        if (browserUtils.isIE && this.clickCausesChange)
+            this.parentSelect.selectedIndex = this.childIndex;
 
-            if ((browserUtils.isFirefox || browserUtils.isSafari ||
-                 browserUtils.isChrome && browserUtils.version >= 53) && this.clickCausesChange) {
-                eventSimulator.input(this.parentSelect);
-                eventSimulator.change(this.parentSelect);
-            }
-        }
+        var simulateInputEventOnValueChange = browserUtils.isFirefox || browserUtils.isSafari ||
+                                               browserUtils.isChrome && browserUtils.version >= 53;
+
+        var simulateChangeEventOnValueChange = simulateInputEventOnValueChange || browserUtils.isIE;
+
+        if (simulateInputEventOnValueChange && this.clickCausesChange)
+            eventSimulator.input(this.parentSelect);
+
+        if (simulateChangeEventOnValueChange && this.clickCausesChange)
+            eventSimulator.change(this.parentSelect);
 
         return Promise.resolve();
     }
