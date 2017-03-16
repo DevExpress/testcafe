@@ -1,8 +1,7 @@
 ---
 layout: docs
 title: User Roles
-permalink: /documentation/test-api/user-roles.html
-checked: true
+permalink: /documentation/test-api/authentication/user-roles.html
 ---
 # User Roles
 
@@ -22,7 +21,7 @@ Role( func( t ) )
 Parameter | Type     | Description
 --------- | -------- | --------------------------------------------------------------------------------
 `func`    | Function | An asynchronous function that contains logic that authenticates the user.
-`t`       | Object   | The [test controller](test-code-structure.md#test-controller) used to access test run API.
+`t`       | Object   | The [test controller](../test-code-structure.md#test-controller) used to access test run API.
 
 ```js
 import { Role } from 'testcafe';
@@ -52,7 +51,9 @@ const admin = Role(async t => {
 
 > Role initialization code is executed only once when the role is used for the first time.
 
-After you created roles, you can switch between users at any moment. Use the `t.useRole` function for this.
+After you create the roles, you can switch between users at any moment except for the role initialization code.
+
+To switch to a role, use the `t.useRole` function.
 
 ```text
 t.useRole( role )
@@ -85,7 +86,13 @@ test('test that involves two users', async t => {
 
 Roles can be shared across tests and fixtures. You can create roles in a separate helper file and use them in any test fixture that references this file.
 
-If a website uses HTTP Basic or Windows (NTLM) authentication, use the approach described in [HTTP Authentication](http-authentication.md).
+You can think of a role as a set of cookies. The role saves cookies that were set by its initialization code. When you switch to the role,
+cookies stored in it are set for the current document, so that you become an authenticated user.
+
+If you switch to a role and then authenticate to a different website in test code, cookies set by such authentication are also stored
+in the role. The next time you switch to this role, you will be authenticated to both sites. Note that this is true only within a single test run. If you use this role from a different test, you will be authenticated to just one website.
+
+If a website uses [HTTP Basic](https://en.wikipedia.org/wiki/Basic_access_authentication) or [Windows (NTLM)](https://en.wikipedia.org/wiki/NT_LAN_Manager) authentication, use the approach described in [HTTP Authentication](http-authentication.md).
 
 ## Anonymous Role
 
