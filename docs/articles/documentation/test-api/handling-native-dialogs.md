@@ -26,13 +26,13 @@ using the `setNativeDialogHandler` method of the
 [test controller](test-code-structure.md#test-controller).
 
 ```text
-t.setNativeDialogHandler( fn(type, text, url), options )
+t.setNativeDialogHandler( fn(type, text, url) [, options] )
 ```
 
 Parameter  | Type                           | Description
 ---------- | ------------------------------ | -------------
-`fn`       | Function &#124; ClientFunction | A regular or [client function](obtaining-data-from-the-client.md) that will be triggered whenever a native dialog is invoked.
-`options`  | Object                         | See [Client Function Options](obtaining-data-from-the-client.md#options).
+`fn`       | Function &#124; ClientFunction | A regular or [client function](obtaining-data-from-the-client.md) that will be triggered whenever a native dialog is invoked. `null` to remove the native dialog handler.
+`options`&#160;*(optional)*  | Object                         | See [Client Function Options](obtaining-data-from-the-client.md#options).
 
 The handler function has the following arguments.
 
@@ -45,6 +45,8 @@ Argument | Type   | Description
 Once the handler is specified, it will be triggered each time a native dialog appears in the test whether it originates from the main window or an `<iframe>`.
 You can provide a new handler at any moment by calling `t.setNativeDialogHandler` once again.
 If a native dialog appears when no handler is set, the test fails with an error.
+
+You can remove a dialog handler by passing `null` to the `t.setNativeDialogHandler` method.
 
 To handle native dialogs that appear during the page load, specify the dialog handler
 before the first test action.
