@@ -42,13 +42,15 @@ export function isBrowserManipulationCommand (command) {
     return command.type === TYPE.takeScreenshot ||
            command.type === TYPE.takeScreenshotOnFail ||
            command.type === TYPE.resizeWindow ||
-           command.type === TYPE.resizeWindowToFitDevice;
+           command.type === TYPE.resizeWindowToFitDevice ||
+           command.type === TYPE.maximizeWindow;
 }
 
 function isRejectablePrepareBrowserManipulationCommand (command) {
     return command.type === TYPE.prepareBrowserManipulation &&
            (command.manipulationCommandType === TYPE.resizeWindow ||
-            command.manipulationCommandType === TYPE.resizeWindowToFitDevice);
+            command.manipulationCommandType === TYPE.resizeWindowToFitDevice ||
+            command.manipulationCommandType === TYPE.maximizeWindow);
 }
 
 function isServicePrepareBrowserManipulationCommand (command) {

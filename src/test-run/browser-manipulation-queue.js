@@ -1,6 +1,9 @@
+import { getViewportSize } from 'testcafe-browser-tools';
 import { isServiceCommand } from './commands/utils';
 import COMMAND_TYPE from './commands/type';
 import WARNING_MESSAGE from '../notifications/warning-message';
+import { WindowDimensionsOverflowError } from '../errors/test-run/';
+
 
 export default class BrowserManipulationQueue {
     constructor (browserConnection, screenshotCapturer, warningLog) {
@@ -12,11 +15,35 @@ export default class BrowserManipulationQueue {
     }
 
     async _resizeWindow (width, height, currentWidth, currentHeight) {
+        var canResizeWindow = await this.browserProvider.canResizeWindowToDimensions(this.browserId, width, height);
+
+        if (!canResizeWindow)
+            throw new WindowDimensionsOverflowError();
+
         try {
             return await this.browserProvider.resizeWindow(this.browserId, width, height, currentWidth, currentHeight);
         }
         catch (err) {
             this.warningLog.addWarning(WARNING_MESSAGE.resizeError, err.message);
+            return null;
+        }
+    }
+
+    async _resizeWindowToFitDevice (device, portrait, currentWidth, currentHeight) {
+        var { landscapeWidth, portraitWidth } = getViewportSize(device);
+
+        var width    = portrait ? portraitWidth : landscapeWidth;
+        var height   = portrait ? landscapeWidth : portraitWidth;
+
+        return await this._resizeWindow(width, height, currentWidth, currentHeight);
+    }
+
+    async _maximizeWindow () {
+        try {
+            return await this.browserProvider.maximizeWindow(this.browserId);
+        }
+        catch (err) {
+            this.warningLog.addWarning(WARNING_MESSAGE.maximizeError, err.message);
             return null;
         }
     }
@@ -56,6 +83,12 @@ export default class BrowserManipulationQueue {
 
             case COMMAND_TYPE.resizeWindow:
                 return await this._resizeWindow(command.width, command.height, driverMsg.innerWidth, driverMsg.innerHeight);
+
+            case COMMAND_TYPE.resizeWindowToFitDevice:
+                return await this._resizeWindowToFitDevice(command.device, command.options.portraitOrientation, driverMsg.innerWidth, driverMsg.innerHeight);
+
+            case COMMAND_TYPE.maximizeWindow:
+                return await this._maximizeWindow();
         }
 
         return null;
