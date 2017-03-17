@@ -1,5 +1,6 @@
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import TEST_RUN_PHASE from '../test-run/phase';
+import ERR_TYPE from '../errors/test-run/type';
 
 import {
     SwitchToMainWindowCommand,
@@ -9,7 +10,11 @@ import {
     NavigateToCommand
 } from './commands/actions';
 
-import { CurrentIframeNotFoundError } from '../errors/test-run';
+import {
+    CurrentIframeNotFoundError,
+    CurrentIframeIsNotLoadedError
+} from '../errors/test-run';
+
 
 class TestRunBookmark {
     constructor (testRun) {
@@ -49,7 +54,13 @@ class TestRunBookmark {
                 await this.testRun.executeCommand(switchWorkingFrameCommand);
             }
             catch (err) {
-                throw new CurrentIframeNotFoundError();
+                if (err.type === ERR_TYPE.actionElementNotFoundError)
+                    throw new CurrentIframeNotFoundError();
+
+                if (err.type === ERR_TYPE.actionIframeIsNotLoadedError)
+                    throw new CurrentIframeIsNotLoadedError();
+
+                throw err;
             }
         }
     }
