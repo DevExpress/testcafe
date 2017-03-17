@@ -63,12 +63,13 @@ addons:
     sources:
      - google-chrome
     packages:
-     - google-chrome-stable
+     - google-chrome-stable fluxbox
 
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
+  - fluxbox >/dev/null 2>&1 &
 ```
 
 You can find more information about Travis and Xvfb in [this article](https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI).
