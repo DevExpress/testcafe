@@ -732,7 +732,7 @@ test('Selector filter origin node argument', async t => {
         }).id).eql('el3');
 });
 
-test('Selector `extend` method', async t => {
+test('Selector `addCustomDOMProperties` method', async t => {
     let el = Selector('rect')
         .addCustomDOMProperties({
             prop1: () => 42,
@@ -779,14 +779,6 @@ test('Selector `extend` method', async t => {
     });
 
     await t.expect(await doc.prop).eql('documentProp');
-});
-
-test('Add custom DOM properties method - argument is not object', async () => {
-    await Selector('rect').addCustomDOMProperties(42);
-});
-
-test('Add custom DOM properties method - property is not function', async () => {
-    await Selector('rect').addCustomDOMProperties({ prop1: 1, prop2: () => 42 });
 });
 
 test('Add custom DOM properties method - property throws an error', async () => {
@@ -845,4 +837,50 @@ test('Selector "prevSibling" method', async t => {
 
     // With filters
     await t.expect(Selector('#el4').prevSibling().withText('Hey?!').nth(0).id).eql('el2');
+});
+
+test('Selector `addCustomMethods` method', async t => {
+    let el = Selector('rect').addCustomMethods({
+        prop1: (node, str) => str + '42',
+        prop2: (node, str, separator) => [str, node.tagName].join(separator)
+    });
+
+    await t
+        .expect(await el.prop1('value: ')).eql('value: 42')
+        .expect(await el().prop1('value: ')).eql('value: 42')
+        .expect(await el.prop2('tagName', ': ')).eql('tagName: rect')
+
+        .expect(await el.parent().filter(() => true).tagName).eql('svg')
+        .expect(await el.exists).ok()
+        .expect(await el.count).eql(1);
+
+    const snapshot = await el();
+
+    await t
+        .expect(snapshot.prop1('value: ')).eql('value: 42')
+        .expect(await snapshot.prop1('value: ')).eql('value: 42');
+
+    el = el.addCustomMethods({
+        prop1: (node, str) => str + '!!!'
+    });
+
+    await t
+        .expect(el.prop1('Hi')).eql('Hi!!!')
+        .expect(el.prop2('tagName', ': ')).eql('tagName: rect');
+
+    const nonExistingElement = await Selector('nonExistingElement').addCustomMethods({
+        prop: () => 'value'
+    })();
+
+    await t.expect(nonExistingElement).eql(null);
+});
+
+test('Add custom method - method throws an error', async () => {
+    const el = Selector('rect').addCustomMethods({
+        customMethod: () => {
+            throw new Error('test');
+        }
+    });
+
+    await el.customMethod();
 });

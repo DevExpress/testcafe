@@ -49,8 +49,12 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `hasClass` method');
     });
 
-    it('Should provide "extend" method in node snapshot', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `extend` method');
+    it('Should provide "addCustomDOMProperties" method in node snapshot', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `addCustomDOMProperties` method');
+    });
+
+    it('Should provide "addCustomMethods" method in node snapshot', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `addCustomMethods` method');
     });
 
     it('Should wait for element to appear on new page', function () {
@@ -227,36 +231,6 @@ describe('[API] Selector', function () {
                 });
         });
 
-        it('Should raise error if addCustomDOMProperties method argument is not object',
-            function () {
-                return runTests('./testcafe-fixtures/selector-test.js', 'Add custom DOM properties method - argument is not object', {
-                    shouldFail: true,
-                    only:       'chrome'
-                })
-                    .catch(function (errs) {
-                        expect(errs[0]).contains(
-                            '"addCustomDOMProperties" option is expected to be a non-null object, but it was number.'
-                        );
-                        expect(errs[0]).contains("> 785 |    await Selector('rect').addCustomDOMProperties(42);");
-                    });
-            }
-        );
-
-        it('Should raise error if at least one of custom DOM properties is not function',
-            function () {
-                return runTests('./testcafe-fixtures/selector-test.js', 'Add custom DOM properties method - property is not function', {
-                    shouldFail: true,
-                    only:       'chrome'
-                })
-                    .catch(function (errs) {
-                        expect(errs[0]).contains(
-                            "Custom DOM properties method \'prop1\' is expected to be a function, but it was number"
-                        );
-                        expect(errs[0]).contains("> 789 |    await Selector('rect').addCustomDOMProperties({ prop1: 1, prop2: () => 42 });");
-                    });
-            }
-        );
-
         it('Should raise error if custom DOM property throws an error',
             function () {
                 return runTests('./testcafe-fixtures/selector-test.js', 'Add custom DOM properties method - property throws an error', {
@@ -267,7 +241,22 @@ describe('[API] Selector', function () {
                         expect(errs[0]).contains(
                             'An error occurred when trying to calculate a custom Selector property "prop":  Error: test'
                         );
-                        expect(errs[0]).contains('> 799 |    await el();');
+                        expect(errs[0]).contains('> 791 |    await el();');
+                    });
+            }
+        );
+
+        it('Should raise error if custom method throws an error',
+            function () {
+                return runTests('./testcafe-fixtures/selector-test.js', 'Add custom method - method throws an error', {
+                    shouldFail: true,
+                    only:       'chrome'
+                })
+                    .catch(function (errs) {
+                        expect(errs[0]).contains(
+                            'An error occurred in customMethod code:  Error: test'
+                        );
+                        expect(errs[0]).contains('> 885 |    await el.customMethod();');
                     });
             }
         );

@@ -8,7 +8,7 @@ import MESSAGE from '../../errors/runtime/message';
 import { assertType, is } from '../../errors/runtime/type-assertions';
 import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import defineLazyProperty from '../../utils/define-lazy-property';
-import addAPI from './add-api';
+import { addAPI, addCustomMethods } from './add-api';
 import createSnapshotMethods from './create-snapshot-methods';
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
@@ -69,7 +69,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         this._addBoundArgsSelectorGetter(resultPromise, args);
 
         // OPTIMIZATION: use buffer function as selector not to trigger lazy property ahead of time
-        addAPI(resultPromise, () => resultPromise.selector, SelectorBuilder, this.options.customDOMProperties);
+        addAPI(resultPromise, () => resultPromise.selector, SelectorBuilder, this.options.customDOMProperties, this.options.customMethods);
 
         return resultPromise;
     }
@@ -78,6 +78,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         var dependencies        = super.getFunctionDependencies();
         var text                = this.options.text;
         var customDOMProperties = this.options.customDOMProperties;
+        var customMethods       = this.options.customMethods;
 
         if (typeof text === 'string')
             text = new RegExp(escapeRe(text));
@@ -91,7 +92,8 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             },
 
             boundArgs:           this.options.boundArgs,
-            customDOMProperties: customDOMProperties
+            customDOMProperties: customDOMProperties,
+            customMethods:       customMethods
         });
     }
 
@@ -135,7 +137,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     _decorateFunction (selectorFn) {
         super._decorateFunction(selectorFn);
 
-        addAPI(selectorFn, () => selectorFn, SelectorBuilder, this.options.customDOMProperties);
+        addAPI(selectorFn, () => selectorFn, SelectorBuilder, this.options.customDOMProperties, this.options.customMethods);
     }
 
     _processResult (result, selectorArgs) {
@@ -144,6 +146,9 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         if (snapshot && !this.options.counterMode) {
             this._addBoundArgsSelectorGetter(snapshot, selectorArgs);
             createSnapshotMethods(snapshot);
+
+            if (this.options.customMethods)
+                addCustomMethods(snapshot, () => snapshot.selector, this.options.customMethods);
         }
 
         return snapshot;
