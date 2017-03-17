@@ -142,28 +142,23 @@ export default class SelectChildClickAutomation {
     }
 
     _mouseup () {
-        if (browserUtils.isFirefox) {
-            eventSimulator.mouseup(this.eventsArgs.element, this.eventsArgs.options);
+        var elementForMouseupEvent = browserUtils.isIE ? this.parentSelect : this.eventsArgs.element;
 
-            if (this.clickCausesChange)
-                eventSimulator.change(this.parentSelect);
-        }
-        else if (browserUtils.isIE) {
-            eventSimulator.mouseup(this.parentSelect, this.eventsArgs.options);
+        eventSimulator.mouseup(elementForMouseupEvent, this.eventsArgs.options);
 
-            if (this.clickCausesChange) {
-                this.parentSelect.selectedIndex = this.childIndex;
+        if (browserUtils.isIE && this.clickCausesChange)
+            this.parentSelect.selectedIndex = this.childIndex;
 
-                eventSimulator.change(this.parentSelect);
-            }
+        var simulateInputEventOnValueChange = browserUtils.isFirefox || browserUtils.isSafari ||
+                                               browserUtils.isChrome && browserUtils.version >= 53;
 
-        }
-        else {
-            eventSimulator.mouseup(this.eventsArgs.element, this.eventsArgs.options);
+        var simulateChangeEventOnValueChange = simulateInputEventOnValueChange || browserUtils.isIE;
 
-            if ((browserUtils.isSafari || browserUtils.isChrome && browserUtils.version >= 53) && this.clickCausesChange)
-                eventSimulator.change(this.parentSelect);
-        }
+        if (simulateInputEventOnValueChange && this.clickCausesChange)
+            eventSimulator.input(this.parentSelect);
+
+        if (simulateChangeEventOnValueChange && this.clickCausesChange)
+            eventSimulator.change(this.parentSelect);
 
         return Promise.resolve();
     }
@@ -191,6 +186,9 @@ export default class SelectChildClickAutomation {
             return this
                 ._move(moveArguments)
                 .then(() => {
+                    if (!browserUtils.isIE)
+                        eventSimulator.input(this.parentSelect);
+
                     eventSimulator.click(this.eventsArgs.element, this.eventsArgs.options);
                 });
         }
