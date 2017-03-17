@@ -63,7 +63,8 @@ describe('[API] t.useRole()', function () {
         it('Should fail if there error occurred while restoring configuration', function () {
             return runTests('./testcafe-fixtures/errors-test.js', 'Error restoring configuration', { shouldFail: true })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('- Error while restoring configuration after Role switch - The specified selector does not match any element in the DOM tree.');
+                    expect(errs[0]).contains('- Error while restoring configuration after Role switch -');
+                    expect(errs[0]).contains('The iframe in which the test is currently operating does not exist anymore.');
                     expect(errs[0]).contains('> 29 |        .useRole(Role.anonymous());');
                 });
         });

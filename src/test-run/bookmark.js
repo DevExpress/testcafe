@@ -9,6 +9,8 @@ import {
     NavigateToCommand
 } from './commands/actions';
 
+import { CurrentIframeNotFoundError } from '../errors/test-run';
+
 class TestRunBookmark {
     constructor (testRun) {
         this.testRun = testRun;
@@ -43,7 +45,12 @@ class TestRunBookmark {
                                             new SwitchToIframeCommand({ selector: this.iframeSelector }) :
                                             new SwitchToMainWindowCommand();
 
-            await this.testRun.executeCommand(switchWorkingFrameCommand);
+            try {
+                await this.testRun.executeCommand(switchWorkingFrameCommand);
+            }
+            catch (err) {
+                throw new CurrentIframeNotFoundError();
+            }
         }
     }
 
