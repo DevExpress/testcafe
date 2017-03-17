@@ -7,7 +7,7 @@ import showDebuggerMessage from '../notifications/debugger-message';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import { PageLoadError, WindowDimensionsOverflowError, RoleSwitchInRoleInitializerError } from '../errors/test-run/';
+import { PageLoadError, RoleSwitchInRoleInitializerError } from '../errors/test-run/';
 import BrowserManipulationQueue from './browser-manipulation-queue';
 import CLIENT_MESSAGES from './client-messages';
 import PHASE from './phase';
@@ -19,7 +19,7 @@ import testRunTracker from '../api/test-run-tracker';
 import ROLE_PHASE from '../role/phase';
 import createBookmark from './bookmark';
 
-import { TakeScreenshotOnFailCommand, ResizeWindowCommand } from './commands/browser-manipulation';
+import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
 import { SetNativeDialogHandlerCommand, SetTestSpeedCommand } from './commands/actions';
 
 
@@ -235,6 +235,12 @@ export default class TestRun extends Session {
         return new Promise((resolve, reject) => this.driverTaskQueue.push({ command, resolve, reject, callsite }));
     }
 
+    _enqueueBrowserManipulation (command, callsite) {
+        this.browserManipulationQueue.push(command);
+
+        return this.executeCommand(new PrepareBrowserManipulationCommand(command.type), callsite);
+    }
+
     _removeAllNonServiceTasks () {
         this.driverTaskQueue = this.driverTaskQueue.filter(driverTask => isServiceCommand(driverTask.command));
 
@@ -350,11 +356,8 @@ export default class TestRun extends Session {
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
 
-        if (isBrowserManipulationCommand(command)) {
-            this.browserManipulationQueue.push(command);
-
-            return this.executeCommand(new PrepareBrowserManipulationCommand(command.type), callsite);
-        }
+        if (isBrowserManipulationCommand(command))
+            return this._enqueueBrowserManipulation(command, callsite);
 
         if (command.type === COMMAND_TYPE.wait)
             return delay(command.timeout);
