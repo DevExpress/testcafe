@@ -9,6 +9,7 @@ var listeners      = hammerhead.eventSandbox.listeners;
 var domUtils        = testCafeCore.domUtils;
 var contentEditable = testCafeCore.contentEditable;
 var textSelection   = testCafeCore.textSelection;
+var replaceCharAt   = testCafeCore.replaceCharAt;
 
 
 function _getSelectionInElement (element) {
@@ -176,10 +177,37 @@ function _typeCharToTextEditable (element, text) {
     eventSimulator.input(element);
 }
 
-export default function (element, text) {
+function _typeTextToNonTextEditable (element, text, caretPos) {
+    if (caretPos !== null) {
+        var inputValue = element.value;
+
+        for (var i = 0; i < text.length; i++) {
+            if (inputValue[caretPos])
+                inputValue = replaceCharAt(inputValue, caretPos, text[i]);
+            else
+                inputValue += text[i];
+
+            caretPos++;
+        }
+
+        element.value = inputValue;
+    }
+    else
+        element.value = text;
+
+    eventSimulator.change(element);
+    eventSimulator.input(element);
+}
+
+export default function (element, text, caretPos) {
     if (domUtils.isContentEditableElement(element))
         _typeCharToContentEditable(element, text === ' ' ? String.fromCharCode(160) : text);
 
-    if (domUtils.isTextEditableElementAndEditingAllowed(element))
-        _typeCharToTextEditable(element, text);
+    if (!domUtils.isElementReadOnly(element)) {
+        if (domUtils.isTextEditableElement(element))
+            _typeCharToTextEditable(element, text);
+
+        else
+            _typeTextToNonTextEditable(element, text, caretPos);
+    }
 }

@@ -40,6 +40,7 @@ export var isDomElement                           = hammerhead.utils.dom.isDomEl
 export var isShadowUIElement                      = hammerhead.utils.dom.isShadowUIElement;
 export var isElementFocusable                     = hammerhead.utils.dom.isElementFocusable;
 export var isHammerheadAttr                       = hammerhead.utils.dom.isHammerheadAttr;
+export var isElementReadOnly                      = hammerhead.utils.dom.isElementReadOnly;
 export var getScrollbarSize                       = hammerhead.utils.dom.getScrollbarSize;
 export var getMapContainer                        = hammerhead.utils.dom.getMapContainer;
 export var getTagName                             = hammerhead.utils.dom.getTagName;

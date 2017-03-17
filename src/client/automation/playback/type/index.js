@@ -142,11 +142,14 @@ export default class TypeAutomation {
         if (isTextEditable)
             elementEditingWatcher.watchElementEditing(this.element);
 
-        var selectionStart    = textSelection.getSelectionStart(this.element);
         var isEditableElement = isTextEditable || isContentEditable;
 
-        if (isEditableElement && !isNaN(parseInt(this.caretPos, 10)) && this.caretPos !== selectionStart)
-            textSelection.select(this.element, this.caretPos, this.caretPos);
+        if (isEditableElement) {
+            var selectionStart = textSelection.getSelectionStart(this.element);
+
+            if (!isNaN(parseInt(this.caretPos, 10)) && this.caretPos !== selectionStart)
+                textSelection.select(this.element, this.caretPos, this.caretPos);
+        }
 
         return Promise.resolve();
     }
@@ -205,22 +208,23 @@ export default class TypeAutomation {
 
         this.eventArgs = this._calculateEventArguments();
 
-        if (this.paste) {
-            return this
-                ._typeAllText(elementForTyping)
-                .then(() => {
-                    eventSimulator.keyup(this.eventArgs.element, this.eventArgs.options);
+        var isTextEditableElement = domUtils.isTextEditableElement(this.element);
+        var isContentEditable     = domUtils.isContentEditableElement(this.element);
 
-                    this.currentPos = this.text.length;
-                });
-        }
+        var shouldTypeAllText = this.paste || !isTextEditableElement && !isContentEditable;
 
-        return this
-            ._typeChar(elementForTyping)
+        return Promise
+            .resolve()
+            .then(() => {
+                return shouldTypeAllText ? this._typeAllText(elementForTyping) : this._typeChar(elementForTyping);
+            })
             .then(() => {
                 eventSimulator.keyup(this.eventArgs.element, this.eventArgs.options);
 
-                this.currentPos++;
+                if (shouldTypeAllText)
+                    this.currentPos = this.text.length;
+                else
+                    this.currentPos++;
             });
     }
 
@@ -254,13 +258,13 @@ export default class TypeAutomation {
                 currentChar = prevChar + currentChar;
         }
 
-        typeChar(element, currentChar);
+        typeChar(element, currentChar, null);
 
         return delay(this.automationSettings.keyActionStepDelay);
     }
 
     _typeAllText (element) {
-        typeChar(element, this.text);
+        typeChar(element, this.text, this.caretPos);
         return delay(this.automationSettings.keyActionStepDelay);
     }
 
