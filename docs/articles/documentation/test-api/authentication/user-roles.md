@@ -89,6 +89,10 @@ test('test that involves two users', async t => {
 
 Roles can be shared across tests and fixtures. You can create roles in a separate helper file and use them in any test fixture that references this file.
 
+When you switch to a role for the first time, TestCafe internally creates a *branch* of this role for this particular test run. All cookies set by your further actions will be appended to this branch. This branch will be used whenever you switch back to this role from the same test run.
+
+For instance, assume that you switch to a role that logs you in on **website A**. After you switch to this role, you log in to **website B** in test code. TestCafe adds the new cookie to the role branch. If you switch to a different role and then back to the initial role in the same test run, you will be logged to **both website A and B**. If you switch to this role in a different test, you will be logged in to **website A** only.
+
 If a website uses [HTTP Basic](https://en.wikipedia.org/wiki/Basic_access_authentication) or [Windows (NTLM)](https://en.wikipedia.org/wiki/NT_LAN_Manager) authentication, use the approach described in [HTTP Authentication](http-authentication.md).
 
 ## Anonymous Role
