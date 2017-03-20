@@ -767,7 +767,7 @@ const myTable = Selector('.my-table').addCustomMethods({
     }
 });
 
-await myTable.getCellText(2,5);
+await t.expect(myTable.getCellText(1, 1)).contains('hey!');
 ```
 
 ## Calling Selectors from Node.js Callbacks
