@@ -1,14 +1,22 @@
-var errorInEachBrowserContains                = require('../../assertion-helper.js').errorInEachBrowserContains;
+var errorInEachBrowserContains                = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 var getNativeDialogNotHandledErrorText        = require('./errors.js').getNativeDialogNotHandledErrorText;
 var getUncaughtErrorInNativeDialogHandlerText = require('./errors.js').getUncaughtErrorInNativeDialogHandlerText;
 
 
-var pageUrl        = 'http://localhost:3000/fixtures/native-dialogs-handling/pages/index.html';
-var pageLoadingUrl = 'http://localhost:3000/fixtures/native-dialogs-handling/pages/page-load.html';
-var pagePromptUrl  = 'http://localhost:3000/fixtures/native-dialogs-handling/pages/prompt.html';
+var pageUrl        = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/index.html';
+var pageLoadingUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/page-load.html';
+var pagePromptUrl  = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/prompt.html';
 
 
 describe('Native dialogs handling', function () {
+    it('Should remove dialog handler if `null` specified', function () {
+        return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Null handler', { shouldFail: true })
+            .catch(function (errs) {
+                errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert', pageUrl), 0);
+                errorInEachBrowserContains(errs, '> 193 |        .click(\'#buttonAlert\');', 0);
+            });
+    });
+
     describe('Errors during dialogs handling', function () {
         it('Should fail if an unexpected confirm dialog appears after an action', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Without handler',
@@ -116,7 +124,7 @@ describe('Native dialogs handling', function () {
         it('Should fail if dialog handler has wrong type', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Dialog handler has wrong type', { shouldFail: true })
                 .catch(function (errs) {
-                    errorInEachBrowserContains(errs, 'The native dialog handler is expected to be specified as a regular function or ClientFunction, but number was passed.', 0);
+                    errorInEachBrowserContains(errs, 'The native dialog handler is expected to be a function, ClientFunction or null, but it was number.', 0);
                     errorInEachBrowserContains(errs, ' > 174 |    await t.setNativeDialogHandler(42);', 0);
                 });
         });
@@ -132,7 +140,7 @@ describe('Native dialogs handling', function () {
         it('Should fail if Selector send as dialog handler', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Selector as dialogHandler', { shouldFail: true })
                 .catch(function (errs) {
-                    errorInEachBrowserContains(errs, 'The native dialog handler is expected to be specified as a regular function or ClientFunction, but Selector was passed.', 0);
+                    errorInEachBrowserContains(errs, 'The native dialog handler is expected to be a function, ClientFunction or null, but it was Selector.', 0);
                     errorInEachBrowserContains(errs, '> 184 |    await t.setNativeDialogHandler(dialogHandler);', 0);
                 });
         });

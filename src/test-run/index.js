@@ -1,19 +1,27 @@
 import path from 'path';
 import { readSync as read } from 'read-file-relative';
+import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
 import showDebuggerMessage from '../notifications/debugger-message';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import { PageLoadError } from '../errors/test-run/';
+import { PageLoadError, RoleSwitchInRoleInitializerError } from '../errors/test-run/';
 import BrowserManipulationQueue from './browser-manipulation-queue';
 import CLIENT_MESSAGES from './client-messages';
-import STATE from './state';
+import PHASE from './phase';
 import COMMAND_TYPE from './commands/type';
 import AssertionExecutor from '../assertions/executor';
+import delay from '../utils/delay';
+import testRunMarker from './marker-symbol';
+import testRunTracker from '../api/test-run-tracker';
+import ROLE_PHASE from '../role/phase';
+import createBookmark from './bookmark';
 
 import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
+import { SetNativeDialogHandlerCommand, SetTestSpeedCommand } from './commands/actions';
+
 
 import {
     TestDoneCommand,
@@ -41,16 +49,20 @@ export default class TestRun extends Session {
 
         super(uploadsRoot);
 
+        this[testRunMarker] = true;
+
         this.opts              = opts;
         this.test              = test;
         this.browserConnection = browserConnection;
 
-        this.state = STATE.initial;
+        this.phase = PHASE.initial;
 
         this.driverTaskQueue       = [];
         this.testDoneCommandQueued = false;
 
-        this.dialogHandler = null;
+        this.activeDialogHandler  = null;
+        this.activeIframeSelector = null;
+        this.speed                = this.opts.speed;
 
         this.pendingRequest   = null;
         this.pendingPageError = null;
@@ -58,6 +70,9 @@ export default class TestRun extends Session {
         this.controller = null;
         this.ctx        = Object.create(null);
         this.fixtureCtx = null;
+
+        this.currentRoleId  = null;
+        this.usedRoleStates = Object.create(null);
 
         this.errs = [];
 
@@ -96,8 +111,8 @@ export default class TestRun extends Session {
             fixtureName:         JSON.stringify(this.test.fixture.name),
             selectorTimeout:     this.opts.selectorTimeout,
             skipJsErrors:        this.opts.skipJsErrors,
-            speed:               this.opts.speed,
-            dialogHandler:       JSON.stringify(this.dialogHandler)
+            speed:               this.speed,
+            dialogHandler:       JSON.stringify(this.activeDialogHandler)
         });
     }
 
@@ -105,8 +120,8 @@ export default class TestRun extends Session {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             testRunId:       JSON.stringify(this.id),
             selectorTimeout: this.opts.selectorTimeout,
-            speed:           this.opts.speed,
-            dialogHandler:   JSON.stringify(this.dialogHandler)
+            speed:           this.speed,
+            dialogHandler:   JSON.stringify(this.activeDialogHandler)
         });
     }
 
@@ -133,8 +148,8 @@ export default class TestRun extends Session {
 
 
     // Test function execution
-    async _executeTestFn (state, fn) {
-        this.state = state;
+    async _executeTestFn (phase, fn) {
+        this.phase = phase;
 
         try {
             await fn(this);
@@ -154,38 +169,38 @@ export default class TestRun extends Session {
 
     async _runBeforeHook () {
         if (this.test.beforeFn)
-            return await this._executeTestFn(STATE.inTestBeforeHook, this.test.beforeFn);
+            return await this._executeTestFn(PHASE.inTestBeforeHook, this.test.beforeFn);
 
         if (this.test.fixture.beforeEachFn)
-            return await this._executeTestFn(STATE.inFixtureBeforeEachHook, this.test.fixture.beforeEachFn);
+            return await this._executeTestFn(PHASE.inFixtureBeforeEachHook, this.test.fixture.beforeEachFn);
 
         return true;
     }
 
     async _runAfterHook () {
         if (this.test.afterFn)
-            return await this._executeTestFn(STATE.inTestAfterHook, this.test.afterFn);
+            return await this._executeTestFn(PHASE.inTestAfterHook, this.test.afterFn);
 
         if (this.test.fixture.afterEachFn)
-            return await this._executeTestFn(STATE.inFixtureAfterEachHook, this.test.fixture.afterEachFn);
+            return await this._executeTestFn(PHASE.inFixtureAfterEachHook, this.test.fixture.afterEachFn);
 
         return true;
     }
 
     async start () {
-        TestRun.activeTestRuns[this.id] = this;
+        testRunTracker.activeTestRuns[this.id] = this;
 
         this.emit('start');
 
         if (await this._runBeforeHook()) {
-            await this._executeTestFn(STATE.inTest, this.test.fn);
+            await this._executeTestFn(PHASE.inTest, this.test.fn);
             await this._runAfterHook();
         }
 
         await this.executeCommand(new TestDoneCommand());
         this._addPendingPageErrorIfAny();
 
-        delete TestRun.activeTestRuns[this.id];
+        delete testRunTracker.activeTestRuns[this.id];
 
         this.emit('done');
     }
@@ -206,7 +221,7 @@ export default class TestRun extends Session {
         var adapter = new TestRunErrorFormattableAdapter(err, {
             userAgent:      this.browserConnection.userAgent,
             screenshotPath: screenshotPath || '',
-            testRunState:   this.state
+            testRunPhase:   this.phase
         });
 
         this.errs.push(adapter);
@@ -220,10 +235,10 @@ export default class TestRun extends Session {
         return new Promise((resolve, reject) => this.driverTaskQueue.push({ command, resolve, reject, callsite }));
     }
 
-    _enqueueSetDialogHandlerCommand (command, callsite) {
-        this.dialogHandler = command.dialogHandler;
+    _enqueueBrowserManipulation (command, callsite) {
+        this.browserManipulationQueue.push(command);
 
-        return this._enqueueCommand(command, callsite);
+        return this.executeCommand(new PrepareBrowserManipulationCommand(command.type), callsite);
     }
 
     _removeAllNonServiceTasks () {
@@ -318,27 +333,37 @@ export default class TestRun extends Session {
         return executor.run();
     }
 
+    _adjustConfigurationWithCommand (command) {
+        if (command.type === COMMAND_TYPE.testDone)
+            this.testDoneCommandQueued = true;
+
+        else if (command.type === COMMAND_TYPE.setNativeDialogHandler)
+            this.activeDialogHandler = command.dialogHandler;
+
+        else if (command.type === COMMAND_TYPE.switchToIframe)
+            this.activeIframeSelector = command.selector;
+
+        else if (command.type === COMMAND_TYPE.switchToMainWindow)
+            this.activeIframeSelector = null;
+
+        else if (command.type === COMMAND_TYPE.setTestSpeed)
+            this.speed = command.speed;
+    }
+
     async executeCommand (command, callsite) {
         this.debugLog.command(command);
 
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
 
-        if (isBrowserManipulationCommand(command)) {
-            this.browserManipulationQueue.push(command);
-
-            return this.executeCommand(new PrepareBrowserManipulationCommand(command.type), callsite);
-        }
+        if (isBrowserManipulationCommand(command))
+            return this._enqueueBrowserManipulation(command, callsite);
 
         if (command.type === COMMAND_TYPE.wait)
-            return new Promise(resolve => setTimeout(resolve, command.timeout));
+            return delay(command.timeout);
 
-        if (command.type === COMMAND_TYPE.testDone)
-            this.testDoneCommandQueued = true;
-
-        if (command.type === COMMAND_TYPE.setNativeDialogHandler)
-            return this._enqueueSetDialogHandlerCommand(command, callsite);
-
+        if (command.type === COMMAND_TYPE.useRole)
+            return await this._useRole(command.role, callsite);
 
         if (command.type === COMMAND_TYPE.assertion) {
             // NOTE: we should send the assertion command to the client only if the test is executed
@@ -348,6 +373,8 @@ export default class TestRun extends Session {
 
             return this._executeAssertion(command, callsite);
         }
+
+        this._adjustConfigurationWithCommand(command);
 
         return this._enqueueCommand(command, callsite);
     }
@@ -360,11 +387,64 @@ export default class TestRun extends Session {
 
         return Promise.reject(err);
     }
+
+    // Role management
+    async switchToCleanRun () {
+        this.ctx        = Object.create(null);
+        this.fixtureCtx = Object.create(null);
+
+        this.useStateSnapshot(null);
+
+        if (this.activeDialogHandler) {
+            var removeDialogHandlerCommand = new SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });
+
+            await this.executeCommand(removeDialogHandlerCommand);
+        }
+
+        if (this.speed !== this.opts.speed) {
+            var setSpeedCommand = new SetTestSpeedCommand({ speed: this.opts.speed });
+
+            await this.executeCommand(setSpeedCommand);
+        }
+    }
+
+    async _getStateSnapshotFromRole (role) {
+        var prevPhase = this.phase;
+
+        this.phase = PHASE.inRoleInitializer;
+
+        if (role.phase === ROLE_PHASE.uninitialized)
+            await role.initialize(this);
+
+        else if (role.phase === ROLE_PHASE.pendingInitialization)
+            await promisifyEvent(role, 'initialized');
+
+        if (role.initErr)
+            throw role.initErr;
+
+        this.phase = prevPhase;
+
+        return role.stateSnapshot;
+    }
+
+    async _useRole (role, callsite) {
+        if (this.phase === PHASE.inRoleInitializer)
+            throw new RoleSwitchInRoleInitializerError(callsite);
+
+        var bookmark = await createBookmark(this);
+
+        if (this.currentRoleId)
+            this.usedRoleStates[this.currentRoleId] = this.getStateSnapshot();
+
+        var stateSnapshot = this.usedRoleStates[role.id] || await this._getStateSnapshotFromRole(role);
+
+        this.useStateSnapshot(stateSnapshot);
+
+        this.currentRoleId = role.id;
+
+        await bookmark.restore(callsite);
+    }
 }
-
-
-// Active test runs pool, used by client functions
-TestRun.activeTestRuns = {};
 
 
 // Service message handlers

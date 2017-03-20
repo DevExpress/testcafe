@@ -2,6 +2,7 @@ var express               = require('express');
 var http                  = require('http');
 var fs                    = require('fs');
 var path                  = require('path');
+var bodyParser            = require('body-parser');
 var readSync              = require('read-file-relative').readSync;
 var multer                = require('multer');
 var Mustache              = require('mustache');
@@ -25,7 +26,7 @@ var readFile = promisify(fs.readFile);
 var Server = module.exports = function (port, basePath) {
     var server = this;
 
-    this.app       = express();
+    this.app       = express().use(bodyParser.urlencoded({ extended: false }));
     this.appServer = http.createServer(this.app).listen(port);
     this.sockets   = [];
     this.basePath  = basePath;
@@ -76,6 +77,16 @@ Server.prototype._setupRoutes = function () {
 
     this.app.post('/quarantine-mode/passing-sequence', function (req, res) {
         res.send(quarantineModeTracker.handlePassingSequence(req.headers['user-agent']));
+    });
+
+    this.app.post('/do-login/', function (req, res) {
+        res.setHeader('set-cookie', 'name=' + req.body.name);
+        res.end('Logged in!');
+    });
+
+    this.app.post('/set-token/', function (req, res) {
+        res.setHeader('set-cookie', 'token=' + req.body.token);
+        res.redirect(req.headers['referer']);
     });
 
     this.app.post('/file-upload', upload.any(), function (req, res) {

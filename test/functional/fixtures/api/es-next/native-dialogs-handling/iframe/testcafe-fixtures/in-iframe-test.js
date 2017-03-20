@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 
 fixture `Native dialogs in iframe`
-    .page `http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/page-with-iframe.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/page-with-iframe.html`;
 
 
-const pageUrl        = 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/page-with-iframe.html';
-const iframeUrl      = 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/iframe.html';
-const childIframeUrl = 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/child-iframe.html';
+const pageUrl        = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/page-with-iframe.html';
+const iframeUrl      = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/iframe.html';
+const childIframeUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/child-iframe.html';
 
 
 //Actions in iframe, dialogs in iframe
@@ -101,7 +101,7 @@ test('Expected alert in parent iframe after an action in child iframe', async t 
         .switchToIframe('#iframe')
         .switchToIframe('#childIframe')
         .setNativeDialogHandler(() => function (type, text, url) {
-            if (url !== 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/iframe.html')
+            if (url !== 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/iframe.html')
                 throw new Error('Wrong dialog url');
         })
         .click('#buttonParentIframeAlert');
@@ -118,7 +118,7 @@ test('Expected alert in child iframe after an action in parent iframe', async t 
         .switchToMainWindow() // NOTE: waiting for all iframes loading
         .switchToIframe('#iframe')
         .setNativeDialogHandler(() => () => function (type, text, url) {
-            if (url !== 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/child-iframe.html')
+            if (url !== 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/child-iframe.html')
                 throw new Error('Wrong dialog url');
         })
         .click('#buttonChildIframeAlert');

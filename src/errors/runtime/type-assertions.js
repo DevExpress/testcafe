@@ -53,11 +53,6 @@ export var is = {
         name:              'non-null object',
         predicate:         (value, type) => type === 'object' && !isNullOrUndefined(value),
         getActualValueMsg: (value, type) => isNullOrUndefined(value) ? String(value) : type
-    },
-
-    'undefined': {
-        name:      'undefined',
-        predicate: value => value === void 0
     }
 };
 

@@ -1,6 +1,7 @@
 import { assertType, is } from '../../errors/runtime/type-assertions';
 import handleTagArgs from '../../utils/handle-tag-args';
 import TestingUnit from './testing-unit';
+import wrapTestFunction from '../wrap-test-function';
 
 export default class Fixture extends TestingUnit {
     constructor (testFile) {
@@ -49,7 +50,7 @@ export default class Fixture extends TestingUnit {
     _beforeEach$ (fn) {
         assertType(is.function, 'beforeEach', 'fixture.beforeEach hook', fn);
 
-        this.beforeEachFn = TestingUnit._wrapTestFunction(fn);
+        this.beforeEachFn = wrapTestFunction(fn);
 
         return this.apiOrigin;
     }
@@ -57,7 +58,7 @@ export default class Fixture extends TestingUnit {
     _afterEach$ (fn) {
         assertType(is.function, 'afterEach', 'fixture.afterEach hook', fn);
 
-        this.afterEachFn = TestingUnit._wrapTestFunction(fn);
+        this.afterEachFn = wrapTestFunction(fn);
 
         return this.apiOrigin;
     }

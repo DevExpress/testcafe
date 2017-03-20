@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 
 fixture `Page load`
-    .page `http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/page-load.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/page-load.html`;
 
 
-const pageUrl   = 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/page-load.html';
-const iframeUrl = 'http://localhost:3000/fixtures/native-dialogs-handling/iframe/pages/iframe-load.html';
+const pageUrl   = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/page-load.html';
+const iframeUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/iframe-load.html';
 
 
 test('Expected dialogs after page load', async t => {

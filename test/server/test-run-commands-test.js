@@ -2504,7 +2504,7 @@ describe('Test run commands', function () {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.setTestSpeed,
+                        type: TYPE.setTestSpeed
                     });
                 },
                 {

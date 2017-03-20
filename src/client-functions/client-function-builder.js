@@ -3,13 +3,13 @@ import testRunTracker from '../api/test-run-tracker';
 import functionBuilderSymbol from './builder-symbol';
 import { createReplicator, FunctionTransform } from './replicator';
 import { ExecuteClientFunctionCommand } from '../test-run/commands/observation';
-import TestRun from '../test-run';
 import compileClientFunction from '../compiler/es-next/compile-client-function';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import MESSAGE from '../errors/runtime/message';
 import getCallsite from '../errors/get-callsite';
 import ClientFunctionResultPromise from './result-promise';
+import testRunMarker from '../test-run/marker-symbol';
 
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
@@ -51,14 +51,19 @@ export default class ClientFunctionBuilder {
         };
     }
 
+    getBoundTestRun () {
+        // NOTE: `boundTestRun` can be either TestController or TestRun instance.
+        if (this.options.boundTestRun)
+            return this.options.boundTestRun.testRun || this.options.boundTestRun;
+
+        return null;
+    }
+
     getFunction () {
         var builder = this;
 
         var clientFn = function __$$clientFunction$$ () {
-            var testRun = builder.options.boundTestRun ?
-                          builder.options.boundTestRun.testRun :
-                          testRunTracker.resolveContextTestRun();
-
+            var testRun  = builder.getBoundTestRun() || testRunTracker.resolveContextTestRun();
             var callsite = getCallsite(builder.callsiteNames.execution);
             var args     = [];
 
@@ -137,9 +142,10 @@ export default class ClientFunctionBuilder {
         assertType(is.nonNullObject, this.callsiteNames.instantiation, '"options" argument', options);
 
         if (!isNullOrUndefined(options.boundTestRun)) {
-            // NOTE: we can't use strict `t instanceof TestController`
-            // check due to module circular reference
-            if (!(options.boundTestRun.testRun instanceof TestRun))
+            // NOTE: `boundTestRun` can be either TestController or TestRun instance.
+            var boundTestRun = options.boundTestRun.testRun || options.boundTestRun;
+
+            if (!boundTestRun[testRunMarker])
                 throw new APIError(this.callsiteNames.instantiation, MESSAGE.invalidClientFunctionTestRunBinding);
         }
 

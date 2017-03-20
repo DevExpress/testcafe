@@ -1,5 +1,4 @@
-The native dialog handler is expected to be a function, ClientFunction or
-null, but it was number.
+The "role" argument is expected to be a Role instance, but it was number.
 
 Browser: Chrome 15.0.874 / Mac OS X 10.8.1
 Screenshot: /unix/path/with/<tag>

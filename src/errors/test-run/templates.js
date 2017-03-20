@@ -1,22 +1,24 @@
 import dedent from 'dedent';
 import { escape as escapeHtml } from 'lodash';
 import TYPE from './type';
-import TEST_RUN_STATE from '../../test-run/state';
+import TEST_RUN_PHASE from '../../test-run/phase';
 
 const SUBTITLES = {
-    [TEST_RUN_STATE.initial]:                 '',
-    [TEST_RUN_STATE.inFixtureBeforeHook]:     '<span class="subtitle">Error in fixture.before hook</span>\n',
-    [TEST_RUN_STATE.inFixtureBeforeEachHook]: '<span class="subtitle">Error in fixture.beforeEach hook</span>\n',
-    [TEST_RUN_STATE.inTestBeforeHook]:        '<span class="subtitle">Error in test.before hook</span>\n',
-    [TEST_RUN_STATE.inTest]:                  '',
-    [TEST_RUN_STATE.inTestAfterHook]:         '<span class="subtitle">Error in test.after hook</span>\n',
-    [TEST_RUN_STATE.inFixtureAfterEachHook]:  '<span class="subtitle">Error in fixture.afterEach hook</span>\n',
-    [TEST_RUN_STATE.inFixtureAfterHook]:      '<span class="subtitle">Error in fixture.after hook</span>\n'
+    [TEST_RUN_PHASE.initial]:                 '',
+    [TEST_RUN_PHASE.inFixtureBeforeHook]:     '<span class="subtitle">Error in fixture.before hook</span>\n',
+    [TEST_RUN_PHASE.inFixtureBeforeEachHook]: '<span class="subtitle">Error in fixture.beforeEach hook</span>\n',
+    [TEST_RUN_PHASE.inTestBeforeHook]:        '<span class="subtitle">Error in test.before hook</span>\n',
+    [TEST_RUN_PHASE.inTest]:                  '',
+    [TEST_RUN_PHASE.inTestAfterHook]:         '<span class="subtitle">Error in test.after hook</span>\n',
+    [TEST_RUN_PHASE.inFixtureAfterEachHook]:  '<span class="subtitle">Error in fixture.afterEach hook</span>\n',
+    [TEST_RUN_PHASE.inFixtureAfterHook]:      '<span class="subtitle">Error in fixture.after hook</span>\n',
+    [TEST_RUN_PHASE.inRoleInitializer]:       '<span class="subtitle">Error in Role initializer</span>\n',
+    [TEST_RUN_PHASE.inBookmarkRestore]:       '<span class="subtitle">Error while restoring configuration after Role switch</span>\n'
 };
 
 function markup (err, msgMarkup, opts = {}) {
     msgMarkup = dedent(`
-        ${SUBTITLES[err.testRunState]}<div class="message">${dedent(msgMarkup)}</div>
+        ${SUBTITLES[err.testRunPhase]}<div class="message">${dedent(msgMarkup)}</div>
 
         <strong>Browser:</strong> <span class="user-agent">${err.userAgent}</span>
     `);
@@ -80,7 +82,7 @@ export default {
     `),
 
     [TYPE.setNativeDialogHandlerCodeWrongTypeError]: err => markup(err, `
-        The native dialog handler is expected to be specified as a regular function or ClientFunction, but ${err.actualType} was passed.
+        The native dialog handler is expected to be a function, ClientFunction or null, but it was ${err.actualType}.
     `),
 
     [TYPE.uncaughtErrorInClientFunctionCode]: err => markup(err, `
@@ -125,6 +127,10 @@ export default {
 
     [TYPE.actionIntegerArgumentError]: err => markup(err, `
         The "${err.argumentName}" argument is expected to be an integer, but it was ${err.actualValue}.
+    `),
+
+    [TYPE.actionRoleArgumentError]: err => markup(err, `
+        The "${err.argumentName}" argument is expected to be a Role instance, but it was ${err.actualValue}.
     `),
 
     [TYPE.actionPositiveIntegerArgumentError]: err => markup(err, `
@@ -236,5 +242,9 @@ export default {
 
     [TYPE.windowDimensionsOverflowError]: err => markup(err, `
         Unable to resize the window because the specified size exceeds the screen size. On macOS, a window cannot be larger than the screen.
+    `),
+
+    [TYPE.roleSwitchInRoleInitializerError]: err => markup(err, `
+        Role cannot be switched while another role is being initialized.
     `)
 };

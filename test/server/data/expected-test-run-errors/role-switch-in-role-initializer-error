@@ -1,5 +1,4 @@
-The native dialog handler is expected to be a function, ClientFunction or
-null, but it was number.
+Role cannot be switched while another role is being initialized.
 
 Browser: Chrome 15.0.874 / Mac OS X 10.8.1
 Screenshot: /unix/path/with/<tag>
@@ -18,3 +17,4 @@ Screenshot: /unix/path/with/<tag>
 
    at func2 (testfile.js:23:5)
    at Object.<anonymous> (testfile.js:24:3)
+

@@ -2,12 +2,12 @@ import { ClientFunction, Selector } from 'testcafe';
 import { expect } from 'chai';
 
 fixture `Native dialogs`
-    .page `http://localhost:3000/fixtures/native-dialogs-handling/pages/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/index.html`;
 
 
 const getResult     = ClientFunction(() => document.getElementById('result').textContent);
-const pageUrl       = 'http://localhost:3000/fixtures/native-dialogs-handling/pages/index.html';
-const promptPageUrl = 'http://localhost:3000/fixtures/native-dialogs-handling/pages/prompt.html';
+const pageUrl       = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/index.html';
+const promptPageUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/prompt.html';
 
 
 test('Without handler', async t => {
@@ -111,7 +111,7 @@ test('Expected alert and prompt after redirect', async t => {
     await t
         .setNativeDialogHandler((type, text, url) => {
             if (type === 'prompt' && text === 'Prompt:' &&
-                url === 'http://localhost:3000/fixtures/native-dialogs-handling/pages/prompt.html')
+                url === 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/prompt.html')
                 return 'prompt result';
 
             return null;
@@ -182,4 +182,13 @@ test('Selector as dialogHandler', async t => {
     var dialogHandler = Selector(() => document.body);
 
     await t.setNativeDialogHandler(dialogHandler);
+});
+
+
+test('Null handler', async t => {
+    await t
+        .setNativeDialogHandler(() => true)
+        .click('#buttonAlert')
+        .setNativeDialogHandler(null)
+        .click('#buttonAlert');
 });

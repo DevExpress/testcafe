@@ -1,6 +1,5 @@
 import getStackFrames from 'callsite';
 import BabelPromise from 'babel-runtime/core-js/promise';
-import TestRun from '../test-run';
 
 const TRACKING_MARK_RE = /^\$\$testcafe_test_run\$\$(\S+)\$\$$/;
 const STACK_CAPACITY   = 5000;
@@ -21,6 +20,8 @@ function decodeTestRunId (testRunId) {
 // Tracker
 export default {
     enabled: false,
+
+    activeTestRuns: {},
 
     _createContextSwitchingFunctionHook (ctxSwitchingFn, patchedArgsCount) {
         var tracker = this;
@@ -110,6 +111,6 @@ export default {
     resolveContextTestRun () {
         var testRunId = this.getContextTestRunId();
 
-        return TestRun.activeTestRuns[testRunId];
+        return this.activeTestRuns[testRunId];
     }
 };

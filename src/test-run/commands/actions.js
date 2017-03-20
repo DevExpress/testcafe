@@ -12,15 +12,20 @@ import {
     nonEmptyStringArgument,
     urlArgument,
     stringOrStringArrayArgument,
-    setSpeedArgument
+    setSpeedArgument,
+    actionRoleArgument
 } from './validations/argument';
 
 import { ActionSelectorError, SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
 import { APIError } from '../../errors/runtime';
+import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './observation';
 
 
 // Initializers
 function initSelector (name, val, skipVisibilityCheck) {
+    if (val instanceof ExecuteSelectorCommand)
+        return val;
+
     try {
         var builder = new SelectorBuilder(val, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
 
@@ -50,34 +55,26 @@ function initTypeOptions (name, val) {
 }
 
 function initDialogHandler (name, val) {
-    var fn         = val.dialogHandler;
-    var options    = val.options;
-    var methodName = 'setNativeDialogHandler';
-    var builder    = fn && fn[functionBuilderSymbol];
+    var fn = val.fn;
 
-    builder = builder instanceof ClientFunctionBuilder ? builder : null;
+    if (fn === null || fn instanceof ExecuteClientFunctionCommand)
+        return fn;
 
-    if (builder) {
-        if (builder instanceof SelectorBuilder)
-            throw new SetNativeDialogHandlerCodeWrongTypeError(builder.callsiteNames.instantiation);
+    var options      = val.options;
+    var methodName   = 'setNativeDialogHandler';
+    var builder      = fn && fn[functionBuilderSymbol];
+    var isSelector   = builder instanceof SelectorBuilder;
+    var functionType = typeof fn;
 
-        fn = fn.with(options);
+    if (functionType !== 'function' || isSelector)
+        throw new SetNativeDialogHandlerCodeWrongTypeError(isSelector ? 'Selector' : functionType);
 
-        builder = fn[functionBuilderSymbol];
-    }
-    else {
-        var functionType = typeof fn;
-
-        if (functionType !== 'function')
-            throw new SetNativeDialogHandlerCodeWrongTypeError(functionType);
-
-        builder = new ClientFunctionBuilder(fn, options, {
-            instantiation: methodName,
-            execution:     methodName
-        });
-    }
+    builder = builder instanceof ClientFunctionBuilder ?
+              fn.with(options)[functionBuilderSymbol] :
+              new ClientFunctionBuilder(fn, options, { instantiation: methodName, execution: methodName });
 
     return builder.getCommand([]);
+
 }
 
 // Commands
@@ -426,6 +423,23 @@ export class SetTestSpeedCommand extends Assignable {
     _getAssignableProperties () {
         return [
             { name: 'speed', type: setSpeedArgument, required: true }
+        ];
+    }
+}
+
+export class UseRoleCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type = TYPE.useRole;
+        this.role = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'role', type: actionRoleArgument, required: true }
         ];
     }
 }

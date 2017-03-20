@@ -1,4 +1,4 @@
-import TEST_RUN_STATE from '../test-run/state';
+import TEST_RUN_PHASE from '../test-run/phase';
 import processTestFnError from '../errors/process-test-fn-error';
 
 export default class FixtureHookController {
@@ -70,7 +70,7 @@ export default class FixtureHookController {
 
             // NOTE: fail all tests in fixture if fixture.before hook has error
             if (item.fixtureBeforeHookErr) {
-                testRun.state = TEST_RUN_STATE.inFixtureBeforeHook;
+                testRun.phase = TEST_RUN_PHASE.inFixtureBeforeHook;
 
                 testRun.addError(item.fixtureBeforeHookErr);
 
@@ -91,7 +91,7 @@ export default class FixtureHookController {
             item.pendingTestRunCount--;
 
             if (item.pendingTestRunCount === 0 && fixture.afterFn) {
-                testRun.state = TEST_RUN_STATE.inFixtureAfterHook;
+                testRun.phase = TEST_RUN_PHASE.inFixtureAfterHook;
 
                 try {
                     await fixture.afterFn(item.fixtureCtx);

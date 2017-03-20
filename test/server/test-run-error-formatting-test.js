@@ -3,7 +3,7 @@ var read                                              = require('read-file-relat
 var remove                                            = require('lodash').pull;
 var escapeRe                                          = require('lodash').escapeRegExp;
 var ReporterPluginHost                                = require('../../lib/reporter/plugin-host');
-var TEST_RUN_STATE                                    = require('../../lib/test-run/state');
+var TEST_RUN_PHASE                                    = require('../../lib/test-run/phase');
 var TYPE                                              = require('../../lib/errors/test-run/type');
 var TestRunErrorFormattableAdapter                    = require('../../lib/errors/test-run/formattable-adapter');
 var testCallsite                                      = require('./data/test-callsite');
@@ -55,6 +55,9 @@ var SetNativeDialogHandlerCodeWrongTypeError          = require('../../lib/error
 var CantObtainInfoForElementSpecifiedBySelectorError  = require('../../lib/errors/test-run').CantObtainInfoForElementSpecifiedBySelectorError;
 var WindowDimensionsOverflowError                     = require('../../lib/errors/test-run').WindowDimensionsOverflowError;
 var SetTestSpeedArgumentError                         = require('../../lib/errors/test-run').SetTestSpeedArgumentError;
+var RoleSwitchInRoleInitializerError                  = require('../../lib/errors/test-run').RoleSwitchInRoleInitializerError;
+var ActionRoleArgumentError                           = require('../../lib/errors/test-run').ActionRoleArgumentError;
+
 
 var TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRe(require.resolve('./data/test-callsite')), 'g');
 
@@ -95,7 +98,7 @@ function assertErrorMessage (file, err) {
         userAgent:      userAgentMock,
         screenshotPath: screenshotPath,
         callsite:       testCallsite,
-        testRunState:   TEST_RUN_STATE.initial
+        testRunPhase:   TEST_RUN_PHASE.initial
     });
 
     plugin
@@ -308,6 +311,14 @@ describe('Error formatting', function () {
 
         it('Should format "setTestSpeedArgumentError"', function () {
             assertErrorMessage('set-test-speed-argument-error', new SetTestSpeedArgumentError('speed', 'string'));
+        });
+
+        it('Should format "roleSwitchInRoleInitializerError"', function () {
+            assertErrorMessage('role-switch-in-role-initializer-error', new RoleSwitchInRoleInitializerError(testCallsite));
+        });
+
+        it('Should format "actionRoleArgumentError"', function () {
+            assertErrorMessage('action-role-argument-error', new ActionRoleArgumentError('role', 'number'));
         });
     });
 

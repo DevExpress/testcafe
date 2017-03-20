@@ -1,12 +1,8 @@
 import handleTagArgs from '../../utils/handle-tag-args';
 import { delegateAPI, getDelegatedAPIList } from '../../utils/delegated-api';
+import ensureUrlProtocol from '../../utils/ensure-url-protocol';
 import { assertType, is } from '../../errors/runtime/type-assertions';
-import TestController from '../test-controller';
-import testRunTracker from '../test-run-tracker';
-import processTestFnError from '../../errors/process-test-fn-error';
 
-const PROTOCOL_RE          = /^(https?|file):\/\//;
-const IMPLICIT_PROTOCOL_RE = /^\/\//;
 
 export default class TestingUnit {
     constructor (testFile) {
@@ -48,11 +44,7 @@ export default class TestingUnit {
 
         assertType(is.string, 'page', 'The page URL', this.pageUrl);
 
-        if (!PROTOCOL_RE.test(this.pageUrl) && this.pageUrl !== 'about:blank') {
-            var protocol = IMPLICIT_PROTOCOL_RE.test(this.pageUrl) ? 'http:' : 'http://';
-
-            this.pageUrl = protocol + this.pageUrl;
-        }
+        this.pageUrl = ensureUrlProtocol(this.pageUrl);
 
         return this.apiOrigin;
     }
@@ -70,30 +62,6 @@ export default class TestingUnit {
         this.authCredentials = credentials;
 
         return this.apiOrigin;
-    }
-
-    static _wrapTestFunction (fn) {
-        return async testRun => {
-            var result     = null;
-            var markeredfn = testRunTracker.addTrackingMarkerToFunction(testRun.id, fn);
-
-            testRun.controller = new TestController(testRun);
-
-            testRunTracker.ensureEnabled();
-
-            try {
-                result = await markeredfn(testRun.controller);
-            }
-            catch (err) {
-                throw processTestFnError(err);
-            }
-
-            // NOTE: check if the last command in the test
-            // function is missing the `await` keyword.
-            testRun.controller._checkForMissingAwait();
-
-            return result;
-        };
     }
 
     static _makeAPIListForChildClass (ChildClass) {

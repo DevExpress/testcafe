@@ -19,6 +19,7 @@ export default {
     actionStringOrStringArrayArgumentError:            'actionStringOrStringArrayArgumentError',
     actionStringArrayElementError:                     'actionStringArrayElementError',
     actionIntegerArgumentError:                        'actionIntegerArgumentError',
+    actionRoleArgumentError:                           'actionRoleArgumentError',
     actionPositiveIntegerArgumentError:                'actionPositiveIntegerArgumentError',
     actionSelectorError:                               'actionSelectorError',
     actionUnsupportedUrlProtocolError:                 'actionUnsupportedUrlProtocolError',
@@ -51,5 +52,6 @@ export default {
     cantObtainInfoForElementSpecifiedBySelectorError:  'cantObtainInfoForElementSpecifiedBySelectorError',
     externalAssertionLibraryError:                     'externalAssertionLibraryError',
     pageLoadError:                                     'pageLoadError',
-    windowDimensionsOverflowError:                     'windowDimensionsOverflowError'
+    windowDimensionsOverflowError:                     'windowDimensionsOverflowError',
+    roleSwitchInRoleInitializerError:                  'roleSwitchInRoleInitializerError'
 };
