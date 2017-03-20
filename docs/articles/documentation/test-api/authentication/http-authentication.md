@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: HTTP Authentication
-permalink: /documentation/test-api/http-authentication.html
+permalink: /documentation/test-api/authentication/http-authentication.html
 checked: true
 ---
 # HTTP Authentication

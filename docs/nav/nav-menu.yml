@@ -105,8 +105,13 @@
     url: /documentation/test-api/obtaining-data-from-the-client.md
   - name: Waiting for Page Elements to Appear
     url: /documentation/test-api/waiting-for-page-elements-to-appear.md
-  - name: HTTP Authentication
-    url: /documentation/test-api/http-authentication.md
+  - name: Authentication
+    url: /documentation/test-api/authentication/README.md
+    content:
+    - name: User Roles
+      url: /documentation/test-api/authentication/user-roles.md
+    - name: HTTP Authentication
+      url: /documentation/test-api/authentication/http-authentication.md
   - name: Pausing the Test
     url: /documentation/test-api/pausing-the-test.md
   - name: Handling Native Dialogs
