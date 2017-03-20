@@ -762,9 +762,8 @@ The `addCustomMethods` function also adds the specified methods to the [element 
 
 ```js
 const myTable = Selector('.my-table').addCustomMethods({
-    getCellText: (table, rowIndex, columnIndex) => {
-        return table.rows[rowIndex].cells[columnIndex].innerText;
-    }
+    getCellText: (table, rowIndex, columnIndex) =>
+        table.rows[rowIndex].cells[columnIndex].innerText
 });
 
 await t.expect(myTable.getCellText(1, 1)).contains('hey!');
