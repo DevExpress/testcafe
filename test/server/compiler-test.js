@@ -3,6 +3,7 @@ var resolve           = require('path').resolve;
 var readFile          = require('fs').readFileSync;
 var Promise           = require('pinkie');
 var renderers         = require('callsite-record').renderers;
+var assertAPIError    = require('./helpers/assert-error').assertAPIError;
 var ERR_TYPE          = require('../../lib/errors/test-run/type');
 var exportableLib     = require('../../lib/api/exportable-lib');
 var NODE_VER          = require('../../lib/utils/node-version');

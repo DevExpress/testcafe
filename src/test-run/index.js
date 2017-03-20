@@ -27,13 +27,15 @@ import {
     TestDoneCommand,
     PrepareBrowserManipulationCommand,
     ShowAssertionRetriesStatusCommand,
-    HideAssertionRetriesStatusCommand
+    HideAssertionRetriesStatusCommand,
+    SetBreakpointCommand
 } from './commands/service';
 
 import {
     isCommandRejectableByPageError,
     isBrowserManipulationCommand,
-    isServiceCommand
+    isServiceCommand,
+    canSetDebuggerBreakpointBeforeCommand
 } from './commands/utils';
 
 //Const
@@ -237,8 +239,13 @@ export default class TestRun extends Session {
 
     _enqueueBrowserManipulation (command, callsite) {
         this.browserManipulationQueue.push(command);
-
         return this.executeCommand(new PrepareBrowserManipulationCommand(command.type), callsite);
+    }
+
+    async _enqueueSetBreakpointCommand (callsite) {
+        showDebuggerMessage(callsite, this.browserConnection.userAgent);
+
+        this.debugging = await this._enqueueCommand(new SetBreakpointCommand(), callsite);
     }
 
     _removeAllNonServiceTasks () {
@@ -348,6 +355,15 @@ export default class TestRun extends Session {
 
         else if (command.type === COMMAND_TYPE.setTestSpeed)
             this.speed = command.speed;
+
+        else if (command.type === COMMAND_TYPE.debug)
+            this.debugging = true;
+    }
+
+
+    async _setBreakpointIfNecessary (command, callsite) {
+        if (this.debugging && canSetDebuggerBreakpointBeforeCommand(command))
+            await this._enqueueSetBreakpointCommand(callsite);
     }
 
     async executeCommand (command, callsite) {
@@ -356,25 +372,24 @@ export default class TestRun extends Session {
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
 
+        this._adjustConfigurationWithCommand(command);
+
+        await this._setBreakpointIfNecessary(command, callsite);
+
         if (isBrowserManipulationCommand(command))
             return this._enqueueBrowserManipulation(command, callsite);
 
         if (command.type === COMMAND_TYPE.wait)
             return delay(command.timeout);
 
+        if (command.type === COMMAND_TYPE.debug)
+            return await this._enqueueSetBreakpointCommand(callsite);
+
         if (command.type === COMMAND_TYPE.useRole)
             return await this._useRole(command.role, callsite);
 
-        if (command.type === COMMAND_TYPE.assertion) {
-            // NOTE: we should send the assertion command to the client only if the test is executed
-            // step-by-step in debugging mode to show debugging status in the status panel
-            if (this.debugging)
-                await this._enqueueCommand(command, callsite);
-
+        if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command, callsite);
-        }
-
-        this._adjustConfigurationWithCommand(command);
 
         return this._enqueueCommand(command, callsite);
     }
@@ -463,8 +478,6 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     this.lastDriverStatusId       = msg.status.id;
     this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
 
-    this.debugging = msg.status.debugging;
-
     if (this.lastDriverStatusResponse)
         return this.lastDriverStatusResponse;
 
@@ -494,12 +507,4 @@ ServiceMessages[CLIENT_MESSAGES.waitForFileDownload] = function (msg) {
         else
             this.resolveWaitForFileDownloadingPromise = resolve;
     });
-};
-
-ServiceMessages[CLIENT_MESSAGES.showDebuggerMessage] = function (msg) {
-    this.debugLog.driverMessage(msg);
-
-    showDebuggerMessage(this.currentDriverTask.callsite, this.browserConnection.userAgent);
-
-    return Promise.resolve();
 };

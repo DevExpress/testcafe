@@ -26,6 +26,7 @@ export default {
     prepareBrowserManipulation: 'prepare-browser-manipulation',
     showAssertionRetriesStatus: 'show-assertion-retries-status',
     hideAssertionRetriesStatus: 'hide-assertion-retries-status',
+    setBreakpoint:              'set-breakpoint',
     resizeWindow:               'resize-window',
     resizeWindowToFitDevice:    'resize-window-to-fit-device',
     maximizeWindow:             'maximize-window',
