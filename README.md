@@ -348,11 +348,11 @@ Use ESLint when writing and editing TestCafe tests.
 
 * [ESLint plugin](https://github.com/miherlosev/eslint-plugin-testcafe)
 
-## Tested with BrowserStack
+## Thanks to BrowserStack
 
-We run our functional tests on BrowserStack, a powerful cloud browser testing service. BrowserStack provides a robust and flexible testing platform, so we don't have to worry about our tests.
+We are grateful to BrowserStack for providing a testing platform where we run functional tests. BrowserStack is a robust and flexible platform, so we don't have to worry about our tests.
 
-<a href="https://www.browserstack.com/"><img alt="BrowserStack Logo" src="media/BrowserStack.png"/></a>
+<a href="https://www.browserstack.com/"><img alt="BrowserStack Logo" src="https://raw.github.com/DevExpress/testcafe/master/media/BrowserStack.png"/></a>
 
 ## Roadmap
 
