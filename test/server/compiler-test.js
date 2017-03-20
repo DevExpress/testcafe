@@ -311,7 +311,7 @@ describe('Compiler', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    assertAPIError(err, {
+                    assertError(err, {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
@@ -338,7 +338,7 @@ describe('Compiler', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    assertAPIError(err, {
+                    assertError(err, {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
@@ -364,7 +364,7 @@ describe('Compiler', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    assertAPIError(err, {
+                    assertError(err, {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
@@ -391,7 +391,7 @@ describe('Compiler', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    assertAPIError(err, {
+                    assertError(err, {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
