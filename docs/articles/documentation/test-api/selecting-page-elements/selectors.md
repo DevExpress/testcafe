@@ -38,7 +38,7 @@ This topic contains the following sections.
   * [Define Action Targets](#define-action-targets)
   * [Define Assertion Actual Value](#define-assertion-actual-value)
   * [Selector Timeout](#selector-timeout)
-* [Adding Custom Properties and Methods to the Element State](#adding-custom-properties-and-methods-to-the-element-state)
+* [Extending Selectors](#extending-selectors)
   * [Custom Properties](#custom-properties)
   * [Custom Methods](#custom-methods)
 * [Calling Selectors from Node.js Callbacks](#calling-selectors-from-nodejs-callbacks)
@@ -688,7 +688,7 @@ DOM node or the timeout exceeds.
 Note that you can additionally require that the node returned by the selector is visible.
 To do this, use the [visibilityCheck](selector-options.md#optionsvisibilitycheck) option.
 
-## Adding Custom Properties and Methods to the Element State
+## Extending Selectors
 
 TestCafe allows you to extend [element state](#obtain-element-state) with custom properties and methods executed on the client side.
 
