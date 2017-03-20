@@ -350,7 +350,7 @@ Use ESLint when writing and editing TestCafe tests.
 
 ## Thanks to BrowserStack
 
-We are grateful to BrowserStack for providing a testing platform where we run functional tests. BrowserStack is a robust and flexible platform, so we don't have to worry about our tests.
+We are grateful to BrowserStack for providing infrastructure that we use to test code in this repository.
 
 <a href="https://www.browserstack.com/"><img alt="BrowserStack Logo" src="https://raw.github.com/DevExpress/testcafe/master/media/BrowserStack.png"/></a>
 
