@@ -1,30 +1,37 @@
 import chalk from 'chalk';
+import { findIndex } from 'lodash';
 import logUpdate from 'log-update';
 import createStackFilter from '../errors/create-stack-filter';
 
 export default {
     messages: [],
 
-    inLogging: false,
+    debugLogging: false,
 
     streamsOverridden: false,
 
     _overrideStream (stream) {
         var initialWrite = stream.write;
+        var that         = this;
 
+        // NOTE: we cannot use arrow function here because 'this' should
+        // be a 'stream' object otherwise stream.write will raise error
         stream.write = function () {
-            if (!this.inLogging) {
-                this.inLogging = true;
-
-                logUpdate.clear();
-                logUpdate.done();
-
+            if (that.debugLogging) {
                 initialWrite.apply(stream, arguments);
-
-                this.inLogging = false;
+                return;
             }
-            else
-                initialWrite.apply(stream, arguments);
+
+            that.debugLogging = true;
+
+            logUpdate.clear();
+            logUpdate.done();
+
+            initialWrite.apply(stream, arguments);
+
+            that._showAllBreakpoints();
+
+            that.debugLogging = false;
         };
     },
 
@@ -33,15 +40,6 @@ export default {
         this._overrideStream(process.stderr);
 
         this.streamsOverridden = true;
-    },
-
-    _getMessageIndex (testRunId) {
-        for (var i = 0; i < this.messages.length; i++) {
-            if (this.messages[i].testRunId === testRunId)
-                return i;
-        }
-
-        return -1;
     },
 
     _getMessageAsString () {
@@ -57,9 +55,9 @@ export default {
         if (!this.messages.length)
             return;
 
-        this.inLogging = true;
+        this.debugLogging = true;
         logUpdate(this._getMessageAsString());
-        this.inLogging = false;
+        this.debugLogging = false;
     },
 
     showBreakpoint (testRunId, userAgent, callsite) {
@@ -80,7 +78,7 @@ export default {
                     `----\n`;
 
         var message = { testRunId, frame };
-        var index   = this._getMessageIndex(testRunId);
+        var index   = findIndex(this.messages, { testRunId });
 
         if (index === -1)
             this.messages.push(message);
@@ -91,7 +89,7 @@ export default {
     },
 
     hideBreakpoint (testRunId) {
-        var index = this._getMessageIndex(testRunId);
+        var index = findIndex(this.messages, { testRunId });
 
         if (index !== -1)
             this.messages.splice(index, 1);
