@@ -18,6 +18,8 @@ import testRunMarker from './marker-symbol';
 import testRunTracker from '../api/test-run-tracker';
 import ROLE_PHASE from '../role/phase';
 import createBookmark from './bookmark';
+import processTestFnError from '../errors/process-test-fn-error';
+import wrapTestFunction from '../api/wrap-test-function';
 
 import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
 import { SetNativeDialogHandlerCommand, SetTestSpeedCommand } from './commands/actions';
@@ -44,6 +46,13 @@ const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.musta
 const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 const MAX_RESPONSE_DELAY              = 2 * 60 * 1000;
 
+const TASK_QUEUE_MANIPULATION = {
+    save:    'task-manipulation-command-save',
+    restore: 'task-manipulation-command-restore'
+};
+
+const ON_EACH_PAGE_HOOK_PHASES = [PHASE.inFixtureOnEachPage, PHASE.inTestOnEachPage, PHASE.inTestControllerOnEachPage];
+
 
 export default class TestRun extends Session {
     constructor (test, browserConnection, screenshotCapturer, warningLog, opts) {
@@ -60,11 +69,15 @@ export default class TestRun extends Session {
         this.phase = PHASE.initial;
 
         this.driverTaskQueue       = [];
+        this.savedTaskQueue        = [];
         this.testDoneCommandQueued = false;
 
         this.activeDialogHandler  = null;
         this.activeIframeSelector = null;
         this.speed                = this.opts.speed;
+
+        this.holdingQueue = null;
+        this.resumeQueue  = null;
 
         this.pendingRequest   = null;
         this.pendingPageError = null;
@@ -78,8 +91,13 @@ export default class TestRun extends Session {
 
         this.errs = [];
 
-        this.lastDriverStatusId       = null;
-        this.lastDriverStatusResponse = null;
+        this.cancelFnExecution = null;
+
+        this.lastDriverStatusId             = null;
+        this.lastDriverStatusResponse       = null;
+        this.onEachPageHookFn               = null;
+        this.lastDriverMessageFromTestState = null;
+        this.lastDriverStatusResponse       = null;
 
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
@@ -153,10 +171,17 @@ export default class TestRun extends Session {
     async _executeTestFn (phase, fn) {
         this.phase = phase;
 
+        var cancelablePromise = new Promise((res, rej) => {
+            this.cancelFnExecution = rej;
+        });
+
         try {
-            await fn(this);
+            await Promise.race([fn(this), cancelablePromise]);
         }
         catch (err) {
+            this.onEachPageHookFn  = null;
+            this.cancelFnExecution = null;
+
             var screenshotPath = null;
 
             if (this.opts.takeScreenshotsOnFails)
@@ -167,6 +192,68 @@ export default class TestRun extends Session {
         }
 
         return !this._addPendingPageErrorIfAny();
+    }
+
+    async _executeOnEachPageFn () {
+        var hookFn = this.getOnEachPageHookFn();
+
+        if (!this.prevPhase)
+            this.prevPhase = this.phase;
+
+        switch (hookFn) {
+            case this.onEachPageHookFn:
+                this.phase = PHASE.inTestControllerOnEachPage;
+                break;
+            case this.test.onEachPageFn:
+                this.phase = PHASE.inTestOnEachPage;
+                break;
+            case this.test.fixture.onEachPageFn:
+                this.phase = PHASE.inFixtureOnEachPage;
+                break;
+        }
+
+        try {
+            await hookFn(this);
+        }
+        catch (err) {
+            var error = processTestFnError(err);
+
+            this.cancelFnExecution(error);
+
+            return false;
+        }
+
+        this.phase     = this.prevPhase;
+        this.prevPhase = this.phase;
+
+        return true;
+    }
+
+    async _runOnEachPageHook (msg) {
+        // NOTE: we should keep original last message from test execution to prevent hook
+        // results from getting into original test, if hook was restarted few times in a row
+        if (ON_EACH_PAGE_HOOK_PHASES.indexOf(this.phase) < 0)
+            this.lastDriverMessageFromTestState = msg;
+        else
+            msg = this.lastDriverMessageFromTestState;
+
+        var result = await this._executeOnEachPageFn();
+
+        if (!result)
+            return;
+
+
+        this.changeTaskQueue(TASK_QUEUE_MANIPULATION.restore);
+
+        // NOTE: Handle the last message, which was received before hook execution.
+        // If the command execution wasn't successfull, it won't start next action,
+        // we should resend unfulfilled task via pending request in this case.
+        var lastDriverStatusResponse = this._handleDriverRequest(msg.status, true);
+
+        if (this.pendingRequest && lastDriverStatusResponse) {
+            this.holdingQueue = null;
+            this._resolvePendingRequest(lastDriverStatusResponse);
+        }
     }
 
     async _runBeforeHook () {
@@ -234,6 +321,11 @@ export default class TestRun extends Session {
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
+        if (this.resumeQueue) {
+            this.resumeQueue();
+            this.resumeQueue = null;
+        }
+
         return new Promise((resolve, reject) => this.driverTaskQueue.push({ command, resolve, reject, callsite }));
     }
 
@@ -254,6 +346,21 @@ export default class TestRun extends Session {
         this.browserManipulationQueue.removeAllNonServiceManipulations();
     }
 
+    changeTaskQueue (manipulation) {
+        if (ON_EACH_PAGE_HOOK_PHASES.indexOf(this.phase) < 0) {
+            if (manipulation === TASK_QUEUE_MANIPULATION.save) {
+                this.savedTaskQueue  = this.driverTaskQueue;
+                this.driverTaskQueue = [];
+            }
+            else {
+                this.driverTaskQueue = this.savedTaskQueue;
+                this.savedTaskQueue  = [];
+            }
+        }
+        // NOTE: We should clean task queue when restarting hook function
+        else
+            this.driverTaskQueue = [];
+    }
 
     // Current driver task
     get currentDriverTask () {
@@ -317,7 +424,7 @@ export default class TestRun extends Session {
 
         var currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
 
-        if (!currentTaskRejectedByError && driverStatus.isCommandResult) {
+        if (!currentTaskRejectedByError && driverStatus.isCommandResult && this.currentDriverTask) {
             if (this.currentDriverTask.command.type === COMMAND_TYPE.testDone) {
                 this._resolveCurrentDriverTask();
 
@@ -379,8 +486,13 @@ export default class TestRun extends Session {
         if (isBrowserManipulationCommand(command))
             return this._enqueueBrowserManipulation(command, callsite);
 
-        if (command.type === COMMAND_TYPE.wait)
+        if (command.type === COMMAND_TYPE.wait) {
+            this.holdingQueue = new Promise(res => {
+                this.resumeQueue = res;
+            });
+
             return delay(command.timeout);
+        }
 
         if (command.type === COMMAND_TYPE.debug)
             return await this._enqueueSetBreakpointCommand(callsite);
@@ -390,6 +502,12 @@ export default class TestRun extends Session {
 
         if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command, callsite);
+
+        if (command.type === COMMAND_TYPE.onEachPage) {
+            this.onEachPageHookFn = wrapTestFunction(command.fn);
+
+            return Promise.resolve();
+        }
 
         return this._enqueueCommand(command, callsite);
     }
@@ -401,6 +519,11 @@ export default class TestRun extends Session {
         this.pendingPageError = null;
 
         return Promise.reject(err);
+    }
+
+    // onEachPageHook
+    getOnEachPageHookFn () {
+        return this.onEachPageHookFn || this.test.onEachPageFn || this.test.fixture.onEachPageFn;
     }
 
     // Role management
@@ -465,14 +588,28 @@ export default class TestRun extends Session {
 // Service message handlers
 var ServiceMessages = TestRun.prototype;
 
-ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
+ServiceMessages[CLIENT_MESSAGES.ready] = async function (msg) {
     this.debugLog.driverMessage(msg);
 
     this._clearPendingRequest();
 
+    if (this.holdingQueue) {
+        await this.holdingQueue;
+
+        this.holdingQueue = null;
+    }
+
+    var isDriverRepeatStatusMessage = msg.status.id === this.lastDriverStatusId;
+    var isPageReloaded              = isDriverRepeatStatusMessage || msg.status.pageLoaded || msg.status.resent;
+
+    if (isPageReloaded && this.getOnEachPageHookFn()) {
+        this.changeTaskQueue(TASK_QUEUE_MANIPULATION.save);
+        this._runOnEachPageHook(msg);
+    }
+
     // NOTE: the driver sends the status for the second time if it didn't get a response at the
     // first try. This is possible when the page was unloaded after the driver sent the status.
-    if (msg.status.id === this.lastDriverStatusId)
+    else if (msg.status.id === this.lastDriverStatusId)
         return this.lastDriverStatusResponse;
 
     this.lastDriverStatusId       = msg.status.id;

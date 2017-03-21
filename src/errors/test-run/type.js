@@ -53,5 +53,6 @@ export default {
     externalAssertionLibraryError:                     'externalAssertionLibraryError',
     pageLoadError:                                     'pageLoadError',
     windowDimensionsOverflowError:                     'windowDimensionsOverflowError',
-    roleSwitchInRoleInitializerError:                  'roleSwitchInRoleInitializerError'
+    roleSwitchInRoleInitializerError:                  'roleSwitchInRoleInitializerError',
+    onEachPageArgumentError:                           'onEachPageArgumentError'
 };

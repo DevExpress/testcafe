@@ -26,7 +26,8 @@ import {
     SetNativeDialogHandlerCommand,
     GetNativeDialogHistoryCommand,
     SetTestSpeedCommand,
-    UseRoleCommand
+    UseRoleCommand,
+    OnEachPageCommand
 } from '../../test-run/commands/actions';
 
 import {
@@ -261,6 +262,10 @@ export default class TestController {
 
     _useRole$ (role) {
         return this._enqueueCommand('useRole', UseRoleCommand, { role });
+    }
+
+    _onEachPage$ (fn) {
+        return this._enqueueCommand('onEachPage', OnEachPageCommand, { fn });
     }
 }
 

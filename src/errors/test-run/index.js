@@ -427,3 +427,9 @@ export class SetNativeDialogHandlerCodeWrongTypeError extends TestRunErrorBase {
     }
 }
 
+// On each page argument error
+export class OnEachPageArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TYPE.onEachPageArgumentError, argumentName, actualValue);
+    }
+}
