@@ -14,9 +14,11 @@ Created by the [testCafe.createRunner](testcafe.md#createrunner) function.
 
 ```js
 const createTestCafe = require('testcafe');
+let testcafe         = null;
 
 createTestCafe('localhost', 1337, 1338)
-    .then(testcafe => {
+    .then(tc => {
+        testcafe     = tc;
         const runner = testcafe.createRunner();
 
         return runner
@@ -26,6 +28,7 @@ createTestCafe('localhost', 1337, 1338)
     })
     .then(failedCount => {
         console.log('Tests failed: ' + failedCount);
+        testcafe.close();
     });
 ```
 
@@ -155,10 +158,12 @@ runner.browsers({
 ```js
 const createTestCafe = require('testcafe');
 let runner           = null;
+let testcafe         = null;
 
 createTestCafe('localhost', 1337, 1338)
-    .then(testcafe => {
-        runner = testcafe.createRunner();
+    .then(tc => {
+        testcafe = tc;
+        runner   = testcafe.createRunner();
 
         return testcafe.createBrowserConnection();
     })
@@ -172,7 +177,10 @@ createTestCafe('localhost', 1337, 1338)
                 .src('test.js')
                 .browsers(remoteConnection)
                 .run()
-                .then(failedCount => { /* ... */ });
+                .then(failedCount => {
+                    console.log(failedCount);
+                    testcafe.close();
+                 });
         });
     });
 ```
@@ -288,7 +296,7 @@ async run(options) → Promise<Number>
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 > where tests are not guaranteed to execute correctly.
 
-You can pass the following options to this function.
+You can pass the following options to the `runner.run` function.
 
 Parameter         | Type    | Description                                                                                                                                                                           | Default
 ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------
@@ -298,19 +306,30 @@ Parameter         | Type    | Description                                       
 `assertionTimeout` | Number  | Specifies the amount of time, in milliseconds, within which TestCafe makes attempts  to successfully execute an [assertion](../../test-api/assertions/README.md) if [a selector property](../../test-api/selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../../test-api/obtaining-data-from-the-client.md) was passed as an actual value. See [Smart Assertion Query Mechanism](../../test-api/assertions/README.md#smart-assertion-query-mechanism). | `3000`
 `speed`           | Number  | Specifies the speed of test execution. Should be a number between `1` (the fastest) and `0.01` (the slowest). If speed is also specified for an [individual action](../../test-api/actions/action-options.md#basic-action-options), the action speed setting overrides test speed. | `1`
 
+After all tests are finished, call the [testcafe.close](testcafe.md#close) function to stop the TestCafe server.
+
 **Example**
 
 ```js
-runner
-    .run({
-        skipJsErrors: true,
-        quarantineMode: true,
-        selectorTimeout: 50000,
-        assertionTimeout: 7000,
-        speed: 0.1
+const createTestCafe = require('testcafe');
+let testcafe         = null;
+
+createTestCafe('localhost', 1337, 1338)
+    .then(tc => {
+        testcafe     = tc;
+        const runner = testcafe.createRunner();
+
+        return runner.run({
+                skipJsErrors: true,
+                quarantineMode: true,
+                selectorTimeout: 50000,
+                assertionTimeout: 7000,
+                speed: 0.1
+            })
     })
     .then(failed => {
         console.log('Tests failed: ' + failed);
+        testcafe.close();
     })
     .catch(error => { /* ... */ });
 ```
