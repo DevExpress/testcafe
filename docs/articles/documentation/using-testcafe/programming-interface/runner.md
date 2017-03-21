@@ -320,12 +320,12 @@ createTestCafe('localhost', 1337, 1338)
         const runner = testcafe.createRunner();
 
         return runner.run({
-                skipJsErrors: true,
-                quarantineMode: true,
-                selectorTimeout: 50000,
-                assertionTimeout: 7000,
-                speed: 0.1
-            })
+            skipJsErrors: true,
+            quarantineMode: true,
+            selectorTimeout: 50000,
+            assertionTimeout: 7000,
+            speed: 0.1
+        });
     })
     .then(failed => {
         console.log('Tests failed: ' + failed);
