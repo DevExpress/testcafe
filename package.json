@@ -17,7 +17,7 @@
   },
   "main": "lib/index",
   "bin": {
-    "testcafe": "./bin/testcafe.js"
+    "testcafe": "./bin/testcafe-with-v8-flag-filter.js"
   },
   "files": [
     "lib",
