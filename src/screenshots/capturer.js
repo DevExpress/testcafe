@@ -86,7 +86,8 @@ export default class Capturer {
         if (customScreenshotPath)
             this.screenshotPathForReport = this.baseScreenshotsPath;
 
-        this.testEntry.path = this.screenshotPathForReport;
+        this.testEntry.hasScreenshots = true;
+        this.testEntry.path           = this.screenshotPathForReport;
 
         return screenshotPath;
     }

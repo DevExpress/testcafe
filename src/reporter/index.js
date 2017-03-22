@@ -92,7 +92,7 @@ export default class Reporter {
             reportItem.errs     = reportItem.errs.concat(testRun.errs);
 
             if (!reportItem.pendingRuns) {
-                if (task.screenshots.enabled)
+                if (task.screenshots.hasCapturedFor(testRun.test))
                     reportItem.screenshotPath = task.screenshots.getPathFor(testRun.test);
 
                 this._shiftReportQueue();

@@ -51,8 +51,9 @@ export default class Screenshots {
 
     _addTestEntry (test) {
         var testEntry = {
-            test: test,
-            path: this.screenshotsPath || ''
+            test:           test,
+            path:           this.screenshotsPath || '',
+            hasScreenshots: false
         };
 
         this.testEntries.push(testEntry);
@@ -62,6 +63,10 @@ export default class Screenshots {
 
     _getTestEntry (test) {
         return find(this.testEntries, entry => entry.test === test);
+    }
+
+    hasCapturedFor (test) {
+        return this._getTestEntry(test).hasScreenshots;
     }
 
     getPathFor (test) {
