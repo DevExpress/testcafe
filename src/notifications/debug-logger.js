@@ -12,26 +12,22 @@ export default {
 
     _overrideStream (stream) {
         var initialWrite = stream.write;
-        var that         = this;
 
-        // NOTE: we cannot use arrow function here because 'this' should
-        // be a 'stream' object otherwise stream.write will raise error
-        stream.write = function () {
-            if (that.debugLogging) {
-                initialWrite.apply(stream, arguments);
-                return;
+        stream.write = (chunk, encoding, cb) => {
+            if (this.debugLogging)
+                initialWrite.call(stream, chunk, encoding, cb);
+            else {
+                this.debugLogging = true;
+
+                logUpdate.clear();
+                logUpdate.done();
+
+                initialWrite.call(stream, chunk, encoding, cb);
+
+                this._showAllBreakpoints();
+
+                this.debugLogging = false;
             }
-
-            that.debugLogging = true;
-
-            logUpdate.clear();
-            logUpdate.done();
-
-            initialWrite.apply(stream, arguments);
-
-            that._showAllBreakpoints();
-
-            that.debugLogging = false;
         };
     },
 
