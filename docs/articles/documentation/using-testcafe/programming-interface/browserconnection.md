@@ -15,10 +15,12 @@ Created by the [testCafe.createBrowserConnection](testcafe.md#createbrowserconne
 ```js
 const createTestCafe = require('testcafe');
 let runner           = null;
+let testcafe         = null;
 
 createTestCafe('localhost', 1337, 1338)
-    .then(testcafe => {
-        runner = testcafe.createRunner();
+    .then(tc => {
+        testcafe = tc;
+        runner   = testcafe.createRunner();
 
         return testcafe.createBrowserConnection();
     })
@@ -32,7 +34,10 @@ createTestCafe('localhost', 1337, 1338)
                 .src('test.js')
                 .browsers(remoteConnection)
                 .run()
-                .then(failedCount => { /* ... */ });
+                .then(failedCount => {
+                    console.log(failedCount);
+                    testcafe.close();
+                 });
         });
     });
 ```
