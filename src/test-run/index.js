@@ -487,9 +487,11 @@ export default class TestRun extends Session {
             return this._enqueueBrowserManipulation(command, callsite);
 
         if (command.type === COMMAND_TYPE.wait) {
-            this.holdingQueue = new Promise(res => {
-                this.resumeQueue = res;
-            });
+            if (!this.holdingQueue) {
+                this.holdingQueue = new Promise(res => {
+                    this.resumeQueue = res;
+                });
+            }
 
             return delay(command.timeout);
         }

@@ -85,6 +85,61 @@ test('Restart hook if reload occurs during its execution', async t => {
     await t.expect(getPageUrl()).contains('iframe');
 });
 
+fixture `Run hook in "fixture.beforeEach" and "fixture.afterEach"`
+    .page `${testPage}`
+    .onEachPage(async () => {
+        await increaseHookCounter();
+    })
+    .beforeEach(async t => {
+        await t.expect(getAndResetHookCounter()).eql(1);
+    })
+    .afterEach(async t => {
+        await t
+            .navigateTo(`${testPage}`)
+            .expect(getAndResetHookCounter()).eql(1);
+    });
+
+test('Run "fixture.beforeEach" and "fixture.afterEach"', async () => {
+
+});
+
+fixture `Share t.ctx and t.fixtureCtx between test and hooks`
+    .page `${testPage}`
+    .before(ctx => {
+        ctx.foo = 'bar';
+    })
+    .onEachPage(async t => {
+        await t.expect(t.fixtureCtx.foo).eql('bar');
+
+        t.fixtureCtx.foo = 'baz';
+        t.ctx.foo        = 'bar';
+    });
+
+test('Share t.ctx and t.fixtureCtx between test and hooks', async t => {
+    await t.click('body');
+    await t.expect(t.fixtureCtx.foo).eql('baz');
+});
+
+fixture `Switch hook after command "t.wait" is executed`
+    .page `${testPage}`
+    .onEachPage(async t => {
+        await t.wait(500);
+        t.ctx.actionSequence.push('hook wait');
+        await t.click('body');
+        t.ctx.actionSequence.push('hook click');
+    });
+
+test('Switch hook after command "t.wait" is executed', async t => {
+    t.ctx.actionSequence = [];
+
+    await t.wait(500);
+    t.ctx.actionSequence.push('test wait');
+    await t.click('body');
+    t.ctx.actionSequence.push('test click');
+
+    await t.expect(t.ctx.actionSequence).eql(['test wait', 'hook wait', 'hook click', 'test click']);
+});
+
 // Test.onEachPage
 fixture `"test.onEachPage" hook`
     .page `${testPage}`;
