@@ -179,9 +179,7 @@ describe('Reporter', function () {
     });
 
     var ScreenshotsMock = function () {
-        this.hasCapturedFor = function (testMock) {
-            return testMock.screenshotExpected;
-        };
+        this.enabled = true;
 
         this.getPathFor = function () {
             return screenshotDir;
@@ -303,7 +301,7 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
-                        screenshotPath: null
+                        screenshotPath: '/screenshots/1445437598847'
                     }
                 ]
             },
@@ -323,7 +321,7 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
-                        screenshotPath: null
+                        screenshotPath: '/screenshots/1445437598847'
                     }
                 ]
             },
@@ -336,7 +334,7 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       false,
                         skipped:        false,
-                        screenshotPath: null
+                        screenshotPath: '/screenshots/1445437598847'
                     }
                 ]
             },
@@ -362,7 +360,7 @@ describe('Reporter', function () {
                         durationMs:     74000,
                         unstable:       true,
                         skipped:        false,
-                        screenshotPath: null
+                        screenshotPath: '/screenshots/1445437598847'
                     }
                 ]
             },

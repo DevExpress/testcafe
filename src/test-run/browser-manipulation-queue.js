@@ -32,8 +32,8 @@ export default class BrowserManipulationQueue {
     async _resizeWindowToFitDevice (device, portrait, currentWidth, currentHeight) {
         var { landscapeWidth, portraitWidth } = getViewportSize(device);
 
-        var width    = portrait ? portraitWidth : landscapeWidth;
-        var height   = portrait ? landscapeWidth : portraitWidth;
+        var width  = portrait ? portraitWidth : landscapeWidth;
+        var height = portrait ? landscapeWidth : portraitWidth;
 
         return await this._resizeWindow(width, height, currentWidth, currentHeight);
     }
@@ -76,9 +76,8 @@ export default class BrowserManipulationQueue {
 
             case COMMAND_TYPE.takeScreenshotOnFail:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureError({
-                    screenshotRequired: true,
-                    pageWidth:          driverMsg.innerWidth,
-                    pageHeight:         driverMsg.innerHeight
+                    pageWidth:  driverMsg.innerWidth,
+                    pageHeight: driverMsg.innerHeight
                 }));
 
             case COMMAND_TYPE.resizeWindow:
