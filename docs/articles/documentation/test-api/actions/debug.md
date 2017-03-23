@@ -19,7 +19,7 @@ The footer displays buttons that allow you to continue test execution or step to
 
 ![Page Footer when Debugging on a Client](../../../images/debugging/client-debugging-footer.png)
 
-> The debugger does not stop at creating and resolving the [selectors](../selecting-page-elements/selectors.md) and [client functions](../obtaining-data-from-thc-client.md).
+> The debugger does not stop at creating and resolving the [selectors](../selecting-page-elements/selectors.md) and [client functions](../obtaining-data-from-the-client.md).
 
 TestCafe logs points in code where the debugger stopped.
 
