@@ -22,7 +22,12 @@ export default class Capturer {
         this.testIndex            = namingOptions.testIndex;
         this.screenshotIndex      = 1;
         this.errorScreenshotIndex = 1;
-        this.pathCustomized       = false;
+
+        var testDirName     = `test-${this.testIndex}`;
+        var screenshotsPath = this.enabled ? joinPath(this.baseScreenshotsPath, this.baseDirName, testDirName) : '';
+
+        this.screenshotsPath         = screenshotsPath;
+        this.screenshotPathForReport = screenshotsPath;
     }
 
     static _correctFilePath (path) {
@@ -47,29 +52,14 @@ export default class Capturer {
     }
 
     _getSreenshotPath (fileName, customPath) {
-        var pathForReport  = this.baseScreenshotsPath;
-        var screenshotPath = null;
+        if (customPath)
+            return joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(customPath));
 
-        if (customPath) {
-            this.pathCustomized = true;
-            screenshotPath      = joinPath(this.baseScreenshotsPath, Capturer._correctFilePath(customPath));
-        }
-        else {
-            var testDirName = `test-${this.testIndex}`;
-            var path        = joinPath(this.baseScreenshotsPath, this.baseDirName, testDirName);
+        var screenshotPath = this.quarantineAttemptNum !== null ?
+                             joinPath(this.screenshotsPath, `run-${this.quarantineAttemptNum}`) :
+                             this.screenshotsPath;
 
-            // NOTE: if test contains takeScreenshot action with custom path
-            // we should specify the most common screenshot folder in report
-            if (!this.pathCustomized)
-                pathForReport = path;
-
-            if (this.quarantineAttemptNum !== null)
-                path = joinPath(path, `run-${this.quarantineAttemptNum}`);
-
-            screenshotPath = joinPath(path, this.userAgentName, fileName);
-        }
-
-        return { pathForReport, screenshotPath };
+        return joinPath(screenshotPath, this.userAgentName, fileName);
     }
 
     async _takeScreenshot (filePath, pageWidth, pageHeight) {
@@ -77,36 +67,38 @@ export default class Capturer {
         await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight);
     }
 
-    async captureAction ({ customPath, pageWidth, pageHeight }) {
+    async _capture (forError, pageWidth, pageHeight, customScreenshotPath) {
         if (!this.enabled)
             return null;
 
-        var fileName = this._getFileName(false);
-        var { pathForReport, screenshotPath } = this._getSreenshotPath(fileName, customPath);
+        var fileName = this._getFileName(forError);
 
-        this.testEntry.path = pathForReport;
+        fileName = forError ? joinPath('errors', fileName) : fileName;
+
+        var screenshotPath = this._getSreenshotPath(fileName, customScreenshotPath);
 
         await this._takeScreenshot(screenshotPath, pageWidth, pageHeight);
 
-        this.testEntry.hasScreenshots = true;
-
         await generateThumbnail(screenshotPath);
+
+        // NOTE: if test contains takeScreenshot action with custom path
+        // we should specify the most common screenshot folder in report
+        if (customScreenshotPath)
+            this.screenshotPathForReport = this.baseScreenshotsPath;
+
+        this.testEntry.hasScreenshots = true;
+        this.testEntry.path           = this.screenshotPathForReport;
 
         return screenshotPath;
     }
 
-    async captureError ({ screenshotRequired, pageWidth, pageHeight }) {
-        if (!screenshotRequired || !this.enabled)
-            return null;
 
-        var fileName = this._getFileName(true);
-        var { screenshotPath } = this._getSreenshotPath(joinPath('errors', fileName));
+    async captureAction ({ pageWidth, pageHeight, customPath }) {
+        return await this._capture(false, pageWidth, pageHeight, customPath);
+    }
 
-        await this._takeScreenshot(screenshotPath, pageWidth, pageHeight);
-
-        await generateThumbnail(screenshotPath);
-
-        return screenshotPath;
+    async captureError ({ pageWidth, pageHeight }) {
+        return await this._capture(true, pageWidth, pageHeight);
     }
 }
 
