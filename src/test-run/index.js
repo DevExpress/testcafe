@@ -3,7 +3,7 @@ import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
-import showDebuggerMessage from '../notifications/debugger-message';
+import debugLogger from '../notifications/debug-logger';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
@@ -243,7 +243,7 @@ export default class TestRun extends Session {
     }
 
     async _enqueueSetBreakpointCommand (callsite) {
-        showDebuggerMessage(callsite, this.browserConnection.userAgent);
+        debugLogger.showBreakpoint(this.id, this.browserConnection.userAgent, callsite);
 
         this.debugging = await this._enqueueCommand(new SetBreakpointCommand(), callsite);
     }
@@ -341,8 +341,10 @@ export default class TestRun extends Session {
     }
 
     _adjustConfigurationWithCommand (command) {
-        if (command.type === COMMAND_TYPE.testDone)
+        if (command.type === COMMAND_TYPE.testDone) {
             this.testDoneCommandQueued = true;
+            debugLogger.hideBreakpoint(this.id);
+        }
 
         else if (command.type === COMMAND_TYPE.setNativeDialogHandler)
             this.activeDialogHandler = command.dialogHandler;
