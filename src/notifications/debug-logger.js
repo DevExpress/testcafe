@@ -24,7 +24,7 @@ export default {
 
                 initialWrite.call(stream, chunk, encoding, cb);
 
-                this._showAllBreakpoints();
+                setTimeout(() => this._showAllBreakpoints(), 0);
 
                 this.debugLogging = false;
             }
