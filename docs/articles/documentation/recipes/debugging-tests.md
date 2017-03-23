@@ -67,6 +67,7 @@ test('My test', async t => {
 
 When test execution reaches this action, it pauses so that you can open browser's developer tools
 and check the web page state, DOM elements location, their CSS styles.
+
 In the footer, you'll find buttons that allow you to continue test execution or step to the next test action.
 
 ![Page Footer when Debugging on a Client](../../images/debugging/client-debugging-footer.png)
