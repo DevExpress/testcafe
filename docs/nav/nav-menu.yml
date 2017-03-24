@@ -94,8 +94,6 @@
       url: /documentation/test-api/actions/upload.md
     - name: Resize Window
       url: /documentation/test-api/actions/resize-window.md
-    - name: Debug
-      url: /documentation/test-api/actions/debug.md
     - name: Action Options
       url: /documentation/test-api/actions/action-options.md
   - name: Assertions
@@ -120,6 +118,8 @@
     url: /documentation/test-api/handling-native-dialogs.md
   - name: Working with &lt;iframes&gt;
     url: /documentation/test-api/working-with-iframes.md
+  - name: Client-Side Debugging
+    url: /documentation/test-api/client-side-debugging.md
   - name: A-Z Index
     url: /documentation/test-api/a-z.md
 - name: EXTENDING TESTCAFE

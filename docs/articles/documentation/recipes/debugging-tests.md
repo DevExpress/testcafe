@@ -51,7 +51,7 @@ It allows you to run and debug your tests in the IDE using the context menu.
 
 ## Debugging Test Behavior on the Client
 
-To debug test behavior on the client, use the [t.debug](../test-api/actions/debug.md) action.
+To debug test behavior on the client, use the [t.debug](../test-api/client-side-debugging.md) action.
 
 ```js
 fixture `My fixture`

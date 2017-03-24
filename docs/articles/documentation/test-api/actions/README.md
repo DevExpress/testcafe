@@ -37,7 +37,6 @@ For details about a specific action, see the corresponding topic.
 * [Type Text](type-text.md)
 * [Upload](upload.md)
 * [Resize Window](resize-window.md)
-* [Debug](debug.md)
 
 ## Selecting Target Elements
 
