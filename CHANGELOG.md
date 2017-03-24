@@ -94,6 +94,10 @@ In the footer, you'll find buttons that allow you to continue test execution or 
 
 ![Page Footer in the Debug Mode](media/client-debugging-footer.png)
 
+TestCafe logs points in code where the debugger stopped.
+
+![Logging Debugger Breakpoints](media/log-debugger.png)
+
 #### :gear: Testing local webpages ([#1286](https://github.com/DevExpress/testcafe/issues/1286))
 
 You can now run tests against local webpages. To do this, specify a URL with the `file://` scheme or a relative path when calling the [page](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage) function.
