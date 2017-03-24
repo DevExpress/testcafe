@@ -1,4 +1,4 @@
-import { assign } from 'lodash';
+import { assign, escapeRegExp as escapeRe } from 'lodash';
 import clientFunctionBuilderSymbol from '../builder-symbol';
 import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapshot-properties';
 import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
@@ -268,6 +268,73 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
     return builder.getFunction();
 }
 
+var ensureRegExpValue = str => typeof str === 'string' ? new RegExp(escapeRe(str)) : str;
+
+/* eslint-disable no-undef */
+function hasText (node) {
+    function hasChildrenWithText (parentNode, textRe) {
+        var cnCount = parentNode.childNodes.length;
+
+        for (var i = 0; i < cnCount; i++) {
+            if (hasText(parentNode.childNodes[i], textRe))
+                return true;
+        }
+
+        return false;
+    }
+
+    // Element
+    if (node.nodeType === 1) {
+        var text = node.innerText;
+
+        // NOTE: In Firefox, <option> elements don't have `innerText`.
+        // So, we fallback to `textContent` in that case (see GH-861).
+        if (node.tagName.toLowerCase() === 'option') {
+            var textContent = node.textContent;
+
+            if (!text && textContent)
+                text = textContent;
+        }
+
+        return textRe.test(text);
+    }
+
+    // Document
+    if (node.nodeType === 9) {
+        // NOTE: latest version of Edge doesn't have `innerText` for `document`,
+        // `html` and `body`. So we check their children instead.
+        var head = node.querySelector('head');
+        var body = node.querySelector('body');
+
+        return hasChildrenWithText(head, textRe) || hasChildrenWithText(body, textRe);
+    }
+
+    // DocumentFragment
+    if (node.nodeType === 11)
+        return hasChildrenWithText(node, textRe);
+
+    return textRe.test(node.textContent);
+}
+
+function hasAttr (node) {
+    if (node.nodeType !== 1)
+        return false;
+
+    var attributes = node.attributes;
+    var attr       = null;
+
+    for (var i = 0; i < attributes.length; i++) {
+        attr = attributes[i];
+
+        if (attrNameRe.test(attr.nodeName) && (!attrValueRe || attrValueRe.test(attr.nodeValue)))
+            return true;
+    }
+
+    return false;
+}
+/* eslint-enable no-undef */
+
+
 function addFilterMethods (obj, getSelector, SelectorBuilder) {
     obj.nth = index => {
         assertType(is.number, 'nth', '"index" argument', index);
@@ -280,9 +347,45 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
     obj.withText = text => {
         assertType([is.string, is.regExp], 'withText', '"text" argument', text);
 
-        var builder = new SelectorBuilder(getSelector(), { text: text }, { instantiation: 'Selector' });
+        var filter = convertFilterToClientFunctionIfNecessary('filter', hasText, { textRe: ensureRegExpValue(text) });
 
-        return builder.getFunction();
+        var selectorFn = () => {
+            /* eslint-disable no-undef */
+            var nodes = selector();
+
+            if (!nodes.length)
+                return null;
+
+            return filterNodes(nodes, filter, document, void 0);
+            /* eslint-enable no-undef */
+        };
+
+        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter);
+    };
+
+    obj.withAttr = (attrName, attrValue) => {
+        assertType([is.string, is.regExp], 'withAttr', '"attrName" argument', attrName);
+
+        if (attrValue !== void 0)
+            assertType([is.string, is.regExp], 'withAttr', '"attrValue" argument', attrValue);
+
+        var filter = convertFilterToClientFunctionIfNecessary('filter', hasAttr, {
+            attrNameRe:  ensureRegExpValue(attrName),
+            attrValueRe: ensureRegExpValue(attrValue)
+        });
+
+        var selectorFn = () => {
+            /* eslint-disable no-undef */
+            var nodes = selector();
+
+            if (!nodes.length)
+                return null;
+
+            return filterNodes(nodes, filter, document, void 0);
+            /* eslint-enable no-undef */
+        };
+
+        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter);
     };
 
     obj.filter = (filter, dependencies) => {
