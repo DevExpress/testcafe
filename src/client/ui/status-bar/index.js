@@ -25,8 +25,8 @@ const USER_AGENT_DIV_CLASS                 = 'user-agent';
 const STATUS_CONTAINER_CLASS               = 'status-container';
 const BUTTONS_CLASS                        = 'buttons';
 const BUTTON_ICON_CLASS                    = 'button-icon';
-const CONTINUE_BUTTON_CLASS                = 'continue';
-const NEXT_ACTION_CLASS                    = 'next-action';
+const RESUME_BUTTON_CLASS                  = 'resume';
+const STEP_CLASS                           = 'step';
 const STATUS_DIV_CLASS                     = 'status';
 const ONLY_ICON_CLASS                      = 'only-icon';
 const ONLY_BUTTONS_CLASS                   = 'only-buttons';
@@ -58,8 +58,8 @@ export default class StatusBar {
         this.infoContainer    = null;
         this.icon             = null;
         this.fixtureContainer = null;
-        this.continueButton   = null;
-        this.nextActionButton = null;
+        this.resumeButton     = null;
+        this.stepButton       = null;
         this.statusDiv        = null;
         this.buttons          = null;
 
@@ -118,8 +118,8 @@ export default class StatusBar {
         shadowUI.addClass(this.buttons, BUTTONS_CLASS);
         statusContainer.appendChild(this.buttons);
 
-        this.continueButton   = this._createButton('Continue Test', CONTINUE_BUTTON_CLASS);
-        this.nextActionButton = this._createButton('Next Action', NEXT_ACTION_CLASS);
+        this.resumeButton = this._createButton('Resume', RESUME_BUTTON_CLASS);
+        this.stepButton   = this._createButton('Step', STEP_CLASS);
     }
 
     _createButton (text, className) {
@@ -368,28 +368,28 @@ export default class StatusBar {
 
             this._recalculateSizes();
 
-            var eventName               = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
-            var continueButtonHandler   = null;
-            var nextActionButtonHandler = null;
+            var eventName           = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
+            var resumeButtonHandler = null;
+            var stepButtonHandler   = null;
 
-            continueButtonHandler = e => {
+            resumeButtonHandler = e => {
                 eventUtils.preventDefault(e);
                 this._resetState();
-                eventUtils.unbind(this.continueButton, eventName, continueButtonHandler);
-                eventUtils.unbind(this.nextActionButton, eventName, nextActionButtonHandler);
+                eventUtils.unbind(this.resumeButton, eventName, resumeButtonHandler);
+                eventUtils.unbind(this.stepButton, eventName, stepButtonHandler);
                 resolve();
             };
 
-            nextActionButtonHandler = e => {
+            stepButtonHandler = e => {
                 eventUtils.preventDefault(e);
                 this._resetState();
-                eventUtils.unbind(this.continueButton, eventName, continueButtonHandler);
-                eventUtils.unbind(this.nextActionButton, eventName, nextActionButtonHandler);
+                eventUtils.unbind(this.resumeButton, eventName, resumeButtonHandler);
+                eventUtils.unbind(this.stepButton, eventName, stepButtonHandler);
                 resolve(true);
             };
 
-            eventUtils.bind(this.continueButton, eventName, continueButtonHandler);
-            eventUtils.bind(this.nextActionButton, eventName, nextActionButtonHandler);
+            eventUtils.bind(this.resumeButton, eventName, resumeButtonHandler);
+            eventUtils.bind(this.stepButton, eventName, stepButtonHandler);
         });
     }
 
