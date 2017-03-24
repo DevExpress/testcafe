@@ -54,9 +54,9 @@ testcafe chrome tests/
 
 When testing is finished, TestCafe aggregates test results from different browsers and outputs them into one comprehensive report.
 
-### Write Test Code Using ES2016
+### Write Test Code in Modern JavaScript
 
-You can write TestCafe tests in ES2016 using the latest JavaScript features like `async/await`.
+You can write TestCafe tests using the latest JavaScript features like `async/await`.
 
 [Test API](https://devexpress.github.io/testcafe/documentation/test-api/index.html) consists of over two dozen methods that can emulate all actions one could possibly do with a webpage.
 Chained syntax allows for code that is easy to write and read.
