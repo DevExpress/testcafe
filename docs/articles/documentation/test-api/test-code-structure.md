@@ -243,7 +243,6 @@ fixture `MyFixture`
     .page `../my-project/index.html`;
 ```
 
-
 ## Initialization and Clean-Up
 
 TestCafe allows you to specify functions that will be executed before a fixture or test is started and after it is finished.
