@@ -23,6 +23,7 @@ export default {
     regeneratorInClientFunctionCode:       `{#instantiationCallsiteName} code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).`,
     invalidClientFunctionTestRunBinding:   'The "boundTestRun" option value is expected to be a test controller.',
     invalidValueType:                      '{smthg} is expected to be a {type}, but it was {actual}.',
+    unsupportedUrlProtocol:                'The specified "{url}" test page URL uses an unsupported {protocol}:// protocol. Only relative URLs or absolute URLs with http://, https:// and file:// protocols are supported.',
     unableToOpenBrowser:                   'Was unable to open the browser "{alias}" due to error.\n\n{errMessage}',
     testControllerProxyCantResolveTestRun: `Cannot implicitly resolve the test run in the context of which the test controller action should be executed. Use test function's 't' argument instead.`
 };

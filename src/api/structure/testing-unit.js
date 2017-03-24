@@ -1,6 +1,6 @@
+import { assertUrl, resolvePageUrl } from '../test-page-url';
 import handleTagArgs from '../../utils/handle-tag-args';
 import { delegateAPI, getDelegatedAPIList } from '../../utils/delegated-api';
-import ensureUrlProtocol from '../../utils/ensure-url-protocol';
 import { assertType, is } from '../../errors/runtime/type-assertions';
 
 
@@ -44,7 +44,9 @@ export default class TestingUnit {
 
         assertType(is.string, 'page', 'The page URL', this.pageUrl);
 
-        this.pageUrl = ensureUrlProtocol(this.pageUrl);
+        assertUrl(this.pageUrl, 'page');
+
+        this.pageUrl = resolvePageUrl(this.pageUrl, this.testFile.filename);
 
         return this.apiOrigin;
     }

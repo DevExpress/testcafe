@@ -19,6 +19,19 @@ function assertThrow (fn, expectedErr) {
     expect(actualErr).eql(expectedErr);
 }
 
+function assertErrorMessage (fn, expectedErrMessage) {
+    var actualErr = null;
+
+    try {
+        fn();
+    }
+    catch (err) {
+        actualErr = err;
+    }
+
+    expect(actualErr.message).eql(expectedErrMessage);
+}
+
 function makeSelector (str, skipVisibilityCheck) {
     var builder = new SelectorBuilder(str, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
     var command = builder.getCommand([]);
@@ -2139,20 +2152,14 @@ describe('Test run commands', function () {
                 }
             );
 
-            assertThrow(
+            assertErrorMessage(
                 function () {
                     return createCommand({
                         type: TYPE.navigateTo,
-                        url:  'file://index.html'
+                        url:  'mail://testcafe@devexpress.com'
                     });
                 },
-                {
-                    isTestCafeError: true,
-                    type:            ERROR_TYPE.actionUnsupportedUrlProtocolError,
-                    protocol:        'file',
-                    argumentName:    'url',
-                    callsite:        null
-                }
+                'Cannot prepare tests due to an error.\n\nThe specified "mail://testcafe@devexpress.com" test page URL uses an unsupported mail:// protocol. Only relative URLs or absolute URLs with http://, https:// and file:// protocols are supported.'
             );
         });
 

@@ -4,6 +4,14 @@ var expect = require('chai').expect;
 // Actions functionality is tested in lower-level raw API.
 describe('[API] Generic errors', function () {
     describe('Error in test code', function () {
+        it('Should handle unsupported protocol in a test page', function () {
+            return runTests('./testcafe-fixtures/unsupported-protocol-test.js', 'Test',
+                { shouldFail: true, only: 'chrome' })
+                .catch(function (err) {
+                    expect(err.message).contains('The specified "mail://testcafe@devexpress.io" test page URL uses an unsupported mail:// protocol.');
+                });
+        });
+
         it('Should handle error thrown by test code', function () {
             return runTests('./testcafe-fixtures/error-in-test-code-test.js', 'Test code throws Error',
                 { shouldFail: true, only: 'chrome' })

@@ -16,7 +16,6 @@ var ActionSpeedOptionError                            = require('../../lib/error
 var ActionSelectorError                               = require('../../lib/errors/test-run').ActionSelectorError;
 var ActionOptionsTypeError                            = require('../../lib/errors/test-run').ActionOptionsTypeError;
 var ActionStringArgumentError                         = require('../../lib/errors/test-run').ActionStringArgumentError;
-var ActionUnsupportedUrlProtocolError                 = require('../../lib/errors/test-run').ActionUnsupportedUrlProtocolError;
 var ActionStringOrStringArrayArgumentError            = require('../../lib/errors/test-run').ActionStringOrStringArrayArgumentError;
 var ActionStringArrayElementError                     = require('../../lib/errors/test-run').ActionStringArrayElementError;
 var PageLoadError                                     = require('../../lib/errors/test-run').PageLoadError;
@@ -219,10 +218,6 @@ describe('Error formatting', function () {
 
         it('Should format "actionStringArgumentError" message', function () {
             assertErrorMessage('action-string-argument-error', new ActionStringArgumentError('text', typeof 1));
-        });
-
-        it('Should format "actionUnsupportedUrlProtocolError" message', function () {
-            assertErrorMessage('action-unsupported-url-protocol-error', new ActionUnsupportedUrlProtocolError('url', 'mail'));
         });
 
         it('Should format "actionIncorrectKeysError" message', function () {
