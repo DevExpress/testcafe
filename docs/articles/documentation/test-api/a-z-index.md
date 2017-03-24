@@ -48,6 +48,7 @@ This topic lists test API members in alphabetical order.
     * [clearUpload](actions/upload.md#clear-file-upload-input)
     * [click](actions/click.md)
     * [ctx](test-code-structure.md#sharing-variables-between-test-hooks-and-test-code)
+    * [debug](client-side-debugging.md)
     * [doubleClick](actions/double-click.md)
     * [drag](actions/drag-element.md#drag-an-element-by-an-offset)
     * [dragtoElement](actions/drag-element.md#drag-an-element-onto-another-one)
