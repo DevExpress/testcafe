@@ -26,7 +26,7 @@ class Role extends EventEmitter {
         this.initErr       = null;
     }
 
-    async initialize (testRun) {
+    async initialize (testRun, debugging) {
         this.phase = PHASE.pendingInitialization;
 
         await testRun.switchToCleanRun();
@@ -36,11 +36,15 @@ class Role extends EventEmitter {
         await testRun.executeCommand(navigateCommand);
 
         try {
+            testRun.debugging = debugging;
             await this.initFn(testRun);
         }
         catch (err) {
             this.initErr = err;
         }
+
+        testRun.previousDebuggingState = testRun.debugging;
+        testRun.debugging              = false;
 
         if (!this.initErr) {
             // NOTE: give Hammerhead time to sync cookies from client
