@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.14.0 (2017-3-27)
+## v0.14.0 (2017-3-28)
 
 Authentication via user roles, client-side debugging and numerous bug fixes.
 
