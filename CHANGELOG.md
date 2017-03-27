@@ -71,6 +71,24 @@ test('test that involves two users', async t => {
 
 To learn more, see [User Roles](https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html).
 
+#### :gear: BrowserStack support
+
+We have released the [BrowserStack](https://www.browserstack.com/) browser provider [plugin](https://github.com/DevExpress/testcafe-browser-provider-browserstack).
+
+Install this plugin from `npm`.
+
+```sh
+npm install testcafe-browser-provider-browserstack
+```
+
+And save the BrowserStack username and access key to environment variables `BROWSERSTACK_USERNAME` and `BROWSERSTACK_ACCESS_KEY`.
+
+Now you can run tests on any virtual machine available on BrowserStack.
+
+```sh
+testcafe "browserstack:Chrome@53.0:Windows 10" "path/to/test/file.js"
+```
+
 #### :gear: Client-side debugging ([#918](https://github.com/DevExpress/testcafe/issues/918))
 
 We have added a new `t.debug` method to debug test behavior on the client.
