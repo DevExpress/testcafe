@@ -5,8 +5,8 @@
     <description></description>
     <link>http://devexpress.github.io/testcafe/</link>
     <atom:link href="http://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 28 Mar 2017 12:52:27 +0300</pubDate>
-    <lastBuildDate>Tue, 28 Mar 2017 12:52:27 +0300</lastBuildDate>
+    <pubDate>Tue, 28 Mar 2017 13:10:49 +0300</pubDate>
+    <lastBuildDate>Tue, 28 Mar 2017 13:10:49 +0300</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
@@ -72,7 +72,7 @@ to isolate authentication test actions and apply them easily whenever you need t
 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;To learn more, see &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html&quot;&gt;User Roles&lt;/a&gt;.&lt;/p&gt;
-&lt;h4&gt;&lt;a class=&quot;anchor&quot; name=&quot;browserstack-support&quot;&gt;&lt;/a&gt;⚙ BrowserStack support &lt;a class=&quot;permalink&quot; href=&quot;#browserstack-support&quot;&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;browserstack-support&quot;&gt;&lt;/a&gt;⚙ BrowserStack support &lt;a class=&quot;permalink&quot; href=&quot;#browserstack-support&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;We have released the &lt;a href=&quot;https://www.browserstack.com/&quot;&gt;BrowserStack&lt;/a&gt; browser provider &lt;a href=&quot;https://github.com/DevExpress/testcafe-browser-provider-browserstack&quot;&gt;plugin&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Install this plugin from &lt;code&gt;npm&lt;/code&gt;.&lt;/p&gt;
