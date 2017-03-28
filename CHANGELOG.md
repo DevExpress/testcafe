@@ -103,6 +103,7 @@ fixture `My fixture`
 test('My test', async t => {
     await t
         .debug()
+        .setNativeDialogHandler(() => true)
         .click('#populate')
         .click('#submit-button');
 });

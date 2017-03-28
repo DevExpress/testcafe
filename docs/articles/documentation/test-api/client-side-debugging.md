@@ -33,6 +33,7 @@ fixture `Debugger example`
 test('Debugger', async t => {
     await t
         .debug()
+        .setNativeDialogHandler(() => true)
         .click('#populate')
         .click('#submit-button');
 });

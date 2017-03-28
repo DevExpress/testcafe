@@ -7,6 +7,8 @@ permalink: /blog/:title.html
 
 Authentication via user roles, client-side debugging and numerous bug fixes.
 
+<!--more-->
+
 ## Enhancements
 
 ### ⚙ Authentication via user roles ([#243](https://github.com/DevExpress/testcafe/issues/243))
@@ -106,6 +108,7 @@ fixture `My fixture`
 test('My test', async t => {
     await t
         .debug()
+        .setNativeDialogHandler(() => true)
         .click('#populate')
         .click('#submit-button');
 });
