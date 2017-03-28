@@ -84,7 +84,8 @@ export default class TestRun extends Session {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
-        this.debugging = false;
+        this.debugging               = false;
+        this.disableDebugBreakpoints = false;
 
         this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, warningLog);
 
@@ -364,7 +365,7 @@ export default class TestRun extends Session {
 
 
     async _setBreakpointIfNecessary (command, callsite) {
-        if (this.debugging && canSetDebuggerBreakpointBeforeCommand(command))
+        if (!this.disableDebugBreakpoints && this.debugging && canSetDebuggerBreakpointBeforeCommand(command))
             await this._enqueueSetBreakpointCommand(callsite);
     }
 
@@ -448,6 +449,8 @@ export default class TestRun extends Session {
         if (this.phase === PHASE.inRoleInitializer)
             throw new RoleSwitchInRoleInitializerError(callsite);
 
+        this.disableDebugBreakpoints = true;
+
         var bookmark = await createBookmark(this);
 
         if (this.currentRoleId)
@@ -460,6 +463,8 @@ export default class TestRun extends Session {
         this.currentRoleId = role.id;
 
         await bookmark.restore(callsite);
+
+        this.disableDebugBreakpoints = false;
     }
 }
 

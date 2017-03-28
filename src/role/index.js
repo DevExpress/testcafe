@@ -36,11 +36,14 @@ class Role extends EventEmitter {
         await testRun.executeCommand(navigateCommand);
 
         try {
+            testRun.disableDebugBreakpoints = false;
             await this.initFn(testRun);
         }
         catch (err) {
             this.initErr = err;
         }
+
+        testRun.disableDebugBreakpoints = true;
 
         if (!this.initErr) {
             // NOTE: give Hammerhead time to sync cookies from client
