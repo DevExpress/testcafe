@@ -395,12 +395,13 @@ There are Linux versions of Chrome and Firefox browsers available for Travis CI 
     <span class="s">sources</span><span class="pi">:</span>
      <span class="pi">-</span> <span class="s">google-chrome</span>
     <span class="s">packages</span><span class="pi">:</span>
-     <span class="pi">-</span> <span class="s">google-chrome-stable</span>
+     <span class="pi">-</span> <span class="s">google-chrome-stable fluxbox</span>
 
 <span class="s">before_script</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="s2">"</span><span class="s">export</span><span class="nv"> </span><span class="s">DISPLAY=:99.0"</span>
   <span class="pi">-</span> <span class="s2">"</span><span class="s">sh</span><span class="nv"> </span><span class="s">-e</span><span class="nv"> </span><span class="s">/etc/init.d/xvfb</span><span class="nv"> </span><span class="s">start"</span>
   <span class="pi">-</span> <span class="s">sleep 3</span>
+  <span class="pi">-</span> <span class="s">fluxbox &gt;/dev/null 2&gt;&amp;1 &amp;</span>
 </code></pre></div>
 <p>You can find more information about Travis and Xvfb in <a href="https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI">this article</a>.</p>
 <h2><a class="anchor" name="step-4---add-the-test-script-to-packagejson"></a>Step 4 - Add the <code>test</code> script to package.json <a class="permalink" href="#step-4---add-the-test-script-to-packagejson">#</a></h2>
