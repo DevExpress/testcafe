@@ -76,7 +76,7 @@ test('test that involves two users', async t => {
 
 To learn more, see [User Roles](https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html).
 
-#### ⚙ BrowserStack support
+### ⚙ BrowserStack support
 
 We have released the [BrowserStack](https://www.browserstack.com/) browser provider [plugin](https://github.com/DevExpress/testcafe-browser-provider-browserstack).
 
