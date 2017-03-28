@@ -84,8 +84,8 @@ export default class TestRun extends Session {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
-        this.debugging              = false;
-        this.previousDebuggingState = false;
+        this.debugging               = false;
+        this.disableDebugBreakpoints = false;
 
         this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, warningLog);
 
@@ -365,7 +365,7 @@ export default class TestRun extends Session {
 
 
     async _setBreakpointIfNecessary (command, callsite) {
-        if (this.debugging && canSetDebuggerBreakpointBeforeCommand(command))
+        if (!this.disableDebugBreakpoints && this.debugging && canSetDebuggerBreakpointBeforeCommand(command))
             await this._enqueueSetBreakpointCommand(callsite);
     }
 
@@ -432,7 +432,7 @@ export default class TestRun extends Session {
         this.phase = PHASE.inRoleInitializer;
 
         if (role.phase === ROLE_PHASE.uninitialized)
-            await role.initialize(this, this.previousDebuggingState);
+            await role.initialize(this);
 
         else if (role.phase === ROLE_PHASE.pendingInitialization)
             await promisifyEvent(role, 'initialized');
@@ -449,13 +449,12 @@ export default class TestRun extends Session {
         if (this.phase === PHASE.inRoleInitializer)
             throw new RoleSwitchInRoleInitializerError(callsite);
 
-        this.previousDebuggingState = this.debugging;
-        this.debugging              = false;
+        this.disableDebugBreakpoints = true;
 
         var bookmark = await createBookmark(this);
 
         if (this.currentRoleId)
-            this.usedRoleStates[this.currentRoleId] = this.getStateSnapshot(this.previousDebuggingState);
+            this.usedRoleStates[this.currentRoleId] = this.getStateSnapshot();
 
         var stateSnapshot = this.usedRoleStates[role.id] || await this._getStateSnapshotFromRole(role);
 
@@ -465,7 +464,7 @@ export default class TestRun extends Session {
 
         await bookmark.restore(callsite);
 
-        this.debugging = this.previousDebuggingState;
+        this.disableDebugBreakpoints = false;
     }
 }
 
