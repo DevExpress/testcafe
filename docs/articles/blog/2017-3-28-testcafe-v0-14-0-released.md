@@ -7,6 +7,8 @@ permalink: /blog/:title.html
 
 Authentication via user roles, client-side debugging and numerous bug fixes.
 
+<!--more-->
+
 ## Enhancements
 
 ### ⚙ Authentication via user roles ([#243](https://github.com/DevExpress/testcafe/issues/243))
@@ -74,7 +76,7 @@ test('test that involves two users', async t => {
 
 To learn more, see [User Roles](https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html).
 
-#### ⚙ BrowserStack support
+### ⚙ BrowserStack support
 
 We have released the [BrowserStack](https://www.browserstack.com/) browser provider [plugin](https://github.com/DevExpress/testcafe-browser-provider-browserstack).
 
@@ -106,6 +108,7 @@ fixture `My fixture`
 test('My test', async t => {
     await t
         .debug()
+        .setNativeDialogHandler(() => true)
         .click('#populate')
         .click('#submit-button');
 });

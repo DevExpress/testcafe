@@ -31,6 +31,7 @@ fixture `My fixture`
 test('My test', async t => {
     debugger;
     await t
+        .setNativeDialogHandler(() => true)
         .click('#populate')
         .click('#submit-button');
 });
@@ -60,6 +61,7 @@ fixture `My fixture`
 test('My test', async t => {
     await t
         .debug()
+        .setNativeDialogHandler(() => true)
         .click('#populate')
         .click('#submit-button');
 });
