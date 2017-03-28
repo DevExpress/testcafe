@@ -26,7 +26,7 @@ class Role extends EventEmitter {
         this.initErr       = null;
     }
 
-    async initialize (testRun, debugging) {
+    async initialize (testRun) {
         this.phase = PHASE.pendingInitialization;
 
         await testRun.switchToCleanRun();
@@ -42,7 +42,7 @@ class Role extends EventEmitter {
         catch (err) {
             this.initErr = err;
         }
-        
+
         testRun.disableDebugBreakpoints = true;
 
         if (!this.initErr) {
