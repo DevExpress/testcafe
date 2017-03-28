@@ -7,20 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Handling Native Dialogs | TestCafe</title>
+  <title>Client-Side Debugging | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/handling-native-dialogs.html" />
-  <meta property="og:title" content="Handling Native Dialogs | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/client-side-debugging.html" />
+  <meta property="og:title" content="Client-Side Debugging | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/handling-native-dialogs.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/client-side-debugging.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
@@ -582,7 +582,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/handling-native-dialogs.html" class="active" >Handling Native Dialogs</a>
+<a href="/testcafe/documentation/test-api/handling-native-dialogs.html"  >Handling Native Dialogs</a>
 		
     </li>
 
@@ -596,7 +596,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/client-side-debugging.html"  >Client-Side Debugging</a>
+<a href="/testcafe/documentation/test-api/client-side-debugging.html" class="active" >Client-Side Debugging</a>
 		
     </li>
 
@@ -626,209 +626,31 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Handling Native Dialogs</h1>
-<p>TestCafe allows you to handle native browser dialogs whenever they are invoked during the test run.
-You can close <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/alert">alert</a> and
-<a href="https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload">beforeunload</a> dialogs,
-choose either option in <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm">confirm</a> dialogs
-or provide text to type into <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt">prompt</a> dialogs.</p>
-
-<p>You can also access the history of the invoked native dialogs, so that you can determine if a certain dialog appeared or not.</p>
-
-<p>This topic contains the following sections.</p>
-
-<ul>
-<li><a href="#dialog-handler">Dialog Handler</a></li>
-<li><a href="#dialog-history">Dialog History</a></li>
-</ul>
-<h2><a class="anchor" name="dialog-handler"></a>Dialog Handler <a class="permalink" href="#dialog-handler">#</a></h2>
-<p>To handle native dialogs invoked during the test run, specify a handler function
-using the <code>setNativeDialogHandler</code> method of the
-<a href="test-code-structure.html#test-controller">test controller</a>.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.setNativeDialogHandler( fn(type, text, url) [, options] )
+			<h1>Client-Side Debugging</h1>
+<p>TestCafe provides the <code>t.debug</code> method that pauses the test and allows you to debug using the browser&#39;s developer tools.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.debug()
 </code></pre></div>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>fn</code></td>
-<td>Function &#124; ClientFunction</td>
-<td>A regular or <a href="obtaining-data-from-the-client.html">client function</a> that will be triggered whenever a native dialog is invoked. <code>null</code> to remove the native dialog handler.</td>
-</tr>
-<tr>
-<td><code>options</code>&#160;<em>(optional)</em></td>
-<td>Object</td>
-<td>See <a href="obtaining-data-from-the-client.html#options">Client Function Options</a>.</td>
-</tr>
-</tbody></table>
+<p>When test execution reaches <code>t.debug</code>, it pauses so that you can open browser&#39;s developer tools
+and check the web page state, the location of DOM elements, their CSS styles, etc.</p>
 
-<p>The handler function has the following arguments.</p>
+<p>The footer displays buttons that allow you to continue test execution or step to the next test action.</p>
 
-<table><thead>
-<tr>
-<th>Argument</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>type</code></td>
-<td>String</td>
-<td>The type of the native dialog. <code>&#39;alert&#39;</code> &#124; <code>&#39;confirm&#39;</code> &#124; <code>&#39;beforeunload&#39;</code> &#124; <code>&#39;prompt&#39;</code>.</td>
-</tr>
-<tr>
-<td><code>text</code></td>
-<td>String</td>
-<td>Text of the dialog message.</td>
-</tr>
-<tr>
-<td><code>url</code></td>
-<td>String</td>
-<td>The URL of the page that invoked the dialog. Use it to determine if the dialog originated from the main window or an <code>&lt;iframe&gt;</code>.</td>
-</tr>
-</tbody></table>
-
-<p>Once the handler is specified, it will be triggered each time a native dialog appears in the test whether it originates from the main window or an <code>&lt;iframe&gt;</code>.
-You can provide a new handler at any moment by calling <code>t.setNativeDialogHandler</code> once again.
-If a native dialog appears when no handler is set, the test fails with an error.</p>
-
-<p>You can remove a dialog handler by passing <code>null</code> to the <code>t.setNativeDialogHandler</code> method.</p>
-
-<p>To handle native dialogs that appear during the page load, specify the dialog handler
-before the first test action.</p>
-<blockquote><div class="blockquote-content"><p>The handler is executed on the client side, so you cannot use Node.js API in the handler.</p>
+<p><img src="../../images/debugging/client-debugging-footer.png" alt="Page Footer when Debugging on a Client"></p>
+<blockquote><div class="blockquote-content"><p>The debugger does not stop at creating and resolving the <a href="selecting-page-elements/selectors.html">selectors</a> and <a href="obtaining-data-from-the-client.html">client functions</a>.</p>
 </div></blockquote>
-<p>You can control how a dialog is handled by using the handler&#39;s return values.
-If you return nothing, TestCafe performs default handling.</p>
+<p>TestCafe logs points in code where the debugger stopped.</p>
 
-<p>The kind of the value that should be returned depends on the dialog type. See the table below for reference.</p>
+<p><img src="../../images/debugging/log-debugger.png" alt="Logging Debugger Breakpoints"></p>
 
-<table><thead>
-<tr>
-<th>Dialog Type</th>
-<th>Return Value</th>
-<th>Default Handling</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>alert</td>
-<td>Ignored</td>
-<td>&#39;OK&#39; button.</td>
-</tr>
-<tr>
-<td>beforeunload</td>
-<td>Ignored</td>
-<td>&#39;Leave&#39; button. There is no way to emulate &#39;Stay&#39; programmatically.</td>
-</tr>
-<tr>
-<td>confirm</td>
-<td><code>true</code> to answer &#39;Yes&#39;; <code>false</code> to answer &#39;No&#39;.</td>
-<td>&#39;No&#39; button.</td>
-</tr>
-<tr>
-<td>prompt</td>
-<td>A string that contains text to be typed into the prompt.</td>
-<td>&#39;Cancel&#39; button.</td>
-</tr>
-</tbody></table>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Debugger</span> <span class="nx">example</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
 
-<p>The following example demonstrates how to handle an alert dialog.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Debugger'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#show-alert-button'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
-<p>The next example is a test that handles two confirm dialogs and a prompt dialog.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">((</span><span class="nx">type</span><span class="p">,</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">url</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">switch</span> <span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">case</span> <span class="s1">'confirm'</span><span class="p">:</span>
-                    <span class="k">switch</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="k">case</span> <span class="s1">'Do you want to subscribe?'</span><span class="p">:</span>
-                            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-                        <span class="k">case</span> <span class="s1">'Do you want to delete your account?'</span><span class="p">:</span>
-                            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-                        <span class="nl">default</span><span class="p">:</span>
-                            <span class="k">throw</span> <span class="s1">'Unexpected confirm dialog!'</span><span class="p">;</span>
-                    <span class="p">}</span>
-                <span class="k">case</span> <span class="s1">'prompt'</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="s1">'Hi there'</span><span class="p">;</span>
-                <span class="k">case</span> <span class="s1">'alert'</span><span class="p">:</span>
-                    <span class="k">throw</span> <span class="s1">'An alert was invoked!'</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">})</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#confirm-subscription'</span><span class="p">);</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#show-prompt'</span><span class="p">);</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#confirm-account-deletion'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div><h2><a class="anchor" name="dialog-history"></a>Dialog History <a class="permalink" href="#dialog-history">#</a></h2>
-<p>You can get the history of the invoked native dialogs to check if a certain dialog appeared or not.</p>
-
-<p>Use the <a href="test-code-structure.html#test-controller">test controller&#39;s</a> <code>getNativeDialogHistory</code> method for this.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.getNativeDialogHistory() → Promise&lt;[{type, text, url}]&gt;
-</code></pre></div>
-<p><code>t.getNativeDialogHistory</code> returns a stack of history entries (i.e., an array in which the latest dialog has an index of <code>0</code>).
-Each entry corresponds to a certain native dialog that appears in the main window or in an <code>&lt;iframe&gt;</code>.</p>
-
-<p>A history entry contains the following properties.</p>
-
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>type</code></td>
-<td>String</td>
-<td>The type of the native dialog. <code>&#39;alert&#39;</code> &#124; <code>&#39;confirm&#39;</code> &#124; <code>&#39;beforeunload&#39;</code> &#124; <code>&#39;prompt&#39;</code>.</td>
-</tr>
-<tr>
-<td><code>text</code></td>
-<td>String</td>
-<td>Text of the dialog message.</td>
-</tr>
-<tr>
-<td><code>url</code></td>
-<td>String</td>
-<td>The URL of the page that invoked the dialog. Use it to determine if the dialog originated from the main window or an <code>&lt;iframe&gt;</code>.</td>
-</tr>
-</tbody></table>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//www.example.com/`;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">((</span><span class="nx">type</span><span class="p">,</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">url</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">type</span> <span class="o">===</span> <span class="s1">'confirm'</span><span class="p">)</span>
-                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">type</span> <span class="o">===</span> <span class="s1">'prompt'</span><span class="p">)</span>
-                <span class="k">return</span> <span class="s1">'Hello!'</span><span class="p">;</span>
-        <span class="p">})</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#show-alert'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#show-confirm'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#show-prompt'</span><span class="p">);</span>
-
-    <span class="kr">const</span> <span class="nx">history</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">getNativeDialogHistory</span><span class="p">();</span>
-
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">history</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">type</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'prompt'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">history</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">text</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'say hello'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">history</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">type</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'confirm'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">history</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">type</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'alert'</span><span class="p">);</span>
+        <span class="p">.</span><span class="nx">debug</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 

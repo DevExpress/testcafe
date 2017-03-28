@@ -346,10 +346,11 @@
 		<div class="post-content">
 
 			<h1>Debugging Tests</h1>
-<p>TestCafe allows you to debug server-side test code and provides a number of options useful for debugging.</p>
+<p>TestCafe allows you to debug server-side test code and test behavior on the client.</p>
 
 <ul>
 <li><a href="#debugging-test-code">Debugging Test Code</a></li>
+<li><a href="#debugging-test-behavior-on-the-client">Debugging Test Behavior on the Client</a></li>
 <li><a href="#options-useful-for-debugging">Options Useful for Debugging</a></li>
 </ul>
 <h2><a class="anchor" name="debugging-test-code"></a>Debugging Test Code <a class="permalink" href="#debugging-test-code">#</a></h2>
@@ -382,6 +383,28 @@ Click the &#39;Resume script execution&#39; button or press F5 to continue. Afte
 <p>You can also debug test code from an IDE.
 For instance, Visual Studio Code has a dedicated <a href="https://github.com/romanresh/vscode-testcafe">TestCafe plugin</a>.
 It allows you to run and debug your tests in the IDE using the context menu.</p>
+<h2><a class="anchor" name="debugging-test-behavior-on-the-client"></a>Debugging Test Behavior on the Client <a class="permalink" href="#debugging-test-behavior-on-the-client">#</a></h2>
+<p>To debug test behavior on the client, use the <a href="../test-api/client-side-debugging.html">t.debug</a> action.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">debug</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>When test execution reaches this action, it pauses so that you can open browser&#39;s developer tools
+and check the web page state, DOM elements location, their CSS styles.</p>
+
+<p>In the footer, you&#39;ll find buttons that allow you to continue test execution or step to the next test action.</p>
+
+<p><img src="../../images/debugging/client-debugging-footer.png" alt="Page Footer when Debugging on a Client"></p>
+
+<p>TestCafe logs points in code where the debugger stopped.</p>
+
+<p><img src="../../images/debugging/log-debugger.png" alt="Logging Debugger Breakpoints"></p>
 <h2><a class="anchor" name="options-useful-for-debugging"></a>Options Useful for Debugging <a class="permalink" href="#options-useful-for-debugging">#</a></h2>
 <p>TestCafe includes a few features helpful when you need to find the cause of issues in your tests.</p>
 <h3><a class="anchor" name="screenshots"></a>Screenshots <a class="permalink" href="#screenshots">#</a></h3>

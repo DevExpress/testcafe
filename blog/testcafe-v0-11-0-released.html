@@ -231,7 +231,7 @@ a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selectin
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#someId'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="c1">// returns `null`, since there is only one element in matching set with id `someId`</span>
 </code></pre></div><h4><a class="anchor" name="deprecated-api"></a>Deprecated API <a class="permalink" href="#deprecated-api">#</a></h4>
 <ul>
-<li><a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#one-time-selection"><code>t.select</code> method</a> - use <code>Selector</code> instead:</li>
+<li><code>t.select</code> method - use <code>Selector</code> instead:</li>
 </ul>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s1">'.someClass'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
 
@@ -240,9 +240,9 @@ a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selectin
 <span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.someClass'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
 </code></pre></div>
 <ul>
-<li><a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionsindex">selectorOptions.index</a> - use <a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#nth">selector.nth()</a> instead.</li>
-<li><a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionstext">selectorOptions.text</a> - use <a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#withtext">selector.withText()</a> instead.</li>
-<li><a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selector-options.html#optionsdependencies">selectorOptions.dependencies</a> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-dom-nodes">filtering</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#search-for-elements-in-the-dom-hierarchy">hierarchical</a> methods to build combined selectors instead.</li>
+<li><code>selectorOptions.index</code> - use <a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#nth">selector.nth()</a> instead.</li>
+<li><code>selectorOptions.text</code> - use <a href="http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#withtext">selector.withText()</a> instead.</li>
+<li><code>selectorOptions.dependencies</code> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#filter-dom-nodes">filtering</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#search-for-elements-in-the-dom-hierarchy">hierarchical</a> methods to build combined selectors instead.</li>
 </ul>
 <h3><a class="anchor" name="built-in-assertions-998"></a>⚙ Built-in assertions. (<a href="https://github.com/DevExpress/testcafe/issues/998">#998</a>) <a class="permalink" href="#built-in-assertions-998">#</a></h3>
 <p>TestCafe now ships with <a href="http://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html">numerous built-in BDD-style assertions</a>.

@@ -543,7 +543,32 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/http-authentication.html"  >HTTP Authentication</a>
+<a href="/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html"  >Waiting for Page Elements to Appear</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/authentication/"  >Authentication</a>
+		
+			<ul>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/authentication/user-roles.html"  >User Roles</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/authentication/http-authentication.html"  >HTTP Authentication</a>
+		
+    </li>
+
+</ul>
 		
     </li>
 
@@ -565,6 +590,13 @@
 		    
 		
 <a href="/testcafe/documentation/test-api/working-with-iframes.html"  >Working with &lt;iframes&gt;</a>
+		
+    </li>
+
+    <li>
+		    
+		
+<a href="/testcafe/documentation/test-api/client-side-debugging.html"  >Client-Side Debugging</a>
 		
     </li>
 
@@ -639,7 +671,12 @@ To interact with the page, use <a href="../actions/">test actions</a>.</p>
 <li><a href="#define-assertion-actual-value">Define Assertion Actual Value</a></li>
 <li><a href="#selector-timeout">Selector Timeout</a></li>
 </ul></li>
-<li><a href="#adding-custom-properties-to-element-state">Adding Custom Properties to Element State</a></li>
+<li><a href="#extending-selectors">Extending Selectors</a>
+
+<ul>
+<li><a href="#custom-properties">Custom Properties</a></li>
+<li><a href="#custom-methods">Custom Methods</a></li>
+</ul></li>
 <li><a href="#calling-selectors-from-nodejs-callbacks">Calling Selectors from Node.js Callbacks</a></li>
 <li><a href="#limitations">Limitations</a></li>
 </ul>
@@ -1402,10 +1439,10 @@ DOM node or the timeout exceeds.</p>
 
 <p>Note that you can additionally require that the node returned by the selector is visible.
 To do this, use the <a href="selector-options.html#optionsvisibilitycheck">visibilityCheck</a> option.</p>
-<h2><a class="anchor" name="adding-custom-properties-to-element-state"></a>Adding Custom Properties to Element State <a class="permalink" href="#adding-custom-properties-to-element-state">#</a></h2>
-<p>TestCafe allows you to extend <a href="#obtain-element-state">element state</a> with custom properties calculated on the client side.</p>
-
-<p>To do this, use the selector&#39;s <code>addCustomDOMProperties</code> method.</p>
+<h2><a class="anchor" name="extending-selectors"></a>Extending Selectors <a class="permalink" href="#extending-selectors">#</a></h2>
+<p>TestCafe allows you to extend <a href="#obtain-element-state">element state</a> with custom properties and methods executed on the client side.</p>
+<h3><a class="anchor" name="custom-properties"></a>Custom Properties <a class="permalink" href="#custom-properties">#</a></h3>
+<p>To add custom properties, use the selector&#39;s <code>addCustomDOMProperties</code> method.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">Selector().addCustomDOMProperties({
     property1: fn1,
     property2: fn2,
@@ -1460,6 +1497,63 @@ To do this, use the <a href="selector-options.html#optionsvisibilitycheck">visib
 
     <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">label</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'input type="checkbox" name="remote"'</span><span class="p">);</span>
 <span class="p">});</span>
+</code></pre></div><h3><a class="anchor" name="custom-methods"></a>Custom Methods <a class="permalink" href="#custom-methods">#</a></h3>
+<p>To add custom methods, use the <code>addCustomMethods</code> method.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Selector().addCustomMethods({
+    method1: fn1,
+    method2: fn2,
+    /* ... */
+});
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>method1</code>, <code>method2</code>, ...</td>
+<td>String</td>
+<td>Method names.</td>
+</tr>
+<tr>
+<td><code>fn1</code>, <code>fn2</code>, ...</td>
+<td>Function</td>
+<td>Functions that contain method code. Executed on the client side in the browser.</td>
+</tr>
+</tbody></table>
+
+<p>Functions that contain method code (<code>fn1</code>, <code>fn2</code>, ...) take the following parameters.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>node</code></td>
+<td>Object</td>
+<td>The DOM node.</td>
+</tr>
+<tr>
+<td><code>param1</code>, <code>param2</code>, ...</td>
+<td>Any</td>
+<td>Method parameters.</td>
+</tr>
+</tbody></table>
+
+<p>The <code>addCustomMethods</code> function also adds the specified methods to the <a href="#obtain-element-state">element state</a> returned by the selector.</p>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">myTable</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.my-table'</span><span class="p">).</span><span class="nx">addCustomMethods</span><span class="p">({</span>
+    <span class="na">getCellText</span><span class="p">:</span> <span class="p">(</span><span class="nx">table</span><span class="p">,</span> <span class="nx">rowIndex</span><span class="p">,</span> <span class="nx">columnIndex</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="nx">table</span><span class="p">.</span><span class="nx">rows</span><span class="p">[</span><span class="nx">rowIndex</span><span class="p">].</span><span class="nx">cells</span><span class="p">[</span><span class="nx">columnIndex</span><span class="p">].</span><span class="nx">innerText</span>
+<span class="p">});</span>
+
+<span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">myTable</span><span class="p">.</span><span class="nx">getCellText</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'hey!'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="calling-selectors-from-nodejs-callbacks"></a>Calling Selectors from Node.js Callbacks <a class="permalink" href="#calling-selectors-from-nodejs-callbacks">#</a></h2>
 <p>Selectors need access to the <a href="../test-code-structure.html#test-controller">test controller</a> to be executed.
 When called right from the test function, they implicitly obtain the test controller.</p>
