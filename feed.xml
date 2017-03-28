@@ -5,14 +5,16 @@
     <description></description>
     <link>http://devexpress.github.io/testcafe/</link>
     <atom:link href="http://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 28 Mar 2017 11:56:19 +0300</pubDate>
-    <lastBuildDate>Tue, 28 Mar 2017 11:56:19 +0300</lastBuildDate>
+    <pubDate>Tue, 28 Mar 2017 12:30:44 +0300</pubDate>
+    <lastBuildDate>Tue, 28 Mar 2017 12:30:44 +0300</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
         <title>TestCafe v0.14.0 Released</title>
         <description>&lt;h1&gt;TestCafe v0.14.0 Released&lt;/h1&gt;
 &lt;p&gt;Authentication via user roles, client-side debugging and numerous bug fixes.&lt;/p&gt;
+
+&lt;!--more--&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;authentication-via-user-roles-243&quot;&gt;&lt;/a&gt;⚙ Authentication via user roles (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/243&quot;&gt;#243&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#authentication-via-user-roles-243&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;Many test scenarios involve the activity of more than one user. TestCafe addresses these scenarios by providing a convenient way
 to isolate authentication test actions and apply them easily whenever you need to switch the user account.&lt;/p&gt;
@@ -91,6 +93,7 @@ and check the web page state, DOM elements location, their CSS styles.&lt;/p&gt;
 &lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'My test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;nx&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;debug&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;setNativeDialogHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'#populate'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'#submit-button'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;

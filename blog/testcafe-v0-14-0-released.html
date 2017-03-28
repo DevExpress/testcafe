@@ -9,7 +9,7 @@
   
   <title>TestCafe v0.14.0 Released | TestCafe</title>
 
-  <meta name="description" content="TestCafe v0.14.0 ReleasedAuthentication via user roles, client-side debugging and numerous bug fixes.Enhancements #⚙ Authentication via user roles (#243) #Ma...">
+  <meta name="description" content="TestCafe v0.14.0 ReleasedAuthentication via user roles, client-side debugging and numerous bug fixes.">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
@@ -144,6 +144,8 @@
         <article class="post-content">
             <h1>TestCafe v0.14.0 Released</h1>
 <p>Authentication via user roles, client-side debugging and numerous bug fixes.</p>
+
+<!--more-->
 <h2><a class="anchor" name="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" name="authentication-via-user-roles-243"></a>⚙ Authentication via user roles (<a href="https://github.com/DevExpress/testcafe/issues/243">#243</a>) <a class="permalink" href="#authentication-via-user-roles-243">#</a></h3>
 <p>Many test scenarios involve the activity of more than one user. TestCafe addresses these scenarios by providing a convenient way
 to isolate authentication test actions and apply them easily whenever you need to switch the user account.</p>
@@ -222,6 +224,7 @@ and check the web page state, DOM elements location, their CSS styles.</p>
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">debug</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
 <span class="p">});</span>
