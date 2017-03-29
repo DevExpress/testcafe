@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Debugging Test Code
-permalink: /documentation/recipes/debugging-test-code.html
+permalink: /documentation/using-testcafe/debugging/debugging-test-code.html
 ---
 # Debugging Test Code
 

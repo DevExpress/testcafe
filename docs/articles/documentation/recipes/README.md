@@ -7,7 +7,8 @@ permalink: /documentation/recipes/
 
 This section provides examples and recipes of how to use TestCafe in different scenarios.
 
-* [Debugging Tests](debugging-tests.md)
+* [Debugging with Chrome Developer Tools](debugging-with-chrome-dev-tools.md)
+* [Debugging with Visual Studio Code](debugging-with-visual-studio-code.md)
 * [Running Tests in Firefox and Chrome Using Travis CI](running-tests-in-firefox-and-chrome-using-travis-ci.md)
 * [Running Tests Using Travis CI and Sauce Labs](running-tests-using-travis-ci-and-sauce-labs.md)
 * [Test Static HTML Pages](test-static-html-pages.md)

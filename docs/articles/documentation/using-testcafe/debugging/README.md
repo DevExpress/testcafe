@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Debugging Tests
-permalink: /documentation/test-api/debugging/
+permalink: /documentation/using-testcafe/debugging/
 ---
 # Debugging Tests
 

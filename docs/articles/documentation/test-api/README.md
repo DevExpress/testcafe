@@ -20,4 +20,3 @@ It contains the following subsections
 * [Pausing the Test](pausing-the-test.md)
 * [Handling Native Dialogs](handling-native-dialogs.md)
 * [Working with \<iframes\>](working-with-iframes.md)
-* [Client-Side Debugging](client-side-debugging.md)

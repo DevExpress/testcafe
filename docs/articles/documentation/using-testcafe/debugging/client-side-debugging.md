@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Client-Side Debugging
-permalink: /documentation/test-api/debugging/client-side-debugging.html
+permalink: /documentation/using-testcafe/debugging/client-side-debugging.html
 ---
 # Client-Side Debugging
 

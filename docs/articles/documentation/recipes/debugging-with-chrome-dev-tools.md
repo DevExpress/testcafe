@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Debugging with Chrome Developer Tools
-permalink: /documentation/recipes/debugging-with-chrome-developer-tools.html
+permalink: /documentation/recipes/debugging-with-chrome-dev-tools.html
 ---
 # Debugging with Chrome Developer Tools
 

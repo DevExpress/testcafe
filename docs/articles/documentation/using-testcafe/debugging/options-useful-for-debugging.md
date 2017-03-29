@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Options Useful for Debugging
-permalink: /documentation/test-api/debugging/options-useful-for-debugging.html
+permalink: /documentation/using-testcafe/debugging/options-useful-for-debugging.html
 ---
 # Options Useful for Debugging
 
@@ -10,7 +10,7 @@ TestCafe includes a few features helpful when you need to find the cause of issu
 ## Screenshots
 
 You can specify that a screenshot should be taken in a particular place in a test.
-Use the [t.takeScreenshot](../test-api/actions/take-screenshot.md) action for this.
+Use the [t.takeScreenshot](../../test-api/actions/take-screenshot.md) action for this.
 
 ```js
 fixture `My fixture`
@@ -27,7 +27,7 @@ test('My test', async t => {
 });
 ```
 
-You can also turn on the [--screenshots-on-fails](../using-testcafe/command-line-interface.html#-s---screenshots-on-fails)
+You can also turn on the [--screenshots-on-fails](../command-line-interface.html#-s---screenshots-on-fails)
 option.
 
 ```sh
@@ -42,7 +42,7 @@ Analyzing these screenshots helps save time on debugging and allows you to deter
 
 TestCafe provides the capability to change test speed. By default, tests are executed at full speed with minimum delays between actions and assertions.
 This makes it hard to identify problems visually when running the test.
-To slow down the test, use the [--speed](../using-testcafe/command-line-interface.html#--speed-factor)
+To slow down the test, use the [--speed](../command-line-interface.html#--speed-factor)
 CLI flag. You can use values from `1` to `0.01`.
 
 ```sh
