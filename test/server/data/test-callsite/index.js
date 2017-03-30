@@ -1,4 +1,4 @@
-var createCallsiteRecord = require('callsite-record');
+var createCallsiteRecord = require('../../../../modules/callsite-record');
 var stackTrace           = require('stack-chain');
 
 var record = null;
@@ -9,14 +9,14 @@ function stackFilter (err, frames) {
         .filter(function (frame) {
             var filename = frame.getFileName();
 
-            return filename === __filename || filename === require.resolve('callsite-record');
+            return filename === __filename || filename === require.resolve('../../../../modules/callsite-record');
         });
 }
 
 stackTrace.filter.attach(stackFilter);
 
 function func1 () {
-    record = createCallsiteRecord('func1');
+    record = createCallsiteRecord({ byFunctionName: 'func1' });
 }
 
 (function func2 () {

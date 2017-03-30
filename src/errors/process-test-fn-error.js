@@ -1,5 +1,5 @@
 import { sep } from 'path';
-import getCallsite from './get-callsite';
+import { getCallsiteForError } from './get-callsite';
 import { APIError } from './runtime';
 
 import {
@@ -34,7 +34,7 @@ export default function processTestFnError (err) {
 
         // NOTE: assertion libraries can add their source files to the error stack frames.
         // We should skip them to create a correct callsite for the assertion error.
-        var callsite = isAssertionError ? getCallsite(err, isAssertionErrorCallsiteFrame) : getCallsite(err);
+        var callsite = isAssertionError ? getCallsiteForError(err, isAssertionErrorCallsiteFrame) : getCallsiteForError(err);
 
         return isAssertionError ?
                new ExternalAssertionLibraryError(err, callsite) :

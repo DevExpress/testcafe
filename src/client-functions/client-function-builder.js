@@ -7,7 +7,7 @@ import compileClientFunction from '../compiler/es-next/compile-client-function';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import MESSAGE from '../errors/runtime/message';
-import getCallsite from '../errors/get-callsite';
+import { getCallsiteForMethod } from '../errors/get-callsite';
 import ClientFunctionResultPromise from './result-promise';
 import testRunMarker from '../test-run/marker-symbol';
 
@@ -64,7 +64,7 @@ export default class ClientFunctionBuilder {
 
         var clientFn = function __$$clientFunction$$ () {
             var testRun  = builder.getBoundTestRun() || testRunTracker.resolveContextTestRun();
-            var callsite = getCallsite(builder.callsiteNames.execution);
+            var callsite = getCallsiteForMethod(builder.callsiteNames.execution);
             var args     = [];
 
             // OPTIMIZATION: don't leak `arguments` object.

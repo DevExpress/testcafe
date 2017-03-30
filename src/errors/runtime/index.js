@@ -1,7 +1,7 @@
 import { renderers } from 'callsite-record';
 import MESSAGE from './message';
 import createStackFilter from '../create-stack-filter';
-import getCallsite from '../get-callsite';
+import { getCallsiteForMethod } from '../get-callsite';
 import renderTemplate from '../../utils/render-template';
 
 // Errors
@@ -34,7 +34,7 @@ export class APIError extends Error {
 
         // NOTE: `rawMessage` is used in error substitution if it occurs in test run.
         this.rawMessage  = rawMessage;
-        this.callsite    = getCallsite(methodName);
+        this.callsite    = getCallsiteForMethod(methodName);
         this.constructor = APIError;
 
         // HACK: prototype properties don't work with built-in subclasses

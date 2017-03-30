@@ -5,7 +5,6 @@ var stackParser = require('error-stack-parser');
 var padStart    = require('lodash').padStart;
 var defaults    = require('lodash').defaults;
 var highlight   = require('highlight-es');
-var wrapCallSite = require('source-map-support').wrapCallSite;
 
 var renderers = {
     default: require('./renderers/default'),
@@ -283,21 +282,23 @@ CallsiteRecord.fromError = function (error, isCallsiteFrame) {
 };
 
 // API
-module.exports = function createCallsiteRecord (/* err, isCallsiteFrame || fnName, typeName */) {
-    if (arguments[0] instanceof Error)
-        return CallsiteRecord.fromError(arguments[0], arguments[1]);
+module.exports = function createCallsiteRecord (options) { /*{ forError, isCallsiteFrame, byFunctionName, typeName, processFrameFn }*/
+    if (options.forError)
+        return CallsiteRecord.fromError(options.forError, options.isCallsiteFrame);
 
-    else if (typeof arguments[0] === 'string') {
+    else if (options.byFunctionName) {
         var stackFrames = callsite();
 
-        stackFrames = stackFrames.map(function (frame) {
-            return wrapCallSite(frame)
-        });
+        if (options.processFrameFn) {
+            stackFrames = stackFrames.map(function (frame) {
+                return options.processFrameFn(frame);
+            });
+        }
 
         // NOTE: remove API call
         stackFrames.shift();
 
-        return CallsiteRecord.fromStackFrames(stackFrames, arguments[0], arguments[1]);
+        return CallsiteRecord.fromStackFrames(stackFrames, options.byFunctionName, options.typeName);
     }
 
     return null;
