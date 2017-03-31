@@ -38,14 +38,6 @@ For details about a specific action, see the corresponding topic.
 * [Upload](upload.md)
 * [Resize Window](resize-window.md)
 
-On touch devices, TestCafe emulates touch events instead of mouse events.
-
-Mouse event | Touch event
------------ | -------------
-`mousemove` (when hovering or dragging) | `touchmove` (dragging only)
-`mousedown` | `touchstart`
-`mouseup`   | `touchend`
-
 ## Selecting Target Elements
 
 For actions that target DOM elements, use the `selector` parameter to identify the desired element.
@@ -130,3 +122,13 @@ You can pass any of the following objects as a `selector`.
 Before executing an action, TestCafe waits for the target element to appear
 in the DOM and become visible. If this does not happen
 within the [selector timeout](../selecting-page-elements/selectors.md#selector-timeout), the test fails.
+
+## Remarks for Touch Devices
+
+On touch devices, TestCafe emulates touch events instead of mouse events.
+
+Mouse event | Touch event
+----------- | -------------
+`mousemove` (when hovering or dragging) | `touchmove` (dragging only)
+`mousedown` | `touchstart`
+`mouseup`   | `touchend`
