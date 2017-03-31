@@ -1,4 +1,4 @@
-import createCallsiteRecord from '../../modules/callsite-record';
+import createCallsiteRecord from 'callsite-record';
 import stackCleaningHook from './stack-cleaning-hook';
 import { wrapCallSite } from 'source-map-support';
 

@@ -1,4 +1,4 @@
-var createCallsiteRecord = require('../../../../modules/callsite-record');
+var createCallsiteRecord = require('callsite-record');
 var stackTrace           = require('stack-chain');
 
 var record = null;
@@ -9,7 +9,7 @@ function stackFilter (err, frames) {
         .filter(function (frame) {
             var filename = frame.getFileName();
 
-            return filename === __filename || filename === require.resolve('../../../../modules/callsite-record');
+            return filename === __filename || filename === require.resolve('callsite-record');
         });
 }
 
