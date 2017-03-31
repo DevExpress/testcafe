@@ -18,15 +18,6 @@
       url: /documentation/using-testcafe/programming-interface/runner.md
     - name: createTestCafe Factory
       url: /documentation/using-testcafe/programming-interface/createtestcafe.md
-  - name: Debugging
-    url: /documentation/using-testcafe/debugging/README.md
-    content:
-    - name: Debugging Test Code
-      url: /documentation/using-testcafe/debugging/debugging-test-code.md
-    - name: Client-Side Debugging
-      url: /documentation/using-testcafe/debugging/client-side-debugging.md
-    - name: Options Useful for Debugging
-      url: /documentation/using-testcafe/debugging/options-useful-for-debugging.md
   - name: Common Concepts
     url: /documentation/using-testcafe/common-concepts/README.md
     content:
@@ -57,14 +48,8 @@
       content:
       - name: Test Hooks
         url: /documentation/test-api/test-code-structure.md#test-hooks
-        content:
-        - name: Sharing Variables Between Test Hooks and Test Code
-          url: /documentation/test-api/test-code-structure.md#sharing-variables-between-test-hooks-and-test-code
       - name: Fixture Hooks
         url: /documentation/test-api/test-code-structure.md#fixture-hooks
-        content:
-        - name: Sharing Variables Between Fixture Hooks and Test Code
-          url: /documentation/test-api/test-code-structure.md#sharing-variables-between-fixture-hooks-and-test-code
     - name: Skipping Tests
       url: /documentation/test-api/test-code-structure.md#skipping-tests
   - name: Selecting Page Elements
@@ -127,6 +112,8 @@
     url: /documentation/test-api/handling-native-dialogs.md
   - name: Working with &lt;iframes&gt;
     url: /documentation/test-api/working-with-iframes.md
+  - name: Debugging
+    url: /documentation/test-api/debugging.md
   - name: A-Z Index
     url: /documentation/test-api/a-z.md
 - name: EXTENDING TESTCAFE
