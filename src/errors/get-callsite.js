@@ -24,5 +24,8 @@ export function getCallsiteForMethod (methodName, typeName) {
 }
 
 export function getCallsiteForError (error, isCallsiteFrame) {
+    // NOTE: "source-map-support" process this kind of error automatically, cause
+    // in this case there is an appeal to "err.stack" inside "callsite-record" which
+    // provokes wrapping of frames, so there is no need to specify "processFrameFn".
     return getCallsite({ forError: error, isCallsiteFrame });
 }
