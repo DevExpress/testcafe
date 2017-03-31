@@ -48,14 +48,8 @@
       content:
       - name: Test Hooks
         url: /documentation/test-api/test-code-structure.md#test-hooks
-        content:
-        - name: Sharing Variables Between Test Hooks and Test Code
-          url: /documentation/test-api/test-code-structure.md#sharing-variables-between-test-hooks-and-test-code
       - name: Fixture Hooks
         url: /documentation/test-api/test-code-structure.md#fixture-hooks
-        content:
-        - name: Sharing Variables Between Fixture Hooks and Test Code
-          url: /documentation/test-api/test-code-structure.md#sharing-variables-between-fixture-hooks-and-test-code
     - name: Skipping Tests
       url: /documentation/test-api/test-code-structure.md#skipping-tests
   - name: Selecting Page Elements
@@ -118,8 +112,8 @@
     url: /documentation/test-api/handling-native-dialogs.md
   - name: Working with &lt;iframes&gt;
     url: /documentation/test-api/working-with-iframes.md
-  - name: Client-Side Debugging
-    url: /documentation/test-api/client-side-debugging.md
+  - name: Debugging
+    url: /documentation/test-api/debugging.md
   - name: A-Z Index
     url: /documentation/test-api/a-z.md
 - name: EXTENDING TESTCAFE
@@ -142,8 +136,10 @@
 - name: RECIPES
   url: /documentation/recipes/README.md
   content:
-    - name: Debugging Tests
-      url: /documentation/recipes/debugging-tests.md
+    - name: Debugging with Chrome Developer Tools
+      url: /documentation/recipes/debugging-with-chrome-dev-tools.md
+    - name: Debugging with Visual Studio Code
+      url: /documentation/recipes/debugging-with-visual-studio-code.md
     - name: Running Tests in Firefox and Chrome Using Travis CI
       url: /documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.md
     - name: Running Tests Using Travis CI and Sauce Labs
