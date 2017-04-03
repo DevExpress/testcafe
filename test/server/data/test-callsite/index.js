@@ -16,7 +16,7 @@ function stackFilter (err, frames) {
 stackTrace.filter.attach(stackFilter);
 
 function func1 () {
-    record = createCallsiteRecord('func1');
+    record = createCallsiteRecord({ byFunctionName: 'func1' });
 }
 
 (function func2 () {

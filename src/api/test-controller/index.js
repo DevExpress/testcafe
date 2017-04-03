@@ -1,7 +1,7 @@
 import Promise from 'pinkie';
 import { identity, assign, isNil as isNullOrUndefined } from 'lodash';
 import { MissingAwaitError } from '../../errors/test-run';
-import getCallsite from '../../errors/get-callsite';
+import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import Assertion from './assertion';
 import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
@@ -82,7 +82,7 @@ export default class TestController {
     _enqueueTask (apiMethodName, createTaskExecutor) {
         this._checkForMissingAwait();
 
-        var callsite = getCallsite(apiMethodName);
+        var callsite = getCallsiteForMethod(apiMethodName);
         var executor = createTaskExecutor(callsite);
 
         this.executionChain       = this.executionChain.then(executor);
@@ -242,7 +242,7 @@ export default class TestController {
     }
 
     _getNativeDialogHistory$ () {
-        var callsite = getCallsite('getNativeDialogHistory');
+        var callsite = getCallsiteForMethod('getNativeDialogHistory');
 
         return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite);
     }

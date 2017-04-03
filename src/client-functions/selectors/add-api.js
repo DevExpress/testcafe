@@ -2,7 +2,7 @@ import { assign } from 'lodash';
 import clientFunctionBuilderSymbol from '../builder-symbol';
 import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapshot-properties';
 import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
-import getCallsite from '../../errors/get-callsite';
+import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../client-function-builder';
 import ClientFunctionResultPromise from '../result-promise';
 import { assertType, is } from '../../errors/runtime/type-assertions';
@@ -106,7 +106,7 @@ function addSnapshotProperties (obj, getSelector, properties) {
     properties.forEach(prop => {
         Object.defineProperty(obj, prop, {
             get: () => {
-                var callsite = getCallsite('get');
+                var callsite = getCallsiteForMethod('get');
 
                 return ClientFunctionResultPromise.fromFn(async () => {
                     var snapshot = await getSnapshot(getSelector, callsite);
@@ -149,7 +149,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties, c
     addCustomMethods(obj, getSelector, customMethods);
 
     obj.getStyleProperty = prop => {
-        var callsite = getCallsite('getStyleProperty');
+        var callsite = getCallsiteForMethod('getStyleProperty');
 
         return ClientFunctionResultPromise.fromFn(async () => {
             var snapshot = await getSnapshot(getSelector, callsite);
@@ -159,7 +159,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties, c
     };
 
     obj.getAttribute = attrName => {
-        var callsite = getCallsite('getAttribute');
+        var callsite = getCallsiteForMethod('getAttribute');
 
         return ClientFunctionResultPromise.fromFn(async () => {
             var snapshot = await getSnapshot(getSelector, callsite);
@@ -169,7 +169,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties, c
     };
 
     obj.getBoundingClientRectProperty = prop => {
-        var callsite = getCallsite('getBoundingClientRectProperty');
+        var callsite = getCallsiteForMethod('getBoundingClientRectProperty');
 
         return ClientFunctionResultPromise.fromFn(async () => {
             var snapshot = await getSnapshot(getSelector, callsite);
@@ -179,7 +179,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties, c
     };
 
     obj.hasClass = name => {
-        var callsite = getCallsite('hasClass');
+        var callsite = getCallsiteForMethod('hasClass');
 
         return ClientFunctionResultPromise.fromFn(async () => {
             var snapshot = await getSnapshot(getSelector, callsite);
@@ -192,7 +192,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties, c
 function createCounter (getSelector, SelectorBuilder) {
     var builder  = new SelectorBuilder(getSelector(), { counterMode: true }, { instantiation: 'Selector' });
     var counter  = builder.getFunction();
-    var callsite = getCallsite('get');
+    var callsite = getCallsiteForMethod('get');
 
     return async () => {
         try {
