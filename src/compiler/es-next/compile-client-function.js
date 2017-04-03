@@ -41,9 +41,9 @@ var babelArtifactPolyfills = {
     'typeof': {
         re: new RegExp(escapeRe(
             'var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? ' +
-            'function (obj) { return typeof obj; } : ' +
-            'function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ' +
-            '&& obj !== Symbol.prototype ? "symbol" : typeof obj; };'
+            'function (obj) {return typeof obj;} : ' +
+            'function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol ' +
+            '&& obj !== Symbol.prototype ? "symbol" : typeof obj;};'
         ), 'g'),
 
         getCode:            () => 'var _typeof = function(obj) { return typeof obj; };',
@@ -58,6 +58,7 @@ function getBabelOptions () {
     return {
         presets:       [presetFallback],
         sourceMaps:    false,
+        retainLines:   true,
         ast:           false,
         babelrc:       false,
         highlightCode: false
@@ -93,7 +94,7 @@ function addBabelArtifactsPolyfills (fnCode, dependenciesDefinition) {
             return polyfillsCode;
         }, '');
 
-    return `(function(){${dependenciesDefinition}${polyfills} return ${modifiedFnCode.trim()}})();`;
+    return `(function(){${dependenciesDefinition}${polyfills} return ${modifiedFnCode}})();`;
 }
 
 function getDependenciesDefinition (dependencies) {

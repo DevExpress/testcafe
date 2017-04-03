@@ -46,6 +46,7 @@ export default class ESNextCompiler {
                 }
             ],
             filename:      filename,
+            retainLines:   true,
             sourceMaps:    true,
             ast:           false,
             babelrc:       false,
