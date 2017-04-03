@@ -7,20 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Authentication | TestCafe</title>
+  <title>Debugging | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/authentication/" />
-  <meta property="og:title" content="Authentication | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/test-api/debugging.html" />
+  <meta property="og:title" content="Debugging | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/authentication/">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/test-api/debugging.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
@@ -528,7 +528,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/authentication/" class="active" >Authentication</a>
+<a href="/testcafe/documentation/test-api/authentication/"  >Authentication</a>
 		
 			<ul>
 
@@ -574,7 +574,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/debugging.html"  >Debugging</a>
+<a href="/testcafe/documentation/test-api/debugging.html" class="active" >Debugging</a>
 		
     </li>
 
@@ -604,20 +604,81 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Authentication</h1>
-<p>Topics in this section describe how to authenticate to the tested web app.</p>
-
-<p>For authentication performed with on-page forms, use roles.</p>
+			<h1>Debugging</h1>
+<p>TestCafe allows you to debug server-side test code and test behavior on the client.</p>
 
 <ul>
-<li><a href="user-roles.html">User Roles</a></li>
+<li><a href="#debugging-test-code">Debugging Test Code</a></li>
+<li><a href="#client-side-debugging">Client-Side Debugging</a></li>
+<li><a href="#options-useful-for-debugging">Options Useful for Debugging</a></li>
 </ul>
-
-<p>To learn how to sign in with <a href="https://en.wikipedia.org/wiki/Basic_access_authentication">HTTP Basic</a> and <a href="https://en.wikipedia.org/wiki/NT_LAN_Manager">NTLM</a> authentication, see the following topic.</p>
+<h2><a class="anchor" name="debugging-test-code"></a>Debugging Test Code <a class="permalink" href="#debugging-test-code">#</a></h2>
+<p>You can debug test code in Chrome Developer Tools and popular IDEs. See the following recipes for details.</p>
 
 <ul>
-<li><a href="http-authentication.html">HTTP/NTLM Authentication</a></li>
+<li><a href="../recipes/debugging-with-chrome-dev-tools.html">Debugging with Chrome Developer Tools</a></li>
+<li><a href="../recipes/debugging-with-visual-studio-code.html">Debugging with Visual Studio Code</a></li>
 </ul>
+<h2><a class="anchor" name="client-side-debugging"></a>Client-Side Debugging <a class="permalink" href="#client-side-debugging">#</a></h2>
+<p>TestCafe provides the <code>t.debug</code> method that pauses the test and allows you to debug using the browser&#39;s developer tools.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.debug()
+</code></pre></div>
+<p>When test execution reaches <code>t.debug</code>, it pauses so that you can open browser&#39;s developer tools
+and check the web page state, the location of DOM elements, their CSS styles, etc.</p>
+
+<p>The footer displays buttons that allow you to continue test execution or step to the next test action.</p>
+
+<p><img src="../../images/debugging/client-debugging-footer.png" alt="Page Footer when Debugging on a Client"></p>
+<blockquote><div class="blockquote-content"><p>The debugger does not stop at creating and resolving the <a href="selecting-page-elements/selectors.html">selectors</a> and <a href="obtaining-data-from-the-client.html">client functions</a>.</p>
+</div></blockquote>
+<p>TestCafe logs points in code where the debugger stopped.</p>
+
+<p><img src="../../images/debugging/log-debugger.png" alt="Logging Debugger Breakpoints"></p>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Debugger</span> <span class="nx">example</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'Debugger'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">debug</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" name="options-useful-for-debugging"></a>Options Useful for Debugging <a class="permalink" href="#options-useful-for-debugging">#</a></h2>
+<p>TestCafe includes a few features helpful when you need to find the cause of issues in your tests.</p>
+<h3><a class="anchor" name="screenshots"></a>Screenshots <a class="permalink" href="#screenshots">#</a></h3>
+<p>You can specify that a screenshot should be taken in a particular place in a test.
+Use the <a href="actions/take-screenshot.html">t.takeScreenshot</a> action for this.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">(</span><span class="s1">'./screenshots'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">(</span><span class="s1">'./screenshots'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>You can also turn on the <a href="../using-testcafe/command-line-interface.html#-s---screenshots-on-fails">--screenshots-on-fails</a>
+option.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests --screenshots ./screenshots --screenshots-on-fails
+</code></pre></div>
+<p>This option enables TestCafe to take a screenshot automatically when a test fails.</p>
+
+<p>Analyzing these screenshots helps save time on debugging and allows you to determine the reason of issues earlier.</p>
+<h3><a class="anchor" name="test-speed"></a>Test Speed <a class="permalink" href="#test-speed">#</a></h3>
+<p>TestCafe provides the capability to change test speed. By default, tests are executed at full speed with minimum delays between actions and assertions.
+This makes it hard to identify problems visually when running the test.
+To slow down the test, use the <a href="../using-testcafe/command-line-interface.html#--speed-factor">--speed</a>
+CLI flag. You can use values from <code>1</code> to <code>0.01</code>.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests --speed 0.1
+</code></pre></div>
+<p>When tests run slowly, you can monitor test execution more easily and notice when test behavior differs from the one that&#39;s expected.</p>
 
 
 		</div>

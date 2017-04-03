@@ -335,34 +335,12 @@
 		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#test-hooks"  >Test Hooks</a>
 		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-test-hooks-and-test-code"  >Sharing Variables Between Test Hooks and Test Code</a>
-		
-    </li>
-
-</ul>
-		
     </li>
 
     <li>
 		    
 		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#fixture-hooks"  >Fixture Hooks</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#sharing-variables-between-fixture-hooks-and-test-code"  >Sharing Variables Between Fixture Hooks and Test Code</a>
-		
-    </li>
-
-</ul>
 		
     </li>
 
@@ -596,7 +574,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/client-side-debugging.html"  >Client-Side Debugging</a>
+<a href="/testcafe/documentation/test-api/debugging.html"  >Debugging</a>
 		
     </li>
 
@@ -728,6 +706,28 @@
 <p>Before executing an action, TestCafe waits for the target element to appear
 in the DOM and become visible. If this does not happen
 within the <a href="../selecting-page-elements/selectors.html#selector-timeout">selector timeout</a>, the test fails.</p>
+<h2><a class="anchor" name="remarks-for-touch-devices"></a>Remarks for Touch Devices <a class="permalink" href="#remarks-for-touch-devices">#</a></h2>
+<p>On touch devices, TestCafe emulates touch events instead of mouse events.</p>
+
+<table><thead>
+<tr>
+<th>Mouse event</th>
+<th>Touch event</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>mousemove</code> (when hovering or dragging)</td>
+<td><code>touchmove</code> (dragging only)</td>
+</tr>
+<tr>
+<td><code>mousedown</code></td>
+<td><code>touchstart</code></td>
+</tr>
+<tr>
+<td><code>mouseup</code></td>
+<td><code>touchend</code></td>
+</tr>
+</tbody></table>
 
 
 		</div>
