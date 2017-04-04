@@ -13,6 +13,8 @@ const TESTCAFE_LIB        = join(__dirname, '../');
 const TESTCAFE_BIN        = join(__dirname, '../../bin');
 const TESTCAFE_HAMMERHEAD = `${sep}testcafe-hammerhead${sep}`;
 
+const SOURCE_MAP_SUPPORT = `${sep}source-map-support${sep}`;
+
 const INTERNAL = 'internal/';
 
 export default function createStackFilter (limit) {
@@ -34,7 +36,8 @@ export default function createStackFilter (limit) {
                    filename.indexOf(BABEL_RELATED) !== 0 &&
                    filename.indexOf(BABYLON) !== 0 &&
                    filename.indexOf(CORE_JS) !== 0 &&
-                   filename.indexOf(REGENERATOR_RUNTIME) !== 0;
+                   filename.indexOf(REGENERATOR_RUNTIME) !== 0 &&
+                   filename.indexOf(SOURCE_MAP_SUPPORT) < 0;
 
         if (pass)
             passedFramesCount++;
