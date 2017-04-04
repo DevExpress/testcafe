@@ -186,8 +186,11 @@ export default class SelectChildClickAutomation {
             return this
                 ._move(moveArguments)
                 .then(() => {
-                    if (!browserUtils.isIE)
+                    if (!browserUtils.isIE) {
+                        this.parentSelect.selectedIndex = this.childIndex;
+
                         eventSimulator.input(this.parentSelect);
+                    }
 
                     eventSimulator.click(this.eventsArgs.element, this.eventsArgs.options);
                 });
