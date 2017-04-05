@@ -1,6 +1,7 @@
 import { sep } from 'path';
 import { getCallsiteForError } from './get-callsite';
 import { APIError } from './runtime';
+import TestCafeErrorList from './error-list';
 
 import {
     UncaughtErrorInTestCode,
@@ -23,7 +24,7 @@ function isAssertionErrorCallsiteFrame (frame) {
 
 
 export default function processTestFnError (err) {
-    if (err && err.isTestCafeError)
+    if (err && (err.isTestCafeError || err instanceof TestCafeErrorList))
         return err;
 
     if (err && err.constructor === APIError)
