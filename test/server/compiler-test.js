@@ -453,29 +453,5 @@ describe('Compiler', function () {
                     expect(stack[2].source).to.have.string('testfile.js');
                 });
         });
-
-        it('Incorrect callsite stack for failed assertion in a method of some class (GH-1267)', function () {
-            return compile('test/server/data/test-suites/regression-gh-1267/testfile.js')
-                .then(function (compiled) {
-                    return compiled.tests[0].fn(testRunMock);
-                })
-                .then(function () {
-                    throw 'Promise rejection expected';
-                })
-                .catch(function (errList) {
-                    var callsite = errList.items[0].callsite.renderSync({ renderer: renderers.noColor });
-
-                    expect(callsite).to.contains(
-                        '   13 |}\n' +
-                        '   14 |\n' +
-                        "   15 |test('test', async t => {\n" +
-                        '   16 |    const page = new Page();\n' +
-                        '   17 |\n' +
-                        ' > 18 |    await page.expect(t);\n' +
-                        '   19 |});\n' +
-                        '   20 |\n'
-                    );
-                });
-        });
     });
 });
