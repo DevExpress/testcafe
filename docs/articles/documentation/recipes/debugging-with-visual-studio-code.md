@@ -30,6 +30,7 @@ You will need to add the following configuration to the `launch.json` file.
 ```json
 {
     "type": "node",
+    "protocol": "inspector",
     "request": "launch",
     "name": "Launch test files with TestCafe",
     "program": "${workspaceRoot}/node_modules/testcafe/bin/testcafe.js",
@@ -44,6 +45,7 @@ You will need to add the following configuration to the `launch.json` file.
 This configuration contains the following attributes:
 
 * `type` - specifies the type of the configuration. Set to `node` for a Node.js configuration.
+* `protocol` - specifies the Node.js [debugger wire protocol](https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_supported-nodelike-runtimes). Set to `inspector` to use the [Inspector protocol](https://chromedevtools.github.io/debugger-protocol-viewer/v8/). This protocol is available in Node.js v6.3 (or v6.9 for Windows) or newer. If you are using an older Node.js, do not specify the `protocol` option. In this instance, the `Legacy` protocol will be used, which may cause issues with source maps while debugging test files.
 * `request` - specifies the request type. Set to `launch` since this configuration launches a program.
 * `name` - specifies the name of the configuration.
 * `program` - path to a JS file that will be executed. In this case, it is the TestCafe module.
