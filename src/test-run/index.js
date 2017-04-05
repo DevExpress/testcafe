@@ -224,7 +224,7 @@ export default class TestRun extends Session {
     addError (err, screenshotPath) {
         var errList = err instanceof TestCafeErrorList ? err.items : [err];
 
-        for (var item of errList) {
+        errList.forEach(item => {
             var adapter = new TestRunErrorFormattableAdapter(item, {
                 userAgent:      this.browserConnection.userAgent,
                 screenshotPath: screenshotPath || '',
@@ -232,7 +232,7 @@ export default class TestRun extends Session {
             });
 
             this.errs.push(adapter);
-        }
+        });
     }
 
     // Task queue

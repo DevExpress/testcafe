@@ -1,6 +1,5 @@
 import Promise from 'pinkie';
 import { identity, assign, isNil as isNullOrUndefined } from 'lodash';
-import { MissingAwaitError } from '../../errors/test-run';
 import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import Assertion from './assertion';
@@ -40,9 +39,9 @@ import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 
 export default class TestController {
     constructor (testRun) {
-        this.testRun              = testRun;
-        this.executionChain       = Promise.resolve();
-        this.callsiteWithoutAwait = null;
+        this.testRun               = testRun;
+        this.executionChain        = Promise.resolve();
+        this.callsitesWithoutAwait = new Set();
     }
 
     // NOTE: we track missing `awaits` by exposing a special custom Promise to user code.
@@ -58,35 +57,31 @@ export default class TestController {
     // t.click('#btn2');          // <-- stores new callsiteWithoutAwait
     // await t2.click('#btn3');   // <-- without check it will set callsiteWithoutAwait = null, so we will lost tracking
     _createExtendedPromise (promise, callsite) {
-        var extendedPromise = promise.then(identity);
-        var originalThen    = extendedPromise.then;
+        var extendedPromise     = promise.then(identity);
+        var originalThen        = extendedPromise.then;
+        var markCallsiteAwaited = () => this.callsitesWithoutAwait.delete(callsite);
 
-        var ensureAwait = () => {
-            if (this.callsiteWithoutAwait === callsite)
-                this.callsiteWithoutAwait = null;
-        };
 
         extendedPromise.then = function () {
-            ensureAwait();
+            markCallsiteAwaited();
             return originalThen.apply(this, arguments);
         };
 
         delegateAPI(extendedPromise, TestController.API_LIST, {
             handler:     this,
-            proxyMethod: ensureAwait
+            proxyMethod: markCallsiteAwaited
         });
 
         return extendedPromise;
     }
 
     _enqueueTask (apiMethodName, createTaskExecutor) {
-        this._checkForMissingAwait();
-
         var callsite = getCallsiteForMethod(apiMethodName);
         var executor = createTaskExecutor(callsite);
 
-        this.executionChain       = this.executionChain.then(executor);
-        this.callsiteWithoutAwait = callsite;
+        this.executionChain = this.executionChain.then(executor);
+
+        this.callsitesWithoutAwait.add(callsite);
 
         return this._createExtendedPromise(this.executionChain, callsite);
     }
@@ -107,10 +102,6 @@ export default class TestController {
         });
     }
 
-    _checkForMissingAwait () {
-        if (this.callsiteWithoutAwait)
-            throw new MissingAwaitError(this.callsiteWithoutAwait);
-    }
 
     // API implementation
     // We need implementation methods to obtain correct callsites. If we use plain API
