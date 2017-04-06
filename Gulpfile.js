@@ -578,15 +578,74 @@ gulp.task('test-functional-travis-old-browsers', ['build'], function () {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.oldBrowsers);
 });
 
+function getDockerEnv (machineName) {
+    return childProcess
+        .execSync('docker-machine env --shell bash ' + machineName)
+        .toString()
+        .split('\n')
+        .map(function (line) {
+            return line.match(/export\s*(.*)="(.*)"$/);
+        })
+        .filter(function (match) {
+            return !!match;
+        })
+        .reduce(function (env, match) {
+            env[match[1]] = match[2];
+            return env;
+        }, {});
+}
+
+function isDockerMachineRunning (machineName) {
+    try {
+        return childProcess.execSync('docker-machine status ' + machineName).toString().match(/Running/);
+    }
+    catch (e) {
+        return false;
+    }
+}
+
+function isDockerMachineExist (machineName) {
+    try {
+        childProcess.execSync('docker-machine status ' + machineName);
+        return true;
+    }
+    catch (e) {
+        return !e.message.match(/Host does not exist/);
+    }
+}
+
+function startDocker () {
+    var dockerMachineName = process.env['DOCKER_MACHINE_NAME'] || 'default';
+
+    if (!isDockerMachineExist(dockerMachineName))
+        childProcess.execSync('docker-machine create -d virtualbox ' + dockerMachineName);
+
+    if (!isDockerMachineRunning(dockerMachineName))
+        childProcess.execSync('docker-machine start ' + dockerMachineName);
+
+    var dockerEnv = getDockerEnv(dockerMachineName);
+
+    assignIn(process.env, dockerEnv);
+}
+
 gulp.task('docker-build', function () {
+    if (!process.env['DOCKER_HOST']) {
+        try {
+            startDocker();
+        }
+        catch (e) {
+            throw new Error('Unable to initialize Docker environment. Use Docker terminal to run this task.\n' + e.stack);
+        }
+    }
+
     var imageId = childProcess
-        .execSync('docker build -q -t testcafe -f docker/Dockerfile .')
+        .execSync('docker build -q -t testcafe -f docker/Dockerfile .', { env: process.env })
         .toString()
         .replace(/\n/g, '');
 
-    childProcess.execSync('docker tag ' + imageId + ' testcafe/testcafe:' + PUBLISH_TAG, { stdio: 'inherit' });
+    childProcess.execSync('docker tag ' + imageId + ' testcafe/testcafe:' + PUBLISH_TAG, { stdio: 'inherit', env: process.env });
 });
 
 gulp.task('docker-publish', ['docker-build'], function () {
-    childProcess.execSync('docker push testcafe/testcafe:' + PUBLISH_TAG, { stdio: 'inherit' });
+    childProcess.execSync('docker push testcafe/testcafe:' + PUBLISH_TAG, { stdio: 'inherit', env: process.env });
 });
