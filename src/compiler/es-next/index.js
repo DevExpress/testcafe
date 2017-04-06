@@ -47,7 +47,7 @@ export default class ESNextCompiler {
             ],
             filename:      filename,
             retainLines:   true,
-            sourceMaps:    true,
+            sourceMaps:    'inline',
             ast:           false,
             babelrc:       false,
             highlightCode: false,
@@ -87,14 +87,9 @@ export default class ESNextCompiler {
 
     _setupSourceMapsSupport () {
         sourceMapSupport.install({
+            hookRequire:              true,
             handleUncaughtExceptions: false,
-            environment:              'node',
-
-            retrieveSourceMap: filename => {
-                var map = this.sourceMaps[filename];
-
-                return map ? { url: filename, map } : null;
-            }
+            environment:              'node'
         });
     }
 
