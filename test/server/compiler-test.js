@@ -402,9 +402,9 @@ describe('Compiler', function () {
                     .then(function () {
                         throw new Error('Promise rejection is expected');
                     })
-                    .catch(function (err) {
-                        expect(err.type).eql(ERR_TYPE.uncaughtErrorInTestCode);
-                        expect(err.errMsg).contains('test-error');
+                    .catch(function (errList) {
+                        expect(errList.items[0].type).eql(ERR_TYPE.uncaughtErrorInTestCode);
+                        expect(errList.items[0].errMsg).contains('test-error');
                         expect(testRun.commands.length).eql(1);
                     });
             });
@@ -420,8 +420,8 @@ describe('Compiler', function () {
                 .then(function () {
                     throw 'Promise rejection expected';
                 })
-                .catch(function (err) {
-                    var callsite = err.callsite.renderSync({ renderer: renderers.noColor });
+                .catch(function (errList) {
+                    var callsite = errList.items[0].callsite.renderSync({ renderer: renderers.noColor });
 
                     expect(callsite).contains(' > 19 |        .method1()\n');
                 });
@@ -442,8 +442,9 @@ describe('Compiler', function () {
                 .then(function () {
                     throw 'Promise rejection expected';
                 })
-                .catch(function (err) {
+                .catch(function (errList) {
                     var stackTraceLimit = 200;
+                    var err             = errList.items[0];
                     var stack           = err.callsite.stackFrames.filter(createStackFilter(stackTraceLimit));
 
                     expect(stack.length).eql(3);
@@ -461,8 +462,8 @@ describe('Compiler', function () {
                 .then(function () {
                     throw 'Promise rejection expected';
                 })
-                .catch(function (err) {
-                    var callsite = err.callsite.renderSync({ renderer: renderers.noColor });
+                .catch(function (errList) {
+                    var callsite = errList.items[0].callsite.renderSync({ renderer: renderers.noColor });
 
                     expect(callsite).to.contains(
                         '   13 |}\n' +

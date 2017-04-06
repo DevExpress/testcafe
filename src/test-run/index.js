@@ -7,6 +7,7 @@ import debugLogger from '../notifications/debug-logger';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
+import TestCafeErrorList from '../errors/error-list';
 import { PageLoadError, RoleSwitchInRoleInitializerError } from '../errors/test-run/';
 import BrowserManipulationQueue from './browser-manipulation-queue';
 import CLIENT_MESSAGES from './client-messages';
@@ -221,13 +222,17 @@ export default class TestRun extends Session {
     }
 
     addError (err, screenshotPath) {
-        var adapter = new TestRunErrorFormattableAdapter(err, {
-            userAgent:      this.browserConnection.userAgent,
-            screenshotPath: screenshotPath || '',
-            testRunPhase:   this.phase
-        });
+        var errList = err instanceof TestCafeErrorList ? err.items : [err];
 
-        this.errs.push(adapter);
+        errList.forEach(item => {
+            var adapter = new TestRunErrorFormattableAdapter(item, {
+                userAgent:      this.browserConnection.userAgent,
+                screenshotPath: screenshotPath || '',
+                testRunPhase:   this.phase
+            });
+
+            this.errs.push(adapter);
+        });
     }
 
     // Task queue

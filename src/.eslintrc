@@ -8,6 +8,7 @@
     "babel"
   ],
   "globals": {
-     "Map": true
+     "Map": true,
+     "Set": true
    }
 }
