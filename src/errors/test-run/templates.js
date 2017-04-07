@@ -207,7 +207,7 @@ export default {
     `),
 
     [TYPE.currentIframeIsInvisibleError]: err => markup(err, `
-        The iframe in which the test is currently operating is not visible anymore.
+        The iframe in which the test is currently operating is not visible.
     `),
 
     [TYPE.missingAwaitError]: err => markup(err, `

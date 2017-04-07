@@ -1,9 +1,14 @@
 import { Promise, eventSandbox, nativeMethods } from '../deps/hammerhead';
 import { domUtils, delay, waitFor, positionUtils } from '../deps/testcafe-core';
-import { CurrentIframeIsNotLoadedError, CurrentIframeNotFoundError, CurrentIframeIsInvisibleError } from '../../../errors/test-run';
+import {
+    CurrentIframeIsNotLoadedError,
+    CurrentIframeNotFoundError,
+    CurrentIframeIsInvisibleError
+} from '../../../errors/test-run';
 import sendMessageToDriver from './send-message-to-driver';
 import { ExecuteCommandMessage, ConfirmationMessage, TYPE as MESSAGE_TYPE } from './messages';
 import DriverStatus from '../status';
+import { isVisibleElementRequiringCommand } from '../../../test-run/commands/utils';
 
 
 const CHECK_IFRAME_EXISTENCE_INTERVAL = 1000;
@@ -19,9 +24,12 @@ export default class ChildDriverLink {
         this.iframeAvailabilityTimeout = iframeAvailabilityTimeout;
     }
 
-    _ensureIframe () {
+    _ensureIframe (checkVisibility) {
         if (!domUtils.isElementInDocument(this.driverIframe))
             return Promise.reject(new CurrentIframeNotFoundError());
+
+        if (!checkVisibility)
+            return Promise.resolve();
 
         return waitFor(() => positionUtils.isElementVisible(this.driverIframe) ? this.driverIframe : null,
             CHECK_IFRAME_VISIBLE_INTERVAL, this.iframeAvailabilityTimeout)
@@ -75,10 +83,12 @@ export default class ChildDriverLink {
     }
 
     executeCommand (command, testSpeed) {
-        // NOTE:  We should check if the iframe is visible and exists before executing the next
-        // command, because the iframe might be hidden or removed since the previous command.
+        // NOTE:  We should check if the iframe exists and it's visible (optionally) before executing
+        // the next command, because the iframe might be hidden or removed since the previous command.
+        var checkVisibility = isVisibleElementRequiringCommand(command);
+
         return this
-            ._ensureIframe()
+            ._ensureIframe(checkVisibility)
             .then(() => {
                 var msg = new ExecuteCommandMessage(command, testSpeed);
 

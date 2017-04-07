@@ -376,7 +376,7 @@ export class SwitchToIframeCommand extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', init: initSelector, required: true }
+            { name: 'selector', init: (name, val) => initSelector(name, val, true), required: true }
         ];
     }
 }

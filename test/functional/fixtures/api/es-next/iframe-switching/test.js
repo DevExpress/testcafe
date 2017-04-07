@@ -51,6 +51,10 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a cross-domain iframe with redirect', DEFAULT_RUN_OPTIONS);
     });
 
+    it("Should be possible to execute an action that doesn't require a visible element in an invisible iframe", function () {
+        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Execute some actions in an invisible iframe', DEFAULT_RUN_OPTIONS);
+    });
+
     describe('Unavailable iframe errors', function () {
         it('Should ensure the iframe element exists before switching to it', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Switch to a non-existent iframe',
@@ -91,7 +95,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
         it('Should raise an error when trying to execute an action in an invisible iframe', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an invisible iframe', DEFAULT_FAILED_RUN_OPTIONS)
                 .catch(function (errs) {
-                    expect(errs[0]).to.contains('The iframe in which the test is currently operating is not visible anymore.');
+                    expect(errs[0]).to.contains('The iframe in which the test is currently operating is not visible.');
                     expect(errs[0]).to.contains("> 192 |        .click('#btn');");
                 });
         });

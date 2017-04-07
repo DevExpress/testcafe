@@ -22,7 +22,6 @@ import {
     ActionElementNotIframeError,
     ActionIframeIsNotLoadedError,
     ActionElementNotFoundError,
-    ActionElementIsInvisibleError,
     CurrentIframeIsNotLoadedError,
     CurrentIframeNotFoundError,
     CurrentIframeIsInvisibleError
@@ -58,9 +57,8 @@ const ASSERTION_RETRIES_START_TIME         = 'testcafe|driver|assertion-retries-
 const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;
 
 const ACTION_IFRAME_ERROR_CTORS = {
-    NotLoadedError:   ActionIframeIsNotLoadedError,
-    NotFoundError:    ActionElementNotFoundError,
-    IsInvisibleError: ActionElementIsInvisibleError
+    NotLoadedError: ActionIframeIsNotLoadedError,
+    NotFoundError:  ActionElementNotFoundError
 };
 
 const CURRENT_IFRAME_ERROR_CTORS = {
@@ -263,8 +261,7 @@ export default class Driver {
 
     _switchToIframe (selector, iframeErrorCtors) {
         var selectorExecutor = new SelectorExecutor(selector, this.selectorTimeout, null, this.statusBar,
-            () => new iframeErrorCtors.NotFoundError(),
-            () => iframeErrorCtors.IsInvisibleError());
+            () => new iframeErrorCtors.NotFoundError(), null);
 
         return selectorExecutor.getResult()
             .then(iframe => {

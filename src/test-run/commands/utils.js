@@ -70,3 +70,16 @@ export function isExecutableInTopWindowOnly (command) {
            command.type === TYPE.hideAssertionRetriesStatus ||
            command.type === TYPE.setBreakpoint;
 }
+
+export function isVisibleElementRequiringCommand (command) {
+    return command.type === TYPE.click ||
+           command.type === TYPE.rightClick ||
+           command.type === TYPE.doubleClick ||
+           command.type === TYPE.hover ||
+           command.type === TYPE.typeText ||
+           command.type === TYPE.drag ||
+           command.type === TYPE.dragToElement ||
+           command.type === TYPE.selectText ||
+           command.type === TYPE.selectEditableContent ||
+           command.type === TYPE.selectTextAreaContent;
+}

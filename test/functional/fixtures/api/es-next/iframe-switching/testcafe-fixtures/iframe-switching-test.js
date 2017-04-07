@@ -1,5 +1,5 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
-import { ClientFunction } from 'testcafe';
+import { ClientFunction, Selector } from 'testcafe';
 import { expect } from 'chai';
 
 
@@ -198,4 +198,14 @@ test('Click in an iframe that is not loaded', async t => {
         .click('#too-long-loading-page-link')
         .wait(3000)
         .click('#second-page-btn');
+});
+
+test('Execute some actions in an invisible iframe', async t => {
+    await t
+        .switchToIframe('#invisible-iframe')
+        .expect(Selector('body').exists).ok();
+
+    const documentLocation = await t.eval(() => document.location.toString());
+
+    await t.expect(documentLocation).contains('about:blank');
 });
