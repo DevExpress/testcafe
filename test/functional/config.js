@@ -4,6 +4,11 @@ var isTravisEnvironment = !!process.env.TRAVIS;
 var isCCNetEnvironment  = !!process.env.CCNET;
 var hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
 
+var browserProviderNames = {
+    sauceLabs:    'sauceLabs',
+    browserstack: 'browserstack'
+};
+
 var testingEnvironmentNames = {
     saucelabsOSXDesktopAndMSEdgeBrowsers: 'saucelabs-osx-desktop-and-ms-edge-browsers',
     saucelabsMobileBrowsers:              'saucelabs-mobile-browsers',
@@ -15,10 +20,11 @@ var testingEnvironmentNames = {
 var testingEnvironments = {};
 
 testingEnvironments[testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers] = {
+    jobName: 'functional tests - OS X desktop and MS edge browsers',
+
     sauceLabs: {
         username:  process.env.SAUCE_USERNAME_FUNCTIONAL_DESKTOP,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP,
-        jobName:   'functional tests - OS X desktop and MS edge browsers'
+        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP
     },
 
     browsers: [
@@ -48,36 +54,39 @@ testingEnvironments[testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers
 };
 
 testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
+    jobName: 'functional tests - mobile browsers',
+
     sauceLabs: {
         username:  process.env.SAUCE_USERNAME_FUNCTIONAL_MOBILE,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_MOBILE,
-        jobName:   'functional tests - mobile browsers'
+        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_MOBILE
+    },
+
+    browserstack: {
+        username:  process.env.BROWSER_STACK_USERNAME,
+        accessKey: process.env.BROWSER_STACK_ACCESS_KEY
     },
 
     browsers: [
         {
-            platformName:    'Android',
-            deviceName:      'Android Emulator',
-            platformVersion: '5.1',
-            browserName:     'Browser',
-            alias:           'android'
+            os:        'android',
+            osVersion: '4.4',
+            browser:   'Android Browser',
+            device:    'Samsung Galaxy Tab 4 10.1',
+            alias:     'android'
         },
         {
-            // NOTE: we can't run tests on iOS 9.3 because of a bug in this version
-            // (see https://github.com/DevExpress/testcafe-hammerhead/issues/672#issuecomment-232043366).
-            // This bug is fixed in iOS 9.3.2 but it's not available on the farm.
-            platformName:    'iOS',
-            deviceName:      'iPad Retina',
-            platformVersion: '9.2',
-            browserName:     'Safari',
-            alias:           'ipad'
+            os:        'ios',
+            osVersion: '9.3',
+            browser:   'Mobile Safari',
+            device:    'iPad Pro',
+            alias:     'ipad'
         },
         {
-            platformName:    'iOS',
-            deviceName:      'iPhone 6 Plus',
-            platformVersion: '9.2',
-            browserName:     'Safari',
-            alias:           'iphone'
+            os:        'ios',
+            osVersion: '10.0',
+            device:    'iPhone 7 Plus',
+            browser:   'Mobile Safari',
+            alias:     'iphone'
         }
     ]
 };
@@ -104,10 +113,12 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
 };
 
 testingEnvironments[testingEnvironmentNames.oldBrowsers] = {
+    jobName: 'functional tests - ms desktop browsers',
+
     sauceLabs: {
         username:  process.env.SAUCE_USERNAME_FUNCTIONAL_DESKTOP,
         accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP,
-        jobName:   'functional tests - ms desktop browsers'
+
     },
 
     browsers: [
@@ -127,10 +138,11 @@ testingEnvironments[testingEnvironmentNames.oldBrowsers] = {
 };
 
 testingEnvironments[testingEnvironmentNames.legacy] = {
+    jobName: 'functional tests - legacy',
+
     sauceLabs: {
         username:  process.env.SAUCE_USERNAME_FUNCTIONAL_DESKTOP,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP,
-        jobName:   'functional tests - legacy'
+        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP
     },
 
     browsers: [
@@ -159,6 +171,7 @@ module.exports = {
 
     testingEnvironmentNames: testingEnvironmentNames,
     testingEnvironments:     testingEnvironments,
+    browserProviderNames:    browserProviderNames,
 
     testCafe: {
         hostname: hostname,

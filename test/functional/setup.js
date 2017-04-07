@@ -1,31 +1,40 @@
-var browserTools       = require('testcafe-browser-tools');
-var SauceLabsConnector = require('saucelabs-connector');
-var Promise            = require('pinkie');
-var caller             = require('caller');
-var path               = require('path');
-var createTestCafe     = require('../../lib');
-var config             = require('./config.js');
-var site               = require('./site');
-var getTestError       = require('./get-test-error.js');
+var browserTools   = require('testcafe-browser-tools');
+var SlConnector    = require('saucelabs-connector');
+var BsConnector    = require('browserstack-connector');
+var Promise        = require('pinkie');
+var caller         = require('caller');
+var path           = require('path');
+var createTestCafe = require('../../lib');
+var config         = require('./config.js');
+var site           = require('./site');
+var getTestError   = require('./get-test-error.js');
 
 var testCafe     = null;
 var browsersInfo = null;
 
-var slConnector = null;
-var slBrowsers  = null;
+var connector        = null;
+var browserInstances = null;
 
 const WAIT_FOR_FREE_MACHINES_REQUEST_INTERVAL  = 60000;
 const WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT = 60;
 
+const BROWSER_STACK_BROWSER_OPENING_DELAY = 45000;
+
 const FUNCTIONAL_TESTS_SELECTOR_TIMEOUT  = 200;
 const FUNCTIONAL_TESTS_ASSERTION_TIMEOUT = 1000;
 
-var envName     = process.env.TESTING_ENVIRONMENT || config.testingEnvironmentNames.localBrowsers;
-var environment = config.testingEnvironments[envName];
+var envName         = process.env.TESTING_ENVIRONMENT || config.testingEnvironmentNames.localBrowsers;
+var environment     = config.testingEnvironments[envName];
+var browserProvider = process.env.browserProvider;
+var isBrowserStack  = browserProvider === config.browserProvidersNames.browserstack;
 
 config.browsers = environment.browsers;
 
-const SAUCE_LABS_REQUESTED_MACHINES_COUNT = environment.browsers.length;
+const REQUESTED_MACHINES_COUNT = environment.browsers.length;
+
+function wait (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 
 function getBrowserInfo (settings) {
@@ -48,24 +57,28 @@ function initBrowsersInfo () {
 }
 
 function openRemoteBrowsers () {
-    slConnector = new SauceLabsConnector(environment.sauceLabs.username, environment.sauceLabs.accessKey);
+    var Connector = isBrowserStack ? BsConnector : SlConnector;
 
-    return slConnector
+    connector = new Connector(environment[browserProvider].username, environment[browserProvider].accessKey);
+
+    return connector
         .connect()
         .then(function () {
-            return slConnector.waitForFreeMachines(SAUCE_LABS_REQUESTED_MACHINES_COUNT,
+            return connector.waitForFreeMachines(REQUESTED_MACHINES_COUNT,
                 WAIT_FOR_FREE_MACHINES_REQUEST_INTERVAL, WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT);
         })
         .then(function () {
             var openBrowserPromises = browsersInfo.map(function (browserInfo) {
-                return slConnector.startBrowser(browserInfo.settings, browserInfo.connection.url,
-                    environment.sauceLabs.jobName);
+                return connector.startBrowser(browserInfo.settings, browserInfo.connection.url,
+                    isBrowserStack ? { jobName: environment.jobName } : environment.jobName);
             });
 
             return Promise.all(openBrowserPromises);
         })
         .then(function (browsers) {
-            slBrowsers = browsers;
+            browserInstances = browsers;
+
+            return isBrowserStack ? wait(BROWSER_STACK_BROWSER_OPENING_DELAY) : null;
         });
 }
 
@@ -81,13 +94,13 @@ function openLocalBrowsers () {
 }
 
 function closeRemoteBrowsers () {
-    var closeBrowserPromises = slBrowsers.map(function (browser) {
-        return slConnector.stopBrowser(browser);
+    var closeBrowserPromises = browserInstances.map(function (browser) {
+        return connector.stopBrowser(isBrowserStack ? browser.id : browser);
     });
 
     return Promise.all(closeBrowserPromises)
         .then(function () {
-            return slConnector.disconnect();
+            return connector.disconnect();
         });
 }
 

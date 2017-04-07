@@ -543,8 +543,9 @@ gulp.task('publish-website', ['build-website-production'], function () {
 gulp.task('test-docs-travis', ['test-website-travis', 'lint']);
 
 
-function testFunctional (fixturesDir, testingEnvironmentName) {
+function testFunctional (fixturesDir, testingEnvironmentName, browserProviderName) {
     process.env.TESTING_ENVIRONMENT = testingEnvironmentName;
+    process.env.browserProvider     = browserProviderName;
 
     return gulp
         .src(['test/functional/setup.js', fixturesDir + '/**/test.js'])
@@ -556,15 +557,15 @@ function testFunctional (fixturesDir, testingEnvironmentName) {
 }
 
 gulp.task('test-functional-travis-desktop-osx-and-ms-edge', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers);
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.sauceLabs);
 });
 
 gulp.task('test-functional-travis-mobile', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.saucelabsMobileBrowsers);
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.saucelabsMobileBrowsers, functionalTestConfig.browserProviderNames.browserstack);
 });
 
 gulp.task('test-functional-local', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsers);
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsers, functionalTestConfig.browserProviderNames.sauceLabs);
 });
 
 gulp.task('test-functional-travis-legacy', ['build'], function () {
@@ -572,5 +573,5 @@ gulp.task('test-functional-travis-legacy', ['build'], function () {
 });
 
 gulp.task('test-functional-travis-old-browsers', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.oldBrowsers);
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.oldBrowsers, functionalTestConfig.browserProviderNames.sauceLabs);
 });
