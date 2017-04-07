@@ -26,7 +26,7 @@ const FUNCTIONAL_TESTS_ASSERTION_TIMEOUT = 1000;
 var envName         = process.env.TESTING_ENVIRONMENT || config.testingEnvironmentNames.localBrowsers;
 var environment     = config.testingEnvironments[envName];
 var browserProvider = process.env.browserProvider;
-var isBrowserStack  = browserProvider === config.browserProvidersNames.browserstack;
+var isBrowserStack  = browserProvider === config.browserProviderNames.browserstack;
 
 config.browsers = environment.browsers;
 
