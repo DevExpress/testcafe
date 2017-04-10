@@ -67,13 +67,13 @@ testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
     },
 
     browsers: [
-        {
+        /*{
             os:        'android',
             osVersion: '4.4',
             browser:   'Android Browser',
             device:    'Samsung Galaxy Tab 4 10.1',
             alias:     'android'
-        },
+        },*/
         {
             os:        'ios',
             osVersion: '9.3',
