@@ -71,7 +71,7 @@ export function isExecutableInTopWindowOnly (command) {
            command.type === TYPE.setBreakpoint;
 }
 
-export function isVisibleElementRequiringCommand (command) {
+export function doesCommandRequireVisibleElement (command) {
     return command.type === TYPE.click ||
            command.type === TYPE.rightClick ||
            command.type === TYPE.doubleClick ||
