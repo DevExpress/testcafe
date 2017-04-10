@@ -76,9 +76,9 @@ testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
         },*/
         {
             os:        'ios',
-            osVersion: '9.3',
+            osVersion: '10.0',
             browser:   'Mobile Safari',
-            device:    'iPad Air 2',
+            device:    'iPad Pro (9.7 inch)',
             alias:     'ipad'
         },
         {
