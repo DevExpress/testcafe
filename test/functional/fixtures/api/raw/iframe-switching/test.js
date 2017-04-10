@@ -8,7 +8,7 @@ describe('[RAW] t.switchToIframe(), t.switchToMainWindow()', function () {
 
     it('Should switch context between a nested iframe and the main window', function () {
         return runTests('./testcafe-fixtures/iframe-switching.testcafe', 'Click on element in a nested iframe',
-            { shouldFail: true, selectorTimeout: 5000 })
+            { shouldFail: true, selectorTimeout: 10000 })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'top window button clicked: 2; iframe button clicked: 1;' +
                                                  ' nested iframe button clicked: 1;', 0);

@@ -4,7 +4,7 @@ var errorInEachBrowserContains = require('../../../../assertion-helper.js').erro
 // NOTE: we set selectorTimeout to a large value in some tests to wait for
 // an iframe to load on the farm (it is fast locally but can take some time on the farm)
 
-var DEFAULT_SELECTOR_TIMEOUT   = 5000;
+var DEFAULT_SELECTOR_TIMEOUT   = 10000;
 var DEFAULT_RUN_OPTIONS        = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
 var DEFAULT_FAILED_RUN_OPTIONS = {
     shouldFail:      true,
