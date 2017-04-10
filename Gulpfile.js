@@ -548,7 +548,7 @@ function testFunctional (fixturesDir, testingEnvironmentName, browserProviderNam
     process.env.browserProvider     = browserProviderName;
 
     return gulp
-        .src(['test/functional/setup.js', fixturesDir + '/**/test.js'])
+        .src(['test/functional/setup.js', fixturesDir + '/**/itest.js'])
         .pipe(mocha({
             ui:       'bdd',
             reporter: 'spec',
