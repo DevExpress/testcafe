@@ -548,7 +548,7 @@ function testFunctional (fixturesDir, testingEnvironmentName, browserProviderNam
     process.env.browserProvider     = browserProviderName;
 
     return gulp
-        .src(['test/functional/setup.js', fixturesDir + '/**/itest.js'])
+        .src(['test/functional/setup.js', fixturesDir + '/**/test.js'])
         .pipe(mocha({
             ui:       'bdd',
             reporter: 'spec',
@@ -560,8 +560,12 @@ gulp.task('test-functional-travis-desktop-osx-and-ms-edge', ['build'], function 
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.sauceLabs);
 });
 
-gulp.task('test-functional-travis-mobile', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.saucelabsMobileBrowsers, functionalTestConfig.browserProviderNames.browserstack);
+gulp.task('test-functional-browserstack-mobile', ['build'], function () {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.browserstackMobileBrowsers, functionalTestConfig.browserProviderNames.browserstack);
+});
+
+gulp.task('test-functional-saucelabs-mobile', ['build'], function () {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.saucelabsMobileBrowsers, functionalTestConfig.browserProviderNames.sauceLabs);
 });
 
 gulp.task('test-functional-local', ['build'], function () {

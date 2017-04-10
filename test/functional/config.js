@@ -12,6 +12,7 @@ var browserProviderNames = {
 var testingEnvironmentNames = {
     saucelabsOSXDesktopAndMSEdgeBrowsers: 'saucelabs-osx-desktop-and-ms-edge-browsers',
     saucelabsMobileBrowsers:              'saucelabs-mobile-browsers',
+    browserstackMobileBrowsers:           'browserstack-mobile-browsers',
     localBrowsers:                        'local-browsers',
     oldBrowsers:                          'old-browsers',
     legacy:                               'legacy'
@@ -53,7 +54,7 @@ testingEnvironments[testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers
     ]
 };
 
-testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
+testingEnvironments[testingEnvironmentNames.browserstackMobileBrowsers] = {
     jobName: 'functional tests - mobile browsers',
 
     sauceLabs: {
@@ -90,6 +91,42 @@ testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
         }
     ]
 };
+
+testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
+    sauceLabs: {
+        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_MOBILE,
+        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_MOBILE,
+        jobName:   'functional tests - mobile browsers'
+    },
+
+    browsers: [
+        /*{
+            platformName:    'Android',
+            deviceName:      'Android Emulator',
+            platformVersion: '5.1',
+            browserName:     'Browser',
+            alias:           'android'
+        },*/
+        {
+            // NOTE: we can't run tests on iOS 9.3 because of a bug in this version
+            // (see https://github.com/DevExpress/testcafe-hammerhead/issues/672#issuecomment-232043366).
+            // This bug is fixed in iOS 9.3.2 but it's not available on the farm.
+            platformName:    'iOS',
+            deviceName:      'iPad Retina Simulator',
+            platformVersion: '10.2',
+            browserName:     'Safari',
+            alias:           'ipad'
+        },
+        {
+            platformName:    'iOS',
+            deviceName:      'iPhone 7 Plus Simulator',
+            platformVersion: '10.2',
+            browserName:     'Safari',
+            alias:           'iphone'
+        }
+    ]
+};
+
 
 testingEnvironments[testingEnvironmentNames.localBrowsers] = {
     browsers: [
