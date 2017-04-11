@@ -45,7 +45,7 @@ You will need to add the following configuration to the `launch.json` file.
 This configuration contains the following attributes:
 
 * `type` - specifies the type of the configuration. Set to `node` for a Node.js configuration.
-* `protocol` - specifies the Node.js [debugger wire protocol](https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_supported-nodelike-runtimes). Set to `inspector` to use the [Inspector protocol](https://chromedevtools.github.io/debugger-protocol-viewer/v8/). This protocol is available in Node.js v6.3 (or v6.9 for Windows) or newer. If you are using an older Node.js, do not specify the `protocol` option. In this instance, the `Legacy` protocol will be used, which may cause issues with source maps while debugging test files.
+* `protocol` - specifies the Node.js [debugger wire protocol](https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_supported-nodelike-runtimes). Note that the inspector protocol is supported in Node.js v6.3 (or v6.9 for Windows) or later. For early versions, omit this property. In that case, a legacy debugger protocol will be used. Legacy protocol is well known for its issues with source map support, therefore newer versions of Node.js are recommended.
 * `request` - specifies the request type. Set to `launch` since this configuration launches a program.
 * `name` - specifies the name of the configuration.
 * `program` - path to a JS file that will be executed. In this case, it is the TestCafe module.
