@@ -9,20 +9,25 @@ There are many ways to test your static HTML pages using TestCafe, but in this r
 we will focus on two simple methods that use a few other packages and can be easily integrated into your workflow.
 
 * [Install TestCafe and create tests](#install-testcafe-and-create-tests)
-* [Option 1 - Use the file:// protocol](#option-1---use-the-file-protocol)
-* [Option 2 - Use a local HTTP server](#option-2---use-a-local-http-server)
+* [Option 1 - Test webpages in the local file system](#option-1---test-webpages-in-the-local-file-system)
+* [Option 2 - Set up a local HTTP server](#option-2---set-up-a-local-http-server)
 
 ## Install TestCafe and create tests
 
 Install TestCafe [locally](../using-testcafe/installing-testcafe.md#locally) in your project and [create tests](../getting-started/README.md#creating-a-test).
 
-## Option 1 - Use the file:// protocol
+## Option 1 - Test webpages in the local file system
 
-[Specify the target webpage](../test-api/test-code-structure.md#specifying-the-start-webpage) using the `file://` protocol.
+[Specify the target webpage](../test-api/test-code-structure.md#specifying-the-start-webpage) using a relative path or the `file://` URL scheme.
 
 ```js
 fixture `My fixture`
     .page `file:///user/my-website/index.html`
+```
+
+```js
+fixture `My fixture`
+    .page `../my-website/index.html`
 ```
 
 Add a command that runs tests to the `package.json` file.
@@ -35,7 +40,7 @@ Add a command that runs tests to the `package.json` file.
 
 This script runs tests from the `./test/acceptance/` directory in Chrome.
 
-## Option 2 - Use a local HTTP server
+## Option 2 - Set up a local HTTP server
 
 Install [http-server](https://github.com/indexzero/http-server) that will be used as a local server.
 
