@@ -12,6 +12,6 @@ describe('Basic and NTLM authentications', function () {
     });
 
     it('Should override credentials with test.httpAuth', function () {
-        return runTests('./testcafe-fixtures/override-credentials-test.js');
+        return runTests('./testcafe-fixtures/override-credentials-test.js', null, { skip: ['android'] });
     });
 });

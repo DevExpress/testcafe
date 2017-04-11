@@ -46,7 +46,7 @@ testingEnvironments[testingEnvironmentNames.browserstackOSXDesktopAndMSEdgeBrows
         {
             os:        'OS X',
             osVersion: 'Sierra',
-            name:      'chrome',
+            name:      'firefox',
             version:   '52.0',
             alias:     'firefox-osx'
         },
