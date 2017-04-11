@@ -73,7 +73,7 @@ testingEnvironments[testingEnvironmentNames.browserstackMobileBrowsers] = {
             os:        'android',
             osVersion: '4.4',
             browser:   'Android Browser',
-            device:    'Samsung Galaxy Tab 4 10.1',
+            device:    'Samsung Galaxy S5',
             alias:     'android'
         },
         {
