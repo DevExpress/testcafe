@@ -557,7 +557,7 @@ function testFunctional (fixturesDir, testingEnvironmentName, browserProviderNam
 }
 
 gulp.task('test-functional-travis-desktop-osx-and-ms-edge', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.sauceLabs);
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.browserstackOSXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack);
 });
 
 gulp.task('test-functional-browserstack-mobile', ['build'], function () {

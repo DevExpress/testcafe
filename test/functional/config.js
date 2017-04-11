@@ -10,57 +10,18 @@ var browserProviderNames = {
 };
 
 var testingEnvironmentNames = {
-    saucelabsOSXDesktopAndMSEdgeBrowsers: 'saucelabs-osx-desktop-and-ms-edge-browsers',
-    saucelabsMobileBrowsers:              'saucelabs-mobile-browsers',
-    browserstackMobileBrowsers:           'browserstack-mobile-browsers',
-    localBrowsers:                        'local-browsers',
-    oldBrowsers:                          'old-browsers',
-    legacy:                               'legacy'
+    browserstackOSXDesktopAndMSEdgeBrowsers: 'browserstack-osx-desktop-and-ms-edge-browsers',
+    saucelabsMobileBrowsers:                 'saucelabs-mobile-browsers',
+    browserstackMobileBrowsers:              'browserstack-mobile-browsers',
+    localBrowsers:                           'local-browsers',
+    oldBrowsers:                             'old-browsers',
+    legacy:                                  'legacy'
 };
 
 var testingEnvironments = {};
 
-testingEnvironments[testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers] = {
+testingEnvironments[testingEnvironmentNames.browserstackOSXDesktopAndMSEdgeBrowsers] = {
     jobName: 'functional tests - OS X desktop and MS edge browsers',
-
-    sauceLabs: {
-        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_DESKTOP,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP
-    },
-
-    browsers: [
-        {
-            platform:    'OS X 10.11',
-            browserName: 'safari',
-            version:     '9.0',
-            alias:       'safari'
-        },
-        {
-            platform:    'OS X 10.11',
-            browserName: 'chrome',
-            alias:       'chrome-osx'
-        },
-        {
-            platform:    'OS X 10.11',
-            browserName: 'firefox',
-            alias:       'firefox-osx'
-        },
-        {
-            platform:    'Windows 10',
-            browserName: 'microsoftedge',
-            alias:       'edge',
-            version:     '13.10586'
-        }
-    ]
-};
-
-testingEnvironments[testingEnvironmentNames.browserstackMobileBrowsers] = {
-    jobName: 'functional tests - mobile browsers',
-
-    sauceLabs: {
-        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_MOBILE,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_MOBILE
-    },
 
     browserstack: {
         username:  process.env.BROWSER_STACK_USERNAME,
@@ -68,13 +29,53 @@ testingEnvironments[testingEnvironmentNames.browserstackMobileBrowsers] = {
     },
 
     browsers: [
-        /*{
+        {
+            os:        'OS X',
+            osVersion: 'Sierra',
+            name:      'safari',
+            version:   '10.0',
+            alias:     'safari'
+        },
+        {
+            os:        'OS X',
+            osVersion: 'Sierra',
+            name:      'chrome',
+            version:   '57.0',
+            alias:     'chrome-osx'
+        },
+        {
+            os:        'OS X',
+            osVersion: 'Sierra',
+            name:      'chrome',
+            version:   '52.0',
+            alias:     'firefox-osx'
+        },
+        {
+            os:        'Windows',
+            osVersion: '10',
+            name:      'edge',
+            version:   '13.0',
+            alias:     'edge',
+        }
+    ]
+};
+
+testingEnvironments[testingEnvironmentNames.browserstackMobileBrowsers] = {
+    jobName: 'functional tests - mobile browsers',
+
+    browserstack: {
+        username:  process.env.BROWSER_STACK_USERNAME,
+        accessKey: process.env.BROWSER_STACK_ACCESS_KEY
+    },
+
+    browsers: [
+        {
             os:        'android',
             osVersion: '4.4',
             browser:   'Android Browser',
             device:    'Samsung Galaxy Tab 4 10.1',
             alias:     'android'
-        },*/
+        },
         {
             os:        'ios',
             osVersion: '10.0',
@@ -89,13 +90,7 @@ testingEnvironments[testingEnvironmentNames.browserstackMobileBrowsers] = {
             browser:   'Mobile Safari',
             alias:     'iphone'
         },
-        {
-            os:        'OS X',
-            osVersion: 'Sierra',
-            name:      'safari',
-            version:   '10.0',
-            alias:     'safari'
-        }
+
     ]
 };
 
@@ -107,13 +102,13 @@ testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
     },
 
     browsers: [
-        /*{
+        {
             platformName:    'Android',
             deviceName:      'Android Emulator',
             platformVersion: '5.1',
             browserName:     'Browser',
             alias:           'android'
-        },*/
+        },
         {
             // NOTE: we can't run tests on iOS 9.3 because of a bug in this version
             // (see https://github.com/DevExpress/testcafe-hammerhead/issues/672#issuecomment-232043366).

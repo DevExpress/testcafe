@@ -4,7 +4,7 @@ matrix:
   - node_js: "stable"
     env: GULP_TASK="test-functional-browserstack-mobile"
   - node_js: "stable"
-    env: GULP_TASK="test-functional-saucelabs-mobile"
+    env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge"
  fast_finish: true
 
 cache: yarn
