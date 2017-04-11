@@ -312,6 +312,10 @@ export function isElementContainsNode (parentElement, childNode) {
     return checkChildNodes(parentElement, childNode);
 }
 
+export function isOptionGroupElement (element) {
+    return hammerhead.utils.dom.instanceToString(element) === '[object HTMLOptGroupElement]';
+}
+
 export function getOptionIndex (select, option) {
     var children = select.querySelectorAll('option');
 
