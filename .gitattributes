@@ -1,4 +1,5 @@
 * text=auto
+*.sh text eol=lf
 *.js text eol=lf
 *.css text eol=lf
 *.html text eol=lf

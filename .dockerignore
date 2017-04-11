@@ -1,0 +1,5 @@
+*
+!bin
+!docker
+!lib
+!package.json
