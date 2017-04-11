@@ -88,6 +88,13 @@ testingEnvironments[testingEnvironmentNames.browserstackMobileBrowsers] = {
             device:    'iPhone 7 Plus',
             browser:   'Mobile Safari',
             alias:     'iphone'
+        },
+        {
+            os:        'OS X',
+            osVersion: 'Sierra',
+            name:      'safari',
+            version:   '10.0',
+            alias:     'safari'
         }
     ]
 };
