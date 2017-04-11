@@ -150,5 +150,7 @@
       url: /documentation/recipes/testing-on-remote-computers-and-mobile-devices.md
     - name: Using Page Model
       url: /documentation/recipes/using-page-model.md
+    - name: Using TestCafe with Grunt
+      url: /documentation/recipes/using-testcafe-with-grunt.md
     - name: Using TestCafe with Gulp
       url: /documentation/recipes/using-testcafe-with-gulp.md

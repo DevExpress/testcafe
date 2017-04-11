@@ -14,4 +14,5 @@ This section provides examples and recipes of how to use TestCafe in different s
 * [Test Static HTML Pages](test-static-html-pages.md)
 * [Testing on Remote Computers and Mobile Devices](testing-on-remote-computers-and-mobile-devices.md)
 * [Using Page Model](using-page-model.md)
+* [Using TestCafe with Grunt](using-testcafe-with-grunt.md)
 * [Using TestCafe with Gulp](using-testcafe-with-gulp.md)
