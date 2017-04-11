@@ -27,7 +27,7 @@ grunt.initConfig({
     testcafe: {
         test: {
             options: {
-                files: ['tests/*.test.js'],
+                files: ['tests/*.js'],
                 browsers: ['chrome']
             }
         }
