@@ -924,7 +924,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.switchToIframe,
-                selector: makeSelector('#iframe')
+                selector: makeSelector('#iframe', true)
             });
         });
 
