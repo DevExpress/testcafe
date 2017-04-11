@@ -121,7 +121,7 @@ function moveTextAreaCursor (element, startPos, endPos, hasInverseSelection, new
     textSelection.select(element, newStart, newEnd);
 }
 
-function setElementValue (element, value) {
+function setElementValue (element, value, position) {
     if (value.charAt(0) === '-' && value.charAt(1) === '.')
         value = value.substring(1);
 
@@ -130,6 +130,8 @@ function setElementValue (element, value) {
 
 
     element.value = value;
+
+    textSelection.select(element, position, position);
     eventSimulator.input(element);
 }
 
@@ -184,14 +186,12 @@ function backspace (element) {
         if (endPos === startPos) {
             if (startPos > 0) {
                 setElementValue(element, value.substring(0, startPos - 1) +
-                                         value.substring(endPos, value.length));
-                textSelection.select(element, startPos - 1, startPos - 1);
+                                         value.substring(endPos, value.length), startPos - 1);
             }
         }
         else {
             setElementValue(element, value.substring(0, startPos) +
-                                     value.substring(endPos, value.length));
-            textSelection.select(element, startPos, startPos);
+                                     value.substring(endPos, value.length), startPos);
         }
     }
 
@@ -210,14 +210,12 @@ function del (element) {
         if (endPos === startPos) {
             if (startPos < value.length) {
                 setElementValue(element, value.substring(0, startPos) +
-                                         value.substring(endPos + 1, value.length));
-                textSelection.select(element, startPos, startPos);
+                                         value.substring(endPos + 1, value.length), startPos);
             }
         }
         else {
             setElementValue(element, value.substring(0, startPos) +
-                                     value.substring(endPos, value.length));
-            textSelection.select(element, startPos, startPos);
+                                     value.substring(endPos, value.length), startPos);
         }
     }
 
@@ -494,9 +492,7 @@ function enter (element) {
         var valueAfterCursor  = element.value.substring(startPos);
         var newPosition       = startPos + 1;
 
-        setElementValue(element, valueBeforeCursor + String.fromCharCode(10) + valueAfterCursor);
-
-        textSelection.select(element, newPosition, newPosition);
+        setElementValue(element, valueBeforeCursor + String.fromCharCode(10) + valueAfterCursor, newPosition);
     }
     //S173120
     else if (element.tagName && domUtils.isAnchorElement(element))

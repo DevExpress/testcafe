@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gh-1388</title>
+</head>
+<body>
+<textarea id="textarea"></textarea>
+
+<script>
+    var textArea = document.getElementById('textarea');
+
+    textArea.value = 'First line\nSecond line';
+
+    window.selectionLog = [];
+
+    textArea.addEventListener('input', function () {
+        window.selectionLog.push(textArea.selectionStart);
+    });
+</script>
+</body>
+</html>
