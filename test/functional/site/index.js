@@ -20,3 +20,11 @@ exports.destroy = function () {
     basicAuthServer.close();
     ntlmAuthServer.close();
 };
+
+exports.addUrlToHub = function (url) {
+    server1.addUrlToHub(url);
+};
+
+exports.waitHubEstablish = function () {
+    return server1.waitHubEstablish();
+};

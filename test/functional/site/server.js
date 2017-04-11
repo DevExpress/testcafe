@@ -1,3 +1,4 @@
+var Promise               = require('pinkie');
 var express               = require('express');
 var http                  = require('http');
 var fs                    = require('fs');
@@ -20,6 +21,7 @@ var CONTENT_TYPES = {
 };
 
 var UPLOAD_SUCCESS_PAGE_TEMPLATE = readSync('./views/upload-success.html.mustache');
+var REDIRECT_PAGE_TEMPLATE       = readSync('./views/redirect.html.mustache');
 
 var readFile = promisify(fs.readFile);
 
@@ -30,6 +32,8 @@ var Server = module.exports = function (port, basePath) {
     this.appServer = http.createServer(this.app).listen(port);
     this.sockets   = [];
     this.basePath  = basePath;
+
+    this.hubUrls = [];
 
     this._setupRoutes();
 
@@ -50,6 +54,14 @@ Server.prototype._setupRoutes = function () {
         var filePath = path.join(server.basePath, '../../package.json');
 
         res.download(filePath);
+    });
+
+    this.app.get('/hub', function (req, res) {
+        /* eslint-disable no-console */
+        console.log('/hub');
+        /* eslint-enable no-console */
+
+        res.end(Mustache.render(REDIRECT_PAGE_TEMPLATE, { url: server.hubUrls.shift() }));
     });
 
     this.app.get('*', function (req, res) {
@@ -110,5 +122,37 @@ Server.prototype.close = function () {
     this.appServer.close();
     this.sockets.forEach(function (socket) {
         socket.destroy();
+    });
+};
+
+Server.prototype.addUrlToHub = function (url) {
+    /* eslint-disable no-console */
+    console.log('url added to hub');
+    /* eslint-enable no-console */
+
+    this.hubUrls.push(url);
+};
+
+Server.prototype.waitHubEstablish = function () {
+    var server = this;
+
+    return new Promise(function (res, rej) {
+        var timeout    = 3 * 60 * 1000;
+        var timeoutId  = null;
+        var intervalId = null;
+
+        timeoutId = setTimeout(function () {
+            clearInterval(intervalId);
+            clearTimeout(timeoutId);
+            rej('Hub timeout estimated. The number of remaining machines is:', server.hubUrls.length);
+        }, timeout);
+
+        intervalId = setInterval(function () {
+            if (!server.hubUrls.length) {
+                clearInterval(intervalId);
+                clearTimeout(timeoutId);
+                res();
+            }
+        }, 5000);
     });
 };
