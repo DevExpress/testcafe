@@ -85,7 +85,7 @@ export default class TestRun extends Session {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
-        this.debugging               = this.opts.stepByStep;
+        this.debugging               = this.opts.debugMode;
         this.disableDebugBreakpoints = false;
 
         this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, warningLog);
