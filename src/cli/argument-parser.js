@@ -106,6 +106,7 @@ export default class CLIArgumentParser {
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
+            .option('--step-by-step', 'execute test steps one by one pausing the test after each step')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
