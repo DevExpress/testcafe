@@ -25,29 +25,29 @@ var _utilsWait = require('./utils/wait');
 var _utilsWait2 = _interopRequireDefault(_utilsWait);
 
 var BrowserStackConnector = (function () {
-    function BrowserStackConnector(username, accessKey) {
+    function BrowserStackConnector (username, accessKey) {
         var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
         _classCallCheck(this, BrowserStackConnector);
 
-        this.username = username;
+        this.username  = username;
         this.accessKey = accessKey;
 
         var _options$connectorLogging = options.connectorLogging;
-        var connectorLogging = _options$connectorLogging === undefined ? true : _options$connectorLogging;
+        var connectorLogging          = _options$connectorLogging === undefined ? true : _options$connectorLogging;
 
-        this.options = { connectorLogging: connectorLogging };
-        this.client = _browserstack.createClient({ username: username, password: accessKey });
+        this.options         = { connectorLogging: connectorLogging };
+        this.client          = _browserstack.createClient({ username: username, password: accessKey });
         this.localConnection = null;
 
-        this.identifier = Date.now();
+        this.id = Date.now();
     }
 
-    BrowserStackConnector.prototype._log = function _log(message) {
+    BrowserStackConnector.prototype._log = function _log (message) {
         if (this.options.connectorLogging) process.stdout.write(message + '\n');
     };
 
-    BrowserStackConnector.prototype._getWorkers = function _getWorkers() {
+    BrowserStackConnector.prototype._getWorkers = function _getWorkers () {
         var _this = this;
 
         return new _pinkie2.default(function (resolve) {
@@ -57,9 +57,9 @@ var BrowserStackConnector = (function () {
         });
     };
 
-    BrowserStackConnector.prototype._getWorker = function _getWorker(id) {
+    BrowserStackConnector.prototype._getWorker = function _getWorker (id) {
         var getWorker, maxAttempts, requestTimeout, attempts, worker;
-        return _regeneratorRuntime.async(function _getWorker$(context$2$0) {
+        return _regeneratorRuntime.async(function _getWorker$ (context$2$0) {
             var _this2 = this;
 
             while (1) switch (context$2$0.prev = context$2$0.next) {
@@ -72,9 +72,9 @@ var BrowserStackConnector = (function () {
                         });
                     };
 
-                    maxAttempts = 30;
+                    maxAttempts    = 30;
                     requestTimeout = 10000;
-                    attempts = 0;
+                    attempts       = 0;
 
                 case 4:
                     if (!(attempts++ <= maxAttempts)) {
@@ -110,8 +110,8 @@ var BrowserStackConnector = (function () {
         }, null, this);
     };
 
-    BrowserStackConnector.prototype._getMaxAvailableMachines = function _getMaxAvailableMachines() {
-        return _regeneratorRuntime.async(function _getMaxAvailableMachines$(context$2$0) {
+    BrowserStackConnector.prototype._getMaxAvailableMachines = function _getMaxAvailableMachines () {
+        return _regeneratorRuntime.async(function _getMaxAvailableMachines$ (context$2$0) {
             var _this3 = this;
 
             while (1) switch (context$2$0.prev = context$2$0.next) {
@@ -121,7 +121,8 @@ var BrowserStackConnector = (function () {
                             if (err) {
                                 _this3._log(err);
                                 reject(err);
-                            } else resolve(status.sessions_limit);
+                            }
+                            else resolve(status.sessions_limit);
                         });
                     }));
 
@@ -132,19 +133,19 @@ var BrowserStackConnector = (function () {
         }, null, this);
     };
 
-    BrowserStackConnector.prototype._getFreeMachineCount = function _getFreeMachineCount() {
+    BrowserStackConnector.prototype._getFreeMachineCount = function _getFreeMachineCount () {
         var _ref, maxMachines, workers;
 
-        return _regeneratorRuntime.async(function _getFreeMachineCount$(context$2$0) {
+        return _regeneratorRuntime.async(function _getFreeMachineCount$ (context$2$0) {
             while (1) switch (context$2$0.prev = context$2$0.next) {
                 case 0:
                     context$2$0.next = 2;
                     return _regeneratorRuntime.awrap(_pinkie2.default.all([this._getMaxAvailableMachines(), this._getWorkers()]));
 
                 case 2:
-                    _ref = context$2$0.sent;
+                    _ref        = context$2$0.sent;
                     maxMachines = _ref[0];
-                    workers = _ref[1];
+                    workers     = _ref[1];
                     return context$2$0.abrupt('return', maxMachines - workers.length);
 
                 case 6:
@@ -154,9 +155,9 @@ var BrowserStackConnector = (function () {
         }, null, this);
     };
 
-    BrowserStackConnector.prototype.getSessionUrl = function getSessionUrl(id) {
+    BrowserStackConnector.prototype.getSessionUrl = function getSessionUrl (id) {
         var worker;
-        return _regeneratorRuntime.async(function getSessionUrl$(context$2$0) {
+        return _regeneratorRuntime.async(function getSessionUrl$ (context$2$0) {
             while (1) switch (context$2$0.prev = context$2$0.next) {
                 case 0:
                     context$2$0.next = 2;
@@ -173,7 +174,7 @@ var BrowserStackConnector = (function () {
         }, null, this);
     };
 
-    BrowserStackConnector.prototype.startBrowser = function startBrowser(browserSettings, url) {
+    BrowserStackConnector.prototype.startBrowser = function startBrowser (browserSettings, url) {
         var timeout = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
 
         var _ref2,
@@ -183,27 +184,31 @@ var BrowserStackConnector = (function () {
             workerId,
             args$2$0 = arguments;
 
-        return _regeneratorRuntime.async(function startBrowser$(context$2$0) {
+        return _regeneratorRuntime.async(function startBrowser$ (context$2$0) {
             var _this4 = this;
 
             while (1) switch (context$2$0.prev = context$2$0.next) {
                 case 0:
-                    _ref2 = args$2$0.length <= 2 || args$2$0[2] === undefined ? {} : args$2$0[2];
+                    _ref2   = args$2$0.length <= 2 || args$2$0[2] === undefined ? {} : args$2$0[2];
                     jobName = _ref2.jobName;
-                    build = _ref2.build;
+                    build   = _ref2.build;
 
                     createWorker = function () {
                         return new _pinkie2.default(function (resolve, reject) {
                             var settings = {
-                                os: browserSettings.os,
-                                os_version: browserSettings.osVersion,
-                                browser: browserSettings.name || null,
-                                browser_version: browserSettings.version || 'latest',
-                                device: browserSettings.device || null,
-                                url: url,
-                                timeout: timeout || 1800,
-                                name: jobName,
-                                build: build,
+                                os:                             browserSettings.os,
+                                os_version:                     browserSettings.osVersion,
+                                browser:                        browserSettings.name || null,
+                                browser_version:                browserSettings.version || 'latest',
+                                device:                         browserSettings.device || null,
+                                url:                            url,
+                                timeout:                        timeout || 1800,
+                                name:                           jobName,
+                                build:                          build,
+                                'browserstack.local':           'true',
+                                'browserstack.localIdentifier': _this4.id,
+                                localIdentifier:                _this4.id,
+                                localIdentifierFlag:            true
                             };
 
                             _this4.client.createWorker(settings, function (err, worker) {
@@ -222,7 +227,7 @@ var BrowserStackConnector = (function () {
                     return _regeneratorRuntime.awrap(createWorker());
 
                 case 6:
-                    workerId = context$2$0.sent;
+                    workerId         = context$2$0.sent;
                     context$2$0.next = 9;
                     return _regeneratorRuntime.awrap(this._getWorker(workerId));
 
@@ -233,7 +238,7 @@ var BrowserStackConnector = (function () {
         }, null, this);
     };
 
-    BrowserStackConnector.prototype.stopBrowser = function stopBrowser(workerId) {
+    BrowserStackConnector.prototype.stopBrowser = function stopBrowser (workerId) {
         var _this5 = this;
 
         return new _pinkie2.default(function (resolve, reject) {
@@ -249,14 +254,13 @@ var BrowserStackConnector = (function () {
         });
     };
 
-    BrowserStackConnector.prototype.connect = function connect() {
+    BrowserStackConnector.prototype.connect = function connect () {
         var _this6 = this;
 
         var opts = {
-            'key': this.accessKey,
-            'logfile': _osFamily2.default.win ? 'NUL' : '/dev/null',
-            'enable-logging-for-api': true,
-            'verbose': true,
+            'key':           this.accessKey,
+            'logfile':       _osFamily2.default.win ? 'NUL' : '/dev/null',
+            localIdentifier: this.id,
         };
 
         this.localConnection = new _browserstackLocal.Local();
@@ -266,12 +270,13 @@ var BrowserStackConnector = (function () {
                 if (err) {
                     _this6._log(err);
                     reject(err);
-                } else resolve();
+                }
+                else resolve();
             });
         });
     };
 
-    BrowserStackConnector.prototype.disconnect = function disconnect() {
+    BrowserStackConnector.prototype.disconnect = function disconnect () {
         var _this7 = this;
 
         return new _pinkie2.default(function (resolve) {
@@ -279,9 +284,9 @@ var BrowserStackConnector = (function () {
         });
     };
 
-    BrowserStackConnector.prototype.waitForFreeMachines = function waitForFreeMachines(machineCount, requestInterval, maxAttemptCount) {
+    BrowserStackConnector.prototype.waitForFreeMachines = function waitForFreeMachines (machineCount, requestInterval, maxAttemptCount) {
         var attempts, freeMachineCount;
-        return _regeneratorRuntime.async(function waitForFreeMachines$(context$2$0) {
+        return _regeneratorRuntime.async(function waitForFreeMachines$ (context$2$0) {
             while (1) switch (context$2$0.prev = context$2$0.next) {
                 case 0:
                     attempts = 0;
@@ -307,7 +312,8 @@ var BrowserStackConnector = (function () {
 
                 case 7:
 
-                    this._log('The number of free machines (' + freeMachineCount + ') is less than requested (' + machineCount + ').');
+                    this._log('The number of free machines (' + freeMachineCount + ') is less than requested (' +
+                              machineCount + ').');
 
                     context$2$0.next = 10;
                     return _regeneratorRuntime.awrap(_utilsWait2.default(requestInterval));
@@ -331,4 +337,4 @@ var BrowserStackConnector = (function () {
 })();
 
 exports.default = BrowserStackConnector;
-module.exports = exports.default;
+module.exports  = exports.default;
