@@ -69,4 +69,5 @@
   * [Test Static HTML Pages](articles/documentation/recipes/test-static-html-pages.md)
   * [Testing on Remote Computers and Mobile Devices](articles/documentation/recipes/testing-on-remote-computers-and-mobile-devices.md)
   * [Using Page Model](articles/documentation/recipes/using-page-model.md)
+  * [Using TestCafe with Grunt](articles/documentation/recipes/using-testcafe-with-grunt.md)
   * [Using TestCafe with Gulp](articles/documentation/recipes/using-testcafe-with-gulp.md)
