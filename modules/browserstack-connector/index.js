@@ -205,9 +205,11 @@ var BrowserStackConnector = (function () {
                                 name: jobName,
                                 build: build,
                                 browserstack: {
-                                    local: true
+                                    local: true,
+                                    localIdentifier: _this4.identifier
                                 },
-                                'browserstack.local': true
+                                'browserstack.local': true,
+                                'browserstack.localIdentifier': _this4.identifier
                             };
 
                             _this4.client.createWorker(settings, function (err, worker) {
@@ -261,7 +263,8 @@ var BrowserStackConnector = (function () {
             'logfile': _osFamily2.default.win ? 'NUL' : '/dev/null',
             'enable-logging-for-api': true,
             'verbose': true,
-            'browserstack.local': true
+            'browserstack.local': true,
+            'local-identifier':   _this6.identifier,
         };
 
         this.localConnection = new _browserstackLocal.Local();
