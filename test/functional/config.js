@@ -27,13 +27,13 @@ testingEnvironments[testingEnvironmentNames.browserstackOSXDesktopAndMSEdgeBrows
     },
 
     browsers: [
-        {
+        /*{
             os:        'OS X',
             osVersion: 'Sierra',
             name:      'safari',
             version:   '10.0',
             alias:     'safari'
-        },
+        },*/
         {
             os:        'OS X',
             osVersion: 'Sierra',
