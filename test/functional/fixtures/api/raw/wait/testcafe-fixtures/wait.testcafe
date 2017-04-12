@@ -1,0 +1,27 @@
+{
+    "fixtures": [
+        {
+            "name": "Wait",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/wait/pages/index.html",
+            "tests": [
+                {
+                    "name": "Wait before click on element",
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector" : "#button1"
+                        },
+                        {
+                          "type": "wait",
+                            "timeout": 5000
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#button2"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

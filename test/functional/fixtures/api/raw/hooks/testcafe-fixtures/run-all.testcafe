@@ -1,0 +1,69 @@
+{
+    "fixtures": [
+        {
+            "name": "Run all",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/hooks/pages/index.html",
+            "beforeEachCommands": [
+                {
+                    "type": "click",
+                    "selector": "#beforeEach"
+                }
+            ],
+            "afterEachCommands": [
+                {
+                    "type": "click",
+                    "selector": "#afterEach"
+                },
+                {
+                    "type": "click",
+                    "selector": "#failAndReport"
+                }
+            ],
+            "tests": [
+                {
+                    "name": "Test1",
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector": "#test"
+                        }
+                    ]
+                },
+                {
+                    "name": "Test2",
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector": "#test"
+                        }
+                    ]
+                },
+                {
+                    "name": "Test3",
+                    "beforeCommands": [
+                        {
+                            "type": "click",
+                            "selector": "#testBefore"
+                        }
+                    ],
+                    "afterCommands": [
+                        {
+                            "type": "click",
+                            "selector": "#testAfter"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#failAndReport"
+                        }
+                    ],
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector": "#test"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

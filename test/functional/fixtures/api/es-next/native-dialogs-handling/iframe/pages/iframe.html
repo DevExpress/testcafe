@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Iframe</title>
+</head>
+<body>
+<button id="buttonAlert">Alert</button>
+<button id="buttonTopWindowAlert">Top window alert</button>
+<button id="buttonChildIframeAlert">Child iframe alert</button>
+<button id="withoutDialog">Without dialog</button>
+
+<iframe id="childIframe" src="child-iframe.html"></iframe>
+<script>
+    document.getElementById('buttonAlert').addEventListener('click', function () {
+        alert('Alert!');
+    });
+    document.getElementById('buttonTopWindowAlert').addEventListener('click', function () {
+        window.top.alert('Alert!');
+    });
+    document.getElementById('buttonChildIframeAlert').addEventListener('click', function () {
+        document.getElementById('childIframe').contentWindow.alert('Alert!');
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="button" id="beforeEach">
+<input type="button" id="test">
+<input type="button" id="afterEach">
+<input type="button" id="failAndReport">
+<input type="button" id="testBefore">
+<input type="button" id="testAfter">
+
+<script>
+    var state = '';
+
+    document.querySelector('#beforeEach').addEventListener('click', function () {
+        state += '[beforeEach]';
+    });
+
+    document.querySelector('#test').addEventListener('click', function () {
+        state += '[test]';
+    });
+
+    document.querySelector('#afterEach').addEventListener('click', function () {
+        state += '[afterEach]';
+    });
+
+    document.querySelector('#testBefore').addEventListener('click', function () {
+        state += '[testBefore]';
+    });
+
+    document.querySelector('#testAfter').addEventListener('click', function () {
+        state += '[testAfter]';
+    });
+
+    document.querySelector('#failAndReport').addEventListener('click', function () {
+        throw new Error(state);
+    });
+</script>
+</body>
+</html>

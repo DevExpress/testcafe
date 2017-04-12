@@ -1,0 +1,99 @@
+{
+  "fixtures": [
+    {
+      "name": "Drag",
+      "pageUrl": "http://localhost:3000/fixtures/api/raw/drag/pages/index.html",
+      "tests": [
+        {
+          "name": "Drag to offset",
+          "commands": [
+            {
+              "type": "drag",
+              "selector": "#draggable-div-1",
+              "dragOffsetX": 10,
+              "dragOffsetY": 20,
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            }
+          ]
+        },
+        {
+          "name": "Drag to element",
+          "commands": [
+            {
+              "type": "drag-to-element",
+              "selector": "#draggable-div-2",
+              "destinationSelector": "#destination-div",
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            }
+          ]
+        },
+        {
+          "name": "Drag non-existent element to another element",
+          "commands": [
+            {
+              "type": "drag-to-element",
+              "selector": "#non-existent",
+              "callsite": "[[Drag non-existent element to another element callsite]]",
+              "destinationSelector": "div",
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            }
+          ]
+        },
+        {
+          "name": "Drag invisible element to another element",
+          "commands": [
+            {
+              "type": "drag-to-element",
+              "selector": "#invisible",
+              "callsite": "[[Drag invisible element to another element callsite]]",
+              "destinationSelector": "div",
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            }
+          ]
+        },
+        {
+          "name": "Drag to non-existent element",
+          "commands": [
+            {
+              "type": "drag-to-element",
+              "selector": "#draggable-div-2",
+              "callsite": "[[Drag to non-existent element callsite]]",
+              "destinationSelector": "#non-existent",
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            }
+          ]
+        },
+        {
+          "name": "Drag to invisible element",
+          "commands": [
+            {
+              "type": "drag-to-element",
+              "selector": "#draggable-div-2",
+              "callsite": "[[Drag to invisible element callsite]]",
+              "destinationSelector": "#invisible",
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "fixtures": [
+    {
+      "name": "Press key",
+      "pageUrl": "http://localhost:3000/fixtures/api/raw/press-key/pages/index.html",
+      "tests": [
+        {
+          "name": "Clear input value",
+          "commands": [
+            {
+              "type": "press-key",
+              "keys": "ctrl+a delete tab"
+            }
+          ]
+        },
+        {
+          "name": "Incorrect keys command",
+          "commands": [
+            {
+              "type": "press-key",
+              "keys": "yo",
+               "callsite": "[[Incorrect keys command callsite]]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

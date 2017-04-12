@@ -1,0 +1,1 @@
+<input type="button" value="Click me" id="button1" onclick="window.firstButtonClicked = true">

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-856-iframe</title>
+</head>
+<body>
+    <a id="link">Link</a>
+
+    <script>
+        document.getElementById('link').addEventListener('click', function () {
+            window.top.document.location = 'second.html';
+        });
+    </script>
+</body>
+</html>

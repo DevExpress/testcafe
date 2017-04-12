@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-1054</title>
+</head>
+<body>
+<input value="Initial value">
+<div contenteditable="true">Initial value</div>
+<script>
+    window.storedValue = '';
+
+    var input = document.querySelector('input');
+    var div   = document.querySelector('div');
+
+    var storeValue = function (event) {
+        var target = event.target;
+
+        window.storedValue = target.value || target.innerText;
+
+        target.removeEventListener('input', storeValue);
+    };
+
+    input.addEventListener('input', storeValue);
+    div.addEventListener('input', storeValue);
+</script>
+</body>
+</html>

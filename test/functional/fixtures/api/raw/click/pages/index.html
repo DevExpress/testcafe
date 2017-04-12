@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Click</title>
+</head>
+<body>
+<form action="submit.html">
+    <input type="button" id="input" value="input"/>
+    <input type="submit" id="submit" value="submit"/>
+    <input type="button" id="error" value="error"/>
+    <input type="button" id="xhr" value="xhr"/>
+    <input type="button" id="create-button" value="create-button"/>
+    <input type="button" id="invisible-button" value="invisible-button" style="display: none;"/>
+    <input type="button" id="out-of-visible-area" style="position: absolute; left: -100px; top: -100px;">
+
+    <a id="link">Link</a>
+    <div id="result"></div>
+</form>
+
+<script>
+    document.getElementById('input').addEventListener('click', function () {
+        throw new Error('Click on input raised');
+    });
+
+    document.getElementById('error').addEventListener('click', function () {
+        throw new Error('Custom error');
+    });
+
+    document.getElementById('xhr').addEventListener('click', function () {
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('POST', '/xhr/1000', true);
+        xhr.send();
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState != 4) return;
+
+            if (xhr.status === 200) {
+                var xhrResultDiv = document.createElement('div');
+
+                xhrResultDiv.id          = 'xhr-result';
+                xhrResultDiv.textContent = xhr.responseText;
+
+                xhrResultDiv.addEventListener('click', function () {
+                    throw new Error('Xhr requests are finished');
+                });
+
+                document.body.appendChild(xhrResultDiv);
+            }
+        }
+    });
+
+    document.getElementById('create-button').addEventListener('click', function () {
+        var newButton = document.createElement('input');
+
+        newButton.type          = 'button';
+        newButton.id            = 'new-button';
+        newButton.value         = 'new-button';
+        newButton.style.display = 'none';
+
+        newButton.addEventListener('click', function () {
+            throw new Error('Click on the new button raised');
+        });
+
+        window.setTimeout(function () {
+            document.documentElement.appendChild(newButton);
+        }, 1000);
+
+        window.setTimeout(function () {
+            newButton.style.display = '';
+        }, 2000);
+    });
+
+    document.getElementById('link').addEventListener('click', function () {
+        window.setTimeout(function () {
+            document.location = 'submit.html';
+        }, 0);
+    });
+</script>
+</body>
+</html>

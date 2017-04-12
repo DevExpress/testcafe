@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hover</title>
+</head>
+<body>
+<input type="button" id="input1" value="input1" style="position: absolute"/>
+<input type="button" id="input2" value="input2" style="margin-left: 100px; margin-top: 100px; "/>
+<input type="button" id="out-of-visible-area" style="position: absolute; left: -100px; top: -100px;">
+
+<script>
+    var eventLog = '';
+
+    document.getElementById('input1').addEventListener('mouseover', function () {
+        eventLog = 'input1 mouseover';
+    });
+
+    document.getElementById('input1').addEventListener('mouseout', function () {
+        eventLog += ' input1 mouseout';
+    });
+
+    document.getElementById('input2').addEventListener('mouseover', function () {
+        if (eventLog === 'input1 mouseover input1 mouseout')
+            throw new Error('Hover on inputs raised');
+    });
+
+    document.getElementById('input2').addEventListener('mouseout', function () {
+        eventLog += ' input2 mouseout';
+    });
+</script>
+</body>
+</html>

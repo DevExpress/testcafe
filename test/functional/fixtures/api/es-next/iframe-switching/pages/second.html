@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Second page</title>
+</head>
+<body>
+<button id="second-page-btn">button</button>
+
+<script>
+    document.getElementById('second-page-btn').addEventListener('click', function () {
+        window.secondPageBtnClickCount = (window.secondPageBtnClickCount || 0) + 1;
+    });
+</script>
+</body>
+</html>

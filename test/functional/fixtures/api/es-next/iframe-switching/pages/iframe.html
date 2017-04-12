@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Iframe</title>
+</head>
+<body>
+<button id="btn">button</button>
+
+<a id="link" href="second.html">second.html</a>
+<a id="too-long-loading-page-link">Too long loading page</a>
+<button id="reload-top-page-btn">Reload top page</button>
+<button id="remove-from-parent-btn">Remove the iframe from the parent</button>
+<button id="hide-iframe-btn">Hide the iframe</button>
+<iframe id="iframe" src="nested-iframe.html"></iframe>
+
+<script>
+    document.getElementById('btn').addEventListener('click', function () {
+        window.top.iframeBtnClickCount = (window.top.iframeBtnClickCount || 0) + 1;
+    });
+
+    document.getElementById('reload-top-page-btn').addEventListener('click', function () {
+        window.top.document.location.reload();
+    });
+
+    document.getElementById('remove-from-parent-btn').addEventListener('click', function () {
+        var iframe = window.top.document.getElementById('iframe');
+
+        window.setTimeout(function () {
+            iframe.parentElement.removeChild(iframe);
+        }, 0);
+    });
+
+    document.getElementById('hide-iframe-btn').addEventListener('click', function () {
+        var iframe = window.top.document.getElementById('iframe');
+
+        window.setTimeout(function () {
+            iframe.style.display = 'none';
+        }, 0);
+    });
+
+    document.getElementById('too-long-loading-page-link').addEventListener('click', function () {
+        window.setTimeout(function () {
+            document.location = 'second.html?delay=14000';
+        }, 1000);
+    });
+</script>
+</body>
+</html>

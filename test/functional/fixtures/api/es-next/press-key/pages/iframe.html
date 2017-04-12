@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<head>
+    <title>Iframe</title>
+</head>
+<body>
+<script>
+    document.body.addEventListener('keydown', function (e) {
+        window.top.document.getElementById('input').focus();
+        e.preventDefault();
+    });
+</script>
+</body>
+</html>

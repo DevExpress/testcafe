@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Iframe switching</title>
+</head>
+<body>
+<div id="log"></div>
+
+<h1>Main page</h1>
+
+<button id="btn">button</button>
+
+<h2>Same-domain iframes</h2>
+
+<iframe id="iframe" src="iframe.html" width="500px" height="300px"></iframe>
+<iframe name="long" id="slowly-loading-iframe" src="iframe.html?delay=1000" height="300px"></iframe>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // NOTE: if we add a slowly loading iframe via markup, IE9 sometimes raises the DOMContentLoaded
+        // event after this iframe is completely loaded (in other browsers, this event never waits for
+        // an iframe to load). To avoid this collision, we create the iframe on the DOMContentLoaded event.
+        // It helps us get rid of an unstable functional test in IE9.
+        var tooSlowlyLoadingIframe = document.createElement('iframe');
+
+        tooSlowlyLoadingIframe.id           = 'too-slowly-loading-iframe';
+        tooSlowlyLoadingIframe.src          = "iframe.html?delay=10000";
+        tooSlowlyLoadingIframe.style.width  = "500px";
+        tooSlowlyLoadingIframe.style.height = "300px";
+
+        document.body.insertBefore(tooSlowlyLoadingIframe, document.getElementById('slowly-loading-iframe'));
+    });
+</script>
+
+<script>
+    document.getElementById('btn').addEventListener('click', function () {
+        window.btnClickCount = (window.btnClickCount || 0) + 1;
+    });
+</script>
+
+<h2>Without src iframes</h2>
+
+<iframe id="iframe-without-src" height="200px"></iframe>
+<button id="fill-iframe-without-src">Fill iframe without src</button>
+<script>
+    document.getElementById('fill-iframe-without-src').addEventListener('click', function () {
+        var iframeDocument = document.getElementById('iframe-without-src').contentWindow.document;
+
+        var btn = iframeDocument.createElement('button');
+
+        btn.id          = 'btn';
+        btn.textContent = 'button';
+        iframeDocument.body.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+            window.top.iframeWithoutSrcBtnClickCount = (window.top.iframeWithoutSrcBtnClickCount || 0) + 1;
+        });
+    });
+</script>
+
+<h2>Cross-domain iframes</h2>
+<iframe id="cross-domain-iframe" height="200px"
+        src="http://localhost:3001/fixtures/api/es-next/iframe-switching/pages/iframe.html"></iframe>
+</body>
+</html>

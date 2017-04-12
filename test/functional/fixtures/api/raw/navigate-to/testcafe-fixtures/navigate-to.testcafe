@@ -1,0 +1,67 @@
+{
+    "fixtures": [
+        {
+            "name": "Navigate to",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/navigate-to/pages/index.html",
+            "tests": [
+                {
+                    "name": "Navigate to a page using a url that contains a protocol",
+                    "commands": [
+                        {
+                            "type": "navigate-to",
+                            "url": "http://localhost:3000/fixtures/api/raw/navigate-to/pages/navigation.html"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#button"
+                        }
+                    ]
+                },
+                {
+                    "name": "Navigate to a page using a protocol-relative url",
+                    "commands": [
+                        {
+                            "type": "navigate-to",
+                            "url": "//localhost:3000/fixtures/api/raw/navigate-to/pages/navigation.html"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#button"
+                        }
+                    ]
+                },
+                {
+                    "name": "Navigate to a page using a relative url",
+                    "commands": [
+                        {
+                            "type": "navigate-to",
+                            "url": "./navigation.html"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#button"
+                        }
+                    ]
+                },
+                {
+                    "name": "Navigate to a page using a non-existent url",
+                    "commands": [
+                        {
+                            "type": "navigate-to",
+                            "url": "http://localhost:3000/fixtures/api/raw/navigate-to/pages/non-existent.html"
+                        }
+                    ]
+                },
+                {
+                    "name": "Navigate to a page using an incorrect url",
+                    "commands": [
+                        {
+                            "type": "navigate-to",
+                            "url": "g;x=1/./y"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

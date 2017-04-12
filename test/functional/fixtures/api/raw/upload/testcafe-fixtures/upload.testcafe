@@ -1,0 +1,111 @@
+{
+    "fixtures": [
+        {
+            "name": "Upload",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/upload/pages/index.html",
+            "tests": [
+                {
+                    "name": "Upload a file",
+                    "commands": [
+                        {
+                            "type": "set-files-to-upload",
+                            "selector": "#file",
+                            "filePath": "../test-data/test.txt"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#submit"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#button"
+                        }
+                    ]
+                },
+                {
+                    "name": "The action element is not a file input",
+                    "commands": [
+                        {
+                            "type": "set-files-to-upload",
+                            "selector": "body",
+                            "filePath": "../test-data/test.txt"
+                        }
+                    ]
+                },
+                {
+                    "name": "The specified file does not exist",
+                    "commands": [
+                        {
+                            "type": "set-files-to-upload",
+                            "selector": "#file",
+                            "filePath": "../test-data/test42.txt"
+                        }
+                    ]
+                },
+                {
+                    "name": "Upload files",
+                    "commands": [
+                        {
+                            "type": "set-files-to-upload",
+                            "selector": "#file",
+                            "filePath": ["../test-data/test2.txt", "../test-data/test3.txt"]
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#submit"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#button1"
+                        },
+                        {
+                         "type": "click",
+                         "selector": "#button2"
+                        }
+                    ]
+                },
+                {
+                    "name": "The specified file does not exist (multiple files)",
+                    "commands": [
+                        {
+                            "type": "set-files-to-upload",
+                            "selector": "#file",
+                            "filePath": ["../test-data/test42.txt", "../test-data/test3.txt"]
+                        }
+                    ]
+                },
+                {
+                    "name": "Clear the upload",
+                    "commands": [
+                        {
+                            "type": "set-files-to-upload",
+                            "selector": "#file",
+                            "filePath": "../test-data/test.txt"
+                        },
+                        {
+                            "type": "clear-upload",
+                            "selector": "#file"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#submit"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#button"
+                        }
+                    ]
+                },
+                {
+                    "name": "The action element is not a file input (clearing upload)",
+                    "commands": [
+                        {
+                            "type": "clear-upload",
+                            "selector": "body"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

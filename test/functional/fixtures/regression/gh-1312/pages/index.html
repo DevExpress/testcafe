@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+  <div id="host">Shadow DOM</div>
+  <script>
+    var host   = document.querySelector('#host');
+    var root   = host.createShadowRoot();
+    var header = document.createElement('h1');
+    var input  = document.createElement('input');
+
+    header.textContent = 'Test Me!';
+
+    header.addEventListener('click', () => header.textContent = 'Test passed');
+
+    root.appendChild(header);
+    root.appendChild(input);
+  </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+{
+    "fixtures": [
+        {
+            "name": "Type",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/type/pages/index.html",
+            "tests": [
+                {
+                    "name": "Type in simple input",
+                    "commands": [
+                        {
+                            "type": "type-text",
+                            "selector": "#input",
+                            "text": "a",
+                            "options": {
+                                "replace": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Type with paste option",
+                    "commands": [
+                        {
+                            "type": "type-text",
+                            "selector": "#input",
+                            "text": "block of text to be inserted in one keystroke",
+                            "options": {
+                                "paste": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Type with empty text argument",
+                    "commands": [
+                        {
+                            "type": "type-text",
+                            "selector": "#input",
+                            "callsite": "[[Type with empty text argument callsite]]",
+                            "text": "",
+                            "options": {
+                                "offsetX": 10,
+                                "offsetY": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Type with numeric text argument",
+                    "commands": [
+                        {
+                            "type": "type-text",
+                            "selector": "#input",
+                            "callsite": "[[Type with numeric text argument callsite]]",
+                            "text": 123,
+                            "options": {
+                                "offsetX": 10,
+                                "offsetY": 10
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

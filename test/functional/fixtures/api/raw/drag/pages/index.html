@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Drag</title>
+    <script src="../../../../../is-touch-device.js"></script>
+
+    <style type="text/css">
+        .draggable-div {
+            position: absolute;
+            background-color: gray;
+            border: none;
+            width: 100px;
+            height: 100px;
+            z-index: 2;
+        }
+
+        #draggable-div-1 {
+            left: 0;
+            top: 0;
+        }
+
+        #draggable-div-2 {
+            left: 200px;
+            top: 0;
+        }
+
+        #destination-div {
+            position: absolute;
+            background-color: red;
+            border: none;
+            left: 0;
+            top: 200px;
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+<div id="draggable-div-1" class="draggable-div"></div>
+<div id="draggable-div-2" class="draggable-div"></div>
+
+<div id="destination-div"></div>
+
+<input type="button" id="invisible" value="invisible-button" style="display: none;"/>
+
+
+<!-- Init drag behavior -->
+<script>
+    (function () {
+        var touchDevice = isTouchDevice();
+
+        function getClientX (e) {
+            return touchDevice ? e.touches[0].clientX : e.clientX;
+        }
+
+        function getClientY (e) {
+            return touchDevice ? e.touches[0].clientY : e.clientY;
+        }
+
+        function initDraggable (element) {
+            var cursorOffsetLeft = 0;
+            var cursorOffsetTop  = 0;
+
+            function onMouseMove (e) {
+                element.style.left = getClientX(e) - cursorOffsetLeft + 'px';
+                element.style.top  = getClientY(e) - cursorOffsetTop + 'px';
+            }
+
+            function onMouseDown (e) {
+                var left = element.offsetLeft;
+                var top  = element.offsetTop;
+
+                element.style.opacity = 0.5;
+                element.style.border  = '1px dotted black';
+
+                cursorOffsetLeft = getClientX(e) - left;
+                cursorOffsetTop  = getClientY(e) - top;
+
+                document.addEventListener(touchDevice ? 'touchmove' : 'mousemove', onMouseMove, true);
+                document.addEventListener(touchDevice ? 'touchend' : 'mouseup', onMouseUp, true);
+            }
+
+            function onMouseUp () {
+                element.style.opacity = 1;
+                element.style.border  = 'none';
+
+                document.removeEventListener(touchDevice ? 'touchmove' : 'mousemove', onMouseMove, true);
+                document.removeEventListener(touchDevice ? 'touchend' : 'mouseup', onMouseUp, true);
+            }
+
+            element.addEventListener(touchDevice ? 'touchstart' : 'mousedown', onMouseDown, true);
+        }
+
+        initDraggable(document.getElementById('draggable-div-1'));
+        initDraggable(document.getElementById('draggable-div-2'));
+    })();
+</script>
+
+<!-- Drag to offset test -->
+<script>
+    (function () {
+        var touchDevice = isTouchDevice();
+
+        var draggable1      = document.getElementById('draggable-div-1');
+        var startPos        = { x: 0, y: 0 };
+        var endPos          = { x: 0, y: 0 };
+        var moveEventRaised = false;
+
+        draggable1.addEventListener(touchDevice ? 'touchstart' : 'mousedown', function () {
+            startPos.x = draggable1.offsetLeft;
+            startPos.y = draggable1.offsetTop;
+        });
+
+        draggable1.addEventListener(touchDevice ? 'touchmove' : 'mousemove', function () {
+            moveEventRaised = true;
+        });
+
+        draggable1.addEventListener(touchDevice ? 'touchend' : 'mouseup', function () {
+            endPos.x = draggable1.offsetLeft;
+            endPos.y = draggable1.offsetTop;
+
+            if (moveEventRaised && endPos.x - startPos.x === 10 && endPos.y - startPos.y === 20)
+                throw new Error('Drag to offset completed successfully');
+            else {
+                throw new Error([
+                    'Drag was not completed successfully:',
+                    'moveEventRaised: expected true but was ' + moveEventRaised + ';',
+                    'left position offset: expected 10 but was ' + (endPos.x - startPos.x) + ';',
+                    'top position offset: expected 10 but was ' + (endPos.y - startPos.y) + ';'
+                ].join(' '));
+            }
+        });
+    })();
+</script>
+
+<!-- Drag to element test -->
+<script>
+    (function () {
+        var touchDevice = isTouchDevice();
+
+        var draggable2      = document.getElementById('draggable-div-2');
+        var destination     = document.getElementById('destination-div');
+        var startPos        = { x: 0, y: 0 };
+        var endPos          = { x: 0, y: 0 };
+        var moveEventRaised = false;
+
+        var destinationDivPos    = { x: destination.offsetLeft, y: destination.offsetTop };
+        var destinationDivCenter = { x: destination.offsetWidth / 2, y: destination.offsetHeight / 2 };
+
+        var destinationPos = {
+            x: destinationDivPos.x + destinationDivCenter.x,
+            y: destinationDivPos.y + destinationDivCenter.y
+        };
+
+        draggable2.addEventListener(touchDevice ? 'touchstart' : 'mousedown', function () {
+            startPos.x = draggable2.offsetLeft;
+            startPos.y = draggable2.offsetTop;
+        });
+
+        draggable2.addEventListener(touchDevice ? 'touchmove' : 'mousemove', function () {
+            moveEventRaised = true;
+        });
+
+        draggable2.addEventListener(touchDevice ? 'touchend' : 'mouseup', function () {
+            endPos.x = draggable2.offsetLeft;
+            endPos.y = draggable2.offsetTop;
+
+            var expectedPos = {
+                x: destinationPos.x - 10,
+                y: destinationPos.y - 10
+            };
+
+            if (moveEventRaised && endPos.x === expectedPos.x && endPos.y === expectedPos.y)
+                throw new Error('Drag to element completed successfully');
+            else {
+                throw new Error([
+                    'Drag was not completed successfully:',
+                    'moveEventRaised: expected true but was ' + moveEventRaised + ';',
+                    'left position: expected ' + expectedPos.x + ' but was ' + endPos.x + ';',
+                    'top position: expected ' + expectedPos.y + ' but was ' + endPos.y + ';'
+                ].join(' '));
+            }
+        });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Iframe switching</title>
+</head>
+<body>
+<h1>Main page</h1>
+
+<button id="error-btn">throw an error</button>
+<button id="error-in-iframe-btn">throw an error in the iframe</button>
+
+<script>
+    document.getElementById('error-btn').addEventListener('click', function () {
+        throw new Error('Main window error');
+    });
+
+    document.getElementById('error-in-iframe-btn').addEventListener('click', function () {
+        document.getElementById('iframe').contentDocument.getElementById('error-btn').click();
+    });
+</script>
+
+<h2>Same-domain iframes</h2>
+
+<iframe id="iframe" src="errors-iframe.html"></iframe>
+<iframe id="iframe2" src="errors-iframe.html"></iframe>
+
+<h2>Cross-domain iframes</h2>
+<iframe id="cross-domain-iframe"
+        src="http://localhost:3001/fixtures/api/es-next/iframe-switching/pages/errors-iframe.html"></iframe>
+</body>
+</html>

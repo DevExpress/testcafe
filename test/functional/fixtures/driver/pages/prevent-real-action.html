@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prevent real action</title>
+</head>
+<body>
+<input type="button" id="button"/>
+<script>
+    document.getElementById('button').addEventListener('click', function () {
+        throw new Error('The click has been performed');
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{
+    "fixtures": [
+        {
+            "name": "Select text",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/select-text/pages/index.html",
+            "tests": [
+                {
+                    "name": "Select text in input",
+                    "commands": [
+                        {
+                            "type": "select-text",
+                            "selector": "#input",
+                            "startPos": 2,
+                            "endPos": 4
+                        }
+                    ]
+                },
+                {
+                    "name": "Select text in textarea",
+                    "commands": [
+                        {
+                            "type": "select-text",
+                            "selector": "#textarea",
+                            "startPos": 1,
+                            "endPos": 5
+                        }
+                    ]
+                },
+                {
+                    "name": "Select editable content in div",
+                    "commands": [
+                        {
+                            "type": "select-text",
+                            "selector": "#div",
+                            "startPos": 5,
+                            "endPos": 15
+                        }
+                    ]
+                },
+                {
+                    "name": "Select in non-editable element",
+                    "commands": [
+                        {
+                            "type": "select-text",
+                            "selector": "#button",
+                            "callsite": "[[Select in non-editable element callsite]]",
+                            "startPos": 1,
+                            "endPos": 2
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

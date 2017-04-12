@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+    <input type="button" id="btn1" value="btn1"/>
+    <input type="button" id="btn2" value="btn2"/>
+    <input type="button" id="btn3" value="btn3"/>
+    <input type="button" id="error" value="error"/>
+    <input type="button" id="showUA" value="showUA"/>
+</form>
+<script>
+    var clicked = '';
+
+    document.querySelector('#btn1').addEventListener('click', function () {
+        clicked += '-btn1';
+    });
+
+    document.querySelector('#btn2').addEventListener('click', function () {
+        clicked += '-btn2';
+    });
+
+    document.querySelector('#btn3').addEventListener('click', function () {
+        clicked += '-btn3';
+        document.location = 'second-page.html?clicked=' + clicked;
+    });
+
+    document.querySelector('#error').addEventListener('click', function () {
+        throw new Error('Error callsite test');
+    });
+
+    document.querySelector('#showUA').addEventListener('click', function () {
+        var div = document.createElement('div');
+
+        div.textContent = navigator.userAgent;
+        div.id          = 'userAgent';
+
+        document.body.appendChild(div);
+    });
+</script>
+</body>
+</html>

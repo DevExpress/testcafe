@@ -1,0 +1,35 @@
+{
+    "fixtures": [
+        {
+            "name": "Select text area content",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/select-text-area-content/pages/index.html",
+            "tests": [
+                {
+                    "name": "Select text in textarea",
+                    "commands": [
+                        {
+                            "type": "select-text-area-content",
+                            "selector": "#textarea",
+                            "startLine": 0,
+                            "startPos": 2,
+                            "endLine": 1,
+                            "endPos": 3
+                        }
+                    ]
+                },
+                {
+                    "name": "Select in non-textarea element",
+                    "commands": [
+                        {
+                            "type": "select-text-area-content",
+                            "selector": "#input",
+                            "callsite": "[[Select in non-textarea element callsite]]",
+                            "startPos": 1,
+                            "endPos": 2
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

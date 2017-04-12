@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button id="buttonAlert">Alert</button>
+<button id="buttonConfirm">Confirm</button>
+
+<button id="buttonDialogAfterTimeoutWithRedirect">DialogAfterTimeoutWithRedirect</button>
+<button id="buttonDialogAfterTimeout">DialogAfterTimeout</button>
+
+<button id="buttonRedirectPrompt">RedirectPrompt</button>
+
+<a id="linkToPromptPage" href="prompt.html">Prompt page</a>
+<a id="linkToThisPage" href="index.html">This page</a>
+
+<button id="enableBeforeUnload">EnableBeforeUnload</button>
+<button id="withoutDialog">Without dialog</button>
+
+<div id="result"></div>
+<script>
+    document.getElementById('buttonAlert').addEventListener('click', function () {
+        window.alert('Alert!');
+    });
+
+    document.getElementById('buttonConfirm').addEventListener('click', function () {
+        document.getElementById('result').textContent = window.confirm('Confirm?');
+    });
+
+    document.getElementById('buttonDialogAfterTimeout').addEventListener('click', function () {
+        window.setTimeout(function () {
+            alert('Alert!');
+        }, 1000);
+    });
+
+    document.getElementById('buttonRedirectPrompt').addEventListener('mousedown', function () {
+        alert('Alert!');
+        document.location.href = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/prompt.html'
+    });
+
+    document.getElementById('enableBeforeUnload').addEventListener('click', function () {
+        window.onbeforeunload = function (e) {
+            return 'Before unload';
+        };
+    });
+</script>
+</body>
+</html>

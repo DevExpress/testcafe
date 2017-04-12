@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nested iframe</title>
+</head>
+<body>
+<button id="btn">button</button>
+
+<script>
+    document.getElementById('btn').addEventListener('click', function () {
+        window.top.nestedIframeBtnClickCount = (window.top.nestedIframeBtnClickCount || 0) + 1;
+    });
+</script>
+</body>
+</html>

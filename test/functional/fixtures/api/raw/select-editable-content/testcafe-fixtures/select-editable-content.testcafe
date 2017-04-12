@@ -1,0 +1,64 @@
+{
+    "fixtures": [
+        {
+            "name": "Select editable content",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/select-editable-content/pages/index.html",
+            "tests": [
+                {
+                    "name": "Select editable content div",
+                    "commands": [
+                        {
+                            "type": "select-editable-content",
+                            "startSelector": "#p1",
+                            "endSelector": "#p2"
+                        }
+                    ]
+                },
+                {
+                    "name": "Select editable content in non-existent div",
+                    "commands": [
+                        {
+                            "type": "select-editable-content",
+                            "startSelector": "#new-div",
+                            "endSelector": "#p2",
+                            "callsite": "[[Select editable content in non-existent div callsite]]"
+                        }
+                    ]
+                },
+                {
+                    "name": "Select editable content in invisible div",
+                    "commands": [
+                        {
+                            "type": "select-editable-content",
+                            "startSelector": "#p3",
+                            "endSelector": "#p4",
+                            "callsite": "[[Select editable content in invisible div callsite]]"
+                        }
+                    ]
+                },
+                {
+                    "name": "Select in non-content-editable element",
+                    "commands": [
+                        {
+                            "type": "select-editable-content",
+                            "startSelector": "#p5",
+                            "endSelector": "#p6",
+                            "callsite": "[[Select in non-content-editable element callsite]]"
+                        }
+                    ]
+                },
+                {
+                   "name": "Select editable content for nodes that don't have a common ancestor",
+                   "commands": [
+                       {
+                           "type": "select-editable-content",
+                           "startSelector": "#p1",
+                           "endSelector": "#p7",
+                           "callsite": "[[Select editable content for nodes that don't have a common ancestor callsite]]"
+                       }
+                   ]
+               }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+{
+    "fixtures": [
+        {
+            "name": "Error on the page",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/click/pages/error.html",
+            "tests": [
+                {
+                    "name": "Click on simple button",
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector": "#input",
+                            "callsite": "[[Click on simple button callsite]]",
+                            "options": {
+                                "offsetX": 10,
+                                "offsetY": 10
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

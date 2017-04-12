@@ -1,0 +1,41 @@
+{
+    "fixtures": [
+        {
+            "name": "Hover",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/hover/pages/index.html",
+            "tests": [
+                {
+                    "name": "Hover on simple buttons",
+                    "commands": [
+                        {
+                            "type": "hover",
+                            "selector": "#input1",
+                            "options": {
+                                "offsetX": 10,
+                                "offsetY": 10
+                            }
+                        },
+                        {
+                            "type": "hover",
+                            "selector": "#input2",
+                            "options": {
+                                "offsetX": 10,
+                                "offsetY": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Hover on a button that is out of the visible area",
+                    "commands": [
+                        {
+                            "type": "hover",
+                            "selector": "#out-of-visible-area",
+                            "callsite": "[[Hover on a button that is out of the visible area callsite]]"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

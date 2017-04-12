@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page load</title>
+</head>
+<body>
+<div id="result"></div>
+<div style="background-color: #6ab779; width: 100px; height: 100px;;"></div>
+<script>
+    var wasReloadedFlag = 'wasReloaded';
+    var wasReloaded = sessionStorage.getItem(wasReloadedFlag);
+    sessionStorage.setItem(wasReloadedFlag, true);
+
+    if (!wasReloaded) {
+        alert('Alert!');
+        document.location.reload();
+    }
+    else {
+        document.getElementById('result').textContent = window.confirm('Confirm?');
+        sessionStorage.removeItem(wasReloadedFlag);
+    }
+</script>
+</body>
+</html>

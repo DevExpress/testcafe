@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Right click</title>
+</head>
+<body>
+<input type="button" id="button" value="input"/>
+<script>
+    document.getElementById('button').addEventListener('contextmenu', function () {
+        throw new Error('Right click on the button');
+    });
+</script>
+</body>
+</html>

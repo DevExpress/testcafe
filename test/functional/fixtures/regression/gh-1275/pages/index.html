@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-1275</title>
+</head>
+<body>
+<input id="input1"/>
+<input id="input2"/>
+
+<script>
+    window.focus();
+
+    var input1 = document.getElementById('input1');
+    var input2 = document.getElementById('input2');
+
+    input1.addEventListener('keydown', function () {
+        input1.style.display = 'none';
+
+        window.setTimeout(function () {
+            input2.focus();
+        });
+    });
+
+    input1.addEventListener('blur', function (e) {
+        if (e.srcElement.tagName && e.srcElement.tagName.toLowerCase() === 'input')
+            document.activeElement.blur();
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+    "fixtures": [
+        {
+            "name": "Fail in test",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/hooks/pages/index.html",
+            "beforeEachCommands": [
+                {
+                    "type": "click",
+                    "selector": "#beforeEach"
+                }
+            ],
+            "afterEachCommands": [
+                {
+                    "type": "click",
+                    "selector": "#afterEach"
+                },
+                {
+                    "type": "click",
+                    "selector": "#failAndReport"
+                }
+            ],
+            "tests": [
+                {
+                    "name": "Test",
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector": "#failAndReport"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

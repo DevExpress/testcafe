@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GH-664</title>
+</head>
+<body>
+<a id="link">Perform cancelled redirect</a>
+
+<script>
+    document.getElementById('link').addEventListener('click', function () {
+        window.location = 'http://example.com';
+
+        window.setTimeout(function () {
+            window.location = window.location.href + '#hash';
+        }, 200);
+    });
+</script>
+</body>
+</html>

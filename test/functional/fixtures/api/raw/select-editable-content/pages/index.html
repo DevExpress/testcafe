@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select editable content</title>
+</head>
+<div id="div1" contenteditable="true">div<p id="p1">with</p>contenteditable<p id="p2">attribute</p></div>
+<div id="div2" contenteditable="true">invisible<p id="p3" style="display: none;">3</p>div<p id="p4">4</p></div>
+<div id="div3"><p id="p5">5</p>div<p id="p6">6</p></div>
+<div id="div4" contenteditable="true"><p id="p7">7</p></div>
+<script>
+    var hasTouchEvents = "ontouchstart" in window;
+
+    document.getElementById('div1').addEventListener(hasTouchEvents ? 'touchend' : 'mouseup', function () {
+        var selection = window.getSelection();
+        var startNode = this.childNodes[1].childNodes[0];
+        var endNode   = this.childNodes[3].childNodes[0];
+
+        if (selection.anchorNode === startNode && selection.anchorOffset === 0 && selection.focusNode === endNode &&
+            selection.focusOffset === endNode.nodeValue.length)
+            throw new Error('Selected editable content in div');
+    });
+</script>
+</body>
+</html>

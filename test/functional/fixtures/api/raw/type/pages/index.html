@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Type</title>
+</head>
+<body>
+<input id="input" value="input"/>
+
+<script>
+    var keydownRaised = false;
+    var keypressRaised = false;
+    var inputRaised = false;
+    var keydownCount = 0;
+    var keypressCount = 0;
+
+    document.getElementById('input').addEventListener('keydown', function () {
+        keydownRaised = true;
+        keydownCount++;
+    });
+
+    document.getElementById('input').addEventListener('keypress', function () {
+        keypressRaised = true;
+        keypressCount++;
+    });
+
+    document.getElementById('input').addEventListener('input', function () {
+        inputRaised = true;
+    });
+
+    document.getElementById('input').addEventListener('keyup', function () {
+        var containsAllText = this.value.indexOf('block of text to be inserted in one keystroke') > 0;
+        var allRaised = keydownRaised && keypressRaised && inputRaised;
+        var exactlyOneKeystroke = keydownCount === 1 && keypressCount === 1;
+
+        if (allRaised && this.value === 'a') {
+            throw new Error('Type in input raised');
+        } else if (allRaised && exactlyOneKeystroke && containsAllText) {
+            throw new Error('Type block in one keystroke raised');
+        }
+    });
+</script>
+</body>
+</html>

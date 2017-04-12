@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button id="buttonIframeAlert">Alert</button>
+
+<iframe id="iframe" src="iframe.html"></iframe>
+<script>
+    document.getElementById('buttonIframeAlert').addEventListener('click', function () {
+        document.getElementById('iframe').contentWindow.alert('Alert!');
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+    "fixtures": [
+        {
+            "name": "Right click",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/right-click/pages/index.html",
+            "tests": [
+                {
+                    "name": "Right click simple button",
+                    "commands": [
+                        {
+                            "type": "right-click",
+                            "selector": "#input",
+                            "options": {
+                                "offsetX": 10,
+                                "offsetY": 10
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

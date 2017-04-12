@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="el1">
+</div>
+
+<button id="makeFloat"></button>
+<button id="setClass"></button>
+<button id="setAttr"></button>
+<button id="setTextContent"></button>
+
+<script>
+    var div = document.getElementById('el1');
+
+    document.getElementById('makeFloat').addEventListener('click', function () {
+        window.setTimeout(function () {
+            div.style.float = 'left';
+        }, 200);
+    });
+
+    document.getElementById('setClass').addEventListener('click', function () {
+        window.setTimeout(function () {
+            div.className += 'hey';
+        }, 150);
+    });
+
+    document.getElementById('setAttr').addEventListener('click', function () {
+        window.setTimeout(function () {
+            div.setAttribute('checked', true);
+        }, 180);
+    });
+
+    document.getElementById('setTextContent').addEventListener('click', function () {
+        window.setTimeout(function () {
+            div.textContent = '42';
+        }, 180);
+    });
+
+    var value = 4;
+
+    Object.defineProperty(window, 'someVar', {
+        get: function () {
+            window.setTimeout(function () {
+                value = 2;
+            }, 400);
+
+            return value;
+        }
+    })
+</script>
+
+</body>
+</html>

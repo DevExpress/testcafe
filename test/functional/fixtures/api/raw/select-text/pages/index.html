@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select text</title>
+    <script src="../../../../../is-touch-device.js"></script>
+</head>
+<body>
+<input id="input" value="input"/>
+
+<textarea id="textarea">
+    123
+    456
+</textarea>
+
+<div id="div" contenteditable="true">Div with editable content</div>
+
+<button id="button">Button</button>
+<script>
+    var touchDevice = isTouchDevice();
+
+    document.getElementById('input').addEventListener(touchDevice ? 'touchend' : 'mouseup', function () {
+        if (this.selectionStart === 2 && this.selectionEnd === 4)
+            throw new Error('Selected text in input');
+    });
+
+    document.getElementById('textarea').addEventListener(touchDevice ? 'touchend' : 'mouseup', function () {
+        if (this.selectionStart === 1 && this.selectionEnd === 5)
+            throw new Error('Selected text in textarea');
+    });
+
+    document.getElementById('div').addEventListener(touchDevice ? 'touchend' : 'mouseup', function () {
+        var selection   = window.getSelection();
+        var divTextNode = this.childNodes[0];
+
+        if (selection.anchorNode === divTextNode && selection.anchorOffset === 5 &&
+            selection.focusNode === divTextNode && selection.focusOffset === 15)
+            throw new Error('Selected editable content');
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Double click</title>
+</head>
+<body>
+<input type="button" id="input" value="input"/>
+
+<script>
+    var clickCount = 0;
+
+    document.getElementById('input').addEventListener('click', function () {
+        clickCount++;
+    });
+
+    document.getElementById('input').addEventListener('dblclick', function () {
+        throw new Error('Click on input raised ' + clickCount + ' times. Double click on input raised');
+    });
+</script>
+</body>
+</html>

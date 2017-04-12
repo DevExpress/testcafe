@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-847</title>
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        #button {
+            display: block;
+        }
+
+        #iframe {
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<button id="button" onclick="window.buttonClicked = true">button</button>
+<iframe id="iframe" src="iframe.html"></iframe>
+<button id="button2">button 2</button>
+
+<script>
+    var iframe = document.getElementById('iframe');
+
+    iframe.style.marginTop = document.documentElement.offsetHeight - iframe.offsetHeight / 2 + 'px';
+</script>
+</body>
+</html>

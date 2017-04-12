@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a id="link">index.html</a>
+<div id="btn1" style="width:100px; height: 50px;"></div>
+
+<script>
+    document.getElementById('link').addEventListener('click', function () {
+        window.setTimeout(function () {
+            window.location = 'index.html?delay=2000';
+        }, 900);
+    });
+
+    var btn1 = document.getElementById('btn1');
+
+    btn1.addEventListener('click', function () {
+        btn1.innerHTML = 'Hey ya!';
+    });
+</script>
+</body>
+</html>
