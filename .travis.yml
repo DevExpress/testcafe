@@ -18,6 +18,7 @@ install: yarn
 branches:
   except:
     - /^build-bot-temp-.*$/
+    - /add/
 
 notifications:
  email: false

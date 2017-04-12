@@ -1,6 +1,6 @@
 var browserTools   = require('testcafe-browser-tools');
 var SlConnector    = require('saucelabs-connector');
-var BsConnector    = require('browserstack-connector');
+var BsConnector    = require('../../modules/browserstack-connector');
 var Promise        = require('pinkie');
 var caller         = require('caller');
 var path           = require('path');
