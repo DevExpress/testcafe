@@ -28,6 +28,7 @@ export default class Runner extends EventEmitter {
             takeScreenshotsOnFails: false,
             skipJsErrors:           false,
             quarantineMode:         false,
+            debugMode:              false,
             reportOutStream:        void 0,
             selectorTimeout:        DEFAULT_SELECTOR_TIMEOUT
         };
@@ -154,9 +155,10 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    run ({ skipJsErrors, quarantineMode, selectorTimeout, assertionTimeout, speed = 1 } = {}) {
+    run ({ skipJsErrors, quarantineMode, debugMode, selectorTimeout, assertionTimeout, speed = 1 } = {}) {
         this.opts.skipJsErrors     = !!skipJsErrors;
         this.opts.quarantineMode   = !!quarantineMode;
+        this.opts.debugMode        = !!debugMode;
         this.opts.selectorTimeout  = selectorTimeout === void 0 ? DEFAULT_SELECTOR_TIMEOUT : selectorTimeout;
         this.opts.assertionTimeout = assertionTimeout === void 0 ? DEFAULT_ASSERTION_TIMEOUT : assertionTimeout;
 

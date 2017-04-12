@@ -93,6 +93,7 @@ export default class CLIArgumentParser {
             .option('-s, --screenshots <path>', 'enable screenshot capturing and specify the path to save the screenshots to')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-q, --quarantine-mode', 'enable the quarantine mode')
+            .option('-d, --debug-mode', 'execute test steps one by one pausing the test after each step')
             .option('-e, --skip-js-errors', 'make tests not fail when a JS error happens on a page')
             .option('-t, --test <name>', 'run only tests with the specified name')
             .option('-T, --test-grep <pattern>', 'run only tests matching the specified pattern')
