@@ -232,6 +232,9 @@ var BrowserStackConnector = (function () {
                     return _regeneratorRuntime.awrap(this._getWorker(workerId));
 
                 case 9:
+                    return context$2$0.abrupt('return', context$2$0.sent);
+
+                case 10:
                 case 'end':
                     return context$2$0.stop();
             }
