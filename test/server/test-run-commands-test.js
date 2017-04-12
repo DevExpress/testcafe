@@ -2540,6 +2540,23 @@ describe('Test run commands', function () {
             );
         });
 
+        it('Should validate OnEachPageCommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.onEachPage
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.onEachPageArgumentError,
+                    argumentName:    'fn',
+                    actualValue:     'undefined',
+                    callsite:        null
+                }
+            );
+        });
+
         it('Should validate AssertionСommand', function () {
             assertThrow(
                 function () {

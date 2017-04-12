@@ -21,7 +21,8 @@ export default class DriverStatus extends Assignable {
             { name: 'isCommandResult' },
             { name: 'executionError' },
             { name: 'pageError' },
-            { name: 'result' }
+            { name: 'result' },
+            { name: 'pageLoaded' }
         ];
     }
 }

@@ -18,7 +18,8 @@ import {
     SwitchToIframeCommand,
     SwitchToMainWindowCommand,
     SetNativeDialogHandlerCommand,
-    SetTestSpeedCommand
+    SetTestSpeedCommand,
+    OnEachPageCommand
 } from './actions';
 
 import AssertionCommand from './assertion';
@@ -107,6 +108,9 @@ export default function createCommandFromObject (obj) {
 
         case TYPE.assertion:
             return new AssertionCommand(obj);
+
+        case TYPE.onEachPage:
+            return new OnEachPageCommand(obj);
     }
 
     return null;

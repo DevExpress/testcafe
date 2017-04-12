@@ -13,7 +13,8 @@ import {
     urlArgument,
     stringOrStringArrayArgument,
     setSpeedArgument,
-    actionRoleArgument
+    actionRoleArgument,
+    onEachPageArgument
 } from './validations/argument';
 
 import { ActionSelectorError, SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
@@ -440,6 +441,23 @@ export class UseRoleCommand extends Assignable {
     _getAssignableProperties () {
         return [
             { name: 'role', type: actionRoleArgument, required: true }
+        ];
+    }
+}
+
+export class OnEachPageCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type = TYPE.onEachPage;
+        this.fn   = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'fn', type: onEachPageArgument, required: true }
         ];
     }
 }

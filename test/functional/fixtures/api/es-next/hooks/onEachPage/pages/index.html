@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<iframe src="iframe.html"></iframe>
+<input id="reload" type="button" value="Reload main window">
+<input id="target" type="button" value="Click me">
+<script>
+    var reloadBtn = document.querySelector('#reload');
+    var target = document.querySelector('#target');
+
+    window.state = false;
+
+    reloadBtn.addEventListener('click', function () {
+        window.location.reload();
+    });
+
+    target.addEventListener('click', function () {
+        window.state = true;
+    });
+</script>
+</body>
+</html>

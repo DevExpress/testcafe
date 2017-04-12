@@ -5,7 +5,8 @@ import {
     createBooleanValidator,
     createIntegerValidator,
     createPositiveIntegerValidator,
-    createSpeedValidator
+    createSpeedValidator,
+    createOnEachPageValidator
 } from './factories';
 
 import {
@@ -18,7 +19,8 @@ import {
     ActionStringOrStringArrayArgumentError,
     ActionStringArrayElementError,
     ActionUnsupportedDeviceTypeError,
-    SetTestSpeedArgumentError
+    SetTestSpeedArgumentError,
+    OnEachPageArgumentError
 } from '../../../errors/test-run';
 
 import { assertUrl } from '../../../api/test-page-url';
@@ -29,6 +31,7 @@ export var integerArgument         = createIntegerValidator(ActionIntegerArgumen
 export var positiveIntegerArgument = createPositiveIntegerValidator(ActionPositiveIntegerArgumentError);
 export var booleanArgument         = createBooleanValidator(ActionBooleanArgumentError);
 export var setSpeedArgument        = createSpeedValidator(SetTestSpeedArgumentError);
+export var onEachPageArgument      = createOnEachPageValidator(OnEachPageArgumentError);
 
 
 export function actionRoleArgument (name, val) {

@@ -50,3 +50,12 @@ export function createSpeedValidator (ErrorCtor) {
             throw new ErrorCtor(name, val);
     };
 }
+
+export function createOnEachPageValidator (ErrorCtor) {
+    return (name, val) => {
+        var valType = typeof val;
+
+        if (valType !== 'function')
+            throw new ErrorCtor(name, valType);
+    };
+}
