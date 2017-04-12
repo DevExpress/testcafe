@@ -204,10 +204,6 @@ var BrowserStackConnector = (function () {
                                 timeout: timeout || 1800,
                                 name: jobName,
                                 build: build,
-                                browserstack: {
-                                    local: true
-                                },
-                                'browserstack.local': true,
                             };
 
                             _this4.client.createWorker(settings, function (err, worker) {
@@ -261,7 +257,6 @@ var BrowserStackConnector = (function () {
             'logfile': _osFamily2.default.win ? 'NUL' : '/dev/null',
             'enable-logging-for-api': true,
             'verbose': true,
-            'browserstack.local': true
         };
 
         this.localConnection = new _browserstackLocal.Local();

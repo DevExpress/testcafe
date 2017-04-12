@@ -1,6 +1,6 @@
 var isTravisEnvironment = !!process.env.TRAVIS;
 var isCCNetEnvironment  = !!process.env.CCNET;
-var hostname            = '127.0.0.1';
+var hostname            = 'localhost';
 
 var browserProviderNames = {
     sauceLabs:    'sauceLabs',
