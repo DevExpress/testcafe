@@ -9,6 +9,7 @@ var shadowUI       = hammerhead.shadowUI;
 var nativeMethods  = hammerhead.nativeMethods;
 var messageSandbox = hammerhead.eventSandbox.message;
 var browserUtils   = hammerhead.utils.browser;
+var listeners      = hammerhead.eventSandbox.listeners;
 
 var styleUtils = testCafeCore.styleUtils;
 var eventUtils = testCafeCore.eventUtils;
@@ -286,7 +287,8 @@ export default class StatusBar {
     }
 
     _bindHandlers () {
-        eventUtils.bind(window, 'resize', () => this._recalculateSizes());
+        listeners.initElementListening(window, ['resize']);
+        listeners.addInternalEventListener(window, ['resize'], () => this._recalculateSizes());
 
         eventUtils.bind(this.statusBar, 'mouseover', () => {
             if (this.hidding || this.debugging)
@@ -307,8 +309,6 @@ export default class StatusBar {
                 this._animate(true);
             }
         });
-
-        eventUtils.bind(this.statusBar, browserUtils.isTouchDevice ? 'touchstart' : 'mousedown', eventUtils.preventDefault);
     }
 
     _initChildListening () {
@@ -368,28 +368,23 @@ export default class StatusBar {
 
             this._recalculateSizes();
 
-            var eventName           = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
-            var resumeButtonHandler = null;
-            var stepButtonHandler   = null;
+            var eventName = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
 
-            resumeButtonHandler = e => {
-                eventUtils.preventDefault(e);
-                this._resetState();
-                eventUtils.unbind(this.resumeButton, eventName, resumeButtonHandler);
-                eventUtils.unbind(this.stepButton, eventName, stepButtonHandler);
-                resolve();
+            var downHandler = e => {
+                var isResumeButton = domUtils.containsElement(this.resumeButton, e.target);
+                var isStepButton   = domUtils.containsElement(this.stepButton, e.target);
+
+                if (isResumeButton || isStepButton) {
+                    eventUtils.preventDefault(e);
+                    this._resetState();
+                    listeners.removeInternalEventListener(window, [eventName], downHandler);
+                    resolve(isStepButton);
+                }
+                else if (domUtils.containsElement(this.statusBar, e.target))
+                    eventUtils.preventDefault(e);
             };
 
-            stepButtonHandler = e => {
-                eventUtils.preventDefault(e);
-                this._resetState();
-                eventUtils.unbind(this.resumeButton, eventName, resumeButtonHandler);
-                eventUtils.unbind(this.stepButton, eventName, stepButtonHandler);
-                resolve(true);
-            };
-
-            eventUtils.bind(this.resumeButton, eventName, resumeButtonHandler);
-            eventUtils.bind(this.stepButton, eventName, stepButtonHandler);
+            listeners.addInternalEventListener(window, [eventName], downHandler);
         });
     }
 
