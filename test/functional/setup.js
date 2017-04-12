@@ -164,13 +164,6 @@ before(function () {
                 var appInitDelay       = opts && opts.appInitDelay;
 
                 var actualBrowsers = browsersInfo.filter(function (browserInfo) {
-
-                    /* eslint-disable no-console */
-                    console.log(browserInfo.settings);
-                    console.log(onlyOption);
-                    console.log(skipOption);
-                    /* eslint-enable no-console */
-
                     var only = onlyOption ? onlyOption.indexOf(browserInfo.settings.alias) > -1 : true;
                     var skip = skipOption ? skipOption.indexOf(browserInfo.settings.alias) > -1 : false;
 
