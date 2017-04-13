@@ -117,6 +117,10 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector filter origin node argument', { only: 'chrome' });
     });
 
+    it('Should provide hasAttribute method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'hasAttribute method');
+    });
+
     describe('Errors', function () {
         it('Should handle errors in Selector code', function () {
             return runTests('./testcafe-fixtures/selector-test.js', 'Error in code', { shouldFail: true })
