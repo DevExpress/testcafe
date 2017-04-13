@@ -4,7 +4,6 @@ var BsConnector    = require('../../modules/browserstack-connector');
 var Promise        = require('pinkie');
 var caller         = require('caller');
 var path           = require('path');
-var os             = require('os');
 var createTestCafe = require('../../lib');
 var config         = require('./config.js');
 var site           = require('./site');
@@ -19,6 +18,8 @@ var browserInstances = null;
 const WAIT_FOR_FREE_MACHINES_REQUEST_INTERVAL  = 60000;
 const WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT = 60;
 
+const BROWSER_STACK_BROWSER_OPENING_DELAY = 45000;
+
 const FUNCTIONAL_TESTS_SELECTOR_TIMEOUT  = 200;
 const FUNCTIONAL_TESTS_ASSERTION_TIMEOUT = 1000;
 
@@ -31,6 +32,9 @@ config.browsers = environment.browsers;
 
 const REQUESTED_MACHINES_COUNT = environment.browsers.length;
 
+function wait (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function getBrowserInfo (settings) {
     return testCafe
@@ -63,16 +67,14 @@ function openRemoteBrowsers () {
                 WAIT_FOR_FREE_MACHINES_REQUEST_INTERVAL, WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT);
         })
         .then(function () {
-            var hubUrl = 'http://' + os.hostname() + ':' + config.site.port1 + '/hub';
+            var buildInfo = {
+                jobName: environment.jobName,
+                build:   process.env.TRAVIS_BUILD_ID || '',
+                tags:    [process.env.TRAVIS_BRANCH || 'master']
+            };
 
             var openBrowserPromises = browsersInfo.map(function (browserInfo) {
-                if (isBrowserStack) {
-                    site.addUrlToHub(browserInfo.connection.url);
-                    browserInfo.settings.build = process.env.TRAVIS_BUILD_ID;
-                }
-
-                return connector.startBrowser(browserInfo.settings, isBrowserStack ? hubUrl : browserInfo.connection.url,
-                    isBrowserStack ? { jobName: environment.jobName } : environment.jobName);
+                return connector.startBrowser(browserInfo.settings, browserInfo.connection.url, buildInfo);
             });
 
             return Promise.all(openBrowserPromises);
@@ -80,7 +82,7 @@ function openRemoteBrowsers () {
         .then(function (browsers) {
             browserInstances = browsers;
 
-            return isBrowserStack ? site.waitHubEstablish() : null;
+            return isBrowserStack ? wait(BROWSER_STACK_BROWSER_OPENING_DELAY) : null;
         });
 }
 
