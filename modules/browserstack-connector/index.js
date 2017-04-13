@@ -205,10 +205,7 @@ var BrowserStackConnector = (function () {
                                 timeout:                        timeout || 1800,
                                 name:                           jobName,
                                 build:                          build,
-                                'browserstack.local':           'true',
-                                'browserstack.localIdentifier': _this4.id,
                                 localIdentifier:                _this4.id,
-                                localIdentifierFlag:            true
                             };
 
                             _this4.client.createWorker(settings, function (err, worker) {
@@ -263,7 +260,7 @@ var BrowserStackConnector = (function () {
         var opts = {
             'key':           this.accessKey,
             'logfile':       _osFamily2.default.win ? 'NUL' : '/dev/null',
-            localIdentifier: this.id,
+            'localIdentifier': this.id,
         };
 
         this.localConnection = new _browserstackLocal.Local();
