@@ -4,6 +4,7 @@ var BsConnector    = require('../../modules/browserstack-connector');
 var Promise        = require('pinkie');
 var caller         = require('caller');
 var path           = require('path');
+var os             = require('os');
 var createTestCafe = require('../../lib');
 var config         = require('./config.js');
 var site           = require('./site');
@@ -62,7 +63,7 @@ function openRemoteBrowsers () {
                 WAIT_FOR_FREE_MACHINES_REQUEST_INTERVAL, WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT);
         })
         .then(function () {
-            var hubUrl = 'http://' + 'localhost' + ':' + config.site.port1 + '/hub';
+            var hubUrl = 'http://' + os.hostname() + ':' + config.site.port1 + '/hub';
 
             var openBrowserPromises = browsersInfo.map(function (browserInfo) {
                 if (isBrowserStack) {
