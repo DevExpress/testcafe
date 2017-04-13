@@ -87,6 +87,8 @@ export default class Driver {
         this.skipJsErrors     = options.skipJsErrors;
         this.dialogHandler    = options.dialogHandler;
 
+        this.customCommandHandlers = {};
+
         this.contextStorage       = null;
         this.nativeDialogsTracker = null;
 
@@ -412,6 +414,15 @@ export default class Driver {
             .then(() => this._onReady(new DriverStatus({ isCommandResult: true })));
     }
 
+    _onCustomCommand (command) {
+        this.customCommandHandlers[command.type](command).then(response => {
+            this._onReady(new DriverStatus({
+                isCommandResult: true,
+                result:          response
+            }));
+        });
+    }
+
     _onTestDone (status) {
         this.contextStorage.setItem(TEST_DONE_SENT_FLAG, true);
 
@@ -435,7 +446,9 @@ export default class Driver {
     }
 
     _executeCommand (command) {
-        if (command.type === COMMAND_TYPE.testDone)
+        if (this.customCommandHandlers[command.type])
+            this._onCustomCommand(command);
+        else if (command.type === COMMAND_TYPE.testDone)
             this._onTestDone(new DriverStatus({ isCommandResult: true }));
 
         else if (command.type === COMMAND_TYPE.setBreakpoint)
@@ -509,6 +522,10 @@ export default class Driver {
 
 
     // API
+    setCustomCommandHandlers (command, handler) {
+        this.customCommandHandlers[command] = handler;
+    }
+
     start () {
         this.contextStorage       = new ContextStorage(window, this.testRunId);
         this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.dialogHandler);
