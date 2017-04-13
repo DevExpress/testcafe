@@ -557,23 +557,19 @@ function testFunctional (fixturesDir, testingEnvironmentName, browserProviderNam
 }
 
 gulp.task('test-functional-travis-desktop-osx-and-ms-edge', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.browserstackOSXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack);
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.OSXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack);
 });
 
-gulp.task('test-functional-browserstack-mobile', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.browserstackMobileBrowsers, functionalTestConfig.browserProviderNames.browserstack);
-});
-
-gulp.task('test-functional-saucelabs-mobile', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.saucelabsMobileBrowsers, functionalTestConfig.browserProviderNames.sauceLabs);
+gulp.task('test-functional-travis-mobile', ['build'], function () {
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.mobileBrowsers, functionalTestConfig.browserProviderNames.browserstack);
 });
 
 gulp.task('test-functional-local', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsers, functionalTestConfig.browserProviderNames.sauceLabs);
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsers);
 });
 
 gulp.task('test-functional-travis-legacy', ['build'], function () {
-    return testFunctional('test/functional/legacy-fixtures', functionalTestConfig.testingEnvironmentNames.legacy);
+    return testFunctional('test/functional/legacy-fixtures', functionalTestConfig.testingEnvironmentNames.legacy, functionalTestConfig.browserProviderNames.sauceLabs);
 });
 
 gulp.task('test-functional-travis-old-browsers', ['build'], function () {

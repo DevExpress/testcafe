@@ -2,7 +2,7 @@ language: node_js
 matrix:
  include:
   - node_js: "stable"
-    env: GULP_TASK="test-functional-browserstack-mobile"
+    env: GULP_TASK="test-functional-travis-mobile"
   - node_js: "stable"
     env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge"
  fast_finish: true
@@ -18,7 +18,6 @@ install: yarn
 branches:
   except:
     - /^build-bot-temp-.*$/
-    - /add/
 
 notifications:
  email: false

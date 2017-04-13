@@ -10,17 +10,16 @@ var browserProviderNames = {
 };
 
 var testingEnvironmentNames = {
-    browserstackOSXDesktopAndMSEdgeBrowsers: 'browserstack-osx-desktop-and-ms-edge-browsers',
-    saucelabsMobileBrowsers:                 'saucelabs-mobile-browsers',
-    browserstackMobileBrowsers:              'browserstack-mobile-browsers',
-    localBrowsers:                           'local-browsers',
-    oldBrowsers:                             'old-browsers',
-    legacy:                                  'legacy'
+    OSXDesktopAndMSEdgeBrowsers: 'osx-desktop-and-ms-edge-browsers',
+    mobileBrowsers:              'mobile-browsers',
+    localBrowsers:               'local-browsers',
+    oldBrowsers:                 'old-browsers',
+    legacy:                      'legacy'
 };
 
 var testingEnvironments = {};
 
-testingEnvironments[testingEnvironmentNames.browserstackOSXDesktopAndMSEdgeBrowsers] = {
+testingEnvironments[testingEnvironmentNames.OSXDesktopAndMSEdgeBrowsers] = {
     jobName: 'functional tests - OS X desktop and MS edge browsers',
 
     browserstack: {
@@ -30,24 +29,37 @@ testingEnvironments[testingEnvironmentNames.browserstackOSXDesktopAndMSEdgeBrows
 
     browsers: [
         {
-            os:        'ios',
-            osVersion: '10.0',
-            browser:   'Mobile Safari',
-            device:    'iPad Pro (9.7 inch)',
-            alias:     'ipad'
+            os:        'OS X',
+            osVersion: 'Sierra',
+            name:      'safari',
+            version:   '10.0',
+            alias:     'safari'
         },
         {
-            os:        'android',
-            osVersion: '4.4',
-            browser:   'Android Browser',
-            device:    'Samsung Galaxy S5',
-            alias:     'android'
+            os:        'OS X',
+            osVersion: 'Sierra',
+            name:      'chrome',
+            version:   '57.0',
+            alias:     'chrome-osx'
+        },
+        {
+            os:        'OS X',
+            osVersion: 'Sierra',
+            name:      'firefox',
+            version:   '52.0',
+            alias:     'firefox-osx'
+        },
+        {
+            os:        'Windows',
+            osVersion: '10',
+            name:      'edge',
+            version:   '13.0',
+            alias:     'edge',
         }
-
     ]
 };
 
-testingEnvironments[testingEnvironmentNames.browserstackMobileBrowsers] = {
+testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
     jobName: 'functional tests - mobile browsers',
 
     browserstack: {
@@ -60,47 +72,25 @@ testingEnvironments[testingEnvironmentNames.browserstackMobileBrowsers] = {
             os:        'android',
             osVersion: '4.4',
             browser:   'Android Browser',
-            device:    'HTC One M8',
+            device:    'Samsung Galaxy S5',
             alias:     'android'
         },
-    ]
-};
-
-testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
-    sauceLabs: {
-        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_MOBILE,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_MOBILE,
-        jobName:   'functional tests - mobile browsers'
-    },
-
-    browsers: [
         {
-            platformName:    'Android',
-            deviceName:      'Android Emulator',
-            platformVersion: '5.1',
-            browserName:     'Browser',
-            alias:           'android'
+            os:        'ios',
+            osVersion: '10.0',
+            browser:   'Mobile Safari',
+            device:    'iPad Pro (9.7 inch)',
+            alias:     'ipad'
         },
         {
-            // NOTE: we can't run tests on iOS 9.3 because of a bug in this version
-            // (see https://github.com/DevExpress/testcafe-hammerhead/issues/672#issuecomment-232043366).
-            // This bug is fixed in iOS 9.3.2 but it's not available on the farm.
-            platformName:    'iOS',
-            deviceName:      'iPad Retina Simulator',
-            platformVersion: '10.2',
-            browserName:     'Safari',
-            alias:           'ipad'
-        },
-        {
-            platformName:    'iOS',
-            deviceName:      'iPhone 7 Plus Simulator',
-            platformVersion: '10.2',
-            browserName:     'Safari',
-            alias:           'iphone'
+            os:        'ios',
+            osVersion: '10.0',
+            device:    'iPhone 7 Plus',
+            browser:   'Mobile Safari',
+            alias:     'iphone'
         }
     ]
 };
-
 
 testingEnvironments[testingEnvironmentNames.localBrowsers] = {
     browsers: [
