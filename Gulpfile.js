@@ -545,7 +545,7 @@ gulp.task('test-docs-travis', ['test-website-travis', 'lint']);
 
 function testFunctional (fixturesDir, testingEnvironmentName, browserProviderName) {
     process.env.TESTING_ENVIRONMENT = testingEnvironmentName;
-    process.env.browserProvider     = browserProviderName;
+    process.env.BROWSER_PROVIDER    = browserProviderName;
 
     return gulp
         .src(['test/functional/setup.js', fixturesDir + '/**/test.js'])
@@ -557,7 +557,7 @@ function testFunctional (fixturesDir, testingEnvironmentName, browserProviderNam
 }
 
 gulp.task('test-functional-travis-desktop-osx-and-ms-edge', ['build'], function () {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.OSXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack);
+    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack);
 });
 
 gulp.task('test-functional-travis-mobile', ['build'], function () {

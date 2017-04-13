@@ -10,7 +10,7 @@ var browserProviderNames = {
 };
 
 var testingEnvironmentNames = {
-    OSXDesktopAndMSEdgeBrowsers: 'osx-desktop-and-ms-edge-browsers',
+    osXDesktopAndMSEdgeBrowsers: 'osx-desktop-and-ms-edge-browsers',
     mobileBrowsers:              'mobile-browsers',
     localBrowsers:               'local-browsers',
     oldBrowsers:                 'old-browsers',
@@ -19,7 +19,7 @@ var testingEnvironmentNames = {
 
 var testingEnvironments = {};
 
-testingEnvironments[testingEnvironmentNames.OSXDesktopAndMSEdgeBrowsers] = {
+testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
     jobName: 'functional tests - OS X desktop and MS edge browsers',
 
     browserstack: {
