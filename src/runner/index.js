@@ -16,12 +16,11 @@ const DEFAULT_ASSERTION_TIMEOUT = 3000;
 
 
 export default class Runner extends EventEmitter {
-    constructor (proxy, browserConnectionGateway, embeddingOpts) {
+    constructor (proxy, browserConnectionGateway) {
         super();
 
         this.proxy               = proxy;
         this.bootstrapper        = new Bootstrapper(browserConnectionGateway);
-        this.embeddingOpts       = embeddingOpts;
         this.pendingTaskPromises = [];
 
         this.opts = {
@@ -93,7 +92,7 @@ export default class Runner extends EventEmitter {
 
     _runTask (reporterPlugin, browserSet, tests, testedApp) {
         var completed         = false;
-        var task              = new Task(tests, browserSet.connections, this.proxy, this.opts, this.embeddingOpts);
+        var task              = new Task(tests, browserSet.connections, this.proxy, this.opts);
         var reporter          = new Reporter(reporterPlugin, task, this.opts.reportOutStream);
         var completionPromise = this._getTaskResult(task, browserSet, reporter, testedApp);
 
@@ -113,8 +112,19 @@ export default class Runner extends EventEmitter {
         return { completionPromise, cancelTask };
     }
 
+    _registerAssets (assets) {
+        assets.forEach(asset => this.proxy.GET(asset.path, asset.info));
+    }
+
 
     // API
+    embeddingOptions (opts) {
+        this._registerAssets(opts.assets);
+        this.opts.TestRunCtor = opts.TestRunCtor;
+
+        return this;
+    }
+
     src (...sources) {
         sources = flatten(sources).map(path => resolvePath(path));
 

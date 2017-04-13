@@ -35,14 +35,14 @@ async function getValidPort (port) {
 }
 
 // API
-async function createTestCafe (hostname, port1, port2, embeddingOpts) {
+async function createTestCafe (hostname, port1, port2) {
     [hostname, port1, port2] = await Promise.all([
         getValidHostname(hostname),
         getValidPort(port1),
         getValidPort(port2)
     ]);
 
-    return new TestCafe(hostname, port1, port2, embeddingOpts);
+    return new TestCafe(hostname, port1, port2);
 }
 
 // Embedding utils

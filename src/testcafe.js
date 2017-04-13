@@ -18,10 +18,9 @@ const FAVICON           = read('./client/ui/favicon.ico', true);
 
 
 export default class TestCafe {
-    constructor (hostname, port1, port2, embeddingOpts) {
+    constructor (hostname, port1, port2) {
         this.proxy                    = new Proxy(hostname, port1, port2);
         this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy);
-        this.embeddingOpts            = embeddingOpts;
         this.runners                  = [];
 
         this._registerAssets();
@@ -44,9 +43,6 @@ export default class TestCafe {
             contentType:          'text/css',
             isShadowUIStylesheet: true
         });
-
-        if (this.embeddingOpts && this.embeddingOpts.assets)
-            this.embeddingOpts.assets.forEach(asset => this.proxy.GET(asset.path, asset.info));
     }
 
 
@@ -58,7 +54,7 @@ export default class TestCafe {
     }
 
     createRunner () {
-        var newRunner = new Runner(this.proxy, this.browserConnectionGateway, this.embeddingOpts);
+        var newRunner = new Runner(this.proxy, this.browserConnectionGateway);
 
         this.runners.push(newRunner);
 

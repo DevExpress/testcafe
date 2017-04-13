@@ -6,7 +6,7 @@ import WarningLog from '../notifications/warning-log';
 import FixtureHookController from './fixture-hook-controller';
 
 export default class Task extends EventEmitter {
-    constructor (tests, browserConnections, proxy, opts, embeddingOpts) {
+    constructor (tests, browserConnections, proxy, opts) {
         super();
 
         this.running            = false;
@@ -14,7 +14,6 @@ export default class Task extends EventEmitter {
         this.tests              = tests;
         this.screenshots        = new Screenshots(opts.screenshotPath);
         this.warningLog         = new WarningLog();
-        this.embeddingOpts      = embeddingOpts;
 
         this.fixtureHookController = new FixtureHookController(tests, browserConnections.length);
         this.pendingBrowserJobs    = this._createBrowserJobs(proxy, opts);
@@ -42,7 +41,7 @@ export default class Task extends EventEmitter {
 
     _createBrowserJobs (proxy, opts) {
         return this.browserConnections.map(bc => {
-            var job = new BrowserJob(this.tests, bc, proxy, this.screenshots, this.warningLog, this.fixtureHookController, opts, this.embeddingOpts);
+            var job = new BrowserJob(this.tests, bc, proxy, this.screenshots, this.warningLog, this.fixtureHookController, opts);
 
             this._assignBrowserJobEventHandlers(job);
             bc.addJob(job);
