@@ -29,34 +29,21 @@ testingEnvironments[testingEnvironmentNames.browserstackOSXDesktopAndMSEdgeBrows
     },
 
     browsers: [
-        /*{
-            os:        'OS X',
-            osVersion: 'Sierra',
-            name:      'safari',
-            version:   '10.0',
-            alias:     'safari'
-        },*/
         {
-            os:        'OS X',
-            osVersion: 'Sierra',
-            name:      'chrome',
-            version:   '57.0',
-            alias:     'chrome-osx'
+            os:        'ios',
+            osVersion: '10.0',
+            browser:   'Mobile Safari',
+            device:    'iPad Pro (9.7 inch)',
+            alias:     'ipad'
         },
         {
-            os:        'OS X',
-            osVersion: 'Sierra',
-            name:      'firefox',
-            version:   '52.0',
-            alias:     'firefox-osx'
-        },
-        {
-            os:        'Windows',
-            osVersion: '10',
-            name:      'edge',
-            version:   '13.0',
-            alias:     'edge',
+            os:        'android',
+            osVersion: '4.4',
+            browser:   'Android Browser',
+            device:    'Samsung Galaxy S5',
+            alias:     'android'
         }
+
     ]
 };
 
@@ -73,24 +60,9 @@ testingEnvironments[testingEnvironmentNames.browserstackMobileBrowsers] = {
             os:        'android',
             osVersion: '4.4',
             browser:   'Android Browser',
-            device:    'Samsung Galaxy S5',
+            device:    'HTC One M8',
             alias:     'android'
         },
-        {
-            os:        'ios',
-            osVersion: '10.0',
-            browser:   'Mobile Safari',
-            device:    'iPad Pro (9.7 inch)',
-            alias:     'ipad'
-        },
-        {
-            os:        'ios',
-            osVersion: '10.0',
-            device:    'iPhone 7 Plus',
-            browser:   'Mobile Safari',
-            alias:     'iphone'
-        },
-
     ]
 };
 
