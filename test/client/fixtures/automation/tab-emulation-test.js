@@ -3,13 +3,12 @@ var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore      = window.getTestCafeModule('testCafeCore');
 var domUtils          = testCafeCore.get('./utils/dom');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var PressAutomation    = testCafeAutomation.Press;
 var parseKeySequence   = testCafeCore.get('./utils/parse-key-sequence');
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 QUnit.config.testTimeout = 15000;
 

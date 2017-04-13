@@ -1,13 +1,12 @@
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
+var testCafeCore = window.getTestCafeModule('testCafeCore');
 
 var testCafeAutomation   = window.getTestCafeModule('testCafeAutomation');
 var SelectTextAutomation = testCafeAutomation.SelectText;
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 var domUtils      = testCafeCore.get('./utils/dom');
 var style         = testCafeCore.get('./utils/style');

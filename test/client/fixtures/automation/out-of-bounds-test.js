@@ -4,9 +4,8 @@ var browserUtils = hammerhead.utils.browser;
 var testCafeCore      = window.getTestCafeModule('testCafeCore');
 var position          = testCafeCore.get('./utils/position');
 var textSelection     = testCafeCore.get('./utils/text-selection');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 var testCafeAutomation     = window.getTestCafeModule('testCafeAutomation');
 var ClickOptions           = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;

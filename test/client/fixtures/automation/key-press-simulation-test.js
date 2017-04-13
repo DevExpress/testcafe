@@ -5,9 +5,8 @@ var testCafeCore      = window.getTestCafeModule('testCafeCore');
 var eventUtils        = testCafeCore.get('./utils/event');
 var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
 var KEY_MAPS          = testCafeCore.get('./utils/key-maps');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 

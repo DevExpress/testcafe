@@ -5,9 +5,8 @@ var testCafeCore      = window.getTestCafeModule('testCafeCore');
 var domUtils          = testCafeCore.get('./utils/dom');
 var textSelection     = testCafeCore.get('./utils/text-selection');
 var position          = testCafeCore.get('./utils/position');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 var testCafeAutomation     = window.getTestCafeModule('testCafeAutomation');
 var ClickAutomation        = testCafeAutomation.Click;

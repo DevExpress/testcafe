@@ -3,9 +3,8 @@ var DblClickAutomation = testCafeAutomation.DblClick;
 var ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
 
 var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 $(document).ready(function () {
     var $el = null;

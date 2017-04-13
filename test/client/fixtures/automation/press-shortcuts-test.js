@@ -4,13 +4,12 @@ var browserUtils = hammerhead.utils.browser;
 var testCafeCore      = window.getTestCafeModule('testCafeCore');
 var textSelection     = testCafeCore.get('./utils/text-selection');
 var domUtils          = testCafeCore.get('./utils/dom');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
 var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var PressAutomation    = testCafeAutomation.Press;
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 $(document).ready(function () {
     //consts

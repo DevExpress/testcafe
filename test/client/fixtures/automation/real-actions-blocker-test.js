@@ -1,8 +1,7 @@
 var hammerhead    = window.getTestCafeModule('hammerhead');
 var nativeMethods = hammerhead.nativeMethods;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
+var testCafeCore = window.getTestCafeModule('testCafeCore');
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
@@ -11,7 +10,7 @@ var ClickAutomation    = testCafeAutomation.Click;
 var HoverAutomation    = testCafeAutomation.Hover;
 var getOffsetOptions   = testCafeAutomation.getOffsetOptions;
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 $(document).ready(function () {
     var TEST_ELEMENT_CLASS = 'TestCafe-testElement';

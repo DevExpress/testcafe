@@ -14,11 +14,10 @@ var TypeOptions          = testCafeAutomation.get('../../test-run/commands/optio
 var testCafeCore      = window.getTestCafeModule('testCafeCore');
 var domUtils          = testCafeCore.get('./utils/dom');
 var textSelection     = testCafeCore.get('./utils/text-selection');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
 var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
 
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 $(document).ready(function () {
     var $el     = null;

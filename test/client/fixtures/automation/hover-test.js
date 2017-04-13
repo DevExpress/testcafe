@@ -6,10 +6,9 @@ var HoverAutomation    = testCafeAutomation.Hover;
 var MouseOptions       = testCafeAutomation.get('../../test-run/commands/options').MouseOptions;
 
 var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
 var position          = testCafeCore.get('./utils/position');
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 
 $(document).ready(function () {
