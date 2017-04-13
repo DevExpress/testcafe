@@ -9,7 +9,7 @@ const QUARANTINE_THRESHOLD = 3;
 
 // Browser job
 export default class BrowserJob extends EventEmitter {
-    constructor (tests, browserConnection, proxy, screenshots, warningLog, fixtureHookController, opts) {
+    constructor (tests, browserConnection, proxy, screenshots, warningLog, fixtureHookController, opts, embeddingOpts) {
         super();
 
         this.started    = false;
@@ -21,6 +21,7 @@ export default class BrowserJob extends EventEmitter {
         this.screenshots           = screenshots;
         this.warningLog            = warningLog;
         this.fixtureHookController = fixtureHookController;
+        this.embeddingOpts         = embeddingOpts;
 
         this.testRunQueue    = tests.map((test, index) => this._createTestRun(test, index + 1, 1));
         this.completionQueue = [];
@@ -110,11 +111,18 @@ export default class BrowserJob extends EventEmitter {
         }
     }
 
+    _getTestRunCtor (test) {
+        if (this.embeddingOpts && this.embeddingOpts.TestRunCtor)
+            return this.embeddingOpts.TestRunCtor;
+
+        return test.isLegacy ? LegacyTestRun : TestRun;
+    }
+
     _createTestRun (test, testIndex, quarantineAttemptNum) {
         quarantineAttemptNum = this.opts.quarantineMode ? quarantineAttemptNum : null;
 
-        var TestRunCtor        = test.isLegacy ? LegacyTestRun : TestRun;
         var screenshotCapturer = this.screenshots.createCapturerFor(test, testIndex, quarantineAttemptNum, this.browserConnection);
+        var TestRunCtor        = this._getTestRunCtor(test);
         var testRun            = new TestRunCtor(test, this.browserConnection, screenshotCapturer, this.warningLog, this.opts);
         var done               = this.opts.quarantineMode ?
                                  () => this._testRunDoneInQuarantineMode(testRun, testIndex) :
