@@ -169,7 +169,7 @@ function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties, c
     };
 
     obj.hasAttribute = attrName => {
-        var callsite = getCallsiteForMethod('getAttribute');
+        var callsite = getCallsiteForMethod('hasAttribute');
 
         return ClientFunctionResultPromise.fromFn(async () => {
             var snapshot = await getSnapshot(getSelector, callsite);
