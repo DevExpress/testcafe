@@ -415,10 +415,13 @@ export default class Driver {
     }
 
     _onCustomCommand (command) {
-        this.customCommandHandlers[command.type](command).then(response => {
+        var handler = this.customCommandHandlers[command.type];
+
+        handler(command).then(result => {
             this._onReady(new DriverStatus({
                 isCommandResult: true,
-                result:          response
+
+                result
             }));
         });
     }
