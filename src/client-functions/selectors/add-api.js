@@ -168,6 +168,16 @@ function addSnapshotPropertyShorthands (obj, getSelector, customDOMProperties, c
         });
     };
 
+    obj.hasAttribute = attrName => {
+        var callsite = getCallsiteForMethod('hasAttribute');
+
+        return ClientFunctionResultPromise.fromFn(async () => {
+            var snapshot = await getSnapshot(getSelector, callsite);
+
+            return snapshot.attributes ? snapshot.attributes.hasOwnProperty(attrName) : false;
+        });
+    };
+
     obj.getBoundingClientRectProperty = prop => {
         var callsite = getCallsiteForMethod('getBoundingClientRectProperty');
 

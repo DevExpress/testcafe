@@ -884,3 +884,44 @@ test('Add custom method - method throws an error', async () => {
 
     await el.customMethod();
 });
+
+test('hasAttribute method', async t => {
+    let sel = Selector('#htmlElement');
+    let el  = await sel();
+
+    await t
+        .expect(sel.hasAttribute('id')).ok()
+        .expect(sel.hasAttribute('class')).ok()
+        .expect(sel.hasAttribute('style')).ok()
+        .expect(sel.hasAttribute('data-something')).notOk()
+        .expect(sel.hasAttribute('data-something-else')).notOk()
+
+        .expect(el.hasAttribute('id')).ok()
+        .expect(el.hasAttribute('class')).ok()
+        .expect(el.hasAttribute('style')).ok()
+        .expect(el.hasAttribute('data-something')).notOk()
+        .expect(el.hasAttribute('data-something-else')).notOk();
+
+    await t.eval(() => {
+        document.querySelector('#htmlElement').setAttribute('data-something', true);
+        document.querySelector('#htmlElement').setAttribute('data-something-else', void 0);
+    });
+
+    await t
+        .expect(sel.hasAttribute('data-something')).ok()
+        .expect(sel.hasAttribute('data-something-else')).ok();
+
+    el = await sel();
+
+    await t
+        .expect(el.hasAttribute('data-something')).ok()
+        .expect(el.hasAttribute('data-something-else')).ok();
+
+    sel = Selector(() => document);
+    el  = await sel();
+
+    // NOTE: method should not be available in snapshot for non-element nodes
+    await t
+        .expect(sel.hasAttribute('id')).notOk()
+        .expect(el.hasAttribute).eql(void 0);
+});
