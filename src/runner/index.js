@@ -112,8 +112,19 @@ export default class Runner extends EventEmitter {
         return { completionPromise, cancelTask };
     }
 
+    _registerAssets (assets) {
+        assets.forEach(asset => this.proxy.GET(asset.path, asset.info));
+    }
+
 
     // API
+    embeddingOptions (opts) {
+        this._registerAssets(opts.assets);
+        this.opts.TestRunCtor = opts.TestRunCtor;
+
+        return this;
+    }
+
     src (...sources) {
         sources = flatten(sources).map(path => resolvePath(path));
 
