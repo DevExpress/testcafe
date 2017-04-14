@@ -70,8 +70,14 @@ function preventRealEventHandler (e, dispatched, preventDefault, cancelHandlers,
     }
 }
 
+var elementListeningInited = false;
+
 export function preventRealEvents () {
-    listeners.initElementListening(window, PREVENTED_EVENTS);
+    if (!elementListeningInited) {
+        listeners.initElementListening(window, PREVENTED_EVENTS);
+        elementListeningInited = true;
+    }
+
     listeners.addFirstInternalHandler(window, PREVENTED_EVENTS, preventRealEventHandler);
 }
 
