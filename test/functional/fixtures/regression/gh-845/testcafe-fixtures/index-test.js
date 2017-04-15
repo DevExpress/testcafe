@@ -5,9 +5,9 @@ fixture `gh845`
     .page `http://localhost:3000/fixtures/regression/gh-845/pages/index.html`;
 
 
-const MAX_UNLOADING_TIMEOUT = 15 * 1000;
-const getDelay              = ClientFunction(() => Date.now() - window.startTime);
-const setStartTime          = ClientFunction(() => {
+const MAX_UNLOADING_TIMEOUT_WITH_INDENT = 15 * 1000 + 5000;
+const getDelay                          = ClientFunction(() => Date.now() - window.startTime);
+const setStartTime                      = ClientFunction(() => {
     window.startTime = Date.now();
 });
 
@@ -18,7 +18,7 @@ test('Click on a download link', async t => {
 
     var delay = await getDelay();
 
-    expect(delay).to.be.below(MAX_UNLOADING_TIMEOUT);
+    expect(delay).to.be.below(MAX_UNLOADING_TIMEOUT_WITH_INDENT);
 });
 
 test('Click on a download link in iframe', async t => {
@@ -30,5 +30,5 @@ test('Click on a download link in iframe', async t => {
 
     var delay = await getDelay();
 
-    expect(delay).to.be.below(MAX_UNLOADING_TIMEOUT);
+    expect(delay).to.be.below(MAX_UNLOADING_TIMEOUT_WITH_INDENT);
 });
