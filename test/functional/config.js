@@ -49,35 +49,32 @@ testingEnvironments[testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers
 
 testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
     sauceLabs: {
-        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_MOBILE,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_MOBILE,
+        username:  process.env.BROWSER_STACK_USERNAME,
+        accessKey: process.env.BROWSER_STACK_ACCESS_KEY,
         jobName:   'functional tests - mobile browsers'
     },
 
     browsers: [
+        /*{
+            os:        'android',
+            osVersion: '5.0',
+            device:    'Google Nexus 5',
+            browser:   'Android Browser',
+            alias:     'android'
+        },*/
+        /*{
+            os:        'ios',
+            osVersion: '9.3',
+            device:    'iPad Pro',
+            browser:   'Mobile Safari',
+            alias:     'ipad'
+        },*/
         {
-            platformName:    'Android',
-            deviceName:      'Android Emulator',
-            platformVersion: '5.1',
-            browserName:     'Browser',
-            alias:           'android'
-        },
-        {
-            // NOTE: we can't run tests on iOS 9.3 because of a bug in this version
-            // (see https://github.com/DevExpress/testcafe-hammerhead/issues/672#issuecomment-232043366).
-            // This bug is fixed in iOS 9.3.2 but it's not available on the farm.
-            platformName:    'iOS',
-            deviceName:      'iPad Retina',
-            platformVersion: '9.2',
-            browserName:     'Safari',
-            alias:           'ipad'
-        },
-        {
-            platformName:    'iOS',
-            deviceName:      'iPhone 6 Plus',
-            platformVersion: '9.2',
-            browserName:     'Safari',
-            alias:           'iphone'
+            os:        'ios',
+            osVersion: '10.0',
+            device:    'iPhone 7 Plus',
+            browser:   'Mobile Safari',
+            alias:     'iphone'
         }
     ]
 };
