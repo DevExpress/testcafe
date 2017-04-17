@@ -52,7 +52,8 @@ function initBrowsersInfo () {
 function openRemoteBrowsers () {
     var Connector = isBrowserStack ? BsConnector : SlConnector;
 
-    connector = new Connector(environment[browserProvider].username, environment[browserProvider].accessKey, { servicePort: 3004 });
+    connector = new Connector(environment[browserProvider].username, environment[browserProvider].accessKey,
+        { servicePort: config.browserstackConnectorServicePort });
 
     return connector
         .connect()

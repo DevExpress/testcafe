@@ -184,5 +184,7 @@ module.exports = {
         port4:     3003
     },
 
+    browserstackConnectorServicePort: 4000,
+
     browsers: []
 };
