@@ -447,6 +447,7 @@ export default class Driver {
     _executeCommand (command) {
         if (this.customCommandHandlers[command.type])
             this._onCustomCommand(command);
+
         else if (command.type === COMMAND_TYPE.testDone)
             this._onTestDone(new DriverStatus({ isCommandResult: true }));
 
