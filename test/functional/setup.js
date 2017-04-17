@@ -18,6 +18,8 @@ var browserInstances = null;
 const WAIT_FOR_FREE_MACHINES_REQUEST_INTERVAL  = 60000;
 const WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT = 60;
 
+const BROWSER_OPENING_TIMEOUT = 90000;
+
 const FUNCTIONAL_TESTS_SELECTOR_TIMEOUT  = 200;
 const FUNCTIONAL_TESTS_ASSERTION_TIMEOUT = 1000;
 
@@ -69,7 +71,8 @@ function openRemoteBrowsers () {
             };
 
             var openBrowserPromises = browsersInfo.map(function (browserInfo) {
-                return connector.startBrowser(browserInfo.settings, browserInfo.connection.url, buildInfo);
+                return connector.startBrowser(browserInfo.settings, browserInfo.connection.url, buildInfo,
+                    { openingTimeout: BROWSER_OPENING_TIMEOUT });
             });
 
             return Promise.all(openBrowserPromises);
