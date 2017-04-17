@@ -21,6 +21,10 @@ describe('[API] t.useRole()', function () {
         return runTests('./testcafe-fixtures/configuration-test.js', 'Restore configuration', { selectorTimeout: 5000 });
     });
 
+    it('Should preserve URL if option specified', function () {
+        return runTests('./testcafe-fixtures/preserve-url-test.js');
+    });
+
     describe('Errors', function () {
         it('Should fail all tests that use role with the initiliazer error', function () {
             return runTests('./testcafe-fixtures/init-error-test.js', null, {

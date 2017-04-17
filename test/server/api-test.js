@@ -1002,6 +1002,60 @@ describe('API', function () {
                     });
                 });
         });
+
+        it('Should raise an error if Role "options" is not an object', function () {
+            var testfile = resolve('test/server/data/test-suites/role-options-is-not-an-object/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"options" argument is expected to be a non-null object, but it was string.',
+
+                        callsite: "   1 |import { Role } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  " > 5 |Role('http://example.com', () => {}, 'hey');\n" +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});\n' +
+                                  '   9 |'
+                    });
+                });
+        });
+
+        it('Should raise an error if Role "option.preserveUrl" is not a boolean', function () {
+            var testfile = resolve('test/server/data/test-suites/role-preserve-url-option-is-not-a-boolean/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 '"preserveUrl" option is expected to be a boolean, but it was object.',
+
+                        callsite: "   1 |import { Role } from 'testcafe';\n" +
+                                  '   2 |\n' +
+                                  '   3 |fixture `Test`;\n' +
+                                  '   4 |\n' +
+                                  " > 5 |Role('http://example.com', () => {}, { preserveUrl: [] });\n" +
+                                  '   6 |\n' +
+                                  "   7 |test('yo', () => {\n" +
+                                  '   8 |});\n' +
+                                  '   9 |'
+                    });
+                });
+        });
     });
 
     describe('TestController import', function () {

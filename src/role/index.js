@@ -11,7 +11,7 @@ import delay from '../utils/delay';
 const COOKIE_SYNC_DELAY = 100;
 
 class Role extends EventEmitter {
-    constructor (loginPage, initFn) {
+    constructor (loginPage, initFn, options = {}) {
         super();
 
         this[roleMarker] = true;
@@ -21,20 +21,28 @@ class Role extends EventEmitter {
 
         this.loginPage = loginPage;
         this.initFn    = initFn;
+        this.opts      = options;
 
+        this.url           = null;
         this.stateSnapshot = null;
         this.initErr       = null;
     }
 
-    async initialize (testRun) {
-        this.phase = PHASE.pendingInitialization;
-
-        await testRun.switchToCleanRun();
-
+    async _navigateToLoginPage (testRun) {
         var navigateCommand = new NavigateToCommand({ url: this.loginPage });
 
         await testRun.executeCommand(navigateCommand);
+    }
 
+    async _storeStateSnapshot (testRun) {
+        if (!this.initErr) {
+            // NOTE: give Hammerhead time to sync cookies from client
+            await delay(COOKIE_SYNC_DELAY);
+            this.stateSnapshot = testRun.getStateSnapshot();
+        }
+    }
+
+    async _executeInitFn (testRun) {
         try {
             testRun.disableDebugBreakpoints = false;
             await this.initFn(testRun);
@@ -42,28 +50,39 @@ class Role extends EventEmitter {
         catch (err) {
             this.initErr = err;
         }
-
-        testRun.disableDebugBreakpoints = true;
-
-        if (!this.initErr) {
-            // NOTE: give Hammerhead time to sync cookies from client
-            await delay(COOKIE_SYNC_DELAY);
-            this.stateSnapshot = testRun.getStateSnapshot();
+        finally {
+            testRun.disableDebugBreakpoints = true;
         }
+    }
+
+    async initialize (testRun) {
+        this.phase = PHASE.pendingInitialization;
+
+        await testRun.switchToCleanRun();
+        await this._navigateToLoginPage(testRun);
+        await this._executeInitFn(testRun);
+        await this._storeStateSnapshot(testRun);
+
+        if (this.opts.preserveUrl)
+            this.url = await testRun.getCurrentUrl();
 
         this.phase = PHASE.initialized;
         this.emit('initialized');
     }
 }
 
-export function createRole (loginPage, initFn) {
+export function createRole (loginPage, initFn, options = {}) {
     assertType(is.string, 'Role', '"loginPage" argument', loginPage);
     assertType(is.function, 'Role', '"initFn" argument', initFn);
+    assertType(is.nonNullObject, 'Role', '"options" argument', options);
+
+    if (options.preserveUrl !== void 0)
+        assertType(is.boolean, 'Role', '"preserveUrl" option', options.preserveUrl);
 
     loginPage = resolvePageUrl(loginPage);
     initFn    = wrapTestFunction(initFn);
 
-    return new Role(loginPage, initFn);
+    return new Role(loginPage, initFn, options);
 }
 
 export function createAnonymousRole () {

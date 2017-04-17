@@ -3,8 +3,8 @@ import SelectorBuilder from '../client-functions/selectors/selector-builder';
 import { createRole, createAnonymousRole } from '../role';
 import testControllerProxy from './test-controller/proxy';
 
-function Role (loginPage, initFn) {
-    return createRole(loginPage, initFn);
+function Role (loginPage, initFn, options) {
+    return createRole(loginPage, initFn, options);
 }
 
 Role.anonymous = createAnonymousRole;

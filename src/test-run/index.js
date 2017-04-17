@@ -18,7 +18,9 @@ import delay from '../utils/delay';
 import testRunMarker from './marker-symbol';
 import testRunTracker from '../api/test-run-tracker';
 import ROLE_PHASE from '../role/phase';
-import createBookmark from './bookmark';
+import TestRunBookmark from './bookmark';
+import ClientFunctionBuilder from '../client-functions/client-function-builder';
+
 
 import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
 import { SetNativeDialogHandlerCommand, SetTestSpeedCommand } from './commands/actions';
@@ -456,7 +458,9 @@ export default class TestRun extends Session {
 
         this.disableDebugBreakpoints = true;
 
-        var bookmark = await createBookmark(this);
+        var bookmark = new TestRunBookmark(this, role);
+
+        await bookmark.init();
 
         if (this.currentRoleId)
             this.usedRoleStates[this.currentRoleId] = this.getStateSnapshot();
@@ -470,6 +474,20 @@ export default class TestRun extends Session {
         await bookmark.restore(callsite);
 
         this.disableDebugBreakpoints = false;
+    }
+
+
+    // Get current URL
+    async getCurrentUrl () {
+        var builder = new ClientFunctionBuilder(() => {
+            /* eslint-disable no-undef */
+            return window.location.href;
+            /* eslint-enable no-undef */
+        }, { boundTestRun: this });
+
+        var getLocation = builder.getFunction();
+
+        return await getLocation();
     }
 }
 
