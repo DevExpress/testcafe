@@ -18,8 +18,6 @@ var browserInstances = null;
 const WAIT_FOR_FREE_MACHINES_REQUEST_INTERVAL  = 60000;
 const WAIT_FOR_FREE_MACHINES_MAX_ATTEMPT_COUNT = 60;
 
-const BROWSER_STACK_BROWSER_OPENING_DELAY = 50000;
-
 const FUNCTIONAL_TESTS_SELECTOR_TIMEOUT  = 200;
 const FUNCTIONAL_TESTS_ASSERTION_TIMEOUT = 1000;
 
@@ -31,10 +29,6 @@ var isBrowserStack  = browserProvider === config.browserProviderNames.browsersta
 config.browsers = environment.browsers;
 
 const REQUESTED_MACHINES_COUNT = environment.browsers.length;
-
-function wait (ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 function getBrowserInfo (settings) {
     return testCafe
@@ -81,8 +75,6 @@ function openRemoteBrowsers () {
         })
         .then(function (browsers) {
             browserInstances = browsers;
-
-            return isBrowserStack ? wait(BROWSER_STACK_BROWSER_OPENING_DELAY) : null;
         });
 }
 

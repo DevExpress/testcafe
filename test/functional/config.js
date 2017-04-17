@@ -67,25 +67,22 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
         {
             os:        'android',
             osVersion: '4.4',
-            browser:   'Android Browser',
             device:    'Samsung Galaxy S5',
-            name:      'Samsung Galaxy S5',
+            name:      'Android Browser',
             alias:     'android'
         },
         {
             os:        'ios',
             osVersion: '10.0',
-            browser:   'Mobile Safari',
             device:    'iPad Pro (9.7 inch)',
-            name:      'iPad Pro (9.7 inch)',
+            name:      'Mobile Safari',
             alias:     'ipad'
         },
         {
             os:        'ios',
             osVersion: '10.0',
             device:    'iPhone 7 Plus',
-            browser:   'Mobile Safari',
-            name:      'iPhone 7 Plus',
+            name:      'Mobile Safari',
             alias:     'iphone'
         }
     ]
