@@ -2,7 +2,6 @@ var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
 var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
@@ -10,7 +9,7 @@ var TypeAutomation     = testCafeAutomation.Type;
 var PressAutomation    = testCafeAutomation.Press;
 var TypeOptions        = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 $(document).ready(function () {
     var $commonInput = null;

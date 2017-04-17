@@ -3,14 +3,13 @@ var browserUtils = hammerhead.utils.browser;
 
 var testCafeCore      = window.getTestCafeModule('testCafeCore');
 var styleUtils        = testCafeCore.get('./utils/style');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var getOffsetOptions   = testCafeAutomation.getOffsetOptions;
 var ClickAutomation    = testCafeAutomation.Click;
 var ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 $(document).ready(function () {
     var $el = null;

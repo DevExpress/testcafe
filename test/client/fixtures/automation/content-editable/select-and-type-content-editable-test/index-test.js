@@ -5,7 +5,6 @@ var testCafeCore      = window.getTestCafeModule('testCafeCore');
 var textSelection     = testCafeCore.get('./utils/text-selection');
 var contentEditable   = testCafeCore.get('./utils/content-editable');
 var domUtils          = testCafeCore.get('./utils/dom');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
 var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
 
 var testCafeAutomation   = window.getTestCafeModule('testCafeAutomation');
@@ -15,7 +14,7 @@ var PressAutomation      = testCafeAutomation.Press;
 
 var TypeOptions = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 
 $(document).ready(function () {

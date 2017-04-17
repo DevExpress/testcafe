@@ -70,7 +70,11 @@ function preventRealEventHandler (e, dispatched, preventDefault, cancelHandlers,
     }
 }
 
-export default function preventRealEvents () {
+export function preventRealEvents () {
     listeners.initElementListening(window, PREVENTED_EVENTS);
     listeners.addFirstInternalHandler(window, PREVENTED_EVENTS, preventRealEventHandler);
+}
+
+export function disableRealEventsPreventing () {
+    listeners.removeInternalEventListener(window, PREVENTED_EVENTS, preventRealEventHandler);
 }

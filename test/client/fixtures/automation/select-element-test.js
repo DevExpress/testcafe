@@ -4,9 +4,8 @@ var shadowUI     = hammerhead.shadowUI;
 
 var testCafeCore      = window.getTestCafeModule('testCafeCore');
 var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;

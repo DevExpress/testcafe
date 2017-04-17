@@ -16,9 +16,7 @@ var PressAutomation = testCafeAutomation.Press;
 var parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
 var getOffsetOptions = testCafeAutomation.getOffsetOptions;
 
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
-
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 var input1                           = null;
 var input2                           = null;

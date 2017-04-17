@@ -2,10 +2,9 @@ var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var RClickAutomation   = testCafeAutomation.RClick;
 var ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
+var testCafeCore = window.getTestCafeModule('testCafeCore');
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;

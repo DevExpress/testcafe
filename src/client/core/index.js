@@ -4,7 +4,7 @@ import KEY_MAPS from './utils/key-maps';
 import NODE_TYPE_DESCRIPTIONS from './utils/node-type-descriptions';
 import RequestBarrier from './request-barrier';
 import * as pageUnloadBarrier from './page-unload-barrier';
-import preventRealEvents from './prevent-real-events';
+import { preventRealEvents, disableRealEventsPreventing } from './prevent-real-events';
 
 import * as serviceUtils from './utils/service';
 import * as domUtils from './utils/dom';
@@ -24,9 +24,10 @@ import sendRequestToFrame from './utils/send-request-to-frame';
 
 import * as browser from '../browser';
 
-exports.RequestBarrier    = RequestBarrier;
-exports.pageUnloadBarrier = pageUnloadBarrier;
-exports.preventRealEvents = preventRealEvents;
+exports.RequestBarrier              = RequestBarrier;
+exports.pageUnloadBarrier           = pageUnloadBarrier;
+exports.preventRealEvents           = preventRealEvents;
+exports.disableRealEventsPreventing = disableRealEventsPreventing;
 
 exports.serviceUtils           = serviceUtils;
 exports.domUtils               = domUtils;

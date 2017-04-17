@@ -5,7 +5,6 @@ var nativeMethods = hammerhead.nativeMethods;
 var testCafeCore      = window.getTestCafeModule('testCafeCore');
 var eventUtils        = testCafeCore.get('./utils/event');
 var textSelection     = testCafeCore.get('./utils/text-selection');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
 var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
@@ -22,7 +21,7 @@ var SelectTextAutomation = testCafeAutomation.SelectText;
 var PressAutomation      = testCafeAutomation.Press;
 var getOffsetOptions     = testCafeAutomation.getOffsetOptions;
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 $(document).ready(function () {
     //consts

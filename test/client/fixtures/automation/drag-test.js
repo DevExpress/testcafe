@@ -5,9 +5,8 @@ var MouseOptions            = testCafeAutomation.get('../../test-run/commands/op
 
 var testCafeCore      = window.getTestCafeModule('testCafeCore');
 var position          = testCafeCore.get('./utils/position');
-var preventRealEvents = testCafeCore.get('./prevent-real-events');
 
-preventRealEvents();
+testCafeCore.preventRealEvents();
 
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
