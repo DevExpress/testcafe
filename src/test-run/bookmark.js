@@ -1,4 +1,3 @@
-import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import TEST_RUN_PHASE from '../test-run/phase';
 import ERR_TYPE from '../errors/test-run/type';
 
@@ -16,9 +15,10 @@ import {
 } from '../errors/test-run';
 
 
-class TestRunBookmark {
-    constructor (testRun) {
+export default class TestRunBookmark {
+    constructor (testRun, role) {
         this.testRun = testRun;
+        this.role    = role;
 
         this.url            = 'about:blank';
         this.dialogHandler  = testRun.activeDialogHandler;
@@ -26,6 +26,14 @@ class TestRunBookmark {
         this.speed          = testRun.speed;
         this.ctx            = testRun.ctx;
         this.fixtureCtx     = testRun.fixtureCtx;
+    }
+
+    async init () {
+        if (this.testRun.activeIframeSelector)
+            await this.testRun.executeCommand(new SwitchToMainWindowCommand());
+
+        if (!this.role.opts.preserveUrl)
+            this.url = await this.testRun.getCurrentUrl();
     }
 
     async _restoreDialogHandler () {
@@ -65,8 +73,8 @@ class TestRunBookmark {
         }
     }
 
-    async _restorePage () {
-        var navigateCommand = new NavigateToCommand({ url: this.url });
+    async _restorePage (url) {
+        var navigateCommand = new NavigateToCommand({ url });
 
         await this.testRun.executeCommand(navigateCommand);
     }
@@ -80,10 +88,16 @@ class TestRunBookmark {
         this.testRun.fixtureCtx = this.fixtureCtx;
 
         try {
-            await this._restoreDialogHandler();
             await this._restoreSpeed();
-            await this._restorePage();
-            await this._restoreWorkingFrame();
+            await this._restoreDialogHandler();
+
+            if (this.role.opts.preserveUrl)
+                await this._restorePage(this.role.url);
+
+            else {
+                await this._restorePage(this.url);
+                await this._restoreWorkingFrame();
+            }
         }
         catch (err) {
             err.callsite = callsite;
@@ -93,23 +107,4 @@ class TestRunBookmark {
 
         this.testRun.phase = prevPhase;
     }
-}
-
-export default async function createBookmark (testRun) {
-    var bookmark = new TestRunBookmark(testRun);
-
-    if (testRun.activeIframeSelector)
-        await testRun.executeCommand(new SwitchToMainWindowCommand());
-
-    var builder = new ClientFunctionBuilder(() => {
-        /* eslint-disable no-undef */
-        return window.location.href;
-        /* eslint-enable no-undef */
-    }, { boundTestRun: testRun });
-
-    var getLocation = builder.getFunction();
-
-    bookmark.url = await getLocation();
-
-    return bookmark;
 }
