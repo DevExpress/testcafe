@@ -4,80 +4,86 @@ var isTravisEnvironment = !!process.env.TRAVIS;
 var isCCNetEnvironment  = !!process.env.CCNET;
 var hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
 
+var browserProviderNames = {
+    sauceLabs:    'sauceLabs',
+    browserstack: 'browserstack'
+};
+
 var testingEnvironmentNames = {
-    saucelabsOSXDesktopAndMSEdgeBrowsers: 'saucelabs-osx-desktop-and-ms-edge-browsers',
-    saucelabsMobileBrowsers:              'saucelabs-mobile-browsers',
-    localBrowsers:                        'local-browsers',
-    oldBrowsers:                          'old-browsers',
-    legacy:                               'legacy'
+    osXDesktopAndMSEdgeBrowsers: 'osx-desktop-and-ms-edge-browsers',
+    mobileBrowsers:              'mobile-browsers',
+    localBrowsers:               'local-browsers',
+    oldBrowsers:                 'old-browsers',
+    legacy:                      'legacy'
 };
 
 var testingEnvironments = {};
 
-testingEnvironments[testingEnvironmentNames.saucelabsOSXDesktopAndMSEdgeBrowsers] = {
-    sauceLabs: {
-        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_DESKTOP,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP,
-        jobName:   'functional tests - OS X desktop and MS edge browsers'
+testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
+    jobName: 'functional tests - OS X desktop and MS edge browsers',
+
+    browserstack: {
+        username:  process.env.BROWSER_STACK_USERNAME,
+        accessKey: process.env.BROWSER_STACK_ACCESS_KEY
     },
 
     browsers: [
         {
-            platform:    'OS X 10.11',
-            browserName: 'safari',
-            version:     '9.0',
-            alias:       'safari'
+            os:        'OS X',
+            osVersion: 'Sierra',
+            name:      'safari',
+            alias:     'safari'
         },
         {
-            platform:    'OS X 10.11',
-            browserName: 'chrome',
-            alias:       'chrome-osx'
+            os:        'OS X',
+            osVersion: 'Sierra',
+            name:      'chrome',
+            alias:     'chrome-osx'
         },
         {
-            platform:    'OS X 10.11',
-            browserName: 'firefox',
-            alias:       'firefox-osx'
+            os:        'OS X',
+            osVersion: 'Sierra',
+            name:      'firefox',
+            alias:     'firefox-osx'
         },
         {
-            platform:    'Windows 10',
-            browserName: 'microsoftedge',
-            alias:       'edge',
-            version:     '13.10586'
+            os:        'Windows',
+            osVersion: '10',
+            name:      'edge',
+            alias:     'edge',
         }
     ]
 };
 
-testingEnvironments[testingEnvironmentNames.saucelabsMobileBrowsers] = {
-    sauceLabs: {
-        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_MOBILE,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_MOBILE,
-        jobName:   'functional tests - mobile browsers'
+testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
+    jobName: 'functional tests - mobile browsers',
+
+    browserstack: {
+        username:  process.env.BROWSER_STACK_USERNAME,
+        accessKey: process.env.BROWSER_STACK_ACCESS_KEY
     },
 
     browsers: [
         {
-            platformName:    'Android',
-            deviceName:      'Android Emulator',
-            platformVersion: '5.1',
-            browserName:     'Browser',
-            alias:           'android'
+            os:        'android',
+            osVersion: '4.4',
+            device:    'Samsung Galaxy S5',
+            name:      'Android Browser',
+            alias:     'android'
         },
         {
-            // NOTE: we can't run tests on iOS 9.3 because of a bug in this version
-            // (see https://github.com/DevExpress/testcafe-hammerhead/issues/672#issuecomment-232043366).
-            // This bug is fixed in iOS 9.3.2 but it's not available on the farm.
-            platformName:    'iOS',
-            deviceName:      'iPad Retina',
-            platformVersion: '9.2',
-            browserName:     'Safari',
-            alias:           'ipad'
+            os:        'ios',
+            osVersion: '10.0',
+            device:    'iPad Pro (9.7 inch)',
+            name:      'Mobile Safari',
+            alias:     'ipad'
         },
         {
-            platformName:    'iOS',
-            deviceName:      'iPhone 6 Plus',
-            platformVersion: '9.2',
-            browserName:     'Safari',
-            alias:           'iphone'
+            os:        'ios',
+            osVersion: '10.0',
+            device:    'iPhone 7 Plus',
+            name:      'Mobile Safari',
+            alias:     'iphone'
         }
     ]
 };
@@ -104,10 +110,12 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
 };
 
 testingEnvironments[testingEnvironmentNames.oldBrowsers] = {
+    jobName: 'functional tests - ms desktop browsers',
+
     sauceLabs: {
         username:  process.env.SAUCE_USERNAME_FUNCTIONAL_DESKTOP,
         accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP,
-        jobName:   'functional tests - ms desktop browsers'
+
     },
 
     browsers: [
@@ -127,10 +135,11 @@ testingEnvironments[testingEnvironmentNames.oldBrowsers] = {
 };
 
 testingEnvironments[testingEnvironmentNames.legacy] = {
+    jobName: 'functional tests - legacy',
+
     sauceLabs: {
         username:  process.env.SAUCE_USERNAME_FUNCTIONAL_DESKTOP,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP,
-        jobName:   'functional tests - legacy'
+        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP
     },
 
     browsers: [
@@ -159,6 +168,7 @@ module.exports = {
 
     testingEnvironmentNames: testingEnvironmentNames,
     testingEnvironments:     testingEnvironments,
+    browserProviderNames:    browserProviderNames,
 
     testCafe: {
         hostname: hostname,
@@ -173,6 +183,8 @@ module.exports = {
         port3:     3002,
         port4:     3003
     },
+
+    browserstackConnectorServicePort: 4000,
 
     browsers: []
 };
