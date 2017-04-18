@@ -1,7 +1,12 @@
+var http      = require('http');
 var express   = require('express');
 var basicAuth = require('basic-auth');
 
-module.exports = function create (port) {
+
+var server  = null;
+var sockets = null;
+
+function start (port) {
     var app = express();
 
     app.all('*', function (req, res) {
@@ -18,5 +23,26 @@ module.exports = function create (port) {
         }
     });
 
-    return app.listen(port);
-};
+    server  = http.createServer(app).listen(port);
+    sockets = [];
+
+    var connectionHandler = function (socket) {
+        sockets.push(socket);
+
+        socket.on('close', function () {
+            sockets.splice(sockets.indexOf(socket), 1);
+        });
+    };
+
+    server.on('connection', connectionHandler);
+}
+
+function shutdown () {
+    server.close();
+
+    sockets.forEach(socket => {
+        socket.destroy();
+    });
+}
+
+module.exports = { start: start, shutdown: shutdown };

@@ -91,6 +91,15 @@ describe('CLI argument parser', function () {
         });
     });
 
+    describe('Proxy url', function () {
+        it('Should parse "--proxy-url"', function () {
+            return parse('--proxy-url localhost:1234')
+                .then(function (parser) {
+                    expect(parser.opts.proxyUrl).eql('localhost:1234');
+                });
+        });
+    });
+
     describe('Selector timeout', function () {
         it('Should parse "--selector-timeout" option as integer value', function () {
             return parse('--selector-timeout 1000')

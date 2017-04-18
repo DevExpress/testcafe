@@ -130,7 +130,7 @@ before(function () {
 
             process.stdout.write('Running tests in browsers: ' + aliases.join(', ') + '\n');
 
-            site.create(config.site.port1, config.site.port2, config.site.port3, config.site.port4, config.site.viewsPath);
+            site.create(config.site.ports, config.site.viewsPath);
 
             if (!config.useLocalBrowsers) {
                 // NOTE: we need to disable this particular timeout for preventing mocha timeout
@@ -161,6 +161,7 @@ before(function () {
                 var speed              = opts && opts.speed;
                 var appCommand         = opts && opts.appCommand;
                 var appInitDelay       = opts && opts.appInitDelay;
+                var externalProxyUrl   = opts && opts.proxy;
 
                 var actualBrowsers = browsersInfo.filter(function (browserInfo) {
                     var only = onlyOption ? onlyOption.indexOf(browserInfo.settings.alias) > -1 : true;
@@ -189,6 +190,7 @@ before(function () {
                 };
 
                 return runner
+                    .proxy(externalProxyUrl)
                     .browsers(connections)
                     .filter(function (test) {
                         return testName ? test === testName : true;
