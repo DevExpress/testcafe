@@ -162,12 +162,14 @@ test('Input-specific element snapshot properties', async t => {
 });
 
 test('`innerText` element snapshot property', async t => {
-    const isIE      = await isIEFunction();
-    const innerText = await getElementById('htmlElementWithInnerText').innerText;
+    const isIE    = await isIEFunction();
+    let innerText = await getElementById('htmlElementWithInnerText').innerText;
 
-    // NOTE: we have to use this regexp because the innerText field
+    innerText = innerText.trim().replace(/\r\n/, '\n');
+
+    // NOTE: we have to use regexp because the innerText field
     // returns a little bit different values in IE9 and other browsers
-    var expectedTextRe = isIE ? /^Hey\r\nyo test {2}42 test {2}'hey hey'; \.someClass \{ \}/ :
+    var expectedTextRe = isIE ? /^Hey\nyo test {2}42 test {2}'hey hey'; \.someClass \{ \}/ :
                          /^Hey\nyo test {1,2}test( \u0000)?/;
 
     await t.expect(expectedTextRe.test(innerText.trim())).ok();
