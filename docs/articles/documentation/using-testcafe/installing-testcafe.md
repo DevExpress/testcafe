@@ -10,9 +10,6 @@ You can install TestCafe through `npm` globally or locally in your project.
 
 * [Globally](#globally)
 * [Locally](#locally)
-
-Alternatively, use a Docker image with TestCafe preinstalled.
-
 * [Using TestCafe Docker Image](#using-testcafe-docker-image)
 
 ## Globally
@@ -60,18 +57,18 @@ You can use the local version of TestCafe from a [command line](command-line-int
 
 ## Using TestCafe Docker Image
 
-TestCafe provides a preconfigured Docker image with TestCafe, Chromium and Firefox installed,
-so that you can avoid the need to install browsers or the testing framework on the server.
+TestCafe provides a preconfigured Docker image with Chromium and Firefox installed.
+Therefore, you can avoid manual installation of browsers and the testing framework on the server.
 
 To learn how to install Docker to your system, see [Install Docker](https://docs.docker.com/engine/installation/).
 
-After Docker is installed, download the TestCafe Docker image from its repository.
+After Docker is installed, download the TestCafe Docker image from the repository.
 
 ```sh
 docker pull testcafe/testcafe
 ```
 
-The command above installs the stable version of the image. If you need an alpha version, run the following command.
+The command above installs a stable version of the image. If you need an alpha version, run the following command.
 
 ```sh
 docker pull testcafe/testcafe:alpha
@@ -85,18 +82,18 @@ docker run -v ${TEST_FOLDER}:/tests -it testcafe/testcafe ${TESTCAFE_ARGS}
 
 This command takes the following parameters:
 
-* `-v ${TEST_FOLDER}:/tests` - maps the `TEST_FOLDER` directory on the host machine to the `/tests` directory in the container. You can map any host directory to any container directory.
+* `-v ${TEST_FOLDER}:/tests` - maps the `TEST_FOLDER` directory on the host machine to the `/tests` directory in the container. You can map any host directory to any container directory:
 
     `-v //c/Users/Username/tests:/tests`
 
     `-v //d/tests:/myTests`
 
-* `-it testcafe/testcafe` - runs TestCafe in the interactive mode with the console enabled
-* `${TESTCAFE_ARGS}` - arguments passed to the `testcafe` command. You can use any arguments from the TestCafe [CLI](command-line-interface.md).
+* `-it testcafe/testcafe` - runs TestCafe in the interactive mode with the console enabled;
+* `${TESTCAFE_ARGS}` - arguments passed to the `testcafe` command. You can use any arguments from the TestCafe [CLI](command-line-interface.md);
 
     `-it testcafe/testcafe 'chromium --no-sandbox,firefox' /tests/test.js`
 
-    You can run tests in the Chromium and Firefox browsers preinstalled to the Docker image. Add the `--no-sandbox` flag to Chromium if the container is run in  unprivileged mode.
+    You can run tests in the Chromium and Firefox browsers preinstalled to the Docker image. Add the `--no-sandbox` flag to Chromium if the container is run in the unprivileged mode.
 
     Use the [remote browser](command-line-interface.md#remote-browsers) to run tests on a mobile device. To do this, you need to add the `-P` flag to the `docker run` command and specify the `remote` keyword as the browser name.
 
