@@ -12,7 +12,7 @@ fixture `Preserve URL`
     .page `http://localhost:3000/fixtures/api/es-next/roles/pages/index.html`;
 
 
-test('Test1', async () => {
+test('Preserve url test', async () => {
     // NOTE: we should restore dialog handler, but omit iframe settings.
     await t
         .setNativeDialogHandler(() => true)

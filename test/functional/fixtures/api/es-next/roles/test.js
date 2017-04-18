@@ -1,5 +1,15 @@
 var expect = require('chai').expect;
 
+// NOTE: we set selectorTimeout to a large value in some tests to wait for
+// an iframe to load on the farm (it is fast locally but can take some time on the farm)
+
+var IFRAME_SELECTOR_TIMEOUT             = 5000;
+var TEST_WITH_IFRAME_RUN_OPTIONS        = { selectorTimeout: IFRAME_SELECTOR_TIMEOUT };
+var TEST_WITH_IFRAME_FAILED_RUN_OPTIONS = {
+    shouldFail:      true,
+    selectorTimeout: IFRAME_SELECTOR_TIMEOUT
+};
+
 describe('[API] t.useRole()', function () {
     it('Should initialize and switch roles', function () {
         return runTests('./testcafe-fixtures/use-role-test.js', null, { only: 'chrome,ie,firefox' });
@@ -10,7 +20,7 @@ describe('[API] t.useRole()', function () {
     });
 
     it('Should have clean configuration in role initializer', function () {
-        return runTests('./testcafe-fixtures/configuration-test.js', 'Clear configuration', { shouldFail: true })
+        return runTests('./testcafe-fixtures/configuration-test.js', 'Clear configuration', TEST_WITH_IFRAME_FAILED_RUN_OPTIONS)
             .catch(function (errs) {
                 expect(errs[0]).contains('- Error in Role initializer - A native alert dialog was invoked');
                 expect(errs[0]).contains('> 31 |    await t.click(showAlertBtn);');
@@ -18,11 +28,11 @@ describe('[API] t.useRole()', function () {
     });
 
     it('Should restore configuration after role initializer', function () {
-        return runTests('./testcafe-fixtures/configuration-test.js', 'Restore configuration', { selectorTimeout: 5000 });
+        return runTests('./testcafe-fixtures/configuration-test.js', 'Restore configuration', TEST_WITH_IFRAME_RUN_OPTIONS);
     });
 
     it('Should preserve URL if option specified', function () {
-        return runTests('./testcafe-fixtures/preserve-url-test.js');
+        return runTests('./testcafe-fixtures/preserve-url-test.js', 'Preserve url test', TEST_WITH_IFRAME_RUN_OPTIONS);
     });
 
     describe('Errors', function () {
@@ -65,7 +75,7 @@ describe('[API] t.useRole()', function () {
         });
 
         it('Should fail if there error occurred while restoring configuration', function () {
-            return runTests('./testcafe-fixtures/errors-test.js', 'Error restoring configuration', { shouldFail: true })
+            return runTests('./testcafe-fixtures/errors-test.js', 'Error restoring configuration', TEST_WITH_IFRAME_FAILED_RUN_OPTIONS)
                 .catch(function (errs) {
                     expect(errs[0]).contains('- Error while restoring configuration after Role switch -');
                     expect(errs[0]).contains('The iframe in which the test is currently operating does not exist anymore.');

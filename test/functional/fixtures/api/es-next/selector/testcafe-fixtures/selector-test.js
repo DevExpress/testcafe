@@ -7,6 +7,15 @@ fixture `Selector`
 
 const getElementById = Selector(id => document.getElementById(id));
 
+const isIEFunction = ClientFunction(() => {
+    var userAgent = window.navigator.userAgent;
+    var appName   = window.navigator.appName;
+    var isIE11Re  = new RegExp('Trident/.*rv:([0-9]{1,}[\.0-9]{0,})');
+
+    return appName === 'Microsoft Internet Explorer' ||
+           appName === 'Netscape' && isIE11Re.exec(userAgent) !== null;
+});
+
 test('HTMLElement snapshot basic properties', async () => {
     const el = await getElementById('htmlElement');
 
@@ -152,12 +161,16 @@ test('Input-specific element snapshot properties', async t => {
     expect(el.selected).to.be.true;
 });
 
-test('`innerText` element snapshot property', async () => {
-    const el = await getElementById('htmlElementWithInnerText');
+test('`innerText` element snapshot property', async t => {
+    const isIE      = await isIEFunction();
+    const innerText = await getElementById('htmlElementWithInnerText').innerText;
 
     // NOTE: we have to use this regexp because the innerText field
     // returns a little bit different values in IE9 and other browsers
-    expect(/^Hey\nyo test {1,2}test( \u0000)?/.test(el.innerText.trim())).to.be.true;
+    var expectedTextRe = isIE ? /^Hey\r\nyo test {2}42 test {2}'hey hey'; \.someClass \{ \}/ :
+                         /^Hey\nyo test {1,2}test( \u0000)?/;
+
+    await t.expect(expectedTextRe.test(innerText.trim())).ok();
 });
 
 test('Non-element node snapshots', async t => {
