@@ -207,7 +207,7 @@ export default function (element, text, caretPos) {
         if (domUtils.isTextEditableElement(element))
             _typeTextToTextEditable(element, text);
 
-        else if (domUtils.isInputElement(element) && domUtils.elementHasValueProperty(element) )
+        else if (domUtils.isInputElement(element))
             _typeTextToNonTextEditable(element, text, caretPos);
     }
 }
