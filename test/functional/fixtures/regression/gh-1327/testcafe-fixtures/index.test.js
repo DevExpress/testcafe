@@ -7,13 +7,13 @@ const getChangeEventCount = ClientFunction(() => window.changeEvtCounter);
 const getInputEventCount  = ClientFunction(() => window.inputEvtCounter);
 
 const inputValuePair = {
-    'date':           '2015-01-01',
-    'week':           '2015-W01',
-    'month':          '2015-01',
-    'datetime-local': '2015-01-01T00:00',
+    'date':           '2016-02-03',
+    'week':           '2016-W03',
+    'month':          '2016-02',
+    'datetime-local': '2016-02-03T01:00',
+    'color':          '#003000',
+    'time':           '23:00',
     'range':          '25',
-    'color':          '#005000',
-    'time':           '23:59'
 };
 
 test.page('http://localhost:3000/fixtures/regression/gh-1327/pages/empty-input.html')

@@ -21,7 +21,6 @@ import getKeyArray from './utils/get-key-array';
 import getSanitizedKey from './utils/get-sanitized-key';
 import parseKeySequence from './utils/parse-key-sequence';
 import sendRequestToFrame from './utils/send-request-to-frame';
-import replaceCharAt from './utils/replaceCharAt';
 
 import * as browser from '../browser';
 
@@ -33,22 +32,21 @@ exports.disableRealEventsPreventing = disableRealEventsPreventing;
 exports.serviceUtils           = serviceUtils;
 exports.domUtils               = domUtils;
 exports.contentEditable        = contentEditable;
-exports.positionUtils                 = positionUtils;
-exports.styleUtils                    = styleUtils;
-exports.eventUtils                    = eventUtils;
-exports.arrayUtils                    = arrayUtils;
-exports.textSelection                 = textSelection;
-exports.waitFor                       = waitFor;
-exports.delay                         = delay;
-exports.noop                          = noop;
-exports.getKeyArray                   = getKeyArray;
-exports.getSanitizedKey               = getSanitizedKey;
-exports.parseKeySequence              = parseKeySequence;
-exports.sendRequestToFrame            = sendRequestToFrame;
-exports.KEY_MAPS                      = KEY_MAPS;
-exports.NODE_TYPE_DESCRIPTIONS        = NODE_TYPE_DESCRIPTIONS;
-exports.browser                       = browser;
-exports.replaceCharAt                 = replaceCharAt;
+exports.positionUtils          = positionUtils;
+exports.styleUtils             = styleUtils;
+exports.eventUtils             = eventUtils;
+exports.arrayUtils             = arrayUtils;
+exports.textSelection          = textSelection;
+exports.waitFor                = waitFor;
+exports.delay                  = delay;
+exports.noop                   = noop;
+exports.getKeyArray            = getKeyArray;
+exports.getSanitizedKey        = getSanitizedKey;
+exports.parseKeySequence       = parseKeySequence;
+exports.sendRequestToFrame     = sendRequestToFrame;
+exports.KEY_MAPS               = KEY_MAPS;
+exports.NODE_TYPE_DESCRIPTIONS = NODE_TYPE_DESCRIPTIONS;
+exports.browser                = browser;
 
 exports.get = require;
 

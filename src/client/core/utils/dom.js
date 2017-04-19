@@ -464,3 +464,7 @@ export function findIframeByWindow (iframeWindow, iframeDestinationWindow) {
 export function isEditableFormElement (element) {
     return isTextEditableElement(element) || isSelectElement(element);
 }
+
+export function elementHasValueProperty (element) {
+    return 'value' in element;
+}

@@ -1,6 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 import { KEY_MAPS, domUtils, getSanitizedKey } from '../../deps/testcafe-core';
-import typeChar from '../type/type-char';
+import typeText from '../type/type-text';
 import { getChar, getDeepActiveElement, changeLetterCase } from './utils';
 import getKeyCode from '../../utils/get-key-code';
 import getKeyIdentifier from '../../utils/get-key-identifier';
@@ -68,7 +68,7 @@ export default class KeyPressSimulator {
             if (!browserUtils.isIE && elementChanged && isStoredElementEditable && isActiveElementEditable)
                 elementForTyping = this.storedActiveElement;
 
-            typeChar(elementForTyping, char);
+            typeText(elementForTyping, char);
         }
     }
 
