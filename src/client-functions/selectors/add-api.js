@@ -11,7 +11,7 @@ import makeRegExp from '../../utils/make-reg-exp';
 const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PROPERTIES);
 
 
-var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode, ...arg) => {
+var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode, ...filterArgs) => {
     if (typeof filter === 'number') {
         var matchingNode = filter < 0 ? nodes[nodes.length + filter] : nodes[filter];
 
@@ -36,7 +36,7 @@ var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, 
 
     if (typeof filter === 'function') {
         for (var j = 0; j < nodes.length; j++) {
-            if (filter(nodes[j], j, originNode, ...arg))
+            if (filter(nodes[j], j, originNode, ...filterArgs))
                 result.push(nodes[j]);
         }
     }
