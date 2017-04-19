@@ -62,3 +62,4 @@ Method | Type | Description
 `getStyleProperty(propertyName)` | Object | Returns the computed value of the CSS `propertyName` property. You can also use the `style` property to access a hash table of CSS properties.
 `getAttribute(attributeName)` | String | Returns the value of the `attributeName` attribute. You can also use the `attributes` property to access a hash table of attributes.
 `getBoundingClientRectProperty(propertyName)` | Number | Returns the value of the `propertyName` property from the `boundingClientRect` object.
+`hasAttribute(attributeName)` | Boolean | `true` if the element has the `attributeName` attribute. Use the `getAttribute` method to obtain the attribute value.
