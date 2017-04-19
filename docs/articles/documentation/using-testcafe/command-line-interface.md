@@ -308,6 +308,9 @@ In the footer, a status bar is displayed in which you can resume test execution 
 
 ![Debugging status bar](../../images/debugging/client-debugging-footer.png)
 
+> If the test you run in the debugging mode contains a [test hook](../test-api/test-code-structure.md#test-hooks)
+> or [fixture hook](../test-api/test-code-structure.md#fixture-hooks), it will be paused within these hooks before the first action.
+
 ### --app-init-delay \<ms\>
 
 Specifies the amount of time, in milliseconds, allowed for an application launched using the [--app](#-a-command---app-command) option to initialize.
