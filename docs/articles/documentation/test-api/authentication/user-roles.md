@@ -130,7 +130,5 @@ Set the `preserveUrl` option to `true` to save the URL to which the browser was 
 TestCafe will navigate to the saved URL each time after you switch to this role.
 
 This option is useful if you store session-related data (like session ID) in the URL.
-In this instance, enable the `preserveUrl` option and use the [t.navigate](../actions/navigate.md) action
-to open the tested URL after you switch between roles.
 
 **Default value**: `false`
