@@ -22,6 +22,7 @@ This topic contains the following sections.
   * [Filter DOM Nodes](#filter-dom-nodes)
       * [nth](#nth)
       * [withText](#withtext)
+      * [withAttr](#withattr)
       * [filter](#filter)
   * [Search for Elements in the DOM Hierarchy](#search-for-elements-in-the-dom-hierarchy)
       * [find](#find)
@@ -160,7 +161,7 @@ providing you with a flexible functional-style selector mechanism.
 
 If selector returns multiple DOM nodes, you must filter them to select
 a single node that will eventually be returned by the selector.
-The selector provides methods to filter DOM nodes by their index or text.
+The selector provides methods to filter DOM nodes by their index, text, attributes, etc.
 
 #### nth
 
@@ -174,6 +175,12 @@ Method | Type | Description
 ------ | ----- | -----
 `withText(text)` | Selector | Creates a selector that filters a matching set by the specified text.
 `withText(re)` | Selector | Creates a selector that filters a matching set using the specified regular expression.
+
+#### withAttr
+
+Method                              | Type     | Description
+----------------------------------- | -------- | -----------
+`withAttr(attrName [, attrValue] )` | Selector | Creates a selector that filters a matching set by the specified attribute and its value. You can omit the `attrValue` parameter to select elements that have the `attrName` attribute regardless of the value.
 
 #### filter
 
