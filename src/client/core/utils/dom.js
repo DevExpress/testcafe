@@ -19,6 +19,7 @@ export var isTextNode                             = hammerhead.utils.dom.isTextN
 export var isRenderedNode                         = hammerhead.utils.dom.isRenderedNode;
 export var isIframeElement                        = hammerhead.utils.dom.isIframeElement;
 export var isInputElement                         = hammerhead.utils.dom.isInputElement;
+export var isButtonElement                        = hammerhead.utils.dom.isButtonElement;
 export var isFileInput                            = hammerhead.utils.dom.isFileInput;
 export var isTextAreaElement                      = hammerhead.utils.dom.isTextAreaElement;
 export var isAnchorElement                        = hammerhead.utils.dom.isAnchorElement;

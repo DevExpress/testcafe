@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gh-1424</title>
+</head>
+<body>
+<button id="btn">button</button>
+<input id="input" type="button" value="input"/>
+<script>
+    window.btnKeyPressCount   = 0;
+    window.btnClickCount      = 0;
+    window.inputKeyPressCount = 0;
+    window.inputClickCount    = 0;
+
+    var button = document.getElementById('btn');
+    var input  = document.getElementById('input');
+
+    button.addEventListener('keypress', function () {
+        window.btnKeyPressCount++;
+    });
+
+    button.addEventListener('click', function () {
+        window.btnClickCount++;
+    });
+
+    input.addEventListener('keypress', function () {
+        window.inputKeyPressCount++;
+    });
+
+    input.addEventListener('click', function () {
+        window.inputClickCount++;
+    });
+</script>
+</body>
+</html>
