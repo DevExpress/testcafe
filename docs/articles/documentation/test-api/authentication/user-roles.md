@@ -15,7 +15,7 @@ A piece of logic that logs in a particular user is called a *role*. Define a rol
 Use the `Role` constructor to create and initialize a role.
 
 ```text
-Role( url, func( t ) )
+Role( url, func( t ) [, options] )
 ```
 
 Parameter | Type     | Description
@@ -23,6 +23,7 @@ Parameter | Type     | Description
 `url`     | String   | The URL of the login page.
 `func`    | Function | An asynchronous function that contains logic that authenticates the user.
 `t`       | Object   | The [test controller](../test-code-structure.md#test-controller) used to access test run API.
+`options` | Object   | See [Role Options](#role-options).
 
 ```js
 import { Role } from 'testcafe';
@@ -117,3 +118,19 @@ test('Anonymous users can see newly created comments', async t => {
         await t.expect(comment.innerText).eql('Hey ya!');
 });
 ```
+
+## Role Options
+
+### options.preserveUrl
+
+Use this option to control which page is opened after you switch to the role.
+
+By default, TestCafe navigates back to the page that was opened previously to switching to the role.
+Set the `preserveUrl` option to `true` to save the URL to which the browser was redirected after logging in.
+TestCafe will navigate to the saved URL each time after you switch to this role.
+
+This option is useful if you store session-related data (like session ID) in the URL.
+In this instance, enable the `preserveUrl` option and use the [t.navigate](../actions/navigate.md) action
+to open the tested URL after you switch between roles.
+
+**Default value**: `false`
