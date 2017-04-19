@@ -131,8 +131,11 @@ export default class KeyPressSimulator {
         if (character && !(modifiersState.ctrl || modifiersState.alt))
             this._type(activeElement, character);
 
-        if (!browserUtils.isFirefox && this.sanitizedKey === 'enter' &&
-            KeyPressSimulator._isKeyActivatedInputElement(activeElement))
+        var isKeyActivatedInput = KeyPressSimulator._isKeyActivatedInputElement(activeElement);
+        var isButton            = domUtils.isButtonElement(activeElement);
+        var raiseClickOnEnter   = !browserUtils.isFirefox && (isKeyActivatedInput || isButton);
+
+        if (raiseClickOnEnter && this.sanitizedKey === 'enter')
             activeElement.click();
 
         return raiseDefault;
@@ -152,7 +155,7 @@ export default class KeyPressSimulator {
 
         // NOTE: in some browsers we should emulate click on active input element while pressing "space" key
         var emulateClick = !browserUtils.isFirefox && !browserUtils.isSafari &&
-                                 (!browserUtils.isChrome || browserUtils.version >= 53);
+                           (!browserUtils.isChrome || browserUtils.version >= 53);
 
         if (emulateClick && raiseDefault && this.sanitizedKey === 'space' &&
             KeyPressSimulator._isKeyActivatedInputElement(activeElement))
