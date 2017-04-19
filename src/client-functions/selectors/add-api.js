@@ -1,4 +1,4 @@
-import { assign, escapeRegExp as escapeRe } from 'lodash';
+import { assign } from 'lodash';
 import clientFunctionBuilderSymbol from '../builder-symbol';
 import { ELEMENT_SNAPSHOT_PROPERTIES, NODE_SNAPSHOT_PROPERTIES } from './snapshot-properties';
 import { CantObtainInfoForElementSpecifiedBySelectorError } from '../../errors/test-run';
@@ -6,11 +6,12 @@ import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../client-function-builder';
 import ClientFunctionResultPromise from '../result-promise';
 import { assertType, is } from '../../errors/runtime/type-assertions';
+import makeRegExp from '../../utils/make-reg-exp';
 
 const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PROPERTIES);
 
 
-var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode) => {
+var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode, ...arg) => {
     if (typeof filter === 'number') {
         var matchingNode = filter < 0 ? nodes[nodes.length + filter] : nodes[filter];
 
@@ -35,25 +36,13 @@ var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, 
 
     if (typeof filter === 'function') {
         for (var j = 0; j < nodes.length; j++) {
-            if (filter(nodes[j], j, originNode))
+            if (filter(nodes[j], j, originNode, ...arg))
                 result.push(nodes[j]);
         }
     }
 
     return result;
 })).getFunction();
-
-var filterNodesByParam = (new ClientFunctionBuilder((nodes, filter, filterParams) => {
-    var result = [];
-
-    for (var j = 0; j < nodes.length; j++) {
-        if (filter(nodes[j], filterParams))
-            result.push(nodes[j]);
-    }
-
-    return result;
-})).getFunction();
-
 
 var expandSelectorResults = (new ClientFunctionBuilder((selector, populateDerivativeNodes) => {
     var nodes = selector();
@@ -263,10 +252,9 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
     var customMethods                 = collectionModeSelectorBuilder.options.customMethods;
 
     var dependencies = {
-        selector:           collectionModeSelectorBuilder.getFunction(),
-        filter:             filter,
-        filterNodes:        filterNodes,
-        filterNodesByParam: filterNodesByParam
+        selector:    collectionModeSelectorBuilder.getFunction(),
+        filter:      filter,
+        filterNodes: filterNodes
     };
 
     dependencies = assign(dependencies, additionalDependencies);
@@ -280,15 +268,13 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
     return builder.getFunction();
 }
 
-var ensureRegExpValue = str => typeof str === 'string' ? new RegExp(escapeRe(str)) : str;
-
 /* eslint-disable no-undef */
-function hasText (node, { textRe }) {
+function hasText (node, index, originNode, textRe) {
     function hasChildrenWithText (parentNode) {
         var cnCount = parentNode.childNodes.length;
 
         for (var i = 0; i < cnCount; i++) {
-            if (hasText(parentNode.childNodes[i], { textRe }))
+            if (hasText(parentNode.childNodes[i], index, originNode, textRe))
                 return true;
         }
 
@@ -328,7 +314,7 @@ function hasText (node, { textRe }) {
     return textRe.test(node.textContent);
 }
 
-function hasAttr (node, { attrNameRe, attrValueRe }) {
+function hasAttr (node, index, originNode, attrNameRe, attrValueRe) {
     if (node.nodeType !== 1)
         return false;
 
@@ -368,12 +354,12 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
             if (!nodes.length)
                 return null;
 
-            return filterNodesByParam(nodes, filter, filterParams);
+            return filterNodes(nodes, filter, document, void 0, textRe);
             /* eslint-enable no-undef */
         };
 
         return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filterByText, {
-            filterParams: { textRe: ensureRegExpValue(text) }
+            textRe: makeRegExp(text)
         });
     };
 
@@ -390,15 +376,13 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
             if (!nodes.length)
                 return null;
 
-            return filterNodesByParam(nodes, filter, filterParams);
+            return filterNodes(nodes, filter, document, void 0, attrNameRe, attrValueRe);
             /* eslint-enable no-undef */
         };
 
         return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filterByAttr, {
-            filterParams: {
-                attrNameRe:  ensureRegExpValue(attrName),
-                attrValueRe: ensureRegExpValue(attrValue)
-            }
+            attrNameRe:  makeRegExp(attrName),
+            attrValueRe: makeRegExp(attrValue)
         });
     };
 
