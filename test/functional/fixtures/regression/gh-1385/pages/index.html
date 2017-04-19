@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gh-1385</title>
+</head>
+<body>
+
+<div id='div' contenteditable="true">content</div>
+
+<script>
+    document.getElementById('div').addEventListener('mousedown', function (e) {
+        var x = e.clientX;
+        var y = e.clientY;
+
+        window.elementFromPointId = document.elementFromPoint(x, y).id;
+
+        if (document.caretPositionFromPoint)
+            window.caretPositionFromPointData = document.caretPositionFromPoint(x, y).offsetNode.data;
+
+        if (document.caretRangeFromPoint)
+            window.caretRangeFromPointData = document.caretRangeFromPoint(x, y).startContainer.data;
+    });
+</script>
+
+</body>
+</html>
