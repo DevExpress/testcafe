@@ -43,6 +43,17 @@ var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, 
     return result;
 })).getFunction();
 
+var filterNodesByParam = (new ClientFunctionBuilder((nodes, filter, filterParams) => {
+    var result = [];
+
+    for (var j = 0; j < nodes.length; j++) {
+        if (filter(nodes[j], filterParams))
+            result.push(nodes[j]);
+    }
+
+    return result;
+})).getFunction();
+
 
 var expandSelectorResults = (new ClientFunctionBuilder((selector, populateDerivativeNodes) => {
     var nodes = selector();
@@ -252,9 +263,10 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
     var customMethods                 = collectionModeSelectorBuilder.options.customMethods;
 
     var dependencies = {
-        selector:    collectionModeSelectorBuilder.getFunction(),
-        filter:      filter,
-        filterNodes: filterNodes
+        selector:           collectionModeSelectorBuilder.getFunction(),
+        filter:             filter,
+        filterNodes:        filterNodes,
+        filterNodesByParam: filterNodesByParam
     };
 
     dependencies = assign(dependencies, additionalDependencies);
@@ -271,12 +283,12 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
 var ensureRegExpValue = str => typeof str === 'string' ? new RegExp(escapeRe(str)) : str;
 
 /* eslint-disable no-undef */
-function hasText (node) {
-    function hasChildrenWithText (parentNode, textRe) {
+function hasText (node, { textRe }) {
+    function hasChildrenWithText (parentNode) {
         var cnCount = parentNode.childNodes.length;
 
         for (var i = 0; i < cnCount; i++) {
-            if (hasText(parentNode.childNodes[i], textRe))
+            if (hasText(parentNode.childNodes[i], { textRe }))
                 return true;
         }
 
@@ -316,7 +328,7 @@ function hasText (node) {
     return textRe.test(node.textContent);
 }
 
-function hasAttr (node) {
+function hasAttr (node, { attrNameRe, attrValueRe }) {
     if (node.nodeType !== 1)
         return false;
 
@@ -334,6 +346,8 @@ function hasAttr (node) {
 }
 /* eslint-enable no-undef */
 
+var filterByText = convertFilterToClientFunctionIfNecessary('filter', hasText);
+var filterByAttr = convertFilterToClientFunctionIfNecessary('filter', hasAttr);
 
 function addFilterMethods (obj, getSelector, SelectorBuilder) {
     obj.nth = index => {
@@ -347,8 +361,6 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
     obj.withText = text => {
         assertType([is.string, is.regExp], 'withText', '"text" argument', text);
 
-        var filter = convertFilterToClientFunctionIfNecessary('filter', hasText, { textRe: ensureRegExpValue(text) });
-
         var selectorFn = () => {
             /* eslint-disable no-undef */
             var nodes = selector();
@@ -356,11 +368,13 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
             if (!nodes.length)
                 return null;
 
-            return filterNodes(nodes, filter, document, void 0);
+            return filterNodesByParam(nodes, filter, filterParams);
             /* eslint-enable no-undef */
         };
 
-        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter);
+        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filterByText, {
+            filterParams: { textRe: ensureRegExpValue(text) }
+        });
     };
 
     obj.withAttr = (attrName, attrValue) => {
@@ -369,11 +383,6 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
         if (attrValue !== void 0)
             assertType([is.string, is.regExp], 'withAttr', '"attrValue" argument', attrValue);
 
-        var filter = convertFilterToClientFunctionIfNecessary('filter', hasAttr, {
-            attrNameRe:  ensureRegExpValue(attrName),
-            attrValueRe: ensureRegExpValue(attrValue)
-        });
-
         var selectorFn = () => {
             /* eslint-disable no-undef */
             var nodes = selector();
@@ -381,11 +390,16 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
             if (!nodes.length)
                 return null;
 
-            return filterNodes(nodes, filter, document, void 0);
+            return filterNodesByParam(nodes, filter, filterParams);
             /* eslint-enable no-undef */
         };
 
-        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filter);
+        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filterByAttr, {
+            filterParams: {
+                attrNameRe:  ensureRegExpValue(attrName),
+                attrValueRe: ensureRegExpValue(attrValue)
+            }
+        });
     };
 
     obj.filter = (filter, dependencies) => {
