@@ -1,0 +1,18 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>GH-1366</title>
+</head>
+
+<body>
+<select>
+    <option value="Ford">Ford</option>
+    <option value="Vauxhall">Vauxhall</option>
+    <option value="Nissan">Nissan</option>
+</select>
+<script>
+    document.querySelector('select').addEventListener('input', function (event){window.selectValue = event.target.value});
+</script>
+</body>
+</html>

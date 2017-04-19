@@ -42,8 +42,10 @@ function clickOnOption (optionIndex, isOptionDisabled) {
     if (clickLeadChanges && !browserUtils.isIE)
         curSelectEl.selectedIndex = optionIndex;
 
-    if (!browserUtils.isFirefox && !browserUtils.isIE && clickLeadChanges)
+    if (!browserUtils.isFirefox && !browserUtils.isIE && clickLeadChanges) {
+        eventSimulator.input(curSelectEl);
         eventSimulator.change(curSelectEl);
+    }
 
     if (browserUtils.isFirefox || browserUtils.isIE)
         eventSimulator.mousedown(browserUtils.isFirefox ? realOption : curSelectEl);
@@ -54,6 +56,9 @@ function clickOnOption (optionIndex, isOptionDisabled) {
     if ((browserUtils.isFirefox || browserUtils.isIE) && clickLeadChanges) {
         if (browserUtils.isIE)
             curSelectEl.selectedIndex = optionIndex;
+
+        if (!browserUtils.isIE)
+            eventSimulator.input(curSelectEl);
 
         eventSimulator.change(curSelectEl);
     }
@@ -263,6 +268,10 @@ export function switchOptionsByKeys (element, command) {
 
         if (nextIndex >= 0 && nextIndex < enabledOptions.length) {
             element.selectedIndex = arrayUtils.indexOf(realOptions, enabledOptions[nextIndex]);
+
+            if (!browserUtils.isIE)
+                eventSimulator.input(element);
+
             eventSimulator.change(element);
         }
     }

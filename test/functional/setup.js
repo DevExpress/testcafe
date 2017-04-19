@@ -231,6 +231,8 @@ before(function () {
 });
 
 after(function () {
+    this.timeout(60000);
+
     testCafe.close();
     site.destroy();
 

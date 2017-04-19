@@ -45,7 +45,10 @@ export default class SelectChildClickAutomation {
             this.childIndex = isOption ? domUtils.getOptionIndex(this.parentSelect, this.element) :
                               domUtils.getOptionGroupIndex(this.parentSelect, this.element);
 
-            this.clickCausesChange = isOption && !this.element.disabled && this.childIndex !== selectedIndex;
+            var parentOptGroup = domUtils.isOptionGroupElement(this.element.parentNode) ? this.element.parentNode : null;
+            var isDisabled     = this.element.disabled || parentOptGroup && parentOptGroup.disabled;
+
+            this.clickCausesChange = isOption && !isDisabled && this.childIndex !== selectedIndex;
         }
 
         this.eventsArgs = {
@@ -185,12 +188,7 @@ export default class SelectChildClickAutomation {
         if (styleUtils.getSelectElementSize(this.parentSelect) <= 1) {
             return this
                 ._move(moveArguments)
-                .then(() => {
-                    if (!browserUtils.isIE)
-                        eventSimulator.input(this.parentSelect);
-
-                    eventSimulator.click(this.eventsArgs.element, this.eventsArgs.options);
-                });
+                .then(() => this._click());
         }
 
         return this

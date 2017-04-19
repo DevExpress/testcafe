@@ -154,6 +154,7 @@ $(document).ready(function () {
         $select.bind('mouseup', eventHandler);
         $select.bind('click', eventHandler);
         $select.bind('change', eventHandler);
+        $select.bind('input', eventHandler);
 
         if ($option) {
             $option.bind('mousedown', eventHandler);
@@ -1380,13 +1381,13 @@ $(document).ready(function () {
             runClickAutomation($option[0], {}, function () {
                 equal(select.selectedIndex, 2);
                 if (browserUtils.isFirefox)
-                    equal(handlersLog.join(), 'select mousedown,select mouseup,select click,option mousedown,option mouseup,select change,option click');
+                    equal(handlersLog.join(), 'select mousedown,select mouseup,select click,option mousedown,option mouseup,select input,select change,option click');
                 else if (browserUtils.isIE)
                     equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select mousedown,select mouseup,select change,option click');
                 else if (isMobileBrowser)
-                    equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select change');
+                    equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select input,select change');
                 else
-                    equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select change,select mouseup,select click');
+                    equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select input,select change,select mouseup,select click');
                 startNext();
             });
         });
@@ -1410,13 +1411,13 @@ $(document).ready(function () {
                         equal(select.selectedIndex, 2);
 
                         if (browserUtils.isFirefox)
-                            equal(handlersLog.join(), 'select mousedown,select mouseup,select click,option mousedown,option mouseup,select change,option click,select mousedown,select mouseup,select click,option mousedown,option mouseup,option click');
+                            equal(handlersLog.join(), 'select mousedown,select mouseup,select click,option mousedown,option mouseup,select input,select change,option click,select mousedown,select mouseup,select click,option mousedown,option mouseup,option click');
                         else if (browserUtils.isIE)
                             equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select mousedown,select mouseup,select change,option click,select mousedown,select mouseup,select click,select mousedown,select mouseup,option click');
                         else if (isMobileBrowser)
-                            equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select change,select mousedown,select mouseup,select click');
+                            equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select input,select change,select mousedown,select mouseup,select click');
                         else
-                            equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select change,select mouseup,select click,select mousedown,select mouseup,select click,select mouseup,select click');
+                            equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select input,select change,select mouseup,select click,select mousedown,select mouseup,select click,select mouseup,select click');
                         startNext();
                     });
                 });
@@ -1468,9 +1469,9 @@ $(document).ready(function () {
                     if (browserUtils.isIE)
                         equal(handlersLog.join(), 'select mousedown,select mouseup,select change,select click');
                     else if (isMobileBrowser)
-                        equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select change');
+                        equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select input,select change');
                     else
-                        equal(handlersLog.join(), 'option mousedown,option mouseup,select change,option click');
+                        equal(handlersLog.join(), 'option mousedown,option mouseup,select input,select change,option click');
                     startNext();
                 });
             }
@@ -1513,9 +1514,9 @@ $(document).ready(function () {
                     if (browserUtils.isIE)
                         equal(handlersLog.join(), 'select mousedown,select mouseup,select change,select click,select mousedown,select mouseup,select click');
                     else if (isMobileBrowser)
-                        equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select change,select mousedown,select mouseup,select click');
+                        equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select input,select change,select mousedown,select mouseup,select click');
                     else
-                        equal(handlersLog.join(), 'option mousedown,option mouseup,select change,option click,option mousedown,option mouseup,option click');
+                        equal(handlersLog.join(), 'option mousedown,option mouseup,select input,select change,option click,option mousedown,option mouseup,option click');
                     startNext();
                 });
             }
