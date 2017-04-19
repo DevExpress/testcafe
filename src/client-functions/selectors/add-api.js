@@ -6,11 +6,12 @@ import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../client-function-builder';
 import ClientFunctionResultPromise from '../result-promise';
 import { assertType, is } from '../../errors/runtime/type-assertions';
+import makeRegExp from '../../utils/make-reg-exp';
 
 const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PROPERTIES);
 
 
-var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode) => {
+var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode, ...filterArgs) => {
     if (typeof filter === 'number') {
         var matchingNode = filter < 0 ? nodes[nodes.length + filter] : nodes[filter];
 
@@ -35,14 +36,13 @@ var filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, 
 
     if (typeof filter === 'function') {
         for (var j = 0; j < nodes.length; j++) {
-            if (filter(nodes[j], j, originNode))
+            if (filter(nodes[j], j, originNode, ...filterArgs))
                 result.push(nodes[j]);
         }
     }
 
     return result;
 })).getFunction();
-
 
 var expandSelectorResults = (new ClientFunctionBuilder((selector, populateDerivativeNodes) => {
     var nodes = selector();
@@ -268,6 +268,73 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
     return builder.getFunction();
 }
 
+/* eslint-disable no-undef */
+function hasText (node, index, originNode, textRe) {
+    function hasChildrenWithText (parentNode) {
+        var cnCount = parentNode.childNodes.length;
+
+        for (var i = 0; i < cnCount; i++) {
+            if (hasText(parentNode.childNodes[i], index, originNode, textRe))
+                return true;
+        }
+
+        return false;
+    }
+
+    // Element
+    if (node.nodeType === 1) {
+        var text = node.innerText;
+
+        // NOTE: In Firefox, <option> elements don't have `innerText`.
+        // So, we fallback to `textContent` in that case (see GH-861).
+        if (node.tagName.toLowerCase() === 'option') {
+            var textContent = node.textContent;
+
+            if (!text && textContent)
+                text = textContent;
+        }
+
+        return textRe.test(text);
+    }
+
+    // Document
+    if (node.nodeType === 9) {
+        // NOTE: latest version of Edge doesn't have `innerText` for `document`,
+        // `html` and `body`. So we check their children instead.
+        var head = node.querySelector('head');
+        var body = node.querySelector('body');
+
+        return hasChildrenWithText(head, textRe) || hasChildrenWithText(body, textRe);
+    }
+
+    // DocumentFragment
+    if (node.nodeType === 11)
+        return hasChildrenWithText(node, textRe);
+
+    return textRe.test(node.textContent);
+}
+
+function hasAttr (node, index, originNode, attrNameRe, attrValueRe) {
+    if (node.nodeType !== 1)
+        return false;
+
+    var attributes = node.attributes;
+    var attr       = null;
+
+    for (var i = 0; i < attributes.length; i++) {
+        attr = attributes[i];
+
+        if (attrNameRe.test(attr.nodeName) && (!attrValueRe || attrValueRe.test(attr.nodeValue)))
+            return true;
+    }
+
+    return false;
+}
+/* eslint-enable no-undef */
+
+var filterByText = convertFilterToClientFunctionIfNecessary('filter', hasText);
+var filterByAttr = convertFilterToClientFunctionIfNecessary('filter', hasAttr);
+
 function addFilterMethods (obj, getSelector, SelectorBuilder) {
     obj.nth = index => {
         assertType(is.number, 'nth', '"index" argument', index);
@@ -280,9 +347,43 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
     obj.withText = text => {
         assertType([is.string, is.regExp], 'withText', '"text" argument', text);
 
-        var builder = new SelectorBuilder(getSelector(), { text: text }, { instantiation: 'Selector' });
+        var selectorFn = () => {
+            /* eslint-disable no-undef */
+            var nodes = selector();
 
-        return builder.getFunction();
+            if (!nodes.length)
+                return null;
+
+            return filterNodes(nodes, filter, document, void 0, textRe);
+            /* eslint-enable no-undef */
+        };
+
+        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filterByText, {
+            textRe: makeRegExp(text)
+        });
+    };
+
+    obj.withAttr = (attrName, attrValue) => {
+        assertType([is.string, is.regExp], 'withAttr', '"attrName" argument', attrName);
+
+        if (attrValue !== void 0)
+            assertType([is.string, is.regExp], 'withAttr', '"attrValue" argument', attrValue);
+
+        var selectorFn = () => {
+            /* eslint-disable no-undef */
+            var nodes = selector();
+
+            if (!nodes.length)
+                return null;
+
+            return filterNodes(nodes, filter, document, void 0, attrNameRe, attrValueRe);
+            /* eslint-enable no-undef */
+        };
+
+        return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filterByAttr, {
+            attrNameRe:  makeRegExp(attrName),
+            attrValueRe: makeRegExp(attrValue)
+        });
     };
 
     obj.filter = (filter, dependencies) => {

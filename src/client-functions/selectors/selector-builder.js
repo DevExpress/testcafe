@@ -1,4 +1,4 @@
-import { isNil as isNullOrUndefined, merge, escapeRegExp as escapeRe } from 'lodash';
+import { isNil as isNullOrUndefined, merge } from 'lodash';
 import dedent from 'dedent';
 import ClientFunctionBuilder from '../client-function-builder';
 import { SelectorNodeTransform } from '../replicator';
@@ -76,19 +76,14 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
     getFunctionDependencies () {
         var dependencies        = super.getFunctionDependencies();
-        var text                = this.options.text;
         var customDOMProperties = this.options.customDOMProperties;
         var customMethods       = this.options.customMethods;
-
-        if (typeof text === 'string')
-            text = new RegExp(escapeRe(text));
 
         return merge({}, dependencies, {
             filterOptions: {
                 counterMode:    this.options.counterMode,
                 collectionMode: this.options.collectionMode,
-                index:          isNullOrUndefined(this.options.index) ? null : this.options.index,
-                text:           text
+                index:          isNullOrUndefined(this.options.index) ? null : this.options.index
             },
 
             boundArgs:           this.options.boundArgs,

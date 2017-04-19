@@ -427,73 +427,93 @@ test('Selector "nth()" method', async () => {
     expect(await getSecondEl.nth(2).id).eql('el3');
 });
 
-test('Selector "withText" method', async () => {
+test('Selector "withText" method', async t => {
     // String selector and string filter
-    let selector = Selector('div').withText('element 4.');
+    await t
+        .expect(Selector('div').withText('element 4.').id).eql('el4')
 
-    let el = await selector();
+        // String selector and regexp filter
+        .expect(Selector('div').withText(/This is element \d+/).id).eql('el1')
 
-    expect(el.id).eql('el4');
+        // Function selector and string filter
+        .expect(Selector(() => document.querySelectorAll('.idxEl')).withText('element 4.').id).eql('el4')
 
-    // String selector and regexp filter
-    selector = Selector('div').withText(/This is element \d+/);
+        // Function selector and regexp filter
+        .expect(Selector(() => document.querySelectorAll('.idxEl')).withText(/This is element \d+/).id).eql('el1')
 
-    el = await selector();
+        // Should filter element if text filter specified
+        .expect(getElementById('el1').withText('element 4.').exists).notOk()
+        .expect(getElementById('el4').withText('element 4.').id).eql('el4');
 
-    expect(el.id).eql('el1');
-
-    // Function selector and string filter
-    selector = Selector(() => document.querySelectorAll('.idxEl')).withText('element 4.');
-
-    el = await selector();
-
-    expect(el.id).eql('el4');
-
-    // Function selector and regexp filter
-    selector = Selector(() => document.querySelectorAll('.idxEl')).withText(/This is element \d+/);
-
-    el = await selector();
-
-    expect(el.id).eql('el1');
-
-    // Should filter element if text filter specified
-    selector = Selector(id => document.getElementById(id)).withText('element 4.');
-
-    el = await selector('el1');
-
-    expect(el).to.be.null;
-
-    el = await selector('el4');
-
-    expect(el.id).eql('el4');
+    var getDocument = Selector(() => document);
 
     // Should filter document if text filter specified
-    selector = Selector(() => document).withText('Lorem ipsum dolor sit amet, consectetur');
+    await t
+        .expect(getDocument.withText('Lorem ipsum dolor sit amet, consectetur').exists).notOk()
+        .expect(getDocument.withText('Hey?! (yo)').nodeType).eql(9)
 
-    el = await selector();
+        //Compound
+        .expect(Selector('div').withText('This').withText('element 4').id).eql('el4');
 
-    expect(el).to.be.null;
+    var getNode = Selector(() => document.getElementById('el2').childNodes[0]);
 
-    // Should be overridable
-    el = await selector.withText('Hey?! (yo)')();
-
-    expect(el.nodeType).eql(9);
-
-    selector = Selector(() => document.getElementById('el2').childNodes[0]).withText('Lorem ipsum dolor sit amet, consectetur');
-
-    el = await selector();
-
-    expect(el).to.be.null;
-
-    el = await selector.withText('Hey?! (yo)')();
-
-    expect(el.nodeType).eql(3);
+    await t
+        .expect(getNode().withText('Lorem ipsum dolor sit amet, consectetur').exists).notOk()
+        .expect(getNode().withText('Hey?! (yo)').nodeType).eql(3);
 
     // Should work on parameterized selectors
     const elWithClass = Selector(className => document.querySelectorAll('.' + className));
 
-    expect(await elWithClass('idxEl').withText('element 4.').id).eql('el4');
-    expect(await elWithClass('idxEl').withText('element 1.').id).eql('el1');
+    await t
+        .expect(elWithClass('idxEl').withText('element 4.').id).eql('el4')
+        .expect(elWithClass('idxEl').withText('element 1.').id).eql('el1');
+});
+
+test('Selector "withAttr" method', async t => {
+    await t
+    // string attr name
+        .expect(Selector('div').withAttr('data-store').id).eql('attr1')
+
+        // regexp attr name
+        .expect(Selector('div').withAttr(/data/).id).eql('attr1')
+
+        // string attr name and string attribute value
+        .expect(Selector('div').withAttr('data-store', 'data-attr2').id).eql('attr2')
+
+        // string attr name and regexp attribute value
+        .expect(Selector('div').withAttr('data-store', /data-attr\d/).id).eql('attr1')
+
+        // regexp attr name and regexp attribute value
+        .expect(Selector('div').withAttr(/store$/, /attr2$/).id).eql('attr2');
+
+    var byAtrSelector = Selector(() => document.querySelectorAll('.attr'));
+
+    await t
+    // Function selector and attr filter
+        .expect(byAtrSelector.withAttr('data-store', 'data-attr2').id).eql('attr2')
+
+        // Function selector and regexp attr filter
+        .expect(byAtrSelector.withAttr(/data/, /data-attr\d/).id).eql('attr1')
+
+        //Compound
+        .expect(Selector('div').withAttr('class', /attr/).withAttr('data-store', 'data-attr2').id).eql('attr2');
+
+    // Parameterized selector and attr filter
+    var byClassNameSelector = Selector(className => document.getElementsByClassName(className));
+
+    await t
+        .expect(byClassNameSelector('attr').withAttr('data-store', 'data-attr1').id).eql('attr1')
+        .expect(byClassNameSelector('attr').withAttr('data-store', 'data-attr2').id).eql('attr2');
+
+    var documentSelector = Selector(() => document);
+
+    // Should not filter document with attributes
+    await t.expect(documentSelector.withAttr('data-store', 'data-attr1').exists).notOk();
+
+    var nodeSelector = Selector(() => document.getElementById('attr1').childNodes[0]);
+
+    // Should not work for nodes
+    await t.expect(nodeSelector.withAttr('data-store').exists).notOk();
 });
 
 test('Selector "filter" method', async () => {
@@ -535,7 +555,7 @@ test('Combination of filter methods', async t => {
 
     expect(el.id).eql('el3');
 
-    el = await selector.withText(/This is element \d+/)();
+    el = await Selector('div').withText(/This is element \d+/).nth(1)();
 
     expect(el.id).eql('el4');
 
