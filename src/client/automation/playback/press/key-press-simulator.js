@@ -131,10 +131,9 @@ export default class KeyPressSimulator {
         if (character && !(modifiersState.ctrl || modifiersState.alt))
             this._type(activeElement, character);
 
-        var isKeyActivatedInputOrButton = KeyPressSimulator._isKeyActivatedInputElement(activeElement) ||
-                                          domUtils.isButtonElement(activeElement);
-
-        var raiseClickOnEnter = !browserUtils.isFirefox && isKeyActivatedInputOrButton;
+        var isKeyActivatedInput = KeyPressSimulator._isKeyActivatedInputElement(activeElement);
+        var isButton            = domUtils.isButtonElement(activeElement);
+        var raiseClickOnEnter   = !browserUtils.isFirefox && (isKeyActivatedInput || isButton);
 
         if (raiseClickOnEnter && this.sanitizedKey === 'enter')
             activeElement.click();
