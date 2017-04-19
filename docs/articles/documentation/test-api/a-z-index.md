@@ -21,7 +21,7 @@ This topic lists test API members in alphabetical order.
     * [page](test-code-structure.md#specifying-the-start-webpage)
     * [skip](test-code-structure.md#skipping-tests)
 * [Role](authentication/user-roles.md)
-    * [anonymous](authentication/user-roles.md)
+    * [anonymous](authentication/user-roles.md#anonymous-role)
 * [Selector](selecting-page-elements/selectors.md#creating-selectors)
     * [addCustomDOMProperties](selecting-page-elements/selectors.md#custom-properties)
     * [addCustomMethods](selecting-page-elements/selectors.md#custom-methods)
