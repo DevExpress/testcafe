@@ -1,6 +1,6 @@
 import { Selector } from 'testcafe';
 
-fixture `gh-1206`
+fixture `Open restricted page via proxy`
     .page `http://localhost:3002`;
 
 test('Authenticate via proxy server', async t => {

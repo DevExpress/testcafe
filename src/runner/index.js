@@ -19,7 +19,7 @@ export default class Runner extends EventEmitter {
     constructor (proxy, browserConnectionGateway) {
         super();
 
-        this.hammerhead          = proxy;
+        this.proxy               = proxy;
         this.bootstrapper        = new Bootstrapper(browserConnectionGateway);
         this.pendingTaskPromises = [];
 
@@ -93,7 +93,7 @@ export default class Runner extends EventEmitter {
 
     _runTask (reporterPlugin, browserSet, tests, testedApp) {
         var completed         = false;
-        var task              = new Task(tests, browserSet.connections, this.hammerhead, this.opts);
+        var task              = new Task(tests, browserSet.connections, this.proxy, this.opts);
         var reporter          = new Reporter(reporterPlugin, task, this.opts.reportOutStream);
         var completionPromise = this._getTaskResult(task, browserSet, reporter, testedApp);
 
@@ -114,7 +114,7 @@ export default class Runner extends EventEmitter {
     }
 
     _registerAssets (assets) {
-        assets.forEach(asset => this.hammerhead.GET(asset.path, asset.info));
+        assets.forEach(asset => this.proxy.GET(asset.path, asset.info));
     }
 
 
@@ -153,7 +153,7 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    proxy (externalProxyUrl) {
+    useProxy (externalProxyUrl) {
         this.opts.externalProxyUrl = externalProxyUrl;
 
         return this;

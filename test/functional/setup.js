@@ -161,7 +161,7 @@ before(function () {
                 var speed              = opts && opts.speed;
                 var appCommand         = opts && opts.appCommand;
                 var appInitDelay       = opts && opts.appInitDelay;
-                var externalProxyUrl   = opts && opts.proxy;
+                var externalProxyUrl   = opts && opts.useProxy;
 
                 var actualBrowsers = browsersInfo.filter(function (browserInfo) {
                     var only = onlyOption ? onlyOption.indexOf(browserInfo.settings.alias) > -1 : true;
@@ -190,7 +190,7 @@ before(function () {
                 };
 
                 return runner
-                    .proxy(externalProxyUrl)
+                    .useProxy(externalProxyUrl)
                     .browsers(connections)
                     .filter(function (test) {
                         return testName ? test === testName : true;
