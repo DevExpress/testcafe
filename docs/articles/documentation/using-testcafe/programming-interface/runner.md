@@ -47,6 +47,7 @@ createTestCafe('localhost', 1337, 1338)
     * [Saving the Report to a File](#saving-the-report-to-a-file)
     * [Implementing a Custom Stream](#implementing-a-custom-stream)
 * [startApp](#startapp)
+* [useProxy](#useproxy)
 * [run](#run)
     * [Cancelling Test Tasks](#cancelling-test-tasks)
     * [Quarantine Mode](#quarantine-mode)
@@ -284,12 +285,12 @@ Parameter         | Type    | Description   Default
 runner.startApp('node server.js', 4000);
 ```
 
-### proxy
+### useProxy
 
 Specifies the URL of the proxy server used in your local network to access the Internet.
 
 ```text
-async proxy(url) → this
+async useProxy(url) → this
 ```
 
 Parameter | Type   | Description
@@ -299,11 +300,17 @@ Parameter | Type   | Description
 **Examples**
 
 ```js
-runner.proxy('proxy.corp.mycompany.com');
+runner.useProxy('proxy.corp.mycompany.com');
 ```
 
 ```js
-runner.proxy('172.0.10.10:8080');
+runner.useProxy('172.0.10.10:8080');
+```
+
+You can specify authentication credentials in the proxy URL.
+
+```js
+runner.useProxy('username:password@proxy.mycorp.com');
 ```
 
 ### run

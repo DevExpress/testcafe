@@ -336,16 +336,22 @@ See [Smart Assertion Query Mechanism](../test-api/assertions/README.md#smart-ass
 testcafe ie my-tests --assertion-timeout 10000
 ```
 
-### --proxy-url \<url\>
+### --proxy \<url\>
 
 Specifies the URL of the proxy server used in your local network to access the Internet.
 
 ```sh
-testcafe chrome my-tests/**/*.js --proxy-url proxy.corp.mycompany.com
+testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com
 ```
 
 ```sh
-testcafe chrome my-tests/**/*.js --proxy-url 172.0.10.10:8080
+testcafe chrome my-tests/**/*.js --proxy 172.0.10.10:8080
+```
+
+You can specify authentication credentials in the proxy URL.
+
+```js
+testcafe chrome my-tests/**/*.js --proxy username:password@proxy.mycorp.com
 ```
 
 ### --ports \<port1,port2\>
