@@ -1,8 +1,8 @@
 var Server                 = require('./server');
 var basicAuthServer        = require('./basic-auth-server');
 var ntlmAuthServer         = require('./ntlm-auth-server');
-var anonymProxyServer      = require('./anonym-proxy');
-var transparentProxyServer = require('./transparent-proxy');
+var trustedProxyServer     = require('./trusted-proxy-server');
+var transparentProxyServer = require('./transparent-proxy-server');
 
 var server1 = null;
 var server2 = null;
@@ -14,8 +14,8 @@ exports.create = function (ports, viewsPath) {
     basicAuthServer.start(ports.basicAuthServer);
     ntlmAuthServer.start(ports.ntlmAuthServer);
 
-    anonymProxyServer.start(ports.anonymProxy);
-    transparentProxyServer.start(ports.transparentProxy);
+    trustedProxyServer.start(ports.trustedProxyServer);
+    transparentProxyServer.start(ports.transparentProxyServer);
 };
 
 exports.destroy = function () {
@@ -23,6 +23,6 @@ exports.destroy = function () {
     server2.close();
     basicAuthServer.shutdown();
     ntlmAuthServer.shutdown();
-    anonymProxyServer.shutdown();
+    trustedProxyServer.shutdown();
     transparentProxyServer.shutdown();
 };
