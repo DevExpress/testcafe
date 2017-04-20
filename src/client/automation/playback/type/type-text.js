@@ -1,7 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import nextTick from '../../utils/next-tick';
-import replaceCharAt from '../../utils/replace-char-at';
 
 var browserUtils   = hammerhead.utils.browser;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
@@ -178,20 +177,8 @@ function _typeTextToTextEditable (element, text) {
 }
 
 function _typeTextToNonTextEditable (element, text, caretPos) {
-    if (caretPos !== null) {
-        var inputValue = element.value;
-
-        for (var i = 0; i < text.length; i++) {
-            if (inputValue[caretPos])
-                inputValue = replaceCharAt(inputValue, caretPos, text[i]);
-            else
-                inputValue += text[i];
-
-            caretPos++;
-        }
-
-        element.value = inputValue;
-    }
+    if (caretPos !== null)
+        element.value = element.value.substr(0, caretPos) + text + element.value.substr(caretPos + text.length);
     else
         element.value = text;
 
