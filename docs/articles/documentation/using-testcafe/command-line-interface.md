@@ -34,7 +34,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--app-init-delay \<ms\>](#--app-init-delay-ms)
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
-  * [--proxy-url \<url\>](#--proxy-url-url)
+  * [--proxy \<url\>](#--proxy-url)
   * [--ports \<port1,port2\>](#--ports-port1port2)
   * [--hostname \<name\>](#--hostname-name)
   * [--speed \<factor\>](#--speed-factor)
