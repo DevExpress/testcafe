@@ -47,7 +47,7 @@ function _updateSelectionAfterDeletionContent (element, selection) {
     return selection;
 }
 
-function _typeCharInElementNode (elementNode, text) {
+function _typeTextInElementNode (elementNode, text) {
     var nodeForTyping  = document.createTextNode(text);
     var textLength     = text.length;
     var selectPosition = { node: nodeForTyping, offset: textLength };
@@ -80,7 +80,7 @@ function _excludeInvisibleSymbolsFromSelection (selection) {
     return selection;
 }
 
-function _typeCharToContentEditable (element, text) {
+function _typeTextToContentEditable (element, text) {
     var currentSelection = _getSelectionInElement(element);
     var startNode        = currentSelection.startPos.node;
     var endNode          = currentSelection.endPos.node;
@@ -124,7 +124,7 @@ function _typeCharToContentEditable (element, text) {
 
     // NOTE: we can type only to the text nodes; for nodes with the 'element-node' type, we use a special behavior
     if (domUtils.isElementNode(startNode)) {
-        _typeCharInElementNode(startNode, text);
+        _typeTextInElementNode(startNode, text);
 
         afterContentChanged();
         return;
@@ -146,7 +146,7 @@ function _typeCharToContentEditable (element, text) {
     afterContentChanged();
 }
 
-function _typeCharToTextEditable (element, text) {
+function _typeTextToTextEditable (element, text) {
     var elementValue      = element.value;
     var textLength        = text.length;
     var startSelection    = textSelection.getSelectionStart(element);
@@ -176,10 +176,25 @@ function _typeCharToTextEditable (element, text) {
     eventSimulator.input(element);
 }
 
-export default function (element, text) {
-    if (domUtils.isContentEditableElement(element))
-        _typeCharToContentEditable(element, text === ' ' ? String.fromCharCode(160) : text);
+function _typeTextToNonTextEditable (element, text, caretPos) {
+    if (caretPos !== null)
+        element.value = element.value.substr(0, caretPos) + text + element.value.substr(caretPos + text.length);
+    else
+        element.value = text;
 
-    if (domUtils.isTextEditableElementAndEditingAllowed(element))
-        _typeCharToTextEditable(element, text);
+    eventSimulator.change(element);
+    eventSimulator.input(element);
+}
+
+export default function (element, text, caretPos) {
+    if (domUtils.isContentEditableElement(element))
+        _typeTextToContentEditable(element, text === ' ' ? String.fromCharCode(160) : text);
+
+    if (!domUtils.isElementReadOnly(element)) {
+        if (domUtils.isTextEditableElement(element))
+            _typeTextToTextEditable(element, text);
+
+        else if (domUtils.isInputElement(element))
+            _typeTextToNonTextEditable(element, text, caretPos);
+    }
 }

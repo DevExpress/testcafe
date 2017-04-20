@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-1327</title>
+</head>
+<body>
+<input type="date">
+<input type="week">
+<input type="month">
+<input type="time">
+<input type="datetime-local">
+<input type="range">
+<input type="color">
+<script>
+    window.inputEvtCounter  = 0;
+    window.changeEvtCounter = 0;
+
+    var inputElements = document.querySelectorAll('input');
+
+    var saveEventToStorage = function (event) {
+        eventStorage.push(event.type);
+    };
+
+    for (var i = 0; i < inputElements.length; i++) {
+        var element = inputElements[i];
+
+        element.addEventListener('change', function () {
+            window.inputEvtCounter++;
+        });
+
+        element.addEventListener('input', function () {
+            window.changeEvtCounter++;
+        });
+    }
+</script>
+</body>
+</html>
