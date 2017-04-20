@@ -89,8 +89,12 @@ export function hasScroll (el) {
         return true;
 
     //T174562 - wrong scrolling in iframes without src and others iframes
-    if (isHtmlElement && body)
-        return body.scrollHeight > body.clientHeight || body.scrollWidth > body.clientWidth;
+    if (isHtmlElement && body) {
+        var clientWidth  = Math.min(el.clientWidth, body.clientWidth);
+        var clientHeight = Math.min(el.clientHeight, body.clientHeight);
+
+        return body.scrollHeight > clientHeight || body.scrollWidth > clientWidth;
+    }
 
     return false;
 }
