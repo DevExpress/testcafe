@@ -180,7 +180,7 @@ Method | Type | Description
 
 Method                              | Type     | Description
 ----------------------------------- | -------- | -----------
-`withAttr(attrName [, attrValue] )` | Selector | Creates a selector that filters a matching set by the specified attribute and its value.
+`withAttr(attrName [, attrValue])` | Selector | Creates a selector that filters a matching set by the specified attribute and its value.
 
 This method takes the following parameters.
 
