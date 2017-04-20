@@ -287,15 +287,15 @@ runner.startApp('node server.js', 4000);
 
 ### useProxy
 
-Specifies the URL of the proxy server used in your local network to access the Internet.
+Specifies the hostname of the proxy server used in your local network to access the Internet.
 
 ```text
-async useProxy(url) → this
+async useProxy(hostname) → this
 ```
 
-Parameter | Type   | Description
---------- | ------ | ---------------------
-`url`     | String | The proxy server URL.
+Parameter      | Type   | Description
+-------------- | ------ | ---------------------
+`hostname`     | String | The proxy server hostname.
 
 **Examples**
 
@@ -307,7 +307,7 @@ runner.useProxy('proxy.corp.mycompany.com');
 runner.useProxy('172.0.10.10:8080');
 ```
 
-You can specify authentication credentials in the proxy URL.
+You can also specify authentication credentials with the proxy hostname.
 
 ```js
 runner.useProxy('username:password@proxy.mycorp.com');
