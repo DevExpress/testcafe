@@ -34,6 +34,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--app-init-delay \<ms\>](#--app-init-delay-ms)
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
+  * [--proxy-url \<url\>](#--proxy-url-url)
   * [--ports \<port1,port2\>](#--ports-port1port2)
   * [--hostname \<name\>](#--hostname-name)
   * [--speed \<factor\>](#--speed-factor)
@@ -333,6 +334,18 @@ See [Smart Assertion Query Mechanism](../test-api/assertions/README.md#smart-ass
 
 ```sh
 testcafe ie my-tests --assertion-timeout 10000
+```
+
+### --proxy-url \<url\>
+
+Specifies the URL of the proxy server used in your local network to access the Internet.
+
+```sh
+testcafe chrome my-tests/**/*.js --proxy-url proxy.corp.mycompany.com
+```
+
+```sh
+testcafe chrome my-tests/**/*.js --proxy-url 172.0.10.10:8080
 ```
 
 ### --ports \<port1,port2\>

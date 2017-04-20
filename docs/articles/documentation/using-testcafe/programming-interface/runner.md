@@ -284,6 +284,28 @@ Parameter         | Type    | Description   Default
 runner.startApp('node server.js', 4000);
 ```
 
+### proxy
+
+Specifies the URL of the proxy server used in your local network to access the Internet.
+
+```text
+async proxy(url) → this
+```
+
+Parameter | Type   | Description
+--------- | ------ | ---------------------
+`url`     | String | The proxy server URL.
+
+**Examples**
+
+```js
+runner.proxy('proxy.corp.mycompany.com');
+```
+
+```js
+runner.proxy('172.0.10.10:8080');
+```
+
 ### run
 
 Runs tests according to the current configuration. Returns the number of failed tests.
