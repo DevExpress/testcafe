@@ -83,12 +83,16 @@ $(document).ready(function () {
         asyncTest('should not wait if scripts are added recursively', function () {
             var barrier = new ScriptExecutionBarrier();
 
+            var scriptCounter = 0;
+
             window.stopAppending      = false;
             window.appendCustomScript = function () {
                 var script        = document.createElement('script');
                 var scriptContent = encodeURIComponent('if(!window.stopAppending)window.appendCustomScript()');
 
-                script.src = '/xhr-test/50?expectedResponse=' + scriptContent;
+                // HACK: we should request different URLs to avoid caching of response in IE 10
+                script.src = '/xhr-test/' + scriptCounter + '?expectedResponse=' + scriptContent;
+                scriptCounter++;
 
                 document.body.appendChild(script);
             };

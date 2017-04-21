@@ -72,7 +72,7 @@ function openRemoteBrowsers () {
 
             var openBrowserPromises = browsersInfo.map(function (browserInfo) {
                 return connector.startBrowser(browserInfo.settings, browserInfo.connection.url, buildInfo,
-                    { openingTimeout: BROWSER_OPENING_TIMEOUT });
+                    isBrowserStack ? { openingTimeout: BROWSER_OPENING_TIMEOUT } : null);
             });
 
             return Promise.all(openBrowserPromises);
