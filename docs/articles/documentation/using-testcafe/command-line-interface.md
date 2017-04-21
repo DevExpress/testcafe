@@ -34,7 +34,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--app-init-delay \<ms\>](#--app-init-delay-ms)
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
-  * [--proxy \<hostname\>](#--proxy-hostname)
+  * [--proxy \<host\>](#--proxy-host)
   * [--ports \<port1,port2\>](#--ports-port1port2)
   * [--hostname \<name\>](#--hostname-name)
   * [--speed \<factor\>](#--speed-factor)
@@ -336,9 +336,9 @@ See [Smart Assertion Query Mechanism](../test-api/assertions/README.md#smart-ass
 testcafe ie my-tests --assertion-timeout 10000
 ```
 
-### --proxy \<hostname\>
+### --proxy \<host\>
 
-Specifies the hostname of the proxy server used in your local network to access the Internet.
+Specifies the proxy server used in your local network to access the Internet.
 
 ```sh
 testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com
@@ -348,7 +348,7 @@ testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com
 testcafe chrome my-tests/**/*.js --proxy 172.0.10.10:8080
 ```
 
-You can also specify authentication credentials with the proxy hostname.
+You can also specify authentication credentials with the proxy host.
 
 ```js
 testcafe chrome my-tests/**/*.js --proxy username:password@proxy.mycorp.com
