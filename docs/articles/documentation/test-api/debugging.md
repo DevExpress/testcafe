@@ -30,7 +30,10 @@ t.debug()
 When test execution reaches `t.debug`, it pauses so that you can open browser's developer tools
 and check the web page state, the location of DOM elements, their CSS styles, etc.
 
-The footer displays buttons that allow you to continue test execution or step to the next test action.
+You can also use the [--debug-mode](../using-testcafe/command-line-interface.md#-d---debug-mode)
+command line option to pause the test before the first action or assertion.
+
+The footer displays buttons that allow you to continue test execution or step to the next test action or assertion.
 
 ![Page Footer when Debugging on a Client](../../images/debugging/client-debugging-footer.png)
 

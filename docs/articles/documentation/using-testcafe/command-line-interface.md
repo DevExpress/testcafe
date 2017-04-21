@@ -31,6 +31,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-f \<name\>, --fixture \<name\>](#-f-name---fixture-name)
   * [-F \<pattern\>, --fixture-grep \<pattern\>](#-f-pattern---fixture-grep-pattern)
   * [-a \<command\>, --app \<command\>](#-a-command---app-command)
+  * [-d, --debug-mode](#-d---debug-mode)
   * [--app-init-delay \<ms\>](#--app-init-delay-ms)
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
@@ -298,6 +299,17 @@ testcafe chrome my-tests --app 'node server.js'
 > TestCafe adds `node_modules/.bin` to `PATH` so that you can use binaries provided by locally installed dependencies without prefixes.
 
 Use the [--app-init-delay](#--app-init-delay-ms) option to specify the amount of time allowed for this command to initialize the tested application.
+
+### -d, --debug-mode
+
+Specify this option to run tests in the debugging mode. In this mode, test execution is paused before the first action or assertion allowing you to invoke the developer tools and debug.
+
+In the footer, a status bar is displayed in which you can resume test execution or step to the next action or assertion.
+
+![Debugging status bar](../../images/debugging/client-debugging-footer.png)
+
+> If the test you run in the debugging mode contains a [test hook](../test-api/test-code-structure.md#test-hooks),
+> it will be paused within this hook before the first action.
 
 ### --app-init-delay \<ms\>
 
