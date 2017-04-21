@@ -145,6 +145,7 @@ before(function () {
         })
         .then(function () {
             global.testReport = null;
+            global.testCafe   = testCafe;
 
             global.runTests = function (fixture, testName, opts) {
                 var report             = '';
@@ -238,6 +239,7 @@ after(function () {
     testCafe.close();
     site.destroy();
 
+    delete global.testcafe;
     delete global.runTests;
     delete global.testReport;
 

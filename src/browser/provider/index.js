@@ -243,4 +243,8 @@ export default class BrowserProvider {
 
         await this.plugin.takeScreenshot(browserId, screenshotPath, pageWidth, pageHeight);
     }
+
+    async reportJobResult (browserId, status, data) {
+        await this.plugin.reportJobResult(browserId, status, data);
+    }
 }

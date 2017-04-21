@@ -52,9 +52,6 @@ export default class Task extends EventEmitter {
 
     // API
     abort () {
-        this.pendingBrowserJobs.forEach(job => {
-            job.removeAllListeners();
-            job.browserConnection.removeJob(job);
-        });
+        this.pendingBrowserJobs.forEach(job => job.cancel());
     }
 }
