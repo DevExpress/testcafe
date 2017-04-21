@@ -1,5 +1,87 @@
 # Changelog
 
+## v0.15.0 (2017-4-26)
+
+TestCafe Docker image, support for Internet access proxies and lots of bug fixes.
+
+### Enhancements
+
+#### :gear: TestCafe Docker image ([#1141](https://github.com/DevExpress/testcafe/issues/1141))
+
+We have created a Docker image with TestCafe, Chromium and Firefox preinstalled.
+
+You no longer need to manually install browsers or the testing framework on your server.
+Pull the Docker image from the repository and run TestCafe immediately.
+
+```sh
+docker pull testcafe/testcafe
+docker run -v //user/tests:/tests -it testcafe/testcafe firefox tests/**/*.js
+```
+
+To learn more, see []()
+
+#### :gear: Support for Internet access proxies ([#1206](https://github.com/DevExpress/testcafe/issues/1206))
+
+If your local network uses a proxy server to access the Internet, you can now specify it to TestCafe so that it could reach the external webpages.
+
+To specify the proxy server, use a command line option
+
+```sh
+testcafe chrome my-tests/**/*.js --proxy 172.0.10.10:8080
+```
+
+or a method in the API.
+
+```js
+runner.useProxy('username:password@proxy.mycorp.com');
+```
+
+Note that you can pass the credentials with the proxy server host.
+
+#### :gear: Debugging mode option in CLI ([#1347](https://github.com/DevExpress/testcafe/issues/1347))
+
+As an alternative to calling the [t.debug](https://devexpress.github.io/testcafe/documentation/test-api/debugging.html#client-side-debugging) method
+in test code, you can now specify the `--debug-mode` command line option to pause the test before the first action or assertion.
+When the test is paused, you can debug in the browser developer tools.
+
+```sh
+testcafe chrome my-tests/**/*.js --debug-mode
+```
+
+#### :gear: Filtering selector's matching set by attribute ([#1346](https://github.com/DevExpress/testcafe/issues/1346))
+
+You can now use the `withAttr` method to select elements that have a particular attribute set to a specific value. You can omit the attribute value to select elements that simply have the specified attribute.
+
+```js
+const el = Selector('div').withAttr('attributeName', 'value').nth(0);
+```
+
+#### :gear: hasAttribute method added to DOM node state ([#1045](https://github.com/DevExpress/testcafe/issues/1045))
+
+For you convenience, the DOM node state object now provides the `hasAttribute` method that allows you to determine if an element has a particular attribute.
+
+```js
+const el = Selector('div.button');
+
+t.expect(el.hasAttribute('disabled')).ok();
+```
+
+#### :gear: Control redirection when switching between user roles ([#1339](https://github.com/DevExpress/testcafe/issues/1339))
+
+[User roles](https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html) now provide a `preserveUrl` option
+that allows you to save the webpage URL to which the browser was redirected after logging in. If you enable this option when creating a role,
+the browser will be redirected to the saved URL every time you switch to this role.
+
+```js
+const regularUser = Role(url, async t => {
+    /* authentication code */
+}, { preserveUrl: true })
+```
+
+### Bug Fixes
+
+
+
 ## v0.14.0 (2017-3-28)
 
 Authentication via user roles, client-side debugging and numerous bug fixes.
