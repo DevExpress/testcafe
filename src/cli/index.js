@@ -39,9 +39,10 @@ function error (err) {
 }
 
 async function runTests (argParser) {
-    var opts  = argParser.opts;
-    var port1 = opts.ports && opts.ports[0];
-    var port2 = opts.ports && opts.ports[1];
+    var opts              = argParser.opts;
+    var port1             = opts.ports && opts.ports[0];
+    var port2             = opts.ports && opts.ports[1];
+    var externalProxyHost = opts.proxy;
 
     log.showSpinner();
 
@@ -52,6 +53,7 @@ async function runTests (argParser) {
     var failed         = 0;
 
     runner
+        .useProxy(externalProxyHost)
         .src(argParser.src)
         .browsers(browsers)
         .reporter(opts.reporter)

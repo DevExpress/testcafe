@@ -178,10 +178,14 @@ module.exports = {
 
     site: {
         viewsPath: './test/functional/',
-        port1:     3000,
-        port2:     3001,
-        port3:     3002,
-        port4:     3003
+        ports:     {
+            server1:                3000,
+            server2:                3001,
+            basicAuthServer:        3002,
+            ntlmAuthServer:         3003,
+            trustedProxyServer:     3004,
+            transparentProxyServer: 3005
+        }
     },
 
     browserstackConnectorServicePort: 4000,
