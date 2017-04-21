@@ -24,7 +24,7 @@ export default class Runner extends EventEmitter {
         this.pendingTaskPromises = [];
 
         this.opts = {
-            externalProxyUrl:       null,
+            externalProxyHost:      null,
             screenshotPath:         null,
             takeScreenshotsOnFails: false,
             skipJsErrors:           false,
@@ -153,8 +153,8 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    useProxy (externalProxyUrl) {
-        this.opts.externalProxyUrl = externalProxyUrl;
+    useProxy (externalProxyHost) {
+        this.opts.externalProxyHost = externalProxyHost;
 
         return this;
     }
