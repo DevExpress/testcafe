@@ -4,6 +4,21 @@
 
 TestCafe Docker image, support for Internet access proxies and lots of bug fixes.
 
+### Breaking Changes
+
+#### New calls to selector's withText method no longer override previous calls
+
+We have changed the way the [withText](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#withtext)
+method behaves when it is called in a chain.
+
+```js
+const el = Selector('div').withText('This is').withText('my element');
+```
+
+In previous versions, this selector searched for a `div` with text `my element` because the second call to `withText` overrode the first one.
+
+Now this code returns an element whose text contains both `This is` and `my element` as the second call compounds with the first one.
+
 ### Enhancements
 
 #### :gear: TestCafe Docker image ([#1141](https://github.com/DevExpress/testcafe/issues/1141))
@@ -18,11 +33,11 @@ docker pull testcafe/testcafe
 docker run -v //user/tests:/tests -it testcafe/testcafe firefox tests/**/*.js
 ```
 
-To learn more, see []()
+To learn more, see [Using TestCafe Docker Image](https://devexpress.github.io/testcafe/documentation/using-testcafe/installing-testcafe.html#using-testcafe-docker-image)
 
 #### :gear: Support for Internet access proxies ([#1206](https://github.com/DevExpress/testcafe/issues/1206))
 
-If your local network uses a proxy server to access the Internet, you can now specify it to TestCafe so that it could reach the external webpages.
+If your local network uses a proxy server to access the Internet, TestCafe can use it reach the external webpages.
 
 To specify the proxy server, use a command line option
 
@@ -42,7 +57,7 @@ Note that you can pass the credentials with the proxy server host.
 
 As an alternative to calling the [t.debug](https://devexpress.github.io/testcafe/documentation/test-api/debugging.html#client-side-debugging) method
 in test code, you can now specify the `--debug-mode` command line option to pause the test before the first action or assertion.
-When the test is paused, you can debug in the browser developer tools.
+When the test is paused, you can debug in the browser developer tools as well as continue test execution step by step.
 
 ```sh
 testcafe chrome my-tests/**/*.js --debug-mode
@@ -50,10 +65,11 @@ testcafe chrome my-tests/**/*.js --debug-mode
 
 #### :gear: Filtering selector's matching set by attribute ([#1346](https://github.com/DevExpress/testcafe/issues/1346))
 
-You can now use the `withAttr` method to select elements that have a particular attribute set to a specific value. You can omit the attribute value to select elements that simply have the specified attribute.
+You can now use the `withAttr` method to select elements that have a particular attribute set to a specific value.
+You can omit the attribute value to select elements that simply have the specified attribute.
 
 ```js
-const el = Selector('div').withAttr('attributeName', 'value').nth(0);
+const el = Selector('div').withAttr('attributeName', 'value').nth(2);
 ```
 
 #### :gear: hasAttribute method added to DOM node state ([#1045](https://github.com/DevExpress/testcafe/issues/1045))
@@ -66,7 +82,7 @@ const el = Selector('div.button');
 t.expect(el.hasAttribute('disabled')).ok();
 ```
 
-#### :gear: Control redirection when switching between user roles ([#1339](https://github.com/DevExpress/testcafe/issues/1339))
+#### :gear: Redirection when switching between roles ([#1339](https://github.com/DevExpress/testcafe/issues/1339))
 
 [User roles](https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html) now provide a `preserveUrl` option
 that allows you to save the webpage URL to which the browser was redirected after logging in. If you enable this option when creating a role,
@@ -80,7 +96,22 @@ const regularUser = Role(url, async t => {
 
 ### Bug Fixes
 
-
+* Fixed a bug where incorrect call site and callstack were generated for an assertion that failed in a class method ([#1267](https://github.com/DevExpress/testcafe/issues/1267))
+* Incorrect validation result no longer appears when a test controller is used inside an async function ([#1285](https://github.com/DevExpress/testcafe/issues/1285))
+* Click on the status panel no longer affects the page state ([#1389](https://github.com/DevExpress/testcafe/issues/1389))
+* The `input` event is now raised with a correct selection value when input value was changed ([#1388](https://github.com/DevExpress/testcafe/issues/1388))
+* Inline source maps are now placed in transpiled files so that breakpoints work correctly ([#1375](https://github.com/DevExpress/testcafe/issues/1375))
+* `value` and `selectedIndex` in the `input` event handler for the dropdown element are now valid ([#1366](https://github.com/DevExpress/testcafe/issues/1366))
+* A `presskey('enter')` call now raises the `click` event on a button element ([#1424](https://github.com/DevExpress/testcafe/issues/1424))
+* The cursor position in Monaco editor is now set correctly on the click action ([#1385](https://github.com/DevExpress/testcafe/issues/1385))
+* `hasScroll` now works correctly if the `body` has absolute positioning ([#1353](https://github.com/DevExpress/testcafe/issues/1353))
+* Text can now be typed into HTML5 input elements ([#1327](https://github.com/DevExpress/testcafe/issues/1327))
+* `focusin` and `focusout` events are now raised when the browser window is in the background ([testcafe-hammerhead/#1044](https://github.com/DevExpress/testcafe-hammerhead/issues/1044))
+* `caretPositionFromPoint` and `caretRangeFromPoint` now return page elements ([testcafe-hammerhead/#1084](https://github.com/DevExpress/testcafe-hammerhead/issues/1084))
+* Images created with the `Image` constructor are now loaded through the proxy ([testcafe-hammerhead/#1087](https://github.com/DevExpress/testcafe-hammerhead/issues/1087))
+* The `innerText` return value is now clear of script and style code ([testcafe-hammerhead/#1079](https://github.com/DevExpress/testcafe-hammerhead/issues/1079))
+* Non-string values for element's text properties are now converted to `String` ([testcafe-hammerhead/#1091](https://github.com/DevExpress/testcafe-hammerhead/issues/1091))
+* SVG elements are now processed correctly in IE ([testcafe-hammerhead/#1083](https://github.com/DevExpress/testcafe-hammerhead/issues/1083))
 
 ## v0.14.0 (2017-3-28)
 
