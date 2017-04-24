@@ -2,7 +2,7 @@
 
 ## v0.15.0 (2017-4-26)
 
-TestCafe Docker image, support for Internet access proxies and lots of bug fixes.
+Plugins for React and Vue.js, TestCafe Docker image, support for Internet access proxies and lots of bug fixes.
 
 ### Breaking Changes
 
@@ -20,6 +20,71 @@ In previous versions, this selector searched for a `div` with text `my element` 
 Now this code returns an element whose text contains both `This is` and `my element` as the second call compounds with the first one.
 
 ### Enhancements
+
+#### :gear: Plugin for testing React apps
+
+In this release cycle, we have created a plugin for testing React applications.
+This plugin allows you to select React components by their names.
+
+```js
+import ReactSelector from 'testcafe-react-selector';
+
+const TodoList         = ReactSelector('TodoApp TodoList');
+const itemsCountStatus = ReactSelector('TodoApp div');
+const itemsCount       = ReactSelector('TodoApp div span');
+```
+
+And it enables you to get React component's `state` and `props`.
+
+```js
+import ReactSelector from 'testcafe-react-selector';
+
+fixture `TODO list test`
+    .page('http://localhost:1337');
+
+test('Check list item', async t => {
+    const el = ReactSelector('TodoList');
+
+    await t.expect(el.getReact().props.priority).eql('High');
+    await t.expect(el.getReact().state.isActive).eql(false);
+});
+```
+
+To learn more, see the [testcafe-react-selectors](https://github.com/DevExpress/testcafe-react-selectors/) repository.
+
+#### :gear: Plugin for testing Vue.js apps
+
+In addition to the React plugin, we have released a plugin that facilitates testing Vue.js applications.
+
+In the same manner, it allows you to select Vue.js components with special `VueSelector` selectors.
+
+```js
+import VueSelector from 'testcafe-vue-selectors';
+
+const rootVue   = VueSelector();
+const todoInput = VueSelector('todo-input');
+const todoItem  = VueSelector('todo-list todo-item');
+```
+
+These selectors allow you to get Vue component's `props`, `state` and `computed` properties.
+
+```js
+import VueSelector from 'testcafe-vue-selector';
+
+fixture `TODO list test`
+    .page('http://localhost:1337');
+
+test('Check list item', async t => {
+    const todoItem = VueSelector('todo-item');
+
+    await t
+        .expect(todoItem.getVue().props.priority).eql('High')
+        .expect(todoItem.getVue().state.isActive).eql(false)
+        .expect(todoItem.getVue().computed.text).eql('Item 1');
+});
+```
+
+To learn more, see the [testcafe-vue-selectors](https://github.com/DevExpress/testcafe-vue-selectors) repository.
 
 #### :gear: TestCafe Docker image ([#1141](https://github.com/DevExpress/testcafe/issues/1141))
 
