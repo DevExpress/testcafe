@@ -378,7 +378,9 @@ export function selectByNodesAndOffsets (startPos, endPos, needFocus) {
             range.setEnd(startNode, startOffset);
             selection.addRange(range);
 
-            if (browserUtils.isWebKit && contentEditable.isInvisibleTextNode(endNode)) {
+            var shouldCutEndOffset = browserUtils.isSafari || browserUtils.isChrome && browserUtils.version < 58;
+
+            if (shouldCutEndOffset && contentEditable.isInvisibleTextNode(endNode)) {
                 try {
                     selection.extend(endNode, Math.min(endOffset, 1));
                 }
