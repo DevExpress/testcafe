@@ -363,11 +363,11 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
         });
     };
 
-    obj.withAttr = (attrName, attrValue) => {
-        assertType([is.string, is.regExp], 'withAttr', '"attrName" argument', attrName);
+    obj.withAttribute = (attrName, attrValue) => {
+        assertType([is.string, is.regExp], 'withAttribute', '"attrName" argument', attrName);
 
         if (attrValue !== void 0)
-            assertType([is.string, is.regExp], 'withAttr', '"attrValue" argument', attrValue);
+            assertType([is.string, is.regExp], 'withAttribute', '"attrValue" argument', attrValue);
 
         var selectorFn = () => {
             /* eslint-disable no-undef */

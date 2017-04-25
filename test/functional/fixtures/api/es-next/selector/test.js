@@ -73,8 +73,8 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "withText" method', { only: 'chrome' });
     });
 
-    it('Should filter results with `withAttr()` method', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "withAttr" method', { only: 'chrome' });
+    it('Should filter results with `withAttribute()` method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "withAttribute" method', { only: 'chrome' });
     });
 
     it('Should filter results with `filter()` method', function () {

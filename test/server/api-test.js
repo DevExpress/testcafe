@@ -470,7 +470,7 @@ describe('API', function () {
                 });
         });
 
-        it('Should raise an error if Selector.withAttr `attrName` argument is not a RegExp or string', function () {
+        it('Should raise an error if Selector.withAttribute `attrName` argument is not a RegExp or string', function () {
             var testfile = resolve('test/server/data/test-suites/selector-with-attr-arg-is-not-regexp-or-string/attrName.js');
 
             return compile(testfile)
@@ -488,7 +488,7 @@ describe('API', function () {
                                   '   2 |\n' +
                                   '   3 |fixture `Test`;\n' +
                                   '   4 |\n' +
-                                  ' > 5 |Selector(() => {}).withAttr(null);\n' +
+                                  ' > 5 |Selector(() => {}).withAttribute(null);\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});'
@@ -496,7 +496,7 @@ describe('API', function () {
                 });
         });
 
-        it('Should raise an error if Selector.withAttr `attrValue` argument is not a RegExp or string', function () {
+        it('Should raise an error if Selector.withAttribute `attrValue` argument is not a RegExp or string', function () {
             var testfile = resolve('test/server/data/test-suites/selector-with-attr-arg-is-not-regexp-or-string/attrValue.js');
 
             return compile(testfile)
@@ -514,7 +514,7 @@ describe('API', function () {
                                   '   2 |\n' +
                                   '   3 |fixture `Test`;\n' +
                                   '   4 |\n' +
-                                  ' > 5 |Selector(() => {}).withAttr(/class/, -100);\n' +
+                                  ' > 5 |Selector(() => {}).withAttribute(/class/, -100);\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});'
