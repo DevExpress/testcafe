@@ -469,51 +469,51 @@ test('Selector "withText" method', async t => {
         .expect(elWithClass('idxEl').withText('element 1.').id).eql('el1');
 });
 
-test('Selector "withAttr" method', async t => {
+test('Selector "withAttribute" method', async t => {
     await t
     // string attr name
-        .expect(Selector('div').withAttr('data-store').id).eql('attr1')
+        .expect(Selector('div').withAttribute('data-store').id).eql('attr1')
 
         // regexp attr name
-        .expect(Selector('div').withAttr(/data/).id).eql('attr1')
+        .expect(Selector('div').withAttribute(/data/).id).eql('attr1')
 
         // string attr name and string attribute value
-        .expect(Selector('div').withAttr('data-store', 'data-attr2').id).eql('attr2')
+        .expect(Selector('div').withAttribute('data-store', 'data-attr2').id).eql('attr2')
 
         // string attr name and regexp attribute value
-        .expect(Selector('div').withAttr('data-store', /data-attr\d/).id).eql('attr1')
+        .expect(Selector('div').withAttribute('data-store', /data-attr\d/).id).eql('attr1')
 
         // regexp attr name and regexp attribute value
-        .expect(Selector('div').withAttr(/store$/, /attr2$/).id).eql('attr2');
+        .expect(Selector('div').withAttribute(/store$/, /attr2$/).id).eql('attr2');
 
     var byAtrSelector = Selector(() => document.querySelectorAll('.attr'));
 
     await t
     // Function selector and attr filter
-        .expect(byAtrSelector.withAttr('data-store', 'data-attr2').id).eql('attr2')
+        .expect(byAtrSelector.withAttribute('data-store', 'data-attr2').id).eql('attr2')
 
         // Function selector and regexp attr filter
-        .expect(byAtrSelector.withAttr(/data/, /data-attr\d/).id).eql('attr1')
+        .expect(byAtrSelector.withAttribute(/data/, /data-attr\d/).id).eql('attr1')
 
         //Compound
-        .expect(Selector('div').withAttr('class', /attr/).withAttr('data-store', 'data-attr2').id).eql('attr2');
+        .expect(Selector('div').withAttribute('class', /attr/).withAttribute('data-store', 'data-attr2').id).eql('attr2');
 
     // Parameterized selector and attr filter
     var byClassNameSelector = Selector(className => document.getElementsByClassName(className));
 
     await t
-        .expect(byClassNameSelector('attr').withAttr('data-store', 'data-attr1').id).eql('attr1')
-        .expect(byClassNameSelector('attr').withAttr('data-store', 'data-attr2').id).eql('attr2');
+        .expect(byClassNameSelector('attr').withAttribute('data-store', 'data-attr1').id).eql('attr1')
+        .expect(byClassNameSelector('attr').withAttribute('data-store', 'data-attr2').id).eql('attr2');
 
     var documentSelector = Selector(() => document);
 
     // Should not filter document with attributes
-    await t.expect(documentSelector.withAttr('data-store', 'data-attr1').exists).notOk();
+    await t.expect(documentSelector.withAttribute('data-store', 'data-attr1').exists).notOk();
 
     var nodeSelector = Selector(() => document.getElementById('attr1').childNodes[0]);
 
     // Should not work for nodes
-    await t.expect(nodeSelector.withAttr('data-store').exists).notOk();
+    await t.expect(nodeSelector.withAttribute('data-store').exists).notOk();
 });
 
 test('Selector "filter" method', async () => {
