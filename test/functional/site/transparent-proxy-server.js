@@ -4,9 +4,9 @@ var urlLib = require('url');
 var server  = null;
 var sockets = null;
 
-function start (port) {
-    var keepAliveAgent = new http.Agent({ keepAlive: true });
+var agentsCache = {};
 
+function start (port) {
     sockets = [];
 
     server = http
@@ -19,10 +19,18 @@ function start (port) {
 
             reqOptions.method  = req.method;
             reqOptions.headers = req.headers;
-            reqOptions.agent   = keepAliveAgent;
+
+            if (!agentsCache[reqOptions.headers['user-agent']])
+                agentsCache[reqOptions.headers['user-agent']] = new http.Agent({ keepAlive: true });
+
+            reqOptions.agent = agentsCache[reqOptions.headers['user-agent']];
 
             var serverReq = http.request(reqOptions, function (serverRes) {
                 res.writeHead(serverRes.statusCode, serverRes.headers);
+
+                if (serverRes.headers.connection && serverRes.headers.connection === 'close')
+                    delete agentsCache[reqOptions.headers['user-agent']];
+
                 serverRes.pipe(res);
             });
 
