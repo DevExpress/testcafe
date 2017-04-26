@@ -418,6 +418,7 @@
 <li><a href="#implementing-a-custom-stream">Implementing a Custom Stream</a></li>
 </ul></li>
 <li><a href="#startapp">startApp</a></li>
+<li><a href="#useproxy">useProxy</a></li>
 <li><a href="#run">run</a>
 
 <ul>
@@ -684,6 +685,30 @@ when the <a href="../../test-api/actions/take-screenshot.html">t.takeScreenshot<
 </div></blockquote>
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">startApp</span><span class="p">(</span><span class="s1">'node server.js'</span><span class="p">,</span> <span class="mi">4000</span><span class="p">);</span>
+</code></pre></div><h3><a class="anchor" name="useproxy"></a>useProxy <a class="permalink" href="#useproxy">#</a></h3>
+<p>Specifies the proxy server used in your local network to access the Internet.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">async useProxy(host) → this
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>host</code></td>
+<td>String</td>
+<td>The proxy server host.</td>
+</tr>
+</tbody></table>
+
+<p><strong>Examples</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="s1">'proxy.corp.mycompany.com'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="s1">'172.0.10.10:8080'</span><span class="p">);</span>
+</code></pre></div>
+<p>You can also specify authentication credentials with the proxy host.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="s1">'username:password@proxy.mycorp.com'</span><span class="p">);</span>
 </code></pre></div><h3><a class="anchor" name="run"></a>run <a class="permalink" href="#run">#</a></h3>
 <p>Runs tests according to the current configuration. Returns the number of failed tests.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async run(options) → Promise&lt;Number&gt;
@@ -730,6 +755,12 @@ where tests are not guaranteed to execute correctly.</p>
 <td>Number</td>
 <td>Specifies the speed of test execution. Should be a number between <code>1</code> (the fastest) and <code>0.01</code> (the slowest). If speed is also specified for an <a href="../../test-api/actions/action-options.html#basic-action-options">individual action</a>, the action speed setting overrides test speed.</td>
 <td><code>1</code></td>
+</tr>
+<tr>
+<td><code>debugMode</code></td>
+<td>Boolean</td>
+<td>Specifies if tests run in the debug mode. If this option is enabled, test execution is paused before the first action or assertion allowing you to invoke the developer tools and debug.</td>
+<td><code>false</code></td>
 </tr>
 </tbody></table>
 
