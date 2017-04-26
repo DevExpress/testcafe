@@ -1,4 +1,4 @@
-import TestFileCompilerBase from '../compiler-base';
+import TestFileCompilerBase from '../base';
 import { GeneralError } from '../../../errors/runtime';
 import MESSAGE from '../../../errors/runtime/message';
 import TestFile from '../../../api/structure/test-file';
