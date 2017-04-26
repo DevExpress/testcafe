@@ -335,6 +335,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/recipes/using-testcafe-with-grunt.html"  >Using TestCafe with Grunt</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/recipes/using-testcafe-with-gulp.html"  >Using TestCafe with Gulp</a>
 		
     </li>
@@ -370,6 +377,7 @@
 <p>You will need to add the following configuration to the <code>launch.json</code> file.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"inspector"</span><span class="p">,</span><span class="w">
     </span><span class="nt">"request"</span><span class="p">:</span><span class="w"> </span><span class="s2">"launch"</span><span class="p">,</span><span class="w">
     </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Launch test files with TestCafe"</span><span class="p">,</span><span class="w">
     </span><span class="nt">"program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${workspaceRoot}/node_modules/testcafe/bin/testcafe.js"</span><span class="p">,</span><span class="w">
@@ -384,6 +392,7 @@
 
 <ul>
 <li><code>type</code> - specifies the type of the configuration. Set to <code>node</code> for a Node.js configuration.</li>
+<li><code>protocol</code> - specifies the Node.js <a href="https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_supported-nodelike-runtimes">debugger wire protocol</a>. Note that the inspector protocol is supported in Node.js v6.3 (or v6.9 for Windows) or later. For early versions, omit this property. In that case, a legacy debugger protocol will be used. Legacy protocol is well known for its issues with source map support, therefore newer versions of Node.js are recommended.</li>
 <li><code>request</code> - specifies the request type. Set to <code>launch</code> since this configuration launches a program.</li>
 <li><code>name</code> - specifies the name of the configuration.</li>
 <li><code>program</code> - path to a JS file that will be executed. In this case, it is the TestCafe module.</li>

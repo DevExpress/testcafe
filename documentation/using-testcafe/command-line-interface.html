@@ -403,9 +403,11 @@
 <li><a href="#-f-name---fixture-name">-f &lt;name&gt;, --fixture &lt;name&gt;</a></li>
 <li><a href="#-f-pattern---fixture-grep-pattern">-F &lt;pattern&gt;, --fixture-grep &lt;pattern&gt;</a></li>
 <li><a href="#-a-command---app-command">-a &lt;command&gt;, --app &lt;command&gt;</a></li>
+<li><a href="#-d---debug-mode">-d, --debug-mode</a></li>
 <li><a href="#--app-init-delay-ms">--app-init-delay &lt;ms&gt;</a></li>
 <li><a href="#--selector-timeout-ms">--selector-timeout &lt;ms&gt;</a></li>
 <li><a href="#--assertion-timeout-ms">--assertion-timeout &lt;ms&gt;</a></li>
+<li><a href="#--proxy-host">--proxy &lt;host&gt;</a></li>
 <li><a href="#--ports-port1port2">--ports &lt;port1,port2&gt;</a></li>
 <li><a href="#--hostname-name">--hostname &lt;name&gt;</a></li>
 <li><a href="#--speed-factor">--speed &lt;factor&gt;</a></li>
@@ -549,7 +551,15 @@ specify this argument.</p>
 </code></pre></div><blockquote><div class="blockquote-content"><p>TestCafe adds <code>node_modules/.bin</code> to <code>PATH</code> so that you can use binaries provided by locally installed dependencies without prefixes.</p>
 </div></blockquote>
 <p>Use the <a href="#--app-init-delay-ms">--app-init-delay</a> option to specify the amount of time allowed for this command to initialize the tested application.</p>
-<h3><a class="anchor" name="--app-init-delay-ms"></a>--app-init-delay &lt;ms&gt; <a class="permalink" href="#--app-init-delay-ms">#</a></h3>
+<h3><a class="anchor" name="-d---debug-mode"></a>-d, --debug-mode <a class="permalink" href="#-d---debug-mode">#</a></h3>
+<p>Specify this option to run tests in the debugging mode. In this mode, test execution is paused before the first action or assertion allowing you to invoke the developer tools and debug.</p>
+
+<p>In the footer, a status bar is displayed in which you can resume test execution or step to the next action or assertion.</p>
+
+<p><img src="../../images/debugging/client-debugging-footer.png" alt="Debugging status bar"></p>
+<blockquote><div class="blockquote-content"><p>If the test you run in the debugging mode contains a <a href="../test-api/test-code-structure.html#test-hooks">test hook</a>,
+it will be paused within this hook before the first action.</p>
+</div></blockquote><h3><a class="anchor" name="--app-init-delay-ms"></a>--app-init-delay &lt;ms&gt; <a class="permalink" href="#--app-init-delay-ms">#</a></h3>
 <p>Specifies the amount of time, in milliseconds, allowed for an application launched using the <a href="#-a-command---app-command">--app</a> option to initialize.</p>
 
 <p>TestCafe waits for the specified time before it starts running tests.</p>
@@ -570,6 +580,13 @@ See <a href="../test-api/assertions/#smart-assertion-query-mechanism">Smart Asse
 
 <p><strong>Default value</strong>: <code>3000</code></p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests --assertion-timeout 10000
+</code></pre></div><h3><a class="anchor" name="--proxy-host"></a>--proxy &lt;host&gt; <a class="permalink" href="#--proxy-host">#</a></h3>
+<p>Specifies the proxy server used in your local network to access the Internet.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js --proxy proxy.corp.mycompany.com
+</code></pre></div><div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js --proxy 172.0.10.10:8080
+</code></pre></div>
+<p>You can also specify authentication credentials with the proxy host.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">testcafe</span> <span class="nx">chrome</span> <span class="nx">my</span><span class="o">-</span><span class="nx">tests</span><span class="cm">/**/</span><span class="o">*</span><span class="p">.</span><span class="nx">js</span> <span class="o">--</span><span class="nx">proxy</span> <span class="nx">username</span><span class="err">:</span><span class="nx">password</span><span class="err">@</span><span class="nx">proxy</span><span class="p">.</span><span class="nx">mycorp</span><span class="p">.</span><span class="nx">com</span>
 </code></pre></div><h3><a class="anchor" name="--ports-port1port2"></a>--ports &lt;port1,port2&gt; <a class="permalink" href="#--ports-port1port2">#</a></h3>
 <p>Specifies custom port numbers used by TestCafe to perform testing. The number range is [0-65535].</p>
 

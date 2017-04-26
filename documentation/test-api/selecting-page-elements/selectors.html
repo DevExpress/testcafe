@@ -625,6 +625,7 @@ To interact with the page, use <a href="../actions/">test actions</a>.</p>
 <ul>
 <li><a href="#nth">nth</a></li>
 <li><a href="#withtext">withText</a></li>
+<li><a href="#withattribute">withAttribute</a></li>
 <li><a href="#filter">filter</a></li>
 </ul></li>
 <li><a href="#search-for-elements-in-the-dom-hierarchy">Search for Elements in the DOM Hierarchy</a>
@@ -763,7 +764,7 @@ providing you with a flexible functional-style selector mechanism.</p>
 <h3><a class="anchor" name="filter-dom-nodes"></a>Filter DOM Nodes <a class="permalink" href="#filter-dom-nodes">#</a></h3>
 <p>If selector returns multiple DOM nodes, you must filter them to select
 a single node that will eventually be returned by the selector.
-The selector provides methods to filter DOM nodes by their index or text.</p>
+The selector provides methods to filter DOM nodes by their index, text, attributes, etc.</p>
 <h4><a class="anchor" name="nth"></a>nth <a class="permalink" href="#nth">#</a></h4>
 <table><thead>
 <tr>
@@ -795,6 +796,41 @@ The selector provides methods to filter DOM nodes by their index or text.</p>
 <td><code>withText(re)</code></td>
 <td>Selector</td>
 <td>Creates a selector that filters a matching set using the specified regular expression.</td>
+</tr>
+</tbody></table>
+<h4><a class="anchor" name="withattribute"></a>withAttribute <a class="permalink" href="#withattribute">#</a></h4>
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>withAttribute(attrName [, attrValue])</code></td>
+<td>Selector</td>
+<td>Creates a selector that filters a matching set by the specified attribute and, optionally, attribute value.</td>
+</tr>
+</tbody></table>
+
+<p>This method takes the following parameters.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>attrName</code></td>
+<td>String &#124; RegExp</td>
+<td>The attribute name.</td>
+</tr>
+<tr>
+<td><code>attrValue</code>&#160;<em>(optional)</em></td>
+<td>String &#124; RegExp</td>
+<td>The attribute value. You can omit this parameter to select elements that have the <code>attrName</code> attribute regardless of the value.</td>
 </tr>
 </tbody></table>
 <h4><a class="anchor" name="filter"></a>filter <a class="permalink" href="#filter">#</a></h4>

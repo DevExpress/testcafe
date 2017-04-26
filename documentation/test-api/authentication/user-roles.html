@@ -611,7 +611,7 @@ to isolate authentication test actions and apply them easily whenever you need t
 <p>A piece of logic that logs in a particular user is called a <em>role</em>. Define a role for each user account participating in your test.</p>
 <h2><a class="anchor" name="creating-and-using-roles"></a>Creating and Using Roles <a class="permalink" href="#creating-and-using-roles">#</a></h2>
 <p>Use the <code>Role</code> constructor to create and initialize a role.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Role( url, func( t ) )
+<div class="highlight"><pre><code class="language-text" data-lang="text">Role( url, func( t ) [, options] )
 </code></pre></div>
 <table><thead>
 <tr>
@@ -634,6 +634,11 @@ to isolate authentication test actions and apply them easily whenever you need t
 <td><code>t</code></td>
 <td>Object</td>
 <td>The <a href="../test-code-structure.html#test-controller">test controller</a> used to access test run API.</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>Object</td>
+<td>See <a href="#role-options">Role Options</a>.</td>
 </tr>
 </tbody></table>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Role</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
@@ -725,7 +730,17 @@ to isolate authentication test actions and apply them easily whenever you need t
 
         <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">comment</span><span class="p">.</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Hey ya!'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div>
+</code></pre></div><h2><a class="anchor" name="role-options"></a>Role Options <a class="permalink" href="#role-options">#</a></h2><h3><a class="anchor" name="optionspreserveurl"></a>options.preserveUrl <a class="permalink" href="#optionspreserveurl">#</a></h3>
+<p>Use this option to control which page is opened after you switch to the role.</p>
+
+<p>By default, TestCafe navigates back to the page that was opened previously to switching to the role.
+Set the <code>preserveUrl</code> option to <code>true</code> to save the URL to which the browser was redirected after logging in.
+TestCafe will navigate to the saved URL each time after you switch to this role.</p>
+
+<p>This option is useful if you store session-related data (like session ID) in the URL.</p>
+
+<p><strong>Default value</strong>: <code>false</code></p>
+
 
 		</div>
 	</article>
