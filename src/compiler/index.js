@@ -2,10 +2,10 @@ import * as fs from 'fs';
 import Promise from 'pinkie';
 import { flattenDeep as flatten, find, chunk } from 'lodash';
 import stripBom from 'strip-bom';
-import { Compiler as LegacyCompiler } from 'testcafe-legacy-api';
+import { Compiler as LegacyTestFileCompiler } from 'testcafe-legacy-api';
 import hammerhead from 'testcafe-hammerhead';
-import EsNextCompiler from './es-next';
-import RawFileCompiler from './raw-file';
+import EsNextTestFileCompiler from './test-file/formats/es-next';
+import RawTestFileCompiler from './test-file/formats/raw';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import promisify from '../utils/promisify';
@@ -19,9 +19,9 @@ export default class Compiler {
         this.sources = sources;
 
         this.testFileCompilers = [
-            new LegacyCompiler(hammerhead.processScript),
-            new EsNextCompiler(),
-            new RawFileCompiler()
+            new LegacyTestFileCompiler(hammerhead.processScript),
+            new EsNextTestFileCompiler(),
+            new RawTestFileCompiler()
         ];
     }
 

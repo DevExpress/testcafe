@@ -2,15 +2,15 @@ import { dirname, join, relative, sep as pathSep } from 'path';
 import { readFileSync } from 'fs';
 import stripBom from 'strip-bom';
 import sourceMapSupport from 'source-map-support';
-import loadBabelLibs from './load-babel-libs';
-import TestFileCompilerBase from '../test-file-compiler-base';
-import TestFile from '../../api/structure/test-file';
-import Fixture from '../../api/structure/fixture';
-import Test from '../../api/structure/test';
-import { TestCompilationError, APIError } from '../../errors/runtime';
-import stackCleaningHook from '../../errors/stack-cleaning-hook';
+import loadBabelLibs from '../../load-babel-libs';
+import TestFileCompilerBase from '../compiler-base';
+import TestFile from '../../../api/structure/test-file';
+import Fixture from '../../../api/structure/fixture';
+import Test from '../../../api/structure/test';
+import { TestCompilationError, APIError } from '../../../errors/runtime';
+import stackCleaningHook from '../../../errors/stack-cleaning-hook';
 
-const EXPORTABLE_LIB_PATH = join(__dirname, '../../api/exportable-lib');
+const EXPORTABLE_LIB_PATH = join(__dirname, '../../../api/exportable-lib');
 const CWD                 = process.cwd();
 
 const FIXTURE_RE       = /(^|;|\s+)fixture\s*(\.|\(|`)/;
@@ -19,7 +19,7 @@ const BABEL_RUNTIME_RE = /^babel-runtime(\\|\/|$)/;
 
 var Module = module.constructor;
 
-export default class ESNextCompiler extends TestFileCompilerBase {
+export default class ESNextTestFileCompiler extends TestFileCompilerBase {
     constructor () {
         super();
 
@@ -83,7 +83,7 @@ export default class ESNextCompiler extends TestFileCompilerBase {
         var mod = new Module(filename, module.parent);
 
         mod.filename = filename;
-        mod.paths    = ESNextCompiler._getNodeModulesLookupPath(filename);
+        mod.paths    = ESNextTestFileCompiler._getNodeModulesLookupPath(filename);
 
         mod._compile(code, filename);
     }
@@ -102,7 +102,7 @@ export default class ESNextCompiler extends TestFileCompilerBase {
         if (this.cache[filename])
             return this.cache[filename];
 
-        var opts     = ESNextCompiler._getBabelOptions(filename);
+        var opts     = ESNextTestFileCompiler._getBabelOptions(filename);
         var compiled = babel.transform(code, opts);
 
         this.cache[filename]      = compiled.code;
@@ -118,13 +118,13 @@ export default class ESNextCompiler extends TestFileCompilerBase {
             // NOTE: remove global API so that it will be unavailable for the dependencies
             this._removeGlobalAPI();
 
-            if (ESNextCompiler._isNodeModulesDep(filename))
+            if (ESNextTestFileCompiler._isNodeModulesDep(filename))
                 origRequireExtension(mod, filename);
             else {
                 var code         = readFileSync(filename);
                 var compiledCode = this._compileES(stripBom(code), filename);
 
-                mod.paths = ESNextCompiler._getNodeModulesLookupPath(filename);
+                mod.paths = ESNextTestFileCompiler._getNodeModulesLookupPath(filename);
 
                 mod._compile(compiledCode, filename);
             }
@@ -189,7 +189,7 @@ export default class ESNextCompiler extends TestFileCompilerBase {
         var origRequireExtension = this._setupRequireHook(testFile);
 
         try {
-            ESNextCompiler._execAsModule(compiledCode, filename);
+            ESNextTestFileCompiler._execAsModule(compiledCode, filename);
         }
         catch (err) {
             // HACK: workaround for the `instanceof` problem
