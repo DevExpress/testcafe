@@ -65,8 +65,7 @@ export default class Compiler {
             tests        = tests.concat(await Promise.all(compileUnits));
         }
 
-        // TODO
-        this.testFileCompilers.forEach(c => c.cleanUp && c.cleanUp());
+        this.testFileCompilers.forEach(c => c.cleanUp());
 
         tests = flatten(tests).filter(test => !!test);
 
