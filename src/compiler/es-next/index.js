@@ -3,6 +3,7 @@ import { readFileSync } from 'fs';
 import stripBom from 'strip-bom';
 import sourceMapSupport from 'source-map-support';
 import loadBabelLibs from './load-babel-libs';
+import TestFileCompilerBase from '../test-file-compiler-base';
 import TestFile from '../../api/structure/test-file';
 import Fixture from '../../api/structure/fixture';
 import Test from '../../api/structure/test';
@@ -18,8 +19,10 @@ const BABEL_RUNTIME_RE = /^babel-runtime(\\|\/|$)/;
 
 var Module = module.constructor;
 
-export default class ESNextCompiler {
+export default class ESNextCompiler extends TestFileCompilerBase {
     constructor () {
+        super();
+
         this.sourceMaps = {};
         this.cache      = {};
 
@@ -167,10 +170,12 @@ export default class ESNextCompiler {
         delete global.test;
     }
 
-    canCompile (code, filename) {
-        return /\.js$/.test(filename) &&
-               FIXTURE_RE.test(code) &&
-               TEST_RE.test(code);
+    _hasTests (code) {
+        return FIXTURE_RE.test(code) && TEST_RE.test(code);
+    }
+
+    getSupportedExtension () {
+        return '.js';
     }
 
     compile (code, filename) {

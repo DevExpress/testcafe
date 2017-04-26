@@ -12,21 +12,20 @@ import promisify from '../utils/promisify';
 
 var readFile = promisify(fs.readFile);
 
-const SOURCE_CHUNK_LENGTH      = 1000;
+const SOURCE_CHUNK_LENGTH = 1000;
 
 export default class Compiler {
     constructor (sources) {
-        this.sources         = sources;
-        this.esNextCompiler  = new EsNextCompiler();
+        this.sources = sources;
 
-        this.compilers = [
+        this.testFileCompilers = [
             new LegacyCompiler(hammerhead.processScript),
-            this.esNextCompiler,
+            new EsNextCompiler(),
             new RawFileCompiler()
         ];
     }
 
-    async _compileFile (filename) {
+    async _compileTestFile (filename) {
         var code = null;
 
         try {
@@ -38,9 +37,9 @@ export default class Compiler {
 
         code = stripBom(code).toString();
 
-        var compiler = find(this.compilers, c => c.canCompile(code, filename));
+        var compiler = find(this.testFileCompilers, c => c.canCompile(code, filename));
 
-        return compiler ? compiler.compile(code, filename) : null;
+        return compiler ? await compiler.compile(code, filename) : null;
     }
 
     async getTests () {
@@ -51,11 +50,12 @@ export default class Compiler {
         // NOTE: split sources into chunks because the fs module can't read all files
         // simultaneously if the number of them is too large (several thousands).
         while (sourceChunks.length) {
-            compileUnits = sourceChunks.shift().map(filename => this._compileFile(filename));
+            compileUnits = sourceChunks.shift().map(filename => this._compileTestFile(filename));
             tests        = tests.concat(await Promise.all(compileUnits));
         }
 
-        this.esNextCompiler.cleanUpCache();
+        // TODO
+        this.testFileCompilers.forEach(c => c.cleanUp && c.cleanUp());
 
         tests = flatten(tests).filter(test => !!test);
 

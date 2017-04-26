@@ -1,3 +1,4 @@
+import TestFileCompilerBase from './test-file-compiler-base';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import TestFile from '../api/structure/test-file';
@@ -6,11 +7,7 @@ import Test from '../api/structure/test';
 import createCommandFromObject from '../test-run/commands/from-object';
 
 
-export default class RawFileCompiler {
-    canCompile (code, filename) {
-        return /\.testcafe$/.test(filename);
-    }
-
+export default class RawFileCompiler extends TestFileCompilerBase {
     static _createTestFn (commands) {
         return async t => {
             for (var i = 0; i < commands.length; i++) {
@@ -75,6 +72,14 @@ export default class RawFileCompiler {
             fixture.afterEach(RawFileCompiler._createTestFn(src.afterEachCommands));
 
         src.tests.forEach(testSrc => RawFileCompiler._addTest(testFile, testSrc));
+    }
+
+    _hasTests () {
+        return true;
+    }
+
+    getSupportedExtension () {
+        return '.testcafe';
     }
 
     compile (code, filename) {
