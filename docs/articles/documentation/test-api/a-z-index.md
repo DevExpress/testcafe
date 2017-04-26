@@ -36,7 +36,7 @@ This topic lists test API members in alphabetical order.
     * [prevSibling](selecting-page-elements/selectors.md#prevsibling)
     * [sibling](selecting-page-elements/selectors.md#sibling)
     * [with](selecting-page-elements/selector-options.md#overwriting-options)
-    * [withAttribute](selecting-page-elements/selectors.md#withAttribute)
+    * [withAttribute](selecting-page-elements/selectors.md#withattribute)
     * [withText](selecting-page-elements/selectors.md#withtext)
 * [test](test-code-structure.md#tests)
     * [after](test-code-structure.md#initialization-and-clean-up)
