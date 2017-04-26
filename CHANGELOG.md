@@ -56,7 +56,7 @@ To learn more, see the [testcafe-react-selectors](https://github.com/DevExpress/
 
 In addition to the React plugin, we have released a plugin that facilitates testing Vue.js applications.
 
-In the same manner, it allows you to select Vue.js components with special `VueSelector` selectors.
+In the same manner, it allows you to select Vue.js components with `VueSelector` selectors.
 
 ```js
 import VueSelector from 'testcafe-vue-selectors';
@@ -118,7 +118,7 @@ runner.useProxy('username:password@proxy.mycorp.com');
 
 Note that you can pass the credentials with the proxy server host.
 
-#### :gear: Debugging mode option in CLI ([#1347](https://github.com/DevExpress/testcafe/issues/1347))
+#### :gear: Debugging mode option ([#1347](https://github.com/DevExpress/testcafe/issues/1347))
 
 As an alternative to calling the [t.debug](https://devexpress.github.io/testcafe/documentation/test-api/debugging.html#client-side-debugging) method
 in test code, you can now specify the `--debug-mode` command line option to pause the test before the first action or assertion.
@@ -128,13 +128,19 @@ When the test is paused, you can debug in the browser developer tools as well as
 testcafe chrome my-tests/**/*.js --debug-mode
 ```
 
+If you use TestCafe API, provide the `debugMode` option to the `runner.run` method.
+
+```js
+runner.run({ debugMode: true });
+```
+
 #### :gear: Filtering selector's matching set by attribute ([#1346](https://github.com/DevExpress/testcafe/issues/1346))
 
-You can now use the `withAttr` method to select elements that have a particular attribute set to a specific value.
+You can now use the `withAttribute` method to select elements that have a particular attribute set to a specific value.
 You can omit the attribute value to select elements that simply have the specified attribute.
 
 ```js
-const el = Selector('div').withAttr('attributeName', 'value').nth(2);
+const el = Selector('div').withAttribute('attributeName', 'value').nth(2);
 ```
 
 #### :gear: hasAttribute method added to DOM node state ([#1045](https://github.com/DevExpress/testcafe/issues/1045))
@@ -172,7 +178,7 @@ const regularUser = Role(url, async t => {
 * `hasScroll` now works correctly if the `body` has absolute positioning ([#1353](https://github.com/DevExpress/testcafe/issues/1353))
 * Text can now be typed into HTML5 input elements ([#1327](https://github.com/DevExpress/testcafe/issues/1327))
 * `focusin` and `focusout` events are now raised when the browser window is in the background ([testcafe-hammerhead/#1044](https://github.com/DevExpress/testcafe-hammerhead/issues/1044))
-* `caretPositionFromPoint` and `caretRangeFromPoint` now return page elements ([testcafe-hammerhead/#1084](https://github.com/DevExpress/testcafe-hammerhead/issues/1084))
+* `caretPositionFromPoint` and `caretRangeFromPoint` now ignore TestCafe UI elements on the page ([testcafe-hammerhead/#1084](https://github.com/DevExpress/testcafe-hammerhead/issues/1084))
 * Images created with the `Image` constructor are now loaded through the proxy ([testcafe-hammerhead/#1087](https://github.com/DevExpress/testcafe-hammerhead/issues/1087))
 * The `innerText` return value is now clear of script and style code ([testcafe-hammerhead/#1079](https://github.com/DevExpress/testcafe-hammerhead/issues/1079))
 * Non-string values for element's text properties are now converted to `String` ([testcafe-hammerhead/#1091](https://github.com/DevExpress/testcafe-hammerhead/issues/1091))
