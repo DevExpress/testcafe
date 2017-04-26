@@ -22,7 +22,7 @@ This topic contains the following sections.
   * [Filter DOM Nodes](#filter-dom-nodes)
       * [nth](#nth)
       * [withText](#withtext)
-      * [withAttr](#withattr)
+      * [withAttribute](#withattribute)
       * [filter](#filter)
   * [Search for Elements in the DOM Hierarchy](#search-for-elements-in-the-dom-hierarchy)
       * [find](#find)
@@ -176,11 +176,11 @@ Method | Type | Description
 `withText(text)` | Selector | Creates a selector that filters a matching set by the specified text.
 `withText(re)` | Selector | Creates a selector that filters a matching set using the specified regular expression.
 
-#### withAttr
+#### withAttribute
 
 Method                              | Type     | Description
 ----------------------------------- | -------- | -----------
-`withAttr(attrName [, attrValue])` | Selector | Creates a selector that filters a matching set by the specified attribute and, optionally, attribute value.
+`withAttribute(attrName [, attrValue])` | Selector | Creates a selector that filters a matching set by the specified attribute and, optionally, attribute value.
 
 This method takes the following parameters.
 
