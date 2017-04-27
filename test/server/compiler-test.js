@@ -117,7 +117,7 @@ describe('Compiler', function () {
     });
 
 
-    describe.only('TypeScript', function () {
+    describe('TypeScript', function () {
         it('Should compile test files and their dependencies', function () {
             var sources = [
                 'test/server/data/test-suites/typescript-basic/testfile1.ts',

@@ -1,4 +1,4 @@
-import { dirname, relative, sep as pathSep } from 'path';
+import { dirname, relative, join, sep as pathSep } from 'path';
 import { readFileSync } from 'fs';
 import stripBom from 'strip-bom';
 import TestFileCompilerBase from './base';
@@ -163,3 +163,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         this.cache = {};
     }
 }
+
+
+// Const
+APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH = join(__dirname, '../../api/exportable-lib');

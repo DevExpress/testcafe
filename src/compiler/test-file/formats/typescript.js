@@ -15,9 +15,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             target:          'ES6',
             lib:             ['lib.es6.d.ts'],
             baseUrl:         __dirname,
-            paths:           {
-                testcafe: ['../../../api/exportable-lib']
-            }
+            paths:           { testcafe: ['../../../api/index.d.ts'] }
         };
     }
 
@@ -56,8 +54,9 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             TypeScriptTestFileCompiler._reportErrors(diagnostics);
 
         var result = ts.transpileModule(code, {
-            fileName:        filename,
-            compilerOptions: opts
+            compilerOptions:     opts,
+            fileName:            filename,
+            renamedDependencies: { testcafe: APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH }
         });
 
         this.cache[filename] = result;

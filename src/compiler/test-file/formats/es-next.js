@@ -1,9 +1,7 @@
-import { join } from 'path';
 import loadBabelLibs from '../../load-babel-libs';
 import APIBasedTestFileCompilerBase from '../api-based';
 
-const BABEL_RUNTIME_RE    = /^babel-runtime(\\|\/|$)/;
-const EXPORTABLE_LIB_PATH = join(__dirname, '../../../api/exportable-lib');
+const BABEL_RUNTIME_RE = /^babel-runtime(\\|\/|$)/;
 
 export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase {
     static _getBabelOptions (filename) {
@@ -28,7 +26,7 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
 
             resolveModuleSource: source => {
                 if (source === 'testcafe')
-                    return EXPORTABLE_LIB_PATH;
+                    return APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH;
 
                 if (BABEL_RUNTIME_RE.test(source)) {
                     try {
