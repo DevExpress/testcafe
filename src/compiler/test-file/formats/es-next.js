@@ -1,10 +1,12 @@
+import { join } from 'path';
 import loadBabelLibs from '../../load-babel-libs';
 import APIBasedTestFileCompilerBase from '../api-based';
 
-const BABEL_RUNTIME_RE = /^babel-runtime(\\|\/|$)/;
+const BABEL_RUNTIME_RE    = /^babel-runtime(\\|\/|$)/;
+const EXPORTABLE_LIB_PATH = join(__dirname, '../../../api/exportable-lib');
 
 export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase {
-    _getBabelOptions (filename) {
+    static _getBabelOptions (filename) {
         var { presetStage2, transformRuntime, presetEnv } = loadBabelLibs();
 
         // NOTE: passPrePreset and complex presets is a workaround for https://github.com/babel/babel/issues/2877
@@ -26,7 +28,7 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
 
             resolveModuleSource: source => {
                 if (source === 'testcafe')
-                    return this.EXPORTABLE_LIB_PATH;
+                    return EXPORTABLE_LIB_PATH;
 
                 if (BABEL_RUNTIME_RE.test(source)) {
                     try {
@@ -48,7 +50,7 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
         if (this.cache[filename])
             return this.cache[filename];
 
-        var opts     = this._getBabelOptions(filename);
+        var opts     = ESNextTestFileCompiler._getBabelOptions(filename);
         var compiled = babel.transform(code, opts);
 
         this.cache[filename] = compiled.code;

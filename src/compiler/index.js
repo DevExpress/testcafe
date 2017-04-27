@@ -6,6 +6,7 @@ import sourceMapSupport from 'source-map-support';
 import { Compiler as LegacyTestFileCompiler } from 'testcafe-legacy-api';
 import hammerhead from 'testcafe-hammerhead';
 import EsNextTestFileCompiler from './test-file/formats/es-next';
+import TypeScriptTestFileCompiler from './test-file/formats/typescript';
 import RawTestFileCompiler from './test-file/formats/raw';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
@@ -22,6 +23,7 @@ export default class Compiler {
         this.testFileCompilers = [
             new LegacyTestFileCompiler(hammerhead.processScript),
             new EsNextTestFileCompiler(),
+            new TypeScriptTestFileCompiler(),
             new RawTestFileCompiler()
         ];
 

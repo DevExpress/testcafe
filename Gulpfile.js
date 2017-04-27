@@ -271,7 +271,13 @@ gulp.task('images', ['clean'], function () {
         .pipe(gulp.dest('lib'));
 });
 
-gulp.task('fast-build', ['server-scripts', 'client-scripts', 'styles', 'images', 'templates']);
+gulp.task('ts-definitions', ['clean'], function () {
+    return gulp
+        .src('src/**/*.d.ts')
+        .pipe(gulp.dest('lib'));
+});
+
+gulp.task('fast-build', ['server-scripts', 'client-scripts', 'styles', 'images', 'templates', 'ts-definitions']);
 gulp.task('build', ['lint', 'fast-build']);
 
 // Test
@@ -635,7 +641,8 @@ gulp.task('docker-build', function () {
             startDocker();
         }
         catch (e) {
-            throw new Error('Unable to initialize Docker environment. Use Docker terminal to run this task.\n' + e.stack);
+            throw new Error('Unable to initialize Docker environment. Use Docker terminal to run this task.\n' +
+                            e.stack);
         }
     }
 
@@ -644,7 +651,10 @@ gulp.task('docker-build', function () {
         .toString()
         .replace(/\n/g, '');
 
-    childProcess.execSync('docker tag ' + imageId + ' testcafe/testcafe:' + PUBLISH_TAG, { stdio: 'inherit', env: process.env });
+    childProcess.execSync('docker tag ' + imageId + ' testcafe/testcafe:' + PUBLISH_TAG, {
+        stdio: 'inherit',
+        env:   process.env
+    });
 });
 
 gulp.task('docker-publish', ['docker-build'], function () {

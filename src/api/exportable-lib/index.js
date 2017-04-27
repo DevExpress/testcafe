@@ -1,7 +1,7 @@
-import ClientFunctionBuilder from '../client-functions/client-function-builder';
-import SelectorBuilder from '../client-functions/selectors/selector-builder';
-import { createRole, createAnonymousRole } from '../role';
-import testControllerProxy from './test-controller/proxy';
+import ClientFunctionBuilder from '../../client-functions/client-function-builder';
+import SelectorBuilder from '../../client-functions/selectors/selector-builder';
+import { createRole, createAnonymousRole } from '../../role';
+import testControllerProxy from '../test-controller/proxy';
 
 function Role (loginPage, initFn, options) {
     return createRole(loginPage, initFn, options);

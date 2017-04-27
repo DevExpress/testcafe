@@ -1,4 +1,4 @@
-import { dirname, join, relative, sep as pathSep } from 'path';
+import { dirname, relative, sep as pathSep } from 'path';
 import { readFileSync } from 'fs';
 import stripBom from 'strip-bom';
 import TestFileCompilerBase from './base';
@@ -18,8 +18,6 @@ var Module = module.constructor;
 export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     constructor () {
         super();
-
-        this.EXPORTABLE_LIB_PATH = join(__dirname, '../../api/exportable-lib');
 
         this.cache                 = Object.create(null);
         this.origRequireExtensions = Object.create(null);
