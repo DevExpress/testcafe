@@ -26,6 +26,56 @@ interface TypeOptions extends ClickOptions {
     paste?: boolean;
 }
 
+// NodeSnapshot
+//----------------------------------------------------------------------------
+interface TextRectangle {
+    bottom: number;
+    left: number;
+    right: number;
+    top: number;
+    width: number;
+    height: number;
+}
+
+interface NodeSnapshotProperties {
+    childElementCount: number;
+    childNodeCount: number;
+    hasChildElements: boolean;
+    hasChildNodes: boolean;
+    nodeType: number;
+    textContent: string;
+
+    attributes?: {[name: string]: string};
+    boundingClientRect?: TextRectangle;
+    checked?: boolean | undefined;
+    classNames?: string[];
+    clientHeight?: number;
+    clientLeft?: number;
+    clientTop?: number;
+    clientWidth?: number;
+    focused?: boolean;
+    id?: string;
+    innerText?: string;
+    namespaceURI?: string | null;
+    offsetHeight?: number;
+    offsetLeft?: number;
+    offsetTop?: number;
+    offsetWidth?: number;
+    selected?: boolean | undefined;
+    selectedIndex?: number | undefined;
+    scrollHeight?: number;
+    scrollLeft?: number;
+    scrollTop?: number;
+    scrollWidth?: number;
+    style?: {[prop: string]: string};
+    tagName?: string;
+    value?: string | undefined;
+    visible?: boolean;
+}
+
+interface NodeSnapshot extends NodeSnapshotProperties {
+
+}
 
 // Selectors
 //----------------------------------------------------------------------------
@@ -35,7 +85,9 @@ interface SelectorOptions {
     visibilityCheck?: Boolean;
 }
 
-interface SelectorAPI {
+type AsyncNodeSnapshotProperties = { [P in keyof NodeSnapshotProperties]: Promise<NodeSnapshotProperties[P]> };
+
+interface SelectorAPI extends AsyncNodeSnapshotProperties {
     nth(index: number): Selector;
 
     withText(text: string): Selector;
@@ -87,9 +139,6 @@ interface Selector extends SelectorAPI {
 interface SelectorPromise extends SelectorAPI, Promise<NodeSnapshot> {
 }
 
-interface NodeSnapshot {
-
-}
 
 // TestController
 //----------------------------------------------------------------------------
