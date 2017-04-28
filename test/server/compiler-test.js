@@ -157,6 +157,32 @@ describe('Compiler', function () {
 
                     expect(tests[3].name).eql('Fixture3Test1');
                     expect(tests[3].fixture).eql(fixtures[2]);
+
+                    return Promise.all(tests.map(function (test) {
+                        return test.fn(testRunMock);
+                    }));
+                })
+                .then(function (results) {
+                    expect(results).eql([
+                        'F1T1: Hey from dep1',
+                        'F1T2',
+                        'F2T1',
+                        'F3T1: Hey from dep1 and dep2'
+                    ]);
+                });
+        });
+
+        it('Should compile mixed dependencies', function () {
+            var sources = [
+                'test/server/data/test-suites/typescript-mixed-dep/testfile.ts'
+            ];
+
+            return compile(sources)
+                .then(function (compiled) {
+                    return compiled.tests[0].fn(testRunMock);
+                })
+                .then(function (results) {
+                    expect(results).eql([8, 8]);
                 });
         });
     });
