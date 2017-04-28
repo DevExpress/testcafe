@@ -94,8 +94,8 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should provide common API functions via lib dependency', function () {
-            return compile('test/server/data/test-suites/common-runtime-dep/testfile.js')
+        it('Should provide exportable lib dep', function () {
+            return compile('test/server/data/test-suites/exportable-lib-dep/testfile.js')
                 .then(function (compiled) {
                     return compiled.tests[0].fn(testRunMock);
                 })
@@ -173,16 +173,19 @@ describe('Compiler', function () {
         });
 
         it('Should compile mixed dependencies', function () {
-            var sources = [
-                'test/server/data/test-suites/typescript-mixed-dep/testfile.ts'
-            ];
-
-            return compile(sources)
+            return compile('test/server/data/test-suites/typescript-mixed-dep/testfile.ts')
                 .then(function (compiled) {
                     return compiled.tests[0].fn(testRunMock);
                 })
                 .then(function (results) {
                     expect(results).eql([8, 8]);
+                });
+        });
+
+        it.only('Should provide API definitions', function () {
+            return compile('test/server/data/test-suites/typescript-defs/testfile.ts')
+                .then(function (compiled) {
+                    expect(compiled.tests.length).gt(0);
                 });
         });
     });

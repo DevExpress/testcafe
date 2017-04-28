@@ -16,13 +16,14 @@
     "url": "git+https://github.com/DevExpress/testcafe.git"
   },
   "main": "lib/index",
-  "types": "lib/api/exportable-lib/index.d.ts",
+  "types": "ts-defs/index.d.ts",
   "bin": {
     "testcafe": "./bin/testcafe-with-v8-flag-filter.js"
   },
   "files": [
     "lib",
-    "bin"
+    "bin",
+    "ts-defs"
   ],
   "keywords": [
     "automated",

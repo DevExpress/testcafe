@@ -16,7 +16,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             target:          'ES6',
             lib:             ['lib.es6.d.ts'],
             baseUrl:         __dirname,
-            paths:           { testcafe: ['../../../api/index.d.ts'] }
+            paths:           { testcafe: ['../../../../ts-defs/index.d.ts'] }
         };
     }
 
