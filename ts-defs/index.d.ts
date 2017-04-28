@@ -82,58 +82,59 @@ interface NodeSnapshot extends NodeSnapshotProperties {
 interface SelectorOptions {
     boundTestRun?: TestController;
     timeout?: number;
-    visibilityCheck?: Boolean;
+    visibilityCheck?: boolean;
 }
 
 type AsyncNodeSnapshotProperties = { [P in keyof NodeSnapshotProperties]: Promise<NodeSnapshotProperties[P]> };
 
 interface SelectorAPI extends AsyncNodeSnapshotProperties {
-    nth(index: number): Selector;
+    nth(index: number): SelectorPromise;
 
-    withText(text: string): Selector;
-    withText(re: RegExp): Selector;
+    withText(text: string): SelectorPromise;
+    withText(re: RegExp): SelectorPromise;
 
-    withAttribute(attrName: string, attrValue?: string): Selector;
+    withAttribute(attrName: string, attrValue?: string): SelectorPromise;
 
-    filter(cssSelector: string): Selector;
-    filter(filterFn: (node: Element | Node, idx: number) => Boolean, dependencies?: {[key: string]: Function}): Selector;
+    filter(cssSelector: string): SelectorPromise;
+    filter(filterFn: (node: Element | Node, idx: number) => boolean, dependencies?: {[key: string]: Function}): SelectorPromise;
 
-    find(cssSelector: string): Selector;
-    find(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => Boolean, dependencies?: {[key: string]: Function}): Selector;
+    find(cssSelector: string): SelectorPromise;
+    find(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean, dependencies?: {[key: string]: Function}): SelectorPromise;
 
-    parent(): Selector;
-    parent(index: number): Selector;
-    parent(cssSelector: string): Selector;
-    parent(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => Boolean, dependencies?: {[key: string]: Function}): Selector;
+    parent(): SelectorPromise;
+    parent(index: number): SelectorPromise;
+    parent(cssSelector: string): SelectorPromise;
+    parent(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean, dependencies?: {[key: string]: Function}): SelectorPromise;
 
-    child(): Selector;
-    child(index: number): Selector;
-    child(cssSelector: string): Selector;
-    child(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => Boolean, dependencies?: {[key: string]: Function}): Selector;
+    child(): SelectorPromise;
+    child(index: number): SelectorPromise;
+    child(cssSelector: string): SelectorPromise;
+    child(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean, dependencies?: {[key: string]: Function}): SelectorPromise;
 
-    sibling(): Selector;
-    sibling(index: number): Selector;
-    sibling(cssSelector: string): Selector;
-    sibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => Boolean, dependencies?: {[key: string]: Function}): Selector;
+    sibling(): SelectorPromise;
+    sibling(index: number): SelectorPromise;
+    sibling(cssSelector: string): SelectorPromise;
+    sibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean, dependencies?: {[key: string]: Function}): SelectorPromise;
 
-    nextSibling(): Selector;
-    nextSibling(index: number): Selector;
-    nextSibling(cssSelector: string): Selector;
-    nextSibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => Boolean, dependencies?: {[key: string]: Function}): Selector;
+    nextSibling(): SelectorPromise;
+    nextSibling(index: number): SelectorPromise;
+    nextSibling(cssSelector: string): SelectorPromise;
+    nextSibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean, dependencies?: {[key: string]: Function}): SelectorPromise;
 
-    prevSibling(): Selector;
-    prevSibling(index: number): Selector;
-    prevSibling(cssSelector: string): Selector;
-    prevSibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => Boolean, dependencies?: {[key: string]: Function}): Selector;
+    prevSibling(): SelectorPromise;
+    prevSibling(index: number): SelectorPromise;
+    prevSibling(cssSelector: string): SelectorPromise;
+    prevSibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean, dependencies?: {[key: string]: Function}): SelectorPromise;
 
-    exists: Promise<Boolean>;
+    exists: Promise<boolean>;
     count: Promise<number>;
+
+    addCustomDOMProperties(props: {[prop: string]: (node: Element | Node) => any}): Selector;
+    addCustomMethods(methods: {[method: string]: (node: Element | Node, ...methodParams: any[]) => any}): Selector;
 }
 
 interface Selector extends SelectorAPI {
     (...args: any[]): SelectorPromise;
-    addCustomDOMProperties(props: {[prop: string]: (node: Element | Node) => any}): Selector;
-    addCustomMethods(methods: {[method: string]: (node: Element | Node, ...methodParams: any[]) => any}): Selector;
 }
 
 interface SelectorPromise extends SelectorAPI, Promise<NodeSnapshot> {
@@ -150,7 +151,7 @@ interface TestController {
 
 // Exportable lib
 declare module 'testcafe' {
-    export function Selector(init: string | Selector | Function | NodeSnapshot | SelectorPromise, options?: SelectorOptions): Selector;
+    export function Selector(init: string | (() => Node | Node[] | NodeList | HTMLCollection) | Selector | NodeSnapshot | SelectorPromise, options?: SelectorOptions): Selector;
 }
 
 
