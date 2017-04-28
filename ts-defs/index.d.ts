@@ -74,7 +74,11 @@ interface NodeSnapshotProperties {
 }
 
 interface NodeSnapshot extends NodeSnapshotProperties {
-
+    hasClass?(className: string): boolean;
+    getStyleProperty?(propertyName: string): string;
+    getAttribute?(attributeName: string): string;
+    getBoundingClientRectProperty?(propertyName: string): number;
+    hasAttribute?(attributeName: string): boolean;
 }
 
 // Selectors
