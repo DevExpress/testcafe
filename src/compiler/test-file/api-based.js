@@ -70,7 +70,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
                     origExt(mod, filename);
 
                 else {
-                    var code         = readFileSync(filename);
+                    var code         = readFileSync(filename).toString();
                     var compiledCode = requireCompilers[ext](stripBom(code), filename);
 
                     mod.paths = APIBasedTestFileCompilerBase._getNodeModulesLookupPath(filename);
