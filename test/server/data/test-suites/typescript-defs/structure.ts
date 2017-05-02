@@ -1,5 +1,5 @@
 /// <reference path="../../../../../ts-defs/index.d.ts" />
-import { Selector } from 'testcafe';
+import {Selector} from 'testcafe';
 
 fixture
     .skip
@@ -22,18 +22,22 @@ fixture
         t.fixtureCtx['yo'] = 'hey';
     })
     .afterEach(async t => {
-
+        await t.click('#smth');
     });
 
 test
     .before(async t => {
-
+        await t.click('#smth');
     })
     .after(async t => {
-
+        await t.click('#smth');
     })
     ('Test1', async t => {
+        t.ctx['1'] = 2;
+        t.ctx['someKey'] = [];
+        t.fixtureCtx['yo'] = 'hey';
 
+        await t.click('#smth');
     })
     .skip
     .only

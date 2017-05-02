@@ -1,32 +1,3 @@
-// Options
-//----------------------------------------------------------------------------
-interface KeyModifiers {
-    ctrl?: boolean;
-    alt?: boolean;
-    shift?: boolean;
-    meta?: boolean
-}
-
-interface ActionOptions {
-    speed?: number;
-}
-
-interface MouseOptions extends ActionOptions {
-    offsetX?: number;
-    offsetY?: number;
-    modifiers?: KeyModifiers;
-}
-
-interface ClickOptions extends MouseOptions {
-    caretPos?: number;
-}
-
-interface TypeOptions extends ClickOptions {
-    replace?: boolean;
-    paste?: boolean;
-}
-
-
 // ClientFunction
 //----------------------------------------------------------------------------
 interface ClientFunctionOptions {
@@ -112,36 +83,46 @@ interface SelectorAPI extends AsyncNodeSnapshotProperties {
 
     withAttribute(attrName: string, attrValue?: string): SelectorPromise;
 
+
     filter(cssSelector: string): SelectorPromise;
-    filter(filterFn: (node: Element | Node, idx: number) => boolean, dependencies?: {[key: string]: Function}): SelectorPromise;
+    filter(filterFn: (node: Element | Node, idx: number) => boolean,
+           dependencies?: {[key: string]: Function}): SelectorPromise;
+
 
     find(cssSelector: string): SelectorPromise;
-    find(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean, dependencies?: {[key: string]: Function}): SelectorPromise;
+    find(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean,
+         dependencies?: {[key: string]: Function}): SelectorPromise;
+
 
     parent(): SelectorPromise;
     parent(index: number): SelectorPromise;
     parent(cssSelector: string): SelectorPromise;
-    parent(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean, dependencies?: {[key: string]: Function}): SelectorPromise;
+    parent(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean,
+           dependencies?: {[key: string]: Function}): SelectorPromise;
 
     child(): SelectorPromise;
     child(index: number): SelectorPromise;
     child(cssSelector: string): SelectorPromise;
-    child(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean, dependencies?: {[key: string]: Function}): SelectorPromise;
+    child(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean,
+          dependencies?: {[key: string]: Function}): SelectorPromise;
 
     sibling(): SelectorPromise;
     sibling(index: number): SelectorPromise;
     sibling(cssSelector: string): SelectorPromise;
-    sibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean, dependencies?: {[key: string]: Function}): SelectorPromise;
+    sibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean,
+            dependencies?: {[key: string]: Function}): SelectorPromise;
 
     nextSibling(): SelectorPromise;
     nextSibling(index: number): SelectorPromise;
     nextSibling(cssSelector: string): SelectorPromise;
-    nextSibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean, dependencies?: {[key: string]: Function}): SelectorPromise;
+    nextSibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean,
+                dependencies?: {[key: string]: Function}): SelectorPromise;
 
     prevSibling(): SelectorPromise;
     prevSibling(index: number): SelectorPromise;
     prevSibling(cssSelector: string): SelectorPromise;
-    prevSibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean, dependencies?: {[key: string]: Function}): SelectorPromise;
+    prevSibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean,
+                dependencies?: {[key: string]: Function}): SelectorPromise;
 
     exists: Promise<boolean>;
     count: Promise<number>;
@@ -176,17 +157,145 @@ interface RoleOptions {
 }
 
 
-// TestController
+// Action options
 //----------------------------------------------------------------------------
-interface TestController {
-    ctx: {[key: string]: any};
-    readonly fixtureCtx: {[key: string]: any};
+interface KeyModifiers {
+    ctrl?: boolean;
+    alt?: boolean;
+    shift?: boolean;
+    meta?: boolean
+}
+
+interface ActionOptions {
+    speed?: number;
+}
+
+interface MouseActionOptions extends ActionOptions {
+    offsetX?: number;
+    offsetY?: number;
+    modifiers?: KeyModifiers;
+}
+
+interface ClickActionOptions extends MouseActionOptions {
+    caretPos?: number;
+}
+
+interface TypeActionOptions extends ClickActionOptions {
+    replace?: boolean;
+    paste?: boolean;
+}
+
+interface ResizeToFitDeviceOptions {
+    portraitOrientation?: boolean;
 }
 
 
+// TestController
+//----------------------------------------------------------------------------
+interface NativeDialogHistoryItem {
+    type: 'alert' | 'confirm' | 'beforeunload' | 'prompt';
+    text: string;
+    url: string;
+}
+
+interface TestController {
+    ctx: {[key: string]: any};
+    readonly fixtureCtx: {[key: string]: any};
+
+    click(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+          options?: ClickActionOptions): TestControllerPromise;
+
+    rightClick(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+               options?: ClickActionOptions): TestControllerPromise;
+
+    doubleClick(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+                options?: ClickActionOptions): TestControllerPromise;
+
+    hover(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+          options?: MouseActionOptions): TestControllerPromise;
+
+    drag(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+         dragOffsetX: number,
+         dragOffsetY: number,
+         options?: MouseActionOptions): TestControllerPromise;
+
+    dragToElement(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+                  destinationSelector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+                  options?: MouseActionOptions): TestControllerPromise;
+
+    typeText(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+             text: string,
+             options?: TypeActionOptions): TestControllerPromise;
+
+
+    selectText(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+               startPos: number,
+               endPos: number,
+               options?: ActionOptions): TestControllerPromise;
+
+    selectTextAreaContent(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+                          startLine: number,
+                          startPos: number,
+                          endLine: number,
+                          endPos: number,
+                          options?: ActionOptions): TestControllerPromise;
+
+    selectEditableContent(startSelector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+                          endSelector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+                          options?: ActionOptions): TestControllerPromise;
+
+    pressKey(keys: string, options?: ActionOptions): TestControllerPromise;
+
+    wait(timeout: number): TestControllerPromise;
+
+    navigateTo(url: string): TestControllerPromise;
+
+    setFilesToUpload(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+                     filePath: String | String[]): TestControllerPromise;
+
+    clearUpload(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection)): TestControllerPromise;
+
+    takeScreenshot(path?: string): TestControllerPromise;
+
+    resizeWindow(width: number, height: number): TestControllerPromise;
+
+    resizeWindowToFitDevice(device: string, options?: ResizeToFitDeviceOptions): TestControllerPromise;
+
+    maximizeWindow(): TestControllerPromise;
+
+    switchToIframe(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection)): TestControllerPromise;
+
+    switchToMainWindow(): TestControllerPromise;
+
+    eval(fn: Function, options?: ClientFunctionOptions): Promise<any>;
+
+    setNativeDialogHandler(fn: ((type: 'alert' | 'confirm' | 'beforeunload' | 'prompt', text: string, url: string) => any) | null,
+                           options?: ClientFunctionOptions): TestControllerPromise;
+
+    getNativeDialogHistory(): Promise<NativeDialogHistoryItem[]>;
+
+    expect(actual: any): Assertion;
+
+    debug(): TestControllerPromise;
+
+    setTestSpeed(speed: number): TestControllerPromise;
+
+    useRole(role: Role): TestControllerPromise;
+}
+
+interface TestControllerPromise extends TestController, Promise<any> {
+}
+
+
+// Assertions
+interface Assertion {
+
+}
+
 // Exportable lib
 declare module 'testcafe' {
-    export function Selector(init: string | (() => Node | Node[] | NodeList | HTMLCollection) | Selector | NodeSnapshot | SelectorPromise, options?: SelectorOptions): Selector;
+    export function Selector(init: string | (() => Node | Node[] | NodeList | HTMLCollection) | Selector | NodeSnapshot | SelectorPromise,
+                             options?: SelectorOptions): Selector;
 
     export function ClientFunction(fn: Function, options?: ClientFunctionOptions): ClientFunction;
 
@@ -194,6 +303,8 @@ declare module 'testcafe' {
         (url: String, fn: (t: TestController) => Promise<any>, options?: RoleOptions): Role;
         anonymous(): Role;
     };
+
+    export var t: TestController;
 }
 
 

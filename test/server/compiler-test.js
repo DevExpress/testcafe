@@ -183,10 +183,13 @@ describe('Compiler', function () {
         });
 
         it.only('Should provide API definitions', function () {
-            return compile('test/server/data/test-suites/typescript-defs/testfile.ts')
-                .then(function (compiled) {
-                    expect(compiled.tests.length).gt(0);
-                });
+            var src = [
+                'test/server/data/test-suites/typescript-defs/structure.ts'
+            ];
+
+            return compile(src).then(function (compiled) {
+                expect(compiled.tests.length).gt(0);
+            });
         });
     });
 
