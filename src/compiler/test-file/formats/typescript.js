@@ -23,7 +23,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     static _reportErrors (diagnostics) {
         // NOTE: lazy load the compiler
         var ts     = require('typescript');
-        var errMsg = '';
+        var errMsg = 'TypeScript compilation failed.\n';
 
         diagnostics.forEach(d => {
             var file                = d.file;
@@ -33,11 +33,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             errMsg += `${file.fileName} (${line + 1}, ${character + 1}): ${message}\n`;
         });
 
-        var err = new Error(errMsg);
-
-        err.stack = errMsg;
-
-        throw err;
+        throw new Error(errMsg);
     }
 
     _compileCode (code, filename) {

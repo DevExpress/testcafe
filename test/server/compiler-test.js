@@ -195,6 +195,18 @@ describe('Compiler', function () {
                 expect(compiled.tests.length).gt(0);
             });
         });
+
+        it('Should provide exportable lib dep', function () {
+            return compile('test/server/data/test-suites/typescript-exportable-lib-dep/testfile.ts')
+                .then(function (compiled) {
+                    return compiled.tests[0].fn(testRunMock);
+                })
+                .then(function (result) {
+                    expect(result.exportableLib).eql(exportableLib);
+                    expect(result.exportableLib).eql(result.exportableLibInDep);
+                });
+        });
+
     });
 
 
@@ -441,23 +453,6 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should raise an error if test file has a syntax error', function () {
-            var testfile = posixResolve('test/server/data/test-suites/syntax-error-in-testfile/testfile.js');
-
-            return compile(testfile)
-                .then(function () {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(function (err) {
-                    assertError(err, {
-                        stackTop: null,
-
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'SyntaxError: ' + testfile + ': Unexpected token, expected { (1:7)'
-                    });
-                });
-        });
-
         it("Should raise an error if test file can't require a module", function () {
             var testfile = resolve('test/server/data/test-suites/require-error-in-testfile/testfile.js');
 
@@ -491,6 +486,43 @@ describe('Compiler', function () {
                     });
                 });
         });
+
+        it('Should raise an error if test file has a syntax error', function () {
+            var testfile = posixResolve('test/server/data/test-suites/syntax-error-in-testfile/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertError(err, {
+                        stackTop: null,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'SyntaxError: ' + testfile + ': Unexpected token, expected { (1:7)'
+                    });
+                });
+        });
+
+        it('Should raise an error if test file has a TypeScript error', function () {
+            var testfile = posixResolve('test/server/data/test-suites/typescript-compile-errors/testfile.ts');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertError(err, {
+                        stackTop: null,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Error: TypeScript compilation failed.\n' +
+                                 testfile + ' (6, 13): Property \'doSmthg\' does not exist on type \'TestController\'.\n' +
+                                 testfile + ' (9, 6): Argument of type \'123\' is not assignable to parameter of type \'string\'.\n'
+                    });
+                });
+        });
+
     });
 
 
