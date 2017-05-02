@@ -240,6 +240,7 @@ describe('CLI argument parser', function () {
             'test/server/data/file-list/dir1/file-1-1.js',
             'test/server/data/file-list/dir1/file-1-2.js',
             'test/server/data/file-list/dir1/file-1-3.testcafe',
+            'test/server/data/file-list/dir1/file-1-4.ts',
             'test/server/data/file-list/dir2/file-2-2.js',
             'test/server/data/file-list/dir2/file-2-3.js'
         ];

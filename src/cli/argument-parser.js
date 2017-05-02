@@ -11,6 +11,7 @@ import { readSync as read } from 'read-file-relative';
 import promisify from '../utils/promisify';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
+import Compiler from '../compiler';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
@@ -21,6 +22,7 @@ var stat      = promisify(fs.stat);
 
 const REMOTE_ALIAS_RE          = /^remote(?::(\d*))?$/;
 const DEFAULT_TEST_LOOKUP_DIRS = OS.win ? ['test/', 'tests/'] : ['test/', 'tests/', 'Test/', 'Tests/'];
+const TEST_FILE_GLOB_PATTERN   = `./**/*@(${Compiler.getSupportedTestFileExtensions().join('|')})`;
 
 const DESCRIPTION = dedent(`
     In the browser list, you can use browser names (e.g. "ie9", "chrome", etc.) as well as paths to executables.
@@ -36,6 +38,7 @@ const DESCRIPTION = dedent(`
 
     More info: https://devexpress.github.io/testcafe/documentation
 `);
+
 
 export default class CLIArgumentParser {
     constructor (cwd) {
@@ -209,7 +212,7 @@ export default class CLIArgumentParser {
                 }
 
                 if (fileStat.isDirectory())
-                    return pathJoin(file, './**/*@(.js|.testcafe)');
+                    return pathJoin(file, TEST_FILE_GLOB_PATTERN);
             }
 
             return file;

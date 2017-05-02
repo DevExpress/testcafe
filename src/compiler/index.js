@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import Promise from 'pinkie';
-import { flattenDeep as flatten, find, chunk } from 'lodash';
+import { flattenDeep as flatten, find, chunk, uniq } from 'lodash';
 import stripBom from 'strip-bom';
 import sourceMapSupport from 'source-map-support';
 import { Compiler as LegacyTestFileCompiler } from 'testcafe-legacy-api';
@@ -16,18 +16,22 @@ var readFile = promisify(fs.readFile);
 
 const SOURCE_CHUNK_LENGTH = 1000;
 
+var testFileCompilers = [
+    new LegacyTestFileCompiler(hammerhead.processScript),
+    new EsNextTestFileCompiler(),
+    new TypeScriptTestFileCompiler(),
+    new RawTestFileCompiler()
+];
+
 export default class Compiler {
     constructor (sources) {
         this.sources = sources;
 
-        this.testFileCompilers = [
-            new LegacyTestFileCompiler(hammerhead.processScript),
-            new EsNextTestFileCompiler(),
-            new TypeScriptTestFileCompiler(),
-            new RawTestFileCompiler()
-        ];
-
         Compiler._setupSourceMapsSupport();
+    }
+
+    static getSupportedTestFileExtensions () {
+        return uniq(testFileCompilers.map(c => c.getSupportedExtension()));
     }
 
     static _setupSourceMapsSupport () {
@@ -50,7 +54,7 @@ export default class Compiler {
 
         code = stripBom(code).toString();
 
-        var compiler = find(this.testFileCompilers, c => c.canCompile(code, filename));
+        var compiler = find(testFileCompilers, c => c.canCompile(code, filename));
 
         return compiler ? await compiler.compile(code, filename) : null;
     }
@@ -67,7 +71,7 @@ export default class Compiler {
             tests        = tests.concat(await Promise.all(compileUnits));
         }
 
-        this.testFileCompilers.forEach(c => c.cleanUp());
+        testFileCompilers.forEach(c => c.cleanUp());
 
         tests = flatten(tests).filter(test => !!test);
 
