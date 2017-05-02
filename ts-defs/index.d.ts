@@ -296,21 +296,53 @@ interface AssertionOptions {
 
 interface Assertion {
     eql(expected: any, message?: string, options?: AssertionOptions): TestControllerPromise;
+    eql(expected: any, options?: AssertionOptions): TestControllerPromise;
+
     notEql(expected: any, message?: string, options?: AssertionOptions): TestControllerPromise;
+    notEql(expected: any, options?: AssertionOptions): TestControllerPromise;
+
     ok(message?: string, options?: AssertionOptions): TestControllerPromise;
+    ok(options?: AssertionOptions): TestControllerPromise;
+
     notOk(message?: string, options?: AssertionOptions): TestControllerPromise;
+    notOk(options?: AssertionOptions): TestControllerPromise;
+
     contains(expected: any, message?: string, options?: AssertionOptions): TestControllerPromise;
+    contains(expected: any, options?: AssertionOptions): TestControllerPromise;
+
     notContains(expected: any, message?: string, options?: AssertionOptions): TestControllerPromise;
+    notContains(expected: any, options?: AssertionOptions): TestControllerPromise;
+
     typeOf(typeName: String, message?: string, options?: AssertionOptions): TestControllerPromise;
+    typeOf(typeName: String, options?: AssertionOptions): TestControllerPromise;
+
     notTypeOf(typeName: String, message?: string, options?: AssertionOptions): TestControllerPromise;
+    notTypeOf(typeName: String, options?: AssertionOptions): TestControllerPromise;
+
     gt(expected: number, message?: string, options?: AssertionOptions): TestControllerPromise;
+    gt(expected: number, options?: AssertionOptions): TestControllerPromise;
+
     gte(expected: number, message?: string, options?: AssertionOptions): TestControllerPromise;
+    gte(expected: number,options?: AssertionOptions): TestControllerPromise;
+
     lt(expected: number, message?: string, options?: AssertionOptions): TestControllerPromise;
+    lt(expected: number, options?: AssertionOptions): TestControllerPromise;
+
     lte(expected: number, message?: string, options?: AssertionOptions): TestControllerPromise;
+    lte(expected: number,options?: AssertionOptions): TestControllerPromise;
+
     within(start: number, finish: number, message?: string, options?: AssertionOptions): TestControllerPromise;
+    within(start: number, finish: number, options?: AssertionOptions): TestControllerPromise;
+
     notWithin(start: number, finish: number, message?: string, options?: AssertionOptions): TestControllerPromise;
+    notWithin(start: number, finish: number, options?: AssertionOptions): TestControllerPromise;
+
     match(re: RegExp, message?: string, options?: AssertionOptions): TestControllerPromise;
+    match(re: RegExp, options?: AssertionOptions): TestControllerPromise;
+
     notMatch(re: RegExp, message?: string, options?: AssertionOptions): TestControllerPromise;
+    notMatch(re: RegExp, options?: AssertionOptions): TestControllerPromise;
+
 }
 
 // Exportable lib

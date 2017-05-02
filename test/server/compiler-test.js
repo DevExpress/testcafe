@@ -182,10 +182,13 @@ describe('Compiler', function () {
                 });
         });
 
-        it.only('Should provide API definitions', function () {
+        it('Should provide API definitions', function () {
             var src = [
                 'test/server/data/test-suites/typescript-defs/structure.ts',
-                'test/server/data/test-suites/typescript-defs/selectors.ts'
+                'test/server/data/test-suites/typescript-defs/selectors.ts',
+                'test/server/data/test-suites/typescript-defs/client-functions.ts',
+                'test/server/data/test-suites/typescript-defs/roles.ts',
+                'test/server/data/test-suites/typescript-defs/test-controller.ts'
             ];
 
             return compile(src).then(function (compiled) {

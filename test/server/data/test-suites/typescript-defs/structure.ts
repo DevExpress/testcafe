@@ -1,5 +1,5 @@
 /// <reference path="../../../../../ts-defs/index.d.ts" />
-import {Selector} from 'testcafe';
+import 'testcafe';
 
 fixture
     .skip

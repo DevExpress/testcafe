@@ -1,5 +1,6 @@
-import {Selector, ClientFunction} from 'testcafe';
-import {expect} from 'chai';
+/// <reference path="../../../../../ts-defs/index.d.ts" />
+import { Selector, ClientFunction } from 'testcafe';
+import { expect } from 'chai';
 
 fixture('Selector')
     .page('http://localhost:3000/fixtures/api/es-next/selector/pages/index.html');
@@ -757,13 +758,13 @@ test('Selector "prevSibling" method', async t => {
 
 test('Selector `addCustomMethods` method', async t => {
     interface CustomSelector1 extends Selector, SelectorPromise {
-        prop1(str: string) : Promise<any>;
-        prop2(str: string, separator: string) : Promise<any>;
+        prop1(str: string): Promise<any>;
+        prop2(str: string, separator: string): Promise<any>;
     }
 
-   interface CustomSnapshot1 extends NodeSnapshot {
-        prop1(str: string) : Promise<any>;
-        prop2(str: string, separator: string) : Promise<any>;
+    interface CustomSnapshot1 extends NodeSnapshot {
+        prop1(str: string): Promise<any>;
+        prop2(str: string, separator: string): Promise<any>;
     }
 
 
@@ -800,7 +801,7 @@ test('Selector `addCustomMethods` method', async t => {
 
 test('Add custom method - method throws an error', async() => {
     interface CustomSelector extends Selector {
-        customMethod() : Promise<any>;
+        customMethod(): Promise<any>;
     }
 
     const el = <CustomSelector>Selector('rect').addCustomMethods({
