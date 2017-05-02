@@ -26,6 +26,19 @@ interface TypeOptions extends ClickOptions {
     paste?: boolean;
 }
 
+
+// ClientFunction
+//----------------------------------------------------------------------------
+interface ClientFunctionOptions {
+    dependencies?: {[key: string]: Function},
+    boundTestRun: TestController
+}
+
+interface ClientFunction {
+    (...args: any[]): Promise<any>;
+    with(options: ClientFunctionOptions): ClientFunction;
+}
+
 // NodeSnapshot
 //----------------------------------------------------------------------------
 interface TextRectangle {
@@ -135,6 +148,12 @@ interface SelectorAPI extends AsyncNodeSnapshotProperties {
 
     addCustomDOMProperties(props: {[prop: string]: (node: Element | Node) => any}): Selector;
     addCustomMethods(methods: {[method: string]: (node: Element | Node, ...methodParams: any[]) => any}): Selector;
+
+    hasClass(className: string): Promise<boolean>;
+    getStyleProperty(propertyName: string): Promise<string>;
+    getAttribute(attributeName: string): Promise<string>;
+    getBoundingClientRectProperty(propertyName: string): Promise<number>;
+    hasAttribute(attributeName: string): Promise<boolean>;
 }
 
 interface Selector extends SelectorAPI {
@@ -142,6 +161,18 @@ interface Selector extends SelectorAPI {
 }
 
 interface SelectorPromise extends SelectorAPI, Promise<NodeSnapshot> {
+}
+
+
+// Role
+//----------------------------------------------------------------------------
+declare class Role {
+    private constructor();
+}
+
+
+interface RoleOptions {
+    preseveUrl?: boolean;
 }
 
 
@@ -156,6 +187,13 @@ interface TestController {
 // Exportable lib
 declare module 'testcafe' {
     export function Selector(init: string | (() => Node | Node[] | NodeList | HTMLCollection) | Selector | NodeSnapshot | SelectorPromise, options?: SelectorOptions): Selector;
+
+    export function ClientFunction(fn: Function, options?: ClientFunctionOptions): ClientFunction;
+
+    export var Role: {
+        (url: String, fn: (t: TestController) => Promise<any>, options?: RoleOptions): Role;
+        anonymous(): Role;
+    };
 }
 
 
