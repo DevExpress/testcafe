@@ -106,6 +106,7 @@
     "useragent": "^2.1.7"
   },
   "devDependencies": {
+    "@types/chai": "^3.5.2",
     "babel-eslint": "^7.1.1",
     "babel-plugin-add-module-exports": "^0.2.0",
     "basic-auth": "^1.1.0",

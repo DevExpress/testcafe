@@ -184,7 +184,8 @@ describe('Compiler', function () {
 
         it.only('Should provide API definitions', function () {
             var src = [
-                'test/server/data/test-suites/typescript-defs/structure.ts'
+                'test/server/data/test-suites/typescript-defs/structure.ts',
+                'test/server/data/test-suites/typescript-defs/selectors.ts'
             ];
 
             return compile(src).then(function (compiled) {

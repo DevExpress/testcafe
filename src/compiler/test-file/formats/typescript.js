@@ -11,7 +11,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             pretty:          true,
             inlineSourceMap: true,
             noEmit:          true,
-            noImplicitAny:   true,
+            noImplicitAny:   false,
             module:          ts.ModuleKind.CommonJS,
             target:          'ES6',
             lib:             ['lib.es6.d.ts'],
@@ -30,7 +30,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             var { line, character } = file.getLineAndCharacterOfPosition(d.start);
             var message             = ts.flattenDiagnosticMessageText(d.messageText, '\n');
 
-            errMsg += `${file.fileName} (${line}, ${character}): ${message}\n`;
+            errMsg += `${file.fileName} (${line + 1}, ${character + 1}): ${message}\n`;
         });
 
         var err = new Error(errMsg);

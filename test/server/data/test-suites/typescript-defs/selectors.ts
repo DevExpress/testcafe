@@ -1,22 +1,12 @@
-// NOTE: to preserve callsites, add new tests AFTER the existing ones
-import { Selector, ClientFunction } from 'testcafe';
-import { expect } from 'chai';
+import {Selector, ClientFunction} from 'testcafe';
+import {expect} from 'chai';
 
-fixture `Selector`
-    .page `http://localhost:3000/fixtures/api/es-next/selector/pages/index.html`;
+fixture('Selector')
+    .page('http://localhost:3000/fixtures/api/es-next/selector/pages/index.html');
 
 const getElementById = Selector(id => document.getElementById(id));
 
-const isIEFunction = ClientFunction(() => {
-    var userAgent = window.navigator.userAgent;
-    var appName   = window.navigator.appName;
-    var isIE11Re  = new RegExp('Trident/.*rv:([0-9]{1,}[\.0-9]{0,})');
-
-    return appName === 'Microsoft Internet Explorer' ||
-           appName === 'Netscape' && isIE11Re.exec(userAgent) !== null;
-});
-
-test('HTMLElement snapshot basic properties', async () => {
+test('HTMLElement snapshot basic properties', async() => {
     const el = await getElementById('htmlElement');
 
     expect(el.nodeType).eql(1);
@@ -29,7 +19,7 @@ test('HTMLElement snapshot basic properties', async () => {
     expect(el.attributes['style']).contains('width: 40px; height: 30px; padding-top: 2px; padding-left: 2px;');
 
     expect(el.style['width']).eql('40px');
-    expect(el.getStyleProperty(['width'])).eql('40px');
+    expect(el.getStyleProperty('width')).eql('40px');
     expect(el.style['height']).eql('30px');
     expect(el.style['padding-top']).eql('2px');
     expect(el.style['padding-left']).eql('2px');
@@ -70,7 +60,7 @@ test('HTMLElement snapshot basic properties', async () => {
     expect(el.classNames).eql(['yo', 'hey', 'cool']);
 });
 
-test('SVGElement snapshot basic properties', async () => {
+test('SVGElement snapshot basic properties', async() => {
     const el = await getElementById('svgElement');
 
     expect(el.nodeType).eql(1);
@@ -81,7 +71,7 @@ test('SVGElement snapshot basic properties', async () => {
     expect(el.attributes['width']).eql('300px');
     expect(el.attributes['height']).eql('100px');
     expect(el.attributes['class']).eql('svg1 svg2');
-    expect(el.attributes['style']).to.be.a.string;
+    expect(el.attributes['style']).to.be.a('string');
 
     expect(el.style['display']).eql('inline');
     expect(el.style['visibility']).eql('visible');
@@ -161,18 +151,12 @@ test('Input-specific element snapshot properties', async t => {
     expect(el.selected).to.be.true;
 });
 
-test('`innerText` element snapshot property', async t => {
-    const isIE    = await isIEFunction();
-    let innerText = await getElementById('htmlElementWithInnerText').innerText;
+test('`innerText` element snapshot property', async() => {
+    const el = await getElementById('htmlElementWithInnerText');
 
-    innerText = innerText.trim().replace(/\r\n/, '\n');
-
-    // NOTE: we have to use regexp because the innerText field
+    // NOTE: we have to use this regexp because the innerText field
     // returns a little bit different values in IE9 and other browsers
-    var expectedTextRe = isIE ? /^Hey\nyo test {2}42 test {2}'hey hey'; \.someClass \{ \}/ :
-                         /^Hey\nyo test {1,2}test( \u0000)?/;
-
-    await t.expect(expectedTextRe.test(innerText.trim())).ok();
+    expect(/^Hey\nyo test {1,2}test( \u0000)?/.test(el.innerText.trim())).to.be.true;
 });
 
 test('Non-element node snapshots', async t => {
@@ -206,7 +190,7 @@ test('Non-element node snapshots', async t => {
     expect(comment.textContent).eql(' some comment ');
 
     const fragment = await Selector(() => {
-        const f   = document.createDocumentFragment();
+        const f = document.createDocumentFragment();
         const div = document.createElement('div');
 
         div.innerHTML = '42';
@@ -223,11 +207,7 @@ test('Non-element node snapshots', async t => {
     expect(fragment.textContent).eql('42');
 });
 
-test('Selector fn is not a function or string', async () => {
-    await Selector(123)();
-});
-
-test('String ctor argument', async () => {
+test('String ctor argument', async() => {
     const el1 = await Selector('#htmlElement')();
     const el2 = await Selector('.svg1')();
 
@@ -243,13 +223,13 @@ test('Wait for element in DOM', async t => {
     expect(el.tagName).eql('div');
 });
 
-test('Element does not appear', async () => {
+test('Element does not appear', async() => {
     const el = await Selector('#someElement')();
 
     expect(el).eql(null);
 });
 
-test('Error in code', async () => {
+test('Error in code', async() => {
     const selector = Selector(() => {
         throw new Error('Hey ya!');
     });
@@ -264,37 +244,23 @@ test('Visibility check', async t => {
 
     expect(el.tagName).eql('div');
 
-    el = await getInvisibleEl.with({ visibilityCheck: true })();
-
-    expect(el).to.be.a.null;
+    el = await getInvisibleEl.with({visibilityCheck: true})();
 
     await t.click('#makeVisible');
 
-    el = await getInvisibleEl.with({ visibilityCheck: true })();
+    el = await getInvisibleEl.with({visibilityCheck: true})();
 
     expect(el.tagName).eql('div');
 });
 
-test('Timeout', async () => {
-    const getSlowEl = Selector('#slowElement').with({ visibilityCheck: true, timeout: 300 });
-    const el        = await getSlowEl();
+test('Timeout', async() => {
+    const getSlowEl = Selector('#slowElement').with({visibilityCheck: true, timeout: 300});
+    const el = await getSlowEl();
 
-    expect(el).to.be.a.null;
+    expect(el).to.be.a('null');
 });
 
-test('Return non-DOM node', async () => {
-    await Selector(() => 'hey')();
-});
-
-test('Snapshot `selector` method', async () => {
-    let el = await getElementById('htmlElement');
-
-    el = await el.selector();
-
-    expect(el.id).eql('htmlElement');
-});
-
-test('Snapshot `hasClass` method', async () => {
+test('Snapshot `hasClass` method', async() => {
     let el = await getElementById('htmlElement');
 
     expect(el.hasClass('yo')).to.be.true;
@@ -309,7 +275,7 @@ test('Snapshot `hasClass` method', async () => {
 });
 
 test('Element on new page', async t => {
-    const getNewElement = Selector('#newPageElement').with({ timeout: 5000 });
+    const getNewElement = Selector('#newPageElement').with({timeout: 5000});
 
     await t.click('#newPage');
 
@@ -318,20 +284,20 @@ test('Element on new page', async t => {
     expect(el.tagName).eql('div');
 });
 
-test('Derivative selector without options', async () => {
+test('Derivative selector without options', async() => {
     var derivative = Selector(getElementById('textInput'));
 
     await derivative();
 });
 
-test('<option> text selector', async () => {
+test('<option> text selector', async() => {
     const selector = Selector('#selectInput > option').withText('O2');
-    const el       = await selector();
+    const el = await selector();
 
     expect(el.id).eql('option2');
 });
 
-test('Snapshot properties shorthands on selector', async () => {
+test('Snapshot properties shorthands on selector', async() => {
     let el = Selector('#htmlElement');
 
     expect(await el.id).eql('htmlElement');
@@ -378,23 +344,15 @@ test('Snapshot properties shorthands on selector', async () => {
     expect(await selector('checkInput').value).eql('on');
 });
 
-test("Snapshot property shorthand - selector doesn't match any element", async () => {
+test("Snapshot property shorthand - selector doesn't match any element", async() => {
     await Selector('#someUnknownElement').tagName;
 });
 
-test("Snapshot shorthand method - selector doesn't match any element", async () => {
+test("Snapshot shorthand method - selector doesn't match any element", async() => {
     await Selector('#someUnknownElement').getStyleProperty('width');
 });
 
-test('Snapshot property shorthand - selector error', async () => {
-    await Selector(() => [].someUndefMethod()).nodeType;
-});
-
-test('Snapshot shorthand method - selector error', async () => {
-    await Selector(() => [].someUndefMethod()).hasClass('yo');
-});
-
-test('Selector "nth()" method', async () => {
+test('Selector "nth()" method', async() => {
     // String selector
     const getSecondEl = Selector('.idxEl').nth(-3);
 
@@ -427,96 +385,76 @@ test('Selector "nth()" method', async () => {
     expect(await getSecondEl.nth(2).id).eql('el3');
 });
 
-test('Selector "withText" method', async t => {
+test('Selector "withText" method', async() => {
     // String selector and string filter
-    await t
-        .expect(Selector('div').withText('element 4.').id).eql('el4')
+    let selector = Selector('div').withText('element 4.');
 
-        // String selector and regexp filter
-        .expect(Selector('div').withText(/This is element \d+/).id).eql('el1')
+    let el = await selector();
 
-        // Function selector and string filter
-        .expect(Selector(() => document.querySelectorAll('.idxEl')).withText('element 4.').id).eql('el4')
+    expect(el.id).eql('el4');
 
-        // Function selector and regexp filter
-        .expect(Selector(() => document.querySelectorAll('.idxEl')).withText(/This is element \d+/).id).eql('el1')
+    // String selector and regexp filter
+    selector = Selector('div').withText(/This is element \d+/);
 
-        // Should filter element if text filter specified
-        .expect(getElementById('el1').withText('element 4.').exists).notOk()
-        .expect(getElementById('el4').withText('element 4.').id).eql('el4');
+    el = await selector();
 
-    var getDocument = Selector(() => document);
+    expect(el.id).eql('el1');
+
+    // Function selector and string filter
+    selector = Selector(() => document.querySelectorAll('.idxEl')).withText('element 4.');
+
+    el = await selector();
+
+    expect(el.id).eql('el4');
+
+    // Function selector and regexp filter
+    selector = Selector(() => document.querySelectorAll('.idxEl')).withText(/This is element \d+/);
+
+    el = await selector();
+
+    expect(el.id).eql('el1');
+
+    // Should filter element if text filter specified
+    selector = Selector(id => document.getElementById(id)).withText('element 4.');
+
+    el = await selector('el1');
+
+    expect(el).to.be.null;
+
+    el = await selector('el4');
+
+    expect(el.id).eql('el4');
 
     // Should filter document if text filter specified
-    await t
-        .expect(getDocument.withText('Lorem ipsum dolor sit amet, consectetur').exists).notOk()
-        .expect(getDocument.withText('Hey?! (yo)').nodeType).eql(9)
+    selector = Selector(() => document).withText('Lorem ipsum dolor sit amet, consectetur');
 
-        //Compound
-        .expect(Selector('div').withText('This').withText('element 4').id).eql('el4');
+    el = await selector();
 
-    var getNode = Selector(() => document.getElementById('el2').childNodes[0]);
+    expect(el).to.be.null;
 
-    await t
-        .expect(getNode().withText('Lorem ipsum dolor sit amet, consectetur').exists).notOk()
-        .expect(getNode().withText('Hey?! (yo)').nodeType).eql(3);
+    // Should be overridable
+    el = await selector.withText('Hey?! (yo)')();
+
+    expect(el.nodeType).eql(9);
+
+    selector = Selector(() => document.getElementById('el2').childNodes[0]).withText('Lorem ipsum dolor sit amet, consectetur');
+
+    el = await selector();
+
+    expect(el).to.be.null;
+
+    el = await selector.withText('Hey?! (yo)')();
+
+    expect(el.nodeType).eql(3);
 
     // Should work on parameterized selectors
     const elWithClass = Selector(className => document.querySelectorAll('.' + className));
 
-    await t
-        .expect(elWithClass('idxEl').withText('element 4.').id).eql('el4')
-        .expect(elWithClass('idxEl').withText('element 1.').id).eql('el1');
+    expect(await elWithClass('idxEl').withText('element 4.').id).eql('el4');
+    expect(await elWithClass('idxEl').withText('element 1.').id).eql('el1');
 });
 
-test('Selector "withAttribute" method', async t => {
-    await t
-    // string attr name
-        .expect(Selector('div').withAttribute('data-store').id).eql('attr1')
-
-        // regexp attr name
-        .expect(Selector('div').withAttribute(/data/).id).eql('attr1')
-
-        // string attr name and string attribute value
-        .expect(Selector('div').withAttribute('data-store', 'data-attr2').id).eql('attr2')
-
-        // string attr name and regexp attribute value
-        .expect(Selector('div').withAttribute('data-store', /data-attr\d/).id).eql('attr1')
-
-        // regexp attr name and regexp attribute value
-        .expect(Selector('div').withAttribute(/store$/, /attr2$/).id).eql('attr2');
-
-    var byAtrSelector = Selector(() => document.querySelectorAll('.attr'));
-
-    await t
-    // Function selector and attr filter
-        .expect(byAtrSelector.withAttribute('data-store', 'data-attr2').id).eql('attr2')
-
-        // Function selector and regexp attr filter
-        .expect(byAtrSelector.withAttribute(/data/, /data-attr\d/).id).eql('attr1')
-
-        //Compound
-        .expect(Selector('div').withAttribute('class', /attr/).withAttribute('data-store', 'data-attr2').id).eql('attr2');
-
-    // Parameterized selector and attr filter
-    var byClassNameSelector = Selector(className => document.getElementsByClassName(className));
-
-    await t
-        .expect(byClassNameSelector('attr').withAttribute('data-store', 'data-attr1').id).eql('attr1')
-        .expect(byClassNameSelector('attr').withAttribute('data-store', 'data-attr2').id).eql('attr2');
-
-    var documentSelector = Selector(() => document);
-
-    // Should not filter document with attributes
-    await t.expect(documentSelector.withAttribute('data-store', 'data-attr1').exists).notOk();
-
-    var nodeSelector = Selector(() => document.getElementById('attr1').childNodes[0]);
-
-    // Should not work for nodes
-    await t.expect(nodeSelector.withAttribute('data-store').exists).notOk();
-});
-
-test('Selector "filter" method', async () => {
+test('Selector "filter" method', async() => {
     // String filter
     expect(await Selector('body div').filter('#htmlElementWithInnerText').id).eql('htmlElementWithInnerText');
 
@@ -555,7 +493,7 @@ test('Combination of filter methods', async t => {
 
     expect(el.id).eql('el3');
 
-    el = await Selector('div').withText(/This is element \d+/).nth(1)();
+    el = await selector.withText(/This is element \d+/)();
 
     expect(el.id).eql('el4');
 
@@ -567,12 +505,12 @@ test('Combination of filter methods', async t => {
     expect(id).eql('el3');
 
     // Selector should maintain filter when used as dependency
-    id = await t.eval(() => selector().id, { dependencies: { selector: selector.nth(0) } });
+    id = await t.eval(() => selector().id, {dependencies: {selector: selector.nth(0)}});
 
     expect(id).eql('el2');
 });
 
-test('Selector "find" method', async () => {
+test('Selector "find" method', async() => {
     // String filter
     expect(await Selector('#htmlElement').find('span').id).eql('someSpan');
 
@@ -609,7 +547,7 @@ test('Selector "find" method', async () => {
     expect(await label.withText('Release it').exists).to.be.false;
 });
 
-test('Selector "parent" method', async () => {
+test('Selector "parent" method', async() => {
     // Index filter
     expect((await Selector('g').parent(1).tagName).toLowerCase()).eql('a');
     expect((await Selector('g').parent().parent().tagName).toLowerCase()).eql('a');
@@ -646,7 +584,7 @@ test('Selector "parent" method', async () => {
     expect(await selector.nth(1).exists).to.be.false;
 });
 
-test('Selector "child" method', async () => {
+test('Selector "child" method', async() => {
     // Index filter
     expect(await Selector('#container').child(1).id).eql('el2');
     expect(await Selector('#p2').child().child().id).eql('p0');
@@ -684,7 +622,7 @@ test('Selector "child" method', async () => {
     expect(await label.withText('Release it').exists).to.be.false;
 });
 
-test('Selector "sibling" method', async () => {
+test('Selector "sibling" method', async() => {
     // Index filter
     expect(await Selector('#el2').sibling(1).id).eql('el3');
     expect(await Selector('#el2').sibling().sibling().id).eql('el2');
@@ -707,7 +645,7 @@ test('Selector "sibling" method', async () => {
     expect(await Selector('#el2').sibling().withText('element 4').id).eql('el4');
 });
 
-test('Selector "count" and "exists" properties', async () => {
+test('Selector "count" and "exists" properties', async() => {
     expect(await Selector('.idxEl').count).eql(4);
     expect(await Selector('.idxEl').nth(2).count).eql(1);
     expect(await Selector('form').find('input').count).eql(2);
@@ -727,25 +665,16 @@ test('Selector "count" and "exists" properties', async () => {
     expect(await witClass('idxEl').withText('testtesttest').exists).to.be.false;
 });
 
-test('Snapshot "count" property - selector error', async () => {
-    await Selector(() => [].someUndefMethod()).count;
-});
-
-test('Snapshot "exists" property - selector error', async () => {
-    await Selector(() => [].someUndefMethod()).exists;
-});
-
 test('Selector filter dependencies and index argument', async t => {
-    const isOne     = ClientFunction(i => i === 1);
-    const isTwo     = ClientFunction(i => i === 2);
+    const isOne = ClientFunction(i => i === 1);
+    const isTwo = ClientFunction(i => i === 2);
     const firstNode = ClientFunction((node, i) => isOne(i));
 
     await t
-        .expect(Selector('.idxEl').filter((node, i) => isTwo(i), { isTwo }).id).eql('el3')
-        .expect(Selector('.find-parent').find((node, i) => isOne(i), { isOne }).id).eql('find-child2')
-        .expect(Selector('#childDiv').parent((node, i) => isTwo(i), { isTwo }).id).eql('p2')
-        .expect(Selector('.find-parent').child((node, i) => isOne(i), { isOne }).id).eql('find-child3')
-        .expect(Selector('#find-child1').sibling(firstNode, { isOne }).id).eql('find-child4');
+        .expect(Selector('.idxEl').filter((node, i) => !!isTwo(i), {isTwo}).id).eql('el3')
+        .expect(Selector('.find-parent').find((node, i) => !!isOne(i), {isOne}).id).eql('find-child2')
+        .expect(Selector('#childDiv').parent((node, i) => !!isTwo(i), {isTwo}).id).eql('p2')
+        .expect(Selector('.find-parent').child((node, i) => !!isOne(i), {isOne}).id).eql('find-child3');
 });
 
 test('Selector filter origin node argument', async t => {
@@ -767,56 +696,8 @@ test('Selector filter origin node argument', async t => {
         }).id).eql('el3');
 });
 
-test('Selector `addCustomDOMProperties` method', async t => {
-    let el = Selector('rect')
-        .addCustomDOMProperties({
-            prop1: () => 42,
-            prop2: node => 'tagName: ' + node.tagName
-        });
 
-    await t.expect(await el.prop1).eql(42)
-        .expect(await el.parent().filter(() => true).prop2).eql('tagName: svg')
-        .expect(await el.exists).ok()
-        .expect(await el.count).eql(1);
-
-    el = el.addCustomDOMProperties({
-        prop2: () => 'other value',
-        prop3: () => 'test'
-    });
-
-    await t.expect(await el.prop1).eql(42)
-        .expect(await el.prop2).eql('other value')
-        .expect(await el.prop3).eql('test');
-
-    const elSnapshot = await Selector('rect')
-        .addCustomDOMProperties({
-            prop1: () => 1,
-            prop2: () => 2
-        })();
-
-    await t.expect(elSnapshot.prop1).eql(1)
-        .expect(elSnapshot.prop2).eql(2);
-
-    const nonExistingElement = await Selector('nonExistingElement').addCustomDOMProperties({
-        prop: () => 'value'
-    })();
-
-    await t.expect(nonExistingElement).eql(null);
-
-    const getSecondEl = Selector('div').addCustomDOMProperties({
-        prop: () => 'second'
-    }).nth(1);
-
-    await t.expect(await getSecondEl.prop).eql('second');
-
-    const doc = await Selector(() => document).addCustomDOMProperties({
-        prop: () => 'documentProp'
-    });
-
-    await t.expect(await doc.prop).eql('documentProp');
-});
-
-test('Add custom DOM properties method - property throws an error', async () => {
+test('Add custom DOM properties method - property throws an error', async() => {
     const el = Selector('rect').addCustomDOMProperties({
         prop: () => {
             throw new Error('test');
@@ -875,29 +756,36 @@ test('Selector "prevSibling" method', async t => {
 });
 
 test('Selector `addCustomMethods` method', async t => {
-    let el = Selector('rect').addCustomMethods({
+    interface CustomSelector1 extends Selector, SelectorPromise {
+        prop1(str: string) : Promise<any>;
+        prop2(str: string, separator: string) : Promise<any>;
+    }
+
+   interface CustomSnapshot1 extends NodeSnapshot {
+        prop1(str: string) : Promise<any>;
+        prop2(str: string, separator: string) : Promise<any>;
+    }
+
+
+    let el = <CustomSelector1>Selector('rect').addCustomMethods({
         prop1: (node, str) => str + '42',
-        prop2: (node, str, separator) => [str, node.tagName].join(separator)
+        prop2: (node, str, separator) => [str, (<Element>node).tagName].join(separator)
     });
 
     await t
         .expect(await el.prop1('value: ')).eql('value: 42')
-        .expect(await el().prop1('value: ')).eql('value: 42')
+        .expect(await (<CustomSelector1>el()).prop1('value: ')).eql('value: 42')
         .expect(await el.prop2('tagName', ': ')).eql('tagName: rect')
 
         .expect(await el.parent().filter(() => true).tagName).eql('svg')
         .expect(await el.exists).ok()
         .expect(await el.count).eql(1);
 
-    const snapshot = await el();
+    const snapshot = <CustomSnapshot1>await el();
 
     await t
         .expect(snapshot.prop1('value: ')).eql('value: 42')
         .expect(await snapshot.prop1('value: ')).eql('value: 42');
-
-    el = el.addCustomMethods({
-        prop1: (node, str) => str + '!!!'
-    });
 
     await t
         .expect(el.prop1('Hi')).eql('Hi!!!')
@@ -910,8 +798,12 @@ test('Selector `addCustomMethods` method', async t => {
     await t.expect(nonExistingElement).eql(null);
 });
 
-test('Add custom method - method throws an error', async () => {
-    const el = Selector('rect').addCustomMethods({
+test('Add custom method - method throws an error', async() => {
+    interface CustomSelector extends Selector {
+        customMethod() : Promise<any>;
+    }
+
+    const el = <CustomSelector>Selector('rect').addCustomMethods({
         customMethod: () => {
             throw new Error('test');
         }
@@ -922,7 +814,7 @@ test('Add custom method - method throws an error', async () => {
 
 test('hasAttribute method', async t => {
     let sel = Selector('#htmlElement');
-    let el  = await sel();
+    let el = await sel();
 
     await t
         .expect(sel.hasAttribute('id')).ok()
@@ -938,7 +830,7 @@ test('hasAttribute method', async t => {
         .expect(el.hasAttribute('data-something-else')).notOk();
 
     await t.eval(() => {
-        document.querySelector('#htmlElement').setAttribute('data-something', true);
+        document.querySelector('#htmlElement').setAttribute('data-something', 'true');
         document.querySelector('#htmlElement').setAttribute('data-something-else', void 0);
     });
 
@@ -953,7 +845,7 @@ test('hasAttribute method', async t => {
         .expect(el.hasAttribute('data-something-else')).ok();
 
     sel = Selector(() => document);
-    el  = await sel();
+    el = await sel();
 
     // NOTE: method should not be available in snapshot for non-element nodes
     await t

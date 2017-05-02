@@ -2,7 +2,7 @@
 //----------------------------------------------------------------------------
 interface ClientFunctionOptions {
     dependencies?: {[key: string]: Function},
-    boundTestRun: TestController
+    boundTestRun?: TestController
 }
 
 interface ClientFunction {
@@ -76,59 +76,61 @@ interface SelectorOptions {
 type AsyncNodeSnapshotProperties = { [P in keyof NodeSnapshotProperties]: Promise<NodeSnapshotProperties[P]> };
 
 interface SelectorAPI extends AsyncNodeSnapshotProperties {
-    nth(index: number): SelectorPromise;
+    nth(index: number): Selector;
 
-    withText(text: string): SelectorPromise;
-    withText(re: RegExp): SelectorPromise;
+    withText(text: string): Selector;
+    withText(re: RegExp): Selector;
 
     withAttribute(attrName: string, attrValue?: string): SelectorPromise;
 
 
-    filter(cssSelector: string): SelectorPromise;
-    filter(filterFn: (node: Element | Node, idx: number) => boolean,
-           dependencies?: {[key: string]: Function}): SelectorPromise;
+    filter(cssSelector: string): Selector;
+    filter(filterFn: (node: Element, idx: number) => boolean,
+           dependencies?: {[key: string]: Function}): Selector;
 
 
-    find(cssSelector: string): SelectorPromise;
-    find(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean,
-         dependencies?: {[key: string]: Function}): SelectorPromise;
+    find(cssSelector: string): Selector;
+    find(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
+         dependencies?: {[key: string]: Function}): Selector;
 
 
-    parent(): SelectorPromise;
-    parent(index: number): SelectorPromise;
-    parent(cssSelector: string): SelectorPromise;
-    parent(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean,
-           dependencies?: {[key: string]: Function}): SelectorPromise;
+    parent(): Selector;
+    parent(index: number): Selector;
+    parent(cssSelector: string): Selector;
+    parent(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
+           dependencies?: {[key: string]: Function}): Selector;
 
-    child(): SelectorPromise;
-    child(index: number): SelectorPromise;
-    child(cssSelector: string): SelectorPromise;
-    child(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean,
-          dependencies?: {[key: string]: Function}): SelectorPromise;
+    child(): Selector;
+    child(index: number): Selector;
+    child(cssSelector: string): Selector;
+    child(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
+          dependencies?: {[key: string]: Function}): Selector;
 
-    sibling(): SelectorPromise;
-    sibling(index: number): SelectorPromise;
-    sibling(cssSelector: string): SelectorPromise;
-    sibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean,
-            dependencies?: {[key: string]: Function}): SelectorPromise;
+    sibling(): Selector;
+    sibling(index: number): Selector;
+    sibling(cssSelector: string): Selector;
+    sibling(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
+            dependencies?: {[key: string]: Function}): Selector;
 
-    nextSibling(): SelectorPromise;
-    nextSibling(index: number): SelectorPromise;
-    nextSibling(cssSelector: string): SelectorPromise;
-    nextSibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean,
-                dependencies?: {[key: string]: Function}): SelectorPromise;
+    nextSibling(): Selector;
+    nextSibling(index: number): Selector;
+    nextSibling(cssSelector: string): Selector;
+    nextSibling(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
+                dependencies?: {[key: string]: Function}): Selector;
 
-    prevSibling(): SelectorPromise;
-    prevSibling(index: number): SelectorPromise;
-    prevSibling(cssSelector: string): SelectorPromise;
-    prevSibling(filterFn: (node: Element | Node, idx: number, originNode: Element | Node) => boolean,
-                dependencies?: {[key: string]: Function}): SelectorPromise;
+    prevSibling(): Selector;
+    prevSibling(index: number): Selector;
+    prevSibling(cssSelector: string): Selector;
+    prevSibling(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
+                dependencies?: {[key: string]: Function}): Selector;
 
     exists: Promise<boolean>;
     count: Promise<number>;
 
-    addCustomDOMProperties(props: {[prop: string]: (node: Element | Node) => any}): Selector;
-    addCustomMethods(methods: {[method: string]: (node: Element | Node, ...methodParams: any[]) => any}): Selector;
+    addCustomDOMProperties(props: {[prop: string]: (node: Element) => any}): Selector;
+    addCustomMethods(methods: {[method: string]: (node: Element, ...methodParams: any[]) => any}): Selector;
+
+    with(options?: SelectorOptions): Selector;
 
     hasClass(className: string): Promise<boolean>;
     getStyleProperty(propertyName: string): Promise<string>;
@@ -202,46 +204,46 @@ interface TestController {
     ctx: {[key: string]: any};
     readonly fixtureCtx: {[key: string]: any};
 
-    click(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+    click(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
           options?: ClickActionOptions): TestControllerPromise;
 
-    rightClick(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+    rightClick(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
                options?: ClickActionOptions): TestControllerPromise;
 
-    doubleClick(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+    doubleClick(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
                 options?: ClickActionOptions): TestControllerPromise;
 
-    hover(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+    hover(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
           options?: MouseActionOptions): TestControllerPromise;
 
-    drag(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+    drag(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
          dragOffsetX: number,
          dragOffsetY: number,
          options?: MouseActionOptions): TestControllerPromise;
 
-    dragToElement(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
-                  destinationSelector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+    dragToElement(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                  destinationSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
                   options?: MouseActionOptions): TestControllerPromise;
 
-    typeText(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+    typeText(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
              text: string,
              options?: TypeActionOptions): TestControllerPromise;
 
 
-    selectText(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+    selectText(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
                startPos: number,
                endPos: number,
                options?: ActionOptions): TestControllerPromise;
 
-    selectTextAreaContent(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+    selectTextAreaContent(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
                           startLine: number,
                           startPos: number,
                           endLine: number,
                           endPos: number,
                           options?: ActionOptions): TestControllerPromise;
 
-    selectEditableContent(startSelector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
-                          endSelector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+    selectEditableContent(startSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                          endSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
                           options?: ActionOptions): TestControllerPromise;
 
     pressKey(keys: string, options?: ActionOptions): TestControllerPromise;
@@ -250,10 +252,10 @@ interface TestController {
 
     navigateTo(url: string): TestControllerPromise;
 
-    setFilesToUpload(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection),
+    setFilesToUpload(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
                      filePath: String | String[]): TestControllerPromise;
 
-    clearUpload(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection)): TestControllerPromise;
+    clearUpload(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection)): TestControllerPromise;
 
     takeScreenshot(path?: string): TestControllerPromise;
 
@@ -263,7 +265,7 @@ interface TestController {
 
     maximizeWindow(): TestControllerPromise;
 
-    switchToIframe(selector: string | Selector | NodeSnapshot | SelectorPromise | (() => Node | Node[] | NodeList | HTMLCollection)): TestControllerPromise;
+    switchToIframe(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection)): TestControllerPromise;
 
     switchToMainWindow(): TestControllerPromise;
 
@@ -313,7 +315,7 @@ interface Assertion {
 
 // Exportable lib
 declare module 'testcafe' {
-    export function Selector(init: string | (() => Node | Node[] | NodeList | HTMLCollection) | Selector | NodeSnapshot | SelectorPromise,
+    export function Selector(init: string | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection) | Selector | NodeSnapshot | SelectorPromise,
                              options?: SelectorOptions): Selector;
 
     export function ClientFunction(fn: Function, options?: ClientFunctionOptions): ClientFunction;
