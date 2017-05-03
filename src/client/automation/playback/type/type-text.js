@@ -31,9 +31,9 @@ function _updateSelectionAfterDeletionContent (element, selection) {
     var startNode      = selection.startPos.node;
     var hasStartParent = startNode.parentNode && startNode.parentElement;
 
-    var browserShouldUpdateSelection = browserUtils.isChrome && browserUtils.version < 58 || browserUtils.isSafari;
+    var browserRequiresSelectionUpdating = browserUtils.isChrome && browserUtils.version < 58 || browserUtils.isSafari;
 
-    if (browserShouldUpdateSelection || !hasStartParent || !domUtils.isElementContainsNode(element, startNode)) {
+    if (browserRequiresSelectionUpdating || !hasStartParent || !domUtils.isElementContainsNode(element, startNode)) {
         selection = _getSelectionInElement(element);
 
         if (textSelection.hasInverseSelectionContentEditable(element)) {
