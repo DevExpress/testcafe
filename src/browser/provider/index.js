@@ -179,6 +179,10 @@ export default class BrowserProvider {
         }
     }
 
+    async isLocalBrowser (browserId, browserName) {
+        return await this.plugin.isLocalBrowser(browserId, browserName);
+    }
+
     async openBrowser (browserId, pageUrl, browserName) {
         await this.plugin.openBrowser(browserId, pageUrl, browserName);
 

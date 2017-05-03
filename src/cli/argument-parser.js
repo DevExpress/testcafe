@@ -1,24 +1,19 @@
 import { resolve, join as pathJoin } from 'path';
 import { Command } from 'commander';
-import fs from 'fs';
 import Promise from 'pinkie';
 import dedent from 'dedent';
 import isGlob from 'is-glob';
 import globby from 'globby';
-import mkdirp from 'mkdirp';
 import OS from 'os-family';
 import { readSync as read } from 'read-file-relative';
-import promisify from '../utils/promisify';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
 import Compiler from '../compiler';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
+import { stat, ensureDir } from '../utils/promisified-functions';
 
-
-var ensureDir = promisify(mkdirp);
-var stat      = promisify(fs.stat);
 
 const REMOTE_ALIAS_RE          = /^remote(?::(\d*))?$/;
 const DEFAULT_TEST_LOOKUP_DIRS = OS.win ? ['test/', 'tests/'] : ['test/', 'tests/', 'Test/', 'Tests/'];

@@ -9,13 +9,15 @@ export default {
         var args = splitQuotedText(str, ' ', '`"\'');
         var path = args.shift();
 
-        var params = await browserTools.getBrowserInfo(path);
+        var browserInfo = await browserTools.getBrowserInfo(path);
 
-        if (!params)
+        if (!browserInfo)
             return null;
 
+        var params = Object.assign({}, browserInfo);
+
         if (args.length)
-            params.cmd += (params.cmd ? ' ' : '') + args.join(' ');
+            params.cmd = args.join(' ') + (params.cmd ? ' ' + params.cmd : '');
 
         return params;
     },

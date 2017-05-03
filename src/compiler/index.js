@@ -1,4 +1,3 @@
-import * as fs from 'fs';
 import Promise from 'pinkie';
 import { flattenDeep as flatten, find, chunk, uniq } from 'lodash';
 import stripBom from 'strip-bom';
@@ -8,11 +7,10 @@ import hammerhead from 'testcafe-hammerhead';
 import EsNextTestFileCompiler from './test-file/formats/es-next';
 import TypeScriptTestFileCompiler from './test-file/formats/typescript';
 import RawTestFileCompiler from './test-file/formats/raw';
+import { readFile } from '../utils/promisified-functions';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
-import promisify from '../utils/promisify';
 
-var readFile = promisify(fs.readFile);
 
 const SOURCE_CHUNK_LENGTH = 1000;
 

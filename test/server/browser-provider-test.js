@@ -57,7 +57,7 @@ describe('Browser provider', function () {
             return getBrowserInfo('path:/usr/bin/chrome --arg1 --arg2')
                 .then(function (browserInfo) {
                     expect(browserInfo.path).to.be.equal('/usr/bin/chrome');
-                    expect(browserInfo.cmd).to.be.equal('--internal-arg --arg1 --arg2');
+                    expect(browserInfo.cmd).to.be.equal('--arg1 --arg2 --internal-arg');
                 });
         });
 
@@ -65,7 +65,7 @@ describe('Browser provider', function () {
             return getBrowserInfo('path:`/opt/Google Chrome/chrome` --arg1 --arg2')
                 .then(function (browserInfo) {
                     expect(browserInfo.path).to.be.equal('/opt/Google Chrome/chrome');
-                    expect(browserInfo.cmd).to.be.equal('--internal-arg --arg1 --arg2');
+                    expect(browserInfo.cmd).to.be.equal('--arg1 --arg2 --internal-arg');
                 });
         });
 
@@ -73,7 +73,7 @@ describe('Browser provider', function () {
             return getBrowserInfo('chrome --arg1 --arg2')
                 .then(function (browserInfo) {
                     expect(browserInfo.path).to.be.equal('chrome');
-                    expect(browserInfo.cmd).to.be.equal('--internal-arg --arg1 --arg2');
+                    expect(browserInfo.cmd).to.contain('--arg1 --arg2 --internal-arg');
                 });
         });
     });

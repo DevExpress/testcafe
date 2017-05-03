@@ -1,12 +1,11 @@
 var express               = require('express');
 var http                  = require('http');
-var fs                    = require('fs');
 var path                  = require('path');
 var bodyParser            = require('body-parser');
 var readSync              = require('read-file-relative').readSync;
 var multer                = require('multer');
 var Mustache              = require('mustache');
-var promisify             = require('../../../lib/utils/promisify');
+var readFile              = require('../../../lib/utils/promisified-functions').readFile;
 var quarantineModeTracker = require('../quarantine-mode-tracker');
 
 var storage = multer.memoryStorage();
@@ -21,7 +20,6 @@ var CONTENT_TYPES = {
 
 var UPLOAD_SUCCESS_PAGE_TEMPLATE = readSync('./views/upload-success.html.mustache');
 
-var readFile = promisify(fs.readFile);
 
 var Server = module.exports = function (port, basePath) {
     var server = this;
