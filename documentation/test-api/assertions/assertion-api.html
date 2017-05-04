@@ -911,7 +911,7 @@
 <p><strong>Example:</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'bar'</span><span class="p">).</span><span class="nx">notTypeOf</span><span class="p">(</span><span class="s1">'number'</span><span class="p">,</span> <span class="s1">'string is not a number'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="great-than"></a>Great than <a class="permalink" href="#great-than">#</a></h2>
-<p>Asserts that <code>expected</code> is strictly greater than <code>actual</code>.</p>
+<p>Asserts that <code>actual</code> is strictly greater than <code>expected</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).gt( expected, message, options );
 </code></pre></div>
 <table><thead>
@@ -924,12 +924,12 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A comparison value.</td>
+<td>A value that should be greater than <code>expected</code>.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
 <td>Any type</td>
-<td>A value that should be greater than <code>actual</code>.</td>
+<td>A comparison value.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
@@ -946,7 +946,7 @@
 <p><strong>Example:</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">gt</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'5 is strictly greater than 2'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="great-than-or-equal-to"></a>Great than or Equal to <a class="permalink" href="#great-than-or-equal-to">#</a></h2>
-<p>Asserts that <code>expected</code> is greater than or equal to <code>actual</code>.</p>
+<p>Asserts that <code>actual</code> is greater than or equal to <code>expected</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).gte( expected, message, options );
 </code></pre></div>
 <table><thead>
@@ -959,12 +959,12 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A comparison value.</td>
+<td>A value that should be greater than or equal to <code>expected</code>.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
 <td>Any type</td>
-<td>A value that should be greater than or equal to <code>actual</code>.</td>
+<td>A comparison value.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
@@ -983,7 +983,7 @@
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">gte</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'5 is greater or equal than 2'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">gte</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'2 is greater or equal than 2 '</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="less-than"></a>Less than <a class="permalink" href="#less-than">#</a></h2>
-<p>Asserts that <code>expected</code> is strictly less than <code>actual</code>.</p>
+<p>Asserts that <code>actual</code> is strictly less than <code>expected</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).lt( expected, message, options );
 </code></pre></div>
 <table><thead>
@@ -996,12 +996,12 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A comparison value.</td>
+<td>A value that should be less than <code>expected</code>.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
 <td>Any type</td>
-<td>A value that should be less than <code>actual</code>.</td>
+<td>A comparison value.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
@@ -1018,7 +1018,7 @@
 <p><strong>Example:</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">lt</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">'2 is strictly less than 5'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="less-than-or-equal-to"></a>Less than or Equal to <a class="permalink" href="#less-than-or-equal-to">#</a></h2>
-<p>Asserts that <code>expected</code> is less than or equal to <code>actual</code>.</p>
+<p>Asserts that <code>actual</code> is less than or equal to <code>expected</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).lte( expected, message, options );
 </code></pre></div>
 <table><thead>
@@ -1031,12 +1031,12 @@
 <tr>
 <td><code>actual</code></td>
 <td>Any type</td>
-<td>A comparison value.</td>
+<td>A value that should be less than or equal to <code>expected</code>.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
 <td>Any type</td>
-<td>A value that should be less than or equal to <code>actual</code>.</td>
+<td>A comparison value.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
