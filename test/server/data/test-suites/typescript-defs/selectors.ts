@@ -7,7 +7,7 @@ fixture('Selector')
 
 const getElementById = Selector(id => document.getElementById(id));
 
-test('HTMLElement snapshot basic properties', async() => {
+test('HTMLElement snapshot basic properties', async t => {
     const el = await getElementById('htmlElement');
 
     expect(el.nodeType).eql(1);
