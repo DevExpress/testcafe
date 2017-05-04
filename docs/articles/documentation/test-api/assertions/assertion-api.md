@@ -208,7 +208,7 @@ await t.expect('bar').notTypeOf('number', 'string is not a number');
 
 ## Great than
 
-Asserts that `expected` is strictly greater than `actual`.
+Asserts that `actual` is strictly greater than `expected`.
 
 ```text
 await t.expect( actual ).gt( expected, message, options );
@@ -216,8 +216,8 @@ await t.expect( actual ).gt( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value.
-`expected`             | Any type | A value that should be greater than `actual`.
+`actual`             | Any type | A value that should be greater than `expected`.
+`expected`             | Any type | A comparison value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
@@ -229,7 +229,7 @@ await t.expect(5).gt(2, '5 is strictly greater than 2');
 
 ## Great than or Equal to
 
-Asserts that `expected` is greater than or equal to `actual`.
+Asserts that `actual` is greater than or equal to `expected`.
 
 ```text
 await t.expect( actual ).gte( expected, message, options );
@@ -237,8 +237,8 @@ await t.expect( actual ).gte( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value.
-`expected`             | Any type | A value that should be greater than or equal to `actual`.
+`actual`             | Any type | A value that should be greater than or equal to `expected`.
+`expected`             | Any type | A comparison value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
@@ -252,7 +252,7 @@ await t
 
 ## Less than
 
-Asserts that `expected` is strictly less than `actual`.
+Asserts that `actual` is strictly less than `expected`.
 
 ```text
 await t.expect( actual ).lt( expected, message, options );
@@ -260,8 +260,8 @@ await t.expect( actual ).lt( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value.
-`expected`             | Any type | A value that should be less than `actual`.
+`actual`             | Any type | A value that should be less than `expected`.
+`expected`             | Any type | A comparison value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
@@ -273,7 +273,7 @@ await t.expect(2).lt(5, '2 is strictly less than 5');
 
 ## Less than or Equal to
 
-Asserts that `expected` is less than or equal to `actual`.
+Asserts that `actual` is less than or equal to `expected`.
 
 ```text
 await t.expect( actual ).lte( expected, message, options );
@@ -281,8 +281,8 @@ await t.expect( actual ).lte( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value.
-`expected`             | Any type | A value that should be less than or equal to `actual`.
+`actual`             | Any type | A value that should be less than or equal to `expected`.
+`expected`             | Any type | A comparison value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
