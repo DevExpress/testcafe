@@ -15,6 +15,9 @@
     "type": "git",
     "url": "git+https://github.com/DevExpress/testcafe.git"
   },
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "main": "lib/index",
   "types": "ts-defs/index.d.ts",
   "bin": {
