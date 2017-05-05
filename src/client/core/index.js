@@ -24,6 +24,9 @@ import sendRequestToFrame from './utils/send-request-to-frame';
 
 import * as browser from '../browser';
 
+import selectorTextFilter from '../../client-functions/selectors/selector-text-filter';
+import selectorAttributeFilter from '../../client-functions/selectors/selector-attribute-filter';
+
 exports.RequestBarrier              = RequestBarrier;
 exports.pageUnloadBarrier           = pageUnloadBarrier;
 exports.preventRealEvents           = preventRealEvents;
@@ -47,6 +50,9 @@ exports.sendRequestToFrame     = sendRequestToFrame;
 exports.KEY_MAPS               = KEY_MAPS;
 exports.NODE_TYPE_DESCRIPTIONS = NODE_TYPE_DESCRIPTIONS;
 exports.browser                = browser;
+
+exports.selectorTextFilter      = selectorTextFilter;
+exports.selectorAttributeFilter = selectorAttributeFilter;
 
 exports.get = require;
 

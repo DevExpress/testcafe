@@ -225,6 +225,24 @@ function getTabIndexAttributeIntValue (el) {
     return tabIndex;
 }
 
+export function getParentsUntil (el, boundElement) {
+    var parent  = el.parentNode;
+    var parents = [];
+
+    while (parent) {
+        if (isElementNode(parent)) {
+            if (parent === boundElement)
+                return parents;
+
+            parents.push(parent);
+        }
+
+        parent = parent.parentNode;
+    }
+
+    return parents;
+}
+
 export function containsElement (elements, element) {
     if (elements.contains)
         return elements.contains(element);
@@ -318,16 +336,17 @@ export function isOptionGroupElement (element) {
     return hammerhead.utils.dom.instanceToString(element) === '[object HTMLOptGroupElement]';
 }
 
-export function getOptionIndex (select, option) {
-    var children = select.querySelectorAll('option');
-
-    return arrayUtils.indexOf(children, option);
-}
-
 export function getOptionGroupIndex (select, optgroutp) {
     var children = select.querySelectorAll('optgroup');
 
     return arrayUtils.indexOf(children, optgroutp);
+}
+
+export function getElementIndexInParent (parent, child) {
+    var children = parent.querySelectorAll(getTagName(child));
+
+    return arrayUtils.indexOf(children, child);
+
 }
 
 export function setUnselectableAttributeRecursive (el) {

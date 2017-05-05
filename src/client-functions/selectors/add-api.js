@@ -7,6 +7,8 @@ import ClientFunctionBuilder from '../client-function-builder';
 import ClientFunctionResultPromise from '../result-promise';
 import { assertType, is } from '../../errors/runtime/type-assertions';
 import makeRegExp from '../../utils/make-reg-exp';
+import selectorTextFilter from './selector-text-filter';
+import selectorAttributeFilter from './selector-attribute-filter';
 
 const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PROPERTIES);
 
@@ -268,72 +270,8 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
     return builder.getFunction();
 }
 
-/* eslint-disable no-undef */
-function hasText (node, index, originNode, textRe) {
-    function hasChildrenWithText (parentNode) {
-        var cnCount = parentNode.childNodes.length;
-
-        for (var i = 0; i < cnCount; i++) {
-            if (hasText(parentNode.childNodes[i], index, originNode, textRe))
-                return true;
-        }
-
-        return false;
-    }
-
-    // Element
-    if (node.nodeType === 1) {
-        var text = node.innerText;
-
-        // NOTE: In Firefox, <option> elements don't have `innerText`.
-        // So, we fallback to `textContent` in that case (see GH-861).
-        if (node.tagName.toLowerCase() === 'option') {
-            var textContent = node.textContent;
-
-            if (!text && textContent)
-                text = textContent;
-        }
-
-        return textRe.test(text);
-    }
-
-    // Document
-    if (node.nodeType === 9) {
-        // NOTE: latest version of Edge doesn't have `innerText` for `document`,
-        // `html` and `body`. So we check their children instead.
-        var head = node.querySelector('head');
-        var body = node.querySelector('body');
-
-        return hasChildrenWithText(head, textRe) || hasChildrenWithText(body, textRe);
-    }
-
-    // DocumentFragment
-    if (node.nodeType === 11)
-        return hasChildrenWithText(node, textRe);
-
-    return textRe.test(node.textContent);
-}
-
-function hasAttr (node, index, originNode, attrNameRe, attrValueRe) {
-    if (node.nodeType !== 1)
-        return false;
-
-    var attributes = node.attributes;
-    var attr       = null;
-
-    for (var i = 0; i < attributes.length; i++) {
-        attr = attributes[i];
-
-        if (attrNameRe.test(attr.nodeName) && (!attrValueRe || attrValueRe.test(attr.nodeValue)))
-            return true;
-    }
-
-    return false;
-}
-/* eslint-enable no-undef */
-
-var filterByText = convertFilterToClientFunctionIfNecessary('filter', hasText);
-var filterByAttr = convertFilterToClientFunctionIfNecessary('filter', hasAttr);
+var filterByText = convertFilterToClientFunctionIfNecessary('filter', selectorTextFilter);
+var filterByAttr = convertFilterToClientFunctionIfNecessary('filter', selectorAttributeFilter);
 
 function addFilterMethods (obj, getSelector, SelectorBuilder) {
     obj.nth = index => {
