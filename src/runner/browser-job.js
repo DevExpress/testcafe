@@ -199,9 +199,9 @@ export default class BrowserJob extends EventEmitter {
         return null;
     }
 
-    cancel () {
+    abort () {
         this.removeAllListeners();
-        this._setResult(RESULT.canceled);
+        this._setResult(RESULT.aborted);
         this.browserConnection.removeJob(this);
     }
 }

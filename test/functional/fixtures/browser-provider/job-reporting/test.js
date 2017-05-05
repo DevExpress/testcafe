@@ -113,7 +113,7 @@ if (config.useLocalBrowsers) {
                     expect(error.message).eql('Connection error');
                     expect(mockProvider.plugin.state['failed-1'].result).eql(mockProvider.plugin.JOB_RESULT.errored);
                     expect(mockProvider.plugin.state['failed-1'].data.message).eql('Connection error');
-                    expect(mockProvider.plugin.state['id-2'].result).eql(mockProvider.plugin.JOB_RESULT.canceled);
+                    expect(mockProvider.plugin.state['id-2'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);
                 });
         });
 
@@ -121,8 +121,8 @@ if (config.useLocalBrowsers) {
             return run(['mock:id-1', 'mock:id-2'], './testcafe-fixtures/long-test.js')
                 .cancel()
                 .then(function () {
-                    expect(mockProvider.plugin.state['id-1'].result).eql(mockProvider.plugin.JOB_RESULT.canceled);
-                    expect(mockProvider.plugin.state['id-2'].result).eql(mockProvider.plugin.JOB_RESULT.canceled);
+                    expect(mockProvider.plugin.state['id-1'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);
+                    expect(mockProvider.plugin.state['id-2'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);
                 });
         });
     });
