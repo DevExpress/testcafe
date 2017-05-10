@@ -10,6 +10,8 @@ import stackCleaningHook from '../../errors/stack-cleaning-hook';
 
 const CWD = process.cwd();
 
+const EXPORTABLE_LIB_PATH = join(__dirname, '../../api/exportable-lib');
+
 const FIXTURE_RE = /(^|;|\s+)fixture\s*(\.|\(|`)/;
 const TEST_RE    = /(^|;|\s+)test\s*(\.|\()/;
 
@@ -21,6 +23,10 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
         this.cache                 = Object.create(null);
         this.origRequireExtensions = Object.create(null);
+    }
+
+    static get EXPORTABLE_LIB_PATH () {
+        return EXPORTABLE_LIB_PATH;
     }
 
     static _getNodeModulesLookupPath (filename) {
@@ -163,7 +169,3 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         this.cache = {};
     }
 }
-
-
-// Const
-APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH = join(__dirname, '../../api/exportable-lib');
