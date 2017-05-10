@@ -36,9 +36,13 @@ export default class DragAutomationBase {
 
         this.automationSettings = new AutomationSettings(this.speed);
 
-        this.endPoint  = null;
-        this.downEvent = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
-        this.upEvent   = browserUtils.isTouchDevice ? 'touchend' : 'mouseup';
+        this.endPoint        = null;
+        this.downEvent       = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
+        this.upEvent         = browserUtils.isTouchDevice ? 'touchend' : 'mouseup';
+        this.dragAndDropMode = false;
+        this.dragElement     = null;
+        this.dropAllowed     = false;
+        this.dataTransfer    = null;
 
         this.eventArgs = {
             point:   null,
@@ -89,7 +93,8 @@ export default class DragAutomationBase {
             .leftButtonDown()
             .then(() => this._calculateEventArguments())
             .then(args => {
-                this.eventArgs = args;
+                this.eventArgs       = args;
+                this.dragAndDropMode = this.eventArgs.element.draggable;
 
                 eventSimulator[this.downEvent](this.eventArgs.element, this.eventArgs.options);
 
@@ -118,19 +123,28 @@ export default class DragAutomationBase {
         var { element, offsets } = this._getDestination();
 
         var dragOptions = new MoveOptions({
-            offsetX:       offsets.offsetX,
-            offsetY:       offsets.offsetY,
-            modifiers:     this.modifiers,
-            speed:         this.speed,
-            minMovingTime: MIN_MOVING_TIME,
-            dragMode:      true
+            offsetX:         offsets.offsetX,
+            offsetY:         offsets.offsetY,
+            modifiers:       this.modifiers,
+            speed:           this.speed,
+            minMovingTime:   MIN_MOVING_TIME,
+            dragMode:        !this.dragAndDropMode,
+            dragAndDropMode: this.dragAndDropMode
         }, false);
 
         var moveAutomation = new MoveAutomation(element, dragOptions);
 
         return moveAutomation
             .run()
-            .then(() => delay(this.automationSettings.mouseActionStepDelay));
+            .then(() => {
+                // NOTE: dragAndDropMode can be cancelled during moved by event handlers
+                this.dragAndDropMode = moveAutomation.dragAndDropMode;
+                this.dragElement     = moveAutomation.dragElement;
+                this.dataTransfer    = moveAutomation.dataTransfer;
+                this.dropAllowed     = moveAutomation.dropAllowed;
+
+                return delay(this.automationSettings.mouseActionStepDelay)
+            });
     }
 
     _mouseup () {
@@ -151,7 +165,16 @@ export default class DragAutomationBase {
                         if (!topElement)
                             return topElement;
 
-                        eventSimulator[this.upEvent](topElement, options);
+                        if (this.dragAndDropMode) {
+                            options.dataTransfer = this.dataTransfer;
+
+                            if (this.dropAllowed)
+                                eventSimulator.drop(topElement, options);
+
+                            eventSimulator.dragend(this.dragElement, options);
+                        }
+                        else
+                            eventSimulator[this.upEvent](topElement, options);
 
                         return getElementFromPoint(point.x, point.y);
                     })

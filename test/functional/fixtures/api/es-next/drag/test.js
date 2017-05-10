@@ -118,4 +118,18 @@ describe('[API] Drag actions', function () {
                 });
         });
     });
+
+    describe.only('html5 drag and drop', function () {
+        it('Should raise drag and drop events', function () {
+            return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'drag and drop', { skip: ['iphone', 'ipad', 'android'] });
+        });
+
+        it('Should check is element draggable', function () {
+            return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'try to drag undraggable');
+        });
+
+        it('Should check is element droppable', function () {
+            return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'try to drop to undroppable');
+        });
+    });
 });

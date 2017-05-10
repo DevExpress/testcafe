@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Drag and drop</title>
+
+    <style>
+        #from, #to {
+            width: 205px;
+            height: 35px;
+            border: 1px solid black;
+            margin: 20px;
+        }
+
+        #draggable {
+            width: 100px;
+            height: 35px;
+            background-color: red;
+            display: inline-block;
+
+        }
+    </style>
+</head>
+<body>
+<div id="from">
+    <div id="draggable" draggable="true"></div>
+</div>
+<div id="to"></div>
+
+<script>
+    var from      = document.querySelector('#from');
+    var to        = document.querySelector('#to');
+    var draggable = document.querySelector('#draggable');
+
+    from.addEventListener('dragstart', function (e) {
+        e.dataTransfer.setData('text', e.target.id);
+    });
+
+    to.addEventListener('dragover', function (e) {
+        e.preventDefault();
+    });
+
+    to.addEventListener('drop', function (e) {
+        e.preventDefault();
+        e.target.appendChild(document.getElementById(e.dataTransfer.getData('text')));
+    });
+
+    // NOTE: the exact order depends on random factors (like cursor moving speed and time).
+    // Here is defined required events that should be raised in a certain order (some additional
+    // events can be raise between these events ('eventName-elementSelector' format is used).
+    window.requiredEvents = [
+        'mousedown-#draggable',
+        'mousemove-#draggable',
+        'dragstart-#draggable',
+        'drag-#draggable',
+        'dragenter-#draggable',
+        'dragover-#draggable',
+        'drag-#draggable',
+        'dragover-#draggable',
+        'drag-#draggable',
+        'dragleave-#draggable',
+        'drag-#draggable',
+        'dragenter-#to',
+        'dragleave-body',
+        'dragover-#to',
+        'drag-#draggable',
+        'dragover-#to',
+        'drop-#to',
+        'dragend-#draggable'
+    ];
+    window.raisedEvents   = [];
+
+    function waitForNextEvent (index) {
+        var nextItemStr = window.requiredEvents[index];
+
+        if (!nextItemStr)
+            return;
+
+        var nextItem = nextItemStr.split('-');
+
+        var eventName = nextItem[0];
+        var selector  = nextItem[1];
+
+        function eventHandler () {
+            document.querySelector(selector).removeEventListener(eventName, eventHandler);
+            window.raisedEvents.push(nextItemStr);
+            waitForNextEvent(index + 1);
+        }
+
+        document.querySelector(selector).addEventListener(eventName, eventHandler);
+    }
+
+    waitForNextEvent(0);
+</script>
+</body>
+</html>

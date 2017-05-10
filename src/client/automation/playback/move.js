@@ -17,6 +17,7 @@ var browserUtils   = hammerhead.utils.browser;
 var extend         = hammerhead.utils.extend;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 var messageSandbox = hammerhead.eventSandbox.message;
+var DataTransfer   = hammerhead.eventSandbox.DataTransfer;
 
 var positionUtils      = testCafeCore.positionUtils;
 var domUtils           = testCafeCore.domUtils;
@@ -50,8 +51,11 @@ export default class MoveAutomation {
         this.touchMode = browserUtils.isTouchDevice;
         this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
 
-        this.dragMode    = moveOptions.dragMode;
-        this.dragElement = null;
+        this.dragMode        = moveOptions.dragMode;
+        this.dragAndDropMode = moveOptions.dragAndDropMode;
+        this.dragElement     = null;
+        this.dropAllowed     = false;
+        this.dataTransfer    = this.dragAndDropMode ? new DataTransfer() : null;
 
         this.automationSettings = new AutomationSettings(moveOptions.speed);
 
@@ -61,7 +65,9 @@ export default class MoveAutomation {
         this.offsetX       = target.offsetX;
         this.offsetY       = target.offsetY;
         this.speed         = moveOptions.speed;
-        this.cursorSpeed   = this.dragMode ? this.automationSettings.draggingSpeed : this.automationSettings.cursorSpeed;
+        this.cursorSpeed   = (this.dragMode ||
+                              this.dragAndDropMode) ? this.automationSettings.draggingSpeed : this.automationSettings.cursorSpeed;
+
         this.minMovingTime = moveOptions.minMovingTime || null;
         this.modifiers     = moveOptions.modifiers || {};
         this.skipScrolling = moveOptions.skipScrolling;
@@ -76,6 +82,8 @@ export default class MoveAutomation {
         this.endTime    = null;
         this.distanceX  = null;
         this.distanceY  = null;
+
+        this.firstMovingStepOccured = false;
     }
 
     static getTarget (el, offsetX, offsetY) {
@@ -239,19 +247,22 @@ export default class MoveAutomation {
     }
 
     _emulateEvents (currentElement) {
-        var whichButton = this.dragMode ? eventUtils.WHICH_PARAMETER.leftButton : eventUtils.WHICH_PARAMETER.noButton;
-        var button      = this.dragMode ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
+        var whichButton = (this.dragMode ||
+                           this.dragAndDropMode) ? eventUtils.WHICH_PARAMETER.leftButton : eventUtils.WHICH_PARAMETER.noButton;
+        var button      = (this.dragMode ||
+                           this.dragAndDropMode) ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
 
         var eventOptions = {
-            clientX: this.x,
-            clientY: this.y,
-            button:  0,
-            which:   browserUtils.isWebKit ? whichButton : 1,
-            buttons: button,
-            ctrl:    this.modifiers.ctrl,
-            alt:     this.modifiers.alt,
-            shift:   this.modifiers.shift,
-            meta:    this.modifiers.meta
+            clientX:      this.x,
+            clientY:      this.y,
+            button:       0,
+            which:        browserUtils.isWebKit ? whichButton : 1,
+            buttons:      button,
+            ctrl:         this.modifiers.ctrl,
+            alt:          this.modifiers.alt,
+            shift:        this.modifiers.shift,
+            meta:         this.modifiers.meta,
+            dataTransfer: this.dataTransfer
         };
 
         // NOTE: if lastHoveredElement was in an iframe that has been removed, IE
@@ -268,31 +279,67 @@ export default class MoveAutomation {
 
         var currentElementChanged = currentElement !== lastHoveredElement;
 
-        if (currentElementChanged && lastHoveredElement)
-            eventSimulator.mouseout(lastHoveredElement, extend({ relatedTarget: currentElement }, eventOptions));
+        var dragleaveElement = null;
+        var dragenterElement = null;
+        if (this.dragAndDropMode)
+            debugger;
+        if (currentElementChanged && lastHoveredElement) {
+            if (this.dragAndDropMode && this.firstMovingStepOccured)
+                dragleaveElement = lastHoveredElement;
+            else
+                eventSimulator.mouseout(lastHoveredElement, extend({ relatedTarget: currentElement }, eventOptions));
+        }
 
         // NOTE: the 'mousemove' event is raised before 'mouseover' in IE only (B236966)
-        if (browserUtils.isIE && currentElement)
+        if (browserUtils.isIE && currentElement && (!this.dragAndDropMode || !this.firstMovingStepOccured))
             eventSimulator[this.moveEvent](currentElement, eventOptions);
+
+        if (currentElementChanged || !this.firstMovingStepOccured) {
+            if (currentElement && domUtils.isElementInDocument(currentElement))
+                if (this.dragAndDropMode)
+                    dragenterElement = currentElement;
+        }
 
         if (currentElementChanged) {
             if (currentElement && domUtils.isElementInDocument(currentElement))
-                eventSimulator.mouseover(currentElement, extend({ relatedTarget: lastHoveredElement }, eventOptions));
+                if (this.dragAndDropMode)
+                    dragenterElement = currentElement;
+                else
+                    eventSimulator.mouseover(currentElement, extend({ relatedTarget: lastHoveredElement }, eventOptions));
 
             lastHoveredElement = domUtils.isElementInDocument(currentElement) ? currentElement : null;
         }
 
-        if (!browserUtils.isIE && currentElement)
+        if (!browserUtils.isIE && currentElement && (!this.dragAndDropMode || !this.firstMovingStepOccured))
             eventSimulator[this.moveEvent](currentElement, eventOptions);
 
         // NOTE: we need to add an extra 'mousemove' if the element was changed because sometimes
         // the client script requires several 'mousemove' events for an element (T246904)
-        if (currentElementChanged && currentElement && domUtils.isElementInDocument(currentElement))
+        if (currentElementChanged && currentElement && domUtils.isElementInDocument(currentElement) && !this.dragAndDropMode)
             eventSimulator[this.moveEvent](currentElement, eventOptions);
+
+        if (!this.firstMovingStepOccured && this.dragAndDropMode) {
+            var draggingAllowed = eventSimulator.dragstart(currentElement, eventOptions);
+
+            if (!draggingAllowed)
+                this.dragAndDropMode = false;
+        }
+
+        if (this.dragAndDropMode) {
+            eventSimulator.drag(this.dragElement, eventOptions);
+
+            if (dragenterElement)
+                eventSimulator.dragenter(dragenterElement, eventOptions);
+
+            if (dragleaveElement)
+                eventSimulator.dragleave(dragleaveElement, eventOptions);
+
+            this.dropAllowed = !eventSimulator.dragover(currentElement, eventOptions);
+        }
     }
 
     _movingStep () {
-        if (this.touchMode && !this.dragMode) {
+        if (this.touchMode && !(this.dragMode || this.dragAndDropMode)) {
             this.x = this.endPoint.x;
             this.y = this.endPoint.y;
         }
@@ -317,8 +364,12 @@ export default class MoveAutomation {
             .move(this.x, this.y)
             .then(getElementUnderCursor)
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
-            .then(topElement => this._emulateEvents(this.dragMode && this.touchMode ? this.dragElement : topElement))
-            .then(nextTick);
+            .then(topElement => this._emulateEvents((this.dragMode || this.dragAndDropMode) &&
+                                                    this.touchMode ? this.dragElement : topElement))
+            .then(() => {
+                this.firstMovingStepOccured = true;
+                return nextTick();
+            });
     }
 
     _isMovingFinished () {
@@ -403,7 +454,7 @@ export default class MoveAutomation {
     run () {
         return getElementUnderCursor()
             .then(topElement => {
-                this.dragElement = this.dragMode ? topElement : null;
+                this.dragElement = (this.dragMode || this.dragAndDropMode) ? topElement : null;
 
                 return this._scroll();
             })

@@ -108,10 +108,11 @@ export class MoveOptions extends MouseOptions {
     constructor (obj, validate) {
         super();
 
-        this.speed         = null;
-        this.minMovingTime = null;
-        this.dragMode      = false;
-        this.skipScrolling = false;
+        this.speed           = null;
+        this.minMovingTime   = null;
+        this.dragMode        = false;
+        this.dragAndDropMode = false;
+        this.skipScrolling   = false;
 
         this._assignFrom(obj, validate);
     }
@@ -121,6 +122,7 @@ export class MoveOptions extends MouseOptions {
             { name: 'speed' },
             { name: 'minMovingTime' },
             { name: 'dragMode' },
+            { name: 'dragAndDropMode' },
             { name: 'skipScrolling', type: booleanOption }
         ]);
     }
