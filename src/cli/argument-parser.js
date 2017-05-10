@@ -6,7 +6,6 @@ import dedent from 'dedent';
 import isGlob from 'is-glob';
 import globby from 'globby';
 import mkdirp from 'mkdirp';
-import OS from 'os-family';
 import { readSync as read } from 'read-file-relative';
 import promisify from '../utils/promisify';
 import { GeneralError } from '../errors/runtime';
@@ -20,7 +19,7 @@ var ensureDir = promisify(mkdirp);
 var stat      = promisify(fs.stat);
 
 const REMOTE_ALIAS_RE          = /^remote(?::(\d*))?$/;
-const DEFAULT_TEST_LOOKUP_DIRS = OS.win ? ['test/', 'tests/'] : ['test/', 'tests/', 'Test/', 'Tests/'];
+const DEFAULT_TEST_LOOKUP_DIRS = ['test/', 'tests/'];
 
 const DESCRIPTION = dedent(`
     In the browser list, you can use browser names (e.g. "ie9", "chrome", etc.) as well as paths to executables.
@@ -229,6 +228,7 @@ export default class CLIArgumentParser {
         this.src = await globby(fileList, {
             cwd:    this.cwd,
             silent: true,
+            nocase: true,
             nodir:  true
         });
 
