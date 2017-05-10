@@ -74,8 +74,7 @@ var CLIENT_TESTS_DESKTOP_BROWSERS = [
     },
     {
         platform:    'Windows 10',
-        browserName: 'chrome',
-        version:     'beta'
+        browserName: 'chrome'
     },
     {
         platform:    'Windows 10',
