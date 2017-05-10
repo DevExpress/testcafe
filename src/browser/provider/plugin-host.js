@@ -2,6 +2,7 @@
 import Promise from 'pinkie';
 import { assignIn } from 'lodash';
 import promisifyEvent from 'promisify-event';
+import BROWSER_JOB_RESULT from '../../runner/browser-job-result';
 import BrowserConnection from '../connection';
 import WARNING_MESSAGE from '../../notifications/warning-message';
 
@@ -10,6 +11,8 @@ const name = Symbol();
 
 export default class BrowserProviderPluginHost {
     constructor (providerObject, providerName) {
+        this.JOB_RESULT = assignIn({}, BROWSER_JOB_RESULT);
+
         assignIn(this, providerObject);
 
         this[name] = providerName;
@@ -101,5 +104,9 @@ export default class BrowserProviderPluginHost {
 
     async maximizeWindow (/*browserId*/) {
         this.reportWarning(WARNING_MESSAGE.maximizeNotSupportedByBrowserProvider, this[name]);
+    }
+
+    async reportJobResult (/*browserId, status, data*/) {
+        return;
     }
 }

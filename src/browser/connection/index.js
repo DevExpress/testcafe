@@ -217,6 +217,10 @@ export default class BrowserConnection extends EventEmitter {
             initScriptPromise.resolve(JSON.parse(data));
     }
 
+    async reportJobResult (status, data) {
+        await this.provider.reportJobResult(this.id, status, data);
+    }
+
     async getStatus () {
         if (this.switchingToIdle) {
             this.switchingToIdle = false;

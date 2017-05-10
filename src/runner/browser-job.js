@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import { find, remove } from 'lodash';
 import TestRun from '../test-run';
+import RESULT from './browser-job-result';
 
 // Const
 const QUARANTINE_THRESHOLD = 3;
@@ -15,15 +16,33 @@ export default class BrowserJob extends EventEmitter {
         this.started    = false;
         this.quarantine = null;
 
+        this.total                 = 0;
+        this.passed                = 0;
         this.opts                  = opts;
         this.proxy                 = proxy;
         this.browserConnection     = browserConnection;
         this.screenshots           = screenshots;
         this.warningLog            = warningLog;
         this.fixtureHookController = fixtureHookController;
+        this.result                = null;
 
         this.testRunQueue    = tests.map((test, index) => this._createTestRun(test, index + 1, 1));
         this.completionQueue = [];
+
+        this.connectionErrorListener = error => this._setResult(RESULT.errored, error);
+
+        this.browserConnection.once('error', this.connectionErrorListener);
+    }
+
+    async _setResult (status, data) {
+        if (this.result)
+            return;
+
+        this.result = { status, data };
+
+        this.browserConnection.removeListener('error', this.connectionErrorListener);
+
+        await this.browserConnection.reportJobResult(this.result.status, this.result.data);
     }
 
     _shouldStartQuarantine (testRun) {
@@ -101,12 +120,20 @@ export default class BrowserJob extends EventEmitter {
         var allDone = this.completionQueue.every(item => item.done);
 
         if (allDone) {
+            this.total++;
+
+            if (!testRun.errs.length)
+                this.passed++;
+
             this.completionQueue.forEach(item => this.emit('test-run-done', item.testRun));
 
             this.completionQueue = [];
 
-            if (!this.hasQueuedTestRuns)
-                this.emit('done');
+            if (!this.hasQueuedTestRuns) {
+                this
+                    ._setResult(RESULT.done, { total: this.total, passed: this.passed })
+                    .then(() => this.emit('done'));
+            }
         }
     }
 
@@ -170,5 +197,11 @@ export default class BrowserJob extends EventEmitter {
         }
 
         return null;
+    }
+
+    abort () {
+        this.removeAllListeners();
+        this._setResult(RESULT.aborted);
+        this.browserConnection.removeJob(this);
     }
 }
