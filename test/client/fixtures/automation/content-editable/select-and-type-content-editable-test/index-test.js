@@ -291,7 +291,7 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                if (browserUtils.isFirefox || browserUtils.isIE && browserUtils.version > 11) {
+                if (browserUtils.isChrome && browserUtils.version > 57 || browserUtils.isFirefox || browserUtils.isIE && browserUtils.version > 11) {
                     checkSelection($el, $el[0].childNodes[3].childNodes[0], text.length, $el[0].childNodes[3].childNodes[0], text.length);
                     equal($el[0].childNodes[3].childNodes[0].nodeValue, text);
                 }
@@ -379,7 +379,7 @@ $(document).ready(function () {
             },
 
             'Check selection': function (callback) {
-                nodeValue = browserUtils.isFirefox || browserUtils.isIE && browserUtils.version > 11
+                nodeValue = browserUtils.isFirefox || browserUtils.isIE && browserUtils.version > 11 || browserUtils.isChrome && browserUtils.version > 57
                     ? $el[0].childNodes[4].nodeValue
                     : $el[0].childNodes[5].childNodes[0].nodeValue;
 
@@ -401,7 +401,7 @@ $(document).ready(function () {
             },
 
             'Check typing': function () {
-                if (!browserUtils.isFirefox && !(browserUtils.isIE && browserUtils.version > 11)) {
+                if (!(browserUtils.isChrome && browserUtils.version > 57) && !browserUtils.isFirefox && !(browserUtils.isIE && browserUtils.version > 11)) {
                     checkSelection($el, $el[0].childNodes[5].childNodes[0], text.length, $el[0].childNodes[5].childNodes[0], text.length);
                     equal($el[0].childNodes[5].childNodes[0].nodeValue, text + 'P');
                 }
@@ -471,7 +471,7 @@ $(document).ready(function () {
             'Check selection': function (callback) {
                 nodeValue = browserUtils.isIE && browserUtils.version <=
                                                  11 ? $el[0].childNodes[8].childNodes[0].nodeValue : $el[0].childNodes[4].nodeValue;
-                if (browserUtils.isFirefox || browserUtils.isIE)
+                if (browserUtils.isFirefox || browserUtils.isIE || browserUtils.isChrome && browserUtils.version > 57)
                     checkSelection($el, $el[0].childNodes[4], 6, $el[0].childNodes[8].childNodes[0], 0);
                 else
                     checkSelection($el, $el[0].childNodes[4], 6, $el[0].childNodes[8], 0);
@@ -519,7 +519,7 @@ $(document).ready(function () {
             'Check selection': function (callback) {
                 nodeValue = browserUtils.isIE ? $el[0].childNodes[8].childNodes[0].nodeValue : $el[0].childNodes[4].nodeValue;
 
-                if (browserUtils.isFirefox || browserUtils.isIE)
+                if (browserUtils.isFirefox || browserUtils.isIE || browserUtils.isChrome && browserUtils.version > 57)
                     checkSelection($el, $el[0].childNodes[3].childNodes[0], 0, $el[0].childNodes[8].childNodes[0], 0);
                 else
                     checkSelection($el, $el[0].childNodes[3].childNodes[0], 0, $el[0].childNodes[8], 0);
@@ -662,7 +662,7 @@ $(document).ready(function () {
             'Check selection': function (callback) {
                 nodeValue = $el[0].childNodes[5].childNodes[4].childNodes[0].nodeValue;
 
-                if (browserUtils.isFirefox || browserUtils.isIE)
+                if (browserUtils.isFirefox || browserUtils.isIE || browserUtils.isChrome && browserUtils.version > 57)
                     checkSelection($el, $el[0].childNodes[5].childNodes[4].childNodes[0], 3, $el[0].childNodes[8].childNodes[0], 2);
                 else
                     checkSelection($el, $el[0].childNodes[5].childNodes[5], 0, $el[0].childNodes[8].childNodes[0], 2);
