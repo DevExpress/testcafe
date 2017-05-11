@@ -23,7 +23,9 @@
 </head>
 <body>
 <div id="from">
-    <div id="draggable" draggable="true"></div>
+    <div id="parent" draggable="true">
+        <div id="draggable"></div>
+    </div>
 </div>
 <div id="to"></div>
 
@@ -33,7 +35,7 @@
     var draggable = document.querySelector('#draggable');
 
     from.addEventListener('dragstart', function (e) {
-        e.dataTransfer.setData('text', e.target.id);
+        e.dataTransfer.setData('text', e.target.children[0].id);
     });
 
     to.addEventListener('dragover', function (e) {
@@ -51,22 +53,22 @@
     window.requiredEvents = [
         'mousedown-#draggable',
         'mousemove-#draggable',
-        'dragstart-#draggable',
-        'drag-#draggable',
+        'dragstart-#parent',
+        'drag-#parent',
         'dragenter-#draggable',
         'dragover-#draggable',
-        'drag-#draggable',
+        'drag-#parent',
         'dragover-#draggable',
-        'drag-#draggable',
+        'drag-#parent',
         'dragleave-#draggable',
-        'drag-#draggable',
+        'drag-#parent',
         'dragenter-#to',
         'dragleave-body',
         'dragover-#to',
-        'drag-#draggable',
+        'drag-#parent',
         'dragover-#to',
         'drop-#to',
-        'dragend-#draggable'
+        'dragend-#parent'
     ];
     window.raisedEvents   = [];
 

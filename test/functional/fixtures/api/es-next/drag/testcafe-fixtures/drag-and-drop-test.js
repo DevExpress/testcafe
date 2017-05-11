@@ -7,7 +7,7 @@ test('drag and drop', async t => {
     var draggable = Selector('#draggable');
 
     await t
-        .expect(draggable.parent(0).id).eql('from')
+        .expect(draggable.parent(0).parent(0).id).eql('from')
         .dragToElement(draggable, '#to', { speed: 0.1 })
         .expect(draggable.parent(0).id).eql('to');
 

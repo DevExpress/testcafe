@@ -93,8 +93,7 @@ export default class DragAutomationBase {
             .leftButtonDown()
             .then(() => this._calculateEventArguments())
             .then(args => {
-                this.eventArgs       = args;
-                this.dragAndDropMode = this.eventArgs.element.draggable;
+                this.eventArgs = args;
 
                 eventSimulator[this.downEvent](this.eventArgs.element, this.eventArgs.options);
 
@@ -123,13 +122,12 @@ export default class DragAutomationBase {
         var { element, offsets } = this._getDestination();
 
         var dragOptions = new MoveOptions({
-            offsetX:         offsets.offsetX,
-            offsetY:         offsets.offsetY,
-            modifiers:       this.modifiers,
-            speed:           this.speed,
-            minMovingTime:   MIN_MOVING_TIME,
-            dragMode:        !this.dragAndDropMode,
-            dragAndDropMode: this.dragAndDropMode
+            offsetX:       offsets.offsetX,
+            offsetY:       offsets.offsetY,
+            modifiers:     this.modifiers,
+            speed:         this.speed,
+            minMovingTime: MIN_MOVING_TIME,
+            dragMode:      true
         }, false);
 
         var moveAutomation = new MoveAutomation(element, dragOptions);
@@ -143,7 +141,7 @@ export default class DragAutomationBase {
                 this.dataTransfer    = moveAutomation.dataTransfer;
                 this.dropAllowed     = moveAutomation.dropAllowed;
 
-                return delay(this.automationSettings.mouseActionStepDelay)
+                return delay(this.automationSettings.mouseActionStepDelay);
             });
     }
 

@@ -52,10 +52,11 @@ export default class MoveAutomation {
         this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
 
         this.dragMode        = moveOptions.dragMode;
-        this.dragAndDropMode = moveOptions.dragAndDropMode;
         this.dragElement     = null;
         this.dropAllowed     = false;
-        this.dataTransfer    = this.dragAndDropMode ? new DataTransfer() : null;
+
+        this.dataTransfer    = this.dragMode ? new DataTransfer() : null;
+        this.dragAndDropMode = false;
 
         this.automationSettings = new AutomationSettings(moveOptions.speed);
 
@@ -65,8 +66,7 @@ export default class MoveAutomation {
         this.offsetX       = target.offsetX;
         this.offsetY       = target.offsetY;
         this.speed         = moveOptions.speed;
-        this.cursorSpeed   = (this.dragMode ||
-                              this.dragAndDropMode) ? this.automationSettings.draggingSpeed : this.automationSettings.cursorSpeed;
+        this.cursorSpeed   = this.dragMode ? this.automationSettings.draggingSpeed : this.automationSettings.cursorSpeed;
 
         this.minMovingTime = moveOptions.minMovingTime || null;
         this.modifiers     = moveOptions.modifiers || {};
@@ -247,10 +247,8 @@ export default class MoveAutomation {
     }
 
     _emulateEvents (currentElement) {
-        var whichButton = (this.dragMode ||
-                           this.dragAndDropMode) ? eventUtils.WHICH_PARAMETER.leftButton : eventUtils.WHICH_PARAMETER.noButton;
-        var button      = (this.dragMode ||
-                           this.dragAndDropMode) ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
+        var whichButton = this.dragMode ? eventUtils.WHICH_PARAMETER.leftButton : eventUtils.WHICH_PARAMETER.noButton;
+        var button      = this.dragMode ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
 
         var eventOptions = {
             clientX:      this.x,
@@ -281,8 +279,7 @@ export default class MoveAutomation {
 
         var dragleaveElement = null;
         var dragenterElement = null;
-        if (this.dragAndDropMode)
-            debugger;
+
         if (currentElementChanged && lastHoveredElement) {
             if (this.dragAndDropMode && this.firstMovingStepOccured)
                 dragleaveElement = lastHoveredElement;
@@ -319,7 +316,7 @@ export default class MoveAutomation {
             eventSimulator[this.moveEvent](currentElement, eventOptions);
 
         if (!this.firstMovingStepOccured && this.dragAndDropMode) {
-            var draggingAllowed = eventSimulator.dragstart(currentElement, eventOptions);
+            var draggingAllowed = eventSimulator.dragstart(this.dragElement, eventOptions);
 
             if (!draggingAllowed)
                 this.dragAndDropMode = false;
@@ -339,7 +336,7 @@ export default class MoveAutomation {
     }
 
     _movingStep () {
-        if (this.touchMode && !(this.dragMode || this.dragAndDropMode)) {
+        if (this.touchMode && !this.dragMode) {
             this.x = this.endPoint.x;
             this.y = this.endPoint.y;
         }
@@ -364,7 +361,7 @@ export default class MoveAutomation {
             .move(this.x, this.y)
             .then(getElementUnderCursor)
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
-            .then(topElement => this._emulateEvents((this.dragMode || this.dragAndDropMode) &&
+            .then(topElement => this._emulateEvents(this.dragMode &&
                                                     this.touchMode ? this.dragElement : topElement))
             .then(() => {
                 this.firstMovingStepOccured = true;
@@ -454,7 +451,18 @@ export default class MoveAutomation {
     run () {
         return getElementUnderCursor()
             .then(topElement => {
-                this.dragElement = (this.dragMode || this.dragAndDropMode) ? topElement : null;
+                this.dragElement = this.dragMode ? topElement : null;
+
+                var parentNode = this.dragElement;
+
+                while (parentNode && !this.dragAndDropMode) {
+                    if (parentNode.draggable) {
+                        this.dragAndDropMode = true;
+                        this.dragElement     = parentNode;
+                    }
+                    else
+                        parentNode = parentNode.parentNode;
+                }
 
                 return this._scroll();
             })
