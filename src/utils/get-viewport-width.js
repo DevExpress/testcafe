@@ -8,7 +8,7 @@ export default function (outStream) {
                                     process.stdout.getWindowSize(1)[0] :
                                     tty.getWindowSize()[1];
 
-        return detectedViewportWidth > DEFAULT_VIEWPORT_WIDTH ? detectedViewportWidth : DEFAULT_VIEWPORT_WIDTH;
+        return Math.max(detectedViewportWidth, DEFAULT_VIEWPORT_WIDTH);
     }
 
     return DEFAULT_VIEWPORT_WIDTH;
