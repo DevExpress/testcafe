@@ -1,16 +1,13 @@
-import { GeneralError } from '../errors/runtime';
-import MESSAGE from '../errors/runtime/message';
-import TestFile from '../api/structure/test-file';
-import Fixture from '../api/structure/fixture';
-import Test from '../api/structure/test';
-import createCommandFromObject from '../test-run/commands/from-object';
+import TestFileCompilerBase from '../base';
+import { GeneralError } from '../../../errors/runtime';
+import MESSAGE from '../../../errors/runtime/message';
+import TestFile from '../../../api/structure/test-file';
+import Fixture from '../../../api/structure/fixture';
+import Test from '../../../api/structure/test';
+import createCommandFromObject from '../../../test-run/commands/from-object';
 
 
-export default class RawFileCompiler {
-    canCompile (code, filename) {
-        return /\.testcafe$/.test(filename);
-    }
-
+export default class RawTestFileCompiler extends TestFileCompilerBase {
     static _createTestFn (commands) {
         return async t => {
             for (var i = 0; i < commands.length; i++) {
@@ -48,15 +45,15 @@ export default class RawFileCompiler {
     static _addTest (testFile, src) {
         var test = new Test(testFile);
 
-        test(src.name, RawFileCompiler._createTestFn(src.commands));
+        test(src.name, RawTestFileCompiler._createTestFn(src.commands));
 
-        RawFileCompiler._assignCommonTestingUnitProperties(src, test);
+        RawTestFileCompiler._assignCommonTestingUnitProperties(src, test);
 
         if (src.beforeCommands)
-            test.before(RawFileCompiler._createTestFn(src.beforeCommands));
+            test.before(RawTestFileCompiler._createTestFn(src.beforeCommands));
 
         if (src.afterCommands)
-            test.after(RawFileCompiler._createTestFn(src.afterCommands));
+            test.after(RawTestFileCompiler._createTestFn(src.afterCommands));
 
         return test;
     }
@@ -66,15 +63,23 @@ export default class RawFileCompiler {
 
         fixture(src.name);
 
-        RawFileCompiler._assignCommonTestingUnitProperties(src, fixture);
+        RawTestFileCompiler._assignCommonTestingUnitProperties(src, fixture);
 
         if (src.beforeEachCommands)
-            fixture.beforeEach(RawFileCompiler._createTestFn(src.beforeEachCommands));
+            fixture.beforeEach(RawTestFileCompiler._createTestFn(src.beforeEachCommands));
 
         if (src.afterEachCommands)
-            fixture.afterEach(RawFileCompiler._createTestFn(src.afterEachCommands));
+            fixture.afterEach(RawTestFileCompiler._createTestFn(src.afterEachCommands));
 
-        src.tests.forEach(testSrc => RawFileCompiler._addTest(testFile, testSrc));
+        src.tests.forEach(testSrc => RawTestFileCompiler._addTest(testFile, testSrc));
+    }
+
+    _hasTests () {
+        return true;
+    }
+
+    getSupportedExtension () {
+        return '.testcafe';
     }
 
     compile (code, filename) {
@@ -84,7 +89,7 @@ export default class RawFileCompiler {
         try {
             data = JSON.parse(code);
 
-            data.fixtures.forEach(fixtureSrc => RawFileCompiler._addFixture(testFile, fixtureSrc));
+            data.fixtures.forEach(fixtureSrc => RawTestFileCompiler._addFixture(testFile, fixtureSrc));
 
             return testFile.getTests();
         }

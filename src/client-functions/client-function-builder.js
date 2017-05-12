@@ -3,7 +3,7 @@ import testRunTracker from '../api/test-run-tracker';
 import functionBuilderSymbol from './builder-symbol';
 import { createReplicator, FunctionTransform } from './replicator';
 import { ExecuteClientFunctionCommand } from '../test-run/commands/observation';
-import compileClientFunction from '../compiler/es-next/compile-client-function';
+import compileClientFunction from '../compiler/compile-client-function';
 import { APIError, ClientFunctionAPIError } from '../errors/runtime';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import MESSAGE from '../errors/runtime/message';

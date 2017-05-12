@@ -2,9 +2,9 @@ import hammerhead from 'testcafe-hammerhead';
 import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
 import { noop, escapeRegExp as escapeRe } from 'lodash';
 import loadBabelLibs from './load-babel-libs';
-import NODE_VER from '../../utils/node-version';
-import { ClientFunctionAPIError } from '../../errors/runtime';
-import MESSAGE from '../../errors/runtime/message';
+import NODE_VER from '../utils/node-version';
+import { ClientFunctionAPIError } from '../errors/runtime';
+import MESSAGE from '../errors/runtime/message';
 
 const ANONYMOUS_FN_RE                = /^function\s*\*?\s*\(/;
 const ES6_OBJ_METHOD_NAME_RE         = /^(\S+?)\s*\(/;

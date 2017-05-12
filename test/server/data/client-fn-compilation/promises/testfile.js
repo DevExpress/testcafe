@@ -1,4 +1,4 @@
-import compileClientFunction from '../../../../../lib/compiler/es-next/compile-client-function';
+import compileClientFunction from '../../../../../lib/compiler/compile-client-function';
 
 fixture `Fixture`;
 

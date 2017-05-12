@@ -15,13 +15,18 @@
     "type": "git",
     "url": "git+https://github.com/DevExpress/testcafe.git"
   },
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "main": "lib/index",
+  "types": "ts-defs/index.d.ts",
   "bin": {
     "testcafe": "./bin/testcafe-with-v8-flag-filter.js"
   },
   "files": [
     "lib",
-    "bin"
+    "bin",
+    "ts-defs"
   ],
   "keywords": [
     "automated",
@@ -92,7 +97,7 @@
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "1.2.1",
     "testcafe-hammerhead": "10.6.7",
-    "testcafe-legacy-api": "2.0.2",
+    "testcafe-legacy-api": "3.0.0",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.1.0",
     "testcafe-reporter-minimal": "^2.1.0",
@@ -100,9 +105,11 @@
     "testcafe-reporter-xunit": "^2.1.0",
     "time-limit-promise": "^1.0.2",
     "tree-kill": "^1.1.0",
+    "typescript": "^2.2.2",
     "useragent": "^2.1.7"
   },
   "devDependencies": {
+    "@types/chai": "^3.5.2",
     "babel-eslint": "^7.1.1",
     "babel-plugin-add-module-exports": "^0.2.0",
     "basic-auth": "^1.1.0",

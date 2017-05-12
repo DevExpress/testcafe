@@ -1,7 +1,7 @@
 import { identity } from 'lodash';
 import Replicator from 'replicator';
 import functionBuilderSymbol from './builder-symbol';
-import compileClientFunction from '../compiler/es-next/compile-client-function';
+import compileClientFunction from '../compiler/compile-client-function';
 
 export function createReplicator (transforms) {
     // NOTE: we will serialize replicator results

@@ -94,8 +94,8 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should provide common API functions via lib dependency', function () {
-            return compile('test/server/data/test-suites/common-runtime-dep/testfile.js')
+        it('Should provide exportable lib dep', function () {
+            return compile('test/server/data/test-suites/exportable-lib-dep/testfile.js')
                 .then(function (compiled) {
                     return compiled.tests[0].fn(testRunMock);
                 })
@@ -114,195 +114,101 @@ describe('Compiler', function () {
                     expect(noLeak).to.be.true;
                 });
         });
+    });
 
-        describe('Client function compilation', function () {
-            function normalizeCode (code) {
-                return code
-                    .replace(/(\r\n|\n|\r)/gm, ' ')
-                    .replace(/'/gm, '"')
-                    .replace(/\s+/gm, '');
-            }
 
-            function getExpected (testDir) {
-                if (NODE_VER < 4) {
-                    try {
-                        return readFile(testDir + '/expected-node10.js').toString();
-                    }
-                    catch (err) {
-                        // NOTE: ignore error - we don't have version-specific data
-                    }
-                }
+    describe('TypeScript', function () {
+        it('Should compile test files and their dependencies', function () {
+            var sources = [
+                'test/server/data/test-suites/typescript-basic/testfile1.ts',
+                'test/server/data/test-suites/typescript-basic/testfile2.ts'
+            ];
 
-                return readFile(testDir + '/expected.js').toString();
-            }
+            return compile(sources)
+                .then(function (compiled) {
+                    var testfile1 = resolve('test/server/data/test-suites/typescript-basic/testfile1.ts');
+                    var testfile2 = resolve('test/server/data/test-suites/typescript-basic/testfile2.ts');
+                    var tests     = compiled.tests;
+                    var fixtures  = compiled.fixtures;
 
-            function testClientFnCompilation (testName) {
-                var testDir  = 'test/server/data/client-fn-compilation/' + testName;
-                var src      = testDir + '/testfile.js';
-                var expected = getExpected(testDir);
+                    expect(tests.length).eql(4);
+                    expect(fixtures.length).eql(3);
 
-                return compile(src)
-                    .then(function (compiled) {
-                        return compiled.tests[0].fn({ id: 'test' });
-                    })
-                    .then(function (compiledClientFn) {
-                        expect(normalizeCode(compiledClientFn)).eql(normalizeCode(expected));
-                    });
-            }
+                    expect(fixtures[0].name).eql('Fixture1');
+                    expect(fixtures[0].path).eql(testfile1);
+                    expect(fixtures[0].pageUrl).eql('about:blank');
 
-            it('Should compile basic client function', function () {
-                return testClientFnCompilation('basic');
-            });
+                    expect(fixtures[1].name).eql('Fixture2');
+                    expect(fixtures[1].path).eql(testfile1);
+                    expect(fixtures[1].pageUrl).eql('http://example.org');
 
-            it('Should polyfill Babel `Promises` artifacts', function () {
-                return testClientFnCompilation('promises');
-            });
+                    expect(fixtures[2].name).eql('Fixture3');
+                    expect(fixtures[2].path).eql(testfile2);
+                    expect(fixtures[2].pageUrl).eql('https://example.com');
 
-            it('Should polyfill Babel `Object.keys()` artifacts', function () {
-                return testClientFnCompilation('object-keys');
-            });
+                    expect(tests[0].name).eql('Fixture1Test1');
+                    expect(tests[0].fixture).eql(fixtures[0]);
 
-            it('Should polyfill Babel `JSON.stringify()` artifacts', function () {
-                return testClientFnCompilation('json-stringify');
-            });
+                    expect(tests[1].name).eql('Fixture1Test2');
+                    expect(tests[1].fixture).eql(fixtures[0]);
 
-            it('Should polyfill Babel `typeof` artifacts', function () {
-                return testClientFnCompilation('typeof');
-            });
+                    expect(tests[2].name).eql('Fixture2Test1');
+                    expect(tests[2].fixture).eql(fixtures[1]);
 
-            describe('Regression', function () {
-                it('Should compile ES6 object method (GH-1279)', function () {
-                    return testClientFnCompilation('gh1279');
+                    expect(tests[3].name).eql('Fixture3Test1');
+                    expect(tests[3].fixture).eql(fixtures[2]);
+
+                    return Promise.all(tests.map(function (test) {
+                        return test.fn(testRunMock);
+                    }));
+                })
+                .then(function (results) {
+                    expect(results).eql([
+                        'F1T1: Hey from dep1',
+                        'F1T2',
+                        'F2T1',
+                        'F3T1: Hey from dep1 and dep2'
+                    ]);
                 });
+        });
+
+        it('Should compile mixed dependencies', function () {
+            return compile('test/server/data/test-suites/typescript-mixed-dep/testfile.ts')
+                .then(function (compiled) {
+                    return compiled.tests[0].fn(testRunMock);
+                })
+                .then(function (results) {
+                    expect(results).eql([8, 8]);
+                });
+        });
+
+        it('Should provide API definitions', function () {
+            var src = [
+                'test/server/data/test-suites/typescript-defs/structure.ts',
+                'test/server/data/test-suites/typescript-defs/selectors.ts',
+                'test/server/data/test-suites/typescript-defs/client-functions.ts',
+                'test/server/data/test-suites/typescript-defs/roles.ts',
+                'test/server/data/test-suites/typescript-defs/test-controller.ts'
+            ];
+
+            return compile(src).then(function (compiled) {
+                expect(compiled.tests.length).gt(0);
             });
+        });
+
+        it('Should provide exportable lib dep', function () {
+            return compile('test/server/data/test-suites/typescript-exportable-lib-dep/testfile.ts')
+                .then(function (compiled) {
+                    return compiled.tests[0].fn(testRunMock);
+                })
+                .then(function (result) {
+                    expect(result.exportableLib).eql(exportableLib);
+                    expect(result.exportableLib).eql(result.exportableLibInDep);
+                });
         });
 
     });
 
-
-    describe('Errors', function () {
-        it("Should raise an error if the specified source file doesn't exists", function () {
-            return compile('does/not/exists.js')
-                .then(function () {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(function (err) {
-                    expect(err.message).eql('Cannot find a test source file at "' +
-                                            resolve('does/not/exists.js') + '".');
-                });
-        });
-
-        it('Should raise an error if test dependency has a syntax error', function () {
-            var testfile = resolve('test/server/data/test-suites/syntax-error-in-dep/testfile.js');
-            var dep      = posixResolve('test/server/data/test-suites/syntax-error-in-dep/dep.js');
-
-            return compile(testfile)
-                .then(function () {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(function (err) {
-                    assertError(err, {
-                        stackTop: testfile,
-
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'SyntaxError: ' + dep + ': Unexpected token, expected { (1:7)'
-                    });
-                });
-        });
-
-        it("Should raise an error if dependency can't require a module", function () {
-            var testfile = resolve('test/server/data/test-suites/require-error-in-dep/testfile.js');
-            var dep      = resolve('test/server/data/test-suites/require-error-in-dep/dep.js');
-
-            return compile(testfile)
-                .then(function () {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(function (err) {
-                    assertError(err, {
-                        stackTop: [
-                            dep,
-                            testfile
-                        ],
-
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 "Error: Cannot find module './yo'"
-                    });
-                });
-        });
-
-        it('Should raise an error if dependency throws runtime error', function () {
-            var testfile = resolve('test/server/data/test-suites/runtime-error-in-dep/testfile.js');
-            var dep      = resolve('test/server/data/test-suites/runtime-error-in-dep/dep.js');
-
-            return compile(testfile)
-                .then(function () {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(function (err) {
-                    assertError(err, {
-                        stackTop: [
-                            dep,
-                            testfile
-                        ],
-
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Error: Hey ya!'
-                    });
-                });
-        });
-
-        it('Should raise an error if test file has a syntax error', function () {
-            var testfile = posixResolve('test/server/data/test-suites/syntax-error-in-testfile/testfile.js');
-
-            return compile(testfile)
-                .then(function () {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(function (err) {
-                    assertError(err, {
-                        stackTop: null,
-
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'SyntaxError: ' + testfile + ': Unexpected token, expected { (1:7)'
-                    });
-                });
-        });
-
-        it("Should raise an error if test file can't require a module", function () {
-            var testfile = resolve('test/server/data/test-suites/require-error-in-testfile/testfile.js');
-
-            return compile(testfile)
-                .then(function () {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(function (err) {
-                    assertError(err, {
-                        stackTop: testfile,
-
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 "Error: Cannot find module './yo'"
-                    });
-                });
-        });
-
-        it('Should raise an error if test file throws runtime error', function () {
-            var testfile = resolve('test/server/data/test-suites/runtime-error-in-testfile/testfile.js');
-
-            return compile(testfile)
-                .then(function () {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(function (err) {
-                    assertError(err, {
-                        stackTop: testfile,
-
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Error: Hey ya!'
-                    });
-                });
-        });
-    });
 
     describe('RAW file', function () {
         it('Should compile test files', function () {
@@ -410,6 +316,215 @@ describe('Compiler', function () {
             });
         });
     });
+
+
+    describe('Client function compilation', function () {
+        function normalizeCode (code) {
+            return code
+                .replace(/(\r\n|\n|\r)/gm, ' ')
+                .replace(/'/gm, '"')
+                .replace(/\s+/gm, '');
+        }
+
+        function getExpected (testDir) {
+            if (NODE_VER < 4) {
+                try {
+                    return readFile(testDir + '/expected-node10.js').toString();
+                }
+                catch (err) {
+                    // NOTE: ignore error - we don't have version-specific data
+                }
+            }
+
+            return readFile(testDir + '/expected.js').toString();
+        }
+
+        function testClientFnCompilation (testName) {
+            var testDir  = 'test/server/data/client-fn-compilation/' + testName;
+            var src      = testDir + '/testfile.js';
+            var expected = getExpected(testDir);
+
+            return compile(src)
+                .then(function (compiled) {
+                    return compiled.tests[0].fn({ id: 'test' });
+                })
+                .then(function (compiledClientFn) {
+                    expect(normalizeCode(compiledClientFn)).eql(normalizeCode(expected));
+                });
+        }
+
+        it('Should compile basic client function', function () {
+            return testClientFnCompilation('basic');
+        });
+
+        it('Should polyfill Babel `Promises` artifacts', function () {
+            return testClientFnCompilation('promises');
+        });
+
+        it('Should polyfill Babel `Object.keys()` artifacts', function () {
+            return testClientFnCompilation('object-keys');
+        });
+
+        it('Should polyfill Babel `JSON.stringify()` artifacts', function () {
+            return testClientFnCompilation('json-stringify');
+        });
+
+        it('Should polyfill Babel `typeof` artifacts', function () {
+            return testClientFnCompilation('typeof');
+        });
+
+        describe('Regression', function () {
+            it('Should compile ES6 object method (GH-1279)', function () {
+                return testClientFnCompilation('gh1279');
+            });
+        });
+    });
+
+
+    describe('Errors', function () {
+        it("Should raise an error if the specified source file doesn't exists", function () {
+            return compile('does/not/exists.js')
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    expect(err.message).eql('Cannot find a test source file at "' +
+                                            resolve('does/not/exists.js') + '".');
+                });
+        });
+
+        it('Should raise an error if test dependency has a syntax error', function () {
+            var testfile = resolve('test/server/data/test-suites/syntax-error-in-dep/testfile.js');
+            var dep      = posixResolve('test/server/data/test-suites/syntax-error-in-dep/dep.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'SyntaxError: ' + dep + ': Unexpected token, expected { (1:7)'
+                    });
+                });
+        });
+
+        it("Should raise an error if dependency can't require a module", function () {
+            var testfile = resolve('test/server/data/test-suites/require-error-in-dep/testfile.js');
+            var dep      = resolve('test/server/data/test-suites/require-error-in-dep/dep.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertError(err, {
+                        stackTop: [
+                            dep,
+                            testfile
+                        ],
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 "Error: Cannot find module './yo'"
+                    });
+                });
+        });
+
+        it('Should raise an error if dependency throws runtime error', function () {
+            var testfile = resolve('test/server/data/test-suites/runtime-error-in-dep/testfile.js');
+            var dep      = resolve('test/server/data/test-suites/runtime-error-in-dep/dep.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertError(err, {
+                        stackTop: [
+                            dep,
+                            testfile
+                        ],
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Error: Hey ya!'
+                    });
+                });
+        });
+
+        it("Should raise an error if test file can't require a module", function () {
+            var testfile = resolve('test/server/data/test-suites/require-error-in-testfile/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 "Error: Cannot find module './yo'"
+                    });
+                });
+        });
+
+        it('Should raise an error if test file throws runtime error', function () {
+            var testfile = resolve('test/server/data/test-suites/runtime-error-in-testfile/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Error: Hey ya!'
+                    });
+                });
+        });
+
+        it('Should raise an error if test file has a syntax error', function () {
+            var testfile = posixResolve('test/server/data/test-suites/syntax-error-in-testfile/testfile.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertError(err, {
+                        stackTop: null,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'SyntaxError: ' + testfile + ': Unexpected token, expected { (1:7)'
+                    });
+                });
+        });
+
+        it('Should raise an error if test file has a TypeScript error', function () {
+            var testfile = posixResolve('test/server/data/test-suites/typescript-compile-errors/testfile.ts');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertError(err, {
+                        stackTop: null,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'Error: TypeScript compilation failed.\n' +
+                                 testfile + ' (6, 13): Property \'doSmthg\' does not exist on type \'TestController\'.\n' +
+                                 testfile + ' (9, 6): Argument of type \'123\' is not assignable to parameter of type \'string\'.\n'
+                    });
+                });
+        });
+
+    });
+
 
     describe('Regression', function () {
         it('Incorrect callsite line in error report on node v0.10.41 (GH-599)', function () {

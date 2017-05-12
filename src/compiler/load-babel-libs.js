@@ -1,4 +1,4 @@
-import NODE_VER from '../../utils/node-version';
+import NODE_VER from '../utils/node-version';
 
 function getOptsForPresetEnv () {
     var opts = { targets: { node: 'current' }, loose: true };
