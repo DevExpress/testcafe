@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gh-1154 index</title>
+</head>
+<body>
+<iframe src="iframe1.html"></iframe>
+</body>
+<script>
+    // NOTE: http://github.com/DevExpress/testcafe/issues/1154#issuecomment-278653899
+    // Approximately after next timeout top Driver fix has established connection with
+    // the first iframe and tries to perform an action, when iframe changes src.
+    window.setTimeout(function () {
+        var iframe = document.querySelector('iframe');
+
+        iframe.src = 'iframe2.html';
+    }, 1000);
+</script>
+</html>
