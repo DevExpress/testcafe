@@ -319,7 +319,8 @@ Run tests and view test results right from your favorite IDE.
 Work with page elements in a way that is native to your framework.
 
 * [Aurelia](https://github.com/miherlosev/testcafe-aurelia-selectors)
-* [React](https://github.com/DevExpress/testcafe-react-selectors/)
+* [React](https://github.com/DevExpress/testcafe-react-selectors)
+* [Vue](https://github.com/devexpress/testcafe-vue-selectors)
 
 ### Plugins for Task Runners
 
