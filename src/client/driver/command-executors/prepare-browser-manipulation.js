@@ -1,6 +1,6 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
-import { cursor } from '../deps/testcafe-automation';
+import { hide as hideUI, show as showUI } from '../deps/testcafe-ui';
 import MESSAGE from '../../../test-run/client-messages';
 import DriverStatus from '../status';
 
@@ -31,10 +31,7 @@ export default function prepareBrowserManipulation (browserId) {
 
     document.title = assignedTitle;
 
-    var isCursorVisible = cursor.visible;
-
-    if (isCursorVisible)
-        cursor.hide();
+    hideUI();
 
     return delay(APPLY_DOCUMENT_TITLE_TIMEOUT)
         .then(() => {
@@ -52,8 +49,7 @@ export default function prepareBrowserManipulation (browserId) {
             nativeMethods.clearInterval.call(window, checkTitleIntervalId);
             document.title = savedDocumentTitle;
 
-            if (isCursorVisible)
-                cursor.show();
+            showUI();
 
             return delay(RESTORE_DOCUMENT_TITLE_TIMEOUT);
         })
