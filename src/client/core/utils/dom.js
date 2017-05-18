@@ -318,16 +318,11 @@ export function isOptionGroupElement (element) {
     return hammerhead.utils.dom.instanceToString(element) === '[object HTMLOptGroupElement]';
 }
 
-export function getOptionIndex (select, option) {
-    var children = select.querySelectorAll('option');
+export function getElementIndexInParent (parent, child) {
+    var children = parent.querySelectorAll(getTagName(child));
 
-    return arrayUtils.indexOf(children, option);
-}
+    return arrayUtils.indexOf(children, child);
 
-export function getOptionGroupIndex (select, optgroutp) {
-    var children = select.querySelectorAll('optgroup');
-
-    return arrayUtils.indexOf(children, optgroutp);
 }
 
 export function setUnselectableAttributeRecursive (el) {

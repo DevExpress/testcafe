@@ -42,8 +42,8 @@ export default class SelectChildClickAutomation {
             var isOption      = domUtils.isOptionElement(this.element);
             var selectedIndex = this.parentSelect.selectedIndex;
 
-            this.childIndex = isOption ? domUtils.getOptionIndex(this.parentSelect, this.element) :
-                              domUtils.getOptionGroupIndex(this.parentSelect, this.element);
+            this.childIndex = isOption ? domUtils.getElementIndexInParent(this.parentSelect, this.element) :
+                              domUtils.getElementIndexInParent(this.parentSelect, this.element);
 
             var parentOptGroup = domUtils.isOptionGroupElement(this.element.parentNode) ? this.element.parentNode : null;
             var isDisabled     = this.element.disabled || parentOptGroup && parentOptGroup.disabled;
