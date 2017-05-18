@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 
 
-describe('[API] Drag actions', function () {
+describe.only('[API] Drag actions', function () {
     describe('t.drag', function () {
         it('Should drag an element by an offset', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to offset', { shouldFail: true, only: 'chrome' })
@@ -119,7 +119,7 @@ describe('[API] Drag actions', function () {
         });
     });
 
-    describe.only('html5 drag and drop', function () {
+    describe('html5 drag and drop', function () {
         it('Should raise drag and drop events', function () {
             return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'drag and drop', { skip: ['iphone', 'ipad', 'android'] });
         });

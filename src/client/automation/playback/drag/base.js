@@ -122,12 +122,12 @@ export default class DragAutomationBase {
         var { element, offsets } = this._getDestination();
 
         var dragOptions = new MoveOptions({
-            offsetX:       offsets.offsetX,
-            offsetY:       offsets.offsetY,
-            modifiers:     this.modifiers,
-            speed:         this.speed,
-            minMovingTime: MIN_MOVING_TIME,
-            dragMode:      true
+            offsetX:        offsets.offsetX,
+            offsetY:        offsets.offsetY,
+            modifiers:      this.modifiers,
+            speed:          this.speed,
+            minMovingTime:  MIN_MOVING_TIME,
+            holdLeftButton: true
         }, false);
 
         var moveAutomation = new MoveAutomation(element, dragOptions);
