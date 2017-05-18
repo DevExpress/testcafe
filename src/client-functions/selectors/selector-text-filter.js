@@ -1,3 +1,8 @@
+// -------------------------------------------------------------
+// WARNING: this file is used by both the client and the server.
+// Do not use any browser or node-specific API!
+// -------------------------------------------------------------
+
 /* eslint-disable no-undef */
 export default function selectorTextFilter (node, index, originNode, textRe) {
     function hasChildrenWithText (parentNode) {
