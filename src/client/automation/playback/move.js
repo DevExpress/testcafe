@@ -55,10 +55,12 @@ export default class MoveAutomation {
         this.holdLeftButton = moveOptions.holdLeftButton;
         this.dragElement    = null;
 
-        this.dataTransfer    = null;
-        this.dragDataStore   = null;
-        this.dragAndDropMode = false;
-        this.dropAllowed     = false;
+        this.dataTransfer     = null;
+        this.dragDataStore    = null;
+        this.dragAndDropMode  = false;
+        this.dropAllowed      = false;
+        this.dragenterElement = null;
+        this.dragleaveElement = null;
 
         this.automationSettings = new AutomationSettings(moveOptions.speed);
 
@@ -248,11 +250,11 @@ export default class MoveAutomation {
         };
     }
 
-    _emulateEvents (currentElement) {
+    get _eventOptions () {
         var whichButton = this.holdLeftButton ? eventUtils.WHICH_PARAMETER.leftButton : eventUtils.WHICH_PARAMETER.noButton;
         var button      = this.holdLeftButton ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
 
-        var eventOptions = {
+        return {
             clientX:      this.x,
             clientY:      this.y,
             button:       0,
@@ -264,7 +266,147 @@ export default class MoveAutomation {
             meta:         this.modifiers.meta,
             dataTransfer: this.dataTransfer
         };
+    }
 
+    _emulateMoveEvents (currentElement, currentElementChanged) {
+        var eventOptions = this._eventOptions;
+        //--- 1
+
+        if (currentElementChanged && lastHoveredElement)
+            eventSimulator.mouseout(lastHoveredElement, extend({ relatedTarget: currentElement }, eventOptions));
+
+        //--- 2
+
+        // NOTE: the 'mousemove' event is raised before 'mouseover' in IE only (B236966)
+        if (browserUtils.isIE && currentElement)
+            eventSimulator[this.moveEvent](currentElement, eventOptions);
+
+        //--- 3
+
+        // --- 4
+
+        if (currentElementChanged) {
+            if (currentElement && domUtils.isElementInDocument(currentElement))
+                eventSimulator.mouseover(currentElement, extend({ relatedTarget: lastHoveredElement }, eventOptions));
+
+            lastHoveredElement = domUtils.isElementInDocument(currentElement) ? currentElement : null;
+        }
+
+        // --- 5
+
+        if (!browserUtils.isIE && currentElement)
+            eventSimulator[this.moveEvent](currentElement, eventOptions);
+
+        // --- 6
+
+        // NOTE: we need to add an extra 'mousemove' if the element was changed because sometimes
+        // the client script requires several 'mousemove' events for an element (T246904)
+        if (currentElementChanged && currentElement && domUtils.isElementInDocument(currentElement))
+            eventSimulator[this.moveEvent](currentElement, eventOptions);
+
+        // --- 7
+
+
+        // --- 8
+
+    }
+
+    _emulateDragAndDropFirstMoveEvents (currentElement, currentElementChanged) {
+        this.firstMovingStepOccured = true;
+
+        var eventOptions = this._eventOptions;
+
+        //--- 1
+
+        if (currentElementChanged && lastHoveredElement)
+            eventSimulator.mouseout(lastHoveredElement, extend({ relatedTarget: currentElement }, eventOptions));
+
+        //--- 2
+
+        // NOTE: the 'mousemove' event is raised before 'mouseover' in IE only (B236966)
+        if (browserUtils.isIE && currentElement)
+            eventSimulator[this.moveEvent](currentElement, eventOptions);
+
+        //--- 3
+
+        if (currentElement && domUtils.isElementInDocument(currentElement))
+            this.dragenterElement = currentElement;
+
+        // --- 4
+
+        if (currentElementChanged)
+            lastHoveredElement = domUtils.isElementInDocument(currentElement) ? currentElement : null;
+
+        // --- 5
+
+        if (!browserUtils.isIE && currentElement)
+            eventSimulator[this.moveEvent](currentElement, eventOptions);
+
+        // --- 6
+
+
+        // --- 7
+
+        var draggingAllowed = eventSimulator.dragstart(this.dragElement, eventOptions);
+
+        if (!draggingAllowed) {
+            this.dragAndDropMode = false;
+            return;
+        }
+
+        // --- 8
+        eventSimulator.drag(this.dragElement, eventOptions);
+
+        if (this.dragenterElement)
+            eventSimulator.dragenter(this.dragenterElement, eventOptions);
+
+        if (this.dragleaveElement)
+            eventSimulator.dragleave(this.dragleaveElement, eventOptions);
+
+        this.dropAllowed = !eventSimulator.dragover(currentElement, eventOptions);
+    }
+
+    _emulateDragAndDropEvents (currentElement, currentElementChanged) {
+        var eventOptions = this._eventOptions;
+
+        //--- 1
+
+        if (currentElementChanged && lastHoveredElement)
+            this.dragleaveElement = lastHoveredElement;
+
+        //--- 2
+
+
+        //--- 3
+
+        if (currentElementChanged && currentElement && domUtils.isElementInDocument(currentElement))
+            this.dragenterElement = currentElement;
+
+        // --- 4
+
+        if (currentElementChanged)
+            lastHoveredElement = domUtils.isElementInDocument(currentElement) ? currentElement : null;
+
+        // --- 5
+
+        // --- 6
+
+        // --- 7
+
+        // --- 8
+
+        eventSimulator.drag(this.dragElement, eventOptions);
+
+        if (this.dragenterElement)
+            eventSimulator.dragenter(this.dragenterElement, eventOptions);
+
+        if (this.dragleaveElement)
+            eventSimulator.dragleave(this.dragleaveElement, eventOptions);
+
+        this.dropAllowed = !eventSimulator.dragover(currentElement, eventOptions);
+    }
+
+    _emulateEvents (currentElement) {
         // NOTE: if lastHoveredElement was in an iframe that has been removed, IE
         // raises an exception when we try to compare it with the current element
         var lastHoveredElementInDocument = lastHoveredElement &&
@@ -279,64 +421,14 @@ export default class MoveAutomation {
 
         var currentElementChanged = currentElement !== lastHoveredElement;
 
-        var dragleaveElement = null;
-        var dragenterElement = null;
-
-        if (currentElementChanged && lastHoveredElement) {
-            if (this.dragAndDropMode && this.firstMovingStepOccured)
-                dragleaveElement = lastHoveredElement;
-            else
-                eventSimulator.mouseout(lastHoveredElement, extend({ relatedTarget: currentElement }, eventOptions));
-        }
-
-        // NOTE: the 'mousemove' event is raised before 'mouseover' in IE only (B236966)
-        if (browserUtils.isIE && currentElement && (!this.dragAndDropMode || !this.firstMovingStepOccured))
-            eventSimulator[this.moveEvent](currentElement, eventOptions);
-
-        if (currentElementChanged || !this.firstMovingStepOccured) {
-            if (currentElement && domUtils.isElementInDocument(currentElement)) {
-                if (this.dragAndDropMode)
-                    dragenterElement = currentElement;
-            }
-        }
-
-        if (currentElementChanged) {
-            if (currentElement && domUtils.isElementInDocument(currentElement)) {
-                if (this.dragAndDropMode)
-                    dragenterElement = currentElement;
-                else
-                    eventSimulator.mouseover(currentElement, extend({ relatedTarget: lastHoveredElement }, eventOptions));
-            }
-
-            lastHoveredElement = domUtils.isElementInDocument(currentElement) ? currentElement : null;
-        }
-
-        if (!browserUtils.isIE && currentElement && (!this.dragAndDropMode || !this.firstMovingStepOccured))
-            eventSimulator[this.moveEvent](currentElement, eventOptions);
-
-        // NOTE: we need to add an extra 'mousemove' if the element was changed because sometimes
-        // the client script requires several 'mousemove' events for an element (T246904)
-        if (currentElementChanged && currentElement && domUtils.isElementInDocument(currentElement) && !this.dragAndDropMode)
-            eventSimulator[this.moveEvent](currentElement, eventOptions);
-
-        if (!this.firstMovingStepOccured && this.dragAndDropMode) {
-            var draggingAllowed = eventSimulator.dragstart(this.dragElement, eventOptions);
-
-            if (!draggingAllowed)
-                this.dragAndDropMode = false;
-        }
-
         if (this.dragAndDropMode) {
-            eventSimulator.drag(this.dragElement, eventOptions);
-
-            if (dragenterElement)
-                eventSimulator.dragenter(dragenterElement, eventOptions);
-
-            if (dragleaveElement)
-                eventSimulator.dragleave(dragleaveElement, eventOptions);
-
-            this.dropAllowed = !eventSimulator.dragover(currentElement, eventOptions);
+            if (!this.firstMovingStepOccured)
+                this._emulateDragAndDropFirstMoveEvents(currentElement, currentElementChanged);
+            else
+                this._emulateDragAndDropEvents(currentElement, currentElementChanged);
         }
+        else
+            this._emulateMoveEvents(currentElement, currentElementChanged);
     }
 
     _movingStep () {
