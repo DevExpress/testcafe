@@ -1,15 +1,15 @@
-import hammerhead from '../deps/hammerhead';
-import testCafeCore from '../deps/testcafe-core';
-import { OffsetOptions, MoveOptions } from '../../../test-run/commands/options';
-import ScrollAutomation from './scroll';
-import cursor from '../cursor';
+import hammerhead from '../../deps/hammerhead';
+import testCafeCore from '../../deps/testcafe-core';
+import { OffsetOptions, MoveOptions } from '../../../../test-run/commands/options';
+import ScrollAutomation from '../scroll';
+import cursor from '../../cursor';
 
-import { underCursor as getElementUnderCursor } from '../get-element';
-import getAutomationPoint from '../utils/get-automation-point';
-import getLineRectIntersection from '../utils/get-line-rect-intersection';
-import whilst from '../utils/promise-whilst';
-import nextTick from '../utils/next-tick';
-import AutomationSettings from '../settings';
+import { underCursor as getElementUnderCursor } from '../../get-element';
+import getAutomationPoint from '../../utils/get-automation-point';
+import getLineRectIntersection from '../../utils/get-line-rect-intersection';
+import whilst from '../../utils/promise-whilst';
+import nextTick from '../../utils/next-tick';
+import AutomationSettings from '../../settings';
 
 var Promise        = hammerhead.Promise;
 var nativeMethods  = hammerhead.nativeMethods;
@@ -55,12 +55,10 @@ export default class MoveAutomation {
         this.holdLeftButton = moveOptions.holdLeftButton;
         this.dragElement    = null;
 
-        this.dataTransfer     = null;
-        this.dragDataStore    = null;
-        this.dragAndDropMode  = false;
-        this.dropAllowed      = false;
-        this.dragenterElement = null;
-        this.dragleaveElement = null;
+        this.dataTransfer    = null;
+        this.dragDataStore   = null;
+        this.dragAndDropMode = false;
+        this.dropAllowed     = false;
 
         this.automationSettings = new AutomationSettings(moveOptions.speed);
 
@@ -314,7 +312,8 @@ export default class MoveAutomation {
     _emulateDragAndDropFirstMoveEvents (currentElement, currentElementChanged) {
         this.firstMovingStepOccured = true;
 
-        var eventOptions = this._eventOptions;
+        var eventOptions     = this._eventOptions;
+        var dragenterElement = null;
 
         //--- 1
 
@@ -330,7 +329,7 @@ export default class MoveAutomation {
         //--- 3
 
         if (currentElement && domUtils.isElementInDocument(currentElement))
-            this.dragenterElement = currentElement;
+            dragenterElement = currentElement;
 
         // --- 4
 
@@ -357,22 +356,21 @@ export default class MoveAutomation {
         // --- 8
         eventSimulator.drag(this.dragElement, eventOptions);
 
-        if (this.dragenterElement)
-            eventSimulator.dragenter(this.dragenterElement, eventOptions);
-
-        if (this.dragleaveElement)
-            eventSimulator.dragleave(this.dragleaveElement, eventOptions);
+        if (dragenterElement)
+            eventSimulator.dragenter(dragenterElement, eventOptions);
 
         this.dropAllowed = !eventSimulator.dragover(currentElement, eventOptions);
     }
 
     _emulateDragAndDropEvents (currentElement, currentElementChanged) {
-        var eventOptions = this._eventOptions;
+        var eventOptions     = this._eventOptions;
+        var dragenterElement = null;
+        var dragleaveElement = null;
 
         //--- 1
 
         if (currentElementChanged && lastHoveredElement)
-            this.dragleaveElement = lastHoveredElement;
+            dragleaveElement = lastHoveredElement;
 
         //--- 2
 
@@ -380,7 +378,7 @@ export default class MoveAutomation {
         //--- 3
 
         if (currentElementChanged && currentElement && domUtils.isElementInDocument(currentElement))
-            this.dragenterElement = currentElement;
+            dragenterElement = currentElement;
 
         // --- 4
 
@@ -397,11 +395,11 @@ export default class MoveAutomation {
 
         eventSimulator.drag(this.dragElement, eventOptions);
 
-        if (this.dragenterElement)
-            eventSimulator.dragenter(this.dragenterElement, eventOptions);
+        if (dragenterElement)
+            eventSimulator.dragenter(dragenterElement, eventOptions);
 
-        if (this.dragleaveElement)
-            eventSimulator.dragleave(this.dragleaveElement, eventOptions);
+        if (dragleaveElement)
+            eventSimulator.dragleave(dragleaveElement, eventOptions);
 
         this.dropAllowed = !eventSimulator.dragover(currentElement, eventOptions);
     }
@@ -542,6 +540,11 @@ export default class MoveAutomation {
 
                 return null;
             });
+    }
+
+    // API
+    get dragAndDropState () {
+
     }
 
     run () {
