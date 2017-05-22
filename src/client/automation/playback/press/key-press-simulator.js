@@ -135,7 +135,7 @@ export default class KeyPressSimulator {
         var isButton            = domUtils.isButtonElement(activeElement);
 
         var isSafariWithAutoRaisedClick = browserUtils.isSafari &&
-                                           browserUtils.compareVersions([browserUtils.fullVersion, '10.1']) >= 0;
+                                           browserUtils.compareVersions([browserUtils.webkitVersion, '603.1.30']) >= 0;
 
         var raiseClickOnEnter = !browserUtils.isFirefox && !isSafariWithAutoRaisedClick
                                 && (isKeyActivatedInput || isButton);
