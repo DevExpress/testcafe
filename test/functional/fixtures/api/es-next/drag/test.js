@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 
 
-describe.only('[API] Drag actions', function () {
+describe('[API] Drag actions', function () {
     describe('t.drag', function () {
         it('Should drag an element by an offset', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to offset', { shouldFail: true, only: 'chrome' })
