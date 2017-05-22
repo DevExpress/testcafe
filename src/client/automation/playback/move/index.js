@@ -421,6 +421,17 @@ export default class MoveAutomation {
                 if (this.dragAndDropMode) {
                     this.dragDataStore = new DragDataStore();
                     this.dataTransfer  = new DataTransfer(this.dragDataStore);
+
+                    var isLink = domUtils.isAnchorElement(this.dragElement);
+
+                    if (isLink || domUtils.isImgElement(this.dragElement)) {
+                        var srcAttr = isLink ? 'href' : 'src';
+
+                        // TODO: waiting for 'parseURL' and 'cleanUpHtml' from 'testcafe-hammerhead'
+                        this.dataTransfer.setData('text/plain', this.dragElement[srcAttr]);
+                        this.dataTransfer.setData('text/uri-list', this.dragElement[srcAttr]);
+                        this.dataTransfer.setData('text/html', this.dragElement.outerHTML);
+                    }
                 }
 
                 return this._scroll();
