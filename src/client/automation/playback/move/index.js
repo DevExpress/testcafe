@@ -312,10 +312,7 @@ export default class MoveAutomation {
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
             .then(topElement => this._emulateEvents(this.holdLeftButton &&
                                                     this.touchMode ? this.dragElement : topElement))
-            .then(() => {
-                this.firstMovingStepOccured = true;
-                return nextTick();
-            });
+            .then(nextTick);
     }
 
     _isMovingFinished () {
@@ -395,11 +392,6 @@ export default class MoveAutomation {
 
                 return null;
             });
-    }
-
-    // API
-    get dragAndDropState () {
-
     }
 
     run () {

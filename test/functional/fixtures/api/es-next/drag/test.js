@@ -132,7 +132,7 @@ describe('[API] Drag actions', function () {
             return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'try to drop to undroppable');
         });
 
-        it.only('Should reproduce native browser behavior', function () {
+        it('Should reproduce native browser behavior', function () {
             return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'drag link and image');
         });
     });

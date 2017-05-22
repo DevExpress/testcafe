@@ -135,7 +135,7 @@ export default class DragAutomationBase {
         return moveAutomation
             .run()
             .then(() => {
-                // NOTE: dragAndDropMode can be cancelled during moved by event handlers
+                // NOTE: dragAndDropMode can be cancelled during moving by event handlers
                 this.dragAndDropMode = moveAutomation.dragAndDropMode;
                 this.dragElement     = moveAutomation.dragElement;
                 this.dataTransfer    = moveAutomation.dataTransfer;

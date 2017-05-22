@@ -28,7 +28,7 @@ export default class MoveEventSequenceBase {
     }
 
     run (currentElement, prevElement, options, moveEvent, dragElement) {
-        // NOTE: if lastHoveredElement was in an iframe that has been removed, IE
+        // NOTE: if last hovered element was in an iframe that has been removed, IE
         // raises an exception when we try to compare it with the current element
         var prevElementInDocument = prevElement && domUtils.isElementInDocument(prevElement);
 
