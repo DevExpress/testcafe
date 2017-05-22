@@ -131,5 +131,9 @@ describe('[API] Drag actions', function () {
         it('Should check is element droppable', function () {
             return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'try to drop to undroppable');
         });
+
+        it.only('Should reproduce native browser behavior', function () {
+            return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'drag link and image');
+        });
     });
 });

@@ -18,6 +18,21 @@ test('drag and drop', async t => {
     await t.expect(raisedEvents.join(',')).eql(requiredEvents.join(','));
 });
 
+test('drag link and image', async t => {
+    const getOuterHtml = ClientFunction(() => getEl().outerHTML);
+
+    const link   = Selector('#link');
+    const target = Selector('#to-display-values');
+
+    const linkUrl  = await link.getAttribute('href');
+    const linkHtml = await getOuterHtml.with({ dependencies: { getEl: link } })();
+
+    const expectedLinkValues = [linkUrl, linkUrl, linkHtml].join(' - ');
+    await t
+        .dragToElement(link, target)
+        .expect(target.textContent).eql(expectedLinkValues);
+});
+
 test.page `http://localhost:3000/fixtures/api/es-next/drag/pages/invalid-drag-and-drop.html`
 ('try to drag undraggable', async t => {
     var undraggable = Selector('#undraggable');

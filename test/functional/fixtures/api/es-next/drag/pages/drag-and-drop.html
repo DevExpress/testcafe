@@ -12,6 +12,13 @@
             margin: 20px;
         }
 
+        #to-display-values {
+            width: 500px;
+            height: 200px;
+            border: 1px solid black;
+            margin: 20px;
+        }
+
         #draggable {
             width: 100px;
             height: 35px;
@@ -29,10 +36,16 @@
 </div>
 <div id="to"></div>
 
+<br/><br/><br/>
+<a id="link" href="http://example.com">Link</a>
+<img id="img" src="./img.png"/>
+<div id="to-display-values"></div>
+
 <script>
-    var from      = document.querySelector('#from');
-    var to        = document.querySelector('#to');
-    var draggable = document.querySelector('#draggable');
+    var from            = document.querySelector('#from');
+    var to              = document.querySelector('#to');
+    var toDisplayValues = document.querySelector('#to-display-values');
+    var draggable       = document.querySelector('#draggable');
 
     from.addEventListener('dragstart', function (e) {
         e.dataTransfer.setData('text', e.target.children[0].id);
@@ -42,9 +55,24 @@
         e.preventDefault();
     });
 
+    toDisplayValues.addEventListener('dragover', function (e) {
+        e.preventDefault();
+    });
+
     to.addEventListener('drop', function (e) {
         e.preventDefault();
         e.target.appendChild(document.getElementById(e.dataTransfer.getData('text')));
+    });
+
+    toDisplayValues.addEventListener('drop', function (e) {
+        e.preventDefault();
+
+        var values = [];
+
+        for (var i = 0; i < e.dataTransfer.types.length; i++)
+            values.push(e.dataTransfer.getData(e.dataTransfer.types[i]));
+
+        e.target.textContent = values.join(' - ');
     });
 
     // NOTE: the exact order depends on random factors (like cursor moving speed and time).
