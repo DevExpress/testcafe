@@ -24,8 +24,10 @@ class DragAndDropFirstMoveEventSequence extends MoveEventSequenceBase {
         moveEventSequence.enterElement.apply(this, arguments);
     }
 
-    dragAndDrop (dragElement, currentElement, prevElement, options) {
+    dragAndDrop (dragElement, currentElement, prevElement, options, dragDataStore) {
         var dragAllowed = eventSimulator.dragstart(dragElement, options);
+
+        dragDataStore.setReadOnlyMode();
 
         if (!dragAllowed) {
             this.dragAndDropMode = false;
@@ -35,8 +37,8 @@ class DragAndDropFirstMoveEventSequence extends MoveEventSequenceBase {
         dragAndDropMoveEventSequence.dragAndDrop.apply(this, arguments);
     }
 
-    run (currentElement, prevElement, options, moveEvent, dragElement) {
-        return super.run(currentElement, null, options, moveEvent, dragElement);
+    run (currentElement, prevElement, options, moveEvent, dragElement, dragDataStore) {
+        return super.run(currentElement, null, options, moveEvent, dragElement, dragDataStore);
     }
 }
 

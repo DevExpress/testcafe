@@ -11,9 +11,10 @@ import whilst from '../../utils/promise-whilst';
 import nextTick from '../../utils/next-tick';
 import AutomationSettings from '../../settings';
 
+import DragAndDropState from '../drag/drag-and-drop-state';
 import moveEventSequence from './event-sequence';
 import dragAndDropMoveEventSequence from './event-sequence/drag-and-drop-move';
-import dragAndDropFirstMoveEventSequence from './event-sequence/first-drag-and-first-move';
+import dragAndDropFirstMoveEventSequence from './event-sequence/drag-and-drop-first-move';
 
 var Promise        = hammerhead.Promise;
 var nativeMethods  = hammerhead.nativeMethods;
@@ -48,6 +49,20 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     }
 });
 
+// Utils
+function findDraggableElement (element) {
+    var parentNode = element;
+
+    while (parentNode) {
+        if (parentNode.draggable)
+            return parentNode;
+
+        parentNode = parentNode.parentNode;
+    }
+
+    return null;
+}
+
 // Static
 var lastHoveredElement = null;
 
@@ -60,10 +75,7 @@ export default class MoveAutomation {
         this.holdLeftButton = moveOptions.holdLeftButton;
         this.dragElement    = null;
 
-        this.dataTransfer    = null;
-        this.dragDataStore   = null;
-        this.dragAndDropMode = false;
-        this.dropAllowed     = false;
+        this.dragAndDropState = new DragAndDropState();
 
         this.automationSettings = new AutomationSettings(moveOptions.speed);
 
@@ -267,21 +279,22 @@ export default class MoveAutomation {
             alt:          this.modifiers.alt,
             shift:        this.modifiers.shift,
             meta:         this.modifiers.meta,
-            dataTransfer: this.dataTransfer
+            dataTransfer: this.dragAndDropState.dataTransfer
         };
 
         var eventSequence = null;
 
-        if (this.dragAndDropMode)
+        if (this.dragAndDropState.enabled)
             eventSequence = this.firstMovingStepOccured ? dragAndDropMoveEventSequence : dragAndDropFirstMoveEventSequence;
         else
             eventSequence = moveEventSequence;
 
-        var { dragAndDropMode, dropAllowed } = eventSequence.run(currentElement, lastHoveredElement, eventOptions, this.moveEvent, this.dragElement);
+        var { dragAndDropMode, dropAllowed } = eventSequence.run(currentElement, lastHoveredElement, eventOptions,
+            this.moveEvent, this.dragElement, this.dragAndDropState.dataStore);
 
-        this.firstMovingStepOccured = true;
-        this.dragAndDropMode        = dragAndDropMode;
-        this.dropAllowed            = dropAllowed;
+        this.firstMovingStepOccured       = true;
+        this.dragAndDropState.enabled     = dragAndDropMode;
+        this.dragAndDropState.dropAllowed = dropAllowed;
 
         lastHoveredElement = currentElement;
     }
@@ -312,8 +325,9 @@ export default class MoveAutomation {
             .move(this.x, this.y)
             .then(getElementUnderCursor)
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
-            .then(topElement => this._emulateEvents(this.holdLeftButton &&
-                                                    this.touchMode ? this.dragElement : topElement))
+            .then(topElement => {
+                return this._emulateEvents(this.holdLeftButton && this.touchMode ? this.dragElement : topElement);
+            })
             .then(nextTick);
     }
 
@@ -401,20 +415,14 @@ export default class MoveAutomation {
             .then(topElement => {
                 this.dragElement = this.holdLeftButton ? topElement : null;
 
-                var parentNode = this.dragElement;
+                var draggable = findDraggableElement(this.dragElement);
 
-                while (parentNode && !this.dragAndDropMode) {
-                    if (parentNode.draggable) {
-                        this.dragAndDropMode = true;
-                        this.dragElement     = parentNode;
-                    }
-                    else
-                        parentNode = parentNode.parentNode;
-                }
-
-                if (this.dragAndDropMode) {
-                    this.dragDataStore = new DragDataStore();
-                    this.dataTransfer  = new DataTransfer(this.dragDataStore);
+                if (draggable) {
+                    this.dragAndDropState.enabled      = true;
+                    this.dragElement                   = draggable;
+                    this.dragAndDropState.element      = this.dragElement;
+                    this.dragAndDropState.dataStore    = new DragDataStore();
+                    this.dragAndDropState.dataTransfer = new DataTransfer(this.dragAndDropState.dataStore);
 
                     var isLink = domUtils.isAnchorElement(this.dragElement);
 
@@ -423,9 +431,9 @@ export default class MoveAutomation {
                         var parsedUrl = urlUtils.parseProxyUrl(this.dragElement[srcAttr]);
                         var src       = parsedUrl ? parsedUrl.destUrl : this.dragElement[srcAttr];
 
-                        this.dataTransfer.setData('text/plain', src);
-                        this.dataTransfer.setData('text/uri-list', src);
-                        this.dataTransfer.setData('text/html', htmlUtils.cleanUpHtml(this.dragElement.outerHTML));
+                        this.dragAndDropState.dataTransfer.setData('text/plain', src);
+                        this.dragAndDropState.dataTransfer.setData('text/uri-list', src);
+                        this.dragAndDropState.dataTransfer.setData('text/html', htmlUtils.cleanUpHtml(this.dragElement.outerHTML));
                     }
                 }
 
@@ -445,6 +453,7 @@ export default class MoveAutomation {
                 }
 
                 return null;
-            });
+            })
+            .then(() => this.dragAndDropState);
     }
 }

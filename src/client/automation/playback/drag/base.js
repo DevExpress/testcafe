@@ -36,13 +36,11 @@ export default class DragAutomationBase {
 
         this.automationSettings = new AutomationSettings(this.speed);
 
-        this.endPoint        = null;
-        this.downEvent       = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
-        this.upEvent         = browserUtils.isTouchDevice ? 'touchend' : 'mouseup';
-        this.dragAndDropMode = false;
-        this.dragElement     = null;
-        this.dropAllowed     = false;
-        this.dataTransfer    = null;
+        this.endPoint  = null;
+        this.downEvent = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
+        this.upEvent   = browserUtils.isTouchDevice ? 'touchend' : 'mouseup';
+
+        this.dragAndDropState = null;
 
         this.eventArgs = {
             point:   null,
@@ -134,12 +132,8 @@ export default class DragAutomationBase {
 
         return moveAutomation
             .run()
-            .then(() => {
-                // NOTE: dragAndDropMode can be cancelled during moving by event handlers
-                this.dragAndDropMode = moveAutomation.dragAndDropMode;
-                this.dragElement     = moveAutomation.dragElement;
-                this.dataTransfer    = moveAutomation.dataTransfer;
-                this.dropAllowed     = moveAutomation.dropAllowed;
+            .then(dragAndDropState => {
+                this.dragAndDropState = dragAndDropState;
 
                 return delay(this.automationSettings.mouseActionStepDelay);
             });
@@ -163,13 +157,14 @@ export default class DragAutomationBase {
                         if (!topElement)
                             return topElement;
 
-                        if (this.dragAndDropMode) {
-                            options.dataTransfer = this.dataTransfer;
+                        if (this.dragAndDropState.enabled) {
+                            options.dataTransfer = this.dragAndDropState.dataTransfer;
 
-                            if (this.dropAllowed)
+                            if (this.dragAndDropState.dropAllowed)
                                 eventSimulator.drop(topElement, options);
 
-                            eventSimulator.dragend(this.dragElement, options);
+                            eventSimulator.dragend(this.dragAndDropState.element, options);
+                            this.dragAndDropState.dataStore.setProtectedMode();
                         }
                         else
                             eventSimulator[this.upEvent](topElement, options);

@@ -56,6 +56,11 @@
     });
 
     toDisplayValues.addEventListener('dragover', function (e) {
+        e.dataTransfer.setData('custom/type', 'customValue');
+
+        if (e.dataTransfer.getData('custom/type'))
+            throw new Error("It should not be allowed to change dataTransfer data after dragstart event");
+
         e.preventDefault();
     });
 
