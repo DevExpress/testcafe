@@ -18,6 +18,8 @@ import dragAndDropFirstMoveEventSequence from './event-sequence/first-drag-and-f
 var Promise        = hammerhead.Promise;
 var nativeMethods  = hammerhead.nativeMethods;
 var browserUtils   = hammerhead.utils.browser;
+var htmlUtils      = hammerhead.utils.html;
+var urlUtils       = hammerhead.utils.url;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 var messageSandbox = hammerhead.eventSandbox.message;
 var DataTransfer   = hammerhead.eventSandbox.DataTransfer;
@@ -417,12 +419,13 @@ export default class MoveAutomation {
                     var isLink = domUtils.isAnchorElement(this.dragElement);
 
                     if (isLink || domUtils.isImgElement(this.dragElement)) {
-                        var srcAttr = isLink ? 'href' : 'src';
+                        var srcAttr   = isLink ? 'href' : 'src';
+                        var parsedUrl = urlUtils.parseProxyUrl(this.dragElement[srcAttr]);
+                        var src       = parsedUrl ? parsedUrl.destUrl : this.dragElement[srcAttr];
 
-                        // TODO: waiting for 'parseURL' and 'cleanUpHtml' from 'testcafe-hammerhead'
-                        this.dataTransfer.setData('text/plain', this.dragElement[srcAttr]);
-                        this.dataTransfer.setData('text/uri-list', this.dragElement[srcAttr]);
-                        this.dataTransfer.setData('text/html', this.dragElement.outerHTML);
+                        this.dataTransfer.setData('text/plain', src);
+                        this.dataTransfer.setData('text/uri-list', src);
+                        this.dataTransfer.setData('text/html', htmlUtils.cleanUpHtml(this.dragElement.outerHTML));
                     }
                 }
 

@@ -20,27 +20,31 @@ test('drag and drop', async t => {
 
 test('drag link and image', async t => {
     /* eslint-disable no-undef */
-    //const getOuterHtml = ClientFunction(() => getEl().outerHTML);
+    const getOuterHtml = ClientFunction(() => getEl().outerHTML);
+    const getSrc       = ClientFunction(() => getEl().src);
     /* eslint-enable no-undef */
 
     const link   = Selector('#link');
     const img    = Selector('#img');
     const target = Selector('#to-display-values');
 
-    // TODO: waiting for 'parseURL' and 'cleanUpHtml' from 'testcafe-hammerhead'
-    /*const linkUrl  = await link.getAttribute('href');
-    const linkHtml = await getOuterHtml.with({ dependencies: { getEl: link } })();
-    const imgSrc   = await link.getAttribute('src');
-    const imgHtml  = await getOuterHtml.with({ dependencies: { getEl: img } })();
+    const linkUrl = await link.getAttribute('href');
+    const imgSrc  = await getSrc.with({ dependencies: { getEl: img } })();
+    const imgHtml = await getOuterHtml.with({ dependencies: { getEl: img } })();
 
-    const expectedLinkValues = [linkUrl, linkUrl, linkHtml].join(' - ');
-    const expectedImgValues  = [imgSrc, imgSrc, imgHtml].join(' - ');*/
+    const expectedImgValues = [imgSrc, imgSrc, imgHtml].join(' - ');
+
+    await t.dragToElement(link, target);
+
+    const linkValues = (await target.textContent).split(' - ');
 
     await t
-        .dragToElement(link, target)
-        //.expect(target.textContent).eql(expectedLinkValues)
-        .dragToElement(img, target);
-    //.expect(target.textContent).eql(expectedImgValues);
+        .expect(linkValues[0]).eql(linkUrl)
+        .expect(linkValues[1]).eql(linkUrl)
+        // NOTE: we can't check exact outerHTML value because of https://github.com/DevExpress/testcafe-hammerhead/issues/1143
+        .expect(linkValues[2]).contains(`<a id="link" href="${linkUrl}"`)
+        .dragToElement(img, target)
+        .expect(target.textContent).eql(expectedImgValues);
 });
 
 test.page `http://localhost:3000/fixtures/api/es-next/drag/pages/invalid-drag-and-drop.html`
