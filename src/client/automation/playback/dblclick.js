@@ -1,8 +1,11 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../get-element';
-import { ClickOptions } from '../../../test-run/commands/options';
+import { ClickOptions, MoveOptions } from '../../../test-run/commands/options';
 import ClickAutomation from './click';
+import MoveAutomation from './move';
+import AutomationSettings from '../settings';
+import getMoveArguments from '../utils/get-move-arguments';
 import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import AUTOMATION_ERROR_TYPES from '../errors';
@@ -26,6 +29,8 @@ export default class DblClickAutomation {
         this.modifiers = clickOptions.modifiers;
         this.caretPos  = clickOptions.caretPos;
         this.speed     = clickOptions.speed;
+
+        this.automationSettings = new AutomationSettings(this.speed);
 
         this.offsetX = clickOptions.offsetX;
         this.offsetY = clickOptions.offsetY;
@@ -76,12 +81,33 @@ export default class DblClickAutomation {
             });
     }
 
+    _move ({ element, offsetX, offsetY, speed }) {
+        var moveOptions = new MoveOptions({
+            offsetX,
+            offsetY,
+            speed,
+
+            modifiers: this.modifiers
+        }, false);
+
+        var moveAutomation = new MoveAutomation(element, moveOptions);
+
+        return moveAutomation
+            .run()
+            .then(() => delay(this.automationSettings.mouseActionStepDelay));
+    }
+
     _firstClick () {
         return this._calculateEventArguments()
             .then(args => {
                 this.eventArgs = args;
 
-                var clickAutomation = new ClickAutomation(this.element, this.options);
+                // NOTE: we should always perform click with the highest speed
+                var clickOptions = new ClickOptions(this.options);
+
+                clickOptions.speed = 1;
+
+                var clickAutomation = new ClickAutomation(this.element, clickOptions);
 
                 return clickAutomation.run();
             })
@@ -104,7 +130,7 @@ export default class DblClickAutomation {
                     offsetY:   this.eventArgs.screenPoint.y,
                     caretPos:  this.caretPos,
                     modifiers: this.modifiers,
-                    speed:     this.speed
+                    speed:     1
                 });
 
                 clickAutomation = new ClickAutomation(document.documentElement, clickOptions);
@@ -128,7 +154,10 @@ export default class DblClickAutomation {
     }
 
     run () {
-        return this._firstClick()
+        var moveArguments = getMoveArguments(this.element, { x: this.offsetX, y: this.offsetY }, this.speed);
+
+        return this._move(moveArguments)
+            .then(() => this._firstClick())
             .then(() => this._secondClick())
             .then(() => this._dblClick());
     }

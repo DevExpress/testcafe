@@ -6,7 +6,7 @@ import MoveAutomation from './move';
 import { MoveOptions } from '../../../test-run/commands/options';
 import cursor from '../cursor';
 import nextTick from '../utils/next-tick';
-import { getMoveAutomationOffsets } from '../utils/offsets';
+import getMoveArguments from '../utils/get-move-arguments';
 import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import AutomationSettings from '../settings';
@@ -45,18 +45,6 @@ export default class RClickAutomation {
         this.eventState = { simulateDefaultBehavior: true };
 
         this.activeElementBeforeMouseDown = null;
-    }
-
-    _getMoveArguments () {
-        var clickOnElement    = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY);
-        var moveActionOffsets = getMoveAutomationOffsets(this.element, this.offsetX, this.offsetY);
-
-        return {
-            element: clickOnElement ? this.element : document.documentElement,
-            offsetX: moveActionOffsets.offsetX,
-            offsetY: moveActionOffsets.offsetY,
-            speed:   this.speed
-        };
     }
 
     _calculateEventArguments () {
@@ -167,7 +155,7 @@ export default class RClickAutomation {
     }
 
     run () {
-        var moveArguments = this._getMoveArguments();
+        var moveArguments = getMoveArguments(this.element, { x: this.offsetX, y: this.offsetY }, this.speed);
 
         // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger
         // mousedown event regardless of how long mousedown event handlers were executing

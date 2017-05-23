@@ -9,7 +9,7 @@ import { fromPoint as getElementFromPoint } from '../../get-element';
 import MoveAutomation from '../move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
-import { getMoveAutomationOffsets } from '../../utils/offsets';
+import getMoveArguments from '../../utils/get-move-arguments';
 import getAutomationPoint from '../../utils/get-automation-point';
 import screenPointToClient from '../../utils/screen-point-to-client';
 import AutomationSettings from '../../settings';
@@ -44,18 +44,6 @@ export default class DragAutomationBase {
             point:   null,
             options: null,
             element: null
-        };
-    }
-
-    _getMoveArguments () {
-        var containsOffset    = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY);
-        var moveActionOffsets = getMoveAutomationOffsets(this.element, this.offsetX, this.offsetY);
-
-        return {
-            element: containsOffset ? this.element : document.documentElement,
-            offsetX: moveActionOffsets.offsetX,
-            offsetY: moveActionOffsets.offsetY,
-            speed:   this.speed
         };
     }
 
@@ -183,7 +171,7 @@ export default class DragAutomationBase {
     }
 
     run () {
-        var moveArguments = this._getMoveArguments();
+        var moveArguments = getMoveArguments(this.element, { x: this.offsetX, y: this.offsetY }, this.speed);
 
         return this._move(moveArguments)
             .then(() => this._mousedown())
