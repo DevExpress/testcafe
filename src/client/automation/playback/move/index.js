@@ -326,7 +326,13 @@ export default class MoveAutomation {
             .then(getElementUnderCursor)
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
             .then(topElement => {
-                return this._emulateEvents(this.holdLeftButton && this.touchMode ? this.dragElement : topElement);
+                var currentElement = this.holdLeftButton && this.touchMode ? this.dragElement : topElement;
+
+                // NOTE: it can be null in IE
+                if (!currentElement)
+                    return null;
+
+                return this._emulateEvents(currentElement);
             })
             .then(nextTick);
     }
