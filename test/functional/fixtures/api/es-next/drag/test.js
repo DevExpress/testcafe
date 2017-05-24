@@ -121,7 +121,7 @@ describe('[API] Drag actions', function () {
 
     describe('html5 drag and drop', function () {
         it('Should raise drag and drop events', function () {
-            return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'drag and drop', { skip: ['iphone', 'ipad', 'android'] });
+            return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'drag and drop');
         });
 
         it('Should check is element draggable', function () {
@@ -133,7 +133,7 @@ describe('[API] Drag actions', function () {
         });
 
         it('Should reproduce native browser behavior', function () {
-            return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'drag link and image');
+            return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'drag link and image', { only: ['chrome'] });
         });
     });
 });
