@@ -6,16 +6,36 @@ var eventSimulator = hammerhead.eventSandbox.eventSimulator;
 var extend         = hammerhead.utils.extend;
 
 class MoveEventSequence extends MoveEventSequenceBase {
-    leaveElement (currentElement, prevElement, options) {
+    leaveElement (currentElement, prevElement, commonAncestor, options) {
         eventSimulator.mouseout(prevElement, extend({ relatedTarget: currentElement }, options));
+
+        var currentParent = prevElement;
+
+        while (currentParent && currentParent !== commonAncestor) {
+            eventSimulator.mouseleave(currentParent, extend({ relatedTarget: currentElement }, options));
+            currentParent = currentParent.parentNode;
+        }
     }
 
     move (element, options, moveEvent) {
         eventSimulator[moveEvent](element, options);
     }
 
-    enterElement (currentElement, prevElement, options) {
+    enterElement (currentElement, prevElement, commonAncestor, options) {
         eventSimulator.mouseover(currentElement, extend({ relatedTarget: prevElement }, options));
+
+        var currentParent      = currentElement;
+        var mouseenterElements = [];
+
+        while (currentParent && currentParent !== commonAncestor) {
+            mouseenterElements.push(currentParent);
+            currentParent = currentParent.parentNode;
+        }
+
+        mouseenterElements.reverse();
+
+        for (var i = 0; i < mouseenterElements.length; i++)
+            eventSimulator.mouseenter(mouseenterElements[i], extend({ relatedTarget: prevElement }, options));
     }
 
     teardown (currentElement, eventOptions, prevElement, moveEvent) {
