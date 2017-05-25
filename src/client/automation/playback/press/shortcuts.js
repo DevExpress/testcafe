@@ -122,12 +122,13 @@ function moveTextAreaCursor (element, startPos, endPos, hasInverseSelection, new
 }
 
 function setElementValue (element, value, position) {
-    if (value.charAt(0) === '-' && value.charAt(1) === '.')
-        value = value.substring(1);
+    if (domUtils.isInputElement(element) && element.type === 'number') {
+        if (value.charAt(0) === '-' && value.charAt(1) === '.')
+            value = value.substring(1);
 
-    if (value.charAt(value.length - 1) === '.')
-        value = value.substring(0, value.length - 1);
-
+        if (value.charAt(value.length - 1) === '.')
+            value = value.substring(0, value.length - 1);
+    }
 
     element.value = value;
 

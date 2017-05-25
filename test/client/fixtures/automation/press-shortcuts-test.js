@@ -1,10 +1,10 @@
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var textSelection     = testCafeCore.get('./utils/text-selection');
-var domUtils          = testCafeCore.get('./utils/dom');
-var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
+var testCafeCore     = window.getTestCafeModule('testCafeCore');
+var textSelection    = testCafeCore.get('./utils/text-selection');
+var domUtils         = testCafeCore.get('./utils/dom');
+var parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var PressAutomation    = testCafeAutomation.Press;
@@ -1000,6 +1000,18 @@ $(document).ready(function () {
 
         runPressAutomation('delete', function () {
             checkShortcut(input, '.5', 1);
+            start();
+        });
+    });
+
+    asyncTest("gh-1499 - Shortcuts work wrong if input's value ends with '.' or starts with '-.'", function () {
+        var input = createTextInput('a-.text.');
+
+        input.focus();
+        nativeSelect(input, 0, 0);
+
+        runPressAutomation('delete', function () {
+            checkShortcut(input, '-.text.', 0, 0);
             start();
         });
     });
