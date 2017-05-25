@@ -5,7 +5,6 @@ import { ClickOptions, MoveOptions } from '../../../test-run/commands/options';
 import ClickAutomation from './click';
 import MoveAutomation from './move';
 import AutomationSettings from '../settings';
-import getMoveArguments from '../utils/get-move-arguments';
 import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import AUTOMATION_ERROR_TYPES from '../errors';
@@ -81,16 +80,9 @@ export default class DblClickAutomation {
             });
     }
 
-    _move ({ element, offsetX, offsetY, speed }) {
-        var moveOptions = new MoveOptions({
-            offsetX,
-            offsetY,
-            speed,
-
-            modifiers: this.modifiers
-        }, false);
-
-        var moveAutomation = new MoveAutomation(element, moveOptions);
+    _move () {
+        var moveOptions    = new MoveOptions(this.options, false);
+        var moveAutomation = new MoveAutomation(this.element, moveOptions);
 
         return moveAutomation
             .run()
@@ -154,9 +146,7 @@ export default class DblClickAutomation {
     }
 
     run () {
-        var moveArguments = getMoveArguments(this.element, { x: this.offsetX, y: this.offsetY }, this.speed);
-
-        return this._move(moveArguments)
+        return this._move()
             .then(() => this._firstClick())
             .then(() => this._secondClick())
             .then(() => this._dblClick());
