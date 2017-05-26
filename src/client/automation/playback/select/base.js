@@ -65,8 +65,7 @@ export default class SelectBaseAutomation {
     }
 
     _move ({ element, offsetX, offsetY, speed }) {
-        var moveOptions = new MoveOptions({ offsetX, offsetY, speed }, false);
-
+        var moveOptions    = new MoveOptions({ offsetX, offsetY, speed }, false);
         var moveAutomation = new MoveAutomation(element, moveOptions);
 
         return moveAutomation

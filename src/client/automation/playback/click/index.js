@@ -8,7 +8,6 @@ import { MoveOptions } from '../../../../test-run/commands/options';
 import SelectChildClickAutomation from './select-child';
 import cursor from '../../cursor';
 import nextTick from '../../utils/next-tick';
-import { getMoveAutomationOffsets } from '../../utils/offsets';
 import getAutomationPoint from '../../utils/get-automation-point';
 import screenPointToClient from '../../utils/screen-point-to-client';
 import AutomationSettings from '../../settings';
@@ -60,18 +59,6 @@ export default class ClickAutomation {
         };
     }
 
-    _getMoveArguments () {
-        var clickOnElement    = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY);
-        var moveActionOffsets = getMoveAutomationOffsets(this.element, this.offsetX, this.offsetY);
-
-        return {
-            element: clickOnElement ? this.element : document.documentElement,
-            offsetX: moveActionOffsets.offsetX,
-            offsetY: moveActionOffsets.offsetY,
-            speed:   this.options.speed
-        };
-    }
-
     _calculateEventArguments () {
         var point   = null;
         var options = null;
@@ -106,16 +93,9 @@ export default class ClickAutomation {
             });
     }
 
-    _move ({ element, offsetX, offsetY, speed }) {
-        var moveOptions = new MoveOptions({
-            offsetX,
-            offsetY,
-            speed,
-
-            modifiers: this.modifiers
-        }, false);
-
-        var moveAutomation = new MoveAutomation(element, moveOptions);
+    _move () {
+        var moveOptions    = new MoveOptions(this.options, false);
+        var moveAutomation = new MoveAutomation(this.element, moveOptions);
 
         return moveAutomation
             .run()
@@ -301,11 +281,9 @@ export default class ClickAutomation {
             return selectChildClickAutomation.run();
         }
 
-        var moveArguments = this._getMoveArguments();
-
         // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger
         // mousedown event regardless of how long mousedown event handlers were executing
-        return this._move(moveArguments)
+        return this._move()
             .then(() => Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown()]))
             .then(() => this._mouseup())
             .then(() => this._click());

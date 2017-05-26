@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gh-1486</title>
+</head>
+<body>
+<button id="btn">Button</button>
+
+<script>
+    var firstMouseDown = null;
+    var lastClick      = null;
+    var currentDelays  = [];
+
+    window.delays = [];
+
+    var button = document.getElementById('btn');
+
+    button.addEventListener('mousedown', function () {
+        if (!firstMouseDown)
+            firstMouseDown = Date.now();
+    });
+
+    button.addEventListener('click', function () {
+        var now = Date.now();
+
+        if (lastClick)
+            currentDelays.push(now - firstMouseDown);
+
+        lastClick = now;
+    });
+
+    button.addEventListener('dblclick', function () {
+        currentDelays.push(Date.now() - lastClick);
+        window.delays.push(currentDelays);
+
+        currentDelays  = [];
+        firstMouseDown = null;
+        lastClick      = null;
+    });
+</script>
+</body>
+</html>

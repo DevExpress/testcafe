@@ -5,6 +5,7 @@ import ScrollAutomation from './scroll';
 import cursor from '../cursor';
 
 import { underCursor as getElementUnderCursor } from '../get-element';
+import getAutomationPoint from '../utils/get-automation-point';
 import getLineRectIntersection from '../utils/get-line-rect-intersection';
 import whilst from '../utils/promise-whilst';
 import nextTick from '../utils/next-tick';
@@ -54,9 +55,11 @@ export default class MoveAutomation {
 
         this.automationSettings = new AutomationSettings(moveOptions.speed);
 
-        this.element       = element;
-        this.offsetX       = moveOptions.offsetX;
-        this.offsetY       = moveOptions.offsetY;
+        var target = MoveAutomation.getTarget(element, moveOptions.offsetX, moveOptions.offsetY);
+
+        this.element       = target.element;
+        this.offsetX       = target.offsetX;
+        this.offsetY       = target.offsetY;
         this.speed         = moveOptions.speed;
         this.cursorSpeed   = this.dragMode ? this.automationSettings.draggingSpeed : this.automationSettings.cursorSpeed;
         this.minMovingTime = moveOptions.minMovingTime || null;
@@ -73,6 +76,19 @@ export default class MoveAutomation {
         this.endTime    = null;
         this.distanceX  = null;
         this.distanceY  = null;
+    }
+
+    static getTarget (el, offsetX, offsetY) {
+        // NOTE: if the target point (considering offsets) is out of
+        // the element change the target element to the document element
+        var relateToDocument = !positionUtils.containsOffset(el, offsetX, offsetY);
+        var relatedPoint     = relateToDocument ? getAutomationPoint(el, offsetX, offsetY) : { x: offsetX, y: offsetY };
+
+        return {
+            element: relateToDocument ? document.documentElement : el,
+            offsetX: relatedPoint.x,
+            offsetY: relatedPoint.y
+        };
     }
 
     static onMoveToIframeRequest (e) {

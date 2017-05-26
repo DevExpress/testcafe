@@ -2,7 +2,6 @@ import { positionUtils } from '../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../get-element';
 import MoveAutomation from './move';
 import { MoveOptions } from '../../../test-run/commands/options';
-import { getMoveAutomationOffsets } from '../utils/offsets';
 import screenPointToClient from '../utils/screen-point-to-client';
 import getAutomationPoint from '../utils/get-automation-point';
 import AUTOMATION_ERROR_TYPES from '../errors';
@@ -11,43 +10,20 @@ import AUTOMATION_ERROR_TYPES from '../errors';
 export default class HoverAutomation {
     constructor (element, hoverOptions) {
         this.element   = element;
-        this.modifiers = hoverOptions.modifiers;
-
-        this.offsetX = hoverOptions.offsetX;
-        this.offsetY = hoverOptions.offsetY;
-        this.speed   = hoverOptions.speed;
+        this.options   = hoverOptions;
     }
 
-    _getMoveArguments () {
-        var clickOnElement    = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY);
-        var moveActionOffsets = getMoveAutomationOffsets(this.element, this.offsetX, this.offsetY);
-
-        return {
-            element: clickOnElement ? this.element : document.documentElement,
-            offsetX: moveActionOffsets.offsetX,
-            offsetY: moveActionOffsets.offsetY,
-            speed:   this.speed
-        };
-    }
-
-    _move ({ element, offsetX, offsetY, speed }) {
-        var moveOptions = new MoveOptions({
-            offsetX,
-            offsetY,
-            speed,
-
-            modifiers: this.modifiers
-        }, false);
-
-        var moveAutomation = new MoveAutomation(element, moveOptions);
+    _move () {
+        var moveOptions    = new MoveOptions(this.options, false);
+        var moveAutomation = new MoveAutomation(this.element, moveOptions);
 
         return moveAutomation.run();
     }
 
     _checkTopElementVisibility () {
-        var screenPoint     = getAutomationPoint(this.element, this.offsetX, this.offsetY);
+        var screenPoint     = getAutomationPoint(this.element, this.options.offsetX, this.options.offsetY);
         var point           = screenPointToClient(this.element, screenPoint);
-        var expectedElement = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY) ?
+        var expectedElement = positionUtils.containsOffset(this.element, this.options.offsetX, this.options.offsetY) ?
                               this.element : null;
 
         return getElementFromPoint(point.x, point.y, expectedElement)
@@ -58,9 +34,7 @@ export default class HoverAutomation {
     }
 
     run () {
-        var moveArguments = this._getMoveArguments();
-
-        return this._move(moveArguments)
+        return this._move()
             .then(() => this._checkTopElementVisibility());
     }
 }
