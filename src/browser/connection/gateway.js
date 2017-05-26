@@ -1,5 +1,6 @@
 import { readSync as read } from 'read-file-relative';
 import { respond404, respond500, respondWithJSON, redirect, preventCaching } from '../../utils/http';
+import RemotesQueue from './remotes-queue';
 
 
 // Const
@@ -7,12 +8,14 @@ const IDLE_PAGE_SCRIPT = read('../../client/browser/idle-page/index.js');
 const IDLE_PAGE_STYLE  = read('../../client/browser/idle-page/styles.css');
 const IDLE_PAGE_LOGO   = read('../../client/browser/idle-page/logo.svg', true);
 
-
 // Gateway
 export default class BrowserConnectionGateway {
     constructor (proxy) {
-        this.connections = {};
-        this.domain      = proxy.server1Info.domain;
+        this.connections  = {};
+        this.remotesQueue = new RemotesQueue();
+        this.domain       = proxy.server1Info.domain;
+
+        this.connectUrl = `${this.domain}/browser/connect`;
 
         this._registerRoutes(proxy);
     }
@@ -37,6 +40,9 @@ export default class BrowserConnectionGateway {
         this._dispatch('/browser/status/{id}', proxy, BrowserConnectionGateway.onStatusRequest);
         this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway.onInitScriptRequest);
         this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway.onInitScriptResponse, 'POST');
+
+        proxy.GET('/browser/connect', (req, res) => this._connectNextRemoteBrowser(req, res));
+        proxy.GET('/browser/connect/', (req, res) => this._connectNextRemoteBrowser(req, res));
 
         proxy.GET('/browser/assets/index.js', { content: IDLE_PAGE_SCRIPT, contentType: 'application/x-javascript' });
         proxy.GET('/browser/assets/styles.css', { content: IDLE_PAGE_STYLE, contentType: 'text/css' });
@@ -111,14 +117,30 @@ export default class BrowserConnectionGateway {
         }
     }
 
+    async _connectNextRemoteBrowser (req, res) {
+        preventCaching(res);
+
+        var remoteConnection = await this.remotesQueue.shift();
+
+        if (remoteConnection)
+            redirect(res, remoteConnection.url);
+        else
+            respond500(res, 'There are no available connections to establish.');
+    }
 
     // API
     startServingConnection (connection) {
         this.connections[connection.id] = connection;
+
+        if (connection.browserInfo.providerName === 'remote')
+            this.remotesQueue.add(connection);
     }
 
     stopServingConnection (connection) {
         delete this.connections[connection.id];
+
+        if (connection.browserInfo.providerName === 'remote')
+            this.remotesQueue.remove(connection);
     }
 
     close () {
