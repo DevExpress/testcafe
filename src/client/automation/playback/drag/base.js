@@ -40,6 +40,8 @@ export default class DragAutomationBase {
         this.downEvent = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
         this.upEvent   = browserUtils.isTouchDevice ? 'touchend' : 'mouseup';
 
+        this.dragAndDropState = null;
+
         this.eventArgs = {
             point:   null,
             options: null,
@@ -118,19 +120,23 @@ export default class DragAutomationBase {
         var { element, offsets } = this._getDestination();
 
         var dragOptions = new MoveOptions({
-            offsetX:       offsets.offsetX,
-            offsetY:       offsets.offsetY,
-            modifiers:     this.modifiers,
-            speed:         this.speed,
-            minMovingTime: MIN_MOVING_TIME,
-            dragMode:      true
+            offsetX:        offsets.offsetX,
+            offsetY:        offsets.offsetY,
+            modifiers:      this.modifiers,
+            speed:          this.speed,
+            minMovingTime:  MIN_MOVING_TIME,
+            holdLeftButton: true
         }, false);
 
         var moveAutomation = new MoveAutomation(element, dragOptions);
 
         return moveAutomation
             .run()
-            .then(() => delay(this.automationSettings.mouseActionStepDelay));
+            .then(dragAndDropState => {
+                this.dragAndDropState = dragAndDropState;
+
+                return delay(this.automationSettings.mouseActionStepDelay);
+            });
     }
 
     _mouseup () {
@@ -151,7 +157,17 @@ export default class DragAutomationBase {
                         if (!topElement)
                             return topElement;
 
-                        eventSimulator[this.upEvent](topElement, options);
+                        if (this.dragAndDropState.enabled) {
+                            options.dataTransfer = this.dragAndDropState.dataTransfer;
+
+                            if (this.dragAndDropState.dropAllowed)
+                                eventSimulator.drop(topElement, options);
+
+                            eventSimulator.dragend(this.dragAndDropState.element, options);
+                            this.dragAndDropState.dataStore.setProtectedMode();
+                        }
+                        else
+                            eventSimulator[this.upEvent](topElement, options);
 
                         return getElementFromPoint(point.x, point.y);
                     })

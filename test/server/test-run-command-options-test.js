@@ -94,11 +94,11 @@ describe('Test run command options', function () {
 
         it('Should create MoveOptions from object', function () {
             var options = new MoveOptions({
-                offsetY:     15,
-                dragOffsetX: 20,
-                dummy:       false,
-                speed:       20,
-                dragMode:    true,
+                offsetY:        15,
+                dragOffsetX:    20,
+                dummy:          false,
+                speed:          20,
+                holdLeftButton: true,
 
                 modifiers: {
                     ctrl:  true,
@@ -108,12 +108,12 @@ describe('Test run command options', function () {
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
-                offsetX:       null,
-                offsetY:       15,
-                speed:         20,
-                minMovingTime: null,
-                dragMode:      true,
-                skipScrolling: false,
+                offsetX:        null,
+                offsetY:        15,
+                speed:          20,
+                minMovingTime:  null,
+                holdLeftButton: true,
+                skipScrolling:  false,
 
                 modifiers: {
                     ctrl:  true,

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invalid Drag and drop</title>
+
+    <style>
+        #from, #to, #invalid-to {
+            width: 310px;
+            height: 35px;
+            border: 1px solid black;
+            margin: 20px;
+        }
+
+        #invalid-to {
+            border-color: red;
+        }
+
+        #draggable, #undraggable, #prevent-drag {
+            width: 100px;
+            height: 35px;
+            display: inline-block;
+        }
+
+        #draggable {
+            background-color: red;
+        }
+
+        #undraggable {
+            background-color: blue;
+        }
+
+        #prevent-drag {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+<div id="from">
+    <div id="draggable" draggable="true"></div>
+    <div id="prevent-drag" draggable="true"></div>
+    <div id="undraggable"></div>
+</div>
+<div id="to"></div>
+<div id="invalid-to"></div>
+
+<script>
+    var from        = document.querySelector('#from');
+    var to          = document.querySelector('#to');
+    var draggable   = document.querySelector('#draggable');
+    var undraggable = document.querySelector('#undraggable');
+    var preventDrag = document.querySelector('#prevent-drag');
+    var invalidTo   = document.querySelector('#invalid-to');
+
+    window.dragEvents = [];
+
+    function logEvent (e) {
+        dragEvents.push(e.type);
+    }
+
+    from.addEventListener('dragstart', function (e) {
+        e.dataTransfer.setData('text', e.target.id);
+        logEvent(e);
+    });
+
+    undraggable.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        logEvent(e);
+    });
+
+    preventDrag.addEventListener('dragstart', function (e) {
+        e.preventDefault();
+    });
+
+    to.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        logEvent(e);
+    });
+
+    to.addEventListener('drop', function (e) {
+        e.preventDefault();
+        e.target.appendChild(document.getElementById(e.dataTransfer.getData('text')));
+        logEvent(e);
+    });
+
+    invalidTo.addEventListener('drop', function (e) {
+        e.preventDefault();
+        e.target.appendChild(document.getElementById(e.dataTransfer.getData('text')));
+        logEvent(e);
+    });
+
+    draggable.addEventListener('dragend', function (e) {
+        window.dradendRaised = true;
+        logEvent(e);
+    });
+</script>
+</body>
+</html>
