@@ -188,7 +188,7 @@ export default class MoveAutomation {
             var clientX = startX - iframeRectangle.left;
             var clientY = startY - iframeRectangle.top;
 
-            // NOTE: We should not emulate mouseout if iframe was reloaded.
+            // NOTE: We should not emulate mouseout and mouseleave if iframe was reloaded.
             if (lastHoveredElement) {
                 eventSimulator.mouseout(lastHoveredElement, { clientX, clientY, relatedTarget: null });
                 eventSimulator.mouseleave(lastHoveredElement, { clientX, clientY, relatedTarget: null });
