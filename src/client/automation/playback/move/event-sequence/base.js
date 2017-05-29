@@ -14,13 +14,13 @@ export default class MoveEventSequenceBase {
         this.dropAllowed     = false;
     }
 
-    leaveElement (/* currentElement, prevElement, options */) {
+    leaveElement (/* currentElement, prevElement, commonAncestor, options */) {
     }
 
     move (/* element, options, moveEvent */) {
     }
 
-    enterElement (/* currentElement, prevElement, options */) {
+    enterElement (/* currentElement, prevElement, commonAncestor, options */) {
     }
 
     dragAndDrop (/* dragElement, currentElement, prevElement, options, dragDataStore */) {
@@ -41,17 +41,18 @@ export default class MoveEventSequenceBase {
             prevElement = null;
 
         var elementChanged = currentElement !== prevElement;
+        var commonAncestor = elementChanged ? domUtils.getCommonAncestor(currentElement, prevElement) : null;
 
         this.setup();
 
         if (elementChanged && !!prevElement)
-            this.leaveElement(currentElement, prevElement, options);
+            this.leaveElement(currentElement, prevElement, commonAncestor, options);
 
         if (browserUtils.isIE)
             this.move(currentElement, options, moveEvent);
 
         if (elementChanged && domUtils.isElementInDocument(currentElement))
-            this.enterElement(currentElement, prevElement, options);
+            this.enterElement(currentElement, prevElement, commonAncestor, options);
 
         if (!browserUtils.isIE)
             this.move(currentElement, options, moveEvent);

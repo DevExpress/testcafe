@@ -81,11 +81,11 @@ export default class MoveAutomation {
 
         var target = MoveAutomation.getTarget(element, moveOptions.offsetX, moveOptions.offsetY);
 
-        this.element       = target.element;
-        this.offsetX       = target.offsetX;
-        this.offsetY       = target.offsetY;
-        this.speed         = moveOptions.speed;
-        this.cursorSpeed   = this.holdLeftButton ? this.automationSettings.draggingSpeed : this.automationSettings.cursorSpeed;
+        this.element     = target.element;
+        this.offsetX     = target.offsetX;
+        this.offsetY     = target.offsetY;
+        this.speed       = moveOptions.speed;
+        this.cursorSpeed = this.holdLeftButton ? this.automationSettings.draggingSpeed : this.automationSettings.cursorSpeed;
 
         this.minMovingTime = moveOptions.minMovingTime || null;
         this.modifiers     = moveOptions.modifiers || {};
@@ -188,9 +188,11 @@ export default class MoveAutomation {
             var clientX = startX - iframeRectangle.left;
             var clientY = startY - iframeRectangle.top;
 
-            // NOTE: We should not emulate mouseout if iframe was reloaded.
-            if (lastHoveredElement)
+            // NOTE: We should not emulate mouseout and mouseleave if iframe was reloaded.
+            if (lastHoveredElement) {
                 eventSimulator.mouseout(lastHoveredElement, { clientX, clientY, relatedTarget: null });
+                eventSimulator.mouseleave(lastHoveredElement, { clientX, clientY, relatedTarget: null });
+            }
 
             messageSandbox.sendServiceMsg({ cmd: MOVE_RESPONSE_CMD }, parentWin);
 

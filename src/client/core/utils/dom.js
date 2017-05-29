@@ -460,3 +460,20 @@ export function findIframeByWindow (iframeWindow, iframeDestinationWindow) {
 export function isEditableFormElement (element) {
     return isTextEditableElement(element) || isSelectElement(element);
 }
+
+export function getCommonAncestor (element1, element2) {
+    if (isTheSameNode(element1, element2))
+        return element1;
+
+    var el1Parents     = [element1].concat(getParents(element1));
+    var commonAncestor = element2;
+
+    while (commonAncestor) {
+        if (arrayUtils.indexOf(el1Parents, commonAncestor) > -1)
+            return commonAncestor;
+
+        commonAncestor = commonAncestor.parentNode;
+    }
+
+    return commonAncestor;
+}
