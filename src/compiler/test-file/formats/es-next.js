@@ -5,7 +5,7 @@ const BABEL_RUNTIME_RE = /^babel-runtime(\\|\/|$)/;
 
 export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase {
     static _getBabelOptions (filename) {
-        var { presetStage2, transformRuntime, presetEnv } = loadBabelLibs();
+        var { presetStage2, presetFlow, transformRuntime, presetEnv } = loadBabelLibs();
 
         // NOTE: passPrePreset and complex presets is a workaround for https://github.com/babel/babel/issues/2877
         // Fixes https://github.com/DevExpress/testcafe/issues/969
@@ -14,7 +14,7 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
             presets:       [
                 {
                     passPerPreset: false,
-                    presets:       [{ plugins: [transformRuntime] }, presetStage2, presetEnv]
+                    presets:       [{ plugins: [transformRuntime] }, presetStage2, presetFlow, presetEnv]
                 }
             ],
             filename:      filename,

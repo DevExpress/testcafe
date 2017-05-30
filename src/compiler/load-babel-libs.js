@@ -17,6 +17,7 @@ export default function loadBabelLibs () {
     return {
         babel:            require('babel-core'),
         presetStage2:     require('babel-preset-stage-2'),
+        presetFlow:       require('babel-preset-flow'),
         transformRuntime: require('babel-plugin-transform-runtime'),
         presetFallback:   require('babel-preset-env').default(null, { loose: true }),
         presetEnv:        require('babel-preset-env').default(null, getOptsForPresetEnv())

@@ -114,6 +114,21 @@ describe('Compiler', function () {
                     expect(noLeak).to.be.true;
                 });
         });
+
+        it('Should strip Flow type declarations', function () {
+            return compile('test/server/data/test-suites/flow-type-declarations/testfile.js')
+                .then(function (compiled) {
+                    return compiled.tests[0].fn(testRunMock);
+                })
+                .then(function (results) {
+                    expect(results.repeated1).to.equal('yoyoyoyoyoyoyoyoyoyoyoyoyo');
+                    expect(results.repeated2).to.equal('yoyoyoyoyoyoyoyoyoyoyoyoyo');
+                    expect(results.length).to.equal(5);
+                    expect(results.launchStatus).to.equal('Rocket launched succesfully!');
+                    expect(results.cash).to.equal('1000000 USD');
+                    expect(results.inventory).to.equal('42 yoyo');
+                });
+        });
     });
 
 
