@@ -1,11 +1,14 @@
+// @flow
 import Rocket from './rocket';
 
 
 export default class RocketLaunch<T: Rocket> {
 
     rocket: T;
-    status: string = 'Not ready yet';
+    payload: number;
 
+    status: string = 'Not ready yet';
+    
     constructor (rocket: T, payload: number) {
         this.payload = payload;
         this.rocket  = rocket;

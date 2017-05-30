@@ -1,8 +1,8 @@
+// @flow
 export default class Rocket {
     country: string;
     year:    number;
-
-    name;
+    name:    string;
 
     constructor (country: string, name: string, year: number) {
         this.country = country;

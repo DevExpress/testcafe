@@ -1,3 +1,7 @@
+// @flow
+declare var fixture: any;
+declare var test: any;
+
 import Rocket from './rocket';
 import RocketLaunch from './rocket-launch';
 
@@ -14,7 +18,7 @@ const arrow = (str: string, n: number = 13): string => {
     return repeat(str, n);
 };
 
-function vecLength<T: { x: number, y: number }> (point: T): T {
+function vecLength<T: { x: number, y: number }> (point: T): number {
     var x: number = point.x;
     var y: number = point.y;
 
@@ -29,7 +33,7 @@ function launch<T: Rocket> (rocket: T): RocketLaunch<T> {
     return launch;
 }
 
-var soyuzFG: Rocket = new Rocket('Russia', 'Soyuz-FG', '2016');
+var soyuzFG: Rocket = new Rocket('Russia', 'Soyuz-FG', 2016);
 
 var soyuzFGLaunch: RocketLaunch<Rocket> = launch(soyuzFG);
 
@@ -42,11 +46,14 @@ var yoyos: Array<number | string> = [42, 'yoyo'];
 fixture `Flow`.page `https://example.com`;
 
 test('test', async () => {
-    return {
-        repeated1: repeat(y, z),
-        repeated2: arrow(y),
+    var yo = y || 'yo';
+    var n  = typeof z === 'string' ? 13 : z;
 
-        length: vecLength({ x: 3, y: 4}),
+    return {
+        repeated1: repeat(yo, n),
+        repeated2: arrow(yo),
+
+        length: vecLength({ x: 3, y: 4 }),
 
         launchStatus: soyuzFGLaunch.status,
 
