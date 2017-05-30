@@ -2,7 +2,7 @@ import loadBabelLibs from '../../load-babel-libs';
 import APIBasedTestFileCompilerBase from '../api-based';
 
 const BABEL_RUNTIME_RE = /^babel-runtime(\\|\/|$)/;
-const FLOW_MARKER_RE   = /^\s*\/\/\s*@flow|^\s*\/\*\s*@flow\s*\*\//;
+const FLOW_MARKER_RE   = /^\s*\/\/\s*@flow\s*\n|^\s*\/\*\s*@flow\s*\*\//;
 
 export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase {
     static _getBabelOptions (filename, code) {

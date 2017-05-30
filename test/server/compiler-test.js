@@ -520,9 +520,12 @@ describe('Compiler', function () {
         });
 
         it('Should raise an error if test file has Flow syntax without a marker comment', function () {
-            var testfile = posixResolve('test/server/data/test-suites/flow-type-declarations/no-flow-marker.js');
+            var testfiles = [
+                posixResolve('test/server/data/test-suites/flow-type-declarations/no-flow-marker.js'),
+                posixResolve('test/server/data/test-suites/flow-type-declarations/flower-marker.js')
+            ];
 
-            return compile(testfile)
+            return compile(testfiles[0])
                 .then(function () {
                     throw new Error('Promise rejection expected');
                 })
@@ -531,7 +534,20 @@ describe('Compiler', function () {
                         stackTop: null,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'SyntaxError: ' + testfile + ': Unexpected token, expected ; (1:8)'
+                                 'SyntaxError: ' + testfiles[0] + ': Unexpected token, expected ; (1:8)'
+                    });
+
+                    return compile(testfiles[1]);
+                })
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertError(err, {
+                        stackTop: null,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'SyntaxError: ' + testfiles[1] + ': Unexpected token, expected ; (2:8)'
                     });
                 });
         });
