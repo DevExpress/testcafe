@@ -115,7 +115,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should strip Flow type declarations', function () {
+        it('Should strip Flow type declarations if a marker comment presents', function () {
             return compile('test/server/data/test-suites/flow-type-declarations/testfile.js')
                 .then(function (compiled) {
                     return compiled.tests[0].fn(testRunMock);
@@ -515,6 +515,23 @@ describe('Compiler', function () {
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
                                  'SyntaxError: ' + testfile + ': Unexpected token, expected { (1:7)'
+                    });
+                });
+        });
+
+        it('Should raise an error if test file has Flow syntax without a marker comment', function () {
+            var testfile = posixResolve('test/server/data/test-suites/flow-type-declarations/no-flow-marker.js');
+
+            return compile(testfile)
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertError(err, {
+                        stackTop: null,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'SyntaxError: ' + testfile + ': Unexpected token, expected ; (1:8)'
                     });
                 });
         });

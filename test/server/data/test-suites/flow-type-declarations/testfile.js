@@ -1,4 +1,6 @@
-// @flow
+/*
+  @flow
+*/
 declare var fixture: any;
 declare var test: any;
 
