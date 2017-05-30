@@ -18,11 +18,12 @@ test('Double click with different speed', async t => {
     const slowClickDblClickDelay             = delays[1][1];
 
     const firstMouseDownSecondClickRatio = slowFirstMouseDownSecondClickDelay / fastFirstMouseDownSecondClickDelay;
-    const clickDblClickRatio             = slowClickDblClickDelay / fastClickDblClickDelay;
+    const clickDblClickDiff              = slowClickDblClickDelay - fastClickDblClickDelay;
 
-    const allowance = 1.5;
+    const ratioAllowance = 1.5;
+    const diffAllowance  = 10;
 
     await t
-        .expect(firstMouseDownSecondClickRatio).lte(allowance)
-        .expect(clickDblClickRatio).lte(allowance);
+        .expect(firstMouseDownSecondClickRatio).lte(ratioAllowance)
+        .expect(clickDblClickDiff).lte(diffAllowance);
 });
