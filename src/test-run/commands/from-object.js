@@ -30,7 +30,7 @@ import {
     MaximizeWindowCommand
 } from './browser-manipulation';
 
-import { WaitCommand } from './observation';
+import { WaitCommand, DebugCommand } from './observation';
 
 
 // Create command from object
@@ -107,6 +107,9 @@ export default function createCommandFromObject (obj) {
 
         case TYPE.assertion:
             return new AssertionCommand(obj);
+
+        case TYPE.debug:
+            return new DebugCommand(obj);
     }
 
     return null;
