@@ -53,7 +53,7 @@ describe('[API] Generic errors', function () {
                 { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains("> 13 |    assert.strictEqual(\'answer\', \'42\');");
-                    expect(errs[0]).to.contains("AssertionError: 'answer' === '42'");
+                    expect(errs[0]).to.match(/AssertionError( \[ERR_ASSERTION])?: 'answer' === '42'/);
                 });
         });
 
@@ -71,7 +71,7 @@ describe('[API] Generic errors', function () {
                 { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('>  8 |    assert(false);');
-                    expect(errs[0]).to.contains('AssertionError: false == true');
+                    expect(errs[0]).to.match(/AssertionError( \[ERR_ASSERTION])?: false == true/);
                 });
         });
     });
