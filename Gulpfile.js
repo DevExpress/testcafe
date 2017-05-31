@@ -3,7 +3,6 @@ var gulp                 = require('gulp');
 var gulpBabel            = require('gulp-babel');
 var less                 = require('gulp-less');
 var filter               = require('gulp-filter');
-var git                  = require('gulp-git');
 var globby               = require('globby');
 var qunitHarness         = require('gulp-qunit-harness');
 var mocha                = require('gulp-mocha');
@@ -421,6 +420,9 @@ gulp.task('clean-website', function () {
 });
 
 gulp.task('fetch-assets-repo', ['clean-website'], function (cb) {
+    // HACK: A dependency of gulp-git is broken on node 8: https://github.com/aseemk/requireDir/issues/45
+    var git = require('gulp-git');
+
     git.clone('https://github.com/DevExpress/testcafe-gh-page-assets.git', { args: 'site' }, cb);
 });
 
