@@ -2,10 +2,11 @@ import loadBabelLibs from '../../load-babel-libs';
 import APIBasedTestFileCompilerBase from '../api-based';
 
 const BABEL_RUNTIME_RE = /^babel-runtime(\\|\/|$)/;
+const FLOW_MARKER_RE   = /^\s*\/\/\s*@flow\s*\n|^\s*\/\*\s*@flow\s*\*\//;
 
 export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase {
-    static _getBabelOptions (filename) {
-        var { presetStage2, transformRuntime, presetEnv } = loadBabelLibs();
+    static _getBabelOptions (filename, code) {
+        var { presetStage2, presetFlow, transformRuntime, transformClassProperties, presetEnv } = loadBabelLibs();
 
         // NOTE: passPrePreset and complex presets is a workaround for https://github.com/babel/babel/issues/2877
         // Fixes https://github.com/DevExpress/testcafe/issues/969
@@ -15,7 +16,11 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
                 {
                     passPerPreset: false,
                     presets:       [{ plugins: [transformRuntime] }, presetStage2, presetEnv]
-                }
+                },
+                FLOW_MARKER_RE.test(code) ? {
+                    passPerPreset: false,
+                    presets:       [{ plugins: [transformClassProperties] }, presetFlow]
+                } : {}
             ],
             filename:      filename,
             retainLines:   true,
@@ -48,7 +53,7 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
         if (this.cache[filename])
             return this.cache[filename];
 
-        var opts     = ESNextTestFileCompiler._getBabelOptions(filename);
+        var opts     = ESNextTestFileCompiler._getBabelOptions(filename, code);
         var compiled = babel.transform(code, opts);
 
         this.cache[filename] = compiled.code;

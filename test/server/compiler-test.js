@@ -114,6 +114,21 @@ describe('Compiler', function () {
                     expect(noLeak).to.be.true;
                 });
         });
+
+        it('Should strip Flow type declarations if a marker comment presents', function () {
+            return compile('test/server/data/test-suites/flow-type-declarations/testfile.js')
+                .then(function (compiled) {
+                    return compiled.tests[0].fn(testRunMock);
+                })
+                .then(function (results) {
+                    expect(results.repeated1).to.equal('yoyoyoyoyoyoyoyoyoyoyoyoyo');
+                    expect(results.repeated2).to.equal('yoyoyoyoyoyoyoyoyoyoyoyoyo');
+                    expect(results.length).to.equal(5);
+                    expect(results.launchStatus).to.equal('Rocket launched succesfully!');
+                    expect(results.cash).to.equal('1000000 USD');
+                    expect(results.inventory).to.equal('42 yoyo');
+                });
+        });
     });
 
 
@@ -500,6 +515,39 @@ describe('Compiler', function () {
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
                                  'SyntaxError: ' + testfile + ': Unexpected token, expected { (1:7)'
+                    });
+                });
+        });
+
+        it('Should raise an error if test file has Flow syntax without a marker comment', function () {
+            var testfiles = [
+                posixResolve('test/server/data/test-suites/flow-type-declarations/no-flow-marker.js'),
+                posixResolve('test/server/data/test-suites/flow-type-declarations/flower-marker.js')
+            ];
+
+            return compile(testfiles[0])
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertError(err, {
+                        stackTop: null,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'SyntaxError: ' + testfiles[0] + ': Unexpected token, expected ; (1:8)'
+                    });
+
+                    return compile(testfiles[1]);
+                })
+                .then(function () {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(function (err) {
+                    assertError(err, {
+                        stackTop: null,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                                 'SyntaxError: ' + testfiles[1] + ': Unexpected token, expected ; (2:8)'
                     });
                 });
         });
