@@ -20,6 +20,10 @@ export default class BrowserProviderPluginHost {
 
 
     // Helpers
+    get providerName () {
+        return this[name];
+    }
+
     runInitScript (browserId, code) {
         var connection = BrowserConnection.getById(browserId);
 
@@ -77,7 +81,7 @@ export default class BrowserProviderPluginHost {
     }
 
     // Extra functions
-    async isLocalBrowser (/* browserId */) {
+    async isLocalBrowser (/* browserId, browserName */) {
         return false;
     }
 
@@ -90,20 +94,20 @@ export default class BrowserProviderPluginHost {
         };
     }
 
-    async resizeWindow (/* browserId, width, height, currentWidth, currentHeight */) {
-        this.reportWarning(WARNING_MESSAGE.resizeNotSupportedByBrowserProvider, this[name]);
+    async resizeWindow (browserId/*, width, height, currentWidth, currentHeight */) {
+        this.reportWarning(browserId, WARNING_MESSAGE.resizeNotSupportedByBrowserProvider, this[name]);
     }
 
     async canResizeWindowToDimensions (/* browserId, width, height */) {
         return true;
     }
 
-    async takeScreenshot (/* browserId, screenshotPath, pageWidth, pageHeight */) {
-        this.reportWarning(WARNING_MESSAGE.screenshotNotSupportedByBrowserProvider, this[name]);
+    async takeScreenshot (browserId/*, screenshotPath, pageWidth, pageHeight */) {
+        this.reportWarning(browserId, WARNING_MESSAGE.screenshotNotSupportedByBrowserProvider, this[name]);
     }
 
-    async maximizeWindow (/*browserId*/) {
-        this.reportWarning(WARNING_MESSAGE.maximizeNotSupportedByBrowserProvider, this[name]);
+    async maximizeWindow (browserId) {
+        this.reportWarning(browserId, WARNING_MESSAGE.maximizeNotSupportedByBrowserProvider, this[name]);
     }
 
     async reportJobResult (/*browserId, status, data*/) {

@@ -26,16 +26,15 @@ export default {
         if (!providerRegExpMatch)
             throw new GeneralError(MESSAGE.cantFindBrowser, alias);
 
-        var providerName = '';
-        var browserName  = '';
+        var providerName = providerRegExpMatch[1];
+        var browserName  = providerRegExpMatch[2] || '';
 
-        var provider = await this.getProvider(providerRegExpMatch[1]);
+        var provider = await this.getProvider(providerName);
 
-        if (provider) {
-            providerName = providerRegExpMatch[1];
-            browserName  = providerRegExpMatch[2] || '';
-        }
-        else {
+        if (!provider && providerRegExpMatch[2])
+            provider = await this.getProvider(providerName + ':');
+
+        if (!provider) {
             providerName = 'locally-installed';
             provider     = await this.getProvider(providerName);
             browserName  = providerRegExpMatch[1] || '';

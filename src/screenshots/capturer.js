@@ -1,10 +1,8 @@
 import { join as joinPath, dirname } from 'path';
-import promisify from '../utils/promisify';
 import sanitizeFilename from 'sanitize-filename';
-import mkdirp from 'mkdirp';
 import { generateThumbnail } from 'testcafe-browser-tools';
+import { ensureDir } from '../utils/promisified-functions';
 
-var ensureDir = promisify(mkdirp);
 
 const PNG_EXTENSION_RE = /(\.png)$/;
 

@@ -8,10 +8,11 @@ export default {
         var args  = browserName.split(' ');
         var alias = args.shift();
 
-        var openParameters = await browserTools.getBrowserInfo(alias);
+        var browserInfo    = await browserTools.getBrowserInfo(alias);
+        var openParameters = Object.assign({}, browserInfo);
 
         if (args.length)
-            openParameters.cmd += (openParameters.cmd ? ' ' : '') + args.join(' ');
+            openParameters.cmd = args.join(' ') + (openParameters.cmd ? ' ' + openParameters.cmd : '');
 
         await browserTools.open(openParameters, pageUrl);
     },

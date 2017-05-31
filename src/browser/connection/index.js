@@ -81,7 +81,7 @@ export default class BrowserConnection extends EventEmitter {
                 this.emit('error', new GeneralError(
                     MESSAGE.unableToOpenBrowser,
                     this.browserInfo.providerName + ':' + this.browserInfo.browserName,
-                    err.message
+                    err.stack
                 ));
             }
         });
