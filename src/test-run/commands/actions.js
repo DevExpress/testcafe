@@ -226,8 +226,8 @@ export class SelectTextCommand extends Assignable {
 
         this.type     = TYPE.selectText;
         this.selector = null;
-        this.startPos = null;
-        this.endPos   = null;
+        this.startPos = void 0;
+        this.endPos   = void 0;
         this.options  = null;
 
         this._assignFrom(obj, true);
@@ -249,7 +249,7 @@ export class SelectEditableContentCommand extends Assignable {
 
         this.type          = TYPE.selectEditableContent;
         this.startSelector = null;
-        this.endSelector   = null;
+        this.endSelector   = void 0;
         this.options       = null;
 
         this._assignFrom(obj, true);
@@ -270,10 +270,10 @@ export class SelectTextAreaContentCommand extends Assignable {
 
         this.type      = TYPE.selectTextAreaContent;
         this.selector  = null;
-        this.startLine = null;
-        this.startPos  = null;
-        this.endLine   = null;
-        this.endPos    = null;
+        this.startLine = void 0;
+        this.startPos  = void 0;
+        this.endLine   = void 0;
+        this.endPos    = void 0;
         this.options   = null;
 
         this._assignFrom(obj, true);

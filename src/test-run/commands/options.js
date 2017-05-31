@@ -28,7 +28,7 @@ export class ActionOptions extends Assignable {
     constructor (obj, validate) {
         super();
 
-        this.speed = null;
+        this.speed = void 0;
 
         this._assignFrom(obj, validate);
     }
@@ -45,8 +45,8 @@ export class OffsetOptions extends ActionOptions {
     constructor (obj, validate) {
         super();
 
-        this.offsetX = null;
-        this.offsetY = null;
+        this.offsetX = void 0;
+        this.offsetY = void 0;
 
         this._assignFrom(obj, validate);
     }
@@ -91,7 +91,7 @@ export class ClickOptions extends MouseOptions {
     constructor (obj, validate) {
         super();
 
-        this.caretPos = null;
+        this.caretPos = void 0;
 
         this._assignFrom(obj, validate);
     }
@@ -108,8 +108,8 @@ export class MoveOptions extends MouseOptions {
     constructor (obj, validate) {
         super();
 
-        this.speed          = null;
-        this.minMovingTime  = null;
+        this.speed          = void 0;
+        this.minMovingTime  = void 0;
         this.holdLeftButton = false;
         this.skipScrolling  = false;
 
@@ -167,7 +167,7 @@ export class AssertionOptions extends Assignable {
     constructor (obj, validate) {
         super();
 
-        this.timeout = null;
+        this.timeout = void 0;
 
         this._assignFrom(obj, validate);
     }

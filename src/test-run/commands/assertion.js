@@ -20,7 +20,7 @@ export default class AssertionCommand extends Assignable {
         this.actual        = void 0;
         this.expected      = void 0;
         this.expected2     = void 0;
-        this.message       = null;
+        this.message       = void 0;
         this.options       = null;
 
         this._assignFrom(obj, true);
