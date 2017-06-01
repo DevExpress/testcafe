@@ -6,7 +6,7 @@ checked: true
 ---
 # Test API
 
-TestCafe allows to write tests using both the TypeScript and modern JavaScript with the latest features like async/await.
+TestCafe allows to write tests using both TypeScript and modern JavaScript with the latest features like async/await.
 
 This section demonstrates how to organize test code and describes the API used to manipulate the webpage and check its state.
 
