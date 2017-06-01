@@ -26,7 +26,7 @@ to avoid the `'fixture' is not defined` and `'test' is not defined` errors.
 ## Fixtures
 
 TestCafe tests must be organized into categories called *fixtures*.
-A JavaScript or Typescript file with TestCafe tests can contain one or more fixtures.
+A JavaScript or TypeScript file with TestCafe tests can contain one or more fixtures.
 
 To declare a test fixture, use the `fixture` function.
 
