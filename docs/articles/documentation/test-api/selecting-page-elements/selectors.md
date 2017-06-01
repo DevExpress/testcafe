@@ -746,6 +746,30 @@ test('Check Label HTML', async t => {
 });
 ```
 
+If you use TypeScript, declare a Selector interface extension with your custom properties:
+
+```csharp
+interface CustomSelector extends Selector {
+    innerHTML: Promise<any>;
+}
+
+interface CustomSnapshot extends NodeSnapshot {
+    innerHTML: string;
+}
+
+// via selector propery
+const label = <CustomSelector>Selector('label').addCustomDOMProperties({
+    innerHTML: el => el.innerHTML
+});
+
+await t.expect(label.innerHTML).contains('input type="checkbox" name="remote"');
+
+// via element snapshot
+const labelSnapshot = <CustomSnapshot>await label();
+
+await t.expect(labelSnapshot.innerHTML).contains('input type="checkbox" name="remote"');
+```
+
 ### Custom Methods
 
 To add custom methods, use the `addCustomMethods` method.
@@ -776,8 +800,25 @@ The `addCustomMethods` function also adds the specified methods to the [element 
 
 ```js
 const myTable = Selector('.my-table').addCustomMethods({
-    getCellText: (table, rowIndex, columnIndex) =>
-        table.rows[rowIndex].cells[columnIndex].innerText
+    getCellText: (table, rowIndex, columnIndex) => {
+        return table.rows[rowIndex].cells[columnIndex].innerText;
+    };
+});
+
+await t.expect(myTable.getCellText(1, 1)).contains('hey!');
+```
+
+If you use TypeScript, declare a Selector interface extension with your custom methods:
+
+```csharp
+interface CustomSelector extends Selector {
+    getCellText(rowIndex: number, columnIndex: number): Promise<any>;
+}
+
+const myTable = <CustomSelector>Selector('#customers').addCustomMethods({
+    getCellText: (table: HTMLTableElement, rowIndex: number, columnIndex: number) => {
+        return table.rows[rowIndex].cells[columnIndex].innerText;
+    }
 });
 
 await t.expect(myTable.getCellText(1, 1)).contains('hey!');
