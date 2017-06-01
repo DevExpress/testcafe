@@ -28,7 +28,7 @@ For more information, see [Installing TestCafe](../using-testcafe/installing-tes
 
 ## Creating a Test
 
-To create a test, create a new .js file anywhere on your computer.
+To create a test, create a new .js or .ts file anywhere on your computer.
 This file must have a special structure: tests must be organized into fixtures. Thus, begin by declaring a fixture using the [fixture](../test-api/test-code-structure.md#fixtures) function.
 
 ```js
