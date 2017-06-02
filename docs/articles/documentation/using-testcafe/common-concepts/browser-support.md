@@ -158,10 +158,10 @@ Options:
         * **userAgent=\<string\>** - the user agent string;
         * **touch=\<bool\>** - whether the touch support is enabled.
     * **CDP arguments**:
-        * **cdpPort=\<int\>** - an open port used for the Chrome Debugging Protocol.
+        * **cdpPort=\<int\>** - a free port used for the Chrome Debugging Protocol.
 * **cmdArgs** - command line [arguments](../command-line-interface.html#starting-browser-with-arguments) that are passed to the chrome.
 
-> The CDP requires an open port to work. TestCafe automatically selects an open port, but you can define a custom port.
+> The CDP requires a free port to work. TestCafe automatically selects a free port, but you can define a custom port.
 
 ## Nonconventional Browsers
 
