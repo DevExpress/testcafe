@@ -99,6 +99,12 @@ Using the [Chrome Debugging Protocol (CDP)](https://chromedevtools.github.io/dev
 * [Running Tests in Headless Mode](#running-tests-in-headless-mode)
 * [Running Tests in the Device Emulation Mode](#running-tests-in-the-device-emulation-mode)
 
+CDP requires a remote debugging port to attach to a Chrome instance. TestCafe automatically assigns a free port but you can specify a custom port via the `cdpPort` argument if necessary:
+
+```sh
+testcafe "chrome:headless:cdpPort=9223" tests/sample-fixture.js
+```
+
 ### Running Tests in Headless Mode
 
 TestCafe allows you to run tests in Google Chrome without any visible UI shell - in the [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome). Note that the [Take screenshot](../../test-api/actions/take-screenshot.html) and [Resize window](../../test-api/actions/resize-window.html) features are fully supported in headless mode.
@@ -107,13 +113,9 @@ TestCafe allows you to run tests in Google Chrome without any visible UI shell -
 testcafe "chrome:headless" tests/sample-fixture.js
 ```
 
-You can specify a custom port for CDP:
+> Note that headless mode is available for Mac and Linux in Chrome 59. You need a [Canary build](https://www.google.com/chrome/browser/canary.html) to enable headless mode on Windows.
 
-```sh
-testcafe "chrome:headless:cdpPort=9223" tests/sample-fixture.js
-```
-
-Note that headless mode is available for Mac and Linux in Chrome 59. You need a [Canary build](https://www.google.com/chrome/browser/canary.html) to enable headless mode on Windows. Specify a path to installation location, if you install a portable version of Chrome:
+Specify a path to installation location, if you install a portable version of Chrome:
 
 ```sh
 testcafe "chrome:path/to/chrome:headless" tests/sample-fixture.js
@@ -125,6 +127,9 @@ You can run test in Chrome's built-in [device emulator](https://developers.googl
 
 ```sh
 testcafe "chrome:emulation:device=iphone 6" tests/sample-fixture.js
+```
+
+```sh
 testcafe "chrome:emulation:width=100;height=200;mobile=true;orientation=vertical;touch=true" tests/sample-fixture.js
 ```
 
@@ -134,34 +139,35 @@ You can combine both device emulation and headless modes:
 testcafe "chrome:headless:emulation:device=iphone 6;cdpPort=9223" tests/sample-fixture.js
 ```
 
-### Available CDP options
+### Available Chrome options
 
 Usage:
 
 ```sh
-chrome[:pathToBrowser][:headless][:emulation][:arg1=value1;arg2=value2][ --cmdArgs]
+chrome[:path-to-browser][:headless][:emulation][:cdp-arguments][ --cmd-arguments]
 ```
 
-Options:
+Parameter                       | Description
+------------------------------- |  -----------------------
+`path-to-browser` *(optional)*  | A path to a portable browser. The path to browser is not required, if it is installed in a system.
+`headless` *(optional)*         | Enables [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome).
+`emulation` *(optional)*        | Enables Chrome [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/).
+`cdp-arguments` *(optional)*    | Emulated device and CDP options separated by `;`.
+`cmd-arguments` *(optional)*    | Command line [arguments](../command-line-interface.html#starting-browser-with-arguments) that are passed to the Chrome.
 
-* **pathToBrowser** - specifies a path to a portable browser. The path to browser is not required, if it is installed in a system.
-* **headless** - Chrome runs in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome).
-* **emulation** - allows you to run tests in Chrome [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/).
-* **chrome arguments** - options separated by `;`.  The following arguments are available:
-    * **device parameters**:
-        * **device=\<string\>** - the emulated device;
-        * **width=\<number\>** - the device screen width in pixels;
-        * **height=\<number\>** - the device screen height in pixels;
-        * **scaleFactor=\<number\>** - device scale factor value;
-        * **mobile=\<bool\>** - whether to emulate a mobile device;
-        * **orientation=\<vertical|horizontal\>** - the device orientation;
-        * **userAgent=\<string\>** - the user agent string;
-        * **touch=\<bool\>** - whether the touch support is enabled.
-    * **CDP arguments**:
-        * **cdpPort=\<int\>** - a free port used for the Chrome Debugging Protocol.
-* **cmdArgs** - command line [arguments](../command-line-interface.html#starting-browser-with-arguments) that are passed to the chrome.
+The following `cdp-arguments` are available:
 
-> The CDP requires a free port to work. TestCafe automatically selects a free port, but you can define a custom port.
+Parameter                      | Type   | Description             | Default
+------------------------------ | ------ | ----------------------- | -------
+`device` *(optional)*       | String  | The emulated device name (see the full list of supported devices in DevTools -> ⠇->Settings -> Devices). | No default value. If the device name is not set specify the emulated device sizes via `height` and `width` properties.
+`width` *(optional)*        | Number  | The device screen width in pixels. | No default value. If the device width is not set specify the emulated device name the `device` property.
+`height` *(optional)*       | Number  | The device screen height in pixels. | No default value. If the device height is not set specify the emulated device name the `device` property.
+`scaleFactor` *(optional)*  | Number  | Device scale factor value. | `1`
+`mobile` *(optional)*       | Boolean | Whether to emulate a mobile device. | `true` if a mobile device is set via the device property. Otherwise `false`.
+`orientation` *(optional)*  | `vertical` &#124; `horizontal` | The device orientation | `vertical`
+`userAgent` *(optional)*    | String  | The user agent string | Default browser's user agent string
+`touch` *(optional)*        | Boolean | Enables or disables touch support | `true` if a touch-supported device is set via the device property. Otherwise `false`.
+`cdpPort` *(optional)*      | Number  | A port (0-65535) used for the Chrome Debugging Protocol. | If not specified TestCafe automatically assigns a free port.
 
 ## Nonconventional Browsers
 

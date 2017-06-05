@@ -12,9 +12,9 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
 
 * [Browser List](#browser-list)
   * [Local Browsers](#local-browsers)
+    * [Using Chrome-specific Features](#using-chrome-specific-features)
   * [Portable Browsers](#portable-browsers)
   * [Remote Browsers](#remote-browsers)
-  * [Using Chrome-specific Features](#using-chrome-specific-features)
   * [Browsers Accessed Through Browser Provider Plugins](#browsers-accessed-through-browser-provider-plugins)
   * [Starting browser with arguments](#starting-browser-with-arguments)
 * [File Path/Glob Pattern](#file-pathglob-pattern)
@@ -72,6 +72,25 @@ To run tests against **all installed browsers**, use the `all` alias.
 testcafe all tests/sample-fixture.js
 ```
 
+#### Using Chrome-specific Features
+
+TestCafe provides the following Chrome-specific features:
+
+* [Running Tests in Headless Mode](common-concepts/browser-support.md#running-tests-in-headless-mode)
+* [Running Tests in the Device Emulation Mode](common-concepts/browser-support.md#running-tests-in-the-device-emulation-mode)
+
+To run tests in headless mode use the `:headless` postfix:
+
+```sh
+testcafe "chrome:headless" tests/sample-fixture.js
+```
+
+To run tests in the device emulation mode specify `emulation:` and [device parameters](common-concepts/browser-support.md#available-chrome-options):
+
+```sh
+testcafe "chrome:emulation:device=iphone 6" tests/sample-fixture.js
+```
+
 ### Portable Browsers
 
 You can specify [portable browsers](common-concepts/browser-support.md#portable-browsers) by using paths to the browser's executable file (with the `path:` prefix), for example:
@@ -99,25 +118,6 @@ TestCafe will provide URLs to open in required browsers on your remote device.
 You can also use the [--qr-code](#--qr-code) option to display QR-codes that represent the same URLs.
 Scan the QR-codes by using the device on which you are going to test your application.
 As a result, the browsers will be connected to TestCafe and tests will start.
-
-### Using Chrome-specific Features
-
-TestCafe provides the following Chrome-specific features:
-
-* [Running Tests in Headless Mode](common-concepts/browser-support.md#running-tests-in-headless-mode)
-* [Running Tests in the Device Emulation Mode](common-concepts/browser-support.md#running-tests-in-the-device-emulation-mode)
-
-To run tests in headless mode use the `:headless` postfix:
-
-```sh
-testcafe "chrome:headless" tests/sample-fixture.js
-```
-
-To run tests in the device emulation mode specify `emulation:` and [device parameters](common-concepts/browser-support.md#available-cdp-options):
-
-```sh
-testcafe "chrome:emulation:device=iphone 6" tests/sample-fixture.js
-```
 
 ### Browsers Accessed Through Browser Provider Plugins
 
