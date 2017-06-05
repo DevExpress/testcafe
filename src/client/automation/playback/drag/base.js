@@ -173,7 +173,7 @@ export default class DragAutomationBase {
                     })
                     .then(element => {
                         //B231323
-                        if (topElement && element === topElement)
+                        if (topElement && element === topElement && !this.dragAndDropState.enabled)
                             eventSimulator.click(topElement, options);
                     });
             });

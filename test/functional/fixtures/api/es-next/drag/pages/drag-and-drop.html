@@ -126,6 +126,10 @@
     }
 
     waitForNextEvent(0);
+
+    document.addEventListener('click', function () {
+        throw new Error('The "click" is raised but should not be');
+    });
 </script>
 </body>
 </html>
