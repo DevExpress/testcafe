@@ -23,3 +23,4 @@ It contains the following subsections
 * [Handling Native Dialogs](handling-native-dialogs.md)
 * [Working with \<iframes\>](working-with-iframes.md)
 * [Debugging](debugging.md)
+* [TypeScript Support](typescript-support.md)
