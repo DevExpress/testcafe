@@ -9,8 +9,8 @@ const someUser = Role('http://localhost:3000/fixtures/api/es-next/roles/pages/lo
         .click('input[value="LogIn"]');
 });
 
-fixture(`AnonymousRole`)
-    .page(`http://localhost:3000/fixtures/api/es-next/roles/pages/index.html`);
+fixture `AnonymousRole`
+    .page `http://localhost:3000/fixtures/api/es-next/roles/pages/index.html`;
 
 test('Test1', async() => {
     await t

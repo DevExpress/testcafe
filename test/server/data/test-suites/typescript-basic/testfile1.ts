@@ -1,7 +1,7 @@
 import 'testcafe';
 import dep1Fn from './dep1';
 
-fixture('Fixture1');
+fixture `Fixture1`;
 
 test('Fixture1Test1', async() => {
     var res = await dep1Fn();

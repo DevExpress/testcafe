@@ -2,8 +2,8 @@
 import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
-fixture(`ClientFunction`)
-    .page(`http://localhost:3000/fixtures/api/es-next/client-function/pages/index.html`);
+fixture `ClientFunction`
+    .page `http://localhost:3000/fixtures/api/es-next/client-function/pages/index.html`;
 
 const getLocation = ClientFunction(() => document.location.toString());
 const getUserAgent = ClientFunction(() => navigator.userAgent);
