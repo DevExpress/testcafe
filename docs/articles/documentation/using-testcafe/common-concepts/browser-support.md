@@ -159,7 +159,7 @@ The following `cdp-arguments` are available:
 
 Parameter                      | Type   | Description             | Default
 ------------------------------ | ------ | ----------------------- | -------
-`device` *(optional)*       | String  | The emulated device name (see the full list of supported devices in DevTools -> ⠇->Settings -> Devices). | No default value. If the device name is not set specify the custom device parameters via the following properties.
+`device` *(optional)*       | String  | The emulated device name (see the full list of supported devices in DevTools -> ⠇->Settings -> Devices). | No default value. If the device name is not set specify the custom device parameters.
 `width` *(optional)*        | Number  | The device screen width in pixels. | No default value. If the device width is not set specify the emulated device name via the `device` property.
 `height` *(optional)*       | Number  | The device screen height in pixels. | No default value. If the device height is not set specify the emulated device name via the `device` property.
 `scaleFactor` *(optional)*  | Number  | Device scale factor value. | Depends on chosen `device` or your system.
