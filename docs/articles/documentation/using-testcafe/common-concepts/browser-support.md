@@ -165,7 +165,7 @@ Parameter                      | Type   | Description             | Default
 `scaleFactor` *(optional)*  | Number  | Device scale factor value. | Depends on chosen `device` or your system.
 `mobile` *(optional)*       | Boolean | Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more. | `true` if a mobile device is set via the `device` property. Otherwise `false`.
 `orientation` *(optional)*  | `vertical` &#124; `horizontal` | The device orientation | `vertical`
-`userAgent` *(optional)*    | String  | The user agent string | The user agent string of the selected `device` or the browser. 
+`userAgent` *(optional)*    | String  | The user agent string | The user agent string of the selected `device` or the browser.
 `touch` *(optional)*        | Boolean | Enables or disables touch event emulation. | `true` if a touch-supported device is set via the device property or your system supports touch events. Otherwise `false`.
 `cdpPort` *(optional)*      | Number  | A port (0-65535) used for the Chrome Debugging Protocol. | If not specified TestCafe automatically assigns a free port.
 
