@@ -763,7 +763,7 @@ interface CustomSnapshot extends NodeSnapshot {
     innerHTML: string;
 }
 
-// via selector propery
+// via selector property
 const label = <CustomSelector>Selector('label').addCustomDOMProperties({
     innerHTML: el => el.innerHTML
 });

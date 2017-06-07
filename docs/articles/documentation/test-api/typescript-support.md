@@ -16,13 +16,15 @@ TestCafe bundles the TypeScript declaration file with the npm package, so you do
 
 ## Writing Tests with TypeScript
 
+To start writing tests with TypeScript install TestCafe into your project directory. For more information, see [Installing TestCafe](../using-testcafe/installing-testcafe.html#locally).
+
 When writing test in TypeScript, it is required to import TestCafe module first.
 
 ```js
 import { Selector } from 'testcafe';
 ```
 
-After importing a testcafe module, an IDE (e.g. VS Code, Sublime Text, WebStorm, etc.) will load TestCafe declaration
+After importing a `testcafe` module, an IDE (e.g. VS Code, Sublime Text, WebStorm, etc.) will load TestCafe declaration
 file and will show you code completion hints for TestCafe API:
 
 ![Writing Tests with TypeScript](../../images/typescript-support.png)
@@ -30,8 +32,8 @@ file and will show you code completion hints for TestCafe API:
 Now, you can write tests in the same manner as in JavaScript.
 When you run a test Testcafe will output if there are any compilation errors.
 
-> The [extending selectors](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#extending-selectors)
+> The [extending selectors](./selecting-page-elements/selectors.html#extending-selectors)
 > in TypeScript differs from extending selectors in JavaScript. Refer to the
-> [Custom Properties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#custom-properties)
-> and [Custom Methods](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#custom-methods)
+> [Custom Properties](./selecting-page-elements/selectors.html#custom-properties)
+> and [Custom Methods](./selecting-page-elements/selectors.html#custom-methods)
 > sections to learn how to extend selectors in TypeScript.
