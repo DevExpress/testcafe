@@ -19,7 +19,9 @@ TestCafe bundles TypeScript declaration file with the npm package, so you have n
 
 Just create a `.ts` file with the
 
-```ts
+<!-- Use `js` instaed of `ts` for this code block for proper code highlighting -->
+
+```js
 import { Selector } from 'testcafe';
 ```
 
@@ -27,7 +29,7 @@ and write your test.
 
 For details, see [TypeScript Support](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html)
 
-### ⚙ Support running in Chrome in headless mode and in device emulation ([#1417](https://github.com/DevExpress/testcafe/issues/1417))
+### ⚙ Support running in Chrome in headless mode and in device emulator ([#1417](https://github.com/DevExpress/testcafe/issues/1417))
 
 Now TestCafe allows you to run your tests in Google Chrome in the headless mode and the device emulation mode.
 
