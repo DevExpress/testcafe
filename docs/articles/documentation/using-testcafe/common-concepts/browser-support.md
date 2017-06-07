@@ -159,14 +159,14 @@ The following `cdp-arguments` are available:
 
 Parameter                      | Type   | Description             | Default
 ------------------------------ | ------ | ----------------------- | -------
-`device` *(optional)*       | String  | The emulated device name (see the full list of supported devices in DevTools -> ⠇->Settings -> Devices). | No default value. If the device name is not set specify the custom device parameters.
-`width` *(optional)*        | Number  | The device screen width in pixels. | No default value. If the device width is not set specify the emulated device name via the `device` property.
-`height` *(optional)*       | Number  | The device screen height in pixels. | No default value. If the device height is not set specify the emulated device name via the `device` property.
-`scaleFactor` *(optional)*  | Number  | Device scale factor value. | Depends on chosen `device` or your system parameters.
-`mobile` *(optional)*       | Boolean | Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more. | `true` if a mobile device is set via the `device` property. Otherwise `false`.
+`device` *(optional)*       | String  | The emulated device name (see the full list of supported devices in DevTools -> ⠇->Settings -> Devices). | No default value. Specify the custom device parameters, if the device name is not set.
+`width` *(optional)*        | Number  | The device screen width in pixels. | No default value. Specify the emulated device name using the `device` property, if the device width is not set.
+`height` *(optional)*       | Number  | The device screen height in pixels. | No default value. Specify the emulated device name using the `device` property, if the device height is not set.
+`scaleFactor` *(optional)*  | Number  | Device scale factor value. | Depends on a chosen `device` or your system parameters.
+`mobile` *(optional)*       | Boolean | Whether to emulate a mobile device. This includes the viewport meta tag, overlay scrollbars, text autosizing and more. | `true` if a mobile device is set via the `device` property. Otherwise `false`.
 `orientation` *(optional)*  | `vertical` &#124; `horizontal` | The device orientation | `vertical`
 `userAgent` *(optional)*    | String  | The user agent string | The user agent string of the selected `device` or the browser.
-`touch` *(optional)*        | Boolean | Enables or disables touch event emulation. | `true` if a touch-supported device is set via the `device` property or your system supports touch events. Otherwise `false`.
+`touch` *(optional)*        | Boolean | Enables or disables the touch event emulation. | `true` if a touch-supported device is set via the `device` property or your system supports touch events. Otherwise `false`.
 `cdpPort` *(optional)*      | Number  | A port (0-65535) used for the Chrome Debugging Protocol. | If not specified TestCafe automatically assigns a free port.
 
 ## Nonconventional Browsers

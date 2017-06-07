@@ -12,7 +12,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
 
 * [Browser List](#browser-list)
   * [Local Browsers](#local-browsers)
-    * [Using Chrome-specific Features](#using-chrome-specific-features)
+      * [Using Chrome-specific Features](#using-chrome-specific-features)
   * [Portable Browsers](#portable-browsers)
   * [Remote Browsers](#remote-browsers)
   * [Browsers Accessed Through Browser Provider Plugins](#browsers-accessed-through-browser-provider-plugins)
