@@ -13,7 +13,7 @@ permalink: /documentation/using-testcafe/common-concepts/browser-support.html
 * [Using Chrome-specific Features](#using-chrome-specific-features)
     * [Running Tests in Headless Mode](#running-tests-in-headless-mode)
     * [Running Tests in the Device Emulation Mode](#running-tests-in-the-device-emulation-mode)
-    * [Available CDP options](#available-cdp-options)
+    * [Available Chrome Options](#available-chrome-options)
 * [Nonconventional Browsers](#nonconventional-browsers)
 
 ## Officially Supported Browsers
@@ -139,7 +139,7 @@ You can combine both device emulation and headless modes:
 testcafe "chrome:headless:emulation:device=iphone 6;cdpPort=9223" tests/sample-fixture.js
 ```
 
-### Available Chrome options
+### Available Chrome Options
 
 Usage:
 
@@ -159,14 +159,14 @@ The following `cdp-arguments` are available:
 
 Parameter                      | Type   | Description             | Default
 ------------------------------ | ------ | ----------------------- | -------
-`device` *(optional)*       | String  | The emulated device name (see the full list of supported devices in DevTools -> ⠇->Settings -> Devices). | No default value. If the device name is not set specify the emulated device sizes via `height` and `width` properties.
-`width` *(optional)*        | Number  | The device screen width in pixels. | No default value. If the device width is not set specify the emulated device name the `device` property.
-`height` *(optional)*       | Number  | The device screen height in pixels. | No default value. If the device height is not set specify the emulated device name the `device` property.
-`scaleFactor` *(optional)*  | Number  | Device scale factor value. | `1`
-`mobile` *(optional)*       | Boolean | Whether to emulate a mobile device. | `true` if a mobile device is set via the device property. Otherwise `false`.
+`device` *(optional)*       | String  | The emulated device name (see the full list of supported devices in DevTools -> ⠇->Settings -> Devices). | No default value. If the device name is not set specify the custom device parameters via the following properties.
+`width` *(optional)*        | Number  | The device screen width in pixels. | No default value. If the device width is not set specify the emulated device name via the `device` property.
+`height` *(optional)*       | Number  | The device screen height in pixels. | No default value. If the device height is not set specify the emulated device name via the `device` property.
+`scaleFactor` *(optional)*  | Number  | Device scale factor value. | Depends on chosen `device` or your system.
+`mobile` *(optional)*       | Boolean | Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more. | `true` if a mobile device is set via the `device` property. Otherwise `false`.
 `orientation` *(optional)*  | `vertical` &#124; `horizontal` | The device orientation | `vertical`
-`userAgent` *(optional)*    | String  | The user agent string | Default browser's user agent string
-`touch` *(optional)*        | Boolean | Enables or disables touch support | `true` if a touch-supported device is set via the device property. Otherwise `false`.
+`userAgent` *(optional)*    | String  | The user agent string | The user agent string of the selected `device` or the browser. 
+`touch` *(optional)*        | Boolean | Enables or disables touch event emulation. | `true` if a touch-supported device is set via the device property or your system supports touch events. Otherwise `false`.
 `cdpPort` *(optional)*      | Number  | A port (0-65535) used for the Chrome Debugging Protocol. | If not specified TestCafe automatically assigns a free port.
 
 ## Nonconventional Browsers
