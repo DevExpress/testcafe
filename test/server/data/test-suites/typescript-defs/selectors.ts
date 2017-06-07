@@ -2,8 +2,8 @@
 import { Selector, ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
-fixture('Selector')
-    .page('http://localhost:3000/fixtures/api/es-next/selector/pages/index.html');
+fixture `Selector`
+    .page `http://localhost:3000/fixtures/api/es-next/selector/pages/index.html`;
 
 const getElementById = Selector(id => document.getElementById(id));
 

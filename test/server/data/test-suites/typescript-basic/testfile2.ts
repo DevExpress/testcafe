@@ -1,8 +1,8 @@
 import 'testcafe';
 import dep2Fn from './dep2';
 
-fixture('Fixture3')
-    .page(`https://example.com`)
+fixture `Fixture3`
+    .page `https://example.com`
     .afterEach(async() => 'yo')
     .beforeEach(async() => 'yo');
 

@@ -1337,14 +1337,14 @@ interface FixtureFn {
      *
      * @param name - The name of the fixture.
      */
-    (name: string): this;
+    (name: string | TemplateStringsArray): this;
     /**
      * Specifies a webpage at which all tests in a fixture start.
      *
      * @param url - The URL of the webpage at this tests start.
      * To test webpages in local directories, you can use the `file://` scheme or relative paths.
      */
-    page(url: string): this;
+    page(url: string  | TemplateStringsArray): this;
     /**
      * Specifies HTTP Basic or Windows (NTLM) authentication credentials for all tests in the fixture.
      *
