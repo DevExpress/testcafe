@@ -19,7 +19,7 @@ TestCafe bundles TypeScript declaration file with the npm package, so you have n
 
 Just create a `.ts` file with the
 
-<!-- Use `js` instaed of `ts` for this code block for proper code highlighting -->
+<!-- Use `js` instead of `ts` for this code block for proper code highlighting -->
 
 ```js
 import { Selector } from 'testcafe';
