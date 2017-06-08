@@ -34,7 +34,7 @@ painless scalability, check-as-you-type code verification and much more. For mor
 To create a test, create a new .js or .ts file anywhere on your computer.
 This file must have a special structure: tests must be organized into fixtures.
 
-Begin by importing the `testcafe` module in your file.
+Firstly, import the `testcafe` module.
 
 ```js
 import { Selector } from 'testcafe';
