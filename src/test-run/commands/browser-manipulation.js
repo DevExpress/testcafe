@@ -20,7 +20,7 @@ export class TakeScreenshotCommand extends Assignable {
         super(obj);
 
         this.type = TYPE.takeScreenshot;
-        this.path = '';
+        this.path = void 0;
 
         this._assignFrom(obj, true);
     }

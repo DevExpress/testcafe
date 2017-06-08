@@ -97,11 +97,6 @@ describe('Test run commands', function () {
                 selector: makeSelector('#yo'),
 
                 options: {
-                    offsetX:  null,
-                    offsetY:  null,
-                    caretPos: null,
-                    speed:    null,
-
                     modifiers: {
                         ctrl:  false,
                         alt:   false,
@@ -168,11 +163,6 @@ describe('Test run commands', function () {
                 selector: makeSelector('#yo'),
 
                 options: {
-                    offsetX:  null,
-                    offsetY:  null,
-                    caretPos: null,
-                    speed:    null,
-
                     modifiers: {
                         ctrl:  false,
                         alt:   false,
@@ -239,11 +229,6 @@ describe('Test run commands', function () {
                 selector: makeSelector('#yo'),
 
                 options: {
-                    offsetX:  null,
-                    offsetY:  null,
-                    caretPos: null,
-                    speed:    null,
-
                     modifiers: {
                         ctrl:  false,
                         alt:   false,
@@ -309,10 +294,6 @@ describe('Test run commands', function () {
                 selector: makeSelector('#yo'),
 
                 options: {
-                    offsetX: null,
-                    offsetY: null,
-                    speed:   null,
-
                     modifiers: {
                         ctrl:  false,
                         alt:   false,
@@ -386,10 +367,6 @@ describe('Test run commands', function () {
                 dragOffsetY: -15,
 
                 options: {
-                    offsetX: null,
-                    offsetY: null,
-                    speed:   null,
-
                     modifiers: {
                         ctrl:  false,
                         alt:   false,
@@ -459,10 +436,6 @@ describe('Test run commands', function () {
                 destinationSelector: makeSelector('#destination'),
 
                 options: {
-                    offsetX: null,
-                    offsetY: null,
-                    speed:   null,
-
                     modifiers: {
                         ctrl:  false,
                         alt:   false,
@@ -537,12 +510,8 @@ describe('Test run commands', function () {
                 text:     'testText',
 
                 options: {
-                    offsetX:  null,
-                    offsetY:  null,
-                    caretPos: null,
-                    speed:    null,
-                    replace:  false,
-                    paste:    false,
+                    replace: false,
+                    paste:   false,
 
                     modifiers: {
                         ctrl:  false,
@@ -592,12 +561,7 @@ describe('Test run commands', function () {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.selectText,
                 selector: makeSelector('#yo'),
-                startPos: null,
-                endPos:   null,
-
-                options: {
-                    speed: null
-                }
+                options:  {}
             });
         });
 
@@ -641,16 +605,10 @@ describe('Test run commands', function () {
             command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:      TYPE.selectTextAreaContent,
-                selector:  makeSelector('#yo'),
-                startLine: null,
-                startPos:  null,
-                endLine:   null,
-                endPos:    null,
+                type:     TYPE.selectTextAreaContent,
+                selector: makeSelector('#yo'),
 
-                options: {
-                    speed: null
-                }
+                options: {}
             });
         });
 
@@ -692,11 +650,8 @@ describe('Test run commands', function () {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.selectEditableContent,
                 startSelector: makeSelector('#node1'),
-                endSelector:   null,
 
-                options: {
-                    speed: null
-                }
+                options: {}
             });
         });
 
@@ -853,8 +808,7 @@ describe('Test run commands', function () {
             command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type: TYPE.takeScreenshot,
-                path: ''
+                type: TYPE.takeScreenshot
             });
         });
 
@@ -995,9 +949,8 @@ describe('Test run commands', function () {
                 type:          TYPE.assertion,
                 assertionType: 'ok',
                 actual:        1,
-                message:       null,
 
-                options: { timeout: null }
+                options: {}
             });
         });
     });

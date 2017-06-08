@@ -32,9 +32,7 @@ describe('Test run command options', function () {
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
-                offsetX: null,
-                offsetY: 15,
-                speed:   null
+                offsetY: 15
             });
         });
 
@@ -52,8 +50,6 @@ describe('Test run command options', function () {
 
             expect(JSON.parse(JSON.stringify(options))).eql({
                 offsetX: 15,
-                offsetY: null,
-                speed:   null,
 
                 modifiers: {
                     ctrl:  true,
@@ -79,9 +75,7 @@ describe('Test run command options', function () {
 
             expect(JSON.parse(JSON.stringify(options))).eql({
                 offsetX:  15,
-                offsetY:  null,
                 caretPos: 20,
-                speed:    null,
 
                 modifiers: {
                     ctrl:  true,
@@ -108,10 +102,8 @@ describe('Test run command options', function () {
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
-                offsetX:        null,
                 offsetY:        15,
                 speed:          20,
-                minMovingTime:  null,
                 holdLeftButton: true,
                 skipScrolling:  false,
 
@@ -141,11 +133,9 @@ describe('Test run command options', function () {
 
             expect(JSON.parse(JSON.stringify(options))).eql({
                 offsetX:  15,
-                offsetY:  null,
                 caretPos: 20,
                 replace:  true,
                 paste:    true,
-                speed:    null,
 
                 modifiers: {
                     ctrl:  true,
