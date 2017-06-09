@@ -32,7 +32,7 @@ async function killChrome (cdpPort) {
     }
 }
 
-export async function start (browserName, pageUrl, { config, cdpPort, tempUserDataDir }) {
+export async function start (pageUrl, { browserName, config, cdpPort, tempUserDataDir }) {
     var chromeInfo = null;
 
     if (config.path)

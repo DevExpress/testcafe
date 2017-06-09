@@ -1,12 +1,12 @@
 import emulatedDevices from 'chrome-emulated-devices-list';
 import OS from 'os-family';
-import { find as findElement, findIndex, pickBy as filterProperties } from 'lodash';
+import { find as findElement, pickBy as filterProperties } from 'lodash';
 
-
-const CONFIG_TERMINATOR_RE = /(\s+|^)-/;
 
 const HEADLESS_DEFAULT_WIDTH  = 1280;
 const HEADLESS_DEFAULT_HEIGHT = 800;
+
+const CONFIG_TERMINATOR_RE = /(\s+|^)-/;
 
 var configCache = {};
 
@@ -57,31 +57,44 @@ function parseConfig (str) {
 }
 
 function getPathFromParsedModes (modesList) {
-    var pathRegExp = /^path=(.*)/;
-    var pathIndex  = findIndex(modesList, el => el.match(pathRegExp));
-    var path       = findMatch(modesList, pathRegExp);
+    if (!modesList.length)
+        return '';
 
-    if (OS.win && pathIndex > -1 && pathIndex < modesList.length - 1 && path.match(/^[A-Za-z]$/))
-        path += ':' + modesList[pathIndex + 1];
+    if (modesList[0] === 'headless' || modesList[0] === 'emulation')
+        return '';
+
+    var path = modesList.shift();
+
+    if (OS.win && modesList.length && path.match(/^[A-Za-z]$/))
+        path += ':' + modesList.shift();
 
     return path;
 }
 
 function parseModes (str) {
-    var parsed   = splitEscaped(str, ':');
-    var path     = getPathFromParsedModes(parsed);
-    var headless = hasMatch(parsed, /^headless$/);
+    var parsed      = splitEscaped(str, ':');
+    var path        = getPathFromParsedModes(parsed);
+    var nextMode    = parsed.shift();
+    var hasHeadless = nextMode === 'headless';
+
+    if (hasHeadless)
+        nextMode = parsed.shift();
+
+    var hasEmulation = nextMode === 'emulation';
+
+    if (hasEmulation)
+        nextMode = parsed.shift();
+
+    while (parsed.length)
+        nextMode += ':' + parsed.shift();
 
     var modes = {
         path:      path,
-        headless:  headless,
-        emulation: hasMatch(parsed, /^emulation$/) || headless
+        headless:  hasHeadless,
+        emulation: hasEmulation || hasHeadless
     };
 
-    var countOfModes  = Object.keys(modes).reduce((count, key) => modes[key] ? count + 1 : count, 0);
-    var optionsString = countOfModes < parsed.length ? parsed [parsed.length - 1] : '';
-
-    return { modes, optionsString };
+    return { modes, optionsString: nextMode || '' };
 }
 
 function simplifyDeviceName (deviceName) {
