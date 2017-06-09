@@ -6,6 +6,20 @@ import { start as startLocalChrome, stop as stopLocalChrome } from './local-chro
 import * as cdp from './cdp';
 
 
+/*eslint-disable no-undef*/
+function getWindowDimensionsInfo () {
+    return {
+        width:  window.innerWidth,
+        height: window.innerHeight
+    };
+}
+/*eslint-enable no-undef*/
+
+const GET_WINDOW_DIMENSIONS_INFO_SCRIPT = getWindowDimensionsInfo.toString();
+
+const HEADLESS_DEFAULT_WIDTH  = 1280;
+const HEADLESS_DEFAULT_HEIGHT = 800;
+
 export default {
     openedBrowsers: {},
 
@@ -15,13 +29,19 @@ export default {
         var runtimeInfo = await getRuntimeInfo(configString);
         var browserName = this.providerName.replace(':', '');
 
-        await startLocalChrome(browserName, pageUrl, runtimeInfo);
+        runtimeInfo.browserId   = browserId;
+        runtimeInfo.browserName = browserName;
+
+        await startLocalChrome(pageUrl, runtimeInfo);
 
         await this.waitForConnectionReady(browserId);
 
-        var cdpClientInfo = await cdp.getClientInfo(browserId, runtimeInfo);
+        if (runtimeInfo.config.headless)
+            runtimeInfo.viewportSize = { width: HEADLESS_DEFAULT_WIDTH, height: HEADLESS_DEFAULT_HEIGHT };
+        else
+            runtimeInfo.viewportSize = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
 
-        Object.assign(runtimeInfo, cdpClientInfo);
+        await cdp.createClient(runtimeInfo);
 
         this.openedBrowsers[browserId] = runtimeInfo;
     },
@@ -55,14 +75,17 @@ export default {
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {
         var runtimeInfo = this.openedBrowsers[browserId];
 
-        await cdp.resizeWindow({ width, height }, { width: currentWidth, height: currentHeight }, runtimeInfo);
+        runtimeInfo.viewportSize.width  = currentWidth;
+        runtimeInfo.viewportSize.height = currentHeight;
+
+        await cdp.resizeWindow({ width, height }, runtimeInfo);
     },
 
     async hasCustomActionForBrowser (browserId) {
-        var { config, windowId, client } = this.openedBrowsers[browserId];
+        var { config, client } = this.openedBrowsers[browserId];
 
         return {
-            hasResizeWindow:                !!client && (config.emulation || windowId || config.headless),
+            hasResizeWindow:                !!client && (config.emulation || config.headless),
             hasTakeScreenshot:              !!client,
             hasCanResizeWindowToDimensions: false,
             hasMaximizeWindow:              false
