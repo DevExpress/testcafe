@@ -3,6 +3,9 @@ import OS from 'os-family';
 import { find as findElement, pickBy as filterProperties } from 'lodash';
 
 
+const HEADLESS_DEFAULT_WIDTH  = 1280;
+const HEADLESS_DEFAULT_HEIGHT = 800;
+
 const CONFIG_TERMINATOR_RE = /(\s+|^)-/;
 
 var configCache = {};
@@ -129,12 +132,12 @@ function getDeviceBasedOptions (deviceName, orientation) {
     };
 }
 
-function parseOptions (str) {
+function parseOptions (str, modes) {
     var parsed = splitEscaped(str, ';');
 
     var baseOptions = {
-        width:       0,
-        height:      0,
+        width:       modes.headless ? HEADLESS_DEFAULT_WIDTH : 0,
+        height:      modes.headless ? HEADLESS_DEFAULT_HEIGHT : 0,
         scaleFactor: 0,
         mobile:      false,
         cdpPort:     findMatch(parsed, /^cdpPort=(.*)/)
@@ -165,7 +168,7 @@ function parseOptions (str) {
 function getNewConfig (configString) {
     var { userArgs, modesString } = parseConfig(configString);
     var { modes, optionsString }  = parseModes(modesString);
-    var options                   = parseOptions(optionsString);
+    var options                   = parseOptions(optionsString, modes);
 
     return Object.assign({ userArgs }, modes, options);
 }

@@ -5,7 +5,7 @@ var getChromeConfig = require('../../lib/browser/provider/built-in/chrome/config
 
 describe('Chrome provider config parser', function () {
     it('Should parse options and arguments', function () {
-        var config = getChromeConfig('path=/chrome/path/with\\::headless:emulation:device=iPhone 4;cdpPort=9222 --arg1 --arg2');
+        var config = getChromeConfig('/chrome/path/with\\::headless:emulation:device=iPhone 4;cdpPort=9222 --arg1 --arg2');
 
         expect(config.path).to.equal('/chrome/path/with:');
         expect(config.headless).to.be.true;
@@ -67,7 +67,7 @@ describe('Chrome provider config parser', function () {
 
     if (OS.win) {
         it('Should allow unescaped colon as disk/path separator on Windows', function () {
-            var config = getChromeConfig('path=C:\\Chrome\\chrome.exe:headless');
+            var config = getChromeConfig('C:\\Chrome\\chrome.exe:headless');
 
             expect(config.path).to.eql('C:\\Chrome\\chrome.exe');
             expect(config.headless).to.be.true;

@@ -17,8 +17,6 @@ function getWindowDimensionsInfo () {
 
 const GET_WINDOW_DIMENSIONS_INFO_SCRIPT = getWindowDimensionsInfo.toString();
 
-const HEADLESS_DEFAULT_WIDTH  = 1280;
-const HEADLESS_DEFAULT_HEIGHT = 800;
 
 export default {
     openedBrowsers: {},
@@ -36,10 +34,7 @@ export default {
 
         await this.waitForConnectionReady(browserId);
 
-        if (runtimeInfo.config.headless)
-            runtimeInfo.viewportSize = { width: HEADLESS_DEFAULT_WIDTH, height: HEADLESS_DEFAULT_HEIGHT };
-        else
-            runtimeInfo.viewportSize = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
+        runtimeInfo.viewportSize = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
 
         await cdp.createClient(runtimeInfo);
 
