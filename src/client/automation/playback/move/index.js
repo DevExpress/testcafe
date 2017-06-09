@@ -425,7 +425,7 @@ export default class MoveAutomation {
 
                 var draggable = findDraggableElement(this.dragElement);
 
-                if (draggable) {
+                if (draggable && browserUtils.hasDataTransfer) {
                     this.dragAndDropState.enabled      = true;
                     this.dragElement                   = draggable;
                     this.dragAndDropState.element      = this.dragElement;
