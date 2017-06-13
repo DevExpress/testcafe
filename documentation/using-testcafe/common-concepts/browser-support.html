@@ -381,6 +381,13 @@
 <li><a href="#portable-browsers">Portable Browsers</a></li>
 <li><a href="#browsers-on-remote-devices">Browsers on Remote Devices</a></li>
 <li><a href="#browsers-in-cloud-testing-services">Browsers in Cloud Testing Services</a></li>
+<li><a href="#using-chrome-specific-features">Using Chrome-specific Features</a>
+
+<ul>
+<li><a href="#running-tests-in-headless-mode">Running Tests in Headless Mode</a></li>
+<li><a href="#running-tests-in-the-device-emulation-mode">Running Tests in the Device Emulation Mode</a></li>
+<li><a href="#available-chrome-options">Available Chrome Options</a></li>
+</ul></li>
 <li><a href="#nonconventional-browsers">Nonconventional Browsers</a></li>
 </ul>
 <h2><a class="anchor" name="officially-supported-browsers"></a>Officially Supported Browsers <a class="permalink" href="#officially-supported-browsers">#</a></h2>
@@ -493,6 +500,128 @@ As you open this URL, the browser connects to the TestCafe server and starts tes
 <p>You can search npm for plugins developed by the community. Their names begin with the <code>testcafe-browser-provider-</code> prefix: <a href="https://www.npmjs.com/search?q=testcafe-browser-provider">https://www.npmjs.com/search?q=testcafe-browser-provider</a>.</p>
 
 <p>You can also create your own plugin. See <a href="../../extending-testcafe/browser-provider-plugin/">Browser Provider Plugin</a> for instructions.</p>
+<h2><a class="anchor" name="using-chrome-specific-features"></a>Using Chrome-specific Features <a class="permalink" href="#using-chrome-specific-features">#</a></h2>
+<p>Using the <a href="https://chromedevtools.github.io/devtools-protocol/">Chrome Debugging Protocol (CDP)</a>, TestCafe provides the following Chrome-specific features:</p>
+
+<ul>
+<li><a href="#running-tests-in-headless-mode">Running Tests in Headless Mode</a></li>
+<li><a href="#running-tests-in-the-device-emulation-mode">Running Tests in the Device Emulation Mode</a></li>
+</ul>
+
+<p>CDP requires a remote debugging port to attach to a Chrome instance. TestCafe automatically assigns a free port but you can specify a custom port via the <code>cdpPort</code> argument if necessary:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless:cdpPort=9223"</span> tests/sample-fixture.js
+</code></pre></div><h3><a class="anchor" name="running-tests-in-headless-mode"></a>Running Tests in Headless Mode <a class="permalink" href="#running-tests-in-headless-mode">#</a></h3>
+<p>TestCafe allows you to run tests in Google Chrome without any visible UI shell - in the <a href="https://developers.google.com/web/updates/2017/04/headless-chrome">headless mode</a>. Note that the <a href="../../test-api/actions/take-screenshot.html">Take screenshot</a> and <a href="../../test-api/actions/resize-window.html">Resize window</a> features are fully supported in headless mode.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless"</span> tests/sample-fixture.js
+</code></pre></div><blockquote><div class="blockquote-content"><p>Note that headless mode is available for Mac and Linux in Chrome 59. You need a <a href="https://www.google.com/chrome/browser/canary.html">Canary build</a> to enable headless mode on Windows.</p>
+</div></blockquote>
+<p>Specify a path to installation location, if you install a portable version of Chrome:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:path/to/chrome:headless"</span> tests/sample-fixture.js
+</code></pre></div><blockquote><div class="blockquote-content"><p>In headless mode the browser&#39;s viewport size is <code>1280x800</code> by default. You can change it via the <a href="../../test-api/actions/resize-window.html">ResizeWindow</a> command or via <a href="#running-tests-in-the-device-emulation-mode">Device Emulation Mode</a> parameters.</p>
+</div></blockquote><h3><a class="anchor" name="running-tests-in-the-device-emulation-mode"></a>Running Tests in the Device Emulation Mode <a class="permalink" href="#running-tests-in-the-device-emulation-mode">#</a></h3>
+<p>You can run test in Chrome&#39;s built-in <a href="https://developers.google.com/web/tools/chrome-devtools/device-mode/">device emulator</a>:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:device=iphone 6"</span> tests/sample-fixture.js
+</code></pre></div><div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:width=100;height=200;mobile=true;orientation=vertical;touch=true"</span> tests/sample-fixture.js
+</code></pre></div>
+<p>You can combine both device emulation and headless modes:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless:emulation:device=iphone 6;cdpPort=9223"</span> tests/sample-fixture.js
+</code></pre></div><h3><a class="anchor" name="available-chrome-options"></a>Available Chrome Options <a class="permalink" href="#available-chrome-options">#</a></h3>
+<p>Usage:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">chrome[:path-to-browser][:headless][:emulation][:cdp-arguments][ --cmd-arguments]
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>path-to-browser</code> <em>(optional)</em></td>
+<td>A path to a portable browser. The path to browser is not required, if it is installed in a system.</td>
+</tr>
+<tr>
+<td><code>headless</code> <em>(optional)</em></td>
+<td>Enables <a href="https://developers.google.com/web/updates/2017/04/headless-chrome">headless mode</a>.</td>
+</tr>
+<tr>
+<td><code>emulation</code> <em>(optional)</em></td>
+<td>Enables Chrome <a href="https://developers.google.com/web/tools/chrome-devtools/device-mode/">device emulator</a>.</td>
+</tr>
+<tr>
+<td><code>cdp-arguments</code> <em>(optional)</em></td>
+<td>Emulated device and CDP options separated by <code>;</code>.</td>
+</tr>
+<tr>
+<td><code>cmd-arguments</code> <em>(optional)</em></td>
+<td>Command line <a href="../command-line-interface.html#starting-browser-with-arguments">arguments</a> that are passed to the Chrome.</td>
+</tr>
+</tbody></table>
+
+<p>The following <code>cdp-arguments</code> are available:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>device</code> <em>(optional)</em></td>
+<td>String</td>
+<td>The emulated device name (see the full list of supported devices in DevTools -&gt; ⠇-&gt;Settings -&gt; Devices).</td>
+<td>No default value. Specify the custom device parameters, if the device name is not set.</td>
+</tr>
+<tr>
+<td><code>width</code> <em>(optional)</em></td>
+<td>Number</td>
+<td>The device screen width in pixels.</td>
+<td>No default value. Specify the emulated device name using the <code>device</code> property, if the device width is not set.</td>
+</tr>
+<tr>
+<td><code>height</code> <em>(optional)</em></td>
+<td>Number</td>
+<td>The device screen height in pixels.</td>
+<td>No default value. Specify the emulated device name using the <code>device</code> property, if the device height is not set.</td>
+</tr>
+<tr>
+<td><code>scaleFactor</code> <em>(optional)</em></td>
+<td>Number</td>
+<td>Device scale factor value.</td>
+<td>Depends on a chosen <code>device</code> or your system parameters.</td>
+</tr>
+<tr>
+<td><code>mobile</code> <em>(optional)</em></td>
+<td>Boolean</td>
+<td>Whether to emulate a mobile device. This includes the viewport meta tag, overlay scrollbars, text autosizing and more.</td>
+<td><code>true</code> if a mobile device is set via the <code>device</code> property. Otherwise <code>false</code>.</td>
+</tr>
+<tr>
+<td><code>orientation</code> <em>(optional)</em></td>
+<td><code>vertical</code> &#124; <code>horizontal</code></td>
+<td>The device orientation</td>
+<td><code>vertical</code></td>
+</tr>
+<tr>
+<td><code>userAgent</code> <em>(optional)</em></td>
+<td>String</td>
+<td>The user agent string</td>
+<td>The user agent string of the selected <code>device</code> or the browser.</td>
+</tr>
+<tr>
+<td><code>touch</code> <em>(optional)</em></td>
+<td>Boolean</td>
+<td>Enables or disables the touch event emulation.</td>
+<td><code>true</code> if a touch-supported device is set via the <code>device</code> property or your system supports touch events. Otherwise <code>false</code>.</td>
+</tr>
+<tr>
+<td><code>cdpPort</code> <em>(optional)</em></td>
+<td>Number</td>
+<td>A port (0-65535) used for the Chrome Debugging Protocol.</td>
+<td>If not specified TestCafe automatically assigns a free port.</td>
+</tr>
+</tbody></table>
 <h2><a class="anchor" name="nonconventional-browsers"></a>Nonconventional Browsers <a class="permalink" href="#nonconventional-browsers">#</a></h2>
 <p>To use a web browser of a different type, you will need a <a href="../../extending-testcafe/browser-provider-plugin/">browser provider plugin</a>.</p>
 

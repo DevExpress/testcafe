@@ -544,6 +544,11 @@
 <li>running browsers accessed through browser provider plugins</li>
 </ul>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'saucelabs:Chrome@52.0:Windows 8.1'</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li>using <a href="../common-concepts/browser-support.html#using-chrome-specific-features">Chrome-specific features</a></li>
+</ul>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome:headless'</span><span class="p">);</span>
 </code></pre></div><h4><a class="anchor" name="specifying-the-path-to-the-browser-executable"></a>Specifying the Path to the Browser Executable <a class="permalink" href="#specifying-the-path-to-the-browser-executable">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'C:\\Program Files\\Internet Explorer\\iexplore.exe'</span><span class="p">);</span>
 </code></pre></div><h4><a class="anchor" name="specifying-the-path-with-command-line-parameters"></a>Specifying the Path with Command Line Parameters <a class="permalink" href="#specifying-the-path-with-command-line-parameters">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">({</span>
     <span class="na">path</span><span class="p">:</span> <span class="s1">'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'</span><span class="p">,</span>

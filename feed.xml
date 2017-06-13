@@ -5,9 +5,69 @@
     <description></description>
     <link>http://devexpress.github.io/testcafe/</link>
     <atom:link href="http://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 04 May 2017 15:45:30 +0300</pubDate>
-    <lastBuildDate>Thu, 04 May 2017 15:45:30 +0300</lastBuildDate>
-    <generator>Jekyll v3.2.1</generator>
+    <pubDate>Tue, 13 Jun 2017 17:41:36 +0300</pubDate>
+    <lastBuildDate>Tue, 13 Jun 2017 17:41:36 +0300</lastBuildDate>
+    <generator>Jekyll v3.4.3</generator>
+    
+      <item>
+        <title>TestCafe v0.16.0 Released</title>
+        <description>&lt;h1&gt;TestCafe v0.16.0 Released&lt;/h1&gt;
+&lt;p&gt;TypeScript support, seamless testing in headless Chrome and device emulator, and numerous bug fixes.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;typescript-support-408&quot;&gt;&lt;/a&gt;⚙ TypeScript support (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/408&quot;&gt;#408&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#typescript-support-408&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;In this release, we have added an ability to write tests in &lt;a href=&quot;https://www.typescriptlang.org/&quot;&gt;TypeScript&lt;/a&gt;. Using of TypeScript brings you all the advantages of strongly typed languages: rich coding assistance, painless scalability, check-as-you-type code verification and much more.&lt;/p&gt;
+
+&lt;p&gt;TestCafe bundles TypeScript declaration file with the npm package, so you have no need to install any additional packages.&lt;/p&gt;
+
+&lt;p&gt;Just create a &lt;code&gt;.ts&lt;/code&gt; file with the&lt;/p&gt;
+
+&lt;!-- Use `js` instead of `ts` for this code block for proper code highlighting --&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'testcafe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and write your test.&lt;/p&gt;
+
+&lt;p&gt;For details, see &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html&quot;&gt;TypeScript Support&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;support-running-in-chrome-in-headless-mode-and-in-device-emulator-1417&quot;&gt;&lt;/a&gt;⚙ Support running in Chrome in headless mode and in device emulator (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1417&quot;&gt;#1417&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#support-running-in-chrome-in-headless-mode-and-in-device-emulator-1417&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Now TestCafe allows you to run your tests in Google Chrome in headless and device emulation modes.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://developers.google.com/web/updates/2017/04/headless-chrome&quot;&gt;Headless mode&lt;/a&gt; allows you to run tests in Chrome without any visible UI shell. To run tests in headless mode, use the &lt;code&gt;:headless&lt;/code&gt; postfix:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe &lt;span class=&quot;s2&quot;&gt;&quot;chrome:headless&quot;&lt;/span&gt; tests/sample-fixture.js
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Device emulation mode allows you to check how your tests works on mobile devices via Chrome&amp;#39;s built-in &lt;a href=&quot;https://developers.google.com/web/tools/chrome-devtools/device-mode/&quot;&gt;device emulator&lt;/a&gt;. To run tests in device emulation mode, specify &lt;code&gt;emulation:&lt;/code&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html#available-chrome-options&quot;&gt;device parameters&lt;/a&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe &lt;span class=&quot;s2&quot;&gt;&quot;chrome:emulation:device=iphone 6&quot;&lt;/span&gt; tests/sample-fixture.js
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;For details, see &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html#using-chrome-specific-features&quot;&gt;Using Chrome-specific Features&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;support-html5-drag-and-drop-897&quot;&gt;&lt;/a&gt;⚙ Support HTML5 Drag and Drop (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/897&quot;&gt;#897&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#support-html5-drag-and-drop-897&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Starting with this release, TestCafe supports HTML5 drag and drop, so you can test elements with the &lt;code&gt;draggable&lt;/code&gt; &lt;a href=&quot;http://w3c.github.io/html/editing.html#the-draggable-attribute&quot;&gt;attribute&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;fixed-url-for-opening-remote-browsers-1476&quot;&gt;&lt;/a&gt;⚙ Fixed URL for opening remote browsers (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1476&quot;&gt;#1476&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#fixed-url-for-opening-remote-browsers-1476&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;We have simplified the format of links that TestCafe generates when you &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html#browsers-on-remote-devices&quot;&gt;run tests on remote browsers&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, you have no need to type a unique link for each test run, all the links became constant. So, it is easier now to run tests on a remote device repeatedly: you can run them by navigating a link from your browser history.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;No TestCafe UI on screenshots created during testing (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1357&quot;&gt;#1357&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mouseenter&lt;/code&gt; and &lt;code&gt;mouseleave&lt;/code&gt; events are not triggered during cursor moving (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1426&quot;&gt;#1426&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The runner&amp;#39;s speed option affects the speed of &lt;code&gt;doubleClick&lt;/code&gt; action (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1486&quot;&gt;#1486&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Press action shortcuts work wrong if input&amp;#39;s value ends with &amp;#39;.&amp;#39; or starts with &amp;#39;-.&amp;#39; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1499&quot;&gt;#1499&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;A test report has too small line length on Travis (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1469&quot;&gt;#1469&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Service messages with cookies do not have enough time to come to server before a new page is loaded (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1086&quot;&gt;testcafe-hammerhead/#1086&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;window.history.replaceState&lt;/code&gt; function is overridden incorrectly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1146&quot;&gt;testcafe-hammerhead/#1146&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Hammerhead crashes if a script file contains a sourcemap comment (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1052&quot;&gt;testcafe-hammerhead/#1052&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The proxy should override the &lt;code&gt;DOMParser.parseFromString&lt;/code&gt; method (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1133&quot;&gt;testcafe-hammerhead/#1133&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;fetch&lt;/code&gt; method should emulate the native behaviour on merging headers (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1116&quot;&gt;testcafe-hammerhead/#1116&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;EventSource&lt;/code&gt; requests are broken when used via proxy (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1106&quot;&gt;testcafe-hammerhead/#1106&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The code processing may cause syntax errors in some cases because of wrong &lt;code&gt;location&lt;/code&gt; property wrapping (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1101&quot;&gt;testcafe-hammerhead/#1101&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;When calling the &lt;code&gt;fetch&lt;/code&gt; function without parameters, we should return its native result instead of &lt;code&gt;window.Promise.reject&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1099&quot;&gt;testcafe-hammerhead/#1099&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;querySelector&lt;/code&gt; function is overridden incorrectly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1131&quot;&gt;testcafe-hammerhead/#1131&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 13 Jun 2017 00:00:00 +0300</pubDate>
+        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-16-0-released.html</link>
+        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-16-0-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v0.15.0 Released</title>

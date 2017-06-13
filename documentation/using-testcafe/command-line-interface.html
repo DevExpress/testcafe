@@ -380,7 +380,11 @@
 <li><a href="#browser-list">Browser List</a>
 
 <ul>
-<li><a href="#local-browsers">Local Browsers</a></li>
+<li><a href="#local-browsers">Local Browsers</a>
+
+<ul>
+<li><a href="#using-chrome-specific-features">Using Chrome-specific Features</a></li>
+</ul></li>
 <li><a href="#portable-browsers">Portable Browsers</a></li>
 <li><a href="#remote-browsers">Remote Browsers</a></li>
 <li><a href="#browsers-accessed-through-browser-provider-plugins">Browsers Accessed Through Browser Provider Plugins</a></li>
@@ -432,6 +436,19 @@ The browsers are specified differently: one by using an alias, the other by usin
 </code></pre></div>
 <p>To run tests against <strong>all installed browsers</strong>, use the <code>all</code> alias.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js
+</code></pre></div><h4><a class="anchor" name="using-chrome-specific-features"></a>Using Chrome-specific Features <a class="permalink" href="#using-chrome-specific-features">#</a></h4>
+<p>TestCafe provides the following Chrome-specific features:</p>
+
+<ul>
+<li><a href="common-concepts/browser-support.html#running-tests-in-headless-mode">Running Tests in Headless Mode</a></li>
+<li><a href="common-concepts/browser-support.html#running-tests-in-the-device-emulation-mode">Running Tests in the Device Emulation Mode</a></li>
+</ul>
+
+<p>To run tests in headless mode use the <code>:headless</code> postfix:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless"</span> tests/sample-fixture.js
+</code></pre></div>
+<p>To run tests in the device emulation mode specify <code>emulation:</code> and <a href="common-concepts/browser-support.html#available-chrome-options">device parameters</a>:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:device=iphone 6"</span> tests/sample-fixture.js
 </code></pre></div><h3><a class="anchor" name="portable-browsers"></a>Portable Browsers <a class="permalink" href="#portable-browsers">#</a></h3>
 <p>You can specify <a href="common-concepts/browser-support.html#portable-browsers">portable browsers</a> by using paths to the browser&#39;s executable file (with the <code>path:</code> prefix), for example:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe path:d:<span class="se">\f</span>irefoxportable<span class="se">\f</span>irefoxportable.exe tests/sample-fixture.js

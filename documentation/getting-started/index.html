@@ -304,8 +304,16 @@
 </code></pre></div>
 <p>For more information, see <a href="../using-testcafe/installing-testcafe.html">Installing TestCafe</a>.</p>
 <h2><a class="anchor" name="creating-a-test"></a>Creating a Test <a class="permalink" href="#creating-a-test">#</a></h2>
-<p>To create a test, create a new .js file anywhere on your computer.
-This file must have a special structure: tests must be organized into fixtures. Thus, begin by declaring a fixture using the <a href="../test-api/test-code-structure.html#fixtures">fixture</a> function.</p>
+<p>TestCafe allows you to write tests using both modern JavaScript with the latest features and TypeScript. Using of TypeScript brings you all the advantages of strongly typed languages: rich coding assistance,
+painless scalability, check-as-you-type code verification and much more. For more information about writing tests in TypeScript, see <a href="../test-api/typescript-support.html">TypeScript Support</a>.</p>
+
+<p>To create a test, create a new .js or .ts file anywhere on your computer.
+This file must have a special structure: tests must be organized into fixtures.</p>
+
+<p>Firstly, import the <code>testcafe</code> module.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+</code></pre></div>
+<p>Then declare a fixture using the <a href="../test-api/test-code-structure.html#fixtures">fixture</a> function.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
 </code></pre></div>
 <p>In this tutorial, you will create a test for the <a href="/testcafe/example">http://devexpress.github.io/testcafe/example</a> sample page.
@@ -314,7 +322,9 @@ Specify this page as a start page for the fixture by using the <a href="../test-
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 </code></pre></div>
 <p>Then, create the <a href="../test-api/test-code-structure.html#tests">test</a> function where you will place test code.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -342,7 +352,9 @@ a number of <a href="../test-api/actions/">actions</a>: <code>click</code>, <cod
 They can be called in a chain.</p>
 
 <p>The following fixture contains a simple test that types a developer name into a text editor and then clicks the Submit button.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Getting</span> <span class="nx">Started</span><span class="err">`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'My first test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
