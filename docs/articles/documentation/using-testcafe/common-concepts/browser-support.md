@@ -146,15 +146,15 @@ testcafe "chrome:headless:emulation:device=iphone 6;cdpPort=9223" tests/sample-f
 Usage:
 
 ```sh
-chrome[:path-to-browser][:headless][:emulation][:cdp-arguments][ --cmd-arguments]
+chrome[:<path-to-browser>][:headless][:emulation][:<cdp-arguments>][ --<cmd-arguments>]
 ```
 
 Parameter                       | Description
 ------------------------------- |  -----------------------
 `path-to-browser` *(optional)*  | A path to a portable browser. The path to browser is not required, if it is installed in a system.
 `headless` *(optional)*         | Enables [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome).
-`emulation` *(optional)*        | Enables Chrome [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/).
-`cdp-arguments` *(optional)*    | Emulated device and CDP options separated by `;`.
+`emulation` *(optional)*        | Enables Chrome [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/). Requires `cdp-arguments`.
+`cdp-arguments` *(optional)*    | Emulated device and CDP options separated by `;`. The device name (the `device` option) or emulated device screen dimensions (both `height` and `width` options) are required.
 `cmd-arguments` *(optional)*    | Command line [arguments](../command-line-interface.md#starting-browser-with-arguments) that are passed to the Chrome.
 
 The following `cdp-arguments` are available:
