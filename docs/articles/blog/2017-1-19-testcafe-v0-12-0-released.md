@@ -15,7 +15,7 @@ HTTP authentication support, a CI-friendly way to start and stop the tested app 
 
 TestCafe now supports testing webpages protected with HTTP Basic and NTLM authentication.
 
-Use the [httpAuth](https://devexpress.github.io/testcafe/documentation/test-api/http-authentication.html) function in fixture or test declaration to specify the credentials.
+Use the [httpAuth](https://devexpress.github.io/testcafe/documentation/test-api/authentication/http-authentication.html) function in fixture or test declaration to specify the credentials.
 
 ```js
 fixture `My fixture`

@@ -153,17 +153,17 @@ Parameter                       | Description
 ------------------------------- |  -----------------------
 `path-to-browser` *(optional)*  | A path to a portable browser. The path to browser is not required, if it is installed in a system.
 `headless` *(optional)*         | Enables [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome).
-`emulation` *(optional)*        | Enables Chrome [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/). Requires `cdp-arguments`.
-`cdp-arguments` *(optional)*    | Emulated device and CDP options separated by `;`. The device name (the `device` option) or emulated device screen dimensions (both `height` and `width` options) are required.
+`emulation` *(optional)*        | Enables Chrome [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/)
+`cdp-arguments` *(optional)*    | Emulated device and CDP options separated by `;`.
 `cmd-arguments` *(optional)*    | Command line [arguments](../command-line-interface.md#starting-browser-with-arguments) that are passed to the Chrome.
 
 The following `cdp-arguments` are available:
 
 Parameter                      | Type   | Description             | Default
 ------------------------------ | ------ | ----------------------- | -------
-`device` *(optional)*       | String  | The emulated device name (see the full list of supported devices in DevTools -> ⠇->Settings -> Devices). | No default value. Specify the custom device parameters, if the device name is not set.
-`width` *(optional)*        | Number  | The device screen width in pixels. | No default value. Specify the emulated device name using the `device` property, if the device width is not set.
-`height` *(optional)*       | Number  | The device screen height in pixels. | No default value. Specify the emulated device name using the `device` property, if the device height is not set.
+`device` *(optional)*       | String  | The emulated device name (see the full list of supported devices in DevTools -> ⠇->Settings -> Devices). | No default value.
+`width` *(optional)*        | Number  | The device screen width in pixels. | The chosen device's width. If the `device` parameter is not set, the default browser's width.
+`height` *(optional)*       | Number  | The device screen height in pixels. | The chosen device's height. If the `device` parameter is not set, the default browser's height.
 `scaleFactor` *(optional)*  | Number  | Device scale factor value. | Depends on a chosen `device` or your system parameters.
 `mobile` *(optional)*       | Boolean | Whether to emulate a mobile device. This includes the viewport meta tag, overlay scrollbars, text autosizing and more. | `true` if a mobile device is set via the `device` property. Otherwise `false`.
 `orientation` *(optional)*  | `vertical` &#124; `horizontal` | The device orientation | `vertical`
