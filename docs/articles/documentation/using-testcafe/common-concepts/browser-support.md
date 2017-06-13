@@ -153,7 +153,7 @@ Parameter                       | Description
 ------------------------------- |  -----------------------
 `path-to-browser` *(optional)*  | A path to a portable browser. The path to browser is not required, if it is installed in a system.
 `headless` *(optional)*         | Enables [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome).
-`emulation` *(optional)*        | Enables Chrome [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/)
+`emulation` *(optional)*        | Enables Chrome [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/).
 `cdp-arguments` *(optional)*    | Emulated device and CDP options separated by `;`.
 `cmd-arguments` *(optional)*    | Command line [arguments](../command-line-interface.md#starting-browser-with-arguments) that are passed to the Chrome.
 
