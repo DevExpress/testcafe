@@ -28,6 +28,8 @@
 - name: TEST API
   url: /documentation/test-api/README.md
   content:
+  - name: TypeScript Support
+    url: /documentation/test-api/typescript-support.md
   - name: Test Code Structure
     url: /documentation/test-api/test-code-structure.md
     content:
