@@ -139,6 +139,12 @@ runner.browsers(['safari', 'chrome']);
 runner.browsers('saucelabs:Chrome@52.0:Windows 8.1');
 ```
 
+* using [Chrome-specific features](../common-concepts/browser-support.md#using-chrome-specific-features)
+
+```js
+runner.browsers('chrome:headless');
+```
+
 #### Specifying the Path to the Browser Executable
 
 ```js
