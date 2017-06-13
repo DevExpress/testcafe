@@ -54,9 +54,9 @@ testcafe chrome tests/
 
 When testing is finished, TestCafe aggregates test results from different browsers and outputs them into one comprehensive report.
 
-### Write Test Code in Modern JavaScript
+### Write Test Code in Modern JavaScript and TypeScript
 
-You can write TestCafe tests using the latest JavaScript features like `async/await`.
+You can write TestCafe tests using both JavaScript with the latest features like `async/await` and TypeScript.
 
 [Test API](https://devexpress.github.io/testcafe/documentation/test-api/index.html) consists of over two dozen methods that can emulate all actions one could possibly do with a webpage.
 Chained syntax allows for code that is easy to write and read.
@@ -76,6 +76,8 @@ test('Emulate user actions and perform a verification', async t => {
     await t.expect(location.pathname).eql('/testcafe/example/thank-you.html');
 });
 ```
+
+Using of TypeScript brings you all the advantages of strongly typed languages: rich coding assistance, painless scalability, check-as-you-type code verification and much more.
 
 Additionally, TestCafe automatically generates source maps for easy debugging.
 To debug your test code, start a debugging session in an IDE that supports source maps.
@@ -164,8 +166,19 @@ For more information, see [Installing TestCafe](https://devexpress.github.io/tes
 
 ### Creating a Test
 
-To create a test, create a new .js file anywhere on your computer.
-This file must have a special structure: tests must be organized into fixtures. Thus, begin by declaring a fixture using the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures) function.
+TestCafe allows you to write tests using both modern JavaScript with the latest features and TypeScript. Using of TypeScript brings you all the advantages of strongly typed languages: rich coding assistance,
+painless scalability, check-as-you-type code verification and much more. For more information about writing tests in TypeScript, see [TypeScript Support](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.md).
+
+To create a test, create a new .js or .ts file anywhere on your computer.
+This file must have a special structure: tests must be organized into fixtures.
+
+Firstly, import the `testcafe` module.
+
+```js
+import { Selector } from 'testcafe';
+```
+
+Then declare a fixture using the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.md#fixtures) function.
 
 ```js
 fixture `Getting Started`
@@ -182,6 +195,8 @@ fixture `Getting Started`
 Then, create the [test](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests) function where you will place test code.
 
 ```js
+import { Selector } from 'testcafe';
+
 fixture `Getting Started`
     .page `https://devexpress.github.io/testcafe/example`;
 
@@ -225,6 +240,8 @@ They can be called in a chain.
 The following fixture contains a simple test that types a developer name into a text editor and then clicks the Submit button.
 
 ```js
+import { Selector } from 'testcafe';
+
 fixture `Getting Started`
     .page `https://devexpress.github.io/testcafe/example`;
 
