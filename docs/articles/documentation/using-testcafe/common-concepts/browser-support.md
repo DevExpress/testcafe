@@ -107,7 +107,7 @@ testcafe "chrome:headless:cdpPort=9223" tests/sample-fixture.js
 
 ### Running Tests in Headless Mode
 
-TestCafe allows you to run tests in Google Chrome without any visible UI shell - in the [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome). Note that the [Take screenshot](../../test-api/actions/take-screenshot.html) and [Resize window](../../test-api/actions/resize-window.html) features are fully supported in headless mode.
+TestCafe allows you to run tests in Google Chrome without any visible UI shell - in the [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome). Note that the [Take screenshot](../../test-api/actions/take-screenshot.md) and [Resize window](../../test-api/actions/resize-window.md) features are fully supported in headless mode.
 
 ```sh
 testcafe "chrome:headless" tests/sample-fixture.js
@@ -120,6 +120,8 @@ Specify a path to installation location, if you install a portable version of Ch
 ```sh
 testcafe "chrome:path/to/chrome:headless" tests/sample-fixture.js
 ```
+
+> In headless mode the browser's viewport size is `1280x800` by default. You can change it via the [ResizeWindow](../../test-api/actions/resize-window.md) command or via [Device Emulation Mode](#running-tests-in-the-device-emulation-mode) parameters.
 
 ### Running Tests in the Device Emulation Mode
 
@@ -153,7 +155,7 @@ Parameter                       | Description
 `headless` *(optional)*         | Enables [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome).
 `emulation` *(optional)*        | Enables Chrome [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/).
 `cdp-arguments` *(optional)*    | Emulated device and CDP options separated by `;`.
-`cmd-arguments` *(optional)*    | Command line [arguments](../command-line-interface.html#starting-browser-with-arguments) that are passed to the Chrome.
+`cmd-arguments` *(optional)*    | Command line [arguments](../command-line-interface.md#starting-browser-with-arguments) that are passed to the Chrome.
 
 The following `cdp-arguments` are available:
 
