@@ -54,9 +54,9 @@ testcafe chrome tests/
 
 When testing is finished, TestCafe aggregates test results from different browsers and outputs them into one comprehensive report.
 
-### Write Test Code in TypeScript and Modern JavaScript
+### Write Test Code in Modern JavaScript and TypeScript
 
-You can write TestCafe tests using both TypeScript and JavaScript with the latest features like `async/await`.
+You can write TestCafe tests using both JavaScript with the latest features like `async/await` and TypeScript.
 
 [Test API](https://devexpress.github.io/testcafe/documentation/test-api/index.html) consists of over two dozen methods that can emulate all actions one could possibly do with a webpage.
 Chained syntax allows for code that is easy to write and read.
@@ -166,7 +166,7 @@ For more information, see [Installing TestCafe](https://devexpress.github.io/tes
 
 ### Creating a Test
 
-TestCafe allows you to write tests using both TypeScript and modern JavaScript with the latest features. Using of TypeScript brings you all the advantages of strongly typed languages: rich coding assistance,
+TestCafe allows you to write tests using both modern JavaScript with the latest features and TypeScript. Using of TypeScript brings you all the advantages of strongly typed languages: rich coding assistance,
 painless scalability, check-as-you-type code verification and much more. For more information about writing tests in TypeScript, see [TypeScript Support](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.md).
 
 To create a test, create a new .js or .ts file anywhere on your computer.
