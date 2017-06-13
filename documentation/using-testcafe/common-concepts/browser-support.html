@@ -527,7 +527,7 @@ As you open this URL, the browser connects to the TestCafe server and starts tes
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless:emulation:device=iphone 6;cdpPort=9223"</span> tests/sample-fixture.js
 </code></pre></div><h3><a class="anchor" name="available-chrome-options"></a>Available Chrome Options <a class="permalink" href="#available-chrome-options">#</a></h3>
 <p>Usage:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">chrome[:path-to-browser][:headless][:emulation][:cdp-arguments][ --cmd-arguments]
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">chrome[:&lt;path-to-browser&gt;][:headless][:emulation][:&lt;cdp-arguments&gt;][ --&lt;cmd-arguments&gt;]
 </code></pre></div>
 <table><thead>
 <tr>
@@ -571,19 +571,19 @@ As you open this URL, the browser connects to the TestCafe server and starts tes
 <td><code>device</code> <em>(optional)</em></td>
 <td>String</td>
 <td>The emulated device name (see the full list of supported devices in DevTools -&gt; ⠇-&gt;Settings -&gt; Devices).</td>
-<td>No default value. Specify the custom device parameters, if the device name is not set.</td>
+<td>No default value.</td>
 </tr>
 <tr>
 <td><code>width</code> <em>(optional)</em></td>
 <td>Number</td>
 <td>The device screen width in pixels.</td>
-<td>No default value. Specify the emulated device name using the <code>device</code> property, if the device width is not set.</td>
+<td>The chosen device&#39;s width. If the <code>device</code> parameter is not set, the default browser&#39;s width.</td>
 </tr>
 <tr>
 <td><code>height</code> <em>(optional)</em></td>
 <td>Number</td>
 <td>The device screen height in pixels.</td>
-<td>No default value. Specify the emulated device name using the <code>device</code> property, if the device height is not set.</td>
+<td>The chosen device&#39;s height. If the <code>device</code> parameter is not set, the default browser&#39;s height.</td>
 </tr>
 <tr>
 <td><code>scaleFactor</code> <em>(optional)</em></td>
