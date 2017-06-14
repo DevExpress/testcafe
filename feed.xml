@@ -5,8 +5,8 @@
     <description></description>
     <link>http://devexpress.github.io/testcafe/</link>
     <atom:link href="http://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 13 Jun 2017 20:26:08 +0300</pubDate>
-    <lastBuildDate>Tue, 13 Jun 2017 20:26:08 +0300</lastBuildDate>
+    <pubDate>Wed, 14 Jun 2017 10:39:05 +0300</pubDate>
+    <lastBuildDate>Wed, 14 Jun 2017 10:39:05 +0300</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
@@ -33,7 +33,8 @@
 
 &lt;p&gt;&lt;a href=&quot;https://developers.google.com/web/updates/2017/04/headless-chrome&quot;&gt;Headless mode&lt;/a&gt; allows you to run tests in Chrome without any visible UI shell. To run tests in headless mode, use the &lt;code&gt;:headless&lt;/code&gt; postfix:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe &lt;span class=&quot;s2&quot;&gt;&quot;chrome:headless&quot;&lt;/span&gt; tests/sample-fixture.js
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;&lt;div class=&quot;blockquote-content&quot;&gt;&lt;p&gt;Note that headless mode is available for Mac and Linux in Chrome 59. You need a &lt;a href=&quot;https://www.google.com/chrome/browser/canary.html&quot;&gt;Canary build&lt;/a&gt; to enable headless mode on Windows.&lt;/p&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
 &lt;p&gt;Device emulation mode allows you to check how your tests works on mobile devices via Chrome&amp;#39;s built-in &lt;a href=&quot;https://developers.google.com/web/tools/chrome-devtools/device-mode/&quot;&gt;device emulator&lt;/a&gt;. To run tests in device emulation mode, specify &lt;code&gt;emulation:&lt;/code&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html#available-chrome-options&quot;&gt;device parameters&lt;/a&gt;:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe &lt;span class=&quot;s2&quot;&gt;&quot;chrome:emulation:device=iphone 6&quot;&lt;/span&gt; tests/sample-fixture.js
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
