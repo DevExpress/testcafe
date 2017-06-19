@@ -693,7 +693,7 @@ interface RoleOptions {
      *
      * This option is useful if you store session-related data (like session ID) in the URL.
      */
-    preseveUrl?: boolean;
+    preserveUrl?: boolean;
 }
 
 

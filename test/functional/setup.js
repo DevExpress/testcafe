@@ -71,8 +71,22 @@ function openRemoteBrowsers () {
             };
 
             var openBrowserPromises = browsersInfo.map(function (browserInfo) {
-                return connector.startBrowser(browserInfo.settings, browserInfo.connection.url, buildInfo,
-                    isBrowserStack ? { openingTimeout: BROWSER_OPENING_TIMEOUT } : null);
+                if (!isBrowserStack || browserInfo.settings.alias !== 'chrome-osx') {
+                    return connector.startBrowser(browserInfo.settings, browserInfo.connection.url, buildInfo,
+                        isBrowserStack ? { openingTimeout: BROWSER_OPENING_TIMEOUT } : null);
+                }
+
+                // HACK: BrowserStack issue: we have to start Chrome/macOS on about:blank and wait for a tab created from extension (about 5 mins)
+                // TODO: Remove the code after Chrome/macOS will be fixed on BrowserStack.
+                return connector
+                    .startBrowser(browserInfo.settings, 'about:blank', buildInfo, { openingTimeout: BROWSER_OPENING_TIMEOUT })
+                    .then(browser => (new Promise(r => setTimeout(r, 5 * 60 * 1000))).then(() => browser))
+                    .then(browser => {
+                        return new Promise(resolve => {
+                            connector.client.changeUrl(browser.id, { url: browserInfo.connection.url }, resolve);
+                        })
+                            .then(() => browser);
+                    });
             });
 
             return Promise.all(openBrowserPromises);
