@@ -28,7 +28,7 @@ For more information, see [Installing TestCafe](../using-testcafe/installing-tes
 
 ## Creating a Test
 
-TestCafe allows you to write tests using both modern JavaScript with the latest features and TypeScript. Using of TypeScript brings you all the advantages of strongly typed languages: rich coding assistance,
+TestCafe allows you to write tests using both modern JavaScript with the latest features and TypeScript. Using TypeScript brings you all the advantages of strongly typed languages: rich coding assistance,
 painless scalability, check-as-you-type code verification and much more. For more information about writing tests in TypeScript, see [TypeScript Support](../test-api/typescript-support.md).
 
 To create a test, create a new .js or .ts file anywhere on your computer.
