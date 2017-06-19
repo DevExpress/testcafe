@@ -76,8 +76,10 @@ function openRemoteBrowsers () {
                         isBrowserStack ? { openingTimeout: BROWSER_OPENING_TIMEOUT } : null);
                 }
 
-                // HACK: BrowserStack issue: we have to start Chrome/macOS on about:blank and wait for a tab created from extension (about 5 mins)
-                // TODO: Remove the code after Chrome/macOS will be fixed on BrowserStack.
+                // HACK: BrowserStack issue: an extension opens a new tab in Chrome during testing. The tab
+                // where the tests are run becames unfocused and the tests hang there. To aviod this we wait
+                // for 5 minutes to be sure that a new tab is opened by the extension and run tests after that.
+                // TODO: Remove the hack once the issue is fixed on BrowserStack.
                 return connector
                     .startBrowser(browserInfo.settings, 'about:blank', buildInfo, { openingTimeout: BROWSER_OPENING_TIMEOUT })
                     .then(browser => (new Promise(r => setTimeout(r, 5 * 60 * 1000))).then(() => browser))
