@@ -4,9 +4,9 @@
 
 ### Bug Fixes
 
-* We need to process a markup imported via meta[rel="import"] html ([testcafe-hammerhead/#1161](https://github.com/DevExpress/testcafe-hammerhead/issues/1161))
-* Wrong passing context to a MutaionObserver ([testcafe-hammerhead/#1178](https://github.com/DevExpress/testcafe-hammerhead/issues/1178))
-* We don't need to process an 'innerHTML' property if element doesn't have it ([testcafe-hammerhead/#1164](https://github.com/DevExpress/testcafe-hammerhead/issues/1164))
+* We need to process a markup imported via `meta[rel="import"]` ([testcafe-hammerhead/#1161](https://github.com/DevExpress/testcafe-hammerhead/issues/1161))
+* Wrong passing context to a `MutationObserver` ([testcafe-hammerhead/#1178](https://github.com/DevExpress/testcafe-hammerhead/issues/1178))
+* We don't need to process an `innerHTML` property if element doesn't have it ([testcafe-hammerhead/#1164](https://github.com/DevExpress/testcafe-hammerhead/issues/1164))
 
 ## v0.16.0 (2017-6-13)
 
