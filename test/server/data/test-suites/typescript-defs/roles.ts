@@ -7,7 +7,7 @@ const someUser = Role('http://localhost:3000/fixtures/api/es-next/roles/pages/lo
     await t
         .typeText('input[name="name"]', 'SomeUser')
         .click('input[value="LogIn"]');
-});
+}, { preserveUrl: false });
 
 fixture `AnonymousRole`
     .page `http://localhost:3000/fixtures/api/es-next/roles/pages/index.html`;
