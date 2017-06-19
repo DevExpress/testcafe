@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import Promise from 'pinkie';
 import timeLimit from 'time-limit-promise';
 import promisifyEvent from 'promisify-event';
-import { noop, pull as remove } from 'lodash';
+import { noop, pull as remove, flatten } from 'lodash';
 import mapReverse from 'map-reverse';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
@@ -11,18 +11,19 @@ const LOCAL_BROWSERS_READY_TIMEOUT  = 2 * 60 * 1000;
 const REMOTE_BROWSERS_READY_TIMEOUT = 6 * 60 * 1000;
 
 export default class BrowserSet extends EventEmitter {
-    constructor (connections) {
+    constructor (connectionGroups) {
         super();
 
         this.RELEASE_TIMEOUT = 10000;
 
         this.pendingReleases = [];
 
-        this.connections = connections;
+        this.connectionGroups = connectionGroups;
+        this.connections      = flatten(connectionGroups);
 
         this.browserErrorHandler = error => this.emit('error', error);
 
-        connections.forEach(bc => bc.on('error', this.browserErrorHandler));
+        this.connections.forEach(bc => bc.on('error', this.browserErrorHandler));
 
         // NOTE: We're setting an empty error handler, because Node kills the process on an 'error' event
         // if there is no handler. See: https://nodejs.org/api/events.html#events_class_events_eventemitter

@@ -36,19 +36,19 @@ export default class FixtureHookController {
         }, new Map());
     }
 
-    _getFixtureMapItem (testRun) {
-        return testRun.test.skip ? null : this.fixtureMap.get(testRun.test.fixture);
+    _getFixtureMapItem (test) {
+        return test.skip ? null : this.fixtureMap.get(test.fixture);
     }
 
-    isTestRunBlocked (testRun) {
-        var item = this._getFixtureMapItem(testRun);
+    isTestBlocked (test) {
+        var item = this._getFixtureMapItem(test);
 
         return item && item.runningFixtureBeforeHook;
     }
 
     async runFixtureBeforeHookIfNecessary (testRun) {
         var fixture = testRun.test.fixture;
-        var item    = this._getFixtureMapItem(testRun);
+        var item    = this._getFixtureMapItem(testRun.test);
 
         if (item) {
             var shouldRunBeforeHook = !item.started && fixture.beforeFn;
@@ -85,7 +85,7 @@ export default class FixtureHookController {
 
     async runFixtureAfterHookIfNecessary (testRun) {
         var fixture = testRun.test.fixture;
-        var item    = this._getFixtureMapItem(testRun);
+        var item    = this._getFixtureMapItem(testRun.test);
 
         if (item) {
             item.pendingTestRunCount--;

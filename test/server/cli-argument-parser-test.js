@@ -118,10 +118,26 @@ describe('CLI argument parser', function () {
     });
 
     describe('Speed', function () {
-        it('Should parse "--speed" option as a number ', function () {
+        it('Should parse "--speed" option as a number', function () {
             return parse('--speed 0.01')
                 .then(function (parser) {
                     expect(parser.opts.speed).eql(0.01);
+                });
+        });
+    });
+
+    describe('Concurrency', function () {
+        it('Should parse "--concurrency" option as a number', function () {
+            return parse('--concurrency 2')
+                .then(function (parser) {
+                    expect(parser.concurrency).eql(2);
+                });
+        });
+
+        it('Should parse "-c" option as a number', function () {
+            return parse('-c 2')
+                .then(function (parser) {
+                    expect(parser.concurrency).eql(2);
                 });
         });
     });

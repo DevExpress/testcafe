@@ -2,7 +2,9 @@ var expect       = require('chai').expect;
 var EventEmitter = require('events').EventEmitter;
 var util         = require('util');
 var Promise      = require('pinkie');
+var chunk        = require('lodash').chunk;
 var Reporter     = require('../../lib/reporter');
+
 
 describe('Reporter', function () {
     // Runnable configuration mocks
@@ -193,9 +195,9 @@ describe('Reporter', function () {
     var TaskMock = function () {
         EventEmitter.call(this);
 
-        this.tests              = testMocks;
-        this.browserConnections = browserConnectionMocks;
-        this.screenshots        = new ScreenshotsMock();
+        this.tests       = testMocks;
+        this.browserSet  = { connectionGroups: chunk(browserConnectionMocks, 1) };
+        this.screenshots = new ScreenshotsMock();
 
         this.warningLog = {
             messages: [

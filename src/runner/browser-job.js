@@ -10,28 +10,27 @@ const QUARANTINE_THRESHOLD = 3;
 
 // Browser job
 export default class BrowserJob extends EventEmitter {
-    constructor (tests, browserConnection, proxy, screenshots, warningLog, fixtureHookController, opts) {
+    constructor (tests, browserConnections, proxy, screenshots, warningLog, fixtureHookController, opts) {
         super();
 
         this.started    = false;
-        this.quarantine = null;
 
         this.total                 = 0;
         this.passed                = 0;
         this.opts                  = opts;
         this.proxy                 = proxy;
-        this.browserConnection     = browserConnection;
+        this.browserConnections    = browserConnections;
         this.screenshots           = screenshots;
         this.warningLog            = warningLog;
         this.fixtureHookController = fixtureHookController;
         this.result                = null;
 
-        this.testRunQueue    = tests.map((test, index) => this._createTestRun(test, index + 1, 1));
+        this.testsQueue      = tests.map((test, index) => ({ test, index, attempt: 1, passed: 0, failed: 0, done: false }));
         this.completionQueue = [];
 
         this.connectionErrorListener = error => this._setResult(RESULT.errored, error);
 
-        this.browserConnection.once('error', this.connectionErrorListener);
+        this.browserConnections.map(bc => bc.once('error', this.connectionErrorListener));
     }
 
     async _setResult (status, data) {
@@ -40,9 +39,9 @@ export default class BrowserJob extends EventEmitter {
 
         this.result = { status, data };
 
-        this.browserConnection.removeListener('error', this.connectionErrorListener);
+        this.browserConnections.map(bc => bc.removeListener('error', this.connectionErrorListener));
 
-        await this.browserConnection.reportJobResult(this.result.status, this.result.data);
+        await this.browserConnections.map(bc => bc.reportJobResult(this.result.status, this.result.data));
     }
 
     _shouldStartQuarantine (testRun) {
@@ -54,50 +53,42 @@ export default class BrowserJob extends EventEmitter {
         this._keepInQuarantine(testRun, testIndex);
     }
 
-    async _endQuarantine (testRun) {
-        testRun.unstable = this.quarantine.passed > 0;
-        this.quarantine  = null;
+    async _endQuarantine (testRun, testInfo) {
+        testRun.unstable = testInfo.passed > 0;
 
         await this._reportTestRunDone(testRun);
     }
 
-    _shouldKeepInQuarantine (testRun) {
+    _shouldKeepInQuarantine (testRun, testInfo) {
         if (testRun.errs.length)
-            this.quarantine.failed++;
+            testInfo.failed++;
         else
-            this.quarantine.passed++;
+            testInfo.passed++;
 
         return this.quarantine.failed < QUARANTINE_THRESHOLD && this.quarantine.passed < QUARANTINE_THRESHOLD;
     }
 
-    _keepInQuarantine (testRun, testIndex) {
-        var quarantineAttemptNum = this.quarantine.failed + this.quarantine.passed + 1;
-        var nextAttempt          = this._createTestRun(testRun.test, testIndex, quarantineAttemptNum);
+    _keepInQuarantine (testRun, testInfo) {
+        testInfo.attempt = testInfo.failed + testInfo.passed + 1;
 
         this._removeFromCompletionQueue(testRun);
-        this.testRunQueue.splice(0, 0, nextAttempt);
+        this.testsQueue.unshift(testInfo);
     }
 
-    async _testRunDoneInQuarantineMode (testRun, testIndex) {
+    async _testRunDoneInQuarantineMode (testRun, testInfo) {
+        if (this._shouldKeepInQuarantine(testRun, testInfo))
+            this._keepInQuarantine(testRun, testInfo);
+        else
+            await this._endQuarantine(testRun, testInfo);
+    }
+
+    async _testRunDone (testRun, testInfo) {
         this.proxy.closeSession(testRun);
 
-        if (this._shouldStartQuarantine(testRun))
-            this._startQuarantine(testRun, testIndex);
-
-        else if (this.quarantine) {
-            if (this._shouldKeepInQuarantine(testRun))
-                this._keepInQuarantine(testRun, testIndex);
-            else
-                await this._endQuarantine(testRun);
-        }
-
+        if (this.opts.quarantineMode && !testInfo.done)
+            await this._testRunDoneInQuarantineMode(testRun, testInfo);
         else
             await this._reportTestRunDone(testRun);
-    }
-
-    async _testRunDone (testRun) {
-        this.proxy.closeSession(testRun);
-        await this._reportTestRunDone(testRun);
     }
 
     _addToCompletionQueue (testRun) {
@@ -115,25 +106,25 @@ export default class BrowserJob extends EventEmitter {
 
         var completionQueueItem = find(this.completionQueue, item => item.testRun === testRun);
 
-        completionQueueItem.done = true;
+        if (!completionQueueItem.done) {
+            completionQueueItem.done = true;
 
-        var allDone = this.completionQueue.every(item => item.done);
-
-        if (allDone) {
             this.total++;
 
             if (!testRun.errs.length)
                 this.passed++;
+        }
 
-            this.completionQueue.forEach(item => this.emit('test-run-done', item.testRun));
+        while (this.completionQueue.length && this.completionQueue[0].done) {
+            completionQueueItem = this.completionQueue.shift();
 
-            this.completionQueue = [];
+            this.emit('test-run-done', completionQueueItem.testRun);
+        }
 
-            if (!this.hasQueuedTestRuns) {
-                this
-                    ._setResult(RESULT.done, { total: this.total, passed: this.passed })
-                    .then(() => this.emit('done'));
-            }
+        if (!this.completionQueue.length && !this.hasQueuedTestRuns) {
+            this
+                ._setResult(RESULT.done, { total: this.total, passed: this.passed })
+                .then(() => this.emit('done'));
         }
     }
 
@@ -144,18 +135,14 @@ export default class BrowserJob extends EventEmitter {
         return test.isLegacy ? LegacyTestRun : TestRun;
     }
 
-    _createTestRun (test, testIndex, quarantineAttemptNum) {
-        quarantineAttemptNum = this.opts.quarantineMode ? quarantineAttemptNum : null;
-
-        var screenshotCapturer = this.screenshots.createCapturerFor(test, testIndex, quarantineAttemptNum, this.browserConnection);
-        var TestRunCtor        = this._getTestRunCtor(test, this.opts);
-        var testRun            = new TestRunCtor(test, this.browserConnection, screenshotCapturer, this.warningLog, this.opts);
-        var done               = this.opts.quarantineMode ?
-                                 () => this._testRunDoneInQuarantineMode(testRun, testIndex) :
-                                 () => this._testRunDone(testRun);
+    _createTestRun (testInfo, connection) {
+        var quarantineAttemptNum = this.opts.quarantineMode ? testInfo.attempt : null;
+        var screenshotCapturer   = this.screenshots.createCapturerFor(testInfo.test, testInfo.index, quarantineAttemptNum, connection);
+        var TestRunCtor          = this._getTestRunCtor(testInfo.test, this.opts);
+        var testRun              = new TestRunCtor(testInfo.test, connection, screenshotCapturer, this.warningLog, this.opts);
 
         testRun.once('start', () => this.emit('test-run-start', testRun));
-        testRun.once('done', done);
+        testRun.once('done', () => this._testRunDone(testRun, testInfo));
 
         return testRun;
     }
@@ -163,17 +150,18 @@ export default class BrowserJob extends EventEmitter {
 
     // API
     get hasQueuedTestRuns () {
-        return !!this.testRunQueue.length;
+        return !!this.testsQueue.length;
     }
 
-    async popNextTestRunUrl () {
-        while (this.testRunQueue.length) {
+    async popNextTestRunUrl (connection) {
+        while (this.testsQueue.length) {
             // NOTE: before hook for test run fixture is currently
             // executing, so test run is temporary blocked
-            if (this.fixtureHookController.isTestRunBlocked(this.testRunQueue[0]))
+            if (this.fixtureHookController.isTestBlocked(this.testsQueue[0].test))
                 break;
 
-            var testRun = this.testRunQueue.shift();
+            var testInfo = this.testsQueue.shift(connection);
+            var testRun  = this._createTestRun(testInfo, connection);
 
             if (!this.started) {
                 this.started = true;
@@ -202,6 +190,6 @@ export default class BrowserJob extends EventEmitter {
     abort () {
         this.removeAllListeners();
         this._setResult(RESULT.aborted);
-        this.browserConnection.removeJob(this);
+        this.browserConnections.map(bc => bc.removeJob(this));
     }
 }

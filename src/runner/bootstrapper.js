@@ -1,4 +1,4 @@
-import { flatten } from 'lodash';
+import { flatten, zipWith, chunk, groupBy } from 'lodash';
 import Promise from 'pinkie';
 import Compiler from '../compiler';
 import BrowserConnection from '../browser/connection';
@@ -14,12 +14,17 @@ export default class Bootstrapper {
     constructor (browserConnectionGateway) {
         this.browserConnectionGateway = browserConnectionGateway;
 
+        this.concurrency  = 1;
         this.sources      = [];
         this.browsers     = [];
         this.filter       = null;
         this.reporter     = null;
         this.appCommand   = null;
         this.appInitDelay = DEFAULT_APP_INIT_DELAY;
+    }
+
+    static _splitBrowserInfo (browserInfo) {
+        return groupBy(browserInfo, browser => browser instanceof BrowserConnection ? 'remotes' : 'automated');
     }
 
     async _getBrowserInfo () {
@@ -31,15 +36,35 @@ export default class Bootstrapper {
         return flatten(browserInfo);
     }
 
-    _createConnectionFromBrowserInfo (browserInfo) {
-        if (browserInfo instanceof BrowserConnection)
-            return browserInfo;
+    _createAutomatedConnections (browserInfo) {
+        if (!browserInfo)
+            return [];
 
-        return new BrowserConnection(this.browserConnectionGateway, browserInfo);
+        var browserConnections = [];
+
+        for (var i = 0; i < this.concurrency; i++) {
+            var nextConnections = browserInfo.map(browser => new BrowserConnection(this.browserConnectionGateway, browser));
+
+            browserConnections = zipWith(browserConnections, nextConnections, (prev, next) => {
+                if (!Array.isArray(prev))
+                    return [next];
+
+                return prev.concat(next);
+            });
+        }
+
+        return browserConnections;
     }
 
     async _getBrowserConnections (browserInfo) {
-        var browserConnections = browserInfo.map(browser => this._createConnectionFromBrowserInfo(browser));
+        var { automated, remotes } = Bootstrapper._splitBrowserInfo(browserInfo);
+
+        if (remotes && remotes.length % this.concurrency)
+            throw new GeneralError(MESSAGE.invalidRemotesCount);
+
+        var browserConnections = this._createAutomatedConnections(automated);
+
+        browserConnections = browserConnections.concat(chunk(remotes, this.concurrency));
 
         return await BrowserSet.from(browserConnections);
     }
