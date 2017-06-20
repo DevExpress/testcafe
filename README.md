@@ -367,6 +367,12 @@ Use ESLint when writing and editing TestCafe tests.
 
 * [ESLint plugin](https://github.com/miherlosev/eslint-plugin-testcafe)
 
+### Accessibility
+
+Find accessibility issues in your web app.
+
+* [axe-testcafe](https://github.com/helen-dikareva/axe-testcafe)
+
 ## Thanks to BrowserStack
 
 We are grateful to BrowserStack for providing infrastructure that we use to test code in this repository.
