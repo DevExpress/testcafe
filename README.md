@@ -56,7 +56,7 @@ When testing is finished, TestCafe aggregates test results from different browse
 
 ### Write Test Code in Modern JavaScript and TypeScript
 
-You can write TestCafe tests using both JavaScript with the latest features like `async/await` and [TypeScript](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html).
+TestCafe allows you to write tests using [TypeScript](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html) or JavaScript (with its modern features like `async/await`).
 
 [Test API](https://devexpress.github.io/testcafe/documentation/test-api/index.html) consists of over two dozen methods that can emulate all actions one could possibly do with a webpage.
 Chained syntax allows for code that is easy to write and read.
@@ -77,9 +77,9 @@ test('Emulate user actions and perform a verification', async t => {
 });
 ```
 
-Using of TypeScript brings you all the advantages of strongly typed languages: rich coding assistance, painless scalability, check-as-you-type code verification and much more.
+By using TypeScript to write your TestCafe tests, you get the advantages of strongly-typed languages such as: rich coding assistance, painless scalability, check-as-you-type code verification, and much more.
 
-Additionally, TestCafe automatically generates source maps for easy debugging.
+To make debugging easier, TestCafe automatically generates source maps.
 To debug your test code, start a debugging session in an IDE that supports source maps.
 
 ### Flexible Selector System
@@ -166,8 +166,8 @@ For more information, see [Installing TestCafe](https://devexpress.github.io/tes
 
 ### Creating a Test
 
-TestCafe allows you to write tests using both modern JavaScript with the latest features and TypeScript. Using of TypeScript brings you all the advantages of strongly typed languages: rich coding assistance,
-painless scalability, check-as-you-type code verification and much more. For more information about writing tests in TypeScript, see [TypeScript Support](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.md).
+TestCafe allows you to write tests using TypeScript or JavaScript (with its modern features like `async/await`).
+By using TypeScript to write your TestCafe tests, you get the advantages of strongly-typed languages such as: rich coding assistance, painless scalability, check-as-you-type code verification, and much more. For more information about writing tests in TypeScript, see [TypeScript Support](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html).
 
 To create a test, create a new .js or .ts file anywhere on your computer.
 This file must have a special structure: tests must be organized into fixtures.

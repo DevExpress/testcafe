@@ -8,7 +8,7 @@ TypeScript support, seamless testing in headless Chrome and device emulator, and
 
 #### :gear: TypeScript support ([#408](https://github.com/DevExpress/testcafe/issues/408))
 
-In this release, we have added an ability to write tests in [TypeScript](https://www.typescriptlang.org/). Using of TypeScript brings you all the advantages of strongly typed languages: rich coding assistance, painless scalability, check-as-you-type code verification and much more.
+In this release, we have added the capability to write tests in [TypeScript](https://www.typescriptlang.org/). By using TypeScript to write your TestCafe tests, you get the advantages of strongly-typed languages such as: rich coding assistance, painless scalability, check-as-you-type code verification, and much more.
 
 TestCafe bundles TypeScript declaration file with the npm package, so you have no need to install any additional packages.
 

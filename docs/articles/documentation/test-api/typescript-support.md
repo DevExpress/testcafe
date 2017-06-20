@@ -7,7 +7,7 @@ checked: true
 # TypeScript Support
 
 TestCafe allows you to write tests with [TypeScript](https://www.typescriptlang.org/) - a typed superset of JavaScript.
-Using of TypeScript brings you all the advantages of strongly typed languages: rich coding assistance,
+Using TypeScript brings you all the advantages of strongly typed languages: rich coding assistance,
 painless scalability, check-as-you-type code verification and much more.
 
 > TestCafe automatically compiles TypeScript before running tests, so you do not need to compile the TypeScript code.
