@@ -29,7 +29,7 @@ For more information, see [Installing TestCafe](../using-testcafe/installing-tes
 ## Creating a Test
 
 TestCafe allows you to write tests using TypeScript or JavaScript (with its modern features like `async/await`).
-By using TypeScript to write your TestCafe tests, you get the advantages of strongly-typed languages such as: rich coding assistance, painless scalability, check-as-you-type code verification, and much more. For more information about writing tests in TypeScript, see [TypeScript Support](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.md).
+By using TypeScript to write your TestCafe tests, you get the advantages of strongly-typed languages such as: rich coding assistance, painless scalability, check-as-you-type code verification, and much more. For more information about writing tests in TypeScript, see [TypeScript Support](../test-api/typescript-support.md).
 
 To create a test, create a new .js or .ts file anywhere on your computer.
 This file must have a special structure: tests must be organized into fixtures.
