@@ -109,6 +109,7 @@
     "testcafe-reporter-spec": "^2.1.1",
     "testcafe-reporter-xunit": "^2.1.0",
     "time-limit-promise": "^1.0.2",
+    "tmp": "0.0.28",
     "tree-kill": "^1.1.0",
     "typescript": "^2.2.2",
     "useragent": "^2.1.7"
@@ -163,7 +164,6 @@
     "saucelabs-connector": "^0.2.0",
     "serve-static": "^1.10.0",
     "strip-ansi": "^3.0.0",
-    "tmp": "0.0.28",
     "webmake": "0.3.42"
   }
 }
