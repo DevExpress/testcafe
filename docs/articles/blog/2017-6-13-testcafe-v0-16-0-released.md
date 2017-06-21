@@ -39,6 +39,8 @@ Now TestCafe allows you to run your tests in Google Chrome in headless and devic
 testcafe "chrome:headless" tests/sample-fixture.js
 ```
 
+> Note that headless mode is available for Mac and Linux in Chrome 59. You need a [Canary build](https://www.google.com/chrome/browser/canary.html) to enable headless mode on Windows.
+
 Device emulation mode allows you to check how your tests works on mobile devices via Chrome's built-in [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/). To run tests in device emulation mode, specify `emulation:` and [device parameters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html#available-chrome-options):
 
 ```sh
