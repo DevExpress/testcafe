@@ -13,7 +13,7 @@ export default class BrowserJob extends EventEmitter {
     constructor (tests, browserConnections, proxy, screenshots, warningLog, fixtureHookController, opts) {
         super();
 
-        this.started    = false;
+        this.started = false;
 
         this.total                 = 0;
         this.passed                = 0;
@@ -25,7 +25,15 @@ export default class BrowserJob extends EventEmitter {
         this.fixtureHookController = fixtureHookController;
         this.result                = null;
 
-        this.testsQueue      = tests.map((test, index) => ({ test, index, attempt: 1, passed: 0, failed: 0, done: false }));
+        this.testsQueue = tests.map((test, index) => ({
+            test,
+            index:   index + 1,
+            attempt: 1,
+            passed:  0,
+            failed:  0,
+            done:    false
+        }));
+
         this.completionQueue = [];
 
         this.connectionErrorListener = error => this._setResult(RESULT.errored, error);
@@ -44,15 +52,6 @@ export default class BrowserJob extends EventEmitter {
         await this.browserConnections.map(bc => bc.reportJobResult(this.result.status, this.result.data));
     }
 
-    _shouldStartQuarantine (testRun) {
-        return !this.quarantine && testRun.errs.length;
-    }
-
-    _startQuarantine (testRun, testIndex) {
-        this.quarantine = { passed: 0, failed: 1 };
-        this._keepInQuarantine(testRun, testIndex);
-    }
-
     async _endQuarantine (testRun, testInfo) {
         testRun.unstable = testInfo.passed > 0;
 
@@ -65,7 +64,7 @@ export default class BrowserJob extends EventEmitter {
         else
             testInfo.passed++;
 
-        return this.quarantine.failed < QUARANTINE_THRESHOLD && this.quarantine.passed < QUARANTINE_THRESHOLD;
+        return testInfo.failed < QUARANTINE_THRESHOLD && testInfo.passed < QUARANTINE_THRESHOLD;
     }
 
     _keepInQuarantine (testRun, testInfo) {
