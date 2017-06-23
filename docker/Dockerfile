@@ -1,6 +1,7 @@
-FROM alpine:latest
+FROM alpine:edge
 
-RUN apk --no-cache add nodejs chromium firefox-esr xvfb dbus eudev ttf-freefont fluxbox
+RUN apk --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ add \
+ nodejs nodejs-npm chromium firefox xwininfo xvfb dbus eudev ttf-freefont fluxbox
 
 COPY . /opt/testcafe
 
