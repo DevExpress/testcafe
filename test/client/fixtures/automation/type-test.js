@@ -1,5 +1,6 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+var hammerhead    = window.getTestCafeModule('hammerhead');
+var browserUtils  = hammerhead.utils.browser;
+var nativeMethods = hammerhead.nativeMethods;
 
 var testCafeCore      = window.getTestCafeModule('testCafeCore');
 var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
@@ -439,6 +440,40 @@ $(document).ready(function () {
                     equal(textarea.value, 'aA \n');
                     start();
                 });
+        });
+    }
+
+    if (nativeMethods.inputValueSetter) {
+        asyncTest('call native setter of the value property (GH-1558)', function () {
+            var input    = $('<input type="text" />').addClass(TEST_ELEMENT_CLASS).appendTo('body')[0];
+            var textArea = $('<textarea/>').addClass(TEST_ELEMENT_CLASS).appendTo('body')[0];
+
+            var testNativeValueSetter = function (element, callback) {
+                var valueGetter = Object.getOwnPropertyDescriptor(element.constructor.prototype, 'value').get;
+                var type        = new TypeAutomation(element, '1', new TypeOptions({ offsetX: 5, offsetY: 5 }));
+
+                Object.defineProperty(element, 'value', {
+                    get: function () {
+                        return valueGetter.call(element);
+                    },
+                    set: function () {
+                        ok(false);
+                    }
+                });
+
+                type
+                    .run()
+                    .then(function () {
+                        equal(element.value, '1');
+                        callback();
+                    });
+            };
+
+            testNativeValueSetter(input, function () {
+                testNativeValueSetter(textArea, function () {
+                    start();
+                });
+            });
         });
     }
 });

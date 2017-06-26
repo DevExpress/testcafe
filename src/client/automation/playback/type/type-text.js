@@ -1,6 +1,7 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import nextTick from '../../utils/next-tick';
+import { setValue } from '../../utils/utils';
 
 var browserUtils   = hammerhead.utils.browser;
 var eventSimulator = hammerhead.eventSandbox.eventSimulator;
@@ -168,8 +169,8 @@ function _typeTextToTextEditable (element, text) {
             endSelection += 1;
         }
 
-        element.value = elementValue.substring(0, startSelection) + text +
-                        elementValue.substring(endSelection, elementValue.length);
+        setValue(element, elementValue.substring(0, startSelection) + text +
+                          elementValue.substring(endSelection, elementValue.length));
 
         textSelection.select(element, startSelection + textLength, startSelection + textLength);
     }
@@ -180,9 +181,9 @@ function _typeTextToTextEditable (element, text) {
 
 function _typeTextToNonTextEditable (element, text, caretPos) {
     if (caretPos !== null)
-        element.value = element.value.substr(0, caretPos) + text + element.value.substr(caretPos + text.length);
+        setValue(element, element.value.substr(0, caretPos) + text + element.value.substr(caretPos + text.length));
     else
-        element.value = text;
+        setValue(element, text);
 
     eventSimulator.change(element);
     eventSimulator.input(element);

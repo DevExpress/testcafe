@@ -1,6 +1,7 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
+import { setValue } from '../../utils/utils';
 
 var Promise               = hammerhead.Promise;
 var browserUtils          = hammerhead.utils.browser;
@@ -130,7 +131,7 @@ function setElementValue (element, value, position) {
             value = value.substring(0, value.length - 1);
     }
 
-    element.value = value;
+    setValue(element, value);
 
     textSelection.select(element, position, position);
     eventSimulator.input(element);
@@ -190,10 +191,8 @@ function backspace (element) {
                                          value.substring(endPos, value.length), startPos - 1);
             }
         }
-        else {
-            setElementValue(element, value.substring(0, startPos) +
-                                     value.substring(endPos, value.length), startPos);
-        }
+        else
+            setElementValue(element, value.substring(0, startPos) + value.substring(endPos, value.length), startPos);
     }
 
     if (domUtils.isContentEditableElement(element))
