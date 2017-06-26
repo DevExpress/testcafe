@@ -4,6 +4,7 @@ import testCafeCore from '../deps/testcafe-core';
 var Promise          = hammerhead.Promise;
 var browserUtils     = hammerhead.utils.browser;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
+var nativeMethods    = hammerhead.nativeMethods;
 
 var contentEditable = testCafeCore.contentEditable;
 var textSelection   = testCafeCore.textSelection;
@@ -115,4 +116,13 @@ export function focusByRelatedElement (element) {
         return;
 
     focusBlurSandbox.focus(elementForFocus, testCafeCore.noop, false, true);
+}
+
+export function setValue (element, value) {
+    if (nativeMethods.inputValueSetter && domUtils.isInputElement(element))
+        nativeMethods.inputValueSetter.call(element, value);
+    else if (nativeMethods.textAreaValueSetter && domUtils.isTextAreaElement(element))
+        nativeMethods.textAreaValueSetter.call(element, value);
+    else
+        element.value = value;
 }

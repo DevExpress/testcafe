@@ -11,6 +11,7 @@ testCafeCore.preventRealEvents();
 var hammerhead    = window.getTestCafeModule('hammerhead');
 var iframeSandbox = hammerhead.sandbox.iframe;
 var browserUtils  = hammerhead.utils.browser;
+var nativeMethods = hammerhead.nativeMethods;
 
 
 $(document).ready(function () {
@@ -157,6 +158,8 @@ $(document).ready(function () {
             });
     });
 
+    module('regression tests');
+
     if (!browserUtils.isSafari && (!browserUtils.isChrome || browserUtils.version > 53)) {
         asyncTest('T334620 - Wrong "key" property in keyEvent objects (press)', function () {
             var textarea = document.createElement('textarea');
@@ -243,6 +246,43 @@ $(document).ready(function () {
                     equal(textarea.value, 'aAA!\n!!');
                     start();
                 });
+        });
+    }
+
+    if (nativeMethods.inputValueSetter) {
+        asyncTest('call native setter of the value property (GH-1558)', function () {
+            var input    = $('<input type="text" />').addClass(TEST_ELEMENT_CLASS).appendTo('body')[0];
+            var textArea = $('<textarea/>').addClass(TEST_ELEMENT_CLASS).appendTo('body')[0];
+
+            var testNativeValueSetter = function (element, callback) {
+                var valueGetter = Object.getOwnPropertyDescriptor(element.constructor.prototype, 'value').get;
+                var press = new PressAutomation(parseKeySequence('backspace').combinations, {});
+
+                element.value = '1';
+                element.focus();
+
+                Object.defineProperty(element, 'value', {
+                    get: function () {
+                        return valueGetter.call(element, '1');
+                    },
+                    set: function () {
+                        ok(false);
+                    }
+                });
+
+                press
+                    .run()
+                    .then(function () {
+                        equal(element.value, '');
+                        callback();
+                    });
+            };
+
+            testNativeValueSetter(input, function () {
+                testNativeValueSetter(textArea, function () {
+                    start();
+                });
+            });
         });
     }
 });
