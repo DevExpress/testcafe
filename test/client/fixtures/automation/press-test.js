@@ -260,6 +260,7 @@ $(document).ready(function () {
 
                 element.value = '1';
                 element.focus();
+                element.setSelectionRange(1, 1);
 
                 Object.defineProperty(element, 'value', {
                     get: function () {
