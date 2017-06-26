@@ -1,32 +1,36 @@
 var expect = require('chai').expect;
 
+var DEFAULT_SELECTOR_TIMEOUT = 3000;
+var DEFAULT_RUN_OPTIONS = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
+var DEFAULT_CHROME_RUN_OPTIONS = { only: 'chrome', selectorTimeout: 3000 };
+
 describe('[API] Selector', function () {
     it('Should provide basic properties in HTMLElement snapshots', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'HTMLElement snapshot basic properties');
+        return runTests('./testcafe-fixtures/selector-test.js', 'HTMLElement snapshot basic properties', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide basic properties in SVGElement snapshots', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'SVGElement snapshot basic properties');
+        return runTests('./testcafe-fixtures/selector-test.js', 'SVGElement snapshot basic properties', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide input-specific properties in element snapshots', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Input-specific element snapshot properties');
+        return runTests('./testcafe-fixtures/selector-test.js', 'Input-specific element snapshot properties', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide `innerText` property in element snapshots', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', '`innerText` element snapshot property');
+        return runTests('./testcafe-fixtures/selector-test.js', '`innerText` element snapshot property', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide node snapshots for non-element nodes', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Non-element node snapshots');
+        return runTests('./testcafe-fixtures/selector-test.js', 'Non-element node snapshots', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should accept string as constructor argument', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'String ctor argument');
+        return runTests('./testcafe-fixtures/selector-test.js', 'String ctor argument', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should wait for element to appear in DOM', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Wait for element in DOM', { selectorTimeout: 2500 });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Wait for element in DOM', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should return `null` if element does not appear within given time', function () {
@@ -34,7 +38,7 @@ describe('[API] Selector', function () {
     });
 
     it('Should check element visibility if option is enabled', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Visibility check', { selectorTimeout: 2500 });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Visibility check', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should use timeout specified via property', function () {
@@ -42,87 +46,87 @@ describe('[API] Selector', function () {
     });
 
     it('Should provide "selector" method in node snapshot', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `selector` method');
+        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `selector` method', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide "hasClass" method in node snapshot', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `hasClass` method');
+        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot `hasClass` method', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide "addCustomDOMProperties" method in node snapshot', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `addCustomDOMProperties` method');
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `addCustomDOMProperties` method', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide "addCustomMethods" method in node snapshot', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `addCustomMethods` method');
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector `addCustomMethods` method', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should wait for element to appear on new page', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Element on new page');
+        return runTests('./testcafe-fixtures/selector-test.js', 'Element on new page', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide snapshot property shorthands on selector', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot properties shorthands on selector', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Snapshot properties shorthands on selector', DEFAULT_CHROME_RUN_OPTIONS);
     });
 
     it('Should filter results with `nth()` method', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "nth()" method', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "nth()" method', DEFAULT_CHROME_RUN_OPTIONS);
     });
 
     it('Should filter results with `withText()` method', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "withText" method', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "withText" method', DEFAULT_CHROME_RUN_OPTIONS);
     });
 
     it('Should filter results with `withAttribute()` method', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "withAttribute" method', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "withAttribute" method', DEFAULT_CHROME_RUN_OPTIONS);
     });
 
     it('Should filter results with `filter()` method', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "filter" method', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "filter" method', DEFAULT_CHROME_RUN_OPTIONS);
     });
 
     it('Should filter using combination of filter methods', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Combination of filter methods', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Combination of filter methods', DEFAULT_CHROME_RUN_OPTIONS);
     });
 
     it('Should provide .find() method', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "find" method');
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "find" method', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide .parent() method', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "parent" method');
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "parent" method', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide .child() method', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "child" method');
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "child" method', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide .sibling() method', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "sibling" method');
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "sibling" method', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide .nextSibling() method', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "nextSibling" method');
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "nextSibling" method', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide .prevSibling() method', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "prevSibling" method');
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "prevSibling" method', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide "exists" and "count" properties', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "count" and "exists" properties');
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "count" and "exists" properties', DEFAULT_RUN_OPTIONS);
     });
 
     it('Should provide dependencies and index argument to selector filter', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector filter dependencies and index argument', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector filter dependencies and index argument', DEFAULT_CHROME_RUN_OPTIONS);
     });
 
     it('Should provide filter origin argument', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector filter origin node argument', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector filter origin node argument', DEFAULT_CHROME_RUN_OPTIONS);
     });
 
     it('Should provide hasAttribute method', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'hasAttribute method');
+        return runTests('./testcafe-fixtures/selector-test.js', 'hasAttribute method', DEFAULT_RUN_OPTIONS);
     });
 
     describe('Errors', function () {
@@ -272,11 +276,14 @@ describe('[API] Selector', function () {
 
     describe('Regression', function () {
         it("Should execute successfully if derivative selector doesn't have options (GH-716)", function () {
-            return runTests('./testcafe-fixtures/selector-test.js', 'Derivative selector without options', { only: 'chrome' });
+            return runTests('./testcafe-fixtures/selector-test.js', 'Derivative selector without options', DEFAULT_CHROME_RUN_OPTIONS);
         });
 
         it('Should select <option> element by text in Firefox (GH-861)', function () {
-            return runTests('./testcafe-fixtures/selector-test.js', '<option> text selector', { only: 'firefox' });
+            return runTests('./testcafe-fixtures/selector-test.js', '<option> text selector', {
+                only:            'firefox',
+                selectorTimeout: 3000
+            });
         });
     });
 });

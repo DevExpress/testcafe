@@ -9,9 +9,10 @@ matrix:
     env: GULP_TASK="test-client-travis"
   - node_js: "stable"
     env: GULP_TASK="test-client-travis-mobile"
-  - node_js: "stable"
+    # We use Node 7 because otherwise we have problems with page loading and tests are blinking
+  - node_js: "7"
     env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge"
-  - node_js: "stable"
+  - node_js: "7"
     env: GULP_TASK="test-functional-travis-mobile"
  fast_finish: true
 
