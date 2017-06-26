@@ -263,7 +263,7 @@ $(document).ready(function () {
 
                 Object.defineProperty(element, 'value', {
                     get: function () {
-                        return valueGetter.call(element, '1');
+                        return valueGetter.call(element);
                     },
                     set: function () {
                         ok(false);
