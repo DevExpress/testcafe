@@ -30,7 +30,7 @@ function initSelector (name, val, skipVisibilityCheck) {
         return val;
 
     try {
-        if (typeof val === 'object' && val.type === RAW_API_JS_EXPRESSION_TYPE && typeof val.value === 'string')
+        if (val !== null && typeof val === 'object' && val.type === RAW_API_JS_EXPRESSION_TYPE && typeof val.value === 'string')
             return executeSelectorExpression(val.value, skipVisibilityCheck);
 
         var builder = new SelectorBuilder(val, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
