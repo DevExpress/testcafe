@@ -178,7 +178,7 @@ Firstly, import the `testcafe` module.
 import { Selector } from 'testcafe';
 ```
 
-Then declare a fixture using the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.md#fixtures) function.
+Then declare a fixture using the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures) function.
 
 ```js
 fixture `Getting Started`
