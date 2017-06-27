@@ -4,7 +4,7 @@
 
 ### Bug Fixes
 
-* Typing text now raises the `onChange` event in new React versions. ([#1558](https://github.com/DevExpress/testcafe/issues/1558))
+* Typing text now raises the `onChange` event in latest React versions. ([#1558](https://github.com/DevExpress/testcafe/issues/1558))
 * Screenshots can now be taken when TestCafe runs from the Docker image. ([#1540](https://github.com/DevExpress/testcafe/issues/1540))
 * The native `value` property setters of HTMLInputElement and HTMLTextAreaElement prototypes are now saved. ([testcafe-hammerhead/#1185](https://github.com/DevExpress/testcafe-hammerhead/issues/1185))
 * The `name` and `namedItem` methods of an HTMLCollection are now marked as non-enumerable. ([testcafe-hammerhead/#1172](https://github.com/DevExpress/testcafe-hammerhead/issues/1172))
