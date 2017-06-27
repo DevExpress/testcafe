@@ -9,7 +9,10 @@
                     "commands": [
                         {
                             "type": "click",
-                            "selector": "#input",
+                            "selector": {
+                                "type": "js-expr",
+                                "value": "Selector('#input')"
+                            },
                             "options": {
                                 "offsetX": 10,
                                 "offsetY": 10
