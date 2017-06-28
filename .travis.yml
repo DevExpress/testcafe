@@ -9,7 +9,8 @@ matrix:
     env: GULP_TASK="test-client-travis"
   - node_js: "stable"
     env: GULP_TASK="test-client-travis-mobile"
-    # We use Node 7 because otherwise we have problems with page loading and tests are blinking
+    # We use Node 7 here as a temporary workaround. Browsers on OS X sometimes can't open a tested
+    # page under Node 8 on BrowserStack for some reason. As a result we have blinking tests.
   - node_js: "7"
     env: GULP_TASK="test-functional-travis-desktop-osx-and-ms-edge"
   - node_js: "7"
