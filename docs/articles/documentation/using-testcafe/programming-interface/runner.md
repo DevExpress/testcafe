@@ -46,6 +46,7 @@ createTestCafe('localhost', 1337, 1338)
     * [Specifying the Reporter](#specifying-the-reporter)
     * [Saving the Report to a File](#saving-the-report-to-a-file)
     * [Implementing a Custom Stream](#implementing-a-custom-stream)
+* [concurrency](#concurrency)
 * [startApp](#startapp)
 * [useProxy](#useproxy)
 * [run](#run)
@@ -265,6 +266,37 @@ runner.reporter('json', stream);
 ```
 
 You can also build your own reporter. Use a [dedicated Yeoman generator](https://github.com/DevExpress/generator-testcafe-reporter) to scaffold out a [reporter plugin](../../extending-testcafe/reporter-plugin/README.md).
+
+### concurrency
+
+Specifies that tests should run concurrently.
+
+```text
+async concurrency(factor) → this
+```
+
+The `concurrency` function takes the following parameters.
+
+Parameter | Type    | Description
+--------- | ------- | --------
+`factor`  | Number | The number of browser instances that will be invoked at the same time to run tests concurrently.
+
+For each browser, TestCafe opens the specified number of instances and runs tests in them simultaneously.
+
+The following example shows how to run tests in three Chrome and three Firefox instances.
+
+```js
+runner
+    .browsers(['chrome', 'firefox'])
+    .concurrency(3);
+```
+
+When you run tests on [remote devices](#passing-a-remote-browser-connection),
+create a [browser connection](browserconnection.md) for each instance of each browsers you test against.
+On a remote device, invoke all the required instances manually. The total number of instances
+should divide by `factor`. Otherwise, an exception will be thrown.
+
+If you test against multiple remote browsers, open and connect all instances of one browser before connecting the next browser.
 
 ### startApp
 

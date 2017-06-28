@@ -27,6 +27,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-S, --screenshots-on-fails](#-s---screenshots-on-fails)
   * [-q, --quarantine-mode](#-q---quarantine-mode)
   * [-e, --skip-js-errors](#-e---skip-js-errors)
+  * [-c \<factor\>, --concurrency \<factor\>](#-c-factor---concurrency-factor)
   * [-t \<name\>, --test \<name\>](#-t-name---test-name)
   * [-T \<pattern\>, --test-grep \<pattern\>](#-t-pattern---test-grep-pattern)
   * [-f \<name\>, --fixture \<name\>](#-f-name---fixture-name)
@@ -114,6 +115,9 @@ testcafe remote:3 tests/sample-fixture.js
 ```
 
 TestCafe will provide URLs to open in required browsers on your remote device.
+
+> If you run tests [concurrently](#-c-factor---concurrency-factor),
+> specify the total number of instances of all browsers after the `remote:` keyword.
 
 You can also use the [--qr-code](#--qr-code) option to display QR-codes that represent the same URLs.
 Scan the QR-codes by using the device on which you are going to test your application.
@@ -269,7 +273,26 @@ For example, the following command runs tests from the specified file and forces
 testcafe ie tests/sample-fixture.js -e
 ```
 
-### -t \<name\>,  --test \<name\>
+### -c \<factor\>, --concurrency \<factor\>
+
+Runs tests concurrently. The `factor` parameter specifies the number of browser instances
+that will be invoked at the same time to run tests concurrently.
+For each browser, TestCafe opens the specified number of instances and runs tests in them simultaneously.
+
+The following example shows how to run tests in three Chrome and three Firefox instances.
+
+```sh
+testcafe -c 3 chrome,firefox tests/sample-fixture.js
+```
+
+When you run tests on [remote devices](#remote-browsers),
+specify the total number of instances of all browsers you test against after the `remote:` keyword.
+On a remote device, invoke all the required instances manually. The total number of instances
+should divide by `factor`. Otherwise, an exception will be thrown.
+
+If you test against multiple remote browsers, open and connect all instances of one browser before connecting the next browser.
+
+### -t \<name\>, --test \<name\>
 
 TestCafe will run a test with the specified name.
 
