@@ -1,6 +1,6 @@
 import tty from 'tty';
 import elegantSpinner from 'elegant-spinner';
-import logUpdate from 'log-update';
+import logUpdate from 'log-update-async-hook';
 import chalk from 'chalk';
 import isCI from 'is-ci';
 
