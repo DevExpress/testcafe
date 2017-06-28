@@ -48,10 +48,10 @@ function subtractSizes (sizeA, sizeB) {
 
 export default class BrowserProvider {
     constructor (plugin) {
-        this.plugin            = plugin;
-        this.initPromise       = Promise.resolve(false);
+        this.plugin      = plugin;
+        this.initPromise = Promise.resolve(false);
 
-        this.isMultiBrowser    = this.plugin.isMultiBrowser;
+        this.isMultiBrowser = this.plugin.isMultiBrowser;
         // HACK: The browser window has different border sizes in normal and maximized modes. So, we need to be sure that the window is
         // not maximized before resizing it in order to keep the mechanism of correcting the client area size working. When browser is started,
         // we are resizing it for the first time to switch the window to normal mode, and for the second time - to restore the client area size.
@@ -195,7 +195,17 @@ export default class BrowserProvider {
     }
 
     async closeBrowser (browserId) {
-        await this.plugin.closeBrowser(browserId);
+        var isLocalBrowser         = await this.plugin.isLocalBrowser(browserId);
+        var customActionsInfo      = await this.plugin.hasCustomActionForBrowser(browserId);
+        var hasCustomCloseBrowser  = customActionsInfo.hasCloseBrowser;
+        var usePluginsCloseBrowser = hasCustomCloseBrowser || !isLocalBrowser;
+
+        if (usePluginsCloseBrowser) {
+            await this.plugin.closeBrowser(browserId);
+            return;
+        }
+
+        await browserTools.close(this.windowDescriptors[browserId]);
     }
 
     async getBrowserList () {
@@ -207,10 +217,12 @@ export default class BrowserProvider {
     }
 
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {
-        var isLocalBrowser    = await this.plugin.isLocalBrowser(browserId);
-        var supportedFeatures = await this.plugin.hasCustomActionForBrowser(browserId);
+        var isLocalBrowser        = await this.plugin.isLocalBrowser(browserId);
+        var customActionsInfo     = await this.plugin.hasCustomActionForBrowser(browserId);
+        var hasCustomResizeWindow = customActionsInfo.hasResizeWindow;
 
-        if (isLocalBrowser && !supportedFeatures.hasResizeWindow) {
+
+        if (isLocalBrowser && !hasCustomResizeWindow) {
             await this._resizeLocalBrowserWindow(browserId, width, height, currentWidth, currentHeight);
             return;
         }
@@ -219,30 +231,34 @@ export default class BrowserProvider {
     }
 
     async canResizeWindowToDimensions (browserId, width, height) {
-        var isLocalBrowser    = await this.plugin.isLocalBrowser(browserId);
-        var supportedFeatures = await this.plugin.hasCustomActionForBrowser(browserId);
+        var isLocalBrowser                 = await this.plugin.isLocalBrowser(browserId);
+        var customActionsInfo              = await this.plugin.hasCustomActionForBrowser(browserId);
+        var hasCustomCanResizeToDimensions = customActionsInfo.hasCanResizeWindowToDimensions;
 
-        if (isLocalBrowser && !supportedFeatures.hasCanResizeWindowToDimensions)
+
+        if (isLocalBrowser && !hasCustomCanResizeToDimensions)
             return await this._canResizeLocalBrowserWindowToDimensions(browserId, width, height);
 
         return await this.plugin.canResizeWindowToDimensions(browserId, width, height);
     }
 
     async maximizeWindow (browserId) {
-        var isLocalBrowser    = await this.plugin.isLocalBrowser(browserId);
-        var supportedFeatures = await this.plugin.hasCustomActionForBrowser(browserId);
+        var isLocalBrowser          = await this.plugin.isLocalBrowser(browserId);
+        var customActionsInfo       = await this.plugin.hasCustomActionForBrowser(browserId);
+        var hasCustomMaximizeWindow = customActionsInfo.hasMaximizeWindow;
 
-        if (isLocalBrowser && !supportedFeatures.hasCanResizeWindowToDimensions)
+        if (isLocalBrowser && !hasCustomMaximizeWindow)
             return await this._maximizeLocalBrowserWindow(browserId);
 
         return await this.plugin.maximizeWindow(browserId);
     }
 
     async takeScreenshot (browserId, screenshotPath, pageWidth, pageHeight) {
-        var isLocalBrowser    = await this.plugin.isLocalBrowser(browserId);
-        var supportedFeatures = await this.plugin.hasCustomActionForBrowser(browserId);
+        var isLocalBrowser          = await this.plugin.isLocalBrowser(browserId);
+        var customActionsInfo       = await this.plugin.hasCustomActionForBrowser(browserId);
+        var hasCustomTakeScreenshot = customActionsInfo.hasTakeScreenshot;
 
-        if (isLocalBrowser && !supportedFeatures.hasTakeScreenshot) {
+        if (isLocalBrowser && !hasCustomTakeScreenshot) {
             await this._takeLocalBrowserScreenshot(browserId, screenshotPath, pageWidth, pageHeight);
             return;
         }
