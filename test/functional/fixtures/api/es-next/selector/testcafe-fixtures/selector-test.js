@@ -1,6 +1,5 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 import { Selector, ClientFunction } from 'testcafe';
-import { expect } from 'chai';
 
 fixture `Selector`
     .page `http://localhost:3000/fixtures/api/es-next/selector/pages/index.html`;
@@ -16,149 +15,155 @@ const isIEFunction = ClientFunction(() => {
            appName === 'Netscape' && isIE11Re.exec(userAgent) !== null;
 });
 
-test('HTMLElement snapshot basic properties', async () => {
+test('HTMLElement snapshot basic properties', async t => {
     const el = await getElementById('htmlElement');
 
-    expect(el.nodeType).eql(1);
-    expect(el.id).eql('htmlElement');
-    expect(el.tagName).eql('div');
+    await t
+        .expect(el.nodeType).eql(1)
+        .expect(el.id).eql('htmlElement')
+        .expect(el.tagName).eql('div')
 
-    expect(el.attributes['id']).eql('htmlElement');
-    expect(el.getAttribute('id')).eql('htmlElement');
-    expect(el.attributes['class']).eql('yo hey cool');
-    expect(el.attributes['style']).contains('width: 40px; height: 30px; padding-top: 2px; padding-left: 2px;');
+        .expect(el.attributes['id']).eql('htmlElement')
+        .expect(el.getAttribute('id')).eql('htmlElement')
+        .expect(el.attributes['class']).eql('yo hey cool')
+        .expect(el.attributes['style']).contains('width: 40px; height: 30px; padding-top: 2px; padding-left: 2px;')
 
-    expect(el.style['width']).eql('40px');
-    expect(el.getStyleProperty(['width'])).eql('40px');
-    expect(el.style['height']).eql('30px');
-    expect(el.style['padding-top']).eql('2px');
-    expect(el.style['padding-left']).eql('2px');
-    expect(el.style['display']).eql('block');
+        .expect(el.style['width']).eql('40px')
+        .expect(el.getStyleProperty(['width'])).eql('40px')
+        .expect(el.style['height']).eql('30px')
+        .expect(el.style['padding-top']).eql('2px')
+        .expect(el.style['padding-left']).eql('2px')
+        .expect(el.style['display']).eql('block')
 
-    expect(el.namespaceURI).eql('http://www.w3.org/1999/xhtml');
-    expect(el.hasChildNodes).to.be.true;
-    expect(el.childNodeCount).eql(3);
-    expect(el.hasChildElements).to.be.true;
-    expect(el.childElementCount).eql(1);
-    expect(el.visible).to.be.true;
+        .expect(el.namespaceURI).eql('http://www.w3.org/1999/xhtml')
+        .expect(el.hasChildNodes).ok()
+        .expect(el.childNodeCount).eql(3)
+        .expect(el.hasChildElements).ok()
+        .expect(el.childElementCount).eql(1)
+        .expect(el.visible).ok()
 
-    expect(el.clientWidth).eql(42);
-    expect(el.clientHeight).eql(32);
-    expect(el.clientTop).eql(0);
-    expect(el.clientLeft).eql(1);
+        .expect(el.clientWidth).eql(42)
+        .expect(el.clientHeight).eql(32)
+        .expect(el.clientTop).eql(0)
+        .expect(el.clientLeft).eql(1)
 
-    expect(el.offsetWidth).eql(43);
-    expect(el.offsetHeight).eql(32);
-    expect(el.offsetTop).eql(0);
-    expect(el.offsetLeft).eql(0);
+        .expect(el.offsetWidth).eql(43)
+        .expect(el.offsetHeight).eql(32)
+        .expect(el.offsetTop).eql(0)
+        .expect(el.offsetLeft).eql(0)
 
-    expect(el.scrollWidth).eql(42);
-    expect(el.scrollHeight).eql(32);
-    expect(el.scrollTop).eql(0);
-    expect(el.scrollLeft).eql(0);
+        .expect(el.scrollWidth).eql(42)
+        .expect(el.scrollHeight).eql(32)
+        .expect(el.scrollTop).eql(0)
+        .expect(el.scrollLeft).eql(0)
 
-    expect(el.focused).to.be.false;
-    expect(el.value).to.be.undefined;
-    expect(el.checked).to.be.undefined;
-    expect(el.selected).to.be.undefined;
+        .expect(el.focused).notOk()
+        .expect(el.value).eql(void 0)
+        .expect(el.checked).eql(void 0)
+        .expect(el.selected).eql(void 0)
 
-    expect(el.boundingClientRect.width).eql(43);
-    expect(el.boundingClientRect.left).eql(0);
-    expect(el.getBoundingClientRectProperty('left')).eql(0);
+        .expect(el.boundingClientRect.width).eql(43)
+        .expect(el.boundingClientRect.left).eql(0)
+        .expect(el.getBoundingClientRectProperty('left')).eql(0)
 
-    expect(el.textContent).eql('\n    \n        42\n    \n    Yo\n');
-    expect(el.classNames).eql(['yo', 'hey', 'cool']);
+        .expect(el.textContent).eql('\n    \n        42\n    \n    Yo\n')
+        .expect(el.classNames).eql(['yo', 'hey', 'cool']);
 });
 
-test('SVGElement snapshot basic properties', async () => {
+test('SVGElement snapshot basic properties', async t => {
     const el = await getElementById('svgElement');
 
-    expect(el.nodeType).eql(1);
-    expect(el.id).eql('svgElement');
-    expect(el.tagName).eql('rect');
+    await t
+        .expect(el.nodeType).eql(1)
+        .expect(el.id).eql('svgElement')
+        .expect(el.tagName).eql('rect')
 
-    expect(el.attributes['id']).eql('svgElement');
-    expect(el.attributes['width']).eql('300px');
-    expect(el.attributes['height']).eql('100px');
-    expect(el.attributes['class']).eql('svg1 svg2');
-    expect(el.attributes['style']).to.be.a.string;
+        .expect(el.attributes['id']).eql('svgElement')
+        .expect(el.attributes['width']).eql('300px')
+        .expect(el.attributes['height']).eql('100px')
+        .expect(el.attributes['class']).eql('svg1 svg2')
+        .expect(typeof el.attributes['style']).eql('string')
 
-    expect(el.style['display']).eql('inline');
-    expect(el.style['visibility']).eql('visible');
+        .expect(el.style['display']).eql('inline')
+        .expect(el.style['visibility']).eql('visible')
 
-    expect(el.namespaceURI).eql('http://www.w3.org/2000/svg');
-    expect(el.hasChildNodes).to.be.true;
-    expect(el.childNodeCount).eql(1);
-    expect(el.hasChildElements).to.be.false;
-    expect(el.childElementCount).eql(0);
-    expect(el.visible).to.be.true;
+        .expect(el.namespaceURI).eql('http://www.w3.org/2000/svg')
+        .expect(el.hasChildNodes).ok()
+        .expect(el.childNodeCount).eql(1)
+        .expect(el.hasChildElements).notOk()
+        .expect(el.childElementCount).eql(0)
+        .expect(el.visible).ok()
 
-    expect(el.clientWidth).eql(0);
-    expect(el.clientHeight).eql(0);
-    expect(el.clientTop).eql(0);
-    expect(el.clientLeft).eql(0);
+        .expect(el.clientWidth).eql(0)
+        .expect(el.clientHeight).eql(0)
+        .expect(el.clientTop).eql(0)
+        .expect(el.clientLeft).eql(0)
 
-    expect(el.boundingClientRect.width).eql(300);
-    expect(el.boundingClientRect.height).eql(100);
-    expect(el.boundingClientRect.top).eql(32);
-    expect(el.boundingClientRect.left).eql(0);
+        .expect(el.boundingClientRect.width).eql(300)
+        .expect(el.boundingClientRect.height).eql(100)
+        .expect(el.boundingClientRect.top).eql(32)
+        .expect(el.boundingClientRect.left).eql(0)
 
-    expect(el.focused).to.be.false;
-    expect(el.value).to.be.undefined;
-    expect(el.checked).to.be.undefined;
-    expect(el.selected).to.be.undefined;
+        .expect(el.focused).notOk()
+        .expect(el.value).eql(void 0)
+        .expect(el.checked).eql(void 0)
+        .expect(el.selected).eql(void 0)
 
-    expect(el.textContent).eql('\n        Hey\n    ');
-    expect(el.classNames).eql(['svg1', 'svg2']);
+        .expect(el.textContent).eql('\n        Hey\n    ')
+        .expect(el.classNames).eql(['svg1', 'svg2']);
 });
 
 test('Input-specific element snapshot properties', async t => {
     let el = await getElementById('textInput');
 
-    expect(el.focused).to.be.false;
-    expect(el.value).eql('');
-    expect(el.checked).to.be.false;
+    await t
+        .expect(el.focused).notOk()
+        .expect(el.value).eql('')
+        .expect(el.checked).notOk()
 
-    await t.typeText('#textInput', 'Hey!');
+        .typeText('#textInput', 'Hey!');
 
     el = await getElementById('textInput');
 
-    expect(el.focused).to.be.true;
-    expect(el.value).eql('Hey!');
-    expect(el.checked).to.be.false;
-    expect(el.selected).to.be.undefined;
+    await t
+        .expect(el.focused).ok()
+        .expect(el.value).eql('Hey!')
+        .expect(el.checked).notOk()
+        .expect(el.selected).eql(void 0);
 
     el = await getElementById('checkInput');
 
-    expect(el.focused).to.be.false;
-    expect(el.value).eql('on');
-    expect(el.checked).to.be.false;
+    await t
+        .expect(el.focused).notOk()
+        .expect(el.value).eql('on')
+        .expect(el.checked).notOk()
 
-    await t.click('#checkInput');
+        .click('#checkInput');
 
     el = await getElementById('checkInput');
 
-    expect(el.focused).to.be.true;
-    expect(el.value).eql('on');
-    expect(el.checked).to.be.true;
+    await t
+        .expect(el.focused).ok()
+        .expect(el.value).eql('on')
+        .expect(el.checked).ok();
 
     el = await getElementById('option2');
 
-    expect(el.selected).to.be.false;
+    await t.expect(el.selected).notOk();
 
     const select = Selector('#selectInput');
 
-    expect(await select.selectedIndex).eql(0);
+    await t.expect(await select.selectedIndex).eql(0);
 
     await t
         .click(select)
-        .click('#option2');
+        .click('#option2')
 
-    expect(await select.selectedIndex).eql(1);
+        .expect(select.selectedIndex).eql(1);
 
     el = await getElementById('option2');
 
-    expect(el.selected).to.be.true;
+    await t.expect(el.selected).ok();
 });
 
 test('`innerText` element snapshot property', async t => {
@@ -176,34 +181,37 @@ test('`innerText` element snapshot property', async t => {
 });
 
 test('Non-element node snapshots', async t => {
-    await t.navigateTo('http://localhost:3000/fixtures/api/es-next/selector/pages/non-element-nodes.html');
+    await t.navigateTo(`http://localhost:3000/fixtures/api/es-next/selector/pages/non-element-nodes.html`);
 
     const doc = await Selector(() => document)();
 
-    expect(doc.nodeType).eql(9);
-    expect(doc.childNodeCount).eql(2);
-    expect(doc.hasChildNodes).to.be.true;
-    expect(doc.childElementCount).eql(1);
-    expect(doc.hasChildElements).to.be.true;
-    expect(doc.textContent).to.be.null;
+    await t
+        .expect(doc.nodeType).eql(9)
+        .expect(doc.childNodeCount).eql(2)
+        .expect(doc.hasChildNodes).ok()
+        .expect(doc.childElementCount).eql(1)
+        .expect(doc.hasChildElements).ok()
+        .expect(doc.textContent).eql(null);
 
     const textNode = await Selector(() => document.body.childNodes[0])();
 
-    expect(textNode.nodeType).eql(3);
-    expect(textNode.childNodeCount).eql(0);
-    expect(textNode.hasChildNodes).to.be.false;
-    expect(textNode.childElementCount).eql(0);
-    expect(textNode.hasChildElements).to.be.false;
-    expect(textNode.textContent).eql('Yo');
+    await t
+        .expect(textNode.nodeType).eql(3)
+        .expect(textNode.childNodeCount).eql(0)
+        .expect(textNode.hasChildNodes).notOk()
+        .expect(textNode.childElementCount).eql(0)
+        .expect(textNode.hasChildElements).notOk()
+        .expect(textNode.textContent).eql('Yo');
 
     const comment = await Selector(() => document.body.childNodes[1])();
 
-    expect(comment.nodeType).eql(8);
-    expect(comment.childNodeCount).eql(0);
-    expect(comment.hasChildNodes).to.be.false;
-    expect(comment.childElementCount).eql(0);
-    expect(comment.hasChildElements).to.be.false;
-    expect(comment.textContent).eql(' some comment ');
+    await t
+        .expect(comment.nodeType).eql(8)
+        .expect(comment.childNodeCount).eql(0)
+        .expect(comment.hasChildNodes).notOk()
+        .expect(comment.childElementCount).eql(0)
+        .expect(comment.hasChildElements).notOk()
+        .expect(comment.textContent).eql(' some comment ');
 
     const fragment = await Selector(() => {
         const f   = document.createDocumentFragment();
@@ -215,24 +223,23 @@ test('Non-element node snapshots', async t => {
         return f;
     })();
 
-    expect(fragment.nodeType).eql(11);
-    expect(fragment.childNodeCount).eql(1);
-    expect(fragment.hasChildNodes).to.be.true;
-    expect(fragment.childElementCount).eql(1);
-    expect(fragment.hasChildElements).to.be.true;
-    expect(fragment.textContent).eql('42');
+    await t
+        .expect(fragment.nodeType).eql(11)
+        .expect(fragment.childNodeCount).eql(1)
+        .expect(fragment.hasChildNodes).ok()
+        .expect(fragment.childElementCount).eql(1)
+        .expect(fragment.hasChildElements).ok()
+        .expect(fragment.textContent).eql('42');
 });
 
 test('Selector fn is not a function or string', async () => {
     await Selector(123)();
 });
 
-test('String ctor argument', async () => {
-    const el1 = await Selector('#htmlElement')();
-    const el2 = await Selector('.svg1')();
-
-    expect(el1.tagName).eql('div');
-    expect(el2.tagName).eql('rect');
+test('String ctor argument', async t => {
+    await t
+        .expect(Selector('#htmlElement').tagName).eql('div')
+        .expect(Selector('.svg1').tagName).eql('rect');
 });
 
 test('Wait for element in DOM', async t => {
@@ -240,13 +247,13 @@ test('Wait for element in DOM', async t => {
 
     const el = await Selector('#newElement')();
 
-    expect(el.tagName).eql('div');
+    await t.expect(el.tagName).eql('div');
 });
 
-test('Element does not appear', async () => {
+test('Element does not appear', async t => {
     const el = await Selector('#someElement')();
 
-    expect(el).eql(null);
+    await t.expect(el).eql(null);
 });
 
 test('Error in code', async () => {
@@ -260,52 +267,51 @@ test('Error in code', async () => {
 test('Visibility check', async t => {
     const getInvisibleEl = Selector('#invisibleElement');
 
-    let el = await getInvisibleEl();
+    await t.expect(getInvisibleEl.tagName).eql('div');
 
-    expect(el.tagName).eql('div');
+    const el = await getInvisibleEl.with({ visibilityCheck: true })();
 
-    el = await getInvisibleEl.with({ visibilityCheck: true })();
+    await t
+        .expect(el).eql(null)
 
-    expect(el).to.be.a.null;
+        .click('#makeVisible')
 
-    await t.click('#makeVisible');
-
-    el = await getInvisibleEl.with({ visibilityCheck: true })();
-
-    expect(el.tagName).eql('div');
+        .expect(getInvisibleEl.with({ visibilityCheck: true }).tagName).eql('div');
 });
 
-test('Timeout', async () => {
+test('Timeout', async t => {
     const getSlowEl = Selector('#slowElement').with({ visibilityCheck: true, timeout: 300 });
     const el        = await getSlowEl();
 
-    expect(el).to.be.a.null;
+    await t.expect(el).eql(null);
 });
 
 test('Return non-DOM node', async () => {
     await Selector(() => 'hey')();
 });
 
-test('Snapshot `selector` method', async () => {
+test('Snapshot `selector` method', async t => {
     let el = await getElementById('htmlElement');
 
     el = await el.selector();
 
-    expect(el.id).eql('htmlElement');
+    await t.expect(el.id).eql('htmlElement');
 });
 
-test('Snapshot `hasClass` method', async () => {
+test('Snapshot `hasClass` method', async t => {
     let el = await getElementById('htmlElement');
 
-    expect(el.hasClass('yo')).to.be.true;
-    expect(el.hasClass('cool')).to.be.true;
-    expect(el.hasClass('42')).to.be.false;
+    await t
+        .expect(el.hasClass('yo')).ok()
+        .expect(el.hasClass('cool')).ok()
+        .expect(el.hasClass('42')).notOk();
 
     el = await getElementById('svgElement');
 
-    expect(el.hasClass('svg1')).to.be.true;
-    expect(el.hasClass('svg2')).to.be.true;
-    expect(el.hasClass('cool')).to.be.false;
+    await t
+        .expect(el.hasClass('svg1')).ok()
+        .expect(el.hasClass('svg2')).ok()
+        .expect(el.hasClass('cool')).notOk();
 });
 
 test('Element on new page', async t => {
@@ -315,7 +321,7 @@ test('Element on new page', async t => {
 
     const el = await getNewElement();
 
-    expect(el.tagName).eql('div');
+    await t.expect(el.tagName).eql('div');
 });
 
 test('Derivative selector without options', async () => {
@@ -324,58 +330,61 @@ test('Derivative selector without options', async () => {
     await derivative();
 });
 
-test('<option> text selector', async () => {
+test('<option> text selector', async t => {
     const selector = Selector('#selectInput > option').withText('O2');
-    const el       = await selector();
 
-    expect(el.id).eql('option2');
+    await t.expect(selector.id).eql('option2');
 });
 
-test('Snapshot properties shorthands on selector', async () => {
+test('Snapshot properties shorthands on selector', async t => {
     let el = Selector('#htmlElement');
 
-    expect(await el.id).eql('htmlElement');
-    expect(await el.nodeType).eql(1);
-    expect(await el.tagName).eql('div');
-    expect(await el.namespaceURI).eql('http://www.w3.org/1999/xhtml');
-    expect(await el.childNodeCount).eql(3);
-    expect(await el.childElementCount).eql(1);
-    expect(await el.visible).to.be.true;
-    expect(await el.clientWidth).eql(42);
-    expect(await el.offsetWidth).eql(43);
-    expect(await el.focused).to.be.false;
-    expect(await el.value).to.be.undefined;
-    expect(await el.textContent).eql('\n    \n        42\n    \n    Yo\n');
-    expect(await el.classNames).eql(['yo', 'hey', 'cool']);
-    expect(await el.getStyleProperty('width')).eql('40px');
-    expect(await el.getStyleProperty('display')).eql('block');
-    expect(await el.getAttribute('id')).eql('htmlElement');
-    expect(await el.getAttribute('class')).eql('yo hey cool');
-    expect(await el.getBoundingClientRectProperty('width')).eql(43);
-    expect(await el.getBoundingClientRectProperty('left')).eql(0);
-    expect(await el.hasClass('yo')).to.be.true;
-    expect(await el.hasClass('cool')).to.be.true;
-    expect(await el.hasClass('some-class')).to.be.false;
+    await t
+        .expect(el.id).eql('htmlElement')
+        .expect(el.nodeType).eql(1)
+        .expect(el.tagName).eql('div')
+        .expect(el.namespaceURI).eql('http://www.w3.org/1999/xhtml')
+        .expect(el.childNodeCount).eql(3)
+        .expect(el.childElementCount).eql(1)
+        .expect(el.visible).ok()
+        .expect(el.clientWidth).eql(42)
+        .expect(el.offsetWidth).eql(43)
+        .expect(el.focused).notOk()
+        .expect(el.value).eql(void 0)
+        .expect(el.textContent).eql('\n    \n        42\n    \n    Yo\n')
+        .expect(el.classNames).eql(['yo', 'hey', 'cool'])
+        .expect(el.getStyleProperty('width')).eql('40px')
+        .expect(el.getStyleProperty('display')).eql('block')
+        .expect(el.getAttribute('id')).eql('htmlElement')
+        .expect(el.getAttribute('class')).eql('yo hey cool')
+        .expect(el.getBoundingClientRectProperty('width')).eql(43)
+        .expect(el.getBoundingClientRectProperty('left')).eql(0)
+        .expect(el.hasClass('yo')).ok()
+        .expect(el.hasClass('cool')).ok()
+        .expect(el.hasClass('some-class')).notOk();
 
     el = Selector('#checkInput');
 
-    expect(await el.focused).to.be.false;
-    expect(await el.value).eql('on');
-    expect(await el.checked).to.be.false;
+    await t
+        .expect(el.focused).notOk()
+        .expect(el.value).eql('on')
+        .expect(el.checked).notOk();
 
     el = Selector(() => document);
 
-    expect(await el.hasClass('some-class')).to.be.false;
-    expect(await el.getStyleProperty('width')).to.be.undefined;
-    expect(await el.getAttribute('id')).to.be.undefined;
-    expect(await el.getBoundingClientRectProperty('left')).to.be.undefined;
+    await t
+        .expect(el.hasClass('some-class')).notOk()
+        .expect(el.getStyleProperty('width')).eql(void 0)
+        .expect(el.getAttribute('id')).eql(void 0)
+        .expect(el.getBoundingClientRectProperty('left')).eql(void 0);
 
     const selector = Selector(id => document.getElementById(id));
 
-    expect(await selector('htmlElement').tagName).eql('div');
-    expect(await selector('htmlElement').classNames).eql(['yo', 'hey', 'cool']);
-    expect(await selector('checkInput').checked).to.be.false;
-    expect(await selector('checkInput').value).eql('on');
+    await t
+        .expect(selector('htmlElement').tagName).eql('div')
+        .expect(selector('htmlElement').classNames).eql(['yo', 'hey', 'cool'])
+        .expect(selector('checkInput').checked).notOk()
+        .expect(selector('checkInput').value).eql('on');
 });
 
 test("Snapshot property shorthand - selector doesn't match any element", async () => {
@@ -394,37 +403,32 @@ test('Snapshot shorthand method - selector error', async () => {
     await Selector(() => [].someUndefMethod()).hasClass('yo');
 });
 
-test('Selector "nth()" method', async () => {
+test('Selector "nth()" method', async t => {
     // String selector
     const getSecondEl = Selector('.idxEl').nth(-3);
 
-    let el = await getSecondEl();
-
-    expect(el.id).eql('el2');
+    await t.expect(getSecondEl.id).eql('el2');
 
     // Function selector
     const getThirdEl = Selector(() => document.querySelectorAll('.idxEl')).nth(2);
 
-    el = await getThirdEl();
-
-    expect(el.id).eql('el3');
+    await t.expect(getThirdEl.id).eql('el3');
 
     // If single node is returned index should be always 0
-    const getFirstEl = Selector(() => document.querySelectorAll('.idxEl')[0]).nth(2);
+    const getFirstEl = await Selector(() => document.querySelectorAll('.idxEl')[0]).nth(2)();
 
-    el = await getFirstEl();
-
-    expect(el).to.be.null;
+    await t.expect(getFirstEl).eql(null);
 
     // Should work on parameterized selectors
     const elWithClass = Selector(className => document.querySelectorAll('.' + className));
 
-    expect(await elWithClass('idxEl').nth(2).id).eql('el3');
-    expect(await elWithClass('idxEl').nth(-3).id).eql('el2');
+    await t
+        .expect(elWithClass('idxEl').nth(2).id).eql('el3')
+        .expect(elWithClass('idxEl').nth(-3).id).eql('el2')
 
-    // Should be overridable
-    expect(await elWithClass('idxEl').nth(2).nth(1).id).eql('el2');
-    expect(await getSecondEl.nth(2).id).eql('el3');
+        // Should be overridable
+        .expect(elWithClass('idxEl').nth(2).nth(1).id).eql('el2')
+        .expect(getSecondEl.nth(2).id).eql('el3');
 });
 
 test('Selector "withText" method', async t => {
@@ -516,215 +520,233 @@ test('Selector "withAttribute" method', async t => {
     await t.expect(nodeSelector.withAttribute('data-store').exists).notOk();
 });
 
-test('Selector "filter" method', async () => {
+test('Selector "filter" method', async t => {
     // String filter
-    expect(await Selector('body div').filter('#htmlElementWithInnerText').id).eql('htmlElementWithInnerText');
+    await t
+        .expect(Selector('body div').filter('#htmlElementWithInnerText').id).eql('htmlElementWithInnerText')
 
-    // Function filter
-    expect(await Selector('#container div').filter(node => node.id === 'el3').id).eql('el3');
+        // Function filter
+        .expect(Selector('#container div').filter(node => node.id === 'el3').id).eql('el3')
 
-    // Compound
-    expect(await Selector('div').filter('.common').filter('.class1').id).eql('common2');
+        // Compound
+        .expect(Selector('div').filter('.common').filter('.class1').id).eql('common2');
 
     // Parameterized selector
     const withClass = Selector(className => document.getElementsByClassName(className));
 
-    expect(await withClass('common').filter('.class1').id).eql('common2');
+    await t
+        .expect(withClass('common').filter('.class1').id).eql('common2')
 
-    // With other filters
-    expect(await Selector('div').filter('.common').nth(0).id).eql('common1');
+        // With other filters
+        .expect(Selector('div').filter('.common').nth(0).id).eql('common1');
 
     // Should not apply implicit index filter when used as transitive selector
     let label = Selector('#list *').filter('label');
 
-    expect(await label.filter('#release').id).eql('release');
-    expect(await label.filter('#write').id).eql('write');
+    await t
+        .expect(label.filter('#release').id).eql('release')
+        .expect(label.filter('#write').id).eql('write');
 
     // Should apply explicit index filter when used as transitive selector
     label = Selector('#list *').filter('label');
 
-    expect(await label.nth(0).parent(0).find('#release').exists).to.be.false;
-    expect(await label.nth(1).parent(0).find('#release').exists).to.be.false;
-    expect(await label.nth(2).parent(0).find('#release').exists).to.be.true;
+    await t
+        .expect(label.nth(0).parent(0).find('#release').exists).notOk()
+        .expect(label.nth(1).parent(0).find('#release').exists).notOk()
+        .expect(label.nth(2).parent(0).find('#release').exists).ok();
 });
 
 test('Combination of filter methods', async t => {
-    const selector = Selector('div').withText('Hey?! (yo)').nth(1);
+    const firstSelector = Selector('div').withText('Hey?! (yo)').nth(1);
 
-    let el = await selector();
+    await t.expect(firstSelector.id).eql('el3');
 
-    expect(el.id).eql('el3');
+    const secondSelector = Selector('div').withText(/This is element \d+/).nth(1);
 
-    el = await Selector('div').withText(/This is element \d+/).nth(1)();
-
-    expect(el.id).eql('el4');
+    await t.expect(secondSelector.id).eql('el4');
 
     // Selector should maintain filter when used as parameter
     const getId = ClientFunction(getEl => getEl().id);
 
-    let id = await getId(selector);
+    let id = await getId(firstSelector);
 
-    expect(id).eql('el3');
+    await t.expect(id).eql('el3');
 
     // Selector should maintain filter when used as dependency
-    id = await t.eval(() => selector().id, { dependencies: { selector: selector.nth(0) } });
+    id = await t.eval(() => firstSelector().id, { dependencies: { firstSelector: firstSelector.nth(0) } });
 
-    expect(id).eql('el2');
+    await t.expect(id).eql('el2');
 });
 
-test('Selector "find" method', async () => {
+test('Selector "find" method', async t => {
+    await t
     // String filter
-    expect(await Selector('#htmlElement').find('span').id).eql('someSpan');
+        .expect(Selector('#htmlElement').find('span').id).eql('someSpan')
 
-    // Function filter
-    expect(await Selector('#container').find(node => node.id === 'el3').id).eql('el3');
+        // Function filter
+        .expect(Selector('#container').find(node => node.id === 'el3').id).eql('el3')
 
-    // Compound
-    expect(await Selector('a').find('f').find('g').innerText).eql('h');
+        // Compound
+        .expect(Selector('a').find('f').find('g').innerText).eql('h')
 
-    // Deep search
-    expect(await Selector('a').find('g').innerText).eql('h');
-    expect(await Selector('a').find(node => node.tagName && node.tagName.toLowerCase() === 'g').innerText).eql('h');
+        // Deep search
+        .expect(Selector('a').find('g').innerText).eql('h')
+        .expect(Selector('a').find(node => node.tagName && node.tagName.toLowerCase() === 'g').innerText).eql('h');
 
     // Parameterized selector
     const withId = Selector(id => document.getElementById(id));
 
-    expect(await withId('htmlElement').find('span').id).eql('someSpan');
+    await t
+        .expect(withId('htmlElement').find('span').id).eql('someSpan')
 
-    // With filters
-    expect(await Selector('#container').find('div').withText('element 4').id).eql('el4');
+        // With filters
+        .expect(Selector('#container').find('div').withText('element 4').id).eql('el4');
 
     // Should not apply implicit index filter when used as transitive selector
     let label = Selector('#list').find('li').find('label');
 
-    expect(await label.withText('Write code').id).eql('write');
-    expect(await label.withText('Test it').id).eql('test');
-    expect(await label.withText('Release it').id).eql('release');
+    await t
+        .expect(label.withText('Write code').id).eql('write')
+        .expect(label.withText('Test it').id).eql('test')
+        .expect(label.withText('Release it').id).eql('release');
 
     // Should apply explicit index filter when used as transitive selector
     label = Selector('#list').find('li').nth(1).find('label');
 
-    expect(await label.withText('Write code').exists).to.be.false;
-    expect(await label.withText('Test it').exists).to.be.true;
-    expect(await label.withText('Release it').exists).to.be.false;
+    await t
+        .expect(label.withText('Write code').exists).notOk()
+        .expect(label.withText('Test it').exists).ok()
+        .expect(label.withText('Release it').exists).notOk();
 });
 
-test('Selector "parent" method', async () => {
+test('Selector "parent" method', async t => {
     // Index filter
-    expect((await Selector('g').parent(1).tagName).toLowerCase()).eql('a');
-    expect((await Selector('g').parent().parent().tagName).toLowerCase()).eql('a');
-    expect((await Selector('#option1').parent(1).tagName).toLowerCase()).eql('form');
-    expect((await Selector('#option1').parent(-2).tagName).toLowerCase()).eql('html');
-    expect(await Selector('g').parent(0).count).eql(1);
+    await t
+        .expect(Selector('g').parent(1).tagName).eql('a')
+        .expect(Selector('g').parent().parent().tagName).eql('a')
+        .expect(Selector('#option1').parent(1).tagName).eql('form')
+        .expect(Selector('#option1').parent(-2).tagName).eql('html')
+        .expect(Selector('g').parent(0).count).eql(1)
 
-    // CSS selector filter
-    expect((await Selector('g').parent('a').tagName).toLowerCase()).eql('a');
-    expect(await Selector('#childDiv').parent('.parent1').id).eql('p1');
+        // CSS selector filter
+        .expect(Selector('g').parent('a').tagName).eql('a')
+        .expect(Selector('#childDiv').parent('.parent1').id).eql('p1')
 
-    // Function selector
-    expect(await Selector('#childDiv').parent(node => node.id === 'p2').id).eql('p2');
+        // Function selector
+        .expect(Selector('#childDiv').parent(node => node.id === 'p2').id).eql('p2');
 
     // Parameterized selector
     const withId = Selector(id => document.getElementById(id));
 
-    expect(await withId('childDiv').parent('.parent1').id).eql('p1');
+    await t
+        .expect(withId('childDiv').parent('.parent1').id).eql('p1')
 
-    // With filters
-    expect(await Selector('#childDiv').parent().withText(/Hey/).id).eql('p2');
-    expect(await Selector('#childDiv').parent().nth(1).id).eql('p1');
+        // With filters
+        .expect(Selector('#childDiv').parent().withText(/Hey/).id).eql('p2')
+        .expect(Selector('#childDiv').parent().nth(1).id).eql('p1');
 
     // Should not apply implicit index filter when used as transitive selector
     let selector = Selector('.common').parent('div').find('div');
 
-    expect(await selector.nth(0).id).eql('common1');
-    expect(await selector.nth(1).id).eql('common2');
+    await t
+        .expect(selector.nth(0).id).eql('common1')
+        .expect(selector.nth(1).id).eql('common2');
 
     // Should apply explicit index filter when used as transitive selector
     selector = Selector('.common').parent('div').nth(0).find('div');
 
-    expect(await selector.nth(0).exists).to.be.true;
-    expect(await selector.nth(1).exists).to.be.false;
+    await t
+        .expect(selector.nth(0).exists).ok()
+        .expect(selector.nth(1).exists).notOk();
 });
 
-test('Selector "child" method', async () => {
+test('Selector "child" method', async t => {
     // Index filter
-    expect(await Selector('#container').child(1).id).eql('el2');
-    expect(await Selector('#p2').child().child().id).eql('p0');
-    expect(await Selector('#container').child(3).id).eql('el4');
-    expect(await Selector('#container').child(-2).id).eql('el3');
-    expect(await Selector('body').child(0).count).eql(1);
+    await t
+        .expect(Selector('#container').child(1).id).eql('el2')
+        .expect(Selector('#p2').child().child().id).eql('p0')
+        .expect(Selector('#container').child(3).id).eql('el4')
+        .expect(Selector('#container').child(-2).id).eql('el3')
+        .expect(Selector('body').child(0).count).eql(1)
 
-    // CSS selector filter
-    expect(await Selector('#container').child('#el3').id).eql('el3');
-    expect(await Selector('form').child('select').id).eql('selectInput');
+        // CSS selector filter
+        .expect(Selector('#container').child('#el3').id).eql('el3')
+        .expect(Selector('form').child('select').id).eql('selectInput')
 
-    // Function selector
-    expect(await Selector('#container').child(el => el.id === 'el2').id).eql('el2');
+        // Function selector
+        .expect(Selector('#container').child(el => el.id === 'el2').id).eql('el2');
 
     // Parameterized selector
     const withId = Selector(id => document.getElementById(id));
 
-    expect(await withId('container').child('#el3').id).eql('el3');
+    await t
+        .expect(withId('container').child('#el3').id).eql('el3')
 
-    // With filters
-    expect(await Selector('#container').child().withText('element 4').id).eql('el4');
+        // With filters
+        .expect(Selector('#container').child().withText('element 4').id).eql('el4');
 
     // Should not apply implicit index filter when used as transitive selector
     let label = Selector('#list').child('li').child('label');
 
-    expect(await label.withText('Write code').id).eql('write');
-    expect(await label.withText('Test it').id).eql('test');
-    expect(await label.withText('Release it').id).eql('release');
+    await t
+        .expect(label.withText('Write code').id).eql('write')
+        .expect(label.withText('Test it').id).eql('test')
+        .expect(label.withText('Release it').id).eql('release');
 
     // Should apply explicit index filter when used as transitive selector
     label = Selector('#list').child('li').nth(1).child('label');
 
-    expect(await label.withText('Write code').exists).to.be.false;
-    expect(await label.withText('Test it').exists).to.be.true;
-    expect(await label.withText('Release it').exists).to.be.false;
+    await t
+        .expect(label.withText('Write code').exists).notOk()
+        .expect(label.withText('Test it').exists).ok()
+        .expect(label.withText('Release it').exists).notOk();
 });
 
-test('Selector "sibling" method', async () => {
+test('Selector "sibling" method', async t => {
     // Index filter
-    expect(await Selector('#el2').sibling(1).id).eql('el3');
-    expect(await Selector('#el2').sibling().sibling().id).eql('el2');
-    expect(await Selector('#el1').sibling(2).id).eql('el4');
-    expect(await Selector('#el1').sibling(-3).id).eql('el2');
-    expect(await Selector('#el2').sibling(0).count).eql(1);
+    await t
+        .expect(Selector('#el2').sibling(1).id).eql('el3')
+        .expect(Selector('#el2').sibling().sibling().id).eql('el2')
+        .expect(Selector('#el1').sibling(2).id).eql('el4')
+        .expect(Selector('#el1').sibling(-3).id).eql('el2')
+        .expect(Selector('#el2').sibling(0).count).eql(1)
 
-    // CSS selector filter
-    expect(await Selector('#selectInput').sibling('[type=checkbox]').id).eql('checkInput');
+        // CSS selector filter
+        .expect(Selector('#selectInput').sibling('[type=checkbox]').id).eql('checkInput')
 
-    // Function selector
-    expect(await Selector('#el2').sibling(el => el.id === 'el3').id).eql('el3');
+        // Function selector
+        .expect(Selector('#el2').sibling(el => el.id === 'el3').id).eql('el3');
 
     // Parameterized selector
     const withId = Selector(id => document.getElementById(id));
 
-    expect(await withId('el2').sibling().id).eql('el1');
+    await t
+        .expect(withId('el2').sibling().id).eql('el1')
 
-    // With filters
-    expect(await Selector('#el2').sibling().withText('element 4').id).eql('el4');
+        // With filters
+        .expect(Selector('#el2').sibling().withText('element 4').id).eql('el4');
 });
 
-test('Selector "count" and "exists" properties', async () => {
-    expect(await Selector('.idxEl').count).eql(4);
-    expect(await Selector('.idxEl').nth(2).count).eql(1);
-    expect(await Selector('form').find('input').count).eql(2);
-    expect(await Selector('.notexists').count).eql(0);
+test('Selector "count" and "exists" properties', async t => {
+    await t
+        .expect(Selector('.idxEl').count).eql(4)
+        .expect(Selector('.idxEl').nth(2).count).eql(1)
+        .expect(Selector('form').find('input').count).eql(2)
+        .expect(Selector('.notexists').count).eql(0);
 
     const witClass = Selector(className => document.getElementsByClassName(className));
 
-    expect(await witClass('idxEl').count).eql(4);
-    expect(await witClass('idxEl').withText('Hey?!').count).eql(2);
+    await t
+        .expect(witClass('idxEl').count).eql(4)
+        .expect(witClass('idxEl').withText('Hey?!').count).eql(2)
 
-    expect(await Selector('.idxEl').exists).to.be.true;
-    expect(await Selector('.idxEl').nth(2).exists).to.be.true;
-    expect(await Selector('form').find('input').exists).to.be.true;
-    expect(await Selector('.notexists').exists).to.be.false;
-    expect(await witClass('idxEl').exists).to.be.true;
-    expect(await witClass('idxEl').withText('Hey?!').exists).to.be.true;
-    expect(await witClass('idxEl').withText('testtesttest').exists).to.be.false;
+        .expect(Selector('.idxEl').exists).ok()
+        .expect(Selector('.idxEl').nth(2).exists).ok()
+        .expect(Selector('form').find('input').exists).ok()
+        .expect(Selector('.notexists').exists).notOk()
+        .expect(witClass('idxEl').exists).ok()
+        .expect(witClass('idxEl').withText('Hey?!').exists).ok()
+        .expect(witClass('idxEl').withText('testtesttest').exists).notOk();
 });
 
 test('Snapshot "count" property - selector error', async () => {
@@ -774,7 +796,8 @@ test('Selector `addCustomDOMProperties` method', async t => {
             prop2: node => 'tagName: ' + node.tagName
         });
 
-    await t.expect(await el.prop1).eql(42)
+    await t
+        .expect(await el.prop1).eql(42)
         .expect(await el.parent().filter(() => true).prop2).eql('tagName: svg')
         .expect(await el.exists).ok()
         .expect(await el.count).eql(1);
@@ -784,7 +807,8 @@ test('Selector `addCustomDOMProperties` method', async t => {
         prop3: () => 'test'
     });
 
-    await t.expect(await el.prop1).eql(42)
+    await t
+        .expect(await el.prop1).eql(42)
         .expect(await el.prop2).eql('other value')
         .expect(await el.prop3).eql('test');
 
@@ -794,7 +818,8 @@ test('Selector `addCustomDOMProperties` method', async t => {
             prop2: () => 2
         })();
 
-    await t.expect(elSnapshot.prop1).eql(1)
+    await t
+        .expect(elSnapshot.prop1).eql(1)
         .expect(elSnapshot.prop2).eql(2);
 
     const nonExistingElement = await Selector('nonExistingElement').addCustomDOMProperties({
@@ -833,21 +858,22 @@ test('Selector "nextSibling" method', async t => {
         .expect(Selector('#el2').nextSibling().nextSibling().id).eql('el4')
         .expect(Selector('#el1').nextSibling().id).eql('el2')
         .expect(Selector('#el1').nextSibling(-2).id).eql('el3')
-        .expect(Selector('#el2').nextSibling(0).count).eql(1);
+        .expect(Selector('#el2').nextSibling(0).count).eql(1)
 
-    // CSS selector filter
-    await t.expect(Selector('#textInput').nextSibling('select').id).eql('selectInput');
+        // CSS selector filter
+        .expect(Selector('#textInput').nextSibling('select').id).eql('selectInput')
 
-    // Function selector
-    await t.expect(Selector('#el2').nextSibling(el => el.id === 'el3').id).eql('el3');
+        // Function selector
+        .expect(Selector('#el2').nextSibling(el => el.id === 'el3').id).eql('el3');
 
     // Parameterized selector
     const withId = Selector(id => document.getElementById(id));
 
-    await t.expect(withId('el2').nextSibling().id).eql('el3');
+    await t
+        .expect(withId('el2').nextSibling().id).eql('el3')
 
-    // With filters
-    await t.expect(Selector('#el2').nextSibling().withText('element 4').id).eql('el4');
+        // With filters
+        .expect(Selector('#el2').nextSibling().withText('element 4').id).eql('el4');
 });
 
 test('Selector "prevSibling" method', async t => {
@@ -857,21 +883,22 @@ test('Selector "prevSibling" method', async t => {
         .expect(Selector('#el3').prevSibling().nextSibling().prevSibling().id).eql('el1')
         .expect(Selector('#el3').prevSibling().id).eql('el1')
         .expect(Selector('#el3').prevSibling(-2).id).eql('el1')
-        .expect(Selector('#el2').prevSibling(0).count).eql(1);
+        .expect(Selector('#el2').prevSibling(0).count).eql(1)
 
-    // CSS selector filter
-    await t.expect(Selector('#selectInput').prevSibling('[type=text]').id).eql('textInput');
+        // CSS selector filter
+        .expect(Selector('#selectInput').prevSibling('[type=text]').id).eql('textInput')
 
-    // Function selector
-    await t.expect(Selector('#el3').prevSibling(el => el.id === 'el2').id).eql('el2');
+        // Function selector
+        .expect(Selector('#el3').prevSibling(el => el.id === 'el2').id).eql('el2');
 
     // Parameterized selector
     const withId = Selector(id => document.getElementById(id));
 
-    await t.expect(withId('el2').prevSibling().id).eql('el1');
+    await t
+        .expect(withId('el2').prevSibling().id).eql('el1')
 
-    // With filters
-    await t.expect(Selector('#el4').prevSibling().withText('Hey?!').nth(0).id).eql('el2');
+        // With filters
+        .expect(Selector('#el4').prevSibling().withText('Hey?!').nth(0).id).eql('el2');
 });
 
 test('Selector `addCustomMethods` method', async t => {
