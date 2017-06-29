@@ -13,6 +13,7 @@ import getAutomationPoint from '../../utils/get-automation-point';
 import screenPointToClient from '../../utils/screen-point-to-client';
 import AutomationSettings from '../../settings';
 import AUTOMATION_ERROR_TYPES from '../../errors';
+import tryUntilTimeout from '../../utils/try-until-timeout';
 
 
 const MIN_MOVING_TIME = 25;
@@ -179,9 +180,12 @@ export default class DragAutomationBase {
             });
     }
 
-    run () {
-        return this._move()
-            .then(() => this._mousedown())
+    run (selectorTimeout, checkElementInterval) {
+        // NOTE: If the target element is out of viewport the mousedown sub-automation raises an error
+        return tryUntilTimeout(() => {
+            return this._move()
+                .then(() => this._mousedown());
+        }, selectorTimeout, checkElementInterval)
             .then(() => this._drag())
             .then(() => this._mouseup());
     }

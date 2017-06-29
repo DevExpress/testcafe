@@ -10,6 +10,7 @@ import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import AutomationSettings from '../settings';
 import AUTOMATION_ERROR_TYPES from '../errors';
+import tryUntilTimeout from '../utils/try-until-timeout';
 
 var Promise = hammerhead.Promise;
 
@@ -147,12 +148,14 @@ export default class RClickAutomation {
             });
     }
 
-    run () {
-        // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger
-        // mousedown event regardless of how long mousedown event handlers were executing
-        return this
-            ._move()
-            .then(() => Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown()]))
+    run (selectorTimeout, checkElementInterval) {
+        // NOTE: If the target element is out of viewport the mousedown sub-automation raises an error
+        return tryUntilTimeout(() => {
+            // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger
+            // mousedown event regardless of how long mousedown event handlers were executing
+            return this._move()
+                .then(() => Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown()]));
+        }, selectorTimeout, checkElementInterval)
             .then(() => this._mouseup())
             .then(() => this._contextmenu());
     }

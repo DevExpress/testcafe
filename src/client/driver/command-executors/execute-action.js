@@ -50,6 +50,7 @@ import {
 
 
 const MAX_DELAY_AFTER_STEP = 2000;
+const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 500;
 
 
 // Ensure command element properties
@@ -99,7 +100,7 @@ function ensureCommandElementsProperties (command, elements) {
 }
 
 // Ensure command elements
-function ensureCommandElements (command, timeout, statusBar) {
+function ensureCommandElements (command, globalSelectorTimeout, statusBar) {
     var elements             = [];
     var ensureElementPromise = Promise.resolve();
     var startTime            = new Date();
@@ -107,7 +108,7 @@ function ensureCommandElements (command, timeout, statusBar) {
     var ensureElement = (selectorCommand, createNotFoundError, createIsInvisibleError, createHasWrongNodeTypeError) => {
         ensureElementPromise = ensureElementPromise
             .then(() => {
-                var selectorExecutor = new SelectorExecutor(selectorCommand, timeout, startTime, statusBar,
+                var selectorExecutor = new SelectorExecutor(selectorCommand, globalSelectorTimeout, startTime, statusBar,
                     createNotFoundError, createIsInvisibleError);
 
                 return selectorExecutor.getResult();
@@ -236,7 +237,7 @@ function createAutomation (elements, command) {
 
 
 // Execute action
-export default function executeAction (command, selectorTimeout, statusBar, testSpeed) {
+export default function executeAction (command, globalSelectorTimeout, statusBar, testSpeed) {
     var resolveStartPromise = null;
 
     var startPromise = new Promise(resolve => {
@@ -256,8 +257,9 @@ export default function executeAction (command, selectorTimeout, statusBar, test
     var completionPromise = new Promise(resolve => {
         var requestBarrier         = null;
         var scriptExecutionBarrier = null;
+        var startTime              = new Date();
 
-        ensureCommandElements(command, selectorTimeout, statusBar)
+        ensureCommandElements(command, globalSelectorTimeout, statusBar)
             .then(elements => {
                 resolveStartPromise();
 
@@ -267,7 +269,11 @@ export default function executeAction (command, selectorTimeout, statusBar, test
                 ensureCommandArguments(command);
                 pageUnloadBarrier.watchForPageNavigationTriggers();
 
-                return createAutomation(elements, command).run();
+                var hasSpecificTimeout       = command.selector && typeof command.selector.timeout === 'number';
+                var commandSelectorTimeout   = hasSpecificTimeout ? command.selector.timeout : globalSelectorTimeout;
+                var remainingSelectorTimeout = commandSelectorTimeout - (new Date() - startTime);
+
+                return createAutomation(elements, command).run(remainingSelectorTimeout, CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL);
             })
             .then(() => {
                 return Promise.all([

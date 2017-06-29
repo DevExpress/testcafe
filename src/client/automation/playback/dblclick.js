@@ -8,6 +8,7 @@ import AutomationSettings from '../settings';
 import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import AUTOMATION_ERROR_TYPES from '../errors';
+import tryUntilTimeout from '../utils/try-until-timeout';
 
 var extend           = hammerhead.utils.extend;
 var browserUtils     = hammerhead.utils.browser;
@@ -146,9 +147,12 @@ export default class DblClickAutomation {
             eventSimulator.dblclick(this.eventState.dblClickElement, this.eventArgs.options);
     }
 
-    run () {
-        return this._move()
-            .then(() => this._firstClick())
+    run (selectorTimeout, checkElementInterval) {
+        // NOTE: If the target element is out of viewport the firstClick sub-automation raises an error
+        return tryUntilTimeout(() => {
+            return this._move()
+                .then(() => this._firstClick());
+        }, selectorTimeout, checkElementInterval)
             .then(() => this._secondClick())
             .then(() => this._dblClick());
     }

@@ -5,12 +5,12 @@ import { MoveOptions } from '../../../test-run/commands/options';
 import screenPointToClient from '../utils/screen-point-to-client';
 import getAutomationPoint from '../utils/get-automation-point';
 import AUTOMATION_ERROR_TYPES from '../errors';
-
+import tryUntilTimeout from '../utils/try-until-timeout';
 
 export default class HoverAutomation {
     constructor (element, hoverOptions) {
-        this.element   = element;
-        this.options   = hoverOptions;
+        this.element = element;
+        this.options = hoverOptions;
     }
 
     _move () {
@@ -33,9 +33,11 @@ export default class HoverAutomation {
             });
     }
 
-    run () {
-        return this._move()
-            .then(() => this._checkTopElementVisibility());
+    run (selectorTimeout, checkElementInterval) {
+        return tryUntilTimeout(() => {
+            return this._move()
+                .then(() => this._checkTopElementVisibility());
+        }, selectorTimeout, checkElementInterval);
     }
 }
 

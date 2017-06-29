@@ -7,6 +7,7 @@ import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
 import AutomationSettings from '../../settings';
 import AUTOMATION_ERROR_TYPES from '../../errors';
+import tryUntilTimeout from '../../utils/try-until-timeout';
 
 var Promise          = hammerhead.Promise;
 var browserUtils     = hammerhead.utils.browser;
@@ -161,13 +162,16 @@ export default class SelectBaseAutomation {
             });
     }
 
-    run () {
+    run (selectorTimeout, checkElementInterval) {
         this.absoluteStartPoint = this._calculateAbsoluteStartPoint();
         this.absoluteEndPoint   = this._calculateAbsoluteEndPoint();
 
-        return this
-            ._moveToPoint(this.absoluteStartPoint)
-            .then(() => this._mousedown())
+        // NOTE: If the target element is out of viewport the mousedown sub-automation raises an error
+        return tryUntilTimeout(() => {
+            return this
+                ._moveToPoint(this.absoluteStartPoint)
+                .then(() => this._mousedown());
+        }, selectorTimeout, checkElementInterval)
             .then(() => this._moveToPoint(this.absoluteEndPoint))
             .then(() => this._mouseup());
     }
