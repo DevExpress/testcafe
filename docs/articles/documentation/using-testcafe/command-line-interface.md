@@ -276,21 +276,15 @@ testcafe ie tests/sample-fixture.js -e
 ### -c \<factor\>, --concurrency \<factor\>
 
 Runs tests concurrently. The `factor` parameter specifies the number of browser instances
-that will be invoked at the same time to run tests concurrently.
-For each browser, TestCafe opens the specified number of instances and runs tests in them simultaneously.
+that will be invoked to run tests.
+
+To learn more about concurrent test execution, see [Concurrent Test Execution](common-concepts/concurrent-test-execution.md).
 
 The following example shows how to run tests in three Chrome and three Firefox instances.
 
 ```sh
 testcafe -c 3 chrome,firefox tests/sample-fixture.js
 ```
-
-When you run tests on [remote devices](#remote-browsers),
-specify the total number of instances of all browsers you test against after the `remote:` keyword.
-On a remote device, invoke all the required instances manually. The total number of instances
-should divide by `factor`. Otherwise, an exception will be thrown.
-
-If you test against multiple remote browsers, open and connect all instances of one browser before connecting the next browser.
 
 ### -t \<name\>, --test \<name\>
 
