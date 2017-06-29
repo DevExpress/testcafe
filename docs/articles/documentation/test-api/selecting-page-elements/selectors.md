@@ -176,8 +176,7 @@ Method | Type | Description
 `withText(text)` | Selector | Creates a selector that filters a matching set by the specified text.
 `withText(re)` | Selector | Creates a selector that filters a matching set using the specified regular expression.
 
-The `withText(text)` method converts the string argument to a regular expression.
-As a result, it selects elements that *contain* the specified String (instead of strict match).
+The `withText(text)` method selects elements that *contain* the specified String (instead of strict match). The `text` argument is case-sensitive.
 
 #### withAttribute
 
