@@ -490,6 +490,11 @@ test('Selector "withAttribute" method', async t => {
         // regexp attr name and regexp attribute value
         .expect(Selector('div').withAttribute(/store$/, /attr2$/).id).eql('attr2');
 
+    //GH #1548
+    await t
+        .expect(Selector('div').withAttribute('store').exists).notOk()
+        .expect(Selector('div').withAttribute('data-store', 'data-attr').exists).notOk();
+
     var byAtrSelector = Selector(() => document.querySelectorAll('.attr'));
 
     await t

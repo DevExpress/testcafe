@@ -4,17 +4,19 @@
 // -------------------------------------------------------------
 
 /* eslint-disable no-undef */
-export default function selectorAttributeFilter (node, index, originNode, attrNameRe, attrValueRe) {
+export default function selectorAttributeFilter (node, index, originNode, attrName, attrValue) {
     if (node.nodeType !== 1)
         return false;
 
     var attributes = node.attributes;
     var attr       = null;
 
+    var check = (actual, expect) => expect.test ? expect.test(actual) : expect === actual;
+
     for (var i = 0; i < attributes.length; i++) {
         attr = attributes[i];
 
-        if (attrNameRe.test(attr.nodeName) && (!attrValueRe || attrValueRe.test(attr.nodeValue)))
+        if (check(attr.nodeName, attrName) && (!attrValue || check(attr.nodeValue, attrValue)))
             return true;
     }
 
