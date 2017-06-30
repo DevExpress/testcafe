@@ -1000,6 +1000,37 @@ describe('Test run commands', function () {
                 options: { timeout: null }
             });
         });
+
+        it('Should process js expression as a Selector', function () {
+            var commandObj = {
+                type:     TYPE.click,
+                selector: {
+                    type:  'js-expr',
+                    value: "Selector('#yo')"
+                }
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.click,
+                selector: makeSelector('#yo', true),
+
+                options: {
+                    offsetX:  null,
+                    offsetY:  null,
+                    caretPos: null,
+                    speed:    null,
+
+                    modifiers: {
+                        ctrl:  false,
+                        alt:   false,
+                        shift: false,
+                        meta:  false
+                    }
+                }
+            });
+        });
     });
 
     describe('Validation', function () {
@@ -2623,6 +2654,49 @@ describe('Test run commands', function () {
                     optionName:      'timeout',
                     actualValue:     10.5,
                     callsite:        null
+                }
+            );
+        });
+
+        it('Should validate js expression as Selector', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.click,
+                        selector: {
+                            type:  'js-expr',
+                            value: 'Selector()'
+                        }
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
+                    errMsg:          'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
+                                     'node snapshot or a Promise returned by a Selector, but undefined was passed.',
+
+                    callsite: null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.click,
+                        selector: {
+                            type:  'js-expr',
+                            value: 'yo'
+                        }
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionSelectorError,
+                    selectorName:    'selector',
+                    errMsg:          'yo is not defined',
+
+                    callsite: null
                 }
             );
         });

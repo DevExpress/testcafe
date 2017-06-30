@@ -19,6 +19,9 @@ import {
 import { ActionSelectorError, SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
 import { APIError } from '../../errors/runtime';
 import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './observation';
+import { executeSelectorExpression } from '../execute-js-expression';
+
+const RAW_API_JS_EXPRESSION_TYPE = 'js-expr';
 
 
 // Initializers
@@ -27,6 +30,12 @@ function initSelector (name, val, skipVisibilityCheck) {
         return val;
 
     try {
+        var isRawAPIJsExpression = val !== null && typeof val === 'object' && val.type === RAW_API_JS_EXPRESSION_TYPE &&
+                                   typeof val.value === 'string';
+
+        if (isRawAPIJsExpression)
+            return executeSelectorExpression(val.value, skipVisibilityCheck);
+
         var builder = new SelectorBuilder(val, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
 
         return builder.getCommand([]);
