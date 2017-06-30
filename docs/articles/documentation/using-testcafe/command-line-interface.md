@@ -116,7 +116,7 @@ testcafe remote:3 tests/sample-fixture.js
 
 TestCafe will provide URLs to open in required browsers on your remote device.
 
-> If you run tests [concurrently](#-c-factor---concurrency-factor),
+> If you run tests [concurrently](#-c-n---concurrency-n),
 > specify the total number of instances of all browsers after the `remote:` keyword.
 
 You can also use the [--qr-code](#--qr-code) option to display QR-codes that represent the same URLs.
