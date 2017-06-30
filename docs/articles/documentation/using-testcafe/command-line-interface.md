@@ -27,7 +27,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-S, --screenshots-on-fails](#-s---screenshots-on-fails)
   * [-q, --quarantine-mode](#-q---quarantine-mode)
   * [-e, --skip-js-errors](#-e---skip-js-errors)
-  * [-c \<factor\>, --concurrency \<factor\>](#-c-factor---concurrency-factor)
+  * [-c \<n\>, --concurrency \<n\>](#-c-n---concurrency-n)
   * [-t \<name\>, --test \<name\>](#-t-name---test-name)
   * [-T \<pattern\>, --test-grep \<pattern\>](#-t-pattern---test-grep-pattern)
   * [-f \<name\>, --fixture \<name\>](#-f-name---fixture-name)
@@ -273,10 +273,10 @@ For example, the following command runs tests from the specified file and forces
 testcafe ie tests/sample-fixture.js -e
 ```
 
-### -c \<factor\>, --concurrency \<factor\>
+### -c \<n\>, --concurrency \<n\>
 
-Runs tests concurrently. The `factor` parameter specifies the number of browser instances
-that will be invoked to run tests.
+Specifies that tests should run concurrently. TestCafe will open `n` browser instances,
+divide tests in `n` groups and run each group in its own browser instance.
 
 To learn more about concurrent test execution, see [Concurrent Test Execution](common-concepts/concurrent-test-execution.md).
 

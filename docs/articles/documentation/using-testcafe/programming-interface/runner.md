@@ -272,14 +272,16 @@ You can also build your own reporter. Use a [dedicated Yeoman generator](https:/
 Specifies that tests should run concurrently.
 
 ```text
-concurrency(factor) → this
+concurrency(n) → this
 ```
+
+TestCafe will open `n` browser instances, divide tests in `n` groups and run each group in its own browser instance.
 
 The `concurrency` function takes the following parameters.
 
 Parameter | Type    | Description
 --------- | ------- | --------
-`factor`  | Number | The number of browser instances that will be invoked to run tests concurrently.
+`n`  | Number | The number of browser instances that will be invoked.
 
 To learn more about concurrent test execution, see [Concurrent Test Execution](../common-concepts/concurrent-test-execution.md).
 
