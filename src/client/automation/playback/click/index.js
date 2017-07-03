@@ -84,7 +84,8 @@ export default class ClickAutomation {
 
         return getElementFromPoint(x, y, expectedElement)
             .then(topElement => {
-                if (!topElement)
+                if (!topElement || (expectedElement && topElement !== expectedElement &&
+                                    !domUtils.containsElement(expectedElement, topElement)))
                     throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 
                 return {

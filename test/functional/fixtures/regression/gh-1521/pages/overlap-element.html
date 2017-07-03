@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gh-1521 (overlap element)</title>
+
+    <style>
+        #target-btn {
+            position: absolute;
+            top: 0px;
+        }
+
+        #overlap-div {
+            position: absolute;
+            top: 0px;
+            width: 500px;
+            height: 500px;
+            background-color: grey;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+<button id="target-btn">Button</button>
+<div id="overlap-div"></div>
+
+<script>
+    var targetBtn  = document.getElementById('target-btn');
+    var overlapDiv = document.getElementById('overlap-div');
+
+    targetBtn.addEventListener('click', function () {
+        window.targetBtnClick = window.targetBtnClick ? window.targetBtnClick++ : 1;
+    });
+
+    overlapDiv.addEventListener('click', function () {
+        window.overlapDivClick = window.overlapDivClick ? window.overlapDivClick++ : 1;
+    });
+</script>
+</body>
+</html>

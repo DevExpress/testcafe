@@ -50,7 +50,7 @@ import {
 
 
 const MAX_DELAY_AFTER_STEP = 2000;
-const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 500;
+const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;
 
 
 // Ensure command element properties
