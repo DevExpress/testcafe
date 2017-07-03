@@ -314,13 +314,13 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
             if (!nodes.length)
                 return null;
 
-            return filterNodes(nodes, filter, document, void 0, attrNameRe, attrValueRe);
+            return filterNodes(nodes, filter, document, void 0, attrName, attrValue);
             /* eslint-enable no-undef */
         };
 
         return createDerivativeSelectorWithFilter(getSelector, SelectorBuilder, selectorFn, filterByAttr, {
-            attrNameRe:  makeRegExp(attrName),
-            attrValueRe: makeRegExp(attrValue)
+            attrName,
+            attrValue
         });
     };
 
