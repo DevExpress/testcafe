@@ -1,12 +1,12 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
+import VisibleElementAutomation from '../visible-element-automation';
 import { fromPoint as getElementFromPoint } from '../../get-element';
 import { focusAndSetSelection, focusByRelatedElement } from '../../utils/utils';
 import tryUntilTimeout from '../../utils/try-until-timeout';
 import MoveAutomation from '../move';
 import { MoveOptions } from '../../../../test-run/commands/options';
-import SelectChildClickAutomation from './select-child';
 import cursor from '../../cursor';
 import nextTick from '../../utils/next-tick';
 import getAutomationPoint from '../../utils/get-automation-point';
@@ -31,10 +31,10 @@ var delay         = testCafeCore.delay;
 var selectElementUI = testCafeUI.selectElement;
 
 
-export default class ClickAutomation {
+export default class ClickAutomation extends VisibleElementAutomation {
     constructor (element, clickOptions) {
-        this.options   = clickOptions;
-        this.element   = element;
+        super(element, clickOptions);
+
         this.modifiers = clickOptions.modifiers;
         this.caretPos  = clickOptions.caretPos;
 
@@ -278,12 +278,6 @@ export default class ClickAutomation {
     }
 
     run (selectorTimeout, checkElementInterval) {
-        if (/option|optgroup/.test(domUtils.getTagName(this.element))) {
-            var selectChildClickAutomation = new SelectChildClickAutomation(this.element, this.options);
-
-            return selectChildClickAutomation.run();
-        }
-
         // NOTE: If the target element is out of viewport the mousedown sub-automation raises an error
         return tryUntilTimeout(() => {
             // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger

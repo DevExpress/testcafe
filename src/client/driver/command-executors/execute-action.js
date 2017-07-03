@@ -16,6 +16,7 @@ import {
     calculateSelectTextArguments,
     getOffsetOptions,
     Click as ClickAutomation,
+    SelectChildClick as SelectChildClickAutomation,
     RClick as RClickAutomation,
     DblClick as DblClickAutomation,
     DragToOffset as DragToOffsetAutomation,
@@ -49,7 +50,7 @@ import {
 } from '../../../errors/test-run';
 
 
-const MAX_DELAY_AFTER_STEP = 2000;
+const MAX_DELAY_AFTER_STEP                  = 2000;
 const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;
 
 
@@ -191,6 +192,9 @@ function createAutomation (elements, command) {
 
     switch (command.type) {
         case COMMAND_TYPE.click :
+            if (/option|optgroup/.test(domUtils.getTagName(elements[0])))
+                return new SelectChildClickAutomation(elements[0], command.options);
+
             return new ClickAutomation(elements[0], command.options);
 
         case COMMAND_TYPE.rightClick :
