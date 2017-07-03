@@ -275,15 +275,17 @@ testcafe ie tests/sample-fixture.js -e
 
 ### -c \<n\>, --concurrency \<n\>
 
-Specifies that tests should run concurrently. TestCafe will open `n` browser instances,
-divide tests in `n` groups and run each group in its own browser instance.
+Specifies that tests should run concurrently.
+
+TestCafe will open `n` instances of the same browser thus creating a pool of browser instances.
+Tests will run concurrently against this pool, i.e. each test will run in the first free instance.
 
 To learn more about concurrent test execution, see [Concurrent Test Execution](common-concepts/concurrent-test-execution.md).
 
-The following example shows how to run tests in three Chrome and three Firefox instances.
+The following example shows how to run tests in three Chrome instances.
 
 ```sh
-testcafe -c 3 chrome,firefox tests/sample-fixture.js
+testcafe -c 3 chrome tests/sample-fixture.js
 ```
 
 ### -t \<name\>, --test \<name\>

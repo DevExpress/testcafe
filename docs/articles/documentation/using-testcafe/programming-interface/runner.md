@@ -275,7 +275,8 @@ Specifies that tests should run concurrently.
 concurrency(n) → this
 ```
 
-TestCafe will open `n` browser instances, divide tests in `n` groups and run each group in its own browser instance.
+TestCafe will open `n` instances of the same browser thus creating a pool of browser instances.
+Tests will run concurrently against this pool, i.e. each test will run in the first free instance.
 
 The `concurrency` function takes the following parameters.
 
@@ -285,11 +286,11 @@ Parameter | Type    | Description
 
 To learn more about concurrent test execution, see [Concurrent Test Execution](../common-concepts/concurrent-test-execution.md).
 
-The following example shows how to run tests in three Chrome and three Firefox instances.
+The following example shows how to run tests in three Chrome instances.
 
 ```js
 runner
-    .browsers(['chrome', 'firefox'])
+    .browsers('chrome')
     .concurrency(3);
 ```
 
