@@ -16,13 +16,12 @@ testcafe chrome tests/test.js
 When this command is executed, TestCafe invokes an instance of the specified browser and runs tests in it.
 
 *Concurrency* is an optional mode that allows you to invoke multiple instances of the same browser.
-The test batch will be distributed across the browser instances so that each instance runs its portion of tests.
+These instances constitute the pool of browsers against which tests run concurrently, i.e. each test runs in the first free instance.
 
 To enable concurrency, use the [-c or --concurrency](../command-line-interface.md#-c-n---concurrency-n)
 command line option or the [runner.concurrency](../programming-interface/runner.md#concurrency) method of the programming interface.
 
-The following command invokes three Chrome instances, divides tests from the `tests/test.js` file in three parts
-runs each part in a separate browser instance.
+The following command invokes three Chrome instances and runs tests concurrently.
 
 ```sh
 testcafe -c 3 chrome tests/test.js
