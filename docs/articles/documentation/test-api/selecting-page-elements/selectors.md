@@ -176,6 +176,8 @@ Method | Type | Description
 `withText(text)` | Selector | Creates a selector that filters a matching set by the specified text.
 `withText(re)` | Selector | Creates a selector that filters a matching set using the specified regular expression.
 
+The `withText(text)` method selects elements that *contain* the specified String (instead of strict match). The `text` argument is case-sensitive.
+
 #### withAttribute
 
 Method                              | Type     | Description
@@ -188,6 +190,8 @@ Parameter                     | Type                 | Description
 ----------------------------- | -------------------- | -------
 `attrName`                    | String &#124; RegExp | The attribute name.
 `attrValue`&#160;*(optional)* | String &#124; RegExp | The attribute value. You can omit this parameter to select elements that have the `attrName` attribute regardless of the value.
+
+If `attrName` or `attrValue` is a String, `withAttribute` selects an element by strict match.
 
 #### filter
 
