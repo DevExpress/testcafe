@@ -1,9 +1,10 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+var hammerhead       = window.getTestCafeModule('hammerhead');
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var position          = testCafeCore.get('./utils/position');
-var textSelection     = testCafeCore.get('./utils/text-selection');
+var testCafeCore  = window.getTestCafeModule('testCafeCore');
+var position      = testCafeCore.get('./utils/position');
+var textSelection = testCafeCore.get('./utils/text-selection');
 
 testCafeCore.preventRealEvents();
 
@@ -57,8 +58,8 @@ $(document).ready(function () {
             $doc.data(DRAGGABLE_BIND_FLAG, true);
             $doc.data(CURSOR_POSITION_PROPERTY, null);
 
-            $doc.bind(browserUtils.isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
-                var curMousePos = browserUtils.isTouchDevice ? {
+            $doc.bind(featureDetection.isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
+                var curMousePos = featureDetection.isTouchDevice ? {
                     x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                     y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
                 } : {
@@ -120,8 +121,8 @@ $(document).ready(function () {
 
         $el.addClass(DRAGGABLE_CLASS);
 
-        $el.bind(browserUtils.isTouchDevice ? 'touchstart' : 'mousedown', function (e) {
-            doc[CURSOR_POSITION_PROPERTY] = browserUtils.isTouchDevice ? {
+        $el.bind(featureDetection.isTouchDevice ? 'touchstart' : 'mousedown', function (e) {
+            doc[CURSOR_POSITION_PROPERTY] = featureDetection.isTouchDevice ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                 y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
             } : {
@@ -134,7 +135,7 @@ $(document).ready(function () {
             $(this).data(DRAG_STARTED_PROPERTY, true);
         });
 
-        $el.bind(browserUtils.isTouchDevice ? 'touchend' : 'mouseup', function () {
+        $el.bind(featureDetection.isTouchDevice ? 'touchend' : 'mouseup', function () {
             doc[CURSOR_POSITION_PROPERTY] = null;
             $(this).data(DRAG_STARTED_PROPERTY, false);
         });
@@ -412,7 +413,7 @@ $(document).ready(function () {
             equal(e.clientY, smallDraggablePosClient.y + dragOffsetY, 'mousedown clientY correct');
         };
 
-        if (!browserUtils.isTouchDevice) {
+        if (!featureDetection.isTouchDevice) {
             $bigDraggable.bind('mousedown', function (e) {
                 var smallDraggablePos       = position.getOffsetPosition($smallDraggable[0]);
                 var smallDraggablePosClient = position.offsetToClientCoords({
@@ -453,7 +454,7 @@ $(document).ready(function () {
                 equal(position.getOffsetPosition($bigDraggable[0]).left, bigDraggableOffset.left + dragOffsetX);
                 equal(position.getOffsetPosition($bigDraggable[0]).top, bigDraggableOffset.top + dragOffsetY);
 
-                expect(browserUtils.isTouchDevice ? 3 : 9);
+                expect(featureDetection.isTouchDevice ? 3 : 9);
 
                 startNext();
             });

@@ -1,5 +1,6 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+var hammerhead       = window.getTestCafeModule('hammerhead');
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
 
 var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
 var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
@@ -112,7 +113,7 @@ $(document).ready(function () {
     });
 
     // NOTE: Android and iOS ignore the size and multiple attributes, all select elements behave like select with size=1
-    if (browserUtils.isTouchDevice) {
+    if (featureDetection.isTouchDevice) {
         asyncTest('in select elements with "size" more than 1, click on an option raises an error when the option list is collapsed', function () {
             SETTINGS.ENABLE_SOURCE_INDEX = true;
             var select                   = createSelect(2);

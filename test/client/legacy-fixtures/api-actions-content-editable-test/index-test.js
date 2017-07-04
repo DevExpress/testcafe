@@ -1,5 +1,6 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+var hammerhead       = window.getTestCafeModule('hammerhead');
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
 
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var domUtils      = testCafeCore.get('./utils/dom');
@@ -14,7 +15,7 @@ var initAutomation       = testCafeLegacyRunner.get('./init-automation');
 actionsAPI.ELEMENT_AVAILABILITY_WAITING_TIMEOUT = 400;
 
 var WAITING_TIMEOUT               = 3500;
-var TEST_COMPLETE_WAITING_TIMEOUT = browserUtils.isTouchDevice ? WAITING_TIMEOUT * 2 : WAITING_TIMEOUT;
+var TEST_COMPLETE_WAITING_TIMEOUT = featureDetection.isTouchDevice ? WAITING_TIMEOUT * 2 : WAITING_TIMEOUT;
 var ERROR_WAITING_TIMEOUT         = actionsAPI.ELEMENT_AVAILABILITY_WAITING_TIMEOUT + 50;
 
 var stepIterator = new StepIterator();
@@ -23,7 +24,7 @@ initAutomation();
 actionsAPI.init(stepIterator);
 
 var correctTestWaitingTime = function (time) {
-    if (browserUtils.isTouchDevice && browserUtils.isFirefox)
+    if (featureDetection.isTouchDevice && browserUtils.isFirefox)
         return time * 2;
 
     return time;

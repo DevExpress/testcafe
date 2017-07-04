@@ -3,21 +3,21 @@ var DragToOffsetAutomation  = testCafeAutomation.DragToOffset;
 var DragToElementAutomation = testCafeAutomation.DragToElement;
 var MouseOptions            = testCafeAutomation.get('../../test-run/commands/options').MouseOptions;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var position          = testCafeCore.get('./utils/position');
+var testCafeCore = window.getTestCafeModule('testCafeCore');
+var position     = testCafeCore.get('./utils/position');
 
 testCafeCore.preventRealEvents();
 
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
-
+var hammerhead       = window.getTestCafeModule('hammerhead');
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
 
 $(document).ready(function () {
     // NOTE: remove this after fix IE tests in iFrame
     $('body').css('border', '0px');
 
     // NOTE: prevent auto scrolling
-    if (browserUtils.isSafari && browserUtils.isTouchDevice) {
+    if (browserUtils.isSafari && featureDetection.isTouchDevice) {
         var $meta = $('<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">');
 
         $('head').append($meta);
@@ -27,7 +27,7 @@ $(document).ready(function () {
     var TEST_ELEMENT_CLASS = 'testElement';
 
     //utils
-    var isTouchDevice = browserUtils.isTouchDevice;
+    var isTouchDevice = featureDetection.isTouchDevice;
 
     var createDraggable = function (left, top, withGloballCoord) {
         var $draggable = $('<div></div>')
@@ -201,7 +201,7 @@ $(document).ready(function () {
             });
     });
 
-    if (!browserUtils.isTouchDevice) {
+    if (!featureDetection.isTouchDevice) {
         asyncTest('GH372-"mousemove" event sent to wrong element during dragging', function () {
             var $firstTarget  = createTarget(10, 10);
             var $secondTarget = createTarget(110, 110);

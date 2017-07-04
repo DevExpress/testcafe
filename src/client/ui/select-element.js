@@ -3,10 +3,11 @@
 import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 
-var shadowUI       = hammerhead.shadowUI;
-var browserUtils   = hammerhead.utils.browser;
-var nativeMethods  = hammerhead.nativeMethods;
-var eventSimulator = hammerhead.eventSandbox.eventSimulator;
+var shadowUI         = hammerhead.shadowUI;
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
+var nativeMethods    = hammerhead.nativeMethods;
+var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
 var positionUtils = testCafeCore.positionUtils;
 var domUtils      = testCafeCore.domUtils;
@@ -50,7 +51,7 @@ function clickOnOption (optionIndex, isOptionDisabled) {
     if (browserUtils.isFirefox || browserUtils.isIE)
         eventSimulator.mousedown(browserUtils.isFirefox ? realOption : curSelectEl);
 
-    if (!browserUtils.isTouchDevice)
+    if (!featureDetection.isTouchDevice)
         eventSimulator.mouseup(browserUtils.isFirefox ? realOption : curSelectEl);
 
     if ((browserUtils.isFirefox || browserUtils.isIE) && clickLeadChanges) {
@@ -63,7 +64,7 @@ function clickOnOption (optionIndex, isOptionDisabled) {
         eventSimulator.change(curSelectEl);
     }
 
-    if (!browserUtils.isTouchDevice)
+    if (!featureDetection.isTouchDevice)
         eventSimulator.click(browserUtils.isFirefox || browserUtils.isIE ? realOption : curSelectEl);
 
     if (!isOptionDisabled)

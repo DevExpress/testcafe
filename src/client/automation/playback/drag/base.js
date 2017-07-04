@@ -19,7 +19,7 @@ const MIN_MOVING_TIME = 25;
 
 var Promise          = hammerhead.Promise;
 var extend           = hammerhead.utils.extend;
-var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
@@ -37,8 +37,8 @@ export default class DragAutomationBase {
         this.automationSettings = new AutomationSettings(this.speed);
 
         this.endPoint  = null;
-        this.downEvent = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
-        this.upEvent   = browserUtils.isTouchDevice ? 'touchend' : 'mouseup';
+        this.downEvent = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
+        this.upEvent   = featureDetection.isTouchDevice ? 'touchend' : 'mouseup';
 
         this.dragAndDropState = null;
 

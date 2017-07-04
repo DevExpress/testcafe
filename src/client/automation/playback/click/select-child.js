@@ -9,6 +9,7 @@ import AutomationSettings from '../../settings';
 var Promise = hammerhead.Promise;
 
 var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
@@ -18,7 +19,7 @@ var delay      = testCafeCore.delay;
 
 var selectElementUI = testCafeUI.selectElement;
 
-const FOCUS_DELAY = browserUtils.isTouchDevice ? 0 : 160;
+const FOCUS_DELAY = featureDetection.isTouchDevice ? 0 : 160;
 
 
 export default class SelectChildClickAutomation {

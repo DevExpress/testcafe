@@ -44,16 +44,16 @@ export default class RequestBarrier extends EventEmitter {
         var onXhrError     = e => this._onRequestError(e.xhr, e.err);
         var onFetchSend    = e => this._onFetchSend(e);
 
-        hammerhead.on(hammerhead.EVENTS.xhrSend, onXhrSend);
+        hammerhead.on(hammerhead.EVENTS.beforeXhrSend, onXhrSend);
         hammerhead.on(hammerhead.EVENTS.xhrCompleted, onXhrCompleted);
         hammerhead.on(hammerhead.EVENTS.xhrError, onXhrError);
-        hammerhead.on(hammerhead.EVENTS.fetchSend, onFetchSend);
+        hammerhead.on(hammerhead.EVENTS.fetchSent, onFetchSend);
 
         this._unbindHandlers = () => {
-            hammerhead.off(hammerhead.EVENTS.xhrSend, onXhrSend);
+            hammerhead.off(hammerhead.EVENTS.beforeXhrSend, onXhrSend);
             hammerhead.off(hammerhead.EVENTS.xhrCompleted, onXhrCompleted);
             hammerhead.off(hammerhead.EVENTS.xhrError, onXhrError);
-            hammerhead.off(hammerhead.EVENTS.fetchSend, onFetchSend);
+            hammerhead.off(hammerhead.EVENTS.fetchSent, onFetchSend);
         };
     }
 

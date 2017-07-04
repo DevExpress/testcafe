@@ -1,12 +1,13 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+var hammerhead       = window.getTestCafeModule('hammerhead');
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var HoverAutomation    = testCafeAutomation.Hover;
 var MouseOptions       = testCafeAutomation.get('../../test-run/commands/options').MouseOptions;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var position          = testCafeCore.get('./utils/position');
+var testCafeCore = window.getTestCafeModule('testCafeCore');
+var position     = testCafeCore.get('./utils/position');
 
 testCafeCore.preventRealEvents();
 
@@ -35,7 +36,7 @@ $(document).ready(function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     });
 
-    if (!browserUtils.isTouchDevice) {
+    if (!featureDetection.isTouchDevice) {
         asyncTest('check mouseover and mouseout event', function () {
             var $el1 = addInputElement('button', 'button1', 200, 200);
             var $el2 = addInputElement('button', 'button1', 400, 400);

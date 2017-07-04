@@ -1,5 +1,6 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+var hammerhead       = window.getTestCafeModule('hammerhead');
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
 
 var testCafeCore = window.getTestCafeModule('testCafeCore');
 
@@ -30,8 +31,8 @@ $(document).ready(function () {
                             'dasdasdasdasdajksdjkajskdjk\najkdjkasjkdjksjkdjksjdkjs\nqwerty\ntest\n' +
                             'cafesadkaldklakldlakdklakldkalskd;';
 
-    var startSelectEvent       = browserUtils.isTouchDevice ? 'ontouchstart' : 'onmousedown';
-    var endSelectEvent         = browserUtils.isTouchDevice ? 'ontouchend' : 'onmouseup';
+    var startSelectEvent       = featureDetection.isTouchDevice ? 'ontouchstart' : 'onmousedown';
+    var endSelectEvent         = featureDetection.isTouchDevice ? 'ontouchend' : 'onmouseup';
     var checkScrollAfterSelect = !(browserUtils.isFirefox || browserUtils.isIE);
 
     var mousedownOnInput    = false;

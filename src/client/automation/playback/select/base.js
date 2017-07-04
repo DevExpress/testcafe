@@ -10,6 +10,7 @@ import AUTOMATION_ERROR_TYPES from '../../errors';
 
 var Promise          = hammerhead.Promise;
 var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
@@ -32,8 +33,8 @@ export default class SelectBaseAutomation {
 
         this.automationSettings = new AutomationSettings(this.speed);
 
-        this.downEvent = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
-        this.upEvent   = browserUtils.isTouchDevice ? 'touchend' : 'mouseup';
+        this.downEvent = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
+        this.upEvent   = featureDetection.isTouchDevice ? 'touchend' : 'mouseup';
 
         this.eventArgs = {
             options: null,

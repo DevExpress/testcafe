@@ -9,15 +9,16 @@ import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import AUTOMATION_ERROR_TYPES from '../errors';
 
-var extend         = hammerhead.utils.extend;
-var browserUtils   = hammerhead.utils.browser;
-var eventSimulator = hammerhead.eventSandbox.eventSimulator;
+var extend           = hammerhead.utils.extend;
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
+var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
 var positionUtils = testCafeCore.positionUtils;
 var eventUtils    = testCafeCore.eventUtils;
 var delay         = testCafeCore.delay;
 
-const FIRST_CLICK_DELAY = browserUtils.isTouchDevice ? 0 : 160;
+const FIRST_CLICK_DELAY = featureDetection.isTouchDevice ? 0 : 160;
 
 
 export default class DblClickAutomation {
