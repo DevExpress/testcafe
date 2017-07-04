@@ -27,6 +27,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-S, --screenshots-on-fails](#-s---screenshots-on-fails)
   * [-q, --quarantine-mode](#-q---quarantine-mode)
   * [-e, --skip-js-errors](#-e---skip-js-errors)
+  * [-c \<n\>, --concurrency \<n\>](#-c-n---concurrency-n)
   * [-t \<name\>, --test \<name\>](#-t-name---test-name)
   * [-T \<pattern\>, --test-grep \<pattern\>](#-t-pattern---test-grep-pattern)
   * [-f \<name\>, --fixture \<name\>](#-f-name---fixture-name)
@@ -114,6 +115,9 @@ testcafe remote:3 tests/sample-fixture.js
 ```
 
 TestCafe will provide URLs to open in required browsers on your remote device.
+
+> If you run tests [concurrently](#-c-n---concurrency-n),
+> specify the total number of instances of all browsers after the `remote:` keyword.
 
 You can also use the [--qr-code](#--qr-code) option to display QR-codes that represent the same URLs.
 Scan the QR-codes by using the device on which you are going to test your application.
@@ -269,7 +273,22 @@ For example, the following command runs tests from the specified file and forces
 testcafe ie tests/sample-fixture.js -e
 ```
 
-### -t \<name\>,  --test \<name\>
+### -c \<n\>, --concurrency \<n\>
+
+Specifies that tests should run concurrently.
+
+TestCafe will open `n` instances of the same browser thus creating a pool of browser instances.
+Tests will run concurrently against this pool, i.e. each test will run in the first free instance.
+
+To learn more about concurrent test execution, see [Concurrent Test Execution](common-concepts/concurrent-test-execution.md).
+
+The following example shows how to run tests in three Chrome instances.
+
+```sh
+testcafe -c 3 chrome tests/sample-fixture.js
+```
+
+### -t \<name\>, --test \<name\>
 
 TestCafe will run a test with the specified name.
 

@@ -46,6 +46,7 @@ createTestCafe('localhost', 1337, 1338)
     * [Specifying the Reporter](#specifying-the-reporter)
     * [Saving the Report to a File](#saving-the-report-to-a-file)
     * [Implementing a Custom Stream](#implementing-a-custom-stream)
+* [concurrency](#concurrency)
 * [startApp](#startapp)
 * [useProxy](#useproxy)
 * [run](#run)
@@ -265,6 +266,33 @@ runner.reporter('json', stream);
 ```
 
 You can also build your own reporter. Use a [dedicated Yeoman generator](https://github.com/DevExpress/generator-testcafe-reporter) to scaffold out a [reporter plugin](../../extending-testcafe/reporter-plugin/README.md).
+
+### concurrency
+
+Specifies that tests should run concurrently.
+
+```text
+concurrency(n) → this
+```
+
+TestCafe will open `n` instances of the same browser thus creating a pool of browser instances.
+Tests will run concurrently against this pool, i.e. each test will run in the first free instance.
+
+The `concurrency` function takes the following parameters.
+
+Parameter | Type    | Description
+--------- | ------- | --------
+`n`  | Number | The number of browser instances that will be invoked.
+
+To learn more about concurrent test execution, see [Concurrent Test Execution](../common-concepts/concurrent-test-execution.md).
+
+The following example shows how to run tests in three Chrome instances.
+
+```js
+runner
+    .browsers('chrome')
+    .concurrency(3);
+```
 
 ### startApp
 

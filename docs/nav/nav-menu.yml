@@ -23,6 +23,8 @@
     content:
     - name: Browser Support
       url: /documentation/using-testcafe/common-concepts/browser-support.md
+    - name: Concurrent Test Execution
+      url: /documentation/using-testcafe/common-concepts/concurrent-test-execution.md
     - name: Reporters
       url: /documentation/using-testcafe/common-concepts/reporters.md
 - name: TEST API
