@@ -148,6 +148,8 @@
       url: /documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.md
     - name: Running Tests Using Travis CI and Sauce Labs
       url: /documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.md
+    - name: Testing &lt;select&gt; Elements 
+      url: /documentation/recipes/testing-select-elements.md
     - name: Test Static HTML Pages
       url: /documentation/recipes/test-static-html-pages.md
     - name: Testing on Remote Computers and Mobile Devices
