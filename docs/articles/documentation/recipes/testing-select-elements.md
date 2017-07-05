@@ -10,7 +10,7 @@ This recipe shows how to test `<select>` elements and pick options from the drop
 Assume the following `<select>` element.
 
 ```html
-<select name="city">
+<select id="city">
     <option>New York</option>
     <option>London</option>
     <option>Paris</option>
@@ -62,7 +62,7 @@ fixture `Test select element`
     .page `http://localhost:8080`;
 
 const citySelect = Selector('#city');
-const city = citySelect.find('option');
+const cityOption = citySelect.find('option');
 
 test(`Select an option from the drop-down menu`, async t => {
     await t
@@ -80,7 +80,7 @@ fixture `Test select element`
     .page `http://localhost:8080`;
 
 const citySelect = Selector('#city');
-const city = citySelect.find('option');
+const cityOption = citySelect.find('option');
 
 test(`Select an option from the drop-down menu`, async t => {
     await t
