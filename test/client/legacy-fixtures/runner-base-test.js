@@ -12,14 +12,14 @@ var transport            = testCafeLegacyRunner.get('./transport');
 QUnit.begin(function () {
     hhsettings.serviceMsgUrl = '/ping/10';
 
-    iframeSandbox.on(iframeSandbox.RUN_TASK_SCRIPT, window.initIFrameTestHandler);
-    iframeSandbox.off(iframeSandbox.RUN_TASK_SCRIPT, iframeSandbox.iframeReadyToInitHandler);
+    iframeSandbox.on(iframeSandbox.RUN_TASK_SCRIPT_EVENT, window.initIFrameTestHandler);
+    iframeSandbox.off(iframeSandbox.RUN_TASK_SCRIPT_EVENT, iframeSandbox.iframeReadyToInitHandler);
 
     $('<iframe id="test-iframe"></iframe>').appendTo('body');
 });
 
 QUnit.done(function () {
-    iframeSandbox.off(iframeSandbox.RUN_TASK_SCRIPT, window.initIFrameTestHandler);
+    iframeSandbox.off(iframeSandbox.RUN_TASK_SCRIPT_EVENT, window.initIFrameTestHandler);
 });
 
 transport.batchUpdate = function (callback) {
