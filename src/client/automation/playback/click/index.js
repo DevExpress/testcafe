@@ -15,9 +15,10 @@ import AUTOMATION_ERROR_TYPES from '../../errors';
 
 var Promise = hammerhead.Promise;
 
-var extend         = hammerhead.utils.extend;
-var browserUtils   = hammerhead.utils.browser;
-var eventSimulator = hammerhead.eventSandbox.eventSimulator;
+var extend           = hammerhead.utils.extend;
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
+var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
 var domUtils      = testCafeCore.domUtils;
 var positionUtils = testCafeCore.positionUtils;
@@ -122,7 +123,7 @@ export default class ClickAutomation {
     }
 
     _raiseTouchEvents () {
-        if (browserUtils.isTouchDevice) {
+        if (featureDetection.isTouchDevice) {
             eventSimulator.touchstart(this.eventArgs.element, this.eventArgs.options);
             eventSimulator.touchend(this.eventArgs.element, this.eventArgs.options);
         }

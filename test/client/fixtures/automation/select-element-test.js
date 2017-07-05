@@ -1,9 +1,10 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
-var shadowUI     = hammerhead.shadowUI;
+var hammerhead       = window.getTestCafeModule('hammerhead');
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
+var shadowUI         = hammerhead.shadowUI;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
+var testCafeCore     = window.getTestCafeModule('testCafeCore');
+var parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
 
 testCafeCore.preventRealEvents();
 
@@ -26,7 +27,7 @@ $(document).ready(function () {
 
     //utils
     var handlersLog     = [];
-    var isMobileBrowser = browserUtils.isTouchDevice;
+    var isMobileBrowser = featureDetection.isTouchDevice;
 
     var createOption = function (parent, text) {
         return $('<option></option>').text(text)

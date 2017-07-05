@@ -4,12 +4,13 @@ import ProgressBar from './progress-bar';
 import MESSAGES from './messages';
 
 
-var Promise        = hammerhead.Promise;
-var shadowUI       = hammerhead.shadowUI;
-var nativeMethods  = hammerhead.nativeMethods;
-var messageSandbox = hammerhead.eventSandbox.message;
-var browserUtils   = hammerhead.utils.browser;
-var listeners      = hammerhead.eventSandbox.listeners;
+var Promise          = hammerhead.Promise;
+var shadowUI         = hammerhead.shadowUI;
+var nativeMethods    = hammerhead.nativeMethods;
+var messageSandbox   = hammerhead.eventSandbox.message;
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
+var listeners        = hammerhead.eventSandbox.listeners;
 
 var styleUtils = testCafeCore.styleUtils;
 var eventUtils = testCafeCore.eventUtils;
@@ -368,7 +369,7 @@ export default class StatusBar {
 
             this._recalculateSizes();
 
-            var eventName = browserUtils.isTouchDevice ? 'touchstart' : 'mousedown';
+            var eventName = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
 
             var downHandler = e => {
                 var isResumeButton = domUtils.containsElement(this.resumeButton, e.target);

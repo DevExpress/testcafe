@@ -3,10 +3,11 @@ import testCafeCore from './../deps/testcafe-core';
 import CURSOR_UI_MESSAGES from './messages';
 
 
-var Promise        = hammerhead.Promise;
-var shadowUI       = hammerhead.shadowUI;
-var browserUtils   = hammerhead.utils.browser;
-var messageSandbox = hammerhead.eventSandbox.message;
+var Promise          = hammerhead.Promise;
+var shadowUI         = hammerhead.shadowUI;
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
+var messageSandbox   = hammerhead.eventSandbox.message;
 
 var styleUtils    = testCafeCore.styleUtils;
 var positionUtils = testCafeCore.positionUtils;
@@ -61,7 +62,7 @@ var CursorUI = {
 
         // NOTE: For IE, we can't use the touch cursor in a cross-domain iframe
         // because we won't be able to get an element under the cursor
-        if (browserUtils.isTouchDevice && !browserUtils.isIE) {
+        if (featureDetection.isTouchDevice && !browserUtils.isIE) {
             shadowUI.addClass(this.cursorElement, TOUCH_CLASS);
 
             // NOTE: in touch mode, the pointer should be in the center of the cursor

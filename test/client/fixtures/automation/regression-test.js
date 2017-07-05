@@ -1,11 +1,12 @@
-var hammerhead    = window.getTestCafeModule('hammerhead');
-var browserUtils  = hammerhead.utils.browser;
-var nativeMethods = hammerhead.nativeMethods;
+var hammerhead       = window.getTestCafeModule('hammerhead');
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
+var nativeMethods    = hammerhead.nativeMethods;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var eventUtils        = testCafeCore.get('./utils/event');
-var textSelection     = testCafeCore.get('./utils/text-selection');
-var parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
+var testCafeCore     = window.getTestCafeModule('testCafeCore');
+var eventUtils       = testCafeCore.get('./utils/event');
+var textSelection    = testCafeCore.get('./utils/text-selection');
+var parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 
@@ -69,8 +70,8 @@ $(document).ready(function () {
                 top:             top ? top + 'px' : '850px',
                 zIndex:          5
             })
-            .bind(browserUtils.isTouchDevice ? 'touchstart' : 'mousedown', function (e) {
-                lastCursorPosition = browserUtils.isTouchDevice ? {
+            .bind(featureDetection.isTouchDevice ? 'touchstart' : 'mousedown', function (e) {
+                lastCursorPosition = featureDetection.isTouchDevice ? {
                     x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                     y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
                 } : {
@@ -79,14 +80,14 @@ $(document).ready(function () {
                 };
                 $(this).data('dragStarted', true);
             })
-            .bind(browserUtils.isTouchDevice ? 'touchend' : 'mouseup', function () {
+            .bind(featureDetection.isTouchDevice ? 'touchend' : 'mouseup', function () {
                 lastCursorPosition = null;
                 $(this).data('dragStarted', false);
             })
             .appendTo($(curDocument).find('body'));
 
-        $(curDocument).bind(browserUtils.isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
-            var curMousePos = browserUtils.isTouchDevice ? {
+        $(curDocument).bind(featureDetection.isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
+            var curMousePos = featureDetection.isTouchDevice ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
                 y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
             } : {
@@ -273,7 +274,7 @@ $(document).ready(function () {
         });
     }
 
-    if (!browserUtils.isTouchDevice) {
+    if (!featureDetection.isTouchDevice) {
         asyncTest('B236966 - TESTCafe - onmouseout event is not called during the execution of the method hover.', function () {
             var $element   = createDraggable(window, document, 200, 200);
             var firstEvent = null;

@@ -1,5 +1,6 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+var hammerhead       = window.getTestCafeModule('hammerhead');
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
 
 var testCafeCore  = window.getTestCafeModule('testCafeCore');
 var domUtils      = testCafeCore.get('./utils/dom');
@@ -20,7 +21,7 @@ var initAutomation = testCafeLegacyRunner.get('./init-automation');
 initAutomation();
 
 var correctTestWaitingTime = function (time) {
-    if (browserUtils.isTouchDevice || browserUtils.hasTouchPoints)
+    if (featureDetection.isTouchDevice || featureDetection.hasTouchPoints)
         return time * 2;
 
     return time;
@@ -69,8 +70,8 @@ $(document).ready(function () {
 
     var INPUT_INITIAL_VALUE = '123456789';
 
-    var startSelectEvent = browserUtils.isTouchDevice ? 'ontouchstart' : 'onmousedown';
-    var endSelectEvent   = browserUtils.isTouchDevice ? 'ontouchend' : 'onmouseup';
+    var startSelectEvent = featureDetection.isTouchDevice ? 'ontouchstart' : 'onmousedown';
+    var endSelectEvent   = featureDetection.isTouchDevice ? 'ontouchend' : 'onmouseup';
 
     var mousedownOnInput    = false;
     var mouseupOnInput      = false;
@@ -231,8 +232,8 @@ $(document).ready(function () {
     });
 
     QUnit.testDone(function () {
-        currentErrorType    = null;
-        currentSourceIndex  = null;
+        currentErrorType   = null;
+        currentSourceIndex = null;
 
         SETTINGS.ENABLE_SOURCE_INDEX = false;
 

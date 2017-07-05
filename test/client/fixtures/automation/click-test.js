@@ -1,8 +1,9 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+var hammerhead       = window.getTestCafeModule('hammerhead');
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var styleUtils        = testCafeCore.get('./utils/style');
+var testCafeCore = window.getTestCafeModule('testCafeCore');
+var styleUtils   = testCafeCore.get('./utils/style');
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var getOffsetOptions   = testCafeAutomation.getOffsetOptions;
@@ -124,7 +125,7 @@ $(document).ready(function () {
             });
     });
 
-    if (!browserUtils.isTouchDevice) {
+    if (!featureDetection.isTouchDevice) {
         asyncTest('over and move events on elements during moving', function () {
             var overed  = false;
             var entered = false;
@@ -840,7 +841,7 @@ $(document).ready(function () {
     });
 
     module('touch devices test');
-    if (browserUtils.isTouchDevice) {
+    if (featureDetection.isTouchDevice) {
         asyncTest('touch event on click', function () {
             var event  = null;
             var events = {

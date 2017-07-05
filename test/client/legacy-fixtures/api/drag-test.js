@@ -1,5 +1,6 @@
-var hammerhead   = window.getTestCafeModule('hammerhead');
-var browserUtils = hammerhead.utils.browser;
+var hammerhead       = window.getTestCafeModule('hammerhead');
+var browserUtils     = hammerhead.utils.browser;
+var featureDetection = hammerhead.utils.featureDetection;
 
 var testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
 var ERROR_TYPE           = testCafeLegacyRunner.get('../test-run-error/type');
@@ -15,7 +16,7 @@ var stepIterator = new StepIterator();
 actionsAPI.init(stepIterator);
 
 var correctTestWaitingTime = function (time) {
-    if (browserUtils.isTouchDevice && browserUtils.isFirefox)
+    if (featureDetection.isTouchDevice && browserUtils.isFirefox)
         return time * 2;
 
     return time;
@@ -26,7 +27,7 @@ $(document).ready(function () {
     $('body').css('border', '0px');
 
     // NOTE: prevent auto scrolling
-    if (browserUtils.isSafari && browserUtils.isTouchDevice) {
+    if (browserUtils.isSafari && featureDetection.isTouchDevice) {
         var $meta = $('<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">');
 
         $('head').append($meta);
@@ -42,7 +43,7 @@ $(document).ready(function () {
 
     //utils
     var asyncActionCallback;
-    var isTouchDevice = browserUtils.isTouchDevice;
+    var isTouchDevice = featureDetection.isTouchDevice;
 
     var createDraggable = function (left, top) {
         var $draggable = $('<div></div>')
