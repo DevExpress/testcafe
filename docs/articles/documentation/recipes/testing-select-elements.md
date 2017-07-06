@@ -74,7 +74,8 @@ This selector uses the [find](../test-api/selecting-page-elements/selectors.md#f
 const cityOption = citySelect.find('option');
 ```
 
-To find the London value, call the [withText](../test-api/selecting-page-elements/selectors.md#withtext) method with the `'London'` parameter.
+To find the `London` value, use the selector's filter methods that include [withText](../test-api/selecting-page-elements/selectors.md#withtext), [nth](../test-api/selecting-page-elements/selectors.md#nth) and
+[withAttribute](../test-api/selecting-page-elements/selectors.md#withattribute).
 Then pass this selector to the `click` method.
 
 ```js
