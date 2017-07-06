@@ -44,6 +44,7 @@ import SelectorExecutor from './command-executors/client-functions/selector-exec
 var transport      = hammerhead.transport;
 var Promise        = hammerhead.Promise;
 var messageSandbox = hammerhead.eventSandbox.message;
+var storages       = hammerhead.storages;
 
 
 const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
@@ -424,6 +425,9 @@ export default class Driver {
 
     _onTestDone (status) {
         this.contextStorage.setItem(TEST_DONE_SENT_FLAG, true);
+
+        storages.clear();
+        storages.lock();
 
         this
             ._sendStatus(status)
