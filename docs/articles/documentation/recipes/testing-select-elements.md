@@ -17,7 +17,29 @@ Assume the following `<select>` element.
 </select>
 ```
 
-This is a simple drop-down list that contains three cities.
+This is a simple drop-down list that contains three values for New York, London and Paris.
+
+In this recipe, you will learn how to create a test that selects a value from this list
+and checks that the `<select>` element contains the right city.
+
+Here is the full test code and further we will reproduce it step by step.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `Test select element`
+    .page `http://localhost:8080`;
+
+const citySelect = Selector('#city');
+const cityOption = citySelect.find('option');
+
+test(`Select an option from the drop-down menu`, async t => {
+    await t
+        .click(citySelect)
+        .click(cityOption.withText('London'))
+        .expect(citySelect.value).eql('London');
+});
+```
 
 Begin with an empty test.
 
@@ -33,61 +55,39 @@ test(`Select an option from the drop-down menu`, async t => {
 ```
 
 First, you need a [selector](../test-api/selecting-page-elements/selectors.md) that picks the `<select>` element.
+
+```js
+const citySelect = Selector('#city');
+```
+
 Use this selector to click the element and invoke the drop-down menu.
 
 ```js
-import { Selector } from 'testcafe';
-
-fixture `Test select element`
-    .page `http://localhost:8080`;
-
-const citySelect = Selector('#city');
-
-test(`Select an option from the drop-down menu`, async t => {
-    await t
-        .click(citySelect);
-});
+await t
+    .click(citySelect);
 ```
 
 Next, write code that selects `London` from the drop-down list. To this end, introduce a selector that identifies options.
 This selector uses the [find](../test-api/selecting-page-elements/selectors.md#find) function to locate `<option>` elements inside `<select>`.
 
+```js
+const cityOption = citySelect.find('option');
+```
+
 To find the London value, call the [withText](../test-api/selecting-page-elements/selectors.md#withtext) method with the `'London'` parameter.
 Then pass this selector to the `click` method.
 
 ```js
-import { Selector } from 'testcafe';
-
-fixture `Test select element`
-    .page `http://localhost:8080`;
-
-const citySelect = Selector('#city');
-const cityOption = citySelect.find('option');
-
-test(`Select an option from the drop-down menu`, async t => {
-    await t
-        .click(citySelect)
-        .click(city.withText('London'));
-});
+await t
+    .click(citySelect)
+    .click(cityOption.withText('London'));
 ```
 
 Finally, add an assertion that checks that the `<select>` element has the `'London'` value selected.
 
 ```js
-import { Selector } from 'testcafe';
-
-fixture `Test select element`
-    .page `http://localhost:8080`;
-
-const citySelect = Selector('#city');
-const cityOption = citySelect.find('option');
-
-test(`Select an option from the drop-down menu`, async t => {
-    await t
-        .click(citySelect)
-        .click(city.withText('London'))
-        .expect(citySelect.value).eql('London');
-});
+await t
+    .click(citySelect)
+    .click(cityOption.withText('London'))
+    .expect(citySelect.value).eql('London');
 ```
-
-In this simple recipe, we have demonstrated how you can handle the `<select>` element in your tests.
