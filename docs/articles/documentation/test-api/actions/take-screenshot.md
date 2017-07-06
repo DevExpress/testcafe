@@ -16,7 +16,7 @@ t.takeScreenshot( [path] )
 
 Parameter           | Type   | Description                                                                                           | Default
 ------------------- | ------ | ----------------------------------------------------------------------------------------------------- | ----------
-`path`&#160;*(optional)* | String | A relative path to the folder where screenshots should be saved. Resolved from the *screenshot directory* specified by using the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots-path](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option. | The screenshot directory specified by using [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) or [screenshots-path](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path).
+`path`&#160;*(optional)* | String | The relative path and the name of the screenshot file to be created. Resolved from the *screenshot directory* specified by using the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots-path](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option. | `{currentDate}\test-{testIndex}\{userAgent}\{screenshotIndex}.png`; `{currentDate}\test-{testIndex}\run-{quarantineAttempt}\{userAgent}\{screenshotIndex}.png` if quarantine mode is enabled.
 
 > Important! If the screenshot directory is not specified with the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [screenshots-path](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option,
 > the `t.takeScreenshot` action is ignored.
@@ -32,6 +32,6 @@ test('Take a screenshot of my new avatar', async t => {
         .click('#change-avatar')
         .setFilesToUpload('#upload-input', 'img/portrait.jpg')
         .click('#submit')
-        .takeScreenshot();
+        .takeScreenshot('my-fixture/test1.png');
 });
 ```
