@@ -17,7 +17,7 @@ Assume the following `<select>` element.
 </select>
 ```
 
-This is a simple drop-down list that contains three values for New York, London and Paris.
+This is a simple drop-down list that contains three values for `New York`, `London` and `Paris`.
 
 In this recipe, you will learn how to create a test that selects a value from this list
 and checks that the `<select>` element contains the right city.
@@ -63,8 +63,7 @@ const citySelect = Selector('#city');
 Use this selector to click the element and invoke the drop-down menu.
 
 ```js
-await t
-    .click(citySelect);
+await t.click(citySelect);
 ```
 
 Next, write code that selects `London` from the drop-down list. To this end, introduce a selector that identifies options.
@@ -84,7 +83,7 @@ await t
     .click(cityOption.withText('London'));
 ```
 
-Finally, add an assertion that checks that the `<select>` element has the `'London'` value selected.
+Finally, add an assertion that checks that the `<select>` element has the `London` value selected.
 
 ```js
 await t
