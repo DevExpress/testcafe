@@ -48,10 +48,6 @@ async function runTests (argParser) {
 
     var testCafe       = await createTestCafe(opts.hostname, port1, port2);
     var concurrency    = argParser.concurrency || 1;
-
-    if (argParser.remoteCount && argParser.remoteCount % concurrency)
-        throw new GeneralError(MESSAGE.invalidRemotesCount);
-
     var remoteBrowsers = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
     var browsers       = argParser.browsers.concat(remoteBrowsers);
     var runner         = testCafe.createRunner();

@@ -1,11 +1,7 @@
 import { EventEmitter } from 'events';
-import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
-import { find, remove } from 'lodash';
-import TestRun from '../test-run';
+import { remove } from 'lodash';
+import TestRunController from './test-run-controller';
 import RESULT from './browser-job-result';
-
-// Const
-const QUARANTINE_THRESHOLD = 3;
 
 
 // Browser job
@@ -25,20 +21,24 @@ export default class BrowserJob extends EventEmitter {
         this.fixtureHookController = fixtureHookController;
         this.result                = null;
 
-        this.testsQueue = tests.map((test, index) => ({
-            test,
-            index:   index + 1,
-            attempt: 1,
-            passed:  0,
-            failed:  0,
-            done:    false
-        }));
+        this.testsQueue = tests.map((test, index) => this._createTestRunController(test, index));
 
         this.completionQueue = [];
 
         this.connectionErrorListener = error => this._setResult(RESULT.errored, error);
 
         this.browserConnections.map(bc => bc.once('error', this.connectionErrorListener));
+    }
+
+    _createTestRunController (test, index) {
+        var testRunController = new TestRunController(test, index + 1, this.proxy, this.screenshots, this.warningLog,
+            this.fixtureHookController, this.opts);
+
+        testRunController.on('test-run-start', () => this.emit('test-run-start', testRunController.testRun));
+        testRunController.on('test-run-restart', () => this._onTestRunRestart(testRunController));
+        testRunController.on('test-run-done', () => this._onTestRunDone(testRunController));
+
+        return testRunController;
     }
 
     async _setResult (status, data) {
@@ -52,72 +52,29 @@ export default class BrowserJob extends EventEmitter {
         await this.browserConnections.map(bc => bc.reportJobResult(this.result.status, this.result.data));
     }
 
-    async _endQuarantine (testRun, testInfo) {
-        testRun.unstable = testInfo.passed > 0;
-
-        await this._reportTestRunDone(testRun);
+    _addToCompletionQueue (testRunInfo) {
+        this.completionQueue.push(testRunInfo);
     }
 
-    _shouldKeepInQuarantine (testRun, testInfo) {
-        if (testRun.errs.length)
-            testInfo.failed++;
-        else
-            testInfo.passed++;
-
-        return testInfo.failed < QUARANTINE_THRESHOLD && testInfo.passed < QUARANTINE_THRESHOLD;
+    _removeFromCompletionQueue (testRunInfo) {
+        remove(this.completionQueue, testRunInfo);
     }
 
-    _keepInQuarantine (testRun, testInfo) {
-        testInfo.attempt = testInfo.failed + testInfo.passed + 1;
-
-        this._removeFromCompletionQueue(testRun);
-        this.testsQueue.unshift(testInfo);
+    _onTestRunRestart (testRunController) {
+        this._removeFromCompletionQueue(testRunController);
+        this.testsQueue.unshift(testRunController);
     }
 
-    async _testRunDoneInQuarantineMode (testRun, testInfo) {
-        if (this._shouldKeepInQuarantine(testRun, testInfo))
-            this._keepInQuarantine(testRun, testInfo);
-        else
-            await this._endQuarantine(testRun, testInfo);
-    }
+    async _onTestRunDone (testRunController) {
+        this.total++;
 
-    async _testRunDone (testRun, testInfo) {
-        this.proxy.closeSession(testRun);
-
-        if (this.opts.quarantineMode && !testInfo.done)
-            await this._testRunDoneInQuarantineMode(testRun, testInfo);
-        else
-            await this._reportTestRunDone(testRun);
-    }
-
-    _addToCompletionQueue (testRun) {
-        this.completionQueue.push({ testRun, done: false });
-    }
-
-    _removeFromCompletionQueue (testRun) {
-        remove(this.completionQueue, item => item.testRun === testRun);
-    }
-
-    async _reportTestRunDone (testRun) {
-        // NOTE: we should report test run completion in order they were completed in browser.
-        // To keep a sequence after fixture hook execution we use completion queue.
-        await this.fixtureHookController.runFixtureAfterHookIfNecessary(testRun);
-
-        var completionQueueItem = find(this.completionQueue, item => item.testRun === testRun);
-
-        if (!completionQueueItem.done) {
-            completionQueueItem.done = true;
-
-            this.total++;
-
-            if (!testRun.errs.length)
-                this.passed++;
-        }
+        if (!testRunController.testRun.errs.length)
+            this.passed++;
 
         while (this.completionQueue.length && this.completionQueue[0].done) {
-            completionQueueItem = this.completionQueue.shift();
+            testRunController = this.completionQueue.shift();
 
-            this.emit('test-run-done', completionQueueItem.testRun);
+            this.emit('test-run-done', testRunController.testRun);
         }
 
         if (!this.completionQueue.length && !this.hasQueuedTestRuns) {
@@ -126,26 +83,6 @@ export default class BrowserJob extends EventEmitter {
                 .then(() => this.emit('done'));
         }
     }
-
-    _getTestRunCtor (test, opts) {
-        if (opts.TestRunCtor)
-            return opts.TestRunCtor;
-
-        return test.isLegacy ? LegacyTestRun : TestRun;
-    }
-
-    _createTestRun (testInfo, connection) {
-        var quarantineAttemptNum = this.opts.quarantineMode ? testInfo.attempt : null;
-        var screenshotCapturer   = this.screenshots.createCapturerFor(testInfo.test, testInfo.index, quarantineAttemptNum, connection);
-        var TestRunCtor          = this._getTestRunCtor(testInfo.test, this.opts);
-        var testRun              = new TestRunCtor(testInfo.test, connection, screenshotCapturer, this.warningLog, this.opts);
-
-        testRun.once('start', () => this.emit('test-run-start', testRun));
-        testRun.once('done', () => this._testRunDone(testRun, testInfo));
-
-        return testRun;
-    }
-
 
     // API
     get hasQueuedTestRuns () {
@@ -156,31 +93,22 @@ export default class BrowserJob extends EventEmitter {
         while (this.testsQueue.length) {
             // NOTE: before hook for test run fixture is currently
             // executing, so test run is temporary blocked
-            if (this.fixtureHookController.isTestBlocked(this.testsQueue[0].test))
+            if (this.testsQueue[0].blocked)
                 break;
 
-            var testInfo = this.testsQueue.shift(connection);
-            var testRun  = this._createTestRun(testInfo, connection);
+            var testRunController = this.testsQueue.shift();
+
+            this._addToCompletionQueue(testRunController);
 
             if (!this.started) {
                 this.started = true;
                 this.emit('start');
             }
 
-            this._addToCompletionQueue(testRun);
+            var testRunUrl = await testRunController.start(connection);
 
-            var hookOk = await this.fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
-
-            if (testRun.test.skip || !hookOk) {
-                this.emit('test-run-start', testRun);
-                await this._reportTestRunDone(testRun);
-            }
-
-            else {
-                testRun.start();
-
-                return this.proxy.openSession(testRun.test.pageUrl, testRun, this.opts.externalProxyHost);
-            }
+            if (testRunUrl)
+                return testRunUrl;
         }
 
         return null;

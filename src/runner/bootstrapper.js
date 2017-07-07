@@ -1,4 +1,4 @@
-import { flatten, zipWith, chunk, groupBy } from 'lodash';
+import { flatten, zipWith, chunk } from 'lodash';
 import Promise from 'pinkie';
 import Compiler from '../compiler';
 import BrowserConnection from '../browser/connection';
@@ -24,7 +24,17 @@ export default class Bootstrapper {
     }
 
     static _splitBrowserInfo (browserInfo) {
-        return groupBy(browserInfo, browser => browser instanceof BrowserConnection ? 'remotes' : 'automated');
+        var remotes   = [];
+        var automated = [];
+
+        browserInfo.forEach(browser => {
+            if (browser instanceof BrowserConnection)
+                remotes.push(browser);
+            else
+                automated.push(browser);
+        });
+
+        return { remotes, automated };
     }
 
     async _getBrowserInfo () {
@@ -60,7 +70,7 @@ export default class Bootstrapper {
         var { automated, remotes } = Bootstrapper._splitBrowserInfo(browserInfo);
 
         if (remotes && remotes.length % this.concurrency)
-            throw new GeneralError(MESSAGE.invalidRemotesCount);
+            throw new GeneralError(MESSAGE.cantDivideRemotesCountByConcurrency);
 
         var browserConnections = this._createAutomatedConnections(automated);
 
