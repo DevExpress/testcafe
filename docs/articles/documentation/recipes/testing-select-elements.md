@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: Testing %lt;select&gt; Elements
+title: Testing &lt;select&gt; Elements
 permalink: /documentation/recipes/testing-select-elements.html
 ---
 # Testing \<select\> Elements
