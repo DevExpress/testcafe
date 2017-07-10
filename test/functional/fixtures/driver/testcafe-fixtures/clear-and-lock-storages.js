@@ -3,10 +3,10 @@ import { ClientFunction } from 'testcafe';
 fixture `Storages`
     .page `http://localhost:3000/fixtures/driver/pages/set-value-to-storages.html`;
 
-const saveNativeStorageKey = ClientFunction(storageName => {
+const setNativeStorageKey = ClientFunction(storageName => {
     const storageWrapper = window['%hammerhead%'].sandbox.storageSandbox[storageName];
 
-    return storageWrapper.nativeStorage.setItem('stored-native-storage-key', storageWrapper.nativeStorageKey);
+    storageWrapper.nativeStorage.setItem('stored-native-storage-key', storageWrapper.nativeStorageKey);
 });
 
 const getNativeStorageState = ClientFunction(storageName => {
@@ -16,8 +16,8 @@ const getNativeStorageState = ClientFunction(storageName => {
 });
 
 test('Set values to storages', async t => {
-    await saveNativeStorageKey('localStorage');
-    await saveNativeStorageKey('sessionStorage');
+    await setNativeStorageKey('localStorage');
+    await setNativeStorageKey('sessionStorage');
 
     await t
         .click('a')
