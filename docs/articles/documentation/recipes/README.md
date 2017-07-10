@@ -11,6 +11,7 @@ This section provides examples and recipes of how to use TestCafe in different s
 * [Debugging with Visual Studio Code](debugging-with-visual-studio-code.md)
 * [Running Tests in Firefox and Chrome Using Travis CI](running-tests-in-firefox-and-chrome-using-travis-ci.md)
 * [Running Tests Using Travis CI and Sauce Labs](running-tests-using-travis-ci-and-sauce-labs.md)
+* [Testing \<select\> Elements](testing-select-elements.md)
 * [Test Static HTML Pages](test-static-html-pages.md)
 * [Testing on Remote Computers and Mobile Devices](testing-on-remote-computers-and-mobile-devices.md)
 * [Using Page Model](using-page-model.md)
