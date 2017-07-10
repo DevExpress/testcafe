@@ -37,8 +37,7 @@ function isCurrentLocation (url) {
 
 //API
 export function startHeartbeat (heartbeatUrl, createXHR) {
-
-    function heartbit () {
+    function heartbeat () {
         sendXHR(heartbeatUrl, createXHR)
             .then(status => {
                 if (status.code === STATUS.closing && !isCurrentLocation(status.url)) {
@@ -48,9 +47,9 @@ export function startHeartbeat (heartbeatUrl, createXHR) {
             });
     }
 
-    window.setInterval(heartbit, HEARTBEAT_INTERVAL);
+    window.setInterval(heartbeat, HEARTBEAT_INTERVAL);
 
-    heartbit();
+    heartbeat();
 }
 
 function executeInitScript (initScriptUrl, createXHR) {
