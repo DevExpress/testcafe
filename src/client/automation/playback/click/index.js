@@ -2,11 +2,9 @@ import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
 import VisibleElementAutomation from '../visible-element-automation';
-import { fromPoint as getElementFromPoint } from '../../get-element';
 import { focusAndSetSelection, focusByRelatedElement } from '../../utils/utils';
 import cursor from '../../cursor';
 import nextTick from '../../utils/next-tick';
-import AutomationSettings from '../../settings';
 
 var Promise = hammerhead.Promise;
 
@@ -15,12 +13,11 @@ var browserUtils     = hammerhead.utils.browser;
 var featureDetection = hammerhead.utils.featureDetection;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
-var domUtils      = testCafeCore.domUtils;
-var positionUtils = testCafeCore.positionUtils;
-var styleUtils    = testCafeCore.styleUtils;
-var eventUtils    = testCafeCore.eventUtils;
-var arrayUtils    = testCafeCore.arrayUtils;
-var delay         = testCafeCore.delay;
+var domUtils   = testCafeCore.domUtils;
+var styleUtils = testCafeCore.styleUtils;
+var eventUtils = testCafeCore.eventUtils;
+var arrayUtils = testCafeCore.arrayUtils;
+var delay      = testCafeCore.delay;
 
 var selectElementUI = testCafeUI.selectElement;
 
@@ -32,11 +29,6 @@ export default class ClickAutomation extends VisibleElementAutomation {
         this.modifiers = clickOptions.modifiers;
         this.caretPos  = clickOptions.caretPos;
 
-        this.offsetX = clickOptions.offsetX;
-        this.offsetY = clickOptions.offsetY;
-
-        this.automationSettings = new AutomationSettings(clickOptions.speed);
-
         this.targetElementParentNodes     = [];
         this.activeElementBeforeMouseDown = null;
         this.mouseDownElement             = null;
@@ -47,13 +39,6 @@ export default class ClickAutomation extends VisibleElementAutomation {
             simulateDefaultBehavior: true,
             clickElement:            null
         };
-    }
-
-    _getElementForEvent (eventArgs) {
-        var { x, y }        = eventArgs.point;
-        var expectedElement = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY) ? this.element : null;
-
-        return getElementFromPoint(x, y, expectedElement);
     }
 
     _bindMousedownHandler () {
@@ -189,7 +174,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
         return cursor
             .buttonUp()
             .then(() => this._getElementForEvent(eventArgs))
-            .then(({ element }) => {
+            .then(element => {
                 eventArgs.element = element;
 
                 this.eventState.clickElement = ClickAutomation._getElementForClick(this.mouseDownElement, element,
@@ -201,7 +186,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
 
     _click (eventArgs) {
         if (domUtils.isOptionElement(eventArgs.element))
-            return;
+            return eventArgs.element;
 
         if (this.eventState.clickElement)
             eventSimulator.click(this.eventState.clickElement, eventArgs.options);
@@ -220,9 +205,11 @@ export default class ClickAutomation extends VisibleElementAutomation {
             else
                 selectElementUI.expandOptionList(eventArgs.element);
         }
+
+        return eventArgs;
     }
 
-    run (selectorTimeout, checkElementInterval) {
+    run (selectorTimeout = 0, checkElementInterval = 0) {
         var eventArgs = null;
 
         return this
@@ -234,7 +221,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
                     options: extend({
                         clientX: clientPoint.x,
                         clientY: clientPoint.y
-                    }, this.modifiers),
+                    }, this.modifiers)
                 };
 
                 // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger

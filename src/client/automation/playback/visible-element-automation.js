@@ -15,6 +15,13 @@ export default class VisibleElementAutomation {
         this.automationSettings = new AutomationSettings(offsetOptions.speed);
     }
 
+    _getElementForEvent (eventArgs) {
+        var { x, y }        = eventArgs.point;
+        var expectedElement = positionUtils.containsOffset(this.element, this.options.offsetX, this.options.offsetY) ? this.element : null;
+
+        return getElementFromPoint(x, y, expectedElement).then(({ element }) => element);
+    }
+
     _moveToElement () {
         var moveOptions    = new MoveOptions(this.options, false);
         var moveAutomation = new MoveAutomation(this.element, moveOptions);
