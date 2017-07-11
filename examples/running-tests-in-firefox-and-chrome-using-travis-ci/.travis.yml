@@ -8,7 +8,7 @@ dist: trusty
 sudo: required
 
 addons:
-  firefox: latest
+  firefox: 53.0
   apt:
     sources:
      - google-chrome
