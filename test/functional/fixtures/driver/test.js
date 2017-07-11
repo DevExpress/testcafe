@@ -31,5 +31,9 @@ describe('TestRun - Driver protocol', function () {
         it('Should allow mixed execution order (GH-564)', function () {
             return runTests('./testcafe-fixtures/driver-test.js', 'Mixed execution order');
         });
+
+        it('Should clear out the localStorage and sessionStorage after test (GH-1546)', function () {
+            return runTests('./testcafe-fixtures/clear-and-lock-storages.js');
+        });
     });
 });
