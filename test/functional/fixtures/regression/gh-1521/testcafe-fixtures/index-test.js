@@ -25,7 +25,7 @@ test
     ('Wait until element is not overlapped', async t => {
         await t.eval(() => {
             window.setTimeout(function () {
-                document.getElementById('overlap-div').style.display = "none";
+                document.getElementById('overlap-div').style.display = 'none';
             }, 1000);
         });
 

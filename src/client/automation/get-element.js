@@ -4,6 +4,7 @@ import testCafeUI from './deps/testcafe-ui';
 import cursor from './cursor';
 
 var browserUtils  = hammerhead.utils.browser;
+var Promise       = hammerhead.Promise;
 var positionUtils = testCafeCore.positionUtils;
 var domUtils      = testCafeCore.domUtils;
 
@@ -79,24 +80,39 @@ function correctTopElementByExpectedElement (topElement, expectedElement) {
 }
 
 export function fromPoint (x, y, expectedElement) {
-    var isInIframe = window !== window.top;
+    var isInIframe   = window !== window.top;
+    var foundElement = null;
 
     return getElementFromPoint(x, y)
         .then(topElement => {
+            foundElement = topElement;
+
             // NOTE: when trying to get an element by elementFromPoint in iframe and the target
             // element is under any of shadow-ui elements, you will get null (only in IE).
             // In this case, you should hide a top window's shadow-ui root to obtain an element.
-            if (!topElement && isInIframe && x > 0 && y > 0) {
-                return getElementFromPoint(x, y, true)
-                    .then(element => correctTopElementByExpectedElement(element, expectedElement));
-            }
+            var resChain = Promise.resolve();
 
-            return correctTopElementByExpectedElement(topElement, expectedElement);
+            if (!foundElement && isInIframe && x > 0 && y > 0) {
+                resChain = resChain
+                    .then(() => getElementFromPoint(x, y, true))
+                    .then(element => {
+                        foundElement = element;
+
+                        return correctTopElementByExpectedElement(element, expectedElement);
+                    });
+            }
+            else
+                resChain = resChain.then(() => correctTopElementByExpectedElement(topElement, expectedElement));
+
+            return resChain
+                .then(correctedElement => {
+                    return { element: correctedElement, corrected: correctedElement !== foundElement };
+                });
         });
 }
 
 export function underCursor () {
     var cursorPosition = cursor.position;
 
-    return fromPoint(cursorPosition.x, cursorPosition.y);
+    return fromPoint(cursorPosition.x, cursorPosition.y).then(({ element }) => element);
 }

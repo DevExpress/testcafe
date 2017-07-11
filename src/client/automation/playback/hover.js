@@ -27,8 +27,8 @@ export default class HoverAutomation {
                               this.element : null;
 
         return getElementFromPoint(point.x, point.y, expectedElement)
-            .then(topElement => {
-                if (!topElement)
+            .then(({ element }) => {
+                if (!element)
                     throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
             });
     }

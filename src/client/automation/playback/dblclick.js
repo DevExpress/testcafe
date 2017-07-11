@@ -69,15 +69,15 @@ export default class DblClickAutomation {
         var y = point ? point.y : this.eventArgs.point.y;
 
         return getElementFromPoint(x, y, expectedElement)
-            .then(topElement => {
-                if (!topElement)
+            .then(({ element }) => {
+                if (!element)
                     throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 
                 return {
                     screenPoint: screenPoint || this.eventArgs.screenPoint,
                     point:       point || this.eventArgs.point,
                     options:     options || this.eventArgs.options,
-                    element:     topElement
+                    element:     element
                 };
             });
     }

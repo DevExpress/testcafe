@@ -16,11 +16,11 @@ describe('[Regression](GH-1521)', function () {
             });
     });
 
-    it.only('Should wait for a timeout if an element is overlapped', function () {
+    it('Should wait for a timeout if an element is overlapped', function () {
         return runTests('testcafe-fixtures/index-test.js', 'Wait until element is not overlapped', { only: 'chrome' });
     });
 
-    it.only('Should click on an overlapping element after some timeout', function () {
+    it('Should click on an overlapping element after some timeout', function () {
         return runTests('testcafe-fixtures/index-test.js', 'Click on an overlapping element after some timeout', { only: 'chrome' });
     });
 });

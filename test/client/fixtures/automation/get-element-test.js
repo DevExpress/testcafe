@@ -69,7 +69,9 @@ $(document).ready(function () {
         createElementUnderRoot(document.body, shadowUILeft, shadowUITop);
 
         getElementFromPointMethod(window).call(window, shadowUITop + 50, shadowUILeft + 50)
-            .then(function (element) {
+            .then(function (res) {
+                var element = res.element;
+
                 equal(element.id, 'div-id');
                 start();
             })
@@ -98,7 +100,9 @@ $(document).ready(function () {
 
             window.setTimeout(function () {
                 getElementFromPointMethod(iframeWindow).call(iframeWindow, 50, 50)
-                    .then(function (element) {
+                    .then(function (res) {
+                        var element = res.element;
+
                         $iframe.remove();
                         equal(element.id, 'div-id');
                         start();
