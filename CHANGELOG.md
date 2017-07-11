@@ -1,5 +1,136 @@
 # Changelog
 
+## v0.17.0
+
+### Enhancements
+
+#### :gear: Testing Electron applications ([testcafe-browser-provider-electron](https://github.com/DevExpress/testcafe-browser-provider-electron))
+
+We have prepared a browser provider that allows you to test Electron applications with TestCafe.
+
+Getting it to work is simple. First, install the plugin from npm.
+
+```sh
+npm install testcafe-browser-provider-electron --save-dev
+```
+
+Then create a `.testcafe-electron-rc` file that contains configurations for the Electron plugin.
+The only required setting here is `mainWindowUrl` - a URL or path to the main window page relative to the application directory.
+
+```json
+{
+    "mainWindowUrl": "./index.html"
+}
+```
+
+Place this file into the application root directory.
+
+Now you are ready to run tests. Specify the `electron` browser name and the application path
+when launching tests from the command line or API.
+
+```sh
+testcafe "electron:/home/user/electron-app" "path/to/test/file.js"
+```
+
+```js
+testCafe
+    .createRunner()
+    .src('path/to/test/file.js')
+    .browsers('electron:/home/user/electron-app')
+    .run();
+```
+
+To learn more about the Electron browser provider, see the plugin [readme](https://github.com/DevExpress/testcafe-browser-provider-electron).
+
+#### :gear: Concurrent test execution ([#1165](https://github.com/DevExpress/testcafe/issues/1165))
+
+To save your time spent on testing, we have added the capability to run tests concurrently in a single browser.
+
+By default, when you run tests in one or several browsers,
+TestCafe opens a single instance of each browser and runs all test sequentially within each instance.
+
+*Concurrency* allows TestCafe to open multiple instances of the same browser
+and distribute the test batch among these instances so that tests run in parallel.
+
+You can enable concurrency with the `-c` command line option or the `runner.concurrency()` API method.
+When doing so, specify the number of instances you wish to invoke.
+
+```js
+testcafe -c 3 chrome tests/test.js
+```
+
+```js
+var testRunPromise = runner
+    .src('tests/test.js')
+    .browsers('chrome')
+    .concurrency(3)
+    .run();
+```
+
+For details, see [Concurrent Test Execution](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html).
+
+#### :gear: Further improvements in automatic waiting mechanism ([#1521](https://github.com/DevExpress/testcafe/issues/1521))
+
+We have enhanced the waiting mechanism behavior in certain scenarios where you still used to need `wait` actions.
+Now automatic waiting is much smarter and chances that you need to wait manually are diminished.
+
+#### :gear: Selector's withAttribute method supports search by strict match ([#1548](https://github.com/DevExpress/testcafe/issues/1548]))
+
+When you provide string arguments to the `withAttribute` method, the selector searches
+for an element whose attribute name and value strictly match the given parameters.
+
+```js
+const el = Selector('.container').withAttribute('width', '200');
+```
+
+#### :gear: User roles preserve the local storage ([#1454](https://github.com/DevExpress/testcafe/issues/1454))
+
+TestCafe now saves the local storage state when switching between roles, so that when you switch back you get the same local storage content you left.
+
+This is useful for testing websites that perform authentication via local storage instead of cookies.
+
+#### Miscellaneous
+
+* `StorageSandbox` is shared to the client API with `clear` and `lock` methods added. ([testcafe-hammerhead/#1189](https://github.com/DevExpress/testcafe-hammerhead/issues/1189))
+* The number of failed cookie-sync messages is now limited. ([testcafe-hammerhead/#1193](https://github.com/DevExpress/testcafe-hammerhead/issues/1193))
+* `Hammerhead.backupStorages` and `Hammerhead.restoreStorages` methods are added to the client API([testcafe-hammerhead/#1125](https://github.com/DevExpress/testcafe-hammerhead/issues/1125))
+* The `GetEventListeners` method is implemented in `sandbox.event.listeners`. ([testcafe-hammerhead/#1238](https://github.com/DevExpress/testcafe-hammerhead/issues/1238))
+* JavaScript expressions now supported in raw API selectors. ([#1466](https://github.com/DevExpress/testcafe/issues/1466))
+
+### Bug Fixes
+
+* Fixed a typo in typedefs for the Role feature. ([#1541](https://github.com/DevExpress/testcafe/issues/1541))
+* Authentication with user roles works correctly in SPAs. ([#1502](https://github.com/DevExpress/testcafe/issues/1502))
+* Fixed an error that said about an undetected `tmp` module. ([#1547](https://github.com/DevExpress/testcafe/issues/1547))
+* Taking screenshots with a Docker image now works correctly. ([#1540](https://github.com/DevExpress/testcafe/issues/1540))
+* `t.typeText` now works with React 15.6.1 ([#1558](https://github.com/DevExpress/testcafe/issues/1558))
+* Description for the `path` parameter of the `t.takeScreenshot` action has been corrected ([#1515](https://github.com/DevExpress/testcafe/issues/1515))
+* Local storage is now cleaned appropriately after the test run.([#1546](https://github.com/DevExpress/testcafe/issues/1546))
+* TestCafe now checks element visibility with a timeout when the target element's `style.top` is negative ([#1185](https://github.com/DevExpress/testcafe/issues/1185))
+* Fetching an absolute CORS URL now works correctly. ([#1629](https://github.com/DevExpress/testcafe/issues/1629))
+* Fixed a bug that led to an error in test code. ([#1442](https://github.com/DevExpress/testcafe/issues/1442))
+* TypeScript performance has been enhanced. ([#1591](https://github.com/DevExpress/testcafe/issues/1591))
+* Mousedown on a link without `src` is now handled properly. ([#1598](https://github.com/DevExpress/testcafe/issues/1598))
+* Markup imported via `meta[rel="import]` is now processed. ([testcafe-hammerhead/#1161](https://github.com/DevExpress/testcafe-hammerhead/issues/1161))
+* The `innerHtml` property is no longer processed if an element doesn't have it. ([testcafe-hammerhead/#1164](https://github.com/DevExpress/testcafe-hammerhead/issues/1164))
+* A correct context is now passed to `MutationObserver`. ([testcafe-hammerhead/#1178](https://github.com/DevExpress/testcafe-hammerhead/issues/1178))
+* Fixed a bug that led to test failing in Edge 15. ([testcafe-hammerhead/#1176](https://github.com/DevExpress/testcafe-hammerhead/issues/1176))
+* Native `value` property setters of an `HTMLInputElement` and `HTMLTextAreaElement` are now saved. ([testcafe-hammerhead/#1185](https://github.com/DevExpress/testcafe-hammerhead/issues/1185))
+* The `name` and `namedItem` properties of `HTMLCollection` are marked as non-enumerable. ([testcafe-hammerhead/#1172](https://github.com/DevExpress/testcafe-hammerhead/issues/1172))
+* Code instrumentation of the `length` property now runs faster. ([testcafe-hammerhead/#979](https://github.com/DevExpress/testcafe-hammerhead/issues/979)
+* The right port is now applied to a cross-domain iframe location after redirect. ([testcafe-hammerhead/#1191](https://github.com/DevExpress/testcafe-hammerhead/issues/1191))
+* `Hammerhead.EVENTS.xhrSend` and `Hammerhead.EVENTS.fetchSend` are renamed to `...Sent`. ([testcafe-hammerhead/#678](https://github.com/DevExpress/testcafe-hammerhead/issues/678))
+* All internal properties are marked as non-enumerable. ([testcafe-hammerhead/#1182](https://github.com/DevExpress/testcafe-hammerhead/issues/1182))
+* Hammerhead no longer crashes on the `slack.com/signin` page. ([testcafe-hammerhead/#1195](https://github.com/DevExpress/testcafe-hammerhead/issues/1195))
+* Fixed a bug where a script error occurred after proxying. ([testcafe-hammerhead/#1209](https://github.com/DevExpress/testcafe-hammerhead/issues/1209))
+* WebWorker content is now correctly proxied in FireFox 54. ([testcafe-hammerhead/#1216](https://github.com/DevExpress/testcafe-hammerhead/issues/1216))
+* Methods that return live node collections are now correctly proxied. ([testcafe-hammerhead/#1096](https://github.com/DevExpress/testcafe-hammerhead/issues/1096))
+* Code instrumentation for the `document.activeElement` property works properly if it is `null`. ([testcafe-hammerhead/#1226](https://github.com/DevExpress/testcafe-hammerhead/issues/1226))
+* `length`, `item` and `namedItem` are no longer own properties of `LiveNodeListWrapper`. ([testcafe-hammerhead/#1222](https://github.com/DevExpress/testcafe-hammerhead/issues/1222))
+* The `scope` option in the `serviceWorker.register` function is now processed correctly. ([testcafe-hammerhead/#1233](https://github.com/DevExpress/testcafe-hammerhead/issues/1233))
+* Promises from a fetch request are now processed correctly. ([testcafe-hammerhead/#1234](https://github.com/DevExpress/testcafe-hammerhead/issues/1234))
+* Fixed a bug that led to an error in compiled babel code. ([testcafe-hammerhead/#1231](https://github.com/DevExpress/testcafe-hammerhead/issues/1231))
+
 ## v0.16.2 (2017-6-27)
 
 ### Bug Fixes
