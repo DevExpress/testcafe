@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import resolveCwd from 'resolve-cwd';
+import setupExitHook from 'async-exit-hook';
 import browserProviderPool from '../browser/provider/pool';
 import { GeneralError, APIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
@@ -7,6 +8,18 @@ import CliArgumentParser from './argument-parser';
 import log from './log';
 import remotesWizard from './remotes-wizard';
 import createTestCafe from '../';
+
+
+var showMessageOnExit = true;
+
+function exitHandler () {
+    if (!showMessageOnExit)
+        return;
+
+    log.hideSpinner();
+    log.write('Stopping TestCafe...');
+    log.showSpinner();
+}
 
 function exit (code) {
     log.hideSpinner();
@@ -68,6 +81,7 @@ async function runTests (argParser) {
     }
 
     finally {
+        showMessageOnExit = false;
         await testCafe.close();
     }
 
@@ -113,6 +127,8 @@ function useLocalInstallation () {
     if (useLocalInstallation())
         return;
 
+    setupExitHook(exitHandler);
+
     try {
         var argParser = new CliArgumentParser();
 
@@ -124,6 +140,7 @@ function useLocalInstallation () {
             await runTests(argParser);
     }
     catch (err) {
+        showMessageOnExit = false;
         error(err);
     }
 })();

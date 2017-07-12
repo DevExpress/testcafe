@@ -54,6 +54,7 @@
     "prepublish": "publish-please guard"
   },
   "dependencies": {
+    "async-exit-hook": "^1.1.2",
     "babel-core": "^6.22.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.22.0",
@@ -78,7 +79,7 @@
     "is-ci": "^1.0.10",
     "is-glob": "^2.0.1",
     "lodash": "^4.13.1",
-    "log-update": "^1.0.2",
+    "log-update-async-hook": "^2.0.2",
     "map-reverse": "^1.0.1",
     "mkdirp": "^0.5.1",
     "moment": "^2.10.3",

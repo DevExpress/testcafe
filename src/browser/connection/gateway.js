@@ -75,8 +75,9 @@ export default class BrowserConnectionGateway {
 
     static onHeartbeat (req, res, connection) {
         if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
-            connection.heartbeat();
-            res.end();
+            var status = connection.heartbeat();
+
+            respondWithJSON(res, status);
         }
     }
 
