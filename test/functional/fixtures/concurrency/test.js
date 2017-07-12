@@ -6,13 +6,29 @@ var config  = require('../../config');
 
 if (config.useLocalBrowsers) {
     describe('Concurrency', function () {
-        var data = '';
+        var data     = '';
 
-        function run (browsers, concurrency, file) {
+        function resolvePath (file) {
+            return path.join(__dirname, file);
+        }
+
+        function run (browsers, concurrency, files, reporter) {
+            var src      = null;
+
+            reporter = reporter || 'json';
+
+            if (typeof files === 'string')
+                src = resolvePath(files);
+            else {
+                src = files.map(function (file) {
+                    return resolvePath(file);
+                });
+            }
+
             return testCafe
                 .createRunner()
-                .src(path.join(__dirname, file))
-                .reporter('json', {
+                .src(src)
+                .reporter(reporter, {
                     write: function (newData) {
                         data += newData;
                     },
@@ -58,8 +74,28 @@ if (config.useLocalBrowsers) {
             return promise;
         }
 
+        function customReporter () {
+            return {
+                reportTestDone: function (name) {
+                    this.write('Test ' + name + ' done').newline();
+                },
+
+                reportFixtureStart: function (name) {
+                    this.write('Fixture ' + name + ' started').newline();
+                },
+
+                reportTaskStart: function () {
+
+                },
+
+                reportTaskDone: function () {
+
+                }
+            };
+        }
+
         beforeEach(function () {
-            data = '';
+            data     = '';
         });
 
         it('Should run tests sequentially if concurrency = 1', function () {
@@ -89,6 +125,20 @@ if (config.useLocalBrowsers) {
 
                     expect(results.errs).eql([]);
                     expect(failedCount).eql(0);
+                });
+        });
+
+        it('Should report fixture start correctly if second fixture finishes before first', function () {
+            return run('chrome', 2, ['./testcafe-fixtures/multifixture-test-a.js', './testcafe-fixtures/multifixture-test-b.js'], customReporter)
+                .then(failedCount => {
+                    expect(failedCount).eql(0);
+                    expect(data.split('\n')).eql([
+                        'Fixture Multifixture A started',
+                        'Test Long test done',
+                        'Fixture Multifixture B started',
+                        'Test Short test done',
+                        ''
+                    ]);
                 });
         });
 

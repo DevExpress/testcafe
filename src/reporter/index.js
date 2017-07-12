@@ -49,21 +49,22 @@ export default class Reporter {
 
     _shiftReportQueue (reportItem) {
         var currentFixture = null;
+        var nextReportItem = null;
 
         while (this.reportQueue.length && this.reportQueue[0].testRunInfo) {
             reportItem     = this.reportQueue.shift();
             currentFixture = reportItem.fixture;
 
             this.plugin.reportTestDone(reportItem.test.name, reportItem.testRunInfo);
+
+            // NOTE: here we assume that tests are sorted by fixture.
+            // Therefore, if the next report item has a different
+            // fixture, we can report this fixture start.
+            nextReportItem = this.reportQueue[0];
+
+            if (nextReportItem && nextReportItem.fixture !== currentFixture)
+                this.plugin.reportFixtureStart(nextReportItem.fixture.name, nextReportItem.fixture.path);
         }
-
-        // NOTE: here we assume that tests are sorted by fixture.
-        // Therefore, if the next report item has a different
-        // fixture, we can report this fixture start.
-        var nextReportItem = this.reportQueue[0];
-
-        if (nextReportItem && nextReportItem.fixture !== currentFixture)
-            this.plugin.reportFixtureStart(nextReportItem.fixture.name, nextReportItem.fixture.path);
     }
 
     _assignTaskEventHandlers (task) {
