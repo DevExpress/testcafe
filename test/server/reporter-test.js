@@ -196,7 +196,7 @@ describe('Reporter', function () {
         EventEmitter.call(this);
 
         this.tests       = testMocks;
-        this.browserSet  = { connectionGroups: chunk(browserConnectionMocks, 1) };
+        this.browserConnectionGroups = chunk(browserConnectionMocks, 1);
         this.screenshots = new ScreenshotsMock();
 
         this.warningLog = {

@@ -118,7 +118,7 @@ export default class TestRunController extends EventEmitter {
         if (this.test.skip || !hookOk) {
             this.emit('test-run-start');
             await this._emitTestRunDone();
-            return '';
+            return null;
         }
 
         testRun.start();

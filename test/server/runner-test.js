@@ -631,8 +631,8 @@ describe('Runner', function () {
             Task.prototype._createBrowserJobs = function () {
                 setTimeout(taskActionCallback.bind(this), TASK_ACTION_DELAY);
 
-                return this.browserSet.connections.map(function (bc) {
-                    return { browserConnection: bc };
+                return this.browserConnectionGroups.map(function (bcGroup) {
+                    return { browserConnections: bcGroup };
                 });
             };
 

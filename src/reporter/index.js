@@ -15,7 +15,7 @@ export default class Reporter {
 
     // Static
     static _createReportQueue (task) {
-        var runsPerTest = task.browserSet.connectionGroups.length;
+        var runsPerTest = task.browserConnectionGroups.length;
 
         return task.tests.map(test => Reporter._createReportItem(test, runsPerTest));
     }
@@ -48,13 +48,6 @@ export default class Reporter {
     }
 
     _shiftReportQueue (reportItem) {
-        if (!reportItem.testRunInfo) {
-            reportItem.testRunInfo = Reporter._createTestRunInfo(reportItem);
-
-            if (!reportItem.errs.length && !reportItem.test.skip)
-                this.passed++;
-        }
-
         var currentFixture = null;
 
         while (this.reportQueue.length && this.reportQueue[0].testRunInfo) {
@@ -76,7 +69,7 @@ export default class Reporter {
     _assignTaskEventHandlers (task) {
         task.once('start', () => {
             var startTime  = new Date();
-            var userAgents = task.browserSet.connectionGroups.map(group => group[0].userAgent);
+            var userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
             var first      = this.reportQueue[0];
 
             this.plugin.reportTaskStart(startTime, userAgents, this.testCount);
@@ -100,6 +93,13 @@ export default class Reporter {
             if (!reportItem.pendingRuns) {
                 if (task.screenshots.hasCapturedFor(testRun.test))
                     reportItem.screenshotPath = task.screenshots.getPathFor(testRun.test);
+
+                if (!reportItem.testRunInfo) {
+                    reportItem.testRunInfo = Reporter._createTestRunInfo(reportItem);
+
+                    if (!reportItem.errs.length && !reportItem.test.skip)
+                        this.passed++;
+                }
 
                 this._shiftReportQueue(reportItem);
             }

@@ -1,4 +1,4 @@
-import { flatten, zipWith, chunk } from 'lodash';
+import { flatten, chunk, times } from 'lodash';
 import Promise from 'pinkie';
 import Compiler from '../compiler';
 import BrowserConnection from '../browser/connection';
@@ -50,20 +50,8 @@ export default class Bootstrapper {
         if (!browserInfo)
             return [];
 
-        var browserConnections = [];
-
-        for (var i = 0; i < this.concurrency; i++) {
-            var nextConnections = browserInfo.map(browser => new BrowserConnection(this.browserConnectionGateway, browser));
-
-            browserConnections = zipWith(browserConnections, nextConnections, (prev, next) => {
-                if (!Array.isArray(prev))
-                    return [next];
-
-                return prev.concat(next);
-            });
-        }
-
-        return browserConnections;
+        return browserInfo
+            .map(browser => times(this.concurrency, () => new BrowserConnection(this.browserConnectionGateway, browser)));
     }
 
     async _getBrowserConnections (browserInfo) {

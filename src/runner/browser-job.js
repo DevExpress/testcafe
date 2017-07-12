@@ -1,3 +1,4 @@
+import Promise from 'pinkie';
 import { EventEmitter } from 'events';
 import { remove } from 'lodash';
 import TestRunController from './test-run-controller';
@@ -21,7 +22,7 @@ export default class BrowserJob extends EventEmitter {
         this.fixtureHookController = fixtureHookController;
         this.result                = null;
 
-        this.testsQueue = tests.map((test, index) => this._createTestRunController(test, index));
+        this.testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index));
 
         this.completionQueue = [];
 
@@ -47,9 +48,9 @@ export default class BrowserJob extends EventEmitter {
 
         this.result = { status, data };
 
-        this.browserConnections.map(bc => bc.removeListener('error', this.connectionErrorListener));
+        this.browserConnections.forEach(bc => bc.removeListener('error', this.connectionErrorListener));
 
-        await this.browserConnections.map(bc => bc.reportJobResult(this.result.status, this.result.data));
+        await Promise.all(this.browserConnections.map(bc => bc.reportJobResult(this.result.status, this.result.data)));
     }
 
     _addToCompletionQueue (testRunInfo) {
@@ -62,7 +63,7 @@ export default class BrowserJob extends EventEmitter {
 
     _onTestRunRestart (testRunController) {
         this._removeFromCompletionQueue(testRunController);
-        this.testsQueue.unshift(testRunController);
+        this.testRunControllerQueue.unshift(testRunController);
     }
 
     async _onTestRunDone (testRunController) {
@@ -86,17 +87,17 @@ export default class BrowserJob extends EventEmitter {
 
     // API
     get hasQueuedTestRuns () {
-        return !!this.testsQueue.length;
+        return !!this.testRunControllerQueue.length;
     }
 
     async popNextTestRunUrl (connection) {
-        while (this.testsQueue.length) {
+        while (this.testRunControllerQueue.length) {
             // NOTE: before hook for test run fixture is currently
             // executing, so test run is temporary blocked
-            if (this.testsQueue[0].blocked)
+            if (this.testRunControllerQueue[0].blocked)
                 break;
 
-            var testRunController = this.testsQueue.shift();
+            var testRunController = this.testRunControllerQueue.shift();
 
             this._addToCompletionQueue(testRunController);
 
