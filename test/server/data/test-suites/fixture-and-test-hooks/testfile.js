@@ -85,5 +85,5 @@ fixture
 test
     .before(async t => {})
     .after(async t => {})
-    `fixture8test1`
+    `${value}`
     .page('http://example.com');

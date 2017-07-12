@@ -50,7 +50,7 @@ describe('Should get structure of esnext files', function () {
                             }
                         },
                         {
-                            name: '<computed name>',
+                            name: '<computed name>(line: 13)',
 
                             start: 187,
                             end:   238,
@@ -63,7 +63,7 @@ describe('Should get structure of esnext files', function () {
                     ]
                 },
                 {
-                    name: '<computed name>',
+                    name: '<computed name>(line: 17)',
 
                     start: 241,
                     end:   353,
@@ -102,7 +102,7 @@ describe('Should get structure of esnext files', function () {
 
                     tests: [
                         {
-                            name: '<computed name>',
+                            name: '<computed name>(line: 10)',
 
                             start: 178,
                             end:   271,
@@ -217,7 +217,7 @@ describe('Should get structure of esnext files', function () {
         return testFixtureParser('./data/test-suites/call-fixture-from-async-function', expectedStructure);
     });
 
-    it.only('.skip, .after, .before in test file', function () {
+    it('.skip, .after, .before in test file', function () {
         var expectedStructure = [
             [
                 {
@@ -466,10 +466,10 @@ describe('Should get structure of esnext files', function () {
 
                     tests: [
                         {
-                            name: 'fixture8test1',
+                            name: '<computed name>(line: 88)',
 
                             start: 1363,
-                            end:   1472,
+                            end:   1467,
 
                             loc: {
                                 end:   { column: 31, line: 89 },
@@ -484,7 +484,7 @@ describe('Should get structure of esnext files', function () {
         return testFixtureParser('./data/test-suites/fixture-and-test-hooks', expectedStructure);
     });
 
-    it.only('.skip, .after, .before in test file - invalid usage', function () {
+    it('.skip, .after, .before in test file - invalid usage', function () {
         var expectedStructure = [[]];
 
         return testFixtureParser('./data/test-suites/fixture-and-test-hooks-invalid-usage', expectedStructure);

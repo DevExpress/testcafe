@@ -1,16 +1,17 @@
 import { assign } from 'lodash';
+import { format } from 'util';
 import { transform as parse } from 'babel-core';
-import { GeneralError } from '../errors/runtime';
-import ESNextTestFileCompiler from './test-file/formats/es-next';
+import { GeneralError } from '../../errors/runtime';
+import ESNextTestFileCompiler from './formats/es-next';
 
-import promisify from '../utils/promisify';
+import promisify from '../../utils/promisify';
 import fs from 'fs';
 
-import MESSAGE from '../errors/runtime/message';
+import MESSAGE from '../../errors/runtime/message';
 
 var readFile = promisify(fs.readFile);
 
-const COMPUTED_NAME_TEXT      = '<computed name>';
+const COMPUTED_NAME_TEXT_TMP  = '<computed name>(line: %s)';
 const METHODS_SPECIFYING_NAME = ['only', 'skip'];
 
 function getRValue (token) {
@@ -23,11 +24,7 @@ function getFunctionBody (token) {
 
 function getTagStrValue (exp) {
     //NOTE: we set <computed name> if template literal has at least one computed substring ${...}
-    return exp.expressions.length ? COMPUTED_NAME_TEXT : exp.quasis[0].value.raw;
-}
-
-function checkMemberDefineName (fn) {
-    return METHODS_SPECIFYING_NAME.indexOf(fn) > -1;
+    return exp.expressions.length ? format(COMPUTED_NAME_TEXT_TMP, exp.loc.start.line) : exp.quasis[0].value.raw;
 }
 
 function formatFnData (name, value, token) {
@@ -38,6 +35,19 @@ function formatFnData (name, value, token) {
         start:  token.start,
         end:    token.end
     };
+}
+
+function checkExpDefineTargetName (type, apiFn) {
+    //NOTE: fixture('fixtureName') or test('testName')
+    const isDirectCall = type === 'Identifier';
+
+    //NOTE: fixture.skip('fixtureName'), test.only('testName') etc.
+    const isMemberCall = type === 'MemberExpression' && METHODS_SPECIFYING_NAME.indexOf(apiFn) > -1;
+
+    //NOTE: fixture.before().after()('fixtureName'), test.before()`testName`.after() etc.
+    const isTailCall = type === 'CallExpression';
+
+    return isDirectCall || isMemberCall || isTailCall;
 }
 
 function analyzeMemberExp (token) {
@@ -58,10 +68,10 @@ function analyzeMemberExp (token) {
             callStack.push(exp);
     }
 
-    let parentExp = callStack.pop();
-
     if (exp.name !== 'fixture' && exp.name !== 'test')
         return null;
+
+    let parentExp = callStack.pop();
 
     if (parentExp.type === 'CallExpression')
         return formatFnData(exp.name, formatFnArg(parentExp.arguments[0]), token);
@@ -73,34 +83,18 @@ function analyzeMemberExp (token) {
         /*eslint-disable no-cond-assign*/
         while (parentExp = callStack.pop()) {
             if (parentExp.type === 'CallExpression' && parentExp.callee) {
-                const calleeType = parentExp.callee.type;
+                const calleeType     = parentExp.callee.type;
+                const calleeMemberFn = parentExp.callee.property && parentExp.callee.property.name;
 
-                //NOTE: fixture('fixtureName') or test('testName')
-                const isDirectCall = calleeType === 'Identifier';
-
-                //NOTE: fixture.skip('fixtureName'), test.only('testName') etc.
-                const isMemberCall = calleeType === 'MemberExpression' &&
-                                     checkMemberDefineName(parentExp.callee.property.name);
-
-                const isTailCall = calleeType === 'CallExpression';
-
-                if (isDirectCall || isMemberCall || isTailCall)
+                if (checkExpDefineTargetName(calleeType, calleeMemberFn))
                     return formatFnData(exp.name, formatFnArg(parentExp.arguments[0]), token);
             }
 
             if (parentExp.type === 'TaggedTemplateExpression' && parentExp.tag) {
-                const tagType = parentExp.tag.type;
+                const tagType     = parentExp.tag.type;
+                const tagMemberFn = parentExp.tag.property && parentExp.tag.property.name;
 
-                //NOTE: fixture('fixtureName') or test('testName')
-                const isDirectCall = tagType === 'Identifier';
-
-                //NOTE: fixture.skip('fixtureName'), test.only('testName') etc.
-                const isMemberCall = tagType === 'MemberExpression' &&
-                                     checkMemberDefineName(parentExp.tag.property.name);
-
-                const isTailCall = tagType === 'CallExpression';
-
-                if (isDirectCall || isMemberCall || isTailCall)
+                if (checkExpDefineTargetName(tagType, tagMemberFn))
                     return formatFnData(exp.name, getTagStrValue(parentExp.quasi), token);
             }
         }
@@ -112,7 +106,7 @@ function analyzeMemberExp (token) {
 
 function formatFnArg (arg) {
     if (arg.type === 'Identifier')
-        return COMPUTED_NAME_TEXT;
+        return format(COMPUTED_NAME_TEXT_TMP, arg.loc.start.line);
 
     if (arg.type === 'TemplateLiteral')
         return getTagStrValue(arg);
@@ -225,12 +219,9 @@ function analyze (astBody) {
     return fixtures;
 }
 
-function canCompile (filename) {
-    return /\.js$/.test(filename);
-}
-
 export default async function (filename) {
-    let code = '';
+    const compiler = new ESNextTestFileCompiler();
+    let code       = '';
 
     try {
         code = await readFile(filename, 'utf8');
@@ -240,9 +231,9 @@ export default async function (filename) {
         throw new GeneralError(MESSAGE.cantFindSpecifiedTestSource, filename);
     }
 
-    if (!canCompile(filename, code)) return [];
+    if (!compiler.canCompile(code, filename)) return [];
 
-    const compilerOptions = ESNextTestFileCompiler._getBabelOptions(filename);
+    const compilerOptions = ESNextTestFileCompiler.getBabelOptions(filename);
     const opts            = assign(compilerOptions, { ast: true });
     const ast             = parse(code, opts).ast;
 
