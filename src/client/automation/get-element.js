@@ -90,7 +90,7 @@ export function fromPoint (x, y, expectedElement) {
             // NOTE: when trying to get an element by elementFromPoint in iframe and the target
             // element is under any of shadow-ui elements, you will get null (only in IE).
             // In this case, you should hide a top window's shadow-ui root to obtain an element.
-            var resChain = Promise.resolve();
+            var resChain = Promise.resolve(topElement);
 
             if (!foundElement && isInIframe && x > 0 && y > 0) {
                 resChain = resChain
@@ -98,13 +98,12 @@ export function fromPoint (x, y, expectedElement) {
                     .then(element => {
                         foundElement = element;
 
-                        return correctTopElementByExpectedElement(element, expectedElement);
+                        return element;
                     });
             }
-            else
-                resChain = resChain.then(() => correctTopElementByExpectedElement(topElement, expectedElement));
 
             return resChain
+                .then(element => correctTopElementByExpectedElement(element, expectedElement))
                 .then(correctedElement => {
                     return { element: correctedElement, corrected: correctedElement !== foundElement };
                 });
