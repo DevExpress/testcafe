@@ -52,7 +52,7 @@ export default class SelectBaseAutomation {
         var clientPoint = positionUtils.offsetToClientCoords(point);
 
         return getElementFromPoint(clientPoint.x, clientPoint.y)
-            .then(topElement => {
+            .then(({ topElement }) => {
                 if (!topElement)
                     throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 

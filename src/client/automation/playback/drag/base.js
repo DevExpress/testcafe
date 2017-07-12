@@ -6,15 +6,10 @@ import {
     delay
 } from '../../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../../get-element';
+import VisibleElementAutomation from '../visible-element-automation';
 import MoveAutomation from '../move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
-import getAutomationPoint from '../../utils/get-automation-point';
-import screenPointToClient from '../../utils/screen-point-to-client';
-import AutomationSettings from '../../settings';
-import AUTOMATION_ERROR_TYPES from '../../errors';
-import tryUntilTimeout from '../../utils/try-until-timeout';
-
 
 const MIN_MOVING_TIME = 25;
 
@@ -25,87 +20,41 @@ var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 var focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
 
-export default class DragAutomationBase {
+export default class DragAutomationBase extends VisibleElementAutomation {
     constructor (element, mouseOptions) {
-        this.element = element;
-        this.options = mouseOptions;
+        super(element, mouseOptions);
 
         this.modifiers = mouseOptions.modifiers;
+        this.speed     = mouseOptions.speed;
         this.offsetX   = mouseOptions.offsetX;
         this.offsetY   = mouseOptions.offsetY;
-        this.speed     = mouseOptions.speed;
-
-        this.automationSettings = new AutomationSettings(this.speed);
 
         this.endPoint  = null;
         this.downEvent = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
         this.upEvent   = featureDetection.isTouchDevice ? 'touchend' : 'mouseup';
 
         this.dragAndDropState = null;
-
-        this.eventArgs = {
-            point:   null,
-            options: null,
-            element: null
-        };
-    }
-
-    _calculateEventArguments () {
-        var screenPoint     = getAutomationPoint(this.element, this.offsetX, this.offsetY);
-        var point           = screenPointToClient(this.element, screenPoint);
-        var expectedElement = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY) ?
-                              this.element : null;
-
-        var options = extend({
-            clientX: point.x,
-            clientY: point.y
-        }, this.modifiers);
-
-        return getElementFromPoint(point.x, point.y, expectedElement)
-            .then(topElement => {
-                if (!topElement)
-                    throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
-
-                return {
-                    point:   point,
-                    options: options,
-                    element: topElement
-                };
-            });
-    }
-
-    _move () {
-        var moveOptions    = new MoveOptions(this.options, false);
-        var moveAutomation = new MoveAutomation(this.element, moveOptions);
-
-        return moveAutomation
-            .run()
-            .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }
 
     _getEndPoint () {
         throw new Error('Not implemented');
     }
 
-    _mousedown () {
+    _mousedown (eventArgs) {
         return cursor
             .leftButtonDown()
-            .then(() => this._calculateEventArguments())
-            .then(args => {
-                this.eventArgs = args;
+            .then(() => {
+                eventSimulator[this.downEvent](eventArgs.element, eventArgs.options);
 
-                eventSimulator[this.downEvent](this.eventArgs.element, this.eventArgs.options);
-
-                return this._focus();
-            })
-            .then(() => delay(this.automationSettings.mouseActionStepDelay));
+                return this._focus(eventArgs);
+            });
     }
 
-    _focus () {
+    _focus (eventArgs) {
         return new Promise(resolve => {
             // NOTE: If the target element is a child of a contentEditable element, we need to call focus for its parent
             var elementForFocus = domUtils.isContentEditableElement(this.element) ?
-                                  contentEditable.findContentEditableParent(this.element) : this.eventArgs.element;
+                                  contentEditable.findContentEditableParent(this.element) : eventArgs.element;
 
             focusBlurSandbox.focus(elementForFocus, resolve, false, true);
         });
@@ -152,7 +101,7 @@ export default class DragAutomationBase {
                 }, this.modifiers);
 
                 return getElementFromPoint(point.x, point.y)
-                    .then(element => {
+                    .then(({ element }) => {
                         topElement = element;
 
                         if (!topElement)
@@ -172,7 +121,7 @@ export default class DragAutomationBase {
 
                         return getElementFromPoint(point.x, point.y);
                     })
-                    .then(element => {
+                    .then(({ element }) => {
                         //B231323
                         if (topElement && element === topElement && !this.dragAndDropState.enabled)
                             eventSimulator.click(topElement, options);
@@ -180,12 +129,25 @@ export default class DragAutomationBase {
             });
     }
 
-    run (selectorTimeout, checkElementInterval) {
-        // NOTE: If the target element is out of viewport the mousedown sub-automation raises an error
-        return tryUntilTimeout(() => {
-            return this._move()
-                .then(() => this._mousedown());
-        }, selectorTimeout, checkElementInterval)
+    run (selectorTimeout = 0, checkElementInterval = 0) {
+        var eventArgs = null;
+
+        return this
+            .ensureElement(selectorTimeout, checkElementInterval)
+            .then(({ element, clientPoint }) => {
+                eventArgs = {
+                    point:   clientPoint,
+                    element: element,
+                    options: extend({
+                        clientX: clientPoint.x,
+                        clientY: clientPoint.y
+                    }, this.modifiers)
+                };
+
+                // NOTE: we should raise start drag with 'mouseActionStepDelay' after we trigger
+                // mousedown event regardless of how long mousedown event handlers were executing
+                return Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown(eventArgs)]);
+            })
             .then(() => this._drag())
             .then(() => this._mouseup());
     }
