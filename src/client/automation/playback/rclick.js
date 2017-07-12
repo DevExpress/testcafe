@@ -25,7 +25,6 @@ export default class RClickAutomation extends VisibleElementAutomation {
 
         this.eventState = {
             simulateDefaultBehavior:      true,
-            clickElement:                 null,
             activeElementBeforeMouseDown: null
         };
     }
@@ -60,18 +59,18 @@ export default class RClickAutomation extends VisibleElementAutomation {
         return cursor
             .buttonUp()
             .then(() => this._getElementForEvent(eventArgs))
-            .then(element => {
-                this.eventState.contextMenuElement = element;
-
-                eventSimulator.mouseup(element, eventArgs.options);
-            });
+            .then(element => eventSimulator.mouseup(element, eventArgs.options));
     }
 
     _contextmenu (eventArgs) {
-        eventSimulator.contextmenu(this.eventState.contextMenuElement, eventArgs.options);
+        return this
+            ._getElementForEvent(eventArgs)
+            .then(element => {
+                eventSimulator.contextmenu(element, eventArgs.options);
 
-        if (!domUtils.isElementFocusable(this.eventState.contextMenuElement))
-            focusByRelatedElement(this.eventState.contextMenuElement);
+                if (!domUtils.isElementFocusable(element))
+                    focusByRelatedElement(element);
+            });
     }
 
     run (selectorTimeout = 0, checkElementInterval = 0) {

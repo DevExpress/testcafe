@@ -383,7 +383,9 @@ $(document).ready(function () {
 
         window.async.series({
             'Click on textarea': function (callback) {
-                runClickAutomation($textarea[0], { caretPos: 5 }, callback);
+                runClickAutomation($textarea[0], { caretPos: 5 }, function () {
+                    callback();
+                });
             },
 
             'First press down': function (callback) {
@@ -419,7 +421,9 @@ $(document).ready(function () {
 
         window.async.series({
             'Click on textarea': function (callback) {
-                runClickAutomation($textarea[0], { caretPos: 23 }, callback);
+                runClickAutomation($textarea[0], { caretPos: 23 }, function () {
+                    callback();
+                });
             },
 
             'First press up': function (callback) {
@@ -453,7 +457,9 @@ $(document).ready(function () {
 
         window.async.series({
             'Click on textarea': function (callback) {
-                runClickAutomation($textarea[0], { caretPos: 5 }, callback);
+                runClickAutomation($textarea[0], { caretPos: 5 }, function () {
+                    callback();
+                });
             },
 
             'Press home': function (callback) {
@@ -475,7 +481,9 @@ $(document).ready(function () {
 
         window.async.series({
             'Click on textarea': function (callback) {
-                runClickAutomation($textarea[0], { caretPos: 15 }, callback);
+                runClickAutomation($textarea[0], { caretPos: 15 }, function () {
+                    callback();
+                });
             },
 
             'Press end': function (callback) {
@@ -540,14 +548,18 @@ $(document).ready(function () {
 
         window.async.series({
             'First Click': function (callback) {
-                runClickAutomation($input[0], {}, callback);
+                runClickAutomation($input[0], {}, function () {
+                    callback();
+                });
             },
 
             'Second Click': function (callback) {
                 equal(clickCount, 1);
                 bindScrollHandlers();
 
-                runClickAutomation($input[0], {}, callback);
+                runClickAutomation($input[0], {}, function () {
+                    callback();
+                });
             },
 
             'Check assertions': function () {

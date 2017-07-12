@@ -311,7 +311,9 @@ $(document).ready(function () {
 
                 return restoreScrollClick.run();
             })
-            .then(start);
+            .then(function () {
+                start();
+            });
     });
 
     asyncTest('focusing on click', function () {

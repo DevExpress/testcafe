@@ -57,7 +57,9 @@ $(document).ready(function () {
 
                 hoverAutomation
                     .run()
-                    .then(callback);
+                    .then(function () {
+                        callback();
+                    });
             },
 
             clickSecondElementAndSimulateRealEvent: function (callback) {
@@ -65,7 +67,9 @@ $(document).ready(function () {
 
                 clickAutomation
                     .run()
-                    .then(callback);
+                    .then(function () {
+                        callback();
+                    });
 
                 window.setTimeout(function () {
                     nativeMethods.click.call(div1);
