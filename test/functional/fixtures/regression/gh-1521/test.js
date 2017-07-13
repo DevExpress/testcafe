@@ -23,4 +23,12 @@ describe('[Regression](GH-1521)', function () {
     it('Should click on an overlapping element after some timeout', function () {
         return runTests('testcafe-fixtures/index-test.js', 'Click on an overlapping element after some timeout', { only: 'chrome' });
     });
+
+    it('Should not wait for a timeout when try to click on an unclickable element', function () {
+        return runTests('testcafe-fixtures/index-test.js', 'Click on an unclickable element');
+    });
+
+    it('Should wait while element is moving', function () {
+        return runTests('testcafe-fixtures/index-test.js', 'Click on a moving element', { only: 'chrome' });
+    });
 });

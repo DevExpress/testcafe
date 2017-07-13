@@ -51,3 +51,39 @@ test
             .expect(targetBtnClick).notOk()
             .expect(overlapDivClick).eql(1);
     });
+
+test
+    .page('http://localhost:3000/fixtures/regression/gh-1521/pages/unclickable-element.html')
+    ('Click on an unclickable element', async t => {
+        const timeout = 5000;
+        const target  = Selector('#target', { timeout });
+
+        await t.expect(target.visible).ok();
+
+        const startTime = Date.now();
+
+        await t.click(target);
+
+        const finishTime         = Date.now();
+        const documentClickCount = await t.eval(() => window.documentClickCount);
+        const elementClickCount  = await t.eval(() => window.elementClickCount);
+
+        await t
+            .expect(finishTime - startTime).lt(timeout)
+            .expect(documentClickCount).eql(1)
+            .expect(elementClickCount).eql(0);
+    });
+
+test
+    .page('http://localhost:3000/fixtures/regression/gh-1521/pages/moving-element.html')
+    ('Click on a moving element', async t => {
+        const target  = Selector('#target', { timeout: 5000 });
+
+        await t
+            .hover(Selector('#start'))
+            .click(target);
+
+        const clickCount  = await t.eval(() => window.clickCount);
+
+        await t.expect(clickCount).eql(1);
+    });

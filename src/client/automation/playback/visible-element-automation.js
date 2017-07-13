@@ -1,4 +1,4 @@
-import { delay, positionUtils, domUtils } from '../deps/testcafe-core';
+import { delay, positionUtils, domUtils, styleUtils } from '../deps/testcafe-core';
 import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import whilst from '../utils/promise-whilst';
@@ -35,19 +35,35 @@ export default class VisibleElementAutomation {
         return this
             ._moveToElement()
             .then(() => {
-                var offsetX     = this.options.offsetX;
-                var offsetY     = this.options.offsetY;
-                var screenPoint = getAutomationPoint(this.element, offsetX, offsetY);
+                var offsetX      = this.options.offsetX;
+                var offsetY      = this.options.offsetY;
+                var screenPoint  = getAutomationPoint(this.element, offsetX, offsetY);
+                var isTarget     = null;
+                var foundElement = null;
 
                 var clientPoint     = screenPointToClient(this.element, screenPoint);
                 var expectedElement = positionUtils.containsOffset(this.element, offsetX, offsetY) ? this.element : null;
+                var firstPosition   = positionUtils.getClientPosition(this.element);
+
+                // NOTE: elements with "pointer-events: none" are never the
+                // target of mouse events and can be get by elementFromPoint
+                var isAutomationUnavailableElement = styleUtils.get(this.element, 'pointer-events') === 'none';
 
                 return getElementFromPoint(clientPoint.x, clientPoint.y, expectedElement)
                     .then(({ element, corrected }) => {
-                        var isTarget = !expectedElement || corrected || element === this.element ||
-                                       domUtils.containsElement(expectedElement, element);
+                        foundElement = element;
 
-                        return { element, clientPoint, isTarget };
+                        isTarget = !expectedElement || isAutomationUnavailableElement || corrected ||
+                                   foundElement === this.element || domUtils.containsElement(expectedElement, foundElement);
+
+                        // NOTE: check is element in moving
+                        return delay(25);
+                    })
+                    .then(() => {
+                        var secondPosition     = positionUtils.getClientPosition(this.element);
+                        var targetElementMoves = firstPosition.x !== secondPosition.x || firstPosition.y !== secondPosition.y;
+
+                        return { element: foundElement, clientPoint, isTarget, targetElementMoves };
                     });
             });
     }
@@ -58,12 +74,13 @@ export default class VisibleElementAutomation {
         var clientPoint        = null;
         var timeoutExpired     = false;
         var targetElementFound = false;
+        var targetElementMoves = false;
 
         delay(timeout).then(() => {
             timeoutExpired = true;
         });
 
-        var condition = () => !timeoutExpired && !targetElementFound;
+        var condition = () => !timeoutExpired && (!targetElementFound || targetElementMoves);
         var iterator  = () => {
             return this
                 ._findElement()
@@ -72,6 +89,7 @@ export default class VisibleElementAutomation {
                     isTarget           = res.isTarget;
                     clientPoint        = res.clientPoint;
                     targetElementFound = element && isTarget;
+                    targetElementMoves = res.targetElementMoves;
 
                     return targetElementFound ? null : delay(checkInterval);
                 });
