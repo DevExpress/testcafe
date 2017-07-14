@@ -1,4 +1,4 @@
-import { delay, positionUtils, domUtils, arrayUtils } from '../deps/testcafe-core';
+import { delay, positionUtils, domUtils, arrayUtils, serviceUtils } from '../deps/testcafe-core';
 import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import whilst from '../utils/promise-whilst';
@@ -8,8 +8,14 @@ import AutomationSettings from '../settings';
 import MoveAutomation from './move';
 import { MoveOptions } from '../../../test-run/commands/options';
 
-export default class VisibleElementAutomation {
+
+export default class VisibleElementAutomation extends serviceUtils.EventEmitter {
     constructor (element, offsetOptions) {
+        super();
+
+        this.WAITING_FOR_ELEMENT_STARTED_EVENT  = 'automation|waiting-element-started-event';
+        this.WAITING_FOR_ELEMENT_FINISHED_EVENT = 'automation|waiting-element-finished-event';
+
         this.element            = element;
         this.options            = offsetOptions;
         this.automationSettings = new AutomationSettings(offsetOptions.speed);
@@ -95,8 +101,12 @@ export default class VisibleElementAutomation {
                 });
         };
 
+        this.emit(this.WAITING_FOR_ELEMENT_STARTED_EVENT, {});
+
         return whilst(condition, iterator)
             .then(() => {
+                this.emit(this.WAITING_FOR_ELEMENT_FINISHED_EVENT, { element });
+
                 if (!element)
                     throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 

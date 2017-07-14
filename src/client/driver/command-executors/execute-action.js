@@ -277,7 +277,14 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
                 var commandSelectorTimeout   = hasSpecificTimeout ? command.selector.timeout : globalSelectorTimeout;
                 var remainingSelectorTimeout = commandSelectorTimeout - (new Date() - startTime);
 
-                return createAutomation(elements, command).run(remainingSelectorTimeout, CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL);
+                var automation = createAutomation(elements, command);
+
+                if (automation.WAITING_FOR_ELEMENT_STARTED_EVENT) {
+                    automation.on(automation.WAITING_FOR_ELEMENT_STARTED_EVENT, () => statusBar.showWaitingElementStatus(remainingSelectorTimeout));
+                    automation.on(automation.WAITING_FOR_ELEMENT_FINISHED_EVENT, ({ element }) => statusBar.hideWaitingElementStatus(!!element));
+                }
+
+                return automation.run(remainingSelectorTimeout, CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL);
             })
             .then(() => {
                 return Promise.all([
