@@ -24,11 +24,12 @@ describe('[Regression](GH-1521)', function () {
         return runTests('testcafe-fixtures/index-test.js', 'Click on an overlapping element after some timeout', { only: 'chrome' });
     });
 
-    it('Should not wait for a timeout when try to click on an unclickable element', function () {
-        return runTests('testcafe-fixtures/index-test.js', 'Click on an unclickable element');
-    });
-
     it('Should wait while element is moving', function () {
         return runTests('testcafe-fixtures/index-test.js', 'Click on a moving element', { only: 'chrome' });
+    });
+
+    it('Should not wait for a timeout when clicks on a child of svg element', function () {
+        // NOTE: ie regression test
+        return runTests('testcafe-fixtures/index-test.js', 'Click on svg child');
     });
 });

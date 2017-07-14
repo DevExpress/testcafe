@@ -1,4 +1,4 @@
-import { delay, positionUtils, domUtils, styleUtils } from '../deps/testcafe-core';
+import { delay, positionUtils, domUtils, arrayUtils } from '../deps/testcafe-core';
 import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import whilst from '../utils/promise-whilst';
@@ -45,17 +45,17 @@ export default class VisibleElementAutomation {
                 var expectedElement = positionUtils.containsOffset(this.element, offsetX, offsetY) ? this.element : null;
                 var firstPosition   = positionUtils.getClientPosition(this.element);
 
-                // NOTE: elements with "pointer-events: none" are never the
-                // target of mouse events and can be get by elementFromPoint
-                var isAutomationUnavailableElement = styleUtils.get(this.element, 'pointer-events') === 'none';
-
                 return getElementFromPoint(clientPoint.x, clientPoint.y, expectedElement)
                     .then(({ element, corrected }) => {
                         foundElement = element;
 
-                        isTarget = !expectedElement || isAutomationUnavailableElement || corrected ||
-                                   foundElement === this.element || domUtils.containsElement(expectedElement, foundElement);
+                        isTarget = !expectedElement || corrected || foundElement === this.element ||
+                                   domUtils.containsElement(expectedElement, foundElement);
 
+                        if (!isTarget && foundElement) {
+                            // NOTE: perform an operation with searching in dom only if necessary
+                            isTarget = arrayUtils.indexOf(domUtils.getParents(foundElement), this.element) > -1;
+                        }
                         // NOTE: check is element in moving
                         return delay(25);
                     })

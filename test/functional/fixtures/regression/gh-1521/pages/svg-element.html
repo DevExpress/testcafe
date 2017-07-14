@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gh-1521 (svg element)</title>
+</head>
+<body>
+<div style="display: none">
+    <svg xmlns="http://www.w3.org/2000/svg">
+        <symbol id="icon" viewBox="-467 269 24 24">
+            <path d="M-465 274h20v2h-20zM-465 280h20v2h-20zM-465 286h20v2h-20z"></path>
+        </symbol>
+    </svg>
+</div>
+<svg id="svg" style="height: 100px; width: 100px;">
+    <use xlink:href="#icon"></use>
+</svg>
+
+<script>
+    window.documentClickCount = 0;
+
+    document.addEventListener('click', function () {
+        window.documentClickCount++;
+    });
+</script>
+</body>
+</html>
