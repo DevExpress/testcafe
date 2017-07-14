@@ -607,12 +607,11 @@ fixture `My fixture`
     .page `http://devexpress.github.io/testcafe/example/`;
 
 test('DOM Node Snapshot', async t => {
-    const sliderHandle = await Selector('#slider').child('span');
+    const sliderHandle        = Selector('#slider').child('span');
+    const sliderHandleSnaphot = await sliderHandle();
 
-    await t
-        .expect(sliderHandle.hasClass('ui-slider-handle')).ok()
-        .expect(sliderHandle.childElementCount).eql(0)
-        .expect(sliderHandle.visible).ok();
+    console.log(sliderHandleSnaphot.hasClass('ui-slider-handle'));    // => true
+    console.log(sliderHandleSnaphot.childElementCount);               // => 0
 });
 ```
 
