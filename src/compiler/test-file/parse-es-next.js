@@ -80,8 +80,7 @@ function analyzeMemberExp (token) {
         return formatFnData(exp.name, getTagStrValue(parentExp.quasi), token);
 
     if (parentExp.type === 'MemberExpression') {
-        /*eslint-disable no-cond-assign*/
-        while (parentExp = callStack.pop()) {
+        while (parentExp) {
             if (parentExp.type === 'CallExpression' && parentExp.callee) {
                 const calleeType     = parentExp.callee.type;
                 const calleeMemberFn = parentExp.callee.property && parentExp.callee.property.name;
@@ -97,8 +96,9 @@ function analyzeMemberExp (token) {
                 if (checkExpDefineTargetName(tagType, tagMemberFn))
                     return formatFnData(exp.name, getTagStrValue(parentExp.quasi), token);
             }
+
+            parentExp = callStack.pop();
         }
-        /*eslint-enable no-cond-assign*/
     }
 
     return null;
