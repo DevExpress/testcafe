@@ -4,7 +4,7 @@ import APIBasedTestFileCompilerBase from '../api-based';
 import ESNextTestFileCompiler from './es-next';
 
 
-const RENAMED_DEPENDENCIES_MAP = new Map ([['testcafe', APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH]]);
+const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH]]);
 
 export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompilerBase {
     static _getTypescriptOptions () {
@@ -61,7 +61,9 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         var opts        = TypeScriptTestFileCompiler._getTypescriptOptions();
         var program     = ts.createProgram([filename], opts);
 
-        program.getSourceFiles().forEach(sourceFile => sourceFile.renamedDependencies = RENAMED_DEPENDENCIES_MAP);
+        program.getSourceFiles().forEach(sourceFile => {
+            sourceFile.renamedDependencies = RENAMED_DEPENDENCIES_MAP;
+        });
 
         var diagnostics = ts.getPreEmitDiagnostics(program);
 
