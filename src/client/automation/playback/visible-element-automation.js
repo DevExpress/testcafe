@@ -99,7 +99,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                     clientPoint           = res.clientPoint;
                     screenPoint           = res.screenPoint;
                     targetElementFound    = element && isTarget;
-                    targetElementIsMoving = res.targetElementMoves;
+                    targetElementIsMoving = res.targetElementIsMoving;
 
                     return targetElementFound ? null : delay(checkInterval);
                 });
