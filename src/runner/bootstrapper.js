@@ -1,4 +1,4 @@
-import { flatten, chunk, times } from 'lodash';
+import { isUndefined, filter, flatten, chunk, times } from 'lodash';
 import Promise from 'pinkie';
 import Compiler from '../compiler';
 import BrowserConnection from '../browser/connection';
@@ -17,8 +17,8 @@ export default class Bootstrapper {
         this.concurrency  = 1;
         this.sources      = [];
         this.browsers     = [];
+        this.reporters    = [];
         this.filter       = null;
-        this.reporter     = null;
         this.appCommand   = null;
         this.appInitDelay = DEFAULT_APP_INIT_DELAY;
     }
@@ -88,21 +88,35 @@ export default class Bootstrapper {
         return tests;
     }
 
-    _getReporterPlugin () {
-        var pluginFactory = this.reporter;
+    _getReporterPlugins () {
+        var stdoutReporters = filter(this.reporters, r => isUndefined(r.outStream) || r.outStream === process.stdout);
 
-        if (typeof pluginFactory !== 'function') {
-            try {
-                var alias = this.reporter || 'spec';
-
-                pluginFactory = require('testcafe-reporter-' + alias);
-            }
-            catch (err) {
-                throw new GeneralError(MESSAGE.cantFindReporterForAlias, this.reporter);
-            }
+        if (stdoutReporters.length > 1)
+            throw new GeneralError(MESSAGE.multipleStdoutReporters, stdoutReporters.map(r => r.reporter).join(', '));
+        else if (stdoutReporters.length === 0) {
+            this.reporters.push({
+                reporter:  'spec',
+                outStream: process.stdout
+            });
         }
 
-        return pluginFactory();
+        return this.reporters.map(({ reporter, outStream }) => {
+            let pluginFactory = reporter;
+
+            if (typeof reporter !== 'function') {
+                try {
+                    pluginFactory = require('testcafe-reporter-' + reporter);
+                }
+                catch (err) {
+                    throw new GeneralError(MESSAGE.cantFindReporterForAlias, this.reporter);
+                }
+            }
+
+            return {
+                plugin: pluginFactory(),
+                outStream
+            };
+        });
     }
 
     async _startTestedApp () {
@@ -120,7 +134,7 @@ export default class Bootstrapper {
 
     // API
     async createRunnableConfiguration () {
-        var reporterPlugin = this._getReporterPlugin();
+        var reporterPlugins = this._getReporterPlugins();
 
         // NOTE: If a user forgot to specify a browser, but has specified a path to tests, the specified path will be
         // considered as the browser argument, and the tests path argument will have the predefined default value.
@@ -131,6 +145,6 @@ export default class Bootstrapper {
         var testedApp   = await this._startTestedApp();
         var browserSet  = await this._getBrowserConnections(browserInfo);
 
-        return { reporterPlugin, browserSet, tests, testedApp };
+        return { reporterPlugins, browserSet, tests, testedApp };
     }
 }

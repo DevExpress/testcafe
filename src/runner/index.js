@@ -30,7 +30,6 @@ export default class Runner extends EventEmitter {
             skipJsErrors:           false,
             quarantineMode:         false,
             debugMode:              false,
-            reportOutStream:        void 0,
             selectorTimeout:        DEFAULT_SELECTOR_TIMEOUT
         };
     }
@@ -91,10 +90,10 @@ export default class Runner extends EventEmitter {
         return reporter.testCount - reporter.passed;
     }
 
-    _runTask (reporterPlugin, browserSet, tests, testedApp) {
+    _runTask (reporterPlugins, browserSet, tests, testedApp) {
         var completed         = false;
         var task              = new Task(tests, browserSet.browserConnectionGroups, this.proxy, this.opts);
-        var reporter          = new Reporter(reporterPlugin, task, this.opts.reportOutStream);
+        var reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream));
         var completionPromise = this._getTaskResult(task, browserSet, reporter, testedApp);
 
         var setCompleted = () => {
@@ -150,8 +149,10 @@ export default class Runner extends EventEmitter {
     }
 
     reporter (reporter, outStream) {
-        this.bootstrapper.reporter = reporter;
-        this.opts.reportOutStream  = outStream;
+        this.bootstrapper.reporters.push({
+            reporter,
+            outStream
+        });
 
         return this;
     }
@@ -195,10 +196,10 @@ export default class Runner extends EventEmitter {
         this.opts.speed = speed;
 
         var runTaskPromise = this.bootstrapper.createRunnableConfiguration()
-            .then(({ reporterPlugin, browserSet, tests, testedApp }) => {
+            .then(({ reporterPlugins, browserSet, tests, testedApp }) => {
                 this.emit('done-bootstrapping');
 
-                return this._runTask(reporterPlugin, browserSet, tests, testedApp);
+                return this._runTask(reporterPlugins, browserSet, tests, testedApp);
             });
 
         return this._createCancelablePromise(runTaskPromise);

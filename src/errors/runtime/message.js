@@ -8,6 +8,7 @@ export default {
     testSourcesNotSet:                     'No test file specified.',
     noTestsToRun:                          'No tests to run. Either the test files contain no tests or the filter function is too restrictive.',
     cantFindReporterForAlias:              'The provided "{name}" reporter does not exist. Check that you have specified the report format correctly.',
+    multipleStdoutReporters:               'Multiple reporters attempting to write to stdout: "{reporters}"',
     optionValueIsNotValidRegExp:           'The "{optionName}" option value is not a valid regular expression.',
     testedAppFailedWithError:              'Tested app failed with an error:\n\n{errMessage}',
     invalidSpeedValue:                     'Speed should be a number between 0.01 and 1.',
