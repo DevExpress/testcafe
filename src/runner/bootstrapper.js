@@ -108,7 +108,7 @@ export default class Bootstrapper {
                     pluginFactory = require('testcafe-reporter-' + reporter);
                 }
                 catch (err) {
-                    throw new GeneralError(MESSAGE.cantFindReporterForAlias, this.reporter);
+                    throw new GeneralError(MESSAGE.cantFindReporterForAlias, reporter);
                 }
             }
 
