@@ -504,7 +504,7 @@ describe('Runner', function () {
         });
 
         it('Should raise an error if concurrency option has wrong value', function () {
-            var incorrectSpeedErrorMessage = 'Concurrency should be an integer greater or equal to 1.';
+            var incorrectSpeedErrorMessage = 'The concurrency factor should be an integer greater or equal to 1.';
 
             return testCafe
                 .createBrowserConnection()
