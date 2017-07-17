@@ -18,6 +18,12 @@ TestCafe ships with the following reporters:
 
 You can also create a [custom reporter](/testcafe/documentation/extending-testcafe/reporter-plugin/) that will fulfill your needs.
 
+Here are some custom reporters developed by the community.
+
+* [NUnit](https://github.com/AndreyBelym/testcafe-reporter-nunit)
+* [Slack](https://github.com/Shafied/testcafe-reporter-slack)
+* [TeamCity](https://github.com/Soluto/testcafe-reporter-teamcity)
+
 For more information about the reporters, see the following sections.
 
 * [Searching for Reporter Plugins](#searching-for-reporter-plugins)

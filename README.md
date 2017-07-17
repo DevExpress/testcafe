@@ -360,6 +360,8 @@ Provide support for more browsers to test against.
 Enable TestCafe to present test results in different formats.
 
 * [NUnit](https://github.com/AndreyBelym/testcafe-reporter-nunit)
+* [Slack](https://github.com/Shafied/testcafe-reporter-slack)
+* [TeamCity](https://github.com/Soluto/testcafe-reporter-teamcity)
 
 ### ESLint
 
