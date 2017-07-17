@@ -62,40 +62,42 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                             // NOTE: perform an operation with searching in dom only if necessary
                             isTarget = arrayUtils.indexOf(domUtils.getParents(foundElement), this.element) > -1;
                         }
+
                         // NOTE: check is element in moving
                         return delay(25);
                     })
                     .then(() => {
-                        var secondPosition     = positionUtils.getClientPosition(this.element);
-                        var targetElementMoves = firstPosition.x !== secondPosition.x || firstPosition.y !== secondPosition.y;
+                        var secondPosition        = positionUtils.getClientPosition(this.element);
+                        var targetElementIsMoving = firstPosition.x !== secondPosition.x ||
+                                                    firstPosition.y !== secondPosition.y;
 
-                        return { element: foundElement, clientPoint, isTarget, targetElementMoves };
+                        return { element: foundElement, clientPoint, isTarget, targetElementIsMoving };
                     });
             });
     }
 
     ensureElement (timeout, checkInterval) {
-        var element            = null;
-        var isTarget           = false;
-        var clientPoint        = null;
-        var timeoutExpired     = false;
-        var targetElementFound = false;
-        var targetElementMoves = false;
+        var element               = null;
+        var isTarget              = false;
+        var clientPoint           = null;
+        var timeoutExpired        = false;
+        var targetElementFound    = false;
+        var targetElementIsMoving = false;
 
         delay(timeout).then(() => {
             timeoutExpired = true;
         });
 
-        var condition = () => !timeoutExpired && (!targetElementFound || targetElementMoves);
+        var condition = () => !timeoutExpired && (!targetElementFound || targetElementIsMoving);
         var iterator  = () => {
             return this
                 ._findElement()
                 .then(res => {
-                    element            = res.element;
-                    isTarget           = res.isTarget;
-                    clientPoint        = res.clientPoint;
-                    targetElementFound = element && isTarget;
-                    targetElementMoves = res.targetElementMoves;
+                    element               = res.element;
+                    isTarget              = res.isTarget;
+                    clientPoint           = res.clientPoint;
+                    targetElementFound    = element && isTarget;
+                    targetElementIsMoving = res.targetElementMoves;
 
                     return targetElementFound ? null : delay(checkInterval);
                 });
