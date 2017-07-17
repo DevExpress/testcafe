@@ -142,7 +142,7 @@ export default class Runner extends EventEmitter {
 
     concurrency (concurrency) {
         if (typeof concurrency !== 'number' || isNaN(concurrency) || concurrency < 1)
-            throw new GeneralError(MESSAGE.invalidConcurrencyValue);
+            throw new GeneralError(MESSAGE.invalidConcurrencyFactor);
 
         this.bootstrapper.concurrency = concurrency;
 
