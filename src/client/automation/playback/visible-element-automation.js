@@ -71,7 +71,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                         var targetElementIsMoving = firstPosition.x !== secondPosition.x ||
                                                     firstPosition.y !== secondPosition.y;
 
-                        return { element: foundElement, clientPoint, isTarget, targetElementIsMoving };
+                        return { element: foundElement, clientPoint, screenPoint, isTarget, targetElementIsMoving };
                     });
             });
     }
@@ -80,6 +80,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
         var element               = null;
         var isTarget              = false;
         var clientPoint           = null;
+        var screenPoint           = null;
         var timeoutExpired        = false;
         var targetElementFound    = false;
         var targetElementIsMoving = false;
@@ -96,6 +97,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                     element               = res.element;
                     isTarget              = res.isTarget;
                     clientPoint           = res.clientPoint;
+                    screenPoint           = res.screenPoint;
                     targetElementFound    = element && isTarget;
                     targetElementIsMoving = res.targetElementMoves;
 
@@ -112,7 +114,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                 if (!element)
                     throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 
-                return { element, clientPoint };
+                return { element, clientPoint, screenPoint };
             });
     }
 }

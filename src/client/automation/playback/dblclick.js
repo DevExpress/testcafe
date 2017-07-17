@@ -58,8 +58,8 @@ export default class DblClickAutomation {
             eventUtils.bind(document, 'focus', eventUtils.preventDefault, true);
 
         var clickOptions = new ClickOptions({
-            offsetX:   this.eventArgs.point.x,
-            offsetY:   this.eventArgs.point.y,
+            offsetX:   this.eventArgs.screenPoint.x,
+            offsetY:   this.eventArgs.screenPoint.y,
             caretPos:  this.caretPos,
             modifiers: this.modifiers,
             speed:     1
