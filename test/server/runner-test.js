@@ -159,11 +159,13 @@ describe('Runner', function () {
         });
 
         it('Should fallback to the default reporter if reporter was not set', function () {
-            runner._runTask = function ([reporter]) {
-                expect(reporter.plugin.reportFixtureStart).to.be.a('function');
-                expect(reporter.plugin.reportTestDone).to.be.a('function');
-                expect(reporter.plugin.reportTaskStart).to.be.a('function');
-                expect(reporter.plugin.reportTaskDone).to.be.a('function');
+            runner._runTask = function (reporters) {
+                var reporterPlugin = reporters[0].plugin;
+
+                expect(reporterPlugin.reportFixtureStart).to.be.a('function');
+                expect(reporterPlugin.reportTestDone).to.be.a('function');
+                expect(reporterPlugin.reportTaskStart).to.be.a('function');
+                expect(reporterPlugin.reportTaskDone).to.be.a('function');
 
                 return Promise.resolve({});
             };
