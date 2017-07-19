@@ -48,19 +48,18 @@ export default class DblClickAutomation extends VisibleElementAutomation {
 
         return clickAutomation.run(selectorTimeout, checkElementInterval)
             .then(clickEventArgs => {
-                this.eventArgs = clickEventArgs;
-                return delay(FIRST_CLICK_DELAY);
+                return delay(FIRST_CLICK_DELAY).then(() => clickEventArgs);
             });
     }
 
-    _secondClick () {
+    _secondClick (eventArgs) {
         //NOTE: we should not call focus after the second mousedown (except in IE) because of the native browser behavior
         if (browserUtils.isIE)
             eventUtils.bind(document, 'focus', eventUtils.preventDefault, true);
 
         var clickOptions = new ClickOptions({
-            offsetX:   this.eventArgs.screenPoint.x,
-            offsetY:   this.eventArgs.screenPoint.y,
+            offsetX:   eventArgs.screenPoint.x,
+            offsetY:   eventArgs.screenPoint.y,
             caretPos:  this.caretPos,
             modifiers: this.modifiers,
             speed:     1
@@ -73,23 +72,24 @@ export default class DblClickAutomation extends VisibleElementAutomation {
                 // NOTE: We should raise the `dblclick` event on an element that
                 // has been actually clicked during the second click automation.
                 this.eventState.dblClickElement = clickAutomation.eventState.clickElement;
-                this.eventArgs                  = clickEventArgs;
 
                 if (browserUtils.isIE)
                     eventUtils.unbind(document, 'focus', eventUtils.preventDefault, true);
+
+                return clickEventArgs;
             });
     }
 
-    _dblClick () {
+    _dblClick (eventArgs) {
         if (this.eventState.dblClickElement)
-            eventSimulator.dblclick(this.eventState.dblClickElement, this.eventArgs.options);
+            eventSimulator.dblclick(this.eventState.dblClickElement, eventArgs.options);
     }
 
     run (selectorTimeout, checkElementInterval) {
         // NOTE: If the target element is out of viewport the firstClick sub-automation raises an error
         return this
             ._firstClick(selectorTimeout, checkElementInterval)
-            .then(() => this._secondClick())
-            .then(() => this._dblClick());
+            .then(eventArgs => this._secondClick(eventArgs))
+            .then(eventArgs => this._dblClick(eventArgs));
     }
 }
