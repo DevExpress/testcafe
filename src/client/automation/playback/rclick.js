@@ -77,7 +77,7 @@ export default class RClickAutomation extends VisibleElementAutomation {
         var eventArgs = null;
 
         return this
-            .ensureElement(selectorTimeout, checkElementInterval)
+            ._ensureElement(selectorTimeout, checkElementInterval)
             .then(({ element, clientPoint }) => {
                 eventArgs = {
                     point:   clientPoint,

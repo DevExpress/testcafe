@@ -7,7 +7,7 @@ export default class HoverAutomation extends VisibleElementAutomation {
     }
 
     run (selectorTimeout = 0, checkElementInterval = 0) {
-        return this.ensureElement(selectorTimeout, checkElementInterval);
+        return this._ensureElement(selectorTimeout, checkElementInterval);
     }
 }
 

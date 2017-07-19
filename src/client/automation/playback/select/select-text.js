@@ -47,7 +47,7 @@ export default class SelectTextAutomation extends SelectBaseAutomation {
 
     run (selectorTimeout = 0, checkElementInterval = 0) {
         return this
-            .ensureElement(selectorTimeout, checkElementInterval)
+            ._ensureElement(selectorTimeout, checkElementInterval)
             .then(() => super.run());
     }
 }

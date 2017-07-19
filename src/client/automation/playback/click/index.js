@@ -213,7 +213,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
         var eventArgs = null;
 
         return this
-            .ensureElement(selectorTimeout, checkElementInterval)
+            ._ensureElement(selectorTimeout, checkElementInterval)
             .then(({ element, clientPoint, screenPoint }) => {
                 eventArgs = {
                     point:       clientPoint,

@@ -12,7 +12,7 @@ describe('[Regression](GH-1521)', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('The element that matches the specified selector is not visible');
-                expect(errs[0]).to.contains(' > 20 |        await t.click(Selector(\'#out-of-viewport-btn\', { timeout: 2000 }));');
+                expect(errs[0]).to.contains(' > 65 |        await t.click(Selector(\'#out-of-viewport-input\', { timeout: 2000 }));');
             });
     });
 

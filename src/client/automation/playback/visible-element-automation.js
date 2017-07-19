@@ -8,6 +8,7 @@ import AutomationSettings from '../settings';
 import MoveAutomation from './move';
 import { MoveOptions } from '../../../test-run/commands/options';
 
+const CHECK_ELEMENT_MOVING_DELAY = 25;
 
 export default class VisibleElementAutomation extends serviceUtils.EventEmitter {
     constructor (element, offsetOptions) {
@@ -55,16 +56,17 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                     .then(({ element, corrected }) => {
                         foundElement = element;
 
-                        isTarget = !expectedElement || corrected || foundElement === this.element ||
-                                   domUtils.containsElement(expectedElement, foundElement);
+                        if (foundElement) {
+                            isTarget = !expectedElement || corrected || foundElement === this.element;
 
-                        if (!isTarget && foundElement) {
-                            // NOTE: perform an operation with searching in dom only if necessary
-                            isTarget = arrayUtils.indexOf(domUtils.getParents(foundElement), this.element) > -1;
+                            if (!isTarget) {
+                                // NOTE: perform an operation with searching in dom only if necessary
+                                isTarget = arrayUtils.indexOf(domUtils.getParents(foundElement), this.element) > -1;
+                            }
                         }
 
                         // NOTE: check is element in moving
-                        return delay(25);
+                        return delay(CHECK_ELEMENT_MOVING_DELAY);
                     })
                     .then(() => {
                         var secondPosition        = positionUtils.getClientPosition(this.element);
@@ -76,9 +78,8 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
             });
     }
 
-    ensureElement (timeout, checkInterval) {
+    _ensureElement (timeout, checkInterval) {
         var element               = null;
-        var isTarget              = false;
         var clientPoint           = null;
         var screenPoint           = null;
         var timeoutExpired        = false;
@@ -95,10 +96,9 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                 ._findElement()
                 .then(res => {
                     element               = res.element;
-                    isTarget              = res.isTarget;
                     clientPoint           = res.clientPoint;
                     screenPoint           = res.screenPoint;
-                    targetElementFound    = element && isTarget;
+                    targetElementFound    = res.isTarget;
                     targetElementIsMoving = res.targetElementIsMoving;
 
                     return targetElementFound ? null : delay(checkInterval);

@@ -48,6 +48,7 @@ test
 
         for (let i = 0; i < actions.length; i++) {
             const action = actions[i];
+
             await t.click('#show-hidden-input');
             await action.perform();
 
@@ -61,7 +62,7 @@ test
 test
     .page('http://localhost:3000/fixtures/regression/gh-1521/pages/hidden-element.html')
     ('Try to click on an out-of-viewport element', async t => {
-        await t.click(Selector('#out-of-viewport-btn', { timeout: 2000 }));
+        await t.click(Selector('#out-of-viewport-input', { timeout: 2000 }));
     });
 
 test
@@ -99,6 +100,9 @@ test
 test
     .page('http://localhost:3000/fixtures/regression/gh-1521/pages/svg-element.html')
     ('Click on svg child', async t => {
+        // NOTE: it's a regression test created during gh-1521 development.
+        // Automations were waiting for a whole timeout when try to perform an
+        // action with a svg element every time. The test checks that now it's fixed.
         const timeout = 5000;
         const target  = Selector('#svg', { timeout });
 
