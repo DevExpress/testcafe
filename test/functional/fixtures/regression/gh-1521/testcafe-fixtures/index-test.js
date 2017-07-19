@@ -1,17 +1,61 @@
-import { Selector } from 'testcafe';
+import { Selector, ClientFunction } from 'testcafe';
 
 fixture `gh-1521`;
 
 test
     .page('http://localhost:3000/fixtures/regression/gh-1521/pages/hidden-element.html')
     ('Wait for an out-of-viewport element', async t => {
-        await t
-            .click('#show-hidden-button')
-            .click(Selector('#out-of-viewport-btn', { timeout: 2000 }));
+        const getEventCount = ClientFunction(event => window.eventCounter[event]);
+        const target        = Selector('#out-of-viewport-input', { timeout: 2000 });
 
-        const btnClickCount = await t.eval(() => window.outOfViewportBtnClick);
+        const actions = [
+            {
+                name:          'click',
+                perform:       async () => await t.click(target),
+                expectedEvent: 'click'
+            },
 
-        await t.expect(btnClickCount).eql(1);
+            {
+                name:          'doubleClick',
+                perform:       async () => await t.doubleClick(target),
+                expectedEvent: 'dblclick'
+            },
+
+            {
+                name:          'hover',
+                perform:       async () => await t.hover(target),
+                expectedEvent: 'mouseover'
+            },
+
+            {
+                name:          'rightClick',
+                perform:       async () => await t.rightClick(target),
+                expectedEvent: 'contextmenu'
+            },
+
+            {
+                name:          'drag',
+                perform:       async () => await t.drag(target, 100, 100),
+                expectedEvent: 'mousedown'
+            },
+
+            {
+                name:          'selectText',
+                perform:       async () => await t.selectText(target),
+                expectedEvent: 'mousedown'
+            }
+        ];
+
+        for (let i = 0; i < actions.length; i++) {
+            const action = actions[i];
+            await t.click('#show-hidden-input');
+            await action.perform();
+
+            const actualEventCount = await getEventCount(action.expectedEvent);
+
+            await t.expect(actualEventCount).eql(1, `${action.name} failed`);
+            await t.click('#reset-page');
+        }
     });
 
 test

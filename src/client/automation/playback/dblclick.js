@@ -1,6 +1,7 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import { ClickOptions } from '../../../test-run/commands/options';
+import VisibleElementAutomation from './visible-element-automation';
 import ClickAutomation from './click';
 import AutomationSettings from '../settings';
 
@@ -14,11 +15,10 @@ var delay      = testCafeCore.delay;
 const FIRST_CLICK_DELAY = featureDetection.isTouchDevice ? 0 : 160;
 
 
-export default class DblClickAutomation {
+export default class DblClickAutomation extends VisibleElementAutomation {
     constructor (element, clickOptions) {
-        this.options = clickOptions;
+        super(element, clickOptions);
 
-        this.element   = element;
         this.modifiers = clickOptions.modifiers;
         this.caretPos  = clickOptions.caretPos;
         this.speed     = clickOptions.speed;
@@ -35,7 +35,7 @@ export default class DblClickAutomation {
         };
     }
 
-    _firstClick () {
+    _firstClick (selectorTimeout, checkElementInterval) {
         // NOTE: we should always perform click with the highest speed
         var clickOptions = new ClickOptions(this.options);
 
@@ -43,7 +43,10 @@ export default class DblClickAutomation {
 
         var clickAutomation = new ClickAutomation(this.element, clickOptions);
 
-        return clickAutomation.run()
+        clickAutomation.on(clickAutomation.WAITING_FOR_ELEMENT_STARTED_EVENT, e => this.emit(this.WAITING_FOR_ELEMENT_STARTED_EVENT, e));
+        clickAutomation.on(clickAutomation.WAITING_FOR_ELEMENT_FINISHED_EVENT, e => this.emit(this.WAITING_FOR_ELEMENT_FINISHED_EVENT, e));
+
+        return clickAutomation.run(selectorTimeout, checkElementInterval)
             .then(clickEventArgs => {
                 this.eventArgs = clickEventArgs;
                 return delay(FIRST_CLICK_DELAY);
@@ -51,8 +54,6 @@ export default class DblClickAutomation {
     }
 
     _secondClick () {
-        var clickAutomation = null;
-
         //NOTE: we should not call focus after the second mousedown (except in IE) because of the native browser behavior
         if (browserUtils.isIE)
             eventUtils.bind(document, 'focus', eventUtils.preventDefault, true);
@@ -65,7 +66,7 @@ export default class DblClickAutomation {
             speed:     1
         });
 
-        clickAutomation = new ClickAutomation(document.documentElement, clickOptions);
+        var clickAutomation = new ClickAutomation(document.documentElement, clickOptions);
 
         return clickAutomation.run()
             .then(clickEventArgs => {
