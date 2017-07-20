@@ -39,18 +39,20 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
     }
 
     _findElement () {
+        var offsetX            = this.options.offsetX;
+        var offsetY            = this.options.offsetY;
+        var initialScreenPoint = getAutomationPoint(this.element, offsetX, offsetY);
+
         return this
             ._moveToElement()
             .then(() => {
-                var offsetX      = this.options.offsetX;
-                var offsetY      = this.options.offsetY;
-                var screenPoint  = getAutomationPoint(this.element, offsetX, offsetY);
-                var isTarget     = null;
-                var foundElement = null;
+                var screenPointAfterMove = getAutomationPoint(this.element, offsetX, offsetY);
+                var isTarget             = null;
+                var foundElement         = null;
 
-                var clientPoint     = screenPointToClient(this.element, screenPoint);
-                var expectedElement = positionUtils.containsOffset(this.element, offsetX, offsetY) ? this.element : null;
-                var firstPosition   = positionUtils.getClientPosition(this.element);
+                var clientPoint         = screenPointToClient(this.element, screenPointAfterMove);
+                var expectedElement     = positionUtils.containsOffset(this.element, offsetX, offsetY) ? this.element : null;
+                var firstClientPosition = positionUtils.getClientPosition(this.element);
 
                 return getElementFromPoint(clientPoint.x, clientPoint.y, expectedElement)
                     .then(({ element, corrected }) => {
@@ -69,11 +71,21 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                         return delay(CHECK_ELEMENT_MOVING_DELAY);
                     })
                     .then(() => {
-                        var secondPosition        = positionUtils.getClientPosition(this.element);
-                        var targetElementIsMoving = firstPosition.x !== secondPosition.x ||
-                                                    firstPosition.y !== secondPosition.y;
+                        var secondClientPosition       = positionUtils.getClientPosition(this.element);
+                        var positionChangedAfterMoving = initialScreenPoint.x !== screenPointAfterMove.x ||
+                                                         initialScreenPoint.y !== screenPointAfterMove.y;
+                        var positionChangedAfterDelay  = firstClientPosition.x !== secondClientPosition.x ||
+                                                         firstClientPosition.y !== secondClientPosition.y;
 
-                        return { element: foundElement, clientPoint, screenPoint, isTarget, targetElementIsMoving };
+                        var targetElementIsMoving = positionChangedAfterMoving || positionChangedAfterDelay;
+
+                        return {
+                            element:     foundElement,
+                            clientPoint,
+                            screenPoint: screenPointAfterMove,
+                            isTarget,
+                            targetElementIsMoving
+                        };
                     });
             });
     }
