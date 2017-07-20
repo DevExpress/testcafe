@@ -74,7 +74,7 @@ var CLIENT_TESTS_DESKTOP_BROWSERS = [
     {
         platform:    'Windows 10',
         browserName: 'chrome',
-        version:     '39.0'
+        version:     '38.0'
     // },
     // {
     //     platform:    'Windows 10',
