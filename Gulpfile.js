@@ -74,27 +74,27 @@ var CLIENT_TESTS_DESKTOP_BROWSERS = [
     {
         platform:    'Windows 10',
         browserName: 'chrome',
-        version:     '26.0'
+        version:     '42.0'
     },
     {
         platform:    'Windows 10',
         browserName: 'firefox',
-        version:     '28.0'
+        version:     '40.0'
     },
-    {
-        platform:    'Windows 7',
-        browserName: 'internet explorer',
-        version:     '8.0'
-    },
-    {
-        platform:    'OS X 10.8',
-        browserName: 'safari',
-        version:     '6.0'
-    },
+    // {
+    //     platform:    'Windows 7',
+    //     browserName: 'internet explorer',
+    //     version:     '8.0'
+    // },
+    // {
+    //     platform:    'OS X 10.8',
+    //     browserName: 'safari',
+    //     version:     '6.0'
+    // },
     {
         platform:    'Windows 7',
         browserName: 'opera',
-        version:     '11'
+        version:     '12'
     // },
     // {
     //     platform:    'OS X 10.11',
