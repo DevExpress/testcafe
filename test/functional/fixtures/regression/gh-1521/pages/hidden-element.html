@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gh-1521 (out-of-the-viewport element)</title>
+
+    <style>
+        #show-hidden-input {
+            position: absolute;
+            top: 50px;
+        }
+
+        #out-of-viewport-input {
+            position: absolute;
+            top: -100px;
+        }
+
+        #reset-page {
+            position: absolute;
+            top: 100px;
+        }
+    </style>
+</head>
+<body>
+<input id="out-of-viewport-input" value="value"/>
+<button id="show-hidden-input">Show hidden input with 1000ms delay</button>
+<button id="reset-page">Reset page</button>
+
+<script>
+    var outOfViewportInput = document.getElementById('out-of-viewport-input');
+
+    function resetCounter () {
+        window.eventCounter = {
+            click:       0,
+            dblclick:    0,
+            mouseover:   0,
+            contextmenu: 0,
+            mousedown:   0
+        };
+    }
+
+    resetCounter();
+
+    document.getElementById('show-hidden-input').addEventListener('click', function () {
+        window.setTimeout(function () {
+            outOfViewportInput.style.top = '10px';
+        }, 1000);
+    });
+
+    document.getElementById('reset-page').addEventListener('click', function () {
+        outOfViewportInput.style.top = '-100px';
+
+        resetCounter();
+    });
+
+    outOfViewportInput.addEventListener('click', function () {
+        window.eventCounter.click++;
+    });
+
+    outOfViewportInput.addEventListener('mousedown', function () {
+        window.eventCounter.mousedown++;
+    });
+
+    outOfViewportInput.addEventListener('dblclick', function () {
+        window.eventCounter.dblclick++;
+    });
+
+    outOfViewportInput.addEventListener('mouseover', function () {
+        window.eventCounter.mouseover++;
+    });
+
+    outOfViewportInput.addEventListener('contextmenu', function () {
+        window.eventCounter.contextmenu++;
+    });
+</script>
+</body>
+</html>

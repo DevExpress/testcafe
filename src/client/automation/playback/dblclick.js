@@ -1,31 +1,24 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
-import { fromPoint as getElementFromPoint } from '../get-element';
-import { ClickOptions, MoveOptions } from '../../../test-run/commands/options';
+import { ClickOptions } from '../../../test-run/commands/options';
+import VisibleElementAutomation from './visible-element-automation';
 import ClickAutomation from './click';
-import MoveAutomation from './move';
 import AutomationSettings from '../settings';
-import getAutomationPoint from '../utils/get-automation-point';
-import screenPointToClient from '../utils/screen-point-to-client';
-import AUTOMATION_ERROR_TYPES from '../errors';
 
-var extend           = hammerhead.utils.extend;
-var browserUtils     = hammerhead.utils.browser;
 var featureDetection = hammerhead.utils.featureDetection;
+var browserUtils     = hammerhead.utils.browser;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
-var positionUtils = testCafeCore.positionUtils;
-var eventUtils    = testCafeCore.eventUtils;
-var delay         = testCafeCore.delay;
+var eventUtils = testCafeCore.eventUtils;
+var delay      = testCafeCore.delay;
 
 const FIRST_CLICK_DELAY = featureDetection.isTouchDevice ? 0 : 160;
 
 
-export default class DblClickAutomation {
+export default class DblClickAutomation extends VisibleElementAutomation {
     constructor (element, clickOptions) {
-        this.options = clickOptions;
+        super(element, clickOptions);
 
-        this.element   = element;
         this.modifiers = clickOptions.modifiers;
         this.caretPos  = clickOptions.caretPos;
         this.speed     = clickOptions.speed;
@@ -35,121 +28,68 @@ export default class DblClickAutomation {
         this.offsetX = clickOptions.offsetX;
         this.offsetY = clickOptions.offsetY;
 
-        this.eventArgs = {
-            point:   null,
-            options: null,
-            element: null
-        };
+        this.eventArgs = null;
 
         this.eventState = {
             dblClickElement: null
         };
     }
 
-    _calculateEventArguments () {
-        var point       = null;
-        var options     = null;
-        var screenPoint = null;
+    _firstClick (selectorTimeout, checkElementInterval) {
+        // NOTE: we should always perform click with the highest speed
+        var clickOptions = new ClickOptions(this.options);
 
-        if (!this.eventArgs.point) {
-            screenPoint = getAutomationPoint(this.element, this.offsetX, this.offsetY);
-            point       = screenPointToClient(this.element, screenPoint);
+        clickOptions.speed = 1;
 
-            options = extend({
-                clientX: point.x,
-                clientY: point.y
-            }, this.modifiers);
-        }
+        var clickAutomation = new ClickAutomation(this.element, clickOptions);
 
-        var expectedElement = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY) ?
-                              this.element : null;
+        clickAutomation.on(clickAutomation.WAITING_FOR_ELEMENT_STARTED_EVENT, e => this.emit(this.WAITING_FOR_ELEMENT_STARTED_EVENT, e));
+        clickAutomation.on(clickAutomation.WAITING_FOR_ELEMENT_FINISHED_EVENT, e => this.emit(this.WAITING_FOR_ELEMENT_FINISHED_EVENT, e));
 
-        var x = point ? point.x : this.eventArgs.point.x;
-        var y = point ? point.y : this.eventArgs.point.y;
-
-        return getElementFromPoint(x, y, expectedElement)
-            .then(topElement => {
-                if (!topElement)
-                    throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
-
-                return {
-                    screenPoint: screenPoint || this.eventArgs.screenPoint,
-                    point:       point || this.eventArgs.point,
-                    options:     options || this.eventArgs.options,
-                    element:     topElement
-                };
+        return clickAutomation.run(selectorTimeout, checkElementInterval)
+            .then(clickEventArgs => {
+                return delay(FIRST_CLICK_DELAY).then(() => clickEventArgs);
             });
     }
 
-    _move () {
-        var moveOptions    = new MoveOptions(this.options, false);
-        var moveAutomation = new MoveAutomation(this.element, moveOptions);
+    _secondClick (eventArgs) {
+        //NOTE: we should not call focus after the second mousedown (except in IE) because of the native browser behavior
+        if (browserUtils.isIE)
+            eventUtils.bind(document, 'focus', eventUtils.preventDefault, true);
 
-        return moveAutomation
-            .run()
-            .then(() => delay(this.automationSettings.mouseActionStepDelay));
-    }
+        var clickOptions = new ClickOptions({
+            offsetX:   eventArgs.screenPoint.x,
+            offsetY:   eventArgs.screenPoint.y,
+            caretPos:  this.caretPos,
+            modifiers: this.modifiers,
+            speed:     1
+        });
 
-    _firstClick () {
-        return this._calculateEventArguments()
-            .then(args => {
-                this.eventArgs = args;
+        var clickAutomation = new ClickAutomation(document.documentElement, clickOptions);
 
-                // NOTE: we should always perform click with the highest speed
-                var clickOptions = new ClickOptions(this.options);
-
-                clickOptions.speed = 1;
-
-                var clickAutomation = new ClickAutomation(this.element, clickOptions);
-
-                return clickAutomation.run();
-            })
-            .then(() => delay(FIRST_CLICK_DELAY));
-    }
-
-    _secondClick () {
-        var clickAutomation = null;
-
-        return this._calculateEventArguments()
-            .then(args => {
-                this.eventArgs = args;
-
-                //NOTE: we should not call focus after the second mousedown (except in IE) because of the native browser behavior
-                if (browserUtils.isIE)
-                    eventUtils.bind(document, 'focus', eventUtils.preventDefault, true);
-
-                var clickOptions = new ClickOptions({
-                    offsetX:   this.eventArgs.screenPoint.x,
-                    offsetY:   this.eventArgs.screenPoint.y,
-                    caretPos:  this.caretPos,
-                    modifiers: this.modifiers,
-                    speed:     1
-                });
-
-                clickAutomation = new ClickAutomation(document.documentElement, clickOptions);
-
-                return clickAutomation.run();
-            })
-            .then(() => {
+        return clickAutomation.run()
+            .then(clickEventArgs => {
                 // NOTE: We should raise the `dblclick` event on an element that
                 // has been actually clicked during the second click automation.
                 this.eventState.dblClickElement = clickAutomation.eventState.clickElement;
-                this.eventArgs                  = clickAutomation.eventArgs;
 
                 if (browserUtils.isIE)
                     eventUtils.unbind(document, 'focus', eventUtils.preventDefault, true);
+
+                return clickEventArgs;
             });
     }
 
-    _dblClick () {
+    _dblClick (eventArgs) {
         if (this.eventState.dblClickElement)
-            eventSimulator.dblclick(this.eventState.dblClickElement, this.eventArgs.options);
+            eventSimulator.dblclick(this.eventState.dblClickElement, eventArgs.options);
     }
 
-    run () {
-        return this._move()
-            .then(() => this._firstClick())
-            .then(() => this._secondClick())
-            .then(() => this._dblClick());
+    run (selectorTimeout, checkElementInterval) {
+        // NOTE: If the target element is out of viewport the firstClick sub-automation raises an error
+        return this
+            ._firstClick(selectorTimeout, checkElementInterval)
+            .then(eventArgs => this._secondClick(eventArgs))
+            .then(eventArgs => this._dblClick(eventArgs));
     }
 }

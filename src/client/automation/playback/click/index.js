@@ -1,17 +1,10 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
-import { fromPoint as getElementFromPoint } from '../../get-element';
+import VisibleElementAutomation from '../visible-element-automation';
 import { focusAndSetSelection, focusByRelatedElement } from '../../utils/utils';
-import MoveAutomation from '../move';
-import { MoveOptions } from '../../../../test-run/commands/options';
-import SelectChildClickAutomation from './select-child';
 import cursor from '../../cursor';
 import nextTick from '../../utils/next-tick';
-import getAutomationPoint from '../../utils/get-automation-point';
-import screenPointToClient from '../../utils/screen-point-to-client';
-import AutomationSettings from '../../settings';
-import AUTOMATION_ERROR_TYPES from '../../errors';
 
 var Promise = hammerhead.Promise;
 
@@ -20,37 +13,25 @@ var browserUtils     = hammerhead.utils.browser;
 var featureDetection = hammerhead.utils.featureDetection;
 var eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
-var domUtils      = testCafeCore.domUtils;
-var positionUtils = testCafeCore.positionUtils;
-var styleUtils    = testCafeCore.styleUtils;
-var eventUtils    = testCafeCore.eventUtils;
-var arrayUtils    = testCafeCore.arrayUtils;
-var delay         = testCafeCore.delay;
+var domUtils   = testCafeCore.domUtils;
+var styleUtils = testCafeCore.styleUtils;
+var eventUtils = testCafeCore.eventUtils;
+var arrayUtils = testCafeCore.arrayUtils;
+var delay      = testCafeCore.delay;
 
 var selectElementUI = testCafeUI.selectElement;
 
 
-export default class ClickAutomation {
+export default class ClickAutomation extends VisibleElementAutomation {
     constructor (element, clickOptions) {
-        this.options   = clickOptions;
-        this.element   = element;
+        super(element, clickOptions);
+
         this.modifiers = clickOptions.modifiers;
         this.caretPos  = clickOptions.caretPos;
-
-        this.offsetX = clickOptions.offsetX;
-        this.offsetY = clickOptions.offsetY;
-
-        this.automationSettings = new AutomationSettings(clickOptions.speed);
 
         this.targetElementParentNodes     = [];
         this.activeElementBeforeMouseDown = null;
         this.mouseDownElement             = null;
-
-        this.eventArgs = {
-            point:   null,
-            options: null,
-            element: null
-        };
 
         this.eventState = {
             mousedownPrevented:      false,
@@ -58,49 +39,6 @@ export default class ClickAutomation {
             simulateDefaultBehavior: true,
             clickElement:            null
         };
-    }
-
-    _calculateEventArguments () {
-        var point   = null;
-        var options = null;
-
-        if (!this.eventArgs.point) {
-            var screenPoint = getAutomationPoint(this.element, this.offsetX, this.offsetY);
-
-            point = screenPointToClient(this.element, screenPoint);
-
-            options = extend({
-                clientX: point.x,
-                clientY: point.y
-            }, this.modifiers);
-        }
-
-        var expectedElement = positionUtils.containsOffset(this.element, this.offsetX, this.offsetY) ?
-                              this.element : null;
-
-        var x = point ? point.x : this.eventArgs.point.x;
-        var y = point ? point.y : this.eventArgs.point.y;
-
-        return getElementFromPoint(x, y, expectedElement)
-            .then(topElement => {
-                if (!topElement)
-                    throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
-
-                return {
-                    point:   point || this.eventArgs.point,
-                    options: options || this.eventArgs.options,
-                    element: topElement
-                };
-            });
-    }
-
-    _move () {
-        var moveOptions    = new MoveOptions(this.options, false);
-        var moveAutomation = new MoveAutomation(this.element, moveOptions);
-
-        return moveAutomation
-            .run()
-            .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }
 
     _bindMousedownHandler () {
@@ -122,24 +60,20 @@ export default class ClickAutomation {
         eventUtils.bind(element, 'blur', onblur, true);
     }
 
-    _raiseTouchEvents () {
+    _raiseTouchEvents (eventArgs) {
         if (featureDetection.isTouchDevice) {
-            eventSimulator.touchstart(this.eventArgs.element, this.eventArgs.options);
-            eventSimulator.touchend(this.eventArgs.element, this.eventArgs.options);
+            eventSimulator.touchstart(eventArgs.element, eventArgs.options);
+            eventSimulator.touchend(eventArgs.element, eventArgs.options);
         }
     }
 
-    _mousedown () {
-        return this._calculateEventArguments()
-            .then(args => {
-                this.eventArgs                = args;
-                this.targetElementParentNodes = domUtils.getParents(this.eventArgs.element);
-                this.mouseDownElement         = this.eventArgs.element;
+    _mousedown (eventArgs) {
+        this.targetElementParentNodes = domUtils.getParents(eventArgs.element);
+        this.mouseDownElement         = eventArgs.element;
 
-                return cursor.leftButtonDown();
-            })
+        return cursor.leftButtonDown()
             .then(() => {
-                this._raiseTouchEvents();
+                this._raiseTouchEvents(eventArgs);
 
                 var activeElement = domUtils.getActiveElement();
 
@@ -155,15 +89,14 @@ export default class ClickAutomation {
 
                 this._bindBlurHandler(activeElement);
 
-                this.eventState.simulateDefaultBehavior =
-                    eventSimulator.mousedown(this.eventArgs.element, this.eventArgs.options);
+                this.eventState.simulateDefaultBehavior = eventSimulator.mousedown(eventArgs.element, eventArgs.options);
 
                 if (this.eventState.simulateDefaultBehavior === false)
                     this.eventState.simulateDefaultBehavior = needCloseSelectDropDown && !this.eventState.mousedownPrevented;
 
                 return this._ensureActiveElementBlur(activeElement);
             })
-            .then(() => this._focus());
+            .then(() => this._focus(eventArgs));
     }
 
     _ensureActiveElementBlur (element) {
@@ -196,15 +129,14 @@ export default class ClickAutomation {
         });
     }
 
-    _focus () {
+    _focus (eventArgs) {
         if (this.eventState.simulateDefaultBehavior === false)
             return Promise.resolve();
 
         // NOTE: If a target element is a contentEditable element, we need to call focusAndSetSelection directly for
         // this element. Otherwise, if the element obtained by elementFromPoint is a child of the contentEditable
         // element, a selection position may be calculated incorrectly (by using the caretPos option).
-        var elementForFocus = domUtils.isContentEditableElement(this.element) ?
-                              this.element : this.eventArgs.element;
+        var elementForFocus = domUtils.isContentEditableElement(this.element) ? this.element : eventArgs.element;
 
         // NOTE: IE doesn't perform focus if active element has been changed while executing mousedown
         var simulateFocus = !browserUtils.isIE || this.activeElementBeforeMouseDown === domUtils.getActiveElement();
@@ -238,55 +170,66 @@ export default class ClickAutomation {
         return arrayUtils.equals(mouseDownElementParentNodes, topElementParentNodes) ? mouseDownElement : null;
     }
 
-    _mouseup () {
+    _mouseup (eventArgs) {
         return cursor
             .buttonUp()
-            .then(() => this._calculateEventArguments())
-            .then(args => {
-                this.eventArgs = args;
+            .then(() => this._getElementForEvent(eventArgs))
+            .then(element => {
+                eventArgs.element = element;
 
-                this.eventState.clickElement = ClickAutomation._getElementForClick(this.mouseDownElement, this.eventArgs.element,
+                this.eventState.clickElement = ClickAutomation._getElementForClick(this.mouseDownElement, element,
                     this.targetElementParentNodes);
 
-                eventSimulator.mouseup(this.eventArgs.element, this.eventArgs.options);
+                eventSimulator.mouseup(element, eventArgs.options);
             });
     }
 
-    _click () {
-        if (domUtils.isOptionElement(this.eventArgs.element))
-            return;
+    _click (eventArgs) {
+        if (domUtils.isOptionElement(eventArgs.element))
+            return eventArgs.element;
 
         if (this.eventState.clickElement)
-            eventSimulator.click(this.eventState.clickElement, this.eventArgs.options);
+            eventSimulator.click(this.eventState.clickElement, eventArgs.options);
 
-        if (!domUtils.isElementFocusable(this.eventArgs.element))
-            focusByRelatedElement(this.eventArgs.element);
+        if (!domUtils.isElementFocusable(eventArgs.element))
+            focusByRelatedElement(eventArgs.element);
 
         // NOTE: Emulating the click event on the 'select' element doesn't expand the
         // dropdown with options (except chrome), therefore we should emulate it.
-        var isSelectElement      = domUtils.isSelectElement(this.eventArgs.element);
-        var isSelectWithDropDown = isSelectElement && styleUtils.getSelectElementSize(this.eventArgs.element) === 1;
+        var isSelectElement      = domUtils.isSelectElement(eventArgs.element);
+        var isSelectWithDropDown = isSelectElement && styleUtils.getSelectElementSize(eventArgs.element) === 1;
 
         if (isSelectWithDropDown && this.eventState.simulateDefaultBehavior !== false) {
-            if (selectElementUI.isOptionListExpanded(this.eventArgs.element))
+            if (selectElementUI.isOptionListExpanded(eventArgs.element))
                 selectElementUI.collapseOptionList();
             else
-                selectElementUI.expandOptionList(this.eventArgs.element);
+                selectElementUI.expandOptionList(eventArgs.element);
         }
+
+        return eventArgs;
     }
 
-    run () {
-        if (/option|optgroup/.test(domUtils.getTagName(this.element))) {
-            var selectChildClickAutomation = new SelectChildClickAutomation(this.element, this.options);
+    run (selectorTimeout = 0, checkElementInterval = 0) {
+        var eventArgs = null;
 
-            return selectChildClickAutomation.run();
-        }
+        return this
+            ._ensureElement(selectorTimeout, checkElementInterval)
+            .then(({ element, clientPoint, screenPoint }) => {
+                eventArgs = {
+                    point:       clientPoint,
+                    screenPoint: screenPoint,
+                    element:     element,
+                    options:     extend({
+                        clientX: clientPoint.x,
+                        clientY: clientPoint.y
+                    }, this.modifiers)
+                };
 
-        // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger
-        // mousedown event regardless of how long mousedown event handlers were executing
-        return this._move()
-            .then(() => Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown()]))
-            .then(() => this._mouseup())
-            .then(() => this._click());
+                // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger
+                // mousedown event regardless of how long mousedown event handlers were executing
+                return Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown(eventArgs)]);
+            })
+            .then(() => this._mouseup(eventArgs))
+            .then(() => this._click(eventArgs));
     }
 }

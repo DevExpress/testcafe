@@ -72,6 +72,7 @@ export default class StatusBar {
         this.showing           = false;
         this.hidding           = false;
         this.debugging         = false;
+        this.waiting           = false;
         this.assertionRetries  = false;
 
         this._createBeforeReady();
@@ -349,6 +350,11 @@ export default class StatusBar {
     _hideWaitingStatus (forceReset) {
         return new Promise(resolve => {
             nativeMethods.setTimeout.call(window, () => {
+                if (this.waiting || this.debugging) {
+                    resolve();
+                    return;
+                }
+
                 shadowUI.removeClass(this.statusBar, WAITING_SUCCESS_CLASS);
                 shadowUI.removeClass(this.statusBar, WAITING_FAILED_CLASS);
 
@@ -390,6 +396,7 @@ export default class StatusBar {
     }
 
     _setWaitingStatus (timeout, startTime) {
+        this.waiting = true;
         this.progressBar.determinateIndicator.start(timeout, startTime);
 
         this.showingTimeout = nativeMethods.setTimeout.call(window, () => {
@@ -400,6 +407,7 @@ export default class StatusBar {
     }
 
     _resetWaitingStatus (waitingSuccess) {
+        this.waiting = false;
         this.progressBar.determinateIndicator.stop();
 
         if (waitingSuccess)

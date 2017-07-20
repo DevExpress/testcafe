@@ -1,11 +1,11 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
+import VisibleElementAutomation from '../visible-element-automation';
 import { fromPoint as getElementFromPoint } from '../../get-element';
 import * as selectUtils from './utils';
 import MoveAutomation from '../move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
-import AutomationSettings from '../../settings';
 import AUTOMATION_ERROR_TYPES from '../../errors';
 
 var Promise          = hammerhead.Promise;
@@ -21,17 +21,15 @@ var eventUtils      = testCafeCore.eventUtils;
 var delay           = testCafeCore.delay;
 
 
-export default class SelectBaseAutomation {
+export default class SelectBaseAutomation extends VisibleElementAutomation {
     constructor (element, actionOptions) {
-        this.element = element;
+        super(element, actionOptions);
 
         this.absoluteStartPoint = null;
         this.absoluteEndPoint   = null;
         this.clientPoint        = null;
 
         this.speed = actionOptions.speed;
-
-        this.automationSettings = new AutomationSettings(this.speed);
 
         this.downEvent = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
         this.upEvent   = featureDetection.isTouchDevice ? 'touchend' : 'mouseup';
@@ -51,12 +49,12 @@ export default class SelectBaseAutomation {
         var clientPoint = positionUtils.offsetToClientCoords(point);
 
         return getElementFromPoint(clientPoint.x, clientPoint.y)
-            .then(topElement => {
-                if (!topElement)
+            .then(({ element }) => {
+                if (!element)
                     throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 
                 return {
-                    element: topElement,
+                    element: element,
                     options: {
                         clientX: clientPoint.x,
                         clientY: clientPoint.y
@@ -171,5 +169,4 @@ export default class SelectBaseAutomation {
             .then(() => this._moveToPoint(this.absoluteEndPoint))
             .then(() => this._mouseup());
     }
-
 }

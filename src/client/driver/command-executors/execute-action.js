@@ -16,6 +16,7 @@ import {
     calculateSelectTextArguments,
     getOffsetOptions,
     Click as ClickAutomation,
+    SelectChildClick as SelectChildClickAutomation,
     RClick as RClickAutomation,
     DblClick as DblClickAutomation,
     DragToOffset as DragToOffsetAutomation,
@@ -49,7 +50,8 @@ import {
 } from '../../../errors/test-run';
 
 
-const MAX_DELAY_AFTER_STEP = 2000;
+const MAX_DELAY_AFTER_STEP                  = 2000;
+const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;
 
 
 // Ensure command element properties
@@ -99,7 +101,7 @@ function ensureCommandElementsProperties (command, elements) {
 }
 
 // Ensure command elements
-function ensureCommandElements (command, timeout, statusBar) {
+function ensureCommandElements (command, globalSelectorTimeout, statusBar) {
     var elements             = [];
     var ensureElementPromise = Promise.resolve();
     var startTime            = new Date();
@@ -107,7 +109,7 @@ function ensureCommandElements (command, timeout, statusBar) {
     var ensureElement = (selectorCommand, createNotFoundError, createIsInvisibleError, createHasWrongNodeTypeError) => {
         ensureElementPromise = ensureElementPromise
             .then(() => {
-                var selectorExecutor = new SelectorExecutor(selectorCommand, timeout, startTime, statusBar,
+                var selectorExecutor = new SelectorExecutor(selectorCommand, globalSelectorTimeout, startTime, statusBar,
                     createNotFoundError, createIsInvisibleError);
 
                 return selectorExecutor.getResult();
@@ -190,6 +192,9 @@ function createAutomation (elements, command) {
 
     switch (command.type) {
         case COMMAND_TYPE.click :
+            if (/option|optgroup/.test(domUtils.getTagName(elements[0])))
+                return new SelectChildClickAutomation(elements[0], command.options);
+
             return new ClickAutomation(elements[0], command.options);
 
         case COMMAND_TYPE.rightClick :
@@ -236,7 +241,7 @@ function createAutomation (elements, command) {
 
 
 // Execute action
-export default function executeAction (command, selectorTimeout, statusBar, testSpeed) {
+export default function executeAction (command, globalSelectorTimeout, statusBar, testSpeed) {
     var resolveStartPromise = null;
 
     var startPromise = new Promise(resolve => {
@@ -256,8 +261,9 @@ export default function executeAction (command, selectorTimeout, statusBar, test
     var completionPromise = new Promise(resolve => {
         var requestBarrier         = null;
         var scriptExecutionBarrier = null;
+        var startTime              = new Date();
 
-        ensureCommandElements(command, selectorTimeout, statusBar)
+        ensureCommandElements(command, globalSelectorTimeout, statusBar)
             .then(elements => {
                 resolveStartPromise();
 
@@ -267,7 +273,18 @@ export default function executeAction (command, selectorTimeout, statusBar, test
                 ensureCommandArguments(command);
                 pageUnloadBarrier.watchForPageNavigationTriggers();
 
-                return createAutomation(elements, command).run();
+                var hasSpecificTimeout       = command.selector && typeof command.selector.timeout === 'number';
+                var commandSelectorTimeout   = hasSpecificTimeout ? command.selector.timeout : globalSelectorTimeout;
+                var remainingSelectorTimeout = commandSelectorTimeout - (new Date() - startTime);
+
+                var automation = createAutomation(elements, command);
+
+                if (automation.WAITING_FOR_ELEMENT_STARTED_EVENT) {
+                    automation.on(automation.WAITING_FOR_ELEMENT_STARTED_EVENT, () => statusBar.showWaitingElementStatus(remainingSelectorTimeout));
+                    automation.on(automation.WAITING_FOR_ELEMENT_FINISHED_EVENT, ({ element }) => statusBar.hideWaitingElementStatus(!!element));
+                }
+
+                return automation.run(remainingSelectorTimeout, CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL);
             })
             .then(() => {
                 return Promise.all([

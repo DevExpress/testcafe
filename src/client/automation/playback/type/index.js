@@ -117,7 +117,7 @@ export default class TypeAutomation {
         this.element = isContentEditable ? this.element : activeElement;
     }
 
-    _click () {
+    _click (selectorTimeout, checkElementInterval) {
         var activeElement     = domUtils.getActiveElement();
         var isTextEditable    = domUtils.isTextEditableElementAndEditingAllowed(this.element);
         var isContentEditable = domUtils.isContentEditableElement(this.element);
@@ -135,7 +135,7 @@ export default class TypeAutomation {
             var clickAutomation = new ClickAutomation(this.element, clickOptions);
 
             return clickAutomation
-                .run()
+                .run(selectorTimeout, checkElementInterval)
                 .then(() => delay(this.automationSettings.mouseActionStepDelay));
         }
 
@@ -268,9 +268,9 @@ export default class TypeAutomation {
         return delay(this.automationSettings.keyActionStepDelay);
     }
 
-    run () {
+    run (selectorTimeout = 0, checkElementInterval = 0) {
         return this
-            ._click()
+            ._click(selectorTimeout, checkElementInterval)
             .then(() => this._calculateTargetElement())
             .then(() => this._type());
     }
