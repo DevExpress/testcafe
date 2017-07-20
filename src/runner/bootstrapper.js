@@ -58,7 +58,7 @@ export default class Bootstrapper {
         var { automated, remotes } = Bootstrapper._splitBrowserInfo(browserInfo);
 
         if (remotes && remotes.length % this.concurrency)
-            throw new GeneralError(MESSAGE.cantDivideRemotesCountByConcurrency);
+            throw new GeneralError(MESSAGE.cannotDivideRemotesCountByConcurrency);
 
         var browserConnections = this._createAutomatedConnections(automated);
 

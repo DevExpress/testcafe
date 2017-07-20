@@ -504,7 +504,7 @@ describe('Runner', function () {
         });
 
         it('Should raise an error if concurrency option has wrong value', function () {
-            var incorrectSpeedErrorMessage = 'The concurrency factor should be an integer greater or equal to 1.';
+            var incorrectConcurrencyFactorErrorMessage = 'The concurrency factor should be an integer greater or equal to 1.';
 
             return testCafe
                 .createBrowserConnection()
@@ -514,22 +514,22 @@ describe('Runner', function () {
                         .concurrency('yo');
                 })
                 .catch(function (err) {
-                    expect(err.message).eql(incorrectSpeedErrorMessage);
+                    expect(err.message).eql(incorrectConcurrencyFactorErrorMessage);
                 })
                 .then(function () {
                     return runner.concurrency(-1);
                 }).catch(function (err) {
-                    expect(err.message).eql(incorrectSpeedErrorMessage);
+                    expect(err.message).eql(incorrectConcurrencyFactorErrorMessage);
                 })
                 .then(function () {
                     return runner.concurrency(0.1);
                 }).catch(function (err) {
-                    expect(err.message).eql(incorrectSpeedErrorMessage);
+                    expect(err.message).eql(incorrectConcurrencyFactorErrorMessage);
                 })
                 .then(function () {
                     return runner.concurrency(0);
                 }).catch(function (err) {
-                    expect(err.message).eql(incorrectSpeedErrorMessage);
+                    expect(err.message).eql(incorrectConcurrencyFactorErrorMessage);
                 });
         });
     });

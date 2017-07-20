@@ -6,14 +6,14 @@ var config  = require('../../config');
 
 if (config.useLocalBrowsers) {
     describe('Concurrency', function () {
-        var data     = '';
+        var data = '';
 
         function resolvePath (file) {
             return path.join(__dirname, file);
         }
 
         function run (browsers, concurrency, files, reporter) {
-            var src      = null;
+            var src = null;
 
             reporter = reporter || 'json';
 
@@ -95,7 +95,7 @@ if (config.useLocalBrowsers) {
         }
 
         beforeEach(function () {
-            data     = '';
+            data = '';
         });
 
         it('Should run tests sequentially if concurrency = 1', function () {
