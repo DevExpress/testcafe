@@ -74,27 +74,27 @@ var CLIENT_TESTS_DESKTOP_BROWSERS = [
     {
         platform:    'Windows 10',
         browserName: 'chrome',
-        version:     '15.0'
+        version:     '26.0'
     },
     {
         platform:    'Windows 10',
         browserName: 'firefox',
-        version:     '8.0'
+        version:     '28.0'
     },
     {
-        platform:    'Windows 10',
+        platform:    'Windows 7',
         browserName: 'internet explorer',
         version:     '8.0'
     },
     {
-        platform:    'OS X 10.11',
+        platform:    'OS X 10.8',
         browserName: 'safari',
-        version:     '4.0'
+        version:     '6.0'
     },
     {
-        platform:    'Windows 10',
+        platform:    'Windows 7',
         browserName: 'opera',
-        version:     '11.5'
+        version:     '11'
     // },
     // {
     //     platform:    'OS X 10.11',
