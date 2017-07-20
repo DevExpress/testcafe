@@ -67,35 +67,42 @@ var CLIENT_TESTS_SETTINGS        = assignIn({}, CLIENT_TESTS_SETTINGS_BASE, { ba
 var CLIENT_TESTS_LEGACY_SETTINGS = assignIn({}, CLIENT_TESTS_SETTINGS_BASE, { basePath: CLIENT_TESTS_LEGACY_PATH });
 
 var CLIENT_TESTS_DESKTOP_BROWSERS = [
+    // {
+    //     platform:    'Windows 10',
+    //     browserName: 'microsoftedge'
+    // },
     {
         platform:    'Windows 10',
-        browserName: 'microsoftedge'
-    },
-    {
-        platform:    'Windows 10',
-        browserName: 'chrome'
-    },
-    {
-        platform:    'Windows 10',
-        browserName: 'firefox'
-    },
-    {
-        platform:    'Windows 10',
-        browserName: 'internet explorer',
-        version:     '11.0'
-    },
-    {
-        platform:    'OS X 10.11',
-        browserName: 'safari',
-        version:     '9.0'
-    },
-    {
-        platform:    'OS X 10.11',
-        browserName: 'chrome'
-    },
-    {
-        platform:    'OS X 10.11',
-        browserName: 'firefox'
+        browserName: 'chrome',
+        version:     '38.0'
+    // },
+    // {
+    //     platform:    'Windows 10',
+    //     browserName: 'firefox',
+    //     version:     '35.0'
+    // },
+    // {
+    //     platform:    'Windows 7',
+    //     browserName: 'internet explorer',
+    //     version:     '8.0'
+    // },
+    // {
+    //     platform:    'OS X 10.8',
+    //     browserName: 'safari',
+    //     version:     '6.0'
+    // },
+    // {
+    //     platform:    'Windows 7',
+    //     browserName: 'opera',
+    //     version:     '12'
+    // },
+    // {
+    //     platform:    'OS X 10.11',
+    //     browserName: 'chrome'
+    // },
+    // {
+    //     platform:    'OS X 10.11',
+    //     browserName: 'firefox'
     }
 ];
 
