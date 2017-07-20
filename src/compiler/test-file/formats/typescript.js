@@ -12,15 +12,16 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         var ts = require('typescript');
 
         return {
-            allowJs:         true,
-            pretty:          true,
-            inlineSourceMap: true,
-            noImplicitAny:   false,
-            module:          ts.ModuleKind.CommonJS,
-            target:          'ES6',
-            lib:             ['lib.es6.d.ts'],
-            baseUrl:         __dirname,
-            paths:           { testcafe: ['../../../../ts-defs/index.d.ts'] }
+            allowJs:                 true,
+            pretty:                  true,
+            inlineSourceMap:         true,
+            noImplicitAny:           false,
+            module:                  ts.ModuleKind.CommonJS,
+            target:                  2 /* ES6 */,
+            lib:                     ['lib.es6.d.ts'],
+            baseUrl:                 __dirname,
+            paths:                   { testcafe: ['../../../../ts-defs/index.d.ts'] },
+            suppressOutputPathCheck: true
         };
     }
 
@@ -58,8 +59,8 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         if (this.cache[filename])
             return this.cache[filename];
 
-        var opts        = TypeScriptTestFileCompiler._getTypescriptOptions();
-        var program     = ts.createProgram([filename], opts);
+        var opts    = TypeScriptTestFileCompiler._getTypescriptOptions();
+        var program = ts.createProgram([filename], opts);
 
         program.getSourceFiles().forEach(sourceFile => {
             sourceFile.renamedDependencies = RENAMED_DEPENDENCIES_MAP;

@@ -270,7 +270,13 @@ gulp.task('images', ['clean'], function () {
         .pipe(gulp.dest('lib'));
 });
 
-gulp.task('fast-build', ['server-scripts', 'client-scripts', 'styles', 'images', 'templates']);
+gulp.task('ts-definitions', ['clean'], function () {
+    return gulp
+        .src('src/**/*.d.ts')
+        .pipe(gulp.dest('lib'));
+});
+
+gulp.task('fast-build', ['server-scripts', 'client-scripts', 'styles', 'images', 'templates', 'ts-definitions']);
 gulp.task('build', ['lint', 'fast-build']);
 
 // Test
