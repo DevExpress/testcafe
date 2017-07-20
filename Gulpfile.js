@@ -74,12 +74,12 @@ var CLIENT_TESTS_DESKTOP_BROWSERS = [
     {
         platform:    'Windows 10',
         browserName: 'chrome',
-        version: '15.0'
+        version:     '15.0'
     },
     {
         platform:    'Windows 10',
         browserName: 'firefox',
-        version: '8.0'
+        version:     '8.0'
     },
     {
         platform:    'Windows 10',
