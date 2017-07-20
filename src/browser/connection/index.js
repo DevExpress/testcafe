@@ -119,7 +119,7 @@ export default class BrowserConnection extends EventEmitter {
         while (this.hasQueuedJobs && !this.currentJob.hasQueuedTestRuns)
             this.jobQueue.shift();
 
-        return this.hasQueuedJobs ? await this.currentJob.popNextTestRunUrl() : null;
+        return this.hasQueuedJobs ? await this.currentJob.popNextTestRunUrl(this) : null;
     }
 
     static getById (id) {

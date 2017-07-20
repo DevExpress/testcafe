@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import Promise from 'pinkie';
 import timeLimit from 'time-limit-promise';
 import promisifyEvent from 'promisify-event';
-import { noop, pull as remove } from 'lodash';
+import { noop, pull as remove, flatten } from 'lodash';
 import mapReverse from 'map-reverse';
 import { GeneralError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
@@ -11,18 +11,19 @@ const LOCAL_BROWSERS_READY_TIMEOUT  = 2 * 60 * 1000;
 const REMOTE_BROWSERS_READY_TIMEOUT = 6 * 60 * 1000;
 
 export default class BrowserSet extends EventEmitter {
-    constructor (connections) {
+    constructor (browserConnectionGroups) {
         super();
 
         this.RELEASE_TIMEOUT = 10000;
 
         this.pendingReleases = [];
 
-        this.connections = connections;
+        this.browserConnectionGroups = browserConnectionGroups;
+        this.browserConnections      = flatten(browserConnectionGroups);
 
         this.browserErrorHandler = error => this.emit('error', error);
 
-        connections.forEach(bc => bc.on('error', this.browserErrorHandler));
+        this.browserConnections.forEach(bc => bc.on('error', this.browserErrorHandler));
 
         // NOTE: We're setting an empty error handler, because Node kills the process on an 'error' event
         // if there is no handler. See: https://nodejs.org/api/events.html#events_class_events_eventemitter
@@ -47,14 +48,14 @@ export default class BrowserSet extends EventEmitter {
 
     async _getReadyTimeout () {
         var isLocalBrowser      = connection => connection.provider.isLocalBrowser(connection.id, connection.browserInfo.browserName);
-        var remoteBrowsersExist = (await Promise.all(this.connections.map(isLocalBrowser))).indexOf(false) > -1;
+        var remoteBrowsersExist = (await Promise.all(this.browserConnections.map(isLocalBrowser))).indexOf(false) > -1;
 
         return remoteBrowsersExist ? REMOTE_BROWSERS_READY_TIMEOUT : LOCAL_BROWSERS_READY_TIMEOUT;
     }
 
     async _waitConnectionsOpened () {
         var connectionsReadyPromise = Promise.all(
-            this.connections
+            this.browserConnections
                 .filter(bc => !bc.opened)
                 .map(bc => promisifyEvent(bc, 'opened'))
         );
@@ -66,7 +67,7 @@ export default class BrowserSet extends EventEmitter {
     }
 
     _checkForDisconnections () {
-        var disconnectedUserAgents = this.connections
+        var disconnectedUserAgents = this.browserConnections
             .filter(bc => bc.closed)
             .map(bc => bc.userAgent);
 
@@ -76,8 +77,8 @@ export default class BrowserSet extends EventEmitter {
 
 
     //API
-    static from (connections) {
-        var browserSet = new BrowserSet(connections);
+    static from (browserConnections) {
+        var browserSet = new BrowserSet(browserConnections);
 
         var prepareConnection = Promise.resolve()
             .then(() => {
@@ -99,10 +100,10 @@ export default class BrowserSet extends EventEmitter {
     }
 
     releaseConnection (bc) {
-        if (this.connections.indexOf(bc) < 0)
+        if (this.browserConnections.indexOf(bc) < 0)
             return Promise.resolve();
 
-        remove(this.connections, bc);
+        remove(this.browserConnections, bc);
 
         bc.removeListener('error', this.browserErrorHandler);
 
@@ -122,7 +123,7 @@ export default class BrowserSet extends EventEmitter {
         // the this.connections array, which leads to shifting indexes
         // towards the beginning. So, we must copy the array in order to iterate it,
         // or we can perform iteration from the end to the beginning.
-        mapReverse(this.connections, bc => this.releaseConnection(bc));
+        mapReverse(this.browserConnections, bc => this.releaseConnection(bc));
 
         await Promise.all(this.pendingReleases);
     }

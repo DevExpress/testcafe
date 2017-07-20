@@ -93,7 +93,7 @@ export default class Runner extends EventEmitter {
 
     _runTask (reporterPlugin, browserSet, tests, testedApp) {
         var completed         = false;
-        var task              = new Task(tests, browserSet.connections, this.proxy, this.opts);
+        var task              = new Task(tests, browserSet.browserConnectionGroups, this.proxy, this.opts);
         var reporter          = new Reporter(reporterPlugin, task, this.opts.reportOutStream);
         var completionPromise = this._getTaskResult(task, browserSet, reporter, testedApp);
 
@@ -136,6 +136,15 @@ export default class Runner extends EventEmitter {
 
     browsers (...browsers) {
         this.bootstrapper.browsers = this.bootstrapper.browsers.concat(flatten(browsers));
+
+        return this;
+    }
+
+    concurrency (concurrency) {
+        if (typeof concurrency !== 'number' || isNaN(concurrency) || concurrency < 1)
+            throw new GeneralError(MESSAGE.invalidConcurrencyFactor);
+
+        this.bootstrapper.concurrency = concurrency;
 
         return this;
     }

@@ -98,6 +98,7 @@ export default class CLIArgumentParser {
             .option('-f, --fixture <name>', 'run only fixtures with the specified name')
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
             .option('-a, --app <command>', 'launch the tested app using the specified command before running tests')
+            .option('-c, --concurrency <number>', 'run tests concurrently')
             .option('--app-init-delay <ms>', 'specify how much time it takes for the tested app to initialize')
             .option('--selector-timeout <ms>', 'set the amount of time within which selectors make attempts to obtain a node to be returned')
             .option('--assertion-timeout <ms>', 'set the amount of time within which assertion should pass')
@@ -173,6 +174,11 @@ export default class CLIArgumentParser {
     _parseSpeed () {
         if (this.opts.speed)
             this.opts.speed = parseFloat(this.opts.speed);
+    }
+
+    _parseConcurrency () {
+        if (this.opts.concurrency)
+            this.concurrency = parseInt(this.opts.concurrency, 10);
     }
 
     _parsePorts () {
@@ -264,6 +270,7 @@ export default class CLIArgumentParser {
         this._parseSpeed();
         this._parsePorts();
         this._parseBrowserList();
+        this._parseConcurrency();
 
         await Promise.all([
             this._parseScreenshotsPath(),

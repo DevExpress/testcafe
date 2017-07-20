@@ -11,6 +11,8 @@ export default {
     optionValueIsNotValidRegExp:           'The "{optionName}" option value is not a valid regular expression.',
     testedAppFailedWithError:              'Tested app failed with an error:\n\n{errMessage}',
     invalidSpeedValue:                     'Speed should be a number between 0.01 and 1.',
+    invalidConcurrencyFactor:              'The concurrency factor should be an integer greater or equal to 1.',
+    cannotDivideRemotesCountByConcurrency: 'The number of remote browsers should be divisible by the factor of concurrency.',
     portsOptionRequiresTwoNumbers:         'The "--ports" option requires two numbers to be specified.',
     portIsNotFree:                         'The specified {portNum} port is already in use by another program.',
     invalidHostname:                       'The specified "{hostname}" hostname cannot be resolved to the current machine.',

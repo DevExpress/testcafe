@@ -15,7 +15,7 @@ export default class Reporter {
 
     // Static
     static _createReportQueue (task) {
-        var runsPerTest = task.browserConnections.length;
+        var runsPerTest = task.browserConnectionGroups.length;
 
         return task.tests.map(test => Reporter._createReportItem(test, runsPerTest));
     }
@@ -28,7 +28,8 @@ export default class Reporter {
             pendingRuns:    runsPerTest,
             errs:           [],
             unstable:       false,
-            startTime:      null
+            startTime:      null,
+            testRunInfo:    null
         };
     }
 
@@ -46,31 +47,30 @@ export default class Reporter {
         return find(this.reportQueue, i => i.test === testRun.test);
     }
 
-    _shiftReportQueue () {
-        // NOTE: a completed report item is always at the front of the queue.
-        // This happens because the next test can't be completed until the
-        // previous one frees all browser connections.
-        // Therefore, tests always get completed sequentially.
-        var reportItem = this.reportQueue.shift();
+    _shiftReportQueue (reportItem) {
+        var currentFixture = null;
+        var nextReportItem = null;
 
-        if (!reportItem.errs.length && !reportItem.test.skip)
-            this.passed++;
+        while (this.reportQueue.length && this.reportQueue[0].testRunInfo) {
+            reportItem     = this.reportQueue.shift();
+            currentFixture = reportItem.fixture;
 
-        this.plugin.reportTestDone(reportItem.test.name, Reporter._createTestRunInfo(reportItem));
+            this.plugin.reportTestDone(reportItem.test.name, reportItem.testRunInfo);
 
-        // NOTE: here we assume that tests are sorted by fixture.
-        // Therefore, if the next report item has a different
-        // fixture, we can report this fixture start.
-        var nextReportItem = this.reportQueue[0];
+            // NOTE: here we assume that tests are sorted by fixture.
+            // Therefore, if the next report item has a different
+            // fixture, we can report this fixture start.
+            nextReportItem = this.reportQueue[0];
 
-        if (nextReportItem && nextReportItem.fixture !== reportItem.fixture)
-            this.plugin.reportFixtureStart(nextReportItem.fixture.name, nextReportItem.fixture.path);
+            if (nextReportItem && nextReportItem.fixture !== currentFixture)
+                this.plugin.reportFixtureStart(nextReportItem.fixture.name, nextReportItem.fixture.path);
+        }
     }
 
     _assignTaskEventHandlers (task) {
         task.once('start', () => {
             var startTime  = new Date();
-            var userAgents = task.browserConnections.map(bc => bc.userAgent);
+            var userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
             var first      = this.reportQueue[0];
 
             this.plugin.reportTaskStart(startTime, userAgents, this.testCount);
@@ -95,7 +95,14 @@ export default class Reporter {
                 if (task.screenshots.hasCapturedFor(testRun.test))
                     reportItem.screenshotPath = task.screenshots.getPathFor(testRun.test);
 
-                this._shiftReportQueue();
+                if (!reportItem.testRunInfo) {
+                    reportItem.testRunInfo = Reporter._createTestRunInfo(reportItem);
+
+                    if (!reportItem.errs.length && !reportItem.test.skip)
+                        this.passed++;
+                }
+
+                this._shiftReportQueue(reportItem);
             }
         });
 

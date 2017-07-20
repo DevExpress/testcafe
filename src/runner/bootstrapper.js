@@ -1,4 +1,4 @@
-import { flatten } from 'lodash';
+import { flatten, chunk, times } from 'lodash';
 import Promise from 'pinkie';
 import Compiler from '../compiler';
 import BrowserConnection from '../browser/connection';
@@ -14,12 +14,27 @@ export default class Bootstrapper {
     constructor (browserConnectionGateway) {
         this.browserConnectionGateway = browserConnectionGateway;
 
+        this.concurrency  = 1;
         this.sources      = [];
         this.browsers     = [];
         this.filter       = null;
         this.reporter     = null;
         this.appCommand   = null;
         this.appInitDelay = DEFAULT_APP_INIT_DELAY;
+    }
+
+    static _splitBrowserInfo (browserInfo) {
+        var remotes   = [];
+        var automated = [];
+
+        browserInfo.forEach(browser => {
+            if (browser instanceof BrowserConnection)
+                remotes.push(browser);
+            else
+                automated.push(browser);
+        });
+
+        return { remotes, automated };
     }
 
     async _getBrowserInfo () {
@@ -31,15 +46,23 @@ export default class Bootstrapper {
         return flatten(browserInfo);
     }
 
-    _createConnectionFromBrowserInfo (browserInfo) {
-        if (browserInfo instanceof BrowserConnection)
-            return browserInfo;
+    _createAutomatedConnections (browserInfo) {
+        if (!browserInfo)
+            return [];
 
-        return new BrowserConnection(this.browserConnectionGateway, browserInfo);
+        return browserInfo
+            .map(browser => times(this.concurrency, () => new BrowserConnection(this.browserConnectionGateway, browser)));
     }
 
     async _getBrowserConnections (browserInfo) {
-        var browserConnections = browserInfo.map(browser => this._createConnectionFromBrowserInfo(browser));
+        var { automated, remotes } = Bootstrapper._splitBrowserInfo(browserInfo);
+
+        if (remotes && remotes.length % this.concurrency)
+            throw new GeneralError(MESSAGE.cannotDivideRemotesCountByConcurrency);
+
+        var browserConnections = this._createAutomatedConnections(automated);
+
+        browserConnections = browserConnections.concat(chunk(remotes, this.concurrency));
 
         return await BrowserSet.from(browserConnections);
     }

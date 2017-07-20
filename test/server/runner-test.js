@@ -502,6 +502,36 @@ describe('Runner', function () {
                     expect(err.message).eql(incorrectSpeedErrorMessage);
                 });
         });
+
+        it('Should raise an error if concurrency option has wrong value', function () {
+            var incorrectConcurrencyFactorErrorMessage = 'The concurrency factor should be an integer greater or equal to 1.';
+
+            return testCafe
+                .createBrowserConnection()
+                .then(function (browserConnection) {
+                    return runner
+                        .browsers(browserConnection)
+                        .concurrency('yo');
+                })
+                .catch(function (err) {
+                    expect(err.message).eql(incorrectConcurrencyFactorErrorMessage);
+                })
+                .then(function () {
+                    return runner.concurrency(-1);
+                }).catch(function (err) {
+                    expect(err.message).eql(incorrectConcurrencyFactorErrorMessage);
+                })
+                .then(function () {
+                    return runner.concurrency(0.1);
+                }).catch(function (err) {
+                    expect(err.message).eql(incorrectConcurrencyFactorErrorMessage);
+                })
+                .then(function () {
+                    return runner.concurrency(0);
+                }).catch(function (err) {
+                    expect(err.message).eql(incorrectConcurrencyFactorErrorMessage);
+                });
+        });
     });
 
     describe('Regression', function () {
@@ -601,8 +631,8 @@ describe('Runner', function () {
             Task.prototype._createBrowserJobs = function () {
                 setTimeout(taskActionCallback.bind(this), TASK_ACTION_DELAY);
 
-                return this.browserConnections.map(function (bc) {
-                    return { browserConnection: bc };
+                return this.browserConnectionGroups.map(function (bcGroup) {
+                    return { browserConnections: bcGroup };
                 });
             };
 

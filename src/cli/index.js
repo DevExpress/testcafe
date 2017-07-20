@@ -60,6 +60,7 @@ async function runTests (argParser) {
     log.showSpinner();
 
     var testCafe       = await createTestCafe(opts.hostname, port1, port2);
+    var concurrency    = argParser.concurrency || 1;
     var remoteBrowsers = await remotesWizard(testCafe, argParser.remoteCount, opts.qrCode);
     var browsers       = argParser.browsers.concat(remoteBrowsers);
     var runner         = testCafe.createRunner();
@@ -69,6 +70,7 @@ async function runTests (argParser) {
         .useProxy(externalProxyHost)
         .src(argParser.src)
         .browsers(browsers)
+        .concurrency(concurrency)
         .reporter(opts.reporter)
         .filter(argParser.filter)
         .screenshots(opts.screenshots, opts.screenshotsOnFails)
