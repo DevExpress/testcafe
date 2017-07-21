@@ -71,9 +71,9 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         if (diagnostics.length)
             TypeScriptTestFileCompiler._reportErrors(diagnostics);
 
-        // NOTE: First argument of emit() is a source file for compilation. If it's undefined, all files in <program> will be compiled.
-        // <program> contains the file specified in createProgram() plus all its dependencies. This mode is a lot faster than
-        // compiling files one-by-one, and used in tsc CLI compiler.
+        // NOTE: The first argument of emit() is a source file to be compiled. If it's undefined, all files in
+        // <program> will be compiled. <program> contains a file specified in createProgram() plus all its dependencies.
+        // This mode is much faster than compiling files one-by-one, and it is used in the tsc CLI compiler.
         program.emit(void 0, (outputName, result, writeBOM, onError, sources) => {
             var sourcePath = TypeScriptTestFileCompiler._normalizeFilename(sources[0].path);
 
