@@ -14,7 +14,7 @@ fixture `Concurrent`
     });
 
 test('Long test', async t => {
-    timelines[t.ctx.userAgent].push('long started');
+    timelines[t.ctx.userAgent].push('test started');
 
     await t.wait(5000);
 
@@ -22,7 +22,7 @@ test('Long test', async t => {
 });
 
 test('Short test', async t => {
-    timelines[t.ctx.userAgent].push('short started');
+    timelines[t.ctx.userAgent].push('test started');
 
     await t.wait(1000);
 
@@ -35,5 +35,5 @@ test('Results', async t => {
     await t.expect(Object.keys(timelines).length).gt(1);
 
     for (const timeline of Object.values(timelines))
-        await t.expect(timeline).eql(['long started', 'short started', 'short finished', 'long finished']);
+        await t.expect(timeline).eql(['test started', 'test started', 'short finished', 'long finished']);
 });
