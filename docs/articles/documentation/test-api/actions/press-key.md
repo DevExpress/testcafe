@@ -22,7 +22,7 @@ The following table shows how to specify keys of different types, key sequences 
 Key Type                   | Example
 -------------------------- | ------
 Alphanumeric keys          | `'a'`, `'A'`, `'1'`
-Modifier keys              | `'shift'`, `'alt'`, `'ctrl'`, `'meta'`
+Modifier keys              | `'shift'`, `'alt'` (⌥ key on macOS), `'ctrl'`, `'meta'` (*meta* key on Linux and ⌘ key on macOS)
 Navigation and action keys | `'backspace'`, `'tab'`, `'enter'`, `'capslock'`, `'esc'`, `'space'`, `'pageup'`, `'pagedown'`, `'end'`, `'home'`, `'left'`, `'right'`, `'down'`, `'ins'`, `'delete'`
 Key combinations           | `'shift+a'`, `'ctrl+d'`
 Sequential key presses     | Any of the above in a space-separated string, e.g. `'a ctrl+b'`
