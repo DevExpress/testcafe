@@ -33,3 +33,9 @@ export class TestDoneCommand {
         this.type = TYPE.testDone;
     }
 }
+
+export class BackupStoragesCommand {
+    constructor () {
+        this.type = TYPE.backupStorages;
+    }
+}

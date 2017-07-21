@@ -9,5 +9,12 @@
     <input type="text" name="name">
     <input type="submit" value="LogIn">
 </form>
+<script>
+    document.querySelector('form').addEventListener('submit', function () {
+        var name = document.querySelector('[name="name"]').value;
+
+        localStorage.setItem('token', '123456789' + name);
+    });
+</script>
 </body>
 </html>

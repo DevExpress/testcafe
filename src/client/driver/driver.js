@@ -434,6 +434,13 @@ export default class Driver {
             .then(() => browser.checkStatus(this.browserStatusUrl, hammerhead.createNativeXHR));
     }
 
+    _onBackupStoragesCommand () {
+        this._onReady(new DriverStatus({
+            isCommandResult: true,
+            result:          storages.backup()
+        }));
+    }
+
 
     // Routing
     _onReady (status) {
@@ -490,6 +497,9 @@ export default class Driver {
 
         else if (command.type === COMMAND_TYPE.hideAssertionRetriesStatus)
             this._onHideAssertionRetriesStatusCommand(command);
+
+        else if (command.type === COMMAND_TYPE.backupStorages)
+            this._onBackupStoragesCommand();
 
         else
             this._onActionCommand(command);

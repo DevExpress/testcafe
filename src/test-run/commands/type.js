@@ -38,5 +38,6 @@ export default {
     debug:                      'debug',
     assertion:                  'assertion',
     useRole:                    'useRole',
-    testDone:                   'test-done'
+    testDone:                   'test-done',
+    backupStorages:             'backup-storages',
 };

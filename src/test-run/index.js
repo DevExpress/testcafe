@@ -31,7 +31,8 @@ import {
     PrepareBrowserManipulationCommand,
     ShowAssertionRetriesStatusCommand,
     HideAssertionRetriesStatusCommand,
-    SetBreakpointCommand
+    SetBreakpointCommand,
+    BackupStoragesCommand
 } from './commands/service';
 
 import {
@@ -414,6 +415,14 @@ export default class TestRun extends Session {
     }
 
     // Role management
+    async getStateSnapshot () {
+        var state = super.getStateSnapshot();
+
+        state.storages = await this.executeCommand(new BackupStoragesCommand());
+
+        return state;
+    }
+
     async switchToCleanRun () {
         this.ctx        = Object.create(null);
         this.fixtureCtx = Object.create(null);
@@ -463,7 +472,7 @@ export default class TestRun extends Session {
         await bookmark.init();
 
         if (this.currentRoleId)
-            this.usedRoleStates[this.currentRoleId] = this.getStateSnapshot();
+            this.usedRoleStates[this.currentRoleId] = await this.getStateSnapshot();
 
         var stateSnapshot = this.usedRoleStates[role.id] || await this._getStateSnapshotFromRole(role);
 

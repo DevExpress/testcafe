@@ -38,7 +38,7 @@ class Role extends EventEmitter {
         if (!this.initErr) {
             // NOTE: give Hammerhead time to sync cookies from client
             await delay(COOKIE_SYNC_DELAY);
-            this.stateSnapshot = testRun.getStateSnapshot();
+            this.stateSnapshot = await testRun.getStateSnapshot();
         }
     }
 

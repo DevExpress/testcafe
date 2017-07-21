@@ -6,11 +6,21 @@
 <body>
 <div id="user-name"></div>
 <div id="token"></div>
+<div id="local-storage-token"></div>
+<div id="session-storage-token"></div>
 
 <form action="/set-token" method="post">
     <input type="text" name="token">
     <input type="submit" value="SetToken">
 </form>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function () {
+        var name = document.querySelector('#user-name').textContent;
+
+        sessionStorage.setItem('token', 'qwerty' + name);
+    });
+</script>
 
 <div id="element-on-page">
 </div>
@@ -35,6 +45,8 @@
 
     document.querySelector('#user-name').textContent = getCookie('name');
     document.querySelector('#token').textContent = getCookie('token');
+    document.querySelector('#local-storage-token').textContent = localStorage.getItem('token');
+    document.querySelector('#session-storage-token').textContent = sessionStorage.getItem('token');
 
     document.querySelector('#show-alert').addEventListener('click', function () {
         alert('Hey!');
