@@ -61,7 +61,7 @@ export default {
             this._overrideStreams();
 
         // NOTE: We do not have callsite for the raw API at the moment. Remove this check after
-        // the callsite format for the TestCafe Studio will be implemented.
+        // the callsite format for the raw API will be implemented.
         var callsiteStr = callsite ? callsite.renderSync({
             frameSize:   1,
             stackFilter: createStackFilter(Error.stackTraceLimit),
