@@ -34,7 +34,7 @@ function initSelector (name, val, skipVisibilityCheck) {
                                    typeof val.value === 'string';
 
         if (isRawAPIJsExpression)
-            return executeSelectorExpression(val.value, skipVisibilityCheck);
+            val = executeSelectorExpression(val.value, skipVisibilityCheck);
 
         var builder = new SelectorBuilder(val, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
 

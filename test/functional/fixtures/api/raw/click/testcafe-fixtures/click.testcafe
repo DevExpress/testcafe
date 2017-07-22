@@ -11,7 +11,7 @@
                             "type": "click",
                             "selector": {
                                 "type": "js-expr",
-                                "value": "Selector('#input')"
+                                "value": "Selector('#input').nth(0)"
                             },
                             "options": {
                                 "offsetX": 10,

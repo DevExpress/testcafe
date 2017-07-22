@@ -1014,7 +1014,7 @@ describe('Test run commands', function () {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.click,
-                selector: makeSelector('#yo', true),
+                selector: makeSelector('#yo'),
 
                 options: {
                     offsetX:  null,
