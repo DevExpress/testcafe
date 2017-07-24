@@ -133,3 +133,17 @@ test
 
         await t.expect(clickCount).eql(1);
     });
+
+test
+    .page('http://localhost:3000/fixtures/regression/gh-1521/pages/fixed-element.html')
+    ('Click on a fixed element', async t => {
+        // NOTE: ensure the page is loaded
+        const timeout = 3000;
+        const startTime = await t.eval(() => Date.now());
+
+        await t.click(Selector('#target', { timeout }));
+
+        const endTime = Date.now();
+
+        await t.expect(endTime - startTime).lt(timeout);
+    });

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gh-1521 (out-of-the-viewport element)</title>
+
+    <style>
+        #parent {
+            position: absolute;
+            width: 40000px;
+            height: 1px;
+        }
+
+        #target {
+            background-color: yellow;
+            width: 200px;
+            height: 100px;
+            position: absolute;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="parent"></div>
+<div id="target"></div>
+
+<script>
+    var parent = document.getElementById('parent');
+    var target = document.getElementById('target');
+
+    function setPosition () {
+        target.style.left = document.body.clientWidth + window.pageXOffset - 200 + 'px';
+        parent.style.left = document.body.clientWidth + window.pageYOffset - 200 + 'px';
+    }
+
+    setPosition();
+
+    window.addEventListener('scroll', setPosition);
+</script>
+</body>
+</html>

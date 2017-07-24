@@ -39,9 +39,10 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
     }
 
     _findElement () {
-        var offsetX            = this.options.offsetX;
-        var offsetY            = this.options.offsetY;
-        var initialScreenPoint = getAutomationPoint(this.element, offsetX, offsetY);
+        var offsetX               = this.options.offsetX;
+        var offsetY               = this.options.offsetY;
+        var initialScreenPoint    = getAutomationPoint(this.element, offsetX, offsetY);
+        var initialClientPosition = positionUtils.getClientPosition(this.element);
 
         return this
             ._moveToElement()
@@ -50,9 +51,9 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                 var isTarget             = null;
                 var foundElement         = null;
 
-                var clientPoint         = screenPointToClient(this.element, screenPointAfterMove);
-                var expectedElement     = positionUtils.containsOffset(this.element, offsetX, offsetY) ? this.element : null;
-                var firstClientPosition = positionUtils.getClientPosition(this.element);
+                var clientPoint               = screenPointToClient(this.element, screenPointAfterMove);
+                var expectedElement           = positionUtils.containsOffset(this.element, offsetX, offsetY) ? this.element : null;
+                var clientPositionBeforeDelay = positionUtils.getClientPosition(this.element);
 
                 return getElementFromPoint(clientPoint.x, clientPoint.y, expectedElement)
                     .then(({ element, corrected }) => {
@@ -71,13 +72,20 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                         return delay(CHECK_ELEMENT_MOVING_DELAY);
                     })
                     .then(() => {
-                        var secondClientPosition       = positionUtils.getClientPosition(this.element);
-                        var positionChangedAfterMoving = initialScreenPoint.x !== screenPointAfterMove.x ||
-                                                         initialScreenPoint.y !== screenPointAfterMove.y;
-                        var positionChangedAfterDelay  = firstClientPosition.x !== secondClientPosition.x ||
-                                                         firstClientPosition.y !== secondClientPosition.y;
+                        var clientPositionAfterDelay         = positionUtils.getClientPosition(this.element);
+                        var offsetPositionChangedAfterMoving = initialScreenPoint.x !== screenPointAfterMove.x ||
+                                                               initialScreenPoint.y !== screenPointAfterMove.y;
+                        var clientPositionChangedAfterMoving = initialClientPosition.x !== clientPositionBeforeDelay.x ||
+                                                               initialClientPosition.y !== clientPositionAfterDelay.y;
+                        var clientPositionChangedAfterDelay  = clientPositionBeforeDelay.x !== clientPositionAfterDelay.x ||
+                                                               clientPositionBeforeDelay.y !== clientPositionAfterDelay.y;
 
-                        var targetElementIsMoving = positionChangedAfterMoving || positionChangedAfterDelay;
+                        // NOTE: The page may be scrolled during moving. We consider the element moved if its offset
+                        // position and client position are changed both. If only client position was changed it means
+                        // the page was scrolled and the element keeps its position on the page. If only offset position
+                        // was changed it means the element is fixed on the page (it can be implemented via script).
+                        var targetElementIsMoving = offsetPositionChangedAfterMoving && clientPositionChangedAfterMoving ||
+                                                    clientPositionChangedAfterDelay;
 
                         return {
                             element:     foundElement,
