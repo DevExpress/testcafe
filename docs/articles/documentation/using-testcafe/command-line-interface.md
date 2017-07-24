@@ -37,6 +37,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--app-init-delay \<ms\>](#--app-init-delay-ms)
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
+  * [--page-load-timeout \<ms\>](#--page-load-timeout-ms)
   * [--proxy \<host\>](#--proxy-host)
   * [--ports \<port1,port2\>](#--ports-port1port2)
   * [--hostname \<name\>](#--hostname-name)
@@ -385,6 +386,20 @@ See [Smart Assertion Query Mechanism](../test-api/assertions/README.md#smart-ass
 
 ```sh
 testcafe ie my-tests --assertion-timeout 10000
+```
+
+### --page-load-timeout \<ms\>
+
+Specifies the amount of time, in milliseconds, passed after the `DOMContentLoaded` event, within which TestCafe waits for the `window.load` event to fire.
+
+After the timeout passes or the `window.load` event is raised (whatever happens first), TestCafe starts the test.
+
+> Note that the `DOMContentLoaded` event is raised after the HTML document is loaded and parsed, while `window.load` is raised after all stylesheets, images and subframes are loaded. That is why `window.load` is fired after the `DOMContentLoaded` event with a certain delay.
+
+**Default value**: `5000`
+
+```sh
+testcafe ie my-tests --page-load-timeout 7000
 ```
 
 ### --proxy \<host\>
