@@ -1,5 +1,10 @@
+import path from 'path';
+import OS from 'os-family';
 import APIBasedTestFileCompilerBase from '../api-based';
 import ESNextTestFileCompiler from './es-next';
+
+
+const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH]]);
 
 export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompilerBase {
     static _getTypescriptOptions () {
@@ -7,16 +12,16 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         var ts = require('typescript');
 
         return {
-            allowJs:         true,
-            pretty:          true,
-            inlineSourceMap: true,
-            noEmit:          true,
-            noImplicitAny:   false,
-            module:          ts.ModuleKind.CommonJS,
-            target:          'ES6',
-            lib:             ['lib.es6.d.ts'],
-            baseUrl:         __dirname,
-            paths:           { testcafe: ['../../../../ts-defs/index.d.ts'] }
+            allowJs:                 true,
+            pretty:                  true,
+            inlineSourceMap:         true,
+            noImplicitAny:           false,
+            module:                  ts.ModuleKind.CommonJS,
+            target:                  2 /* ES6 */,
+            lib:                     ['lib.es6.d.ts'],
+            baseUrl:                 __dirname,
+            paths:                   { testcafe: ['../../../../ts-defs/index.d.ts'] },
+            suppressOutputPathCheck: true
         };
     }
 
@@ -36,29 +41,46 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         throw new Error(errMsg);
     }
 
+    static _normalizeFilename (filename) {
+        filename = path.resolve(filename);
+
+        if (OS.win)
+            filename = filename.toLowerCase();
+
+        return filename;
+    }
+
     _compileCode (code, filename) {
         // NOTE: lazy load the compiler
         var ts = require('typescript');
 
+        filename = TypeScriptTestFileCompiler._normalizeFilename(filename);
+
         if (this.cache[filename])
             return this.cache[filename];
 
-        var opts        = TypeScriptTestFileCompiler._getTypescriptOptions();
-        var program     = ts.createProgram([filename], opts);
+        var opts    = TypeScriptTestFileCompiler._getTypescriptOptions();
+        var program = ts.createProgram([filename], opts);
+
+        program.getSourceFiles().forEach(sourceFile => {
+            sourceFile.renamedDependencies = RENAMED_DEPENDENCIES_MAP;
+        });
+
         var diagnostics = ts.getPreEmitDiagnostics(program);
 
         if (diagnostics.length)
             TypeScriptTestFileCompiler._reportErrors(diagnostics);
 
-        var result = ts.transpileModule(code, {
-            compilerOptions:     opts,
-            fileName:            filename,
-            renamedDependencies: { testcafe: APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH }
+        // NOTE: The first argument of emit() is a source file to be compiled. If it's undefined, all files in
+        // <program> will be compiled. <program> contains a file specified in createProgram() plus all its dependencies.
+        // This mode is much faster than compiling files one-by-one, and it is used in the tsc CLI compiler.
+        program.emit(void 0, (outputName, result, writeBOM, onError, sources) => {
+            var sourcePath = TypeScriptTestFileCompiler._normalizeFilename(sources[0].path);
+
+            this.cache[sourcePath] = result;
         });
 
-        this.cache[filename] = result;
-
-        return result.outputText;
+        return this.cache[filename];
     }
 
     _getRequireCompilers () {
