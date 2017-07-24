@@ -54,10 +54,10 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         // NOTE: lazy load the compiler
         var ts = require('typescript');
 
-        filename = TypeScriptTestFileCompiler._normalizeFilename(filename);
+        var normalizedFilename = TypeScriptTestFileCompiler._normalizeFilename(filename);
 
-        if (this.cache[filename])
-            return this.cache[filename];
+        if (this.cache[normalizedFilename])
+            return this.cache[normalizedFilename];
 
         var opts    = TypeScriptTestFileCompiler._getTypescriptOptions();
         var program = ts.createProgram([filename], opts);
@@ -80,7 +80,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             this.cache[sourcePath] = result;
         });
 
-        return this.cache[filename];
+        return this.cache[normalizedFilename];
     }
 
     _getRequireCompilers () {
