@@ -398,8 +398,10 @@ After the timeout passes or the `window.load` event is raised (whatever happens 
 
 **Default value**: `5000`
 
+You can set the page load timeout to `0` to skip waiting for the `window.load` event.
+
 ```sh
-testcafe ie my-tests --page-load-timeout 7000
+testcafe ie my-tests --page-load-timeout 0
 ```
 
 ### --proxy \<host\>
