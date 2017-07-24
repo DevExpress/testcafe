@@ -9,7 +9,7 @@ export function executeSelectorExpression (expression, skipVisibilityCheck) {
 
             var builder = new SelectorBuilder(fn, options, { instantiation: 'Selector' });
 
-            return builder.getCommand([]);
+            return builder.getFunction();
         }
     };
 
