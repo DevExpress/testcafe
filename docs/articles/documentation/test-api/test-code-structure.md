@@ -170,7 +170,7 @@ t.setTestSpeed( factor )
 ```
 
 Parameter  | Type      | Description
----------- | --------- | ----------- 
+---------- | --------- | -----------
 `factor`   | Number    | Specifies the test speed. Must be a number between `1` (the fastest) and `0.01` (the slowest).
 
 If speed is also specified for an [individual action](actions/action-options.md#basic-action-options), the action speed setting overrides test speed.
