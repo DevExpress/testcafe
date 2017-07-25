@@ -76,7 +76,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                         var offsetPositionChangedAfterMoving = initialScreenPoint.x !== screenPointAfterMove.x ||
                                                                initialScreenPoint.y !== screenPointAfterMove.y;
                         var clientPositionChangedAfterMoving = initialClientPosition.x !== clientPositionBeforeDelay.x ||
-                                                               initialClientPosition.y !== clientPositionAfterDelay.y;
+                                                               initialClientPosition.y !== clientPositionBeforeDelay.y;
                         var clientPositionChangedAfterDelay  = clientPositionBeforeDelay.x !== clientPositionAfterDelay.x ||
                                                                clientPositionBeforeDelay.y !== clientPositionAfterDelay.y;
 
