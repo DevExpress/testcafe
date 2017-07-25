@@ -8,7 +8,10 @@ describe('Should wait for the window.load event if necessary', function () {
     });
 
     it('Should wait for the window.load event in iframe', function () {
-        return runTests('testcafe-fixtures/index-test.js', 'Wait for window.load in iframe', { pageLoadTimeout: 0 });
+        return runTests('testcafe-fixtures/index-test.js', 'Wait for window.load in iframe', {
+            pageLoadTimeout: 0,
+            selectorTimeout: 10000
+        });
     });
 
     it("Shouldn't wait for the window.load event more than timeout", function () {
