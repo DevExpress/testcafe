@@ -169,9 +169,9 @@ to slow the test down.
 t.setTestSpeed( factor )
 ```
 
-Parameter  | Type      | Description
----------- | --------- | -----------
-`factor`   | Number    | Specifies the test speed. Must be a number between `1` (the fastest) and `0.01` (the slowest).
+Parameter  | Type      | Description | Default
+---------- | --------- | ----------- | ---------
+`factor`   | Number    | Specifies the test speed. Must be a number between `1` (the fastest) and `0.01` (the slowest). | `1`
 
 If speed is also specified for an [individual action](actions/action-options.md#basic-action-options), the action speed setting overrides test speed.
 
@@ -205,9 +205,9 @@ To specify the page load timeout in test code, use the `t.setPageLoadTimeout` me
 t.setPageLoadTimeout( duration )
 ```
 
-Parameter  | Type      | Description
----------- | --------- | -----------
-`duration` | Number    | Page load timeout, in milliseconds. `0` to skip waiting for the `window.load` event.
+Parameter  | Type      | Description | Default
+---------- | --------- | ----------- | --------
+`duration` | Number    | Page load timeout, in milliseconds. `0` to skip waiting for the `window.load` event. | `5000`
 
 You can also set the page load timeout when launching tests via the [command line](../using-testcafe/command-line-interface.md#--page-load-timeout-ms) or [API](../using-testcafe/programming-interface/runner.md#run).
 
@@ -223,6 +223,8 @@ test(`Page load timeout`, async t => {
         .navigateTo('http://devexpress.github.io/testcafe/');
 });
 ```
+
+> Note that the `DOMContentLoaded` event is raised after the HTML document is loaded and parsed, while `window.load` is raised after all stylesheets, images and subframes are loaded. That is why `window.load` is fired after the `DOMContentLoaded` event with a certain delay.
 
 ## Specifying the Start Webpage
 
