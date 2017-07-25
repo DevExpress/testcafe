@@ -23,7 +23,7 @@ import ClientFunctionBuilder from '../client-functions/client-function-builder';
 
 
 import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
-import { SetNativeDialogHandlerCommand, SetTestSpeedCommand } from './commands/actions';
+import { SetNativeDialogHandlerCommand, SetTestSpeedCommand, SetPageLoadTimeoutCommand } from './commands/actions';
 
 
 import {
@@ -69,6 +69,7 @@ export default class TestRun extends Session {
         this.activeDialogHandler  = null;
         this.activeIframeSelector = null;
         this.speed                = this.opts.speed;
+        this.pageLoadTimeout      = this.opts.pageLoadTimeout;
 
         this.pendingRequest   = null;
         this.pendingPageError = null;
@@ -117,6 +118,7 @@ export default class TestRun extends Session {
             testName:            JSON.stringify(this.test.name),
             fixtureName:         JSON.stringify(this.test.fixture.name),
             selectorTimeout:     this.opts.selectorTimeout,
+            pageLoadTimeout:     this.pageLoadTimeout,
             skipJsErrors:        this.opts.skipJsErrors,
             speed:               this.speed,
             dialogHandler:       JSON.stringify(this.activeDialogHandler)
@@ -127,6 +129,7 @@ export default class TestRun extends Session {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             testRunId:       JSON.stringify(this.id),
             selectorTimeout: this.opts.selectorTimeout,
+            pageLoadTimeout: this.pageLoadTimeout,
             speed:           this.speed,
             dialogHandler:   JSON.stringify(this.activeDialogHandler)
         });
@@ -367,6 +370,9 @@ export default class TestRun extends Session {
         else if (command.type === COMMAND_TYPE.setTestSpeed)
             this.speed = command.speed;
 
+        else if (command.type === COMMAND_TYPE.setPageLoadTimeout)
+            this.pageLoadTimeout = command.duration;
+
         else if (command.type === COMMAND_TYPE.debug)
             this.debugging = true;
     }
@@ -401,6 +407,11 @@ export default class TestRun extends Session {
 
         if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command, callsite);
+
+        if (command.type === COMMAND_TYPE.setPageLoadTimeout) {
+            this.pageLoadTimeout = command.duration;
+            return Promise.resolve();
+        }
 
         return this._enqueueCommand(command, callsite);
     }
@@ -439,6 +450,12 @@ export default class TestRun extends Session {
             var setSpeedCommand = new SetTestSpeedCommand({ speed: this.opts.speed });
 
             await this.executeCommand(setSpeedCommand);
+        }
+
+        if (this.pageLoadTimeout !== this.opts.pageLoadTimeout) {
+            var setPageLoadTimeoutCommand = new SetPageLoadTimeoutCommand({ duration: this.opts.pageLoadTimeout });
+
+            await this.executeCommand(setPageLoadTimeoutCommand);
         }
     }
 

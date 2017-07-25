@@ -22,6 +22,7 @@ const BROWSER_OPENING_TIMEOUT = 90000;
 
 const FUNCTIONAL_TESTS_SELECTOR_TIMEOUT  = 200;
 const FUNCTIONAL_TESTS_ASSERTION_TIMEOUT = 1000;
+const FUNCTIONAL_TESTS_PAGE_LOAD_TIMEOUT = 0;
 
 var envName         = process.env.TESTING_ENVIRONMENT || config.testingEnvironmentNames.localBrowsers;
 var environment     = config.testingEnvironments[envName];
@@ -155,6 +156,7 @@ before(function () {
                 var quarantineMode     = opts && opts.quarantineMode;
                 var selectorTimeout    = opts && opts.selectorTimeout || FUNCTIONAL_TESTS_SELECTOR_TIMEOUT;
                 var assertionTimeout   = opts && opts.assertionTimeout || FUNCTIONAL_TESTS_ASSERTION_TIMEOUT;
+                var pageLoadTimeout    = opts && opts.pageLoadTimeout || FUNCTIONAL_TESTS_PAGE_LOAD_TIMEOUT;
                 var onlyOption         = opts && opts.only;
                 var skipOption         = opts && opts.skip;
                 var screenshotPath     = opts && opts.setScreenshotPath ? '___test-screenshots___' : '';
@@ -219,6 +221,7 @@ before(function () {
                         quarantineMode:   quarantineMode,
                         selectorTimeout:  selectorTimeout,
                         assertionTimeout: assertionTimeout,
+                        pageLoadTimeout:  pageLoadTimeout,
                         speed:            speed
                     })
                     .then(function () {

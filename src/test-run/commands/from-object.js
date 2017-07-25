@@ -18,7 +18,8 @@ import {
     SwitchToIframeCommand,
     SwitchToMainWindowCommand,
     SetNativeDialogHandlerCommand,
-    SetTestSpeedCommand
+    SetTestSpeedCommand,
+    SetPageLoadTimeoutCommand
 } from './actions';
 
 import AssertionCommand from './assertion';
@@ -104,6 +105,9 @@ export default function createCommandFromObject (obj) {
 
         case TYPE.setTestSpeed:
             return new SetTestSpeedCommand(obj);
+
+        case TYPE.setPageLoadTimeout:
+            return new SetPageLoadTimeoutCommand(obj);
 
         case TYPE.assertion:
             return new AssertionCommand(obj);

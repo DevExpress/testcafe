@@ -16,7 +16,8 @@ async function initConfiguration () {
         .expect(history[0].text).eql('Hey!')
         .switchToIframe('#iframe')
         .expect(iframeElement.exists).ok()
-        .setTestSpeed(0.95);
+        .setTestSpeed(0.95)
+        .setPageLoadTimeout(95);
 
     t.ctx.someVal        = 'ctxVal';
     t.fixtureCtx.someVal = 'fixtureCtxVal';

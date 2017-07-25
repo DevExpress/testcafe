@@ -86,6 +86,7 @@ export default class Driver {
         this.fixtureName      = runInfo.fixtureName;
         this.testName         = runInfo.testName;
         this.selectorTimeout  = options.selectorTimeout;
+        this.pageLoadTimeout  = options.pageLoadTimeout;
         this.initialSpeed     = options.speed;
         this.skipJsErrors     = options.skipJsErrors;
         this.dialogHandler    = options.dialogHandler;
@@ -103,7 +104,7 @@ export default class Driver {
         this.pageInitialRequestBarrier = new RequestBarrier();
 
         this.readyPromise = eventUtils
-            .documentReady()
+            .documentReady(this.pageLoadTimeout)
             .then(() => this.pageInitialRequestBarrier.wait(true));
 
         this._initChildDriverListening();
