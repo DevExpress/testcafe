@@ -214,10 +214,10 @@ You can also set the page load timeout when launching tests via the [command lin
 **Example**
 
 ```js
-fixture `Test Speed`
+fixture `Page load timeout`
     .page `http://devexpress.github.io/testcafe/example/`;
 
-test(`Test Speed`, async t => {
+test(`Page load timeout`, async t => {
     await t
         .setPageLoadTimeout(0)
         .navigateTo('http://devexpress.github.io/testcafe/');
