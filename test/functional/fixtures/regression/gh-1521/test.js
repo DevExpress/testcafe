@@ -32,4 +32,8 @@ describe('[Regression](GH-1521)', function () {
         // NOTE: ie regression test
         return runTests('testcafe-fixtures/index-test.js', 'Click on svg child');
     });
+
+    it('Should not wait if the offset position of a fixed element is changing', function () {
+        return runTests('testcafe-fixtures/index-test.js', 'Click on a fixed element', { only: 'chrome' });
+    });
 });
