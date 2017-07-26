@@ -138,7 +138,7 @@ test
     .page('http://localhost:3000/fixtures/regression/gh-1521/pages/fixed-element.html')
     ('Click on a fixed element', async t => {
         // NOTE: ensure the page is loaded
-        const timeout = 3000;
+        const timeout   = 3000;
         const startTime = await t.eval(() => Date.now());
 
         await t.click(Selector('#target', { timeout }));
@@ -146,4 +146,15 @@ test
         const endTime = Date.now();
 
         await t.expect(endTime - startTime).lt(timeout);
+    });
+
+test
+    .page('http://localhost:3000/fixtures/regression/gh-1521/pages/changing-element.html')
+    ('Click on a changing element', async t => {
+        const target = Selector('#out-of-viewport-input', { timeout: 3000 });
+
+        await t
+            .click('#show-hidden-input')
+            .click(target)
+            .expect(ClientFunction(() => window.clickCount)()).eql(1, 'check element click count', { timeout: 0 });
     });

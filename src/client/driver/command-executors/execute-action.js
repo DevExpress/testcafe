@@ -26,7 +26,8 @@ import {
     SelectText as SelectTextAutomation,
     SelectEditableContent as SelectEditableContentAutomation,
     Press as PressAutomation,
-    Upload as UploadAutomation
+    Upload as UploadAutomation,
+    whilst
 } from '../deps/testcafe-automation';
 
 import DriverStatus from '../status';
@@ -259,35 +260,77 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
     };
 
     var completionPromise = new Promise(resolve => {
-        var requestBarrier         = null;
-        var scriptExecutionBarrier = null;
-        var startTime              = new Date();
+        var startTime       = new Date();
+        var firstRun        = true;
+        var timeoutExpired  = false;
+        var actionCompleted = false;
+        var forceRun        = false;
+        var lastRunError    = null;
 
-        ensureCommandElements(command, globalSelectorTimeout, statusBar)
-            .then(elements => {
-                resolveStartPromise();
+        ensureCommandArguments(command);
 
-                requestBarrier         = new RequestBarrier();
-                scriptExecutionBarrier = new ScriptExecutionBarrier();
+        var requestBarrier         = new RequestBarrier();
+        var scriptExecutionBarrier = new ScriptExecutionBarrier();
 
-                ensureCommandArguments(command);
-                pageUnloadBarrier.watchForPageNavigationTriggers();
+        pageUnloadBarrier.watchForPageNavigationTriggers();
 
-                var hasSpecificTimeout       = command.selector && typeof command.selector.timeout === 'number';
-                var commandSelectorTimeout   = hasSpecificTimeout ? command.selector.timeout : globalSelectorTimeout;
-                var remainingSelectorTimeout = commandSelectorTimeout - (new Date() - startTime);
+        var hasSpecificTimeout     = command.selector && typeof command.selector.timeout === 'number';
+        var commandSelectorTimeout = hasSpecificTimeout ? command.selector.timeout : globalSelectorTimeout;
 
-                var automation = createAutomation(elements, command);
+        function run (force) {
+            return ensureCommandElements(command, globalSelectorTimeout, statusBar)
+                .then(elements => {
+                    var automation = createAutomation(elements, command);
 
-                if (automation.WAITING_FOR_ELEMENT_STARTED_EVENT) {
-                    automation.on(automation.WAITING_FOR_ELEMENT_STARTED_EVENT, () => statusBar.showWaitingElementStatus(remainingSelectorTimeout));
-                    automation.on(automation.WAITING_FOR_ELEMENT_FINISHED_EVENT, ({ element }) => statusBar.hideWaitingElementStatus(!!element));
+                    if (!!automation.TARGET_ELEMENT_FOUND_EVENT)
+                        automation.on(automation.TARGET_ELEMENT_FOUND_EVENT, resolveStartPromise);
+                    else
+                        resolveStartPromise();
+
+                    return automation.run(force);
+                });
+        }
+
+        var condition = () => {
+            return firstRun || !(actionCompleted || timeoutExpired) || forceRun;
+        };
+
+        var iterator = () => {
+            firstRun = false;
+
+            return run(forceRun)
+                .then(() => {
+                    actionCompleted = true;
+                    lastRunError    = null;
+                    forceRun        = false;
+                })
+                .catch(err => {
+                    timeoutExpired = Date.now() - startTime >= commandSelectorTimeout;
+
+                    if (timeoutExpired && err.message === AUTOMATION_ERROR_TYPES.elementFromPointIsNotTarget) {
+                        // If we can't get a target element via elementFromPoint but it's
+                        // visible we click on the point where the element is located.
+                        forceRun = true;
+                        return null;
+                    }
+
+                    lastRunError = err;
+
+                    return timeoutExpired ? null : delay(CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL);
+                });
+        };
+
+        whilst(condition, iterator)
+            .then(() => {
+                if (lastRunError) {
+                    var error = lastRunError.message === AUTOMATION_ERROR_TYPES.elementIsInvisibleError ?
+                                new ActionElementIsInvisibleError() : lastRunError;
+
+                    resolve(new DriverStatus({ isCommandResult: true, executionError: error }));
+                    return;
                 }
 
-                return automation.run(remainingSelectorTimeout, CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL);
-            })
-            .then(() => {
-                return Promise.all([
+                Promise.all([
                     delayAfterAction(),
 
                     // NOTE: script can be added by xhr-request, so we should run
@@ -297,17 +340,8 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
                         .then(() => scriptExecutionBarrier.wait()),
 
                     pageUnloadBarrier.wait()
-                ]);
+                ]).then(() => resolve(new DriverStatus({ isCommandResult: true })));
             })
-            .then(() => resolve(new DriverStatus({ isCommandResult: true })))
-            .catch(err => {
-                // NOTE: in case we couldn't find an element for event
-                // simulation, we raise an error of this type (GH - 337)
-                var error = err.message === AUTOMATION_ERROR_TYPES.elementIsInvisibleError ?
-                            new ActionElementIsInvisibleError() : err;
-
-                return resolve(new DriverStatus({ isCommandResult: true, executionError: error }));
-            });
     });
 
     return { startPromise, completionPromise };

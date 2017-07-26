@@ -18,6 +18,7 @@ import {
 } from '../../test-run/commands/options';
 import AutomationSettings from './settings';
 import { getOffsetOptions } from './utils/offsets';
+import whilst from './utils/promise-whilst';
 import calculateSelectTextArguments from './playback/select/calculate-select-text-arguments';
 import ERROR_TYPES from './errors';
 import cursor from './cursor';
@@ -42,6 +43,7 @@ exports.TypeOptions           = TypeOptions;
 exports.ERROR_TYPES                  = ERROR_TYPES;
 exports.AutomationSettings           = AutomationSettings;
 exports.getOffsetOptions             = getOffsetOptions;
+exports.whilst                       = whilst;
 exports.calculateSelectTextArguments = calculateSelectTextArguments;
 exports.cursor                       = cursor;
 

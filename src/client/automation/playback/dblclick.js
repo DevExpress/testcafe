@@ -35,7 +35,7 @@ export default class DblClickAutomation extends VisibleElementAutomation {
         };
     }
 
-    _firstClick (selectorTimeout, checkElementInterval) {
+    _firstClick (ignoreElementFromPointIsNotTargetError) {
         // NOTE: we should always perform click with the highest speed
         var clickOptions = new ClickOptions(this.options);
 
@@ -46,7 +46,7 @@ export default class DblClickAutomation extends VisibleElementAutomation {
         clickAutomation.on(clickAutomation.WAITING_FOR_ELEMENT_STARTED_EVENT, e => this.emit(this.WAITING_FOR_ELEMENT_STARTED_EVENT, e));
         clickAutomation.on(clickAutomation.WAITING_FOR_ELEMENT_FINISHED_EVENT, e => this.emit(this.WAITING_FOR_ELEMENT_FINISHED_EVENT, e));
 
-        return clickAutomation.run(selectorTimeout, checkElementInterval)
+        return clickAutomation.run(ignoreElementFromPointIsNotTargetError)
             .then(clickEventArgs => {
                 return delay(FIRST_CLICK_DELAY).then(() => clickEventArgs);
             });
@@ -85,10 +85,10 @@ export default class DblClickAutomation extends VisibleElementAutomation {
             eventSimulator.dblclick(this.eventState.dblClickElement, eventArgs.options);
     }
 
-    run (selectorTimeout, checkElementInterval) {
+    run (ignoreElementFromPointIsNotTargetError) {
         // NOTE: If the target element is out of viewport the firstClick sub-automation raises an error
         return this
-            ._firstClick(selectorTimeout, checkElementInterval)
+            ._firstClick(ignoreElementFromPointIsNotTargetError)
             .then(eventArgs => this._secondClick(eventArgs))
             .then(eventArgs => this._dblClick(eventArgs));
     }
