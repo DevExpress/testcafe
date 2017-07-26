@@ -282,7 +282,7 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
                 .then(elements => {
                     var automation = createAutomation(elements, command);
 
-                    if (!!automation.TARGET_ELEMENT_FOUND_EVENT)
+                    if (automation.TARGET_ELEMENT_FOUND_EVENT)
                         automation.on(automation.TARGET_ELEMENT_FOUND_EVENT, resolveStartPromise);
                     else
                         resolveStartPromise();
@@ -341,7 +341,7 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
 
                     pageUnloadBarrier.wait()
                 ]).then(() => resolve(new DriverStatus({ isCommandResult: true })));
-            })
+            });
     });
 
     return { startPromise, completionPromise };
