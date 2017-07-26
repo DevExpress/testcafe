@@ -197,7 +197,7 @@ test(`Test Speed`, async t => {
 
 Page load timeout defines the amount of time passed after the `DOMContentLoaded` event, within which the `window.load` event should be raised.
 
-After the timeout passes or the `window.load` event is raised (whatever happens first), TestCafe starts the test.
+After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test.
 
 To specify the page load timeout in test code, use the `t.setPageLoadTimeout` method.
 

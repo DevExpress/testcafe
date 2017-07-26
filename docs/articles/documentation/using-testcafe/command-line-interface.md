@@ -392,7 +392,7 @@ testcafe ie my-tests --assertion-timeout 10000
 
 Specifies the amount of time, in milliseconds, passed after the `DOMContentLoaded` event, within which TestCafe waits for the `window.load` event to fire.
 
-After the timeout passes or the `window.load` event is raised (whatever happens first), TestCafe starts the test.
+After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test.
 
 > Note that the `DOMContentLoaded` event is raised after the HTML document is loaded and parsed, while `window.load` is raised after all stylesheets, images and subframes are loaded. That is why `window.load` is fired after the `DOMContentLoaded` event with a certain delay.
 
