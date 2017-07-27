@@ -38,8 +38,11 @@ import ChildDriverLink from './driver-link/child';
 import prepareBrowserManipulation from './command-executors/prepare-browser-manipulation';
 import executeActionCommand from './command-executors/execute-action';
 import executeNavigateToCommand from './command-executors/execute-navigate-to';
+import {
+    getResult as getExecuteSelectorResult,
+    getResultDriverStatus as getExecuteSelectorResultDriverStatus
+} from './command-executors/execute-selector';
 import ClientFunctionExecutor from './command-executors/client-functions/client-function-executor';
-import SelectorExecutor from './command-executors/client-functions/selector-executor';
 
 var transport      = hammerhead.transport;
 var Promise        = hammerhead.Promise;
@@ -265,11 +268,9 @@ export default class Driver {
     }
 
     _switchToIframe (selector, iframeErrorCtors) {
-        var selectorExecutor = new SelectorExecutor(selector, this.selectorTimeout, null, this.statusBar,
+        return getExecuteSelectorResult(selector, this.selectorTimeout, null,
             () => new iframeErrorCtors.NotFoundError(),
-            () => iframeErrorCtors.IsInvisibleError());
-
-        return selectorExecutor.getResult()
+            () => iframeErrorCtors.IsInvisibleError())
             .then(iframe => {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframeError();
@@ -351,9 +352,8 @@ export default class Driver {
 
     _onExecuteSelectorCommand (command) {
         var startTime = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || new Date();
-        var executor  = new SelectorExecutor(command, this.selectorTimeout, startTime, this.statusBar, null, null);
 
-        executor.getResultDriverStatus()
+        getExecuteSelectorResultDriverStatus(command, this.selectorTimeout, startTime, null, null, this.statusBar)
             .then(driverStatus => {
                 this.contextStorage.setItem(SELECTOR_EXECUTION_START_TIME, null);
                 this._onReady(driverStatus);

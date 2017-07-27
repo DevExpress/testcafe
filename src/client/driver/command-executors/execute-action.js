@@ -101,7 +101,7 @@ function ensureCommandElementsProperties (command, elements) {
 }
 
 // Ensure command elements
-function ensureCommandElements (command, globalSelectorTimeout, statusBar) {
+function ensureCommandElements (command, globalSelectorTimeout) {
     var elements             = [];
     var ensureElementPromise = Promise.resolve();
     var startTime            = new Date();
@@ -109,7 +109,7 @@ function ensureCommandElements (command, globalSelectorTimeout, statusBar) {
     var ensureElement = (selectorCommand, createNotFoundError, createIsInvisibleError, createHasWrongNodeTypeError) => {
         ensureElementPromise = ensureElementPromise
             .then(() => {
-                var selectorExecutor = new SelectorExecutor(selectorCommand, globalSelectorTimeout, startTime, statusBar,
+                var selectorExecutor = new SelectorExecutor(selectorCommand, globalSelectorTimeout, startTime,
                     createNotFoundError, createIsInvisibleError);
 
                 return selectorExecutor.getResult();
@@ -277,17 +277,21 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
         var hasSpecificTimeout     = command.selector && typeof command.selector.timeout === 'number';
         var commandSelectorTimeout = hasSpecificTimeout ? command.selector.timeout : globalSelectorTimeout;
 
-        function runRecursively (forced) {
-            return ensureCommandElements(command, globalSelectorTimeout, statusBar)
+        function runRecursively (strictElementCheck) {
+            return ensureCommandElements(command, globalSelectorTimeout)
                 .then(elements => {
                     var automation = createAutomation(elements, command);
 
-                    if (automation.TARGET_ELEMENT_FOUND_EVENT)
-                        automation.on(automation.TARGET_ELEMENT_FOUND_EVENT, resolveStartPromise);
+                    if (automation.TARGET_ELEMENT_FOUND_EVENT) {
+                        automation.on(automation.TARGET_ELEMENT_FOUND_EVENT, () => {
+                            statusBar.hideWaitingElementStatus(true);
+                            resolveStartPromise();
+                        });
+                    }
                     else
                         resolveStartPromise();
 
-                    return automation.run(!forced);
+                    return automation.run(strictElementCheck);
                 })
                 .catch(err => {
                     var timeoutExpired = Date.now() - startTime >= commandSelectorTimeout;
@@ -296,18 +300,20 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
                         if (err.message === AUTOMATION_ERROR_TYPES.foundElementIsNotTarget) {
                             // If we can't get a target element via elementFromPoint but it's
                             // visible we click on the point where the element is located.
-                            return runRecursively(true);
+                            return runRecursively(false);
                         }
 
                         throw err.message === AUTOMATION_ERROR_TYPES.elementIsInvisibleError ?
                               new ActionElementIsInvisibleError() : err;
                     }
 
-                    return delay(CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL).then(runRecursively);
+                    return delay(CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL).then(() => runRecursively(true));
                 });
         }
 
-        runRecursively()
+        statusBar.showWaitingElementStatus(commandSelectorTimeout);
+
+        runRecursively(true)
             .then(() => {
                 return Promise.all([
                     delayAfterAction(),
@@ -322,7 +328,10 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
                 ]);
             })
             .then(() => resolve(new DriverStatus({ isCommandResult: true })))
-            .catch(err => resolve(new DriverStatus({ isCommandResult: true, executionError: err })));
+            .catch(err => {
+                return statusBar.hideWaitingElementStatus(false)
+                    .then(() => resolve(new DriverStatus({ isCommandResult: true, executionError: err })));
+            });
     });
 
     return { startPromise, completionPromise };
