@@ -129,11 +129,11 @@ export default class DragAutomationBase extends VisibleElementAutomation {
             });
     }
 
-    run (ignoreElementFromPointIsNotTargetError) {
+    run (useStrictElementCheck) {
         var eventArgs = null;
 
         return this
-            ._ensureElement(ignoreElementFromPointIsNotTargetError)
+            ._ensureElement(useStrictElementCheck)
             .then(({ element, clientPoint }) => {
                 eventArgs = {
                     point:   clientPoint,

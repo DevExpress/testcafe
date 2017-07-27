@@ -6,8 +6,8 @@ export default class HoverAutomation extends VisibleElementAutomation {
         super(element, hoverOptions);
     }
 
-    run (ignoreElementFromPointIsNotTargetError) {
-        return this._ensureElement(ignoreElementFromPointIsNotTargetError);
+    run (useStrictElementCheck) {
+        return this._ensureElement(useStrictElementCheck);
     }
 }
 

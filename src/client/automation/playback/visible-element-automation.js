@@ -13,9 +13,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
     constructor (element, offsetOptions) {
         super();
 
-        this.WAITING_FOR_ELEMENT_STARTED_EVENT  = 'automation|waiting-element-started-event';
-        this.WAITING_FOR_ELEMENT_FINISHED_EVENT = 'automation|waiting-element-finished-event';
-        this.TARGET_ELEMENT_FOUND_EVENT         = 'automation|target-element-found-event';
+        this.TARGET_ELEMENT_FOUND_EVENT = 'automation|target-element-found-event';
 
         this.element            = element;
         this.options            = offsetOptions;
@@ -98,7 +96,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
             });
     }
 
-    _ensureElement (ignoreElementFromPointIsNotTargetError) {
+    _ensureElement (useStrictElementCheck) {
         var element               = null;
         var clientPoint           = null;
         var screenPoint           = null;
@@ -117,8 +115,8 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                 if (!element)
                     throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 
-                if (!ignoreElementFromPointIsNotTargetError && (!targetElementFound || targetElementIsMoving))
-                    throw new Error(AUTOMATION_ERROR_TYPES.elementFromPointIsNotTarget);
+                if (useStrictElementCheck && (!targetElementFound || targetElementIsMoving))
+                    throw new Error(AUTOMATION_ERROR_TYPES.foundElementIsNotTarget);
 
                 this.emit(this.TARGET_ELEMENT_FOUND_EVENT, {});
 

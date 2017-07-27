@@ -26,8 +26,7 @@ import {
     SelectText as SelectTextAutomation,
     SelectEditableContent as SelectEditableContentAutomation,
     Press as PressAutomation,
-    Upload as UploadAutomation,
-    whilst
+    Upload as UploadAutomation
 } from '../deps/testcafe-automation';
 
 import DriverStatus from '../status';
@@ -260,14 +259,15 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
     };
 
     var completionPromise = new Promise(resolve => {
-        var startTime       = new Date();
-        var firstRun        = true;
-        var timeoutExpired  = false;
-        var actionCompleted = false;
-        var forceRun        = false;
-        var lastRunError    = null;
+        var startTime = new Date();
 
-        ensureCommandArguments(command);
+        try {
+            ensureCommandArguments(command);
+        }
+        catch (err) {
+            resolve(new DriverStatus({ isCommandResult: true, executionError: err }));
+            return;
+        }
 
         var requestBarrier         = new RequestBarrier();
         var scriptExecutionBarrier = new ScriptExecutionBarrier();
@@ -277,7 +277,7 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
         var hasSpecificTimeout     = command.selector && typeof command.selector.timeout === 'number';
         var commandSelectorTimeout = hasSpecificTimeout ? command.selector.timeout : globalSelectorTimeout;
 
-        function run (force) {
+        function runRecursively (forced) {
             return ensureCommandElements(command, globalSelectorTimeout, statusBar)
                 .then(elements => {
                     var automation = createAutomation(elements, command);
@@ -287,50 +287,29 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
                     else
                         resolveStartPromise();
 
-                    return automation.run(force);
+                    return automation.run(!forced);
+                })
+                .catch(err => {
+                    var timeoutExpired = Date.now() - startTime >= commandSelectorTimeout;
+
+                    if (timeoutExpired) {
+                        if (err.message === AUTOMATION_ERROR_TYPES.foundElementIsNotTarget) {
+                            // If we can't get a target element via elementFromPoint but it's
+                            // visible we click on the point where the element is located.
+                            return runRecursively(true);
+                        }
+
+                        throw err.message === AUTOMATION_ERROR_TYPES.elementIsInvisibleError ?
+                              new ActionElementIsInvisibleError() : err;
+                    }
+
+                    return delay(CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL).then(runRecursively);
                 });
         }
 
-        var condition = () => {
-            return firstRun || !(actionCompleted || timeoutExpired) || forceRun;
-        };
-
-        var iterator = () => {
-            firstRun = false;
-
-            return run(forceRun)
-                .then(() => {
-                    actionCompleted = true;
-                    lastRunError    = null;
-                    forceRun        = false;
-                })
-                .catch(err => {
-                    timeoutExpired = Date.now() - startTime >= commandSelectorTimeout;
-
-                    if (timeoutExpired && err.message === AUTOMATION_ERROR_TYPES.elementFromPointIsNotTarget) {
-                        // If we can't get a target element via elementFromPoint but it's
-                        // visible we click on the point where the element is located.
-                        forceRun = true;
-                        return null;
-                    }
-
-                    lastRunError = err;
-
-                    return timeoutExpired ? null : delay(CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL);
-                });
-        };
-
-        whilst(condition, iterator)
+        runRecursively()
             .then(() => {
-                if (lastRunError) {
-                    var error = lastRunError.message === AUTOMATION_ERROR_TYPES.elementIsInvisibleError ?
-                                new ActionElementIsInvisibleError() : lastRunError;
-
-                    resolve(new DriverStatus({ isCommandResult: true, executionError: error }));
-                    return;
-                }
-
-                Promise.all([
+                return Promise.all([
                     delayAfterAction(),
 
                     // NOTE: script can be added by xhr-request, so we should run
@@ -340,8 +319,10 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
                         .then(() => scriptExecutionBarrier.wait()),
 
                     pageUnloadBarrier.wait()
-                ]).then(() => resolve(new DriverStatus({ isCommandResult: true })));
-            });
+                ]);
+            })
+            .then(() => resolve(new DriverStatus({ isCommandResult: true })))
+            .catch(err => resolve(new DriverStatus({ isCommandResult: true, executionError: err })));
     });
 
     return { startPromise, completionPromise };

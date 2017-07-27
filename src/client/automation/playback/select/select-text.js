@@ -45,9 +45,9 @@ export default class SelectTextAutomation extends SelectBaseAutomation {
         textSelection.select(this.element, this.startPos, this.endPos);
     }
 
-    run (ignoreElementFromPointIsNotTargetError) {
+    run (useStrictElementCheck) {
         return this
-            ._ensureElement(ignoreElementFromPointIsNotTargetError)
+            ._ensureElement(useStrictElementCheck)
             .then(() => super.run());
     }
 }

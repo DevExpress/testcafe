@@ -1,4 +1,4 @@
 export default {
-    elementIsInvisibleError:     'elementIsInvisibleError',
-    elementFromPointIsNotTarget: 'elementFromPointIsNotTarget'
+    elementIsInvisibleError: 'elementIsInvisibleError',
+    foundElementIsNotTarget: 'foundElementIsNotTarget'
 };
