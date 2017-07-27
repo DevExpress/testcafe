@@ -484,6 +484,52 @@ describe('Should get structure of esnext files', function () {
         return testFixtureParser('./data/test-suites/fixture-and-test-hooks', expectedStructure);
     });
 
+    it('Tests and fixtures definitions in IIFE', function () {
+        var expectedStructure = [[
+            {
+                name: 'fixture',
+
+                start: 19,
+                end:   59,
+
+                loc: {
+                    end: {
+                        column: 44,
+                        line:   2
+                    },
+
+                    start: {
+                        column: 4,
+                        line:   2
+                    }
+                },
+
+                tests: [
+                    {
+                        name: 'testName',
+
+                        start: 83,
+                        end:   158,
+
+                        loc: {
+                            end: {
+                                column: 10,
+                                line:   7
+                            },
+
+                            start: {
+                                column: 8,
+                                line:   5
+                            }
+                        }
+                    }
+                ]
+            }
+        ]];
+
+        return testFixtureParser('./data/test-suites/tests-fixtures-in-iife', expectedStructure);
+    });
+
     it('.skip, .after, .before in test file - invalid usage', function () {
         var expectedStructure = [[]];
 
