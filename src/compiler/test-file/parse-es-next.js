@@ -136,6 +136,9 @@ function analyzeFnCall (token) {
         if (token.callee.type === 'MemberExpression' || token.callee.type === 'CallExpression')
             return analyzeMemberExp(token);
 
+        if (token.callee.type === 'FunctionExpression' || token.callee.type === 'ArrowFunctionExpression')
+            return collectTestCafeCalls(token.callee.body.body);
+
         return getFnCall(token);
     }
 
