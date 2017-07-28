@@ -1,8 +1,9 @@
-var expect      = require('chai').expect;
-var fs          = require('fs');
-var path        = require('path');
-var getTestList = require('../../lib/embedding-utils').getTestList;
-var Promise     = require('pinkie');
+var expect              = require('chai').expect;
+var fs                  = require('fs');
+var path                = require('path');
+var getTestList         = require('../../lib/embedding-utils').getTestList;
+var getTestListFromCode = require('../../lib/embedding-utils').getTestListFromCode;
+var Promise             = require('pinkie');
 
 function testFixtureParser (dir, expectedStructure) {
     var dirPath  = path.join(__dirname, dir);
@@ -13,6 +14,9 @@ function testFixtureParser (dir, expectedStructure) {
         var expected = expectedStructure[index];
 
         return getTestList(filePath).then(function (structure) {
+            var fileContent = fs.readFileSync(filePath, 'utf8');
+
+            expect(getTestListFromCode(fileContent)).eql(expected);
             expect(structure).eql(expected);
         });
     });

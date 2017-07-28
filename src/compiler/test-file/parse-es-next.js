@@ -222,23 +222,35 @@ function analyze (astBody) {
     return fixtures;
 }
 
-export default async function (filename) {
-    const compiler = new ESNextTestFileCompiler();
-    let code       = '';
+function parseEsNext (code) {
+    const compilerOptions = ESNextTestFileCompiler.getBabelOptions(null, code);
+
+    delete compilerOptions.filename;
+
+    const opts = assign(compilerOptions, { ast: true });
+    const ast  = parse(code, opts).ast;
+
+    return analyze(ast.program.body);
+}
+
+export async function getTestList (filePath) {
+    let fileContent = '';
 
     try {
-        code = await readFile(filename, 'utf8');
+        fileContent = await readFile(filePath, 'utf8');
     }
 
     catch (err) {
-        throw new GeneralError(MESSAGE.cantFindSpecifiedTestSource, filename);
+        throw new GeneralError(MESSAGE.cantFindSpecifiedTestSource, filePath);
     }
 
-    if (!compiler.canCompile(code, filename)) return [];
+    const compiler = new ESNextTestFileCompiler();
 
-    const compilerOptions = ESNextTestFileCompiler.getBabelOptions(filename);
-    const opts            = assign(compilerOptions, { ast: true });
-    const ast             = parse(code, opts).ast;
+    if (!compiler.canCompile(fileContent, filePath)) return [];
 
-    return analyze(ast.program.body);
+    return parseEsNext(fileContent);
+}
+
+export function getTestListFromCode (code) {
+    return parseEsNext(code);
 }
