@@ -24,12 +24,11 @@ function visible (el) {
 }
 
 export default class SelectorExecutor extends ClientFunctionExecutor {
-    constructor (command, globalTimeout, startTime, statusBar, createNotFoundError, createIsInvisibleError) {
+    constructor (command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError) {
         super(command);
 
         this.createNotFoundError    = createNotFoundError;
         this.createIsInvisibleError = createIsInvisibleError;
-        this.statusBar              = statusBar;
         this.timeout                = typeof command.timeout === 'number' ? command.timeout : globalTimeout;
         this.counterMode            = this.dependencies.filterOptions.counterMode;
 
@@ -88,8 +87,6 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         var error     = null;
         var element   = null;
 
-        this.statusBar.showWaitingElementStatus(this.timeout);
-
         return this
             ._ensureExists(args, startTime)
             .then(el => {
@@ -100,15 +97,12 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
             })
             .catch(err => {
                 error = err;
-
-                return this.statusBar.hideWaitingElementStatus(false);
             })
             .then(el => {
                 if (error)
                     throw error;
 
                 element = el;
-                return this.statusBar.hideWaitingElementStatus(!!el);
             })
             .then(() => element);
     }

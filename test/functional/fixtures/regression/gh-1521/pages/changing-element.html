@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gh-1521 (changing element)</title>
+
+    <style>
+        #show-hidden-input {
+            position: absolute;
+            top: 50px;
+        }
+
+        #out-of-viewport-input {
+            position: absolute;
+            top: -100px;
+        }
+    </style>
+</head>
+<body>
+<input id="out-of-viewport-input" value="value"/>
+<button id="show-hidden-input">Replace hidden and show it with 1600ms delay</button>
+
+<script>
+    var outOfViewportInput = document.getElementById('out-of-viewport-input');
+
+    window.clickCount = 0;
+
+    document.getElementById('show-hidden-input').addEventListener('click', function () {
+        window.setTimeout(function () {
+            outOfViewportInput.parentNode.removeChild(outOfViewportInput);
+
+            outOfViewportInput = document.createElement('input');
+
+            document.body.appendChild(outOfViewportInput);
+
+            outOfViewportInput.id    = 'out-of-viewport-input';
+            outOfViewportInput.value = 'replaced';
+
+            outOfViewportInput.addEventListener('click', function () {
+                window.clickCount++;
+            });
+        }, 500);
+
+        window.setTimeout(function () {
+            outOfViewportInput.style.top = '10px';
+        }, 1600);
+    });
+</script>
+</body>
+</html>

@@ -102,7 +102,7 @@
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "1.2.4",
     "testcafe-hammerhead": "11.0.3",
-    "testcafe-legacy-api": "3.0.0",
+    "testcafe-legacy-api": "3.1.0",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.1.0",
     "testcafe-reporter-minimal": "^2.1.0",

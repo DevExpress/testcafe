@@ -1,7 +1,6 @@
 import { delay, positionUtils, domUtils, arrayUtils, serviceUtils } from '../deps/testcafe-core';
 import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
-import whilst from '../utils/promise-whilst';
 import { fromPoint as getElementFromPoint } from '../get-element';
 import AUTOMATION_ERROR_TYPES from '../errors';
 import AutomationSettings from '../settings';
@@ -14,8 +13,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
     constructor (element, offsetOptions) {
         super();
 
-        this.WAITING_FOR_ELEMENT_STARTED_EVENT  = 'automation|waiting-element-started-event';
-        this.WAITING_FOR_ELEMENT_FINISHED_EVENT = 'automation|waiting-element-finished-event';
+        this.TARGET_ELEMENT_FOUND_EVENT = 'automation|target-element-found-event';
 
         this.element            = element;
         this.options            = offsetOptions;
@@ -98,41 +96,29 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
             });
     }
 
-    _ensureElement (timeout, checkInterval) {
+    _ensureElement (useStrictElementCheck) {
         var element               = null;
         var clientPoint           = null;
         var screenPoint           = null;
-        var timeoutExpired        = false;
         var targetElementFound    = false;
         var targetElementIsMoving = false;
 
-        delay(timeout).then(() => {
-            timeoutExpired = true;
-        });
-
-        var condition = () => !timeoutExpired && (!targetElementFound || targetElementIsMoving);
-        var iterator  = () => {
-            return this
-                ._findElement()
-                .then(res => {
-                    element               = res.element;
-                    clientPoint           = res.clientPoint;
-                    screenPoint           = res.screenPoint;
-                    targetElementFound    = res.isTarget;
-                    targetElementIsMoving = res.targetElementIsMoving;
-
-                    return targetElementFound ? null : delay(checkInterval);
-                });
-        };
-
-        this.emit(this.WAITING_FOR_ELEMENT_STARTED_EVENT, {});
-
-        return whilst(condition, iterator)
-            .then(() => {
-                this.emit(this.WAITING_FOR_ELEMENT_FINISHED_EVENT, { element });
+        return this
+            ._findElement()
+            .then(res => {
+                element               = res.element;
+                clientPoint           = res.clientPoint;
+                screenPoint           = res.screenPoint;
+                targetElementFound    = res.isTarget;
+                targetElementIsMoving = res.targetElementIsMoving;
 
                 if (!element)
                     throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
+
+                if (useStrictElementCheck && (!targetElementFound || targetElementIsMoving))
+                    throw new Error(AUTOMATION_ERROR_TYPES.foundElementIsNotTarget);
+
+                this.emit(this.TARGET_ELEMENT_FOUND_EVENT, {});
 
                 return { element, clientPoint, screenPoint };
             });

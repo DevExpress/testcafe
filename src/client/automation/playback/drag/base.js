@@ -129,11 +129,11 @@ export default class DragAutomationBase extends VisibleElementAutomation {
             });
     }
 
-    run (selectorTimeout = 0, checkElementInterval = 0) {
+    run (useStrictElementCheck) {
         var eventArgs = null;
 
         return this
-            ._ensureElement(selectorTimeout, checkElementInterval)
+            ._ensureElement(useStrictElementCheck)
             .then(({ element, clientPoint }) => {
                 eventArgs = {
                     point:   clientPoint,

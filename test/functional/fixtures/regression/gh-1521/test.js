@@ -5,6 +5,10 @@ describe('[Regression](GH-1521)', function () {
         return runTests('testcafe-fixtures/index-test.js', 'Wait for an out-of-viewport element', { only: 'chrome' });
     });
 
+    it('Should reevaluate selector during waiting for element since it can be changed', function () {
+        return runTests('testcafe-fixtures/index-test.js', 'Click on a changing element', { only: 'chrome' });
+    });
+
     it('Should fail if an element is not in the viewport constantly', function () {
         return runTests('testcafe-fixtures/index-test.js', 'Try to click on an out-of-viewport element', {
             only:       'chrome',

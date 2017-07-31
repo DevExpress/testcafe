@@ -101,7 +101,7 @@ function ensureCommandElementsProperties (command, elements) {
 }
 
 // Ensure command elements
-function ensureCommandElements (command, globalSelectorTimeout, statusBar) {
+function ensureCommandElements (command, globalSelectorTimeout) {
     var elements             = [];
     var ensureElementPromise = Promise.resolve();
     var startTime            = new Date();
@@ -109,7 +109,7 @@ function ensureCommandElements (command, globalSelectorTimeout, statusBar) {
     var ensureElement = (selectorCommand, createNotFoundError, createIsInvisibleError, createHasWrongNodeTypeError) => {
         ensureElementPromise = ensureElementPromise
             .then(() => {
-                var selectorExecutor = new SelectorExecutor(selectorCommand, globalSelectorTimeout, startTime, statusBar,
+                var selectorExecutor = new SelectorExecutor(selectorCommand, globalSelectorTimeout, startTime,
                     createNotFoundError, createIsInvisibleError);
 
                 return selectorExecutor.getResult();
@@ -259,33 +259,63 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
     };
 
     var completionPromise = new Promise(resolve => {
-        var requestBarrier         = null;
-        var scriptExecutionBarrier = null;
-        var startTime              = new Date();
+        var startTime = new Date();
 
-        ensureCommandElements(command, globalSelectorTimeout, statusBar)
-            .then(elements => {
-                resolveStartPromise();
+        try {
+            ensureCommandArguments(command);
+        }
+        catch (err) {
+            resolve(new DriverStatus({ isCommandResult: true, executionError: err }));
+            return;
+        }
 
-                requestBarrier         = new RequestBarrier();
-                scriptExecutionBarrier = new ScriptExecutionBarrier();
+        var requestBarrier         = new RequestBarrier();
+        var scriptExecutionBarrier = new ScriptExecutionBarrier();
 
-                ensureCommandArguments(command);
-                pageUnloadBarrier.watchForPageNavigationTriggers();
+        pageUnloadBarrier.watchForPageNavigationTriggers();
 
-                var hasSpecificTimeout       = command.selector && typeof command.selector.timeout === 'number';
-                var commandSelectorTimeout   = hasSpecificTimeout ? command.selector.timeout : globalSelectorTimeout;
-                var remainingSelectorTimeout = commandSelectorTimeout - (new Date() - startTime);
+        var hasSpecificTimeout     = command.selector && typeof command.selector.timeout === 'number';
+        var commandSelectorTimeout = hasSpecificTimeout ? command.selector.timeout : globalSelectorTimeout;
 
-                var automation = createAutomation(elements, command);
+        function runRecursively (strictElementCheck) {
+            return ensureCommandElements(command, globalSelectorTimeout)
+                .then(elements => {
+                    var automation = createAutomation(elements, command);
 
-                if (automation.WAITING_FOR_ELEMENT_STARTED_EVENT) {
-                    automation.on(automation.WAITING_FOR_ELEMENT_STARTED_EVENT, () => statusBar.showWaitingElementStatus(remainingSelectorTimeout));
-                    automation.on(automation.WAITING_FOR_ELEMENT_FINISHED_EVENT, ({ element }) => statusBar.hideWaitingElementStatus(!!element));
-                }
+                    if (automation.TARGET_ELEMENT_FOUND_EVENT) {
+                        automation.on(automation.TARGET_ELEMENT_FOUND_EVENT, () => {
+                            statusBar.hideWaitingElementStatus(true);
+                            resolveStartPromise();
+                        });
+                    }
+                    else {
+                        statusBar.hideWaitingElementStatus(true);
+                        resolveStartPromise();
+                    }
 
-                return automation.run(remainingSelectorTimeout, CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL);
-            })
+                    return automation.run(strictElementCheck);
+                })
+                .catch(err => {
+                    var timeoutExpired = Date.now() - startTime >= commandSelectorTimeout;
+
+                    if (timeoutExpired) {
+                        if (err.message === AUTOMATION_ERROR_TYPES.foundElementIsNotTarget) {
+                            // If we can't get a target element via elementFromPoint but it's
+                            // visible we click on the point where the element is located.
+                            return runRecursively(false);
+                        }
+
+                        throw err.message === AUTOMATION_ERROR_TYPES.elementIsInvisibleError ?
+                              new ActionElementIsInvisibleError() : err;
+                    }
+
+                    return delay(CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL).then(() => runRecursively(true));
+                });
+        }
+
+        statusBar.showWaitingElementStatus(commandSelectorTimeout);
+
+        runRecursively(true)
             .then(() => {
                 return Promise.all([
                     delayAfterAction(),
@@ -301,12 +331,8 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
             })
             .then(() => resolve(new DriverStatus({ isCommandResult: true })))
             .catch(err => {
-                // NOTE: in case we couldn't find an element for event
-                // simulation, we raise an error of this type (GH - 337)
-                var error = err.message === AUTOMATION_ERROR_TYPES.elementIsInvisibleError ?
-                            new ActionElementIsInvisibleError() : err;
-
-                return resolve(new DriverStatus({ isCommandResult: true, executionError: error }));
+                return statusBar.hideWaitingElementStatus(false)
+                    .then(() => resolve(new DriverStatus({ isCommandResult: true, executionError: err })));
             });
     });
 
