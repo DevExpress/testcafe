@@ -7,7 +7,6 @@ import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import shortId from 'shortid';
 import COMMAND from './command';
-import STATUS from './status';
 import { GeneralError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 
@@ -37,7 +36,6 @@ export default class BrowserConnection extends EventEmitter {
         this.provider = browserInfo.provider;
 
         this.permanent        = permanent;
-        this.closing          = false;
         this.closed           = false;
         this.ready            = false;
         this.opened           = false;
@@ -166,10 +164,8 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     close () {
-        if (this.closed || this.closing)
+        if (this.closed)
             return;
-
-        this.closing = true;
 
         this._closeBrowser()
             .then(() => {
@@ -197,11 +193,6 @@ export default class BrowserConnection extends EventEmitter {
     heartbeat () {
         clearTimeout(this.heartbeatTimeout);
         this._waitForHeartbeat();
-
-        return {
-            code: this.closing ? STATUS.closing : STATUS.ok,
-            url:  this.closing ? this.idleUrl : ''
-        };
     }
 
     renderIdlePage () {
