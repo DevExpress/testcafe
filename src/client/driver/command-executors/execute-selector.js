@@ -25,7 +25,7 @@ export function getResultDriverStatus (command, globalTimeout, startTime, create
 
     return selectorExecutor.getResultDriverStatus()
         .then(status => {
-            return statusBar.hideWaitingElementStatus(!!status.result && !status.executionError)
+            return statusBar.hideWaitingElementStatus(!!status.result)
                 .then(() => status);
         });
 }

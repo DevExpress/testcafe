@@ -269,8 +269,7 @@ export default class Driver {
 
     _switchToIframe (selector, iframeErrorCtors) {
         return getExecuteSelectorResult(selector, this.selectorTimeout, null,
-            () => new iframeErrorCtors.NotFoundError(),
-            () => iframeErrorCtors.IsInvisibleError())
+            () => new iframeErrorCtors.NotFoundError(), () => iframeErrorCtors.IsInvisibleError(), this.statusBar)
             .then(iframe => {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframeError();
