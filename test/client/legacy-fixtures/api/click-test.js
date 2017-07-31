@@ -56,6 +56,12 @@ $(document).ready(function () {
             .appendTo('body');
     };
 
+    var createOption = function (parent, text) {
+        return $('<option></option>').text(text)
+            .addClass(TEST_ELEMENT_CLASS)
+            .appendTo(parent);
+    };
+
     var startNext = function () {
         if (browserUtils.isIE) {
             removeTestElements();
@@ -457,6 +463,26 @@ $(document).ready(function () {
             },
             function () {
                 ok(!exceptionRaised, 'should not throw an exception');
+            },
+            correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
+        );
+    });
+
+    asyncTest('click on an option element', function () {
+        var select = $('<select></select>')
+            .addClass(TEST_ELEMENT_CLASS)
+            .appendTo('body')[0];
+
+        createOption(select, 'opt1');
+
+        var option = createOption(select, 'opt2');
+
+        runAsyncTest(
+            function () {
+                actionsAPI.click([select, option]);
+            },
+            function () {
+                equal(select.selectedIndex, 1);
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
