@@ -288,8 +288,10 @@ export default function executeAction (command, globalSelectorTimeout, statusBar
                             resolveStartPromise();
                         });
                     }
-                    else
+                    else {
+                        statusBar.hideWaitingElementStatus(true);
                         resolveStartPromise();
+                    }
 
                     return automation.run(strictElementCheck);
                 })
