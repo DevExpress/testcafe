@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.17.0 (2017-8-1)
+## v0.17.0 (2017-8-2)
 
 ### Enhancements
 
@@ -74,22 +74,13 @@ For details, see [Concurrent Test Execution](https://devexpress.github.io/testca
 We have enhanced the waiting mechanism behavior in certain scenarios where you still used to need `wait` actions.
 Now automatic waiting is much smarter and chances that you need to wait manually are diminished.
 
-#### :gear: Selector's withAttribute method supports search by strict match ([#1548](https://github.com/DevExpress/testcafe/issues/1548]))
-
-When you provide string arguments to the `withAttribute` method, the selector searches
-for an element whose attribute name and value strictly match the given parameters.
-
-```js
-const el = Selector('.container').withAttribute('width', '200');
-```
-
 #### :gear: User roles preserve the local storage ([#1454](https://github.com/DevExpress/testcafe/issues/1454))
 
 TestCafe now saves the local storage state when switching between roles, so that when you switch back you get the same local storage content you left.
 
 This is useful for testing websites that perform authentication via local storage instead of cookies.
 
-#### Miscellaneous
+#### Internal Improvements
 
 * `StorageSandbox` is shared to the client API with `clear` and `lock` methods added. ([testcafe-hammerhead/#1189](https://github.com/DevExpress/testcafe-hammerhead/issues/1189))
 * The number of failed cookie-sync messages is now limited. ([testcafe-hammerhead/#1193](https://github.com/DevExpress/testcafe-hammerhead/issues/1193))
@@ -99,27 +90,23 @@ This is useful for testing websites that perform authentication via local storag
 
 ### Bug Fixes
 
-* Authentication with user roles works correctly in SPAs. ([#1502](https://github.com/DevExpress/testcafe/issues/1502))
+* Selector's `withAttribute` method supports search by strict match ([#1548](https://github.com/DevExpress/testcafe/issues/1548]))
 * Description for the `path` parameter of the `t.takeScreenshot` action has been corrected ([#1515](https://github.com/DevExpress/testcafe/issues/1515))
 * Local storage is now cleaned appropriately after the test run.([#1546](https://github.com/DevExpress/testcafe/issues/1546))
 * TestCafe now checks element visibility with a timeout when the target element's `style.top` is negative ([#1185](https://github.com/DevExpress/testcafe/issues/1185))
 * Fetching an absolute CORS URL now works correctly. ([#1629](https://github.com/DevExpress/testcafe/issues/1629))
-* Fixed a bug that led to an error in test code. ([#1442](https://github.com/DevExpress/testcafe/issues/1442))
+* Add partial support for proxying live node collections (the `GetElementsByTagName` method) ([#1442](https://github.com/DevExpress/testcafe/issues/1442))
 * TypeScript performance has been enhanced. ([#1591](https://github.com/DevExpress/testcafe/issues/1591))
-* Mousedown on a link without `src` is now handled properly. ([#1598](https://github.com/DevExpress/testcafe/issues/1598))
-* Fixed a bug that led to test failing in Edge 15. ([testcafe-hammerhead/#1176](https://github.com/DevExpress/testcafe-hammerhead/issues/1176))
 * The right port is now applied to a cross-domain iframe location after redirect. ([testcafe-hammerhead/#1191](https://github.com/DevExpress/testcafe-hammerhead/issues/1191))
-* `Hammerhead.EVENTS.xhrSend` and `Hammerhead.EVENTS.fetchSend` are renamed to `...Sent`. ([testcafe-hammerhead/#678](https://github.com/DevExpress/testcafe-hammerhead/issues/678))
 * All internal properties are marked as non-enumerable. ([testcafe-hammerhead/#1182](https://github.com/DevExpress/testcafe-hammerhead/issues/1182))
-* Hammerhead no longer crashes on the `slack.com/signin` page. ([testcafe-hammerhead/#1195](https://github.com/DevExpress/testcafe-hammerhead/issues/1195))
-* Fixed a bug where a script error occurred after proxying. ([testcafe-hammerhead/#1209](https://github.com/DevExpress/testcafe-hammerhead/issues/1209))
+* Support proxying pages with defined referrer policy. ([testcafe-hammerhead/#1195](https://github.com/DevExpress/testcafe-hammerhead/issues/1195))
 * WebWorker content is now correctly proxied in FireFox 54. ([testcafe-hammerhead/#1216](https://github.com/DevExpress/testcafe-hammerhead/issues/1216))
 * Methods that return live node collections are now correctly proxied. ([testcafe-hammerhead/#1096](https://github.com/DevExpress/testcafe-hammerhead/issues/1096))
 * Code instrumentation for the `document.activeElement` property works properly if it is `null`. ([testcafe-hammerhead/#1226](https://github.com/DevExpress/testcafe-hammerhead/issues/1226))
 * `length`, `item` and `namedItem` are no longer own properties of `LiveNodeListWrapper`. ([testcafe-hammerhead/#1222](https://github.com/DevExpress/testcafe-hammerhead/issues/1222))
 * The `scope` option in the `serviceWorker.register` function is now processed correctly. ([testcafe-hammerhead/#1233](https://github.com/DevExpress/testcafe-hammerhead/issues/1233))
 * Promises from a fetch request are now processed correctly. ([testcafe-hammerhead/#1234](https://github.com/DevExpress/testcafe-hammerhead/issues/1234))
-* Fixed a bug that led to an error in compiled babel code. ([testcafe-hammerhead/#1231](https://github.com/DevExpress/testcafe-hammerhead/issues/1231))
+* Fix transpiling for the `for..of` loop to support browsers without `window.Iterator`. ([testcafe-hammerhead/#1231](https://github.com/DevExpress/testcafe-hammerhead/issues/1231))
 
 ## v0.16.2 (2017-6-27)
 
