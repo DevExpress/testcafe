@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.17.0
+## v0.17.0 (2017-8-1)
 
 ### Enhancements
 
@@ -99,11 +99,7 @@ This is useful for testing websites that perform authentication via local storag
 
 ### Bug Fixes
 
-* Fixed a typo in typedefs for the Role feature. ([#1541](https://github.com/DevExpress/testcafe/issues/1541))
 * Authentication with user roles works correctly in SPAs. ([#1502](https://github.com/DevExpress/testcafe/issues/1502))
-* Fixed an error that said about an undetected `tmp` module. ([#1547](https://github.com/DevExpress/testcafe/issues/1547))
-* Taking screenshots with a Docker image now works correctly. ([#1540](https://github.com/DevExpress/testcafe/issues/1540))
-* `t.typeText` now works with React 15.6.1 ([#1558](https://github.com/DevExpress/testcafe/issues/1558))
 * Description for the `path` parameter of the `t.takeScreenshot` action has been corrected ([#1515](https://github.com/DevExpress/testcafe/issues/1515))
 * Local storage is now cleaned appropriately after the test run.([#1546](https://github.com/DevExpress/testcafe/issues/1546))
 * TestCafe now checks element visibility with a timeout when the target element's `style.top` is negative ([#1185](https://github.com/DevExpress/testcafe/issues/1185))
@@ -111,13 +107,7 @@ This is useful for testing websites that perform authentication via local storag
 * Fixed a bug that led to an error in test code. ([#1442](https://github.com/DevExpress/testcafe/issues/1442))
 * TypeScript performance has been enhanced. ([#1591](https://github.com/DevExpress/testcafe/issues/1591))
 * Mousedown on a link without `src` is now handled properly. ([#1598](https://github.com/DevExpress/testcafe/issues/1598))
-* Markup imported via `meta[rel="import]` is now processed. ([testcafe-hammerhead/#1161](https://github.com/DevExpress/testcafe-hammerhead/issues/1161))
-* The `innerHtml` property is no longer processed if an element doesn't have it. ([testcafe-hammerhead/#1164](https://github.com/DevExpress/testcafe-hammerhead/issues/1164))
-* A correct context is now passed to `MutationObserver`. ([testcafe-hammerhead/#1178](https://github.com/DevExpress/testcafe-hammerhead/issues/1178))
 * Fixed a bug that led to test failing in Edge 15. ([testcafe-hammerhead/#1176](https://github.com/DevExpress/testcafe-hammerhead/issues/1176))
-* Native `value` property setters of an `HTMLInputElement` and `HTMLTextAreaElement` are now saved. ([testcafe-hammerhead/#1185](https://github.com/DevExpress/testcafe-hammerhead/issues/1185))
-* The `name` and `namedItem` properties of `HTMLCollection` are marked as non-enumerable. ([testcafe-hammerhead/#1172](https://github.com/DevExpress/testcafe-hammerhead/issues/1172))
-* Code instrumentation of the `length` property now runs faster. ([testcafe-hammerhead/#979](https://github.com/DevExpress/testcafe-hammerhead/issues/979)
 * The right port is now applied to a cross-domain iframe location after redirect. ([testcafe-hammerhead/#1191](https://github.com/DevExpress/testcafe-hammerhead/issues/1191))
 * `Hammerhead.EVENTS.xhrSend` and `Hammerhead.EVENTS.fetchSend` are renamed to `...Sent`. ([testcafe-hammerhead/#678](https://github.com/DevExpress/testcafe-hammerhead/issues/678))
 * All internal properties are marked as non-enumerable. ([testcafe-hammerhead/#1182](https://github.com/DevExpress/testcafe-hammerhead/issues/1182))
