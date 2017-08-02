@@ -23,9 +23,9 @@ Getting it to work is simple. First, install the browser provider plugin from np
 npm install testcafe-browser-provider-electron
 ```
 
-We assume that you have a JavaScript application meant to run in Electron.
+We assume that you have a JavaScript application that you wish to run in Electron.
 
-Then create a `.testcafe-electron-rc` file that contains configurations for the Electron plugin.
+Create a `.testcafe-electron-rc` file that contains configurations for the Electron plugin.
 The only required setting here is `mainWindowUrl`. It's a URL (or path) to the main window page relative to the application directory.
 
 ```json
