@@ -15,7 +15,7 @@ npm install testcafe-browser-provider-electron --save-dev
 ```
 
 Then create a `.testcafe-electron-rc` file that contains configurations for the Electron plugin.
-The only required setting here is `mainWindowUrl` - a URL or path to the main window page relative to the application directory.
+The only required setting here is `mainWindowUrl`. It's a URL (or path) to the main window page relative to the application directory.
 
 ```json
 {
@@ -26,7 +26,7 @@ The only required setting here is `mainWindowUrl` - a URL or path to the main wi
 Place this file into the application root directory.
 
 Now you are ready to run tests. Specify the `electron` browser name and the application path
-when launching tests from the command line or API.
+at the test launch.
 
 ```sh
 testcafe "electron:/home/user/electron-app" "path/to/test/file.js"
@@ -44,16 +44,14 @@ To learn more about the Electron browser provider, see the plugin [readme](https
 
 #### :gear: Concurrent test execution ([#1165](https://github.com/DevExpress/testcafe/issues/1165))
 
-To save your time spent on testing, we have added the capability to run tests concurrently in a single browser.
+We've added concurrent test launch. This makes a test batch complete faster.
 
-By default, when you run tests in one or several browsers,
-TestCafe opens a single instance of each browser and runs all test sequentially within each instance.
+By default TestCafe launches one instance of each specified browser. Tests run one by one in each of them.
 
-*Concurrency* allows TestCafe to open multiple instances of the same browser
-and distribute the test batch among these instances so that tests run in parallel.
+Enable *concurrency* and TestCafe will launch multiple instances of each browser. It will distribute the test batch among them. The tests will run in parallel.
 
-You can enable concurrency with the `-c` command line option or the `runner.concurrency()` API method.
-When doing so, specify the number of instances you wish to invoke.
+To enable concurrency, add `-c`in the command line. Or use the `runner.concurrency()` API method.
+Specify the number of instances to invoke for each browser.
 
 ```js
 testcafe -c 3 chrome tests/test.js
@@ -76,17 +74,9 @@ Now automatic waiting is much smarter and chances that you need to wait manually
 
 #### :gear: User roles preserve the local storage ([#1454](https://github.com/DevExpress/testcafe/issues/1454))
 
-TestCafe now saves the local storage state when switching between roles, so that when you switch back you get the same local storage content you left.
+TestCafe now saves the local storage state when switching between roles. You get the same local storage content you left when you switch back.
 
 This is useful for testing websites that perform authentication via local storage instead of cookies.
-
-#### Internal Improvements
-
-* `StorageSandbox` is shared to the client API with `clear` and `lock` methods added. ([testcafe-hammerhead/#1189](https://github.com/DevExpress/testcafe-hammerhead/issues/1189))
-* The number of failed cookie-sync messages is now limited. ([testcafe-hammerhead/#1193](https://github.com/DevExpress/testcafe-hammerhead/issues/1193))
-* `Hammerhead.backupStorages` and `Hammerhead.restoreStorages` methods are added to the client API([testcafe-hammerhead/#1125](https://github.com/DevExpress/testcafe-hammerhead/issues/1125))
-* The `GetEventListeners` method is implemented in `sandbox.event.listeners`. ([testcafe-hammerhead/#1238](https://github.com/DevExpress/testcafe-hammerhead/issues/1238))
-* JavaScript expressions now supported in raw API selectors. ([#1466](https://github.com/DevExpress/testcafe/issues/1466))
 
 ### Bug Fixes
 
@@ -101,7 +91,6 @@ This is useful for testing websites that perform authentication via local storag
 * All internal properties are marked as non-enumerable. ([testcafe-hammerhead/#1182](https://github.com/DevExpress/testcafe-hammerhead/issues/1182))
 * Support proxying pages with defined referrer policy. ([testcafe-hammerhead/#1195](https://github.com/DevExpress/testcafe-hammerhead/issues/1195))
 * WebWorker content is now correctly proxied in FireFox 54. ([testcafe-hammerhead/#1216](https://github.com/DevExpress/testcafe-hammerhead/issues/1216))
-* Methods that return live node collections are now correctly proxied. ([testcafe-hammerhead/#1096](https://github.com/DevExpress/testcafe-hammerhead/issues/1096))
 * Code instrumentation for the `document.activeElement` property works properly if it is `null`. ([testcafe-hammerhead/#1226](https://github.com/DevExpress/testcafe-hammerhead/issues/1226))
 * `length`, `item` and `namedItem` are no longer own properties of `LiveNodeListWrapper`. ([testcafe-hammerhead/#1222](https://github.com/DevExpress/testcafe-hammerhead/issues/1222))
 * The `scope` option in the `serviceWorker.register` function is now processed correctly. ([testcafe-hammerhead/#1233](https://github.com/DevExpress/testcafe-hammerhead/issues/1233))
