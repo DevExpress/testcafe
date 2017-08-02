@@ -48,7 +48,7 @@ testCafe
     .run();
 ```
 
-To learn more about the Electron browser provider, see the plugin [readme](https://github.com/DevExpress/testcafe-browser-provider-electron).
+Nota that you can also test Electron app's executable files. To learn more about the Electron browser provider, see the plugin [readme](https://github.com/DevExpress/testcafe-browser-provider-electron).
 
 #### :gear: Concurrent test execution ([#1165](https://github.com/DevExpress/testcafe/issues/1165))
 
