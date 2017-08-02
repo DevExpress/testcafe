@@ -6,15 +6,17 @@
 
 #### :gear: Testing Electron applications ([testcafe-browser-provider-electron](https://github.com/DevExpress/testcafe-browser-provider-electron))
 
-We have prepared a browser provider that allows you to test Electron applications with TestCafe.
+We have created a browser provider that allows you to test Electron applications with TestCafe.
 
-Getting it to work is simple. First, install the plugin from npm.
+Getting it to work is simple. First, install the browser provider plugin from npm.
 
 ```sh
-npm install testcafe-browser-provider-electron --save-dev
+npm install testcafe-browser-provider-electron
 ```
 
-Then create a `.testcafe-electron-rc` file that contains configurations for the Electron plugin.
+We assume that you have a JavaScript application that you wish to run in Electron.
+
+Create a `.testcafe-electron-rc` file that contains configurations for the Electron plugin.
 The only required setting here is `mainWindowUrl`. It's a URL (or path) to the main window page relative to the application directory.
 
 ```json
@@ -24,6 +26,12 @@ The only required setting here is `mainWindowUrl`. It's a URL (or path) to the m
 ```
 
 Place this file into the application root directory.
+
+At the next step, install the Electron module.
+
+```sh
+npm install electron@latest
+```
 
 Now you are ready to run tests. Specify the `electron` browser name and the application path
 at the test launch.
@@ -40,7 +48,7 @@ testCafe
     .run();
 ```
 
-To learn more about the Electron browser provider, see the plugin [readme](https://github.com/DevExpress/testcafe-browser-provider-electron).
+Nota that you can also test Electron app's executable files. To learn more about the Electron browser provider, see the plugin [readme](https://github.com/DevExpress/testcafe-browser-provider-electron).
 
 #### :gear: Concurrent test execution ([#1165](https://github.com/DevExpress/testcafe/issues/1165))
 
