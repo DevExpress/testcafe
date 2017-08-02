@@ -5,9 +5,107 @@
     <description></description>
     <link>http://devexpress.github.io/testcafe/</link>
     <atom:link href="http://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 14 Jun 2017 10:39:05 +0300</pubDate>
-    <lastBuildDate>Wed, 14 Jun 2017 10:39:05 +0300</lastBuildDate>
-    <generator>Jekyll v3.4.3</generator>
+    <pubDate>Wed, 02 Aug 2017 19:27:09 +0300</pubDate>
+    <lastBuildDate>Wed, 02 Aug 2017 19:27:09 +0300</lastBuildDate>
+    <generator>Jekyll v3.5.0</generator>
+    
+      <item>
+        <title>TestCafe v0.17.0 Released</title>
+        <description>&lt;h1&gt;TestCafe v0.17.0 Released: Testing Electron Apps and Concurrent Test Execution&lt;/h1&gt;
+&lt;p&gt;With this release, we have prepared a bunch of new features. Two big news are the Electron browser provider and concurrent test execution.&lt;/p&gt;
+
+&lt;p&gt;Read on to learn more.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;testing-electron-applications-testcafe-browser-provider-electron&quot;&gt;&lt;/a&gt;⚙ Testing Electron applications (&lt;a href=&quot;https://github.com/DevExpress/testcafe-browser-provider-electron&quot;&gt;testcafe-browser-provider-electron&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#testing-electron-applications-testcafe-browser-provider-electron&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;We have created a browser provider that allows you to test Electron applications with TestCafe.&lt;/p&gt;
+
+&lt;p&gt;Getting it to work is simple. First, install the browser provider plugin from npm.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;npm install testcafe-browser-provider-electron
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We assume that you have a JavaScript application that you wish to run in Electron.&lt;/p&gt;
+
+&lt;p&gt;Create a &lt;code&gt;.testcafe-electron-rc&lt;/code&gt; file that contains configurations for the Electron plugin.
+The only required setting here is &lt;code&gt;mainWindowUrl&lt;/code&gt;. It&amp;#39;s a URL (or path) to the main window page relative to the application directory.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;mainWindowUrl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./index.html&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Place this file into the application root directory.&lt;/p&gt;
+
+&lt;p&gt;At the next step, install the Electron module.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;npm install electron@latest
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now you are ready to run tests. Specify the &lt;code&gt;electron&lt;/code&gt; browser name and the application path
+at the test launch.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe &lt;span class=&quot;s2&quot;&gt;&quot;electron:/home/user/electron-app&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;path/to/test/file.js&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;testCafe&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;createRunner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'path/to/test/file.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'electron:/home/user/electron-app'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To learn more about the Electron browser provider, see the plugin &lt;a href=&quot;https://github.com/DevExpress/testcafe-browser-provider-electron&quot;&gt;readme&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;concurrent-test-execution-1165&quot;&gt;&lt;/a&gt;⚙ Concurrent test execution (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1165&quot;&gt;#1165&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#concurrent-test-execution-1165&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;We&amp;#39;ve added concurrent test launch. This makes a test batch complete faster.&lt;/p&gt;
+
+&lt;p&gt;By default TestCafe launches one instance of each specified browser. Tests run one by one in each of them.&lt;/p&gt;
+
+&lt;p&gt;Enable &lt;em&gt;concurrency&lt;/em&gt; and TestCafe will launch multiple instances of each browser. It will distribute the test batch among them. The tests will run in parallel.&lt;/p&gt;
+
+&lt;p&gt;To enable concurrency, add &lt;code&gt;-c&lt;/code&gt;in the command line. Or use the &lt;code&gt;runner.concurrency()&lt;/code&gt; API method.
+Specify the number of instances to invoke for each browser.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;chrome&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;js&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testRunPromise&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tests/test.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'chrome'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;concurrency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;For details, see &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html&quot;&gt;Concurrent Test Execution&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;output-test-run-reports-to-slack-and-teamcity-testcafe-reporter-slack-testcafe-reporter-teamcity&quot;&gt;&lt;/a&gt;⚙ Output test run reports to Slack and TeamCity (&lt;a href=&quot;https://github.com/Shafied/testcafe-reporter-slack&quot;&gt;testcafe-reporter-slack&lt;/a&gt;, &lt;a href=&quot;https://github.com/Soluto/testcafe-reporter-teamcity&quot;&gt;testcafe-reporter-teamcity&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#output-test-run-reports-to-slack-and-teamcity-testcafe-reporter-slack-testcafe-reporter-teamcity&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Thanks to &lt;a href=&quot;https://github.com/Shafied&quot;&gt;@Shafied&lt;/a&gt; and &lt;a href=&quot;https://github.com/nirsky&quot;&gt;@nirsky&lt;/a&gt;, TestCafe ecosystem has gained two new reporter plugins.&lt;/p&gt;
+
+&lt;p&gt;The Slack reporter allows you to create a chat bot that posts test run results to a Slack channel.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/testcafe-slack-reporter.png&quot; alt=&quot;Slack Reporter&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;The TeamCity reporter enables you to display reports inside the TeamCity UI.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/testcafe-reporter-teamcity.png&quot; alt=&quot;TeamCity Reporter&quot;&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;further-improvements-in-automatic-waiting-mechanism-1521&quot;&gt;&lt;/a&gt;⚙ Further improvements in automatic waiting mechanism (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1521&quot;&gt;#1521&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#further-improvements-in-automatic-waiting-mechanism-1521&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;We have enhanced the waiting mechanism behavior in certain scenarios where you still used to need &lt;code&gt;wait&lt;/code&gt; actions.
+Now automatic waiting is much smarter and chances that you need to wait manually are diminished.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;user-roles-preserve-the-local-storage-1454&quot;&gt;&lt;/a&gt;⚙ User roles preserve the local storage (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1454&quot;&gt;#1454&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#user-roles-preserve-the-local-storage-1454&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe now saves the local storage state when switching between roles. You get the same local storage content you left when you switch back.&lt;/p&gt;
+
+&lt;p&gt;This is useful for testing websites that perform authentication via local storage instead of cookies.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Selector&amp;#39;s &lt;code&gt;withAttribute&lt;/code&gt; method supports search by strict match (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1548&quot;&gt;#1548&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Description for the &lt;code&gt;path&lt;/code&gt; parameter of the &lt;code&gt;t.takeScreenshot&lt;/code&gt; action has been corrected (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1515&quot;&gt;#1515&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Local storage is now cleaned appropriately after the test run.(&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1546&quot;&gt;#1546&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe now checks element visibility with a timeout when the target element&amp;#39;s &lt;code&gt;style.top&lt;/code&gt; is negative (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1185&quot;&gt;#1185&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fetching an absolute CORS URL now works correctly. (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1629&quot;&gt;#1629&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Add partial support for proxying live node collections (the &lt;code&gt;GetElementsByTagName&lt;/code&gt; method) (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1442&quot;&gt;#1442&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TypeScript performance has been enhanced. (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1591&quot;&gt;#1591&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The right port is now applied to a cross-domain iframe location after redirect. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1191&quot;&gt;testcafe-hammerhead/#1191&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;All internal properties are marked as non-enumerable. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1182&quot;&gt;testcafe-hammerhead/#1182&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Support proxying pages with defined referrer policy. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1195&quot;&gt;testcafe-hammerhead/#1195&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;WebWorker content is now correctly proxied in FireFox 54. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1216&quot;&gt;testcafe-hammerhead/#1216&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Code instrumentation for the &lt;code&gt;document.activeElement&lt;/code&gt; property works properly if it is &lt;code&gt;null&lt;/code&gt;. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1226&quot;&gt;testcafe-hammerhead/#1226&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;length&lt;/code&gt;, &lt;code&gt;item&lt;/code&gt; and &lt;code&gt;namedItem&lt;/code&gt; are no longer own properties of &lt;code&gt;LiveNodeListWrapper&lt;/code&gt;. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1222&quot;&gt;testcafe-hammerhead/#1222&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;scope&lt;/code&gt; option in the &lt;code&gt;serviceWorker.register&lt;/code&gt; function is now processed correctly. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1233&quot;&gt;testcafe-hammerhead/#1233&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Promises from a fetch request are now processed correctly. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1234&quot;&gt;testcafe-hammerhead/#1234&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fix transpiling for the &lt;code&gt;for..of&lt;/code&gt; loop to support browsers without &lt;code&gt;window.Iterator&lt;/code&gt;. (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1231&quot;&gt;testcafe-hammerhead/#1231&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 02 Aug 2017 00:00:00 +0300</pubDate>
+        <link>http://devexpress.github.io/testcafe/blog/testcafe-v0-17-0-released.html</link>
+        <guid isPermaLink="true">http://devexpress.github.io/testcafe/blog/testcafe-v0-17-0-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v0.16.0 Released</title>
@@ -16,7 +114,7 @@
 
 &lt;!--more--&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; name=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; name=&quot;typescript-support-408&quot;&gt;&lt;/a&gt;⚙ TypeScript support (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/408&quot;&gt;#408&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#typescript-support-408&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;In this release, we have added an ability to write tests in &lt;a href=&quot;https://www.typescriptlang.org/&quot;&gt;TypeScript&lt;/a&gt;. Using of TypeScript brings you all the advantages of strongly typed languages: rich coding assistance, painless scalability, check-as-you-type code verification and much more.&lt;/p&gt;
+&lt;p&gt;In this release, we have added the capability to write tests in &lt;a href=&quot;https://www.typescriptlang.org/&quot;&gt;TypeScript&lt;/a&gt;. By using TypeScript to write your TestCafe tests, you get the advantages of strongly-typed languages such as: rich coding assistance, painless scalability, check-as-you-type code verification, and much more.&lt;/p&gt;
 
 &lt;p&gt;TestCafe bundles TypeScript declaration file with the npm package, so you have no need to install any additional packages.&lt;/p&gt;
 

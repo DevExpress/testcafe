@@ -344,6 +344,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html"  >Concurrent Test Execution</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
 		
     </li>
@@ -417,6 +424,7 @@
 <li><a href="#saving-the-report-to-a-file">Saving the Report to a File</a></li>
 <li><a href="#implementing-a-custom-stream">Implementing a Custom Stream</a></li>
 </ul></li>
+<li><a href="#concurrency">concurrency</a></li>
 <li><a href="#startapp">startApp</a></li>
 <li><a href="#useproxy">useProxy</a></li>
 <li><a href="#run">run</a>
@@ -660,7 +668,36 @@ when the <a href="../../test-api/actions/take-screenshot.html">t.takeScreenshot<
 <span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'json'</span><span class="p">,</span> <span class="nx">stream</span><span class="p">);</span>
 </code></pre></div>
 <p>You can also build your own reporter. Use a <a href="https://github.com/DevExpress/generator-testcafe-reporter">dedicated Yeoman generator</a> to scaffold out a <a href="../../extending-testcafe/reporter-plugin/">reporter plugin</a>.</p>
-<h3><a class="anchor" name="startapp"></a>startApp <a class="permalink" href="#startapp">#</a></h3>
+<h3><a class="anchor" name="concurrency"></a>concurrency <a class="permalink" href="#concurrency">#</a></h3>
+<p>Specifies that tests should run concurrently.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">concurrency(n) → this
+</code></pre></div>
+<p>TestCafe will open <code>n</code> instances of the same browser thus creating a pool of browser instances.
+Tests will run concurrently against this pool, i.e. each test will run in the first free instance.</p>
+
+<p>The <code>concurrency</code> function takes the following parameters.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>n</code></td>
+<td>Number</td>
+<td>The number of browser instances that will be invoked.</td>
+</tr>
+</tbody></table>
+
+<p>To learn more about concurrent test execution, see <a href="../common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a>.</p>
+
+<p>The following example shows how to run tests in three Chrome instances.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">concurrency</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</code></pre></div><h3><a class="anchor" name="startapp"></a>startApp <a class="permalink" href="#startapp">#</a></h3>
 <p>Specifies a shell command that will be executed before running tests. Use it to launch or deploy the application that will be tested.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async startApp(command, initDelay) → this
 </code></pre></div>

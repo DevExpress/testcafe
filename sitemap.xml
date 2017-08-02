@@ -33,6 +33,10 @@
 <lastmod>2017-06-13T00:00:00+03:00</lastmod>
 </url>
 <url>
+<loc>http://devexpress.github.io/testcafe/blog/testcafe-v0-17-0-released.html</loc>
+<lastmod>2017-08-02T00:00:00+03:00</lastmod>
+</url>
+<url>
 <loc>http://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/</loc>
 </url>
 <url>
@@ -97,6 +101,9 @@
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html</loc>
+</url>
+<url>
+<loc>http://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html</loc>
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html</loc>
@@ -198,6 +205,9 @@
 <loc>http://devexpress.github.io/testcafe/documentation/recipes/testing-on-remote-computers-and-mobile-devices.html</loc>
 </url>
 <url>
+<loc>http://devexpress.github.io/testcafe/documentation/recipes/testing-select-elements.html</loc>
+</url>
+<url>
 <loc>http://devexpress.github.io/testcafe/documentation/test-api/actions/type-text.html</loc>
 </url>
 <url>
@@ -226,10 +236,10 @@
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/example/index.html</loc>
-<lastmod>2017-06-14T10:39:03+03:00</lastmod>
+<lastmod>2017-08-02T19:27:07+03:00</lastmod>
 </url>
 <url>
 <loc>http://devexpress.github.io/testcafe/example/thank-you.html</loc>
-<lastmod>2017-06-14T10:39:03+03:00</lastmod>
+<lastmod>2017-08-02T19:27:07+03:00</lastmod>
 </url>
 </urlset>
