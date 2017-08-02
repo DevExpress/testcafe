@@ -344,6 +344,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html"  >Concurrent Test Execution</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
 		
     </li>
@@ -402,6 +409,7 @@
 <li><a href="#-s---screenshots-on-fails">-S, --screenshots-on-fails</a></li>
 <li><a href="#-q---quarantine-mode">-q, --quarantine-mode</a></li>
 <li><a href="#-e---skip-js-errors">-e, --skip-js-errors</a></li>
+<li><a href="#-c-n---concurrency-n">-c &lt;n&gt;, --concurrency &lt;n&gt;</a></li>
 <li><a href="#-t-name---test-name">-t &lt;name&gt;, --test &lt;name&gt;</a></li>
 <li><a href="#-t-pattern---test-grep-pattern">-T &lt;pattern&gt;, --test-grep &lt;pattern&gt;</a></li>
 <li><a href="#-f-name---fixture-name">-f &lt;name&gt;, --fixture &lt;name&gt;</a></li>
@@ -460,7 +468,9 @@ The browsers are specified differently: one by using an alias, the other by usin
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe remote:3 tests/sample-fixture.js
 </code></pre></div>
 <p>TestCafe will provide URLs to open in required browsers on your remote device.</p>
-
+<blockquote><div class="blockquote-content"><p>If you run tests <a href="#-c-n---concurrency-n">concurrently</a>,
+specify the total number of instances of all browsers after the <code>remote:</code> keyword.</p>
+</div></blockquote>
 <p>You can also use the <a href="#--qr-code">--qr-code</a> option to display QR-codes that represent the same URLs.
 Scan the QR-codes by using the device on which you are going to test your application.
 As a result, the browsers will be connected to TestCafe and tests will start.</p>
@@ -542,7 +552,17 @@ specify this argument.</p>
 
 <p>For example, the following command runs tests from the specified file and forces TestCafe to ignore JavaScript errors.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie tests/sample-fixture.js -e
-</code></pre></div><h3><a class="anchor" name="-t-name---test-name"></a>-t &lt;name&gt;,  --test &lt;name&gt; <a class="permalink" href="#-t-name---test-name">#</a></h3>
+</code></pre></div><h3><a class="anchor" name="-c-n---concurrency-n"></a>-c &lt;n&gt;, --concurrency &lt;n&gt; <a class="permalink" href="#-c-n---concurrency-n">#</a></h3>
+<p>Specifies that tests should run concurrently.</p>
+
+<p>TestCafe will open <code>n</code> instances of the same browser thus creating a pool of browser instances.
+Tests will run concurrently against this pool, i.e. each test will run in the first free instance.</p>
+
+<p>To learn more about concurrent test execution, see <a href="common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a>.</p>
+
+<p>The following example shows how to run tests in three Chrome instances.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe -c 3 chrome tests/sample-fixture.js
+</code></pre></div><h3><a class="anchor" name="-t-name---test-name"></a>-t &lt;name&gt;, --test &lt;name&gt; <a class="permalink" href="#-t-name---test-name">#</a></h3>
 <p>TestCafe will run a test with the specified name.</p>
 
 <p>For example, the following command runs only the <code>&quot;Click a label&quot;</code> test from the <code>sample-fixture.js</code> file.</p>

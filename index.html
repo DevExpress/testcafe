@@ -201,7 +201,7 @@
                 Write Test Code in Modern JavaScript and TypeScript
             </span>
             <div class="description">
-                <p>You can write TestCafe tests using both JavaScript with the latest features like <code>async/await</code> and <a href="documentation/test-api/typescript-support.html">TypeScript</a>.</p>
+                <p>TestCafe allows you to write tests using <a href="documentation/test-api/typescript-support.html">TypeScript</a> or JavaScript (with its modern features like <code>async/await</code>).</p>
                 <p><a href="documentation/test-api">Test API</a> consists of over two dozen methods that can emulate all actions one could possibly do with a webpage. Chained syntax allows for code that is easy to write and read.</p>
                 <pre><code class="javascript">fixture `Example page`
     .page `https://devexpress.github.io/testcafe/example`;
@@ -216,8 +216,8 @@ test('Emulate user actions and perform a verification', async t => {
 
     await t.expect(location.pathname).eql('/testcafe/example/thank-you.html');
 });</code></pre>
-                <p>Using of TypeScript brings you all the advantages of strongly typed languages: rich coding assistance, painless scalability, check-as-you-type code verification and much more.</p>
-                <p>Additionally, TestCafe automatically generates source maps for easy debugging. To debug your test code, start a debugging session in an IDE that supports source maps.</p>
+                <p>By using TypeScript to write your TestCafe tests, you get the advantages of strongly-typed languages such as: rich coding assistance, painless scalability, check-as-you-type code verification, and much more.</p>
+                <p>To make debugging easier, TestCafe automatically generates source maps. To debug your test code, start a debugging session in an IDE that supports source maps.</p>
             </div>
         </div>
 		<div class="feature">

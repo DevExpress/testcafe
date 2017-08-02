@@ -805,6 +805,8 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Creates a selector that filters a matching set using the specified regular expression.</td>
 </tr>
 </tbody></table>
+
+<p>The <code>withText(text)</code> method selects elements that <em>contain</em> the specified String (instead of strict match). The <code>text</code> argument is case-sensitive.</p>
 <h4><a class="anchor" name="withattribute"></a>withAttribute <a class="permalink" href="#withattribute">#</a></h4>
 <table><thead>
 <tr>
@@ -840,6 +842,8 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>The attribute value. You can omit this parameter to select elements that have the <code>attrName</code> attribute regardless of the value.</td>
 </tr>
 </tbody></table>
+
+<p>If <code>attrName</code> or <code>attrValue</code> is a String, <code>withAttribute</code> selects an element by strict match.</p>
 <h4><a class="anchor" name="filter"></a>filter <a class="permalink" href="#filter">#</a></h4>
 <table><thead>
 <tr>
@@ -1379,12 +1383,11 @@ exposed by the selector in a single object.</p>
     <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="s1">'DOM Node Snapshot'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">sliderHandle</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#slider'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'span'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">sliderHandle</span>        <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#slider'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="s1">'span'</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">sliderHandleSnaphot</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sliderHandle</span><span class="p">();</span>
 
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">sliderHandle</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">'ui-slider-handle'</span><span class="p">)).</span><span class="nx">ok</span><span class="p">()</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">sliderHandle</span><span class="p">.</span><span class="nx">childElementCount</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">sliderHandle</span><span class="p">.</span><span class="nx">visible</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sliderHandleSnaphot</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">'ui-slider-handle'</span><span class="p">));</span>    <span class="c1">// =&gt; true</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sliderHandleSnaphot</span><span class="p">.</span><span class="nx">childElementCount</span><span class="p">);</span>               <span class="c1">// =&gt; 0</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>Note that if a selector initializer has several matching DOM nodes on the page,
