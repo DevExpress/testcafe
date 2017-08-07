@@ -45,6 +45,61 @@
 
   
   
+  
+
+  <script>
+    (function () {
+        var VISIT_DAY = {
+            first: 1,
+            second: 2,
+            more: 3
+        };
+
+        var isLandingPage = false;
+        var isGettingStarted = false;
+        var isDocumentation = false;
+
+        function updateVisitDay () {
+            var FIRST_VISIT_DAY_ITEM_NAME = 'first-visit-day';
+            var SECOND_VISIT_DAY_ITEM_NAME = 'second-visit-day';
+            var DIFFERENT_VISITS_DELAY = 12 * 60 * 60 * 1000; 
+            
+            // TODO: ignore old visits
+            var now = Date.now();
+            var firstVisit = window.localStorage.getItem(FIRST_VISIT_DAY_ITEM_NAME);
+            var secondVisit = window.localStorage.getItem(SECOND_VISIT_DAY_ITEM_NAME);
+
+            if(!firstVisit) {
+                window.localStorage.setItem(FIRST_VISIT_DAY_ITEM_NAME, now);
+                return VISIT_DAY.first;
+            }
+
+            firstVisit = parseInt(firstVisit);
+
+            if(!secondVisit) {
+                if(!isLandingPage && now - firstVisit >=DIFFERENT_VISITS_DELAY) {
+                    window.localStorage.setItem(SECOND_VISIT_DAY_ITEM_NAME, now);
+                    return VISIT_DAY.second;
+                }
+
+                return VISIT_DAY.first;
+            }
+            
+            secondVisit = parseInt(secondVisit);
+
+            return now - secondVisit >= DIFFERENT_VISITS_DELAY ? VISIT_DAY.more : VISIT_DAY.second;
+        }
+
+        window.needShowShareWidget = function () {
+            if(!isDocumentation || isGettingStarted)
+                return false;
+
+            var visitDay = updateVisitDay();
+
+            return visitDay === VISIT_DAY.more;
+        };
+    })();
+  </script>
 
   
 
