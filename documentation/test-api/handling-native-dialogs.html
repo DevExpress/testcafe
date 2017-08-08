@@ -45,12 +45,71 @@
 
   
   
+  
+
+  <script>
+    (function () {
+        var VISIT_DAY = {
+            first: 1,
+            second: 2,
+            more: 3
+        };
+
+        var isLandingPage = false;
+        var isGettingStarted = false;
+        var isDocumentation = true;
+
+        function updateVisitDay () {
+            var FIRST_VISIT_DAY_ITEM_NAME = 'first-visit-day';
+            var SECOND_VISIT_DAY_ITEM_NAME = 'second-visit-day';
+            var DIFFERENT_VISITS_DELAY = 12 * 60 * 60 * 1000; 
+            
+            // TODO: ignore old visits
+            var now = Date.now();
+            var firstVisit = window.localStorage.getItem(FIRST_VISIT_DAY_ITEM_NAME);
+            var secondVisit = window.localStorage.getItem(SECOND_VISIT_DAY_ITEM_NAME);
+
+            if(!firstVisit) {
+                window.localStorage.setItem(FIRST_VISIT_DAY_ITEM_NAME, now);
+                return VISIT_DAY.first;
+            }
+
+            firstVisit = parseInt(firstVisit);
+
+            if(!secondVisit) {
+                if(!isLandingPage && now - firstVisit >=DIFFERENT_VISITS_DELAY) {
+                    window.localStorage.setItem(SECOND_VISIT_DAY_ITEM_NAME, now);
+                    return VISIT_DAY.second;
+                }
+
+                return VISIT_DAY.first;
+            }
+            
+            secondVisit = parseInt(secondVisit);
+
+            return now - secondVisit >= DIFFERENT_VISITS_DELAY ? VISIT_DAY.more : VISIT_DAY.second;
+        }
+
+        window.needShowShareWidget = function () {
+            if(!isDocumentation || isGettingStarted)
+                return false;
+
+            var visitDay = updateVisitDay();
+
+            return visitDay === VISIT_DAY.more;
+        };
+    })();
+  </script>
 
   
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
     <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
+    <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
+    <script defer src="/testcafe/scripts/widget.js" type="text/javascript"></script>
+    <script src="/testcafe/scripts/mobile-detect.min.js" type="text/javascript"></script>
+
     <script>
         var MIN_BODY_WIDTH = 1000;
         var FOOTER_HEIGHT  = 63;
@@ -58,11 +117,12 @@
 
         var nav            = null;
         var article        = null;
-        var isMobileDevice = window.screen.width < 800 || window.screen.height < 800;
+        var md             = new MobileDetect(window.navigator.userAgent);
+        var isMobileDevice = !!md.mobile();
 
         function setNavTopPosition () {
             var isMobileZoomed = isMobileDevice && window.innerWidth !== document.body.scrollWidth;
-            var top = null;
+            var top            = null;
 
             if(isMobileDevice) {
                 top = window.pageYOffset >= HEADER_HEIGHT ? window.pageYOffset - HEADER_HEIGHT + 'px' : '0';
@@ -817,6 +877,33 @@ Each entry corresponds to a certain native dialog that appears in the main windo
 <span class="p">});</span>
 </code></pre></div>
 
+		</div>
+		<div class="widget-container hidden">
+			<div id="share-button">
+				<div id="graph-icon">
+					<img src="/testcafe/images/icon-share.svg"/>
+				</div>
+				<p>TELL<br/>YOUR<br/>FRIENDS</p>
+			</div>
+			<div class="widget-panel">
+				<div id="tweet">
+					<a href="https://twitter.com/intent/tweet?text=Check%20out%20%23TestCafe%20-%20a%20free%20node.js%20tool%20for%20e2e%20testing%20https%3A%2F%2Fdevexpress.github.io%2Ftestcafe%2F"
+					onclick="return !window.open(this.href, 'Twitter', 'width=690,height=450')"
+					target="_blank">
+						<img src="/testcafe/images/icon-tweet.svg"/>
+					</a>
+				</div>
+				<div id="facebook">
+					<a href="https://www.facebook.com/sharer/sharer.php?u=https://devexpress.github.io/testcafe/"
+					onclick="return !window.open(this.href, 'Facebook', 'width=500,height=500')"
+					target="_blank">
+						<image src="/testcafe/images/icon-facebook.svg"/>
+					</a>
+				</div>
+				<div id="collapse">
+					<img src="/testcafe/images/icon-close.svg"/>
+				</div>
+			</div>
 		</div>
 	</article>
 </main>
