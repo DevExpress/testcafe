@@ -41,8 +41,9 @@ describe('[API] TestController', function () {
 
         it('Should track missing `await`', function () {
             return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await', {
-                shouldFail: true,
-                only:       'chrome'
+                shouldFail:      true,
+                only:            'chrome',
+                selectorTimeout: 5000
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains(missingAwaitErrMsg);
@@ -52,7 +53,7 @@ describe('[API] TestController', function () {
 
         it('Should track missing `await` in chain', function () {
             return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await in chain',
-                { shouldFail: true, only: 'chrome' })
+                { shouldFail: true, only: 'chrome', selectorTimeout: 5000 })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains(missingAwaitErrMsg);
                     expect(errs[0]).to.contains("> 38 |        .click('#page2-btn2');");
@@ -61,7 +62,7 @@ describe('[API] TestController', function () {
 
         it('Should track missing `await` in the end of test', function () {
             return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await in the end of the test',
-                { shouldFail: true, only: 'chrome' })
+                { shouldFail: true, only: 'chrome', selectorTimeout: 5000 })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains(missingAwaitErrMsg);
                     expect(errs[0]).to.contains("> 44 |    t.click('#btn3');");
@@ -70,7 +71,7 @@ describe('[API] TestController', function () {
 
         it('Should track missing `await` for actions with error', function () {
             return runTests('./testcafe-fixtures/test-controller-test.js', 'Error caused by action with missing await',
-                { shouldFail: true, only: 'chrome' })
+                { shouldFail: true, only: 'chrome', selectorTimeout: 5000 })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains(missingAwaitErrMsg);
                     expect(errs[0]).to.contains("> 48 |    t.click('#error');");
@@ -81,7 +82,7 @@ describe('[API] TestController', function () {
 
         it('Should track missing `await` with disrupted chain', function () {
             return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await with disrupted chain',
-                { shouldFail: true, only: 'chrome' })
+                { shouldFail: true, only: 'chrome', selectorTimeout: 5000 })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains(missingAwaitErrMsg);
                     expect(errs[0]).to.contains("> 58 |    t.click('#btn2');");
@@ -90,7 +91,7 @@ describe('[API] TestController', function () {
 
         it('Should track missing `await` in helper', function () {
             return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await in helper',
-                { shouldFail: true, only: 'chrome' })
+                { shouldFail: true, only: 'chrome', selectorTimeout: 5000 })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains(missingAwaitErrMsg);
                     expect(errs[0]).to.contains("> 2 |    t.click('#yo');");
@@ -99,7 +100,7 @@ describe('[API] TestController', function () {
 
         it('Should track missing `await` before error', function () {
             return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await before error',
-                { shouldFail: true, only: 'chrome' })
+                { shouldFail: true, only: 'chrome', selectorTimeout: 5000 })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains(missingAwaitErrMsg);
                     expect(errs[0]).to.contains("> 68 |    t.click('#btn2'); ");
