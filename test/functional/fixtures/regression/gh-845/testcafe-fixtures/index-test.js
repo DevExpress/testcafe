@@ -6,14 +6,9 @@ fixture `gh845`
 
 
 const MAX_UNLOADING_TIMEOUT = 15 * 1000;
-const getDelay              = ClientFunction(() => Date.now() - window.startTime);
-const setStartTime          = ClientFunction(() => {
-    window.startTime = Date.now();
-});
+const getDelay              = ClientFunction(() => Date.now() - window.mousedownTime);
 
 test('Click on a download link', async t => {
-    await setStartTime();
-
     await t.click('#link');
 
     var delay = await getDelay();
@@ -23,8 +18,6 @@ test('Click on a download link', async t => {
 
 test('Click on a download link in iframe', async t => {
     await t.switchToIframe('#iframe');
-
-    await setStartTime();
 
     await t.click('#link');
 
