@@ -121,10 +121,10 @@ export default class TestRunController extends EventEmitter {
             return null;
         }
 
-        testRun.start();
-
         testRun.once('start', () => this.emit('test-run-start'));
         testRun.once('done', () => this._testRunDone());
+
+        testRun.start();
 
         return this.proxy.openSession(testRun.test.pageUrl, testRun, this.opts.externalProxyHost);
     }

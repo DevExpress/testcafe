@@ -1,11 +1,16 @@
 var expect = require('chai').expect;
 
+//GH-1674
+const TEST_DURATION_BOUND = 10000;
+
 // NOTE: we run tests in chrome only, because we mainly test server API functionality.
 // Actions functionality is tested in lower-level raw API.
 describe('[API] t.click()', function () {
     it('Should make click on a button', function () {
         return runTests('./testcafe-fixtures/click-test.js', 'Click button', { shouldFail: true, only: 'chrome' })
             .catch(function (errs) {
+                // GH-1674
+                expect(testReport.durationMs).below(TEST_DURATION_BOUND);
                 expect(errs[0]).to.contains('Button clicked');
                 expect(errs[0]).to.contains(
                     ' 15 |test(\'Incorrect action option\', async t => {' +
