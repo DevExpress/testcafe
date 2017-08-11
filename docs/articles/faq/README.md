@@ -5,7 +5,7 @@ permalink: /faq/
 ---
 # FAQ
 
-* [Troubleshooting](#Troubleshooting)
+* [Troubleshooting](#troubleshooting)
   * [I have installed TestCafe but I cannot run it. What's your advice?](#i-have-installed-testcafe-but-i-cannot-run-it-whats-your-advice)
   * [When I run a TestCafe test, I get an unexpected error. Do you know any possible reasons?](#when-i-run-a-testcafe-test-i-get-an-unexpected-error-do-you-know-any-possible-reasons)
   * [I have installed TestCafe plugins but they do not work. What have I done wrong?](#i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong)
