@@ -1,6 +1,8 @@
+var expect                     = require('chai').expect;
 var CUSTOM_JS_ERROR            = '%TC_TEST_ERR%';
 var errorInEachBrowserContains = require('../../assertion-helper.js').errorInEachBrowserContains;
 
+const TEST_DURATION_BOUND = 10000;
 
 describe('[Legacy] Uncaught js errors', function () {
     it('Should fail if there is no onerror handler', function () {
@@ -60,6 +62,14 @@ describe('[Legacy] Uncaught js errors', function () {
             return runTests('testcafe-fixtures/no-handler.test.js', null, { shouldFail: true })
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, 'on page "http://localhost:3000/legacy-fixtures/page-js-errors/pages/no-handler.html"', 0);
+                });
+        });
+
+        it('Test report should contains correct duration time (GH-22)', function () {
+            return runTests('./testcafe-fixtures/unreachable-page.test.js', 'Unreachable page')
+                .catch(function (errs) {
+                    expect(testReport.durationMs).below(TEST_DURATION_BOUND);
+                    errorInEachBrowserContains(errs, 'Failed to find a DNS-record for the resource at', 0);
                 });
         });
     });
