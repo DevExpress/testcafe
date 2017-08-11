@@ -69,8 +69,8 @@ describe('[Legacy] Uncaught js errors', function () {
             return runTests('./testcafe-fixtures/unreachable-page.test.js', 'Unreachable page')
                 .catch(function (errs) {
                     expect(testReport.durationMs).below(TEST_DURATION_BOUND);
-                    errorInEachBrowserContains(errs, "Failed to find a DNS-record for the resource at", 0);
-                })
+                    errorInEachBrowserContains(errs, 'Failed to find a DNS-record for the resource at', 0);
+                });
         });
     });
 });
