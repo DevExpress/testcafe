@@ -5,103 +5,17 @@ permalink: /faq/
 ---
 # FAQ
 
-* [Troubleshooting](#troubleshooting)
-  * [I have installed TestCafe but I cannot run it. What's your advice?](#i-have-installed-testcafe-but-i-cannot-run-it-whats-your-advice)
-  * [When I run a TestCafe test, I get an unexpected error. Do you know any possible reasons?](#when-i-run-a-testcafe-test-i-get-an-unexpected-error-do-you-know-any-possible-reasons)
-  * [I have installed TestCafe plugins but they do not work. What have I done wrong?](#i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong)
-  * [My test fails because TestCafe could not find the required webpage element. What could go wrong?](#my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-what-could-go-wrong)
 * [General Questions](#general-questions)
   * [I've heard that TestCafe doesn't use Selenium under the hood. How does it actually operate?](#ive-heard-that-testcafe-doesnt-use-selenium-under-the-hood-how-does-it-actually-operate)
   * [I've noticed there are two versions of TestCafe: a paid version and an open-source version. Why have two versions and what's the difference between them?](#ive-noticed-there-are-two-versions-of-testcafe-a-paid-version-and-an-open-source-version-why-have-two-versions-and-whats-the-difference-between-them)
   * [Which browsers does TestCafe support? What are the exact supported versions?](#which-browsers-does-testcafe-support-what-are-the-exact-supported-versions)
   * [Can I use third-party modules in tests?](#can-i-use-third-party-modules-in-tests)
   * [How do I work with configuration files and environment variables?](#how-do-i-work-with-configuration-files-and-environment-variables)
-
-## Troubleshooting
-
-### I have installed TestCafe but I cannot run it. What's your advice?
-
-First, make sure that your firewall does not block ports used by TestCafe.
-By default, TestCafe chooses free ports automatically. That is why it can be
-hard to determine which ports it actually uses. In this instance, use
-the [--ports](../documentation/using-testcafe/command-line-interface.md#--ports-port1port2) command line option
-or the [createTestCafe](../documentation/using-testcafe/programming-interface/createtestcafe.md)
-API factory function to specify custom ports. After that, you can check that these specific ports are not blocked by the firewall.
-
-Another reason for this problem can be the proxy server you use to access the Internet.
-If your network is connected to the Web via a proxy, use
-the [--proxy](../documentation/using-testcafe/command-line-interface.md#--proxy-host) command line option
-or the [useProxy](../documentation/using-testcafe/programming-interface/runner.md#useproxy) API method
-to specify the proxy address.
-
-Please also note that if you run TestCafe on Linux, you need to make sure the system is running
-the [X11](https://en.wikipedia.org/wiki/X_Window_System) server.
-Without X11, you can only run tests in cloud services and headless Google Chrome.
-However, if you use the [Xvbf](https://en.wikipedia.org/wiki/Xvfb) server, you can run any other browser in the headless mode.
-
-### When I run a TestCafe test, I get an unexpected error. Do you know any possible reasons?
-
-The most common reason for this is a JavaScript error on the tested page.
-Open this page in the browser, pop up the console and see if the page has any errors.
-In case there are errors, you can either fix them or use
-the [--skip-js-errors](../documentation/using-testcafe/command-line-interface.md#-e---skip-js-errors) flag
-to tell TestCafe to skip them.
-
-If this does not help, try running the problematic test in the incognito mode.
-You can do this by adding an appropriate flag after the browser name.
-
-```sh
-testcafe "chrome -incognito" tests/test.js
-```
-
-```sh
-testcafe "firefox –private-window" tests/test.js
-```
-
-If the test runs successfully, the issue may be caused by browser extensions.
-Try disabling them one by one and restart the test in the regular mode at each iteration.
-This way you will find out which extension prevents the test from running.
-
-In rare cases, third-party modules can cause this kind of error.
-If you use a locally installed TestCafe, try installing it globally and running
-the test outside of the project to eliminate the influence of third-party modules.
-
-### I have installed TestCafe plugins but they do not work. What have I done wrong?
-
-If you are using a locally installed TestCafe, plugins should also be installed locally.
-
-```sh
-npm install --save-dev {pluginName}
-```
-
-If you are going to use a global TestCafe installation or you wish to use the plugin in other projects as well, install it globally.
-
-```sh
-npm install -g {pluginName}
-```
-
-### My test fails because TestCafe could not find the required webpage element. What could go wrong?
-
-To determine the cause of this issue, first try debugging the tested page with TestCafe built-in debugger.
-To do this, add the [t.debug](../documentation/test-api/debugging.md) method to test code.
-Then run the test and wait until the browser stops at the breakpoint.
-After this, use the browser's development tools to check that:
-
-* the element is present on the page;
-* the element is visible (TestCafe considers it visible if it does not have `display` set to `none`,
-  `visibility` set to `hidden` or the zero `width` or `height`);
-* the element's part targeted by the action is visible
-  (by default, this is the center of the element; it can be changed by using
-  the [`offsetX` and `offsetY`](https://devexpress.github.io/testcafe/documentation/test-api/actions/action-options.html#mouse-action-options)
-  parameters);
-* the element is not in an `<iframe>` (if it is, use the
-  [t.switchToIframe](https://devexpress.github.io/testcafe/documentation/test-api/working-with-iframes.html) method
-  to switch to the appropriate `<iframe>`).
-
-In addition, try running the test at full screen. If it passes, then your webpage hides
-the target element when it is resized to smaller dimensions.
-
-Finally, try updating TestCafe to the latest version to see if the problem persists.
+* [Troubleshooting](#troubleshooting)
+  * [I have installed TestCafe but I cannot run it. What's your advice?](#i-have-installed-testcafe-but-i-cannot-run-it-whats-your-advice)
+  * [When I run a TestCafe test, I get an unexpected error. Do you know any possible reasons?](#when-i-run-a-testcafe-test-i-get-an-unexpected-error-do-you-know-any-possible-reasons)
+  * [I have installed TestCafe plugins but they do not work. What have I done wrong?](#i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong)
+  * [My test fails because TestCafe could not find the required webpage element. What could go wrong?](#my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-what-could-go-wrong)
 
 ## General Questions
 
@@ -251,3 +165,89 @@ testcafe chrome test.js
 ```
 
 In test code, you can access this variable as `process.env.DEV_MODE`.
+
+## Troubleshooting
+
+### I have installed TestCafe but I cannot run it. What's your advice?
+
+First, make sure that your firewall does not block ports used by TestCafe.
+By default, TestCafe chooses free ports automatically. That is why it can be
+hard to determine which ports it actually uses. In this instance, use
+the [--ports](../documentation/using-testcafe/command-line-interface.md#--ports-port1port2) command line option
+or the [createTestCafe](../documentation/using-testcafe/programming-interface/createtestcafe.md)
+API factory function to specify custom ports. After that, you can check that these specific ports are not blocked by the firewall.
+
+Another reason for this problem can be the proxy server you use to access the Internet.
+If your network is connected to the Web via a proxy, use
+the [--proxy](../documentation/using-testcafe/command-line-interface.md#--proxy-host) command line option
+or the [useProxy](../documentation/using-testcafe/programming-interface/runner.md#useproxy) API method
+to specify the proxy address.
+
+Please also note that if you run TestCafe on Linux, you need to make sure the system is running
+the [X11](https://en.wikipedia.org/wiki/X_Window_System) server.
+Without X11, you can only run tests in cloud services and headless Google Chrome.
+However, if you use the [Xvbf](https://en.wikipedia.org/wiki/Xvfb) server, you can run any other browser in the headless mode.
+
+### When I run a TestCafe test, I get an unexpected error. Do you know any possible reasons?
+
+The most common reason for this is a JavaScript error on the tested page.
+Open this page in the browser, pop up the console and see if the page has any errors.
+In case there are errors, you can either fix them or use
+the [--skip-js-errors](../documentation/using-testcafe/command-line-interface.md#-e---skip-js-errors) flag
+to tell TestCafe to skip them.
+
+If this does not help, try running the problematic test in the incognito mode.
+You can do this by adding an appropriate flag after the browser name.
+
+```sh
+testcafe "chrome -incognito" tests/test.js
+```
+
+```sh
+testcafe "firefox –private-window" tests/test.js
+```
+
+If the test runs successfully, the issue may be caused by browser extensions.
+Try disabling them one by one and restart the test in the regular mode at each iteration.
+This way you will find out which extension prevents the test from running.
+
+In rare cases, third-party modules can cause this kind of error.
+If you use a locally installed TestCafe, try installing it globally and running
+the test outside of the project to eliminate the influence of third-party modules.
+
+### I have installed TestCafe plugins but they do not work. What have I done wrong?
+
+If you are using a locally installed TestCafe, plugins should also be installed locally.
+
+```sh
+npm install --save-dev {pluginName}
+```
+
+If you are going to use a global TestCafe installation or you wish to use the plugin in other projects as well, install it globally.
+
+```sh
+npm install -g {pluginName}
+```
+
+### My test fails because TestCafe could not find the required webpage element. What could go wrong?
+
+To determine the cause of this issue, first try debugging the tested page with TestCafe built-in debugger.
+To do this, add the [t.debug](../documentation/test-api/debugging.md) method to test code.
+Then run the test and wait until the browser stops at the breakpoint.
+After this, use the browser's development tools to check that:
+
+* the element is present on the page;
+* the element is visible (TestCafe considers it visible if it does not have `display` set to `none`,
+  `visibility` set to `hidden` or the zero `width` or `height`);
+* the element's part targeted by the action is visible
+  (by default, this is the center of the element; it can be changed by using
+  the [`offsetX` and `offsetY`](https://devexpress.github.io/testcafe/documentation/test-api/actions/action-options.html#mouse-action-options)
+  parameters);
+* the element is not in an `<iframe>` (if it is, use the
+  [t.switchToIframe](https://devexpress.github.io/testcafe/documentation/test-api/working-with-iframes.html) method
+  to switch to the appropriate `<iframe>`).
+
+In addition, try running the test at full screen. If it passes, then your webpage hides
+the target element when it is resized to smaller dimensions.
+
+Finally, try updating TestCafe to the latest version to see if the problem persists.
