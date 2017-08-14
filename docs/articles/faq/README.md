@@ -169,7 +169,7 @@ In test code, you can access this variable as `process.env.DEV_MODE`.
 ### I have installed TestCafe but I cannot run it. What should I do?
 
 **Check your firewall.** First, make sure that your firewall does not block ports used by TestCafe.
-By default, TestCafe chooses free ports automatically. Use the 
+By default, TestCafe chooses free ports automatically. Use the
 [--ports](../documentation/using-testcafe/command-line-interface.md#--ports-port1port2) command line option
 or the [createTestCafe](../documentation/using-testcafe/programming-interface/createtestcafe.md)
 API factory function to specify custom ports. After that, check that these specific ports are not blocked by the firewall.
