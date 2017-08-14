@@ -666,11 +666,19 @@ test('Right click button', async t => {
 
 
 test('Select text in input', async t => {
-    await t.selectText('#input', 2, 4);
+    await t
+        .selectText('#input', 2, 4)
+        .selectText('#input', 2)
+        .selectText('#input');
 });
 
 test('Select content in textarea', async t => {
-    await t.selectTextAreaContent('#textarea', 0, 2, 1, 3);
+    await t
+        .selectTextAreaContent('#textarea', 0, 2, 1, 3)
+        .selectTextAreaContent('#textarea', 0, 2, 1)
+        .selectTextAreaContent('#textarea', 0, 2)
+        .selectTextAreaContent('#textarea', 1)
+        .selectTextAreaContent('#textarea');
 });
 
 test('Select editable content', async t => {

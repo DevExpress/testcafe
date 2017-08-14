@@ -878,10 +878,10 @@ interface TestController {
      * @param options
      */
     selectTextAreaContent(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                          startLine: number,
-                          startPos: number,
-                          endLine: number,
-                          endPos: number,
+                          startLine?: number,
+                          startPos?: number,
+                          endLine?: number,
+                          endPos?: number,
                           options?: ActionOptions): TestControllerPromise;
     /**
      * Performs selection within editable content
