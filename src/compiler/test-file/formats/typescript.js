@@ -75,7 +75,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         // <program> will be compiled. <program> contains a file specified in createProgram() plus all its dependencies.
         // This mode is much faster than compiling files one-by-one, and it is used in the tsc CLI compiler.
         program.emit(void 0, (outputName, result, writeBOM, onError, sources) => {
-            var sourcePath = TypeScriptTestFileCompiler._normalizeFilename(sources[0].path);
+            var sourcePath = TypeScriptTestFileCompiler._normalizeFilename(sources[0].fileName);
 
             this.cache[sourcePath] = result;
         });
