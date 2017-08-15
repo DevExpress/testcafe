@@ -10,11 +10,11 @@ async function getActiveTab (cdpPort, browserId) {
     return tab;
 }
 
-async function setEmulationBounds ({ client, config, viewportSize }) {
+async function setEmulationBounds ({ client, config, viewportSize, defaultScale }) {
     await client.Emulation.setDeviceMetricsOverride({
         width:             viewportSize.width,
         height:            viewportSize.height,
-        deviceScaleFactor: config.scaleFactor,
+        deviceScaleFactor: config.scaleFactor || defaultScale,
         mobile:            config.mobile,
         fitWindow:         false
     });
@@ -58,6 +58,11 @@ export async function createClient (runtimeInfo) {
 
     await client.Page.enable();
     await client.Network.enable();
+    await client.Runtime.enable();
+
+    var devicePixelRatioQueryResult = await client.Runtime.evaluate({ expression: 'window.devicePixelRatio' });
+
+    runtimeInfo.defaultScale = devicePixelRatioQueryResult.result.value;
 
     if (config.emulation)
         await setEmulation(runtimeInfo);
