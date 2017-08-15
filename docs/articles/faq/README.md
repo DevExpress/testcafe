@@ -62,13 +62,13 @@ about the new product that will be called ***TestCafe Studio***.
 
 ### Which browsers does TestCafe support? What are the exact supported versions?
 
-You can find the list of oficially supported browsers in
+You can find the list of officially supported browsers in
 [our documentation](../documentation/using-testcafe/common-concepts/browser-support.md).
 These are the browsers we are testing TestCafe with.
 
 At the same time, TestCafe should work with almost every modern browser with extensive support for HTML5.
 
-TestCafe works with two latest versions of oficially supported browsers.
+TestCafe works with two latest versions of officially supported browsers.
 Exceptions are specified explicitly in the supported browsers list.
 However, TestCafe usually works in any version of such browsers released in the last three years.
 
