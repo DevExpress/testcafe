@@ -12,12 +12,12 @@ import { MoveOptions } from '../../../test-run/commands/options';
 var extend = hammerhead.utils.extend;
 
 class ElementState {
-    constructor (element, clientPoint, screenPoint, isTarget, inMoving) {
+    constructor ({ element = null, clientPoint = null, screenPoint = null, isTarget = false, inMoving = false }) {
         this.element     = element;
-        this.clientPoint = clientPoint || null;
-        this.screenPoint = screenPoint || null;
-        this.isTarget    = isTarget || false;
-        this.inMoving    = inMoving || false;
+        this.clientPoint = clientPoint;
+        this.screenPoint = screenPoint;
+        this.isTarget    = isTarget;
+        this.inMoving    = inMoving;
     }
 }
 
@@ -43,7 +43,9 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
         var moveOptions    = new MoveOptions(extend({ skipScrolling: true }, this.options), false);
         var moveAutomation = new MoveAutomation(this.element, moveOptions);
 
-        return moveAutomation.run();
+        return moveAutomation
+            .run()
+            .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }
 
     _scrollToElement () {
@@ -72,7 +74,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                         var foundElement = element;
 
                         if (!foundElement)
-                            return new ElementState(null);
+                            return new ElementState({});
 
                         var isTarget = !expectedElement || corrected || foundElement === this.element;
 
@@ -92,7 +94,13 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                         // changed it means the element is fixed on the page (it can be implemented via script).
                         var targetElementIsMoving = offsetPositionChanged && clientPositionChanged;
 
-                        return new ElementState(element, clientPoint, screenPointAfterAction, isTarget, targetElementIsMoving);
+                        return new ElementState({
+                            element,
+                            clientPoint,
+                            screenPoint: screenPointAfterAction,
+                            isTarget,
+                            inMoving:    targetElementIsMoving
+                        });
                     });
             });
     }
@@ -103,8 +111,6 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
 
         if (useStrictElementCheck && (!state.isTarget || state.inMoving))
             throw new Error(AUTOMATION_ERROR_TYPES.foundElementIsNotTarget);
-
-        return state;
     }
 
     _ensureElement (useStrictElementCheck, skipCheckAfterMoving) {
@@ -114,7 +120,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
             .then(() => this._wrapAction(() => this._moveToElement()))
             .then(state => {
                 if (!skipCheckAfterMoving)
-                    return VisibleElementAutomation._checkElementState(state, useStrictElementCheck);
+                    VisibleElementAutomation._checkElementState(state, useStrictElementCheck);
 
                 return state;
             })

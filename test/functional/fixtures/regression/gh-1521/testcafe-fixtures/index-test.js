@@ -167,5 +167,6 @@ test
         await t
             .hover('#loading-panel')
             .hover(target)
-            .expect(ClientFunction(() => window.mouseOverRaised)()).ok('', { timeout: 10000 });
+            .expect(ClientFunction(() => window.mouseOverRaised)()).ok('', { timeout: 10000 })
+            .expect(ClientFunction(() => window.mouseMoveRaised)()).ok('');
     });
