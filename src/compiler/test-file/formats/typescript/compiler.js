@@ -1,7 +1,7 @@
 import path from 'path';
 import OS from 'os-family';
-import APIBasedTestFileCompilerBase from '../api-based';
-import ESNextTestFileCompiler from './es-next';
+import APIBasedTestFileCompilerBase from '../../api-based';
+import ESNextTestFileCompiler from '../es-next/compiler';
 
 
 const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH]]);
@@ -20,7 +20,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             target:                  2 /* ES6 */,
             lib:                     ['lib.es6.d.ts'],
             baseUrl:                 __dirname,
-            paths:                   { testcafe: ['../../../../ts-defs/index.d.ts'] },
+            paths:                   { testcafe: ['../../../../../ts-defs/index.d.ts'] },
             suppressOutputPathCheck: true
         };
     }

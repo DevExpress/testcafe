@@ -1,5 +1,5 @@
-import loadBabelLibs from '../../load-babel-libs';
-import APIBasedTestFileCompilerBase from '../api-based';
+import loadBabelLibs from '../../../load-babel-libs';
+import APIBasedTestFileCompilerBase from '../../api-based';
 
 const BABEL_RUNTIME_RE = /^babel-runtime(\\|\/|$)/;
 const FLOW_MARKER_RE   = /^\s*\/\/\s*@flow\s*\n|^\s*\/\*\s*@flow\s*\*\//;
