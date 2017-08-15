@@ -47,7 +47,7 @@ exports.cursor                       = cursor;
 
 exports.get = require;
 
-Object.defineProperty(window, '%testCafeAutomation%', {
+hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeAutomation%', {
     enumerable:   false,
     configurable: false,
     writable:     false,

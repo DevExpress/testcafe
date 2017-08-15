@@ -58,7 +58,7 @@ exports.show = function (showTopRoot) {
     return Promise.resolve();
 };
 
-Object.defineProperty(window, '%testCafeUI%', {
+hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeUI%', {
     enumerable:   false,
     configurable: false,
     writable:     false,

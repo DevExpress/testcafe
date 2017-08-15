@@ -1,7 +1,8 @@
 {
   "rules": {
     "hammerhead/use-hh-promise": 2,
-    "hammerhead/use-native-methods": [2, ["setTimeout", "setInterval", "clearTimeout", "clearInterval"]]
+    "hammerhead/use-native-methods": [2, ["setTimeout", "setInterval", "clearTimeout", "clearInterval"]],
+    "no-restricted-globals": [2, "Object", "JSON"]
   },
   "env": {
     "browser": true,

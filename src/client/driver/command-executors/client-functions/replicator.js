@@ -2,6 +2,7 @@ import Replicator from 'replicator';
 import evalFunction from './eval-function';
 import { NodeSnapshot, ElementSnapshot } from './selector-executor/node-snapshots';
 import { DomNodeClientFunctionResultError, UncaughtErrorInCustomDOMPropertyCode } from '../../../../errors/test-run';
+import hammerhead from '../../deps/hammerhead';
 
 // NOTE: save original ctors because they may be overwritten by page code
 var Node     = window.Node;
@@ -45,7 +46,7 @@ export class SelectorNodeTransform {
     }
 
     _extend (snapshot, node) {
-        Object.keys(this.customDOMProperties).forEach(prop => {
+        hammerhead.nativeMethods.objectKeys.call(window.Object, this.customDOMProperties).forEach(prop => {
             try {
                 snapshot[prop] = this.customDOMProperties[prop](node);
             }

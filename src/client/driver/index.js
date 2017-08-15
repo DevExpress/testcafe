@@ -4,21 +4,21 @@ import IframeDriver from './iframe-driver';
 import ScriptExecutionBarrier from './script-execution-barrier';
 
 
-Object.defineProperty(window, '%testCafeDriver%', {
+hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeDriver%', {
     enumerable:   false,
     configurable: false,
     writable:     false,
     value:        Driver
 });
 
-Object.defineProperty(window, '%testCafeIframeDriver%', {
+hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeIframeDriver%', {
     enumerable:   false,
     configurable: false,
     writable:     false,
     value:        IframeDriver
 });
 
-Object.defineProperty(window, '%ScriptExecutionBarrier%', {
+hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%ScriptExecutionBarrier%', {
     enumerable:   false,
     configurable: false,
     writable:     false,

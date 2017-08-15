@@ -1,4 +1,5 @@
 import { InvalidSelectorResultError } from '../../../../../errors/test-run';
+import hammerhead from '../../../deps/hammerhead';
 
 // NOTE: save original ctors and methods because they may be overwritten by page code
 var isArray        = Array.isArray;
@@ -24,7 +25,7 @@ function getNodeByIndex (collection, index) {
 
 
 // Selector filter
-Object.defineProperty(window, '%testCafeSelectorFilter%', {
+hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeSelectorFilter%', {
     value: (node, options) => {
         var filtered = [];
 

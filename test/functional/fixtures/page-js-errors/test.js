@@ -36,10 +36,29 @@ describe('Test should fail after js-error on the page', function () {
                 errorInEachBrowserContains(errs, 'Error before reload', 0);
             });
     });
+
+    it('if unhandled promise rejection is raised', function () {
+        return runTests('./testcafe-fixtures/unhandled-promise-rejection-test.js', 'Click button',
+            {
+                shouldFail: true,
+                only:       'chrome'
+            })
+            .catch(function (errs) {
+                errorInEachBrowserContains(errs, 'Rejection reason', 0);
+            });
+    });
 });
 
-describe('Should ignore an js-error on the page', function () {
-    it('if the skipJsErrors option is set to true', function () {
+describe('Should ignore an js-error on the page if the skipJsErrors option is set to true', function () {
+    it('uncaught JavaScript error', function () {
         return runTests('./testcafe-fixtures/error-after-click-test.js', 'Click button', { skipJsErrors: true });
+    });
+
+    it ('unhandled Promise rejection', function () {
+        return runTests('./testcafe-fixtures/unhandled-promise-rejection-test.js', 'Click button',
+            {
+                skipJsErrors: true,
+                only:         'chrome'
+            });
     });
 });
