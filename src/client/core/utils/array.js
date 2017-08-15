@@ -1,3 +1,5 @@
+import hammerhead from '../deps/hammerhead';
+
 var nativeIndexOf = Array.prototype.indexOf;
 var nativeForEach = Array.prototype.forEach;
 var nativeSome    = Array.prototype.some;
@@ -22,7 +24,7 @@ export function reverse (arr) {
 }
 
 export function isArray (arg) {
-    return Object.prototype.toString.call(arg) === '[object Array]';
+    return hammerhead.nativeMethods.objectToString.call(arg) === '[object Array]';
 }
 
 export function find (arr, callback) {

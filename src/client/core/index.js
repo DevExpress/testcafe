@@ -56,7 +56,7 @@ exports.selectorAttributeFilter = selectorAttributeFilter;
 
 exports.get = require;
 
-Object.defineProperty(window, '%testCafeCore%', {
+hammerhead.nativeMethods.objectDefineProperty.call(window, window, '%testCafeCore%', {
     enumerable:   false,
     configurable: false,
     writable:     false,

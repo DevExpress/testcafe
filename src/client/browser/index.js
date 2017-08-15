@@ -18,7 +18,9 @@ function sendXHR (url, createXHR, method = 'GET', data = null) {
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200)
+                    /*eslint-disable no-restricted-globals*/
                     resolve(xhr.responseText ? JSON.parse(xhr.responseText) : '');
+                    /*eslint-enable no-restricted-globals*/
                 else
                     reject('disconnected');
             }
@@ -48,9 +50,9 @@ function executeInitScript (initScriptUrl, createXHR) {
             if (!res.code)
                 return null;
 
-            /* eslint-disable no-eval */
+            /* eslint-disable no-eval,  no-restricted-globals*/
             return sendXHR(initScriptUrl, createXHR, 'POST', JSON.stringify(eval(res.code)));
-            /* eslint-enable no-eval */
+            /* eslint-enable no-eval, no-restricted-globals */
         })
         .then(() => {
             window.setTimeout(() => executeInitScript(initScriptUrl, createXHR), 1000);

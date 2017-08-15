@@ -113,6 +113,7 @@ export default class Driver {
         preventRealEvents();
 
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
+        hammerhead.on(hammerhead.EVENTS.unhandledRejection, err => this._onJsError(err));
     }
 
     set speed (val) {
