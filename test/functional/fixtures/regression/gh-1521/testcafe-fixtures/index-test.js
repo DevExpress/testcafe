@@ -158,3 +158,14 @@ test
             .click(target)
             .expect(ClientFunction(() => window.clickCount)()).eql(1, 'check element click count', { timeout: 0 });
     });
+
+test
+    .page('http://localhost:3000/fixtures/regression/gh-1521/pages/hover-element.html')
+    ('Hover to an overlapped element', async t => {
+        const target = Selector('#target', { timeout: 5000 });
+
+        await t
+            .hover('#loading-panel')
+            .hover(target)
+            .expect(ClientFunction(() => window.mouseOverRaised)()).ok('', { timeout: 10000 });
+    });

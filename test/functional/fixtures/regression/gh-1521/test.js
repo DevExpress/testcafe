@@ -40,4 +40,8 @@ describe('[Regression](GH-1521)', function () {
     it('Should not wait if the offset position of a fixed element is changing', function () {
         return runTests('testcafe-fixtures/index-test.js', 'Click on a fixed element', { only: 'chrome' });
     });
+
+    it('Should raise mouseover/mousemove if hovered element was overlapped', function () {
+        return runTests('testcafe-fixtures/index-test.js', 'Hover to an overlapped element', { only: 'chrome' });
+    });
 });
