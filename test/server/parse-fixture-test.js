@@ -230,3 +230,15 @@ describe('Should get structure of typescript files', function () {
         return testTypeScriptFilesParser('./data/test-suites/typescript-parser-smoke', expectedStructure);
     });
 });
+
+describe('Regression', function () {
+    it('Parser fails with "JS allocation failed" error (GH-1771)', function () {
+        var expectedStructure = [[
+            new Fixture('Fixture', 93, 135, new Loc(5, 0, 6, 24), [
+                new Test('Test', 138, 167, new Loc(8, 0, 10, 2))
+            ])
+        ]];
+
+        return testJSFilesParser('./data/test-suites/regression-gh-1771', expectedStructure);
+    });
+});
