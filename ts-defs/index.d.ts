@@ -864,8 +864,8 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     selectText(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-               startPos: number,
-               endPos: number,
+               startPos?: number,
+               endPos?: number,
                options?: ActionOptions): TestControllerPromise;
     /**
      * Selects `<textarea>` content.
@@ -878,10 +878,10 @@ interface TestController {
      * @param options
      */
     selectTextAreaContent(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                          startLine: number,
-                          startPos: number,
-                          endLine: number,
-                          endPos: number,
+                          startLine?: number,
+                          startPos?: number,
+                          endLine?: number,
+                          endPos?: number,
                           options?: ActionOptions): TestControllerPromise;
     /**
      * Performs selection within editable content
