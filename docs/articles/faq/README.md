@@ -162,6 +162,8 @@ set DEV_MODE=true
 testcafe chrome test.js
 ```
 
+On macOS, [the workflow is longer](https://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x).
+
 In test code, you can access this variable as `process.env.DEV_MODE`.
 
 ## Troubleshooting
