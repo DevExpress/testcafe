@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Click</title>
+</head>
+<body>
+<input type="button" id="input" value="input"/>
+<div id="text">div text</div>
+
+<script>
+    window.setTimeout(function () {
+        var input2 = document.createElement('input');
+
+        input2.type  = 'button';
+        input2.id    = 'input2';
+        input2.value = 'input2';
+
+        document.body.appendChild(input2);
+    }, 1500);
+</script>
+</body>
+</html>

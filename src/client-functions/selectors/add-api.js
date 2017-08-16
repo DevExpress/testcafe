@@ -273,6 +273,15 @@ function createDerivativeSelectorWithFilter (getSelector, SelectorBuilder, selec
 var filterByText = convertFilterToClientFunctionIfNecessary('filter', selectorTextFilter);
 var filterByAttr = convertFilterToClientFunctionIfNecessary('filter', selectorAttributeFilter);
 
+function ensureRegExpContext (str) {
+    // NOTE: if a regexp is created in a separate context (via the 'vm' module) we
+    // should wrap it with new RegExp() to make the `instanceof RegExp` check successful.
+    if (typeof str !== 'string' && !(str instanceof RegExp))
+        return new RegExp(str);
+
+    return str;
+}
+
 function addFilterMethods (obj, getSelector, SelectorBuilder) {
     obj.nth = index => {
         assertType(is.number, 'nth', '"index" argument', index);
@@ -284,6 +293,8 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
 
     obj.withText = text => {
         assertType([is.string, is.regExp], 'withText', '"text" argument', text);
+
+        text = ensureRegExpContext(text);
 
         var selectorFn = () => {
             /* eslint-disable no-undef */
@@ -304,8 +315,12 @@ function addFilterMethods (obj, getSelector, SelectorBuilder) {
     obj.withAttribute = (attrName, attrValue) => {
         assertType([is.string, is.regExp], 'withAttribute', '"attrName" argument', attrName);
 
-        if (attrValue !== void 0)
+        attrName = ensureRegExpContext(attrName);
+
+        if (attrValue !== void 0) {
             assertType([is.string, is.regExp], 'withAttribute', '"attrValue" argument', attrValue);
+            attrValue = ensureRegExpContext(attrValue);
+        }
 
         var selectorFn = () => {
             /* eslint-disable no-undef */
