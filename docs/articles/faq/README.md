@@ -7,7 +7,7 @@ permalink: /faq/
 
 * [General Questions](#general-questions)
   * [I've heard that TestCafe doesn't use Selenium. How does it operate?](#ive-heard-that-testcafe-doesnt-use-selenium-how-does-it-operate)
-  * [I've noticed there are two versions of TestCafe: a paid version and an open-source version. Why have two versions and what's the difference between them?](#ive-noticed-there-are-two-versions-of-testcafe-a-paid-version-and-an-open-source-version-why-have-two-versions-and-whats-the-difference-between-them)
+  * [What's the difference between a paid and an open-source TestCafe versions?](#whats-the-difference-between-a-paid-and-an-open-source-testcafe-versions)
   * [Which browsers does TestCafe support? What are the exact supported versions?](#which-browsers-does-testcafe-support-what-are-the-exact-supported-versions)
   * [Can I use third-party modules in tests?](#can-i-use-third-party-modules-in-tests)
   * [How do I work with configuration files and environment variables?](#how-do-i-work-with-configuration-files-and-environment-variables)
@@ -32,7 +32,7 @@ This proxy injects the driver script that emulates user actions right into the t
 You can read more about our motivations on our [forum](https://testcafe-discuss.devexpress.com/t/why-not-use-selenium/47).
 Don't hesitate to ask for more details.
 
-### I've noticed there are two versions of TestCafe: a [paid version](https://testcafe.devexpress.com) and an [open-source version](https://devexpress.github.io/testcafe). Why have two versions and what's the difference between them?
+### What's the difference between a [paid](https://testcafe.devexpress.com) and an [open-source](https://devexpress.github.io/testcafe) TestCafe versions?
 
 Historically, TestCafe first appeared as a paid standalone tool. It had several features beside the test runner.
 [Control Panel](https://testcafe.devexpress.com/Documentation/Using_TestCafe/Control_Panel/),
@@ -168,7 +168,7 @@ In test code, you can access this variable as `process.env.DEV_MODE`.
 
 ## Troubleshooting
 
-### I have installed TestCafe but I cannot run it. What should I do?
+### I've installed TestCafe but I can't run it. What should I do?
 
 **Check your firewall.** First, make sure that your firewall does not block ports used by TestCafe.
 By default, TestCafe chooses free ports automatically. Use the
@@ -214,7 +214,7 @@ This way you will find out which extension prevents the test from running.
 If you use a locally installed TestCafe, try installing it globally and running
 the test outside of the project to eliminate the influence of third-party modules.
 
-### I have installed TestCafe plugins but they do not work. What have I done wrong?
+### I've installed TestCafe plugins but they don't work. What have I done wrong?
 
 If you are using a locally installed TestCafe, plugins should also be installed locally.
 
@@ -228,10 +228,10 @@ If you are going to use a global TestCafe installation or you wish to use the pl
 npm install -g {pluginName}
 ```
 
-### My test fails because TestCafe could not find the required webpage element. What could go wrong?
+### My test fails because TestCafe couldn't find the required webpage element. What could go wrong?
 
 First try debugging the tested page with TestCafe built-in debugger.
-To do this, add the [t.debug](../documentation/test-api/debugging.md) method to test code.
+To do this, add the [t.debug()](../documentation/test-api/debugging.md) method to test code.
 Then run the test and wait until the browser stops at the breakpoint.
 After this, use the browser's development tools to check that:
 
