@@ -6,6 +6,8 @@
   external: true
 - text: FAQ
   url: /faq/
+- text: Publications
+  url: /publications/
 - text: Blog
   url: /blog/
 - text: Issues

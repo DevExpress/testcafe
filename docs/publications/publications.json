@@ -1,0 +1,193 @@
+{
+    "publications": [
+        {
+            "type": "Plugins",
+            "title": "16 plugins to extend TestCafe functionality",
+            "excerpt": "TestCafe manages end-to-end testing process out of the box. It starts browsers, runs tests and shows results. But there is also a bunch of plugins which extend its functionality. Here’s a list of the most popular ones.",
+            "author": "Natu Krylova",
+            "date": "2017-7-26",
+            "publisher": "medium.com",
+            "url": "https://medium.com/@krylovanatu/14-plugins-to-extend-testcafe-functionality-82096fc3f334"
+        },
+        {
+            "type": "Tutorial",
+            "title": "An Easier Way to Authenticate Users in E2E Tests",
+            "excerpt": "There are many cases in which you may need your tests to act on behalf of an authenticated user. For instance, if your Web application provides special functionality for authorized users, you will need your test to authenticate.",
+            "author": "Alexander Moskovkin",
+            "date": "2017-7-24",
+            "publisher": "medium.com",
+            "url": "https://medium.com/@amoskovkin/an-easier-way-to-authenticate-users-in-e2e-tests-230d86071f48"
+        },
+        {
+            "type": "Mention",
+            "title": "Fresh Resources for Web Developers – July 2017",
+            "excerpt": "Time flies and we are now in the middle of 2017. In this month’s installment, we have an array of great JavaScript libraries and a few others like a plugin to enable GraphQL in WordPress, a desktop application to render CSV data, and a few website frameworks. Let’s check them out.",
+            "author": "Thoriq Firdaus",
+            "date": "2017-7-14",
+            "publisher": "hongkiat.com",
+            "url": "http://www.hongkiat.com/blog/designers-developers-monthly-07-2017/"
+        },
+        {
+            "type": "Tutorial",
+            "title": "Ordering pizza delivery with one console command in TestCafe",
+            "excerpt": "Hello everyone, today I’ll tell you a story about a neat and easy way to implement end-to-end testing for a pizza delivery web service using a new open source framework.",
+            "author": "Helen Dikareva",
+            "date": "2017-7-6",
+            "publisher": "medium.com",
+            "url": "https://medium.com/@dikareva1209/ordering-pizza-delivery-with-one-console-command-in-testcafe-50547c856cb"
+        },
+        {
+            "type": "Mention",
+            "title": "This month's most useful tools for developers > May 2017",
+            "excerpt": "Some are about new thinking or new techniques, some are about old or legacy technology and some are just useful resources for different languages or platforms. The brief is simple — if we think they’re useful, you might too.",
+            "author": "Dootrix",
+            "date": "2017-5-11",
+            "publisher": "medium.com",
+            "url": "https://medium.com/the-reading-room/this-months-most-useful-tools-for-developers-may-2017-44d423f95872"
+        },
+        {
+            "type": "Tutorial",
+            "title": "Developing Microservices - Node, React, and Docker",
+            "excerpt": "In this post you will learn how to quickly spin up a reproducible development environment with Docker to manage a number of Node.js microservices.",
+            "author": "Michael Herman",
+            "date": "2017-5-11",
+            "publisher": "mherman.org",
+            "url": "http://mherman.org/blog/2017/05/11/developing-microservices-node-react-docker/#.WX8QAojyjb0"
+        },
+        {
+            "type": "Tutorial",
+            "title": "A modern way to do E2E testing for Vue.js apps",
+            "excerpt": "When you are writing e2e tests for a web app, you sometimes have no other choice than to write clumsy selectors like...",
+            "author": "Alexander Moskovkin",
+            "date": "2017-5-11",
+            "publisher": "hackernoon.com",
+            "url": "https://hackernoon.com/a-modern-way-to-do-e2e-testing-for-vue-js-apps-cebe0a07499c"
+        },
+        {
+            "type": "Mention",
+            "title": "An Overview of JavaScript Testing in 2017",
+            "excerpt": "This short guide is intended to catch you up with the most important reasoning, terms, tools, and approaches to JavaScript testing. ",
+            "author": "Vitalik Zaidman",
+            "date": "2017-4-29",
+            "publisher": "medium.com",
+            "url": "https://medium.com/powtoon-engineering/a-complete-guide-to-testing-javascript-in-2017-a217b4cd5a2a"
+        },
+        {
+            "type": "Tutorial",
+            "title": "E2E Testing React applications with TestCafe",
+            "excerpt": "Born deep inside Facebook labs, React gained a huge popularity among the developers who make web applications with complex user interfaces.",
+            "author": "Alexander Moskovkin",
+            "date": "2017-4-5",
+            "publisher": "hackernoon.com",
+            "url": "https://hackernoon.com/e2e-testing-react-applications-with-testcafe-8edb605ec66c"
+        },
+        {
+            "type": "Tutorial",
+            "title": "All the tricks that help you debug TestCafe tests",
+            "excerpt": "When you write functional tests, sooner or later you face the need to debug them. In this article, I’ll review everything TestCafe offers to facilitate this daily routine task.",
+            "author": "Helen Dikareva",
+            "date": "2017-3-31",
+            "publisher": "medium.com",
+            "url": "https://medium.com/@dikareva1209/all-the-tricks-that-help-you-debug-testcafe-tests-af0418220d"
+        },
+        {
+            "type": "Review",
+            "title": "Functional Testing With TestCafe",
+            "excerpt": "Today we are going to dive into the world of functional web testing with TestCafe. Unlike the majority of other end-to-end (e2e) testing tools, TestCafe is not dependent on Selenium or WebDriver. Instead...",
+            "author": "Michael Herman",
+            "date": "2017-3-19",
+            "publisher": "mherman.org",
+            "url": "http://mherman.org/blog/2017/03/19/functional-testing-with-testcafe/#.WX8PsIjyjb0"
+        },
+        {
+            "type": "Review",
+            "title": "TestCafe: Easier End-to-end Web App Testing with Node.js",
+            "excerpt": "In this article, TestCafe team member Vasily Strelyaev explains the benefits of this new Node.js-based app testing framework...",
+            "author": "Vasily Strelyaev",
+            "date": "2017-3-14",
+            "publisher": "sitepoint.com",
+            "url": "https://www.sitepoint.com/testcafe-easier-end-end-web-app-testing-node-js/"
+        },
+        {
+            "type": "Mention",
+            "title": "Top 5 Most Rated Node.js Frameworks for End-to-End Web Testing",
+            "excerpt": "Hello my friends, today we are going to look into the most popular solutions for functional web testing...",
+            "author": "Adrian Lewis",
+            "date": "2017-3-13",
+            "publisher": "medium.com",
+            "url": "https://medium.com/@adrian_lewis/top-5-most-rated-node-js-frameworks-for-end-to-end-web-testing-f8ebca4e5d44"
+        },
+        {
+            "type": "Tutorial",
+            "title": "End-to-End Testing Vue.js Apps with TestCafe",
+            "excerpt": "End-to-end testing is one of the most valuable tools in your testing arsenal, allowing you to...",
+            "author": "Joshua Bemenderfer",
+            "date": "2017-3-7",
+            "publisher": "alligator.io",
+            "url": "https://alligator.io/vuejs/e2e-testing-testcafe/"
+        },
+        {
+            "type": "Tutorial",
+            "title": "How to set up E2E browser testing for your GitHub project",
+            "excerpt": "Nowadays, a vast number of projects, small and large, is developed using Node.js tools and hosted on GitHub. Authors of these projects...",
+            "author": "Alexander Moskovkin",
+            "date": "2017-2-2",
+            "publisher": "hackernoon.com",
+            "url": "https://hackernoon.com/how-to-set-up-e2e-browser-testing-for-your-github-project-89c24e15a84"
+        },
+        {
+            "type": "Tutorial",
+            "title": "Aurelia E2E Testing with TestCafe",
+            "excerpt": "Aurelia is a JavaScript client framework of the next generation for mobile, desktop and web. It is written in ECMAScript 2016 from the ground-up and built as a series of collaborating libraries.",
+            "author": "Alexander Moskovkin",
+            "date": "2017-1-26",
+            "publisher": "hackernoon.com",
+            "url": "https://hackernoon.com/aurelia-e2e-testing-with-testcafe-b4fb19bcb0c9"
+        },
+        {
+            "type": "Tutorial",
+            "title": "How to Use Page Model Pattern in End-to-End Web Testing",
+            "excerpt": "Page Model is a test automation pattern that allows you to create an abstraction of the tested page and use it in test code to refer to page elements. In this article, I will try to explain why it is a good practice to use Page Model in JavaScript tests...",
+            "author": "Vasily Strelyaev",
+            "date": "2017-1-23",
+            "publisher": "scotch.io",
+            "url": "https://scotch.io/@VasilyStrelyaev/how-to-use-page-model-pattern-in-end-to-end-web-testing"
+        },
+        {
+            "type": "Tutorial",
+            "title": "How to set up functional testing for a web app from scratch in 5 minutes",
+            "excerpt": "Assume you have a clean PC without any developer tools. How quickly can you install all the required testing tools, write and run your first functional test for the web? An hour? Or two?",
+            "author": "Alexander Moskovkin",
+            "date": "2017-1-16",
+            "publisher": "hackernoon.com",
+            "url": "https://hackernoon.com/how-to-set-up-functional-testing-for-a-web-app-from-scratch-in-5-minutes-8055e5d41882"
+        },
+        {
+            "type": "Tutorial",
+            "title": "End-to-End Testing for Your Web App With TestCafe",
+            "excerpt": "In this article, we will look at how you get started with TestCafe and write your first test from scratch.",
+            "author": "Alexander Moskovkin",
+            "date": "2017-1-11",
+            "publisher": "dzone.com",
+            "url": "https://dzone.com/articles/end-to-end-testing-for-your-web-app-with-open-sour"
+        },
+        {
+            "type": "Mention",
+            "title": "27 popular new github repositories for web developers in 2016",
+            "excerpt": "Here are some popular new github repositories that can be interesting for web developers. All of them earned their first 1500 stars in 2016...",
+            "author": "Alexander Moskovkin",
+            "date": "2016-12-20",
+            "publisher": "hackernoon.com",
+            "url": "https://hackernoon.com/27-popular-new-github-repositories-for-web-developers-in-2016-27cdcbba9779"
+        },
+        {
+            "type": "Mention",
+            "title": "15 Interesting JavaScript and CSS Libraries for November 2016",
+            "excerpt": "Our mission at Tutorialzine is to keep you up to date with the latest and coolest trends in web development. That’s why every month we release a handpicked collection of some of the best resources that we’vestumbled upon and deemed worthy of your attention...",
+            "author": "Danny Markov",
+            "date": "2016-11-8",
+            "publisher": "tutorialzine.com",
+            "url": "https://tutorialzine.com/2016/11/15-interesting-javascript-and-css-libraries-for-november-2016"
+        }
+    ]
+}
