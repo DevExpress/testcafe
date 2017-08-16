@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gh-1679</title>
+
+</head>
+<body>
+<button id="btn">Button</button>
+
+<script>
+    var btn = document.getElementById('btn');
+
+    btn.addEventListener('mouseover', function () {
+        window.btnHovered = true;
+        btn.style.display = 'none';
+    });
+</script>
+</body>
+</html>

@@ -7,7 +7,7 @@ export default class HoverAutomation extends VisibleElementAutomation {
     }
 
     run (useStrictElementCheck) {
-        return this._ensureElement(useStrictElementCheck);
+        return this._ensureElement(useStrictElementCheck, true);
     }
 }
 

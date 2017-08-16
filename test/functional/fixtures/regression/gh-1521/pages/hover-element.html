@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gh-1521 (hover element)</title>
+
+    <style>
+        #target {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+
+        #loading-panel {
+            width: 100%;
+            height: 100%;
+            opacity: 0.5;
+            background-color: yellow;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+    </style>
+</head>
+<body>
+<div id="target"></div>
+<div id="loading-panel"></div>
+
+<script>
+    var target       = document.getElementById('target');
+    var loadingPanel = document.getElementById('loading-panel');
+
+    loadingPanel.addEventListener('mouseover', function () {
+        window.setTimeout(function () {
+            loadingPanel.style.display = 'none';
+        }, 1000);
+    });
+
+    target.addEventListener('mouseover', function () {
+        window.mouseOverRaised = true;
+    });
+
+    target.addEventListener('mousemove', function () {
+        window.mouseMoveRaised = true;
+    });
+</script>
+</body>
+</html>
