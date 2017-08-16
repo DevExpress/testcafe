@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.17.1 (2017-8-16)
+
+### Bug Fixes
+
+* The `hover` action no longer fails for elements that hide on mouseover ([#1679](https://github.com/DevExpress/testcafe/issues/1679))
+* SelectText and SelectTextAreaContent TypeScript definitions now match the documentation ([#1697](https://github.com/DevExpress/testcafe/issues/1697))
+* TestCafe now finds browsers installed for the current user on Windows ([#1688](https://github.com/DevExpress/testcafe/issues/1688))
+* TestCafe can now resize MS Edge 15 window ([#1517](https://github.com/DevExpress/testcafe/issues/1517))
+* Test no longer hands when `takeScreenshot` is called in headless Chrome Canary on Windows ([#1685](https://github.com/DevExpress/testcafe/issues/1685))
+* Tests now fail if the `uncaughtRejection` exception is raised ([#1473](https://github.com/DevExpress/testcafe/issues/1473))
+* TypeScript tests now run on macOS with no errors ([#1696](https://github.com/DevExpress/testcafe/issues/1696))
+* Test duration is now reported accurately ([#1674](https://github.com/DevExpress/testcafe/issues/1674))
+* XHR requests with an overridden `setRequestHeader` function returned by the `XhrSandbox.openNativeXhr` method are now handled properly ([testcafe-hammerhead/#1252](https://github.com/DevExpress/testcafe-hammerhead/issues/1252))
+* HTML in an overridden `document.write` function is now processed correctly ([testcafe-hammerhead/#1218](https://github.com/DevExpress/testcafe-hammerhead/issues/1218))
+* `Object.assign` is now overridden ([testcafe-hammerhead/#1208](https://github.com/DevExpress/testcafe-hammerhead/issues/1208))
+* `acorn` now processes `async` functions ([testcafe-hammerhead/#1260](https://github.com/DevExpress/testcafe-hammerhead/issues/1260))
+
 ## v0.17.0 (2017-8-2)
 
 ### Enhancements
