@@ -12,10 +12,10 @@ permalink: /faq/
   * [Can I use third-party modules in tests?](#can-i-use-third-party-modules-in-tests)
   * [How do I work with configuration files and environment variables?](#how-do-i-work-with-configuration-files-and-environment-variables)
 * [Troubleshooting](#troubleshooting)
-  * [I have installed TestCafe but I cannot run it. What should I do?](#i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do)
+  * [I've installed TestCafe but I can't run it. What should I do?](#ive-installed-testcafe-but-i-cant-run-it-what-should-i-do)
   * [When I run a TestCafe test, I get an unexpected error. What can cause that?](#when-i-run-a-testcafe-test-i-get-an-unexpected-error-what-can-cause-that)
-  * [I have installed TestCafe plugins but they do not work. What have I done wrong?](#i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong)
-  * [My test fails because TestCafe could not find the required webpage element. What could go wrong?](#my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-what-could-go-wrong)
+  * [I've installed TestCafe plugins but they don't work. What have I done wrong?](#ive-installed-testcafe-plugins-but-they-dont-work-what-have-i-done-wrong)
+  * [My test fails because TestCafe couldn't find the required webpage element. What could go wrong?](#my-test-fails-because-testcafe-couldnt-find-the-required-webpage-element-what-could-go-wrong)
 
 ## General Questions
 
