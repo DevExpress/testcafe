@@ -8,6 +8,7 @@
 * SelectText and SelectTextAreaContent TypeScript definitions now match the documentation ([#1697](https://github.com/DevExpress/testcafe/issues/1697))
 * TestCafe now finds browsers installed for the current user on Windows ([#1688](https://github.com/DevExpress/testcafe/issues/1688))
 * TestCafe can now resize MS Edge 15 window ([#1517](https://github.com/DevExpress/testcafe/issues/1517))
+* Detected Google Chrome Canary has the dedicated `chrome-canary` alias now ([#1711](https://github.com/DevExpress/testcafe/issues/1711)) 
 * Test no longer hangs when `takeScreenshot` is called in headless Chrome Canary on Windows ([#1685](https://github.com/DevExpress/testcafe/issues/1685))
 * Tests now fail if the `uncaughtRejection` exception is raised ([#1473](https://github.com/DevExpress/testcafe/issues/1473))
 * TypeScript tests now run on macOS with no errors ([#1696](https://github.com/DevExpress/testcafe/issues/1696))

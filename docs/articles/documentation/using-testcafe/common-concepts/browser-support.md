@@ -21,7 +21,7 @@ permalink: /documentation/using-testcafe/common-concepts/browser-support.html
 While TestCafe is designed to support most modern browsers, there are a limited number
 of *officially supported* browsers against which TestCafe is actively tested.
 
-* Google Chrome
+* Google Chrome (Stable, Beta, Dev and Canary)
 * Internet Explorer (9+)
 * Microsoft Edge
 * Mozilla Firefox
@@ -38,15 +38,16 @@ You can use a short name - *browser alias* - to identify these browsers when lau
 
 The following table lists browsers that can be detected automatically.
 
-Browser           | Browser Alias
------------------ | -------------------
-Chromium          | `chromium`
-Google Chrome     | `chrome`
-Internet Explorer | `ie`
-Microsoft Edge    | `edge`
-Mozilla Firefox   | `firefox`
-Opera             | `opera`
-Safari            | `safari`
+Browser                                      | Browser Alias
+---------------------------------------------| -------------------
+Chromium                                     | `chromium`
+Google Chrome (Stable, Beta, Dev channel)    | `chrome`
+Google Chrome Canary                         | `chrome-canary`
+Internet Explorer                            | `ie`
+Microsoft Edge                               | `edge`
+Mozilla Firefox                              | `firefox`
+Opera                                        | `opera`
+Safari                                       | `safari`
 
 The list of all the available browsers can be obtained by calling the `testcafe` command
 with the [--list-browsers](../command-line-interface.md#-b---list-browsers) flag.
