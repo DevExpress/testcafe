@@ -21,7 +21,7 @@
 ----
 
 * **Works on all popular environments**: TestCafe runs on Windows, MacOS and Linux. Supports desktop, mobile, remote and cloud [browsers](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html). With UI or headless.
-* **1 minute to set up**: You don’t need WebDriver or any other testing software. Install TestCafe with one command and you’re ready to test: `npm install -g testcafe`
+* **A few seconds to set up**: You don’t need WebDriver or any other testing software. Install TestCafe with one command and you’re ready to test: `npm install -g testcafe`
 * **Free and open source**: TestCafe is free to use under [MIT license](https://github.com/DevExpress/testcafe/blob/master/LICENSE). Plugins provide custom reports, integration with other tools, launching tests from IDE, etc. Use the plugins made by GitHub community or make your own.
 
 ## Table of contents
