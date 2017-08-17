@@ -21,7 +21,7 @@ permalink: /documentation/using-testcafe/common-concepts/browser-support.html
 While TestCafe is designed to support most modern browsers, there are a limited number
 of *officially supported* browsers against which TestCafe is actively tested.
 
-* Google Chrome (Stable, Beta, Dev and Canary)
+* Google Chrome: regular Update Channels (Stable, Beta, Dev) and Canary
 * Internet Explorer (9+)
 * Microsoft Edge
 * Mozilla Firefox
@@ -41,7 +41,7 @@ The following table lists browsers that can be detected automatically.
 Browser                                      | Browser Alias
 ---------------------------------------------| -------------------
 Chromium                                     | `chromium`
-Google Chrome (Stable, Beta, Dev channel)    | `chrome`
+Google Chrome (Regular Channels)             | `chrome`
 Google Chrome Canary                         | `chrome-canary`
 Internet Explorer                            | `ie`
 Microsoft Edge                               | `edge`
