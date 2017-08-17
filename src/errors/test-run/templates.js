@@ -242,5 +242,11 @@ export default {
 
     [TYPE.roleSwitchInRoleInitializerError]: err => markup(err, `
         Role cannot be switched while another role is being initialized.
+    `),
+
+    [TYPE.assertionExecutableArgumentError]: err => markup(err, `
+        Assertion executable "${err.argumentName}" argument value "${err.actualValue}" error:
+
+        ${err.errMsg}
     `)
 };

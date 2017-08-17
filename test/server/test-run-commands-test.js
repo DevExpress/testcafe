@@ -1031,6 +1031,34 @@ describe('Test run commands', function () {
                 }
             });
         });
+
+        it('Should process js expression as a assertion parameter', function () {
+            var commandObj = {
+                type:          TYPE.assertion,
+                assertionType: 'eql',
+
+                actual: {
+                    type:  'js-expr',
+                    value: '1 + 2'
+                },
+
+                expected: 1
+            };
+
+            var command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:          TYPE.assertion,
+                assertionType: 'eql',
+                actual:        3,
+                expected:      1,
+                message:       null,
+
+                options: {
+                    timeout: null
+                }
+            });
+        });
     });
 
     describe('Validation', function () {
@@ -2653,6 +2681,28 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.actionPositiveIntegerOptionError,
                     optionName:      'timeout',
                     actualValue:     10.5,
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:          TYPE.assertion,
+                        assertionType: 'ok',
+
+                        actual: {
+                            type:  'js-expr',
+                            value: 'invalid js code'
+                        }
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    argumentName:    'actual',
+                    actualValue:     'invalid js code',
+                    errMsg:          'Unexpected identifier',
+                    type:            ERROR_TYPE.assertionExecutableArgumentError,
                     callsite:        null
                 }
             );

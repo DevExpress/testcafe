@@ -21,7 +21,7 @@
                         {
                             "type": "assertion",
                             "assertionType": "eql",
-                            "actual": "hey",
+                            "actual": {"type":"js-expr", "value":"hey"},
                             "expected": "yo",
                             "message": "testMessage",
                             "callsite": "[[Eql assertion failed callsite]]"

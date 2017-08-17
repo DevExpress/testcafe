@@ -237,6 +237,14 @@ export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
     }
 }
 
+export class AssertionExecutableArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, argumentValue, errMsg) {
+        super(TYPE.assertionExecutableArgumentError, argumentName, argumentValue);
+
+        this.errMsg = errMsg;
+    }
+}
+
 // Selector errors
 export class ActionSelectorError extends TestRunErrorBase {
     constructor (selectorName, errMsg) {
