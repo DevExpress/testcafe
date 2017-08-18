@@ -149,6 +149,13 @@ export class ExternalAssertionLibraryError extends TestRunErrorBase {
     }
 }
 
+export class AssertionExecutableArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, argumentValue, errMsg) {
+        super(TYPE.assertionExecutableArgumentError, argumentName, argumentValue);
+
+        this.errMsg = errMsg;
+    }
+}
 
 // Action parameters errors
 //--------------------------------------------------------------------

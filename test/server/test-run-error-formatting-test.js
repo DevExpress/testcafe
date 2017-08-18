@@ -7,6 +7,7 @@ var TEST_RUN_PHASE                                    = require('../../lib/test-
 var TYPE                                              = require('../../lib/errors/test-run/type');
 var TestRunErrorFormattableAdapter                    = require('../../lib/errors/test-run/formattable-adapter');
 var testCallsite                                      = require('./data/test-callsite');
+var AssertionExecutableArgumentError                  = require('../../lib/errors/test-run').AssertionExecutableArgumentError;
 var ActionIntegerOptionError                          = require('../../lib/errors/test-run').ActionIntegerOptionError;
 var ActionPositiveIntegerOptionError                  = require('../../lib/errors/test-run').ActionPositiveIntegerOptionError;
 var ActionIntegerArgumentError                        = require('../../lib/errors/test-run').ActionIntegerArgumentError;
@@ -314,6 +315,10 @@ describe('Error formatting', function () {
 
         it('Should format "actionRoleArgumentError"', function () {
             assertErrorMessage('action-role-argument-error', new ActionRoleArgumentError('role', 'number'));
+        });
+
+        it('Should format "assertionExecutableArgumentError"', function () {
+            assertErrorMessage('assertion-executable-argument-error', new AssertionExecutableArgumentError('actual', '1 + temp', 'Unexpected identifier'));
         });
     });
 

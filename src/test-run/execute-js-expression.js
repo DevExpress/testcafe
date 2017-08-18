@@ -2,7 +2,7 @@ import { createContext, runInContext } from 'vm';
 import SelectorBuilder from '../client-functions/selectors/selector-builder';
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
 
-export function executeSelectorExpression (expression, skipVisibilityCheck) {
+export function executeJsExpression (expression, skipVisibilityCheck) {
     var sandbox = {
         Selector: (fn, options = {}) => {
             if (skipVisibilityCheck)

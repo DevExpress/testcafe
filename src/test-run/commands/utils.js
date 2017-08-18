@@ -4,6 +4,8 @@
 // -------------------------------------------------------------
 import TYPE from './type';
 
+const RAW_API_JS_EXPRESSION_TYPE = 'js-expr';
+
 export function isCommandRejectableByPageError (command) {
     return !isObservationCommand(command) && !isBrowserManipulationCommand(command) && !isServiceCommand(command) ||
            isRejectablePrepareBrowserManipulationCommand(command)
@@ -69,4 +71,9 @@ export function isExecutableInTopWindowOnly (command) {
            command.type === TYPE.showAssertionRetriesStatus ||
            command.type === TYPE.hideAssertionRetriesStatus ||
            command.type === TYPE.setBreakpoint;
+}
+
+export function isJSExpression (val) {
+    return val !== null && typeof val === 'object' && val.type === RAW_API_JS_EXPRESSION_TYPE &&
+           typeof val.value === 'string';
 }

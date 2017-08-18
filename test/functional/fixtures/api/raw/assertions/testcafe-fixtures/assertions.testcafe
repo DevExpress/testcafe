@@ -137,6 +137,17 @@
                             "callsite": "[[Timeout option is string callsite]]"
                         }
                     ]
+                },
+                {
+                    "name": "js expression",
+                    "commands": [
+                        {
+                            "type": "assertion",
+                            "assertionType": "eql",
+                            "actual": { "type" : "js-expr", "value" : "Selector('body').count" },
+                            "expected": 1
+                        }
+                    ]
                 }
             ]
         }

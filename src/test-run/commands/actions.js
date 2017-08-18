@@ -19,10 +19,8 @@ import {
 import { ActionSelectorError, SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
 import { APIError } from '../../errors/runtime';
 import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './observation';
-import { executeSelectorExpression } from '../execute-js-expression';
-
-const RAW_API_JS_EXPRESSION_TYPE = 'js-expr';
-
+import { executeJsExpression } from '../execute-js-expression';
+import { isJSExpression } from './utils';
 
 // Initializers
 function initSelector (name, val, skipVisibilityCheck) {
@@ -30,11 +28,8 @@ function initSelector (name, val, skipVisibilityCheck) {
         return val;
 
     try {
-        var isRawAPIJsExpression = val !== null && typeof val === 'object' && val.type === RAW_API_JS_EXPRESSION_TYPE &&
-                                   typeof val.value === 'string';
-
-        if (isRawAPIJsExpression)
-            val = executeSelectorExpression(val.value, skipVisibilityCheck);
+        if (isJSExpression(val))
+            val = executeJsExpression(val.value, skipVisibilityCheck);
 
         var builder = new SelectorBuilder(val, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
 
