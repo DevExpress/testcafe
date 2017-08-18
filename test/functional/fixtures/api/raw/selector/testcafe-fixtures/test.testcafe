@@ -1,0 +1,187 @@
+{
+  "fixtures": [
+    {
+      "name": "Selector",
+      "pageUrl": "http://localhost:3000/fixtures/api/raw/selector/pages/index.html",
+      "tests": [
+        {
+          "name": "Different types of selectors",
+          "commands": [
+            {
+              "type": "click",
+              "note": "client function as argument",
+              "selector": {
+                "type": "js-expr",
+                "value": "Selector(() => document.getElementById('input'))"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": ".with()",
+              "selector": {
+                "type": "js-expr",
+                "value": "const el = Selector('#input2', { timeout: 0 }); Selector(el).with({ timeout: 5000 })"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": "derivative selector",
+              "selector": {
+                "type": "js-expr",
+                "value": "const getElementById = Selector(id => document.getElementById(id)); Selector(getElementById('input'))"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": ".withText(text)",
+              "selector": {
+                "type": "js-expr",
+                "value": "Selector('div').withText('div text')"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": ".withText(/re/)",
+              "selector": {
+                "type": "js-expr",
+                "value": "Selector('div').withText(/div text/)"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": ".withText(new RegExp('re'))",
+              "selector": {
+                "type": "js-expr",
+                "value": "Selector('div').withText(new RegExp('div text'))"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": ".withAttribute(/re/, /re/)",
+              "selector": {
+                "type": "js-expr",
+                "value": "Selector('input').withAttribute(/id/, /input$/)"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": "nested .nth()",
+              "selector": {
+                "type": "js-expr",
+                "value": "Selector('input').nth(0).nth(0)"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": ".filter(string)",
+              "selector": {
+                "type": "js-expr",
+                "value": "Selector('input').filter('#input')"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": ".filter(fn)",
+              "selector": {
+                "type": "js-expr",
+                "value": "Selector('input').filter(node => node.id === 'input')"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": "compound .filter()",
+              "selector": {
+                "type": "js-expr",
+                "value": "Selector('*').filter('input').filter('#input')"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": "parametrized selector with .filter()",
+              "selector": {
+                "type": "js-expr",
+                "value": "const withId = Selector(id => document.getElementById(id)); withId('input').filter('#input')"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": "ClientFunction as a dependency",
+              "selector": {
+                "type": "js-expr",
+                "value": "const isOne = ClientFunction(i => i === 1); Selector('input').filter((node, i) => isOne(i), { isOne })"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            }
+          ]
+        },
+        {
+          "name": "Incorrect selector",
+          "commands": [
+            {
+              "type": "click",
+              "selector": {
+                "type": "js-expr",
+                "value": "WrongSelector()"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
