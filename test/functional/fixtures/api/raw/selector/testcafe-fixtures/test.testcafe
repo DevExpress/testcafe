@@ -33,7 +33,7 @@
             },
             {
               "type": "click",
-              "note": "deriative selector",
+              "note": "derivative selector",
               "selector": {
                 "type": "js-expr",
                 "value": "const getElementById = Selector(id => document.getElementById(id)); Selector(getElementById('input'))"
