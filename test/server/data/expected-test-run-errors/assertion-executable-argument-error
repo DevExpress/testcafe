@@ -1,4 +1,5 @@
-Assertion executable "actual" argument value "1 + temp" error:
+Cannot evaluate the "1 + temp" expression in the "actual" parameter because
+of the following error:
 
 Unexpected identifier
 
@@ -11,7 +12,7 @@ Screenshot: /unix/path/with/<tag>
    21 |
    22 |(function func2 () {
  > 23 |    func1();
-   24 |})();                                                                                                                                                                 git
+   24 |})();
    25 |
    26 |stackTrace.filter.deattach(stackFilter);
    27 |

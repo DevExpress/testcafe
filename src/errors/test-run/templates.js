@@ -245,7 +245,7 @@ export default {
     `),
 
     [TYPE.assertionExecutableArgumentError]: err => markup(err, `
-        Assertion executable "${err.argumentName}" argument value "${err.actualValue}" error:
+        Cannot evaluate the "${err.actualValue}" expression in the "${err.argumentName}" parameter because of the following error:
 
         ${err.errMsg}
     `)
