@@ -3,7 +3,7 @@ import Assignable from '../../utils/assignable';
 import { AssertionOptions } from './options';
 import { APIError } from '../../errors/runtime';
 import { AssertionExecutableArgumentError } from '../../errors/test-run';
-import { executeSelectorExpression } from '../execute-js-expression';
+import { executeJsExpression } from '../execute-js-expression';
 import { isJSExpression } from './utils';
 
 import { stringArgument, actionOptions, nonEmptyStringArgument } from './validations/argument';
@@ -17,7 +17,7 @@ function initAssertionOptions (name, val) {
 function initAssertionParameter (name, val, skipVisibilityCheck) {
     try {
         if (isJSExpression(val))
-            val = executeSelectorExpression(val.value, skipVisibilityCheck);
+            val = executeJsExpression(val.value, skipVisibilityCheck);
 
         return val;
     }

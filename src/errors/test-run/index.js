@@ -149,6 +149,13 @@ export class ExternalAssertionLibraryError extends TestRunErrorBase {
     }
 }
 
+export class AssertionExecutableArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, argumentValue, errMsg) {
+        super(TYPE.assertionExecutableArgumentError, argumentName, argumentValue);
+
+        this.errMsg = errMsg;
+    }
+}
 
 // Action parameters errors
 //--------------------------------------------------------------------
@@ -234,14 +241,6 @@ export class SetTestSpeedArgumentError extends ActionArgumentErrorBase {
 export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
     constructor (argumentName, argumentValue) {
         super(TYPE.actionUnsupportedDeviceTypeError, argumentName, argumentValue);
-    }
-}
-
-export class AssertionExecutableArgumentError extends ActionArgumentErrorBase {
-    constructor (argumentName, argumentValue, errMsg) {
-        super(TYPE.assertionExecutableArgumentError, argumentName, argumentValue);
-
-        this.errMsg = errMsg;
     }
 }
 

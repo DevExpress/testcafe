@@ -77,4 +77,11 @@ describe('[Raw API] Assertions', function () {
                 expect(errs[0]).contains('[[Timeout option is string callsite]]');
             });
     });
+
+    it('Should process js expression', function () {
+        return runTests('./testcafe-fixtures/assertions.testcafe', 'js expression', {
+            shouldFail: false,
+            only:       'chrome'
+        });
+    });
 });

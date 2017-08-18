@@ -19,7 +19,7 @@ import {
 import { ActionSelectorError, SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
 import { APIError } from '../../errors/runtime';
 import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './observation';
-import { executeSelectorExpression } from '../execute-js-expression';
+import { executeJsExpression } from '../execute-js-expression';
 import { isJSExpression } from './utils';
 
 // Initializers
@@ -29,7 +29,7 @@ function initSelector (name, val, skipVisibilityCheck) {
 
     try {
         if (isJSExpression(val))
-            val = executeSelectorExpression(val.value, skipVisibilityCheck);
+            val = executeJsExpression(val.value, skipVisibilityCheck);
 
         var builder = new SelectorBuilder(val, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
 

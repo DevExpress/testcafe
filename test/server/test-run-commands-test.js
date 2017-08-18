@@ -1032,7 +1032,7 @@ describe('Test run commands', function () {
             });
         });
 
-        it('Should process js expression as a assertion parameter', function () {
+        it('Should process js expression as an assertion parameter', function () {
             var commandObj = {
                 type:          TYPE.assertion,
                 assertionType: 'eql',

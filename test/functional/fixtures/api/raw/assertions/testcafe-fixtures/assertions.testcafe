@@ -21,7 +21,7 @@
                         {
                             "type": "assertion",
                             "assertionType": "eql",
-                            "actual": {"type":"js-expr", "value":"hey"},
+                            "actual": "hey",
                             "expected": "yo",
                             "message": "testMessage",
                             "callsite": "[[Eql assertion failed callsite]]"
@@ -135,6 +135,17 @@
                                 "timeout": "hey"
                             },
                             "callsite": "[[Timeout option is string callsite]]"
+                        }
+                    ]
+                },
+                {
+                    "name": "js expression",
+                    "commands": [
+                        {
+                            "type": "assertion",
+                            "assertionType": "eql",
+                            "actual": { "type" : "js-expr", "value" : "Selector('body').count" },
+                            "expected": 1
                         }
                     ]
                 }
