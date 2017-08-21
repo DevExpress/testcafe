@@ -55,7 +55,9 @@ It has the same name but contains lots of new functionality and improvements:
 
 You can learn more about the open-source version at [https://devexpress.github.io/testcafe](https://devexpress.github.io/testcafe).
 
-We have not abandoned our aspirations to create a competitive proprietary product. We plan to release a new commercial version called ***TestCafe Studio***, based on the revised open-source TestCafe. Visit [https://testcafe.devexpress.com](https://testcafe.devexpress.com) for up-to-date information.
+We have not abandoned our aspirations to create a competitive proprietary product.
+We plan to release a new commercial version called ***TestCafe Studio***, based on the revised open-source TestCafe.
+Follow us on [Twitter](https://twitter.com/DXTestCafe) for the news about TestCafe Studio.
 
 ### Which browsers does TestCafe support? What are the exact supported versions?
 
@@ -80,7 +82,8 @@ fixture `fixture`
    .page('http://localhost/testcafe/');
 
 test('test', async t => {
-   // var filePath = ...;
+   var filePath = 'filepath.js';
+
    await t.expect(fs.existsSync(filePath)).ok();
 });
 ```
