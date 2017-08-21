@@ -40,7 +40,7 @@ a visual interface for creating, modifying and running your tests, and the
 [Visual Test Recorder](https://testcafe.devexpress.com/Documentation/Using_TestCafe/Visual_Test_Recorder/)
 for recording tests by pointing and clicking through the test scenario in the browser.
 
-In 2015 we released the TestCafe core as an open-source project.
+In 2015 we decided to release the TestCafe core as an open-source project.
 The last major paid version release (v15.1) was in summer 2015.
 After that, it switched to a maintenance-only mode.
 You can find the latest paid version at [https://testcafe.devexpress.com](https://testcafe.devexpress.com).
@@ -88,7 +88,7 @@ test('test', async t => {
 On the client side, use `t.eval` to include the desired module in the test.
 Then you can use this module inside client functions and selectors.
 
-```sh
+```js
 test('test', async t => {
     // eval jquery code to add jQuery to the page
     await t.eval(new Function(fs.readFileSync('./jquery.js').toString()));
@@ -165,7 +165,7 @@ In test code, you can access this variable as `process.env.DEV_MODE`.
 ### I have installed TestCafe but I cannot run it. What should I do?
 
 **Check your firewall.** First, make sure that your firewall does not block the ports TestCafe uses.
-TestCafe chooses free ports automatically by default. Use the 
+TestCafe chooses free ports automatically by default. Use the
 [--ports](../documentation/using-testcafe/command-line-interface.md#--ports-port1port2) command line option
 or the [createTestCafe](../documentation/using-testcafe/programming-interface/createtestcafe.md)
 API factory function to specify custom ports. After that, check that the firewall does not block these specific ports.
