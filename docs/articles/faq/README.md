@@ -7,7 +7,7 @@ permalink: /faq/
 
 * [General Questions](#general-questions)
   * [I have heard that TestCafe does not use Selenium. How does it operate?](#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate)
-  * [What is the difference between a paid and an open-source TestCafe version?](#what-is-the-difference-between-a-paid-and-an-open-source-testcafe-versions)
+  * [What is the difference between a paid and an open-source TestCafe version?](#what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version)
   * [Which browsers does TestCafe support? What are the exact supported versions?](#which-browsers-does-testcafe-support-what-are-the-exact-supported-versions)
   * [Can I use third-party modules in tests?](#can-i-use-third-party-modules-in-tests)
   * [How do I work with configuration files and environment variables?](#how-do-i-work-with-configuration-files-and-environment-variables)
