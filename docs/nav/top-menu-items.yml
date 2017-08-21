@@ -4,6 +4,8 @@
 - text: GitHub
   url: https://github.com/DevExpress/testcafe
   external: true
+- text: FAQ
+  url: /faq/
 - text: Blog
   url: /blog/
 - text: Issues
