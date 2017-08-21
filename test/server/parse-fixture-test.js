@@ -17,11 +17,9 @@ var Fixture = function (name, start, end, loc, tests) {
     );
 };
 
-class Loc {
-    constructor (lineStart, columnStart, lineEnd, columnEnd) {
-        this.start = { column: columnStart, line: lineStart };
-        this.end   = { column: columnEnd, line: lineEnd };
-    }
+function Loc (lineStart, columnStart, lineEnd, columnEnd) {
+    this.start = { column: columnStart, line: lineStart };
+    this.end   = { column: columnEnd, line: lineEnd };
 }
 
 function testFixtureParser (dir, expectedStructure, fileParser, codeParser) {
