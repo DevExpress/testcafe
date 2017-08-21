@@ -20,9 +20,9 @@
 
 ----
 
-* **Works on all popular environments**: TestCafe runs on Windows, MacOS and Linux. Supports desktop, mobile, remote and cloud [browsers](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html). With UI or headless.
-* **A few seconds to set up**: You don’t need WebDriver or any other testing software. Install TestCafe with one command and you’re ready to test: `npm install -g testcafe`
-* **Free and open source**: TestCafe is free to use under [MIT license](https://github.com/DevExpress/testcafe/blob/master/LICENSE). Plugins provide custom reports, integration with other tools, launching tests from IDE, etc. Use the plugins made by GitHub community or make your own.
+* **Works on all popular environments**: TestCafe runs on Windows, MacOS, and Linux. It supports desktop, mobile, remote and cloud [browsers](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html) (UI or headless).
+* **Quick to set up**: You do not need WebDriver or any other testing software. Install TestCafe with one command, and you are ready to test: `npm install -g testcafe`
+* **Free and open source**: TestCafe is free to use under the [MIT license](https://github.com/DevExpress/testcafe/blob/master/LICENSE). Plugins provide custom reports, integration with other tools, launching tests from IDE, etc. You can use the plugins made by the GitHub community or make your own.
 
 ## Table of contents
 
@@ -39,40 +39,42 @@
 ## Features
 
 **Stable tests and no manual timeouts**<br/>
-TestCafe provides built in assertions which wait until page elements load. You can
-change the maximum wait time. And if elements load faster, tests will skip the timeout
-and go on.
+TestCafe provides built-in assertions which wait until page elements load.
+You can change the maximum wait time.
+If elements load faster, tests skip the timeout and continue.
 
 **Latest JS and TypeScript support**<br/>
-TestCafe supports latest JavaScript features, including ES6, ES7 (e.g.
-`async/await`). Or you can [use TypeScript](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html) if you prefer a strongly typed language.
+TestCafe supports the latest JavaScript features, including ES6, ES7 (for example, async/await).
+You can also [use TypeScript](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html)
+if you prefer a strongly typed language.
 
 **Detects JS errors in your code**<br/>
-TestCafe reports JS errors that it finds on the webpage. By default tests will fail
-because of that. You can turn it off if you wish.
+TestCafe reports JS errors that it finds on the webpage.
+Tests automatically fail because of that.
+However, you can disable this.
 
 **Concurrent tests launch**<br/>
-TestCafe can open multiple instances of the same browser to run tests in parallel.
-It decreases test execution time.
+TestCafe can open multiple instances of the same browser to run parallel
+tests which decrease test execution time.
 
 **PageObject pattern support**<br/>
-TestCafe’s [Test API](https://devexpress.github.io/testcafe/documentation/test-api/)
-includes a  library of high-level selectors, assertions, etc.
-You can combine them to implement readable tests with [PageObject pattern](https://martinfowler.com/bliki/PageObject.html).
+The TestCafe's [Test API](https://devexpress.github.io/testcafe/documentation/test-api/)
+includes a high-level selector library, assertions, etc.
+You can combine them to implement readable tests with the [PageObject pattern](https://martinfowler.com/bliki/PageObject.html).
 
 ```js
 const macOSInput = Selector('.column').find('label').withText('MacOS').child('input');`
 ```
 
 **Easy to include in a continuous integration system**<br/>
-TestCafe is launched from console and its reports can be viewed
-in CI system’s interface (TeamCity, Jenkins, Travis & etc.)
+TestCafe is launched from a console, and its reports can be viewed in a CI system's interface
+(TeamCity, Jenkins, Travis & etc.)
 
 ## Getting Started
 
 ### Installation
 
-Ensure that [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) are installed on your computer, then run:
+Ensure that [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) are installed on your computer before running it:
 
 ```sh
 npm install -g testcafe
@@ -80,11 +82,11 @@ npm install -g testcafe
 
 ### Creating the Test
 
-Let’s make a test for [https://devexpress.github.io/testcafe/example](https://devexpress.github.io/testcafe/example) page.
+As an example, we are going to test the [https://devexpress.github.io/testcafe/example](https://devexpress.github.io/testcafe/example) page.
 
-Create a `.js` or `.ts` file anywhere on your computer.
+Create a `.js` or `.ts` file on your computer.
 Note that it needs to have a specific structure: tests must be organized into fixtures.
-You can paste the following code to see the test in action.
+You can paste the following code to see the test in action:
 
 ```js
 import { Selector } from 'testcafe'; // first import the testcafe selector module
@@ -92,7 +94,7 @@ fixture `Getting Started`// declare the fixture
     .page `https://devexpress.github.io/testcafe/example`;  // specify the start page
 
 
-//then create the test function where you’ll place the code:
+//then create the test function where you'll place the code:
 test('My first test', async t => {
     // insert your test code in this section
 await t
@@ -113,17 +115,16 @@ and [file path](https://devexpress.github.io/testcafe/documentation/using-testca
 testcafe chrome test1.js
 ```
 
-TestCafe will open the browser and start test execution in it.
+TestCafe opens the browser and starts executing the test.
 
-> Important! Make sure to keep the browser tab that is running tests active.
-> Do not minimize the browser window. Inactive tabs and minimized browser windows
-> switch to a lower resource consumption mode where tests are not guaranteed to execute correctly.
+> Important! Make sure to stay in the browser tab that is running tests.
+> Do not minimize the browser window. Tests are not guaranteed to execute correctly
+> in inactive tabs and minimized browser windows because they switch to a lower resource consumption mode.
 
 ### Viewing the Results
 
-By default TestCafe outputs the results into command shell.
-For more information see [Reporters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html).
-You can also use [plugins](#plugins) to customize the reports.
+TestCafe outputs the results into a command shell by default. See [Reporters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html).
+for more information. You can also use [plugins](#plugins) to customize the reports.
 
 ![Test Report](docs/articles/images/report.png)
 
@@ -145,7 +146,7 @@ Follow us on [Twitter](https://twitter.com/DXTestCafe). We post TestCafe news an
 
 ## Badge
 
-Show the world you're using TestCafe:
+Show everyone you are using TestCafe:
 
 ## Contributing
 
@@ -156,18 +157,18 @@ For more information on how to help us improve TestCafe, see the [CONTRIBUTING.m
 You can use these plugin generators to create your own plugins:
 
 * [Build a browser provider](https://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/)
-  to set up tests on your on-premises server farm, to use a cloud testing platform, or to start your local browsers in a special way. Use this [Yeoman generator](https://www.npmjs.com/package/generator-testcafe-browser-provider) so that you’ll need to write only a few lines of code.
+  to set up tests on your on-premises server farm, to use a cloud testing platform, or to start your local browsers in a special way. Use this [Yeoman generator](https://www.npmjs.com/package/generator-testcafe-browser-provider) to write only a few lines of code.
 * To [build a custom reporter](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/)
-  with your own formatting and style check out this [generator](https://www.npmjs.com/package/generator-testcafe-reporter).
+  with your formatting and style, check out this [generator](https://www.npmjs.com/package/generator-testcafe-reporter).
 
 If you want your plugin to be listed below, [send us a note in a Github issue](https://github.com/DevExpress/testcafe/labels/TYPE%3A%20proposal).
 
 ## Plugins
 
-These plugins are made by TestCafe developers and our community members.
+TestCafe developers and community members made these plugins:
 
 * **Browser Providers**<br/>
-  They allow you to use TestCafe with cloud browser providers and emulators.
+  Allows you to use TestCafe with cloud browser providers and emulators.
   * [SauceLabs provider](https://github.com/DevExpress/testcafe-browser-provider-saucelabs) (by abelym)
   * [BrowserStack provider](https://github.com/DevExpress/testcafe-browser-provider-browserstack) (by abelym)
   * [Nightmare headless provider](https://github.com/ryx/testcafe-browser-provider-nightmare) (by ryx)
@@ -185,7 +186,7 @@ These plugins are made by TestCafe developers and our community members.
   * [Gulp](https://github.com/DevExpress/gulp-testcafe) (by inikulin)
 
 * **Custom Reporters**<br/>
-  TestCafe will present results in different formats.
+  TestCafe presents results in different formats.
   * [TeamCity](https://github.com/Soluto/testcafe-reporter-teamcity) (by nirsky)
   * [Slack](https://github.com/Shafied/testcafe-reporter-slack) (by Shafied)
   * [NUnit](https://github.com/AndreyBelym/testcafe-reporter-nunit) (by abelym)
@@ -196,7 +197,7 @@ These plugins are made by TestCafe developers and our community members.
   * [axe-testcafe](https://github.com/helen-dikareva/axe-testcafe) (by helen-dikareva)
 
 * **IDE Plugins**<br/>
-  Run tests and view results from your favorite IDE..
+  Run tests and view results from your favorite IDE.
   * [Visual Studio Code](https://github.com/romanresh/vscode-testcafe) (by romanresh)
   * [SublimeText](https://github.com/churkin/testcafe-sublimetext) (by churkin)
 
@@ -206,7 +207,7 @@ These plugins are made by TestCafe developers and our community members.
 
 ## Thanks to BrowserStack
 
-We are grateful to BrowserStack for providing infrastructure that we use to test code in this repository.
+We are grateful to BrowserStack for providing the infrastructure that we use to test code in this repository.
 
 <a href="https://www.browserstack.com/"><img alt="BrowserStack Logo" src="https://raw.github.com/DevExpress/testcafe/master/media/BrowserStack.png"/></a>
 
