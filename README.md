@@ -146,7 +146,13 @@ Follow us on [Twitter](https://twitter.com/DXTestCafe). We post TestCafe news an
 
 ## Badge
 
-Show everyone you are using TestCafe:
+Show everyone you are using TestCafe: ![Tested with TestCafe](https://img.shields.io/badge/tested%20with-TestCafe-blue.svg)
+
+Use the following URL to get a TestCafe badge:
+
+```text
+https://img.shields.io/badge/tested%20with-TestCafe-blue.svg
+```
 
 ## Contributing
 
