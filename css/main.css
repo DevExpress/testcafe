@@ -513,3 +513,10 @@ html, body {
   top: 22px;
   left: 10px;
   float: left; }
+
+.faq {
+  max-width: 1100px;
+  margin: 32px 0 40px calc(350px + 40px);
+  padding-right: 40px; }
+  .faq .anchor {
+    top: -80px; }

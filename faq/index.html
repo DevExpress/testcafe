@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Frequently Asked Questions | TestCafe</title>
+
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+
+  <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/faq/" />
+  <meta property="og:title" content="Frequently Asked Questions | TestCafe" />
+
+  <link rel="shortcut icon" href="/testcafe/favicon.ico">
+  <link rel="stylesheet" href="/testcafe/css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/faq/">
+  <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function (e) {
+          hljs.initHighlightingOnLoad();
+      });
+  </script>
+
+  
+  <script>
+    // Google Analytics
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83678642-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  
+  
+  
+
+  <script>
+    (function () {
+        var VISIT_DAY = {
+            first: 1,
+            second: 2,
+            more: 3
+        };
+
+        var isLandingPage = false;
+        var isGettingStarted = false;
+        var isDocumentation = false;
+
+        function updateVisitDay () {
+            var FIRST_VISIT_DAY_ITEM_NAME = 'first-visit-day';
+            var SECOND_VISIT_DAY_ITEM_NAME = 'second-visit-day';
+            var DIFFERENT_VISITS_DELAY = 12 * 60 * 60 * 1000; 
+            
+            // TODO: ignore old visits
+            var now = Date.now();
+            var firstVisit = window.localStorage.getItem(FIRST_VISIT_DAY_ITEM_NAME);
+            var secondVisit = window.localStorage.getItem(SECOND_VISIT_DAY_ITEM_NAME);
+
+            if(!firstVisit) {
+                window.localStorage.setItem(FIRST_VISIT_DAY_ITEM_NAME, now);
+                return VISIT_DAY.first;
+            }
+
+            firstVisit = parseInt(firstVisit);
+
+            if(!secondVisit) {
+                if(!isLandingPage && now - firstVisit >=DIFFERENT_VISITS_DELAY) {
+                    window.localStorage.setItem(SECOND_VISIT_DAY_ITEM_NAME, now);
+                    return VISIT_DAY.second;
+                }
+
+                return VISIT_DAY.first;
+            }
+            
+            secondVisit = parseInt(secondVisit);
+
+            return now - secondVisit >= DIFFERENT_VISITS_DELAY ? VISIT_DAY.more : VISIT_DAY.second;
+        }
+
+        window.needShowShareWidget = function () {
+            if(!isDocumentation || isGettingStarted)
+                return false;
+
+            var visitDay = updateVisitDay();
+
+            return visitDay === VISIT_DAY.more;
+        };
+    })();
+  </script>
+
+  
+
+  
+    <script>
+        if (document.images) {
+            img1 = new Image();
+            img1.src = '/testcafe/images/test-cafe-logo.png';
+        }
+    </script>
+  
+    <script>
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article) {
+            var MIN_BODY_WIDTH = 1000;
+
+            function updateHeader() {
+                var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
+
+                
+
+                siteHeader.style.position = bodyMinimized ? 'static' : '';
+
+                if(docTopMenu)
+                    docTopMenu.style.position = bodyMinimized ? 'static' : '';
+
+                if(contentWrapper)
+                    contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
+
+                if(article)
+                    article.style.marginTop = bodyMinimized ? '21px' : '72px';
+            }
+
+            updateHeader();
+            window.addEventListener('scroll', updateHeader);
+            window.addEventListener('resize', updateHeader);
+        }
+        document.addEventListener('DOMContentLoaded', function (e) {
+            var contentWrapper = document.querySelector('.container');
+            var siteHeader     = document.querySelector('.site-header');
+            var docTopMenu     = document.querySelector('.doc-top-nav');
+            var article        = document.querySelector('.doc');
+
+            if(siteHeader) 
+                initHeader(siteHeader, contentWrapper, docTopMenu, article);
+        });
+    </script>
+</head>
+
+
+  <body>
+    <div class="page-content-wrapper">
+
+      <header class="site-header minimized">
+  <div class="site-header-content">
+    <a class="site-logo" href="/testcafe/"></a>
+    <nav class="site-nav">
+        
+          
+          <a class="page-link " href="/testcafe/documentation/getting-started/">Documentation</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://github.com/DevExpress/testcafe">GitHub</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link active" href="/testcafe/faq/">FAQ</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="/testcafe/blog/">Blog</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://github.com/DevExpress/testcafe/issues">Issues</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://testcafe-discuss.devexpress.com/">Discuss</a>
+          <span class="page-link-separator">|</span>
+        
+          
+          <a class="page-link " href="https://twitter.com/dxtestcafe">Twitter</a>
+          <span class="page-link-separator">|</span>
+        
+      <input type="text" placeholder="Search" id="search"/>
+    </nav>
+
+  </div>
+</header>
+
+
+
+
+      <div class="container">
+    <main>
+	<article class="faq">
+		<div class="post-content">
+
+			<h1>FAQ</h1>
+<ul>
+<li><a href="#general-questions">General Questions</a>
+
+<ul>
+<li><a href="#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate">I have heard that TestCafe does not use Selenium. How does it operate?</a></li>
+<li><a href="#what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version">What is the difference between a paid and an open-source TestCafe version?</a></li>
+<li><a href="#which-browsers-does-testcafe-support-what-are-the-exact-supported-versions">Which browsers does TestCafe support? What are the exact supported versions?</a></li>
+<li><a href="#can-i-use-third-party-modules-in-tests">Can I use third-party modules in tests?</a></li>
+<li><a href="#how-do-i-work-with-configuration-files-and-environment-variables">How do I work with configuration files and environment variables?</a></li>
+</ul></li>
+<li><a href="#troubleshooting">Troubleshooting</a>
+
+<ul>
+<li><a href="#i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do">I have installed TestCafe, but I cannot run it. What should I do?</a></li>
+<li><a href="#when-i-run-a-testcafe-test-i-get-an-unexpected-error-what-can-cause-that">When I run a TestCafe test, I get an unexpected error. What can cause that?</a></li>
+<li><a href="#i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong">I have installed TestCafe plugins but they do not work. What have I done wrong?</a></li>
+<li><a href="#my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen">My test fails because TestCafe could not find the required webpage element. Why does this happen?</a></li>
+</ul></li>
+</ul>
+<h2><a class="anchor" name="general-questions"></a>General Questions <a class="permalink" href="#general-questions">#</a></h2><h3><a class="anchor" name="i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate"></a>I have heard that TestCafe does not use Selenium. How does it operate? <a class="permalink" href="#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate">#</a></h3>
+<p>Unlike most testing solutions, TestCafe is not built on Selenium.
+This allows us to implement features you cannot find in Selenium-based tools
+(for example, testing on mobile devices, user roles, automatic waiting, etc.).</p>
+
+<p>TestCafe uses a <a href="https://github.com/DevExpress/testcafe-hammerhead">URL-rewriting proxy</a>
+which allows it to work without the WebDriver.
+This proxy injects the driver script that emulates user actions into the tested page.</p>
+
+<p>You can read about this in our <a href="https://testcafe-discuss.devexpress.com/t/why-not-use-selenium/47">forum</a>.
+Feel free to ask for more details.</p>
+<h3><a class="anchor" name="what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version"></a>What is the difference between a <a href="https://testcafe.devexpress.com">paid</a> and an <a href="https://devexpress.github.io/testcafe">open-source</a> TestCafe version? <a class="permalink" href="#what-is-the-difference-between-a-paid-and-an-open-source-testcafe-version">#</a></h3>
+<p>TestCafe first appeared as a paid, standalone tool. It had several features besides the test runner: the
+<a href="https://testcafe.devexpress.com/Documentation/Using_TestCafe/Control_Panel/">Control Panel</a>,
+a visual interface for creating, modifying and running your tests, and the
+<a href="https://testcafe.devexpress.com/Documentation/Using_TestCafe/Visual_Test_Recorder/">Visual Test Recorder</a>
+for recording tests by pointing and clicking through the test scenario in the browser.</p>
+
+<p>In 2015 we decided to release the TestCafe core as an open-source project.
+The last major paid version release (v15.1) was in summer 2015.
+After that, it switched to a maintenance-only mode.
+You can find the latest paid version at <a href="https://testcafe.devexpress.com">https://testcafe.devexpress.com</a>.</p>
+
+<p>We released the open-source TestCafe in late 2016.
+It has the same name but contains lots of new functionality and improvements:</p>
+
+<ul>
+<li>a new API and offers a new approach to writing tests;</li>
+<li>no UI to manage and run tests. You can run tests from the CLI or node.js module;</li>
+<li>it is more convenient to integrate into node.js development workflow;</li>
+<li>es6 support, flexible selectors and smart assertions, authentication features, etc.</li>
+</ul>
+
+<p>You can learn more about the open-source version at <a href="https://devexpress.github.io/testcafe">https://devexpress.github.io/testcafe</a>.</p>
+
+<p>We have not abandoned our aspirations to create a competitive proprietary product.
+We plan to release a new commercial version called <strong><em>TestCafe Studio</em></strong>, based on the revised open-source TestCafe.
+Follow us on <a href="https://twitter.com/DXTestCafe">Twitter</a> for the news about TestCafe Studio.</p>
+<h3><a class="anchor" name="which-browsers-does-testcafe-support-what-are-the-exact-supported-versions"></a>Which browsers does TestCafe support? What are the exact supported versions? <a class="permalink" href="#which-browsers-does-testcafe-support-what-are-the-exact-supported-versions">#</a></h3>
+<p>You can find a list of supported browsers in
+<a href="../documentation/using-testcafe/common-concepts/browser-support.html">our documentation</a>.
+TestCafe is tested against the two latest versions of each browser
+except for the browsers whose versions are specified explicitly in this list.</p>
+
+<p>We do not use the most recent JavaScript features in TestCafe code,
+which means it should work with any browser with HTML5 support released in the last three years.</p>
+<h3><a class="anchor" name="can-i-use-third-party-modules-in-tests"></a>Can I use third-party modules in tests? <a class="permalink" href="#can-i-use-third-party-modules-in-tests">#</a></h3>
+<p>You can import third-party modules to test files in the same way as a regular node.js module.</p>
+
+<p>On the server side, use the <code>import</code> statement.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">fs</span> <span class="nx">from</span> <span class="s1">'fs'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">fixture</span><span class="err">`</span>
+   <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://localhost/testcafe/'</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="kd">var</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="s1">'filepath.js'</span><span class="p">;</span>
+
+   <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">filePath</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>On the client side, use <code>t.eval</code> to include the desired module in the test.
+Then you can use this module inside client functions and selectors.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// eval jquery code to add jQuery to the page</span>
+    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="k">new</span> <span class="nb">Function</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">'./jquery.js'</span><span class="p">).</span><span class="nx">toString</span><span class="p">()));</span>
+
+    <span class="kd">var</span> <span class="nx">clientFunction</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// You can use $ here</span>
+        <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">text</span><span class="p">();</span>
+    <span class="p">});</span>
+
+    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">clientFunction</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div><h3><a class="anchor" name="how-do-i-work-with-configuration-files-and-environment-variables"></a>How do I work with configuration files and environment variables? <a class="permalink" href="#how-do-i-work-with-configuration-files-and-environment-variables">#</a></h3>
+<p>TestCafe works without any configuration.
+It does not have any config files where you can place custom variables.
+However, you can introduce your own configuration file and import it to the test code.</p>
+
+<p>For example, you need to pass a website&#39;s base URL to test code. In this instance, you can create the following <code>config.json</code> file:</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nt">"baseUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost/testcafe"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>In the test code, import it as you would do with a regular JavaScript module.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">config</span> <span class="nx">from</span> <span class="s1">'./config'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">config</span><span class="p">.</span><span class="nx">baseUrl</span><span class="p">}</span><span class="sr">/test1/i</span><span class="nx">ndex</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span><span class="p">;</span>
+</code></pre></div>
+<p>Alternatively, you can use custom command line parameters or environment variables.</p>
+
+<p>The following command passes the <code>env</code> argument to the test code:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --env<span class="o">=</span>development
+</code></pre></div>
+<p>In the test, use an argument parser library (like <code>minimist</code>) to parse custom arguments.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">minimist</span> <span class="nx">from</span> <span class="s1">'minimist'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">minimist</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+<span class="kr">const</span> <span class="nx">environment</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">env</span><span class="p">;</span>
+
+<span class="nx">fixture</span><span class="p">(</span><span class="s1">'example'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'check environment'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Environment:'</span><span class="p">,</span> <span class="nx">environment</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>To set an environment variable use the following command on Windows.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">set </span><span class="nv">DEV_MODE</span><span class="o">=</span><span class="nb">true
+</span>testcafe chrome test.js
+</code></pre></div>
+<p>On macOS, <a href="https://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x">the workflow is longer</a>.</p>
+
+<p>In test code, you can access this variable as <code>process.env.DEV_MODE</code>.</p>
+<h2><a class="anchor" name="troubleshooting"></a>Troubleshooting <a class="permalink" href="#troubleshooting">#</a></h2><h3><a class="anchor" name="i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do"></a>I have installed TestCafe but I cannot run it. What should I do? <a class="permalink" href="#i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do">#</a></h3>
+<p><strong>Check your firewall.</strong> First, make sure that your firewall does not block the ports TestCafe uses.
+TestCafe chooses free ports automatically by default. Use the
+<a href="../documentation/using-testcafe/command-line-interface.html#--ports-port1port2">--ports</a> command line option
+or the <a href="../documentation/using-testcafe/programming-interface/createtestcafe.html">createTestCafe</a>
+API factory function to specify custom ports. After that, check that the firewall does not block these specific ports.</p>
+
+<p><strong>Check your proxy server</strong>. Another reason for this problem can be the proxy server you use to access the Internet.
+If your network is connected to the Web via a proxy, use the
+<a href="../documentation/using-testcafe/command-line-interface.html#--proxy-host">--proxy</a> command line option
+or the <a href="../documentation/using-testcafe/programming-interface/runner.html#useproxy">useProxy</a> API method
+to specify the proxy address.</p>
+
+<p><strong>For Linux check X11.</strong> Also note that if you run TestCafe on Linux,
+you need to make sure the system is running the <a href="https://en.wikipedia.org/wiki/X_Window_System">X11</a> server.
+Without X11, you can only run tests in cloud services and headless Google Chrome.
+However, if you use the <a href="https://en.wikipedia.org/wiki/Xvfb">Xvbf</a> server, you can run any other browser in the headless mode.</p>
+<h3><a class="anchor" name="when-i-run-a-testcafe-test-i-get-an-unexpected-error-what-can-cause-that"></a>When I run a TestCafe test, I get an unexpected error. What can cause that? <a class="permalink" href="#when-i-run-a-testcafe-test-i-get-an-unexpected-error-what-can-cause-that">#</a></h3>
+<p><strong>JavaScript errors.</strong> The most common reason for this is a JavaScript error on the tested page.
+Load this page in the browser, open the console and see if the page has any errors.
+In case there are errors, you can either fix them or use
+the <a href="../documentation/using-testcafe/command-line-interface.html#-e---skip-js-errors">--skip-js-errors</a> flag
+to tell TestCafe to skip them.</p>
+
+<p><strong>Browser extensions.</strong> If this does not help, try running the problematic test in incognito mode.
+You can do this by adding an appropriate flag after the browser name.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"firefox –private-window"</span> tests/test.js
+</code></pre></div>
+<p>If the test runs successfully, it might be browser extensions causing the issue.
+Try disabling them one by one and restart the test in the regular mode at each iteration.
+This way you can find out which extension prevents the test from running.</p>
+
+<p><strong>Third-party modules.</strong> In rare cases, third-party modules can be the cause.
+If you use a locally installed TestCafe, try installing it globally and running the test
+outside of the project to eliminate the influence of third-party modules.</p>
+<h3><a class="anchor" name="i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong"></a>I have installed TestCafe plugins but they do not work. What have I done wrong? <a class="permalink" href="#i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong">#</a></h3>
+<p>Plugins should also be installed locally if you are using a locally installed TestCafe.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install --save-dev <span class="o">{</span>pluginName<span class="o">}</span>
+</code></pre></div>
+<p>If you are going to use a global TestCafe installation, or you wish
+to use the plugin in other projects as well, install it globally.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install -g <span class="o">{</span>pluginName<span class="o">}</span>
+</code></pre></div><h3><a class="anchor" name="my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen"></a>My test fails because TestCafe could not find the required webpage element. Why does this happen? <a class="permalink" href="#my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen">#</a></h3>
+<p>First, try debugging the tested page with the TestCafe&#39;s built-in debugger by adding
+the <a href="../documentation/test-api/debugging.html">t.debug()</a> method to test code.
+Then run the test and wait until the browser stops at the breakpoint.
+After this, use the browser&#39;s development tools to check that:</p>
+
+<ul>
+<li>the element is present on the page;</li>
+<li>the element is visible (TestCafe considers it visible if it does not have <code>display</code> set to <code>none</code>,
+<code>visibility</code> set to <code>hidden</code> or the zero <code>width</code> or <code>height</code>);</li>
+<li>the element&#39;s part targeted by the action is visible (the center of the element by default;
+it can be changed using the
+<a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/action-options.html#mouse-action-options"><code>offsetX</code> and <code>offsetY</code></a>
+parameters);</li>
+<li>the element is not in an <code>&lt;iframe&gt;</code> (if it is, use the
+<a href="https://devexpress.github.io/testcafe/documentation/test-api/working-with-iframes.html">t.switchToIframe</a> method
+to switch to the appropriate <code>&lt;iframe&gt;</code>).</li>
+</ul>
+
+<p>Also, try running the test at full screen. If it passes, then your webpage hides the target element
+when it is resized to smaller dimensions.</p>
+
+<p>Finally, try updating TestCafe to the latest version to see if the problem persists.</p>
+
+
+        </div>
+    </article>
+</main>
+</div>
+
+      <div class="push"></div>
+    </div>
+
+    <footer class="site-footer">
+    <div class="site-footer-content">
+        <div class="footer-col-1">
+            <p><strong>TestCafe</strong>: Automated browser testing for the modern web development stack<br/>
+            Copyright © 1998-2017 Developer Express Inc.</p>
+        </div>
+    </div>
+</footer>
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+    <script type="text/javascript"> docsearch({
+          apiKey: '938fb7894c0af8c01af3e2b4c53d4bdd',
+          indexName: 'testcafe',
+          inputSelector: '#search',
+          debug: false // Set debug to true if you want to inspect the dropdown
+      });
+    </script>
+
+  </body>
+
+</html>
