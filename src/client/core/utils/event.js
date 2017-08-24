@@ -35,20 +35,15 @@ export function unbind (el, event, handler, useCapture) {
         nativeMethods.removeEventListener.call(el, event, handler, useCapture);
 }
 
-export function documentReady (pageLoadTimeout = 0) {
-    return new Promise(resolve => {
-        var isReady          = false;
-        var windowLoadRaised = false;
 
-        function ready (forced) {
+// Document ready
+const waitForDomContentLoaded = () => {
+    return new Promise(resolve => {
+        var isReady = false;
+
+        function ready () {
             if (isReady)
                 return;
-
-            if (!forced && listeners.getEventListeners(window, 'load').length && !windowLoadRaised) {
-                // NOTE: wait for window.load
-                delay(pageLoadTimeout).then(() => ready(true));
-                return;
-            }
 
             if (!document.body) {
                 nativeMethods.setTimeout.call(window, ready, 1);
@@ -56,8 +51,6 @@ export function documentReady (pageLoadTimeout = 0) {
             }
 
             isReady = true;
-
-            unbind(window, 'load', ready);
 
             resolve();
         }
@@ -73,12 +66,19 @@ export function documentReady (pageLoadTimeout = 0) {
 
         if (document.readyState === 'complete')
             nativeMethods.setTimeout.call(window, onContentLoaded, 1);
-        else {
+        else
             bind(document, 'DOMContentLoaded', onContentLoaded);
-            bind(window, 'load', () => {
-                windowLoadRaised = true;
-                ready();
-            });
-        }
-    });
+    })
+};
+
+const waitForWindowLoad = () => new Promise(resolve => bind(window, 'load', resolve));
+
+export function documentReady (pageLoadTimeout = 0) {
+    return waitForDomContentLoaded()
+        .then(() => {
+            if (!listeners.getEventListeners(window, 'load').length)
+                return null;
+
+            return Promise.race([waitForWindowLoad(), delay(pageLoadTimeout)]);
+        });
 }

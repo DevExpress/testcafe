@@ -19,8 +19,8 @@ test
 test
 ('Wait for window.load in iframe', async t => {
     await t
-        .navigateTo('http://localhost:3000/fixtures/api/es-next/page-load-timeout/pages/with-iframe.html')
         .setPageLoadTimeout(3000)
+        .navigateTo('http://localhost:3000/fixtures/api/es-next/page-load-timeout/pages/with-iframe.html')
         .switchToIframe('#iframe')
         .expect(ClientFunction(() => window.loadEventRaised)()).ok('Test started before window.load', { timeout: 0 });
 });
