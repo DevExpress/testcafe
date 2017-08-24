@@ -379,7 +379,7 @@ export default class Driver {
     _onPrepareBrowserManipulationCommand () {
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true);
 
-        prepareBrowserManipulation(this.browserId)
+        prepareBrowserManipulation()
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
                 return this._onReady(driverStatus);
