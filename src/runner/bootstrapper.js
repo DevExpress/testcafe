@@ -103,7 +103,7 @@ export default class Bootstrapper {
         return this.reporters.map(({ reporter, outStream }) => {
             let pluginFactory = reporter;
 
-            if (typeof reporter !== 'function') {
+            if (typeof pluginFactory !== 'function') {
                 try {
                     pluginFactory = require('testcafe-reporter-' + reporter);
                 }

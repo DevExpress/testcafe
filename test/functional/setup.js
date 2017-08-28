@@ -163,6 +163,7 @@ before(function () {
                 var appCommand         = opts && opts.appCommand;
                 var appInitDelay       = opts && opts.appInitDelay;
                 var externalProxyHost  = opts && opts.useProxy;
+                var customReporters    = opts && opts.reporters;
 
                 var actualBrowsers = browsersInfo.filter(function (browserInfo) {
                     var only = onlyOption ? onlyOption.indexOf(browserInfo.settings.alias) > -1 : true;
@@ -190,13 +191,10 @@ before(function () {
                         throw err;
                 };
 
-                return runner
-                    .useProxy(externalProxyHost)
-                    .browsers(connections)
-                    .filter(function (test) {
-                        return testName ? test === testName : true;
-                    })
-                    .reporter('json', {
+                if (customReporters)
+                    customReporters.forEach(r => runner.reporter(r.reporter, r.outStream));
+                else {
+                    runner.reporter('json', {
                         write: function (data) {
                             report += data;
                         },
@@ -204,6 +202,14 @@ before(function () {
                         end: function (data) {
                             report += data;
                         }
+                    });
+                }
+
+                return runner
+                    .useProxy(externalProxyHost)
+                    .browsers(connections)
+                    .filter(function (test) {
+                        return testName ? test === testName : true;
                     })
                     .src(fixturePath)
                     .screenshots(screenshotPath, screenshotsOnFails)
@@ -216,6 +222,9 @@ before(function () {
                         speed:            speed
                     })
                     .then(function () {
+                        if (customReporters)
+                            return;
+
                         var taskReport = JSON.parse(report);
                         var errorDescr = getTestError(taskReport, actualBrowsers);
                         var testReport = taskReport.fixtures.length === 1 ?
