@@ -68,7 +68,7 @@ const waitForDomContentLoaded = () => {
             nativeMethods.setTimeout.call(window, onContentLoaded, 1);
         else
             bind(document, 'DOMContentLoaded', onContentLoaded);
-    })
+    });
 };
 
 const waitForWindowLoad = () => new Promise(resolve => bind(window, 'load', resolve));

@@ -399,6 +399,9 @@ export default class TestRun extends Session {
         if (command.type === COMMAND_TYPE.wait)
             return delay(command.timeout);
 
+        if (command.type === COMMAND_TYPE.setPageLoadTimeout)
+            return null;
+
         if (command.type === COMMAND_TYPE.debug)
             return await this._enqueueSetBreakpointCommand(callsite);
 
