@@ -48,6 +48,10 @@ function testJSFilesParser (dir, expectedStructure) {
     ]);
 }
 
+function testTypeScriptFilesParser (dir, expectedStructure) {
+    return testFixtureParser(dir, expectedStructure, getTypeScriptTestList, getTypeScriptTestListFromCode);
+}
+
 describe('Should get structure of files (esnext and typescript common cases)', function () {
     it('Base', function () {
         var expectedStructure = [
@@ -193,5 +197,36 @@ describe('Should get structure of files (esnext and typescript common cases)', f
         var expectedStructure = [[]];
 
         return testJSFilesParser('./data/test-suites/fixture-and-test-hooks-invalid-usage', expectedStructure);
+    });
+});
+
+
+describe('Should get structure of typescript files', function () {
+    it('Smoke test', () => {
+        var expectedStructure = [
+            [
+                new Fixture('fixture 1', 72, 132, new Loc(5, 0, 5, 60),
+                    [
+                        new Test('test 1', 246, 325, new Loc(9, 0, 11, 2))
+                    ]
+                ),
+
+                new Fixture('<computed name>(line: 14)', 380, 422, new Loc(14, 1, 14, 43),
+                    [
+                        new Test('<computed name>(line: 15)', 425, 456, new Loc(15, 1, 16, 3))
+                    ]
+                )
+            ],
+
+            [
+                new Fixture('fixture 1', 97, 138, new Loc(9, 9, 9, 50),
+                    [
+                        new Test('test 1', 147, 222, new Loc(11, 6, 13, 12))
+                    ]
+                )
+            ]
+        ];
+
+        return testTypeScriptFilesParser('./data/test-suites/typescript-parser-smoke', expectedStructure);
     });
 });

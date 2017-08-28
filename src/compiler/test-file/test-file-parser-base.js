@@ -102,6 +102,7 @@ export class TestFileParserBase {
 
         switch (currTokenType) {
             case tokenType.ExpressionStatement:
+            case tokenType.TypeAssertionExpression:
                 return this.analyzeToken(token.expression);
 
             case tokenType.FunctionDeclaration:

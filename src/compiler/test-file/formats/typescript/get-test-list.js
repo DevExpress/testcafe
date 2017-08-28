@@ -141,6 +141,9 @@ class TypeScriptTestFileParser extends TestFileParserBase {
         if (arg.text && arg.kind !== this.tokenType.NumericLiteral)
             return arg.text;
 
+        if (arg.kind === this.tokenType.TypeAssertionExpression)
+            return this.formatFnArg(arg.expression);
+
         return null;
     }
 
