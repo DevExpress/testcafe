@@ -4,7 +4,7 @@ var config                     = require('../../../../config.js');
 var errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 
 
-describe.only('[API] Resize window actions', function () {
+describe('[API] Resize window actions', function () {
     if (config.useLocalBrowsers) {
         describe('t.resizeWindow', function () {
             it('Should resize the window', function () {

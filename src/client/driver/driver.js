@@ -75,12 +75,11 @@ const CURRENT_IFRAME_ERROR_CTORS = {
 
 
 export default class Driver {
-    constructor (ids, communicationUrls, runInfo, options) {
+    constructor (testRunId, communicationUrls, runInfo, options) {
         this.COMMAND_EXECUTING_FLAG   = 'testcafe|driver|command-executing-flag';
         this.EXECUTING_IN_IFRAME_FLAG = 'testcafe|driver|executing-in-iframe-flag';
 
-        this.testRunId        = ids.testRun;
-        this.browserId        = ids.browser;
+        this.testRunId        = testRunId;
         this.heartbeatUrl     = communicationUrls.heartbeat;
         this.browserStatusUrl = communicationUrls.status;
         this.userAgent        = runInfo.userAgent;
