@@ -148,9 +148,9 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    reporter (reporter, outStream) {
+    reporter (name, outStream) {
         this.bootstrapper.reporters.push({
-            reporter,
+            name,
             outStream
         });
 

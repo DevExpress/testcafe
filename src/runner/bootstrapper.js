@@ -92,23 +92,23 @@ export default class Bootstrapper {
         var stdoutReporters = filter(this.reporters, r => isUndefined(r.outStream) || r.outStream === process.stdout);
 
         if (stdoutReporters.length > 1)
-            throw new GeneralError(MESSAGE.multipleStdoutReporters, stdoutReporters.map(r => r.reporter).join(', '));
+            throw new GeneralError(MESSAGE.multipleStdoutReporters, stdoutReporters.map(r => r.name).join(', '));
         else if (stdoutReporters.length === 0) {
             this.reporters.push({
-                reporter:  'spec',
+                name:      'spec',
                 outStream: process.stdout
             });
         }
 
-        return this.reporters.map(({ reporter, outStream }) => {
-            let pluginFactory = reporter;
+        return this.reporters.map(({ name, outStream }) => {
+            let pluginFactory = name;
 
             if (typeof pluginFactory !== 'function') {
                 try {
-                    pluginFactory = require('testcafe-reporter-' + reporter);
+                    pluginFactory = require('testcafe-reporter-' + name);
                 }
                 catch (err) {
-                    throw new GeneralError(MESSAGE.cantFindReporterForAlias, reporter);
+                    throw new GeneralError(MESSAGE.cantFindReporterForAlias, name);
                 }
             }
 

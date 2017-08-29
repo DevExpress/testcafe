@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import resolveCwd from 'resolve-cwd';
+import fs from 'fs';
 import browserProviderPool from '../browser/provider/pool';
 import { GeneralError, APIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
@@ -52,13 +53,20 @@ async function runTests (argParser) {
     var browsers       = argParser.browsers.concat(remoteBrowsers);
     var runner         = testCafe.createRunner();
     var failed         = 0;
+    var reporters      = argParser.opts.reporters.map(r => {
+        return {
+            name:      r.name,
+            outStream: r.outFile ? fs.createWriteStream(r.outFile) : void 0
+        };
+    });
+
+    reporters.forEach(r => runner.reporter(r.name, r.outStream));
 
     runner
         .useProxy(externalProxyHost)
         .src(argParser.src)
         .browsers(browsers)
         .concurrency(concurrency)
-        .reporter(opts.reporter)
         .filter(argParser.filter)
         .screenshots(opts.screenshots, opts.screenshotsOnFails)
         .startApp(opts.app, opts.appInitDelay);

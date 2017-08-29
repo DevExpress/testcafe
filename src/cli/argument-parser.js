@@ -1,4 +1,4 @@
-import { resolve, join as pathJoin } from 'path';
+import { resolve, join as pathJoin, dirname } from 'path';
 import { Command } from 'commander';
 import Promise from 'pinkie';
 import dedent from 'dedent';
@@ -87,7 +87,7 @@ export default class CLIArgumentParser {
             .description(CLIArgumentParser._getDescription())
 
             .option('-b, --list-browsers [provider]', 'output the aliases for local browsers or browsers available through the specified browser provider')
-            .option('-r, --reporter <name>', 'specify the reporter type to use')
+            .option('-r, --reporters <name[:outFile][,...]>', 'specify reporter types to use and corresponding output files')
             .option('-s, --screenshots <path>', 'enable screenshot capturing and specify the path to save the screenshots to')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-q, --quarantine-mode', 'enable the quarantine mode')
@@ -199,6 +199,35 @@ export default class CLIArgumentParser {
             .filter(browser => browser && this._filterAndCountRemotes(browser));
     }
 
+    async _parseReporters () {
+        if (!this.opts.reporters) {
+            this.opts.reporters = [];
+            return;
+        }
+
+        const reporters = this.opts.reporters.split(',');
+
+        this.opts.reporters = reporters.map(reporter => {
+            const separatorIndex = reporter.indexOf(':');
+
+            if (separatorIndex < 0)
+                return { name: reporter };
+
+            const name    = reporter.substring(0, separatorIndex);
+            const outFile = reporter.substring(separatorIndex + 1);
+
+            return { name, outFile };
+        });
+
+        for (const reporter of this.opts.reporters) {
+            if (reporter.outFile) {
+                reporter.outFile = resolve(this.cwd, reporter.outFile);
+
+                await ensureDir(dirname(reporter.outFile));
+            }
+        }
+    }
+
     async _convertDirsToGlobs (fileList) {
         fileList = await Promise.all(fileList.map(async file => {
             if (!isGlob(file)) {
@@ -274,7 +303,8 @@ export default class CLIArgumentParser {
 
         await Promise.all([
             this._parseScreenshotsPath(),
-            this._parseFileList()
+            this._parseFileList(),
+            this._parseReporters()
         ]);
     }
 }
