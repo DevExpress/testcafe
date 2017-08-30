@@ -13,7 +13,7 @@ export default class DragToOffsetAutomation extends DragAutomationBase {
         this.dragOffsetY = offsetY;
     }
 
-    _getEndPoint () {
+    _getDestination () {
         var startPoint = getAutomationPoint(this.element, this.offsetX, this.offsetY);
         var maxX       = styleUtils.getWidth(document);
         var maxY       = styleUtils.getHeight(document);
@@ -22,19 +22,17 @@ export default class DragToOffsetAutomation extends DragAutomationBase {
             y: startPoint.y + this.dragOffsetY
         };
 
-        return {
+        endPoint = {
             x: Math.min(Math.max(0, endPoint.x), maxX),
             y: Math.min(Math.max(0, endPoint.y), maxY)
         };
-    }
 
-    _getDestination () {
         var element = document.documentElement;
         var offsets = {
-            offsetX: this.endPoint.x,
-            offsetY: this.endPoint.y
+            offsetX: endPoint.x,
+            offsetY: endPoint.y
         };
 
-        return { element, offsets };
+        return { element, offsets, endPoint };
     }
 }

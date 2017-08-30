@@ -145,6 +145,25 @@ export class TypeOptions extends ClickOptions {
     }
 }
 
+// DragToElement
+export class DragToElementOptions extends MouseOptions {
+    constructor (obj, validate) {
+        super(obj, validate);
+
+        this.destinationOffsetX = null;
+        this.destinationOffsetY = null;
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return super._getAssignableProperties().concat([
+            { name: 'destinationOffsetX', type: integerOption },
+            { name: 'destinationOffsetY', type: integerOption }
+        ]);
+    }
+}
+
 //ResizeToFitDevice
 export class ResizeToFitDeviceOptions extends Assignable {
     constructor (obj, validate) {

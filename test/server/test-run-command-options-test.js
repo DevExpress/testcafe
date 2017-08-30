@@ -2,6 +2,7 @@ var expect                   = require('chai').expect;
 var ActionOptions            = require('../../lib/test-run/commands/options').ActionOptions;
 var OffsetOptions            = require('../../lib/test-run/commands/options').OffsetOptions;
 var MouseOptions             = require('../../lib/test-run/commands/options').MouseOptions;
+var DragToElementOptions     = require('../../lib/test-run/commands/options').DragToElementOptions;
 var ClickOptions             = require('../../lib/test-run/commands/options').ClickOptions;
 var MoveOptions              = require('../../lib/test-run/commands/options').MoveOptions;
 var TypeOptions              = require('../../lib/test-run/commands/options').TypeOptions;
@@ -146,6 +147,35 @@ describe('Test run command options', function () {
                 replace:  true,
                 paste:    true,
                 speed:    null,
+
+                modifiers: {
+                    ctrl:  true,
+                    alt:   false,
+                    shift: true,
+                    meta:  false
+                }
+            });
+        });
+
+        it('Should create DragToElementOptions from object', function () {
+            var options = new DragToElementOptions({
+                offsetX:            15,
+                destinationOffsetX: 20,
+                dummy:              false,
+
+                modifiers: {
+                    ctrl:  true,
+                    shift: true,
+                    dummy: 'yo'
+                }
+            }, false);
+
+            expect(JSON.parse(JSON.stringify(options))).eql({
+                offsetX:            15,
+                offsetY:            null,
+                destinationOffsetX: 20,
+                destinationOffsetY: null,
+                speed:              null,
 
                 modifiers: {
                     ctrl:  true,
@@ -354,6 +384,34 @@ describe('Test run command options', function () {
                     type:            ERROR_TYPE.actionBooleanOptionError,
                     actualValue:     'number',
                     optionName:      'replace',
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate DragToElementOptions', function () {
+            assertThrow(
+                function () {
+                    return new DragToElementOptions({ destinationOffsetX: null }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionIntegerOptionError,
+                    actualValue:     'object',
+                    optionName:      'destinationOffsetX',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new DragToElementOptions({ destinationOffsetY: NaN }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionIntegerOptionError,
+                    actualValue:     NaN,
+                    optionName:      'destinationOffsetY',
                     callsite:        null
                 }
             );

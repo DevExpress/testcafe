@@ -408,11 +408,13 @@ describe('Test run commands', function () {
                 dragOffsetX:         10,
 
                 options: {
-                    offsetX:  23,
-                    offsetY:  32,
-                    caretPos: 2,
-                    speed:    0.5,
-                    dummy:    1,
+                    offsetX:            23,
+                    offsetY:            32,
+                    destinationOffsetX: 12,
+                    destinationOffsetY: 21,
+                    caretPos:           2,
+                    speed:              0.5,
+                    dummy:              1,
 
                     modifiers: {
                         ctrl:  true,
@@ -432,9 +434,12 @@ describe('Test run commands', function () {
                 destinationSelector: makeSelector('#destination'),
 
                 options: {
-                    offsetX: 23,
-                    offsetY: 32,
-                    speed:   0.5,
+                    offsetX:            23,
+                    offsetY:            32,
+                    destinationOffsetX: 12,
+                    destinationOffsetY: 21,
+                    speed:              0.5,
+
 
                     modifiers: {
                         ctrl:  true,
@@ -459,9 +464,11 @@ describe('Test run commands', function () {
                 destinationSelector: makeSelector('#destination'),
 
                 options: {
-                    offsetX: null,
-                    offsetY: null,
-                    speed:   null,
+                    offsetX:            null,
+                    offsetY:            null,
+                    destinationOffsetX: null,
+                    destinationOffsetY: null,
+                    speed:              null,
 
                     modifiers: {
                         ctrl:  false,

@@ -157,7 +157,7 @@ test('Click button', async t => {
     await t.click('#btn');
 });
 
-test('Click without offset options', async t=> {
+test('Click without offset options', async t => {
     await t.click('#div');
 });
 
@@ -200,6 +200,10 @@ test('Drag to element with incorrect selector', async t => {
 
 test('Drag to element with incorrect destinationSelector', async t => {
     await t.dragToElement('#draggable-div-2', null);
+});
+
+test('Drag to element with destination offsets', async t => {
+    await t.dragToElement('#draggable-div-2', '#destination-div', {destinationOffsetX: 0, destinationOffsetY: 0})
 });
 
 test('Destination element selector returns text node', async t => {
