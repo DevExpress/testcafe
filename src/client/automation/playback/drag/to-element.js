@@ -18,7 +18,8 @@ export default class DragToElementAutomation extends DragAutomationBase {
         var element     = this.destinationElement;
         var elementRect = positionUtils.getElementRectangle(element);
         var offsets     = getOffsetOptions(element, this.destinationOffsetX, this.destinationOffsetY);
-        var endPoint    = {
+
+        var endPoint = {
             x: elementRect.left + offsets.offsetX,
             y: elementRect.top + offsets.offsetY
         };
