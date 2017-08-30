@@ -191,42 +191,6 @@ describe('Runner', function () {
                 .src('test/server/data/test-suites/basic/testfile2.js')
                 .run();
         });
-
-        it('Should fallback to the default reporter if reporter with "outStream=process.stdout" was not set', function () {
-            runner._runTask = function (reporters) {
-                expect(reporters.length).to.be.eql(2);
-
-                var reporterPlugin1 = reporters[0].plugin;
-
-                expect(reporterPlugin1.reportFixtureStart).to.be.a('function');
-                expect(reporterPlugin1.reportTestDone).to.be.a('function');
-                expect(reporterPlugin1.reportTaskStart).to.be.a('function');
-                expect(reporterPlugin1.reportTaskDone).to.be.a('function');
-
-                var reporterPlugin2 = reporters[0].plugin;
-
-                expect(reporterPlugin2.reportFixtureStart).to.be.a('function');
-                expect(reporterPlugin2.reportTestDone).to.be.a('function');
-                expect(reporterPlugin2.reportTaskStart).to.be.a('function');
-                expect(reporterPlugin2.reportTaskDone).to.be.a('function');
-
-                return Promise.resolve({});
-            };
-
-            var outStreamMock = {
-                write: function () {
-                },
-
-                end: function () {
-                }
-            };
-
-            return runner
-                .browsers(connection)
-                .reporter('json', outStreamMock)
-                .src('test/server/data/test-suites/basic/testfile2.js')
-                .run();
-        });
     });
 
     describe('.src()', function () {

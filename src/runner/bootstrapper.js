@@ -93,7 +93,8 @@ export default class Bootstrapper {
 
         if (stdoutReporters.length > 1)
             throw new GeneralError(MESSAGE.multipleStdoutReporters, stdoutReporters.map(r => r.name).join(', '));
-        else if (stdoutReporters.length === 0) {
+
+        if (!this.reporters.length) {
             this.reporters.push({
                 name:      'spec',
                 outStream: process.stdout
