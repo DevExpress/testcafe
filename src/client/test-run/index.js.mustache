@@ -15,8 +15,7 @@
     var testName            = {{{testName}}};
 
     var ClientDriver = window['%testCafeDriver%'];
-    var driver       = new ClientDriver(
-        { testRun: testRunId, browser: browserId },
+    var driver       = new ClientDriver(testRunId,
         { heartbeat: browserHeartbeatUrl, status: browserStatusUrl },
         { userAgent: userAgent, fixtureName: fixtureName, testName: testName },
         {

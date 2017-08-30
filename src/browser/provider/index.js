@@ -57,6 +57,7 @@ export default class BrowserProvider {
         // we are resizing it for the first time to switch the window to normal mode, and for the second time - to restore the client area size.
         this.resizeCorrections = {};
         this.maxScreenSizes    = {};
+        this.windowDescriptors = {};
     }
 
     async _calculateResizeCorrections (browserId) {
@@ -101,6 +102,8 @@ export default class BrowserProvider {
     }
 
     async _onOpenBrowser (browserId) {
+        this.windowDescriptors[browserId] = await browserTools.findWindow(browserId);
+
         if (OS.win)
             await this._calculateResizeCorrections(browserId);
         else if (OS.mac)
@@ -108,7 +111,9 @@ export default class BrowserProvider {
     }
 
     async _closeLocalBrowser (browserId) {
-        await browserTools.close(browserId);
+        await browserTools.close(this.windowDescriptors[browserId]);
+
+        delete this.windowDescriptors[browserId];
     }
 
     async _resizeLocalBrowserWindow (browserId, width, height, currentWidth, currentHeight) {
@@ -119,11 +124,11 @@ export default class BrowserProvider {
             delete this.resizeCorrections[browserId];
         }
 
-        await browserTools.resize(browserId, currentWidth, currentHeight, width, height);
+        await browserTools.resize(this.windowDescriptors[browserId], currentWidth, currentHeight, width, height);
     }
 
     async _takeLocalBrowserScreenshot (browserId, screenshotPath) {
-        await browserTools.screenshot(browserId, screenshotPath);
+        await browserTools.screenshot(this.windowDescriptors[browserId], screenshotPath);
     }
 
     async _canResizeLocalBrowserWindowToDimensions (browserId, width, height) {
@@ -136,7 +141,7 @@ export default class BrowserProvider {
     }
 
     async _maximizeLocalBrowserWindow (browserId) {
-        await browserTools.maximize(browserId);
+        await browserTools.maximize(this.windowDescriptors[browserId]);
     }
 
     async init () {

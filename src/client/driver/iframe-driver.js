@@ -10,8 +10,8 @@ import IframeNativeDialogTracker from './native-dialog-tracker/iframe';
 
 
 export default class IframeDriver extends Driver {
-    constructor (ids, options) {
-        super(ids, {}, {}, options);
+    constructor (testRunId, options) {
+        super(testRunId, {}, {}, options);
 
         this.lastParentDriverMessageId = null;
         this.parentDriverLink          = new ParentDriverLink(window.parent);
