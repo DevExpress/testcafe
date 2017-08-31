@@ -1,6 +1,7 @@
 * text=auto
 *.sh text eol=lf
 *.js text eol=lf
+*.ts text eol=lf
 *.css text eol=lf
 *.html text eol=lf
 *.md text eol=lf
