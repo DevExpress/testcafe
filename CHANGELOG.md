@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.17.2 (2017-9-1)
+
+### Bug Fixes
+
+* Taking a screenshot on teamcity agent works correctly now ([#1625](https://github.com/DevExpress/testcafe/issues/1625))
+* It is possible to run tests on remote devices from a docker container ([#1728](https://github.com/DevExpress/testcafe/issues/1728))
+* TestCafe compiles TypeScript tests correctly now if Mocha or Jest typedefs are included in the project ([#1537](https://github.com/DevExpress/testcafe/issues/1537))
+* Running on remote devices works correctly on MacOS now ([#1732](https://github.com/DevExpress/testcafe/issues/1732))
+* A target directory is checked before creating a screenshot ([#1551](https://github.com/DevExpress/testcafe/issues/1551))
+* The second `MutationObserver` callback argument is not missed now ([testcafe-hammerhead/#1268](https://github.com/DevExpress/testcafe-hammerhead/issues/1268))
+* Link's `href` property with an unsupported protocol is set correctly now ([testcafe-hammerhead/#1276](https://github.com/DevExpress/testcafe-hammerhead/issues/1276))
+* The `document.documentURI` property is now processed correctly in IE ([testcafe-hammerhead/#1270](https://github.com/DevExpress/testcafe-hammerhead/issues/1270))
+* JSON.stringify and Object.keys functions now work properly for a MessageEvent instance ([testcafe-hammerhead/#1277](https://github.com/DevExpress/testcafe-hammerhead/issues/1277))
+
 ## v0.17.1 (2017-8-17)
 
 ### Bug Fixes
