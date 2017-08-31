@@ -5,7 +5,7 @@ interface ClientFunctionOptions {
      *  Contains functions, variables or objects used by the client function internally.
      *  Properties of the `dependencies` object will be added to the client function's scope as variables.
      */
-    dependencies?: {[key: string]: Function},
+    dependencies?: {[key: string]: any},
     /**
      * If you need to call a client function from a Node.js callback, assign the current test controller to the `boundTestRun` option.
      */
