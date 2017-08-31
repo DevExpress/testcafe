@@ -485,6 +485,11 @@ test('Selector "filter" method', async() => {
     expect(await label.nth(0).parent(0).find('#release').exists).to.be.false;
     expect(await label.nth(1).parent(0).find('#release').exists).to.be.false;
     expect(await label.nth(2).parent(0).find('#release').exists).to.be.true;
+
+    // Should allow non-functions as a dependency
+    const dep = true;
+
+    Selector('#list *').filter(() => dep, { dependencies: { dep } })
 });
 
 test('Combination of filter methods', async t => {
@@ -546,6 +551,11 @@ test('Selector "find" method', async() => {
     expect(await label.withText('Write code').exists).to.be.false;
     expect(await label.withText('Test it').exists).to.be.true;
     expect(await label.withText('Release it').exists).to.be.false;
+
+    // Should allow non-functions as a dependency
+    const dep = true;
+
+    Selector('#list *').find(() => dep, { dependencies: { dep } })
 });
 
 test('Selector "parent" method', async() => {
@@ -583,6 +593,11 @@ test('Selector "parent" method', async() => {
 
     expect(await selector.nth(0).exists).to.be.true;
     expect(await selector.nth(1).exists).to.be.false;
+
+    // Should allow non-functions as a dependency
+    const dep = true;
+
+    Selector('#list *').parent(() => dep, { dependencies: { dep } })
 });
 
 test('Selector "child" method', async() => {
@@ -621,6 +636,11 @@ test('Selector "child" method', async() => {
     expect(await label.withText('Write code').exists).to.be.false;
     expect(await label.withText('Test it').exists).to.be.true;
     expect(await label.withText('Release it').exists).to.be.false;
+
+    // Should allow non-functions as a dependency
+    const dep = true;
+
+    Selector('#list *').child(() => dep, { dependencies: { dep } })
 });
 
 test('Selector "sibling" method', async() => {
@@ -644,6 +664,11 @@ test('Selector "sibling" method', async() => {
 
     // With filters
     expect(await Selector('#el2').sibling().withText('element 4').id).eql('el4');
+
+    // Should allow non-functions as a dependency
+    const dep = true;
+
+    Selector('#list *').sibling(() => dep, { dependencies: { dep } })
 });
 
 test('Selector "count" and "exists" properties', async() => {
@@ -730,6 +755,11 @@ test('Selector "nextSibling" method', async t => {
 
     // With filters
     await t.expect(Selector('#el2').nextSibling().withText('element 4').id).eql('el4');
+
+    // Should allow non-functions as a dependency
+    const dep = true;
+
+    Selector('#list *').nextSibling(() => dep, { dependencies: { dep } })
 });
 
 test('Selector "prevSibling" method', async t => {
@@ -797,6 +827,11 @@ test('Selector `addCustomMethods` method', async t => {
     })();
 
     await t.expect(nonExistingElement).eql(null);
+
+    // Should allow non-functions as a dependency
+    const dep = true;
+
+    Selector('#list *').prevSibling(() => dep, { dependencies: { dep } })
 });
 
 test('Add custom method - method throws an error', async() => {
