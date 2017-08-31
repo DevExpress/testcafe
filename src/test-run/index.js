@@ -411,11 +411,6 @@ export default class TestRun extends Session {
         if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command, callsite);
 
-        if (command.type === COMMAND_TYPE.setPageLoadTimeout) {
-            this.pageLoadTimeout = command.duration;
-            return Promise.resolve();
-        }
-
         return this._enqueueCommand(command, callsite);
     }
 
