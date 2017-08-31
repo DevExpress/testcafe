@@ -5,7 +5,7 @@ interface ClientFunctionOptions {
      *  Contains functions, variables or objects used by the client function internally.
      *  Properties of the `dependencies` object will be added to the client function's scope as variables.
      */
-    dependencies?: {[key: string]: Function},
+    dependencies?: {[key: string]: any},
     /**
      * If you need to call a client function from a Node.js callback, assign the current test controller to the `boundTestRun` option.
      */
@@ -474,7 +474,7 @@ interface SelectorAPI {
      * @param dependencies - Predicate dependencies.
      */
     filter(filterFn: (node: Element, idx: number) => boolean,
-           dependencies?: {[key: string]: Function}): Selector;
+           dependencies?: {[key: string]: any}): Selector;
     /**
      * Finds all descendants of all nodes in the matching set and filters them by `cssSelector`.
      *
@@ -491,7 +491,7 @@ interface SelectorAPI {
      * @param dependencies - Predicate dependencies.
      */
     find(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
-         dependencies?: {[key: string]: Function}): Selector;
+         dependencies?: {[key: string]: any}): Selector;
     /**
      * Finds all parents of all nodes in the matching set (first element in the set will be the closest parent).
      */
@@ -518,7 +518,7 @@ interface SelectorAPI {
      * @param dependencies - Predicate dependencies.
      */
     parent(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
-           dependencies?: {[key: string]: Function}): Selector;
+           dependencies?: {[key: string]: any}): Selector;
     /**
      * Finds all child elements (not nodes) of all nodes in the matching set.
      */
@@ -545,7 +545,7 @@ interface SelectorAPI {
      * @param dependencies - Predicate dependencies.
      */
     child(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
-          dependencies?: {[key: string]: Function}): Selector;
+          dependencies?: {[key: string]: any}): Selector;
     /**
      * Finds all sibling elements (not nodes) of all nodes in the matching set.
      */
@@ -572,7 +572,7 @@ interface SelectorAPI {
      * @param dependencies - Predicate dependencies.
      */
     sibling(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
-            dependencies?: {[key: string]: Function}): Selector;
+            dependencies?: {[key: string]: any}): Selector;
     /**
      * Finds all succeeding sibling elements (not nodes) of all nodes in the matching set.
      */
@@ -599,7 +599,7 @@ interface SelectorAPI {
      * @param dependencies - Predicate dependencies.
      */
     nextSibling(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
-                dependencies?: {[key: string]: Function}): Selector;
+                dependencies?: {[key: string]: any}): Selector;
     /**
      * Finds all preceding sibling elements (not nodes) of all nodes in the matching set.
      */
@@ -626,7 +626,7 @@ interface SelectorAPI {
      * @param dependencies - Predicate dependencies.
      */
     prevSibling(filterFn: (node: Element, idx: number, originNode: Element) => boolean,
-                dependencies?: {[key: string]: Function}): Selector;
+                dependencies?: {[key: string]: any}): Selector;
     /**
      * `true if` at least one matching element exists.
      */

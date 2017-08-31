@@ -5,6 +5,10 @@ import { expect } from 'chai';
 fixture `ClientFunction`
     .page `http://localhost:3000/fixtures/api/es-next/client-function/pages/index.html`;
 
+// Should allow non-functions as a dependency
+const dep      = true;
+const someFunc = ClientFunction(() => dep, { dependencies: { dep } });
+
 const getLocation = ClientFunction(() => document.location.toString());
 const getUserAgent = ClientFunction(() => navigator.userAgent);
 
