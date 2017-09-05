@@ -61,10 +61,6 @@ export default class BrowserProvider {
     }
 
     async _calculateResizeCorrections (browserId) {
-        // NOTE: delay to ensure the window finished the opening
-        await this.plugin.waitForConnectionReady(browserId);
-        await delay(BROWSER_OPENING_DELAY);
-
         var title = await this.plugin.runInitScript(browserId, GET_TITLE_SCRIPT);
 
         if (!await browserTools.isMaximized(title))
@@ -90,9 +86,6 @@ export default class BrowserProvider {
     }
 
     async _calculateMacSizeLimits (browserId) {
-        await this.plugin.waitForConnectionReady(browserId);
-        await delay(BROWSER_OPENING_DELAY);
-
         var sizeInfo = await this.plugin.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
 
         this.maxScreenSizes[browserId] = {
@@ -102,6 +95,10 @@ export default class BrowserProvider {
     }
 
     async _onOpenBrowser (browserId) {
+        // NOTE: delay to ensure the window finished the opening
+        await this.plugin.waitForConnectionReady(browserId);
+        await delay(BROWSER_OPENING_DELAY);
+
         this.windowDescriptors[browserId] = await browserTools.findWindow(browserId);
 
         if (OS.win)
