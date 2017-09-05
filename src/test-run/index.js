@@ -8,6 +8,7 @@ import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import TestCafeErrorList from '../errors/error-list';
+import { executeJsExpression } from './execute-js-expression';
 import { PageLoadError, RoleSwitchInRoleInitializerError } from '../errors/test-run/';
 import BrowserManipulationQueue from './browser-manipulation-queue';
 import CLIENT_MESSAGES from './client-messages';
@@ -212,6 +213,9 @@ export default class TestRun extends Session {
         this.emit('done');
     }
 
+    _evaluate (code) {
+        return executeJsExpression(code, false, this);
+    }
 
     // Errors
     _addPendingPageErrorIfAny () {
