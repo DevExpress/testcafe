@@ -39,12 +39,13 @@
 ## Features
 
 **Stable tests and no manual timeouts**<br/>
-TestCafe provides built-in assertions which wait until page elements load.
+TestCafe automatically waits for page loads and XHRs before the test starts and after each action.
+It also features smart test actions and assertions that wait for page elements to appear.
 You can change the maximum wait time.
 If elements load faster, tests skip the timeout and continue.
 
 **Latest JS and TypeScript support**<br/>
-TestCafe supports the latest JavaScript features, including ES6, ES7 (for example, async/await).
+TestCafe supports the latest JavaScript features, including ES8 (for example, async/await).
 You can also [use TypeScript](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html)
 if you prefer a strongly typed language.
 
@@ -60,14 +61,14 @@ tests which decrease test execution time.
 **PageObject pattern support**<br/>
 The TestCafe's [Test API](https://devexpress.github.io/testcafe/documentation/test-api/)
 includes a high-level selector library, assertions, etc.
-You can combine them to implement readable tests with the [PageObject pattern](https://martinfowler.com/bliki/PageObject.html).
+You can combine them to implement readable tests with the [PageObject pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html).
 
 ```js
 const macOSInput = Selector('.column').find('label').withText('MacOS').child('input');`
 ```
 
 **Easy to include in a continuous integration system**<br/>
-TestCafe is launched from a console, and its reports can be viewed in a CI system's interface
+You can run TestCafe from a console, and its reports can be viewed in a CI system's interface
 (TeamCity, Jenkins, Travis & etc.)
 
 ## Getting Started
@@ -89,7 +90,8 @@ Note that it needs to have a specific structure: tests must be organized into fi
 You can paste the following code to see the test in action:
 
 ```js
-import { Selector } from 'testcafe'; // first import the testcafe selector module
+import { Selector } from 'testcafe'; // first import testcafe selectors
+
 fixture `Getting Started`// declare the fixture
     .page `https://devexpress.github.io/testcafe/example`;  // specify the start page
 
@@ -123,12 +125,12 @@ TestCafe opens the browser and starts executing the test.
 
 ### Viewing the Results
 
-TestCafe outputs the results into a command shell by default. See [Reporters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html).
+TestCafe outputs the results into a command shell by default. See [Reporters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html)
 for more information. You can also use [plugins](#plugins) to customize the reports.
 
 ![Test Report](docs/articles/images/report.png)
 
-Read the [Getting Started](https://devexpress.github.io/testcafe/documentation/getting-started/) page for more information.
+Read the [Getting Started](https://devexpress.github.io/testcafe/documentation/getting-started/) page for a more detailed guide.
 
 ![Install TestCafe and Run a Test](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/install-and-run-test.gif)
 
@@ -146,12 +148,14 @@ Follow us on [Twitter](https://twitter.com/DXTestCafe). We post TestCafe news an
 
 ## Badge
 
-Show everyone you are using TestCafe: ![Tested with TestCafe](https://img.shields.io/badge/tested%20with-TestCafe-blue.svg)
+Show everyone you are using TestCafe: ![Tested with TestCafe](https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg)
 
-Use the following URL to get a TestCafe badge:
+To display this badge, add the following code to your repository readme:
 
 ```text
-https://img.shields.io/badge/tested%20with-TestCafe-blue.svg
+<a href="https://github.com/DevExpress/testcafe">
+    <img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg">
+</a>
 ```
 
 ## Contributing
@@ -167,14 +171,14 @@ You can use these plugin generators to create your own plugins:
 * To [build a custom reporter](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/)
   with your formatting and style, check out this [generator](https://www.npmjs.com/package/generator-testcafe-reporter).
 
-If you want your plugin to be listed below, [send us a note in a Github issue](https://github.com/DevExpress/testcafe/labels/TYPE%3A%20proposal).
+If you want your plugin to be listed below, [send us a note in a Github issue](https://github.com/DevExpress/testcafe/issues).
 
 ## Plugins
 
 TestCafe developers and community members made these plugins:
 
 * **Browser Providers**<br/>
-  Allows you to use TestCafe with cloud browser providers and emulators.
+  Allow you to use TestCafe with cloud browser providers and emulators.
   * [SauceLabs provider](https://github.com/DevExpress/testcafe-browser-provider-saucelabs) (by abelym)
   * [BrowserStack provider](https://github.com/DevExpress/testcafe-browser-provider-browserstack) (by abelym)
   * [Nightmare headless provider](https://github.com/ryx/testcafe-browser-provider-nightmare) (by ryx)
@@ -192,7 +196,7 @@ TestCafe developers and community members made these plugins:
   * [Gulp](https://github.com/DevExpress/gulp-testcafe) (by inikulin)
 
 * **Custom Reporters**<br/>
-  TestCafe presents results in different formats.
+  View test results in different formats.
   * [TeamCity](https://github.com/Soluto/testcafe-reporter-teamcity) (by nirsky)
   * [Slack](https://github.com/Shafied/testcafe-reporter-slack) (by Shafied)
   * [NUnit](https://github.com/AndreyBelym/testcafe-reporter-nunit) (by abelym)
