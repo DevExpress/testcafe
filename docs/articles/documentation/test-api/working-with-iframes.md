@@ -26,14 +26,21 @@ Parameter  | Type                                              | Description
 `selector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies an `<iframe>` on the tested page. See [Selecting Target Elements](actions/README.md#selecting-target-elements).
 
 ```js
+import { ClientFunction } from 'testcafe';
+
 fixture `My fixture`
-    .page `http://www.example.com/`;
+    .page `http://localhost/testcafe/`;
 
 test('switching to an iframe', async t => {
-    await t
-        .click('#button-in-main-window')
-        .switchToIframe('#iframe-1')
-        .click('#button-in-iframe-1');
+    const getLocation = ClientFunction(() => window.location.href);
+
+    // NOTE: the ClientFunction will be executed in TOP window's context
+    console.log(await getLocation());
+
+    await t.switchToIframe('#iframe-1');
+
+    // NOTE: the ClientFunction will be executed in IFRAME window's context
+    console.log(await getLocation());
 });
 ```
 
