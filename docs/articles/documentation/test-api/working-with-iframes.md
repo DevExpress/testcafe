@@ -29,7 +29,7 @@ Parameter  | Type                                              | Description
 import { ClientFunction } from 'testcafe';
 
 fixture `My fixture`
-    .page `http://localhost/testcafe/`;
+    .page `http://example.com`;
 
 test('switching to an iframe', async t => {
     const getLocation = ClientFunction(() => window.location.href);
@@ -37,7 +37,10 @@ test('switching to an iframe', async t => {
     // NOTE: the ClientFunction will be executed in TOP window's context
     console.log(await getLocation());
 
-    await t.switchToIframe('#iframe-1');
+    await t
+        .click('#button-in-main-window')
+        .switchToIframe('#iframe-1')
+        .click('#button-in-iframe-1');
 
     // NOTE: the ClientFunction will be executed in IFRAME window's context
     console.log(await getLocation());
