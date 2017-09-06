@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.17.2 (2017-9-1)
+
+### Bug Fixes
+
+* Taking a screenshot on teamcity agent works correctly now ([#1625](https://github.com/DevExpress/testcafe/issues/1625))
+* It is possible to run tests on remote devices from a docker container ([#1728](https://github.com/DevExpress/testcafe/issues/1728))
+* TestCafe compiles TypeScript tests correctly now if Mocha or Jest typedefs are included in the project ([#1537](https://github.com/DevExpress/testcafe/issues/1537))
+* Running on remote devices works correctly on MacOS now ([#1732](https://github.com/DevExpress/testcafe/issues/1732))
+* A target directory is checked before creating a screenshot ([#1551](https://github.com/DevExpress/testcafe/issues/1551))
+* TypeScript definitions allow you to send any objects as `dependencies` for `ClientFunctions` now. ([#1713](https://github.com/DevExpress/testcafe/issues/1713))
+* The second `MutationObserver` callback argument is not missed now ([testcafe-hammerhead/#1268](https://github.com/DevExpress/testcafe-hammerhead/issues/1268))
+* Link's `href` property with an unsupported protocol is set correctly now ([testcafe-hammerhead/#1276](https://github.com/DevExpress/testcafe-hammerhead/issues/1276))
+* The `document.documentURI` property is now processed correctly in IE ([testcafe-hammerhead/#1270](https://github.com/DevExpress/testcafe-hammerhead/issues/1270))
+* `JSON.stringify` and `Object.keys` functions now work properly for a `MessageEvent` instance ([testcafe-hammerhead/#1277](https://github.com/DevExpress/testcafe-hammerhead/issues/1277))
+
 ## v0.17.1 (2017-8-17)
 
 ### Bug Fixes
@@ -8,7 +23,7 @@
 * SelectText and SelectTextAreaContent TypeScript definitions now match the documentation ([#1697](https://github.com/DevExpress/testcafe/issues/1697))
 * TestCafe now finds browsers installed for the current user on Windows ([#1688](https://github.com/DevExpress/testcafe/issues/1688))
 * TestCafe can now resize MS Edge 15 window ([#1517](https://github.com/DevExpress/testcafe/issues/1517))
-* Google Chrome Canary has a dedicated `chrome-canary` alias now ([#1711](https://github.com/DevExpress/testcafe/issues/1711)) 
+* Google Chrome Canary has a dedicated `chrome-canary` alias now ([#1711](https://github.com/DevExpress/testcafe/issues/1711))
 * Test no longer hangs when `takeScreenshot` is called in headless Chrome Canary on Windows ([#1685](https://github.com/DevExpress/testcafe/issues/1685))
 * Tests now fail if the `uncaughtRejection` exception is raised ([#1473](https://github.com/DevExpress/testcafe/issues/1473))
 * TypeScript tests now run on macOS with no errors ([#1696](https://github.com/DevExpress/testcafe/issues/1696))
