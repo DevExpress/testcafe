@@ -1,5 +1,14 @@
 [
     {
+        "type": "Tutorial",
+        "title": "E2E Testing AngularJS applications with TestCafe",
+        "excerpt": "If you write with AngularJS then most likely testing with Protractor is the first thing that comes to your mind. But is it the only option? If you're curious about the alternatives, read ahead.",
+        "author": "Alexander Moskovkin",
+        "date": "2017-9-6",
+        "publisher": "medium.com",
+        "url": "https://hackernoon.com/e2e-testing-angularjs-applications-with-testcafe-96108abe4bec"
+    },
+    {
         "type": "Plugins",
         "title": "16 plugins to extend TestCafe functionality",
         "excerpt": "TestCafe manages end-to-end testing process out of the box. It starts browsers, runs tests and shows results. But there is also a bunch of plugins which extend its functionality. Here’s a list of the most popular ones.",
