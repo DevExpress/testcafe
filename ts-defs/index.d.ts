@@ -758,17 +758,17 @@ interface TypeActionOptions extends ClickActionOptions {
 
 interface DragToElementOptions extends MouseActionOptions {
     /**
-     * Mouse pointer X coordinate that define a point where the dragToElement action is finished.
+     * Mouse pointer X coordinate that defines a point where the dragToElement action is finished.
      * If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the destination element.
      * If an offset is a negative integer, they are calculated relative to the bottom-right corner.
-     * The default is the center of the destination element.
+     * By default, the dragToElement action is finished in the center of the destination element.
      */
     destinationOffsetX?: number;
     /**
-     * Mouse pointer Y coordinate that define a point where the dragToElement is finished started.
+     * Mouse pointer Y coordinate that defines a point where the dragToElement action is finished.
      * If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the destination element.
      * If an offset is a negative integer, they are calculated relative to the bottom-right corner.
-     * The default is the center of the destination element.
+     * By default, the dragToElement action is finished in the center of the destination element.
      */
     destinationOffsetY?: number;
 }
