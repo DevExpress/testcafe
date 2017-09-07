@@ -87,7 +87,7 @@ export default class CLIArgumentParser {
             .description(CLIArgumentParser._getDescription())
 
             .option('-b, --list-browsers [provider]', 'output the aliases for local browsers or browsers available through the specified browser provider')
-            .option('-r, --reporter <name[:outFile][,...]>', 'specify reporter types to use and corresponding output files')
+            .option('-r, --reporters <name[:outputFile][,...]>', 'specify the reporters and optionally files where reports are saved')
             .option('-s, --screenshots <path>', 'enable screenshot capturing and specify the path to save the screenshots to')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-q, --quarantine-mode', 'enable the quarantine mode')
