@@ -8,14 +8,11 @@
   url: /faq/
 - text: Publications
   url: /publications/
-- text: Blog
+- text: Release Notes
   url: /blog/
 - text: Issues
   url: https://github.com/DevExpress/testcafe/issues
   external: true
-- text: Discuss
+- text: Forum
   url: https://testcafe-discuss.devexpress.com/
-  external: true
-- text: Twitter
-  url: https://twitter.com/dxtestcafe
   external: true
