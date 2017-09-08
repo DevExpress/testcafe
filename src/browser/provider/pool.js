@@ -7,7 +7,7 @@ import { GeneralError } from '../../errors/runtime';
 import MESSAGE from '../../errors/runtime/message';
 
 
-const BROWSER_PROVIDER_RE = /^([^:]+)(?::(.*))?$/;
+const BROWSER_PROVIDER_RE = /^([^:\s]+):?(.*)?$/;
 
 export default {
     providersCache: {},

@@ -1,100 +1,41 @@
 import emulatedDevices from 'chrome-emulated-devices-list';
-import OS from 'os-family';
-import { find as findElement, pickBy as filterProperties } from 'lodash';
+import { pickBy as filterProperties } from 'lodash';
+import {
+    hasMatch, findMatch, isMatchTrue, getModes, splitEscaped, getPathFromParsedModes, parseConfig
+} from '../../utils/argument-parsing';
 
 
 const HEADLESS_DEFAULT_WIDTH  = 1280;
 const HEADLESS_DEFAULT_HEIGHT = 800;
 
-const CONFIG_TERMINATOR_RE = /(\s+|^)-/;
+const AVAILABLE_MODES = ['userProfile', 'headless', 'emulation'];
 
 var configCache = {};
 
-function hasMatch (array, re) {
-    return !!findElement(array, el => el.match(re));
+function hasCustomProfile (userArgs) {
+    return !!userArgs.match(/--user-data-dir=/);
 }
 
-function findMatch (array, re) {
-    var element = findElement(array, el => el.match(re));
+function parseModes (modesStr, userArgs) {
+    var parsed        = splitEscaped(modesStr, ':');
+    var path          = getPathFromParsedModes(parsed, AVAILABLE_MODES);
+    var detectedModes = getModes(parsed, AVAILABLE_MODES);
+    var optionsString = '';
 
-    return element ? element.match(re)[1] : '';
-}
-
-function isMatchTrue (array, re) {
-    var match = findMatch(array, re);
-
-    return match && match !== '0' && match !== 'false';
-}
-
-function splitEscaped (str, splitterChar) {
-    var result = [''];
-
-    for (var i = 0; i < str.length; i++) {
-        if (str[i] === splitterChar) {
-            result.push('');
-            continue;
-        }
-
-        if (str[i] === '\\' && (str[i + 1] === '\\' || str [i + 1] === splitterChar))
-            i++;
-
-        result[result.length - 1] += str[i];
-    }
-
-    return result;
-}
-
-function parseConfig (str) {
-    var configTerminatorMatch = str.match(CONFIG_TERMINATOR_RE);
-
-    if (!configTerminatorMatch)
-        return { modesString: str, userArgs: '' };
-
-    return {
-        modesString: str.substr(0, configTerminatorMatch.index),
-        userArgs:    str.substr(configTerminatorMatch.index + configTerminatorMatch[1].length)
-    };
-}
-
-function getPathFromParsedModes (modesList) {
-    if (!modesList.length)
-        return '';
-
-    if (modesList[0] === 'headless' || modesList[0] === 'emulation')
-        return '';
-
-    var path = modesList.shift();
-
-    if (OS.win && modesList.length && path.match(/^[A-Za-z]$/))
-        path += ':' + modesList.shift();
-
-    return path;
-}
-
-function parseModes (str) {
-    var parsed      = splitEscaped(str, ':');
-    var path        = getPathFromParsedModes(parsed);
-    var nextMode    = parsed.shift();
-    var hasHeadless = nextMode === 'headless';
-
-    if (hasHeadless)
-        nextMode = parsed.shift();
-
-    var hasEmulation = nextMode === 'emulation';
-
-    if (hasEmulation)
-        nextMode = parsed.shift();
+    if (parsed.length)
+        optionsString = parsed.shift();
 
     while (parsed.length)
-        nextMode += ':' + parsed.shift();
+        optionsString += ':' + parsed.shift();
 
     var modes = {
-        path:      path,
-        headless:  hasHeadless,
-        emulation: hasEmulation || hasHeadless
+        path:        path,
+        userProfile: detectedModes.userProfile || hasCustomProfile(userArgs),
+        headless:    detectedModes.headless,
+        emulation:   detectedModes.emulation || detectedModes.headless
     };
 
-    return { modes, optionsString: nextMode || '' };
+    return { modes, optionsString };
 }
 
 function simplifyDeviceName (deviceName) {
@@ -154,7 +95,7 @@ function parseOptions (str, modes) {
         width:       Number(findMatch(parsed, /^width=(.*)/) || NaN),
         height:      Number(findMatch(parsed, /^height=(.*)/) || NaN),
         scaleFactor: Number(findMatch(parsed, /^scaleFactor=(.*)/) || NaN),
-        userAgent:   findMatch(parsed, /^userAgent=(.*)/),
+        userAgent:   findMatch(parsed, /^userAgent=(.*)/)
     };
 
     specifiedDeviceOptions = filterProperties(specifiedDeviceOptions, optionValue => {
@@ -167,7 +108,7 @@ function parseOptions (str, modes) {
 
 function getNewConfig (configString) {
     var { userArgs, modesString } = parseConfig(configString);
-    var { modes, optionsString }  = parseModes(modesString);
+    var { modes, optionsString }  = parseModes(modesString, userArgs);
     var options                   = parseOptions(optionsString, modes);
 
     return Object.assign({ userArgs }, modes, options);
