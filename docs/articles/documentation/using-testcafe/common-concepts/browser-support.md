@@ -114,8 +114,6 @@ TestCafe allows you to run tests in Google Chrome without any visible UI shell -
 testcafe "chrome:headless" tests/sample-fixture.js
 ```
 
-> Note that headless mode is available for Mac and Linux in Chrome 59. You need a [Canary build](https://www.google.com/chrome/browser/canary.html) to enable headless mode on Windows.
-
 Specify a path to installation location, if you install a portable version of Chrome:
 
 ```sh
