@@ -40,6 +40,7 @@ const LOADING_PAGE_TEXT                    = 'Loading Web Page...';
 const WAITING_FOR_ELEMENT_TEXT             = 'Waiting for an element to appear...';
 const WAITING_FOR_ASSERTION_EXECUTION_TEXT = 'Waiting for an assertion execution...';
 const DEBUGGING_TEXT                       = 'Debugging test...';
+const TEST_FAILED_TEXT                     = 'Test failed';
 const MIDDLE_WINDOW_WIDTH                  = 720;
 const SMALL_WINDOW_WIDTH                   = 380;
 const SMALL_WINDOW_WIDTH_IN_DEBUGGING      = 540;
@@ -366,11 +367,19 @@ export default class StatusBar {
         });
     }
 
-    _showDebuggingStatus () {
+    _showDebuggingStatus (isTestError) {
         return new Promise(resolve => {
             this.debugging = true;
 
-            this.statusDiv.textContent = DEBUGGING_TEXT;
+            if (isTestError) {
+                this.buttons.removeChild(this.stepButton);
+                this.statusDiv.textContent = TEST_FAILED_TEXT;
+                shadowUI.removeClass(this.statusBar, WAITING_SUCCESS_CLASS);
+                shadowUI.addClass(this.statusBar, WAITING_FAILED_CLASS);
+            }
+            else
+                this.statusDiv.textContent = DEBUGGING_TEXT;
+
             this.buttons.style.display = 'inline-block';
 
             this._recalculateSizes();
@@ -437,11 +446,12 @@ export default class StatusBar {
         this._resetState();
     }
 
-    showDebuggingStatus () {
+    showDebuggingStatus (isTestError) {
         this._stopAnimation();
+
         styleUtils.set(this.statusBar, 'opacity', 1);
 
-        return this._showDebuggingStatus();
+        return this._showDebuggingStatus(isTestError);
     }
 
     showWaitingElementStatus (timeout) {

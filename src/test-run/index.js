@@ -3,6 +3,7 @@ import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
+import testcafeReporterSpecPlugin from 'testcafe-reporter-spec';
 import debugLogger from '../notifications/debug-logger';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
@@ -21,6 +22,7 @@ import testRunTracker from '../api/test-run-tracker';
 import ROLE_PHASE from '../role/phase';
 import TestRunBookmark from './bookmark';
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
+import ReporterPluginHost from '../reporter/plugin-host';
 
 
 import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
@@ -91,7 +93,9 @@ export default class TestRun extends Session {
         this.resolveWaitForFileDownloadingPromise = null;
 
         this.debugging               = this.opts.debugMode;
+        this.debugOnFail             = this.opts.debugOnFail;
         this.disableDebugBreakpoints = false;
+        this.debugReporterPluginHost = new ReporterPluginHost(testcafeReporterSpecPlugin);
 
         this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, warningLog);
 
@@ -208,6 +212,9 @@ export default class TestRun extends Session {
             await this._runAfterHook();
         }
 
+        if (this.errs.length && this.debugOnFail)
+            await this._enqueueSetBreakpointCommand(null, this.debugReporterPluginHost.formatError(this.errs[0]));
+
         await this.executeCommand(new TestDoneCommand());
         this._addPendingPageErrorIfAny();
 
@@ -263,10 +270,10 @@ export default class TestRun extends Session {
         return this.executeCommand(new PrepareBrowserManipulationCommand(command.type), callsite);
     }
 
-    async _enqueueSetBreakpointCommand (callsite) {
-        debugLogger.showBreakpoint(this.id, this.browserConnection.userAgent, callsite);
+    async _enqueueSetBreakpointCommand (callsite, error) {
+        debugLogger.showBreakpoint(this.id, this.browserConnection.userAgent, callsite, error);
 
-        this.debugging = await this._enqueueCommand(new SetBreakpointCommand(), callsite);
+        this.debugging = await this._enqueueCommand(new SetBreakpointCommand(!!error), callsite);
     }
 
     _removeAllNonServiceTasks () {

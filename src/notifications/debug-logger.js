@@ -56,7 +56,7 @@ export default {
         this.debugLogging = false;
     },
 
-    showBreakpoint (testRunId, userAgent, callsite) {
+    showBreakpoint (testRunId, userAgent, callsite, testError) {
         if (!this.streamsOverridden)
             this._overrideStreams();
 
@@ -71,8 +71,8 @@ export default {
         var frame = `\n` +
                     `----\n` +
                     `${userAgent}\n` +
-                    chalk.yellow('DEBUGGER PAUSE:') + `\n` +
-                    `${callsiteStr}\n` +
+                    chalk.yellow(testError ? 'DEBUGGER PAUSE ON FAILED TEST:' : 'DEBUGGER PAUSE:') + `\n` +
+                    `${testError ? testError : callsiteStr}\n` +
                     `----\n`;
 
         var message = { testRunId, frame };
