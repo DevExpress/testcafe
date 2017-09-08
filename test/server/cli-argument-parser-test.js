@@ -305,12 +305,25 @@ describe('CLI argument parser', function () {
             });
     });
 
+    it('Should parse reporters and their output file paths and ensure they exist', function () {
+        var cwd      = process.cwd();
+        var filePath = path.join(tmp.dirSync().name, 'my/reports/report.json');
+
+        return parse('-r list,json:' + filePath)
+            .then(function (parser) {
+                expect(parser.opts.reporters[0].name).eql('list');
+                expect(parser.opts.reporters[0].outFile).to.be.undefined;
+                expect(parser.opts.reporters[1].name).eql('json');
+                expect(parser.opts.reporters[1].outFile).eql(path.resolve(cwd, filePath));
+            });
+    });
+
     it('Should parse command line arguments', function () {
         return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --qr-code --app run-app --speed 0.5 ie test/server/data/file-list/file-1.js')
             .then(function (parser) {
                 expect(parser.browsers).eql(['ie']);
                 expect(parser.src).eql([path.resolve(process.cwd(), 'test/server/data/file-list/file-1.js')]);
-                expect(parser.opts.reporter).eql('list');
+                expect(parser.opts.reporters[0].name).eql('list');
                 expect(parser.opts.hostname).eql('myhost');
                 expect(parser.opts.app).eql('run-app');
                 expect(parser.opts.screenshots).to.be.undefined;
