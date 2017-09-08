@@ -125,8 +125,8 @@ await t.expect( actual ).contains( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | String &#124; Array | A String or Array that should contain an `expected` value.
-`expected`             | Any type | An expected value.
+`actual`             | String &#124; Array &#124; Object | A string that contains the `expected` substring, an array that contains the `expected` value or an object that contains the `expected` property.
+`expected`             | Any type | The expected value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
@@ -134,8 +134,9 @@ Parameter              | Type                                              | Des
 
 ```js
 await t
-    .expect('foo bar').contains('bar', 'actual string contains expected')
-    .expect([1, 2, 3]).contains(2, 'actual array contains expected');
+    .expect('foo bar').contains('bar', 'string contains the expected substring')
+    .expect([1, 2, 3]).contains(2, 'array contains the expected value')
+    .expect({ foo: 'bar', hello: 'universe' }).contains({ foo: 'bar' }, 'object contains the expected property');
 ```
 
 ## Not Contains
@@ -148,7 +149,7 @@ await t.expect( actual ).notContains( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | String &#124; Array | A String or Array that should not contain an `expected` value.
+`actual`             | String &#124; Array &#124; Object | A string that should not contain the `expected` substring, an array that should not contain the `expected` value or an object that should not contain the `expected` property.
 `expected`             | Any type | An expected value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
@@ -157,8 +158,9 @@ Parameter              | Type                                              | Des
 
 ```js
 await t
-    .expect('foo bar').notContains('baz', 'actual string do not contains expected')
-    .expect([1, 2, 3]).notContains(4, 'actual array contains expected');
+    .expect('foo bar').notContains('baz', 'string does not contain a substring')
+    .expect([1, 2, 3]).notContains(4, 'array does not contain a value')
+    .expect({ foo: 'bar', hello: 'universe' }).notContains({ buzz: 'abc' }, 'object does not contain a property');
 ```
 
 ## Type Of
