@@ -354,6 +354,7 @@ Provide support for more browsers to test against.
 * [BrowserStack](https://github.com/DevExpress/testcafe-browser-provider-browserstack)
 * [Nightmare](https://github.com/ryx/testcafe-browser-provider-nightmare)
 * [iOS Simulator](https://github.com/Ents24/testcafe-browser-provider-fbsimctl)
+* [Puppeteer](https://github.com/jdobosz/testcafe-browser-provider-puppeteer)
 
 ### Custom Reporters
 
