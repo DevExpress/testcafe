@@ -132,7 +132,7 @@ for more information. You can also use [plugins](#plugins) to customize the repo
 
 ![Test Report](docs/articles/images/report.png)
 
-Read the [Getting Started](https://devexpress.github.io/testcafe/documentation/getting-started/) page for a more detailed guide.<br/>
+Read the [Getting Started](https://devexpress.github.io/testcafe/documentation/getting-started/) page for a more detailed guide.<br/><br/>
 
 ![Install TestCafe and Run a Test](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/install-and-run-test.gif)
 
