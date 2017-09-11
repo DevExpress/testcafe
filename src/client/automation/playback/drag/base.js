@@ -65,9 +65,9 @@ export default class DragAutomationBase extends VisibleElementAutomation {
     }
 
     _drag () {
-        this.endPoint = this._getEndPoint();
+        var { element, offsets, endPoint } = this._getDestination();
 
-        var { element, offsets } = this._getDestination();
+        this.endPoint = endPoint;
 
         var dragOptions = new MoveOptions({
             offsetX:        offsets.offsetX,

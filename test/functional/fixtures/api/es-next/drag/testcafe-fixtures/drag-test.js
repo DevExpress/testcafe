@@ -54,3 +54,23 @@ test('Destination element selector returns text node', async t => {
 
     await t.dragToElement('#draggable-div-2', getDocument);
 });
+
+test('Drag to element with destination offsets', async t => {
+    const draggable   = Selector('#draggable-div-3');
+    const destination = Selector('#destination-div-2');
+
+    const destRect = await destination.boundingClientRect;
+
+    await t
+        .dragToElement(draggable, destination, { offsetX: 0, offsetY: 0, destinationOffsetX: 0, destinationOffsetY: 0 })
+        .expect(draggable.getBoundingClientRectProperty('left')).eql(destRect.left)
+        .expect(draggable.getBoundingClientRectProperty('top')).eql(destRect.top)
+        .dragToElement(draggable, destination, {
+            offsetX:            0,
+            offsetY:            0,
+            destinationOffsetX: -1,
+            destinationOffsetY: -1
+        })
+        .expect(draggable.getBoundingClientRectProperty('left')).eql(destRect.left + destRect.width - 1)
+        .expect(draggable.getBoundingClientRectProperty('top')).eql(destRect.top + destRect.height - 1);
+});

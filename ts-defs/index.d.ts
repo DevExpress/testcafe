@@ -756,6 +756,23 @@ interface TypeActionOptions extends ClickActionOptions {
     paste?: boolean;
 }
 
+interface DragToElementOptions extends MouseActionOptions {
+    /**
+     * Mouse pointer X coordinate that defines a point where the dragToElement action is finished.
+     * If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the destination element.
+     * If an offset is a negative integer, they are calculated relative to the bottom-right corner.
+     * By default, the dragToElement action is finished in the center of the destination element.
+     */
+    destinationOffsetX?: number;
+    /**
+     * Mouse pointer Y coordinate that defines a point where the dragToElement action is finished.
+     * If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the destination element.
+     * If an offset is a negative integer, they are calculated relative to the bottom-right corner.
+     * By default, the dragToElement action is finished in the center of the destination element.
+     */
+    destinationOffsetY?: number;
+}
+
 interface ResizeToFitDeviceOptions {
     /**
      * `true` for portrait screen orientation; `false` for landscape.
@@ -844,7 +861,7 @@ interface TestController {
      */
     dragToElement(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
                   destinationSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                  options?: MouseActionOptions): TestControllerPromise;
+                  options?: DragToElementOptions): TestControllerPromise;
     /**
      * Types the specified text into an input element.
      *

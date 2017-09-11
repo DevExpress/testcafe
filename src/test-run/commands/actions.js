@@ -3,7 +3,7 @@ import SelectorBuilder from '../../client-functions/selectors/selector-builder';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import functionBuilderSymbol from '../../client-functions/builder-symbol';
 import Assignable from '../../utils/assignable';
-import { ActionOptions, ClickOptions, MouseOptions, TypeOptions } from './options';
+import { ActionOptions, ClickOptions, MouseOptions, TypeOptions, DragToElementOptions } from './options';
 
 import {
     actionOptions,
@@ -56,6 +56,10 @@ function initMouseOptions (name, val) {
 
 function initTypeOptions (name, val) {
     return new TypeOptions(val, true);
+}
+
+function initDragToElementOptions (name, val) {
+    return new DragToElementOptions(val, true);
 }
 
 function initDialogHandler (name, val) {
@@ -219,7 +223,7 @@ export class DragToElementCommand extends Assignable {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'destinationSelector', init: initSelector, required: true },
-            { name: 'options', type: actionOptions, init: initMouseOptions, required: true }
+            { name: 'options', type: actionOptions, init: initDragToElementOptions, required: true }
         ];
     }
 }

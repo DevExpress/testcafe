@@ -25,22 +25,37 @@
             top: 0;
         }
 
-        #destination-div {
+        #draggable-div-3 {
+            left: 400px;
+            top: 0;
+        }
+
+        .destination {
             position: absolute;
             background-color: red;
             border: none;
-            left: 0;
-            top: 200px;
             width: 100px;
             height: 100px;
+        }
+
+        #destination-div {
+            left: 0;
+            top: 200px;
+        }
+
+        #destination-div-2 {
+            left: 200px;
+            top: 400px;
         }
     </style>
 </head>
 <body>
 <div id="draggable-div-1" class="draggable-div"></div>
 <div id="draggable-div-2" class="draggable-div"></div>
+<div id="draggable-div-3" class="draggable-div"></div>
 
-<div id="destination-div"></div>
+<div id="destination-div" class="destination"></div>
+<div id="destination-div-2" class="destination"></div>
 
 <input type="button" id="invisible" value="invisible-button" style="display: none;"/>
 
@@ -94,6 +109,7 @@
 
         initDraggable(document.getElementById('draggable-div-1'));
         initDraggable(document.getElementById('draggable-div-2'));
+        initDraggable(document.getElementById('draggable-div-3'));
     })();
 
 </script>

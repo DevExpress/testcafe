@@ -117,6 +117,10 @@ describe('[API] Drag actions', function () {
                     expect(errs[0]).to.contains(' > 55 |    await t.dragToElement(\'#draggable-div-2\', getDocument);');
                 });
         });
+
+        it('Should take into account destination offsets', function () {
+            return runTests('./testcafe-fixtures/drag-test.js', 'Drag to element with destination offsets');
+        });
     });
 
     describe('html5 drag and drop', function () {
