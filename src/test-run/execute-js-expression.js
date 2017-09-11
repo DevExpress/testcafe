@@ -16,7 +16,7 @@ export function executeJsExpression (expression, skipVisibilityCheck, testRun) {
             return builder.getFunction();
         },
 
-        ClientFunction: (fn, options) => {
+        ClientFunction: (fn, options = {}) => {
             if (testRun)
                 options.boundTestRun = testRun;
 

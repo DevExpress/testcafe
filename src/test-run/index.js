@@ -214,7 +214,12 @@ export default class TestRun extends Session {
     }
 
     _evaluate (code) {
-        return executeJsExpression(code, false, this);
+        try {
+            return executeJsExpression(code, false, this);
+        }
+        catch (err) {
+            return { err };
+        }
     }
 
     // Errors
