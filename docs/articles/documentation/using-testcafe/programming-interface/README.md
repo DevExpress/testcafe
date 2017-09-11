@@ -61,6 +61,12 @@ runner
     });
 ```
 
+> Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
+> Inactive tabs and minimized browser windows switch to a lower resource consumption mode
+> where tests are not guaranteed to execute correctly.
+
+Browser extensions can interfere with test execution. If you encounter an unexpected error, try disabling your browser's extensions.
+
 For details, see the reference topics below.
 
 ----
