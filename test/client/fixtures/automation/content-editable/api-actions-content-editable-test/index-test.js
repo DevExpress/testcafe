@@ -287,43 +287,7 @@ $(document).ready(function () {
             });
     });
 
-    asyncTest('simple inverse select', function () {
-        $el = $('#2');
-
-        var selectText = new SelectTextAutomation($el[0], 21, 4, {});
-
-        selectText
-            .run()
-            .then(function () {
-                if (browserUtils.isIE)
-                    checkSelection($el, $el[0].childNodes[0], 4, $el[0].childNodes[2], 6);
-                else {
-                    checkSelection($el, $el[0].childNodes[2], 6, $el[0].childNodes[0], 4);
-                    equal(textSelection.hasInverseSelection($el[0]), true, 'selection direction correct');
-                }
-
-                startNext();
-            });
-    });
-
-    asyncTest('difficult inverse select', function () {
-        $el = $('#6');
-
-        var selectText = new SelectTextAutomation($el[0], 141, 4, {});
-
-        selectText
-            .run()
-            .then(function () {
-                if (browserUtils.isIE)
-                    checkSelection($el, $el[0].childNodes[0], 4, $el[0].childNodes[10], 1);
-                else {
-                    checkSelection($el, $el[0].childNodes[10], 1, $el[0].childNodes[0], 4);
-                    equal(textSelection.hasInverseSelection($el[0]), true, 'selection direction correct');
-                }
-
-                startNext();
-            });
-    });
+    // NOTE: creation of inverse selections moved to functional tests
 
     asyncTest('select in simple nearest common ancestor', function () {
         $parent = $('#6');

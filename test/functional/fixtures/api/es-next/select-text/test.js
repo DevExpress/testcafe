@@ -115,6 +115,14 @@ describe('[API] Select text', function () {
             return runTests('./testcafe-fixtures/select-text-test.js', 'Select editable content', { only: 'chrome' });
         });
 
+        it('Should create simple inverse selection in editable content', function () {
+            return runTests('./testcafe-fixtures/select-text-test.js', 'simple inverse selection in contenteditable');
+        });
+
+        it('Should create difficult inverse selection in editable content', function () {
+            return runTests('./testcafe-fixtures/select-text-test.js', 'difficult inverse selection in contenteditable');
+        });
+
         it('Should validate startSelector argument', function () {
             return runTests('./testcafe-fixtures/select-text-test.js', 'Incorrect startSelector in selectEditableContent', {
                 shouldFail: true,
