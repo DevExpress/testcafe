@@ -75,7 +75,7 @@ You can run TestCafe from a console, and its reports can be viewed in a CI syste
 
 ### Installation
 
-Ensure that [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) are installed on your computer before running it:
+Ensure that [Node.js](https://nodejs.org/) (version 4 or newer) and [npm](https://www.npmjs.com/) are installed on your computer before running it:
 
 ```sh
 npm install -g testcafe
@@ -98,10 +98,12 @@ fixture `Getting Started`// declare the fixture
 
 //then create the test function where you'll place the code:
 test('My first test', async t => {
+
     // insert your test code in this section
-await t
+    await t
         .typeText('#developer-name', 'John Smith')
         .click('#submit-button')
+
         // Use the assertion to check if the actual header text is equal to the expected one
         .expect(Selector('#article-header').innerText).eql('Thank you, John Smith!');
 });
@@ -130,7 +132,7 @@ for more information. You can also use [plugins](#plugins) to customize the repo
 
 ![Test Report](docs/articles/images/report.png)
 
-Read the [Getting Started](https://devexpress.github.io/testcafe/documentation/getting-started/) page for a more detailed guide.
+Read the [Getting Started](https://devexpress.github.io/testcafe/documentation/getting-started/) page for a more detailed guide.<br/>
 
 ![Install TestCafe and Run a Test](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/install-and-run-test.gif)
 
@@ -152,7 +154,7 @@ Show everyone you are using TestCafe: ![Tested with TestCafe](https://img.shield
 
 To display this badge, add the following code to your repository readme:
 
-```text
+```html
 <a href="https://github.com/DevExpress/testcafe">
     <img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg">
 </a>
@@ -171,7 +173,7 @@ You can use these plugin generators to create your own plugins:
 * To [build a custom reporter](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/)
   with your formatting and style, check out this [generator](https://www.npmjs.com/package/generator-testcafe-reporter).
 
-If you want your plugin to be listed below, [send us a note in a Github issue](https://github.com/DevExpress/testcafe/issues).
+If you want your plugin to be listed below, [send us a note in a Github issue](https://github.com/DevExpress/testcafe/issues/new).
 
 ## Plugins
 
