@@ -64,7 +64,7 @@ includes a high-level selector library, assertions, etc.
 You can combine them to implement readable tests with the [PageObject pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html).
 
 ```js
-const macOSInput = Selector('.column').find('label').withText('MacOS').child('input');`
+const macOSInput = Selector('.column').find('label').withText('MacOS').child('input');
 ```
 
 **Easy to include in a continuous integration system**<br/>
