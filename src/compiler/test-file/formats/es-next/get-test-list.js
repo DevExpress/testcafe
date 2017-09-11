@@ -68,6 +68,9 @@ class EsNextTestFileParser extends TestFileParserBase {
             else if (exp.type === tokenType.TaggedTemplateExpression)
                 exp = exp.tag;
 
+            else
+                return null;
+
             if (exp.type !== tokenType.Identifier)
                 callStack.push(exp);
         }
