@@ -62,6 +62,7 @@ export default class StatusBar {
         this.icon             = null;
         this.fixtureContainer = null;
         this.resumeButton     = null;
+        this.finishButton     = null;
         this.stepButton       = null;
         this.statusDiv        = null;
         this.buttons          = null;
@@ -124,6 +125,10 @@ export default class StatusBar {
 
         this.resumeButton = this._createButton('Resume', RESUME_BUTTON_CLASS);
         this.stepButton   = this._createButton('Step', STEP_CLASS);
+        this.finishButton = this._createButton('Finish', RESUME_BUTTON_CLASS);
+
+        this.buttons.appendChild(this.resumeButton);
+        this.buttons.appendChild(this.stepButton);
     }
 
     _createButton (text, className) {
@@ -144,7 +149,6 @@ export default class StatusBar {
 
         button.appendChild(icon);
         button.appendChild(span);
-        this.buttons.appendChild(button);
 
         return button;
     }
@@ -373,6 +377,9 @@ export default class StatusBar {
 
             if (isTestError) {
                 this.buttons.removeChild(this.stepButton);
+                this.buttons.removeChild(this.resumeButton);
+                this.buttons.appendChild(this.finishButton);
+
                 this.statusDiv.textContent = TEST_FAILED_TEXT;
                 shadowUI.removeClass(this.statusBar, WAITING_SUCCESS_CLASS);
                 shadowUI.addClass(this.statusBar, WAITING_FAILED_CLASS);
@@ -389,8 +396,9 @@ export default class StatusBar {
             var downHandler = e => {
                 var isResumeButton = domUtils.containsElement(this.resumeButton, e.target);
                 var isStepButton   = domUtils.containsElement(this.stepButton, e.target);
+                var isFinishButton = domUtils.containsElement(this.finishButton, e.target);
 
-                if (isResumeButton || isStepButton) {
+                if (isResumeButton || isStepButton || isFinishButton) {
                     eventUtils.preventDefault(e);
                     this._resetState();
                     listeners.removeInternalEventListener(window, [eventName], downHandler);
