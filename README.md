@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-<i>A node.js tool to automate end-to-end web testing.<br/>Write tests in JS or TypeScript, run them and view results.</i>
+<i>A Node.js tool to automate end-to-end web testing.<br/>Write tests in JS or TypeScript, run them and view results.</i>
 </p>
 
 <p align="center">
