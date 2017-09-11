@@ -181,41 +181,43 @@ TestCafe developers and community members made these plugins:
 
 * **Browser Providers**<br/>
   Allow you to use TestCafe with cloud browser providers and emulators.
-  * [SauceLabs provider](https://github.com/DevExpress/testcafe-browser-provider-saucelabs) (by abelym)
-  * [BrowserStack provider](https://github.com/DevExpress/testcafe-browser-provider-browserstack) (by abelym)
-  * [Nightmare headless provider](https://github.com/ryx/testcafe-browser-provider-nightmare) (by ryx)
-  * [fbsimctl iOS emulator](https://github.com/Ents24/testcafe-browser-provider-fbsimctl) (by ents24)
+  * [SauceLabs provider](https://github.com/DevExpress/testcafe-browser-provider-saucelabs) (by [AndreyBelym](https://github.com/AndreyBelym))
+  * [BrowserStack provider](https://github.com/DevExpress/testcafe-browser-provider-browserstack) (by [AndreyBelym](https://github.com/AndreyBelym))
+  * [Nightmare headless provider](https://github.com/ryx/testcafe-browser-provider-nightmare) (by [ryx](https://github.com/ryx))
+  * [fbsimctl iOS emulator](https://github.com/Ents24/testcafe-browser-provider-fbsimctl) (by [ents24](https://github.com/Ents24))
+  * [Electron](https://github.com/DevExpress/testcafe-browser-provider-electron) (by [AndreyBelym](https://github.com/AndreyBelym))
 
 * **Framework-Specific Selectors**<br/>
   Work with page elements in a way that is native to your framework.
-  * [React](https://github.com/DevExpress/testcafe-react-selectors) (by kirovboris)
-  * [Aurelia](https://github.com/miherlosev/testcafe-aurelia-selectors) (by miherlosev)
-  * [Vue](https://github.com/devexpress/testcafe-vue-selectors) (by miherlosev)
+  * [React](https://github.com/DevExpress/testcafe-react-selectors) (by [kirovboris](https://github.com/kirovboris))
+  * [AngularJS](https://github.com/DevExpress/testcafe-angular-selectors) (by [miherlosev](https://github.com/miherlosev))
+  * [Vue](https://github.com/devexpress/testcafe-vue-selectors) (by [miherlosev](https://github.com/miherlosev))
+  * [Aurelia](https://github.com/miherlosev/testcafe-aurelia-selectors) (by [miherlosev](https://github.com/miherlosev))
 
 * **Plugins for Task Runners**<br/>
   Integrate TestCafe into your project's workflow.
-  * [Grunt](https://github.com/crudo/grunt-testcafe) (by crudo)
-  * [Gulp](https://github.com/DevExpress/gulp-testcafe) (by inikulin)
+  * [Grunt](https://github.com/crudo/grunt-testcafe) (by [crudo](https://github.com/crudo))
+  * [Gulp](https://github.com/DevExpress/gulp-testcafe) (by [inikulin](https://github.com/inikulin))
 
 * **Custom Reporters**<br/>
   View test results in different formats.
-  * [TeamCity](https://github.com/Soluto/testcafe-reporter-teamcity) (by nirsky)
-  * [Slack](https://github.com/Shafied/testcafe-reporter-slack) (by Shafied)
-  * [NUnit](https://github.com/AndreyBelym/testcafe-reporter-nunit) (by abelym)
-  * [TimeCafe](https://github.com/jimthedev/timecafe) (by jimthedev)
+  * [TeamCity](https://github.com/Soluto/testcafe-reporter-teamcity) (by [nirsky](https://github.com/nirsky))
+  * [Slack](https://github.com/Shafied/testcafe-reporter-slack) (by [Shafied](https://github.com/Shafied))
+  * [NUnit](https://github.com/AndreyBelym/testcafe-reporter-nunit) (by [AndreyBelym](https://github.com/AndreyBelym))
+  * [TimeCafe](https://github.com/jimthedev/timecafe) (by [jimthedev](https://github.com/jimthedev))
 
 * **Test Accessibility**<br/>
   Find accessibility issues in your web app.
-  * [axe-testcafe](https://github.com/helen-dikareva/axe-testcafe) (by helen-dikareva)
+  * [axe-testcafe](https://github.com/helen-dikareva/axe-testcafe) (by [helen-dikareva](https://github.com/helen-dikareva))
 
 * **IDE Plugins**<br/>
   Run tests and view results from your favorite IDE.
-  * [Visual Studio Code](https://github.com/romanresh/vscode-testcafe) (by romanresh)
-  * [SublimeText](https://github.com/churkin/testcafe-sublimetext) (by churkin)
+  * [Visual Studio Code](https://github.com/romanresh/vscode-testcafe) (by [romanresh](https://github.com/romanresh))
+  * [SublimeText](https://github.com/churkin/testcafe-sublimetext) (by [churkin](https://github.com/churkin))
 
 * **ESLint**<br/>
   Use ESLint when writing and editing TestCafe tests.
-  * [ESLint plugin](https://github.com/miherlosev/eslint-plugin-testcafe) (by miherlosev)
+  * [ESLint plugin](https://github.com/miherlosev/eslint-plugin-testcafe) (by [miherlosev](https://github.com/miherlosev))
 
 ## Thanks to BrowserStack
 
