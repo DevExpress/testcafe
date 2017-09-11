@@ -56,7 +56,7 @@ However, you can disable this.
 
 **Concurrent tests launch**<br/>
 TestCafe can open multiple instances of the same browser to run parallel
-tests which decrease test execution time.
+tests which decreases test execution time.
 
 **PageObject pattern support**<br/>
 The TestCafe's [Test API](https://devexpress.github.io/testcafe/documentation/test-api/)
