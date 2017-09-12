@@ -23,8 +23,10 @@ This topic contains the following sections.
 TestCafe assertions start with the `expect` method exposed by [test controller](../test-code-structure.html#test-controller).
 This method accepts the actual value. You can pass a value, a [Selector's DOM node state property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
 or a [client function](../obtaining-data-from-the-client.md).
+TestCafe automatically waits for node state properties to obtain a value and for client functions to execute.
+See [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism) for details.
 
-Then, an [assertion method](assertion-api.md) follows. Assertion methods accept an expected value
+After `expect`, an [assertion method](assertion-api.md) follows. Assertion methods accept an expected value
 and, optionally, other arguments.
 
 For instance, the deep equality assertion has the following structure.
