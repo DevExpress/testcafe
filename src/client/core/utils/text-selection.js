@@ -380,16 +380,24 @@ export function selectByNodesAndOffsets (startPos, endPos, needFocus) {
 
             var shouldCutEndOffset = browserUtils.isSafari || browserUtils.isChrome && browserUtils.version < 58;
 
-            if (shouldCutEndOffset && contentEditable.isInvisibleTextNode(endNode)) {
+            var extendSelection = (node, offset) => {
+                // NODE: in some cases in Firefox extend method raises error so we use try-catch
                 try {
-                    selection.extend(endNode, Math.min(endOffset, 1));
+                    selection.extend(node, offset);
                 }
                 catch (err) {
-                    selection.extend(endNode, 0);
+                    return false;
                 }
+
+                return true;
+            };
+
+            if (shouldCutEndOffset && contentEditable.isInvisibleTextNode(endNode)) {
+                if (!extendSelection(endNode, Math.min(endOffset, 1)))
+                    extendSelection(endNode, 0);
             }
             else
-                selection.extend(endNode, endOffset);
+                extendSelection(endNode, endOffset);
         }
     };
 
