@@ -35,7 +35,7 @@ await t.expect( actual ).eql( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value.
+`actual`             | Value &#124; Object &#124; Selector's Property &#124; ClientFunction | A comparison value. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the comparison value is obtained.
 `expected`             | Any type | An expected value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
@@ -58,7 +58,7 @@ await t.expect( actual ).notEql( unexpected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value.
+`actual`             | Value &#124; Object &#124; Selector's Property &#124; ClientFunction | A comparison value. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the comparison value is obtained.
 `expected`             | Any type | An unexpected value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
@@ -81,7 +81,7 @@ await t.expect( actual ).ok( message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A value that should be truthy.
+`actual`             | Value &#124; Object &#124; Selector's Property &#124; ClientFunction | A value that should be truthy. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the `actual` value is obtained.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
@@ -103,7 +103,7 @@ await t.expect( actual ).notOk( message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A value that should be falsy.
+`actual`             | Value &#124; Object &#124; Selector's Property &#124; ClientFunction | A value that should be falsy. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the `actual` value is obtained.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
@@ -125,7 +125,7 @@ await t.expect( actual ).contains( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | String &#124; Array &#124; Object | A string that contains the `expected` substring, an array that contains the `expected` value or an object that contains the `expected` property.
+`actual`             | String &#124; Array &#124; Object &#124; Selector's Property &#124; ClientFunction | A string that contains the `expected` substring, an array that contains the `expected` value or an object that contains the `expected` property. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the `actual` value is obtained.
 `expected`             | Any type | The expected value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
@@ -149,8 +149,8 @@ await t.expect( actual ).notContains( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | String &#124; Array &#124; Object | A string that should not contain the `expected` substring, an array that should not contain the `expected` value or an object that should not contain the `expected` property.
-`expected`             | Any type | An expected value.
+`actual`             | String &#124; Array &#124; Object &#124; Selector's Property &#124; ClientFunction | A string that should not contain the `expected` substring, an array that should not contain the `expected` value or an object that should not contain the `expected` property. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the `actual` value is obtained.
+`expected`             | Any type | The expected value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
 
@@ -173,7 +173,7 @@ await t.expect( actual ).typeOf( typeName, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value.
+`actual`             | Value &#124; Object &#124; Selector's Property &#124; ClientFunction  | A comparison value. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the `actual` value is obtained.
 `typeName`             | String | The expected type of an `actual` value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
@@ -197,7 +197,7 @@ await t.expect( actual ).notTypeOf( typeName, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value.
+`actual`             | Value &#124; Object &#124; Selector's Property &#124; ClientFunction | A comparison value. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the `actual` value is obtained.
 `typeName`             | String | An unexpected type of `actual` value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
@@ -218,7 +218,7 @@ await t.expect( actual ).gt( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A value that should be greater than `expected`.
+`actual`             | Number &#124; Selector's Property &#124; ClientFunction  | A value that should be greater than `expected`. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the `actual` value is obtained.
 `expected`             | Any type | A comparison value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
@@ -239,7 +239,7 @@ await t.expect( actual ).gte( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A value that should be greater than or equal to `expected`.
+`actual`             | Number &#124; Selector's Property &#124; ClientFunction | A value that should be greater than or equal to `expected`. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the `actual` value is obtained.
 `expected`             | Any type | A comparison value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
@@ -262,7 +262,7 @@ await t.expect( actual ).lt( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A value that should be less than `expected`.
+`actual`             | Number &#124; Selector's Property &#124; ClientFunction | A value that should be less than `expected`. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the `actual` value is obtained.
 `expected`             | Any type | A comparison value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
@@ -283,7 +283,7 @@ await t.expect( actual ).lte( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A value that should be less than or equal to `expected`.
+`actual`             | Number &#124; Selector's Property &#124; ClientFunction | A value that should be less than or equal to `expected`. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the `actual` value is obtained.
 `expected`             | Any type | A comparison value.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
@@ -306,7 +306,7 @@ await t.expect( actual ).within( start, finish, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value.
+`actual`             | Number &#124; Selector's Property &#124; ClientFunction | A comparison value. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the `actual` value is obtained.
 `start`             | Number | A lower bound of range (included).
 `finish`             | Number | An upper bound of range (included).
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
@@ -328,7 +328,7 @@ await t.expect( actual ).notWithin( start, finish, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A comparison value.
+`actual`             | Number &#124; Selector's Property &#124; ClientFunction | A comparison value. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the `actual` value is obtained.
 `start`             | Number | A lower bound of range (included).
 `finish`             | Number | An upper bound of range (included).
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
@@ -350,7 +350,7 @@ await t.expect( actual ).match( re, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | String | A comparison value.
+`actual`             | String &#124; Selector's Property &#124; ClientFunction | A comparison value. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the `actual` value is obtained.
 `re`             | RegExp | A regular expression that is expected to match `actual`.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
@@ -371,7 +371,7 @@ await t.expect( actual ).notMatch( re, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | String | A comparison value.
+`actual`             | String &#124; Selector's Property &#124; ClientFunction | A comparison value. If you pass a [selector's property](../selecting-page-elements/selectors.md#define-assertion-actual-value) or a [client function](../obtaining-data-from-the-client.md), the [Smart Assertion Query Mechanism](README.md#smart-assertion-query-mechanism) is activated and the assertion automatically waits until the `actual` value is obtained.
 `re`             | RegExp | A regular expression that is expected not to match `actual`.
 `message`&#160;*(optional)* | String   | An assertion message that will be displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](README.md#assertion-options).
