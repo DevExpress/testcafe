@@ -103,9 +103,11 @@ const isIEFunction = ClientFunction(() => {
     var userAgent = window.navigator.userAgent;
     var appName   = window.navigator.appName;
     var isIE11Re  = new RegExp('Trident/.*rv:([0-9]{1,}[\.0-9]{0,})');
+    var isMSEdge  = /Edge/.test(navigator.userAgent);
 
     return appName === 'Microsoft Internet Explorer' ||
-           appName === 'Netscape' && isIE11Re.exec(userAgent) !== null;
+           appName === 'Netscape' && isIE11Re.exec(userAgent) !== null ||
+           isMSEdge;
 });
 
 test('simple inverse selection in contenteditable', async t => {
