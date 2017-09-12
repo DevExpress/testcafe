@@ -99,7 +99,7 @@ export default class CLIArgumentParser {
             .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
             .option('-a, --app <command>', 'launch the tested app using the specified command before running tests')
             .option('-c, --concurrency <number>', 'run tests concurrently')
-            .option('--debug-on-fail', 'pause the test if it is failed')
+            .option('--debug-on-fail', 'pause the test if it fails')
             .option('--app-init-delay <ms>', 'specify how much time it takes for the tested app to initialize')
             .option('--selector-timeout <ms>', 'set the amount of time within which selectors make attempts to obtain a node to be returned')
             .option('--assertion-timeout <ms>', 'set the amount of time within which assertion should pass')
