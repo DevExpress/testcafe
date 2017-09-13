@@ -32,10 +32,18 @@ npm install -g flow-typed
 
 ## Step 2 - Initialize Flow
 
+First, open `package.json` and configure `npm` to run Flow.
+
+```json
+"scripts": {
+    "flow":  "./node_modules/.bin/flow"
+}
+```
+
 Run the following command to initialize Flow with default configuration.
 
 ```sh
-./node_modules/.bin/flow init
+npm run flow init
 ```
 
 Install the TestCafe [library definition](https://flow.org/en/docs/libdefs/) to provide type information for TestCafe API.
@@ -80,5 +88,5 @@ Now when you perform an operation that violates the type annotations, Flow will 
 To run the check, simply call Flow with no parameters.
 
 ```sh
-./node_modules/.bin/flow
+npm run flow
 ```
