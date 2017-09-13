@@ -36,7 +36,7 @@ First, open `package.json` and configure `npm` to run Flow.
 
 ```json
 "scripts": {
-    "flow":  "./node_modules/.bin/flow"
+    "flow": "flow"
 }
 ```
 
