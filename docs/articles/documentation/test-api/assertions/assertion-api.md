@@ -16,8 +16,8 @@ The following assertion methods are available.
 * [Not Contains](#not-contains)
 * [Type of](#type-of)
 * [Not Type of](#not-type-of)
-* [Great than](#great-than)
-* [Great than or Equal to](#great-than-or-equal-to)
+* [Greater than](#greater-than)
+* [Greater than or Equal to](#greater-than-or-equal-to)
 * [Less than](#less-than)
 * [Less than or Equal to](#less-than-or-equal-to)
 * [Within](#within)
@@ -49,14 +49,12 @@ await t
 ```
 
 ```js
-import { ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(param => {a: param});
-
-    await t.expect(fn('bar')).eql({ a: 'bar' });
+    await t.expect(Selector('.className').count).eql(3);
 });
 ```
 
@@ -84,14 +82,12 @@ await t
 ```
 
 ```js
-import { ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(param => {a: param});
-
-    await t.expect(fn('foo')).notEql({ a: 'bar' });
+    await t.expect(Selector('.className').count).notEql(2);
 });
 ```
 
@@ -118,14 +114,12 @@ await t
 ```
 
 ```js
-import { ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(() => 'ok');
-
-    await t.expect(fn()).ok();
+    await t.expect(Selector('#element').exists).ok();
 });
 ```
 
@@ -152,14 +146,12 @@ await t
 ```
 
 ```js
-import { ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(() => false);
-
-    await t.expect(fn()).notOk();
+    await t.expect(Selector('#element').exists).notOk();
 });
 ```
 
@@ -193,9 +185,9 @@ import { ClientFunction } from 'testcafe';
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(param => [param + 1, param + 2, param + 3]);
+    const getLocation = ClientFunction(() => document.location.href.toString());
 
-    await t.expect(fn(0)).contains(3);
+    await t.expect(getLocation()).contains('example.com');
 });
 ```
 
@@ -229,9 +221,9 @@ import { ClientFunction } from 'testcafe';
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(param => [param + 1, param + 2, param + 3]);
+    const getLocation = ClientFunction(() => document.location.href.toString());
 
-    await t.expect(fn(0)).notContains(4);
+    await t.expect(getLocation()).notContains('devexpress.com');
 });
 ```
 
@@ -260,14 +252,12 @@ await t
 ```
 
 ```js
-import { ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(param => {a: param});
-
-    await t.expect(fn('foo')).typeOf('object');
+    await t.expect(Selector('#element').getAttribute('attr')).typeOf('string');
 });
 ```
 
@@ -293,18 +283,16 @@ await t.expect('bar').notTypeOf('number', 'string is not a number');
 ```
 
 ```js
-import { ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(param => {a: param});
-
-    await t.expect(fn('foo')).notTypeOf('number');
+    await t.expect(Selector('#element').getAttribute('attr')).notTypeOf('null');
 });
 ```
 
-## Great than
+## Greater than
 
 Asserts that `actual` is strictly greater than `expected`.
 
@@ -326,18 +314,16 @@ await t.expect(5).gt(2, '5 is strictly greater than 2');
 ```
 
 ```js
-import { ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(param => param * 2);
-
-    await t.expect(fn(3)).gt(5);
+    await t.expect(Selector('#element').clientWidth).gt(300);
 });
 ```
 
-## Great than or Equal to
+## Greater than or Equal to
 
 Asserts that `actual` is greater than or equal to `expected`.
 
@@ -361,14 +347,12 @@ await t
 ```
 
 ```js
-import { ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(param => param * 2);
-
-    await t.expect(fn(3)).gte(6);
+    await t.expect(Selector('#element').clientWidth).gte(50);
 });
 ```
 
@@ -394,14 +378,12 @@ await t.expect(2).lt(5, '2 is strictly less than 5');
 ```
 
 ```js
-import { ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(param => param * 2);
-
-    await t.expect(fn(3)).lt(12);
+    await t.expect(Selector('#element').offsetHeight).lt(25);
 });
 ```
 
@@ -429,14 +411,12 @@ await t
 ```
 
 ```js
-import { ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(param => param * 2);
-
-    await t.expect(fn(3)).lte(6);
+    await t.expect(Selector('#element').offsetHeight).lte(400);
 });
 ```
 
@@ -463,14 +443,12 @@ await t.expect(5).within(3, 10, 'this assertion will pass');
 ```
 
 ```js
-import { ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(param => param * 2);
-
-    await t.expect(fn(3)).within(3, 10);
+    await t.expect(Selector('#element').scrollTop).within(300, 400);
 });
 ```
 
@@ -497,14 +475,12 @@ await t.expect(1).notWithin(3, 10, 'this assertion will pass');
 ```
 
 ```js
-import { ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(param => param * 2);
-
-    await t.expect(fn(3)).notWithin(10, 20);
+    await t.expect(Selector('#element').scrollTop).notWithin(100, 200);
 });
 ```
 
@@ -535,9 +511,9 @@ import { ClientFunction } from 'testcafe';
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(param => param + 'a');
+    const getLocation = ClientFunction(() => document.location.href.toString());
 
-    await t.expect(fn('foo')).match(/a$/);
+    await t.expect(getLocation()).match('/.com/');
 });
 ```
 
@@ -568,8 +544,8 @@ import { ClientFunction } from 'testcafe';
 fixture `My fixture`;
 
 test('My test', async t => {
-    const fn = ClientFunction(param => param + 'a');
+    const getLocation = ClientFunction(() => document.location.href.toString());
 
-    await t.expect(fn('foo')).notMatch(/^a/);
+    await t.expect(getLocation()).notMatch('/.co.uk/');
 });
 ```
