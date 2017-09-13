@@ -513,7 +513,7 @@ fixture `My fixture`;
 test('My test', async t => {
     const getLocation = ClientFunction(() => document.location.href.toString());
 
-    await t.expect(getLocation()).match('/.com/');
+    await t.expect(getLocation()).match('/\.com/');
 });
 ```
 
@@ -546,6 +546,6 @@ fixture `My fixture`;
 test('My test', async t => {
     const getLocation = ClientFunction(() => document.location.href.toString());
 
-    await t.expect(getLocation()).notMatch('/.co.uk/');
+    await t.expect(getLocation()).notMatch('/\.co\.uk/');
 });
 ```
