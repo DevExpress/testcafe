@@ -13,7 +13,7 @@ import MESSAGE from '../errors/runtime/message';
 
 const DEFAULT_SELECTOR_TIMEOUT  = 10000;
 const DEFAULT_ASSERTION_TIMEOUT = 3000;
-const DEFAULT_PAGE_LOAD_TIMEOUT = 5000;
+const DEFAULT_PAGE_LOAD_TIMEOUT = 3000;
 
 
 export default class Runner extends EventEmitter {
