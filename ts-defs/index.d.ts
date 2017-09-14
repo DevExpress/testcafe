@@ -1021,6 +1021,12 @@ interface TestController {
      */
     setTestSpeed(speed: number): TestControllerPromise;
     /**
+     * Specifies the amount of time within which TestCafe waits for the `window.load` event to fire before starting the test.
+     *
+     * @param duration - Specifies the amount of time within which TestCafe waits for the `window.load` event to fire before starting the test.
+     */
+    setPageLoadTimeout(duration: number): TestControllerPromise;
+    /**
      * Switches user role.
      *
      * @param role - The role you need to use further in the test.

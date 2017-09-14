@@ -6,6 +6,7 @@ import {
     SwitchToIframeCommand,
     SetNativeDialogHandlerCommand,
     SetTestSpeedCommand,
+    SetPageLoadTimeoutCommand,
     NavigateToCommand
 } from './commands/actions';
 
@@ -20,12 +21,13 @@ export default class TestRunBookmark {
         this.testRun = testRun;
         this.role    = role;
 
-        this.url            = 'about:blank';
-        this.dialogHandler  = testRun.activeDialogHandler;
-        this.iframeSelector = testRun.activeIframeSelector;
-        this.speed          = testRun.speed;
-        this.ctx            = testRun.ctx;
-        this.fixtureCtx     = testRun.fixtureCtx;
+        this.url             = 'about:blank';
+        this.dialogHandler   = testRun.activeDialogHandler;
+        this.iframeSelector  = testRun.activeIframeSelector;
+        this.speed           = testRun.speed;
+        this.pageLoadTimeout = testRun.pageLoadTimeout;
+        this.ctx             = testRun.ctx;
+        this.fixtureCtx      = testRun.fixtureCtx;
     }
 
     async init () {
@@ -49,6 +51,14 @@ export default class TestRunBookmark {
             var restoreSpeedCommand = new SetTestSpeedCommand({ speed: this.speed });
 
             await this.testRun.executeCommand(restoreSpeedCommand);
+        }
+    }
+
+    async _restorePageLoadTimeout () {
+        if (this.testRun.pageLoadTimeout !== this.pageLoadTimeout) {
+            var restorePageLoadTimeoutCommand = new SetPageLoadTimeoutCommand({ duration: this.pageLoadTimeout });
+
+            await this.testRun.executeCommand(restorePageLoadTimeoutCommand);
         }
     }
 
@@ -89,6 +99,7 @@ export default class TestRunBookmark {
 
         try {
             await this._restoreSpeed();
+            await this._restorePageLoadTimeout();
             await this._restoreDialogHandler();
 
             if (this.role.opts.preserveUrl)

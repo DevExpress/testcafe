@@ -5,6 +5,7 @@
     var testRunId           = {{{testRunId}}};
     var browserId           = {{{browserId}}};
     var selectorTimeout     = {{{selectorTimeout}}};
+    var pageLoadTimeout     = {{{pageLoadTimeout}}};
     var speed               = {{{speed}}};
     var browserHeartbeatUrl = {{{browserHeartbeatUrl}}};
     var browserStatusUrl    = {{{browserStatusUrl}}};
@@ -20,6 +21,7 @@
         { userAgent: userAgent, fixtureName: fixtureName, testName: testName },
         {
             selectorTimeout: selectorTimeout,
+            pageLoadTimeout: pageLoadTimeout,
             skipJsErrors:    skipJsErrors,
             dialogHandler:   dialogHandler,
             speed:           speed

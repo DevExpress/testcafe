@@ -1,9 +1,11 @@
 import hammerhead from '../deps/hammerhead';
+import delay from './delay';
 import * as domUtils from './dom';
 
 
 var Promise       = hammerhead.Promise;
 var nativeMethods = hammerhead.nativeMethods;
+var listeners     = hammerhead.eventSandbox.listeners;
 
 export const RECORDING_LISTENED_EVENTS = [
     'click', 'mousedown', 'mouseup', 'dblclick', 'contextmenu', 'mousemove', 'mouseover', 'mouseout',
@@ -34,7 +36,8 @@ export function unbind (el, event, handler, useCapture) {
 }
 
 
-export function documentReady () {
+// Document ready
+const waitForDomContentLoaded = () => {
     return new Promise(resolve => {
         var isReady = false;
 
@@ -48,8 +51,6 @@ export function documentReady () {
             }
 
             isReady = true;
-
-            unbind(window, 'load', ready);
 
             resolve();
         }
@@ -65,9 +66,19 @@ export function documentReady () {
 
         if (document.readyState === 'complete')
             nativeMethods.setTimeout.call(window, onContentLoaded, 1);
-        else {
+        else
             bind(document, 'DOMContentLoaded', onContentLoaded);
-            bind(window, 'load', ready);
-        }
     });
+};
+
+const waitForWindowLoad = () => new Promise(resolve => bind(window, 'load', resolve));
+
+export function documentReady (pageLoadTimeout = 0) {
+    return waitForDomContentLoaded()
+        .then(() => {
+            if (!listeners.getEventListeners(window, 'load').length)
+                return null;
+
+            return Promise.race([waitForWindowLoad(), delay(pageLoadTimeout)]);
+        });
 }

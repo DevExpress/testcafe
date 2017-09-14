@@ -102,6 +102,7 @@ export default class CLIArgumentParser {
             .option('--app-init-delay <ms>', 'specify how much time it takes for the tested app to initialize')
             .option('--selector-timeout <ms>', 'set the amount of time within which selectors make attempts to obtain a node to be returned')
             .option('--assertion-timeout <ms>', 'set the amount of time within which assertion should pass')
+            .option('--page-load-timeout <ms>', 'set the amount of time within which TestCafe waits for the `window.load` event to fire on page load before proceeding to the next test action')
             .option('--speed <factor>', 'set the speed of test execution (0.01 ... 1)')
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
@@ -168,6 +169,14 @@ export default class CLIArgumentParser {
             assertType(is.nonNegativeNumberString, null, 'Assertion timeout', this.opts.assertionTimeout);
 
             this.opts.assertionTimeout = parseInt(this.opts.assertionTimeout, 10);
+        }
+    }
+
+    _parsePageLoadTimeout () {
+        if (this.opts.pageLoadTimeout) {
+            assertType(is.nonNegativeNumberString, null, 'Page load timeout', this.opts.pageLoadTimeout);
+
+            this.opts.pageLoadTimeout = parseInt(this.opts.pageLoadTimeout, 10);
         }
     }
 
@@ -295,6 +304,7 @@ export default class CLIArgumentParser {
         this._parseFilteringOptions();
         this._parseSelectorTimeout();
         this._parseAssertionTimeout();
+        this._parsePageLoadTimeout();
         this._parseAppInitDelay();
         this._parseSpeed();
         this._parsePorts();

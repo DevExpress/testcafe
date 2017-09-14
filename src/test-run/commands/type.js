@@ -35,6 +35,7 @@ export default {
     setNativeDialogHandler:     'set-native-dialog-handler',
     getNativeDialogHistory:     'get-native-dialog-history',
     setTestSpeed:               'set-test-speed',
+    setPageLoadTimeout:         'set-page-load-timeout',
     debug:                      'debug',
     assertion:                  'assertion',
     useRole:                    'useRole',

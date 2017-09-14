@@ -23,7 +23,7 @@ describe('[API] t.useRole()', function () {
         return runTests('./testcafe-fixtures/configuration-test.js', 'Clear configuration', TEST_WITH_IFRAME_FAILED_RUN_OPTIONS)
             .catch(function (errs) {
                 expect(errs[0]).contains('- Error in Role initializer - A native alert dialog was invoked');
-                expect(errs[0]).contains('> 31 |    await t.click(showAlertBtn);');
+                expect(errs[0]).contains('> 32 |    await t.click(showAlertBtn);');
             });
     });
 

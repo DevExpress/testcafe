@@ -117,6 +117,19 @@ describe('CLI argument parser', function () {
         });
     });
 
+    describe('Page load timeout', function () {
+        it('Should parse "--page-load-timeout" option as integer value', function () {
+            return parse('--page-load-timeout 1000')
+                .then(function (parser) {
+                    expect(parser.opts.pageLoadTimeout).eql(1000);
+                });
+        });
+
+        it('Should raise an error if the "--page-load-timeout" option value is not an integer', function () {
+            return assertRaisesError('--page-load-timeout yo', 'Page load timeout is expected to be a non-negative number, but it was "yo".');
+        });
+    });
+
     describe('Speed', function () {
         it('Should parse "--speed" option as a number', function () {
             return parse('--speed 0.01')

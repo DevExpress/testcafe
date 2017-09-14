@@ -959,6 +959,19 @@ describe('Test run commands', function () {
             });
         });
 
+        it('Should create SetPageLoadTimeoutCommand from object', function () {
+            var commandObj = {
+                type:     TYPE.setPageLoadTimeout,
+                duration: 3
+            };
+            var command    = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.setPageLoadTimeout,
+                duration: 3
+            });
+        });
+
         it('Should create AssertionCommand from object', function () {
             var commandObj = {
                 type:          TYPE.assertion,
@@ -2601,6 +2614,39 @@ describe('Test run commands', function () {
                     type:            ERROR_TYPE.setTestSpeedArgumentError,
                     argumentName:    'speed',
                     actualValue:     2,
+                    callsite:        null
+                }
+            );
+        });
+
+        it('Should validate SetPageLoadTimeoutCommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.setPageLoadTimeout
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    argumentName:    'duration',
+                    actualValue:     'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:     TYPE.setPageLoadTimeout,
+                        duration: -1
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    type:            ERROR_TYPE.actionPositiveIntegerArgumentError,
+                    argumentName:    'duration',
+                    actualValue:     -1,
                     callsite:        null
                 }
             );

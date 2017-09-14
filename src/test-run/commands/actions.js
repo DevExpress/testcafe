@@ -435,6 +435,23 @@ export class SetTestSpeedCommand extends Assignable {
     }
 }
 
+export class SetPageLoadTimeoutCommand extends Assignable {
+    constructor (obj) {
+        super(obj);
+
+        this.type     = TYPE.setPageLoadTimeout;
+        this.duration = null;
+
+        this._assignFrom(obj, true);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'duration', type: positiveIntegerArgument, required: true }
+        ];
+    }
+}
+
 export class UseRoleCommand extends Assignable {
     constructor (obj) {
         super(obj);

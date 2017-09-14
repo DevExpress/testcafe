@@ -13,6 +13,7 @@ import MESSAGE from '../errors/runtime/message';
 
 const DEFAULT_SELECTOR_TIMEOUT  = 10000;
 const DEFAULT_ASSERTION_TIMEOUT = 3000;
+const DEFAULT_PAGE_LOAD_TIMEOUT = 3000;
 
 
 export default class Runner extends EventEmitter {
@@ -30,7 +31,8 @@ export default class Runner extends EventEmitter {
             skipJsErrors:           false,
             quarantineMode:         false,
             debugMode:              false,
-            selectorTimeout:        DEFAULT_SELECTOR_TIMEOUT
+            selectorTimeout:        DEFAULT_SELECTOR_TIMEOUT,
+            pageLoadTimeout:        DEFAULT_PAGE_LOAD_TIMEOUT
         };
     }
 
@@ -183,12 +185,13 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    run ({ skipJsErrors, quarantineMode, debugMode, selectorTimeout, assertionTimeout, speed = 1 } = {}) {
+    run ({ skipJsErrors, quarantineMode, debugMode, selectorTimeout, assertionTimeout, pageLoadTimeout, speed = 1 } = {}) {
         this.opts.skipJsErrors     = !!skipJsErrors;
         this.opts.quarantineMode   = !!quarantineMode;
         this.opts.debugMode        = !!debugMode;
         this.opts.selectorTimeout  = selectorTimeout === void 0 ? DEFAULT_SELECTOR_TIMEOUT : selectorTimeout;
         this.opts.assertionTimeout = assertionTimeout === void 0 ? DEFAULT_ASSERTION_TIMEOUT : assertionTimeout;
+        this.opts.pageLoadTimeout  = pageLoadTimeout === void 0 ? DEFAULT_PAGE_LOAD_TIMEOUT : pageLoadTimeout;
 
         if (typeof speed !== 'number' || isNaN(speed) || speed < 0.01 || speed > 1)
             throw new GeneralError(MESSAGE.invalidSpeedValue);
