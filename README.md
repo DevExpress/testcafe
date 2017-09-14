@@ -24,6 +24,12 @@
 * **1 minute to set up**: You [do not need WebDriver](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) or any other testing software. Install TestCafe with one command, and you are ready to test: `npm install -g testcafe`
 * **Free and open source**: TestCafe is free to use under the [MIT license](https://github.com/DevExpress/testcafe/blob/master/LICENSE). [Plugins](#plugins) provide custom reports, integration with other tools, launching tests from IDE, etc. You can use the plugins made by the GitHub community or make your own.
 
+![Install TestCafe and Run a Test](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/install-and-run-test.gif)
+
+<p align="center">
+<i>Running a sample test in Safari</i>
+</p>
+
 ## Table of contents
 
 * [Features](#features)
@@ -130,13 +136,7 @@ for more information. You can also use [plugins](#plugins) to customize the repo
 
 ![Test Report](docs/articles/images/report.png)
 
-Read the [Getting Started](https://devexpress.github.io/testcafe/documentation/getting-started/) page for a more detailed guide.<br/><br/>
-
-![Install TestCafe and Run a Test](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/install-and-run-test.gif)
-
-<p align="center">
-<i>Running a sample test in Safari</i>
-</p>
+Read the [Getting Started](https://devexpress.github.io/testcafe/documentation/getting-started/) page for a more detailed guide.
 
 ## Documentation
 
