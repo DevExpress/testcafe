@@ -3,7 +3,6 @@ import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
-import testcafeReporterSpecPlugin from 'testcafe-reporter-spec';
 import debugLogger from '../notifications/debug-logger';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
@@ -95,7 +94,7 @@ export default class TestRun extends Session {
         this.debugging               = this.opts.debugMode;
         this.debugOnFail             = this.opts.debugOnFail;
         this.disableDebugBreakpoints = false;
-        this.debugReporterPluginHost = new ReporterPluginHost(testcafeReporterSpecPlugin);
+        this.debugReporterPluginHost = new ReporterPluginHost({ noColors: false });
 
         this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, warningLog);
 
