@@ -40,6 +40,7 @@ const LOADING_PAGE_TEXT                    = 'Loading Web Page...';
 const WAITING_FOR_ELEMENT_TEXT             = 'Waiting for an element to appear...';
 const WAITING_FOR_ASSERTION_EXECUTION_TEXT = 'Waiting for an assertion execution...';
 const DEBUGGING_TEXT                       = 'Debugging test...';
+const TEST_FAILED_TEXT                     = 'Test failed';
 const MIDDLE_WINDOW_WIDTH                  = 720;
 const SMALL_WINDOW_WIDTH                   = 380;
 const SMALL_WINDOW_WIDTH_IN_DEBUGGING      = 540;
@@ -61,6 +62,7 @@ export default class StatusBar {
         this.icon             = null;
         this.fixtureContainer = null;
         this.resumeButton     = null;
+        this.finishButton     = null;
         this.stepButton       = null;
         this.statusDiv        = null;
         this.buttons          = null;
@@ -123,6 +125,10 @@ export default class StatusBar {
 
         this.resumeButton = this._createButton('Resume', RESUME_BUTTON_CLASS);
         this.stepButton   = this._createButton('Step', STEP_CLASS);
+        this.finishButton = this._createButton('Finish', RESUME_BUTTON_CLASS);
+
+        this.buttons.appendChild(this.resumeButton);
+        this.buttons.appendChild(this.stepButton);
     }
 
     _createButton (text, className) {
@@ -143,7 +149,6 @@ export default class StatusBar {
 
         button.appendChild(icon);
         button.appendChild(span);
-        this.buttons.appendChild(button);
 
         return button;
     }
@@ -366,11 +371,22 @@ export default class StatusBar {
         });
     }
 
-    _showDebuggingStatus () {
+    _showDebuggingStatus (isTestError) {
         return new Promise(resolve => {
             this.debugging = true;
 
-            this.statusDiv.textContent = DEBUGGING_TEXT;
+            if (isTestError) {
+                this.buttons.removeChild(this.stepButton);
+                this.buttons.removeChild(this.resumeButton);
+                this.buttons.appendChild(this.finishButton);
+
+                this.statusDiv.textContent = TEST_FAILED_TEXT;
+                shadowUI.removeClass(this.statusBar, WAITING_SUCCESS_CLASS);
+                shadowUI.addClass(this.statusBar, WAITING_FAILED_CLASS);
+            }
+            else
+                this.statusDiv.textContent = DEBUGGING_TEXT;
+
             this.buttons.style.display = 'inline-block';
 
             this._recalculateSizes();
@@ -380,8 +396,9 @@ export default class StatusBar {
             var downHandler = e => {
                 var isResumeButton = domUtils.containsElement(this.resumeButton, e.target);
                 var isStepButton   = domUtils.containsElement(this.stepButton, e.target);
+                var isFinishButton = domUtils.containsElement(this.finishButton, e.target);
 
-                if (isResumeButton || isStepButton) {
+                if (isResumeButton || isStepButton || isFinishButton) {
                     eventUtils.preventDefault(e);
                     this._resetState();
                     listeners.removeInternalEventListener(window, [eventName], downHandler);
@@ -437,11 +454,12 @@ export default class StatusBar {
         this._resetState();
     }
 
-    showDebuggingStatus () {
+    showDebuggingStatus (isTestError) {
         this._stopAnimation();
+
         styleUtils.set(this.statusBar, 'opacity', 1);
 
-        return this._showDebuggingStatus();
+        return this._showDebuggingStatus(isTestError);
     }
 
     showWaitingElementStatus (timeout) {

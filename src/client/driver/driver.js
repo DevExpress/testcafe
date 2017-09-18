@@ -386,8 +386,8 @@ export default class Driver {
             });
     }
 
-    _onSetBreakpointCommand () {
-        this.statusBar.showDebuggingStatus()
+    _onSetBreakpointCommand (isTestError) {
+        this.statusBar.showDebuggingStatus(isTestError)
             .then(stopAfterNextAction => this._onReady(new DriverStatus({
                 isCommandResult: true,
                 result:          stopAfterNextAction
@@ -463,7 +463,7 @@ export default class Driver {
             this._onTestDone(new DriverStatus({ isCommandResult: true }));
 
         else if (command.type === COMMAND_TYPE.setBreakpoint)
-            this._onSetBreakpointCommand();
+            this._onSetBreakpointCommand(command.isTestError);
 
         else if (command.type === COMMAND_TYPE.prepareBrowserManipulation)
             this._onPrepareBrowserManipulationCommand();
