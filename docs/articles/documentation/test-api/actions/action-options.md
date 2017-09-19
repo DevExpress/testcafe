@@ -10,7 +10,7 @@ This topic describes [test action](README.md) options.
 
 * [Basic Action Options](#basic-action-options)
 * [Mouse Action Options](#mouse-action-options)
-* [DragToElement Options](#dragtoelement-options)
+* [DragToElement Action Options](#dragtoelement-action-options)
 * [Click Action Options](#click-action-options)
 * [Typing Action Options](#typing-action-options)
 
@@ -98,7 +98,7 @@ test('My Test', async t => {
 });
 ```
 
-## DragToElement Options
+## DragToElement Action Options
 
 Provides additional parameters for the `t.dragToElement` action.
 
