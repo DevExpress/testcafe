@@ -22,9 +22,11 @@ This topic contains the following sections.
 
 TestCafe assertions start with the `expect` method exposed by [test controller](../test-code-structure.html#test-controller).
 This method accepts the actual value. You can pass a value, a [Selector's DOM node state property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
-or a [client function](../obtaining-data-from-the-client.md).
+or a [client function](../obtaining-data-from-the-client.md) promise.
+TestCafe automatically waits for node state properties to obtain a value and for client functions to execute.
+See [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism) for details.
 
-Then, an [assertion method](assertion-api.md) follows. Assertion methods accept an expected value
+After `expect`, an [assertion method](assertion-api.md) follows. Assertion methods accept an expected value
 and, optionally, other arguments.
 
 For instance, the deep equality assertion has the following structure.
@@ -76,7 +78,7 @@ To stabilize such tests, you need to add a timeout that will guarantee that the 
 Adding such timeouts can increase the test running time because of extra waiting.
 
 If the TestCafe assertion receives a [Selector's DOM node state property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
-or a [client function](../obtaining-data-from-the-client.md)
+or a [client function](../obtaining-data-from-the-client.md) promise
 as an actual value, TestCafe uses the smart assertion query mechanism:
 if an assertion did not pass, the test does not fail immediately. The assertion retries to pass multiple times and
 each time it requests the actual property value. The test fails if the assertion could not complete successfully
@@ -131,7 +133,7 @@ if you run TestCafe from the command line.
 
 The amount of time, in milliseconds, allowed for an assertion to pass before the test fails if
 [a selector property](../selecting-page-elements/selectors.md#define-assertion-actual-value)
-or a [client function](../obtaining-data-from-the-client.md) was used in assertion.
+or a [client function](../obtaining-data-from-the-client.md) promise was used in assertion.
 
 **Default value**: timeout is specified by using the [runner.run](../../using-testcafe/programming-interface/runner.md#run) API method
 or the [assertion-timeout](../../using-testcafe/command-line-interface.md#--assertion-timeout-ms) command line option.
