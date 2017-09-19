@@ -254,8 +254,8 @@ export default class MoveAutomation {
 
         if (domUtils.isHtmlElement(this.element)) {
             return {
-                x: this.offsetX - scroll.left,
-                y: this.offsetY - scroll.top
+                x: Math.floor(this.offsetX - scroll.left),
+                y: Math.floor(this.offsetY - scroll.top)
             };
         }
 
@@ -263,8 +263,8 @@ export default class MoveAutomation {
         var isDocumentBody = this.element.tagName && domUtils.isBodyElement(this.element);
 
         return {
-            x: isDocumentBody ? clientPosition.x + this.offsetX : clientPosition.x + this.offsetX - scroll.left,
-            y: isDocumentBody ? clientPosition.y + this.offsetY : clientPosition.y + this.offsetY - scroll.top
+            x: Math.floor(isDocumentBody ? clientPosition.x + this.offsetX : clientPosition.x + this.offsetX - scroll.left),
+            y: Math.floor(isDocumentBody ? clientPosition.y + this.offsetY : clientPosition.y + this.offsetY - scroll.top)
         };
     }
 
