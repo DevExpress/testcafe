@@ -57,7 +57,7 @@ Parameter              | Type                                              | Des
 ---------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------
 `selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being dragged. See [Selecting Target Elements](README.md#selecting-target-elements).
 `destinationSelector`  | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element that serves as the drop location. See [Selecting Target Elements](README.md#selecting-target-elements).
-`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Drag Action Options](action-options.md#drag-action-options).
+`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Drag Action Options](action-options.md#dragtoelement-options).
 
 This sample shows how to drop an element into a specific area using the `t.dragToElement` action.
 

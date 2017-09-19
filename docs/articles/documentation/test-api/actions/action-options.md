@@ -10,7 +10,7 @@ This topic describes [test action](README.md) options.
 
 * [Basic Action Options](#basic-action-options)
 * [Mouse Action Options](#mouse-action-options)
-* [Drag Action Options](#drag-action-options)
+* [DragToElement Options](#dragtoelement-options)
 * [Click Action Options](#click-action-options)
 * [Typing Action Options](#typing-action-options)
 
@@ -98,7 +98,7 @@ test('My Test', async t => {
 });
 ```
 
-## Drag Action Options
+## DragToElement Options
 
 Provides additional parameters for the `t.dragToElement` action.
 
@@ -126,7 +126,7 @@ Parameter                      | Type    | Description                          
 `destinationOffsetX`, `destinationOffsetY` | Number  | Mouse pointer coordinates that define a point where dragging is finished. If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the destination element. If an offset is a negative integer, they are calculated relative to the bottom-right corner. | The center of the destination element.
 `speed`   | Number | The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between `1` (the maximum speed) and `0.01` (the minimum speed). If test speed is also specified in the [CLI](../../using-testcafe/command-line-interface.md#--speed-factor) or [programmatically](../../using-testcafe/programming-interface/runner.md#run), the action speed setting overrides test speed. | `1`
 
-Drag options are used in the [t.dragToElement](drag-element.md#drag-an-element-onto-another-one) action.
+DragToElement options are used in the [t.dragToElement](drag-element.md#drag-an-element-onto-another-one) action.
 
 **Example**
 
