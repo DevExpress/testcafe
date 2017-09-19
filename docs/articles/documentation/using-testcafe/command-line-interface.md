@@ -22,7 +22,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-h, --help](#-h---help)
   * [-v, --version](#-v---version)
   * [-b, --list-browsers](#-b---list-browsers)
-  * [-r \<name\>, --reporter \<name\>](#-r-name---reporter-name)
+  * [-r \<name\[:file\],\[...\]\>, --reporter \<name\[:file\],\[...\]\>](#-r-namefile---reporter-namefile)
   * [-s \<path\>, --screenshots \<path\>](#-s-path---screenshots-path)
   * [-S, --screenshots-on-fails](#-s---screenshots-on-fails)
   * [-q, --quarantine-mode](#-q---quarantine-mode)
@@ -148,7 +148,7 @@ On `Unix` shells like `bash`, `zsh`, `csh` (on macOS, Linux, Windows Subsystem f
 testcafe 'chrome --start-fullscreen' tests/sample-fixture.js
 ```
 
-You can also specify arguments for portable browsers. If a path to a browser contains spaces, the path should be surrounded with backticks:
+You can also specify arguments for portable browsers. If a path to a browser contains spaces, the path should be surrounded with backticks.
 
 For Unix shells and Windows PowerShell:
 
@@ -215,7 +215,7 @@ Lists aliases of the [local browsers](common-concepts/browser-support.md#locally
 testcafe --list-browsers
 ```
 
-### -r \<name\>, --reporter \<name\>
+### -r \<name\[:file\],\[...\]\>, --reporter \<name\[:file\],\[...\]\>
 
 Specifies the name of a [built-in](common-concepts/reporters.md) or [custom reporter](../extending-testcafe/reporter-plugin/README.md) that will be used to generate test reports.
 
@@ -233,12 +233,19 @@ testcafe all tests/sample-fixture.js -r my-reporter
 
 The generated test report will be displayed in the command prompt window.
 
-If you need to save the report to an external file, you can redirect the command output stream to the file
-by using the > redirection operator and specifying the report file path.
+If you need to save the report to an external file, specify the file path after the report name.
 
 ```sh
-testcafe all tests/sample-fixture.js > tests/test-results.txt
+testcafe all tests/sample-fixture.js -r json:report.json
 ```
+
+You can also use multiple reporters in a single test run. List them separated by commas.
+
+```sh
+testcafe all tests/sample-fixture.js -r spec,xunit:report.xml
+```
+
+Note that only one reporter can write to `stdout`. All other reporters must output to files.
 
 ### -s \<path\>, --screenshots \<path\>
 

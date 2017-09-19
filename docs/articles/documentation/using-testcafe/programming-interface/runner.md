@@ -232,6 +232,8 @@ Parameter                | Type                        | Description            
 `name`                   | String                      | The name of the [reporter](../common-concepts/reporters.md) to use.
 `outStream`&#160;*(optional)* | Writable Stream implementer | The stream to which the report will be written. | `stdout`
 
+To use multiple reporters, call this method several times with different reporter names. Note that only one reporter can write to `stdout`.
+
 #### Specifying the Reporter
 
 ```js
@@ -245,6 +247,20 @@ const stream = fs.createWriteStream('report.xml');
 
 runner
     .reporter('xunit', stream)
+    .run()
+    .then(failedCount => {
+        stream.end();
+    });
+```
+
+#### Using Multiple Reporters
+
+```js
+const stream = fs.createWriteStream('report.json');
+
+runner
+    .reporter('json', stream)
+    .reporter('list')
     .run()
     .then(failedCount => {
         stream.end();
