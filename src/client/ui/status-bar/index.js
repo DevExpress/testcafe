@@ -488,6 +488,8 @@ export default class StatusBar {
         this._stopAnimation();
 
         styleUtils.set(this.statusBar, 'opacity', 1);
+        styleUtils.set(this.statusBar, 'visibility', 'visible');
+        this.state.hiden = false;
 
         return this._showDebuggingStatus(isTestError);
     }
