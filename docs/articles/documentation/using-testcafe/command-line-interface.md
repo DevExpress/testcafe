@@ -34,6 +34,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-F \<pattern\>, --fixture-grep \<pattern\>](#-f-pattern---fixture-grep-pattern)
   * [-a \<command\>, --app \<command\>](#-a-command---app-command)
   * [-d, --debug-mode](#-d---debug-mode)
+  * [--debug-on-fail](#--debug-on-fail)
   * [--app-init-delay \<ms\>](#--app-init-delay-ms)
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
@@ -366,6 +367,14 @@ In the footer, a status bar is displayed in which you can resume test execution 
 
 > If the test you run in the debugging mode contains a [test hook](../test-api/test-code-structure.md#test-hooks),
 > it will be paused within this hook before the first action.
+
+### --debug-on-fail
+
+Specifies whether to automatically enter the debug mode when a test fails.
+
+If this option is enabled, TestCafe pauses the test at the moment it fails. This allows you to explore the tested page and determine the cause of the fail. Unlike the debug mode enabled by the [--debug-mode](#-d---debug-mode) option, in this instance you can interact with the page as if it was regularly opened in the browser.
+
+When you are done, click the **Finish** button in the footer to end test execution.
 
 ### --app-init-delay \<ms\>
 
