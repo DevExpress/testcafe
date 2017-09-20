@@ -70,12 +70,18 @@ export default class StatusBar {
         this.progressBar       = null;
         this.animationInterval = null;
         this.showingTimeout    = null;
-        this.created           = false;
-        this.showing           = false;
-        this.hidding           = false;
-        this.debugging         = false;
-        this.waiting           = false;
-        this.assertionRetries  = false;
+
+        this.windowHeight = styleUtils.getHeight(window);
+
+        this.state = {
+            created:          false,
+            showing:          false,
+            hiding:           false,
+            debugging:        false,
+            waiting:          false,
+            assertionRetries: false,
+            hidden:           false
+        };
 
         this._createBeforeReady();
         this._initChildListening();
@@ -175,11 +181,11 @@ export default class StatusBar {
         this._recalculateSizes();
         this._bindHandlers();
 
-        this.created = true;
+        this.state.created = true;
     }
 
     _createBeforeReady () {
-        if (this.created || window !== window.top)
+        if (this.state.created || window !== window.top)
             return;
 
         if (document.body)
@@ -189,7 +195,7 @@ export default class StatusBar {
     }
 
     _setSizeStyle (windowWidth) {
-        var smallWidth = this.debugging ? SMALL_WINDOW_WIDTH_IN_DEBUGGING : SMALL_WINDOW_WIDTH;
+        var smallWidth = this.state.debugging ? SMALL_WINDOW_WIDTH_IN_DEBUGGING : SMALL_WINDOW_WIDTH;
 
         if (windowWidth > MIDDLE_WINDOW_WIDTH) {
             shadowUI.removeClass(this.statusBar, ONLY_ICON_CLASS);
@@ -203,7 +209,7 @@ export default class StatusBar {
             shadowUI.removeClass(this.statusBar, ICON_AND_BUTTONS_CLASS);
             shadowUI.addClass(this.statusBar, ICON_AND_STATUS_CLASS);
         }
-        else if (this.debugging) {
+        else if (this.state.debugging) {
             if (windowWidth < smallWidth && windowWidth > ONLY_BUTTONS_WIDTH) {
                 shadowUI.removeClass(this.statusBar, ONLY_ICON_CLASS);
                 shadowUI.removeClass(this.statusBar, ONLY_BUTTONS_CLASS);
@@ -246,7 +252,7 @@ export default class StatusBar {
         var statusDivWidth     = styleUtils.getWidth(this.statusDiv);
         var marginLeft         = containerWidth / 2 - statusDivWidth / 2 - infoContainerWidth;
 
-        if (this.debugging)
+        if (this.state.debugging)
             marginLeft -= styleUtils.getWidth(this.buttons) / 2;
 
         styleUtils.set(this.statusDiv, 'marginLeft', Math.max(Math.round(marginLeft), 0) + 'px');
@@ -254,6 +260,8 @@ export default class StatusBar {
 
     _recalculateSizes () {
         var windowWidth = styleUtils.getWidth(window);
+
+        this.windowHeight = styleUtils.getHeight(window);
 
         styleUtils.set(this.statusBar, 'width', windowWidth + 'px');
 
@@ -271,6 +279,11 @@ export default class StatusBar {
 
         this._stopAnimation();
 
+        if (show) {
+            styleUtils.set(this.statusBar, 'visibility', 'visible');
+            this.state.hidden = false;
+        }
+
         this.animationInterval = nativeMethods.setInterval.call(window, () => {
             passedTime = Date.now() - startTime;
             progress   = Math.min(passedTime / ANIMATION_DELAY, 1);
@@ -280,8 +293,14 @@ export default class StatusBar {
 
             if (progress === 1) {
                 this._stopAnimation();
-                this.showing = false;
-                this.hidding = false;
+
+                if (!show) {
+                    styleUtils.set(this.statusBar, 'visibility', 'hidden');
+                    this.state.hidden = true;
+                }
+
+                this.state.showing = false;
+                this.state.hiding  = false;
             }
         }, ANIMATION_UPDATE_INTERVAL);
     }
@@ -293,27 +312,38 @@ export default class StatusBar {
         }
     }
 
+    _fadeOut () {
+        if (this.state.hiding || this.state.debugging)
+            return;
+
+        this.state.showing = false;
+        this.state.hiding  = true;
+        this._animate();
+    }
+
+    _fadeIn () {
+        if (this.state.showing || this.state.debugging)
+            return;
+
+        this.state.hiding  = false;
+        this.state.showing = true;
+        this._animate(true);
+    }
+
     _bindHandlers () {
         listeners.initElementListening(window, ['resize']);
         listeners.addInternalEventListener(window, ['resize'], () => this._recalculateSizes());
 
-        eventUtils.bind(this.statusBar, 'mouseover', () => {
-            if (this.hidding || this.debugging)
-                return;
+        const statusBarHeight = styleUtils.getHeight(this.statusBar);
 
-            this.showing = false;
-            this.hidding = true;
-            this._animate();
-        });
-
-        eventUtils.bind(this.statusBar, 'mouseout', e => {
-            if (this.showing || this.debugging)
-                return;
-
-            if (!domUtils.containsElement(this.statusBar, e.relatedTarget)) {
-                this.hidding = false;
-                this.showing = true;
-                this._animate(true);
+        listeners.addFirstInternalHandler(window, ['mousemove', 'mouseout'], e => {
+            if (e.type === 'mouseout' && !e.relatedTarget)
+                this._fadeIn(e);
+            else if (e.type === 'mousemove') {
+                if (e.clientY > this.windowHeight - statusBarHeight)
+                    this._fadeOut(e);
+                else if (this.state.hidden)
+                    this._fadeIn(e);
             }
         });
     }
@@ -338,7 +368,7 @@ export default class StatusBar {
     }
 
     _resetState () {
-        this.debugging = false;
+        this.state.debugging = false;
 
         this.buttons.style.display = 'none';
 
@@ -347,7 +377,7 @@ export default class StatusBar {
     }
 
     _showWaitingStatus () {
-        this.statusDiv.textContent = this.assertionRetries ? WAITING_FOR_ASSERTION_EXECUTION_TEXT : WAITING_FOR_ELEMENT_TEXT;
+        this.statusDiv.textContent = this.state.assertionRetries ? WAITING_FOR_ASSERTION_EXECUTION_TEXT : WAITING_FOR_ELEMENT_TEXT;
         this._setStatusDivLeftMargin();
         this.progressBar.show();
     }
@@ -355,7 +385,7 @@ export default class StatusBar {
     _hideWaitingStatus (forceReset) {
         return new Promise(resolve => {
             nativeMethods.setTimeout.call(window, () => {
-                if (this.waiting || this.debugging) {
+                if (this.state.waiting || this.state.debugging) {
                     resolve();
                     return;
                 }
@@ -373,7 +403,7 @@ export default class StatusBar {
 
     _showDebuggingStatus (isTestError) {
         return new Promise(resolve => {
-            this.debugging = true;
+            this.state.debugging = true;
 
             if (isTestError) {
                 this.buttons.removeChild(this.stepButton);
@@ -413,7 +443,7 @@ export default class StatusBar {
     }
 
     _setWaitingStatus (timeout, startTime) {
-        this.waiting = true;
+        this.state.waiting = true;
         this.progressBar.determinateIndicator.start(timeout, startTime);
 
         this.showingTimeout = nativeMethods.setTimeout.call(window, () => {
@@ -424,7 +454,7 @@ export default class StatusBar {
     }
 
     _resetWaitingStatus (waitingSuccess) {
-        this.waiting = false;
+        this.state.waiting = false;
         this.progressBar.determinateIndicator.stop();
 
         if (waitingSuccess)
@@ -447,7 +477,7 @@ export default class StatusBar {
 
     //API
     hidePageLoadingStatus () {
-        if (!this.created)
+        if (!this.state.created)
             this._create();
 
         this.progressBar.indeterminateIndicator.stop();
@@ -458,31 +488,33 @@ export default class StatusBar {
         this._stopAnimation();
 
         styleUtils.set(this.statusBar, 'opacity', 1);
+        styleUtils.set(this.statusBar, 'visibility', 'visible');
+        this.state.hiden = false;
 
         return this._showDebuggingStatus(isTestError);
     }
 
     showWaitingElementStatus (timeout) {
-        if (!this.assertionRetries)
+        if (!this.state.assertionRetries)
             this._setWaitingStatus(timeout);
     }
 
     hideWaitingElementStatus (waitingSuccess) {
-        if (!this.assertionRetries)
+        if (!this.state.assertionRetries)
             return this._resetWaitingStatus(waitingSuccess);
 
         return Promise.resolve();
     }
 
     showWaitingAssertionRetriesStatus (timeout, startTime) {
-        this.assertionRetries = true;
+        this.state.assertionRetries = true;
         this._setWaitingStatus(timeout, startTime);
     }
 
     hideWaitingAssertionRetriesStatus (waitingSuccess) {
         return this._resetWaitingStatus(waitingSuccess)
             .then(() => {
-                this.assertionRetries = false;
+                this.state.assertionRetries = false;
             });
     }
 }
