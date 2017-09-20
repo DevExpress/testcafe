@@ -137,7 +137,7 @@ const fileIcon      = Selector('.file-icon');
 const directoryPane = Selector('.directory');
 
 fixture `My Fixture`
-    .page `https://example.com/`
+    .page `https://example.com/`;
 
 test('My Test', async t => {
     await t
