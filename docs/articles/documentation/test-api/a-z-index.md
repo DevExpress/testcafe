@@ -29,6 +29,8 @@ This topic lists test API members in alphabetical order.
     * [count](selecting-page-elements/selectors/using-selectors.md#check-if-an-element-exists)
     * [exists](selecting-page-elements/selectors/using-selectors.md#check-if-an-element-exists)
     * [filter](selecting-page-elements/selectors/functional-style-selectors.md#filter)
+    * [filterHidden](selecting-page-elements/selectors/functional-style-selectors.md#filterhidden)
+    * [filterVisible](selecting-page-elements/selectors/functional-style-selectors.md#filtervisible)
     * [find](selecting-page-elements/selectors/functional-style-selectors.md#find)
     * [nextSibling](selecting-page-elements/selectors/functional-style-selectors.md#nextsibling)
     * [nth](selecting-page-elements/selectors/functional-style-selectors.md#nth)
