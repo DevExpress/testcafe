@@ -87,6 +87,7 @@ export default class BrowserProviderPluginHost {
 
     async hasCustomActionForBrowser (/* browserId */) {
         return {
+            hasCloseBrowser:                this.hasOwnProperty('closeBrowser'),
             hasResizeWindow:                this.hasOwnProperty('resizeWindow'),
             hasTakeScreenshot:              this.hasOwnProperty('takeScreenshot'),
             hasCanResizeWindowToDimensions: this.hasOwnProperty('canResizeWindowToDimensions'),

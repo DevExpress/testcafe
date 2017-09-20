@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { findIndex } from 'lodash';
-import logUpdate from 'log-update';
+import logUpdate from 'log-update-async-hook';
 import createStackFilter from '../errors/create-stack-filter';
 
 export default {

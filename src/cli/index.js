@@ -1,6 +1,6 @@
+import fs from 'fs';
 import chalk from 'chalk';
 import resolveCwd from 'resolve-cwd';
-import fs from 'fs';
 import browserProviderPool from '../browser/provider/pool';
 import { GeneralError, APIError } from '../errors/runtime';
 import MESSAGE from '../errors/runtime/message';
@@ -9,8 +9,53 @@ import log from './log';
 import remotesWizard from './remotes-wizard';
 import createTestCafe from '../';
 
+
+const TERMINATION_TYPES = {
+    sigint:   'sigint',
+    sigbreak: 'sigbreak',
+    shutdown: 'shutdown'
+};
+
+var showMessageOnExit = true;
+var exitMessageShown  = false;
+var exiting           = false;
+
+var handledSignalsCount = {
+    [TERMINATION_TYPES.sigint]:   0,
+    [TERMINATION_TYPES.sigbreak]: 0,
+    [TERMINATION_TYPES.shutdown]: 0
+};
+
+function exitHandler (terminationType) {
+    handledSignalsCount[terminationType]++;
+
+    if (showMessageOnExit && !exitMessageShown) {
+        exitMessageShown = true;
+
+        log.hideSpinner();
+        log.write('Stopping TestCafe...');
+        log.showSpinner();
+
+        process.on('exit', () => log.hideSpinner(true));
+    }
+
+    if (exiting || handledSignalsCount[terminationType] < 2)
+        return;
+
+    exiting = true;
+
+    exit(0);
+}
+
+function setupExitHandler () {
+    process.on('SIGINT', () => exitHandler(TERMINATION_TYPES.sigint));
+    process.on('SIGBREAK', () => exitHandler(TERMINATION_TYPES.sigbreak));
+
+    process.on('message', message => message === 'shutdown' && exitHandler(TERMINATION_TYPES.shutdown));
+}
+
 function exit (code) {
-    log.hideSpinner();
+    log.hideSpinner(true);
 
     // NOTE: give a process time to flush the output.
     // It's necessary in some environments.
@@ -78,6 +123,7 @@ async function runTests (argParser) {
     }
 
     finally {
+        showMessageOnExit = false;
         await testCafe.close();
     }
 
@@ -123,6 +169,8 @@ function useLocalInstallation () {
     if (useLocalInstallation())
         return;
 
+    setupExitHandler(exitHandler);
+
     try {
         var argParser = new CliArgumentParser();
 
@@ -134,6 +182,7 @@ function useLocalInstallation () {
             await runTests(argParser);
     }
     catch (err) {
+        showMessageOnExit = false;
         error(err);
     }
 })();

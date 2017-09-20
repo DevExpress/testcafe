@@ -17,10 +17,6 @@ export default {
         await browserTools.open(openParameters, pageUrl);
     },
 
-    async closeBrowser (browserId) {
-        await browserTools.close(browserId);
-    },
-
     async isLocalBrowser () {
         return true;
     },

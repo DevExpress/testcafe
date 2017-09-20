@@ -1,6 +1,7 @@
 import Promise from 'pinkie';
 import TestCafe from './testcafe';
 import * as endpointUtils from 'endpoint-utils';
+import setupExitHook from 'async-exit-hook';
 import { GeneralError } from './errors/runtime';
 import MESSAGE from './errors/runtime/message';
 import embeddingUtils from './embedding-utils';
@@ -42,7 +43,11 @@ async function createTestCafe (hostname, port1, port2) {
         getValidPort(port2)
     ]);
 
-    return new TestCafe(hostname, port1, port2);
+    var testcafe = new TestCafe(hostname, port1, port2);
+
+    setupExitHook(cb => testcafe.close().then(cb));
+
+    return testcafe;
 }
 
 // Embedding utils
