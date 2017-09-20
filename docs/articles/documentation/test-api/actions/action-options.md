@@ -10,6 +10,7 @@ This topic describes [test action](README.md) options.
 
 * [Basic Action Options](#basic-action-options)
 * [Mouse Action Options](#mouse-action-options)
+* [DragToElement Action Options](#dragtoelement-action-options)
 * [Click Action Options](#click-action-options)
 * [Typing Action Options](#typing-action-options)
 
@@ -73,8 +74,7 @@ Parameter                      | Type    | Description                          
 `offsetX`, `offsetY`           | Number  | Mouse pointer coordinates that define a point where the action is performed or started. If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the target element. If an offset is a negative integer, they are calculated relative to the bottom-right corner. | The center of the target element.
 `speed`   | Number | The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between `1` (the maximum speed) and `0.01` (the minimum speed). If test speed is also specified in the [CLI](../../using-testcafe/command-line-interface.md#--speed-factor) or [programmatically](../../using-testcafe/programming-interface/runner.md#run), the action speed setting overrides test speed. | `1`
 
-Mouse action options are used in the [t.drag](drag-element.md#drag-an-element-by-an-offset),
-[t.dragToElement](drag-element.md#drag-an-element-onto-another-one) and [t.hover](hover.md) actions.
+Mouse action options are used in the [t.drag](drag-element.md#drag-an-element-by-an-offset) and [t.hover](hover.md) actions.
 
 **Example**
 
@@ -91,6 +91,61 @@ test('My Test', async t => {
         .drag(sliderHandle, 360, 0, {
             offsetX: 10,
             offsetY: 10,
+            modifiers: {
+                shift: true
+            }
+        });
+});
+```
+
+## DragToElement Action Options
+
+Provides additional parameters for the `t.dragToElement` action.
+
+```js
+{
+    modifiers: {
+        ctrl: Boolean,
+        alt: Boolean,
+        shift: Boolean,
+        meta: Boolean
+    },
+
+    offsetX: Number,
+    offsetY: Number,
+    destinationOffsetX: Number,
+    destinationOffsetY: Number,
+    speed: Number
+}
+```
+
+Parameter                      | Type    | Description                                                                                                                                                 | Default
+------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------
+`ctrl`, `alt`, `shift`, `meta` | Boolean | Indicate which modifier keys are to be pressed during the drag action.                                                                                     | `false`
+`offsetX`, `offsetY`           | Number  | Mouse pointer coordinates that define a point where dragging is started. If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the target element. If an offset is a negative integer, they are calculated relative to the bottom-right corner. | The center of the target element.
+`destinationOffsetX`, `destinationOffsetY` | Number  | Mouse pointer coordinates that define a point where dragging is finished. If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the destination element. If an offset is a negative integer, they are calculated relative to the bottom-right corner. | The center of the destination element.
+`speed`   | Number | The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between `1` (the maximum speed) and `0.01` (the minimum speed). If test speed is also specified in the [CLI](../../using-testcafe/command-line-interface.md#--speed-factor) or [programmatically](../../using-testcafe/programming-interface/runner.md#run), the action speed setting overrides test speed. | `1`
+
+DragToElement options are used in the [t.dragToElement](drag-element.md#drag-an-element-onto-another-one) action.
+
+**Example**
+
+```js
+import { Selector } from 'testcafe';
+
+const fileIcon      = Selector('.file-icon');
+const directoryPane = Selector('.directory');
+
+fixture `My Fixture`
+    .page `https://example.com/`;
+
+test('My Test', async t => {
+    await t
+        .dragToElement(fileIcon, directoryPane, {
+            offsetX: 10,
+            offsetY: 10,
+            destinationOffsetX: 100,
+            destinationOffsetY: 50,
             modifiers: {
                 shift: true
             }
