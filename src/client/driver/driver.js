@@ -59,6 +59,7 @@ const ACTIVE_IFRAME_SELECTOR               = 'testcafe|driver|active-iframe-sele
 const TEST_SPEED                           = 'testcafe|driver|test-speed';
 const ASSERTION_RETRIES_TIMEOUT            = 'testcafe|driver|assertion-retries-timeout';
 const ASSERTION_RETRIES_START_TIME         = 'testcafe|driver|assertion-retries-start-time';
+const CONSOLE_MESSAGES                     = 'testcafe|driver|console-messages';
 const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;
 
 const ACTION_IFRAME_ERROR_CTORS = {
@@ -114,6 +115,7 @@ export default class Driver {
 
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.unhandledRejection, err => this._onJsError(err));
+        hammerhead.on(hammerhead.EVENTS.consoleMethCalled, e => this._onConsoleMessage(e));
     }
 
     set speed (val) {
@@ -122,6 +124,19 @@ export default class Driver {
 
     get speed () {
         return this.contextStorage.getItem(TEST_SPEED);
+    }
+
+    get consoleMessages () {
+        return this.contextStorage.getItem(CONSOLE_MESSAGES) || {
+            log:   [],
+            info:  [],
+            error: [],
+            warn:  []
+        };
+    }
+
+    set consoleMessages (messages) {
+        return this.contextStorage.setItem(CONSOLE_MESSAGES, messages);
     }
 
     // Error handling
@@ -156,6 +171,26 @@ export default class Driver {
         return false;
     }
 
+    // Console messages
+    _onConsoleMessage (e) {
+        const meth = e.meth;
+
+        const args = e.args.map(arg => {
+            if (arg === null)
+                return 'null';
+
+            if (arg === void 0)
+                return 'undefined';
+
+            return arg.toString();
+        });
+
+        const messages = this.consoleMessages;
+
+        messages[meth].push(Array.prototype.slice.call(args).join(' '));
+
+        this.consoleMessages = messages;
+    }
 
     // Status
     _addPendingErrorToStatus (status) {
@@ -327,6 +362,13 @@ export default class Driver {
         }));
     }
 
+    _onGetConsoleMessagesCommand () {
+        this._onReady(new DriverStatus({
+            isCommandResult: true,
+            result:          this.consoleMessages
+        }));
+    }
+
     _onNavigateToCommand (command) {
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true);
 
@@ -488,6 +530,9 @@ export default class Driver {
 
         else if (command.type === COMMAND_TYPE.getNativeDialogHistory)
             this._onGetNativeDialogHistoryCommand(command);
+
+        else if (command.type === COMMAND_TYPE.getConsoleMessages)
+            this._onGetConsoleMessagesCommand(command);
 
         else if (command.type === COMMAND_TYPE.setTestSpeed)
             this._onSetTestSpeedCommand(command);

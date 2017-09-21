@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Console messages</title>
+</head>
+<body>
+<button id="trigger-messages">Trigger Messages</button>
+
+<a id="reload" href="./empty.html">Reload</a>
+
+<script>
+    var counter = 1;
+
+    function triggerMessages () {
+        console.log('log' + counter);
+        console.warn('warn' + counter);
+        console.error('error' + counter);
+        console.info('info' + counter);
+
+        counter++;
+    }
+
+    triggerMessages();
+    document.querySelector('#trigger-messages').addEventListener('click', triggerMessages);
+</script>
+</body>
+</html>

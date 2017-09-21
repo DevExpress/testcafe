@@ -418,6 +418,12 @@ export class GetNativeDialogHistoryCommand {
     }
 }
 
+export class GetConsoleMessagesCommand {
+    constructor () {
+        this.type = TYPE.getConsoleMessages;
+    }
+}
+
 export class SetTestSpeedCommand extends Assignable {
     constructor (obj) {
         super(obj);

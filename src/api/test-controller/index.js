@@ -24,6 +24,7 @@ import {
     SwitchToMainWindowCommand,
     SetNativeDialogHandlerCommand,
     GetNativeDialogHistoryCommand,
+    GetConsoleMessagesCommand,
     SetTestSpeedCommand,
     SetPageLoadTimeoutCommand,
     UseRoleCommand
@@ -237,6 +238,12 @@ export default class TestController {
         var callsite = getCallsiteForMethod('getNativeDialogHistory');
 
         return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite);
+    }
+
+    _getConsoleMessages$ () {
+        var callsite = getCallsiteForMethod('getConsoleMessages');
+
+        return this.testRun.executeCommand(new GetConsoleMessagesCommand(), callsite);
     }
 
     _expect$ (actual) {

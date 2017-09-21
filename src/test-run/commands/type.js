@@ -34,6 +34,7 @@ export default {
     switchToMainWindow:         'switch-to-main-window',
     setNativeDialogHandler:     'set-native-dialog-handler',
     getNativeDialogHistory:     'get-native-dialog-history',
+    getConsoleMessages:         'get-console-messages',
     setTestSpeed:               'set-test-speed',
     setPageLoadTimeout:         'set-page-load-timeout',
     debug:                      'debug',
