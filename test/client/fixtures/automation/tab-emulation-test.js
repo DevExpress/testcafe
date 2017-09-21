@@ -1,8 +1,8 @@
 var hammerhead   = window.getTestCafeModule('hammerhead');
 var browserUtils = hammerhead.utils.browser;
 
-var testCafeCore      = window.getTestCafeModule('testCafeCore');
-var domUtils          = testCafeCore.get('./utils/dom');
+var testCafeCore = window.getTestCafeModule('testCafeCore');
+var domUtils     = testCafeCore.get('./utils/dom');
 
 var testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 var PressAutomation    = testCafeAutomation.Press;
@@ -21,6 +21,7 @@ $(document).ready(function () {
     var $inputText               = null;
     var $textarea                = null;
     var $link                    = null;
+    var $linkWithTabIndex        = null;
     var $divWithTabIndex         = null;
 
     //contentEditable elements
@@ -48,11 +49,13 @@ $(document).ready(function () {
     var createElements = function () {
         var $body = $('body');
 
-        $inputText = $('<input type="text">').attr('value', 'text input').addClass(TEST_ELEMENT_CLASS).appendTo($body);
-        $textarea  = $('<textarea>').css('height', 100).attr('value', 'textarea').addClass(TEST_ELEMENT_CLASS).appendTo($body);
-        $link      = $('<a>').attr('href', 'http://www.example.org/').attr('tabIndex', 2).text('Link with href').addClass(TEST_ELEMENT_CLASS).appendTo($body);
+        $inputText        = $('<input type="text">').attr('value', 'text input').addClass(TEST_ELEMENT_CLASS).appendTo($body);
+        $textarea         = $('<textarea>').css('height', 100).attr('value', 'textarea').addClass(TEST_ELEMENT_CLASS).appendTo($body);
+        $link             = $('<a>').attr('href', 'http://www.example.org/').attr('tabIndex', 2).text('Link with href').addClass(TEST_ELEMENT_CLASS).appendTo($body);
+        $linkWithTabIndex = $('<a>').attr('tabIndex', '0').text('Link without href but with tabIndex').addClass(TEST_ELEMENT_CLASS).appendTo($body);
 
         $('<a>').text('Link without href').addClass(TEST_ELEMENT_CLASS).appendTo($body);
+        $('<a>').attr('tabIndex', '-10').text('Link without href and with negative tabIndex').addClass(TEST_ELEMENT_CLASS).appendTo($body);
         $('<div></div>').text('div tag').addClass(TEST_ELEMENT_CLASS).appendTo($body);
 
         $divWithTabIndex = $('<div></div>').text('div tag with tabIndex').attr('tabIndex', 1).addClass(TEST_ELEMENT_CLASS).appendTo($body);
@@ -110,6 +113,9 @@ $(document).ready(function () {
         $expectedFocusedElements.push($radioInput2);
         $expectedFocusedElements.push($inputText);
         $expectedFocusedElements.push($textarea);
+
+        //GH-1803
+        $expectedFocusedElements.push($linkWithTabIndex);
 
         $expectedFocusedElements.push($divContentEditable);
 
