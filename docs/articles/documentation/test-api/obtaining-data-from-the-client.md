@@ -55,11 +55,10 @@ In this instance, the client function will complete only when this Promise resol
 ```js
 import { ClientFunction } from 'testcafe';
 
-const performAsyncOperation = ClientFunction(() => {
-    return Promise
-        .resolve()
-        .then(asyncFn)
-        .then(otherAsyncFn);
+сonst performAsyncOperation = ClientFunction(() => {
+    return Promise(resolve => {
+        window.setTimeout(resolve, 500); // some async operations
+    });
 });
 ```
 
