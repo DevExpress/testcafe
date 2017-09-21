@@ -64,14 +64,18 @@ src(source) → this
 
 Parameter | Type                | Description
 --------- | ------------------- | ----------------------------------------------------------------------------
-`source`  | String &#124; Array | The relative or absolute path to a test fixture file, or several such paths.
+`source`  | String &#124; Array | The relative or absolute path to a test fixture file, or several such paths. You can use `glob` patterns to include (or exclude) multiple files.
 
 Concatenates the settings when called several times.
 
-**Example**
+**Examples**
 
 ```js
 runner.src(['/home/user/tests/fixture1.js', 'fixture5.js']);
+```
+
+```js
+runner.src(['/home/user/tests/**/*.js', '!/home/user/tests/foo.js']);
 ```
 
 ### filter
