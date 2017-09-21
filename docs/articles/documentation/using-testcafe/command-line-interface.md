@@ -396,7 +396,7 @@ After the timeout passes or the `window.load` event is raised (whichever happens
 
 > Note that the `DOMContentLoaded` event is raised after the HTML document is loaded and parsed, while `window.load` is raised after all stylesheets, images and subframes are loaded. That is why `window.load` is fired after the `DOMContentLoaded` event with a certain delay.
 
-**Default value**: `5000`
+**Default value**: `3000`
 
 You can set the page load timeout to `0` to skip waiting for the `window.load` event.
 
