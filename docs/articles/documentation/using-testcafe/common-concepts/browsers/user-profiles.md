@@ -7,15 +7,15 @@ permalink: /documentation/using-testcafe/common-concepts/browsers/user-profiles.
 
 By default, TestCafe launches browsers with a clean profile, which means empty local storage, no extensions or bookmarks, etc. This was done to minimize the influence of profile intrinsics on test runs.
 
-However, if you need to start a browser with the current user profile, you can do this by specifying the `:user-profile` browser flag.
+However, if you need to start a browser with the current user profile, you can do this by specifying the `:userProfile` browser flag.
 
 ```sh
-testcafe firefox:user-profile tests/test.js
+testcafe firefox:userProfile tests/test.js
 ```
 
 ```js
 runner
     .src('tests/fixture1.js')
-    .browsers('firefox:user-profile')
+    .browsers('firefox:userProfile')
     .run();
 ```
