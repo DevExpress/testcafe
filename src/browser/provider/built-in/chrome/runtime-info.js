@@ -12,7 +12,7 @@ function createTempProfileDir () {
 export default async function (configString) {
     var config          = getConfig(configString);
     var tempProfileDir = !config.userProfile ? createTempProfileDir() : null;
-    var cdpPort         = config.cdpPort || await getFreePort();
+    var cdpPort         = config.headless || config.emulation ? config.cdpPort || await getFreePort() : null;
 
     return { config, cdpPort, tempProfileDir };
 }

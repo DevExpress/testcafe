@@ -1,4 +1,3 @@
-import browserTools from 'testcafe-browser-tools';
 import OS from 'os-family';
 import getRuntimeInfo from './runtime-info';
 import getConfig from './config';
@@ -48,7 +47,7 @@ export default {
         if (cdp.isHeadlessTab(runtimeInfo))
             await cdp.closeTab(runtimeInfo);
         else
-            await browserTools.close(browserId);
+            await this.closeLocalBrowser(browserId);
 
         if (OS.mac || runtimeInfo.config.headless)
             await stopLocalChrome(runtimeInfo);
@@ -81,6 +80,7 @@ export default {
         var { config, client } = this.openedBrowsers[browserId];
 
         return {
+            hasCloseBrowser:                true,
             hasResizeWindow:                !!client && (config.emulation || config.headless),
             hasTakeScreenshot:              !!client,
             hasCanResizeWindowToDimensions: false,

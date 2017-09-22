@@ -51,6 +51,12 @@ export default class BrowserProviderPluginHost {
         connection.setProviderMetaInfo(message);
     }
 
+    closeLocalBrowser (browserId) {
+        var connection = BrowserConnection.getById(browserId);
+
+        connection.provider._closeLocalBrowser(browserId);
+    }
+
     // API
     // Browser control
     async openBrowser (/* browserId, pageUrl, browserName */) {

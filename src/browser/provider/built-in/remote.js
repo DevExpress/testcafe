@@ -26,6 +26,7 @@ export default {
         var isLocalBrowser = this.localBrowsersFlags[browserId];
 
         return {
+            hasCloseBrowser:                true,
             hasResizeWindow:                !isLocalBrowser,
             hasMaximizeWindow:              !isLocalBrowser,
             hasTakeScreenshot:              !isLocalBrowser,
