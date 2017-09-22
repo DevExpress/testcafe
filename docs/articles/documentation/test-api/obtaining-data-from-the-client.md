@@ -16,6 +16,7 @@ or custom data calculated by a client script.
 This topic contains the following sections.
 
 * [Creating Client Functions](#creating-client-functions)
+  * [Running Asynchronous Client Code](#running-asynchronous-client-code)
 * [Executing Client Functions](#executing-client-functions)
 * [Options](#options)
 * [One-Time Client Code Execution](#one-time-client-code-execution)
@@ -43,6 +44,22 @@ The following example shows how to create a client function.
 import { ClientFunction } from 'testcafe';
 
 const getWindowLocation = ClientFunction(() => window.location);
+```
+
+### Running Asynchronous Client Code
+
+You can create client functions that run asynchronous code.
+To this end, pass a function that returns a Promise to the `ClientFunction` constructor.
+In this instance, the client function will complete only when this Promise resolves.
+
+```js
+import { ClientFunction } from 'testcafe';
+
+сonst performAsyncOperation = ClientFunction(() => {
+    return Promise(resolve => {
+        window.setTimeout(resolve, 500); // some async operations
+    });
+});
 ```
 
 ## Executing Client Functions
