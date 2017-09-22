@@ -120,9 +120,9 @@ The `browser` parameter can be any of the following objects, or an `Array` of th
 
 Parameter Type                                                                                        | Description                            | Browser Type
 ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------
-String                                                                                                | The browser alias that differs for different browser types. For details, see [Browser Support](../common-concepts/browser-support.md).                            | [Local browsers](../common-concepts/browser-support.md#locally-installed-browsers), [cloud browsers](../common-concepts/browser-support.md#browsers-in-cloud-testing-services) and [browsers accessed through *browser provider plugins*](../common-concepts/browser-support.md#nonconventional-browsers).                                                                 |
- `{path: String, cmd: String}`                                                                        | The path to the browser executable (`path`) and command line parameters (`cmd`). The `cmd` property is optional.                                                     | [Local](../common-concepts/browser-support.md#locally-installed-browsers) and [portable](../common-concepts/browser-support.md#portable-browsers) browsers
-[BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | [Remote browsers](../common-concepts/browser-support.md#browsers-on-remote-devices)
+String                                                                                                | The browser alias that differs for different browser types. For details, see [Browser Support](../common-concepts/browsers/browser-support.md).                            | [Local browsers](../common-concepts/browsers/browser-support.md#locally-installed-browsers), [cloud browsers](../common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services) and [browsers accessed through *browser provider plugins*](../common-concepts/browsers/browser-support.md#nonconventional-browsers).                                                                 |
+ `{path: String, cmd: String}`                                                                        | The path to the browser executable (`path`) and command line parameters (`cmd`). The `cmd` property is optional.                                                     | [Local](../common-concepts/browsers/browser-support.md#locally-installed-browsers) and [portable](../common-concepts/browsers/browser-support.md#portable-browsers) browsers
+[BrowserConnection](browserconnection.md)                                                            | The remote browser connection.                                                                                                                                        | [Remote browsers](../common-concepts/browsers/browser-support.md#browsers-on-remote-devices)
 
 You are free to mix different types of objects in one function call. The `browsers` function concatenates the settings when called several times.
 
@@ -140,7 +140,7 @@ runner.browsers(['safari', 'chrome']);
 runner.browsers('saucelabs:Chrome@52.0:Windows 8.1');
 ```
 
-* using [Chrome-specific features](../common-concepts/browser-support.md#using-chrome-specific-features)
+* using [Chrome debugging features](../common-concepts/browsers/using-chrome-debugging-features.md)
 
 ```js
 runner.browsers('chrome:headless');

@@ -46,21 +46,21 @@ Opera                | `opera`
 Safari               | `safari`
 
 The list of all the available browsers can be obtained by calling the `testcafe` command
-with the [--list-browsers](../command-line-interface.md#-b---list-browsers) flag.
+with the [--list-browsers](../../command-line-interface.md#-b---list-browsers) flag.
 
 To run tests in a different local browser, specify the path to the browser executable file.
 
 For more information and examples, see:
 
-* Command line: [Local Browsers](../command-line-interface.md#local-browsers)
-* API: [runner.browsers](../programming-interface/runner.md#browsers)
+* Command line: [Local Browsers](../../command-line-interface.md#local-browsers)
+* API: [runner.browsers](../../programming-interface/runner.md#browsers)
 
 ## Portable Browsers
 
 To use a portable browser, specify the path to the browser executable file. For more information and examples, see:
 
-* Command line: [Portable Browsers](../command-line-interface.md#portable-browsers)
-* API: [runner.browsers](../programming-interface/runner.md#browsers)
+* Command line: [Portable Browsers](../../command-line-interface.md#portable-browsers)
+* API: [runner.browsers](../../programming-interface/runner.md#browsers)
 
 ## Browsers on Remote Devices
 
@@ -68,15 +68,15 @@ To run tests on a remote mobile and desktop device, this device must have networ
 
 First, you will need to create a remote browser connection.
 
-* Command line: specify the `remote` *alias* (see [Remote Browsers](../command-line-interface.md#remote-browsers))
-* API: use the [createBrowserConnection](../programming-interface/testcafe.md#createbrowserconnection) method
+* Command line: specify the `remote` *alias* (see [Remote Browsers](../../command-line-interface.md#remote-browsers))
+* API: use the [createBrowserConnection](../../programming-interface/testcafe.md#createbrowserconnection) method
 
 After that, TestCafe will provide a URL to open on the remote device in the browser against which you want to test.
 As you open this URL, the browser connects to the TestCafe server and starts testing.
 
 ## Browsers in Cloud Testing Services
 
-TestCafe allows you to use browsers from cloud testing services. You can access them through [browser provider plugins](../../extending-testcafe/browser-provider-plugin/).
+TestCafe allows you to use browsers from cloud testing services. You can access them through [browser provider plugins](../../../extending-testcafe/browser-provider-plugin/).
 
 The following plugins for cloud services are currently provided by the TestCafe team.
 
