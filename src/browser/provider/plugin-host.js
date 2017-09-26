@@ -51,10 +51,10 @@ export default class BrowserProviderPluginHost {
         connection.setProviderMetaInfo(message);
     }
 
-    closeLocalBrowser (browserId) {
+    async closeLocalBrowser (browserId) {
         var connection = BrowserConnection.getById(browserId);
 
-        connection.provider._closeLocalBrowser(browserId);
+        await connection.provider._closeLocalBrowser(browserId);
     }
 
     // API
