@@ -8,6 +8,7 @@ describe('Chrome provider config parser', function () {
         var config = getChromeConfig('/chrome/path/with\\::headless:emulation:device=iPhone 4;cdpPort=9222 --arg1 --arg2');
 
         expect(config.path).to.equal('/chrome/path/with:');
+        expect(config.userProfile).to.be.false;
         expect(config.headless).to.be.true;
         expect(config.emulation).to.be.true;
 
@@ -63,6 +64,16 @@ describe('Chrome provider config parser', function () {
         expect(config.width).to.equal(1280);
         expect(config.height).to.equal(800);
         expect(config.scaleFactor).to.equal(0);
+    });
+
+    it('Should support userProfile mode', function () {
+        var config = getChromeConfig('userProfile');
+
+        expect(config.userProfile).to.be.true;
+
+        config = getChromeConfig('--user-data-dir=/dev/null');
+
+        expect(config.userProfile).to.be.true;
     });
 
     if (OS.win) {

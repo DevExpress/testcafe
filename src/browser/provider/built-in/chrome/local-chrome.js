@@ -4,10 +4,11 @@ import { findProcess, killProcess } from '../../../../utils/promisified-function
 
 const BROWSER_CLOSING_TIMEOUT = 5;
 
-
-function buildChromeArgs (config, cdpPort, platformArgs, userDataDir) {
-    return [`--remote-debugging-port=${cdpPort}`, `--user-data-dir=${userDataDir.name}`]
+function buildChromeArgs (config, cdpPort, platformArgs, profileDir) {
+    return []
         .concat(
+            config.headless || config.emulation ? [`--remote-debugging-port=${cdpPort}`] : [],
+            !config.userProfile ? [`--user-data-dir=${profileDir.name}`] : [],
             config.headless ? ['--headless'] : [],
             config.userArgs ? [config.userArgs] : [],
             platformArgs ? [platformArgs] : []
@@ -32,17 +33,11 @@ async function killChrome (cdpPort) {
     }
 }
 
-export async function start (pageUrl, { browserName, config, cdpPort, tempUserDataDir }) {
-    var chromeInfo = null;
-
-    if (config.path)
-        chromeInfo = await browserTools.getBrowserInfo(config.path);
-    else
-        chromeInfo = await browserTools.getBrowserInfo(browserName);
-
+export async function start (pageUrl, { browserName, config, cdpPort, tempProfileDir }) {
+    var chromeInfo           = await browserTools.getBrowserInfo(config.path || browserName);
     var chromeOpenParameters = Object.assign({}, chromeInfo);
 
-    chromeOpenParameters.cmd = buildChromeArgs(config, cdpPort, chromeOpenParameters.cmd, tempUserDataDir);
+    chromeOpenParameters.cmd = buildChromeArgs(config, cdpPort, chromeOpenParameters.cmd, tempProfileDir);
 
     await browserTools.open(chromeOpenParameters, pageUrl);
 }

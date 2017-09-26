@@ -36,7 +36,8 @@ export default {
 
         runtimeInfo.viewportSize = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
 
-        await cdp.createClient(runtimeInfo);
+        if (runtimeInfo.config.headless || runtimeInfo.config.emulation)
+            await cdp.createClient(runtimeInfo);
 
         this.openedBrowsers[browserId] = runtimeInfo;
     },
