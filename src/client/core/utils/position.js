@@ -229,7 +229,7 @@ export function getElementFromPoint (x, y) {
     if (el === null)
         el = func.call(document, x - 1, y - 1);
 
-    while (el && el.shadowRoot) {
+    while (el && el.shadowRoot && el.shadowRoot.elementFromPoint) {
         var shadowEl = el.shadowRoot.elementFromPoint(x, y);
 
         if (!shadowEl)
