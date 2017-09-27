@@ -1,5 +1,6 @@
+import OS from 'os-family';
 import getRuntimeInfo from './runtime-info';
-import { start as startLocalFirefox } from './local-firefox';
+import { start as startLocalFirefox, stop as stopLocalFirefox } from './local-firefox';
 import MarionetteClient from './marionette-client';
 import getConfig from './config';
 
@@ -18,6 +19,8 @@ export default {
 
         await startLocalFirefox(pageUrl, runtimeInfo);
 
+        await this.waitForConnectionReady(runtimeInfo.browserId);
+
         if (runtimeInfo.config.headless) {
             var marionetteClient = new MarionetteClient(runtimeInfo.marionettePort);
 
@@ -30,12 +33,16 @@ export default {
     },
 
     async closeBrowser (browserId) {
-        var { config, marionetteClient } = this.openedBrowsers[browserId];
+        var runtimeInfo = this.openedBrowsers[browserId];
+        var { config, marionetteClient } = runtimeInfo;
 
         if (config.headless)
             await marionetteClient.quit();
         else
             await this.closeLocalBrowser(browserId);
+
+        if (OS.mac && !config.headless)
+            await stopLocalFirefox(runtimeInfo);
 
         delete this.openedBrowsers[browserId];
     },

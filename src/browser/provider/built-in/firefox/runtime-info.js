@@ -15,6 +15,7 @@ async function generatePrefs (profileDir, port) {
     var prefsFileName = path.join(profileDir, 'user.js');
 
     var prefs = [
+        'user_pref("browser.link.open_newwindow.override.external", 2);',
         'user_pref("app.update.enabled", false);',
         'user_pref("app.update.auto", false);',
         'user_pref("app.update.mode", 0);',
@@ -38,8 +39,8 @@ async function generatePrefs (profileDir, port) {
 
 export default async function (configString) {
     var config         = getConfig(configString);
-    var tempProfileDir = !config.userProfile ? createTempProfileDir() : null;
     var marionettePort = config.headless ? config.marionettePort || await getFreePort() : null;
+    var tempProfileDir = !config.userProfile ? createTempProfileDir() : null;
 
     if (!config.userProfile)
         await generatePrefs(tempProfileDir.name, marionettePort);
