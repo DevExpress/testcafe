@@ -747,8 +747,8 @@ test('Chaining callsites', async t => {
         .click('#btn3');
 });
 
-test('t.getConsoleMessages', async t => {
-    let messages = await t.getConsoleMessages();
+test('t.getBrowserConsoleMessages', async t => {
+    let messages = await t.getBrowserConsoleMessages();
 
     await t
         .expect(messages.error).eql(['error1'])
@@ -761,7 +761,7 @@ test('t.getConsoleMessages', async t => {
         // Check the driver keeps the messages between page reloads
         .click('#reload');
 
-    messages = await t.getConsoleMessages();
+    messages = await t.getBrowserConsoleMessages();
 
     await t
         .expect(messages.error).eql(['error1', 'error2'])
@@ -774,7 +774,7 @@ test('messages formatting', async t => {
     // Several arguments
     await t.eval(() => console.log('a', 1, null, void 0, ['b', 2], {c: 3}))
 
-    let {log} = await t.getConsoleMessages();
+    let {log} = await t.getBrowserConsoleMessages();
 
     await t.expect(log[0]).eql('a 1 null undefined b,2 [object Object]');
 });

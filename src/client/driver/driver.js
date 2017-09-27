@@ -362,7 +362,7 @@ export default class Driver {
         }));
     }
 
-    _onGetConsoleMessagesCommand () {
+    _onGetBrowserConsoleMessagesCommand () {
         this._onReady(new DriverStatus({
             isCommandResult: true,
             result:          this.consoleMessages
@@ -531,8 +531,8 @@ export default class Driver {
         else if (command.type === COMMAND_TYPE.getNativeDialogHistory)
             this._onGetNativeDialogHistoryCommand(command);
 
-        else if (command.type === COMMAND_TYPE.getConsoleMessages)
-            this._onGetConsoleMessagesCommand(command);
+        else if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
+            this._onGetBrowserConsoleMessagesCommand(command);
 
         else if (command.type === COMMAND_TYPE.setTestSpeed)
             this._onSetTestSpeedCommand(command);

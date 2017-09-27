@@ -418,9 +418,9 @@ export class GetNativeDialogHistoryCommand {
     }
 }
 
-export class GetConsoleMessagesCommand {
+export class GetBrowserConsoleMessagesCommand {
     constructor () {
-        this.type = TYPE.getConsoleMessages;
+        this.type = TYPE.getBrowserConsoleMessages;
     }
 }
 

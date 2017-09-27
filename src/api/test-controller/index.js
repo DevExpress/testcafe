@@ -24,7 +24,7 @@ import {
     SwitchToMainWindowCommand,
     SetNativeDialogHandlerCommand,
     GetNativeDialogHistoryCommand,
-    GetConsoleMessagesCommand,
+    GetBrowserConsoleMessagesCommand,
     SetTestSpeedCommand,
     SetPageLoadTimeoutCommand,
     UseRoleCommand
@@ -240,10 +240,10 @@ export default class TestController {
         return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite);
     }
 
-    _getConsoleMessages$ () {
-        var callsite = getCallsiteForMethod('getConsoleMessages');
+    _getBrowserConsoleMessages$ () {
+        var callsite = getCallsiteForMethod('getBrowserConsoleMessages');
 
-        return this.testRun.executeCommand(new GetConsoleMessagesCommand(), callsite);
+        return this.testRun.executeCommand(new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
     _expect$ (actual) {

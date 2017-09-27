@@ -799,21 +799,21 @@ interface NativeDialogHistoryItem {
     url: string;
 }
 
-interface ConsoleMessagesCollection {
+interface BrowserConsoleMessages {
     /**
-     * TODO:
+     * Messages output to the browser console by the console.log() method.
      */
     log: string[],
     /**
-     * TODO:
+     * Warning messages output to the browser console by the console.warn() method.
      */
     warn: string[],
     /**
-     * TODO:
+     * Error messages output to the browser console by the console.error() method.
      */
     error: string[],
     /**
-     * TODO:
+     * Information messages output to the browser console by the console.info() method.
      */
     info: string[]
 }
@@ -1024,9 +1024,9 @@ interface TestController {
      */
     getNativeDialogHistory(): Promise<NativeDialogHistoryItem[]>;
     /**
-     * TODO: Returns a collection of browser console messages.
+     * Returns an object that contains messages output to the browser console.
      */
-    getConsoleMessages(): Promise<ConsoleMessagesCollection>;
+    getBrowserConsoleMessages(): Promise<BrowserConsoleMessages>;
     /**
      * Starts an assertion chain and specifies assertion actual value.
      *
