@@ -772,9 +772,13 @@ test('t.getBrowserConsoleMessages', async t => {
 
 test('messages formatting', async t => {
     // Several arguments
-    await t.eval(() => console.log('a', 1, null, void 0, ['b', 2], {c: 3}))
+    await t.eval(() => console.log('a', 1, null, void 0, ['b', 2], {c: 3}));
 
-    let {log} = await t.getBrowserConsoleMessages();
+    const messages = await t.getBrowserConsoleMessages();
 
-    await t.expect(log[0]).eql('a 1 null undefined b,2 [object Object]');
+    await t
+        .expect(messages.log[0]).eql('a 1 null undefined b,2 [object Object]')
+        .expect(messages.info.length).eql(0)
+        .expect(messages.warn.length).eql(0)
+        .expect(messages.error.length).eql(0);
 });
