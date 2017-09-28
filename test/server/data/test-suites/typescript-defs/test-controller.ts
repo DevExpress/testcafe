@@ -1,6 +1,6 @@
 /// <reference path="../../../../../ts-defs/index.d.ts" />
-import {Selector, ClientFunction} from 'testcafe';
-import {expect} from 'chai';
+import { Selector, ClientFunction } from 'testcafe';
+import { expect } from 'chai';
 
 fixture(`TestController`)
     .page(`http://localhost:3000/fixtures/api/es-next/assertions/pages/index.html`);

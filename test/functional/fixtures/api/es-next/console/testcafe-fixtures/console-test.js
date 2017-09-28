@@ -1,4 +1,4 @@
-fixture `Double Click`;
+fixture `getBrowserConsoleMessages`;
 
 
 test
