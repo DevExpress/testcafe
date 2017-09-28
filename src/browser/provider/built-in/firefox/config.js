@@ -1,7 +1,7 @@
-import { splitEscaped, parseConfig, getModes, getPathFromParsedModes } from '../../utils/argument-parsing';
+import { findMatch, splitEscaped, parseConfig, getModes, getPathFromParsedModes } from '../../utils/argument-parsing';
 
 
-const AVAILABLE_MODES = ['userProfile'];
+const AVAILABLE_MODES = ['userProfile', 'headless'];
 
 var configCache = {};
 
@@ -15,8 +15,10 @@ function parseModes (modesStr, userArgs) {
     var detectedModes = getModes(parsed, AVAILABLE_MODES);
 
     return {
-        path:        path,
-        userProfile: detectedModes.userProfile || hasCustomProfile(userArgs)
+        path:           path,
+        userProfile:    detectedModes.userProfile || hasCustomProfile(userArgs),
+        headless:       detectedModes.headless,
+        marionettePort: findMatch(parsed, /^marionettePort=(.*)/)
     };
 }
 

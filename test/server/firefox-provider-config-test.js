@@ -5,10 +5,12 @@ var getFirefoxConfig = require('../../lib/browser/provider/built-in/firefox/conf
 
 describe('Firefox provider config parser', function () {
     it('Should parse options and arguments', function () {
-        var config = getFirefoxConfig('/firefox/path/with\\::headless:emulation:device=iPhone 4;cdpPort=9222 --arg1 --arg2');
+        var config = getFirefoxConfig('/firefox/path/with\\::headless:marionettePort=22822: --arg1 --arg2');
 
         expect(config.path).to.equal('/firefox/path/with:');
         expect(config.userProfile).to.be.false;
+        expect(config.headless).to.be.true;
+        expect(config.marionettePort).to.be.equal('22822');
 
         expect(config.userArgs).to.equal('--arg1 --arg2');
     });

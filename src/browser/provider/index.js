@@ -205,7 +205,7 @@ export default class BrowserProvider {
             return;
         }
 
-        await browserTools.close(this.windowDescriptors[browserId]);
+        await this._closeLocalBrowser(browserId);
     }
 
     async getBrowserList () {
