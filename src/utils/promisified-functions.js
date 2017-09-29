@@ -1,5 +1,6 @@
-import mkdirp from 'mkdirp';
 import fs from 'fs';
+import childProcess from 'child_process';
+import mkdirp from 'mkdirp';
 import psNode from 'ps-node';
 import promisify from './promisify';
 
@@ -11,3 +12,5 @@ export const readFile  = promisify(fs.readFile);
 
 export const findProcess = promisify(psNode.lookup);
 export const killProcess = promisify(psNode.kill);
+
+export const exec = promisify(childProcess.exec);
