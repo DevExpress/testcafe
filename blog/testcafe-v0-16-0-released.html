@@ -223,8 +223,7 @@
 
 <p><a href="https://developers.google.com/web/updates/2017/04/headless-chrome">Headless mode</a> allows you to run tests in Chrome without any visible UI shell. To run tests in headless mode, use the <code>:headless</code> postfix:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless"</span> tests/sample-fixture.js
-</code></pre></div><blockquote><div class="blockquote-content"><p>Note that headless mode is available for Mac and Linux in Chrome 59. You need a <a href="https://www.google.com/chrome/browser/canary.html">Canary build</a> to enable headless mode on Windows.</p>
-</div></blockquote>
+</code></pre></div>
 <p>Device emulation mode allows you to check how your tests works on mobile devices via Chrome&#39;s built-in <a href="https://developers.google.com/web/tools/chrome-devtools/device-mode/">device emulator</a>. To run tests in device emulation mode, specify <code>emulation:</code> and <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html#available-chrome-options">device parameters</a>:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:device=iphone 6"</span> tests/sample-fixture.js
 </code></pre></div>

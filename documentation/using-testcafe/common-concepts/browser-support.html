@@ -588,8 +588,7 @@ As you open this URL, the browser connects to the TestCafe server and starts tes
 </code></pre></div><h3><a class="anchor" name="running-tests-in-headless-mode"></a>Running Tests in Headless Mode <a class="permalink" href="#running-tests-in-headless-mode">#</a></h3>
 <p>TestCafe allows you to run tests in Google Chrome without any visible UI shell - in the <a href="https://developers.google.com/web/updates/2017/04/headless-chrome">headless mode</a>. Note that the <a href="../../test-api/actions/take-screenshot.html">Take screenshot</a> and <a href="../../test-api/actions/resize-window.html">Resize window</a> features are fully supported in headless mode.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless"</span> tests/sample-fixture.js
-</code></pre></div><blockquote><div class="blockquote-content"><p>Note that headless mode is available for Mac and Linux in Chrome 59. You need a <a href="https://www.google.com/chrome/browser/canary.html">Canary build</a> to enable headless mode on Windows.</p>
-</div></blockquote>
+</code></pre></div>
 <p>Specify a path to installation location, if you install a portable version of Chrome:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:path/to/chrome:headless"</span> tests/sample-fixture.js
 </code></pre></div><blockquote><div class="blockquote-content"><p>In headless mode the browser&#39;s viewport size is <code>1280x800</code> by default. You can change it via the <a href="../../test-api/actions/resize-window.html">ResizeWindow</a> command or via <a href="#running-tests-in-the-device-emulation-mode">Device Emulation Mode</a> parameters.</p>
