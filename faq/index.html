@@ -360,7 +360,8 @@ to tell TestCafe to skip them.</p>
 
 <p><strong>Browser extensions.</strong> If this does not help, try running the problematic test in incognito mode.
 You can do this by adding an appropriate flag after the browser name.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"firefox –private-window"</span> tests/test.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome -incognito"</span> tests/test.js
+</code></pre></div><div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"firefox –private-window"</span> tests/test.js
 </code></pre></div>
 <p>If the test runs successfully, it might be browser extensions causing the issue.
 Try disabling them one by one and restart the test in the regular mode at each iteration.

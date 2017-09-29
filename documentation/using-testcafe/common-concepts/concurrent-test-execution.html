@@ -458,7 +458,8 @@ These instances constitute the pool of browsers against which tests run concurre
 
 <p>To enable concurrency, use the <a href="../command-line-interface.html#-c-n---concurrency-n">-c or --concurrency</a>
 command line option or the <a href="../programming-interface/runner.html#concurrency">runner.concurrency</a> method of the programming interface.</p>
-
+<blockquote class="important"><div class="blockquote-content"><p>Concurrent test execution is not supported in Microsoft Edge. This is because there is no known way to start Edge in a new window and make it open a particular URL.</p>
+</div></blockquote>
 <p>The following command invokes three Chrome instances and runs tests concurrently.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe -c 3 chrome tests/test.js
 </code></pre></div>

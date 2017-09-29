@@ -847,13 +847,13 @@
 </thead><tbody>
 <tr>
 <td><code>actual</code></td>
-<td>String &#124; Array</td>
-<td>A String or Array that should contain an <code>expected</code> value.</td>
+<td>String &#124; Array &#124; Object</td>
+<td>A string that contains the <code>expected</code> substring, an array that contains the <code>expected</code> value or an object that contains the <code>expected</code> property.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
 <td>Any type</td>
-<td>An expected value.</td>
+<td>The expected value.</td>
 </tr>
 <tr>
 <td><code>message</code>&#160;<em>(optional)</em></td>
@@ -869,8 +869,9 @@
 
 <p><strong>Examples:</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foo bar'</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'bar'</span><span class="p">,</span> <span class="s1">'actual string contains expected'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]).</span><span class="nx">contains</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'actual array contains expected'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foo bar'</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'bar'</span><span class="p">,</span> <span class="s1">'string contains the expected substring'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]).</span><span class="nx">contains</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'array contains the expected value'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">foo</span><span class="p">:</span> <span class="s1">'bar'</span><span class="p">,</span> <span class="na">hello</span><span class="p">:</span> <span class="s1">'universe'</span> <span class="p">}).</span><span class="nx">contains</span><span class="p">({</span> <span class="na">foo</span><span class="p">:</span> <span class="s1">'bar'</span> <span class="p">},</span> <span class="s1">'object contains the expected property'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="not-contains"></a>Not Contains <a class="permalink" href="#not-contains">#</a></h2>
 <p>Asserts that <code>actual</code> does not contain <code>expected</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).notContains( expected, message, options );
@@ -884,8 +885,8 @@
 </thead><tbody>
 <tr>
 <td><code>actual</code></td>
-<td>String &#124; Array</td>
-<td>A String or Array that should not contain an <code>expected</code> value.</td>
+<td>String &#124; Array &#124; Object</td>
+<td>A string that should not contain the <code>expected</code> substring, an array that should not contain the <code>expected</code> value or an object that should not contain the <code>expected</code> property.</td>
 </tr>
 <tr>
 <td><code>expected</code></td>
@@ -906,8 +907,9 @@
 
 <p><strong>Examples:</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">await</span> <span class="nx">t</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foo bar'</span><span class="p">).</span><span class="nx">notContains</span><span class="p">(</span><span class="s1">'baz'</span><span class="p">,</span> <span class="s1">'actual string do not contains expected'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">expect</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]).</span><span class="nx">notContains</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">'actual array contains expected'</span><span class="p">);</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'foo bar'</span><span class="p">).</span><span class="nx">notContains</span><span class="p">(</span><span class="s1">'baz'</span><span class="p">,</span> <span class="s1">'string does not contain a substring'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]).</span><span class="nx">notContains</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">'array does not contain a value'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">({</span> <span class="na">foo</span><span class="p">:</span> <span class="s1">'bar'</span><span class="p">,</span> <span class="na">hello</span><span class="p">:</span> <span class="s1">'universe'</span> <span class="p">}).</span><span class="nx">notContains</span><span class="p">({</span> <span class="na">buzz</span><span class="p">:</span> <span class="s1">'abc'</span> <span class="p">},</span> <span class="s1">'object does not contain a property'</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" name="type-of"></a>Type Of <a class="permalink" href="#type-of">#</a></h2>
 <p>Asserts that type of <code>actual</code> is <code>typeName</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).typeOf( typeName, message, options );

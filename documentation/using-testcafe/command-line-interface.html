@@ -543,10 +543,20 @@ As a result, the browsers will be connected to TestCafe and tests will start.</p
 specify a browser alias that consists of the <code>{browser-provider-name}</code> prefix and the name of a browser itself (the latter can be omitted); for example, <code>saucelabs:Chrome@52.0:Windows 8.1</code>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"saucelabs:Chrome@52.0:Windows 8.1"</span> tests/sample-fixture.js
 </code></pre></div><h3><a class="anchor" name="starting-browser-with-arguments"></a>Starting browser with arguments <a class="permalink" href="#starting-browser-with-arguments">#</a></h3>
-<p>If you need to pass arguments for the specified browser, write them right after browser alias. Surround the browser call and its arguments with quotation marks:</p>
+<p>If you need to pass arguments for the specified browser, write them right after browser alias. Surround the browser call and its arguments with quotation marks.</p>
+
+<p>On Windows <code>cmd.exe</code>, the default command prompt, use double quotation marks.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome --start-fullscreen"</span> tests/sample-fixture.js
 </code></pre></div>
+<p>On <code>Unix</code> shells like <code>bash</code>, <code>zsh</code>, <code>csh</code> (on macOS, Linux, Windows Subsystem for Linux) and Windows PowerShell, prefer single quotation marks.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s1">'chrome --start-fullscreen'</span> tests/sample-fixture.js
+</code></pre></div>
 <p>You can also specify arguments for portable browsers. If a path to a browser contains spaces, the path should be surrounded with backticks:</p>
+
+<p>For Unix shells and Windows PowerShell:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s1">'path:`/Users/TestCafe/Apps/Google Chrome.app` --start-fullscreen'</span> tests/sample-fixture.js
+</code></pre></div>
+<p>For <code>cmd.exe</code>:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"path:</span><span class="sb">`</span>C:<span class="se">\P</span>rogram Files <span class="o">(</span>x86<span class="o">)</span><span class="se">\G</span>oogle<span class="se">\C</span>hrome<span class="se">\A</span>pplication<span class="se">\c</span>hrome.exe<span class="sb">`</span><span class="s2"> --start-fullscreen"</span> tests/sample-fixture.js
 </code></pre></div>
 <p>You can specify arguments for local browsers only.</p>

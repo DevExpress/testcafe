@@ -7,20 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Running Tests Using Travis CI and Sauce Labs | TestCafe</title>
+  <title>Finding Code Issues with Flow Type Checker | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html" />
-  <meta property="og:title" content="Running Tests Using Travis CI and Sauce Labs | TestCafe" />
+  <meta property="og:url" content="http://devexpress.github.io/testcafe/documentation/recipes/finding-code-issues-with-flow-type-checker.html" />
+  <meta property="og:title" content="Finding Code Issues with Flow Type Checker | TestCafe" />
 
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
-  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html">
+  <link rel="canonical" href="http://devexpress.github.io/testcafe/documentation/recipes/finding-code-issues-with-flow-type-checker.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="http://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
@@ -364,7 +364,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/finding-code-issues-with-flow-type-checker.html"  >Finding Code Issues with Flow Type Checker</a>
+<a href="/testcafe/documentation/recipes/finding-code-issues-with-flow-type-checker.html" class="active" >Finding Code Issues with Flow Type Checker</a>
 		
     </li>
 
@@ -378,7 +378,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html" class="active" >Running Tests Using Travis CI and Sauce Labs</a>
+<a href="/testcafe/documentation/recipes/running-tests-using-travis-ci-and-sauce-labs.html"  >Running Tests Using Travis CI and Sauce Labs</a>
 		
     </li>
 
@@ -437,77 +437,61 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Running Tests Using Travis CI and Sauce Labs</h1>
-<p>You can automatically run tests as a part of your build process using TestCafe and <a href="https://travis-ci.org/">Travis CI</a>.
-TestCafe also allows you to use <a href="https://saucelabs.com/">Sauce Labs</a> browsers for testing.
-Thus, you can run your tests completely in the cloud.</p>
+			<h1>Finding Code Issues with Flow Type Checker</h1>
+<p><a href="https://flow.org/en/">Flow</a> is a static type checker for JavaScript. It can help you identify problems in your code
+by infering variable types or analyzing <a href="https://flow.org/en/docs/types/">static type annotations</a>. For more information, see the <a href="https://flow.org/en/docs/">Flow documentation</a>.</p>
 
-<p>Suppose you have a GitHub project for which you need to automatically run tests in the cloud when the project is modified. To do this, go through the following steps.</p>
+<p>This recipe describes how to check TestCafe test code with Flow.</p>
+<h2><a class="anchor" name="step-1---install-flow"></a>Step 1 - Install Flow <a class="permalink" href="#step-1---install-flow">#</a></h2>
+<p>To use Flow with TestCafe, you will need two packages.</p>
 
-<ul>
-<li><a href="#step-1---install-testcafe-and-create-tests">Step 1 - Install TestCafe and create tests</a></li>
-<li><a href="#step-2---enable-travis-for-your-project">Step 2 - Enable Travis for your project</a></li>
-<li><a href="#step-3---configure-travis-to-use-sauce-labs">Step 3 - Configure Travis to use Sauce Labs</a></li>
-<li><a href="#step-4---install-the-sauce-labs-browser-provider-plugin">Step 4 - Install the Sauce Labs browser provider plugin</a></li>
-<li><a href="#step-5---add-the-test-script-to-packagejson">Step 5 - Add the <code>test</code> script to package.json</a></li>
-<li><a href="#step-6---trigger-a-travis-ci-build">Step 6 - Trigger a Travis CI build</a></li>
-</ul>
-<blockquote><div class="blockquote-content"><p>TestCafe provides an <a href="https://github.com/DevExpress/testcafe/tree/master/examples/running-tests-using-travis-and-saucelabs/">example</a> that can show you how to run tests with Travis CI and Sauce Labs.</p>
-</div></blockquote><h2><a class="anchor" name="step-1---install-testcafe-and-create-tests"></a>Step 1 - Install TestCafe and create tests <a class="permalink" href="#step-1---install-testcafe-and-create-tests">#</a></h2>
-<p>Install TestCafe <a href="../using-testcafe/installing-testcafe.html#locally">locally</a> in your project and <a href="../getting-started/#creating-a-test">create tests</a>.</p>
-<h2><a class="anchor" name="step-2---enable-travis-for-your-project"></a>Step 2 - Enable Travis for your project <a class="permalink" href="#step-2---enable-travis-for-your-project">#</a></h2>
-<ol>
-<li><a href="https://travis-ci.org/auth">Sign in to Travis CI</a> with your GitHub account. Travis CI will synchronize your repositories from GitHub. You can see them on your <a href="https://travis-ci.org/profile">profile page</a>.</li>
-<li><p>Enable Travis CI for a repository you want to build by flicking the switch on.</p>
-
-<p><img src="../../images/travis-step-2-2.png" alt="Enable Travis for a repository"></p>
-
-<p>By default, Travic CI runs builds on pushes and pull requests. You can manage this behavior in your repository&#39;s settings.</p>
-
-<p><img src="../../images/travis-step-2-4.png" alt="Enable builds"></p></li>
-<li><p>Add a <code>.travis.yml</code> configuration file to the root of your project. This file contains parameters and commands that instruct Travis CI how to execute your builds. For more information, see <a href="https://docs.travis-ci.com/user/customizing-the-build">Customizing the Build</a>.</p>
-
-<p>For Node.js projects, the <code>.travis.yml</code> file can have the following content.</p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"> <span class="s">language</span><span class="pi">:</span> <span class="s">node_js</span>
- <span class="s">node_js</span><span class="pi">:</span> <span class="s2">"</span><span class="s">stable"</span>
-
- <span class="s">before_install</span><span class="pi">:</span>
-   <span class="pi">-</span> <span class="s">stty cols 80</span>
+<p>The first one is the Flow binary responsible for checking your code. Install it locally to the project.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install --save-dev flow-bin
 </code></pre></div>
-<p>Commit and push this file to your repository.</p></li>
-</ol>
-<h2><a class="anchor" name="step-3---configure-travis-to-use-sauce-labs"></a>Step 3 - Configure Travis to use Sauce Labs <a class="permalink" href="#step-3---configure-travis-to-use-sauce-labs">#</a></h2>
-<ol>
-<li>Save your Sauce Labs username and access key to the SAUCE_USERNAME and SAUCE_ACCESS_KEY environment variables, as described in <a href="https://wiki.saucelabs.com/display/DOCS/Best+Practice%3A+Use+Environment+Variables+for+Authentication+Credentials">SauceLabs documentation</a>.</li>
-<li><p>Go to the repository settings in Travis CI. In the <strong>Environment Variables</strong> section, define the SAUCE_USERNAME and SAUCE_ACCESS_KEY variables (see <a href="https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings">Defining Variables in Repository Settings</a>).</p>
+<p>With this module, you can introduce type annotations in your code (or let Flow infer the types implicitly) and run code checks.</p>
 
-<p><img src="../../images/travis-step-3-2.png" alt="Define variables"></p></li>
-</ol>
-<h2><a class="anchor" name="step-4---install-the-sauce-labs-browser-provider-plugin"></a>Step 4 - Install the Sauce Labs browser provider plugin <a class="permalink" href="#step-4---install-the-sauce-labs-browser-provider-plugin">#</a></h2>
-<p>To run TestCafe tests in the cloud using Sauce Labs browsers, you need to install the <a href="https://www.npmjs.com/package/testcafe-browser-provider-saucelabs">testcafe-browser-provider-saucelabs</a> plugin locally to your project.
-To do this, run the following command.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install --save-dev testcafe-browser-provider-saucelabs
+<p>However, this only works for your test code. Flow will still treat TestCafe API as untyped and imply that all API members has the type <code>any</code>.</p>
+
+<p>To provide type information for third-party libraries (including TestCafe), Flow uses a special module - <a href="https://github.com/flowtype/flow-typed">flow-typed</a>. Install it globally.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install -g flow-typed
+</code></pre></div><h2><a class="anchor" name="step-2---initialize-flow"></a>Step 2 - Initialize Flow <a class="permalink" href="#step-2---initialize-flow">#</a></h2>
+<p>First, open <code>package.json</code> and configure <code>npm</code> to run Flow.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"flow"</span><span class="p">:</span><span class="w"> </span><span class="s2">"flow"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Run the following command to initialize Flow with default configuration.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm run flow init
 </code></pre></div>
-<p>For more information on testing in cloud browsers, see <a href="../using-testcafe/common-concepts/browser-support.html#browsers-in-cloud-testing-services">Browsers in Cloud Testing Services</a>.</p>
-<h2><a class="anchor" name="step-5---add-the-test-script-to-packagejson"></a>Step 5 - Add the <code>test</code> script to package.json <a class="permalink" href="#step-5---add-the-test-script-to-packagejson">#</a></h2>
-<p>To test a project, Travis runs test scripts. For Node.js projects, the default test script is <code>npm test</code>.
-To tell npm how to run your tests, add the <code>test</code> script to the project&#39;s package.json file. Use <code>testcafe</code> command in the script to run tests on a Sauce Labs browser.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">"scripts": {
-    "test":  "testcafe \"saucelabs:Chrome@beta:Windows 10\" tests/index-test.js"
-}
+<p>Install the TestCafe <a href="https://flow.org/en/docs/libdefs/">library definition</a> to provide type information for TestCafe API.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">flow-typed install testcafe@0.x.x
+</code></pre></div><h2><a class="anchor" name="step-3---prepare-your-test-files"></a>Step 3 - Prepare Your Test Files <a class="permalink" href="#step-3---prepare-your-test-files">#</a></h2>
+<p>At the beginning of each test file that you wish to check with Flow, place the following comment.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//@flow</span>
 </code></pre></div>
-<p>For more information on how to configure a test run using a <code>testcafe</code> command, see <a href="../using-testcafe/command-line-interface.html">Command Line Interface</a>.</p>
+<p>You can optionally provide <a href="https://flow.org/en/docs/types/">type annotations</a> for variables in test code.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//@flow</span>
 
-<p><strong>Note:</strong> If your app requires starting a custom web server, use the <code>--app</code> TestCafe option to specify a command that starts your server.
-This command will be automatically executed before running tests. After tests are finished, TestCafe will stop the app server.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">"scripts": {
-  "test":  "testcafe \"saucelabs:Chrome@beta:Windows 10\" tests/index-test.js --app \"node server.js\""
-}
-</code></pre></div><h2><a class="anchor" name="step-6---trigger-a-travis-ci-build"></a>Step 6 - Trigger a Travis CI build <a class="permalink" href="#step-6---trigger-a-travis-ci-build">#</a></h2>
-<p>You can trigger a Travis CI build by pushing commits to your repository or creating a pull request.</p>
+<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//example.com`;</span>
 
-<p>To check if the build passed or failed, go to the <a href="https://travis-ci.org/repositories">build status page</a>.</p>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="nx">foo</span><span class="p">(</span><span class="na">bar</span><span class="p">:</span> <span class="nx">number</span><span class="p">):</span> <span class="nx">string</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+    <span class="p">};</span>
 
+    <span class="kd">var</span> <span class="na">n</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+
+    <span class="c1">// ...</span>
+
+    <span class="nx">n</span> <span class="o">=</span> <span class="s2">"foo"</span><span class="p">;</span> <span class="c1">// &lt;- error</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Now when you perform an operation that violates the type annotations, Flow will raise an error.</p>
+<h2><a class="anchor" name="step-4---check-test-code"></a>Step 4 - Check Test Code <a class="permalink" href="#step-4---check-test-code">#</a></h2>
+<p>To run the check, simply call Flow with no parameters.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm run flow
+</code></pre></div>
 
 		</div>
 		<div class="widget-container hidden">
