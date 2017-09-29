@@ -8,9 +8,10 @@ import delay from '../../../../utils/delay';
 
 const CONNECTION_READY_TIMEOUT   = 300;
 const MAX_CONNECTION_RETRY_COUNT = 10;
+const MAX_RESIZE_RETRY_COUNT     = 5;
 const HEADER_SEPARATOR           = ':';
 
-const GET_PAGE_SIZE_SCRIPT = 'return {width:document.documentElement.clientWidth, height: document.documentElement.clientHeight}';
+const GET_PAGE_SIZE_SCRIPT = 'return { width: window.innerWidth, height: window.innerHeight }';
 
 module.exports = class MarionetteClient {
     constructor (port = 2828, host = '127.0.0.1') {
@@ -170,8 +171,9 @@ module.exports = class MarionetteClient {
 
     async setWindowSize (width, height) {
         var { value: pageRect } = await this.executeScript(GET_PAGE_SIZE_SCRIPT);
+        var attemptCounter       = 0;
 
-        while (pageRect.width !== width || pageRect.height !== height) {
+        while (attemptCounter++ < MAX_RESIZE_RETRY_COUNT && (pageRect.width !== width || pageRect.height !== height)) {
             var currentRect = await this._getResponse({ command: 'getWindowRect' });
 
             await this._getResponse({
