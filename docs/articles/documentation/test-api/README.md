@@ -26,3 +26,4 @@ The following topics describe the API used to manipulate the webpage and check i
 * [Handling Native Dialogs](handling-native-dialogs.md)
 * [Working with \<iframes\>](working-with-iframes.md)
 * [Debugging](debugging.md)
+* [Accessing Console Messages](accessing-console-messages.md)

@@ -72,6 +72,7 @@ This topic lists test API members in alphabetical order.
         * [match](assertions/assertion-api.md#match)
         * [notMatch](assertions/assertion-api.md#not-match)
     * [fixtureCtx](test-code-structure.md#sharing-variables-between-fixture-hooks-and-test-code)
+    * [getBrowserConsoleMessages](accessing-console-messages.md)
     * [getNativeDialogHistory](handling-native-dialogs.md#dialog-history)
     * [hover](actions/hover.md)
     * [navigate](actions/navigate.md)
