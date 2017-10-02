@@ -1,5 +1,213 @@
 # Changelog
 
+## v0.18.0 (2017-10-5)
+
+### Enhancements
+
+#### :gear: Testing in headless Firefox
+
+We have added support for Firefox running in the [headless mode](https://developer.mozilla.org/en-US/Firefox/Headless_mode) (version 56+).
+
+```sh
+testcafe firefox:headless tests/sample-fixture.js
+```
+
+```js
+runner
+    .src('tests/sample-fixture.js')
+    .browsers('firefox:headless')
+    .run()
+    .then(failedCount => {
+        // ...
+    });
+```
+
+#### :gear: Outputting test results to multiple channels ([#1412](https://github.com/DevExpress/testcafe/issues/1412))
+
+If you need a report to be printed in the console, saved to a `.json` file and transmitted to a Slack channel,
+you can now do this by specifying multiple reporters when running tests.
+
+```sh
+testcafe all tests/sample-fixture.js -r spec,json:report.json,slack
+```
+
+```js
+const stream = fs.createWriteStream('report.json');
+
+runner
+    .src('tests/sample-fixture.js')
+    .browsers('chrome')
+    .reporter('spec')
+    .reporter('json', stream)
+    .reporter('slack')
+    .run()
+    .then(failedCount => {
+        stream.end();
+    });
+```
+
+#### :gear: Entering the debug mode when a test fails ([#1608](https://github.com/DevExpress/testcafe/issues/1608))
+
+TestCafe can now automatically switch to the debug mode whenever a test fails. Test execution will be paused, so that you can explore the tested page to determine the cause of the fail.
+
+To enable this behavior, use the `--debug-on-fail` flag in the command line or the `debugOnFail` option in the API.
+
+```sh
+testcafe chrome tests/fixture.js --debug-on-fail
+```
+
+```js
+runner.run({ debugOnFail: true });
+```
+
+#### :gear: Browsers are opened with clean profiles by default ([#1623](https://github.com/DevExpress/testcafe/issues/1623))
+
+TestCafe now opens browsers with empty profiles to eliminate the undesirable influence of profile settings and extensions on test running.
+
+However, you can **return to the previous behavior** by using the `:userProfile` browser option.
+
+```sh
+testcafe firefox:userProfile tests/test.js
+```
+
+```js
+runner
+    .src('tests/fixture1.js')
+    .browsers('firefox:userProfile')
+    .run();
+```
+
+#### :gear: Customizable timeout to wait for the `window.load` event ([#1645](https://github.com/DevExpress/testcafe/issues/1645))
+
+Previously, TestCafe started a test when the `DOMContentLoaded` event was raised. However, there are many pages that execute some kind of initialization code on the `window.load` event (which is raised after `DOMContentLoaded` because it waits for all stylesheets, images and subframes to load). In this instance, you need to wait for the `window.load` event to fire before running tests.
+
+With this release, TestCafe waits for the `window.load` event for `3` seconds.
+We have also added a `pageLoadTimeout` setting that allows you to customize this interval.
+You can set it to `0` to skip waiting for `window.load`.
+
+The following examples show how to use the `pageLoadTimeout` setting from the command line and API.
+
+```sh
+testcafe chrome test.js --page-load-timeout 0
+```
+
+```js
+runner.run({
+    pageLoadTimeout: 0
+});
+```
+
+You can also use the `setPageLoadTimeout` method in test API to set the timeout for an individual test.
+
+```js
+fixture `Page load timeout`
+    .page `http://devexpress.github.io/testcafe/example/`;
+
+test(`Page load timeout`, async t => {
+    await t
+        .setPageLoadTimeout(0)
+        .navigateTo('http://devexpress.github.io/testcafe/');
+});
+```
+
+#### :gear: Access messages output by the tested app to the browser console ([#1738](https://github.com/DevExpress/testcafe/issues/1738))
+
+Use the `t.getBrowserConsoleMessages` method to obtain messages that the tested app output to the browser console.
+
+This method returns the following object.
+
+```js
+{
+    error: ["Cannot read property 'length' of undefined", '...'],       // error messages
+    warn: ['The setTimeout property is deprecated', '...'],             // warning messages
+    log: ['[09:12:08] Logged in', '[09:25:43] Changes saved', '...'],   // log messages
+    info: ['The application was updated since your last visit.', '...'] // info messages
+}
+```
+
+Note that this method returns only messages posted via the `console.error`, `console.warn`, `console.log` and `console.info` methods. Messages output by the browser (like when an unhandled exception occurs on the page) will not be returned.
+
+**Example**
+
+```js
+// check-prop-types.js
+import { t } from 'testcafe';
+
+export default async function () {
+    const { error } = await t.getBrowserConsoleMessages();
+
+    await t.expect(error[0]).notOk();
+}
+
+// test.js
+import { Selector } from 'testcafe';
+import checkPropTypes from './check-prop-types';
+
+fixture `react example`
+    .page `http://localhost:8080/`  // https://github.com/mzabriskie/react-example
+    .afterEach(() => checkPropTypes());
+
+test('test', async t => {
+    await t
+        .typeText(Selector('.form-control'), 'devexpress')
+        .click(Selector('button').withText('Go'))
+        .click(Selector('h4').withText('Organizations'));
+});
+```
+
+#### :gear: Defining drag end point on the destination element ([#982](https://github.com/DevExpress/testcafe/issues/982))
+
+The `t.dragToElement` action can now drop a dragged element at any point inside the destination element.
+You can specify the target point using the `destinationOffsetX` and `destinationOffsetY` options.
+
+```js
+import { Selector } from 'testcafe';
+
+const fileIcon      = Selector('.file-icon');
+const directoryPane = Selector('.directory');
+
+fixture `My Fixture`
+    .page `https://example.com/`;
+
+test('My Test', async t => {
+    await t
+        .dragToElement(fileIcon, directoryPane, {
+            offsetX: 10,
+            offsetY: 10,
+            destinationOffsetX: 100,
+            destinationOffsetY: 50,
+            modifiers: {
+                shift: true
+            }
+        });
+});
+```
+
+#### :gear: TestCafe exits gracefully when the process is interrupted ([#1378](https://github.com/DevExpress/testcafe/issues/1378))
+
+Previously, TestCafe left browsers open when you exited the process by pressing `Ctrl+C` in the terminal.
+Now TestCafe exits gracefully closing all browsers opened for testing.
+
+### Bug Fixes
+
+* Tests no longer hang in Nightmare ([#1493](https://github.com/DevExpress/testcafe/issues/1493))
+* The `focus` event is now raised when clicking links with `tabIndex="0"` ([#1803](https://github.com/DevExpress/testcafe/issues/1803))
+* Headless Chrome processes no longer hang after test runs ([#1826](https://github.com/DevExpress/testcafe/issues/1826))
+* Tests with the `resizeWindow` action no longer fail in headless Firefox ([#1825](https://github.com/DevExpress/testcafe/issues/1825))
+* Tests now run correctly in headless Firefox and regular Chrome on Linux ([#1824](https://github.com/DevExpress/testcafe/issues/1824))
+* `setFilesToUpload` no longer throws a `RangeError` on websites that use Angular ([#1731](https://github.com/DevExpress/testcafe/issues/1731))
+* Fixed a bug where an `iframe` got wrong origin ([#1753](https://github.com/DevExpress/testcafe/issues/1753))
+* Fixed a bug where it was impossible to click an element under the TestCafe panel ([#1846](https://github.com/DevExpress/testcafe/issues/1846))
+* `document.open` now doesn't throw an error if `document.defaultView` is `null` ([testcafe-hammerhead/#1272](https://github.com/DevExpress/testcafe-hammerhead/issues/1272))
+* No error is thrown when the handler passed to `addEventListener` is `undefined` ([testcafe-hammerhead/#1251](https://github.com/DevExpress/testcafe-hammerhead/issues/1251))
+* An error is no longer raised if the processed element is not extendible ([testcafe-hammerhead/#1300](https://github.com/DevExpress/testcafe-hammerhead/issues/1300))
+* Fixed a bug where an `onclick` handler did not work after click on a `Submit` button ([testcafe-hammerhead/#1291](https://github.com/DevExpress/testcafe-hammerhead/issues/1291))
+* Images with `style = background-image: url("img.png");` are now loaded correctly ([testcafe-hammerhead/#1212](https://github.com/DevExpress/testcafe-hammerhead/issues/1212))
+* Documents can now contain two `ShadowUI` roots ([testcafe-hammerhead/#1246](https://github.com/DevExpress/testcafe-hammerhead/issues/1246))
+* HTML in an overridden `document.write` function is now processed correctly ([testcafe-hammerhead/#1311](https://github.com/DevExpress/testcafe-hammerhead/issues/1311))
+* Absolute paths are now proxied correctly in Firefox ([testcafe-hammerhead/#1330](https://github.com/DevExpress/testcafe-hammerhead/issues/1330))
+* Elements processing now works for a `documentFragment` as it is added to the DOM ([testcafe-hammerhead/#1334](https://github.com/DevExpress/testcafe-hammerhead/issues/1334))
+
 ## v0.17.2 (2017-9-6)
 
 ### Bug Fixes
