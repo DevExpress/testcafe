@@ -50,6 +50,8 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 > where tests are not guaranteed to execute correctly.
 
+Browser extensions can interfere with test execution. If you encounter an unexpected error, try disabling your browser's extensions.
+
 ## Browser List
 
 The `browser-list-comma-separated` argument specifies the list of browsers (separated by commas) where tests will be run.

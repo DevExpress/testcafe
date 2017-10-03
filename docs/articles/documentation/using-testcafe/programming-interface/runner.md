@@ -371,10 +371,6 @@ Runs tests according to the current configuration. Returns the number of failed 
 async run(options) → Promise<Number>
 ```
 
-> Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
-> Inactive tabs and minimized browser windows switch to a lower resource consumption mode
-> where tests are not guaranteed to execute correctly.
-
 You can pass the following options to the `runner.run` function.
 
 Parameter         | Type    | Description                                                                                                                                                                           | Default
