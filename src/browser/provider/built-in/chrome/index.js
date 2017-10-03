@@ -3,18 +3,7 @@ import getRuntimeInfo from './runtime-info';
 import getConfig from './config';
 import { start as startLocalChrome, stop as stopLocalChrome } from './local-chrome';
 import * as cdp from './cdp';
-
-
-/*eslint-disable no-undef*/
-function getWindowDimensionsInfo () {
-    return {
-        width:  window.innerWidth,
-        height: window.innerHeight
-    };
-}
-/*eslint-enable no-undef*/
-
-const GET_WINDOW_DIMENSIONS_INFO_SCRIPT = getWindowDimensionsInfo.toString();
+import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../utils/client-functions';
 
 
 export default {
