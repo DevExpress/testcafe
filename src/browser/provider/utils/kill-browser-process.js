@@ -9,11 +9,11 @@ async function findProcessWin (processOptions) {
     var wmicOutput  = await exec(cmd);
     var processList = wmicOutput.split(/\s*\n/);
 
-    // NOTE: remote list's header and empty last element, caused by trailing newline
-    processList.shift();
-    processList.pop();
+    processList = processList
+        // NOTE: remove list's header and empty last element, caused by trailing newline
+        .slice(1, -1)
+        .map(pid => ({ pid: Number(pid) }));
 
-    processList = processList.map(pid => ({ pid: Number(pid) }));
     return processList;
 }
 
