@@ -127,12 +127,7 @@ export default class Driver {
     }
 
     get consoleMessages () {
-        return this.contextStorage.getItem(CONSOLE_MESSAGES) || {
-            log:   [],
-            info:  [],
-            error: [],
-            warn:  []
-        };
+        return this.contextStorage.getItem(CONSOLE_MESSAGES);
     }
 
     set consoleMessages (messages) {
@@ -172,6 +167,15 @@ export default class Driver {
     }
 
     // Console messages
+    static _getDefaultConsoleMessages () {
+        return {
+            log:   [],
+            info:  [],
+            error: [],
+            warn:  []
+        };
+    }
+
     _onConsoleMessage (e) {
         const meth = e.meth;
 
@@ -185,7 +189,7 @@ export default class Driver {
             return arg.toString();
         });
 
-        const messages = this.consoleMessages;
+        const messages = this.consoleMessages || Driver._getDefaultConsoleMessages();
 
         messages[meth].push(Array.prototype.slice.call(args).join(' '));
 
@@ -208,12 +212,22 @@ export default class Driver {
         status.pageError = status.pageError || dialogError;
     }
 
+    _addConsoleMessagesToStatus (status) {
+        var messages = this.consoleMessages;
+
+        if (messages) {
+            status.consoleMessages = messages;
+            this.consoleMessages   = null;
+        }
+    }
+
     _sendStatus (status) {
         // NOTE: We should not modify the status if it is resent after
         // the page load because the server has cached the response
         if (!status.resent) {
             this._addPendingErrorToStatus(status);
             this._addUnexpectedDialogErrorToStatus(status);
+            this._addConsoleMessagesToStatus(status);
         }
 
         this.contextStorage.setItem(PENDING_STATUS, status);
@@ -363,10 +377,7 @@ export default class Driver {
     }
 
     _onGetBrowserConsoleMessagesCommand () {
-        this._onReady(new DriverStatus({
-            isCommandResult: true,
-            result:          this.consoleMessages
-        }));
+        this._onReady(new DriverStatus({ isCommandResult: true }));
     }
 
     _onNavigateToCommand (command) {

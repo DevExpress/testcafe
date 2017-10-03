@@ -17,6 +17,10 @@ test
         // Check the driver keeps the messages between page reloads
         .click('#reload');
 
+    // Changes in the getBrowserConsoleMessages result object should
+    // not affect the console messages state in the test run.
+    messages.log.push('unexpected');
+
     messages = await t.getBrowserConsoleMessages();
 
     await t

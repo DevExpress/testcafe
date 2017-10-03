@@ -3,6 +3,7 @@ import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
+import { assignIn } from 'lodash';
 import debugLogger from '../notifications/debug-logger';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
@@ -72,6 +73,13 @@ export default class TestRun extends Session {
         this.activeIframeSelector = null;
         this.speed                = this.opts.speed;
         this.pageLoadTimeout      = this.opts.pageLoadTimeout;
+
+        this.consoleMessages = {
+            log:   [],
+            info:  [],
+            warn:  [],
+            error: []
+        };
 
         this.pendingRequest   = null;
         this.pendingPageError = null;
@@ -269,6 +277,12 @@ export default class TestRun extends Session {
         return this.executeCommand(new PrepareBrowserManipulationCommand(command.type), callsite);
     }
 
+    async _enqueueBrowserConsoleMessagesCommand (command, callsite) {
+        await this._enqueueCommand(command, callsite);
+
+        return assignIn({}, this.consoleMessages);
+    }
+
     async _enqueueSetBreakpointCommand (callsite, error) {
         debugLogger.showBreakpoint(this.id, this.browserConnection.userAgent, callsite, error);
 
@@ -343,6 +357,12 @@ export default class TestRun extends Session {
         var pageError = this.pendingPageError || driverStatus.pageError;
 
         var currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
+
+        if (driverStatus.consoleMessages) {
+            Object.keys(this.consoleMessages).forEach(msgType => {
+                this.consoleMessages[msgType] = this.consoleMessages[msgType].concat(driverStatus.consoleMessages[msgType]);
+            });
+        }
 
         if (!currentTaskRejectedByError && driverStatus.isCommandResult) {
             if (this.currentDriverTask.command.type === COMMAND_TYPE.testDone) {
@@ -425,6 +445,9 @@ export default class TestRun extends Session {
 
         if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command, callsite);
+
+        if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
+            return await this._enqueueBrowserConsoleMessagesCommand(command, callsite);
 
         return this._enqueueCommand(command, callsite);
     }
