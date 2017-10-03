@@ -26,8 +26,10 @@
       content:
       - name: Browser Support
         url: /documentation/using-testcafe/common-concepts/browsers/browser-support.md
-      - name: Using Chrome Debugging Features
-        url: /documentation/using-testcafe/common-concepts/browsers/using-chrome-debugging-features.md
+      - name: Testing in Headless Mode
+        url: /documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.md
+      - name: Using Chrome Device Emulation
+        url: /documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.md
       - name: User Profiles
         url: /documentation/using-testcafe/common-concepts/browsers/user-profiles.md
     - name: Concurrent Test Execution
