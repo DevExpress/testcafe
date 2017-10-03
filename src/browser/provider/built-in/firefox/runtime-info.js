@@ -24,7 +24,14 @@ async function generatePrefs (profileDir, port) {
         'user_pref("browser.startup.homepage_override.mstone","ignore");',
         'user_pref("browser.tabs.warnOnCloseOtherTabs", false);',
         'user_pref("browser.tabs.warnOnClose", false);',
-        'user_pref("toolkit.telemetry.reportingpolicy.firstRun", false);'
+        'user_pref("toolkit.telemetry.reportingpolicy.firstRun", false);',
+        'user_pref("toolkit.telemetry.enabled", false);',
+        'user_pref("toolkit.telemetry.rejected", true);',
+        'user_pref("datareporting.healthreport.uploadEnabled", false);',
+        'user_pref("datareporting.healthreport.service.enabled", false);',
+        'user_pref("datareporting.healthreport.service.firstRun", false);',
+        'user_pref("datareporting.policy.dataSubmissionEnabled", false);',
+        'user_pref("datareporting.policy.dataSubmissionPolicyBypassNotification", true);'
     ];
 
     if (port) {
