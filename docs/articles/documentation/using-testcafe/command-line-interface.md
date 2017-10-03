@@ -73,24 +73,25 @@ To run tests against **all installed browsers**, use the `all` alias.
 testcafe all tests/sample-fixture.js
 ```
 
-#### Using Chrome-specific Features
+#### Testing in Headless Mode
 
-TestCafe provides the following Chrome-specific features:
-
-* [Running Tests in Headless Mode](common-concepts/browsers/using-chrome-debugging-features.md#running-tests-in-headless-mode)
-* [Running Tests in the Device Emulation Mode](common-concepts/browsers/using-chrome-debugging-features.md#running-tests-in-the-device-emulation-mode)
-
-To run tests in headless mode use the `:headless` postfix:
+To run tests in the headless mode in Google Chrome or Firefox, use the `:headless` postfix:
 
 ```sh
-testcafe "chrome:headless" tests/sample-fixture.js
+testcafe "firefox:headless" tests/sample-fixture.js
 ```
 
-To run tests in the device emulation mode specify `emulation:` and [device parameters](common-concepts/browsers/using-chrome-debugging-features.md#available-options):
+For details, see [Testing in Headless Mode](common-concepts/browsers/testing-in-headless-mode.md).
+
+#### Using Chrome Device Emulation
+
+To run tests in Chrome device emulation mode, specify `:emulation` and [device parameters](common-concepts/browsers/using-chrome-device-emulation.md#emulator-parameters).
 
 ```sh
 testcafe "chrome:emulation:device=iphone 6" tests/sample-fixture.js
 ```
+
+To learn more, see [Using Chrome Device Emulation](common-concepts/browsers/using-chrome-device-emulation.md)
 
 ### Portable Browsers
 

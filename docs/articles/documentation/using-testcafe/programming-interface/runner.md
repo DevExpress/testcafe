@@ -140,7 +140,7 @@ runner.browsers(['safari', 'chrome']);
 runner.browsers('saucelabs:Chrome@52.0:Windows 8.1');
 ```
 
-* using [Chrome debugging features](../common-concepts/browsers/using-chrome-debugging-features.md)
+* using [headless mode](../common-concepts/browsers/testing-in-headless-mode.md)
 
 ```js
 runner.browsers('chrome:headless');
