@@ -2,27 +2,8 @@ import Promise from 'pinkie';
 import browserTools from 'testcafe-browser-tools';
 import OS from 'os-family';
 import delay from '../../utils/delay';
+import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from './utils/client-functions';
 
-
-/*eslint-disable no-undef*/
-function getTitle () {
-    return document.title;
-}
-
-function getWindowDimensionsInfo () {
-    return {
-        width:           window.innerWidth,
-        height:          window.innerHeight,
-        outerWidth:      window.outerWidth,
-        outerHeight:     window.outerHeight,
-        availableWidth:  screen.availWidth,
-        availableHeight: screen.availHeight
-    };
-}
-/*eslint-disable no-undef*/
-
-const GET_TITLE_SCRIPT                  = getTitle.toString();
-const GET_WINDOW_DIMENSIONS_INFO_SCRIPT = getWindowDimensionsInfo.toString();
 
 const BROWSER_OPENING_DELAY = 2000;
 

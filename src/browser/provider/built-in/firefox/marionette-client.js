@@ -4,13 +4,13 @@ import promisifyEvent from 'promisify-event';
 import EventEmitter from 'events';
 import { writeFile } from '../../../../utils/promisified-functions';
 import delay from '../../../../utils/delay';
+import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../utils/client-functions';
 
 
 const CONNECTION_READY_TIMEOUT   = 300;
 const MAX_CONNECTION_RETRY_COUNT = 10;
+const MAX_RESIZE_RETRY_COUNT     = 2;
 const HEADER_SEPARATOR           = ':';
-
-const GET_PAGE_SIZE_SCRIPT = 'return {width:document.documentElement.clientWidth, height: document.documentElement.clientHeight}';
 
 module.exports = class MarionetteClient {
     constructor (port = 2828, host = '127.0.0.1') {
@@ -158,8 +158,8 @@ module.exports = class MarionetteClient {
         this.buffer = null;
     }
 
-    async executeScript (expression) {
-        return await this._getResponse({ command: 'executeScript', parameters: { script: expression } });
+    async executeScript (code) {
+        return await this._getResponse({ command: 'executeScript', parameters: { script: `return (${code})()` } });
     }
 
     async takeScreenshot (path) {
@@ -169,9 +169,10 @@ module.exports = class MarionetteClient {
     }
 
     async setWindowSize (width, height) {
-        var { value: pageRect } = await this.executeScript(GET_PAGE_SIZE_SCRIPT);
+        var { value: pageRect } = await this.executeScript(GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
+        var attemptCounter      = 0;
 
-        while (pageRect.width !== width || pageRect.height !== height) {
+        while (attemptCounter++ < MAX_RESIZE_RETRY_COUNT && (pageRect.width !== width || pageRect.height !== height)) {
             var currentRect = await this._getResponse({ command: 'getWindowRect' });
 
             await this._getResponse({
@@ -185,7 +186,7 @@ module.exports = class MarionetteClient {
                 }
             });
 
-            ({ value: pageRect } = await this.executeScript(GET_PAGE_SIZE_SCRIPT));
+            ({ value: pageRect } = await this.executeScript(GET_WINDOW_DIMENSIONS_INFO_SCRIPT));
         }
     }
 
