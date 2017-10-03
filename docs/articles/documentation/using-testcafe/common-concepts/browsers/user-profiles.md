@@ -5,7 +5,7 @@ permalink: /documentation/using-testcafe/common-concepts/browsers/user-profiles.
 ---
 # User Profiles
 
-By default, TestCafe launches browsers with a clean profile, which means empty local storage, no extensions or bookmarks, etc. This was done to minimize the influence of profile intrinsics on test runs.
+By default, TestCafe launches browsers (Google Chrome and Mozilla Firefox so far) with a clean profile, i.e. without extensions, bookmarks and other profile settings. This was done to minimize the influence of profile parameters on test runs.
 
 However, if you need to start a browser with the current user profile, you can do this by specifying the `:userProfile` browser flag.
 
