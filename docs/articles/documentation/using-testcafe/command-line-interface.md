@@ -12,8 +12,9 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
 
 * [Browser List](#browser-list)
   * [Local Browsers](#local-browsers)
-      * [Using Chrome-specific Features](#using-chrome-specific-features)
   * [Portable Browsers](#portable-browsers)
+  * [Testing in Headless Mode](#testing-in-headless-mode)
+  * [Using Chrome Device Emulation](#using-chrome-device-emulation)
   * [Remote Browsers](#remote-browsers)
   * [Browsers Accessed Through Browser Provider Plugins](#browsers-accessed-through-browser-provider-plugins)
   * [Starting browser with arguments](#starting-browser-with-arguments)
@@ -73,7 +74,15 @@ To run tests against **all installed browsers**, use the `all` alias.
 testcafe all tests/sample-fixture.js
 ```
 
-#### Testing in Headless Mode
+### Portable Browsers
+
+You can specify [portable browsers](common-concepts/browsers/browser-support.md#portable-browsers) by using paths to the browser's executable file (with the `path:` prefix), for example:
+
+```sh
+testcafe path:d:\firefoxportable\firefoxportable.exe tests/sample-fixture.js
+```
+
+### Testing in Headless Mode
 
 To run tests in the headless mode in Google Chrome or Firefox, use the `:headless` postfix:
 
@@ -83,7 +92,7 @@ testcafe "firefox:headless" tests/sample-fixture.js
 
 For details, see [Testing in Headless Mode](common-concepts/browsers/testing-in-headless-mode.md).
 
-#### Using Chrome Device Emulation
+### Using Chrome Device Emulation
 
 To run tests in Chrome device emulation mode, specify `:emulation` and [device parameters](common-concepts/browsers/using-chrome-device-emulation.md#emulator-parameters).
 
@@ -92,14 +101,6 @@ testcafe "chrome:emulation:device=iphone 6" tests/sample-fixture.js
 ```
 
 To learn more, see [Using Chrome Device Emulation](common-concepts/browsers/using-chrome-device-emulation.md)
-
-### Portable Browsers
-
-You can specify [portable browsers](common-concepts/browsers/browser-support.md#portable-browsers) by using paths to the browser's executable file (with the `path:` prefix), for example:
-
-```sh
-testcafe path:d:\firefoxportable\firefoxportable.exe tests/sample-fixture.js
-```
 
 ### Remote Browsers
 
