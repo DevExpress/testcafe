@@ -33,7 +33,7 @@ permalink: /
                         <p>1 minute to set up</p>
                         <div class="description">
                             <p>You <a href="https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate">do not need WebDriver</a> or any other testing software. Install TestCafe with one command, and you are ready to test.</p>
-                            <p><code class="install-example">npm install -g testcafe</code></p>
+                            <code class="install-example"><p>npm install -g testcafe</p></code>
                         </div>
                     </div>
                 </div>
@@ -108,8 +108,8 @@ permalink: /
                             <div class="feature feature-5">
                                 <p>Build readable tests with<br/>PageObject</p>
                                 <div class="description">
-                                    <p>The TestCafe's <a href="https://devexpress.github.io/testcafe/documentation/test-api/">Test API</a> includes a high-level selector library, assertions, etc. You can combine them to implement readable tests with the <a id="page-object-link">PageObject pattern</a>.
-                                    <p><code class="page-object-example">const el = Selector('.column').find('label')<br/>.withText('MacOS').child('input');</code></p>
+                                    <p>The TestCafe's <a href="https://devexpress.github.io/testcafe/documentation/test-api/">Test API</a> includes a high-level selector library, assertions, etc. You can combine them to implement readable tests with the <a id="page-object-link">PageObject pattern</a>.</p>
+                                    <code class="page-object-example"><p>const el = Selector('.column').find('label')<br/>           .withText('MacOS').child('input');</p></code>
                                 </div>
                                 <div id="page-object-popover">
                                         With this pattern, the tested page is represented by a JavaScript object. Elements in tests are accessed through the object's interface. Even if page markup changes, the page object's interface remains the same. And you won't have to rewrite the tests.
