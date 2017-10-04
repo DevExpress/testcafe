@@ -12,9 +12,10 @@ var browserUtils     = hammerhead.utils.browser;
 var featureDetection = hammerhead.utils.featureDetection;
 var listeners        = hammerhead.eventSandbox.listeners;
 
-var styleUtils = testCafeCore.styleUtils;
-var eventUtils = testCafeCore.eventUtils;
-var domUtils   = testCafeCore.domUtils;
+var styleUtils   = testCafeCore.styleUtils;
+var eventUtils   = testCafeCore.eventUtils;
+var domUtils     = testCafeCore.domUtils;
+var serviceUtils = testCafeCore.serviceUtils;
 
 
 const STATUS_BAR_CLASS                     = 'status-bar';
@@ -25,15 +26,16 @@ const FIXTURE_CONTAINER_CLASS              = 'fixture-container';
 const FIXTURE_DIV_CLASS                    = 'fixture';
 const USER_AGENT_DIV_CLASS                 = 'user-agent';
 const STATUS_CONTAINER_CLASS               = 'status-container';
+const UNLOCK_PAGE_AREA_CLASS               = 'unlock-page-area';
+const UNLOCK_PAGE_CONTAINER_CLASS          = 'unlock-page-container';
+const UNLOCK_ICON_CLASS                    = 'unlock-icon';
+const LOCKED_CLASS                         = 'locked';
+const UNLOCKED_CLASS                       = 'unlocked';
 const BUTTONS_CLASS                        = 'buttons';
 const BUTTON_ICON_CLASS                    = 'button-icon';
 const RESUME_BUTTON_CLASS                  = 'resume';
 const STEP_CLASS                           = 'step';
 const STATUS_DIV_CLASS                     = 'status';
-const ONLY_ICON_CLASS                      = 'only-icon';
-const ONLY_BUTTONS_CLASS                   = 'only-buttons';
-const ICON_AND_BUTTONS_CLASS               = 'icon-buttons';
-const ICON_AND_STATUS_CLASS                = 'icon-status';
 const WAITING_FAILED_CLASS                 = 'waiting-element-failed';
 const WAITING_SUCCESS_CLASS                = 'waiting-element-success';
 const LOADING_PAGE_TEXT                    = 'Loading Web Page...';
@@ -41,17 +43,28 @@ const WAITING_FOR_ELEMENT_TEXT             = 'Waiting for an element to appear..
 const WAITING_FOR_ASSERTION_EXECUTION_TEXT = 'Waiting for an assertion execution...';
 const DEBUGGING_TEXT                       = 'Debugging test...';
 const TEST_FAILED_TEXT                     = 'Test failed';
-const MIDDLE_WINDOW_WIDTH                  = 720;
-const SMALL_WINDOW_WIDTH                   = 380;
-const SMALL_WINDOW_WIDTH_IN_DEBUGGING      = 540;
-const ONLY_BUTTONS_WIDTH                   = 330;
+const UNLOCK_PAGE_TEXT                     = 'Unlock page';
+const PAGE_UNLOCKED_TEXT                   = 'Page unlocked';
 const SHOWING_DELAY                        = 300;
 const ANIMATION_DELAY                      = 500;
 const ANIMATION_UPDATE_INTERVAL            = 10;
 
+const VIEWS = {
+    all:                 { name: 'show-all-elements' },
+    hideFixture:         { name: 'hide-fixture', maxSize: 940, className: 'icon-status-view' },
+    hideStatus:          { name: 'hide-status', maxSize: 380, className: 'icon-unlock-buttons-view' },
+    hideStatusDebugging: { name: 'hide-status-debugging', maxSize: 740, className: 'icon-unlock-buttons-view' },
+    hideUnlockArea:      { name: 'hide-unlock-area', maxSize: 460, className: 'icon-buttons-view' },
+    onlyButtons:         { name: 'show-buttons-only', maxSize: 330, className: 'only-buttons-view' },
+    onlyIcon:            { name: 'show-icon-only', maxSize: 330, className: 'only-icon-view' }
+};
 
-export default class StatusBar {
+export default class StatusBar extends serviceUtils.EventEmitter {
     constructor (userAgent, fixtureName, testName) {
+        super();
+
+        this.UNLOCK_PAGE_BTN_CLICK = 'testcafe|ui|status-bar|unlock-page-btn-click';
+
         this.userAgent   = userAgent;
         this.fixtureName = fixtureName;
         this.testName    = testName;
@@ -83,12 +96,15 @@ export default class StatusBar {
             hidden:           false
         };
 
+        this.currentView = null;
+
         this._createBeforeReady();
         this._initChildListening();
     }
 
     _createFixtureArea () {
         this.infoContainer = document.createElement('div');
+        shadowUI.addClass(this.infoContainer, INFO_CONTAINER_CLASS);
         shadowUI.addClass(this.infoContainer, INFO_CONTAINER_CLASS);
         this.container.appendChild(this.infoContainer);
 
@@ -113,6 +129,40 @@ export default class StatusBar {
         this.fixtureContainer.appendChild(userAgentDiv);
     }
 
+    _createUnlockPageArea (container) {
+        var unlockPageArea      = document.createElement('div');
+        var unlockPageContainer = document.createElement('div');
+        var unlockIcon          = document.createElement('div');
+        var unlockText          = document.createElement('span');
+
+        unlockText.textContent = UNLOCK_PAGE_TEXT;
+
+        shadowUI.addClass(unlockPageArea, UNLOCK_PAGE_AREA_CLASS);
+        shadowUI.addClass(unlockPageContainer, UNLOCK_PAGE_CONTAINER_CLASS);
+        shadowUI.addClass(unlockPageContainer, LOCKED_CLASS);
+        shadowUI.addClass(unlockIcon, UNLOCK_ICON_CLASS);
+
+        if (browserUtils.isMacPlatform)
+            unlockPageContainer.style.paddingTop = '3px';
+
+        container.appendChild(unlockPageArea);
+        unlockPageArea.appendChild(unlockPageContainer);
+        unlockPageContainer.appendChild(unlockIcon);
+        unlockPageContainer.appendChild(unlockText);
+
+        this._bindClickOnce([unlockPageContainer], () => {
+            shadowUI.removeClass(unlockPageContainer, LOCKED_CLASS);
+            shadowUI.addClass(unlockPageContainer, UNLOCKED_CLASS);
+            unlockText.textContent = PAGE_UNLOCKED_TEXT;
+
+            this.emit(this.UNLOCK_PAGE_BTN_CLICK, {});
+        });
+
+        unlockPageArea.style.display = 'none';
+
+        return unlockPageArea;
+    }
+
     _createStatusArea () {
         var statusContainer = document.createElement('div');
 
@@ -123,18 +173,25 @@ export default class StatusBar {
         this.statusDiv.textContent = LOADING_PAGE_TEXT;
 
         shadowUI.addClass(this.statusDiv, STATUS_DIV_CLASS);
+
+        if (browserUtils.isMacPlatform)
+            this.statusDiv.style.marginTop = '9px';
+
         statusContainer.appendChild(this.statusDiv);
+
+        this.unlockPageArea = this._createUnlockPageArea(statusContainer);
 
         this.buttons = document.createElement('div');
         shadowUI.addClass(this.buttons, BUTTONS_CLASS);
         statusContainer.appendChild(this.buttons);
 
         this.resumeButton = this._createButton('Resume', RESUME_BUTTON_CLASS);
-        this.stepButton   = this._createButton('Step', STEP_CLASS);
+        this.stepButton   = this._createButton('Next Step', STEP_CLASS);
         this.finishButton = this._createButton('Finish', RESUME_BUTTON_CLASS);
 
         this.buttons.appendChild(this.resumeButton);
         this.buttons.appendChild(this.stepButton);
+        this.buttons.style.display = 'none';
     }
 
     _createButton (text, className) {
@@ -194,41 +251,39 @@ export default class StatusBar {
             nativeMethods.setTimeout.call(window, () => this._createBeforeReady(), 0);
     }
 
-    _setSizeStyle (windowWidth) {
-        var smallWidth = this.state.debugging ? SMALL_WINDOW_WIDTH_IN_DEBUGGING : SMALL_WINDOW_WIDTH;
+    _switchView (newView) {
+        if (this.currentView && this.currentView.name === newView.name)
+            return;
 
-        if (windowWidth > MIDDLE_WINDOW_WIDTH) {
-            shadowUI.removeClass(this.statusBar, ONLY_ICON_CLASS);
-            shadowUI.removeClass(this.statusBar, ONLY_BUTTONS_CLASS);
-            shadowUI.removeClass(this.statusBar, ICON_AND_BUTTONS_CLASS);
-            shadowUI.removeClass(this.statusBar, ICON_AND_STATUS_CLASS);
+        if (this.currentView && this.currentView.className)
+            shadowUI.removeClass(this.statusBar, this.currentView.className);
+
+        if (newView.className)
+            shadowUI.addClass(this.statusBar, newView.className);
+
+        this.currentView = newView;
+    }
+
+    _calculateActualView (windowWidth) {
+        var hideStatusMaxSize = this.state.debugging ? VIEWS.hideStatusDebugging.maxSize : VIEWS.hideStatus.maxSize;
+
+        if (windowWidth >= VIEWS.hideFixture.maxSize)
+            return VIEWS.all;
+
+        if (windowWidth < VIEWS.hideFixture.maxSize && windowWidth >= hideStatusMaxSize)
+            return VIEWS.hideFixture;
+
+        if (this.debugging) {
+            if (windowWidth < hideStatusMaxSize && windowWidth >= VIEWS.hideUnlockArea.maxSize)
+                return VIEWS.hideStatus;
+
+            if (windowWidth < VIEWS.hideUnlockArea.maxSize && windowWidth >= VIEWS.onlyButtons.maxSize)
+                return VIEWS.hideUnlockArea;
+
+            return VIEWS.onlyButtons;
         }
-        else if (windowWidth < MIDDLE_WINDOW_WIDTH && windowWidth > smallWidth) {
-            shadowUI.removeClass(this.statusBar, ONLY_ICON_CLASS);
-            shadowUI.removeClass(this.statusBar, ONLY_BUTTONS_CLASS);
-            shadowUI.removeClass(this.statusBar, ICON_AND_BUTTONS_CLASS);
-            shadowUI.addClass(this.statusBar, ICON_AND_STATUS_CLASS);
-        }
-        else if (this.state.debugging) {
-            if (windowWidth < smallWidth && windowWidth > ONLY_BUTTONS_WIDTH) {
-                shadowUI.removeClass(this.statusBar, ONLY_ICON_CLASS);
-                shadowUI.removeClass(this.statusBar, ONLY_BUTTONS_CLASS);
-                shadowUI.addClass(this.statusBar, ICON_AND_BUTTONS_CLASS);
-                shadowUI.removeClass(this.statusBar, ICON_AND_STATUS_CLASS);
-            }
-            else if (windowWidth < ONLY_BUTTONS_WIDTH) {
-                shadowUI.removeClass(this.statusBar, ONLY_ICON_CLASS);
-                shadowUI.addClass(this.statusBar, ONLY_BUTTONS_CLASS);
-                shadowUI.removeClass(this.statusBar, ICON_AND_BUTTONS_CLASS);
-                shadowUI.removeClass(this.statusBar, ICON_AND_STATUS_CLASS);
-            }
-        }
-        else if (windowWidth < smallWidth) {
-            shadowUI.removeClass(this.statusBar, ONLY_BUTTONS_CLASS);
-            shadowUI.removeClass(this.statusBar, ICON_AND_STATUS_CLASS);
-            shadowUI.removeClass(this.statusBar, ICON_AND_BUTTONS_CLASS);
-            shadowUI.addClass(this.statusBar, ONLY_ICON_CLASS);
-        }
+
+        return VIEWS.onlyIcon;
     }
 
     _setFixtureContainerWidth () {
@@ -244,18 +299,26 @@ export default class StatusBar {
     }
 
     _setStatusDivLeftMargin () {
-        if (styleUtils.get(this.statusDiv, 'display') === 'none')
+        if (styleUtils.get(this.statusDiv.parentNode, 'display') === 'none')
             return;
+
+        var statusDivHidden = styleUtils.get(this.statusDiv, 'display') === 'none';
 
         var infoContainerWidth = styleUtils.getWidth(this.infoContainer);
         var containerWidth     = styleUtils.getWidth(this.container);
-        var statusDivWidth     = styleUtils.getWidth(this.statusDiv);
-        var marginLeft         = containerWidth / 2 - statusDivWidth / 2 - infoContainerWidth;
+        var statusDivWidth     = statusDivHidden ? 0 : styleUtils.getWidth(this.statusDiv);
 
-        if (this.state.debugging)
+        var marginLeft = containerWidth / 2 - statusDivWidth / 2 - infoContainerWidth;
+
+        if (this.state.debugging) {
             marginLeft -= styleUtils.getWidth(this.buttons) / 2;
+            marginLeft -= styleUtils.getWidth(this.unlockPageArea) / 2;
+        }
 
-        styleUtils.set(this.statusDiv, 'marginLeft', Math.max(Math.round(marginLeft), 0) + 'px');
+        var marginLeftStr = Math.max(Math.round(marginLeft), 0) + 'px';
+
+        styleUtils.set(this.statusDiv, 'marginLeft', statusDivHidden ? 0 : marginLeftStr);
+        styleUtils.set(this.statusDiv.parentNode, 'marginLeft', statusDivHidden ? marginLeftStr : 0);
     }
 
     _recalculateSizes () {
@@ -265,7 +328,7 @@ export default class StatusBar {
 
         styleUtils.set(this.statusBar, 'width', windowWidth + 'px');
 
-        this._setSizeStyle(windowWidth);
+        this._switchView(this._calculateActualView(windowWidth));
         this._setFixtureContainerWidth();
         this._setStatusDivLeftMargin();
     }
@@ -348,6 +411,25 @@ export default class StatusBar {
         });
     }
 
+    _bindClickOnce (elements, handler) {
+        var eventName = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
+
+        var downHandler = e => {
+            var isTargetElement = !!elements.find(el => domUtils.containsElement(el, e.target));
+
+            if (isTargetElement) {
+                eventUtils.preventDefault(e);
+                listeners.removeInternalEventListener(window, [eventName], downHandler);
+
+                handler(e);
+            }
+            else if (domUtils.containsElement(this.statusBar, e.target))
+                eventUtils.preventDefault(e);
+        };
+
+        listeners.addInternalEventListener(window, [eventName], downHandler);
+    }
+
     _initChildListening () {
         messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
             var msg = e.message;
@@ -370,7 +452,8 @@ export default class StatusBar {
     _resetState () {
         this.state.debugging = false;
 
-        this.buttons.style.display = 'none';
+        this.buttons.style.display        = 'none';
+        this.unlockPageArea.style.display = 'none';
 
         this.statusDiv.textContent = '';
         this.progressBar.hide();
@@ -417,28 +500,17 @@ export default class StatusBar {
             else
                 this.statusDiv.textContent = DEBUGGING_TEXT;
 
-            this.buttons.style.display = 'inline-block';
+            this.buttons.style.display        = '';
+            this.unlockPageArea.style.display = '';
 
             this._recalculateSizes();
 
-            var eventName = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
+            this._bindClickOnce([this.resumeButton, this.stepButton, this.finishButton], e => {
+                var isStepButton = domUtils.containsElement(this.stepButton, e.target);
 
-            var downHandler = e => {
-                var isResumeButton = domUtils.containsElement(this.resumeButton, e.target);
-                var isStepButton   = domUtils.containsElement(this.stepButton, e.target);
-                var isFinishButton = domUtils.containsElement(this.finishButton, e.target);
-
-                if (isResumeButton || isStepButton || isFinishButton) {
-                    eventUtils.preventDefault(e);
-                    this._resetState();
-                    listeners.removeInternalEventListener(window, [eventName], downHandler);
-                    resolve(isStepButton);
-                }
-                else if (domUtils.containsElement(this.statusBar, e.target))
-                    eventUtils.preventDefault(e);
-            };
-
-            listeners.addInternalEventListener(window, [eventName], downHandler);
+                this._resetState();
+                resolve(isStepButton);
+            });
         });
     }
 
