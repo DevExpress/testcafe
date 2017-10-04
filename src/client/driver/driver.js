@@ -206,12 +206,8 @@ export default class Driver {
     }
 
     _addConsoleMessagesToStatus (status) {
-        var messages = this.consoleMessages;
-
-        if (messages) {
-            status.consoleMessages = messages;
-            this.consoleMessages   = null;
-        }
+        status.consoleMessages = this.consoleMessages;
+        this.consoleMessages   = null;
     }
 
     _sendStatus (status) {

@@ -352,8 +352,7 @@ export default class TestRun extends Session {
 
         var currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
 
-        if (driverStatus.consoleMessages)
-            this.consoleMessages.concat(driverStatus.consoleMessages);
+        this.consoleMessages.concat(driverStatus.consoleMessages);
 
         if (!currentTaskRejectedByError && driverStatus.isCommandResult) {
             if (this.currentDriverTask.command.type === COMMAND_TYPE.testDone) {
