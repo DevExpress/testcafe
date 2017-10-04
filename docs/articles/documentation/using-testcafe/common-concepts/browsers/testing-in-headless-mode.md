@@ -33,11 +33,9 @@ runner
 
 Note that the [Take screenshot](../../../test-api/actions/take-screenshot.md) and [Resize window](../../../test-api/actions/resize-window.md) features are fully supported in the headless mode.
 
-> In the headless mode, the browser's viewport size is `1280x800` by default. You can change it via the [ResizeWindow](../../../test-api/actions/resize-window.md) command or via [Device Emulation Mode](using-chrome-device-emulation.md#emulator-parameters) parameters (for Chrome).
+## Automation Port
 
-## CDP Port
-
-[Chrome Debugging Protocol (CDP)](https://chromedevtools.github.io/devtools-protocol/) requires a remote debugging port to attach to a Chrome instance. TestCafe automatically assigns a free port but you can specify a custom port via the `cdpPort` argument if necessary:
+Chrome and Firefox require a remote control port for TestCafe to attach to the browser instance. TestCafe automatically assigns a free port but you can specify a custom port via the `cdpPort` argument for Chrome and the `marionettePort` argument for Firefox.
 
 ```sh
 testcafe "chrome:headless:cdpPort=9223" tests/sample-fixture.js
@@ -47,5 +45,16 @@ testcafe "chrome:headless:cdpPort=9223" tests/sample-fixture.js
 runner
     .src('tests/sample-fixture.js')
     .browsers('chrome:headless:cdpPort=9223')
+    .run();
+```
+
+```sh
+testcafe "firefox:headless:marionettePort=9223" tests/sample-fixture.js
+```
+
+```js
+runner
+    .src('tests/sample-fixture.js')
+    .browsers('firefox:headless:marionettePort=9223')
     .run();
 ```
