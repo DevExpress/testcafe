@@ -3,7 +3,6 @@ import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Promise from 'pinkie';
 import Mustache from 'mustache';
-import { assignIn } from 'lodash';
 import debugLogger from '../notifications/debug-logger';
 import { Session } from 'testcafe-hammerhead';
 import TestRunDebugLog from './debug-log';
@@ -23,7 +22,7 @@ import ROLE_PHASE from '../role/phase';
 import TestRunBookmark from './bookmark';
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import ReporterPluginHost from '../reporter/plugin-host';
-
+import BrowserConsoleMessages from './browser-console-messages';
 
 import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
 import { SetNativeDialogHandlerCommand, SetTestSpeedCommand, SetPageLoadTimeoutCommand } from './commands/actions';
@@ -74,12 +73,7 @@ export default class TestRun extends Session {
         this.speed                = this.opts.speed;
         this.pageLoadTimeout      = this.opts.pageLoadTimeout;
 
-        this.consoleMessages = {
-            log:   [],
-            info:  [],
-            warn:  [],
-            error: []
-        };
+        this.consoleMessages = new BrowserConsoleMessages();
 
         this.pendingRequest   = null;
         this.pendingPageError = null;
@@ -280,7 +274,7 @@ export default class TestRun extends Session {
     async _enqueueBrowserConsoleMessagesCommand (command, callsite) {
         await this._enqueueCommand(command, callsite);
 
-        return assignIn({}, this.consoleMessages);
+        return this.consoleMessages.getCopy();
     }
 
     async _enqueueSetBreakpointCommand (callsite, error) {
@@ -358,11 +352,8 @@ export default class TestRun extends Session {
 
         var currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
 
-        if (driverStatus.consoleMessages) {
-            Object.keys(this.consoleMessages).forEach(msgType => {
-                this.consoleMessages[msgType] = this.consoleMessages[msgType].concat(driverStatus.consoleMessages[msgType]);
-            });
-        }
+        if (driverStatus.consoleMessages)
+            this.consoleMessages.concat(driverStatus.consoleMessages);
 
         if (!currentTaskRejectedByError && driverStatus.isCommandResult) {
             if (this.currentDriverTask.command.type === COMMAND_TYPE.testDone) {
@@ -471,8 +462,9 @@ export default class TestRun extends Session {
     }
 
     async switchToCleanRun () {
-        this.ctx        = Object.create(null);
-        this.fixtureCtx = Object.create(null);
+        this.ctx             = Object.create(null);
+        this.fixtureCtx      = Object.create(null);
+        this.consoleMessages = new BrowserConsoleMessages();
 
         this.useStateSnapshot(null);
 

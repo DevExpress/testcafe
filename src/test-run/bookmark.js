@@ -28,6 +28,7 @@ export default class TestRunBookmark {
         this.pageLoadTimeout = testRun.pageLoadTimeout;
         this.ctx             = testRun.ctx;
         this.fixtureCtx      = testRun.fixtureCtx;
+        this.consoleMessages = testRun.consoleMessages;
     }
 
     async init () {
@@ -94,8 +95,9 @@ export default class TestRunBookmark {
 
         this.testRun.phase = TEST_RUN_PHASE.inBookmarkRestore;
 
-        this.testRun.ctx        = this.ctx;
-        this.testRun.fixtureCtx = this.fixtureCtx;
+        this.testRun.ctx             = this.ctx;
+        this.testRun.fixtureCtx      = this.fixtureCtx;
+        this.testRun.consoleMessages = this.consoleMessages;
 
         try {
             await this._restoreSpeed();

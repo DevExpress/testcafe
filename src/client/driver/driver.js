@@ -27,6 +27,8 @@ import {
     CurrentIframeNotFoundError,
     CurrentIframeIsInvisibleError
 } from '../../errors/test-run';
+
+import BrowserConsoleMessages from '../../test-run/browser-console-messages';
 import NativeDialogTracker from './native-dialog-tracker';
 
 import { SetNativeDialogHandlerMessage, TYPE as MESSAGE_TYPE } from './driver-link/messages';
@@ -127,11 +129,11 @@ export default class Driver {
     }
 
     get consoleMessages () {
-        return this.contextStorage.getItem(CONSOLE_MESSAGES);
+        return new BrowserConsoleMessages(this.contextStorage.getItem(CONSOLE_MESSAGES));
     }
 
     set consoleMessages (messages) {
-        return this.contextStorage.setItem(CONSOLE_MESSAGES, messages);
+        return this.contextStorage.setItem(CONSOLE_MESSAGES, messages ? messages.getCopy() : null);
     }
 
     // Error handling
@@ -167,15 +169,6 @@ export default class Driver {
     }
 
     // Console messages
-    static _getDefaultConsoleMessages () {
-        return {
-            log:   [],
-            info:  [],
-            error: [],
-            warn:  []
-        };
-    }
-
     _onConsoleMessage (e) {
         const meth = e.meth;
 
@@ -189,9 +182,9 @@ export default class Driver {
             return arg.toString();
         });
 
-        const messages = this.consoleMessages || Driver._getDefaultConsoleMessages();
+        const messages = this.consoleMessages;
 
-        messages[meth].push(Array.prototype.slice.call(args).join(' '));
+        messages.addMessage(meth, Array.prototype.slice.call(args).join(' '));
 
         this.consoleMessages = messages;
     }
