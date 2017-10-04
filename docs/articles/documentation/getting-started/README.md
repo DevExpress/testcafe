@@ -126,7 +126,7 @@ For this purpose, it offers special kinds of functions that will execute your co
 and [ClientFunction](../test-api/obtaining-data-from-the-client.md) used to obtain arbitrary data from the client side.
 You call these functions as regular async functions, that is you can obtain their results and use parameters to pass data to them.
 
-The selector API provides methods and properties to select elements on the page and get theirs state.
+The selector API provides methods and properties to select elements on the page and get their state.
 
 For example, clicking the Submit button on the sample web page opens a "Thank you" page.
 To get access to DOM elements on the opened page, the `Selector` function can be used.
