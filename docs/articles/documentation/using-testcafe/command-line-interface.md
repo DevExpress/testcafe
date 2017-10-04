@@ -12,8 +12,9 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
 
 * [Browser List](#browser-list)
   * [Local Browsers](#local-browsers)
-      * [Using Chrome-specific Features](#using-chrome-specific-features)
   * [Portable Browsers](#portable-browsers)
+  * [Testing in Headless Mode](#testing-in-headless-mode)
+  * [Using Chrome Device Emulation](#using-chrome-device-emulation)
   * [Remote Browsers](#remote-browsers)
   * [Browsers Accessed Through Browser Provider Plugins](#browsers-accessed-through-browser-provider-plugins)
   * [Starting browser with arguments](#starting-browser-with-arguments)
@@ -58,7 +59,7 @@ The `browser-list-comma-separated` argument specifies the list of browsers (sepa
 
 ### Local Browsers
 
-You can specify [locally installed browsers](common-concepts/browser-support.md#locally-installed-browsers) by using browser aliases or paths (with the `path:` prefix).
+You can specify [locally installed browsers](common-concepts//browsers/browser-support.md#locally-installed-browsers) by using browser aliases or paths (with the `path:` prefix).
 The list of all the available browsers can be obtained by calling the [--list-browsers](#-b---list-browsers) command.
 
 The following example demonstrates how to run a test in several browsers.
@@ -74,36 +75,37 @@ To run tests against **all installed browsers**, use the `all` alias.
 testcafe all tests/sample-fixture.js
 ```
 
-#### Using Chrome-specific Features
-
-TestCafe provides the following Chrome-specific features:
-
-* [Running Tests in Headless Mode](common-concepts/browser-support.md#running-tests-in-headless-mode)
-* [Running Tests in the Device Emulation Mode](common-concepts/browser-support.md#running-tests-in-the-device-emulation-mode)
-
-To run tests in headless mode use the `:headless` postfix:
-
-```sh
-testcafe "chrome:headless" tests/sample-fixture.js
-```
-
-To run tests in the device emulation mode specify `emulation:` and [device parameters](common-concepts/browser-support.md#available-chrome-options):
-
-```sh
-testcafe "chrome:emulation:device=iphone 6" tests/sample-fixture.js
-```
-
 ### Portable Browsers
 
-You can specify [portable browsers](common-concepts/browser-support.md#portable-browsers) by using paths to the browser's executable file (with the `path:` prefix), for example:
+You can specify [portable browsers](common-concepts/browsers/browser-support.md#portable-browsers) by using paths to the browser's executable file (with the `path:` prefix), for example:
 
 ```sh
 testcafe path:d:\firefoxportable\firefoxportable.exe tests/sample-fixture.js
 ```
 
+### Testing in Headless Mode
+
+To run tests in the headless mode in Google Chrome or Firefox, use the `:headless` postfix:
+
+```sh
+testcafe "firefox:headless" tests/sample-fixture.js
+```
+
+For details, see [Testing in Headless Mode](common-concepts/browsers/testing-in-headless-mode.md).
+
+### Using Chrome Device Emulation
+
+To run tests in Chrome device emulation mode, specify `:emulation` and [device parameters](common-concepts/browsers/using-chrome-device-emulation.md#emulator-parameters).
+
+```sh
+testcafe "chrome:emulation:device=iphone 6" tests/sample-fixture.js
+```
+
+To learn more, see [Using Chrome Device Emulation](common-concepts/browsers/using-chrome-device-emulation.md)
+
 ### Remote Browsers
 
-To run tests in a [browser on a remote device](common-concepts/browser-support.md#browsers-on-remote-devices), specify `remote` as a browser alias.
+To run tests in a [browser on a remote device](common-concepts/browsers/browser-support.md#browsers-on-remote-devices), specify `remote` as a browser alias.
 
 ```sh
 testcafe remote tests/sample-fixture.js
@@ -126,7 +128,7 @@ As a result, the browsers will be connected to TestCafe and tests will start.
 
 ### Browsers Accessed Through Browser Provider Plugins
 
-To run tests in [cloud browsers](common-concepts/browser-support.md#browsers-in-cloud-testing-services) or [other browsers](common-concepts/browser-support.md#nonconventional-browsers) accessed through a [browser provider plugin](../extending-testcafe/browser-provider-plugin/),
+To run tests in [cloud browsers](common-concepts/browsers/browser-support.md#browsers-in-cloud-testing-services) or [other browsers](common-concepts/browsers/browser-support.md#nonconventional-browsers) accessed through a [browser provider plugin](../extending-testcafe/browser-provider-plugin/README.md),
 specify a browser alias that consists of the `{browser-provider-name}` prefix and the name of a browser itself (the latter can be omitted); for example, `saucelabs:Chrome@52.0:Windows 8.1`.
 
 ```sh
@@ -210,7 +212,7 @@ testcafe --version
 
 ### -b, --list-browsers
 
-Lists aliases of the [local browsers](common-concepts/browser-support.md#locally-installed-browsers) available on your computer.
+Lists aliases of the [local browsers](common-concepts/browsers/browser-support.md#locally-installed-browsers) available on your computer.
 
 ```sh
 testcafe --list-browsers

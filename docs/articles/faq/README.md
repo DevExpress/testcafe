@@ -62,7 +62,7 @@ Follow us on [Twitter](https://twitter.com/DXTestCafe) for the news about TestCa
 ### Which browsers does TestCafe support? What are the exact supported versions?
 
 You can find a list of supported browsers in
-[our documentation](../documentation/using-testcafe/common-concepts/browser-support.md).
+[our documentation](../documentation/using-testcafe/common-concepts/browsers/browser-support.md).
 TestCafe is tested against the two latest versions of each browser
 except for the browsers whose versions are specified explicitly in this list.
 

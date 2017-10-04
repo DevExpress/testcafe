@@ -21,8 +21,17 @@
   - name: Common Concepts
     url: /documentation/using-testcafe/common-concepts/README.md
     content:
-    - name: Browser Support
-      url: /documentation/using-testcafe/common-concepts/browser-support.md
+    - name: Browsers
+      url: /documentation/using-testcafe/common-concepts/browsers/README.md
+      content:
+      - name: Browser Support
+        url: /documentation/using-testcafe/common-concepts/browsers/browser-support.md
+      - name: Testing in Headless Mode
+        url: /documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.md
+      - name: Using Chrome Device Emulation
+        url: /documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.md
+      - name: User Profiles
+        url: /documentation/using-testcafe/common-concepts/browsers/user-profiles.md
     - name: Concurrent Test Execution
       url: /documentation/using-testcafe/common-concepts/concurrent-test-execution.md
     - name: Reporters
