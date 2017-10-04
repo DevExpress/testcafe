@@ -50,7 +50,7 @@ Use the following parameters to configure Chrome device emulator. Specify them a
 
 Parameter                      | Type   | Description             | Default
 ------------------------------ | ------ | ----------------------- | -------
-`device` *(optional)*       | String  | The emulated device name (see the full list of supported devices in DevTools -> ⠇->Settings -> Devices). | No default value.
+`device` *(optional)*       | String  | The emulated device name (see the full list of supported devices in DevTools -> ⠇-> Settings -> Devices). | No default value.
 `width` *(optional)*        | Number  | The device screen width in pixels. | The chosen device's width. If the `device` parameter is not set, the default browser's width.
 `height` *(optional)*       | Number  | The device screen height in pixels. | The chosen device's height. If the `device` parameter is not set, the default browser's height.
 `scaleFactor` *(optional)*  | Number  | Device scale factor value. | Depends on a chosen `device` or your system parameters.
