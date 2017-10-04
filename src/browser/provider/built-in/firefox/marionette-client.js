@@ -8,7 +8,7 @@ import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../utils/client-functions'
 
 
 const CONNECTION_READY_TIMEOUT   = 300;
-const MAX_CONNECTION_RETRY_COUNT = 10;
+const MAX_CONNECTION_RETRY_COUNT = 100;
 const MAX_RESIZE_RETRY_COUNT     = 2;
 const HEADER_SEPARATOR           = ':';
 
