@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gh-1846</title>
+    <style>
+        #btn {
+            position: absolute;
+            bottom: 1px;
+            left: 50px;
+        }
+
+        .point {
+            position: absolute;
+            height: 5px;
+            width: 5px;
+            background-color: yellow;
+            left: 200px;
+        }
+
+        #top {
+            top: 5px;
+        }
+
+        #bottom {
+            bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+<button id="btn">Button</button>
+<div id="top" class="point"></div>
+<div id="bottom" class="point"></div>
+<script>
+    window.clickCount = 0;
+
+    var btn = document.getElementById('btn');
+
+    btn.addEventListener('click', function () {
+        window.clickCount++;
+    });
+</script>
+</body>
+</html>
