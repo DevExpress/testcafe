@@ -273,7 +273,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         if (windowWidth < VIEWS.hideFixture.maxSize && windowWidth >= hideStatusMaxSize)
             return VIEWS.hideFixture;
 
-        if (this.debugging) {
+        if (this.state.debugging) {
             if (windowWidth < hideStatusMaxSize && windowWidth >= VIEWS.hideUnlockArea.maxSize)
                 return VIEWS.hideStatus;
 
