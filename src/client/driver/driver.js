@@ -5,6 +5,7 @@ import {
     eventUtils,
     domUtils,
     preventRealEvents,
+    disableRealEventsPreventing,
     waitFor,
     browser
 } from './deps/testcafe-core';
@@ -595,6 +596,8 @@ export default class Driver {
         browser.startHeartbeat(this.heartbeatUrl, hammerhead.createNativeXHR);
 
         this.statusBar = new StatusBar(this.userAgent, this.fixtureName, this.testName);
+
+        this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, disableRealEventsPreventing);
 
         this.readyPromise.then(() => {
             this.statusBar.hidePageLoadingStatus();

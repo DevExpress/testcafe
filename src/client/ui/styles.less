@@ -378,9 +378,58 @@
 
                 .status {
                     display: inline-block;
-                    margin-top: 6px;
+                    margin-top: 7px;
                     color: #36B6E5;
                     line-height: 27px;
+                }
+
+                .unlock-page-area {
+                    display: inline-block;
+                    margin: 7px 0 0 21px;
+
+                    .unlock-page-container {
+                        &.locked {
+                            border: 1px solid #36B6E5;
+                            .rounded-corners(3px);
+
+                            cursor: pointer;
+
+                            .unlock-icon {
+                                cursor: pointer;
+                            }
+
+                            span {
+                                cursor: pointer;
+                            }
+                        }
+
+                        &.unlocked {
+                            border-left: 1px solid rgba(66, 173, 223, 0.5);
+                            border-top: 1px solid transparent;
+                        }
+
+                        position: relative;
+                        top: 3px;
+                        padding: 0 14px 1px;
+
+                        .unlock-icon {
+                            .sprite-icon();
+
+                            display: inline-block;
+                            width: 12px;
+                            height: 16px;
+                            background-position: -54px -64px;
+                        }
+
+                        span {
+                            position: relative;
+                            top: -3px;
+                            margin-left: 10px;
+
+                            font-size: 13px;
+                            color: #36B6E5;
+                        }
+                    }
                 }
 
                 .buttons {
@@ -389,14 +438,14 @@
                     position: absolute;
                     right: 10px;
                     line-height: 0;
-                    display: none;
+                    display: inline-block;
 
                     .button {
                         .rounded-corners(3px);
 
-                        font-size: 12px;
+                        font-size: 13px;
                         width: auto;
-                        padding: 0 15px 0 15px;
+                        padding: 0 16px;
                         float: none;
                         display: inline-block;
 
@@ -427,14 +476,14 @@
 
                         span {
                             position: relative;
-                            top: 1px;
+                            top: 2px;
                         }
 
                         &.resume {
                             background-color: #51B7E7;
 
                             span {
-                                padding-right: 6px;
+                                padding-right: 7px;
                             }
 
                             .button-icon {
@@ -447,15 +496,17 @@
                         &.step {
                             background-color: #38A3D5;
                             margin-left: 5px;
+                            padding: 0 14px;
 
                             span {
-                                padding-right: 6px;
+                                padding-left: 4px;
+                                padding-right: 1px;
                             }
 
                             .button-icon {
-                                width: 25px;
+                                width: 29px;
                                 height: 18px;
-                                background-position: -15px -64px;
+                                background-position: -20px -64px;
                             }
                         }
                     }
@@ -481,15 +532,52 @@
             .progress-bar.determinate .value {
                 background-color: #df5679;
             }
+
+            .unlock-page-container {
+                &.locked {
+                    border: 1px solid #df5679 !important;
+                }
+
+                border-left: 1px solid rgba(223, 86, 121, 0.5) !important;;
+
+                span {
+                    color: #df5679 !important;;
+                }
+
+                .unlock-icon {
+                    background-position: -69px -64px !important;
+                }
+            }
         }
 
-        &.icon-status {
+        /* Views */
+        &.icon-status-view, &.icon-unlock-buttons-view, &.icon-buttons-view, &.only-buttons-view, &.only-icon-view {
+            .container .info-container .fixture-container {
+                display: none;
+            }
+        }
+
+        &.icon-unlock-buttons-view, &.icon-buttons-view, &.only-buttons-view, &.only-icon-view {
+            .status-container > .status {
+                display: none;
+            }
+        }
+
+        &.icon-buttons-view, &.only-buttons-view, &.only-icon-view {
+            .status-container .unlock-page-area {
+                display: none;
+            }
+        }
+
+        &.only-buttons-view {
+            .info-container {
+                display: none;
+            }
+        }
+
+        &.icon-status-view {
             .info-container {
                 width: 20%;
-
-                .fixture-container {
-                    display: none;
-                }
             }
 
             .status-container {
@@ -497,7 +585,45 @@
             }
         }
 
-        &.only-icon {
+        &.icon-unlock-buttons-view {
+            .container {
+                .info-container {
+                    width: 40px;
+
+                    .icon {
+                        margin-right: 0;
+                    }
+                }
+
+                .status-container .unlock-page-area .unlock-page-container.unlocked {
+                    border-left: none !important;
+                }
+            }
+        }
+
+        &.icon-buttons-view {
+            .container {
+                .info-container {
+                    width: 40px;
+
+                    .icon {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+
+        &.only-buttons-view {
+            .status-container {
+                .buttons {
+                    left: 0;
+                    right: 0;
+                    text-align: center !important;
+                }
+            }
+        }
+
+        &.only-icon-view {
             .container {
                 margin-left: 0;
                 text-align: center !important;
@@ -508,52 +634,10 @@
                     .icon {
                         margin-right: 0;
                     }
-
-                    .fixture-container {
-                        display: none;
-                    }
-                }
-            }
-            .status-container {
-                display: none;
-            }
-        }
-
-        &.icon-buttons {
-            .container {
-                .info-container {
-                    width: 40px;
-
-                    .icon {
-                        margin-right: 0;
-                    }
-
-                    .fixture-container {
-                        display: none;
-                    }
-                }
-            }
-            .status-container > .status {
-                display: none;
-            }
-        }
-
-        &.only-buttons{
-            .info-container{
-                display: none;
-            }
-
-            .status-container {
-                .status{
-                    display: none;
-                }
-                .buttons {
-                    left: 0;
-                    right: 0;
-                    text-align: center !important;
                 }
             }
         }
+        /* --- */
 
         .progress-bar {
             width: 100%;
