@@ -704,7 +704,7 @@ test('Take a screenshot in quarantine mode', async t => {
 
 
 test('Type text in input', async t => {
-    await t.typeText('#input', 'a', { replace: true });
+    await t.typeText('#input', 'a', {replace: true});
 });
 
 
@@ -745,4 +745,40 @@ test('Chaining callsites', async t => {
         .click('#btn2')
         .click('#error')
         .click('#btn3');
+});
+
+test('t.getBrowserConsoleMessages', async t => {
+    let messages = await t.getBrowserConsoleMessages();
+
+    await t
+        .expect(messages.error).eql(['error1'])
+        .expect(messages.warn).eql(['warn1'])
+        .expect(messages.log).eql(['log1'])
+        .expect(messages.info).eql(['info1'])
+
+        .click('#trigger-messages')
+
+        // Check the driver keeps the messages between page reloads
+        .click('#reload');
+
+    messages = await t.getBrowserConsoleMessages();
+
+    await t
+        .expect(messages.error).eql(['error1', 'error2'])
+        .expect(messages.warn).eql(['warn1', 'warn2'])
+        .expect(messages.log).eql(['log1', 'log2'])
+        .expect(messages.info).eql(['info1', 'info2']);
+});
+
+test('messages formatting', async t => {
+    // Several arguments
+    await t.eval(() => console.log('a', 1, null, void 0, ['b', 2], {c: 3}));
+
+    const messages = await t.getBrowserConsoleMessages();
+
+    await t
+        .expect(messages.log[0]).eql('a 1 null undefined b,2 [object Object]')
+        .expect(messages.info.length).eql(0)
+        .expect(messages.warn.length).eql(0)
+        .expect(messages.error.length).eql(0);
 });

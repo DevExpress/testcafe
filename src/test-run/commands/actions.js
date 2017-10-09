@@ -418,6 +418,12 @@ export class GetNativeDialogHistoryCommand {
     }
 }
 
+export class GetBrowserConsoleMessagesCommand {
+    constructor () {
+        this.type = TYPE.getBrowserConsoleMessages;
+    }
+}
+
 export class SetTestSpeedCommand extends Assignable {
     constructor (obj) {
         super(obj);

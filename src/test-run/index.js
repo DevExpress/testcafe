@@ -22,7 +22,7 @@ import ROLE_PHASE from '../role/phase';
 import TestRunBookmark from './bookmark';
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import ReporterPluginHost from '../reporter/plugin-host';
-
+import BrowserConsoleMessages from './browser-console-messages';
 
 import { TakeScreenshotOnFailCommand } from './commands/browser-manipulation';
 import { SetNativeDialogHandlerCommand, SetTestSpeedCommand, SetPageLoadTimeoutCommand } from './commands/actions';
@@ -72,6 +72,8 @@ export default class TestRun extends Session {
         this.activeIframeSelector = null;
         this.speed                = this.opts.speed;
         this.pageLoadTimeout      = this.opts.pageLoadTimeout;
+
+        this.consoleMessages = new BrowserConsoleMessages();
 
         this.pendingRequest   = null;
         this.pendingPageError = null;
@@ -269,6 +271,12 @@ export default class TestRun extends Session {
         return this.executeCommand(new PrepareBrowserManipulationCommand(command.type), callsite);
     }
 
+    async _enqueueBrowserConsoleMessagesCommand (command, callsite) {
+        await this._enqueueCommand(command, callsite);
+
+        return this.consoleMessages.getCopy();
+    }
+
     async _enqueueSetBreakpointCommand (callsite, error) {
         debugLogger.showBreakpoint(this.id, this.browserConnection.userAgent, callsite, error);
 
@@ -343,6 +351,8 @@ export default class TestRun extends Session {
         var pageError = this.pendingPageError || driverStatus.pageError;
 
         var currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
+
+        this.consoleMessages.concat(driverStatus.consoleMessages);
 
         if (!currentTaskRejectedByError && driverStatus.isCommandResult) {
             if (this.currentDriverTask.command.type === COMMAND_TYPE.testDone) {
@@ -426,6 +436,9 @@ export default class TestRun extends Session {
         if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command, callsite);
 
+        if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
+            return await this._enqueueBrowserConsoleMessagesCommand(command, callsite);
+
         return this._enqueueCommand(command, callsite);
     }
 
@@ -448,8 +461,9 @@ export default class TestRun extends Session {
     }
 
     async switchToCleanRun () {
-        this.ctx        = Object.create(null);
-        this.fixtureCtx = Object.create(null);
+        this.ctx             = Object.create(null);
+        this.fixtureCtx      = Object.create(null);
+        this.consoleMessages = new BrowserConsoleMessages();
 
         this.useStateSnapshot(null);
 

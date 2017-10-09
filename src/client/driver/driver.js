@@ -27,6 +27,8 @@ import {
     CurrentIframeNotFoundError,
     CurrentIframeIsInvisibleError
 } from '../../errors/test-run';
+
+import BrowserConsoleMessages from '../../test-run/browser-console-messages';
 import NativeDialogTracker from './native-dialog-tracker';
 
 import { SetNativeDialogHandlerMessage, TYPE as MESSAGE_TYPE } from './driver-link/messages';
@@ -59,6 +61,7 @@ const ACTIVE_IFRAME_SELECTOR               = 'testcafe|driver|active-iframe-sele
 const TEST_SPEED                           = 'testcafe|driver|test-speed';
 const ASSERTION_RETRIES_TIMEOUT            = 'testcafe|driver|assertion-retries-timeout';
 const ASSERTION_RETRIES_START_TIME         = 'testcafe|driver|assertion-retries-start-time';
+const CONSOLE_MESSAGES                     = 'testcafe|driver|console-messages';
 const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;
 
 const ACTION_IFRAME_ERROR_CTORS = {
@@ -114,6 +117,7 @@ export default class Driver {
 
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.unhandledRejection, err => this._onJsError(err));
+        hammerhead.on(hammerhead.EVENTS.consoleMethCalled, e => this._onConsoleMessage(e));
     }
 
     set speed (val) {
@@ -122,6 +126,14 @@ export default class Driver {
 
     get speed () {
         return this.contextStorage.getItem(TEST_SPEED);
+    }
+
+    get consoleMessages () {
+        return new BrowserConsoleMessages(this.contextStorage.getItem(CONSOLE_MESSAGES));
+    }
+
+    set consoleMessages (messages) {
+        return this.contextStorage.setItem(CONSOLE_MESSAGES, messages ? messages.getCopy() : null);
     }
 
     // Error handling
@@ -156,6 +168,26 @@ export default class Driver {
         return false;
     }
 
+    // Console messages
+    _onConsoleMessage (e) {
+        const meth = e.meth;
+
+        const args = e.args.map(arg => {
+            if (arg === null)
+                return 'null';
+
+            if (arg === void 0)
+                return 'undefined';
+
+            return arg.toString();
+        });
+
+        const messages = this.consoleMessages;
+
+        messages.addMessage(meth, Array.prototype.slice.call(args).join(' '));
+
+        this.consoleMessages = messages;
+    }
 
     // Status
     _addPendingErrorToStatus (status) {
@@ -173,12 +205,18 @@ export default class Driver {
         status.pageError = status.pageError || dialogError;
     }
 
+    _addConsoleMessagesToStatus (status) {
+        status.consoleMessages = this.consoleMessages;
+        this.consoleMessages   = null;
+    }
+
     _sendStatus (status) {
         // NOTE: We should not modify the status if it is resent after
         // the page load because the server has cached the response
         if (!status.resent) {
             this._addPendingErrorToStatus(status);
             this._addUnexpectedDialogErrorToStatus(status);
+            this._addConsoleMessagesToStatus(status);
         }
 
         this.contextStorage.setItem(PENDING_STATUS, status);
@@ -325,6 +363,10 @@ export default class Driver {
             isCommandResult: true,
             result:          this.nativeDialogsTracker.appearedDialogs
         }));
+    }
+
+    _onGetBrowserConsoleMessagesCommand () {
+        this._onReady(new DriverStatus({ isCommandResult: true }));
     }
 
     _onNavigateToCommand (command) {
@@ -488,6 +530,9 @@ export default class Driver {
 
         else if (command.type === COMMAND_TYPE.getNativeDialogHistory)
             this._onGetNativeDialogHistoryCommand(command);
+
+        else if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
+            this._onGetBrowserConsoleMessagesCommand(command);
 
         else if (command.type === COMMAND_TYPE.setTestSpeed)
             this._onSetTestSpeedCommand(command);

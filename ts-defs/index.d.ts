@@ -799,6 +799,25 @@ interface NativeDialogHistoryItem {
     url: string;
 }
 
+interface BrowserConsoleMessages {
+    /**
+     * Messages output to the browser console by the console.log() method.
+     */
+    log: string[],
+    /**
+     * Warning messages output to the browser console by the console.warn() method.
+     */
+    warn: string[],
+    /**
+     * Error messages output to the browser console by the console.error() method.
+     */
+    error: string[],
+    /**
+     * Information messages output to the browser console by the console.info() method.
+     */
+    info: string[]
+}
+
 interface TestController {
     /**
      * Dictionary that is shared between test hook functions and test code.
@@ -1004,6 +1023,10 @@ interface TestController {
      * corresponds to a certain native dialog that appears in the main window or in an `<iframe>`.
      */
     getNativeDialogHistory(): Promise<NativeDialogHistoryItem[]>;
+    /**
+     * Returns an object that contains messages output to the browser console.
+     */
+    getBrowserConsoleMessages(): Promise<BrowserConsoleMessages>;
     /**
      * Starts an assertion chain and specifies assertion actual value.
      *
