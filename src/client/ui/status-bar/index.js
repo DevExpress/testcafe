@@ -16,6 +16,7 @@ var styleUtils   = testCafeCore.styleUtils;
 var eventUtils   = testCafeCore.eventUtils;
 var domUtils     = testCafeCore.domUtils;
 var serviceUtils = testCafeCore.serviceUtils;
+var arrayUtils   = testCafeCore.arrayUtils;
 
 
 const STATUS_BAR_CLASS                     = 'status-bar';
@@ -415,7 +416,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         var eventName = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
 
         var downHandler = e => {
-            var isTargetElement = !!elements.find(el => domUtils.containsElement(el, e.target));
+            var isTargetElement = !!arrayUtils.find(elements, el => domUtils.containsElement(el, e.target));
 
             if (isTargetElement) {
                 eventUtils.preventDefault(e);
