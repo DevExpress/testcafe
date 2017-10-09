@@ -118,16 +118,16 @@ This method returns the following object.
 
 ```js
 {
-    error: ["Cannot read property 'length' of undefined", '...'],       // error messages
-    warn: ['The setTimeout property is deprecated', '...'],             // warning messages
-    log: ['[09:12:08] Logged in', '[09:25:43] Changes saved', '...'],   // log messages
-    info: ['The application was updated since your last visit.', '...'] // info messages
+    error: ["Cannot access the 'db' database. Wrong credentials.", '...'], // error messages
+    warn: ['The setTimeout property is deprecated', '...'],                // warning messages
+    log: ['[09:12:08] Logged in', '[09:25:43] Changes saved', '...'],      // log messages
+    info: ['The application was updated since your last visit.', '...']    // info messages
 }
 ```
 
 Note that this method returns only messages posted via the `console.error`, `console.warn`, `console.log` and `console.info` methods. Messages output by the browser (like when an unhandled exception occurs on the page) will not be returned.
 
-**Example**
+The following example shows how to check the React prop types for errors using the `t.getBrowserConsoleMessages` method.
 
 ```js
 // check-prop-types.js
