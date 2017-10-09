@@ -300,7 +300,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _setStatusDivLeftMargin () {
-        if (styleUtils.get(this.statusDiv.parentNode, 'display') === 'none')
+        if (!this.statusDiv.parentNode || styleUtils.get(this.statusDiv.parentNode, 'display') === 'none')
             return;
 
         var statusDivHidden = styleUtils.get(this.statusDiv, 'display') === 'none';
