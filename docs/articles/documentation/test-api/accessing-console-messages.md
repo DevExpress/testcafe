@@ -21,7 +21,9 @@ Field | Type | Description
 `log`  | Array of String | Log messages printed in the console.
 `info` | Array of String | Information messages printed in the console.
 
-**Example**
+Note that this method returns only messages posted via the `console.error`, `console.warn`, `console.log` and `console.info` methods. Messages output by the browser (like when an unhandled exception occurs on the page) will not be returned.
+
+The following example shows how to check the React prop types for errors using the `t.getBrowserConsoleMessages` method.
 
 ```js
 // check-prop-types.js
