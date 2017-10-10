@@ -67,7 +67,7 @@ When debugging your tests, you can now interact with the tested page. Click the 
 
 After that, you can do anything with the webpage. This gives you additional powers to detect problems in your tests.
 
-Click **Resume** to continue running the test.
+Click **Resume** to continue running the test or click **Next Step** to step over.
 
 #### :gear: Chrome and Firefox are opened with clean profiles by default ([#1623](https://github.com/DevExpress/testcafe/issues/1623))
 
