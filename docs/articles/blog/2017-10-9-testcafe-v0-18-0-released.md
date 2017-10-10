@@ -35,7 +35,7 @@ Note that before starting a test, you need to wait until the component tree is l
 import { AngularSelector, waitForAngular } from 'testcafe-angular-selectors';
 
 fixture `App tests`
-    .page('http://angular-app-url')
+    .page `http://angular-app-url`
     .beforeEach(async () => {
         await waitForAngular();
     });
