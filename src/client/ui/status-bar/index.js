@@ -30,6 +30,7 @@ const STATUS_CONTAINER_CLASS               = 'status-container';
 const UNLOCK_PAGE_AREA_CLASS               = 'unlock-page-area';
 const UNLOCK_PAGE_CONTAINER_CLASS          = 'unlock-page-container';
 const UNLOCK_ICON_CLASS                    = 'unlock-icon';
+const ICON_SEPARATOR_CLASS                 = 'icon-separator';
 const LOCKED_CLASS                         = 'locked';
 const UNLOCKED_CLASS                       = 'unlocked';
 const BUTTONS_CLASS                        = 'buttons';
@@ -134,6 +135,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         var unlockPageArea      = document.createElement('div');
         var unlockPageContainer = document.createElement('div');
         var unlockIcon          = document.createElement('div');
+        var iconSeparator       = document.createElement('div');
         var unlockText          = document.createElement('span');
 
         unlockText.textContent = UNLOCK_PAGE_TEXT;
@@ -142,14 +144,21 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         shadowUI.addClass(unlockPageContainer, UNLOCK_PAGE_CONTAINER_CLASS);
         shadowUI.addClass(unlockPageContainer, LOCKED_CLASS);
         shadowUI.addClass(unlockIcon, UNLOCK_ICON_CLASS);
+        shadowUI.addClass(iconSeparator, ICON_SEPARATOR_CLASS);
 
-        if (browserUtils.isMacPlatform)
+        if (browserUtils.isMacPlatform) {
             unlockPageContainer.style.paddingTop = '3px';
+            unlockPageContainer.style.height     = '24px';
+
+            if (browserUtils.isFirefox)
+                unlockText.style.lineHeight = '30px';
+        }
 
         container.appendChild(unlockPageArea);
         unlockPageArea.appendChild(unlockPageContainer);
         unlockPageContainer.appendChild(unlockIcon);
         unlockPageContainer.appendChild(unlockText);
+        unlockPageContainer.appendChild(iconSeparator);
 
         this._bindClickOnce([unlockPageContainer], () => {
             shadowUI.removeClass(unlockPageContainer, LOCKED_CLASS);
